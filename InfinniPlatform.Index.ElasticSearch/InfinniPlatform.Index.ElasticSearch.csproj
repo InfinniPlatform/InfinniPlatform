@@ -55,6 +55,7 @@
     <Compile Include="Implementation\ElasticProviders\ElasticConnection.cs" />
     <Compile Include="Implementation\ElasticProviders\ElasticConstants.cs" />
     <Compile Include="Factories\ElasticFactory.cs" />
+    <Compile Include="Implementation\ElasticProviders\ElasticSearchProviderAllIndexes.cs" />
     <Compile Include="Implementation\ElasticProviders\ElasticSearchProviderInfo.cs" />
     <Compile Include="Implementation\ElasticProviders\SchemaIndexVersion\ElasticMappingExtension.cs" />
     <Compile Include="Implementation\ElasticProviders\SchemaIndexVersion\IndexToTypeAccordance.cs" />

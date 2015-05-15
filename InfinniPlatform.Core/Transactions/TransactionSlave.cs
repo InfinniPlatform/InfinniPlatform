@@ -7,34 +7,99 @@ using InfinniPlatform.Api.Transactions;
 
 namespace InfinniPlatform.Transactions
 {
+
+    /// <summary>
+    ///   Подчиненная транзакция.
+    ///   Сохранение данных выполняется только в рамках мастер-транзакции.
+    ///   Подчиненная транзакция только обновляет разделяемый список сохраняемых элементов данных
+    /// </summary>
     public sealed class TransactionSlave : ITransaction
     {
         private readonly string _transactionMarker;
-		private readonly List<AttachedInstance> _itemsList;
+        private readonly ITransaction _masterTransaction;
+        private readonly List<AttachedInstance> _itemsList;
 
-        public TransactionSlave(string transactionMarker, List<AttachedInstance> itemsList)
+        /// <summary>
+        ///   Конструктор подчиненной транзакции
+        /// </summary>
+        /// <param name="transactionMarker">Идентификатор транзакции</param>
+        /// <param name="masterTransaction">Базовая транзакция</param>
+        /// <param name="itemsList">Список элементов транзакции</param>
+        public TransactionSlave(string transactionMarker, ITransaction masterTransaction, List<AttachedInstance> itemsList)
         {
             _transactionMarker = transactionMarker;
+            _masterTransaction = masterTransaction;
             _itemsList = itemsList;
         }
 
+        /// <summary>
+        ///   Главная транзакция
+        /// </summary>
+        public ITransaction MasterTransaction
+        {
+            get { return _masterTransaction; }
+        }
+
+
+        /// <summary>
+        ///   Зафиксировать транзакцию
+        /// </summary>
         public void CommitTransaction()
         {
+            //подчиненная транзакция не выполняет сохранение данных. За сохранение данных отвечает мастер-транзакция
         }
 
-        public void Attach(AttachedInstance item)
+        /// <summary>
+        ///   Отсоединить документ от транзакции
+        /// </summary>
+        /// <param name="instanceId">Идентификатор отсоединяемого документа</param>
+        public void Detach(string instanceId)
         {
-            _itemsList.Add(item);
+            var itemDetached = _itemsList.FirstOrDefault(i => i.Documents.Any(a => a.Id.Equals(instanceId)));
+            if (itemDetached != null)
+            {
+                itemDetached.Detached = true;
+            }
         }
 
+        /// <summary>
+        ///   Присоединить документ к транзакции
+        /// </summary>
+        /// <param name="configId">Идентификатор конфигурации</param>
+        /// <param name="documentId">Идентификатор типа документа</param>
+        /// <param name="version">Версия конфигурации</param>
+        /// <param name="documents">Присоединяемые документы</param>
+        /// <param name="routing">Роутинг сохранения</param>
+        public void Attach(string configId, string documentId, string version, IEnumerable<dynamic> documents, string routing)
+        {
+            _itemsList.Add(new AttachedInstance()
+            {
+                Documents = documents,
+                ConfigId = configId,
+                DocumentId = documentId,
+                Version = version,
+                Routing = routing
+            });
+        }
+
+        /// <summary>
+        ///   Получить идентификатор транзакции
+        /// </summary>
+        /// <returns></returns>
         public string GetTransactionMarker()
         {
             return _transactionMarker;
         }
 
+        /// <summary>
+        ///   Получить список документов транзакции
+        /// </summary>
+        /// <returns>Список документов транзакции</returns>
         public List<AttachedInstance> GetTransactionItems()
         {
             return _itemsList;
         }
+
+
     }
 }

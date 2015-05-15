@@ -22,7 +22,7 @@ namespace InfinniPlatform.Api.Schema
 
         private IList<LinkEntry> _entries = new List<LinkEntry>();
         private ISchemaProvider _schemaProvider;
-		private List<dynamic> _typeInfoChain = new List<dynamic>();
+        private List<dynamic> _typeInfoChain = new List<dynamic>();
 
         public void ProcessSchema(dynamic schema)
         {
@@ -52,13 +52,13 @@ namespace InfinniPlatform.Api.Schema
                         var linkSchemaObject = new SchemaObject(parentInfo, startInfo.Key, propertyValue.Caption,
                             startInfo.Value, schemaInner);
 
-						if (_typeInfoChain.Any(t => t.ConfigId == propertyValue.TypeInfo.DocumentLink.ConfigId &&
-												   t.DocumentId == propertyValue.TypeInfo.DocumentLink.DocumentId))
-						{
-							continue;
-						}
+                        if (_typeInfoChain.Any(t => t.ConfigId == propertyValue.TypeInfo.DocumentLink.ConfigId &&
+                                                   t.DocumentId == propertyValue.TypeInfo.DocumentLink.DocumentId))
+                        {
+                            continue;
+                        }
 
-						_typeInfoChain.Add(propertyValue.TypeInfo.DocumentLink);
+                        _typeInfoChain.Add(propertyValue.TypeInfo.DocumentLink);
 
                         if (OnObjectProperty != null)
                         {
@@ -84,6 +84,7 @@ namespace InfinniPlatform.Api.Schema
                             }
                         }
 
+                        //---
                         var linkEntry = new LinkEntry()
                         {
                             ConfigId = propertyValue.TypeInfo.DocumentLink.ConfigId,
@@ -100,6 +101,7 @@ namespace InfinniPlatform.Api.Schema
                                 ProcessSchema(linkSchemaObject, schemaInner);
                             }
                         }
+                        //---
                     }
                 }
                 else if (propertyValue.Type == "Array")
@@ -120,12 +122,28 @@ namespace InfinniPlatform.Api.Schema
                         var arraySchemaObject = new SchemaObject(parentInfo, startInfo.Key, propertyValue.Caption,
                             startInfo.Value,
                             schemaObject);
+                        
                         OnArrayProperty(arraySchemaObject);
 
                         //если массив содержит ссылочные типы, то выполняем анализ типа элемента массива
                         if (schemaObject != null)
                         {
-                            ProcessSchema(arraySchemaObject, schemaObject);
+
+                            var linkEntry = new LinkEntry()
+                            {
+                                ConfigId = propertyValue.Items.TypeInfo.DocumentLink.ConfigId,
+                                DocumentId = propertyValue.Items.TypeInfo.DocumentLink.DocumentId,
+                                Schema = schemaObject
+                            };
+
+                            var linkToObjectIsCycleReference = _entries.HasEntry(linkEntry);
+                            if (!linkToObjectIsCycleReference)
+                            {
+                                _entries.Add(linkEntry);
+                                ProcessSchema(arraySchemaObject, schemaObject);
+                            }
+                            
+                            
                         }
                     }
                 }

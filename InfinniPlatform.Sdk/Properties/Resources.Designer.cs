@@ -61,11 +61,119 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There an business logic error on request execution..
+        /// </summary>
+        internal static string BusinessLogicError {
+            get {
+                return ResourceManager.GetString("BusinessLogicError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Document to detach should not be null..
+        /// </summary>
+        internal static string DocumentToDetachShouldntBeEmpty {
+            get {
+                return ResourceManager.GetString("DocumentToDetachShouldntBeEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fail to get document with exception: {0}.
         /// </summary>
         internal static string FailGetDocument {
             get {
                 return ResourceManager.GetString("FailGetDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fail to attach document to session with exception: {0}.
+        /// </summary>
+        internal static string FailToAttachDocumentToSession {
+            get {
+                return ResourceManager.GetString("FailToAttachDocumentToSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fail to commit session with exception: {0}.
+        /// </summary>
+        internal static string FailToCommitException {
+            get {
+                return ResourceManager.GetString("FailToCommitException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fail to create new session..
+        /// </summary>
+        internal static string FailToCreateNewSession {
+            get {
+                return ResourceManager.GetString("FailToCreateNewSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fail to delete document with exception: {0}.
+        /// </summary>
+        internal static string FailToDeleteDocument {
+            get {
+                return ResourceManager.GetString("FailToDeleteDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fail to detach document from session with exception: {0}.
+        /// </summary>
+        internal static string FailToDetachDocument {
+            get {
+                return ResourceManager.GetString("FailToDetachDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fail to get session with exception: {0}.
+        /// </summary>
+        internal static string FailToGetSession {
+            get {
+                return ResourceManager.GetString("FailToGetSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fail to set document with exception: {0}.
+        /// </summary>
+        internal static string FailToSetDocument {
+            get {
+                return ResourceManager.GetString("FailToSetDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fail to update document with exception: {0}.
+        /// </summary>
+        internal static string FailToUpdateDocument {
+            get {
+                return ResourceManager.GetString("FailToUpdateDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is an internal server error..
+        /// </summary>
+        internal static string InternalServerError {
+            get {
+                return ResourceManager.GetString("InternalServerError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remote server not found..
+        /// </summary>
+        internal static string RemoteServerNotFound {
+            get {
+                return ResourceManager.GetString("RemoteServerNotFound", resourceCulture);
             }
         }
         
@@ -93,6 +201,15 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string ServiceNotRegistered {
             get {
                 return ResourceManager.GetString("ServiceNotRegistered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is not service on specified url.
+        /// </summary>
+        internal static string ServiceNotRegisteredError {
+            get {
+                return ResourceManager.GetString("ServiceNotRegisteredError", resourceCulture);
             }
         }
         

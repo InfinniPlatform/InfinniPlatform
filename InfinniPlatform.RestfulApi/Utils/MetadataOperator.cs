@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Metadata;
+using InfinniPlatform.Api.Validation;
 
 namespace InfinniPlatform.RestfulApi.Utils
 {
@@ -106,18 +108,21 @@ namespace InfinniPlatform.RestfulApi.Utils
 			                    foreach (var documentLink in documentLinks)
 			                    {
 				                    dynamic link = documentLink;
+
+                                    //выполняется при разрешении ссылок на документ.
+                                    //в случае успешного разрешения необходимо удалить объекты с разрешенной ссылкой из списка
 			                        Action<object> setValueAction = value =>
 			                        {
 			                            dynamic arrayToAddResolvedDocument = document[property.Key];
-
-			                            if (arrayToAddResolvedDocument == null)
-			                            {
-			                                arrayToAddResolvedDocument = new List<dynamic>();
-			                                document[property.Key] = arrayToAddResolvedDocument;
-			                            }
-
 										dynamic propValue = value;
+
 										propValue.DisplayName = link.DisplayName;
+
+			                            var removeValue = ((IList<dynamic>) arrayToAddResolvedDocument).FirstOrDefault(r => r.Id == propValue.Id);
+			                            if (removeValue != null)
+			                            {
+			                                ObjectHelper.RemoveItem(arrayToAddResolvedDocument,removeValue);
+			                            }
 
 			                            arrayToAddResolvedDocument.Add(value);
 			                        };
@@ -129,7 +134,7 @@ namespace InfinniPlatform.RestfulApi.Utils
                                         setValueAction);
 			                    }
 
-			                    document[property.Key] = null;
+			                    //document[property.Key] = null;
 			                }
 
 			                if (property.Value.Items.TypeInfo.DocumentLink.Inline == true)

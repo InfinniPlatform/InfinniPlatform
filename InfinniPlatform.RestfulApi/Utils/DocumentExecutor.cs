@@ -28,6 +28,20 @@ namespace InfinniPlatform.RestfulApi.Utils
 			_profilerComponent = profilerComponent;
 		}
 
+	    public dynamic GetBaseDocument(string userName, string instanceId)
+	    {
+            var documentProvider = _documentComponent.GetAllIndexesOperationProvider(userName);
+	        return documentProvider.GetItem(instanceId);
+	    }
+
+        public dynamic GetCompleteDocument(string configId, string documentId, string userName, string instanceId)
+        {
+            var docsToResolve = new[] {GetBaseDocument(userName, instanceId)};
+            new ReferenceResolver(_metadataComponent).ResolveReferences(configId, documentId,
+                docsToResolve, null);
+            return docsToResolve.FirstOrDefault();
+        }
+
 		public IEnumerable<dynamic> GetCompleteDocuments(string configId, string documentId, string userName, int pageNumber, int pageSize,
 			IEnumerable<dynamic> filter, IEnumerable<dynamic> sorting, IEnumerable<dynamic> ignoreResolve)
 		{

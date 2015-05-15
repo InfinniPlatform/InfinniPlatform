@@ -55,7 +55,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 	        _operationProfiler = operationProfiler;
 		}
 
-        public RestQueryResponse QueryPost(string id, object changesObject, bool replaceObject, CookieContainer cookieContainer)
+        public RestQueryResponse QueryPost(string id, dynamic changesObject, bool replaceObject, CookieContainer cookieContainer)
         {
             IEnumerable<EventDefinition> events = new List<EventDefinition>();
 

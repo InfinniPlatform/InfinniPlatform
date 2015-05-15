@@ -29,7 +29,7 @@ namespace InfinniPlatform.Sdk
             return restResponse.ToQueryResponse();
         }
 
-        public RestQueryResponse QueryPost(string url, object body)
+        public RestQueryResponse QueryPost(string url, object body = null)
         {
             var restClient = new RestClient(url);
 
@@ -39,11 +39,16 @@ namespace InfinniPlatform.Sdk
             // Изменение времени ожидания ответа сделано для того, чтобы можно было загрузить большие объемы данных
             restClient.Timeout = 1000 * 60 * 300;
 
-            IRestResponse restResponse = restClient.Post(
-                new RestRequest
-                {
-                    RequestFormat = DataFormat.Json
-                }.AddBody(body));
+            var restRequest = new RestRequest
+            {
+                RequestFormat = DataFormat.Json
+            };
+            if (body != null)
+            {
+                restRequest.AddBody(body);
+            }
+
+            IRestResponse restResponse = restClient.Post(restRequest);
 
             return restResponse.ToQueryResponse();
         }
@@ -67,6 +72,32 @@ namespace InfinniPlatform.Sdk
                 {
                     RequestFormat = DataFormat.Json
                 }.AddBody(body));
+
+            return restResponse.ToQueryResponse();
+        }
+
+        public RestQueryResponse QueryDelete(string url)
+        {
+            var restClient = new RestClient(url);
+
+            restClient.CookieContainer = _cookieContainer;
+            IRestResponse restResponse = restClient.Delete(new RestRequest
+            {
+                RequestFormat = DataFormat.Json
+            });
+
+            return restResponse.ToQueryResponse();
+        }
+
+        public RestQueryResponse QueryGetById(string url)
+        {
+            var restClient = new RestClient(url);
+
+            restClient.CookieContainer = _cookieContainer;
+            IRestResponse restResponse = restClient.Get(new RestRequest
+            {
+                RequestFormat = DataFormat.Json
+            });
 
             return restResponse.ToQueryResponse();
         }

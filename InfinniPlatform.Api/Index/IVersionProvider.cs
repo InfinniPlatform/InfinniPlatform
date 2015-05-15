@@ -39,5 +39,11 @@ namespace InfinniPlatform.Api.Index
 		/// </summary>
 		/// <param name="id">Идентификатор версии</param>
 		void DeleteDocument(string id);
-	}
+
+        /// <summary>
+        ///   Удалить документы с идентификаторами из списка
+        /// </summary>
+        /// <param name="ids">Список идентификаторов</param>
+        void DeleteDocuments(IEnumerable<string> ids);
+    }
 }

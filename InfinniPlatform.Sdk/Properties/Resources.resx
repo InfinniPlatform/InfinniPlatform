@@ -113,4 +113,43 @@
   <data name="ResultIsNotOfObjectType" xml:space="preserve">
     <value>query result is not of object type</value>
   </data>
+  <data name="FailToSetDocument" xml:space="preserve">
+    <value>Fail to set document with exception: {0}</value>
+  </data>
+  <data name="FailToUpdateDocument" xml:space="preserve">
+    <value>Fail to update document with exception: {0}</value>
+  </data>
+  <data name="BusinessLogicError" xml:space="preserve">
+    <value>There an business logic error on request execution.</value>
+  </data>
+  <data name="RemoteServerNotFound" xml:space="preserve">
+    <value>Remote server not found.</value>
+  </data>
+  <data name="InternalServerError" xml:space="preserve">
+    <value>There is an internal server error.</value>
+  </data>
+  <data name="ServiceNotRegisteredError" xml:space="preserve">
+    <value>There is not service on specified url</value>
+  </data>
+  <data name="FailToDeleteDocument" xml:space="preserve">
+    <value>Fail to delete document with exception: {0}</value>
+  </data>
+  <data name="FailToCreateNewSession" xml:space="preserve">
+    <value>Fail to create new session.</value>
+  </data>
+  <data name="FailToAttachDocumentToSession" xml:space="preserve">
+    <value>Fail to attach document to session with exception: {0}</value>
+  </data>
+  <data name="FailToGetSession" xml:space="preserve">
+    <value>Fail to get session with exception: {0}</value>
+  </data>
+  <data name="FailToDetachDocument" xml:space="preserve">
+    <value>Fail to detach document from session with exception: {0}</value>
+  </data>
+  <data name="DocumentToDetachShouldntBeEmpty" xml:space="preserve">
+    <value>Document to detach should not be null.</value>
+  </data>
+  <data name="FailToCommitException" xml:space="preserve">
+    <value>Fail to commit session with exception: {0}</value>
+  </data>
 </root>

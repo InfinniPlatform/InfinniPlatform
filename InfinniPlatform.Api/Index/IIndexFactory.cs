@@ -63,5 +63,12 @@ namespace InfinniPlatform.Api.Index
 	    /// <param name="typeName">Наименование типа для выполнения операций с данными. Если не указан, осуществляется выборка всех существующих в индексе типов</param>
 	    /// <param name="routing"></param>
 	    IAggregationProvider BuildAggregationProvider(string indexName, string typeName, string routing);
+
+        /// <summary>
+        ///   Получить провайдер операций по всем индексам и типам базы
+        /// </summary>
+        /// <param name="routing">Значение роутинга пользователя</param>
+        /// <returns>Провайдер операций по всем индексам и типам базы</returns>
+        IAllIndexesOperationProvider BuildAllIndexesOperationProvider(string routing);
     }
 }

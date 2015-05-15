@@ -36,7 +36,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
             //получаем тип метаданных/индекс, по которому выполняем поиск документов
             var idType = ConfigRequestProvider.GetMetadataIdentifier();
 
-			var metadataConfig = _globalContext.GetComponent<IConfigurationMediatorComponent>().ConfigurationBuilder.GetConfigurationObject(ConfigRequestProvider.GetConfiguration()).MetadataConfiguration;
+			var metadataConfig = _globalContext.GetComponent<IMetadataConfigurationProvider>().GetMetadataConfiguration(ConfigRequestProvider.GetConfiguration());
 
             var target = new SearchContext();
             target.Context = _globalContext;

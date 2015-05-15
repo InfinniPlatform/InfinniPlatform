@@ -6,7 +6,7 @@ using InfinniPlatform.Json.EventBuilders;
 
 namespace InfinniPlatform.Factories
 {
-	public class AggregateProvider : IAggregateProvider
+	public class AggregateProvider
 	{
 		public object CreateAggregate()
 		{

@@ -4,6 +4,7 @@ using InfinniPlatform.Api.RestApi.CommonApi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.SearchOptions.Builders;
 
 namespace InfinniPlatform.Api.RestApi.DataApi
@@ -26,6 +27,24 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
 			return response.ToDynamicList();
 		}
+
+        public dynamic GetDocument(string id)
+        {
+            var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getdocumentbyid", null, new
+            {
+                Id = id,
+                Secured = _secured
+            });
+
+            try
+            {
+                return response.ToDynamic();
+            }
+            catch (Exception)
+            {
+                throw new ArgumentException(response.Content);
+            }
+        } 
 
 		public IEnumerable<dynamic> GetDocument(string configuration,
 			string metadata,
@@ -151,9 +170,9 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 				                                                                                     }).ToDynamic();
 		}
 
-        public void DeleteDocument(string configuration, string metadata, string documentId)
+        public dynamic DeleteDocument(string configuration, string metadata, string documentId)
         {
-            RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "deletedocument", null, new
+            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "deletedocument", null, new
             {
                 Configuration = configuration,
                 Metadata = metadata,
@@ -162,6 +181,27 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             });
 
         }
+
+        public dynamic UpdateDocument(string configuration, string metadata, dynamic item, bool ignoreWarnings = false, bool allowNonSchemaProperties = false)
+        {
+            object transactionMarker = ObjectHelper.GetProperty(item, "TransactionMarker");
+            if (transactionMarker != null && !string.IsNullOrEmpty(transactionMarker.ToString()))
+            {
+                item.TransactionMarker = null;
+            }
+
+            return RestQueryApi.QueryPostRaw("RestfulApi", "configuration", "updatedocument", item.Id, new
+            {
+                Configuration = configuration,
+                Metadata = metadata,
+                IgnoreWarnings = ignoreWarnings,
+                AllowNonSchemaProperties = allowNonSchemaProperties,
+                Document = item.ChangesObject,
+                TransactionMarker = transactionMarker,
+                Secured = _secured
+            },false).ToDynamic();
+        }
+
 
         public dynamic SetDocument(string configuration, string metadata, dynamic item, bool ignoreWarnings = false, bool allowNonSchemaProperties = false)
         {
@@ -186,7 +226,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         }
 
 
-        public void SetDocuments(string configuration, string metadata, IEnumerable<object> item, int batchSize = 200, bool allowNonSchemaProperties = false)
+        public dynamic SetDocuments(string configuration, string metadata, IEnumerable<object> item, int batchSize = 200, bool allowNonSchemaProperties = false)
         {
             var batches = LinqExtensions.Batch(item, batchSize);
 
@@ -224,6 +264,11 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                     }
                 }
             }
+
+            dynamic result = new DynamicWrapper();
+            result.IsValid = true;
+            result.ValidationMessage = Resources.BatchCompletedSuccessfully;
+            return result;
         }
 
     }

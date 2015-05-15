@@ -57,7 +57,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
 
 			//устанавливаем контекст прикладной конфигурации. В ходе рефакторинга необходимо обдумать, как вынести это на более высокий уровень абстракции
 		    var appliedConfig =
-			    _globalContext.GetComponent<IConfigurationMediatorComponent>().GetConfiguration(ConfigRequestProvider); 
+			    _globalContext.GetComponent<IConfigurationMediatorComponent>().GetConfiguration(ConfigRequestProvider.GetConfiguration()); 
 	        
 
 			if (string.IsNullOrEmpty(idType))

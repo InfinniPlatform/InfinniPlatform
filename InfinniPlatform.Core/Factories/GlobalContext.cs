@@ -41,8 +41,7 @@ namespace InfinniPlatform.Factories
 			_components.Add(new TransactionComponent(dependencyContainerComponent.ResolveDependency<ITransactionManager>()));
 			_components.Add(new WebClientNotificationComponent(dependencyContainerComponent.ResolveDependency<IWebClientNotificationServiceFactory>()));
 			_components.Add(new ConfigurationMediatorComponent(
-				dependencyContainerComponent.ResolveDependency<IConfigurationObjectBuilder>(),
-				dependencyContainerComponent.ResolveDependency<IMetadataConfigurationProvider>()));
+				dependencyContainerComponent.ResolveDependency<IConfigurationObjectBuilder>()));
 
 			_components.Add(dependencyContainerComponent);
 			_components.Add(SystemComponent);
@@ -58,9 +57,12 @@ namespace InfinniPlatform.Factories
 			_components.Add(new SignInApi());
 			_components.Add(new PasswordVerifierComponent(this));
 			_components.Add(new InprocessDocumentComponent(new ConfigurationMediatorComponent(
-																dependencyContainerComponent.ResolveDependency<IConfigurationObjectBuilder>(),
-																dependencyContainerComponent.ResolveDependency<IMetadataConfigurationProvider>()),
-														   new SecurityComponent()));
+																dependencyContainerComponent.ResolveDependency<IConfigurationObjectBuilder>()                                                                
+																),
+														   new SecurityComponent(),
+                                                           dependencyContainerComponent.ResolveDependency<IIndexFactory>()));
+            _components.Add(metadataConfigurationProvider);
+
 		}
 
 		private readonly IList<object> _components = new List<object>(); 

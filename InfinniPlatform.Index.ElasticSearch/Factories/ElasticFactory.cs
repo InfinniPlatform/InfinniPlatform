@@ -82,6 +82,17 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 	 	    return providerInfo.Provider;
  	    }
 
+        /// <summary>
+        ///   Получить провайдер операций по всем индексам и типам базы
+        /// </summary>
+        /// <param name="routing">Значение роутинга пользователя</param>
+        /// <returns>Провайдер операций по всем индексам и типам базы</returns>
+	    public IAllIndexesOperationProvider BuildAllIndexesOperationProvider(string routing)
+	    {
+	        var expectedRouting = _indexRoutingFactory.GetRoutingUnspecifiedType(routing);
+            return new ElasticSearchProviderAllIndexes(expectedRouting);
+	    }
+
 	    /// <summary>
 	    ///   Создать провайдер операций для работы с индексами
 	    /// </summary>

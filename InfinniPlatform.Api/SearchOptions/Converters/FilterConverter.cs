@@ -44,7 +44,7 @@ namespace InfinniPlatform.Api.SearchOptions.Converters
             //op = IsEquals
             var op = criteria.Substring(0, criteria.IndexOf(" ", StringComparison.Ordinal)).ToLowerInvariant();
             //criteria = 200
-            var value = criteria.Substring(criteria.IndexOf(" ", StringComparison.Ordinal));
+            var value = criteria.Substring(criteria.IndexOf(" ", StringComparison.Ordinal)+1);
 
             dynamic criteriaDynamic = new DynamicWrapper();
             criteriaDynamic.Property = propertyName;

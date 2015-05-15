@@ -16,13 +16,26 @@ namespace InfinniPlatform.ContextComponents
 	{
 		private readonly IConfigurationMediatorComponent _configurationMediatorComponent;
 		private readonly ISecurityComponent _securityComponent;
+	    private readonly IIndexFactory _indexFactory;
 
-		public InprocessDocumentComponent(IConfigurationMediatorComponent configurationMediatorComponent,
-		                                 ISecurityComponent securityComponent)
+	    public InprocessDocumentComponent(IConfigurationMediatorComponent configurationMediatorComponent,
+		                                 ISecurityComponent securityComponent, IIndexFactory indexFactory)
 		{
 			_configurationMediatorComponent = configurationMediatorComponent;
 			_securityComponent = securityComponent;
+	        _indexFactory = indexFactory;
 		}
+
+	    public IAllIndexesOperationProvider GetAllIndexesOperationProvider(string userName)
+	    {
+	        return _indexFactory.BuildAllIndexesOperationProvider(GetUserRouting(userName));
+	    }
+
+	    private string GetUserRouting(string userName)
+	    {
+	        return _securityComponent.GetClaim(AuthorizationStorageExtensions.OrganizationClaim, userName) ??
+	               AuthorizationStorageExtensions.AnonimousUser;
+	    }
 
 		public IVersionProvider GetDocumentProvider(string configId, string documentId, string userName)
 		{
@@ -35,7 +48,7 @@ namespace InfinniPlatform.ContextComponents
 			if (config != null)
 			{
 
-				return config.GetDocumentProvider(documentId,_securityComponent.GetClaim(AuthorizationStorageExtensions.OrganizationClaim,userName) ?? AuthorizationStorageExtensions.AnonimousUser);
+				return config.GetDocumentProvider(documentId,GetUserRouting(userName));
 			}
 			return null;
 		}

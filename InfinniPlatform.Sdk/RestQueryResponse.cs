@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net;
+using System.Text;
 using InfinniPlatform.Sdk.Properties;
 using RestSharp;
 
@@ -53,10 +54,36 @@ namespace InfinniPlatform.Sdk
             get
             {
                 return (HttpStatusCode == HttpStatusCode.OK || HttpStatusCode == HttpStatusCode.BadRequest) &&
-                       !IsRemoteServerNotFound && !IsServiceNotRegistered && !IsServerError;
+                      !IsBusinessLogicError && !IsRemoteServerNotFound && !IsServiceNotRegistered && !IsServerError;
             }
         }
 
+        public string GetErrorContent()
+        {
+            var builder = new StringBuilder();
+            if (IsBusinessLogicError)
+            {
+                builder.Append(Resources.BusinessLogicError);
+            }
+            else if (IsRemoteServerNotFound)
+            {
+                builder.Append(Resources.RemoteServerNotFound);
+            }
+            else if (IsServerError)
+            {
+                builder.Append(Resources.InternalServerError);
+            }
+            else if (IsServiceNotRegistered)
+            {
+                builder.Append(Resources.ServiceNotRegisteredError);
+            }
+            if (!string.IsNullOrEmpty(Content))
+            {
+                builder.Append(string.Format("/r/nAdditional info: {0}", Content));
+            }
+
+            return builder.ToString();
+        }
     }
 
     public static class RestQueryExtensions

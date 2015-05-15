@@ -1,0 +1,58 @@
+{
+  "Id": "622b5316-a3b7-4e1b-b3ac-db138d75e93c",
+  "Secured": true,
+  "Name": "Comment",
+  "Caption": "Комментарий",
+  "Description": "",
+  "Versioning": 2,
+  "MetadataIndex": "Comment",
+  "Services": [],
+  "Processes": [],
+  "Scenarios": [],
+  "Generators": [],
+  "Views": [],
+  "PrintViews": [],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "DocumentStatuses": [],
+  "ParentId": "f17a31e9-3872-419e-882f-b9cdc3a29e76",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "documentmetadata",
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "Author": {
+        "Caption": "Автор комментария",
+        "Type": "Object",
+        "TypeInfo": {
+          "DocumentLink": {
+            "ConfigId": "Gameshop",
+            "DocumentId": "UserProfile"
+          }
+        },
+        "Properties": {}
+      },
+      "Likes": {
+        "Caption": "Количество лайков",
+        "Type": "Integer"
+      },
+      "Text": {
+        "Caption": "Текст комментария",
+        "Type": "String"
+      },
+      "ParentComment": {
+        "Caption": "Комментарий, к которому относится текущий комментарий",
+        "Type": "Object",
+        "TypeInfo": {
+          "DocumentLink": {
+            "ConfigId": "Gameshop",
+            "DocumentId": "Comment",
+            "Resolve": false
+          }
+        },
+        "Properties": {}
+      }
+    }
+  }
+}

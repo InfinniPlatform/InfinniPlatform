@@ -396,4 +396,31 @@
   <data name="UnsatisfiedVersionNumber" xml:space="preserve">
     <value>UnsatifiedAppVersion</value>
   </data>
+  <data name="DocumentNotFound" xml:space="preserve">
+    <value>Document with identifier "{0}" not found.</value>
+  </data>
+  <data name="DocumentDeletedSuccessfully" xml:space="preserve">
+    <value>Document with identifier "{0}" deleted successfully</value>
+  </data>
+  <data name="DocumentProviderTypeNotFound" xml:space="preserve">
+    <value>document provider for type "{0}" not found.</value>
+  </data>
+  <data name="LogDocumentDeleted" xml:space="preserve">
+    <value>document "{0}" deleted</value>
+  </data>
+  <data name="SessionCreatedSuccessfully" xml:space="preserve">
+    <value>Session created successfully</value>
+  </data>
+  <data name="DocumentAttachedSuccessfully" xml:space="preserve">
+    <value>Document attached successfully.</value>
+  </data>
+  <data name="SessionIdAndDocumentShouldntBeEmpty" xml:space="preserve">
+    <value>SessionId and Document should'nt be empty.</value>
+  </data>
+  <data name="BatchCompletedSuccessfully" xml:space="preserve">
+    <value>Batch completed successfully</value>
+  </data>
+  <data name="DeletedDocumentsIdentifiersShouldNotBeNull" xml:space="preserve">
+    <value>Deleted documents identifiers list must be not null.</value>
+  </data>
 </root>

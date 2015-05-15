@@ -1,21 +1,40 @@
-﻿namespace InfinniPlatform.Api.Transactions
+﻿using System.Collections.Generic;
+
+namespace InfinniPlatform.Api.Transactions
 {
+    /// <summary>
+    ///  Присоединенный к транзакции экземпляр документа
+    /// </summary>
 	public sealed class AttachedInstance
 	{
-		public string ConfigId
-		{
-			get { return Instance.Configuration; }
-		}
+        /// <summary>
+        ///   Идентификатор конфигурации
+        /// </summary>
+        public string ConfigId { get; set; }
 
-		public string DocumentId
-		{
-			get { return Instance.Metadata; }
-		}
+        /// <summary>
+        ///   Идентификатор типа документа
+        /// </summary>
+		public string DocumentId { get; set; }
 
-		public dynamic Instance { get; set; }
+        /// <summary>
+        ///   Список сохраняемых документов
+        /// </summary>
+		public IEnumerable<dynamic> Documents { get; set; }
 
+        /// <summary>
+        ///   Версия конфигурации
+        /// </summary>
 		public string Version { get; set; }
 
+        /// <summary>
+        ///   Роутинг пользователя
+        /// </summary>
 		public string Routing { get; set; }
+
+        /// <summary>
+        ///   Признак отсоединения от транзакции
+        /// </summary>
+        public bool Detached { get; set; }
 	}
 }

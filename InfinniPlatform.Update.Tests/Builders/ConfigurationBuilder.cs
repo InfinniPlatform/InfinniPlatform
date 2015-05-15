@@ -52,12 +52,7 @@ namespace InfinniPlatform.Update.Tests.Builders
 			return query;
 		}
 
-		public static SearchHandler BuildQueryContextSearch(this SearchHandler query)
-		{
-			var documentContentConfigRequestProvider = new LocalDataProvider("update", "package", "search",null);
-			query.ConfigRequestProvider = documentContentConfigRequestProvider;
-			return query;
-		}
+
 
 		private static IMetadataConfigurationProvider InitConfig(Type configurationModule)
 		{

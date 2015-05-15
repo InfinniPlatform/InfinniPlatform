@@ -1,0 +1,113 @@
+{
+  "Id": "d9a54b22-5d8b-4a1b-a1a6-6ce0ad5b1f3c",
+  "Secured": true,
+  "Name": "Review",
+  "Caption": "Обзор игры",
+  "Description": "",
+  "Versioning": 2,
+  "MetadataIndex": "Review",
+  "Services": [],
+  "Processes": [],
+  "Scenarios": [],
+  "Generators": [],
+  "Views": [],
+  "PrintViews": [],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "DocumentStatuses": [],
+  "ParentId": "f17a31e9-3872-419e-882f-b9cdc3a29e76",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "documentmetadata",
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "Game": {
+        "Caption": "Игра",
+        "Type": "Object",
+        "TypeInfo": {
+          "DocumentLink": {
+            "ConfigId": "Gameshop",
+            "DocumentId": "Catalogue",
+            "Resolve": false
+          }
+        },
+        "Properties": {}
+      },
+      "Text": {
+        "Caption": "Текст обзора",
+        "Type": "String"
+      },
+      "Author": {
+        "Caption": "Автор обзора",
+        "Type": "Object",
+        "Properties": {
+          "Nick": {
+            "Caption": "Никнейм",
+            "Type": "String"
+          },
+          "Name": {
+            "Caption": "Имя автора",
+            "Type": "String"
+          }
+        }
+      },
+      "Comments": {
+        "Caption": "Список комментариев",
+        "Type": "Array",
+        "Items": {
+          "Type": "Object",
+          "TypeInfo": {
+            "DocumentLink": {
+              "ConfigId": "Gameshop",
+              "DocumentId": "Comment",
+              "Inline": false,
+              "Resolve": true
+            }
+          },
+          "Properties": {}
+        }
+      },
+      "ReviewConfig": {
+        "Caption": "Конфигурация компьютера",
+        "Type": "Object",
+        "TypeInfo": {
+          "DocumentLink": {
+            "ConfigId": "Gameshop",
+            "DocumentId": "PCConfig",
+            "Resolve": false,
+            "Inline": true
+          }
+        },
+        "Properties": {}
+      },
+      "Rate": {
+        "Caption": "Оценка игры",
+        "Type": "Object",
+        "TypeInfo": {
+          "DocumentLink": {
+            "ConfigId": "Gameshop",
+            "DocumentId": "GameRating",
+            "Resolve": true
+          }
+        },
+        "Properties": {}
+      },
+      "AdditionalInfo": {
+        "Caption": "Дополнительная информация о игре",
+        "Type": "Array",
+        "Items": {
+          "Type": "Object",
+          "TypeInfo": {
+            "DocumentLink": {
+              "ConfigId": "Gameshop",
+              "DocumentId": "GameInfo",
+              "Inline": true
+            }
+          },
+          "Properties": {}
+        }
+      }
+    }
+  }
+}

@@ -12,22 +12,17 @@ namespace InfinniPlatform.ContextComponents
 {
 	public sealed class ConfigurationMediatorComponent : IConfigurationMediatorComponent
 	{
-		private readonly IMetadataConfigurationProvider _metadataConfigurationProvider;
 		private readonly IConfigurationObjectBuilder _configurationObjectBuilder;
 
-		public ConfigurationMediatorComponent(IConfigurationObjectBuilder configurationObjectBuilder, IMetadataConfigurationProvider metadataConfigurationProvider)
+		public ConfigurationMediatorComponent(IConfigurationObjectBuilder configurationObjectBuilder)
 		{
-			_metadataConfigurationProvider = metadataConfigurationProvider;
 			_configurationObjectBuilder = configurationObjectBuilder;
 		}
 
 
-		public IConfigurationObject GetConfiguration(IConfigRequestProvider configRequestProvider)
+		public IConfigurationObject GetConfiguration(string configurationId)
 		{
-			var metadataConfig = _metadataConfigurationProvider
-					.GetMetadataConfiguration(configRequestProvider.GetConfiguration());
-
-			return _configurationObjectBuilder.GetConfigurationObject(configRequestProvider.GetConfiguration());
+			return _configurationObjectBuilder.GetConfigurationObject(configurationId);
 
 		}
 

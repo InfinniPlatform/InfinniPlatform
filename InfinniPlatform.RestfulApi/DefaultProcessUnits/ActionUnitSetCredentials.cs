@@ -1,4 +1,5 @@
-﻿using InfinniPlatform.Api.ContextComponents;
+﻿using System.Diagnostics;
+using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
 using InfinniPlatform.Api.Metadata;
@@ -10,7 +11,6 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
 	{
 		public void Action(IApplyContext target)
 		{
-
 			dynamic defaultBusinessProcess = null;
 
 			//TODO Игнорировать системные конфигурации при валидации. Пока непонятно, как переделать

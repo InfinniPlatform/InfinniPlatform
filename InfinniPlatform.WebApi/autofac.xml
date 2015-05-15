@@ -70,10 +70,6 @@
       service="InfinniPlatform.Metadata.IMetadataConfigurationProvider, InfinniPlatform.Core"
       instance-scope="single-instance"/>
     <component
-      type = "InfinniPlatform.Factories.AggregateProvider, InfinniPlatform.Core"
-      service="InfinniPlatform.Factories.IAggregateProvider, InfinniPlatform.Core"
-      instance-scope="per-dependency"/>
-    <component
       type = "InfinniPlatform.Metadata.Implementation.MetadataConfiguration.ConfigurationObjectBuilder, InfinniPlatform.Metadata"
       service="InfinniPlatform.Api.Metadata.IConfigurationObjectBuilder, InfinniPlatform.Api"
       instance-scope="single-instance"/>

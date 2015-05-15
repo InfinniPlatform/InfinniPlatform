@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes;
@@ -23,7 +24,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 			                                    target.Context.GetComponent<IMetadataComponent>(),
 			                                    target.Context.GetComponent<InprocessDocumentComponent>(),
 			                                    target.Context.GetComponent<IProfilerComponent>());
-
+		    
 			target.Result = executor.GetCompleteDocuments(target.Item.Configuration, target.Item.Metadata, target.UserName,
 			                                              Convert.ToInt32(target.Item.PageNumber),
 			                                              Convert.ToInt32(target.Item.PageSize),

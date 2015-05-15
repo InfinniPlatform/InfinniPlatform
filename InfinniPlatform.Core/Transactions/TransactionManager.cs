@@ -20,14 +20,40 @@ namespace InfinniPlatform.Transactions
             _indexFactory = indexFactory;
         }
 
+        /// <summary>
+        ///   Зафиксировать транзакцию
+        /// </summary>
+        /// <param name="transactionMarker">Идентификатор транзакции</param>
+        public void CommitTransaction(string transactionMarker)
+        {
+            _transactions[transactionMarker].MasterTransaction.CommitTransaction();
+        }
+
+        /// <summary>
+        ///  Удалить транзакцию
+        /// </summary>
+        /// <param name="transactionMarker">Идентификатор транзакции</param>
+        public void RemoveTransaction(string transactionMarker)
+        {
+            if (_transactions.ContainsKey(transactionMarker))
+            {
+                RemoveTransaction(_transactions[transactionMarker]);
+            }
+        }
+
+        /// <summary>
+        ///   Получить транзакцию с указанным идентификатором
+        /// </summary>
+        /// <param name="transactionMarker">Идентификатор транзакции</param>
+        /// <returns>Транзакция</returns>
         public ITransaction GetTransaction(string transactionMarker)
         {
             ITransaction result = null;
 
             if (_transactions.ContainsKey(transactionMarker))
             {
-                var containedIdList = _transactions[transactionMarker].GetTransactionItems();
-                var transactionSlave = new TransactionSlave(transactionMarker,containedIdList);
+                var containedInstances = _transactions[transactionMarker].GetTransactionItems();
+                var transactionSlave = new TransactionSlave(transactionMarker,_transactions[transactionMarker].MasterTransaction, containedInstances);
                 result = transactionSlave;
             }
 
@@ -48,13 +74,6 @@ namespace InfinniPlatform.Transactions
             return result;
         }
 
-        public void Attach(string transactionMarker, AttachedInstance document)
-        {
-            if (_transactions.ContainsKey(transactionMarker))
-            {
-                _transactions[transactionMarker].Attach(document);
-            }
-        }
 
         private void RemoveTransaction(ITransaction removedTransaction)
         {

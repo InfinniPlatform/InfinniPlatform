@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 using Microsoft.Owin;
@@ -125,7 +126,7 @@ namespace InfinniPlatform.Owin.Middleware
 
 			    if (handlersRegistered.Any() && handlerInfo == null)
 			    {
-                    result = new ErrorRequestHandlerResult(string.Format(Resources.MethodIsNotSupported, request.Method, request.Path, handlerInfo.Method));
+                    result = new ErrorRequestHandlerResult(string.Format(Resources.MethodIsNotSupported, request.Method, request.Path, request.Method));
 			    }
 
 				// Если метод входящего запроса совпадает с ожидаемым
@@ -137,7 +138,14 @@ namespace InfinniPlatform.Owin.Middleware
 					}
 					catch (Exception error)
 					{
-						result = new ErrorRequestHandlerResult(BuildErrorMessage(error));
+					    if (error is TargetInvocationException)
+					    {
+					        result = new ErrorRequestHandlerResult(BuildErrorMessage(error.InnerException));
+					    }
+					    else
+					    {
+					        result = new ErrorRequestHandlerResult(BuildErrorMessage(error));
+					    }
 					}
 				}
 

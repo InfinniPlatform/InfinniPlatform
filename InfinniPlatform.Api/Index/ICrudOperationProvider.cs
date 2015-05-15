@@ -2,6 +2,9 @@
 
 namespace InfinniPlatform.Api.Index
 {
+    /// <summary>
+    ///   Провайдер стандартных операций с данными
+    /// </summary>
 	public interface ICrudOperationProvider {	    
 
 	    /// <summary>
@@ -31,7 +34,13 @@ namespace InfinniPlatform.Api.Index
 		/// </summary>
 		/// <param name="key">Идентификатор удаляемого объекта индекса</param>
 		void Remove(string key);
-        
+
+        /// <summary>
+        ///   Удалить объекты с идентификаторами из списка
+        /// </summary>
+        /// <param name="ids">Список идентификаторов</param>
+        void RemoveItems(IEnumerable<string> ids);
+
 		/// <summary>
 		///   Получить объект по идентификатору
 		/// </summary>

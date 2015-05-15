@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Dynamic;
 using System.IO;
+using System.Linq;
 using System.Security.Policy;
 using System.Web;
 using InfinniPlatform.Api.Dynamic;
@@ -24,11 +26,24 @@ namespace InfinniPlatform.WebApi.Middleware
 		{
 			//порядок регистрации обработчиков на текущий момент определяет приоритет применения роутинга в случае совпадения пути, сформированного
 			//в результате обработки шаблона
-			RegisterPostRequestHandler(GetRestTemplatePath, InvokeCustomService);
-			RegisterGetRequestHandler(GetRestTemplateDocumentPath, InvokeGetDocumentService);
-			RegisterPostRequestHandler(GetRestTemplateDocumentPath, InvokePostDocumentService);
-			RegisterPutRequestHandler(GetRestTemplateDocumentPath, InvokePutDocumentService);
-			RegisterDeleteRequestHandler(GetRestTemplateDocumentPath, InvokeDeleteDocumentService);
+			
+			RegisterGetRequestHandler(GetRestTemplateDocumentList, InvokeGetDocumentService);
+			RegisterPostRequestHandler(GetRestTemplateDocument, InvokePostDocumentService);
+			RegisterPutRequestHandler(GetRestTemplateDocument, InvokePutDocumentService);
+			RegisterDeleteRequestHandler(GetRestTemplateDocumentDelete, InvokeDeleteDocumentService);
+
+            RegisterPutRequestHandler(GetRestTemplateDocuments, InvokePutDocumentsService);
+
+            RegisterGetRequestHandler(GetRestTemplateDocumentById, InvokeGetByIdDocumentService);
+
+            RegisterPostRequestHandler(GetRestTemplate, InvokeCustomService);
+
+            RegisterPostRequestHandler(GetSessionTemplate, InvokeSessionService);
+            RegisterPostRequestHandler(GetSessionTemplateById, InvokeSessionServiceCommit);
+            RegisterDeleteRequestHandler(GetSessionTemplateById, InvokeSessionServiceRemove);
+            RegisterDeleteRequestHandler(GetSessionTemplateAttachmentById, InvokeDetachSessionDocumentService);
+            RegisterPutRequestHandler(GetSessionTemplateById, InvokeAttachSessionDocumentService);
+            RegisterGetRequestHandler(GetSessionTemplateById, InvokeGetSessionService);
 		}
 
 		private PathString GetBaseApplicationPath()
@@ -36,21 +51,100 @@ namespace InfinniPlatform.WebApi.Middleware
 			return new PathString("/_version_/_application_");
 		}
 
-		private PathString GetRestTemplatePath(IOwinContext context)
+        private PathString GetSessionTemplate(IOwinContext context)
+	    {
+	        return context.FormatSessionRoutePath(new PathString("/_version_"));
+	    }
+
+
+        private PathString GetSessionTemplateById(IOwinContext context)
+        {
+            return context.FormatSessionRoutePath(new PathString("/_version_/_sessionId_"));
+        }
+
+        private PathString GetSessionTemplateAttachmentById(IOwinContext context)
+        {
+            return context.FormatSessionRoutePath(new PathString("/_version_/_sessionId_/_attachmentId_"));
+        }
+
+		private PathString GetRestTemplate(IOwinContext context)
 		{
 			return context.FormatRoutePath(new PathString(GetBaseApplicationPath() + "/_documentType_/_service_"));
 		}
 
-		private PathString GetRestTemplateDocumentPath(IOwinContext context)
+        private PathString GetRestTemplateDocumentList(IOwinContext context)
+        {
+            return context.FormatRoutePath(new PathString(GetBaseApplicationPath() + "/_documentType_"));
+        }
+
+		private PathString GetRestTemplateDocument(IOwinContext context)
 		{
-			return context.FormatRoutePath(new PathString(GetBaseApplicationPath() + "/_documentType_"));
+			return context.FormatRoutePath(new PathString(GetBaseApplicationPath() + "/_documentType_/_instanceId_"));
 		}
+
+        private PathString GetRestTemplateDocuments(IOwinContext context)
+        {
+            return context.FormatRoutePath(new PathString(GetBaseApplicationPath() + "/_documentType_"));
+        }
+
+
+        private PathString GetRestTemplateDocumentDelete(IOwinContext context)
+        {
+            return context.FormatRoutePath(new PathString(GetBaseApplicationPath() + "/_documentType_/_instanceId_"));
+        }
+
+        private PathString GetRestTemplateDocumentById(IOwinContext context)
+        {
+            return context.FormatRoutePath(new PathString(GetBaseApplicationPath() + "/_documentType_/_instanceId_"));
+        }
 
 
 		private static IRequestHandlerResult InvokeCustomService(IOwinContext context)
 		{
 			throw new NotImplementedException();
 		}
+
+	    private static IRequestHandlerResult InvokeSessionService(IOwinContext context)
+	    {
+            return new ValueRequestHandlerResult(new SessionApi().CreateSession());
+	    }
+
+        private static IRequestHandlerResult InvokeSessionServiceCommit(IOwinContext context)
+        {
+            var routeDictionary = context.GetSessionRouteDictionary();
+
+            return new ValueRequestHandlerResult(new SessionApi().SaveSession(routeDictionary["sessionId"]));
+        }
+
+	    private static IRequestHandlerResult InvokeSessionServiceRemove(IOwinContext context)
+        {
+            var routeDictionary = context.GetSessionRouteDictionary();
+
+            return new ValueRequestHandlerResult(new SessionApi().RemoveSession(routeDictionary["sessionId"]));
+        }
+
+	    private static IRequestHandlerResult InvokeAttachSessionDocumentService(IOwinContext context)
+	    {
+            var routeDictionary = context.GetSessionRouteDictionary();
+
+            var body = JObject.Parse(ReadRequestBody(context).ToString());
+
+            return new ValueRequestHandlerResult(new SessionApi().Attach(routeDictionary["version"], routeDictionary["sessionId"], body));
+	    }
+
+        private static IRequestHandlerResult InvokeDetachSessionDocumentService(IOwinContext context)
+        {
+            var routeDictionary = context.GetSessionRouteDictionary();
+
+            return new ValueRequestHandlerResult(new SessionApi().Detach(routeDictionary["version"], routeDictionary["sessionId"], routeDictionary["attachmentId"]));
+        }
+
+	    private static IRequestHandlerResult InvokeGetSessionService(IOwinContext context)
+	    {
+            var routeDictionary = context.GetSessionRouteDictionary();
+
+            return new ValueRequestHandlerResult(new SessionApi().GetSession(routeDictionary["version"], routeDictionary["sessionId"]));
+	    }
 
 		private static IRequestHandlerResult InvokeGetDocumentService(IOwinContext context)
 		{
@@ -85,22 +179,53 @@ namespace InfinniPlatform.WebApi.Middleware
 
 		private static IRequestHandlerResult InvokePostDocumentService(IOwinContext context)
 		{
-			throw new NotImplementedException();
+		    var body = JObject.Parse(ReadRequestBody(context).ToString()).ToDynamic();
+
+		    var routeDictionary = context.GetRouteDictionary();
+
+            body.Id = routeDictionary["instanceId"];
+
+            return new ValueRequestHandlerResult(new DocumentApi().UpdateDocument(routeDictionary["application"],routeDictionary["documentType"],body));
 		}
 
 		private static IRequestHandlerResult InvokePutDocumentService(IOwinContext context)
 		{		   
-            var body = JObject.Parse(ReadRequestBody(context).ToString());
+            dynamic body = JObject.Parse(ReadRequestBody(context).ToString());
 
             var routeDictionary = context.GetRouteDictionary();
+
+		    body.Id = routeDictionary["instanceId"];
 
 		    return new ValueRequestHandlerResult(new DocumentApi().SetDocument(routeDictionary["application"], routeDictionary["documentType"], body));
 		}
 
+
+        private static IRequestHandlerResult InvokePutDocumentsService(IOwinContext context)
+        {
+            dynamic body = JArray.Parse(ReadRequestBody(context).ToString());
+
+            var routeDictionary = context.GetRouteDictionary();
+
+            return new ValueRequestHandlerResult(new DocumentApi().SetDocuments(routeDictionary["application"], routeDictionary["documentType"], body));
+        }
+
 		private static IRequestHandlerResult InvokeDeleteDocumentService(IOwinContext context)
 		{
-			throw new NotImplementedException();
+            var routeDictionary = context.GetRouteDictionary();
+
+            return new ValueRequestHandlerResult(new DocumentApi().DeleteDocument(routeDictionary["application"], routeDictionary["documentType"], routeDictionary["instanceId"]));
 		}
+
+
+        private static IRequestHandlerResult InvokeGetByIdDocumentService(IOwinContext context)
+        {
+            var routeDictionary = context.GetRouteDictionary();
+
+            var result = new DocumentApi().GetDocument(routeDictionary["application"], routeDictionary["documentType"],
+                cr => cr.AddCriteria(f => f.IsEquals(routeDictionary["instanceId"]).Property("Id")),0, 1).FirstOrDefault();
+
+            return new ValueRequestHandlerResult(result);
+        }
 
 	}
 }

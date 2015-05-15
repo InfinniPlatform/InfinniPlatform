@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Index;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.Versioning
@@ -59,7 +60,18 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.Versioning
 		public void DeleteDocument(string id)
 		{
             _elasticSearchProvider.Remove(id);
+            _elasticSearchProvider.Refresh();
 		}
+
+        /// <summary>
+        ///   Удалить документы с идентификаторами из списка
+        /// </summary>
+        /// <param name="ids">Список идентификаторов</param>
+	    public void DeleteDocuments(IEnumerable<string> ids)
+	    {
+	        _elasticSearchProvider.RemoveItems(ids);
+            _elasticSearchProvider.Refresh();
+	    }
 
 	    /// <summary>
 		///   Записать версию объекта в индекс

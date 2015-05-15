@@ -154,8 +154,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
                 // Документ с данным идентификатором может находиться в любом из типов
 
                 // Удалить одним запросом _elasticConnection.Client.DeleteByQuery<dynamic>(q => q.Index(_indexName).Id(objectToIndex.Id));
-                // неполучается из-за бага в NEST - операция DeleteByQuery требует индекс по умолчанию https://github.com/elasticsearch/elasticsearch-net/issues/646,
-                // Поэтому удаляем по-отдельности из каждого типа. 
+                // не получается из-за бага в NEST - операция DeleteByQuery требует индекс по умолчанию https://github.com/elasticsearch/elasticsearch-net/issues/646,
+                // Поэтому удаляем по отдельности из каждого типа. 
 
 
                 foreach (var indexType in _derivedTypeNames.SelectMany(d => d.TypeNames))
@@ -217,9 +217,12 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 			        throw new ArgumentException(response.ConnectionStatus.OriginalException.Message);
 			    }
 
-                // Если и эластик не вернул внятного сообщения, выводим достаточно общее сообщение
-                // (ничего более конкретного сказать не можем)
-			    throw new ArgumentException("Incorrect request for index data");
+
+			    throw new ArgumentException(string.Format("Index type mapping does not according actual document scheme.\r\nDocument: {0},\r\nIndexName: {1},\r\nTypeName: {2},\r\nActualMapping: {3}",
+                    item.ToString(),
+                    _indexName,
+                    _typeName,
+                    currentMapping));
 			}
 		}
 
@@ -261,6 +264,18 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 	    }
 
 	    /// <summary>
+	    ///   Удалить объекты с идентификаторами из списка
+	    /// </summary>
+	    /// <param name="ids">Список идентификаторов</param>
+	    public void RemoveItems(IEnumerable<string> ids)
+	    {
+	        foreach (var id in ids)
+	        {
+	            Remove(id);
+	        }
+	    }
+
+	    /// <summary>
 	    ///   Получить объект по идентификатору
 	    /// </summary>
 	    /// <param name="key">Идентификатор индексируемого объекта</param>
@@ -275,8 +290,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
 	        var response = _elasticConnection.Client.Search<dynamic>(
 	            q => q
-	                .Index(_indexName)
-	                .Types(_derivedTypeNames.SelectMany(d => d.TypeNames))
+                    .AllIndices()
+                    .AllTypes()
 					.Routing(_routing)
 	                .Query(f => f.Term(
 	                    ElasticConstants.IndexObjectPath + ElasticConstants.IndexObjectIdentifierField,

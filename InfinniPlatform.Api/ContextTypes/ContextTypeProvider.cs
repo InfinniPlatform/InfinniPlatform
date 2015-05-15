@@ -15,13 +15,13 @@ namespace InfinniPlatform.Api.ContextTypes
 		{
 			ContextTypeKinds.Add(typeof(IApplyContext),ContextTypeKind.ApplyMove);
 			ContextTypeKinds.Add(typeof(IApplyResultContext), ContextTypeKind.ApplyResult);
-			ContextTypeKinds.Add(typeof(IFilterEventContext), ContextTypeKind.ApplyFilter);
+			ContextTypeKinds.Add(typeof(IProcessEventContext), ContextTypeKind.ApplyFilter);
 			ContextTypeKinds.Add(typeof(ISearchContext), ContextTypeKind.SearchContext);
 			ContextTypeKinds.Add(typeof(IUploadContext), ContextTypeKind.Upload);
 
 			ContextTypeNames.Add(typeof(IApplyContext),Resources.DocumentMoveContextType);
 			ContextTypeNames.Add(typeof(IApplyResultContext), Resources.DocumentMoveResultContext);
-			ContextTypeNames.Add(typeof(IFilterEventContext), Resources.DocumentFilterEventContext);
+			ContextTypeNames.Add(typeof(IProcessEventContext), Resources.DocumentFilterEventContext);
 			ContextTypeNames.Add(typeof(ISearchContext), Resources.DocumentSearchContext);
 			ContextTypeNames.Add(typeof(IUploadContext), Resources.FileUploadContext);
 

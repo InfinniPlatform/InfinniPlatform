@@ -8,6 +8,8 @@ using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.RestfulApi.Utils;
 using System;
+using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.Transactions;
 
 namespace InfinniPlatform.RestfulApi.ActionUnits
 {
@@ -24,7 +26,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 			dynamic instanceId = null;
 			if (documentProvider != null)
 			{
-				TransactionUtils.ApplyTransactionMarker(target);
+				ApplyTransactionMarker(target);
 
 			    _metadataComponent = target.Context.GetComponent<IMetadataComponent>();
 
@@ -287,6 +289,31 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 	            instanceToHandle[propertyName] = null;
 	        }
 	    }
+
+        /// <summary>
+        ///   Присоединить сохраняемые документы к указанной транзакции
+        /// </summary>
+        /// <param name="target"></param>
+        private void ApplyTransactionMarker(IApplyContext target)
+        {
+            if (!string.IsNullOrEmpty(target.TransactionMarker))
+            {
+                dynamic docs = (target.Item.Document != null ? new[] { target.Item.Document } : null) ??
+                               target.Item.Documents;
+
+                if (docs != null)
+                {
+                    target.Context.GetComponent<ITransactionComponent>().GetTransactionManager()
+                        .GetTransaction(target.TransactionMarker)
+                        .Attach(target.Item.Configuration,
+                                target.Item.Metadata,
+                                target.Version,
+                                docs,
+                                target.Context.GetComponent<ISecurityComponent>().GetClaim(AuthorizationStorageExtensions.OrganizationClaim, target.UserName) ?? AuthorizationStorageExtensions.AnonimousUser);
+                }
+            }
+
+        }
 
 	}
 }
