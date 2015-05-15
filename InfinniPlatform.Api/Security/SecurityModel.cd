@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="InfinniPlatform.Api.Security.ApplicationUser" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACCMAAAAAAgAAAAAAAAAAAAAgAAAABIAQAQAAAAAAA=</HashCode>
+      <FileName>Security\ApplicationUser.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Claims" />
+      <Property Name="Logins" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="InfinniPlatform.Api.Security.ApplicationUserClaim">
+    <Position X="3" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAgAAAAAAA=</HashCode>
+      <FileName>Security\ApplicationUserClaim.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InfinniPlatform.Api.Security.ApplicationUserLogin">
+    <Position X="3" Y="2" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAAAAA=</HashCode>
+      <FileName>Security\ApplicationUserLogin.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InfinniPlatform.Api.Security.ApplicationRole" BaseTypeListCollapsed="true">
+    <Position X="5.5" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAgAAAAAAAAAAQAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Security\ApplicationRole.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InfinniPlatform.Api.Security.ApplicationClaimType">
+    <Position X="8.5" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAgAAAAAAAAAAQAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Security\ApplicationClaimType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

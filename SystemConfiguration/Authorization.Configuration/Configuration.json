@@ -1,0 +1,65 @@
+{
+  "Id": "980b279b-26a5-4a5d-9e78-bef695322a6f",
+  "Name": "Authorization",
+  "Caption": "Authorization",
+  "Description": "",
+  "Menu": [
+    {
+      "Id": "1a7a4c6a-956c-4727-9a6f-88bb5af22aaf",
+      "Name": "MainMenu",
+      "Caption": "Авторизация",
+      "Description": ""
+    }
+  ],
+  "Documents": [
+    {
+      "Id": "0c23fc63-c756-4822-adb1-0a1deb00524f",
+      "Name": "Common",
+      "Caption": "Common options",
+      "Description": "Common options"
+    },
+    {
+      "Id": "4d256357-5793-4465-a9c2-02f7d5aef0c4",
+      "Name": "Authorization_Registers",
+      "Caption": "Registers common options",
+      "Description": "Storage for register's common information (e.g. actual date)"
+    },
+    {
+      "Id": "a9b9a3d1-822c-43bf-9dd4-74397fa36bd9",
+      "Name": "AclStore",
+      "Caption": "AclStore",
+      "Description": ""
+    },
+    {
+      "Id": "a06bb617-e77f-4168-8fb0-607db8853d23",
+      "Name": "UserStore",
+      "Caption": "UserStore",
+      "Description": "Хранилище пользователей системы"
+    },
+    {
+      "Id": "483b57aa-182c-4d3e-8a6d-0b22c3892332",
+      "Name": "RoleStore",
+      "Caption": "RoleStore",
+      "Description": "Хранилище ролей пользователей"
+    },
+    {
+      "Id": "2f5e3ba4-248b-4d5f-b3f7-23618d93aebf",
+      "Name": "UserRole",
+      "Caption": "UserRole",
+      "Description": ""
+    }
+  ],
+  "Registers": [],
+  "Assemblies": [
+    {
+      "Id": "2c40bdeb-99a4-48ad-af2b-4df53a3350dc",
+      "Name": "InfinniPlatform.SystemConfig.Administration",
+      "Caption": "InfinniPlatform.SystemConfig.Administration",
+      "Description": ""
+    }
+  ],
+  "Reports": [],
+  "Version": "version_systemconfig",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "metadata"
+}

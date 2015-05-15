@@ -1,0 +1,9 @@
+﻿{
+  "id": "ScrollVisibility",
+  "description": "Видимость полосы прокрутки",
+  "enum": [
+    "Auto",
+    "Visible",
+    "Hidden"
+  ]
+}

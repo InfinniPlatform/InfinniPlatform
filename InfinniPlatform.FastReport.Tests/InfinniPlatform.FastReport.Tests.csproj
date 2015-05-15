@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A486B8A5-ADA5-4959-8A49-7C7DE185E4DC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>InfinniPlatform.FastReport.Tests</RootNamespace>
+    <AssemblyName>InfinniPlatform.FastReport.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FastReport, Version=2013.4.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FastReport.Net.2013.4.6\lib\net40\FastReport.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.2.1408.0717\lib\net40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AssemblyInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReportObjectBuilders\Bands\ReportBandBuilderTest.cs" />
+    <Compile Include="ReportObjectBuilders\Bands\ReportBandPrintSetupBuilderTest.cs" />
+    <Compile Include="ReportObjectBuilders\Bands\ReportDataBandBuilderTest.cs" />
+    <Compile Include="ReportObjectBuilders\Bands\ReportGroupBandBuilderTest.cs" />
+    <Compile Include="ReportObjectBuilders\Bands\ReportPageBandBuilderTest.cs" />
+    <Compile Include="ReportObjectBuilders\Behaviors\FastReportBehaviorTest.cs" />
+    <Compile Include="ReportObjectBuilders\Behaviors\FastReportExtensions.cs" />
+    <Compile Include="ReportObjectBuilders\Borders\BorderBuilderTest.cs" />
+    <Compile Include="ReportObjectBuilders\Data\DataBindTest.cs" />
+    <Compile Include="ReportObjectBuilders\Data\DataSourceInfoBuilderTest.cs" />
+    <Compile Include="ReportObjectBuilders\Data\ParameterInfoBuilderTest.cs" />
+    <Compile Include="ReportObjectBuilders\Data\TotalInfoBuilderTest.cs" />
+    <Compile Include="ReportObjectBuilders\Elements\ElementLayoutBuilderTest.cs" />
+    <Compile Include="ReportObjectBuilders\Elements\TableElementBuilderTest.cs" />
+    <Compile Include="ReportObjectBuilders\Elements\TextElementBuilderTest.cs" />
+    <Compile Include="ReportObjectBuilders\Elements\TextElementStyleBuilderTest.cs" />
+    <Compile Include="ReportObjectBuilders\Format\FormatBuilderTest.cs" />
+    <Compile Include="ReportObjectBuilders\Print\PrintSetupBuilderTest.cs" />
+    <Compile Include="ReportObjectBuilders\Report\ReportObjectBuilderTest.cs" />
+    <Compile Include="ReportTemplateBuilders\Bands\ReportBandPrintSetupTemplateBuilderTest.cs" />
+    <Compile Include="ReportTemplateBuilders\Bands\ReportBandTemplateBuilderTest.cs" />
+    <Compile Include="ReportTemplateBuilders\Bands\ReportDataBandTemplateBuilderTest.cs" />
+    <Compile Include="ReportTemplateBuilders\Bands\ReportGroupBandTemplateBuilderTest.cs" />
+    <Compile Include="ReportTemplateBuilders\Bands\ReportPageBandTemplateBuilderTest.cs" />
+    <Compile Include="ReportTemplateBuilders\Borders\BorderTemplateBuilderTest.cs" />
+    <Compile Include="ReportTemplateBuilders\Data\CollectionBindTemplateBuilderTest.cs" />
+    <Compile Include="ReportTemplateBuilders\Data\ConstantBindTemplateBuilderTest.cs" />
+    <Compile Include="ReportTemplateBuilders\Data\DataBindTemplateBuilderTest.cs" />
+    <Compile Include="ReportTemplateBuilders\Data\ParameterBindTemplateBuilderTest.cs" />
+    <Compile Include="ReportTemplateBuilders\Data\PropertyBindTemplateBuilderTest.cs" />
+    <Compile Include="ReportTemplateBuilders\Data\TestReportDataSource.cs" />
+    <Compile Include="ReportTemplateBuilders\Data\TotalBindTemplateBuilderTest.cs" />
+    <Compile Include="ReportTemplateBuilders\Elements\ElementLayoutTemplateBuilderTest.cs" />
+    <Compile Include="ReportTemplateBuilders\Elements\ElementTemplateBuilderTest.cs" />
+    <Compile Include="ReportTemplateBuilders\Elements\TableElementTemplateBuilderTest.cs" />
+    <Compile Include="ReportTemplateBuilders\Elements\TextElementStyleTemplateBuilderTest.cs" />
+    <Compile Include="ReportTemplateBuilders\Elements\TextElementTemplateBuilderTest.cs" />
+    <Compile Include="ReportTemplateBuilders\Format\FormatTemplateBuilderTest.cs" />
+    <Compile Include="ReportTemplateBuilders\Print\PrintSetupTemplateBuilderTest.cs" />
+    <Compile Include="ReportTemplateBuilders\Reports\ReportTemplateBuilderTest.cs" />
+    <Compile Include="Templates\Data\DataExtensionsTest.cs" />
+    <Compile Include="TestEntities\Client.cs" />
+    <Compile Include="TestEntities\Manager.cs" />
+    <Compile Include="TestEntities\Order.cs" />
+    <Compile Include="TestEntities\OrderItem.cs" />
+    <Compile Include="TestEntities\Product.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
+      <Project>{7CA0F96C-7FF4-44B2-9D44-851984DF4532}</Project>
+      <Name>InfinniPlatform.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.FastReport\InfinniPlatform.FastReport.csproj">
+      <Project>{774d0e71-1848-4074-b537-f182fefed717}</Project>
+      <Name>InfinniPlatform.FastReport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Tests\InfinniPlatform.Tests.csproj">
+      <Project>{a46f638c-c9c5-49be-bc8d-8144e8c8f87a}</Project>
+      <Name>InfinniPlatform.Tests</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Files\Tests\App.config">
+      <Link>App.config</Link>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\Files\Build\TransformOnBuild.targets" />
+  <ItemGroup>
+    <None Include="Properties\AssemblyInfo.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AssemblyInfo.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

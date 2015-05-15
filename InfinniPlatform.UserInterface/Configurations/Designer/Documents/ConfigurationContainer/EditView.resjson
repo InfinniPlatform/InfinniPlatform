@@ -1,0 +1,141 @@
+﻿{
+  "Name": "EditView",
+  "Image": "System/ConfigurationContainer_16x16",
+  "Text": "Connection Settings",
+  "DataSources": [
+    {
+      "ObjectDataSource": {
+        "Name": "MainDataSource"
+      }
+    }
+  ],
+  "LayoutPanel": {
+    "StackPanel": {
+      "Items": [
+        {
+          "GridPanel": {
+            "Rows": [
+              {
+                "Cells": [
+                  {
+                    "ColumnSpan": 2,
+                    "Items": [
+                      {
+                        "Label": {
+                          "Text": "Scheme:"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "ColumnSpan": 10,
+                    "Items": [
+                      {
+                        "TextBox": {
+                          "Value": {
+                            "PropertyBinding": {
+                              "DataSource": "MainDataSource",
+                              "Property": "ServerScheme"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "Cells": [
+                  {
+                    "ColumnSpan": 2,
+                    "Items": [
+                      {
+                        "Label": {
+                          "Text": "Server:"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "ColumnSpan": 10,
+                    "Items": [
+                      {
+                        "TextBox": {
+                          "Value": {
+                            "PropertyBinding": {
+                              "DataSource": "MainDataSource",
+                              "Property": "ServerName"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "Cells": [
+                  {
+                    "ColumnSpan": 2,
+                    "Items": [
+                      {
+                        "Label": {
+                          "Text": "Port:"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "ColumnSpan": 10,
+                    "Items": [
+                      {
+                        "TextBox": {
+                          "Value": {
+                            "PropertyBinding": {
+                              "DataSource": "MainDataSource",
+                              "Property": "ServerPort"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "ToolBar": {
+            "Items": [
+              {
+                "ToolBarButton": {
+                  "Text": "Save",
+                  "Image": "Actions/Save_16x16",
+                  "Hotkey": "Ctrl+S",
+                  "Action": {
+                    "SaveAction": {
+                      "CanClose": false,
+                      "DataSource": "MainDataSource"
+                    }
+                  }
+                }
+              },
+              {
+                "ToolBarButton": {
+                  "Text": "Cancel",
+                  "Image": "Actions/Cancel_16x16",
+                  "Action": {
+                    "CancelAction": {
+                      "DataSource": "MainDataSource"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -21,6 +21,8 @@ build/
 bld/
 [Bb]in/
 [Oo]bj/
+[Aa]ssemblies/
+[Ll]ogs/
 
 # Visual Studo 2015 cache/options directory
 .vs/
@@ -149,6 +151,7 @@ csx/
 
 # Windows Store app package directory
 AppPackages/
+[Ll]ib/
 
 # Others
 *.[Cc]ache

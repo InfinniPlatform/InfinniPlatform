@@ -1,0 +1,129 @@
+{
+  "Id": "a6d72b18-542f-4651-94e0-77b8821f54cf",
+  "Scripts": [
+    {
+      "Name": "CreateUser",
+      "Body": "\r\ncontext.DataSources['AddUserDataSource'].setSelectedItem(context.DataSources['MainDataSource'].getSelectedItem());\r\ncontext.Global.executeAction(\r\n{\r\n   SaveAction : {\r\n      DataSource : 'AddUserDataSource',\r\n   }\r\n});"
+    }
+  ],
+  "DataSources": [
+    {
+      "DocumentDataSource": {
+        "Name": "MainDataSource",
+        "ConfigId": "Administration",
+        "DocumentId": "User"
+      }
+    },
+    {
+      "DocumentDataSource": {
+        "Name": "AddUserDataSource",
+        "ConfigId": "Administration",
+        "DocumentId": "User",
+        "UpdateAction": "AddUser"
+      }
+    }
+  ],
+  "LayoutPanel": {
+    "StackPanel": {
+      "Items": [
+        {
+          "ScrollPanel": {
+            "LayoutPanel": {
+              "GridPanel": {
+                "Rows": [
+                  {
+                    "Cells": [
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "Label": {
+                              "Text": "Логин пользователя"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "TextBox": {
+                              "Value": {
+                                "PropertyBinding": {
+                                  "DataSource": "MainDataSource",
+                                  "Property": "UserName"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "Label": {
+                              "Text": "Пароль пользователя",
+                              "Name": "PasswordLabel"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "TextBox": {
+                              "Name": "PasswordText",
+                              "Value": {
+                                "PropertyBinding": {
+                                  "DataSource": "MainDataSource",
+                                  "Property": "Password"
+                                }
+                              },
+                              "InputType": "password"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ToolBar": {
+            "Items": [
+              {
+                "ToolBarButton": {
+                  "Text": "Сохранить",
+                  "OnClick": {
+                    "Name": "CreateUser"
+                  }
+                }
+              },
+              {
+                "ToolBarButton": {
+                  "Text": "Отмена",
+                  "Action": {
+                    "CancelAction": {}
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "Text": "Пользователь системы",
+  "Description": "Регистрация пользователя",
+  "Caption": "Регистрация пользователя",
+  "Name": "RegisterUserView",
+  "ParentId": "a915920d-e561-48ab-9c19-4e61bae90b7b",
+  "Version": "version_systemconfig",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "viewmetadata"
+}

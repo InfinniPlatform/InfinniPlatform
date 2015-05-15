@@ -1,0 +1,1183 @@
+{
+    "Id": "0505fe63-7849-46da-98c6-fde11763c475",
+    "Name": "1.2.643.5.1.13.2.7.5.1",
+    "Type": "Document",
+    "Description": "Эпикриз в стационаре выписной",
+    "Model": {
+        "Name": "EpicrisisModel",
+        "Caption": "Модель тела документа (эпикриз в стационаре выписной)",
+        "Description": "Модель содержимого CDA документа",
+        "MultiplicityFrom": 1,
+        "MultiplicityTo": 1,
+        "Groups": [        
+        {
+            "Name": "Hospitalization",
+            "Caption": "Госпитализация",
+            "Description": "Случай оказания медицинской помощи (Госпитализация стационар, дневной стационар)",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1,
+            "Properties": [{
+                "Type": "LinkClassifier",
+                "Name": "WhoDelivered",
+                "Caption": "Кем доставлен",
+                "Description": "Кем доставлен",
+                "MultiplicityFrom": 1,
+                "MultiplicityTo": 1,
+                "Attributes": {
+                    "ClassifierLink": {
+                        "ConfigId": "ClassifierStorage",
+                        "ConfigVersion": "1.0.0.0",
+                        "ClassifierId": "1.2.643.5.1.13.2.1.1.281"
+                    }
+                }
+            },
+            {
+                "Type": "Integer",
+                "Name": "NumberOfDays",
+                "Caption": "Общее количество койко-дней",
+                "Description": "Общее количество койко-дней в рамках случая оказания медицинской помощи",
+                "MultiplicityFrom": 1,
+                "MultiplicityTo": 1
+            },
+            {
+                "Type": "LinkClassifier",
+                "Name": "HospitalizationInThisYear",
+                "Caption": "Госпитализирован по поводу данного заболевания в текущем году",
+                "Description": "Госпитализирован по поводу данного заболевания в текущем году",
+                "MultiplicityFrom": 1,
+                "MultiplicityTo": 1,
+                "Attributes": {
+                    "ClassifierLink": {
+                        "ConfigId": "ClassifierStorage",
+                        "ConfigVersion": "1.0.0.0",
+                        "ClassifierId": "1.2.643.5.1.13.2.1.1.109"
+                    }
+                }
+            },
+            {
+                "Type": "LinkClassifier",
+                "Name": "TimeAfterBegining",
+                "Caption": "Время доставки в стационар от начала заболевания",
+                "Description": "Время доставки в стационар от начала заболевания в рамках случая оказания медицинской помощи",
+                "MultiplicityFrom": 1,
+                "MultiplicityTo": 1,
+                "Attributes": {
+                    "ClassifierLink": {
+                        "ConfigId": "ClassifierStorage",
+                        "ConfigVersion": "1.0.0.0",
+                        "ClassifierId": "1.2.643.5.1.13.2.1.1.537"
+                    }
+                }
+            }]
+        },
+        {
+            "Name": "HospitalStay",
+            "Caption": "Пребывание в стационаре",
+            "Description": "Пребывание в стационаре",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1,
+            "Groups": [{
+                "Name": "BranchStay",
+                "Caption": "Отделение пребывания",
+                "Description": "Раздел предназначен для описания движения пациента в стационаре. Включает сведения о госпитализации, нахождении в отделениях пребывания.",
+                "MultiplicityFrom": 1,
+                "MultiplicityTo": null,
+                "Groups": [{
+                    "Name": "Department",
+                    "Caption": "Отделение пребывания",
+                    "Description": "Отделение пребывания",
+                    "MultiplicityFrom": 1,
+                    "MultiplicityTo": 1,
+                    "Properties": [{
+                        "Type": "LinkClassifier",
+                        "Name": "TermsOfCare",
+                        "Caption": "Условия оказания медицинской помощи",
+                        "Description": "Условия оказания медицинской помощи",
+                        "MultiplicityFrom": 1,
+                        "MultiplicityTo": 1,
+                        "Attributes": {
+                            "ClassifierLink": {
+                                "ConfigId": "ClassifierStorage",
+                                "ConfigVersion": "1.0.0.0",
+                                "ClassifierId": "1.2.643.5.1.13.2.1.1.103"
+                            }
+                        }
+                    },                    
+                    {
+                        "Type": "Integer",
+                        "Name": "LengthOfStay",
+                        "Caption": "Длительность пребывания",
+                        "Description": "Длительность пребывания на койке в днях",
+                        "MultiplicityFrom": 1,
+                        "MultiplicityTo": 1
+                    }]
+                },
+                {
+                    "Name": "Performer",
+                    "Caption": "Исполнитель",
+                    "Description": "Сведения об отделении",
+                    "MultiplicityFrom": 1,
+                    "MultiplicityTo": 1,
+                    "Groups": [{
+                        "Name": "AssignedPerformer",
+                        "Caption": "Исполнитель",
+                        "Description": "Детальная информация об исполнителе",
+                        "MultiplicityFrom": 1,
+                        "MultiplicityTo": 1,
+                        "Groups": [{
+                            "Name": "BedProfile",
+                            "Caption": "Профиль койки",
+                            "Description": "Профиль койки",
+                            "MultiplicityFrom": 1,
+                            "MultiplicityTo": 1,                            
+                            "Properties": [{
+                                "Type": "LinkClassifier",
+                                "Name": "ProfileCode",
+                                "Caption": "Профиль койки",
+                                "Description": "Профиль койки",
+                                "MultiplicityFrom": 1,
+                                "MultiplicityTo": 1,
+                                "Attributes": {
+                                    "ClassifierLink": {
+                                        "ConfigId": "ClassifierStorage",
+                                        "ConfigVersion": "1.0.0.0",
+                                        "ClassifierId": "1.2.643.5.1.13.2.1.1.221"
+                                    }
+                                }
+                            }]
+                        },
+                        {
+                            "Name": "RepresentedOrganization",
+                            "Caption": "Организация",
+                            "Description": "Организация",
+                            "MultiplicityFrom": 1,
+                            "MultiplicityTo": 1,                            
+                            "Properties": [{
+                                "Type": "String",
+                                "Name": "OrganizationName",
+                                "Caption": "Название отделения",
+                                "Description": "Название отделения",
+                                "MultiplicityFrom": 1,
+                                "MultiplicityTo": 1
+                            }]
+                        }],
+                        "Properties": [{
+                            "Type": "String",
+                            "Name": "OrganizationRegisterId",
+                            "Caption": "Регистрационный код отделения",
+                            "Description": "Регистрационный код отделения в МО",
+                            "MultiplicityFrom": 1,
+                            "MultiplicityTo": 1
+                        },
+                        {
+                            "Type": "String",
+                            "Name": "LastName",
+                            "Caption": "Фамилия",
+                            "Description": "Фамилия",
+                            "MultiplicityFrom": 1,
+                            "MultiplicityTo": 1
+                        },
+                        {
+                            "Type": "String",
+                            "Name": "FirstName",
+                            "Caption": "Имя",
+                            "Description": "Имя",
+                            "MultiplicityFrom": 1,
+                            "MultiplicityTo": 1
+                        },
+                        {
+                            "Type": "String",
+                            "Name": "MiddleName",
+                            "Caption": "Отчество",
+                            "Description": "Отчество",
+                            "MultiplicityFrom": 1,
+                            "MultiplicityTo": 1
+                        }]
+                    }],
+                    "Properties": [{
+                        "Type": "LinkClassifier",
+                        "Name": "PerformerType",
+                        "Caption": "Тип исполнителя",
+                        "Description": "Тип исполнителя",
+                        "MultiplicityFrom": 1,
+                        "MultiplicityTo": 1,
+                        "Attributes": {
+                            "ClassifierLink": {
+                                "ConfigId": "ClassifierStorage",
+                                "ConfigVersion": "1.0.0.0",
+                                "ClassifierId": "1.2.643.5.1.13.2.7.1.30"
+                            }
+                        }
+                    }]
+                }],
+                "Properties": [{
+                    "Type": "DateTime",
+                    "Name": "StartTime",
+                    "Caption": "Дата и время поступления",
+                    "Description": "Дата и время поступления",
+                    "MultiplicityFrom": 1,
+                    "MultiplicityTo": 1
+                },
+                {
+                    "Type": "DateTime",
+                    "Name": "StopTime",
+                    "Caption": "Дата и время выбытия",
+                    "Description": "Дата и время выбытия",
+                    "MultiplicityFrom": 1,
+                    "MultiplicityTo": 1
+                }]
+            }
+            ],
+            "Properties": [
+            {
+                "Type": "String",
+                "Name": "Text",
+                "Caption": "Текст",
+                "Description": "Форматированный текст описания пребывания в стационаре. Включает сведения об отделениях пребывания, датах перемещения по отделениям.",
+                "MultiplicityFrom": 1,
+                "MultiplicityTo": 1
+            }]
+        },
+        {
+            "Name": "DiagnosisGroup",
+            "Caption": "Диагноз",
+            "Description": "Диагноз",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1,
+            "Groups": [{
+                "Name": "Diagnosis",
+                "Caption": "Диагноз",
+                "Description": "Диагноз",
+                "MultiplicityFrom": 1,
+                "MultiplicityTo": null,
+                "Groups": [{
+                    "Name": "Observation",
+                    "Caption": "Наблюдения",
+                    "Description": "Наблюдения",
+                    "MultiplicityFrom": 1,
+                    "MultiplicityTo": 1,
+                    "Properties": [{
+                        "Type": "LinkClassifier",
+                        "Name": "EventType",
+                        "Caption": "Тип события",
+                        "Description": "Тип события",
+                        "MultiplicityFrom": 1,
+                        "MultiplicityTo": 1,
+                        "Attributes": {
+                            "ClassifierLink": {
+                                "ConfigId": "ClassifierStorage",
+                                "ConfigVersion": "1.0.0.0",
+                                "ClassifierId": "1.2.643.5.1.13.2.7.1.12"
+                            }
+                        }
+                    },
+                    {
+                        "Type": "LinkClassifier",
+                        "Name": "Mkb10Diagnosis",
+                        "Caption": "Диагноз в соответствии с МКБ-10",
+                        "Description": "Диагноз в соответствии с МКБ-10",
+                        "MultiplicityFrom": 1,
+                        "MultiplicityTo": 1,
+                        "Attributes": {
+                            "ClassifierLink": {
+                                "ConfigId": "ClassifierStorage",
+                                "ConfigVersion": "1.0.0.0",
+                                "ClassifierId": "1.2.643.5.1.13.2.1.1.641"
+                            }
+                        }
+                    },                   
+                    {
+                        "Type": "LinkClassifier",
+                        "Name": "DiagnosisType",
+                        "Caption": "Тип диагноза",
+                        "Description": "Тип диагноза",
+                        "MultiplicityFrom": 1,
+                        "MultiplicityTo": 1,
+                        "Attributes": {
+                            "ClassifierLink": {
+                                "ConfigId": "ClassifierStorage",
+                                "ConfigVersion": "1.0.0.0",
+                                "ClassifierId": "1.2.643.5.1.13.2.7.1.13"
+                            }
+                        }
+                    }]
+                }]
+            }],
+            "Properties": [
+            {
+                "Type": "String",
+                "Name": "Text",
+                "Caption": "Текст",
+                "Description": "Форматированный текст описания пребывания в стационаре. Включает сведения об отделениях пребывания, датах перемещения по отделениям.",
+                "MultiplicityFrom": 1,
+                "MultiplicityTo": 1
+            }]
+        },
+        {
+            "Name": "InitialInspection",
+            "Caption": "Первичный осмотр",
+            "Description": "Первичный осмотр предоставляет собой сведения об эпизоде медицинской помощи, регистрируемом на первом этапе оказания медицинской помощи",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1,
+            "Groups": [            
+            {
+                "Name": "LifeAnamnesis",
+                "Caption": "Анамнез жизни",
+                "Description": "Данная секция может содержать неструктурированную информацию об анамнезе жизни пациента. В этом случае содержание подсекции представляет собой неформатированный человекочитаемый текст в элементе text. Также информация может быть структурирована на несколько подсекций: 1.  Социальный анамнез 2.  Семейный анамнез 3.  Факторы риска 4.  Общебиографические сведения",
+                "MultiplicityFrom": 1,
+                "MultiplicityTo": 1,
+                "Groups": [{
+                    "Name": "BiographicalInformation",
+                    "Caption": "Общебиографические сведения",
+                    "Description": "Анамнез жизни: Общебиографические сведения (секция->компонент 1)",
+                    "MultiplicityFrom": 1,
+                    "MultiplicityTo": null,
+                    "Properties": [
+                    {
+                        "Type": "String",
+                        "Name": "Text",
+                        "Caption": "Текст",
+                        "Description": "Форматированный текст",
+                        "MultiplicityFrom": 1,
+                        "MultiplicityTo": 1
+                    }]
+                },
+                {
+                    "Name": "SolialStatus",
+                    "Caption": "Социальный статус",
+                    "Description": "Анамнез жизни: Социальный статус (секция->компонент 2)",
+                    "MultiplicityFrom": 1,
+                    "MultiplicityTo": null,
+                    "Properties": [
+                    {
+                        "Type": "String",
+                        "Name": "Text",
+                        "Caption": "Текст",
+                        "Description": "Форматированный текст",
+                        "MultiplicityFrom": 1,
+                        "MultiplicityTo": 1
+                    }]
+                },
+                {
+                    "Name": "FamilyAnamnesis",
+                    "Caption": "Семейный анамнез",
+                    "Description": "Анамнез жизни: Семейный (наследственный) анамнез (секция ->  компонент 3)",
+                    "MultiplicityFrom": 1,
+                    "MultiplicityTo": null,
+                    "Properties": [
+                    {
+                        "Type": "String",
+                        "Name": "Text",
+                        "Caption": "Текст",
+                        "Description": "Форматированный текст",
+                        "MultiplicityFrom": 1,
+                        "MultiplicityTo": 1
+                    }],
+                    "Groups": [{
+                        "Name": "RiskFactorGroup",
+                        "Caption": "Фактор риска",
+                        "Description": "Основное заболевание родственника - фактор риска",
+                        "MultiplicityFrom": 1,
+                        "MultiplicityTo": 1,                        
+                        "Groups": [{
+                            "Name": "RiskFactor",
+                            "Caption": "Фактор риска",
+                            "Description": "Основное заболевание родственника - фактор риска",
+                            "MultiplicityFrom": 1,
+                            "MultiplicityTo": null,
+                            "Properties": [{
+                                "Type": "LinkClassifier",
+                                "Name": "Disease",
+                                "Caption": "Заболевание",
+                                "Description": "Заболевание",
+                                "MultiplicityFrom": 1,
+                                "MultiplicityTo": 1,
+                                "Attributes": {
+                                    "ClassifierLink": {
+                                        "ConfigId": "ClassifierStorage",
+                                        "ConfigVersion": "1.0.0.0",
+                                        "ClassifierId": "1.2.643.5.1.13.2.1.1.641"
+                                    }
+                                }
+                            },
+                            {
+                                "Type": "LinkClassifier",
+                                "Name": "PatientRelationship",
+                                "Caption": "Отношение к пациенту",
+                                "Description": "Отношение к пациенту",
+                                "MultiplicityFrom": 1,
+                                "MultiplicityTo": 1,
+                                "Attributes": {
+                                    "ClassifierLink": {
+                                        "ConfigId": "ClassifierStorage",
+                                        "ConfigVersion": "1.0.0.0",
+                                        "ClassifierId": "1.2.643.5.1.13.2.7.1.15"
+                                    }
+                                }
+                            },
+                            {
+                                "Type": "String",
+                                "Name": "PatientRelationshipDescription",
+                                "Caption": "Отношение к пациенту",
+                                "Description": "Отношение к пациенту",
+                                "MultiplicityFrom": 1,
+                                "MultiplicityTo": 1
+                            }]
+                        }]
+                    }]
+                },
+                {
+                    "Name": "RiskFactors",
+                    "Caption": "Факторы риска",
+                    "Description": "Анамнез жизни: Факторы риска (секция->компонент 4)",
+                    "MultiplicityFrom": 1,
+                    "MultiplicityTo": null,
+                    "Properties": [
+                    {
+                        "Type": "String",
+                        "Name": "Text",
+                        "Caption": "Текст",
+                        "Description": "Форматированный текст",
+                        "MultiplicityFrom": 1,
+                        "MultiplicityTo": 1
+                    }],
+                    "Groups": [{
+                        "Name": "RiskFactors",
+                        "Caption": "Фактор риска",
+                        "Description": "Основное заболевание родственника - фактор риска",
+                        "MultiplicityFrom": 1,
+                        "MultiplicityTo": 1,
+                        "Properties": [{
+                            "Type": "DateTime",
+                            "Name": "EffectiveTime",
+                            "Caption": "Дата",
+                            "Description": "Дата",
+                            "MultiplicityFrom": 1,
+                            "MultiplicityTo": 1
+                        },
+                        {
+                            "Type": "LinkClassifier",
+                            "Name": "RiskFactorsCode",
+                            "Caption": "Фактор риска",
+                            "Description": "Фактор риска",
+                            "MultiplicityFrom": 1,
+                            "MultiplicityTo": 1,
+                            "Attributes": {
+                                "ClassifierLink": {
+                                    "ConfigId": "ClassifierStorage",
+                                    "ConfigVersion": "1.0.0.0",
+                                    "ClassifierId": "1.2.643.5.1.13.2.1.1.325"
+                                }
+                            }
+                        }]
+                    }]
+                }],
+                "Properties": [
+                {
+                    "Type": "String",
+                    "Name": "Text",
+                    "Caption": "Текст",
+                    "Description": "Форматированный текст",
+                    "MultiplicityFrom": 1,
+                    "MultiplicityTo": 1
+                }]
+            },
+            {
+                "Name": "HistoryOfDisease",
+                "Caption": "Анамнез заболевания",
+                "Description": "Данная секция описывает важный относительно данного заболевания анамнез пациента и может содержать неструктурированную информацию об анамнезе болезни, либо информация может быть разделена на три подсекции - «История настоящего заболевания», «Перенесенные заболевания» и «Предыдущие госпитализации».",
+                "MultiplicityFrom": 1,
+                "MultiplicityTo": 1,
+                "Groups": [{
+                    "Name": "HistoryOfCurrentDisease",
+                    "Caption": "История настоящего заболевания",
+                    "Description": "История настоящего заболевания (секция->компонент 1)",
+                    "MultiplicityFrom": 1,
+                    "MultiplicityTo": 1,
+                    "Properties": [
+                    {
+                        "Type": "String",
+                        "Name": "Text",
+                        "Caption": "Текст",
+                        "Description": "Форматированный текст",
+                        "MultiplicityFrom": 1,
+                        "MultiplicityTo": 1
+                    }]
+                },
+                {
+                    "Name": "LifeAnamnesis",
+                    "Caption": "Перенесенные заболевания",
+                    "Description": "Перенесенные заболевания (секция->компонент 2)",
+                    "MultiplicityFrom": 1,
+                    "MultiplicityTo": 1,
+                    "Properties": [
+                    {
+                        "Type": "String",
+                        "Name": "text",
+                        "Caption": "Текст",
+                        "Description": "Форматированный текст",
+                        "MultiplicityFrom": 1,
+                        "MultiplicityTo": 1
+                    }]
+                },
+                {
+                    "Name": "PreviousHospitalization",
+                    "Caption": "Предыдущие госпитализации",
+                    "Description": "Предыдущие госпитализации (секция->компонент 3)",
+                    "MultiplicityFrom": 1,
+                    "MultiplicityTo": 1,
+                    "Properties": [
+                    {
+                        "Type": "String",
+                        "Name": "Text",
+                        "Caption": "Текст",
+                        "Description": "Форматированный текст",
+                        "MultiplicityFrom": 1,
+                        "MultiplicityTo": 1
+                    }],
+                    "Groups": [{
+                        "Name": "Hospitalization",
+                        "Caption": "госпитализация",
+                        "Description": "госпитализация",
+                        "MultiplicityFrom": 1,
+                        "MultiplicityTo": 1,
+                        "Properties": [{
+                            "Type": "DateTime",
+                            "Name": "StartTime",
+                            "Caption": "Дата и время начала госпитализации",
+                            "Description": "Дата и время начала госпитализации",
+                            "MultiplicityFrom": 1,
+                            "MultiplicityTo": 1
+                        },
+                        {
+                            "Type": "DateTime",
+                            "Name": "StopTime",
+                            "Caption": "Дата и время окончания госпитализации",
+                            "Description": "Дата и время окончания госпитализации",
+                            "MultiplicityFrom": 1,
+                            "MultiplicityTo": 1
+                        },
+                        {
+                            "Type": "String",
+                            "Name": "OrganizationId",
+                            "Caption": "Код организации",
+                            "Description": "Код организации",
+                            "MultiplicityFrom": 1,
+                            "MultiplicityTo": 1
+                        }],
+                        "Groups": [{
+                            "Name": "RepresentedOrganization",
+                            "Caption": "Организация",
+                            "Description": "Организация",
+                            "MultiplicityFrom": 1,
+                            "MultiplicityTo": 1,                            
+                            "Properties": [{
+                                "Type": "String",
+                                "Name": "OrganizationName",
+                                "Caption": "Название отделения",
+                                "Description": "Название отделения",
+                                "MultiplicityFrom": 1,
+                                "MultiplicityTo": 1
+                            }]
+                        }]
+                    }]
+                }],
+                "Properties": [
+                {
+                    "Type": "String",
+                    "Name": "Text",
+                    "Caption": "Текст",
+                    "Description": "Форматированный текст",
+                    "MultiplicityFrom": 1,
+                    "MultiplicityTo": 1
+                }]
+            },
+            {
+                "Name": "ObjectiveData",
+                "Caption": "Объективные данные",
+                "Description": "Данная секция содержит информацию о физикальном исследовании пациента и содержит неструктурированную информацию об обследовании в элементе text. Информация может быть структурирована на несколько секций: Функциональное обследование, Психический статус, Неврологический статус, Состояние по системам",
+                "MultiplicityFrom": 1,
+                "MultiplicityTo": 1,
+                "Groups": [{
+                    "Name": "FunctionalInspection",
+                    "Caption": "Функциональное обследование",
+                    "Description": "Функциональное обследование",
+                    "MultiplicityFrom": 1,
+                    "MultiplicityTo": 1,
+                    "Properties": [
+                    {
+                        "Type": "String",
+                        "Name": "Text",
+                        "Caption": "Текст",
+                        "Description": "Форматированный текст",
+                        "MultiplicityFrom": 1,
+                        "MultiplicityTo": 1
+                    }]                    
+                },
+                {
+                    "Name": "MentalStatus",
+                    "Caption": "Психический статус",
+                    "Description": "Психический статус",
+                    "MultiplicityFrom": 1,
+                    "MultiplicityTo": 1,
+                    "Properties": [
+                    {
+                        "Type": "String",
+                        "Name": "Text",
+                        "Caption": "Текст",
+                        "Description": "Форматированный текст",
+                        "MultiplicityFrom": 1,
+                        "MultiplicityTo": 1
+                    }]
+                },
+                {
+                    "Name": "NeurologicalStatus",
+                    "Caption": "Неврологический статус",
+                    "Description": "Неврологический статус",
+                    "MultiplicityFrom": 1,
+                    "MultiplicityTo": 1,
+                    "Properties": [
+                    {
+                        "Type": "String",
+                        "Name": "Text",
+                        "Caption": "Текст",
+                        "Description": "Форматированный текст",
+                        "MultiplicityFrom": 1,
+                        "MultiplicityTo": 1
+                    }]
+                },
+                {
+                    "Name": "PhysicalExamination",
+                    "Caption": "Физикальное обследование",
+                    "Description": "Физикальное обследование",
+                    "MultiplicityFrom": 1,
+                    "MultiplicityTo": 1,
+                    "Properties": [
+                    {
+                        "Type": "String",
+                        "Name": "Text",
+                        "Caption": "Текст",
+                        "Description": "Форматированный текст",
+                        "MultiplicityFrom": 1,
+                        "MultiplicityTo": 1
+                    }]
+                }],
+                "Properties": [
+                {
+                    "Type": "String",
+                    "Name": "Text",
+                    "Caption": "Текст",
+                    "Description": "Форматированный текст",
+                    "MultiplicityFrom": 1,
+                    "MultiplicityTo": 1
+                }]
+            },
+            {
+                "Name": "PreliminaryDiagnosis",
+                "Caption": "Предварительный диагноз",
+                "Description": "Предварительный диагноз",
+                "MultiplicityFrom": 1,
+                "MultiplicityTo": 1,                
+                "Properties": [
+                {
+                    "Type": "String",
+                    "Name": "Text",
+                    "Caption": "Текст",
+                    "Description": "Форматированный текст",
+                    "MultiplicityFrom": 1,
+                    "MultiplicityTo": 1
+                }]
+            },
+            {
+                "Name": "InspectionPlan",
+                "Caption": "План обследования",
+                "Description": "План обследования",
+                "MultiplicityFrom": 1,
+                "MultiplicityTo": 1,                
+                "Properties": [
+                {
+                    "Type": "String",
+                    "Name": "Text",
+                    "Caption": "Текст",
+                    "Description": "Форматированный текст",
+                    "MultiplicityFrom": 1,
+                    "MultiplicityTo": 1
+                }]
+            },
+            {
+                "Name": "TreatmentPlanning",
+                "Caption": "План лечения",
+                "Description": "План лечения",
+                "MultiplicityFrom": 1,
+                "MultiplicityTo": 1,                
+                "Properties": [
+                {
+                    "Type": "String",
+                    "Name": "Text",
+                    "Caption": "Текст",
+                    "Description": "Форматированный текст",
+                    "MultiplicityFrom": 1,
+                    "MultiplicityTo": 1
+                }]
+            }],
+            "Properties": [
+            {
+                "Type": "String",
+                "Name": "Text",
+                "Caption": "Текст",
+                "Description": "Форматированный текст",
+                "MultiplicityFrom": 1,
+                "MultiplicityTo": 1
+            }]
+        },
+        {
+            "Name": "InformationOnTreatment",
+            "Caption": "Информация о лечении",
+            "Description": "Информация о лечении",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1,            
+            "Properties": [
+            {
+                "Type": "String",
+                "Name": "Text",
+                "Caption": "Текст",
+                "Description": "Форматированный текст",
+                "MultiplicityFrom": 1,
+                "MultiplicityTo": 1
+            }]
+        },
+        {
+            "Name": "PatientCondition",
+            "Caption": "Состояние пациента",
+            "Description": "Состояние пациента",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1,            
+            "Properties": [
+            {
+                "Type": "String",
+                "Name": "Text",
+                "Caption": "Текст",
+                "Description": "Форматированный текст",
+                "MultiplicityFrom": 1,
+                "MultiplicityTo": 1
+            }]
+        },
+        {
+            "Name": "ServicesData",
+            "Caption": "Данные по услугам",
+            "Description": "Данные по услугам",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1,
+            "Groups": [{
+                "Name": "ServiceDescription",
+                "Caption": "Описание услуги",
+                "Description": "Описание услуги",
+                "MultiplicityFrom": 1,
+                "MultiplicityTo": null,
+                "Groups": [{
+                    "Name": "StayDepartmentData",
+                    "Caption": "Данные об отделении пребывания",
+                    "Description": "Данные об отделении пребывания",
+                    "MultiplicityFrom": 1,
+                    "MultiplicityTo": 1,
+                    "Groups": [{
+                        "Name": "Performer",
+                        "Caption": "Исполнитель",
+                        "Description": "Сведения об отделении",
+                        "MultiplicityFrom": 1,
+                        "MultiplicityTo": 1,
+                        "Groups": [{
+                            "Name": "AssignedPerformer",
+                            "Caption": "Исполнитель",
+                            "Description": "Детальная информация об исполнителе",
+                            "MultiplicityFrom": 1,
+                            "MultiplicityTo": 1,
+                            "Groups": [{
+                                "Name": "BedProfile",
+                                "Caption": "Профиль койки",
+                                "Description": "Профиль койки",
+                                "MultiplicityFrom": 1,
+                                "MultiplicityTo": 1,                               
+                                "Properties": [{
+                                    "Type": "LinkClassifier",
+                                    "Name": "BedProfileCode",
+                                    "Caption": "Профиль койки",
+                                    "Description": "Профиль койки",
+                                    "MultiplicityFrom": 1,
+                                    "MultiplicityTo": 1,
+                                    "Attributes": {
+                                        "ClassifierLink": {
+                                            "ConfigId": "ClassifierStorage",
+                                            "ConfigVersion": "1.0.0.0",
+                                            "ClassifierId": "1.2.643.5.1.13.2.1.1.221"
+                                        }
+                                    }
+                                }]
+                            },
+                            {
+                                "Name": "RepresentedOrganization",
+                                "Caption": "Организация",
+                                "Description": "Организация",
+                                "MultiplicityFrom": 1,
+                                "MultiplicityTo": 1,                                
+                                "Properties": [{
+                                    "Type": "String",
+                                    "Name": "OrganizationName",
+                                    "Caption": "Название отделения",
+                                    "Description": "Название отделения",
+                                    "MultiplicityFrom": 1,
+                                    "MultiplicityTo": 1
+                                }]
+                            }],
+                            "Properties": [{
+                                "Type": "String",
+                                "Name": "RegisterId",
+                                "Caption": "Регистрационный код отделения",
+                                "Description": "Регистрационный код отделения в МО",
+                                "MultiplicityFrom": 1,
+                                "MultiplicityTo": 1
+                            }]
+                        }],
+                        "Properties": [{
+                            "Type": "LinkClassifier",
+                            "Name": "PerformerType",
+                            "Caption": "Тип исполнителя",
+                            "Description": "Тип исполнителя",
+                            "MultiplicityFrom": 1,
+                            "MultiplicityTo": 1,
+                            "Attributes": {
+                                "ClassifierLink": {
+                                    "ConfigId": "ClassifierStorage",
+                                    "ConfigVersion": "1.0.0.0",
+                                    "ClassifierId": "1.2.643.5.1.13.2.7.1.30"
+                                }
+                            }
+                        }]
+                    }],
+                    "Properties": [{
+                        "Type": "LinkClassifier",
+                        "Name": "DepartmentStay",
+                        "Caption": "Пребывание в отделении",
+                        "Description": "Пребывание в отделении",
+                        "MultiplicityFrom": 1,
+                        "MultiplicityTo": 1,
+                        "Attributes": {
+                            "ClassifierLink": {
+                                "ConfigId": "ClassifierStorage",
+                                "ConfigVersion": "1.0.0.0",
+                                "ClassifierId": "1.2.643.5.1.13.2.7.1.12"
+                            }
+                        }
+                    },
+                    {
+                        "Type": "DateTime",
+                        "Name": "StartTime",
+                        "Caption": "Дата и время поступления",
+                        "Description": "Дата и время поступления",
+                        "MultiplicityFrom": 1,
+                        "MultiplicityTo": 1
+                    },
+                    {
+                        "Type": "DateTime",
+                        "Name": "StopTime",
+                        "Caption": "Дата и время выбытия",
+                        "Description": "Дата и время выбытия",
+                        "MultiplicityFrom": 1,
+                        "MultiplicityTo": 1
+                    }]
+                }],
+                "Properties": [{
+                    "Type": "LinkClassifier",
+                    "Name": "Service",
+                    "Caption": "Услуга",
+                    "Description": "Услуга",
+                    "MultiplicityFrom": 1,
+                    "MultiplicityTo": 1,
+                    "Attributes": {
+                        "ClassifierLink": {
+                            "ConfigId": "ClassifierStorage",
+                            "ConfigVersion": "1.0.0.0",
+                            "ClassifierId": "1.2.643.5.1.13.2.1.1.473"
+                        }
+                    }
+                },
+                {
+                    "Type": "LinkClassifier",
+                    "Name": "AccountingUnitCare",
+                    "Caption": "Единица учета медицинской помощи",
+                    "Description": "Единица учета медицинской помощи",
+                    "MultiplicityFrom": 1,
+                    "MultiplicityTo": 1,
+                    "Attributes": {
+                        "ClassifierLink": {
+                            "ConfigId": "ClassifierStorage",
+                            "ConfigVersion": "1.0.0.0",
+                            "ClassifierId": "1.2.643.5.1.13.2.1.1.80"
+                        }
+                    }
+                },          
+                {
+                    "Type": "Integer",
+                    "Name": "ServiceQuantity",
+                    "Caption": "Количество услуг",
+                    "Description": "Количество услуг",
+                    "MultiplicityFrom": 1,
+                    "MultiplicityTo": 1
+                }]
+            }],
+            "Properties": [
+            {
+                "Type": "String",
+                "Name": "Text",
+                "Caption": "Текст",
+                "Description": "Форматированный текст",
+                "MultiplicityFrom": 1,
+                "MultiplicityTo": 1
+            }]
+        }
+        ],
+        "Properties": [
+        {
+            "Type": "String",
+            "Name": "DocumentId",
+            "Caption": "Уникальный номер экземпляра документа",
+            "Description": "Уникальный номер экземпляра документа",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1
+        }, 
+        {
+            "Type": "String",
+            "Name": "PatientId",
+            "Caption": "Уникальный идентификатор пациента",
+            "Description": "Уникальный идентификатор пациента",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1
+        }, 
+        {
+            "Type": "String",
+            "Name": "MedicalWorkerId",
+            "Caption": "Уникальный идентификатора медицинского работника",
+            "Description": "Уникальный идентификатора медицинского работника",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1
+        },       
+        {
+            "Type": "DateTime",
+            "Name": "Date",
+            "Caption": "Дата создания документа",
+            "Description": "Дата создания документа",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1
+        },
+        {
+            "Type": "LinkClassifier",
+            "Name": "Confidentiality",
+            "Caption": "Уровень конфиденциальности документа",
+            "Description": "Уровень конфиденциальности документа",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1,
+            "Attributes": {
+                "ClassifierLink": {
+                    "ConfigId": "ClassifierStorage",
+                    "ConfigVersion": "1.0.0.0",
+                    "ClassifierId": "2.16.840.1.113883.5.25"
+                }
+            }
+        },
+        {
+            "Type": "LinkClassifier",
+            "Name": "GuardianConfidentialityCode",
+            "Caption": "Уровень доступа опекуна/попечителя",
+            "Description": "Уровень доступа опекуна/попечителя",
+            "MultiplicityFrom": 0,
+            "MultiplicityTo": 1,
+            "Attributes": {
+                "ClassifierLink": {
+                    "ConfigId": "ClassifierStorage",
+                    "ConfigVersion": "1.0.0.0",
+                    "ClassifierId": "1.2.643.5.1.13.2.7.1.9"
+                }
+            }
+        },
+        {
+            "Type": "LinkClassifier",
+            "Name": "PatientConfidentialityCode",
+            "Caption": "Уровень доступа врача",
+            "Description": "Уровень доступа врача",
+            "MultiplicityFrom": 0,
+            "MultiplicityTo": 1,
+            "Attributes": {
+                "ClassifierLink": {
+                    "ConfigId": "ClassifierStorage",
+                    "ConfigVersion": "1.0.0.0",
+                    "ClassifierId": "1.2.643.5.1.13.2.7.1.10"
+                }
+            }
+        },
+        {
+            "Type": "String",
+            "Name": "CaseNumber",
+            "Caption": "Номер истории болезни",
+            "Description": "Номер истории болезни, к которой относится документ",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1
+        },
+        {
+            "Type": "Integer",
+            "Name": "DocumentVersionNumber",
+            "Caption": "Версия данного документа",
+            "Description": "Версия данного документа",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1
+        },
+        {
+            "Type": "String",
+            "Name": "DocumentOwner",
+            "Caption": "Владелец документа",
+            "Description": "Код учреждения в реестре Минздрава РФ",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1
+        },
+        {
+            "Type": "String",
+            "Name": "DocumentOwnerName",
+            "Caption": "Владелец документа",
+            "Description": "Наименование учреждения",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1
+        },
+        {
+            "Type": "DateTime",
+            "Name": "StatementTime",
+            "Caption": "Дата и время утверждения",
+            "Description": "Дата и время утверждения",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1
+        },
+        {
+            "Type": "String",
+            "Name": "AuthenticatorId",
+            "Caption": "Код учреждения в реестре Минздрава РФ",
+            "Description": "Код учреждения в реестре Минздрава РФ, к которой относится работник, подписавший документ",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1
+        },
+        {
+            "Type": "String",
+            "Name": "AuthenticatorPersonId",
+            "Caption": "Код медицинского работника, подписавшего документ",
+            "Description": "Код медицинского работника, подписавшего документ",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1
+        },
+        {
+            "Type": "LinkClassifier",
+            "Name": "AuthenticatorCode",
+            "Caption": "Код должности роли медицинского работника",
+            "Description": "Код должности роли медицинского работника, подписавшего документ",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1,
+            "Attributes": {
+                "ClassifierLink": {
+                    "ConfigId": "ClassifierStorage",
+                    "ConfigVersion": "1.0.0.0",
+                    "ClassifierId": "1.2.643.5.1.13.2.1.1.607"
+                }
+            }
+        },
+        {
+            "Type": "LinkClassifier",
+            "Name": "AuthenticatorParticipant",
+            "Caption": "Роль в оказании медицинской помощи",
+            "Description": "Роль в оказании медицинской помощи подписавшего документ",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1,
+            "Attributes": {
+                "ClassifierLink": {
+                    "ConfigId": "ClassifierStorage",
+                    "ConfigVersion": "1.0.0.0",
+                    "ClassifierId": "1.2.643.5.1.13.2.7.1.30"
+                }
+            }
+        },
+        {
+            "Type": "String",
+            "Name": "AuthenticatorLastName",
+            "Caption": "Фамилия подписавшего документ",
+            "Description": "Фамилия подписавшего документ",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1
+        },
+        {
+            "Type": "String",
+            "Name": "AuthenticatorFirstName",
+            "Caption": "Имя подписавшего документ",
+            "Description": "Имя подписавшего документ",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1
+        },
+        {
+            "Type": "String",
+            "Name": "AuthenticatorMiddleName",
+            "Caption": "Отчество подписавшего документ",
+            "Description": "Отчество подписавшего документ",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1
+        },
+        {
+            "Type": "String",
+            "Name": "CaseHistoryNumber",
+            "Caption": "Номер истории болезни случая заболевания",
+            "Description": "OID и номер истории болезни должны образовывать уникальную комбинацию в рамках всей системы",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1
+        },
+        {
+            "Type": "LinkClassifier",
+            "Name": "CaseType",
+            "Caption": "Тип случая заболевания",
+            "Description": "Тип случая заболевания (госпитализация)",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1,
+            "Attributes": {
+                "ClassifierLink": {
+                    "ConfigId": "ClassifierStorage",
+                    "ConfigVersion": "1.0.0.0",
+                    "ClassifierId": "1.2.643.5.1.13.2.7.1.1"
+                }
+            }
+        },
+        {
+            "Type": "DateTime",
+            "Name": "HospitalizationIssueDate",
+            "Caption": "Дата и время начала госпитализации",
+            "Description": "Дата и время начала госпитализации в рамках случая оказания медицинской помощи",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1
+        },
+        {
+            "Type": "DateTime",
+            "Name": "HospitalizationExpiryDate",
+            "Caption": "Дата и время окончания госпитализации",
+            "Description": "Дата и время окончания госпитализации в рамках случая оказания медицинской помощи",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1
+        },
+        {
+            "Type": "LinkClassifier",
+            "Name": "HospitalizationDispositionCode",
+            "Caption": "Исход госпитализации",
+            "Description": "Исход госпитализации в рамках случая оказания медицинской помощи",
+            "MultiplicityFrom": 1,
+            "MultiplicityTo": 1,
+            "Attributes": {
+                "ClassifierLink": {
+                    "ConfigId": "ClassifierStorage",
+                    "ConfigVersion": "1.0.0.0",
+                    "ClassifierId": "1.2.643.5.1.13.2.1.1.542"
+                }
+            }
+        }
+        ]
+    }
+}

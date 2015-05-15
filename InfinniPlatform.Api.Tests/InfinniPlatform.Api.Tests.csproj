@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A8285E35-48F8-45CC-961C-282678230221}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>InfinniPlatform.Api.Tests</RootNamespace>
+    <AssemblyName>InfinniPlatform.Api.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=104.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Builders\ConfigurationBuilder.cs" />
+    <Compile Include="Builders\SampleMetadataBuilder.cs" />
+    <Compile Include="Dynamic\DynamicWrapperJsonConverterTest.cs" />
+    <Compile Include="Dynamic\DynamicWrapperTest.cs" />
+    <Compile Include="Dynamic\ObjectHelperTest.cs" />
+    <Compile Include="Extensions\AuthorizationExtensionsTest.cs" />
+    <Compile Include="Extensions\CommonExtensionsTest.cs" />
+    <Compile Include="Extensions\ReflectionExtensionsTest.cs" />
+    <Compile Include="Packages\ConfigExporterBehavior.cs" />
+    <Compile Include="Help\SelfDocumentationBehavior.cs" />
+    <Compile Include="RestBehavior\Acceptance\AdminBehavior.cs" />
+    <Compile Include="RestBehavior\Acceptance\AfterDocumentSaveEventsBehavior.cs" />
+    <Compile Include="RestBehavior\Acceptance\ActionUnitExceptionHandlingBehavior.cs" />
+    <Compile Include="RestBehavior\Acceptance\AuthorizationBehavior.cs" />
+    <Compile Include="RestBehavior\Acceptance\ContentUploadBehavior.cs" />
+    <Compile Include="RestBehavior\Acceptance\SaaSBehaivor.cs" />
+    <Compile Include="RestBehavior\Acceptance\SortingBehavior.cs" />
+    <Compile Include="RestBehavior\Acceptance\GetManagedMetadataBehavior.cs" />
+    <Compile Include="RestBehavior\Acceptance\RegistersBehavior.cs" />
+    <Compile Include="RestBehavior\Acceptance\DeleteReferencedDocumentBehavior.cs" />
+    <Compile Include="RestBehavior\Acceptance\CreateDocumentBehavior.cs" />
+    <Compile Include="RestBehavior\Acceptance\PrefillDocumentBehavior.cs" />
+    <Compile Include="RestBehavior\Acceptance\ReportingBehavior.cs" />
+    <Compile Include="RestBehavior\Acceptance\ResolveReferencesDocumentBehavior.cs" />
+    <Compile Include="RestBehavior\Acceptance\SchemaChangeDocumentBehavior.cs" />
+    <Compile Include="RestBehavior\Acceptance\SignalRNotificationBehavior.cs" />
+    <Compile Include="RestBehavior\Acceptance\TransactionBehavior.cs" />
+    <Compile Include="RestBehavior\Acceptance\ValidationDocumentBehavior.cs" />
+    <Compile Include="RestBehavior\ConfiguratorApiBehavior\GeneratorBrokerBehavior.cs" />
+    <Compile Include="RestBehavior\ConfiguratorApiBehavior\MetadataCacheRefresherBehavior.cs" />
+    <Compile Include="RestBehavior\DataSources\MetadataDataSourceBehavior.cs" />
+    <Compile Include="Dynamic\DynamicWrapperBehavior.cs" />
+    <Compile Include="Events\EventListBuilderBehavior.cs" />
+    <Compile Include="Events\ObjectToEventSerializerBehavior.cs" />
+    <Compile Include="Metadata\MetadataBuilderBehavior.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AssemblyInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RestBehavior\ConfiguratorApiBehavior\MetadataCrudBehavior.cs" />
+    <Compile Include="RestBehavior\Acceptance\DocumentApiBehavior.cs" />
+    <Compile Include="RestBehavior\TestActions\ActionUnitGeneratorTest.cs" />
+    <Compile Include="RestBehavior\TestActions\AddNewBedToRoomMoveAction.cs" />
+    <Compile Include="RestBehavior\TestActions\ActionWithException.cs" />
+    <Compile Include="RestBehavior\TestActions\DeleteRegisterEntriesAction.cs" />
+    <Compile Include="RestBehavior\TestActions\HospitalRegisterMoveAction.cs" />
+    <Compile Include="RestBehavior\TestActions\TestRegisterMoveAction.cs" />
+    <Compile Include="RestBehavior\TestActions\TestAction.cs" />
+    <Compile Include="RestBehavior\TestActions\TestComplexAction.cs" />
+    <Compile Include="RestBehavior\TestActions\TestComplexFillDocumentAction.cs" />
+    <Compile Include="RestBehavior\TestActions\TestComplexValidator.cs" />
+    <Compile Include="RestBehavior\TestActions\TestSignalRAction.cs" />
+    <Compile Include="RestBehavior\TestActions\Transactions\TestSaveDocumentFailAction.cs" />
+    <Compile Include="RestBehavior\TestActions\YetAnotherTestComplexAction.cs" />
+    <Compile Include="Schema\SchemaCreatorBehavior.cs" />
+    <Compile Include="Serialization\JsonObjectSerializerTest.cs" />
+    <Compile Include="TestDataGenerator\TestDataGeneratorBehavior.cs" />
+    <Compile Include="Validation\BaseValidationOperatorTest.cs" />
+    <Compile Include="Validation\BooleanValidators\AndValidatorTest.cs" />
+    <Compile Include="Validation\BooleanValidators\NotValidatorTest.cs" />
+    <Compile Include="Validation\BooleanValidators\OrValidatorTest.cs" />
+    <Compile Include="Validation\CollectionValidators\AllCollectionValidatorTest.cs" />
+    <Compile Include="Validation\CollectionValidators\AnyCollectionValidatorTest.cs" />
+    <Compile Include="Validation\CollectionValidators\ContainsCollectionValidatorTest.cs" />
+    <Compile Include="Validation\CollectionValidators\NullOrEmptyCollectionValidatorTest.cs" />
+    <Compile Include="Validation\FaseValidationOperator.cs" />
+    <Compile Include="Validation\ObjectValidators\AbsoluteUriValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\ContainsValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\DefaultValueValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\EndsWithValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\EqualValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\GuidValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\InValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\LessThanOrEqualValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\LessThanValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\MoreThanOrEqualValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\MoreThanValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\NullOrEmptyValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\NullOrWhiteSpaceValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\NullValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\RegexValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\RelativeUriValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\StartsWithValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\UriValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\ValidatorTestCase.cs" />
+    <Compile Include="Validation\PredicateValidationOperator.cs" />
+    <Compile Include="Validation\Serialization\ValidationOperatorSerializerTest.cs" />
+    <Compile Include="Validation\TrueValidationOperator.cs" />
+    <Compile Include="Zip\ZipLoaderBehavior.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
+      <Project>{7ca0f96c-7ff4-44b2-9d44-851984df4532}</Project>
+      <Name>InfinniPlatform.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.SystemConfig\InfinniPlatform.SystemConfig.csproj">
+      <Project>{6EFC2069-AFEB-453D-AD2C-3E170486A4F1}</Project>
+      <Name>InfinniPlatform.SystemConfig</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Tests\InfinniPlatform.Tests.csproj">
+      <Project>{a46f638c-c9c5-49be-bc8d-8144e8c8f87a}</Project>
+      <Name>InfinniPlatform.Tests</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Files\Tests\App.config">
+      <Link>App.config</Link>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\Files\Build\TransformOnBuild.targets" />
+  <ItemGroup>
+    <None Include="Properties\AssemblyInfo.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AssemblyInfo.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

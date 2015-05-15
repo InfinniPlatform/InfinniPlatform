@@ -1,0 +1,192 @@
+{
+  "Id": "1a1c5aaf-2407-42d9-9c06-43dbd20b6292",
+  "LayoutPanel": {
+    "StackPanel": {
+      "Items": [
+        {
+          "ScrollPanel": {
+            "LayoutPanel": {
+              "GridPanel": {
+                "Rows": [
+                  {
+                    "Cells": [
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "Label": {
+                              "Text": "Дата"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "TextBox": {
+                              "Enabled": false,
+                              "DisplayFormat": {
+                                "DateTimeFormat": {
+                                  "Format": "G"
+                                }
+                              },
+                              "Value": {
+                                "PropertyBinding": {
+                                  "DataSource": "MainDataSource",
+                                  "Property": "Date"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "Label": {
+                              "Text": "Уровень"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "TextBox": {
+                              "Enabled": false,
+                              "Value": {
+                                "PropertyBinding": {
+                                  "DataSource": "MainDataSource",
+                                  "Property": "Level"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "Label": {
+                              "Text": "Пользователь"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "TextBox": {
+                              "Enabled": false,
+                              "Value": {
+                                "PropertyBinding": {
+                                  "DataSource": "MainDataSource",
+                                  "Property": "User"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "Label": {
+                              "Text": "Раздел"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "TextBox": {
+                              "Enabled": false,
+                              "Value": {
+                                "PropertyBinding": {
+                                  "DataSource": "MainDataSource",
+                                  "Property": "Source"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "Label": {
+                              "Text": "Сообщение"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 9,
+                        "Items": [
+                          {
+                            "TextBox": {
+                              "Enabled": false,
+                              "Multiline": true,
+                              "LineCount": 5,
+                              "Value": {
+                                "PropertyBinding": {
+                                  "DataSource": "MainDataSource",
+                                  "Property": "Message"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ToolBar": {
+            "Items": [
+              {
+                "ToolBarButton": {
+                  "Text": "OK",
+                  "Action": {
+                    "CancelAction": {}
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "DataSources": [
+    {
+      "DocumentDataSource": {
+        "Name": "MainDataSource",
+        "ConfigId": "Administration",
+        "DocumentId": "EventLog"
+      }
+    }
+  ],
+  "Text": "Событие",
+  "__DocumentId": "viewmetadata",
+  "__ConfigId": "systemconfig",
+  "Version": "version_systemconfig",
+  "ParentId": "6d20dd54-4cdd-4245-be18-86e06bc9f7c7",
+  "Name": "EditView",
+  "Caption": "Документ",
+  "Description": "",
+  "MetadataType": "EditView"
+}

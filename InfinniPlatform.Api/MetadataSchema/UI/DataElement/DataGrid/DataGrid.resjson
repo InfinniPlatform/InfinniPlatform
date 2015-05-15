@@ -1,0 +1,29 @@
+﻿{
+  "id": "DataGrid",
+  "description": "Элемент представления ля отображения данных в виде таблицы",
+  "type": "object",
+  "extends": {
+    "$ref": "http://demo.infinnity.ru:8081/display/MC/BaseListElement"
+  },
+  "properties": {
+    "MultiSelect": {
+      "description": "Разрешен ли выбор нескольких значений",
+      "type": "boolean",
+      "default": false
+    },
+    "Columns": {
+      "description": "Список колонок таблицы",
+      "type": "array",
+      "items": {
+        "$ref": "http://demo.infinnity.ru:8081/display/MC/DataGridColumn"
+      }
+    },
+    "Groups": {
+      "description": "Список групп таблицы",
+      "type": "array",
+      "items": {
+        "$ref": "http://demo.infinnity.ru:8081/display/MC/DataGridGroup"
+      }
+    }
+  }
+}

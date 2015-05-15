@@ -1,0 +1,70 @@
+{
+  "Id": "6d20dd54-4cdd-4245-be18-86e06bc9f7c7",
+  "Name": "EventLog",
+  "Caption": "Журнал событий",
+  "Description": "Действия пользователей по конкретному разделу, за выбранный промежуток времени.",
+  "Versioning": 2,
+  "MetadataIndex": "EventLog",
+  "Services": [],
+  "Processes": [
+    {
+      "Id": "c8cff7f5-9047-40c6-8db6-8e211117cae7",
+      "Name": "Default",
+      "Caption": "Default business process"
+    }
+  ],
+  "Scenarios": [],
+  "Generators": [],
+  "Views": [
+    {
+      "Id": "f5c7c572-512f-410b-9aa7-326f4d637482",
+      "Name": "ListView",
+      "Caption": "Журнал",
+      "Description": "Журнал событий"
+    },
+    {
+      "Id": "1a1c5aaf-2407-42d9-9c06-43dbd20b6292",
+      "Name": "EditView",
+      "Caption": "Документ",
+      "Description": ""
+    }
+  ],
+  "PrintViews": [],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "DocumentStatuses": [],
+  "ParentId": "232b5c7f-6d7d-43da-a76f-9c1b9abba672",
+  "Version": "version_systemconfig",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "documentmetadata",
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "Id": {
+        "Caption": "Идентификатор события",
+        "Type": "Uuid"
+      },
+      "Date": {
+        "Caption": "Дата события",
+        "Type": "DateTime"
+      },
+      "Level": {
+        "Caption": "Уровень события",
+        "Type": "String"
+      },
+      "User": {
+        "Caption": "Имя пользователя",
+        "Type": "String"
+      },
+      "Source": {
+        "Caption": "Источник события",
+        "Type": "String"
+      },
+      "Message": {
+        "Caption": "Сообщение события",
+        "Type": "String"
+      }
+    }
+  }
+}

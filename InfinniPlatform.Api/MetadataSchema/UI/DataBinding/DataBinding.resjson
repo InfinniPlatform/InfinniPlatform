@@ -1,0 +1,20 @@
+﻿{
+  "id": "DataBinding",
+  "description": "Контейнер для описания связи между элементом представления и данными",
+  "type": "object",
+  "properties": {
+    "ObjectBinding": {
+      "description": "Описывает связь между элементом представления и произвольным объектом",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/ObjectBinding"
+    },
+    "PropertyBinding": {
+      "description": "Описывает связь между элементом представления и свойством источника данных",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/PropertyBinding"
+    },
+    "ParameterBinding": {
+      "description": "Описывает связь между элементом представления и параметром представления",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/ParameterBinding"
+    }
+  },
+  "additionalProperties": false
+}

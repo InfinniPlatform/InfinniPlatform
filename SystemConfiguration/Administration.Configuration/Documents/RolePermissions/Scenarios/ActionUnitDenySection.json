@@ -1,0 +1,13 @@
+{
+  "Id": "859242dc-d427-4cbf-90aa-6198538ad620",
+  "ScriptUnitType": 1,
+  "ContextType": 2,
+  "ScenarioId": "ActionUnitDenySection",
+  "Description": "",
+  "Caption": "ActionUnitDenySection",
+  "Name": "ActionUnitDenySection",
+  "ParentId": "cf4d2816-9dde-4143-8e53-1bcaa1972bcf",
+  "Version": "version_systemconfig",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "scenariometadata"
+}

@@ -1,0 +1,23 @@
+﻿{
+  "id": "GridPanel",
+  "description": "Контейнер элементов представления в виде сетки",
+  "type": "object",
+  "extends": {
+    "$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
+  },
+  "properties": {
+    "Columns": {
+      "description": "Количество колонок",
+      "type": "integer",
+      "default": 12
+    },
+    "Rows": {
+      "description": "Список строк",
+      "type": "array",
+      "items": {
+        "$ref": "http://demo.infinnity.ru:8081/display/MC/GridPanelRow"
+      }
+    }
+  },
+  "additionalProperties": false
+}

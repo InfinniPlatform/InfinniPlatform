@@ -1,0 +1,255 @@
+﻿<?xml version="1.0"?>
+<template xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="openEHR/v1/Template">
+  <id>f9ec7e34-1a60-4314-bd65-02123278d6f2</id>
+  <name>Форма 025-12/у</name>
+  <description>
+    <lifecycle_state>Initial</lifecycle_state>
+    <details>
+      <purpose />
+      <use />
+      <misuse />
+    </details>
+    <other_details>
+      <item>
+        <key>MetaDataSet:Sample Set </key>
+        <value>Template metadata sample set </value>
+      </item>
+      <item>
+        <key>Acknowledgements</key>
+        <value />
+      </item>
+      <item>
+        <key>Business Process Level</key>
+        <value />
+      </item>
+      <item>
+        <key>Care setting</key>
+        <value />
+      </item>
+      <item>
+        <key>Client group</key>
+        <value />
+      </item>
+      <item>
+        <key>Clinical Record Element</key>
+        <value />
+      </item>
+      <item>
+        <key>Copyright</key>
+        <value />
+      </item>
+      <item>
+        <key>Issues</key>
+        <value />
+      </item>
+      <item>
+        <key>Owner</key>
+        <value />
+      </item>
+      <item>
+        <key>Sign off</key>
+        <value />
+      </item>
+      <item>
+        <key>Speciality</key>
+        <value />
+      </item>
+      <item>
+        <key>User roles</key>
+        <value />
+      </item>
+    </other_details>
+  </description>
+  <definition xsi:type="COMPOSITION" archetype_id="openEHR-EHR-COMPOSITION.examination_025.v1" concept_name="Форма 025" annotation="plain(&quot;true&quot;);">
+    <Content xsi:type="ADMIN_ENTRY" archetype_id="openEHR-EHR-ADMIN_ENTRY.general_information.v1" template_id="d17ae88f-b657-4e90-a23d-62272e2d9b7d" concept_name="Общая информация (форма 025)" path="/content[at0003]" />
+    <Content xsi:type="EVALUATION" archetype_id="openEHR-EHR-EVALUATION.app_conclusion.v1" concept_name="Заключение осмотра" max="1" path="/content[at0004]">
+      <Rule path="/data[at0001]/items[at0015]" max="0" />
+      <Items xsi:type="CLUSTER" archetype_id="openEHR-EHR-CLUSTER.stomatologist_treatment.v1" concept_name="Заключение стоматолога" max="1" path="/data[at0001]/items[at0025]">
+        <Rule path="/items[at0061]" max="8" name="Заключение стоматолога" annotation="showCaption(&quot;false&quot;);"/>
+        <Rule path="/items[at0061]/items[at0001]" min="1" annotation="width(&quot;1&quot;);dropdown(&quot;true&quot;);" >
+		        <constraint xsi:type="textConstraint">
+            <termQueryId terminologyID="ToothNumber" terminologyLang="en-GB" queryName="ToothNumber" />
+          </constraint>
+        </Rule>
+        <Rule path="/items[at0061]/items[at0062]" min="1" annotation="width(&quot;1&quot;);dropdown(&quot;true&quot;);">
+          <constraint xsi:type="textConstraint">
+            <termQueryId terminologyID="NsiToothSurface" terminologyLang="en-GB" queryName="NsiToothSurface" />
+          </constraint>
+        </Rule>
+        <Rule path="/items[at0061]/items[at0059]" max="0" />
+        <Rule path="/items[at0061]/items[at0060]" max="0" />
+        <Rule path="/items[at0061]/items[at0002]" hide_on_form="true" annotation="hidden(&quot;true&quot;);" />
+        <Rule path="/items[at0061]/items[at0003]" max="0" />
+        <Rule path="/items[at0061]/items[at0004]" max="0" />
+        <Rule path="/items[at0061]/items[at0005]" max="0" />
+        <Rule path="/items[at0061]/items[at0006]" max="0" />
+      </Items>
+      <Items xsi:type="CLUSTER" archetype_id="openEHR-EHR-CLUSTER.app_diagnosed_disease.v1" concept_name="Основной диагноз" max="1" path="/data[at0001]/items[at0024]" name="Предварительный диагноз">
+        <Rule path="/items[at0002]" hide_on_form="true" annotation="hidden(&quot;true&quot;);" />
+        <Rule path="/items[at0001]" annotation="width(&quot;3&quot;);br(&quot;true&quot;);hightlight(&quot;true&quot;);bigCaption(&quot;true&quot;);printBr(&quot;true&quot;);">
+          <constraint xsi:type="textConstraint">
+            <termQueryId terminologyID="Disease" terminologyLang="en-GB" queryName="Disease" />
+          </constraint>
+        </Rule>
+        <Rule path="/items[at0003]" annotation="dropdown(&quot;true&quot;);print(&quot;false&quot;);">
+          <constraint xsi:type="textConstraint">
+            <termQueryId terminologyID="DiseaseCharacter" terminologyLang="en-GB" queryName="DiseaseCharacter" />
+          </constraint>
+        </Rule>
+        <Rule path="/items[at0029]" annotation="dropdown(&quot;true&quot;);print(&quot;false&quot;);br(&quot;true&quot;);">
+          <constraint xsi:type="textConstraint">
+            <termQueryId terminologyID="NsiDiseaseStage" terminologyLang="en-GB" queryName="NsiDiseaseStage" />
+          </constraint>
+        </Rule>
+        <Rule path="/items[at0021]" max="0" />
+        <Rule path="/items[at0007]" annotation="dropdown(&quot;true&quot;);print(&quot;false&quot;);">
+          <constraint xsi:type="textConstraint">
+            <termQueryId terminologyID="Trauma" terminologyLang="en-GB" queryName="Trauma" />
+          </constraint>
+        </Rule>
+        <Rule path="/items[at0020]" max="0" />
+        <Rule path="/items[at0028]" hide_on_form="true" annotation="hidden(&quot;true&quot;);" />
+        <Rule path="/items[at0046]" annotation="dropdown(&quot;true&quot;);print(&quot;false&quot;);">
+          <constraint xsi:type="textConstraint">
+            <termQueryId terminologyID="NsiDispensarySign" terminologyLang="en-GB" queryName="NsiDispensarySign" />
+          </constraint>
+        </Rule>
+      </Items>
+      <Items xsi:type="CLUSTER" archetype_id="openEHR-EHR-CLUSTER.app_diagnosed_disease.v1" concept_name="Основной диагноз" max="1" path="/data[at0001]/items[at0002]">
+        <Rule path="/items[at0002]" hide_on_form="true" annotation="hidden(&quot;true&quot;);" />
+        <Rule path="/items[at0001]" min="1" annotation="width(&quot;3&quot;);br(&quot;true&quot;);hightlight(&quot;true&quot;);bigCaption(&quot;true&quot;);printBr(&quot;true&quot;);">
+          <constraint xsi:type="textConstraint">
+            <termQueryId terminologyID="Disease" terminologyLang="en-GB" queryName="Disease" />
+          </constraint>
+        </Rule>
+        <Rule path="/items[at0003]" min="1" annotation="dropdown(&quot;true&quot;);print(&quot;false&quot;);">
+          <constraint xsi:type="textConstraint">
+            <termQueryId terminologyID="DiseaseCharacter" terminologyLang="en-GB" queryName="DiseaseCharacter" />
+          </constraint>
+        </Rule>
+        <Rule path="/items[at0029]" annotation="dropdown(&quot;true&quot;);print(&quot;false&quot;);br(&quot;true&quot;);">
+          <constraint xsi:type="textConstraint">
+            <termQueryId terminologyID="NsiDiseaseStage" terminologyLang="en-GB" queryName="NsiDiseaseStage" />
+          </constraint>
+        </Rule>
+        <Rule path="/items[at0021]" annotation="hidden(&quot;true&quot;);" />
+        <Rule path="/items[at0007]" annotation="dropdown(&quot;true&quot;);print(&quot;false&quot;);">
+          <constraint xsi:type="textConstraint">
+            <termQueryId terminologyID="Trauma" terminologyLang="en-GB" queryName="Trauma" />
+          </constraint>
+        </Rule>
+        <Rule path="/items[at0020]" annotation="hidden(&quot;true&quot;);" />
+        <Rule path="/items[at0028]" annotation="hidden(&quot;true&quot;);" />
+        <Rule path="/items[at0046]" annotation="dropdown(&quot;true&quot;);print(&quot;false&quot;);">
+          <constraint xsi:type="textConstraint">
+            <termQueryId terminologyID="NsiDispensarySign" terminologyLang="en-GB" queryName="NsiDispensarySign" />
+          </constraint>
+        </Rule>
+      </Items>
+      <Items xsi:type="CLUSTER" archetype_id="openEHR-EHR-CLUSTER.app_diagnosed_disease.v1" concept_name="Основной диагноз" path="/data[at0001]/items[at0003]" name="Сопутствующий диагноз">
+        <Rule path="/items[at0002]" hide_on_form="true" annotation="hidden(&quot;true&quot;);" />
+        <Rule path="/items[at0001]" min="1" annotation="width(&quot;3&quot;);br(&quot;true&quot;);hightlight(&quot;true&quot;);bigCaption(&quot;true&quot;);printBr(&quot;true&quot;);">
+          <constraint xsi:type="textConstraint">
+            <termQueryId terminologyID="Disease" terminologyLang="en-GB" queryName="Disease" />
+          </constraint>
+        </Rule>
+        <Rule path="/items[at0003]" min="1" annotation="dropdown(&quot;true&quot;);print(&quot;false&quot;);">
+          <constraint xsi:type="textConstraint">
+            <termQueryId terminologyID="DiseaseCharacter" terminologyLang="en-GB" queryName="DiseaseCharacter" />
+          </constraint>
+        </Rule>
+        <Rule path="/items[at0029]" annotation="dropdown(&quot;true&quot;);print(&quot;false&quot;);br(&quot;true&quot;);">
+          <constraint xsi:type="textConstraint">
+            <termQueryId terminologyID="NsiDiseaseStage" terminologyLang="en-GB" queryName="NsiDiseaseStage" />
+          </constraint>
+        </Rule>
+        <Rule path="/items[at0021]" hide_on_form="true" annotation="hidden(&quot;true&quot;);"/>
+        <Rule path="/items[at0007]" annotation="dropdown(&quot;true&quot;);print(&quot;false&quot;);">
+          <constraint xsi:type="textConstraint">
+            <termQueryId terminologyID="Trauma" terminologyLang="en-GB" queryName="Trauma" />
+          </constraint>
+        </Rule>
+        <Rule path="/items[at0020]" max="0" />
+        <Rule path="/items[at0028]" hide_on_form="true" annotation="hidden(&quot;true&quot;);" />
+        <Rule path="/items[at0046]" annotation="dropdown(&quot;true&quot;);print(&quot;false&quot;);">
+          <constraint xsi:type="textConstraint">
+            <termQueryId terminologyID="NsiDispensarySign" terminologyLang="en-GB" queryName="NsiDispensarySign" />
+          </constraint>
+        </Rule>
+      </Items>
+      <Items xsi:type="CLUSTER" archetype_id="openEHR-EHR-CLUSTER.app_treatment_result.v1" concept_name="Результат обращения" max="1" min="1" path="/data[at0001]/items[at0004]">
+        <Rule path="/items[at0001]" annotation="dropdown(&quot;true&quot;);customfilter(&quot;Type=2&quot;);">
+          <constraint xsi:type="textConstraint">
+            <termQueryId terminologyID="GeneralResult" terminologyLang="en-GB" queryName="GeneralResult" />
+          </constraint>
+        </Rule>
+        <Rule path="/items[at0016]" min="1" annotation="dropdown(&quot;true&quot;);customfilter(&quot;Type=2&quot;);">
+          <constraint xsi:type="textConstraint">
+            <termQueryId terminologyID="GeneralOutcome" terminologyLang="en-GB" queryName="GeneralOutcome" />
+          </constraint>
+        </Rule>
+        <Rule path="/items[at0009]" max="0" />
+        <Rule path="/items[at0010]" max="0" />
+        <Rule path="/items[at0008]" max="0" />
+      </Items>
+      <Items xsi:type="CLUSTER" archetype_id="openEHR-EHR-CLUSTER.health_group.v1" concept_name="Группа здоровья" max="1" path="/data[at0001]/items[at0005]" name="Диспансеризация">
+        <Rule path="/items[at0001]" name="Группа состояния здоровья" annotation="dropdown(&quot;true&quot;);">
+          <constraint xsi:type="textConstraint">
+            <termQueryId terminologyID="NsiHealthStateGroup" terminologyLang="en-GB" queryName="NsiHealthStateGroup" />
+         </constraint>
+        </Rule>
+        <Rule path="/items[at0022]" name="Этап диспансеризации" annotation="dropdown(&quot;true&quot;);">
+          <constraint xsi:type="textConstraint">
+            <excludedValues>local::at0025</excludedValues>
+            <excludedValues>local::at0026</excludedValues>
+          </constraint>
+        </Rule>
+        <Rule path="/items[at0002]" hide_on_form="true" annotation="hidden(&quot;true&quot;);" />
+        <Rule path="/items[at0014]" max="0" />
+        <Rule path="/items[at0015]" max="0" />
+        <Rule path="/items[at0021]" max="0" />
+        <Rule path="/items[at0016]" max="0" />
+        <Rule path="/items[at0017]" max="0" />
+        <Rule path="/items[at0018]" max="0" />
+      </Items>
+      <Items xsi:type="CLUSTER" archetype_id="openEHR-EHR-CLUSTER.app_temporary_disability_025_hmao.v1" concept_name="Листок нетрудоспособности" max="1" path="/data[at0001]/items[at0013]">
+        <Rule path="/items[at0010]" annotation="width(&quot;1&quot;);hidden(&quot;true&quot;);" />
+        <Rule path="/items[at0002]" annotation="width(&quot;1&quot;);br(&quot;true&quot;);dropdown(&quot;true&quot;);">
+          <constraint xsi:type="textConstraint">
+            <termQueryId terminologyID="CertificateIncapacityStatus" terminologyLang="en-GB" queryName="CertificateIncapacityStatus" />
+          </constraint>
+        </Rule>
+        <Rule path="/items[at0007]" annotation="width(&quot;1&quot;);br(&quot;true&quot;);hidden(&quot;true&quot;);" />
+        <Rule path="/items[at0008]" annotation="width(&quot;1&quot;);br(&quot;true&quot;);hidden(&quot;true&quot;);" />
+        <Rule path="/items[at0011]" annotation="hidden(&quot;true&quot;);" />
+        <Rule path="/items[at0012]" annotation="width(&quot;1&quot;);br(&quot;true&quot;);dropdown(&quot;true&quot;);">
+          <constraint xsi:type="textConstraint">
+            <termQueryId terminologyID="DisabilityReason" terminologyLang="en-GB" queryName="DisabilityReason" />
+          </constraint>
+        </Rule>
+        <Rule path="/items[at0020]" annotation="row(&quot;true&quot;);" />
+		<Rule path="/items[at0020]/items[at0021]" annotation="width(&quot;1&quot;);dropdown(&quot;true&quot;);">
+          <constraint xsi:type="textConstraint">
+            <termQueryId terminologyID="SexType" terminologyLang="en-GB" queryName="SexType" />
+          </constraint>
+        </Rule>
+      </Items>
+      <Items xsi:type="CLUSTER" archetype_id="openEHR-EHR-CLUSTER.rendered_service_hmao.v1" concept_name="Оказанные услуги" path="/data[at0001]/items[at0020]">
+        <Rule path="/items[at0001]" min="1" annotation="dropdown(&quot;true&quot;);">
+          <constraint xsi:type="textConstraint">
+            <termQueryId terminologyID="NsiServiceType" terminologyLang="en-GB" queryName="NsiServiceType" />
+          </constraint>
+        </Rule>
+		<Rule path="/items[at0005]" annotation="hidden(&quot;true&quot;);"/>
+        <Rule path="/items[at0002]" min="1" annotation="dropdown(&quot;true&quot;);">
+          <constraint xsi:type="textConstraint">
+            <termQueryId terminologyID="NsiAccountingUnitOfCare" terminologyLang="en-GB" queryName="NsiAccountingUnitOfCare" />
+          </constraint>
+        </Rule>
+        <Rule path="/items[at0003]" min="1" annotation="width(&quot;1&quot;);" />
+        <Rule path="/items[at0004]" annotation="width(&quot;1&quot;);" />
+      </Items>
+    </Content>
+    <Context />
+  </definition>
+</template>

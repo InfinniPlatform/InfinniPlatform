@@ -1,0 +1,19 @@
+{
+  "Id": "c8cff7f5-9047-40c6-8db6-8e211117cae7",
+  "__DocumentId": "processmetadata",
+  "__ConfigId": "systemconfig",
+  "Version": "version_systemconfig",
+  "ParentId": "6d20dd54-4cdd-4245-be18-86e06bc9f7c7",
+  "Name": "Default",
+  "Caption": "Default business process",
+  "Type": 2,
+  "Transitions": [
+    {
+      "Id": "bf7654fa-4c27-4a7e-93d2-c6e635d15470",
+      "Name": "DefaultTransition",
+      "SchemaPrefill": "{\r\n  \"Type\": \"Object\",\r\n  \"Caption\": \"Schema\",\r\n  \"Properties\": {\r\n    \"Id\": {\r\n      \"Caption\": \"Идентификатор события\",\r\n      \"Type\": \"Uuid\"\r\n    },\r\n    \"Date\": {\r\n      \"Caption\": \"Дата события\",\r\n      \"Type\": \"DateTime\"\r\n    },\r\n    \"Level\": {\r\n      \"Caption\": \"Уровень события\",\r\n      \"Type\": \"String\"\r\n    },\r\n    \"User\": {\r\n      \"Caption\": \"Имя пользователя\",\r\n      \"Type\": \"String\"\r\n    },\r\n    \"Source\": {\r\n      \"Caption\": \"Источник события\",\r\n      \"Type\": \"String\"\r\n    },\r\n    \"Message\": {\r\n      \"Caption\": \"Сообщение события\",\r\n      \"Type\": \"String\"\r\n    }\r\n  }\r\n}",
+      "CredentialsType": "CurrentUserCredentials"
+    }
+  ],
+  "SettingsType": "Default"
+}

@@ -1,0 +1,40 @@
+﻿{
+  "id": "Panel",
+  "description": "Контейнер элементов представления в виде сворачиваемой прямоугольной области",
+  "type": "object",
+  "extends": {
+    "$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
+  },
+  "properties": {
+    "Image": {
+      "description": "Изображение заголовка панели",
+      "type": "string"
+    },
+    "Collapsible": {
+      "description": "Разрешено ли сворачивание панели",
+      "type": "boolean",
+      "default": false
+    },
+    "Collapsed": {
+      "description": "Свернута ли панель",
+      "type": "boolean",
+      "default": false
+    },
+    "Items": {
+      "description": "Список дочерних элементов",
+      "type": "array",
+      "items": {
+        "$ref": "http://demo.infinnity.ru:8081/display/MC/VisualElement"
+      }
+    },
+    "OnExpanded": {
+      "description": "Обработчик события разворачивания панели",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+    },
+    "OnCollapsed": {
+      "description": "Обработчик события сворачивания панели",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,15 @@
+﻿{
+  "id": "GridPanelRow",
+  "description": "Описание строки сетки",
+  "type": "object",
+  "properties": {
+    "Cells": {
+      "description": "Список ячеек",
+      "type": "array",
+      "items": {
+        "$ref": "http://demo.infinnity.ru:8081/display/MC/GridPanelCell"
+      }
+    }
+  },
+  "additionalProperties": false
+}

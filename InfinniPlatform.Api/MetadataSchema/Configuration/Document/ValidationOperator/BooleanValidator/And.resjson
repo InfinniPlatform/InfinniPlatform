@@ -1,0 +1,33 @@
+﻿{
+  "id": "And",
+  "description": "Объект должен удовлетворять всем заданным условиям",
+  "type": "object",
+  "extends": {
+    "$ref": "http://wiki.infinnity.lan:8081/display/MC/BaseValidationOperator"
+  },
+  "properties": {
+    "Property": {
+      "description": "Наименование свойства",
+      "type": "string"
+    },
+    "Operators": {
+      "description": "Список операторов",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "extends": [
+          {
+            "$ref": "http://wiki.infinnity.lan:8081/display/MC/BooleanValidator"
+          },
+          {
+            "$ref": "http://wiki.infinnity.lan:8081/display/MC/CollectionValidator"
+          },
+          {
+            "$ref": "http://wiki.infinnity.lan:8081/display/MC/ObjectValidator"
+          }
+        ]
+      }
+    }
+  },
+  "additionalProperties": false
+}

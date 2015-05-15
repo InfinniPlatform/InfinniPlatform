@@ -1,0 +1,26 @@
+﻿{
+  "id": "DatePicker",
+  "description": "Элемент представления для отображения и редактирования даты",
+  "type": "object",
+  "extends": {
+    "$ref": "http://demo.infinnity.ru:8081/display/MC/BaseTextElement"
+  },
+  "properties": {
+    "Mode": {
+      "description": "Режим работы элемента",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/DatePickerMode",
+      "default": "Date"
+    },
+    "MinDate": {
+      "description": "Минимально возможная дата для выбора",
+      "type": "string",
+      "format": "date-time"
+    },
+    "MaxDate": {
+      "description": "Максимально возможная дата для выбора",
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
+}

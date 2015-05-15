@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D6FBC1D7-48E7-4819-8C8B-DD7FA398D2CC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>InfinniPlatform.Hosting</RootNamespace>
+    <AssemblyName>InfinniPlatform.Hosting</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="RazorEngine">
+      <HintPath>..\packages\RazorEngine.3.4.1\lib\net45\RazorEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.0.0\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Implementation\ExtensionPointHandling\ExtensionPointHandler.cs" />
+    <Compile Include="Implementation\ExtensionPointHandling\ExtensionPointHandlerInstance.cs" />
+    <Compile Include="Implementation\LoaderExtension.cs" />
+    <Compile Include="Implementation\Modules\JsonConfigurationInstaller.cs" />
+    <Compile Include="Implementation\Modules\MetadataConfigurationInstaller.cs" />
+    <Compile Include="Implementation\ServiceRegistration\ServiceRegistrationContainerFactory.cs" />
+    <Compile Include="OwinHostingServiceFactory.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AssemblyInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Implementation\ServiceRegistration\ServiceRegistration.cs" />
+    <Compile Include="Implementation\ServiceRegistration\ServiceRegistrationContainer.cs" />
+    <Compile Include="Implementation\ServiceTemplates\ServiceTemplate.cs" />
+    <Compile Include="Implementation\ServiceTemplates\ServiceTemplateConfiguration.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
+      <Project>{7ca0f96c-7ff4-44b2-9d44-851984df4532}</Project>
+      <Name>InfinniPlatform.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Authentication\InfinniPlatform.Authentication.csproj">
+      <Project>{9FEC0071-8A7C-44C1-91C7-9C1219601B34}</Project>
+      <Name>InfinniPlatform.Authentication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
+      <Project>{ebc684b7-b72a-475f-bbc1-b6293b607b9b}</Project>
+      <Name>InfinniPlatform.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Cors\InfinniPlatform.Cors.csproj">
+      <Project>{303087ba-00c2-452d-907c-54c94f42a588}</Project>
+      <Name>InfinniPlatform.Cors</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Index.ElasticSearch\InfinniPlatform.Index.ElasticSearch.csproj">
+      <Project>{2B2F3FA6-F434-4FCF-A4C7-323FFC602F0C}</Project>
+      <Name>InfinniPlatform.Index.ElasticSearch</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Owin\InfinniPlatform.Owin.csproj">
+      <Project>{deadc17e-4c51-48d7-9aea-f8dae3090c74}</Project>
+      <Name>InfinniPlatform.Owin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.SignalR\InfinniPlatform.SignalR.csproj">
+      <Project>{c78bfc13-e956-4229-a2ff-7d95ac9ca74f}</Project>
+      <Name>InfinniPlatform.SignalR</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.WebApi\InfinniPlatform.WebApi.csproj">
+      <Project>{86ab4502-9b73-43b5-8a20-f01aade0eda4}</Project>
+      <Name>InfinniPlatform.WebApi</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\Files\Build\TransformOnBuild.targets" />
+  <ItemGroup>
+    <None Include="Properties\AssemblyInfo.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AssemblyInfo.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,21 @@
+{
+  "Id": "2ae94a95-e886-45cb-8361-0a294ef3c94b",
+  "SettingsType": "Custom",
+  "Transitions": [
+    {
+      "Id": "e94dfcd7-a897-453a-a7f8-494342c8b2d9",
+      "Name": "DeleteMenu",
+      "ActionPoint": {
+        "TypeName": "Action",
+        "ScenarioId": "e90a02e0-a8c0-45c8-b31d-ff961cab33a8"
+      }
+    }
+  ],
+  "Type": 2,
+  "Caption": "DeleteMenu",
+  "Name": "DeleteMenu",
+  "ParentId": "d2da06bc-80c7-40a9-b882-6276210eb229",
+  "Version": "version_systemconfig",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "processmetadata"
+}

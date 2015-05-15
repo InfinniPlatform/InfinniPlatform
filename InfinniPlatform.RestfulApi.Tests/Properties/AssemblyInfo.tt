@@ -1,0 +1,2 @@
+﻿<#@ include file="..\..\Files\Build\AssemblyInfo.tt" #>
+[assembly: AssemblyDescription("<#= projectName #>")]

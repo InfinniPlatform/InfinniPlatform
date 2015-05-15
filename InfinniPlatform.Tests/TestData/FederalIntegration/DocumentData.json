@@ -1,0 +1,515 @@
+{
+  "DocumentId": "123",
+  "PatientId": "48905059995",
+  "MedicalWorkerId": "2341",
+  "Date": "2013-06-17T13:47:23+06:00",
+  "Confidentiality": {
+    "Code": "V",
+    "CodeSystem": "2.16.840.1.113883.5.25",
+    "CodeSystemName": "Уровень конфиденциальности документа",
+    "DisplayName": "Закрыто"
+  },
+  "GuardianConfidentialityCode": [
+    {
+      "Code": "R",
+      "CodeSystem": "1.2.643.5.1.13.2.7.1.9",
+      "CodeSystemName": "Уровень конфиденциальности опекуна",
+      "DisplayName": "Ограниченно"
+    }
+  ],
+  "PatientConfidentialityCode": [
+    {
+      "Code": "N",
+      "CodeSystem": "1.2.643.5.1.13.2.7.1.10",
+      "CodeSystemName": "Уровень конфиденциальности врача",
+      "DisplayName": "Открыто"
+    }
+  ],
+  "CaseNumber": "2013/321",
+  "NoneXmlBody": "Находился на стационарном лечении в кардиологическом отделении Института кардиохирургии им. В. И. Бураковского.Дата начала оказания услуги: 04 ноября 2013 г. 08:00. Дата окончания оказания услуги: 04 ноября 2013 г. 11:01. Анализы на ВИЧ, HBS Ag, HCV Ab, RW отрицательные. Основной диагноз: I50 –Хроническая сердечная недостаточность. Жалобы при поступлении: Боль в области сердца. Анамнез: Считает себя заболевшим с ноября 2012 года, когда после физической нагрузки почувствовал боль в области сердца. Состояние при поступлении: удовлетворительное. Проведено лечение в соответствии с стандартом специализированной медицинской помощи при заболеваниях сердечно-сосудистой системы. Общее состояние при выписке: - улучшение. Трудоспособность: утрачена временно. Рекомендации: Режим: Общий Диета: Стол №0 Общие рекомендации:Динамическое наблюдение лечащего врача",
+  "DocumentVersionNumber": "2",
+  "DocumentOwner": "1.2.643.5.1.13.3.25.64.109",
+  "DocumentOwnerName": [
+    "Волгоградская областная больница"
+  ],
+  "StatementTime": "2013-07-22T00:00:00",
+  "AuthenticatorId": "1.2.643.5.1.13.3.25.64.109",
+  "AuthenticatorPersonId": "05908055572",
+  "AuthenticatorCode": {
+    "Code": "90",
+    "CodeSystem": "1.2.643.5.1.13.2.1.1.607",
+    "CodeSystemName": "Номенклатура должностей медицинских работников и фармацевтических работников",
+    "DisplayName": "Врач-хирург"
+  },
+  "AuthenticatorParticipant": [
+    {
+      "Code": "DOCOBS",
+      "CodeSystem": "1.2.643.5.1.13.2.7.1.30",
+      "CodeSystemName": "Роль в оказании медицинской помощи",
+      "DisplayName": "Лечащий врач"
+    }
+  ],
+  "AuthenticatorLastName": "Привалов",
+  "AuthenticatorFirstName": "Александр",
+  "AuthenticatorMiddleName": "Иванович",
+  "CaseHistoryNumber": "2013/531",
+  "CaseType": {
+    "Code": "STAT",
+    "CodeSystem": "1.2.643.5.1.13.2.7.1.1",
+    "CodeSystemName": "Вид случая заболевания",
+    "DisplayName": "Госпитализация"
+  },
+  "HospitalizationIssueDate": "2013-05-31T00:00:00",
+  "HospitalizationExpiryDate": "2013-05-31T00:00:00",
+  "HospitalizationDispositionCode": {
+    "Code": "1",
+    "CodeSystem": "1.2.643.5.1.13.2.1.1.542",
+    "CodeSystemName": "Классификатор исходов госпитализации",
+    "DisplayName": "Выписан"
+  },
+  "Hospitalization": [
+    {
+      "WhoDelivered": {
+        "Code": "2",
+        "CodeSystem": "1.2.643.5.1.13.2.1.1.281",
+        "CodeSystemName": "Классификатор каналов госпитализации в лечебно-профилактическую организацию",
+        "DisplayName": "Самотек"
+      },
+      "NumberOfDays": "16",
+      "HospitalizationInThisYear": {
+        "Code": "1",
+        "CodeSystem": "1.2.643.5.1.13.2.1.1.109",
+        "CodeSystemName": "Классификатор количества госпитализаций",
+        "DisplayName": "Госпитализирован впервые в данном году по диагнозу"
+      },
+      "TimeAfterBegining": {
+        "Code": "3",
+        "CodeSystem": "1.2.643.5.1.13.2.1.1.537",
+        "CodeSystemName": "Справочник времени доставки больного в стационар от начала заболевания (получения травмы)",
+        "DisplayName": "позднее 24-х часов"
+      }
+    }
+  ],
+  "HospitalStay": [
+    {
+      "BranchStay": [
+        {
+          "StartTime": "2013-05-31T08:13:00",
+          "StopTime": "2013-05-31T08:13:00",
+          "Department": [
+            {
+              "TermsOfCare": {
+                "Code": "1",
+                "CodeSystem": "1.2.643.5.1.13.2.1.1.103",
+                "CodeSystemName": "Классификатор условий оказания медицинской помощи",
+                "DisplayName": "Стационарная помощь"
+              },
+              "LengthOfStay": "11"
+            }
+          ],
+          "Performer": {
+            "PerformerType": {
+              "Code": "DEP",
+              "CodeSystem": "1.2.643.5.1.13.2.7.1.30",
+              "CodeSystemName": "Роль в оказании медицинской помощи",
+              "DisplayName": "Отделение"
+            },
+            "AssignedPerformer": {
+              "OrganizationRegisterId": "14",
+              "LastName": "Привалов",
+              "FirstName": "Александр",
+              "MiddleName": "Иванович",
+              "BedProfile": [
+                {
+                  "ProfileCode": {
+                    "Code": "29",
+                    "CodeSystem": "1.2.643.5.1.13.2.1.1.221",
+                    "CodeSystemName": "Номенклатура коечного фонда медицинской организации",
+                    "DisplayName": "Ортопедические для взрослых"
+                  }
+                }
+              ],
+              "RepresentedOrganization": {
+                "OrganizationName": [
+                  "Отделение ортопедической хирургии №1"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "StartTime": "2013-06-10T10:00:00",
+          "StopTime": "2013-06-10T10:00:00",
+          "Department": [
+            {
+              "TermsOfCare": {
+                "Code": "3",
+                "CodeSystem": "1.2.643.5.1.13.2.1.1.103",
+                "CodeSystemName": "Классификатор условий оказания медицинской помощи",
+                "DisplayName": "Стационарозамещающая помощь"
+              },
+              "LengthOfStay": "5"
+            }
+          ],
+          "Performer": {
+            "PerformerType": {
+              "Code": "DEP",
+              "CodeSystem": "1.2.643.5.1.13.2.7.1.30",
+              "CodeSystemName": "Роль в оказании медицинской помощи",
+              "DisplayName": "Отделение"
+            },
+            "AssignedPerformer": {
+              "OrganizationRegisterId": "7",
+              "LastName": "Исаев",
+              "FirstName": "Тимур",
+              "MiddleName": "Арманович",
+              "BedProfile": [
+                {
+                  "ProfileCode": {
+                    "Code": "1",
+                    "CodeSystem": "1.2.643.5.1.13.2.1.1.221",
+                    "CodeSystemName": "Номенклатура коечного фонда медицинской организации",
+                    "DisplayName": "Терапевтические"
+                  }
+                }
+              ],
+              "RepresentedOrganization": {
+                "OrganizationName": [
+                  "Терапевтическое отделение №1"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "StartTime": "2013-06-15T00:00:00",
+          "Performer": {
+            "PerformerType": {
+              "Code": "REF",
+              "CodeSystem": "1.2.643.5.1.13.2.7.1.30",
+              "CodeSystemName": "Роль в оказании медицинской помощи",
+              "DisplayName": "Учреждение"
+            },
+            "AssignedPerformer": {
+              "RepresentedOrganization": {
+                "OrganizationName": [
+                  "ГБУЗ \"ВОКБ № 1\""
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "DiagnosisGroup": [
+    {
+      "Diagnosis": [
+        {
+          "Observation": {
+            "EventType": {
+              "Code": "DGN",
+              "CodeSystem": "1.2.643.5.1.13.2.7.1.12",
+              "CodeSystemName": "Система кодирования событий",
+              "DisplayName": "Диагноз"
+            },
+            "Mkb10Diagnosis": [
+              {
+                "Code": "M17.1",
+                "CodeSystem": "1.2.643.5.1.13.2.1.1.641",
+                "CodeSystemName": "Международная классификация болезней и состояний, связанных со здоровьем, Десятого пересмотра. Версия 2",
+                "DisplayName": "Другой первичный гонартроз"
+              }
+            ],
+            "DiagnosisType": [
+              {
+                "Code": "MAIN",
+                "CodeSystem": "1.2.643.5.1.13.2.7.1.13",
+                "CodeSystemName": "Тип диагноза",
+                "DisplayName": "Основное заболевание"
+              }
+            ]
+          }
+        },
+        {
+          "Observation": {
+            "EventType": {
+              "Code": "DGN",
+              "CodeSystem": "1.2.643.5.1.13.2.7.1.12",
+              "CodeSystemName": "Система кодирования событий",
+              "DisplayName": "Диагноз"
+            },
+            "Mkb10Diagnosis": [
+              {
+                "Code": "M96.6",
+                "CodeSystem": "1.2.643.5.1.13.2.1.1.641",
+                "CodeSystemName": "Международная классификация болезней и состояний, связанных со здоровьем, Десятого пересмотра. Версия 2",
+                "DisplayName": "Перелом после установки ортопед.имплантата суставного протеза или кост.пластинки"
+              }
+            ],
+            "DiagnosisType": [
+              {
+                "Code": "MAIN_COMPL",
+                "CodeSystem": "1.2.643.5.1.13.2.7.1.13",
+                "CodeSystemName": "Тип диагноза",
+                "DisplayName": "Осложнение основного заболевания"
+              }
+            ]
+          }
+        },
+        {
+          "Observation": {
+            "EventType": {
+              "Code": "DGN",
+              "CodeSystem": "1.2.643.5.1.13.2.7.1.12",
+              "CodeSystemName": "Система кодирования событий",
+              "DisplayName": "Диагноз"
+            },
+            "Mkb10Diagnosis": [
+              {
+                "Code": "G35",
+                "CodeSystem": "1.2.643.5.1.13.2.1.1.641",
+                "CodeSystemName": "Международная классификация болезней и состояний, связанных со здоровьем, Десятого пересмотра. Версия 2",
+                "DisplayName": "Рассеянный склероз"
+              }
+            ],
+            "DiagnosisType": [
+              {
+                "Code": "BY_ILLNESS",
+                "CodeSystem": "1.2.643.5.1.13.2.7.1.13",
+                "CodeSystemName": "Тип диагноза",
+                "DisplayName": "Сопутствующее заболевание"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "InitialInspection": [
+    {
+      "LifeAnamnesis": [
+        {
+          "BiographicalInformation": [],
+          "SolialStatus": [],
+          "FamilyAnamnesis": [
+            {
+              "RiskFactorGroup": [
+                {
+                  "RiskFactor": {
+                    "Disease": [
+                      {
+                        "Code": "I12",
+                        "CodeSystem": "1.2.643.5.1.13.2.1.1.641",
+                        "CodeSystemName": "Международная классификация болезней и состояний, связанных со здоровьем, Десятого пересмотра. Версия 2",
+                        "DisplayName": "Гипертензивная [гипертоническая] болезнь с преимущ. поражением почек"
+                      }
+                    ],
+                    "PatientRelationship": {
+                      "Code": "1",
+                      "CodeSystem": "1.2.643.5.1.13.2.7.1.15",
+                      "CodeSystemName": "Отношение к пациенту",
+                      "DisplayName": "Родитель"
+                    },
+                    "PatientRelationshipDescription": [
+                      "Отец"
+                    ]
+                  }
+                },
+                {
+                  "RiskFactor": {
+                    "Disease": [
+                      {
+                        "Code": "E10",
+                        "CodeSystem": "1.2.643.5.1.13.2.1.1.641",
+                        "CodeSystemName": "Международная классификация болезней и состояний, связанных со здоровьем, Десятого пересмотра. Версия 2",
+                        "DisplayName": "Инсулинзависимый сахарный диабет"
+                      }
+                    ],
+                    "PatientRelationship": {
+                      "Code": "2",
+                      "CodeSystem": "1.2.643.5.1.13.2.7.1.15",
+                      "CodeSystemName": "Отношение к пациенту",
+                      "DisplayName": "Близкий родственник"
+                    },
+                    "PatientRelationshipDescription": [
+                      "Брат"
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          "RiskFactors": [
+            {
+              "RiskFactors": [
+                {
+                  "RiskFactorsCode": {
+                    "Code": "3",
+                    "CodeSystem": "1.2.643.5.1.13.2.1.1.325",
+                    "CodeSystemName": "Классификатор факторов риска и медицинского анамнеза больного с острым нарушением мозгового кровообращения",
+                    "DisplayName": "Курение"
+                  },
+                  "EffectiveTime": "1987-01-01T00:00:00"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "HistoryOfDisease": [
+        {
+          "HistoryOfCurrentDisease": [],
+          "LifeAnamnesis": [],
+          "PreviousHospitalization": [
+            {
+              "Hospitalization": [
+                {
+                  "StartTime": "2012-12-12T00:00:00",
+                  "StopTime": "2012-12-12T00:00:00",
+                  "OrganizationId": "1.2.643.5.1.13.3.25.34.98",
+                  "RepresentedOrganization": {
+                    "OrganizationName": [
+                      "ГКБ №10"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "ObjectiveData": [
+        {
+          "FunctionalInspection": [],
+          "MentalStatus": [],
+          "NeurologicalStatus": [],
+          "PhysicalExamination": []
+        }
+      ],
+      "PreliminaryDiagnosis": [],
+      "InspectionPlan": [],
+      "TreatmentPlanning": []
+    }
+  ],
+  "InformationOnTreatment": [],
+  "PatientCondition": [
+    {
+      "Text": [
+        "Улучшение"
+      ]
+    }
+  ],
+  "ServicesData": [
+    {
+      "ServiceDescription": [
+        {
+          "Service": {
+            "Code": "B01.050.003",
+            "CodeSystem": "1.2.643.5.1.13.2.1.1.473",
+            "CodeSystemName": "Номенклатура медицинских услуг",
+            "DisplayName": "Ежедневный осмотр врачом - травматологом-ортопедом с наблюдением и уходом среднего и младшего медицинского персонала в отделении стационара"
+          },
+          "AccountingUnitCare": [
+            {
+              "Code": "5",
+              "CodeSystem": "1.2.643.5.1.13.2.1.1.80",
+              "CodeSystemName": "Классификатор единиц учета медицинской помощи",
+              "DisplayName": "Койко-день в круглосуточном стационаре"
+            }
+          ],
+          "ServiceQuantity": "11",
+          "StayDepartmentData": {
+            "DepartmentStay": {
+              "Code": "STAT",
+              "CodeSystem": "1.2.643.5.1.13.2.7.1.12",
+              "CodeSystemName": "Система кодирования событий",
+              "DisplayName": "Отделение пребывания"
+            },
+            "StartTime": "2013-05-31T08:13:00",
+            "StopTime": "2013-05-31T08:13:00",
+            "Performer": {
+              "PerformerType": {
+                "Code": "DEP",
+                "CodeSystem": "1.2.643.5.1.13.2.7.1.30",
+                "CodeSystemName": "Роль в оказании медицинской помощи",
+                "DisplayName": "Отделение"
+              },
+              "AssignedPerformer": {
+                "RegisterId": "1.2.643.5.1.13.3.25.64.109",
+                "BedProfile": [
+                  {
+                    "code": {
+                      "Code": "29",
+                      "CodeSystem": "1.2.643.5.1.13.2.1.1.221",
+                      "CodeSystemName": "Номенклатура коечного фонда медицинской организации",
+                      "DisplayName": "Ортопедические для взрослых"
+                    }
+                  }
+                ],
+                "RepresentedOrganization": {
+                  "OrganizationName": [
+                    "Отделение ортопедической хирургии №1"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "Service": {
+            "Code": "B01.047.009",
+            "CodeSystem": "1.2.643.5.1.13.2.1.1.473",
+            "CodeSystemName": "Номенклатура медицинских услуг",
+            "DisplayName": "Ежедневный осмотр врачом-терапевтом с наблюдением и уходом среднего и младшего медицинского персонала в отделении стационара"
+          },
+          "AccountingUnitCare": [
+            {
+              "Code": "5",
+              "CodeSystem": "1.2.643.5.1.13.2.1.1.80",
+              "CodeSystemName": "Классификатор единиц учета медицинской помощи",
+              "DisplayName": "Койко-день в круглосуточном стационаре"
+            }
+          ],
+          "ServiceQuantity": "5",
+          "StayDepartmentData": {
+            "DepartmentStay": {
+              "Code": "STAT",
+              "CodeSystem": "1.2.643.5.1.13.2.7.1.12",
+              "CodeSystemName": "Система кодирования событий",
+              "DisplayName": "Отделение пребывания"
+            },
+            "StartTime": "2013-06-10T10:00:00",
+            "StopTime": "2013-06-10T10:00:00",
+            "Performer": {
+              "PerformerType": {
+                "Code": "DEP",
+                "CodeSystem": "1.2.643.5.1.13.2.7.1.30",
+                "CodeSystemName": "Роль в оказании медицинской помощи",
+                "DisplayName": "Отделение"
+              },
+              "AssignedPerformer": {
+                "RegisterId": "1.2.643.5.1.13.3.25.64.109",
+                "BedProfile": [
+                  {
+                    "code": {
+                      "Code": "1",
+                      "CodeSystem": "1.2.643.5.1.13.2.1.1.221",
+                      "CodeSystemName": "Номенклатура коечного фонда медицинской организации",
+                      "DisplayName": "Терапевтические"
+                    }
+                  }
+                ],
+                "RepresentedOrganization": {
+                  "OrganizationName": [
+                    "Терапевтическое отделение №2"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

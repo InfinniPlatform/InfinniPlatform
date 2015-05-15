@@ -1,0 +1,145 @@
+{
+  "Id": "010b7bdb-aaca-47e9-9a66-fc12e80bbdfd",
+  "Scripts": [
+    {
+      "Name": "SetUserRole",
+      "Body": "debugger;\r\nvar selectedItem = context.DataSources['MainDataSource'].getSelectedItem();\r\nvar editItem = {};\r\nif(selectedItem.Role != null) {\r\n  editItem.RoleName = selectedItem.Role.DisplayName;\r\n  editItem.UserName = selectedItem.UserName;\r\n  context.DataSources['AddUserRoleDataSource'].setSelectedItem(editItem);\r\n}"
+    }
+  ],
+  "__DocumentId": "viewmetadata",
+  "__ConfigId": "systemconfig",
+  "Version": "version_systemconfig",
+  "ParentId": "a06bb617-e77f-4168-8fb0-607db8853d23",
+  "Name": "EditViewUserRole",
+  "Caption": "Форма редактирования ролей пользователя",
+  "Description": "",
+  "MetadataType": "EditView",
+  "LayoutPanel": {
+    "StackPanel": {
+      "Items": [
+        {
+          "ScrollPanel": {
+            "LayoutPanel": {
+              "GridPanel": {
+                "Rows": [
+                  {
+                    "Cells": [
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "Label": {
+                              "Text": "Логин пользователя"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "TextBox": {
+                              "Value": {
+                                "PropertyBinding": {
+                                  "DataSource": "MainDataSource",
+                                  "Property": "UserName"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "Label": {
+                              "Text": "Роль"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "ComboBox": {
+                              "ValueProperty": "Id",
+                              "DisplayProperty": "Name",
+                              "Value": {
+                                "PropertyBinding": {
+                                  "DataSource": "MainDataSource",
+                                  "Property": "Role"
+                                }
+                              },
+                              "Items": {
+                                "PropertyBinding": {
+                                  "DataSource": "RoleDataSource"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ToolBar": {
+            "Items": [
+              {
+                "ToolBarButton": {
+                  "Text": "Сохранить",
+                  "OnClick": {
+                    "Name": "SetUserRole"
+                  },
+                  "Action": {
+                    "SaveAction": {
+                      "DataSource": "AddUserRoleDataSource"
+                    }
+                  }
+                }
+              },
+              {
+                "ToolBarButton": {
+                  "Text": "Отмена",
+                  "Action": {
+                    "CancelAction": {}
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "DataSources": [
+    {
+      "DocumentDataSource": {
+        "Name": "MainDataSource",
+        "ConfigId": "Authorization",
+        "DocumentId": "UserStore"
+      }
+    },
+    {
+      "DocumentDataSource": {
+        "Name": "RoleDataSource",
+        "ConfigId": "Authorization",
+        "DocumentId": "RoleStore"
+      }
+    },
+    {
+      "DocumentDataSource": {
+        "Name": "AddUserRoleDataSource",
+        "ConfigId": "RestfulApi",
+        "DocumentId": "Authorization",
+        "UpdateAction": "AddUserRole"
+      }
+    }
+  ]
+}

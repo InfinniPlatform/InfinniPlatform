@@ -1,0 +1,91 @@
+{
+  "Id": "fc46268e-4d97-4395-ba17-f3ae33899871",
+  "__DocumentId": "viewmetadata",
+  "__ConfigId": "systemconfig",
+  "Version": "version_systemconfig",
+  "ParentId": "8dd1f306-5379-49eb-90f4-7ca766d1a157",
+  "Name": "EditView",
+  "MetadataType": "EditView",
+  "Caption": "",
+  "Description": "",
+  "Text": "Организация",
+  "ChildViews": [],
+  "DataSources": [
+    {
+      "DocumentDataSource": {
+        "Name": "MainDataSource",
+        "ConfigId": "Administration",
+        "DocumentId": "Organization"
+      }
+    }
+  ],
+  "LayoutPanel": {
+    "StackPanel": {
+      "Items": [
+        {
+          "ScrollPanel": {
+            "LayoutPanel": {
+              "GridPanel": {
+                "Rows": [
+                  {
+                    "Cells": [
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "Label": {
+                              "Text": "Наименование"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "TextBox": {
+                              "Value": {
+                                "PropertyBinding": {
+                                  "DataSource": "MainDataSource",
+                                  "Property": "Name"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ToolBar": {
+            "Items": [
+              {
+                "ToolBarButton": {
+                  "Text": "Сохранить",
+                  "Action": {
+                    "SaveAction": {
+                      "DataSource": "MainDataSource"
+                    }
+                  }
+                }
+              },
+              {
+                "ToolBarButton": {
+                  "Text": "Отмена",
+                  "Action": {
+                    "CancelAction": {}
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

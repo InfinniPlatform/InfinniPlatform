@@ -1,0 +1,153 @@
+﻿{
+  "Name": "SchemaScalarEdit",
+  "Text": "Property",
+  "DataSources": [
+    {
+      "ObjectDataSource": {
+        "Name": "MainDataSource"
+      }
+    }
+  ],
+  "LayoutPanel": {
+    "StackPanel": {
+      "Name": "MainPanel",
+      "Items": [
+        {
+          "GridPanel": {
+            "Name": "GeneralDataPanel",
+            "Rows": [
+              {
+                "Cells": [
+                  {
+                    "ColumnSpan": 2,
+                    "Items": [
+                      {
+                        "Label": {
+                          "Name": "NameLabel",
+                          "Text": "Name:"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "ColumnSpan": 10,
+                    "Items": [
+                      {
+                        "TextBox": {
+                          "Name": "NameEditor",
+                          "Value": {
+                            "PropertyBinding": {
+                              "DataSource": "MainDataSource",
+                              "Property": "Name"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "Cells": [
+                  {
+                    "ColumnSpan": 2,
+                    "Items": [
+                      {
+                        "Label": {
+                          "Name": "CaptionLabel",
+                          "Text": "Caption:"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "ColumnSpan": 10,
+                    "Items": [
+                      {
+                        "TextBox": {
+                          "Name": "CaptionEditor",
+                          "Value": {
+                            "PropertyBinding": {
+                              "DataSource": "MainDataSource",
+                              "Property": "Caption"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "Cells": [
+                  {
+                    "ColumnSpan": 2,
+                    "Items": [
+                      {
+                        "Label": {
+                          "Name": "DescriptionLabel",
+                          "Text": "Description:"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "ColumnSpan": 10,
+                    "Items": [
+                      {
+                        "TextBox": {
+                          "Name": "DescriptionEditor",
+                          "Multiline": true,
+                          "VerticalTextAlignment": "Top",
+                          "LineCount": 4,
+                          "Value": {
+                            "PropertyBinding": {
+                              "DataSource": "MainDataSource",
+                              "Property": "Description"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "ToolBar": {
+            "Name": "MainToolBar",
+            "Items": [
+              {
+                "ToolBarButton": {
+                  "Name": "ApplyButton",
+                  "Text": "OK",
+                  "Hotkey": "Ctrl+S",
+                  "Image": "Actions/Apply_16x16",
+                  "Action": {
+                    "SaveItemAction": {
+                      "DataSource": "MainDataSource"
+                    }
+                  }
+                }
+              },
+              {
+                "ToolBarButton": {
+                  "Name": "CancelGeneralButton",
+                  "Text": "Cancel",
+                  "Image": "Actions/Cancel_16x16",
+                  "Action": {
+                    "CancelAction": {
+                      "DataSource": "MainDataSource"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

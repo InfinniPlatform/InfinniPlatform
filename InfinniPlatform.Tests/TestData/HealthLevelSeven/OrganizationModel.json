@@ -1,0 +1,168 @@
+{
+	"Id": "e2d61014-03a9-4bdb-95c3-faf3a8e0e013",
+	"Name": "Информацию об организации",
+	"Type": "Document",
+	"Description": "Представляет информацию об организации",
+	"Model": {
+		"Name": "OrganizationDataModel",
+		"Caption": "Сведения о медицинской организации",
+		"Description": "Сведения о медицинской организации",
+		"MultiplicityFrom": 1,
+		"MultiplicityTo": 1,
+		"Groups": [{
+			"Name": "Organization",
+			"Caption": "Данные о медицинской организации",
+			"Description": "Данные о медицинской организации",
+			"MultiplicityFrom": 1,
+			"MultiplicityTo": 1,			
+			"Properties": [{
+				"Type": "Uuid",
+				"Name": "Id",
+				"Caption": "Уникальный идентификатор организации",
+				"Description": "Необходимо, чтобы уникальный идентификатор организации был всегда одним и тем же для регистрируемого учреждения вне зависимости от того, сколько раз это учреждение было зарегистрировано в системе интеграции",
+				"MultiplicityFrom": 1,
+				"MultiplicityTo": 1				
+			},
+			{
+				"Type": "Uuid",
+				"Name": "PublicId",
+				"Caption": "Публичный уникальный идентификатор организации",
+				"Description": "Публичный уникальный идентификатор предназначен для поиска организации",
+				"MultiplicityFrom": 1,
+				"MultiplicityTo": 1
+			},			
+			{
+				"Type": "String",
+				"Name": "Token",
+				"Caption": "Маркер безопасности организации",
+				"Description": "Каждой организации при регистрации выдается маркер безопасности, который может использоваться для доступа к другим сервисам системы интеграции",
+				"MultiplicityFrom": 1,
+				"MultiplicityTo": 1
+			},		
+			{
+				"Type": "String",
+				"Name": "RegisterCode",
+				"Caption": "Код учреждения в реестре Минздрава РФ",
+				"Description": "Код учреждения в реестре Минздрава РФ",
+				"MultiplicityFrom": 1,
+				"MultiplicityTo": 1
+			},	
+			{
+				"Type": "String",
+				"Name": "Url",
+				"Caption": "Абсолютный URL REST-сервиса организации",
+				"Description": "Абсолютный URL REST-сервиса организации для доступа к ее публичным документам",
+				"MultiplicityFrom": 1,
+				"MultiplicityTo": 1
+			},	
+			{
+				"Type": "String",
+				"Name": "Code",
+				"Caption": "Код организации",
+				"Description": "Код организации",
+				"MultiplicityFrom": 1,
+				"MultiplicityTo": 1
+			},
+			{
+				"Type": "String",
+				"Name": "FullName",
+				"Caption": "Полное наименование организации",
+				"Description": "Полное наименование организации",
+				"MultiplicityFrom": 1,
+				"MultiplicityTo": 1
+			},
+			{
+				"Type": "String",
+				"Name": "ShortName",
+				"Caption": "Краткое наименование организации",
+				"Description": "Краткое наименование организации",
+				"MultiplicityFrom": 1,
+				"MultiplicityTo": 1
+			},
+			{
+				"Type": "String",
+				"Name": "Website",
+				"Caption": "Web-сайт организации",
+				"Description": "Web-сайт организации",
+				"MultiplicityFrom": 0,
+				"MultiplicityTo": 1
+			},
+			{
+				"Type": "ComplexType",
+				"Name": "Addresses",
+				"Caption": "Список адресов организации",
+				"Description": "Должен быть указан, как минимум, один адрес",
+				"MultiplicityFrom": 1,
+				"MultiplicityTo": null,
+				"Attributes": {
+					"ComplexTypeLink": {
+						"ConfigId": "FederalIntegration",
+						"ConfigVersion": "1.0.0.0",
+						"ObjectMetadataId": "Address"
+					}
+				}
+			},
+			{
+				"Type": "ComplexType",
+				"Name": "Phones",
+				"Caption": "Список телефонов организации",
+				"Description": "Должен быть указан, как минимум, один телефон",
+				"MultiplicityFrom": 1,
+				"MultiplicityTo": null,
+				"Attributes": {
+					"ComplexTypeLink": {
+						"ConfigId": "FederalIntegration",
+						"ConfigVersion": "1.0.0.0",
+						"ObjectMetadataId": "ContactInformation"
+					}
+				}
+			},
+			{
+				"Type": "ComplexType",
+				"Name": "Emails",
+				"Caption": "Список электронных почтовых адресов (email) организации",
+				"Description": "Должен быть указан, как минимум, один электронный почтовый адрес (email)",
+				"MultiplicityFrom": 1,
+				"MultiplicityTo": null,
+				"Attributes": {
+					"ComplexTypeLink": {
+						"ConfigId": "FederalIntegration",
+						"ConfigVersion": "1.0.0.0",
+						"ObjectMetadataId": "ContactInformation"
+					}
+				}
+			},
+			{
+				"Type": "ComplexType",
+				"Name": "Faxes",
+				"Caption": "Факсы организации",
+				"Description": "Факсы организации",
+				"MultiplicityFrom": 0,
+				"MultiplicityTo": null,
+				"Attributes": {
+					"ComplexTypeLink": {
+						"ConfigId": "FederalIntegration",
+						"ConfigVersion": "1.0.0.0",
+						"ObjectMetadataId": "ContactInformation"
+					}
+				}
+			},
+			{
+				"Type": "ComplexType",
+				"Name": "Requisites",
+				"Caption": "Список реквизитов организации",
+				"Description": "Обязательно должны быть указаны ИНН и КПП",
+				"MultiplicityFrom": 2,
+				"MultiplicityTo": null,
+				"Attributes": {
+					"ComplexTypeLink": {
+						"ConfigId": "FederalIntegration",
+						"ConfigVersion": "1.0.0.0",
+						"ObjectMetadataId": "Requisite"
+					}
+				}
+			}		
+			]
+		}]
+	}
+}

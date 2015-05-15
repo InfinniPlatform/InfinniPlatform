@@ -1,0 +1,21 @@
+{
+  "Id": "a4def14f-3dc4-4560-a6ce-81d1ce74731b",
+  "SettingsType": "Custom",
+  "Transitions": [
+    {
+      "Id": "4007c2b6-7f23-4fb6-a2e8-3cd56896de1b",
+      "Name": "CreatePermissionsForRole",
+      "ActionPoint": {
+        "TypeName": "Action",
+        "ScenarioId": "2de09485-e30e-46bb-a5a1-59469b61647f"
+      }
+    }
+  ],
+  "Type": 2,
+  "Caption": "CreatePermissionsForRole",
+  "Name": "CreatePermissionsForRole",
+  "ParentId": "cf4d2816-9dde-4143-8e53-1bcaa1972bcf",
+  "Version": "version_systemconfig",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "processmetadata"
+}

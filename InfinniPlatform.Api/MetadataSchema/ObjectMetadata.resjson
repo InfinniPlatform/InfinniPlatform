@@ -1,0 +1,38 @@
+﻿{
+  "id": "ObjectMetadata",
+  "description": "Объект метаданных",
+  "type": "object",
+  "properties": {
+    "Id": {
+      "description": "Уникальный идентификатор объекта метаданных",
+      "type": "string",
+      "required": true
+    },
+    "Name": {
+      "description": "Наименование объекта метаданных",
+      "type": "string",
+      "required": true
+    },
+    "Caption": {
+      "description": "Заголовок объекта метаданных",
+      "type": "string"
+    },
+    "Description": {
+      "description": "Описание объекта метаданных",
+      "type": "string"
+    },
+    "Status": {
+      "description": "Статус объекта метаданных",
+      "type": "string"
+    },
+    "ParentId": {
+      "description": "Родительский объект метаданных",
+      "type": "string"
+    },
+    "Version": {
+      "description": "Версия конфигурации объекта метаданных",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

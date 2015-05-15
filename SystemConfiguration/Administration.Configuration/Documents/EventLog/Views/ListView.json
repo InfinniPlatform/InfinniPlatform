@@ -1,0 +1,212 @@
+{
+  "Id": "f5c7c572-512f-410b-9aa7-326f4d637482",
+  "MetadataType": "ListView",
+  "Text": "Лог",
+  "Description": "Журнал событий",
+  "Caption": "Журнал",
+  "Name": "ListView",
+  "ParentId": "6d20dd54-4cdd-4245-be18-86e06bc9f7c7",
+  "Version": "version_systemconfig",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "viewmetadata",
+  "DataSources": [
+    {
+      "DocumentDataSource": {
+        "Name": "MainDataSource",
+        "ConfigId": "Administration",
+        "DocumentId": "EventLog"
+      }
+    },
+    {
+      "ObjectDataSource": {
+        "Name": "LevelDataSource",
+        "Items": [
+          {
+            "Id": "INFO",
+            "DisplayName": "Информация"
+          },
+          {
+            "Id": "WARN",
+            "DisplayName": "Предупреждение"
+          },
+          {
+            "Id": "ERROR",
+            "DisplayName": "Ошибка"
+          },
+          {
+            "Id": "FATAL",
+            "DisplayName": "Критическая ошибка"
+          }
+        ]
+      }
+    }
+  ],
+  "LayoutPanel": {
+    "StackPanel": {
+      "Items": [
+        {
+          "FilterPanel": {
+            "DataSource": "MainDataSource",
+            "GeneralProperties": [
+              {
+                "Text": "Дата от",
+                "Property": "Date",
+                "DefaultOperator": "IsMoreThanOrEquals",
+                "Operators": [
+                  {
+                    "Operator": "IsMoreThanOrEquals",
+                    "Editor": {
+                      "DatePicker": {}
+                    }
+                  }
+                ]
+              },
+              {
+                "Text": "Дата до",
+                "Property": "Date",
+                "DefaultOperator": "IsLessThanOrEquals",
+                "Operators": [
+                  {
+                    "Operator": "IsLessThanOrEquals",
+                    "Editor": {
+                      "DatePicker": {}
+                    }
+                  }
+                ]
+              },
+              {
+                "Text": "Уровень",
+                "Property": "Level",
+                "DefaultOperator": "IsContains",
+                "Operators": [
+                  {
+                    "Operator": "IsContains",
+                    "Editor": {
+                      "ComboBox": {
+                        "ValueProperty": "Id",
+                        "DisplayProperty": "DisplayName",
+                        "Items": {
+                          "PropertyBinding": {
+                            "DataSource": "LevelDataSource"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "Text": "Пользователь",
+                "Property": "User",
+                "DefaultOperator": "IsContains",
+                "Operators": [
+                  {
+                    "Operator": "IsContains",
+                    "Editor": {
+                      "TextBox": {}
+                    }
+                  }
+                ]
+              },
+              {
+                "Text": "Раздел",
+                "Property": "Source",
+                "DefaultOperator": "IsContains",
+                "Operators": [
+                  {
+                    "Operator": "IsContains",
+                    "Editor": {
+                      "TextBox": {}
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "DataGrid": {
+            "Columns": [
+              {
+                "Text": "Дата",
+                "DisplayProperty": "Date",
+                "ItemFormat": {
+                  "DateTimeFormat": {
+                    "Format": "G"
+                  }
+                }
+              },
+              {
+                "Text": "Уровень",
+                "DisplayProperty": "Level"
+              },
+              {
+                "Text": "Пользователь",
+                "DisplayProperty": "User"
+              },
+              {
+                "Text": "Раздел",
+                "DisplayProperty": "Source"
+              },
+              {
+                "Text": "Сообщение",
+                "DisplayProperty": "Message"
+              }
+            ],
+            "Items": {
+              "PropertyBinding": {
+                "DataSource": "MainDataSource"
+              }
+            },
+            "ToolBar": {
+              "Items": [
+                {
+                  "ToolBarButton": {
+                    "Text": "Просмотр",
+                    "Action": {
+                      "EditAction": {
+                        "View": {
+                          "AutoView": {
+                            "ConfigId": "Administration",
+                            "DocumentId": "EventLog",
+                            "ViewType": "EditView",
+                            "OpenMode": "Dialog"
+                          }
+                        },
+                        "DataSource": "MainDataSource"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "ToolBar": {
+            "Items": [
+              {
+                "ToolBarButton": {
+                  "Text": "Просмотр",
+                  "Action": {
+                    "EditAction": {
+                      "View": {
+                        "AutoView": {
+                          "ConfigId": "Administration",
+                          "DocumentId": "EventLog",
+                          "ViewType": "EditView",
+                          "OpenMode": "Dialog"
+                        }
+                      },
+                      "DataSource": "MainDataSource"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

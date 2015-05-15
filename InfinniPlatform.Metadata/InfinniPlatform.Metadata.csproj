@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F1239C4B-CA5F-4B5E-83AC-DA686E81030F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>InfinniPlatform.Metadata</RootNamespace>
+    <AssemblyName>InfinniPlatform.Metadata</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Implementation\Handlers\AggregateExtensions.cs" />
+    <Compile Include="Implementation\Handlers\ApplyChangesHandler.cs" />
+    <Compile Include="Implementation\Handlers\HelpHandler.cs" />
+    <Compile Include="Implementation\Handlers\SearchDocumentAggregationHandler.cs" />
+    <Compile Include="Implementation\Handlers\SearchHandler.cs" />
+    <Compile Include="Implementation\Handlers\SystemEventsHandler.cs" />
+    <Compile Include="Implementation\Handlers\UploadHandler.cs" />
+    <Compile Include="Implementation\Handlers\UrlEncodedDataHandler.cs" />
+    <Compile Include="Implementation\HostServerConfiguration\InfinniPlatformHostFactory.cs" />
+    <Compile Include="Implementation\MetadataConfiguration\CrossConfigSearcher.cs" />
+    <Compile Include="Implementation\MetadataConfiguration\ScriptConfiguration.cs" />
+    <Compile Include="Implementation\MetadataConfiguration\ConfigurationObjectBuilder.cs" />
+    <Compile Include="Implementation\MetadataConfiguration\MetadataConfiguration.cs" />
+    <Compile Include="Implementation\MetadataConfiguration\ConfigurationObject.cs" />
+    <Compile Include="Implementation\MetadataConfiguration\MetadataConfigurationProvider.cs" />
+    <Compile Include="Implementation\MetadataConfiguration\MetadataContainer.cs" />
+    <Compile Include="Implementation\Modules\StandardTemplatesInstaller.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AssemblyInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="StateMachine\ExecutedScriptBuilderFactory.cs" />
+    <Compile Include="StateMachine\ActionUnits\ActionOperatorBuilders\ActionOperatorBuilderEmbedded.cs" />
+    <Compile Include="StateMachine\ActionUnits\ActionOperatorBuilders\ActionOperatorBuilderScript.cs" />
+    <Compile Include="StateMachine\ActionUnits\ActionOperatorBuilders\ActionOperator.cs" />
+    <Compile Include="StateMachine\ActionUnits\ActionUnit.cs" />
+    <Compile Include="StateMachine\Statuses\StateTransition.cs" />
+    <Compile Include="StateMachine\Statuses\StateTransitionConditions\StateTransitionConditionNone.cs" />
+    <Compile Include="StateMachine\Statuses\StateTransitionConditions\StateTransitionConditionObjectStatus.cs" />
+    <Compile Include="StateMachine\Statuses\StateTransitionConfig.cs" />
+    <Compile Include="StateMachine\Statuses\StateWorkflow.cs" />
+    <Compile Include="StateMachine\Statuses\StateWorkflowConfig.cs" />
+    <Compile Include="StateMachine\Statuses\StateWorkflowRegister.cs" />
+    <Compile Include="StateMachine\Statuses\StateWorkflowStartingPointConfig.cs" />
+    <Compile Include="StateMachine\ValidationUnits\ValidationUnit.cs" />
+    <Compile Include="StateMachine\ValidationUnits\ValidationUnitBuilders\ValidationOperator.cs" />
+    <Compile Include="StateMachine\ValidationUnits\ValidationUnitBuilders\ValidationOperatorBuilderScript.cs" />
+    <Compile Include="StateMachine\ValidationUnits\ValidationUnitBuilders\ValidationOperatorBuilderEmbedded.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
+      <Project>{7ca0f96c-7ff4-44b2-9d44-851984df4532}</Project>
+      <Name>InfinniPlatform.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
+      <Project>{ebc684b7-b72a-475f-bbc1-b6293b607b9b}</Project>
+      <Name>InfinniPlatform.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Index.ElasticSearch\InfinniPlatform.Index.ElasticSearch.csproj">
+      <Project>{2B2F3FA6-F434-4FCF-A4C7-323FFC602F0C}</Project>
+      <Name>InfinniPlatform.Index.ElasticSearch</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\Files\Build\TransformOnBuild.targets" />
+  <ItemGroup>
+    <None Include="Properties\AssemblyInfo.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AssemblyInfo.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

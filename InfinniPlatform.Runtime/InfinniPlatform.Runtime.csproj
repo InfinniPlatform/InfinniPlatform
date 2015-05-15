@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CDF22217-5452-4D4C-8F00-9601FD367050}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>InfinniPlatform.Runtime</RootNamespace>
+    <AssemblyName>InfinniPlatform.Runtime</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Implementation\AssemblyDispatch\AssemblyVersionLoader.cs" />
+    <Compile Include="Implementation\ChangeListeners\ChangeListener.cs" />
+    <Compile Include="Implementation\ProjectConverter\Content.cs" />
+    <Compile Include="Implementation\ProjectConverter\EmbeddedResource.cs" />
+    <Compile Include="Implementation\ProjectConverter\IItemElement.cs" />
+    <Compile Include="Implementation\ProjectConverter\Import.cs" />
+    <Compile Include="Implementation\ProjectConverter\IProjectComponent.cs" />
+    <Compile Include="Implementation\ProjectConverter\IProjectConverterFrom.cs" />
+    <Compile Include="Implementation\ProjectConverter\IProjectConverterTo.cs" />
+    <Compile Include="Implementation\ProjectConverter\Module.cs" />
+    <Compile Include="Implementation\ProjectConverter\Project.cs" />
+    <Compile Include="Implementation\ProjectConverter\ProjectConfig.cs" />
+    <Compile Include="Implementation\ProjectConverter\ProjectConverterFrom.cs" />
+    <Compile Include="Implementation\ProjectConverter\ProjectConverterTo.cs" />
+    <Compile Include="Implementation\ProjectConverter\ProjectProperty.cs" />
+    <Compile Include="Implementation\ProjectConverter\ProjectReference.cs" />
+    <Compile Include="Implementation\ProjectConverter\Reference.cs" />
+    <Compile Include="Implementation\ProjectConverter\ReflectionPair.cs" />
+    <Compile Include="Implementation\ProjectConverter\XDocumentExtension.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AssemblyInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Factories\ScriptFactory.cs" />
+    <Compile Include="Factories\ScriptFactoryBuilder.cs" />
+    <Compile Include="Implementation\ScriptMetadataProviders\ScriptMetadataProviderMemory.cs" />
+    <Compile Include="Implementation\ScriptProcessors\ScriptProcessor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
+      <Project>{7ca0f96c-7ff4-44b2-9d44-851984df4532}</Project>
+      <Name>InfinniPlatform.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
+      <Project>{ebc684b7-b72a-475f-bbc1-b6293b607b9b}</Project>
+      <Name>InfinniPlatform.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\Files\Build\TransformOnBuild.targets" />
+  <ItemGroup>
+    <None Include="Properties\AssemblyInfo.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AssemblyInfo.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

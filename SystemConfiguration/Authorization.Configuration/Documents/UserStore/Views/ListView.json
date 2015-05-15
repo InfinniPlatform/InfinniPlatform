@@ -1,0 +1,153 @@
+{
+  "Id": "3d02640a-4359-4a72-b6c0-954142d6c41a",
+  "LayoutPanel": {
+    "StackPanel": {
+      "Items": [
+        {
+          "SearchPanel": {
+            "DataSource": "MainDataSource"
+          }
+        },
+        {
+          "DataGrid": {
+            "Columns": [
+              {
+                "Text": "Логин пользователя",
+                "DisplayProperty": "UserName"
+              }
+            ],
+            "Items": {
+              "PropertyBinding": {
+                "DataSource": "MainDataSource"
+              }
+            },
+            "ToolBar": {
+              "Items": [
+                {
+                  "ToolBarButton": {
+                    "Text": "Добавить",
+                    "Action": {
+                      "AddAction": {
+                        "View": {
+                          "AutoView": {
+                            "ConfigId": "Authorization",
+                            "DocumentId": "UserStore",
+                            "ViewType": "EditView",
+                            "MetadataName": "EditView",
+                            "OpenMode": "Dialog"
+                          }
+                        },
+                        "DataSource": "MainDataSource"
+                      }
+                    }
+                  }
+                },
+                {
+                  "ToolBarButton": {
+                    "Text": "Редактировать",
+                    "Action": {
+                      "EditAction": {
+                        "View": {
+                          "AutoView": {
+                            "ConfigId": "Authorization",
+                            "DocumentId": "UserStore",
+                            "ViewType": "EditView",
+                            "MetadataName": "EditView",
+                            "OpenMode": "Dialog"
+                          }
+                        },
+                        "DataSource": "MainDataSource"
+                      }
+                    }
+                  }
+                },
+                {
+                  "ToolBarButton": {
+                    "Text": "Удалить",
+                    "Action": {
+                      "DeleteAction": {
+                        "DataSource": "MainDataSource"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "ToolBar": {
+            "Items": [
+              {
+                "ToolBarButton": {
+                  "Text": "Добавить",
+                  "Action": {
+                    "AddAction": {
+                      "View": {
+                        "AutoView": {
+                          "ConfigId": "Authorization",
+                          "DocumentId": "UserStore",
+                          "ViewType": "EditView",
+                          "MetadataName": "EditView",
+                          "OpenMode": "Page"
+                        }
+                      },
+                      "DataSource": "MainDataSource"
+                    }
+                  }
+                }
+              },
+              {
+                "ToolBarButton": {
+                  "Text": "Редактировать",
+                  "Action": {
+                    "EditAction": {
+                      "View": {
+                        "AutoView": {
+                          "ConfigId": "Authorization",
+                          "DocumentId": "UserStore",
+                          "ViewType": "EditView",
+                          "MetadataName": "EditView",
+                          "OpenMode": "Page"
+                        }
+                      },
+                      "DataSource": "MainDataSource"
+                    }
+                  }
+                }
+              },
+              {
+                "ToolBarButton": {
+                  "Text": "Удалить",
+                  "Action": {
+                    "DeleteAction": {
+                      "DataSource": "MainDataSource"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "DataSources": [
+    {
+      "DocumentDataSource": {
+        "Name": "MainDataSource",
+        "ConfigId": "Authorization",
+        "DocumentId": "UserStore"
+      }
+    }
+  ],
+  "Text": "Журнал 'UserStore'",
+  "MetadataType": "ListView",
+  "Description": "",
+  "Caption": "Журнал хранилища пользователей",
+  "Name": "ListView",
+  "ParentId": "a06bb617-e77f-4168-8fb0-607db8853d23",
+  "Version": "version_systemconfig",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "viewmetadata"
+}

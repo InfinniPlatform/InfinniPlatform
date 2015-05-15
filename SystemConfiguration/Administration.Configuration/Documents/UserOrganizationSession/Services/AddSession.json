@@ -1,0 +1,39 @@
+{
+  "Id": "8c15f831-ff1b-41f6-ae05-1612acc6a2ae",
+  "ExtensionPoints": [
+    {
+      "TypeName": {
+        "Name": "Move",
+        "ContextType": 2,
+        "Caption": "Document move context"
+      },
+      "ScenarioId": "AddSession"
+    }
+  ],
+  "Caption": "AddSession",
+  "Type": {
+    "Name": "applyjson",
+    "WorkflowExtensionPoints": [
+      {
+        "Name": "FilterEvents",
+        "ContextType": 4,
+        "Caption": "Document filter events context"
+      },
+      {
+        "Name": "Move",
+        "ContextType": 2,
+        "Caption": "Document move context"
+      },
+      {
+        "Name": "GetResult",
+        "ContextType": 8,
+        "Caption": "Document move result context"
+      }
+    ]
+  },
+  "Name": "AddSession",
+  "ParentId": "5d6656d6-9523-4e7d-9e09-be46773046a7",
+  "Version": "version_systemconfig",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "servicemetadata"
+}

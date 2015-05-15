@@ -1,0 +1,32 @@
+﻿{
+  "id": "PrintElementImage",
+  "description": "Однострочный элемент печатного представления для отображения изображений",
+  "type": "object",
+  "extends": {
+    "$ref": "http://demo.infinnity.ru:8081/display/MC/PrintElementInline"
+  },
+  "properties": {
+    "Data": {
+      "description": "Данные изображения",
+      "type": "string",
+      "media": {
+        "binaryEncoding": "base64"
+      }
+    },
+    "Size": {
+      "description": "Размеры изображения",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/Size"
+    },
+    "Rotation": {
+      "description": "Поворот изображения",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/PrintElementRotation",
+      "default": "Rotate0"
+    },
+    "Stretch": {
+      "description": "Растягивание изображения",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/PrintElementImageStretch",
+      "default": "Uniform"
+    }
+  },
+  "additionalProperties": false
+}

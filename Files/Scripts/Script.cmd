@@ -1,0 +1,1 @@
+"%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe" -NonInteractive -NoProfile -ExecutionPolicy Bypass -Command "& { Start-Process -WorkingDirectory '%~dp0' -NoNewWindow -File '%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe' -ArgumentList '-File %1' }"

@@ -1,0 +1,11 @@
+﻿{
+  "id": "PrintElementTextCase",
+  "description": "Регистр символов текста элемента печатного представления",
+  "enum": [
+    "Normal",
+    "SentenceCase",
+    "Lowercase",
+    "Uppercase",
+    "ToggleCase"
+  ]
+}

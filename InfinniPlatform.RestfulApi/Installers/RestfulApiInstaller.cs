@@ -1,0 +1,420 @@
+﻿using InfinniPlatform.Api.Actions;
+using InfinniPlatform.Api.Hosting;
+using InfinniPlatform.Api.Metadata;
+using InfinniPlatform.Api.RestQuery;
+using InfinniPlatform.Hosting;
+using InfinniPlatform.Hosting.Implementation.ExtensionPointHandling;
+using InfinniPlatform.Hosting.Implementation.Modules;
+using InfinniPlatform.Metadata;
+
+namespace InfinniPlatform.RestfulApi.Installers
+{
+    public sealed class RestfulApiInstaller : MetadataConfigurationInstaller
+    {
+        public RestfulApiInstaller(IMetadataConfigurationProvider metadataConfigurationProvider, IScriptConfiguration actionConfiguration)
+            : base(metadataConfigurationProvider, actionConfiguration)
+        {
+        }
+
+        protected override void RegisterConfiguration(IMetadataConfiguration metadataConfiguration)
+        {
+            var actionUnits = metadataConfiguration.ScriptConfiguration;
+
+            actionUnits.RegisterActionUnitDistributedStorage("indexexists", "ActionUnitIndexExists");
+            actionUnits.RegisterActionUnitDistributedStorage("rebuildindex", "ActionUnitRebuildIndex");
+            actionUnits.RegisterActionUnitDistributedStorage("getfromindex", "ActionUnitGetFromIndex");
+            actionUnits.RegisterActionUnitDistributedStorage("insertindex", "ActionUnitInsertIndex");
+            actionUnits.RegisterActionUnitDistributedStorage("insertindexwithtimestamp", "ActionUnitIndexWithTimeStamp");
+            actionUnits.RegisterActionUnitDistributedStorage("getdocument", "ActionUnitGetDocument");
+            actionUnits.RegisterActionUnitDistributedStorage("getconfigmetadata", "ActionUnitGetConfigMetadata");
+            actionUnits.RegisterActionUnitDistributedStorage("getconfigmetadatalist", "ActionUnitGetConfigMetadataList");
+            actionUnits.RegisterActionUnitDistributedStorage("getdocumentcrossconfig", "ActionUnitGetDocumentCrossConfig");
+            actionUnits.RegisterActionUnitDistributedStorage("getbyquery", "ActionUnitGetByQuery");
+
+
+            actionUnits.RegisterActionUnitDistributedStorage("setdocument", "ActionUnitSetDocument");
+            actionUnits.RegisterActionUnitDistributedStorage("successsetdocument", "ActionUnitSuccessSetDocument");
+            actionUnits.RegisterActionUnitDistributedStorage("failsetdocument", "ActionUnitFailSetDocument");
+            actionUnits.RegisterActionUnitDistributedStorage("successdeletedocument", "ActionUnitSuccessDeleteDocument");
+            actionUnits.RegisterActionUnitDistributedStorage("filterauthdocument", "ActionUnitFilterAuthDocument");
+
+            actionUnits.RegisterActionUnitDistributedStorage("simpleauth", "ActionUnitSimpleAuth");
+            actionUnits.RegisterActionUnitDistributedStorage("complexauth", "ActionUnitComplexAuth");
+            actionUnits.RegisterActionUnitDistributedStorage("applyaccess", "ActionUnitApplyAccess");
+            actionUnits.RegisterActionUnitDistributedStorage("changepassword", "ActionUnitChangePassword");
+
+            actionUnits.RegisterActionUnitDistributedStorage("signin", "ActionUnitSignIn");
+            actionUnits.RegisterActionUnitDistributedStorage("signin", "ActionUnitSignIn");
+            actionUnits.RegisterActionUnitDistributedStorage("signout", "ActionUnitSignOut");
+
+            actionUnits.RegisterActionUnitDistributedStorage("adduser", "ActionUnitAddUser");
+            actionUnits.RegisterActionUnitDistributedStorage("adduserrole", "ActionUnitAddUserRole");
+            actionUnits.RegisterActionUnitDistributedStorage("addrole", "ActionUnitAddRole");
+            actionUnits.RegisterActionUnitDistributedStorage("addclaim", "ActionUnitAddClaim");
+
+            actionUnits.RegisterActionUnitDistributedStorage("removeuser", "ActionUnitRemoveUser");
+            actionUnits.RegisterActionUnitDistributedStorage("removeuserrole", "ActionUnitRemoveUserRole");
+            actionUnits.RegisterActionUnitDistributedStorage("removerole", "ActionUnitRemoveRole");
+            actionUnits.RegisterActionUnitDistributedStorage("removeacl", "ActionUnitRemoveAcl");
+
+            actionUnits.RegisterActionUnitDistributedStorage("getacl", "ActionUnitGetAcl");
+            actionUnits.RegisterActionUnitDistributedStorage("getroles", "ActionUnitGetRoles");
+            actionUnits.RegisterActionUnitDistributedStorage("getuserroles", "ActionUnitGetUserRoles");
+            actionUnits.RegisterActionUnitDistributedStorage("getusers", "ActionUnitGetUsers");
+
+
+            actionUnits.RegisterActionUnitDistributedStorage("updateroles", "ActionUnitUpdateUserRoles");
+            actionUnits.RegisterActionUnitDistributedStorage("setdefaultacl", "ActionUnitSetDefaultAcl");
+            actionUnits.RegisterActionUnitDistributedStorage("grantadminacl", "ActionUnitGrantAdminAcl");
+
+            actionUnits.RegisterActionUnitDistributedStorage("updateacl", "ActionUnitUpdateAcl");
+
+            actionUnits.RegisterActionUnitDistributedStorage("adminauth", "ActionUnitAdminAuth");
+            actionUnits.RegisterActionUnitDistributedStorage("documentauth", "ActionUnitDocumentAuth");
+
+            actionUnits.RegisterActionUnitDistributedStorage("uploadbinarycontent", "ActionUnitUploadBinaryContent");
+            actionUnits.RegisterActionUnitDistributedStorage("downloadbinarycontent", "ActionUnitDownloadBinaryContent");
+
+            actionUnits.RegisterActionUnitDistributedStorage("createdocument", "ActionUnitCreateDocument");
+            actionUnits.RegisterActionUnitDistributedStorage("deletedocument", "ActionUnitDeleteDocument");
+
+            actionUnits.RegisterActionUnitDistributedStorage("status", "ActionUnitRestIsReady");
+            actionUnits.RegisterActionUnitDistributedStorage("getdocumentfaststorage", "ActionUnitGetDocumentFastStorage");
+
+            actionUnits.RegisterValidationUnitDistributedStorage("setdocumentvalidationwarning", "ValidationUnitSetDocumentWarning");
+            actionUnits.RegisterValidationUnitDistributedStorage("setdocumentvalidationerror", "ValidationUnitSetDocumentError");
+
+            actionUnits.RegisterActionUnitDistributedStorage("setanonimouscredentials", "ActionUnitSetAnonimousCredentials");
+            actionUnits.RegisterActionUnitDistributedStorage("setcredentials", "ActionUnitSetCredentials");
+
+            metadataConfiguration.RegisterWorkflow("index", "indexexists",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("indexexists")))));
+
+            metadataConfiguration.RegisterWorkflow("index", "rebuildindex",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("rebuildindex")))));
+
+            metadataConfiguration.RegisterWorkflow("index", "getfromindex",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("getfromindex")))));
+            metadataConfiguration.RegisterWorkflow("index", "insertindex",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("insertindex")))));
+            metadataConfiguration.RegisterWorkflow("index", "insertindexwithtimestamp",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("insertindexwithtimestamp")))));
+
+
+
+            metadataConfiguration.RegisterWorkflow("configuration", "getconfigmetadata",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("getconfigmetadata"))
+                        )));
+
+            metadataConfiguration.RegisterWorkflow("configuration", "getconfigmetadatalist",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("getconfigmetadatalist"))
+                        )));
+
+            metadataConfiguration.RegisterWorkflow("configuration", "getdocumentcrossconfig",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("getdocumentcrossconfig"))
+                        .WithSimpleAuthorization(() => actionUnits.GetAction("documentauth"))
+                        .OnSuccess(() => actionUnits.GetAction("filterauthdocument"))
+                        )));
+
+            metadataConfiguration.RegisterWorkflow("configuration", "filterauthdocument",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("filterauthdocument")))));
+
+
+            metadataConfiguration.RegisterWorkflow("configuration", "getbyquery",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("getbyquery")))));
+
+
+            metadataConfiguration.RegisterWorkflow("authorization", "applyaccess",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithSimpleAuthorization(() => actionUnits.GetAction("adminauth"))
+                        .WithAction(() => actionUnits.GetAction("applyaccess"))
+                        .OnSuccess(() => actionUnits.GetAction("updateacl"))
+                        )));
+
+
+            metadataConfiguration.RegisterWorkflow("authorization", "signin",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("signin"))
+                        )));
+
+            metadataConfiguration.RegisterWorkflow("authorization", "signout",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("signout"))
+                        )));
+
+
+            metadataConfiguration.RegisterWorkflow("authorization", "changepassword",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("changepassword"))
+                        )));
+
+            metadataConfiguration.RegisterWorkflow("authorization", "adduser",
+                            f => f.FlowWithoutState(wc => wc
+                                .Move(ws => ws
+                                    .WithAction(() => actionUnits.GetAction("adduser"))
+                                    )));
+
+            metadataConfiguration.RegisterWorkflow("authorization", "adduserrole",
+                            f => f.FlowWithoutState(wc => wc
+                                .Move(ws => ws
+                                    .WithAction(() => actionUnits.GetAction("adduserrole"))
+                                    )));
+
+            metadataConfiguration.RegisterWorkflow("authorization", "addrole",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("addrole"))
+                        )));
+
+            metadataConfiguration.RegisterWorkflow("authorization", "addclaim",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("addclaim"))
+                        )));
+
+            metadataConfiguration.RegisterWorkflow("authorization", "removeuser",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("removeuser"))
+                        )));
+
+            metadataConfiguration.RegisterWorkflow("authorization", "removeuserrole",
+                            f => f.FlowWithoutState(wc => wc
+                                .Move(ws => ws
+                                    .WithAction(() => actionUnits.GetAction("removeuserrole"))
+                                    )));
+
+            metadataConfiguration.RegisterWorkflow("authorization", "removerole",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("removerole"))
+                        )));
+
+            metadataConfiguration.RegisterWorkflow("authorization", "removeacl",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("removeacl"))
+                        )));
+
+            metadataConfiguration.RegisterWorkflow("authorization", "getuserroles",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("getuserroles"))
+                        )));
+
+            metadataConfiguration.RegisterWorkflow("authorization", "getroles",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("getroles"))
+                        )));
+
+            metadataConfiguration.RegisterWorkflow("authorization", "grantadminacl",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("grantadminacl"))
+                        )));
+
+            metadataConfiguration.RegisterWorkflow("authorization", "setdefaultacl",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("setdefaultacl"))
+                        )));
+
+            metadataConfiguration.RegisterWorkflow("authorization", "getusers",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("getusers"))
+                        )));
+
+            metadataConfiguration.RegisterWorkflow("authorization", "updateacl",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("updateacl"))
+                        )));
+
+            metadataConfiguration.RegisterWorkflow("authorization", "updateroles",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        //.WithSimpleAuthorization(() => actionUnits.GetAction("simpleauth"))
+                        .WithAction(() => actionUnits.GetAction("updateroles"))
+                        )));
+
+
+            metadataConfiguration.RegisterWorkflow("authorization", "getacl",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        //.WithSimpleAuthorization(() => actionUnits.GetAction("simpleauth"))
+                        .WithAction(() => actionUnits.GetAction("getacl"))
+                        )));
+
+
+
+
+            metadataConfiguration.RegisterWorkflow("authorization", "simpleauth",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("simpleauth"))
+                        )));
+
+            metadataConfiguration.RegisterWorkflow("configuration", "downloadbinarycontent",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("downloadbinarycontent"))
+                        )));
+
+            metadataConfiguration.RegisterWorkflow("configuration", "uploadbinarycontent",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("uploadbinarycontent"))
+                        )));
+
+
+            metadataConfiguration.RegisterWorkflow("configuration", "getdocument",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("getdocument"))
+                        .WithSimpleAuthorization(() => actionUnits.GetAction("documentauth"))
+                        .WithComplexAuthorization(() => actionUnits.GetAction("complexauth"))
+                        .OnSuccess(() => actionUnits.GetAction("filterauthdocument"))
+                        .OnCredentials(() => actionUnits.GetAction("setcredentials"))
+                        )));
+
+            metadataConfiguration.RegisterWorkflow("configuration", "setdocument",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithValidationWarning(() => actionUnits.GetValidator("setdocumentvalidationwarning"))
+                        .WithValidationError(() => actionUnits.GetValidator("setdocumentvalidationerror"))
+                        .WithAction(() => actionUnits.GetAction("setdocument"))
+                        .WithSimpleAuthorization(() => actionUnits.GetAction("documentauth"))
+                        .WithComplexAuthorization(() => actionUnits.GetAction("complexauth"))
+                        .OnSuccess(() => actionUnits.GetAction("successsetdocument"))
+                        .OnFail(() => actionUnits.GetAction("failsetdocument"))
+                        .OnCredentials(() => actionUnits.GetAction("setcredentials"))
+                        )));
+
+            metadataConfiguration.RegisterWorkflow("configuration", "createdocument",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("createdocument"))
+                        .WithSimpleAuthorization(() => actionUnits.GetAction("documentauth"))
+                        .WithComplexAuthorization(() => actionUnits.GetAction("complexauth"))
+                        .OnCredentials(() => actionUnits.GetAction("setcredentials"))
+                        )));
+
+            metadataConfiguration.RegisterWorkflow("configuration", "deletedocument",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("deletedocument"))
+                        .OnDelete(() => actionUnits.GetAction("successdeletedocument"))
+                        .WithSimpleAuthorization(() => actionUnits.GetAction("documentauth"))
+                        .WithComplexAuthorization(() => actionUnits.GetAction("complexauth"))
+                        .OnCredentials(() => actionUnits.GetAction("setcredentials"))
+                        )));
+            metadataConfiguration.RegisterWorkflow("configuration", "status",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("status")))));
+
+        }
+
+        protected override void RegisterServices(IServiceRegistrationContainer servicesConfiguration)
+        {
+            servicesConfiguration.AddRegistration("index", "ApplyJson", reg => reg
+                    .RegisterHandlerInstance("indexexists", instance => instance.RegisterExtensionPoint("GetResult", "indexexists"))
+                    .RegisterHandlerInstance("rebuildindex", instance => instance.RegisterExtensionPoint("GetResult", "rebuildindex"))
+                    .RegisterHandlerInstance("getfromindex", instance => instance.RegisterExtensionPoint("GetResult", "getfromindex"))
+                    .RegisterHandlerInstance("insertindex", instance => instance.RegisterExtensionPoint("GetResult", "insertindex"))
+                    .RegisterHandlerInstance("insertindexwithtimestamp", instance => instance.RegisterExtensionPoint("GetResult", "insertindexwithtimestamp"))
+                    .SetResultHandler(HttpResultHandlerType.BadRequest)
+                    );
+
+            servicesConfiguration.AddRegistration("authorization", "ApplyJson", reg => reg
+                    .RegisterHandlerInstance("applyaccess", insance => insance.RegisterExtensionPoint("Move", "applyaccess"))
+                    .RegisterHandlerInstance("simpleauth", insance => insance.RegisterExtensionPoint("Move", "simpleauth"))
+
+                    .RegisterHandlerInstance("adduser", insance => insance.RegisterExtensionPoint("Move", "adduser"))
+                    .RegisterHandlerInstance("addrole", insance => insance.RegisterExtensionPoint("Move", "addrole"))
+                    .RegisterHandlerInstance("adduserrole", insance => insance.RegisterExtensionPoint("Move", "adduserrole"))
+                    .RegisterHandlerInstance("addclaim", insance => insance.RegisterExtensionPoint("Move", "addclaim"))
+
+                    .RegisterHandlerInstance("setdefaultacl", insance => insance.RegisterExtensionPoint("Move", "setdefaultacl"))
+                    .RegisterHandlerInstance("grantadminacl", insance => insance.RegisterExtensionPoint("Move", "grantadminacl"))
+
+                    .RegisterHandlerInstance("removeuser", insance => insance.RegisterExtensionPoint("Move", "removeuser"))
+                    .RegisterHandlerInstance("removerole", insance => insance.RegisterExtensionPoint("Move", "removerole"))
+                    .RegisterHandlerInstance("removeacl", insance => insance.RegisterExtensionPoint("Move", "removeacl"))
+                    .RegisterHandlerInstance("removeuserrole", insance => insance.RegisterExtensionPoint("Move", "removeuserrole"))
+                    .RegisterHandlerInstance("changepassword", insance => insance.RegisterExtensionPoint("Move", "changepassword"))
+
+                    .RegisterHandlerInstance("getusers", insance => insance.RegisterExtensionPoint("Move", "getusers"))
+                    .RegisterHandlerInstance("getuserroles", insance => insance.RegisterExtensionPoint("Move", "getuserroles"))
+                    .RegisterHandlerInstance("getroles", insance => insance.RegisterExtensionPoint("Move", "getroles"))
+                    .RegisterHandlerInstance("getacl", insance => insance.RegisterExtensionPoint("Move", "getacl"))
+
+
+                    .RegisterHandlerInstance("updateroles", insance => insance.RegisterExtensionPoint("Move", "updateroles"))
+                    .RegisterHandlerInstance("updateacl", insance => insance.RegisterExtensionPoint("Move", "updateacl"))
+
+                    .RegisterHandlerInstance("signout", insance => insance.RegisterExtensionPoint("Move", "signout"))
+                    .SetResultHandler(HttpResultHandlerType.BadRequest)
+                    );
+            servicesConfiguration.AddRegistration("authorization", "ApplyJson", reg => reg
+                .RegisterHandlerInstance("signin", insance => insance.RegisterExtensionPoint("Move", "signin"))
+                .SetResultHandler(HttpResultHandlerType.SignIn));
+
+            servicesConfiguration.AddRegistration("configuration", "ApplyJson", reg => reg
+                    .RegisterHandlerInstance("status", insance => insance.RegisterExtensionPoint("GetResult", "status"))
+                    .RegisterHandlerInstance("getdocument", insance => insance
+                                                                .RegisterExtensionPoint("Move", "getdocument")
+                                                                )
+
+                    .RegisterHandlerInstance("getconfigmetadata", insance => insance
+                                                                .RegisterExtensionPoint("Move", "getconfigmetadata"))
+                    .RegisterHandlerInstance("getconfigmetadatalist", insance => insance
+                                                                .RegisterExtensionPoint("Move", "getconfigmetadatalist"))
+
+                    .RegisterHandlerInstance("getdocumentcrossconfig", insance => insance
+                                                                .RegisterExtensionPoint("Move", "getdocumentcrossconfig"))
+                    .RegisterHandlerInstance("getbyquery", instance => instance
+                                                                .RegisterExtensionPoint("GetResult", "getbyquery"))
+
+                    .RegisterHandlerInstance("setdocument", insance => insance.RegisterExtensionPoint("Move", "setdocument"))
+                    .RegisterHandlerInstance("createdocument", insance => insance.RegisterExtensionPoint("Move", "createdocument"))
+                    .RegisterHandlerInstance("deletedocument", insance => insance.RegisterExtensionPoint("Move", "deletedocument"))
+                    .SetResultHandler(HttpResultHandlerType.BadRequest)
+                    );
+
+            servicesConfiguration.AddRegistration("configuration", "Upload", reg => reg
+                    .RegisterHandlerInstance("uploadbinarycontent", insance => insance.RegisterExtensionPoint("Upload", "uploadbinarycontent")));
+
+            servicesConfiguration.AddRegistration("configuration", "UrlEncodedData", reg => reg
+                    .RegisterHandlerInstance("downloadbinarycontent", insance => insance.RegisterExtensionPoint("ProcessUrlEncodedData", "downloadbinarycontent"))
+                    .SetResultHandler(HttpResultHandlerType.ByteContent));
+
+        }
+    }
+}

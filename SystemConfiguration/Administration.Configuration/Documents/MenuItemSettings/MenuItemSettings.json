@@ -1,0 +1,56 @@
+{
+  "Id": "47db35a8-9185-4fc9-ab5e-cd42360b5d4d",
+  "Name": "MenuItemSettings",
+  "Caption": "Настройка главного меню",
+  "Description": "",
+  "Versioning": 2,
+  "MetadataIndex": "MenuItemSettings",
+  "Services": [],
+  "Processes": [],
+  "Scenarios": [],
+  "Generators": [],
+  "Views": [
+    {
+      "Id": "fe23ee79-8c1c-4c02-8e03-76cf2c74dd51",
+      "Name": "ListView",
+      "Caption": "Журнал настроек разрешений меню",
+      "Description": ""
+    },
+    {
+      "Id": "11d2dabc-905b-4dc1-b18a-dbf5bf1a9465",
+      "Name": "EditViewMenuItem",
+      "Caption": "Форма редактирования настроек разрешений пункта меню",
+      "Description": ""
+    }
+  ],
+  "PrintViews": [],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "DocumentStatuses": [],
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "MenuItemId": {
+        "Caption": "Идентификатор пункта меню",
+        "Type": "String"
+      },
+      "Role": {
+        "Caption": "Роль",
+        "Type": "Object",
+        "TypeInfo": {
+          "DocumentLink": {
+            "ConfigId": "Administration",
+            "DocumentId": "Role",
+            "Resolve": true
+          }
+        },
+        "Properties": {}
+      }
+    }
+  },
+  "ParentId": "232b5c7f-6d7d-43da-a76f-9c1b9abba672",
+  "Version": "version_systemconfig",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "documentmetadata"
+}

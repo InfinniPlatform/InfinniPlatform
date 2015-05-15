@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="InfinniPlatform.FastReport.Templates.Print.PrintPaper">
+    <Position X="3.25" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABQAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Templates\Print\PrintPaper.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Orientation" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="InfinniPlatform.FastReport.Templates.Print.PrintPaperMargin">
+    <Position X="3.25" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAIAAAACAGAAAAAAAA=</HashCode>
+      <FileName>Templates\Print\PrintPaperMargin.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InfinniPlatform.FastReport.Templates.Print.PrintSetup">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAEAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>Templates\Print\PrintSetup.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Paper" />
+      <Property Name="Margin" />
+    </ShowAsAssociation>
+  </Class>
+  <Enum Name="InfinniPlatform.FastReport.Templates.Print.PaperOrientation">
+    <Position X="6.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAgA=</HashCode>
+      <FileName>Templates\Print\PaperOrientation.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

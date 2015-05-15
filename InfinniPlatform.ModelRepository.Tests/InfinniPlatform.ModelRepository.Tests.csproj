@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{789D757E-B051-4BAA-B43F-DD3B834552A0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>InfinniPlatform.ModelRepository.Tests</RootNamespace>
+    <AssemblyName>InfinniPlatform.ModelRepository.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ArchetypeBuilder, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\ArchetypeBuilder.dll</HintPath>
+    </Reference>
+    <Reference Include="ArtefactBuilders, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\ArtefactBuilders.dll</HintPath>
+    </Reference>
+    <Reference Include="DesignByContract, Version=1.0.2746.28005, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\DesignByContract.dll</HintPath>
+    </Reference>
+    <Reference Include="EhrReaders, Version=1.5.2915.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\EhrReaders.dll</HintPath>
+    </Reference>
+    <Reference Include="EiffelSoftware.Runtime, Version=6.2.7.1629, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\EiffelSoftware.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.2.1408.0717\lib\net40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="OceanEhr.Common, Version=1.5.4059.31483, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\OceanEhr.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="OceanEhr.OpenEhrV1, Version=1.5.3209.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\OceanEhr.OpenEhrV1.dll</HintPath>
+    </Reference>
+    <Reference Include="OceanInformatics.AdlParser, Version=1.4.0.1287, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\OceanInformatics.AdlParser.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenEhr.V1.Its.Xml, Version=1.0.1.4, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\OpenEhr.V1.Its.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="SimiTemplatesConvertationBehavior.cs" />
+    <Compile Include="OpenEhrDataConvertionTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AssemblyInfo.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
+      <Project>{7CA0F96C-7FF4-44B2-9D44-851984DF4532}</Project>
+      <Name>InfinniPlatform.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
+      <Project>{ebc684b7-b72a-475f-bbc1-b6293b607b9b}</Project>
+      <Name>InfinniPlatform.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.ModelRepository\InfinniPlatform.ModelRepository.csproj">
+      <Project>{afb709e2-71c1-4712-aa8d-4a9621939279}</Project>
+      <Name>InfinniPlatform.ModelRepository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.OceanInformatics\InfinniPlatform.OceanInformatics.csproj">
+      <Project>{42cb828f-e466-42c7-b0c4-6e3bdb56d328}</Project>
+      <Name>InfinniPlatform.OceanInformatics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Tests\InfinniPlatform.Tests.csproj">
+      <Project>{a46f638c-c9c5-49be-bc8d-8144e8c8f87a}</Project>
+      <Name>InfinniPlatform.Tests</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Files\Tests\App.config">
+      <Link>App.config</Link>
+    </None>
+    <None Include="OpenEhrTestData\BasicTemplatesFull.zip" />
+    <None Include="OpenEhrTestData\openEHR-ADMIN-ENTRY.t_examination_025_general_information.v1.oet">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="OpenEhrTestData\openEHR-EHR-ADMIN_ENTRY.general_information.v1.adl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="OpenEhrTestData\openEHR-EHR-CLUSTER.app_diagnosed_disease.v1.adl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="OpenEhrTestData\openEHR-EHR-CLUSTER.app_temporary_disability_025_hmao.v1.adl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="OpenEhrTestData\openEHR-EHR-CLUSTER.app_treatment_result.v1.adl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="OpenEhrTestData\openEHR-EHR-CLUSTER.health_group.v1.adl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="OpenEhrTestData\openEHR-EHR-CLUSTER.medical_insurance.v1.adl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="OpenEhrTestData\openEHR-EHR-CLUSTER.rendered_service_hmao.v1.adl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="OpenEhrTestData\openEHR-EHR-CLUSTER.stomatologist_treatment.v1.adl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="OpenEhrTestData\openEHR-EHR-CLUSTER.t_medical_insurance_stat_hmao.v1.oet">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="OpenEhrTestData\openEHR-EHR-COMPOSITION.examination_025.v1.adl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="OpenEhrTestData\openEHR-EHR-EVALUATION.app_conclusion.v1.adl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="OpenEhrTestData\template025.oet">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="OpenEhrTestData\025_1.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OpenEhrTestData\025_2.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OpenEhrTestData\Form025.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OpenEhrTestData\Form066.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OpenEhrTestData\TemplateForm025.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OpenEhrTestData\TemplateForm066.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\Files\Build\TransformOnBuild.targets" />
+  <ItemGroup>
+    <None Include="Properties\AssemblyInfo.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AssemblyInfo.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

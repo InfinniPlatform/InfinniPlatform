@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="InfinniPlatform.FastReport.Templates.Bands.ReportBand">
+    <Position X="5.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAEAQAEAAAAAAAAAAEAAAAAIAAAA=</HashCode>
+      <FileName>Templates\Bands\ReportBand.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PrintSetup" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="InfinniPlatform.FastReport.Templates.Bands.ReportBandPrintSetup">
+    <Position X="8.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Templates\Bands\ReportBandPrintSetup.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PrintTargets" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="InfinniPlatform.FastReport.Templates.Bands.ReportDataBand">
+    <Position X="0.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAEAAEAAAgABAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Templates\Bands\ReportDataBand.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Content" />
+      <Property Name="Group" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="InfinniPlatform.FastReport.Templates.Bands.ReportGroupBand">
+    <Position X="2.75" Y="2.75" Width="1.75" />
+    <AssociationLine Name="Header" Type="InfinniPlatform.FastReport.Templates.Bands.ReportBand" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.5" Y="3.142" />
+        <Point X="5.938" Y="3.142" />
+        <Point X="5.938" Y="2.139" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Footer" Type="InfinniPlatform.FastReport.Templates.Bands.ReportBand" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.5" Y="3.596" />
+        <Point X="6.875" Y="3.596" />
+        <Point X="6.875" Y="2.139" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>BAEAQAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Templates\Bands\ReportGroupBand.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Header" />
+      <Property Name="Footer" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Enum Name="InfinniPlatform.FastReport.Templates.Bands.PrintTargets">
+    <Position X="11.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAAAAAAACAAACAAAAAAJAAAAEAAAA=</HashCode>
+      <FileName>Templates\Bands\PrintTargets.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

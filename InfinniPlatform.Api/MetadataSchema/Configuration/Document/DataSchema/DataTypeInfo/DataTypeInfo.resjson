@@ -1,0 +1,16 @@
+﻿{
+  "id": "DataTypeInfo",
+  "description": "Информация о типе данных",
+  "type": "object",
+  "properties": {
+    "BinaryLink": {
+      "description": "Ссылка на двоичные данные",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/BinaryLink"
+    },
+    "DocumentLink": {
+      "description": "Ссылка на документ",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/DocumentLink"
+    }
+  },
+  "additionalProperties": false
+}

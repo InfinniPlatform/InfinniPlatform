@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="SpecifiedConfigurationNameNotFound" xml:space="preserve">
+    <value>Configuration with specified name not found: "{0}"</value>
+  </data>
+  <data name="MetadataObjectSuccessfullyUpdated" xml:space="preserve">
+    <value>metadata object successfully updated</value>
+  </data>
+  <data name="ConfigurationVersionNotFound" xml:space="preserve">
+    <value>configuration version not found in repository: "{0}"</value>
+  </data>
+  <data name="MetadataObjectDeleted" xml:space="preserve">
+    <value>Metadata object successfully deleted.</value>
+  </data>
+  <data name="ConfigurationVersionShouldSpecified" xml:space="preserve">
+    <value>Configuration version for update should be specified!</value>
+  </data>
+  <data name="ErrorParsingJsonConfiguration" xml:space="preserve">
+    <value>Error in parsing JSON configuration</value>
+  </data>
+  <data name="ConfigurationIdNotFound" xml:space="preserve">
+    <value>Need to specify ConfigurationId to set configuration from JSON</value>
+  </data>
+  <data name="ErrorConfigurationNameNotFound" xml:space="preserve">
+    <value>Configuration name not found.</value>
+  </data>
+  <data name="ErrorMetadataGeneratorNotSpecified" xml:space="preserve">
+    <value>Source metadata for generator not specified.</value>
+  </data>
+  <data name="GeneratorMetadataNotFound" xml:space="preserve">
+    <value>Metadata for generator "{0}" not found.</value>
+  </data>
+  <data name="ErrorActionUnitNotSpecified" xml:space="preserve">
+    <value>Action unit for generator not specified.</value>
+  </data>
+  <data name="ErrorCreatedGeneratorNameNotSpecified" xml:space="preserve">
+    <value>Created generator name not specified.</value>
+  </data>
+  <data name="ErrorActionModuleNotSpecified" xml:space="preserve">
+    <value>Action module not specified.</value>
+  </data>
+  <data name="ErrorGeneratorMetadataTypeNotSpecified" xml:space="preserve">
+    <value>Generator metadata type not specified.</value>
+  </data>
+  <data name="ErrorMetadataNotSpecified" xml:space="preserve">
+    <value>Item metadata not specified.</value>
+  </data>
+  <data name="ErrorMetadataTypeNotSpecified" xml:space="preserve">
+    <value>Metadata type not specified.</value>
+  </data>
+  <data name="ErrorDocumentMetadataElementNameNotSpecified" xml:space="preserve">
+    <value>Name of document metadata element not specified.</value>
+  </data>
+  <data name="GeneratorMetadataNotRegistered" xml:space="preserve">
+    <value>generator metadata with name "{0}" not registered</value>
+  </data>
+  <data name="RegisterNotFound" xml:space="preserve">
+    <value>Specified register {0} not found</value>
+  </data>
+  <data name="SpecifiedIntervalIsInvalidSupportedIntervals" xml:space="preserve">
+    <value>Specified interval {0} is invalid. Supported intervals: year, quarter, month, week, day, hour, minute, second</value>
+  </data>
+  <data name="SpecifiedTimezoneIsInvalid" xml:space="preserve">
+    <value>Specified timezone {0} is invalid. Valid timezone example: "+05:00"</value>
+  </data>
+</root>

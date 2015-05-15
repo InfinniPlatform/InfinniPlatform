@@ -1,0 +1,369 @@
+﻿archetype (adl_version=1.4)
+	openEHR-EHR-ADMIN_ENTRY.general_information.v1
+
+concept
+	[at0000]	-- Общая информация
+language
+	original_language = <[ISO_639-1::ru]>
+description
+	original_author = <
+		["name"] = <"">
+	>
+	details = <
+		["ru"] = <
+			language = <[ISO_639-1::ru]>
+			purpose = <"">
+			use = <"">
+			misuse = <"">
+			copyright = <"">
+		>
+	>
+	lifecycle_state = <"0">
+	other_contributors = <>
+	other_details = <
+		["MD5-CAM-1.0.1"] = <"AB8E72663C7B039FD7DF7EE46ED4DF29">
+	>
+
+definition
+	ADMIN_ENTRY[at0000] matches {	-- Общая информация
+		data matches {
+			ITEM_TREE[at0001] matches {	-- Tree
+				items cardinality matches {2..*; unordered} matches {
+					ELEMENT[at0067] occurrences matches {0..1} matches {	-- Направление на комиссию
+						value matches {
+							DV_IDENTIFIER matches {
+								type matches {/.*/}
+							}
+						}
+					}
+					ELEMENT[at0034] occurrences matches {0..1} matches {	-- Номер направления
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0032] matches {	-- Дата приема
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					ELEMENT[at0002] occurrences matches {0..1} matches {	-- Талон на прием
+						value matches {
+							DV_IDENTIFIER matches {
+								issuer matches {/.*/}
+								type matches {/.*/}
+							}
+						}
+					}
+					ELEMENT[at0003] matches {	-- Специалист
+						value matches {
+							DV_IDENTIFIER matches {
+								type matches {/Врач/}
+							}
+						}
+					}
+					ELEMENT[at0004] occurrences matches {0..1} matches {	-- Специальность
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0035] occurrences matches {0..1} matches {	-- Медсестра
+						value matches {
+							DV_IDENTIFIER matches {
+								type matches {/Врач/}
+							}
+						}
+					}
+					ELEMENT[at0031] occurrences matches {0..1} matches {	-- Отделение
+						value matches {
+							DV_IDENTIFIER matches {
+								type matches {/Отделение/}
+							}
+						}
+					}
+					ELEMENT[at0068] occurrences matches {0..1} matches {	-- Направившее отделение
+						value matches {
+							DV_IDENTIFIER matches {
+								type matches {/Отделение/}
+							}
+						}
+					}
+					ELEMENT[at0079] occurrences matches {0..1} matches {	-- Кабинет
+						value matches {
+							DV_IDENTIFIER matches {
+								type matches {/Кабинет/}
+							}
+						}
+					}
+					ELEMENT[at0025] occurrences matches {0..1} matches {	-- Тип приема
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0026, 	-- первичный
+									at0027, 	-- повторный
+									at0028, 	-- диспансерный
+									at0029, 	-- консультация
+									at0030]	-- дневник
+								}
+							}
+						}
+					}
+					ELEMENT[at0074] occurrences matches {0..1} matches {	-- Тип осмотра
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0075, 	-- первичный
+									at0076, 	-- осмотр лечащего врача
+									at0077, 	-- осмотр заведующего отделением
+									at0078]	-- осмотр дежурного врача
+								}
+							}
+						}
+					}
+					ELEMENT[at0007] occurrences matches {0..1} matches {	-- Место приема
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0053] occurrences matches {0..1} matches {	-- Полис
+						include
+							archetype_id/value matches {/.*/}
+					}
+					ELEMENT[at0008] occurrences matches {0..1} matches {	-- Цель посещения
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0036] occurrences matches {0..1} matches {	-- Количество исследований
+						value matches {
+							DV_COUNT matches {
+								magnitude matches {|0..1000|}
+							}
+						}
+					}
+					ELEMENT[at0040] occurrences matches {0..1} matches {	-- Несчастный случай
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0069] occurrences matches {0..1} matches {	-- Вид медицинской помощи
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0052] occurrences matches {0..1} matches {	-- Диагноз
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0059] occurrences matches {0..1} matches {	-- Консультация
+						value matches {
+							DV_BOOLEAN matches {
+								value matches {True}
+							}
+						}
+					}
+					allow_archetype CLUSTER[at0010] occurrences matches {0..*} matches {	-- Направления на консультацию
+						include
+							archetype_id/value matches {/.*/}
+					}
+					ELEMENT[at0064] occurrences matches {0..1} matches {	-- Комиссия
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0065, 	-- ВЭК
+									at0066]	-- допдиспансеризация
+								}
+							}
+						}
+					}
+					ELEMENT[at0070] occurrences matches {0..1} matches {	-- Вид посещения
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0071] occurrences matches {0..1} matches {	-- Условия оказания медицинской помощи
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0072] occurrences matches {0..1} matches {	-- Вид помощи
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0073] occurrences matches {0..1} matches {	-- Форма оказания медицинской помощи
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+				}
+			}
+		}
+	}
+
+ontology
+	term_definitions = <
+		["ru"] = <
+			items = <
+				["at0000"] = <
+					text = <"Общая информация">
+					description = <"unknown">
+				>
+				["at0001"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Талон на прием">
+					description = <"*">
+				>
+				["at0003"] = <
+					text = <"Специалист">
+					description = <"*">
+				>
+				["at0004"] = <
+					text = <"Специальность">
+					description = <"*">
+				>
+				["at0007"] = <
+					text = <"Место приема">
+					description = <"*">
+				>
+				["at0008"] = <
+					text = <"Цель посещения">
+					description = <"*">
+				>
+				["at0010"] = <
+					text = <"Направления на консультацию">
+					description = <"*">
+				>
+				["at0025"] = <
+					text = <"Тип приема">
+					description = <"*">
+				>
+				["at0026"] = <
+					text = <"первичный">
+					description = <"*">
+				>
+				["at0027"] = <
+					text = <"повторный">
+					description = <"*">
+				>
+				["at0028"] = <
+					text = <"диспансерный">
+					description = <"*">
+				>
+				["at0029"] = <
+					text = <"консультация">
+					description = <"*">
+				>
+				["at0030"] = <
+					text = <"дневник">
+					description = <"*">
+				>
+				["at0031"] = <
+					text = <"Отделение">
+					description = <"*">
+				>
+				["at0032"] = <
+					text = <"Дата приема">
+					description = <"*">
+				>
+				["at0034"] = <
+					text = <"Номер направления">
+					description = <"*">
+				>
+				["at0035"] = <
+					text = <"Медсестра">
+					description = <"*">
+				>
+				["at0036"] = <
+					text = <"Количество исследований">
+					description = <"*">
+				>
+				["at0040"] = <
+					text = <"Несчастный случай">
+					description = <"*">
+				>
+				["at0052"] = <
+					text = <"Диагноз">
+					description = <"*">
+				>
+				["at0053"] = <
+					text = <"Полис">
+					description = <"*">
+				>
+				["at0059"] = <
+					text = <"Консультация">
+					description = <"*">
+				>
+				["at0064"] = <
+					text = <"Комиссия">
+					description = <"*">
+				>
+				["at0065"] = <
+					text = <"ВЭК">
+					description = <"*">
+				>
+				["at0066"] = <
+					text = <"допдиспансеризация">
+					description = <"*">
+				>
+				["at0067"] = <
+					text = <"Направление на комиссию">
+					description = <"*">
+				>
+				["at0068"] = <
+					text = <"Направившее отделение">
+					description = <"*">
+				>
+				["at0069"] = <
+					text = <"Вид медицинской помощи">
+					description = <"*">
+				>
+				["at0070"] = <
+					text = <"Вид посещения">
+					description = <"*">
+				>
+				["at0071"] = <
+					text = <"Условия оказания медицинской помощи">
+					description = <"*">
+				>
+				["at0072"] = <
+					text = <"Вид помощи">
+					description = <"*">
+				>
+				["at0073"] = <
+					text = <"Форма оказания медицинской помощи">
+					description = <"*">
+				>
+				["at0074"] = <
+					text = <"Тип осмотра">
+					description = <"*">
+				>
+				["at0075"] = <
+					text = <"первичный">
+					description = <"*">
+				>
+				["at0076"] = <
+					text = <"осмотр лечащего врача">
+					description = <"*">
+				>
+				["at0077"] = <
+					text = <"осмотр заведующего отделением">
+					description = <"*">
+				>
+				["at0078"] = <
+					text = <"осмотр дежурного врача">
+					description = <"*">
+				>
+				["at0079"] = <
+					text = <"Кабинет">
+					description = <"*">
+				>
+			>
+		>
+	>

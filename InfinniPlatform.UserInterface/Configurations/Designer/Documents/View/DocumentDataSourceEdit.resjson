@@ -1,0 +1,342 @@
+﻿{
+  "Name": "DocumentDataSourceEdit",
+  "Text": "DocumentDataSource",
+  "DataSources": [
+    {
+      "ObjectDataSource": {
+        "Name": "MainDataSource"
+      }
+    }
+  ],
+  "LayoutPanel": {
+    "StackPanel": {
+      "Name": "GeneralPagePanel",
+      "Items": [
+        {
+          "GridPanel": {
+            "Name": "GeneralDataPanel",
+            "Rows": [
+              {
+                "Cells": [
+                  {
+                    "ColumnSpan": 2,
+                    "Items": [
+                      {
+                        "Label": {
+                          "Name": "NameLabel",
+                          "Text": "Name:"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "ColumnSpan": 10,
+                    "Items": [
+                      {
+                        "TextBox": {
+                          "Name": "NameEditor",
+                          "Value": {
+                            "PropertyBinding": {
+                              "DataSource": "MainDataSource",
+                              "Property": "Name"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "Cells": [
+                  {
+                    "ColumnSpan": 2,
+                    "Items": [
+                      {
+                        "Label": {
+                          "Name": "ConfigIdLabel",
+                          "Text": "Configuration:"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "ColumnSpan": 10,
+                    "Items": [
+                      {
+                        "ConfigSelector": {
+                          "Name": "ConfigIdEditor",
+                          "Value": {
+                            "PropertyBinding": {
+                              "DataSource": "MainDataSource",
+                              "Property": "ConfigId"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "Cells": [
+                  {
+                    "ColumnSpan": 2,
+                    "Items": [
+                      {
+                        "Label": {
+                          "Name": "DocumentIdLabel",
+                          "Text": "Document:"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "ColumnSpan": 10,
+                    "Items": [
+                      {
+                        "DocumentSelector": {
+                          "Name": "DocumentIdEditor",
+                          "ConfigId": {
+                            "PropertyBinding": {
+                              "DataSource": "MainDataSource",
+                              "Property": "ConfigId"
+                            }
+                          },
+                          "Value": {
+                            "PropertyBinding": {
+                              "DataSource": "MainDataSource",
+                              "Property": "DocumentId"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "Cells": [
+                  {
+                    "ColumnSpan": 2,
+                    "Items": [
+                      {
+                        "Label": {
+                          "Name": "IdPropertyLabel",
+                          "Text": "IdProperty:"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "ColumnSpan": 10,
+                    "Items": [
+                      {
+                        "TextBox": {
+                          "Name": "IdPropertyEditor",
+                          "Value": {
+                            "PropertyBinding": {
+                              "DataSource": "MainDataSource",
+                              "Property": "IdProperty"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "Cells": [
+                  {
+                    "ColumnSpan": 2,
+                    "Items": [
+                      {
+                        "Label": {
+                          "Name": "CreateActionLabel",
+                          "Text": "CreateAction:"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "ColumnSpan": 10,
+                    "Items": [
+                      {
+                        "TextBox": {
+                          "Name": "CreateActionEditor",
+                          "Value": {
+                            "PropertyBinding": {
+                              "DataSource": "MainDataSource",
+                              "Property": "CreateAction"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "Cells": [
+                  {
+                    "ColumnSpan": 2,
+                    "Items": [
+                      {
+                        "Label": {
+                          "Name": "ReadActionLabel",
+                          "Text": "ReadAction:"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "ColumnSpan": 10,
+                    "Items": [
+                      {
+                        "TextBox": {
+                          "Name": "ReadActionEditor",
+                          "Value": {
+                            "PropertyBinding": {
+                              "DataSource": "MainDataSource",
+                              "Property": "ReadAction"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "Cells": [
+                  {
+                    "ColumnSpan": 2,
+                    "Items": [
+                      {
+                        "Label": {
+                          "Name": "UpdateActionLabel",
+                          "Text": "UpdateAction:"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "ColumnSpan": 10,
+                    "Items": [
+                      {
+                        "TextBox": {
+                          "Name": "UpdateActionEditor",
+                          "Value": {
+                            "PropertyBinding": {
+                              "DataSource": "MainDataSource",
+                              "Property": "UpdateAction"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "Cells": [
+                  {
+                    "ColumnSpan": 2,
+                    "Items": [
+                      {
+                        "Label": {
+                          "Name": "DeleteActionLabel",
+                          "Text": "DeleteAction:"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "ColumnSpan": 10,
+                    "Items": [
+                      {
+                        "TextBox": {
+                          "Name": "DeleteActionEditor",
+                          "Value": {
+                            "PropertyBinding": {
+                              "DataSource": "MainDataSource",
+                              "Property": "DeleteAction"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "Cells": [
+                  {
+                    "ColumnSpan": 2,
+                    "Items": [
+                      {
+                        "Label": {
+                          "Name": "FillCreatedItemLabel",
+                          "Text": "FillCreatedItem:"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "ColumnSpan": 10,
+                    "Items": [
+                      {
+                        "CheckBox": {
+                          "Name": "FillCreatedItemEditor",
+                          "Value": {
+                            "PropertyBinding": {
+                              "DataSource": "MainDataSource",
+                              "Property": "FillCreatedItem"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "ToolBar": {
+            "Name": "GeneralToolBar",
+            "Items": [
+              {
+                "ToolBarButton": {
+                  "Name": "GeneralSaveButton",
+                  "Text": "OK",
+                  "Image": "Actions/Apply_16x16",
+                  "Hotkey": "Ctrl+S",
+                  "Action": {
+                    "SaveItemAction": {
+                      "DataSource": "MainDataSource"
+                    }
+                  }
+                }
+              },
+              {
+                "ToolBarButton": {
+                  "Name": "GeneralCancelButton",
+                  "Text": "Cancel",
+                  "Image": "Actions/Cancel_16x16",
+                  "Action": {
+                    "CancelAction": {
+                      "DataSource": "MainDataSource"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

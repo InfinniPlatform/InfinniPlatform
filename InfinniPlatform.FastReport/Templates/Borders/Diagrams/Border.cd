@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="InfinniPlatform.FastReport.Templates.Borders.BorderLine">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAABAAAgAAAAAA=</HashCode>
+      <FileName>Templates\Borders\BorderLine.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Style" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="InfinniPlatform.FastReport.Templates.Borders.Border">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAIAAAACACAAAAAAAA=</HashCode>
+      <FileName>Templates\Borders\Border.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="InfinniPlatform.FastReport.Templates.Borders.BorderLineStyle">
+    <Position X="4.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAAAAAAAAAACAACAAAoAAAAAAAAAAA=</HashCode>
+      <FileName>Templates\Borders\BorderLineStyle.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

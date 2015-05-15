@@ -1,0 +1,16 @@
+﻿{
+  "id": "ForeignKey",
+  "description": "Ссылка на внешний документ",
+  "type": "object",
+  "properties": {
+    "Id": {
+      "description": "Уникальный идентификатор внешнего документа",
+      "type": "string",
+      "required": true
+    },
+    "DisplayName": {
+      "description": "Строковое представление внешнего документа",
+      "type": "string"
+    }
+  }
+}

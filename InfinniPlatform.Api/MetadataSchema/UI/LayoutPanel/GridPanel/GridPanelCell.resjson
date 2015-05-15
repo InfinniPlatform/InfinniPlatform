@@ -1,0 +1,20 @@
+﻿{
+  "id": "GridPanelCell",
+  "description": "Описание ячейки сетки",
+  "type": "object",
+  "properties": {
+    "ColumnSpan": {
+      "description": "Размер ячейки в колонках",
+      "type": "integer",
+      "default": 1
+    },
+    "Items": {
+      "description": "Список элементов ячейки",
+      "type": "array",
+      "items": {
+        "$ref": "http://demo.infinnity.ru:8081/display/MC/VisualElement"
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,34 @@
+﻿{
+  "id": "FilterPanel",
+  "description": "Элемент представления для настраиваемого фильтра источника данных",
+  "type": "object",
+  "extends": {
+    "$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
+  },
+  "properties": {
+    "AllowAdvancedMode": {
+      "description": "Разрешен ли режим расширенной фильтрации",
+      "type": "boolean",
+      "default": true
+    },
+    "GeneralProperties": {
+      "description": "Список основных свойств для фильтрации",
+      "type": "array",
+      "items": {
+        "$ref": "http://demo.infinnity.ru:8081/display/MC/FilterPanelProperty"
+      }
+    },
+    "AdditionalProperties": {
+      "description": "Список дополнительных свойств для фильтрации",
+      "type": "array",
+      "items": {
+        "$ref": "http://demo.infinnity.ru:8081/display/MC/FilterPanelProperty"
+      }
+    },
+    "DataSource": {
+      "description": "Источник данных для фильтрации",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

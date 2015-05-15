@@ -1,0 +1,215 @@
+{
+  "Id": "4bd4b209-a267-457c-9059-e32aaf0606ee",
+  "__DocumentId": "viewmetadata",
+  "__ConfigId": "systemconfig",
+  "Version": "version_systemconfig",
+  "ParentId": "5fffaf06-d1dd-42e6-b6d2-bd582b8e5df6",
+  "Name": "EditView",
+  "Caption": "Форма редактирования прав доступа ролей",
+  "Description": "",
+  "MetadataType": "EditView",
+  "Text": "Права доступа на раздел",
+  "ChildViews": [],
+  "DataSources": [
+    {
+      "DocumentDataSource": {
+        "Name": "MainDataSource",
+        "ConfigId": "Administration",
+        "DocumentId": "SectionPermissions"
+      }
+    },
+    {
+      "DocumentDataSource": {
+        "ConfigId": "Administration",
+        "DocumentId": "Section",
+        "Name": "SectionDataSource"
+      }
+    }
+  ],
+  "LayoutPanel": {
+    "StackPanel": {
+      "Items": [
+        {
+          "ScrollPanel": {
+            "LayoutPanel": {
+              "GridPanel": {
+                "Rows": [
+                  {
+                    "Cells": [
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "Label": {
+                              "Text": "Раздел"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "ComboBox": {
+                              "ValueProperty": "Id",
+                              "DisplayProperty": "Name",
+                              "Value": {
+                                "PropertyBinding": {
+                                  "DataSource": "MainDataSource",
+                                  "Property": "Section"
+                                }
+                              },
+                              "Items": {
+                                "PropertyBinding": {
+                                  "DataSource": "SectionDataSource"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 12,
+                        "Items": [
+                          {
+                            "Label": {
+                              "Text": ""
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "Label": {
+                              "Text": "Права на создание"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "CheckBox": {
+                              "Value": {
+                                "PropertyBinding": {
+                                  "DataSource": "MainDataSource",
+                                  "Property": "PermissionCreate"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "Label": {
+                              "Text": "Права на просмотр"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "CheckBox": {
+                              "Value": {
+                                "PropertyBinding": {
+                                  "DataSource": "MainDataSource",
+                                  "Property": "PermissionRead"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "Label": {
+                              "Text": "Права на редактирование"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "CheckBox": {
+                              "Value": {
+                                "PropertyBinding": {
+                                  "DataSource": "MainDataSource",
+                                  "Property": "PermissionWrite"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "Label": {
+                              "Text": "Права на удаление"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "CheckBox": {
+                              "Value": {
+                                "PropertyBinding": {
+                                  "DataSource": "MainDataSource",
+                                  "Property": "PermissionDelete"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ToolBar": {
+            "Items": [
+              {
+                "ToolBarButton": {
+                  "Text": "Сохранить",
+                  "Action": {
+                    "SaveAction": {
+                      "DataSource": "MainDataSource"
+                    }
+                  }
+                }
+              },
+              {
+                "ToolBarButton": {
+                  "Text": "Отмена",
+                  "Action": {
+                    "CancelAction": {}
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,228 @@
+﻿archetype (adl_version=1.4)
+	openEHR-EHR-CLUSTER.health_group.v1
+
+concept
+	[at0000]	-- Группа здоровья
+language
+	original_language = <[ISO_639-1::ru]>
+description
+	original_author = <
+		["name"] = <"">
+	>
+	details = <
+		["ru"] = <
+			language = <[ISO_639-1::ru]>
+			purpose = <"">
+			use = <"">
+			misuse = <"">
+			copyright = <"">
+		>
+	>
+	lifecycle_state = <"0">
+	other_contributors = <>
+	other_details = <
+		["MD5-CAM-1.0.1"] = <"E82AB95947A62A554AF8D43A35E8D20D">
+	>
+
+definition
+	CLUSTER[at0000] matches {	-- Группа здоровья
+		items cardinality matches {2..*; unordered} matches {
+			ELEMENT[at0001] occurrences matches {0..1} matches {	-- Группа здоровья
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0022] occurrences matches {0..1} matches {	-- Информация о ведении диспансеризации
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0023, 	-- диспансеризация завершена на 1 этапе
+							at0024, 	-- перевод на 2 этап диспансеризации
+							at0025, 	-- диспансеризация завершена на 2 этапе
+							at0026]	-- получен отказ от проведения дополнительной диспансеризации
+						}
+					}
+				}
+			}
+			ELEMENT[at0002] occurrences matches {0..1} matches {	-- Профиль санаторно-курортного лечения
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0003, 	-- болезни крови
+							at0004, 	-- болезни эндокринной системы
+							at0005, 	-- болезни нервной системы
+							at0006, 	-- болезни глаза
+							at0007, 	-- болезни уха
+							at0008, 	-- болезни органов кровообращения
+							at0009, 	-- болезни органов дыхания
+							at0010, 	-- болезни органов пищеварения
+							at0011, 	-- болезни костно-мышечной системы
+							at0012, 	-- болезни мочеполовой системы
+							at0013]	-- болезни женских половых органов
+						}
+					}
+				}
+			}
+			ELEMENT[at0014] occurrences matches {0..1} matches {	-- Результаты анализов
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0015] occurrences matches {0..1} matches {	-- Результаты исследований
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0021] occurrences matches {0..1} matches {	-- Заключение по приказу 6ц
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0016] occurrences matches {0..1} matches {	-- Решение 6ц
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0017] occurrences matches {0..1} matches {	-- Комментарий
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			CLUSTER[at0018] occurrences matches {0..1} matches {	-- Допуск к работе при условии
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0019] occurrences matches {0..1} matches {	-- работа в очках
+						value matches {
+							DV_BOOLEAN matches {
+								value matches {True}
+							}
+						}
+					}
+					ELEMENT[at0020] occurrences matches {0..1} matches {	-- работа в СИЗ
+						value matches {
+							DV_BOOLEAN matches {
+								value matches {True}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+ontology
+	term_definitions = <
+		["ru"] = <
+			items = <
+				["at0000"] = <
+					text = <"Группа здоровья">
+					description = <"unknown">
+				>
+				["at0001"] = <
+					text = <"Группа здоровья">
+					description = <"*">
+				>
+				["at0002"] = <
+					text = <"Профиль санаторно-курортного лечения">
+					description = <"*">
+				>
+				["at0003"] = <
+					text = <"болезни крови">
+					description = <"*">
+				>
+				["at0004"] = <
+					text = <"болезни эндокринной системы">
+					description = <"*">
+				>
+				["at0005"] = <
+					text = <"болезни нервной системы">
+					description = <"*">
+				>
+				["at0006"] = <
+					text = <"болезни глаза">
+					description = <"*">
+				>
+				["at0007"] = <
+					text = <"болезни уха">
+					description = <"*">
+				>
+				["at0008"] = <
+					text = <"болезни органов кровообращения">
+					description = <"*">
+				>
+				["at0009"] = <
+					text = <"болезни органов дыхания">
+					description = <"*">
+				>
+				["at0010"] = <
+					text = <"болезни органов пищеварения">
+					description = <"*">
+				>
+				["at0011"] = <
+					text = <"болезни костно-мышечной системы">
+					description = <"*">
+				>
+				["at0012"] = <
+					text = <"болезни мочеполовой системы">
+					description = <"*">
+				>
+				["at0013"] = <
+					text = <"болезни женских половых органов">
+					description = <"*">
+				>
+				["at0014"] = <
+					text = <"Результаты анализов">
+					description = <"*">
+				>
+				["at0015"] = <
+					text = <"Результаты исследований">
+					description = <"*">
+				>
+				["at0016"] = <
+					text = <"Решение 6ц">
+					description = <"*">
+				>
+				["at0017"] = <
+					text = <"Комментарий">
+					description = <"*">
+				>
+				["at0018"] = <
+					text = <"Допуск к работе при условии">
+					description = <"*">
+				>
+				["at0019"] = <
+					text = <"работа в очках">
+					description = <"*">
+				>
+				["at0020"] = <
+					text = <"работа в СИЗ">
+					description = <"*">
+				>
+				["at0021"] = <
+					text = <"Заключение по приказу 6ц">
+					description = <"*">
+				>
+				["at0022"] = <
+					text = <"Информация о ведении диспансеризации">
+					description = <"*">
+				>
+				["at0023"] = <
+					text = <"диспансеризация завершена на 1 этапе">
+					description = <"*">
+				>
+				["at0024"] = <
+					text = <"перевод на 2 этап диспансеризации">
+					description = <"*">
+				>
+				["at0025"] = <
+					text = <"диспансеризация завершена на 2 этапе">
+					description = <"*">
+				>
+				["at0026"] = <
+					text = <"получен отказ от проведения дополнительной диспансеризации">
+					description = <"*">
+				>
+			>
+		>
+	>

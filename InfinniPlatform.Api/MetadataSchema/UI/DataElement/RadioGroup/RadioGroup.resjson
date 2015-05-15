@@ -1,0 +1,15 @@
+﻿{
+  "id": "RadioGroup",
+  "description": "Элемент представления для выбора одного значения из списка",
+  "type": "object",
+  "extends": {
+    "$ref": "http://demo.infinnity.ru:8081/display/MC/BaseListElement"
+  },
+  "properties": {
+    "Orientation": {
+      "description": "Ориентация списка элементов",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/RadioGroupOrientation"
+    }
+  },
+  "additionalProperties": false
+}

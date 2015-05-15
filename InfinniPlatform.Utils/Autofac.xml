@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<autofac>
+  <components>
+    <component
+      type = "InfinniPlatform.Runtime.Factories.ScriptFactory, InfinniPlatform.Runtime"
+      service="InfinniPlatform.Factories.IScriptFactory, InfinniPlatform.Core"
+      instance-scope="single-instance"/>
+    <component
+      type = "InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.IndexQueryExecutor, InfinniPlatform.Index.ElasticSearch"
+      service="InfinniPlatform.Index.IIndexQueryExecutor, InfinniPlatform.Core"
+      instance-scope="per-dependency"/>
+    <component
+      type = "InfinniPlatform.Index.ElasticSearch.Factories.ElasticFactory, InfinniPlatform.Index.ElasticSearch"
+      service="InfinniPlatform.Factories.IIndexFactory, InfinniPlatform.Core"
+      instance-scope="single-instance"/>
+    <component
+      type = "InfinniPlatform.Index.ElasticSearch.Factories.VersionProviderManager, InfinniPlatform.Index.ElasticSearch"
+      service="InfinniPlatform.Index.IVersionProviderManager, InfinniPlatform.Core"
+      instance-scope="single-instance"/>
+    <component
+      type = "InfinniPlatform.Index.ElasticSearch.Factories.VersionProviderFactory, InfinniPlatform.Index.ElasticSearch"
+      service="InfinniPlatform.Factories.IVersionProviderFactory, InfinniPlatform.Core"
+      instance-scope="single-instance"/>
+    <component
+      type = "InfinniPlatform.Cassandra.Client.CassandraDatabaseFactory, InfinniPlatform.Cassandra"
+      service="InfinniPlatform.Cassandra.IColumnFamilyDatabaseFactory, InfinniPlatform.Cassandra"
+      instance-scope="single-instance"/>
+    <component
+      type = "InfinniPlatform.EventStorage.CassandraEventStorageFactory, InfinniPlatform.EventStorage"
+      service="InfinniPlatform.Factories.IEventStorageFactory, InfinniPlatform.Core"
+      instance-scope="single-instance"/>
+    <component
+      type = "InfinniPlatform.Transactions.TransactionManager, InfinniPlatform.Core"
+      service="InfinniPlatform.Api.Transactions.ITransactionManager, InfinniPlatform.Api"
+      instance-scope="single-instance"/>
+    <component
+      type = "InfinniPlatform.Hosting.LocalHost.LocalHostServer, InfinniPlatform.Hosting"
+      service="InfinniPlatform.Api.LocalRouting.ILocalHostServer, InfinniPlatform.Api"
+      instance-scope="single-instance"/>
+    <component
+      type = "InfinniPlatform.BlobStorage.CassandraBlobStorageFactory, InfinniPlatform.BlobStorage"
+      service="InfinniPlatform.Factories.IBlobStorageFactory, InfinniPlatform.Core"
+      instance-scope="single-instance"/>
+    <component
+      type = "InfinniPlatform.Factories.GlobalContext, InfinniPlatform.Core"
+      service="InfinniPlatform.Api.Context.IGlobalContext, InfinniPlatform.Api"
+      instance-scope="per-dependency"/>
+    <component
+      type = "InfinniPlatform.Runtime.Factories.ScriptFactoryBuilder, InfinniPlatform.Runtime"
+      service="InfinniPlatform.Factories.IScriptFactoryBuilder, InfinniPlatform.Core"
+      instance-scope="single-instance"/>
+    <component
+      type = "InfinniPlatform.Runtime.Implementation.ChangeListeners.ChangeListener, InfinniPlatform.Runtime"
+      service="InfinniPlatform.Runtime.IChangeListener, InfinniPlatform.Core"
+      instance-scope="single-instance"/>
+    <component
+      type = "InfinniPlatform.Sql.DapperSqlQueryExecutorFactory, InfinniPlatform.Sql"
+      service="InfinniPlatform.Factories.ISqlQueryExecutorFactory, InfinniPlatform.Core"
+      instance-scope="single-instance"/>
+    <component
+      type = "InfinniPlatform.ModelRepository.OpenEhrDataConverter.OceanOpenEhrFactory, InfinniPlatform.ModelRepository"
+      service="InfinniPlatform.Factories.IOpenEhrFactory, InfinniPlatform.Core"
+      instance-scope="single-instance"/>
+    <component
+      type = "InfinniPlatform.WebApi.Factories.HttpResultHandlerFactory, InfinniPlatform.WebApi"
+      service="InfinniPlatform.WebApi.IHttpResultHandlerFactory, InfinniPlatform.WebApi"
+      instance-scope="single-instance"/>
+    <component
+      type = "InfinniPlatform.Metadata.Implementation.MetadataConfiguration.MetadataConfigurationProvider, InfinniPlatform.Metadata"
+      service="InfinniPlatform.Metadata.IMetadataConfigurationProvider, InfinniPlatform.Core"
+      instance-scope="single-instance"/>
+    <component
+      type = "InfinniPlatform.Factories.AggregateProvider, InfinniPlatform.Core"
+      service="InfinniPlatform.Factories.IAggregateProvider, InfinniPlatform.Core"
+      instance-scope="per-dependency"/>
+    <component
+      type = "InfinniPlatform.Metadata.Implementation.MetadataConfiguration.ConfigurationObjectBuilder, InfinniPlatform.Metadata"
+      service="InfinniPlatform.Metadata.IConfigurationObjectBuilder, InfinniPlatform.Core"
+      instance-scope="single-instance"/>
+    <component
+      type = "InfinniPlatform.Metadata.Implementation.MetadataConfiguration.ScriptConfiguration, InfinniPlatform.Metadata"
+      service="InfinniPlatform.Actions.IScriptConfiguration, InfinniPlatform.Core"
+      instance-scope="per-dependency"/>
+    <component
+      type = "InfinniPlatform.Compression.GZipDataCompressor, InfinniPlatform.Core"
+      service="InfinniPlatform.Compression.IDataCompressor, InfinniPlatform.Core"
+      instance-scope="per-dependency"/>
+  </components>
+</autofac>

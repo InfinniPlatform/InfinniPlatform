@@ -1,0 +1,152 @@
+﻿{
+  "Name": "MenuItemEdit",
+  "Text": "Menu Item",
+  "DataSources": [
+    {
+      "ObjectDataSource": {
+        "Name": "MainDataSource"
+      }
+    }
+  ],
+  "LayoutPanel": {
+    "StackPanel": {
+      "Name": "GeneralPagePanel",
+      "Items": [
+        {
+          "GridPanel": {
+            "Name": "GeneralDataPanel",
+            "Rows": [
+              {
+                "Cells": [
+                  {
+                    "ColumnSpan": 2,
+                    "Items": [
+                      {
+                        "Label": {
+                          "Name": "TextLabel",
+                          "Text": "Text:"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "ColumnSpan": 10,
+                    "Items": [
+                      {
+                        "TextBox": {
+                          "Name": "TextEditor",
+                          "Value": {
+                            "PropertyBinding": {
+                              "DataSource": "MainDataSource",
+                              "Property": "Text"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "Cells": [
+                  {
+                    "ColumnSpan": 2,
+                    "Items": [
+                      {
+                        "Label": {
+                          "Name": "ImageLabel",
+                          "Text": "Image:"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "ColumnSpan": 10,
+                    "Items": [
+                      {
+                        "TextBox": {
+                          "Name": "ImageEditor",
+                          "Value": {
+                            "PropertyBinding": {
+                              "DataSource": "MainDataSource",
+                              "Property": "Image"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "Cells": [
+                  {
+                    "ColumnSpan": 2,
+                    "Items": [
+                      {
+                        "Label": {
+                          "Name": "ActionLabel",
+                          "Text": "Action:"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "ColumnSpan": 10,
+                    "Items": [
+                      {
+                        "CodeEditor": {
+                          "Name": "ActionEditor",
+                          "Syntax": "JavaScript",
+                          "Formatter": "JsonObjectFormatter",
+                          "Value": {
+                            "PropertyBinding": {
+                              "DataSource": "MainDataSource",
+                              "Property": "Action"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "ToolBar": {
+            "Name": "GeneralToolBar",
+            "Items": [
+              {
+                "ToolBarButton": {
+                  "Name": "GeneralSaveButton",
+                  "Text": "OK",
+                  "Image": "Actions/Apply_16x16",
+                  "Hotkey": "Ctrl+S",
+                  "Action": {
+                    "SaveItemAction": {
+                      "DataSource": "MainDataSource"
+                    }
+                  }
+                }
+              },
+              {
+                "ToolBarButton": {
+                  "Name": "GeneralCancelButton",
+                  "Text": "Cancel",
+                  "Image": "Actions/Cancel_16x16",
+                  "Action": {
+                    "CancelAction": {
+                      "DataSource": "MainDataSource"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

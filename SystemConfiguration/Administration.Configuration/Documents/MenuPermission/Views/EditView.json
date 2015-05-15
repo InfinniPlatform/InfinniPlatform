@@ -1,0 +1,216 @@
+{
+  "Id": "a9b868b7-584e-4b14-90c5-0f041d9c2506",
+  "__DocumentId": "viewmetadata",
+  "__ConfigId": "systemconfig",
+  "Version": "version_systemconfig",
+  "ParentId": "bd4bfcb7-daf8-4e52-b317-a2b9ed6b0480",
+  "Name": "EditView",
+  "MetadataType": "EditView",
+  "Caption": "",
+  "Description": "",
+  "Text": "Права на меню",
+  "ChildViews": [],
+  "Scripts": [
+    {
+      "Name": "ViewLoaded",
+      "Body": "debugger; \r\n\r\n\r\nvar item = {}; \r\n\r\ncontext.DataSources['MetadataDataSource'].setSelectedItem(item);\r\ncontext.Global.executeAction({\r\n   SaveAction : {\r\n      DataSource : 'MetadataDataSource',\r\n      CanClose : false\r\n   }  \r\n}, function(data) {\r\n\r\n     context.DataSources['ConfigIdDataSource'].setDataItems(data);\r\n\r\n});"
+    },
+    {
+      "Name": "UpdateMenuMetadataList",
+      "Body": "debugger;\r\nvar selectedItemSection = context.DataSources['MainDataSource'].getSelectedItem();\r\nif(selectedItemSection && selectedItemSection.ConfigId && selectedItemSection.ConfigId.DisplayName) {\r\n   \r\n   selectedItemSection.DocumentId = null;\r\n   context.DataSources['MainDataSource'].setSelectedItem(selectedItemSection);\r\n   \r\n   var selectedItem = {};\r\n   selectedItem.Configuration = selectedItemSection.ConfigId.DisplayName;\r\n   selectedItem.MetadataType = 'Menu'; //Получить все меню конфигурации\r\n   context.DataSources['MetadataDataSource'].setSelectedItem(selectedItem);\r\n   \r\n   context.Global.executeAction({\r\n      SaveAction : {\r\n         DataSource : \"MetadataDataSource\",\r\n         CanClose : false\r\n      }\r\n   }, function(data) {\r\n   \t  context.DataSources['MenuIdDataSource'].setDataItems(data);   \r\n   \t  context.Controls['MenuEditor'].setValue(null);\r\n   });    \r\n\r\n}"
+    },
+    {
+      "Name": "OnPrepareSave",
+      "Body": "debugger;\r\nvar selectedItem = context.DataSources['MainDataSource'].getSelectedItem();\r\nif(selectedItem) {\r\n   var configId = selectedItem.ConfigId;\r\n   selectedItem.ConfigId = null;\r\n   if(configId) {\r\n      selectedItem.ConfigId = configId.DisplayName;\r\n   }\r\n   context.DataSources['MainDataSource'].setSelectedItem(selectedItem);\r\n}"
+    }
+  ],
+  "OnLoaded": {
+    "Name": "ViewLoaded"
+  },
+  "DataSources": [
+    {
+      "DocumentDataSource": {
+        "Name": "MainDataSource",
+        "ConfigId": "Administration",
+        "DocumentId": "MenuPermission",
+        "UpdateAction": "SaveMenuPermission"
+      }
+    },
+    {
+      "DocumentDataSource": {
+        "ConfigId": "Administration",
+        "DocumentId": "Role",
+        "Name": "RoleDataSource"
+      }
+    },
+    {
+      "ObjectDataSource": {
+        "Name": "ConfigIdDataSource"
+      }
+    },
+    {
+      "DocumentDataSource": {
+        "Name": "MenuIdDataSource",
+        "ConfigId": "",
+        "DocumentId": ""
+      }
+    },
+    {
+      "DocumentDataSource": {
+        "Name": "MetadataDataSource",
+        "ConfigId": "RestfulApi",
+        "DocumentId": "Configuration",
+        "UpdateAction": "GetConfigMetadataList"
+      }
+    }
+  ],
+  "LayoutPanel": {
+    "StackPanel": {
+      "Items": [
+        {
+          "ScrollPanel": {
+            "LayoutPanel": {
+              "GridPanel": {
+                "Rows": [
+                  {
+                    "Cells": [
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "Label": {
+                              "Text": "Роль пользователя"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "ComboBox": {
+                              "ValueProperty": "Id",
+                              "DisplayProperty": "Name",
+                              "Value": {
+                                "PropertyBinding": {
+                                  "DataSource": "MainDataSource",
+                                  "Property": "Role"
+                                }
+                              },
+                              "Items": {
+                                "PropertyBinding": {
+                                  "DataSource": "RoleDataSource"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "Label": {
+                              "Text": "Конфигурация"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "ComboBox": {
+                              "ValueProperty": "Id",
+                              "DisplayProperty": "Name",
+                              "Autocomplete": "None",
+                              "OnValueChanged": {
+                                "Name": "UpdateMenuMetadataList"
+                              },
+                              "Value": {
+                                "PropertyBinding": {
+                                  "DataSource": "MainDataSource",
+                                  "Property": "ConfigId"
+                                }
+                              },
+                              "Items": {
+                                "PropertyBinding": {
+                                  "DataSource": "ConfigIdDataSource"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "Label": {
+                              "Text": "Меню для роли"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "ComboBox": {
+                              "Name": "MenuEditor",
+                              "ValueProperty": "Id",
+                              "DisplayProperty": "Name",
+                              "Autocomplete": "None",
+                              "Value": {
+                                "PropertyBinding": {
+                                  "DataSource": "MainDataSource",
+                                  "Property": "Menu"
+                                }
+                              },
+                              "Items": {
+                                "PropertyBinding": {
+                                  "DataSource": "MenuIdDataSource"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ToolBar": {
+            "Items": [
+              {
+                "ToolBarButton": {
+                  "Text": "Сохранить",
+                  "OnClick": {
+                    "Name": "OnPrepareSave"
+                  },
+                  "Action": {
+                    "SaveAction": {
+                      "DataSource": "MainDataSource"
+                    }
+                  }
+                }
+              },
+              {
+                "ToolBarButton": {
+                  "Text": "Отмена",
+                  "Action": {
+                    "CancelAction": {}
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

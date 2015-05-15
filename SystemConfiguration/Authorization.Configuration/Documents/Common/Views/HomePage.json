@@ -1,0 +1,32 @@
+{
+  "Id": "cc985825-d554-4590-9ed1-4130f601fcbb",
+  "LayoutPanel": {
+    "GridPanel": {
+      "Rows": [
+        {
+          "Cells": [
+            {
+              "ColumnSpan": 2,
+              "Items": [
+                {
+                  "MenuBar": {
+                    "Name": "MainMenu",
+                    "ConfigId": "Authorization"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "MetadataType": "HomePage",
+  "Description": "",
+  "Caption": "Домашняя страница конфигурации",
+  "Name": "HomePage",
+  "ParentId": "0c23fc63-c756-4822-adb1-0a1deb00524f",
+  "Version": "version_systemconfig",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "viewmetadata"
+}

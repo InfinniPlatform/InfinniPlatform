@@ -1,0 +1,17 @@
+﻿{
+  "id": "PrintElementBorder",
+  "description": "Границы элемента печатного представления",
+  "type": "object",
+  "properties": {
+    "Thickness": {
+      "description": "Толщина границ",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/Thickness"
+    },
+    "Color": {
+      "description": "Цвет границ",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/Color",
+      "default": "Transparent"
+    }
+  },
+  "additionalProperties": false
+}

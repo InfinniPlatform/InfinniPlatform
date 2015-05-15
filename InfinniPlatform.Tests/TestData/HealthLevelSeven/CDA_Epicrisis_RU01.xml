@@ -1,0 +1,3742 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="./test/XSL/1.0/main.xsl"?>
+<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="urn:hl7-RU-EHR:v1" xsi:schemaLocation="
+	urn:hl7-org:v3 ../infrastructure/cda/CDA_RU01.xsd
+	urn:hl7-RU-EHR:v1 ../infrastructure/cda/POCD_MT000040_RU01_Extension.xsd">
+	<!-- Выписной эпикриз оформляется строго определенным образом. Так, он в обязательном порядке включает следующие составные части:
+		 данные о личности пациента, жалобы, анамнез, диагноз, результаты обследований, анализов, осмотров и т.д.;
+		 мнения разных специалистов, данные о ходе и итогах лечения, прогноз и рекомендации по продолжению лечения, реабилитации и т.д. -->
+	<!-- ЗАГОЛОВОК ДОКУМЕНТА -->
+	<realmCode code="RU"/>
+	<!-- Шаблон: Тип документа CDA [1] -->
+	<typeId root="2.16.840.1.113883.1.3" extension="POCD_MT000040_RU01"/>
+	<!-- Шаблон: Версия шаблона стандарта: Эпикриз стационара, версия № 1 -->
+	<templateId root="1.2.643.5.1.13.2.7.5.1"/>
+	<templateId root="1.2.643.5.1.13.2.7.5.1.1"/>
+	<!-- Шаблон: Уникальный номер экземпляра документа. OID root и extention должны образовать уникальную комбинацию. Extention может задаваться в виде UUID [1] -->
+	<id root="1.2.643.5.1.13.3.25.64.109" extension="123"/>
+	<!-- Шаблон: Тип медицинского документа [1] -->
+	<code code="1" codeSystem="1.2.643.5.1.13.2.1.1.646" codeSystemName="Система электронных медицинских документов" displayName="Эпикриз стационара"/>
+	<!-- Шаблон: Название [1] -->
+	<title>Эпикриз</title>
+	<!-- Шаблон: Дата создания документа [1] -->
+	<effectiveTime value="20130617114723+0400"/>
+	<!-- Шаблон: Уровень конфиденциальности документа [1] -->
+	<confidentialityCode code="V" codeSystem="2.16.840.1.113883.5.25" codeSystemName="Уровень конфиденциальности документа" displayName="Закрыто">
+		<!-- Уровень доступа опекуна/попечителя -->
+		<translation code="R" codeSystem="1.2.643.5.1.13.2.7.1.9" codeSystemName="Уровень конфиденциальности опекуна" displayName="Ограниченно"/>
+		<!-- Уровень доступа врача -->
+		<translation code="N" codeSystem="1.2.643.5.1.13.2.7.1.10" codeSystemName="Уровень конфиденциальности врача" displayName="Открыто"/>
+	</confidentialityCode>
+	<!-- Шаблон: Язык документа [1] -->
+	<languageCode code="RU"/>
+	<!-- Шаблон: Номер истории болезни, к которой относится документ [1] -->
+	<setId root="1.2.643.5.1.13.3.25.64.109" extension="2013/321"/>
+	<!-- Шаблон: Версия данного документа [1] -->
+	<versionNumber value="2"/>
+	<!-- НАЧАЛО ДАННЫХ О ПАЦИЕНТЕ -->
+	<!-- Шаблон: Эпикриз_пациент [1] -->
+	<recordTarget typeCode="RCT">
+		<!-- Область описания: "PAT" - пациент -->
+		<realmCode code="PAT"/>
+		<patientRole classCode="PAT">
+			<!-- Код пациента -->
+			<!-- Это автоматически генерируемый МИС id используется для соотнесения детальных данных таких как способ обращения, дата рождения, возраст и т.д. Может быть как UUID, так и код, присвоенный МО, см. тег patient -->
+			<!-- id root="1.2.643.5.1.13.3.25.64.109" extension="7AA0BAAC-0CD0-11E0-9516-4350DFD72085"/> -->
+			<!-- Код физического лица ("48905059995") в организации ("1.2.643.5.1.13.3.25.64.109") -->
+			<id root="1.2.643.5.1.13.3.25.64.109" extension="48905059995"/>
+			<!-- Адрес пациента [0..2] начало блока -->
+			<!-- Адрес фактического места жительства -->
+			<addr use="H">
+				<!-- Страна -->
+				<country>Российская Федерация</country>
+				<!-- Область/Край -->
+				<state>Новосибирская область</state>
+				<!-- Город -->
+				<city>Новосибирск</city>
+				<!-- streetAddressLine используется только для неструктурированного указания адреса, например: -->
+				<streetAddressLine>9-69, Лескова ул., Новосибирск, Новосибирская область, Российская Федерация, 630008</streetAddressLine>
+				<!-- Улица -->
+				<streetName>Лескова ул.</streetName>
+				<!-- Номер дома -->
+				<houseNumber>69</houseNumber>
+				<!-- Квартира -->
+				<additionalLocator>9</additionalLocator>
+				<!-- Почтовый индекс -->
+				<postalCode>630008</postalCode>
+				<!-- Код КЛАДР населенного пункта -->
+				<unitID>5400000100000</unitID>
+				<!-- Геокоординаты объекта -->
+				<direction>55.022155,82.950660</direction>
+			</addr>
+			<!-- Адрес постоянной регистрации -->
+			<addr use="HP">
+				<!-- Страна -->
+				<country>Российская Федерация</country>
+				<!-- Область/Край -->
+				<state>Новосибирская область</state>
+				<!-- Район -->
+				<county>Калининский район</county>
+				<!-- Город/Населенный пункт -->
+				<city>Пашино</city>
+				<!-- streetAddressLine используется только для неструктурированного указания адреса, например: -->
+				<!--<streetAddressLine>11-25, Новоуральская ул., Пашино, Калининский район, Новосибирская область, Российская Федерация, 630900</streetAddressLine> -->
+				<!-- Улица -->
+				<streetName>Новоуральская ул.</streetName>
+				<!-- Номер дома -->
+				<houseNumber>11</houseNumber>
+				<!-- Квартира -->
+				<additionalLocator>25</additionalLocator>
+				<!-- Почтовый индекс -->
+				<postalCode>630900</postalCode>
+				<!-- Код КЛАДР населенного пункта -->
+				<unitID>5400000100400</unitID>
+			</addr>
+			<!-- Конец блока адреса -->
+			<!-- Телефон пациента 1 -->
+			<telecom value="tel:+79876543210"/>
+			<!-- Телефон пациента 2 -->
+			<telecom use="MC" value="tel:+79031234567"/>
+			<!-- Адрес электронной почты пациента -->
+			<telecom value="mailto:viktor.korneev@mail.ru"/>
+			<!-- Факс пациента -->
+			<telecom value="fax:+78442171300"/>
+			<!--Информация, для идентификации пациента -->
+			<patient classCode="PSN" determinerCode="INSTANCE">
+				<!--Идентификатор пациента в МО (МИС) -->
+				<id root="1.2.643.5.1.13.3.25.64.109" extension="48905059995"/>
+				<!-- Фамилия, Имя, Отчество [0..1] -->
+				<name>
+					<!-- Фамилия -->
+					<family>Демидов</family>
+					<!-- Имя -->
+					<given>Петр</given>
+					<!-- Отчество -->
+					<given>Игоревич</given>
+				</name>
+				<!-- Пол пациента [1] -->
+				<administrativeGenderCode code="1" codeSystem="1.2.643.5.1.13.2.1.1.156" codeSystemName="Классификатор половой принадлежности" displayName="Мужской"/>
+				<!-- Дата рождения [0..1] -->
+				<birthTime value="19630913"/>
+				<ext:patient HL7-ClassName="PAT" HL7-Domain="PRPA_RM000000" realmCode="RU">
+					<!-- Шаблон: Место работы пациента [0..1] -->
+					<ext:asEmployment>
+						<!-- Название отрасли -->
+						<ext:jobCode code="51141" codeSystem="1.2.643.5.1.13.2.1.1.62" codeSystemName="Общероссийский классификатор видов экономической деятельности" displayName="Деятельность агентов по оптовой торговле офисным оборудованием и вычислительной техникой [2]"/>
+						<!-- Должность -->
+						<ext:jobTitleName>Агент по оптовой торговле офисным оборудованием и вычислительной техникой [2]</ext:jobTitleName>
+						<ext:employerOrganization classCode="ORG" determinerCode="INSTANCE">
+							<!-- Код ОГРН работодателя [1]-->
+							<ext:id nullFlavor="NI"/>
+							<!-- Название предприятия [1] -->
+							<ext:name>ООО "Формоза"</ext:name>
+						</ext:employerOrganization>
+					</ext:asEmployment>
+					<ext:asLivingTerritoryCode code="77000000000" codeSystem="1.2.643.5.1.13.2.1.1.196" codeSystemName="Классификатор адресов России" displayName="Москва"/>
+					<!-- Тип места жительства -->
+					<ext:asResidenceType code="1" codeSystem="1.2.643.5.1.13.2.1.1.573" codeSystemName="Справочник жителя села или города" displayName="Городской"/>
+					<!-- Социальный статус -->
+					<ext:asMember classCode="MBR">
+						<!-- Группа, к которой относится пациент -->
+						<ext:group classCode="SocialStatus">
+							<ext:code code="4" codeSystem="1.2.643.5.1.13.2.1.1.366" codeSystemName="Классификатор социальных статусов (в том числе занятости) населения" displayName="Работающий"/>
+						</ext:group>
+					</ext:asMember>
+					<!-- Категория льготности -->
+					<ext:asMember classCode="MBR">
+						<ext:effectiveTime>
+							<ext:low inclusive="false" value="17120101"/>
+							<ext:high value="20200101"/>
+						</ext:effectiveTime>
+						<!-- Группа, к которой относится пациент -->
+						<ext:group classCode="PopulationCategory">
+							<ext:code code="11" codeSystem="1.2.643.5.1.13.2.1.1.358" codeSystemName="Классификатор категорий льгот" displayName="граждане РФ, пострадавшие от радиации"/>
+						</ext:group>
+					</ext:asMember>
+					<!--Идентификаторы -->
+					<ext:asOtherIDs classCode="IDENT">
+						<ext:templateId root="1.2.643.5.1.13.2.7.5.1.1" extension="POCD_MT000040_RU01_Extension.OtherIDs"/>
+						<!-- OID документа-->
+						<!--<ext:id root="1.2.643.5.1.13.2.7.100.3"/>-->
+						<!--Тип идентификатора-->
+						<ext:documentType code="5" codeSystem="1.2.643.5.1.13.2.7.1.62" codeSystemName="Тип внешнего идентификатора" displayName="Документ, удостоверяющий личность">
+							<!--Тип документа, удостоверяющего личность -->
+							<ext:translation code="14" codeSystem="1.2.643.5.1.13.2.1.1.498" codeSystemName="Классификатор документов, удостоверяющих личность гражданина Российской Федерации" displayName="Паспорт гражданина РФ"/>
+						</ext:documentType>
+						<!-- Номер и серия документа-->
+						<ext:documentNumber series="4567" number="1234567890"/>
+						<!-- Дата выдачи документа-->
+						<ext:effectiveTime value="20020505"/>
+						<!-- Организация, выдавшая документ-->
+						<ext:scopingOrganization classCode="ORG" determinerCode="INSTANCE">
+							<!--Идентификатор организации, выдавшей документ -->
+							<ext:id nullFlavor="NA"/>
+							<!--Наименование организации, выдавшей документ-->
+							<ext:name>ОУФМС России, по Даниловскому району, г Москвы в ЮАО</ext:name>
+						</ext:scopingOrganization>
+					</ext:asOtherIDs>
+					<!-- Полисы страхования, предъявленные пациентом -->
+					<!-- Полис ОМС -->
+					<ext:asOtherIDs classCode="HLD">
+						<ext:templateId root="1.2.643.5.1.13.2.7.5.1.1" extension="POCD_MT000040_RU01_Extension.OtherIDs"/>
+						<ext:documentType code="1" codeSystem="1.2.643.5.1.13.2.7.1.62" codeSystemName="Тип внешнего идентификатора" displayName="Полис обязательного медицинского страхования"/>
+						<!-- Собственно номер и серия (если есть) и тип полиса -->
+						<ext:documentNumber series="35" number="1234567890"/>
+						<!-- Даты начала и окончания действия полиса -->
+						<ext:effectiveTime value="20100214"/>
+						<!-- Страховая компания, выдавшая полис -->
+						<ext:scopingOrganization classCode="ORG" determinerCode="INSTANCE">
+							<!-- Идентификатор страховой компании по справочнику "Реестр страховых медицинских организаций (ФОМС)" - всегда root="1.2.643.5.1.13.2.1.1.635"-->
+							<ext:id root="1.2.643.5.1.13.2.1.1.635" extension="39" assigningAuthorityName="ЗАО МАКС-М"/>
+							<!-- Название страховой компании -->
+							<ext:name>ЗАО "МАКС-М"</ext:name>
+						</ext:scopingOrganization>
+						<!-- Код территории страхования по справочникам ОКАТО, ОКТМО, КЛАДР -->
+						<ext:InsuredTerritory code="7700000000000" codeSystem="1.2.643.5.1.13.2.1.1.196" codeSystemName="Классификатор адресов России" displayName="Москва"/>
+					</ext:asOtherIDs>
+					<!-- Полис ДМС -->
+					<ext:asOtherIDs classCode="HLD">
+						<ext:templateId root="1.2.643.5.1.13.2.7.5.1.1" extension="POCD_MT000040_RU01_Extension.OtherIDs"/>
+						<ext:documentType code="2" codeSystem="1.2.643.5.1.13.2.7.1.62" codeSystemName="Тип внешнего идентификатора" displayName="Полис добровольного медицинского страхования"/>
+						<!-- Собственно номер и серия (если есть) и тип полиса -->
+						<ext:documentNumber series="1111" number="0987654321"/>
+						<!-- Даты начала и окончания действия полиса -->
+						<ext:effectiveTime>
+							<ext:low value="20130214"/>
+							<ext:high value="20130813"/>
+						</ext:effectiveTime>
+						<!-- Страховая компания, выдавшая полис -->
+						<ext:scopingOrganization classCode="ORG" determinerCode="INSTANCE">
+							<!-- Идентификатор страховой компании по справочнику "Реестр страховых медицинских организаций (ФОМС)" - всегда root="1.2.643.5.1.13.2.1.1.635"-->
+							<ext:id root="1.2.643.5.1.13.2.1.1.635" extension="39" assigningAuthorityName="ЗАО МАКС-М"/>
+							<!-- Название страховой компании -->
+							<ext:name>ЗАО "МАКС-М"</ext:name>
+						</ext:scopingOrganization>
+						<!-- Код территории страхования по справочникам ОКАТО, ОКТМО, КЛАДР -->
+						<ext:InsuredTerritory code="7700000000000" codeSystem="1.2.643.5.1.13.2.1.1.196" codeSystemName="Классификатор адресов России" displayName="Москва"/>
+					</ext:asOtherIDs>
+					<!-- Другие идентификаторы пациента -->
+					<!-- СНИЛС пациента -->
+					<ext:asOtherIDs classCode="IDENT">
+						<ext:templateId root="1.2.643.5.1.13.2.7.5.1.1" extension="POCD_MT000040_RU01_Extension.OtherIDs"/>
+						<ext:documentType code="3" codeSystem="1.2.643.5.1.13.2.7.1.62" codeSystemName="Тип внешнего идентификатора" displayName="Страховой номер индивидуального лицевого счёта"/>
+						<!--<ext:documentNumber type="СНИЛС" number="000-000-000 00"/>-->
+						<ext:documentNumber number="000-000-000 00"/>
+						<ext:effectiveTime value="20100214"/>
+					</ext:asOtherIDs>
+					<!-- ИНН пациента -->
+					<ext:asOtherIDs classCode="IDENT">
+						<ext:templateId root="1.2.643.5.1.13.2.7.5.1.1" extension="POCD_MT000040_RU01_Extension.OtherIDs"/>
+						<ext:documentType code="4" codeSystem="1.2.643.5.1.13.2.7.1.62" codeSystemName="Тип внешнего идентификатора" displayName="Индивидуальный номер налогоплательщика"/>
+						<ext:documentNumber number="123456789101"/>
+						<ext:effectiveTime value="20100214"/>
+						<ext:scopingOrganization classCode="ORG" determinerCode="INSTANCE">
+							<!-- Идентификатор организации -->
+							<ext:id nullFlavor="NA"/>
+						</ext:scopingOrganization>
+						<!-- Код территории страхования по справочникам ОКАТО, ОКТМО, КЛАДР -->
+						<ext:InsuredTerritory nullFlavor="NA"/>
+					</ext:asOtherIDs>
+					<ext:asUnidentified value="true"/>
+				</ext:patient>
+				<!-- Шаблон: Другие участники [0..*] -->
+				<!-- Другой участник случая 1 (опекун / родитель) -->
+				<guardian classCode="GUARD">
+					<!-- Код другого участника [1] -->
+					<!-- Код физического лица ("36598") в реестре ("1.2.643.5.1.13.3.25.64.109") -->
+					<id root="1.2.643.5.1.13.3.25.64.109" extension="36598"/>
+					<!-- Отношение к пациенту [1] -->
+					<code code="1" codeSystem="1.2.643.5.1.13.2.7.1.15" codeSystemName="Отношение к пациенту" displayName="Родитель"/>
+					<!-- Фамилия, имя, отчество -->
+					<guardianPerson>
+						<name>
+							<!-- Фамилия -->
+							<family>Демидов</family>
+							<!-- Имя -->
+							<given>Игорь</given>
+							<!-- Отчество -->
+							<given>Трофимович</given>
+						</name>
+						<ext:person HL7-ClassName="PSN" HL7-Domain="PRPA_RM000000" realmCode="RU">
+							<!--Идентификаторы -->
+							<ext:asOtherIDs classCode="IDENT">
+								<ext:templateId root="1.2.643.5.1.13.2.7.5.1.1" extension="POCD_MT000040_RU01_Extension.OtherIDs"/>
+								<!--Тип идентификатора-->
+								<ext:documentType code="5" codeSystem="1.2.643.5.1.13.2.7.1.62" codeSystemName="Тип внешнего идентификатора" displayName="Документ, удостоверяющий личность">
+									<!--Тип документа, удостоверяющего личность -->
+									<ext:translation code="14" codeSystem="1.2.643.5.1.13.2.1.1.498" codeSystemName="Классификатор документов, удостоверяющих личность гражданина Российской Федерации" displayName="Паспорт гражданина РФ"/>
+								</ext:documentType>
+								<!-- Номер и серия документа-->
+								<ext:documentNumber series="4678" number="1234567890"/>
+								<!-- Дата выдачи документа-->
+								<ext:effectiveTime value="200206505"/>
+								<!-- Организация, выдавшая документ-->
+								<ext:scopingOrganization classCode="ORG" determinerCode="INSTANCE">
+									<!--Идентификатор организации, выдавшей документ -->
+									<ext:id nullFlavor="NA"/>
+									<!--Наименование организации, выдавшей документ-->
+									<ext:name>ОУФМС России, по Даниловскому району, г Москвы в ЮАО</ext:name>
+								</ext:scopingOrganization>
+							</ext:asOtherIDs>
+							<!-- Полисы страхования, предъявленные представителем пациента -->
+							<!-- Полис ОМС представителя пациента-->
+							<ext:asOtherIDs classCode="HLD">
+								<ext:templateId root="1.2.643.5.1.13.2.7.5.1.1" extension="POCD_MT000040_RU01_Extension.OtherIDs"/>
+								<ext:documentType code="1" codeSystem="1.2.643.5.1.13.2.7.1.62" codeSystemName="Тип внешнего идентификатора" displayName="Полис обязательного медицинского страхования"/>
+								<!-- Собственно номер и серия (если есть) и тип полиса -->
+								<ext:documentNumber series="35" number="1234567890"/>
+								<!-- Даты выдачи полиса -->
+								<ext:effectiveTime value="20100214"/>
+								<!-- Страховая компания, выдавшая полис представителю пациента-->
+								<ext:scopingOrganization classCode="ORG" determinerCode="INSTANCE">
+									<!-- Идентификатор страховой компании по справочнику "Реестр страховых медицинских организаций (ФОМС)" - всегда root="1.2.643.5.1.13.2.1.1.635"-->
+									<ext:id root="1.2.643.5.1.13.2.1.1.635" extension="39" assigningAuthorityName="ЗАО МАКС-М"/>
+									<!-- Название страховой компании -->
+									<ext:name>ЗАО "МАКС-М"</ext:name>
+								</ext:scopingOrganization>
+								<!-- Код территории страхования по справочникам ОКАТО, ОКТМО, КЛАДР -->
+								<ext:InsuredTerritory code="7700000000000" codeSystem="1.2.643.5.1.13.2.1.1.196" codeSystemName="Классификатор адресов России" displayName="Москва"/>
+							</ext:asOtherIDs>
+							<!-- Полис ДМС представителя пациента -->
+							<ext:asOtherIDs classCode="HLD">
+								<ext:templateId root="1.2.643.5.1.13.2.7.5.1.1" extension="POCD_MT000040_RU01_Extension.OtherIDs"/>
+								<ext:documentType code="2" codeSystem="1.2.643.5.1.13.2.7.1.62" codeSystemName="Тип внешнего идентификатора" displayName="Полис добровольного медицинского страхования"/>
+								<!-- Собственно номер и серия (если есть) и тип полиса -->
+								<ext:documentNumber series="1111" number="0987654321"/>
+								<!-- Даты начала и окончания действия полиса -->
+								<ext:effectiveTime>
+									<ext:low value="20130214"/>
+									<ext:high value="20130813"/>
+								</ext:effectiveTime>
+								<!-- Страховая компания, выдавшая полис -->
+								<ext:scopingOrganization classCode="ORG" determinerCode="INSTANCE">
+									<!-- Идентификатор страховой компании по справочнику "Реестр страховых медицинских организаций (ФОМС)" - всегда root="1.2.643.5.1.13.2.1.1.635"-->
+									<ext:id root="1.2.643.5.1.13.2.1.1.635" extension="39" assigningAuthorityName="ЗАО МАКС-М"/>
+									<!-- Название страховой компании -->
+									<ext:name>ЗАО "МАКС-М"</ext:name>
+								</ext:scopingOrganization>
+								<!-- Код территории страхования по справочникам ОКАТО, ОКТМО, КЛАДР -->
+								<ext:InsuredTerritory code="7700000000000" codeSystem="1.2.643.5.1.13.2.1.1.196" codeSystemName="Классификатор адресов России" displayName="Москва"/>
+							</ext:asOtherIDs>
+							<!-- Другие идентификаторы представителя пациента -->
+							<!-- СНИЛС представителя пациента -->
+							<ext:asOtherIDs classCode="IDENT">
+								<ext:templateId root="1.2.643.5.1.13.2.7.5.1.1" extension="POCD_MT000040_RU01_Extension.OtherIDs"/>
+								<ext:documentType code="3" codeSystem="1.2.643.5.1.13.2.7.1.62" codeSystemName="Тип внешнего идентификатора" displayName="Страховой номер индивидуального лицевого счёта"/>
+								<ext:documentNumber number="000-000-000 00"/>
+								<ext:effectiveTime value="20100214"/>
+							</ext:asOtherIDs>
+							<!-- ИНН пациента -->
+							<ext:asOtherIDs classCode="IDENT">
+								<ext:templateId root="1.2.643.5.1.13.2.7.5.1.1" extension="POCD_MT000040_RU01_Extension.OtherIDs"/>
+								<ext:documentType code="4" codeSystem="1.2.643.5.1.13.2.7.1.62" codeSystemName="Тип внешнего идентификатора" displayName="Индивидуальный номер налогоплательщика"/>
+								<ext:documentNumber number="123456789101"/>
+								<ext:effectiveTime value="20100214"/>
+								<ext:scopingOrganization classCode="ORG" determinerCode="INSTANCE">
+									<!-- Идентификатор организации, выдавшей полис -->
+									<ext:id nullFlavor="NA"/>
+								</ext:scopingOrganization>
+								<!-- Код территории страхования по справочникам ОКАТО, ОКТМО, КЛАДР -->
+								<ext:InsuredTerritory nullFlavor="NA"/>
+							</ext:asOtherIDs>
+						</ext:person>
+					</guardianPerson>
+				</guardian>
+				<!-- Место рождения [0..1] -->
+				<birthplace classCode="BIRTHPL">
+					<place>
+						<addr use="PHYS">
+							<!-- Страна -->
+							<country>Российская Федерация</country>
+							<!-- Область/Край  -->
+							<state>Волгоградская область</state>
+							<!-- Город -->
+							<city>Урюпинск</city>
+							<unitID/>
+						</addr>
+					</place>
+				</birthplace>
+			</patient>
+		</patientRole>
+	</recordTarget>
+	<!-- КОНЕЦ ДАННЫХ О ПАЦИЕНТЕ -->
+	<!-- ДАННЫЕ ОБ АВТОРЕ ДОКУМЕНТА-->
+	<!-- Шаблон: Медицинский работник - автор [1] -->
+	<author typeCode="AUT">
+		<!-- дата и время создания включенного объекта (дата и время компиляции) [1] -->
+		<time value="20070217114723"/>
+		<assignedAuthor classCode="ASSIGNED">
+			<!-- код медицинского работника (врача) [1] -->
+			<id root="1.2.643.5.1.13.3.25.64.109" extension="2341" assigningAuthorityName="Волгоградская областная больница"/>
+			<!-- Код должности роли медицинского работника по справочнику ("1.2.643.5.1.13.2.1.1.607") Минздрава РФ -->
+			<code code="90" codeSystem="1.2.643.5.1.13.2.1.1.607" codeSystemName="Номенклатура должностей медицинских работников и фармацевтических работников" displayName="Врач-хирург">
+				<translation code="DOCOBS" codeSystem="1.2.643.5.1.13.2.7.1.30" codeSystemName="Роль в оказании медицинской помощи" displayName="Лечащий врач"/>
+			</code>
+			<telecom value="tel:+78442171311"/>
+			<telecom value="mailto:a.privalov@oblhosp.volgograd.ru"/>
+			<telecom value="fax:+78442171300"/>
+			<!-- Фамилия, Имя, Отчество [1] -->
+			<assignedPerson classCode="PSN" determinerCode="INSTANCE">
+				<name>
+					<!-- Фамилия -->
+					<family>Привалов</family>
+					<!-- Имя -->
+					<given>Александр</given>
+					<!-- Отчество -->
+					<given>Иванович</given>
+				</name>
+				<ext:person>
+					<ext:asOtherIDs classCode="IDENT">
+						<ext:templateId root="1.2.643.5.1.13.2.7.5.1.1" extension="POCD_MT000040_RU01_Extension.OtherIDs"/>
+						<ext:documentType code="3" codeSystem="1.2.643.5.1.13.2.7.1.62" codeSystemName="Тип внешнего идентификатора" displayName="Страховой номер индивидуального лицевого счёта"/>
+						<ext:documentNumber number="000-000-000 00"/>
+						<ext:effectiveTime value="20100214"/>
+					</ext:asOtherIDs>
+				</ext:person>
+				<!-- Шаблон: Специальность [0..1] -->
+				<ext:asLicencedEntity HL7-ClassName="LIC" HL7-Domain="PRPM_RM000000" realmCode="RU">
+					<!-- код специальности и название -->
+					<ext:code code="28" codeSystem="1.2.643.5.1.13.2.1.1.181" codeSystemName="Номенклатура специальностей специалистов с высшим и послевузовским медицинским и фармацевтическим образованием в сфере здравоохранения" displayName="Травматология и ортопедия"/>
+				</ext:asLicencedEntity>
+			</assignedPerson>
+			<!-- Шаблон: Медицинская организация [1] -->
+			<representedOrganization classCode="ORG" determinerCode="INSTANCE">
+				<!-- Код учреждения в реестре Минздрава РФ [1] -->
+				<id root="1.2.643.5.1.13.3.25.64.109"/>
+				<!-- Наименование учреждения [1] -->
+				<name>Волгоградская областная больница</name>
+				<!-- Контактные данные [1..*] -->
+				<telecom value="tel:+78442171300"/>
+				<telecom value="mailto:info@oblhosp.volgograd.ru"/>
+				<telecom value="fax:+78442171300"/>
+				<!-- Адрес больницы [1] -->
+				<addr use="PHYS">
+					<!-- Страна -->
+					<country>Российская Федерация</country>
+					<!-- Область/Край  -->
+					<state>Волгоградская область</state>
+					<!-- Город -->
+					<city>Волгоград</city>
+					<!-- Улица -->
+					<streetName>ул. Ангарская</streetName>
+					<!-- Номер дома -->
+					<houseNumber>22</houseNumber>
+					<!-- Почтовый индекс -->
+					<postalCode>400081</postalCode>
+				</addr>
+			</representedOrganization>
+		</assignedAuthor>
+	</author>
+	<!-- КОНЕЦ ДАННЫХ ОБ АВТОРЕ -->
+	<!-- ДАННЫЕ ОБ ОРГАНИЗАЦИИ-ВЛАДЕЛЬЦЕ ДОКУМЕНТА НАЧАЛО -->
+	<!-- Шаблон: Владелец документа [1] -->
+	<custodian typeCode="CST">
+		<assignedCustodian>
+			<representedCustodianOrganization>
+				<!-- Код учреждения в реестре Минздрава РФ [1] -->
+				<id root="1.2.643.5.1.13.3.25.64.109"/>
+				<!-- Наименование учреждения [1] -->
+				<name>Волгоградская областная больница</name>
+			</representedCustodianOrganization>
+		</assignedCustodian>
+	</custodian>
+	<!-- КОНЕЦ ДАННЫХ ОБ ОРГАНИЗАЦИИ-ВЛАДЕЛЬЦЕ ДОКУМЕНТА -->
+	<!-- ДАННЫЕ ОБ УТВЕРЖДАЮЩЕЙ ПОДПИСИ НАЧАЛО -->
+	<!-- Лицо утвердившее документ (Заведующий отделением, председатель комиссиии т.п.) -->
+	<!-- Шаблон: Утвердивший документ документа [0..1] -->
+	<legalAuthenticator>
+		<time value="20130722"/>
+		<signatureCode code="S"/>
+		<assignedEntity>
+			<id root="1.2.643.5.1.13.3.25.64.109" extension="12345" assigningAuthorityName="Волгоградская областная больница"/>
+			<!-- Код должности роли медицинского работника по справочнику ("1.2.643.5.1.13.2.1.1.607") Минздрава РФ -->
+			<code code="262" codeSystem="1.2.643.5.1.13.2.1.1.607" codeSystemName="Номенклатура должностей медицинских работников и фармацевтических работников" displayName="Заведующий отделением">
+				<translation code="4" codeSystem="1.2.643.5.1.13.2.7.1.30" codeSystemName="Роль в оказании медицинской помощи" displayName="Заведующий отделением"/>
+			</code>
+			<assignedPerson>
+				<name>
+					<family>Павлов</family>
+					<!-- Имя -->
+					<given>Сергей</given>
+					<!-- Отчество -->
+					<given>Иванович</given>
+				</name>
+				<ext:person>
+					<ext:asOtherIDs classCode="IDENT">
+						<ext:templateId root="1.2.643.5.1.13.2.7.5.1.1" extension="POCD_MT000040_RU01_Extension.OtherIDs"/>
+						<ext:documentType code="3" codeSystem="1.2.643.5.1.13.2.7.1.62" codeSystemName="Тип внешнего идентификатора" displayName="Страховой номер индивидуального лицевого счёта"/>
+						<ext:documentNumber number="11223344595"/>
+						<ext:effectiveTime value="20100214"/>
+					</ext:asOtherIDs>
+				</ext:person>
+			</assignedPerson>
+		</assignedEntity>
+	</legalAuthenticator>
+	<!-- ДАННЫЕ ОБ УТВЕРЖДАЮЩЕЙ ПОДПИСИ КОНЕЦ-->
+	<!-- ДАННЫЕ О ЛИЦЕ, ПОДПИСАВШЕМ ДОКУМЕНТ НАЧАЛО-->
+	<!-- Шаблон: Подписавший документ [1] -->
+	<authenticator>
+		<time value="20130722"/>
+		<signatureCode code="S"/>
+		<!-- Код врача в МО + наименование организации-->
+		<assignedEntity>
+			<id root="1.2.643.5.1.13.3.25.64.109" extension="2341"/>
+			<!-- Код должности роли медицинского работника по справочнику ("1.2.643.5.1.13.2.1.1.607") Минздрава РФ -->
+			<code code="90" codeSystem="1.2.643.5.1.13.2.1.1.607" codeSystemName="Номенклатура должностей медицинских работников и фармацевтических работников" displayName="Врач-хирург">
+				<translation code="DOCOBS" codeSystem="1.2.643.5.1.13.2.7.1.30" codeSystemName="Роль в оказании медицинской помощи" displayName="Лечащий врач"/>
+			</code>
+			<telecom value="tel:+78442171311"/>
+			<telecom value="mailto:a.privalov@oblhosp.volgograd.ru"/>
+			<telecom value="fax:+78442171300"/>
+			<assignedPerson>
+				<name>
+					<!-- Фамилия -->
+					<family>Привалов</family>
+					<!-- Имя -->
+					<given>Александр</given>
+					<!-- Отчество -->
+					<given>Иванович</given>
+				</name>
+				<ext:person>
+					<ext:asOtherIDs classCode="IDENT">
+						<ext:templateId root="1.2.643.5.1.13.2.7.5.1.1" extension="POCD_MT000040_RU01_Extension.OtherIDs"/>
+						<ext:documentType code="3" codeSystem="1.2.643.5.1.13.2.7.1.62" codeSystemName="Тип внешнего идентификатора" displayName="Страховой номер индивидуального лицевого счёта"/>
+						<ext:documentNumber number="11223344595"/>
+						<ext:effectiveTime value="20100214"/>
+					</ext:asOtherIDs>
+				</ext:person>
+			</assignedPerson>
+		</assignedEntity>
+	</authenticator>
+	<!-- КОНЕЦ ДАННЫХ О ЛИЦЕ, ПОДПИСАВШЕМ ДОКУМЕНТ-->
+	<!-- ДАННЫЕ О КОНТАКТНЫХ ЛИЦАХ ПАЦИЕНТА НАЧАЛО-->
+	<!-- Контактные лица пациента -->
+	<participant typeCode="NOT">
+		<associatedEntity classCode="PRS">
+			<!-- Код контактного лица [0..1] -->
+			<id nullFlavor="NI"/>
+			<!-- Отношение к пациенту [1] -->
+			<code code="3" codeSystem="1.2.643.5.1.13.2.7.1.15" codeSystemName="Отношение к пациенту" displayName="Другие родственники"/>
+			<!-- Способ контакта [1..*] -->
+			<telecom value="tel:+74954223456"/>
+			<!-- Фамилия, Имя, Отчество (если есть) контактного лица [1] -->
+			<associatedPerson>
+				<name>
+					<!-- Фамилия -->
+					<family>Савенкова</family>
+					<!-- Имя -->
+					<given>Арина</given>
+					<!-- Отчество -->
+					<given>Сергеевна</given>
+				</name>
+			</associatedPerson>
+		</associatedEntity>
+	</participant>
+	<!-- КОНЕЦ ДАННЫХ О КОНТАКТНЫХ ЛИЦАХ ПАЦИЕНТА -->
+	<!-- ДАННЫЕ О НАПРАВЛЕНИИ НА ГОСПИТАЛИЗАЦИЯ НАЧАЛО-->
+	<!-- Шаблон: Номер направления [0..1] -->
+	<inFulfillmentOf typeCode="FLFS">
+		<order classCode="ACT" moodCode="RQO">
+			<!-- Номер направления [1] -->
+			<id root="1.2.643.5.1.13.3.25.64.108" extension="101"/>
+			<!-- Тип документа [1] -->
+			<code code="3" codeSystem="1.2.643.5.1.13.2.1.1.646" codeSystemName="Система электронных медицинских документов" displayName="Направление"/>
+			<!-- Срочность госпитализации [1] -->
+			<priorityCode code="1" codeSystem="1.2.643.5.1.13.2.1.1.568" codeSystemName="Классификатор форм оказания медицинской помощи" displayName="Плановая"/>
+			<!-- Дата выдачи направления -->
+			<ext:asOrderDate value="20130507"/>
+		</order>
+	</inFulfillmentOf>
+	<!--КОНЕЦ О НАПРАВЛЕНИИ НА ГОСПИТАЛИЗАЦИЯ-->
+	<!--ОБЩИЕ СВЕДЕНИЯ О ДОКУМЕНТЕ НАЧАЛО  -->
+	<documentationOf>
+		<serviceEvent classCode="PCPR">
+			<templateId root="1.2.643.5.1.13.2.7.5.1.6.6"/>
+			<effectiveTime>
+				<!-- Дата начала госпитализации -->
+				<low value="20130531081300"/>
+				<!-- Дата окончания госпитализации -->
+				<high value="20130615232212"/>
+			</effectiveTime>
+			<performer typeCode="PRF">
+				<functionCode code="12" codeSystem="1.2.643.5.1.13.2.7.1.30" codeSystemName="Роль в оказании медицинской помощи" displayName="Лечащий врач"/>
+				<assignedEntity>
+					<!-- код медицинского работника (врача) [1] -->
+					<id root="1.2.643.5.1.13.3.25.64.109" extension="2341"/>
+					<!-- Код должности роли медицинского работника по справочнику ("1.2.643.5.1.13.2.1.1.607") Минздрава РФ -->
+					<code code="91" codeSystem="1.2.643.5.1.13.2.1.1.607" codeSystemName="Номенклатура должностей медицинских работников и фармацевтических работников" displayName="врач-хирург"/>
+					<assignedPerson>
+						<name>
+							<!-- Фамилия -->
+							<family>Привалов</family>
+							<!-- Имя -->
+							<given>Александр</given>
+							<!-- Отчество -->
+							<given>Иванович</given>
+						</name>
+					</assignedPerson>
+				</assignedEntity>
+			</performer>
+		</serviceEvent>
+	</documentationOf>
+	<!--КОНЕЦ ОБЩИХ СВЕДЕНИЙ О ДОКУМЕНТЕ  -->
+	<!-- СВЕДЕНИЯ О ЗАМЕНЯЕМОМ ДОКУМЕНТЕ НАЧАЛО-->
+	<relatedDocument typeCode="RPLC">
+		<templateId root="1.2.643.5.1.13.2.7.5.1.6.7"/>
+		<parentDocument>
+			<id root="1.2.643.5.1.13.3.25.64.109" extension="111"/>
+			<code code="1" codeSystem="1.2.643.5.1.13.2.1.1.1" codeSystemName="Система электронных медицинских документов" displayName="Эпикриз стационара"/>
+			<setId root="1.2.643.5.1.13.3.25.64.109" extension="2013/321"/>
+			<versionNumber value="1"/>
+		</parentDocument>
+	</relatedDocument>
+	<!-- КОНЕЦ СВЕДЕНИЙ О ЗАМЕНЯЕМОМ ДОКУМЕНТЕ-->
+	<!-- Шаблон: Случай оказания медицинской помощи [1] -->
+	<componentOf>
+		<encompassingEncounter>
+			<!-- Номер истории болезни -->
+			<!-- OID и номер истории болезни должны образовывать уникальную комбинацию в рамках всей системы -->
+			<id root="1.2.643.5.1.13.3.25.64.109" extension="2013/531"/>
+			<!-- Тип случая заболевания (госпитализация) -->
+			<code code="STAT" codeSystem="1.2.643.5.1.13.2.7.1.1" codeSystemName="Вид случая заболевания" displayName="Госпитализация"/>
+			<!-- Дата госпитализации -->
+			<effectiveTime>
+				<!-- Дата начала госпитализации -->
+				<low value="20130531"/>
+				<!-- Дата окончания госпитализации -->
+				<high value="20130615"/>
+			</effectiveTime>
+			<!--Шаблон: Госпитализация стационар, дневной стационар [1] -->
+			<ext:encounter HL7-ClassName="ENC" HL7-Domain="PRPA_RM000000" realmCode="RU">
+				<!-- Кем доставлен [1] -->
+				<ext:admissionReferralSourceCode code="2" codeSystem="1.2.643.5.1.13.2.1.1.281" codeSystemName="Классификатор каналов госпитализации в лечебно-профилактическую организацию" displayName="Самотек"/>
+				<!--Условия оказания помощи-->
+				<ext:encounterType code="1" codeSystem="1.2.643.5.1.13.2.1.1.103" codeSystemName="Классификатор условий оказания медицинской помощи" displayName="Стационарная помощь"/>
+				<!-- Общее количество койко-дней -->
+				<ext:lengthOfStayQuantity value="16"/>
+				<!-- Госпитализирован по поводу данного заболевания в текущем году [1] -->
+				<ext:priorityCode code="1" codeSystem="1.2.643.5.1.13.2.1.1.109" codeSystemName="Классификатор количества госпитализаций" displayName="Госпитализирован впервые в данном году по диагнозу"/>
+				<!-- Время доставки в стационар от начала заболевания [1] -->
+				<ext:timeAfterBegining code="3" codeSystem="1.2.643.5.1.13.2.1.1.537" codeSystemName="Справочник времени доставки больного в стационар от начала заболевания (получения травмы)" displayName="позднее 24-х часов"/>
+				<ext:statusCode code="completed"/>
+			</ext:encounter>
+			<!-- Исход госпитализации [1] -->
+			<dischargeDispositionCode code="1" codeSystem="1.2.643.5.1.13.2.1.1.542" codeSystemName="Классификатор исходов госпитализации" displayName="Выписан"/>
+			<!--Шаблон: Присутствовали [0..1] -->
+			<encounterParticipant typeCode="REF">
+				<assignedEntity>
+					<!-- Код участника [1] -->
+					<id root="1.2.643.5.1.13.3.25.64.109" extension="6543"/>
+					<!-- Код должности и роли медицинского работника-->
+					<code code="90" codeSystem="1.2.643.5.1.13.2.1.1.607" codeSystemName="Номенклатура должностей медицинских работников и фармацевтических работников" displayName="Врач-хирург">
+						<translation code="17" codeSystem="1.2.643.5.1.13.2.7.1.30" codeSystemName="Роль в оказании медицинской помощи" displayName="Наблюдатель"/>
+					</code>
+					<!-- Код и название специальности -->
+					<!--Шаблон: Специальность [1] -->
+					<ext:asLicencedEntity HL7-ClassName="LIC" HL7-Domain="PRPM_RM000000" realmCode="RU">
+						<ext:code code="28" codeSystem="1.2.643.5.1.13.2.1.1.181" codeSystemName="Номенклатура специальностей специалистов с высшим и послевузовским медицинским и фармацевтическим образованием в сфере здравоохранения" displayName="Травматология и ортопедия"/>
+					</ext:asLicencedEntity>
+					<!-- Фамилия, Имя, Отчество (если есть) участника [1] -->
+					<assignedPerson classCode="PSN" determinerCode="INSTANCE">
+						<name>
+							<!-- Фамилия -->
+							<family>Кривцов</family>
+							<!-- Имя -->
+							<given>Александр</given>
+							<!-- Отчество -->
+							<given>Сергеевич</given>
+						</name>
+					</assignedPerson>
+					<representedOrganization classCode="ORG" determinerCode="INSTANCE">
+						<!-- Код организации-->
+						<id root="1.2.643.5.1.13.3.25.64.109"/>
+						<!-- Название организации [1] -->
+						<name>Волгоградская областная больница</name>
+						<!-- Тип медицинской орагнизации -->
+						<standardIndustryClassCode code="2" codeSystem="1.2.643.5.1.13.2.1.1.462" codeSystemName="Номенклатура государственных и муниципальных учреждений здравоохранения и социального обслуживания" displayName="1.1. Больничные учреждения"/>
+					</representedOrganization>
+				</assignedEntity>
+			</encounterParticipant>
+		</encompassingEncounter>
+	</componentOf>
+	<!-- ТЕЛО ДОКУМЕНТА -->
+	<component typeCode="COMP">
+		<structuredBody classCode="DOCBODY" moodCode="EVN">
+			<!-- ПРЕБЫВАНИЕ В СТАЦИОНАРЕ НАЧАЛО -->
+			<!-- Шаблон: Пребывание в стационаре [1] -->
+			<component typeCode="COMP">
+				<section classCode="DOCSECT" moodCode="EVN">
+					<templateId root="1.2.643.5.1.13.2.7.5.2.1"/>
+					<!-- Код секции "HOSP" [1] -->
+					<code code="HOSP" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Пребывание в стационаре"/>
+					<!-- Наименование секции [1] -->
+					<title>Пребывание в стационаре</title>
+					<text>
+						<table border="1">
+							<thead>
+								<tr>
+									<th>Наименование отделения пребывания</th>
+									<th>Дата поступления</th>
+									<th>Дата перевода выписки</th>
+									<th>Длительность пребывания</th>
+									<th>Профиль койки</th>
+									<th>Лечаший врач</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td align="center">Отделение ортопедической хирургии №1</td>
+									<td align="center">31-05-2013</td>
+									<td align="center">10-06-2013</td>
+									<td align="center">11</td>
+									<td align="center">Ортопедические для взрослых</td>
+									<td align="center">Привалов Александр Иванович</td>
+								</tr>
+								<tr>
+									<td align="center">Терапевтическое отделение №1</td>
+									<td align="center">10-06-2013</td>
+									<td align="center">16-06-2013</td>
+									<td align="center">5</td>
+									<td align="center">Терапевтические для взрослых</td>
+									<td align="center">Исаев Тимур Арманович</td>
+								</tr>
+							</tbody>
+						</table>
+						<paragraph>
+							<caption>Направлен на дальнейшее лечение в ГБУЗ ВОКБ № 1</caption>
+						</paragraph>
+					</text>
+					<!-- Шаблон: Отделение пребывания [1..*] -->
+					<!-- Отделение пребывания 1 -->
+					<entry typeCode="COMP">
+						<templateId root="1.2.643.5.1.13.2.7.5.4.3"/>
+						<encounter classCode="ENC" moodCode="EVN">
+							<templateId root="1.2.643.5.1.13.2.7.5.3.1"/>
+							<!-- Тип визита [1], всегда "STAT" -->
+							<code code="STAT" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Отделение пребывания"/>
+							<!-- Статус -->
+							<statusCode code="completed"/>
+							<!-- Время поступления и выбытия [1] -->
+							<effectiveTime>
+								<!-- Время и дата поступления -->
+								<low value="20130531081300"/>
+								<!-- Время и  дата выбытия -->
+								<high value="20130610100000"/>
+							</effectiveTime>
+							<!-- Шаблон: Расширение информации о визите [1] и Шаблон: Длительность пребывания на койке [1] -->
+							<ext:encounter HL7-ClassName="ENC" HL7-Domain="PRPA_RM000000" realmCode="RU">
+								<!-- Условия оказания медицинской помощи -->
+								<ext:encounterType code="1" codeSystem="1.2.643.5.1.13.2.1.1.103" codeSystemName="Классификатор условий оказания медицинской помощи" displayName="Стационарная помощь"/>
+								<!-- Длительность пребывания на койке в днях -->
+								<ext:lengthOfStayQuantity value="11"/>
+							</ext:encounter>
+							<!-- Исполнитель [1] -->
+							<performer typeCode="PRF">
+								<!-- Тип исполнителя [1] -->
+								<modeCode code="DEP" codeSystem="1.2.643.5.1.13.2.7.1.30" codeSystemName="Роль в оказании медицинской помощи" displayName="Отделение"/>
+								<assignedEntity>
+									<!-- Регистрационный код отделения в МО [1] (возможно из Паспорта ЛПУ) -->
+									<id root="1.2.643.5.1.13.3.25.64.109" extension="14" assigningAuthorityName="Ортопедическое отделение"/>
+									<!-- Расширение стандарта [1] -->
+									<ext:asBedProfile HL7-ClassName="LIC" HL7-Domain="PRPM_RM000000" realmCode="RU">
+										<!-- Профиль койки [1] -->
+										<ext:code code="29" codeSystem="1.2.643.5.1.13.2.1.1.221" codeSystemName="Номенклатура коечного фонда медицинской организации" displayName="Ортопедические для взрослых"/>
+									</ext:asBedProfile>
+									<assignedPerson>
+										<name>
+											<!-- Фамилия -->
+											<family>Привалов</family>
+											<!-- Имя -->
+											<given>Александр</given>
+											<!-- Отчество -->
+											<given>Иванович</given>
+										</name>
+									</assignedPerson>
+									<representedOrganization>
+										<!-- Название отделения [1] -->
+										<name>Отделение ортопедической хирургии №1</name>
+										<!-- Отделение является подразделением МО [0..1] -->
+										<asOrganizationPartOf classCode="PART">
+											<wholeOrganization classCode="ORG" determinerCode="INSTANCE">
+												<!-- Название МО [1] -->
+												<name>Волгоградская областная больница</name>
+												<!-- Тип МО [1] -->
+												<standardIndustryClassCode code="2" codeSystem="1.2.643.5.1.13.2.1.1.462" codeSystemName="Номенклатура государственных и муниципальных учреждений здравоохранения и социального обслуживания" displayName="1.1. Больничные учреждения"/>
+											</wholeOrganization>
+										</asOrganizationPartOf>
+									</representedOrganization>
+								</assignedEntity>
+							</performer>
+						</encounter>
+					</entry>
+					<!-- Отделение пребывания 2 -->
+					<entry typeCode="COMP">
+						<templateId root="1.2.643.5.1.13.2.7.5.4.3"/>
+						<encounter classCode="ENC" moodCode="EVN">
+							<templateId root="1.2.643.5.1.13.2.7.5.3.1"/>
+							<!-- Тип визита [1], всегда "STAT" -->
+							<code code="STAT" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Отделение пребывания"/>
+							<!-- Статус -->
+							<statusCode code="completed"/>
+							<!-- Время поступления и выбытия [1] -->
+							<effectiveTime>
+								<!-- Время поступления -->
+								<low value="20130610100000"/>
+								<!-- Время выбытия -->
+								<high value="20130615232212"/>
+							</effectiveTime>
+							<!--Шаблон: Расширение информации о визите [1] и Шаблон: Длительность пребывания на койке [1] -->
+							<ext:encounter HL7-ClassName="ENC" HL7-Domain="PRPA_RM000000" realmCode="RU">
+								<!-- Условия оказания медицинской помощи -->
+								<ext:encounterType code="3" codeSystem="1.2.643.5.1.13.2.1.1.103" codeSystemName="Классификатор условий оказания медицинской помощи" displayName="Стационарозамещающая помощь">
+									<ext:qualifier>
+										<!-- Вид стационарозамещающей помощи -->
+										<ext:value code="daySTAT" codeSystem="1.2.643.5.1.13.2.7.1.5" codeSystemName="Вид стационарозамещающей помощи" displayName="Дневной стационар в стационаре"/>
+									</ext:qualifier>
+								</ext:encounterType>
+								<!-- Длительность пребывания на койке в днях -->
+								<ext:lengthOfStayQuantity value="5"/>
+							</ext:encounter>
+							<!-- Исполнитель [1] -->
+							<performer typeCode="PRF">
+								<!-- Тип исполнителя [1] -->
+								<modeCode code="DEP" codeSystem="1.2.643.5.1.13.2.7.1.30" codeSystemName="Роль в оказании медицинской помощи" displayName="Отделение"/>
+								<assignedEntity>
+									<!-- Регистрационный код отделения в МО [1] (возможно из Паспорта ЛПУ) -->
+									<id root="1.2.643.5.1.13.3.25.64.109" extension="7" assigningAuthorityName="Терапевтическое отделение"/>
+									<!-- Расширение стандарта [1] -->
+									<ext:asBedProfile HL7-ClassName="LIC" HL7-Domain="PRPM_RM000000" realmCode="RU">
+										<!-- Профиль койки [1] -->
+										<ext:code code="1" codeSystem="1.2.643.5.1.13.2.1.1.221" codeSystemName="Номенклатура коечного фонда медицинской организации" displayName="Терапевтические"/>
+									</ext:asBedProfile>
+									<assignedPerson>
+										<name>
+											<!-- Фамилия -->
+											<family>Исаев</family>
+											<!-- Имя -->
+											<given>Тимур</given>
+											<!-- Отчество -->
+											<given>Арманович</given>
+										</name>
+									</assignedPerson>
+									<representedOrganization>
+										<!-- Отделение является подразделением МО [0..1] -->
+										<name>Терапевтическое отделение №1</name>
+										<asOrganizationPartOf classCode="PART">
+											<wholeOrganization classCode="ORG" determinerCode="INSTANCE">
+												<!-- Название МО [1] -->
+												<name>Волгоградская областная больница</name>
+												<!-- Тип МО [1] -->
+												<standardIndustryClassCode code="2" codeSystem="1.2.643.5.1.13.2.1.1.462" codeSystemName="Номенклатура государственных и муниципальных учреждений здравоохранения и социального обслуживания" displayName="1.1. Больничные учреждения"/>
+											</wholeOrganization>
+										</asOrganizationPartOf>
+									</representedOrganization>
+								</assignedEntity>
+							</performer>
+						</encounter>
+					</entry>
+					<!-- Шаблон: Дальнейшее лечение [0..1] -->
+					<entry typeCode="COMP">
+						<templateId root="1.2.643.5.1.13.2.7.5.4.3"/>
+						<encounter classCode="ENC" moodCode="EVN">
+							<templateId root="1.2.643.5.1.13.2.7.5.3.2"/>
+							<!-- Тип визита [1], всегда "NXT" -->
+							<code code="NXT" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Направление на дальнейшее лечение">
+								<originalText>Направлен на дальнейшее лечение в ГБУЗ ВОКБ № 1</originalText>
+							</code>
+							<!-- Статус, всегда "completed" -->
+							<statusCode code="completed"/>
+							<effectiveTime value="20130615"/>
+							<!-- Исполнитель [1] -->
+							<performer typeCode="PRF">
+								<!-- Тип исполнителя [1], всегда "REF" -->
+								<modeCode code="REF" codeSystem="1.2.643.5.1.13.2.7.1.30" codeSystemName="Роль в оказании медицинской помощи" displayName="Учреждение"/>
+								<assignedEntity>
+									<!-- Код учреждения в реестре Минздрава РФ, куда направлен [1] -->
+									<id root="1.2.643.5.1.13.3.25.34.98"/>
+									<representedOrganization>
+										<!-- Наименование учреждения, куда направлен [1] -->
+										<name>ГБУЗ "ВОКБ № 1"</name>
+									</representedOrganization>
+								</assignedEntity>
+							</performer>
+						</encounter>
+					</entry>
+				</section>
+			</component>
+			<!-- ПРЕБЫВАНИЕ В СТАЦИОНАРЕ КОНЕЦ -->
+			<!-- СМЕРТЬ НАЧАЛО -->
+			<!-- Шаблон: Смерть [0..1] -->
+			<component typeCode="COMP">
+				<section classCode="DOCSECT" moodCode="EVN">
+					<templateId root="1.2.643.5.1.13.2.7.5.2.14"/>
+					<!-- Код секции "DEATH" [1] -->
+					<code code="DEATH" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Смерть"/>
+					<!-- Наименование секции [1] -->
+					<title>Сведения о летальном исходе</title>
+					<text>
+						<list>
+							<item>Патологоанатомическое исследование</item>
+						</list>
+						<table border="1">
+							<thead>
+								<tr>
+									<th>Дата</th>
+									<th>Патологоанатомический диагноз</th>
+									<th>Соответствие клинического и патологоанатомического диагнозов</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td align="center">16-06-2013</td>
+									<td align="center">S02.9 - Перелом неуточненный части костей черепа и лицевых костей</td>
+									<td align="center">Расхождение</td>
+								</tr>
+							</tbody>
+						</table>
+						<list>
+							<item>Причина смерти</item>
+						</list>
+						<table border="1">
+							<thead>
+								<tr>
+									<th>Непосредственная причина смерти</th>
+									<th>Предшествующая причина смерти</th>
+									<th>Первоначальная (основная) причина смерти</th>
+									<th>Внешняя причина смерти</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td align="center">S06.10 - Травматический отек головного мозга без открытой внутричерепной раны</td>
+									<td align="center">S06.5 - Травматическое субдуральное кровоизлияние</td>
+									<td align="center">S02.9 - Перелом неуточненный части костей черепа и лицевых костей</td>
+									<td align="center">Y29.9  - В неуточн. условиях</td>
+								</tr>
+							</tbody>
+						</table>
+					</text>
+					<entry>
+						<templateId root="1.2.643.5.1.13.2.7.5.4.4"/>
+						<observation classCode="OBS" moodCode="DEF">
+							<templateId root="1.2.643.5.1.13.2.7.5.3.18"/>
+							<code code="PAT" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Патологоанатомическое исследование"/>
+							<statusCode code="completed"/>
+							<effectiveTime value="201306161700"/>
+							<!--Совпадение диагнозов -->
+							<value xsi:type="CD" code="2" codeSystem="1.2.643.5.1.13.2.7.1.19" codeSystemName="Соответствие клинического и патологоанатомического диагнозов" displayName="Расхождение"/>
+							<performer typeCode="PRF">
+								<assignedEntity>
+									<!-- код медицинского работника (врача) [1] установившего причину смерти-->
+									<id root="1.2.643.5.1.13.3.25.64.109" extension="2341" assigningAuthorityName="Волгоградская областная больница"/>
+									<!-- Код должности роли медицинского работника по справочнику ("1.2.643.5.1.13.2.1.1.607") Минздрава РФ -->
+									<code code="69" codeSystem="1.2.643.5.1.13.2.1.1.607" codeSystemName="Номенклатура должностей медицинских работников и фармацевтических работников" displayName="Врач-судебно-медицинский эксперт"/>
+									<assignedPerson>
+										<name>
+											<!-- Фамилия -->
+											<family>Григорьев</family>
+											<!-- Имя -->
+											<given>Семён</given>
+											<!-- Отчество -->
+											<given>Иванович</given>
+										</name>
+									</assignedPerson>
+								</assignedEntity>
+							</performer>
+							<!-- Отказ от проведения вскрытия -->
+							<entryRelationship typeCode="RSON">
+								<observation classCode="OBS" moodCode="EVN">
+									<code code="1" codeSystem="1.2.643.5.1.13.2.7.1.66" codeSystemName="Причины отказа от проведения процедуры" displayName="Религиозные убеждения"/>
+								</observation>
+							</entryRelationship>
+							<!--Непосредственная причина смерти - т.е. заболевание, травма или другое состояние, непосредственно приведшее к смерти [0..1]-->
+							<entryRelationship typeCode="CAUS">
+								<observation classCode="OBS" moodCode="EVN">
+									<!-- Тип события "DGN" [1] -->
+									<code code="DGN" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Диагноз"/>
+									<statusCode code="completed"/>
+									<effectiveTime value="201306161700"/>
+									<value xsi:type="CD" code="S06.10" codeSystem="1.2.643.5.1.13.2.1.1.641" codeSystemName="Международная классификация болезней и состояний, связанных со здоровьем, Десятого пересмотра. Версия 2" displayName="Травматический отек головного мозга без открытой внутричерепной раны"/>
+									<interpretationCode code="PAT_DEATHRSON " codeSystem="1.2.643.5.1.13.2.7.1.13" codeSystemName="Тип диагноза" displayName="Непосредственная причина смерти"/>
+								</observation>
+							</entryRelationship>
+							<!--Предшествующая причина смерти - т.е. заболевание, травма или другое состояние, непосредственно приведшее к смерти[0..1]-->
+							<entryRelationship typeCode="CAUS">
+								<observation classCode="OBS" moodCode="EVN">
+									<!-- Тип события "DGN" [1] -->
+									<code code="DGN" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Диагноз"/>
+									<statusCode code="completed"/>
+									<effectiveTime value="201306161700"/>
+									<value xsi:type="CD" code="S06.5" codeSystem="1.2.643.5.1.13.2.1.1.641" codeSystemName="Международная классификация болезней и состояний, связанных со здоровьем, Десятого пересмотра. Версия 2" displayName="Травматическое субдуральное кровоизлияние">
+										<originalText>Острая сердечная недостаточность</originalText>
+									</value>
+									<interpretationCode code="PAT_PRVRSON" codeSystem="1.2.643.5.1.13.2.7.1.13" codeSystemName="Тип диагноза" displayName="Предшествующая причина смерти"/>
+								</observation>
+							</entryRelationship>
+							<!--Первоначальная (основная) причина смерти - т.е. заболевание, травма или состояние, явившееся началом цепи болезненных процессов, приведших к смерти [1..1]-->
+							<entryRelationship typeCode="CAUS">
+								<observation classCode="OBS" moodCode="EVN">
+									<!-- Тип события "DGN" [1] -->
+									<code code="DGN" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Диагноз"/>
+									<statusCode code="completed"/>
+									<effectiveTime value="201306161700"/>
+									<value xsi:type="CD" code="S02.9" codeSystem="1.2.643.5.1.13.2.1.1.641" codeSystemName="Международная классификация болезней и состояний, связанных со здоровьем, Десятого пересмотра. Версия 2" displayName="Перелом неуточненный части костей черепа и лицевых костей"/>
+									<interpretationCode code="PAT_PRMRSON" codeSystem="1.2.643.5.1.13.2.7.1.13" codeSystemName="Тип диагноза" displayName="Первоначальная (основная) причина смерти"/>
+								</observation>
+							</entryRelationship>
+							<!--Внешняя причина смерти [0..1]  -->
+							<entryRelationship typeCode="CAUS">
+								<observation classCode="OBS" moodCode="EVN">
+									<!-- Тип события "DGN" [1] -->
+									<code code="DGN" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Диагноз"/>
+									<statusCode code="completed"/>
+									<effectiveTime nullFlavor="NI"/>
+									<value xsi:type="CD" code="Y29.9" codeSystem="1.2.643.5.1.13.2.1.1.641" codeSystemName="Международная классификация болезней и состояний, связанных со здоровьем, Десятого пересмотра. Версия 2" displayName="В неуточн. условиях"/>
+									<interpretationCode code="PAT_EXTRSON" codeSystem="1.2.643.5.1.13.2.7.1.13" codeSystemName="Тип диагноза" displayName="Внешняя причина смерти"/>
+								</observation>
+							</entryRelationship>
+							<!-- Другие причины [0..*]-->
+							<entryRelationship typeCode="CAUS">
+								<observation classCode="OBS" moodCode="EVN">
+									<!-- Тип события "DGN" [1] -->
+									<code code="DGN" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Диагноз"/>
+									<statusCode code="completed"/>
+									<effectiveTime nullFlavor="NI"/>
+									<value xsi:type="CD" code="Y29.9" codeSystem="1.2.643.5.1.13.2.1.1.641" codeSystemName="Международная классификация болезней и состояний, связанных со здоровьем, Десятого пересмотра. Версия 2" displayName="В неуточн.месте">
+										<originalText>Контакт с тупым предметом с неопределенными намерениями в неуточненном месте</originalText>
+									</value>
+									<interpretationCode code="PAT_OTHRSON" codeSystem="1.2.643.5.1.13.2.7.1.13" codeSystemName="Тип диагноза" displayName="Другие заболевания, травмы и состояния, повлиявшие на летальный исход"/>
+								</observation>
+							</entryRelationship>
+						</observation>
+					</entry>
+					<entry typeCode="COMP">
+						<templateId root="1.2.643.5.1.13.2.7.5.4.5"/>
+						<act classCode="ACT" moodCode="EVN">
+							<templateId root="1.2.643.5.1.13.2.7.5.3.10"/>
+							<!-- Тип события [1]: Составление медицинского свидетельства о смерти "DEATHDOC" -->
+							<code code="DEATHDOC" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Составление медицинского свидетельства о смерти"/>
+							<!-- Дата составления свидетельства о смерти [1] -->
+							<effectiveTime value="20130616"/>
+							<performer typeCode="PRF">
+								<assignedEntity>
+									<!-- код медицинского работника (врача) [1] составившего документ-->
+									<id root="1.2.643.5.1.13.3.25.64.109" extension="2341" assigningAuthorityName="Волгоградская областная больница"/>
+									<!-- Код должности роли медицинского работника по справочнику ("1.2.643.5.1.13.2.1.1.607") Минздрава РФ -->
+									<code code="69" codeSystem="1.2.643.5.1.13.2.1.1.607" codeSystemName="Номенклатура должностей медицинских работников и фармацевтических работников" displayName="Врач-судебно-медицинский эксперт"/>
+									<assignedPerson>
+										<name>
+											<!-- Фамилия -->
+											<family>Григорьев</family>
+											<!-- Имя -->
+											<given>Семён</given>
+											<!-- Отчество -->
+											<given>Иванович</given>
+										</name>
+									</assignedPerson>
+								</assignedEntity>
+							</performer>
+							<!-- Шаблон: Данные о смерти [1] -->
+							<entryRelationship typeCode="RSON">
+								<act moodCode="EVN" classCode="ACT">
+									<templateId root="1.2.643.5.1.13.2.7.5.3.19"/>
+									<!-- Тип события [1]: Смерть "DEATH" -->
+									<code code="DEATH" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Смерть"/>
+									<!-- Дата и время смерти [1] -->
+									<effectiveTime value="201306152322"/>
+									<reference typeCode="REFR">
+										<externalDocument classCode="DOC" moodCode="EVN">
+											<!-- Номер медицинского свидетельства о смерти [1] -->
+											<id root="1.2.643.5.1.13.3.25.64.109" extension="93276473"/>
+											<!-- Тип внешнего документа [1] : Медицинское свидетельство о смерти "DEATHCERT" -->
+											<code code="DEATHCERT" codeSystem="1.2.643.5.1.13.2.7.1.38" codeSystemName="Тип внешнего документа" displayName="Медицинское свидетельство о смерти"/>
+										</externalDocument>
+									</reference>
+								</act>
+							</entryRelationship>
+						</act>
+					</entry>
+				</section>
+			</component>
+			<!-- СМЕРТЬ КОНЕЦ -->
+			<!-- ДИАГНОЗЫ НАЧАЛО -->
+			<!-- Шаблон: Диагноз [1] -->
+			<component typeCode="COMP">
+				<section classCode="DOCSECT" moodCode="EVN">
+					<templateId root="1.2.643.5.1.13.2.7.5.2.2"/>
+					<!-- Код секции [1] "DGN" -->
+					<code code="DGN" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Диагнозы"/>
+					<!-- Наименование секции [1] -->
+					<title>Диагнозы</title>
+					<text>
+						<table border="1">
+							<thead>
+								<tr>
+									<th>Основной диагноз</th>
+									<th>Осложнение основоного заболевания</th>
+									<th>Сопутствующее заболевание</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td align="center">M17.1 - Другой первичный гонартроз</td>
+									<td align="center">M96.6 - Перелом после установки ортопед.имплантата суставного протеза или кост.пластинки</td>
+									<td align="center">G35 - Рассеянный склероз</td>
+								</tr>
+							</tbody>
+						</table>
+					</text>
+					<!-- Шаблон: Основной диагноз [1] и Шаблон: Диагноз [1] -->
+					<entry typeCode="COMP">
+						<templateId root="1.2.643.5.1.13.2.7.5.4.4"/>
+						<observation classCode="OBS" moodCode="EVN">
+							<templateId root="1.2.643.5.1.13.2.7.5.3.3"/>
+							<!-- Тип события "DGN" [1] -->
+							<code code="DGN" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Диагноз"/>
+							<!-- Статус: завершен [1] -->
+							<statusCode code="completed"/>
+							<!-- Диагноз в соответствии с МКБ-10: код и наименование диагноза МКБ-10 [1] -->
+							<value code="M17.1" codeSystem="1.2.643.5.1.13.2.1.1.641" codeSystemName="Международная классификация болезней и состояний, связанных со здоровьем, Десятого пересмотра. Версия 2" displayName="Другой первичный гонартроз" xsi:type="CD">
+								<!-- Клинический диагноз [1] -->
+								<originalText>Другой первичный гонартроз правого коленного сустава</originalText>
+							</value>
+							<!-- Тип диагноза (Основной "MAIN") [1] -->
+							<interpretationCode code="MAIN" codeSystem="1.2.643.5.1.13.2.7.1.13" codeSystemName="Тип диагноза" displayName="Основное заболевание"/>
+						</observation>
+					</entry>
+					<!-- Основной диагноз конец -->
+					<!-- Шаблон: Осложнение основного заболевания [0..*] -->
+					<!-- Шаблон: Диагноз [1] -->
+					<entry typeCode="COMP">
+						<templateId root="1.2.643.5.1.13.2.7.5.4.4"/>
+						<observation classCode="OBS" moodCode="EVN">
+							<templateId root="1.2.643.5.1.13.2.7.5.3.3"/>
+							<!-- Тип события "DGN" [1] -->
+							<code code="DGN" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Диагноз"/>
+							<!-- Статус: завершен [1] -->
+							<statusCode code="completed"/>
+							<!-- Диагноз в соответствии с МКБ-10: код и наименование диагноза МКБ-10 [1] -->
+							<value code="M96.6" codeSystem="1.2.643.5.1.13.2.1.1.641" codeSystemName="Международная классификация болезней и состояний, связанных со здоровьем, Десятого пересмотра. Версия 2" displayName="Перелом после установки ортопед.имплантата суставного протеза или кост.пластинки" xsi:type="CD">
+								<!-- Клинический диагноз [1] -->
+								<originalText>Перелом после установки имплантата</originalText>
+							</value>
+							<!-- Тип диагноза (Осложнение основного заболевания "MAIN_COMPL") [1] -->
+							<interpretationCode code="MAIN_COMPL" codeSystem="1.2.643.5.1.13.2.7.1.13" codeSystemName="Тип диагноза" displayName="Осложнение основного заболевания"/>
+						</observation>
+					</entry>
+					<!-- Шаблон: Сопутствующие заболевания [0..*] -->
+					<!-- Шаблон: Диагноз [1] -->
+					<entry typeCode="COMP">
+						<templateId root="1.2.643.5.1.13.2.7.5.4.4"/>
+						<observation classCode="OBS" moodCode="EVN">
+							<templateId root="1.2.643.5.1.13.2.7.5.3.3"/>
+							<!-- Тип события "DGN" [1] -->
+							<code code="DGN" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Диагноз"/>
+							<!-- Статус: завершен [1] -->
+							<statusCode code="completed"/>
+							<!-- Диагноз в соответствии с МКБ-10: код и наименование диагноза МКБ-10 [1] -->
+							<value code="G35" codeSystem="1.2.643.5.1.13.2.1.1.641" codeSystemName="Международная классификация болезней и состояний, связанных со здоровьем, Десятого пересмотра. Версия 2" displayName="Рассеянный склероз" xsi:type="CD">
+								<!-- Клинический диагноз [1] -->
+								<originalText>Рассеянный склероз</originalText>
+							</value>
+							<!-- Тип диагноза (всегда - BY_ILLNESS Сопутствующее заболевание) [1] -->
+							<interpretationCode code="BY_ILLNESS" codeSystem="1.2.643.5.1.13.2.7.1.13" codeSystemName="Тип диагноза" displayName="Сопутствующее заболевание"/>
+						</observation>
+					</entry>
+					<!-- Сопутствующие заболевания конец -->
+				</section>
+			</component>
+			<!-- ДИАГНОЗЫ КОНЕЦ -->
+			<!-- ПЕРВИЧНЫЙ ОСМОТР НАЧАЛО-->
+			<!-- Шаблон: Первичный осмотр [1] -->
+			<component typeCode="COMP">
+				<section classCode="DOCSECT" moodCode="EVN">
+					<templateId root="1.2.643.5.1.13.2.7.5.2.3"/>
+					<!-- Код секции [1] "PRMOBS" -->
+					<code code="PRMOBS" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Первичный осмотр"/>
+					<title>Первичный осмотр</title>
+					<text>
+            <list>
+							<item>
+								<caption>Со слов пациента:</caption>
+								<content>Боль при хотьбе, отек области коленного сустава</content>
+							</item>
+							<item>
+								<caption>Анамнез жизни:</caption>
+								<list>
+									<item>
+										<caption>Общебиографические сведения:</caption>
+										<content>Рос и развивался без особенностей</content>
+									</item>
+									<item>
+										<caption>Социальный анамнез:</caption>
+										<content>Не отягощен</content>
+									</item>
+									<item>
+										<caption>Семейный (наследственный анамнез):</caption>
+										<table border="1">
+											<thead>
+												<tr>
+													<th>Отношение к пациенту</th>
+													<th>Заболевание</th>
+													<th>Дата смерти</th>
+													<th>Причина смерти</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td align="center">Отец</td>
+													<td align="center">Гипертензивная [гипертоническая] болезнь с преимущ. поражением почек; причина смерти</td>
+													<td align="center">1983</td>
+													<td align="center">Острый инфаркт миокарда, в возрасте</td>
+												</tr>
+												<tr>
+													<td align="center">Брат</td>
+													<td align="center">Инсулинзависимый сахарный диабет</td>
+													<td/>
+													<td/>
+												</tr>
+											</tbody>
+										</table>
+									</item>
+									<item>
+										<caption>Факторы риска:</caption>
+										<list>
+											<item>
+												<caption>Фактор риска и медицинского анамнеза:</caption>
+												<content>Курение</content>
+											</item>
+										</list>
+									</item>
+								</list>
+							</item>
+							<item>
+								<caption>Анамнез заболевания:</caption>
+								<list>
+									<item>
+										<caption>История настоящего заболевания</caption>
+										<content>Считает себя заболевшим с ноября 2012 года, когда после физической нагрузки почувствовал боль при разгибании колена</content>
+									</item>
+									<item>
+										<caption>Перенесенные заболевания:</caption>
+										<table border="1">
+											<thead>
+												<tr>
+													<th>Дата</th>
+													<th>Обстоятельства возникновения заболевания</th>
+													<th>Диагноз</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td align="center">1963</td>
+													<td align="center">В детском возрасте</td>
+													<td align="center">A37.0 - Коклюш,вызв. Bordetella pertussis</td>
+												</tr>
+											</tbody>
+										</table>
+									</item>
+									<item>
+										<caption>Предыдущие госпитализации</caption>
+										<table border="1">
+											<thead>
+												<tr>
+													<th>Дата госпитализации</th>
+													<th>Дата Выписки</th>
+													<th>Учреждение</th>
+													<th>Причина госпитализации</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td align="center">12.12.2012</td>
+													<td align="center">24.12.2012</td>
+													<td align="center">ГКБ №10</td>
+													<td align="center">Плановое обследование в терапевтическом отделении</td>
+												</tr>
+											</tbody>
+										</table>
+									</item>
+								</list>
+							</item>
+							<item>
+								<caption>Объективные данные</caption>
+								<list>
+									<item>
+										<caption>Функциональное обследование:</caption>
+										<table border="1">
+											<thead>
+												<tr>
+													<th>Параметр функционального обследования</th>
+													<th>Результат осмотра</th>
+													<th>Контрольное значение</th>
+													<th>Единицы измерения</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td align="center">Частота дыхательных движений</td>
+													<td align="center">20</td>
+													<td align="center">16-20</td>
+													<td align="center"> в/мин.</td>
+												</tr>
+												<tr>
+													<td align="center">Частота сердечных сокращений</td>
+													<td align="center">75</td>
+													<td align="center">60-90</td>
+													<td align="center"> в/мин.</td>
+												</tr>
+												<tr>
+													<td align="center">Систолическое артериальное давление</td>
+													<td align="center">120</td>
+													<td align="center">120-130</td>
+													<td align="center">мм.рт.ст.</td>
+												</tr>
+												<tr>
+													<td align="center">Диастолическое артериальное давление</td>
+													<td align="center">80</td>
+													<td align="center">80-85</td>
+													<td align="center">мм.рт.ст.</td>
+												</tr>
+												<tr>
+													<td align="center">Температура тела</td>
+													<td align="center">36.6</td>
+													<td align="center">35.5 до 37.4</td>
+													<td align="center">°C</td>
+												</tr>
+												<tr>
+													<td align="center">Рост</td>
+													<td align="center">176</td>
+													<td/>
+													<td align="center">см.</td>
+												</tr>
+												<tr>
+													<td align="center">Вес</td>
+													<td align="center">60</td>
+													<td/>
+													<td align="center">кг.</td>
+												</tr>
+												<tr>
+													<td align="center">ИМТ</td>
+													<td align="center">19</td>
+													<td/>
+													<td/>
+												</tr>
+												<tr>
+													<td align="center">Кожная складка (область живота)</td>
+													<td align="center">13</td>
+													<td/>
+													<td align="center">см.</td>
+												</tr>
+											</tbody>
+										</table>
+									</item>
+									<item>
+										<caption>Физикальное обследование:</caption>
+										<table border="1">
+											<thead>
+												<tr>
+													<th>Параметр физикального обследования</th>
+													<th>Состояние</th>
+													<th>Описание состояния</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td align="center">Кожные покровы</td>
+													<td align="center">Норма</td>
+													<td align="center">Кожные покровы без патологических изменений, физиологической окраски. Тургор и эластичность кожи удовлетворительные</td>
+												</tr>
+												<tr>
+													<td align="center">Видимые слизистые оболочки</td>
+													<td align="center">Норма</td>
+													<td align="center">Слизистая ротовой полости розовая, важная, блестящая, гиперсаливации нет. Конъюктива чистая, блестящая, влажная. Задняя стенка глотки розовая, налетов нет</td>
+												</tr>
+												<tr>
+													<td align="center">Ногти</td>
+													<td align="center">Норма</td>
+													<td align="center">Округлой формы, бледно-розового цвет, без трофических изменений. Патологических маркеров не выявлено</td>
+												</tr>
+												<tr>
+													<td align="center">Подкожно-жировая клетчатка</td>
+													<td align="center">Норма</td>
+													<td align="center">Округлой формы, имеют розовый цвет, без трофических изменений</td>
+												</tr>
+												<tr>
+													<th>Лимфатическая система</th>
+													<td align="center">Норма</td>
+													<td align="center">Периферические лимфатические узлы не пальпируются</td>
+												</tr>
+												<tr>
+													<th>Эндокринная система</th>
+													<td align="center">Норма</td>
+													<td align="center">Оволосение по мужскому типу, масса тела не увеличена. Патологических маркеров не выявлено</td>
+												</tr>
+												<tr>
+													<td align="center">Щитовидная железа</td>
+													<td align="center">Норма</td>
+													<td align="center">Не увеличена</td>
+												</tr>
+												<tr>
+													<th>Система органов кровообращения</th>
+													<td align="center">Норма</td>
+													<td align="center">Сердечные тоны ясные. Ритм синусовый. Границы абсолютной и относительной тупости сердца не изменены. Пульс умеренного наполнения и напряжения. Дефицита пульса нет. Патологические симптомы:"сердечный горб" не определяется. Пульсации сосудов не видно. Пальпаторно верхушечный толчок определяется на 1 см кнутри от срединно-ключичной линии в 5 межреберье слева. На основании сердца пульсация сосудов пальпаторно не определяется </td>
+												</tr>
+												<tr>
+													<th>Система органов дыхания</th>
+													<td align="center">Норма</td>
+													<td align="center">При перкуссии границы легких определяются на обычном уровне, высота стояния верхушек легких спереди 3,5 см от ключицы справа и слева. Поля Кренига справа 6 см, слева 6 см. Границы легких не изменены. При сравнительной перкуссии над обоими легкими определяется ясный легочный звук Дыхание везикулярное. Бронхофония сохранена. Хрипы не выслушиваются Патологические симптомы: крепитация и шум трения плевры не прослушивается, голосовое дрожание на симметричных участках проводится одинаково</td>
+												</tr>
+												<tr>
+													<th>Система органов пищеварения</th>
+													<td align="center">Норма</td>
+													<td align="center">Язык влажный, обложен белым налетом Зубы требуют санации Глотание и прохождение пищи по пищеводу свободное Живот Обычной формы, участвует а акте дыхания, мягкий, спокойный, безболезненный Перистальтика отчетливая Печень Верхняя граница печени совпадает с нижней границей правого легкого, нижняя проходит по правой реберной дуге. Пальпаторно нижний край печени эластичный, острый, безболезненный. Поверхность ровная, гладкая Желчный пузырь не пальпируется Селезенка не увеличена Патологические симптомы: Симптомы раздражения брюшины отрицательные. Напряжение мышц передней брюшной стенки не выявлено </td>
+												</tr>
+												<tr>
+													<th>Костно-мышечная система</th>
+													<td align="center">Норма</td>
+													<td align="center">В конфигурации скелета деформаций не выявлено, суставы правильной конфигурации, движения в них в полном объеме, безболезнены. Деформации черепа отсутствуют, движения шейного отдела позвоночника в полном объеме. Степень развития мышц, сила и тонус - удовлетворительно, пальпация отдельных мышечных групп безболезненна.</td>
+												</tr>
+												<tr>
+													<th>Мочеполовая система</th>
+													<td align="center">Норма</td>
+													<td align="center">Область почек при пальпации безболезненная, почки не пальпируются. Симптом Пастернацкого отрицательный с обеих сторон. Мочеиспускание безболезненное, регулярное. Диурез 1-1,5 л в сутки Патологические симптомы отсутствуют</td>
+												</tr>
+												<tr>
+													<td align="center">Молочные железы</td>
+													<td align="center">Норма</td>
+													<td align="center">Патологических состояний не выявлено</td>
+												</tr>
+											</tbody>
+										</table>
+									</item>
+									<item>
+										<caption>Психический статус</caption>
+										<content>Сознание ясное. Контактен, поведение адекватное. Реально оценивает тяжесть собственного состояния. Настроение спокойное, подавленности, раздражительности не отмечено</content>/>
+											</item>
+									<item>
+										<caption>Неврологический статус</caption>
+										<content>Координация движений в норме. Глубокие сухожильные рефлексы в норме. Чувствительность сохранена в полном объеме. Патологические симптомы: функция черепно-мозговых нервов сохранны. Патологических рефлексов и менингеальных знаков не выявлено. Дермографизм нестойкий розовый.</content>
+									</item>
+								</list>
+							</item>
+							<item>
+								<table border="1">
+									<tbody align="center">
+										<tr>
+											<th align="center">Предварительный диагноз</th>
+											<td align="center">Гонартроз коленного сустава</td>
+										</tr>
+									</tbody>
+								</table>
+							</item>
+							<item>
+								<paragraph/>
+								<table border="1">
+									<thead>
+										<tr>
+											<th/>
+											<th>План обследования</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<th>Лабораторные исследования:</th>
+											<td align="center">Общий (клинический) анализ крови; Биохимический анализ крови; Общий анализ мочи</td>
+										</tr>
+										<tr>
+											<th>Инструментальные исследования</th>
+											<td align="center">Рентгенография коленного сустава; Рентгеноскопия грудной клетки; Электрокардиография</td>
+										</tr>
+									</tbody>
+								</table>
+							</item>
+							<item>
+								<table border="1">
+									<thead>
+										<tr>
+											<th/>
+											<th>План лечения</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<th>Медикаментозное лечение:</th>
+											<td align="center">Симптоматическая терапия. K, Mg - сберегающие диуретики. Нестероидные противовоспалительные средства (НПВП). Витаминно-минеральный комплекс. Обезболивающие стредства. Снотворное.</td>
+										</tr>
+										<tr>
+											<th>Оперативное лечение:</th>
+											<td align="center">Показанао эндопротезирование коленного сустава</td>
+										</tr>
+									</tbody>
+								</table>
+							</item>
+						</list>
+					</text>
+					<!--Шаблон: Жалобы [0..1] -->
+					<component typeCode="COMP">
+						<section classCode="DOCSECT" moodCode="EVN">
+							<templateId root="1.2.643.5.1.13.2.7.5.2.15"/>
+							<!-- Код секции [1] "COMPLNTS" -->
+							<code code="COMPLNTS" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Жалобы"/>
+							<!-- Наименование секции [1] -->
+							<title>Жалобы</title>
+							<text>
+								<list>
+									<item>
+										<caption>Со слов пациента:</caption>
+										<content>Боль при хотьбе, отек области коленного сустава</content>
+									</item>
+								</list>
+							</text>
+							<!-- Шаблон: Жалобы пациента -->
+							<entry typeCode="COMP">
+								<templateId root="1.2.643.5.1.13.2.7.5.4.4"/>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="1.2.643.5.1.13.2.7.5.3.5"/>
+									<!-- Тип события "COMPLNT" (опрос, выявление жалоб) [1] -->
+									<code code="COMPLNT" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Жалобa"/>
+									<!-- Статус: завершен [1] -->
+									<statusCode code="completed"/>
+									<!-- Дата и время возникновения симптомов-->
+									<effectiveTime value="20130930152000"/>
+									<!-- Кто выявил симптомы -->
+									<value code="1" codeSystem="1.2.643.5.1.13.2.1.1.270" codeSystemName="Классификатор лиц, зафиксировавших симптомы у больного" displayName="Самим пациентом" xsi:type="CD">
+										<!-- Жалобы [1] -->
+										<originalText>Боль при хотьбе, отек области коленного сустава</originalText>
+									</value>
+								</observation>
+							</entry>
+						</section>
+					</component>
+					<!--ОПРОС (ЖАЛОБЫ) КОНЕЦ -->
+					<!-- АНАМНЕЗ ЖИЗНИ НАЧАЛО-->
+					<component typeCode="COMP">
+						<section classCode="DOCSECT" moodCode="EVN">
+							<templateId root="1.2.643.5.1.13.2.7.5.2.17"/>
+							<!-- Код секции [1] "LANAM" -->
+							<code code="LANAM" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Анамнез жизни"/>
+							<title>Анамнез жизни</title>
+							<text>
+								<list>
+									<item>
+										<caption>Общебиографические сведения:</caption>
+										<content>Рос и развивался без особенностей</content>
+									</item>
+									<item>
+										<caption>Социальный анамнез:</caption>
+										<content>Не отягощен</content>
+									</item>
+									<item>
+										<caption>Семейный (наследственный анамнез):</caption>
+										<table border="1">
+											<thead>
+												<tr>
+													<th>Отношение к пациенту</th>
+													<th>Заболевание</th>
+													<th>Дата смерти</th>
+													<th>Причина смерти</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td align="center">Отец</td>
+													<td align="center">Гипертензивная [гипертоническая] болезнь с преимущ. поражением почек; причина смерти</td>
+													<td align="center">1983</td>
+													<td align="center">Острый инфаркт миокарда, в возрасте</td>
+												</tr>
+												<tr>
+													<td align="center">Брат</td>
+													<td align="center">Инсулинзависимый сахарный диабет</td>
+													<td/>
+													<td/>
+												</tr>
+											</tbody>
+										</table>
+									</item>
+									<item>
+										<caption>Факторы риска:</caption>
+										<list>
+											<item>
+												<caption>Фактор риска и медицинского анамнеза:</caption>
+												<content>Курение</content>
+											</item>
+										</list>
+									</item>
+								</list>
+							</text>
+							<!-- Анамнез жизни: Общебиографические сведения (секция->компонент 1) начало-->
+							<component typeCode="COMP">
+								<section classCode="DOCSECT" moodCode="EVN">
+									<templateId root="1.2.643.5.1.13.2.7.5.2.25"/>
+									<!-- Код секции [1] "BIOGR" -->
+									<code code="BIOGR" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Общебиографические сведения"/>
+									<title>Общебиографические сведения</title>
+									<text>
+										<list>
+											<item>
+												<caption>Общебиографические сведения:</caption>
+												<content>Рос и развивался без особенностей</content>
+											</item>
+										</list>
+									</text>
+								</section>
+							</component>
+							<!-- Анамнез жизни: Общебиографические сведения (секция->компонент 1) конец-->
+							<!-- Анамнез жизни: Социальный статус (секция->компонент 2) начало-->
+							<component typeCode="COMP">
+								<section classCode="DOCSECT" moodCode="EVN">
+									<templateId root="1.2.643.5.1.13.2.7.5.2.28"/>
+									<!-- Код секции [1] "SOCANAM" -->
+									<code code="SOCANAM" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Социальный анамнез"/>
+									<title>Социальный статус</title>
+									<text>
+										<list>
+											<item>
+												<caption>Социальный анамнез:</caption>
+												<content>Не отягощен</content>
+											</item>
+										</list>
+									</text>
+								</section>
+							</component>
+							<component typeCode="COMP">
+								<!--Анамнез жизни: Семейный (наследственный) анамнез (секция ->  компонент 3) начало-->
+								<section classCode="DOCSECT" moodCode="EVN">
+									<templateId root="1.2.643.5.1.13.2.7.5.2.27"/>
+									<!-- Код секции [1] "FAMILY" -->
+									<code code="FAMILY" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Семейный (наследственный) анамнез)"/>
+									<title>Семейный (наследственный анамнез)</title>
+									<text>
+										<table border="1">
+											<thead>
+												<tr>
+													<th>Отношение к пациенту</th>
+													<th>Заболевание</th>
+													<th>Дата смерти</th>
+													<th>Причина смерти</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td align="center">Отец</td>
+													<td align="center">Гипертензивная [гипертоническая] болезнь с преимущ. поражением почек; причина смерти</td>
+													<td align="center">1983</td>
+													<td align="center">Острый инфаркт миокарда, в возрасте</td>
+												</tr>
+												<tr>
+													<td align="center">Брат</td>
+													<td align="center">Инсулинзависимый сахарный диабет</td>
+													<td/>
+													<td/>
+												</tr>
+											</tbody>
+										</table>
+									</text>
+									<entry>
+										<templateId root="1.2.643.5.1.13.2.7.5.4.4"/>
+										<!-- Родственник 1 (основное заболевание родственника - фактор риска) начало -->
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="1.2.643.5.1.13.2.7.5.3.13"/>
+											<code code="FAMILY" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Семейный (наследственный) анамнез"/>
+											<value code="I12" codeSystem="1.2.643.5.1.13.2.1.1.641" codeSystemName="Международная классификация болезней и состояний, связанных со здоровьем, Десятого пересмотра. Версия 2" displayName="Гипертензивная [гипертоническая] болезнь с преимущ. поражением почек" xsi:type="CD"/>
+											<subject>
+												<relatedSubject classCode="PRS">
+													<code code="1" codeSystem="1.2.643.5.1.13.2.7.1.15" codeSystemName="Отношение к пациенту" displayName="Родитель">
+														<originalText>Отец</originalText>
+													</code>
+												</relatedSubject>
+											</subject>
+											<!-- Заболевание - причина смерти -->
+											<entryRelationship typeCode="CAUS">
+												<observation classCode="OBS" moodCode="EVN">
+													<templateId root="1.2.643.5.1.13.2.7.5.3.20"/>
+													<code code="FAMDEATH" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Причина смерти родственника"/>
+													<effectiveTime>
+														<low value="1983"/>
+													</effectiveTime>
+													<value xsi:type="CD" code="I21" codeSystem="1.2.643.5.1.13.2.1.1.641" codeSystemName="Международная классификация болезней и состояний, связанных со здоровьем, Десятого пересмотра. Версия 2" displayName="Острый инфаркт миокарда"/>
+													<interpretationCode code="PAT_DEATHRSON " codeSystem="1.2.643.5.1.13.2.7.1.13" codeSystemName="Тип диагноза" displayName="Непосредственная причина смерти"/>
+												</observation>
+											</entryRelationship>
+										</observation>
+									</entry>
+									<!-- Родственник 1 (основное заболевание родственника - фактор риска) конец -->
+									<!-- Родственник 2 (основное заболевание родственника - фактор риска) начало-->
+									<entry>
+										<templateId root="1.2.643.5.1.13.2.7.5.4.4"/>
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="1.2.643.5.1.13.2.7.5.3.13"/>
+											<code code="FAMILY" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Семейный (наследственный) анамнез"/>
+											<value code="E10" codeSystem="1.2.643.5.1.13.2.1.1.641" codeSystemName="Международная классификация болезней и состояний, связанных со здоровьем, Десятого пересмотра. Версия 2" displayName="Инсулинзависимый сахарный диабет" xsi:type="CD"/>
+											<subject>
+												<relatedSubject classCode="PRS">
+													<code code="2" codeSystem="1.2.643.5.1.13.2.7.1.15" codeSystemName="Отношение к пациенту" displayName="Близкий родственник">
+														<originalText>Брат</originalText>
+													</code>
+												</relatedSubject>
+											</subject>
+										</observation>
+									</entry>
+								</section>
+							</component>
+							<!--Анамнез жизни: Семейный (наследственный) анамнез (секция ->  компонент 3) конец-->
+							<!-- Анамнез жизни: Факторы риска (секция->компонент 4) начало-->
+							<component typeCode="COMP">
+								<section classCode="DOCSECT" moodCode="EVN">
+									<templateId root="1.2.643.5.1.13.2.7.5.2.26"/>
+									<!-- Код секции [1] "RISKFACTORS" -->
+									<code code="RISKFACTORS" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Факторы риска"/>
+									<title>Факторы риска</title>
+									<text>
+										<list>
+											<item>
+												<caption>Фактор риска и медицинского анамнез:</caption>
+												<content>Курение</content>
+											</item>
+										</list>
+									</text>
+									<entry>
+										<templateId root="1.2.643.5.1.13.2.7.5.4.7"/>
+										<organizer classCode="CLUSTER" moodCode="EVN">
+											<templateId root="1.2.643.5.1.13.2.7.5.3.14"/>
+											<code code="RISKFACTOR" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Фактор риска"/>
+											<statusCode code="completed"/>
+											<component typeCode="COMP">
+												<observation classCode="OBS" moodCode="EVN">
+													<code code="3" codeSystem="1.2.643.5.1.13.2.1.1.325" codeSystemName="Классификатор факторов риска и медицинского анамнеза больного с острым нарушением мозгового кровообращения" displayName="Курение"/>
+													<effectiveTime value="1987"/>
+												</observation>
+											</component>
+										</organizer>
+									</entry>
+								</section>
+							</component>
+							<!-- Анамнез жизни: Факторы риска (секция->компонент 4) конец-->
+						</section>
+					</component>
+					<!-- АНАМНЕЗ ЖИЗНИ КОНЕЦ-->
+					<!-- АНАМНЕЗ ЗАБОЛЕВАНИЯ НАЧАЛО-->
+					<component typeCode="COMP">
+						<section classCode="DOCSECT" moodCode="EVN">
+							<templateId root="1.2.643.5.1.13.2.7.5.2.16"/>
+							<!-- Код секции [1] "ANAM" -->
+							<code code="ANAM" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Анамнез заболевания"/>
+							<title>Анамнез заболевания</title>
+							<text>
+								<list>
+									<item>
+										<caption>История настоящего заболевания</caption>
+										<content>Считает себя заболевшим с ноября 2012 года, когда после физической нагрузки почувствовал боль при разгибании колена</content>
+									</item>
+									<item>
+										<caption>Перенесенные заболевания:</caption>
+										<table border="1">
+											<thead>
+												<tr>
+													<th>Дата</th>
+													<th>Обстоятельства возникновения заболевания</th>
+													<th>Диагноз</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td align="center">1963</td>
+													<td align="center">В детском возрасте</td>
+													<td align="center">A37.0 - Коклюш,вызв. Bordetella pertussis</td>
+												</tr>
+											</tbody>
+										</table>
+									</item>
+									<item>
+										<caption>Предыдущие госпитализации</caption>
+										<table border="1">
+											<thead>
+												<tr>
+													<th>Дата госпитализации</th>
+													<th>Дата Выписки</th>
+													<th>Учреждение</th>
+													<th>Причина госпитализации</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td align="center">12.12.2012</td>
+													<td align="center">24.12.2012</td>
+													<td align="center">ГКБ №10</td>
+													<td align="center">Плановое обследование в терапевтическом отделении</td>
+												</tr>
+											</tbody>
+										</table>
+									</item>
+									<item>
+										<caption>Объективные данные</caption>
+										<list>
+											<item>
+												<caption>Функциональное обследование:</caption>
+												<table border="1">
+													<thead>
+														<tr>
+															<th>Параметр функционального обследования</th>
+															<th>Результат осмотра</th>
+															<th>Контрольное значение</th>
+															<th>Единицы измерения</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td align="center">Частота дыхательных движений</td>
+															<td align="center">20</td>
+															<td align="center">16-20</td>
+															<td align="center"> в/мин.</td>
+														</tr>
+														<tr>
+															<td align="center">Частота сердечных сокращений</td>
+															<td align="center">75</td>
+															<td align="center">60-90</td>
+															<td align="center"> в/мин.</td>
+														</tr>
+														<tr>
+															<td align="center">Систолическое артериальное давление</td>
+															<td align="center">120</td>
+															<td align="center">120-130</td>
+															<td align="center">мм.рт.ст.</td>
+														</tr>
+														<tr>
+															<td align="center">Диастолическое артериальное давление</td>
+															<td align="center">80</td>
+															<td align="center">80-85</td>
+															<td align="center">мм.рт.ст.</td>
+														</tr>
+														<tr>
+															<td align="center">Температура тела</td>
+															<td align="center">36.6</td>
+															<td align="center">35.5 до 37.4</td>
+															<td align="center">°C</td>
+														</tr>
+														<tr>
+															<td align="center">Рост</td>
+															<td align="center">176</td>
+															<td/>
+															<td/>
+														</tr>
+														<tr>
+															<td align="center">Вес</td>
+															<td align="center">60</td>
+															<td/>
+															<td/>
+														</tr>
+														<tr>
+															<td align="center">ИМТ</td>
+															<td align="center">19</td>
+															<td/>
+															<td/>
+														</tr>
+														<tr>
+															<td align="center">Кожная складка (область живота)</td>
+															<td align="center">13</td>
+															<td/>
+															<td align="center">см</td>
+														</tr>
+													</tbody>
+												</table>
+											</item>
+										</list>
+									</item>
+								</list>
+							</text>
+							<!-- Анамнез заболевания: История настоящего заболевания (секция->компонент 1) начало-->
+							<component typeCode="COMP">
+								<section classCode="DOCSECT" moodCode="EVN">
+									<templateId root="1.2.643.5.1.13.2.7.5.2.22"/>
+									<!-- Код секции [1] "HISTPRL" -->
+									<code code="HSTILL" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="История настоящего заболевания"/>
+									<title>История настоящего заболевания</title>
+									<text>
+										<list>
+											<item>
+												<caption>История настоящего заболевания</caption>
+												<content>Считает себя заболевшим с ноября 2012 года, когда после физической нагрузки почувствовал боль при разгибании колена</content>
+											</item>
+										</list>
+									</text>
+								</section>
+							</component>
+							<!-- Анамнез заболевания: История настоящего заболевания (секция->компонент 1) конец-->
+							<!-- Анамнез заболевания: Перенесенные заболевания (секция->компонент 2) начало-->
+							<component typeCode="COMP">
+								<section classCode="DOCSECT" moodCode="EVN">
+									<templateId root="1.2.643.5.1.13.2.7.5.2.23"/>
+									<!-- Код секции [1] "PRVDS" -->
+									<code code="PRVDS" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Перенесенные заболевания"/>
+									<title>Перенесенные заболевания</title>
+									<text>
+										<table border="1">
+											<thead>
+												<tr>
+													<th>Дата</th>
+													<th>Обстоятельства перенесенного заболевания</th>
+													<th>Диагноз</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td align="center">1963</td>
+													<td align="center">В детском возрасте</td>
+													<td align="center">A37.0 - Коклюш,вызв. Bordetella pertussis</td>
+												</tr>
+											</tbody>
+										</table>
+									</text>
+									<!--Структурированные сведения о перенесенных заболеваниям-->
+									<entry>
+										<templateId root="1.2.643.5.1.13.2.7.5.4.7"/>
+										<organizer classCode="BATTERY" moodCode="EVN">
+											<templateId root="1.2.643.5.1.13.2.7.5.3.12"/>
+											<code code="PRVDS" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Перенесенное заболевание"/>
+											<statusCode code="completed"/>
+											<!-- В каком году было выявлено заболевание -->
+											<effectiveTime>
+												<low value="1963"/>
+												<high nullFlavor="NA"/>
+											</effectiveTime>
+											<!--Обстоятельства возникновения заболевания -->
+											<subject>
+												<relatedSubject classCode="PRS">
+													<code code="1" codeSystem="1.2.643.5.1.13.2.7.1.58" codeSystemName="Обстоятельства возникновения заболевания" displayName="В детском возрасте"/>
+												</relatedSubject>
+											</subject>
+											<component typeCode="COMP">
+												<!-- Диагноз -->
+												<observation classCode="OBS" moodCode="EVN">
+													<code code="A37.0" codeSystem="1.2.643.5.1.13.2.1.1.641" codeSystemName="Международная классификация болезней и состояний, связанных со здоровьем 10 пересмотра" displayName="Коклюш,вызв. Bordetella pertussis"/>
+												</observation>
+											</component>
+										</organizer>
+									</entry>
+								</section>
+							</component>
+							<!-- Анамнез заболевания:Перенесенные заболевания (секция->компонент 2) конец-->
+							<!-- Анамнез заболевания:Предыдущие госпитализации (секция->компонент 3) начало-->
+							<component typeCode="COMP">
+								<section classCode="DOCSECT" moodCode="EVN">
+									<templateId root="1.2.643.5.1.13.2.7.5.2.24"/>
+									<!-- Код секции [1] "PRVHOSP" -->
+									<code code="PRVHOSP" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Предыдущие госпитализации"/>
+									<title>Предыдущие госпитализации</title>
+									<text>
+										<table border="1">
+											<thead>
+												<tr>
+													<th>Дата госпитализации</th>
+													<th>Дата Выписки</th>
+													<th>Учреждение</th>
+													<th>Причина госпитализации</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td align="center">12.12.2012</td>
+													<td align="center">24.12.2012</td>
+													<td align="center">ГКБ №10</td>
+													<td align="center">Плановое обследование в терапевтическом отделении</td>
+												</tr>
+											</tbody>
+										</table>
+									</text>
+									<!-- Конец текстового описания -->
+									<entry typeCode="COMP">
+										<templateId root="1.2.643.5.1.13.2.7.5.4.3"/>
+										<encounter classCode="ENC" moodCode="EVN">
+											<templateId root="1.2.643.5.1.13.2.7.5.3.17"/>
+											<!--Предыдущая госпитализация всегда "PRVHOSP"-->
+											<code code="PRVHOSP" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Предыдущая госпитализация">
+												<originalText>Плановое обследование в терапевтическом отделении</originalText>
+											</code>
+											<!-- Статус, всегда "completed" -->
+											<statusCode code="completed"/>
+											<effectiveTime>
+												<low value="20121212"/>
+												<high value="20121224"/>
+											</effectiveTime>
+											<!-- Исполнитель [1] -->
+											<performer typeCode="PRF">
+												<assignedEntity>
+													<id root="1.2.643.5.1.13.3.25.34.98"/>
+													<representedOrganization classCode="ORG" determinerCode="INSTANCE">
+														<!-- Код учреждения в реестре Минздрава РФ [1] -->
+														<id root="1.2.643.5.1.13.3.25.34.98"/>
+														<!-- Наименование учреждения -->
+														<name>ГКБ №10</name>
+													</representedOrganization>
+												</assignedEntity>
+											</performer>
+										</encounter>
+									</entry>
+								</section>
+							</component>
+							<!-- Анамнез заболевания:Предыдущие госпитализации (секция->компонент 3) конец-->
+						</section>
+					</component>
+					<!-- АНАМНЕЗ ЗАБОЛЕВАНИЯ КОНЕЦ-->
+					<!-- ОБЪЕКТИВНЫЕ ДАННЫЕ НАЧАЛО-->
+					<component typeCode="COMP">
+						<section classCode="DOCSECT" moodCode="EVN">
+							<templateId root="1.2.643.5.1.13.2.7.5.2.18"/>
+							<!-- Код секции [1] "PATOBJ"; перечень параметров - в соответствии с ГОСТ Р 52623.1-2008 -->
+							<code code="PATOBJ" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Объективные данные"/>
+							<title>Объективные данные</title>
+							<text>
+								<list>
+									<item>
+										<caption>Функциональное обследование</caption>
+										<table border="1">
+											<thead>
+												<tr>
+													<th>Параметр функционального обследования</th>
+													<th>Результат осмотра</th>
+													<th>Контрольное значение</th>
+													<th>Единицы измерения</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td align="center">Частота дыхательных движений</td>
+													<td align="center">20</td>
+													<td align="center">16-20</td>
+													<td align="center">в/мин.</td>
+												</tr>
+												<tr>
+													<td align="center">Частота сердечных сокращений</td>
+													<td align="center">75</td>
+													<td align="center">60-90</td>
+													<td align="center">в/мин.</td>
+												</tr>
+												<tr>
+													<td align="center">Систолическое артериальное давление</td>
+													<td align="center">120</td>
+													<td align="center">120-130</td>
+													<td align="center">мм.рт.ст.</td>
+												</tr>
+												<tr>
+													<td align="center">Диастолическое артериальное давление</td>
+													<td align="center">80</td>
+													<td align="center">80-85</td>
+													<td align="center">мм.рт.ст.</td>
+												</tr>
+												<tr>
+													<td align="center">Температура тела</td>
+													<td align="center">36.6</td>
+													<td align="center">35.5 до 37.4</td>
+													<td align="center">°C</td>
+												</tr>
+												<tr>
+													<td align="center">Рост</td>
+													<td align="center">176</td>
+												</tr>
+												<tr>
+													<td align="center">Вес</td>
+													<td align="center">60</td>
+												</tr>
+												<tr>
+													<td align="center">ИМТ</td>
+													<td align="center">19</td>
+												</tr>
+												<tr>
+													<td align="center">Кожная складка (область живота)</td>
+													<td align="center">13</td>
+													<td/>
+													<td align="center">см</td>
+												</tr>
+											</tbody>
+										</table>
+									</item>
+								</list>
+								<list>
+									<item>
+										<caption>Психический статус:</caption>
+										<content>Сознание ясное. Контактен, поведение адекватное. Реально оценивает тяжесть собственного состояния. Настроение спокойное, подавленности, раздражительности не отмечено</content>
+									</item>
+									<item>
+										<caption>Неврологический статус</caption>
+										<content>Координация движений в норме. Глубокие сухожильные рефлексы в норме. Чувствительность сохранена в полном объеме. Патологические симптомы: функция черепно-мозговых нервов сохранны. Патологических рефлексов и менингеальных знаков не выявлено. Дермографизм нестойкий розовый.</content>
+									</item>
+									<item>
+										<list>
+											<caption>Физикальное обследование</caption>
+											<item>
+												<table border="1">
+													<tbody>
+														<tr>
+															<th>Кожные покровы</th>
+															<td align="center">Норма</td>
+															<td align="center">Кожные покровы без патологических изменений, физиологической окраски. Тургор и эластичность кожи удовлетворительные</td>
+														</tr>
+														<tr>
+															<th>Видимые слизистые оболочки</th>
+															<td align="center">Норма</td>
+															<td align="center">Слизистая ротовой полости розовая, важная, блестящая, гиперсаливации нет. Конъюктива чистая, блестящая, влажная. Задняя стенка глотки розовая, налетов нет</td>
+														</tr>
+														<tr>
+															<th>Ногти</th>
+															<td align="center">Норма</td>
+															<td align="center">Округлой формы, бледно-розового цвет, без трофических изменений. Патологических маркеров не выявлено</td>
+														</tr>
+														<tr>
+															<th>Подкожно-жировая клетчатка</th>
+															<td align="center">Норма</td>
+															<td align="center">Округлой формы, имеют розовый цвет, без трофических изменений</td>
+														</tr>
+														<tr>
+															<th>Лимфатическая система</th>
+															<td align="center">Норма</td>
+															<td align="center">Периферические лимфатические узлы не пальпируются</td>
+														</tr>
+														<tr>
+															<th>Эндокринная система</th>
+															<td align="center">Норма</td>
+															<td align="center">Оволосение по мужскому типу, масса тела не увеличена. Патологических маркеров не выявлено</td>
+														</tr>
+														<tr>
+															<th>Щитовидная железа</th>
+															<td align="center">Норма</td>
+															<td align="center">Не увеличена</td>
+														</tr>
+														<tr>
+															<th>Система органов кровообращения</th>
+															<td align="center">Норма</td>
+															<td align="center">Сердечные тоны ясные. Ритм синусовый. Границы абсолютной и относительной тупости сердца не изменены. Пульс умеренного наполнения и напряжения. Дефицита пульса нет. Патологические симптомы:"сердечный горб" не определяется. Пульсации сосудов не видно. Пальпаторно верхушечный толчок определяется на 1 см кнутри от срединно-ключичной линии в 5 межреберье слева. На основании сердца пульсация сосудов пальпаторно не определяется </td>
+														</tr>
+														<tr>
+															<th>Система органов дыхания</th>
+															<td align="center">Норма</td>
+															<td align="center">При перкуссии границы легких определяются на обычном уровне, высота стояния верхушек легких спереди 3,5 см от ключицы справа и слева. Поля Кренига справа 6 см, слева 6 см. Границы легких не изменены. При сравнительной перкуссии над обоими легкими определяется ясный легочный звук Дыхание везикулярное. Бронхофония сохранена. Хрипы не выслушиваются Патологические симптомы: крепитация и шум трения плевры не прослушивается, голосовое дрожание на симметричных участках проводится одинаково</td>
+														</tr>
+														<tr>
+															<th>Система органов пищеварения</th>
+															<td align="center">Норма</td>
+															<td align="center">Язык влажный, обложен белым налетом Зубы требуют санации Глотание и прохождение пищи по пищеводу свободное Живот Обычной формы, участвует а акте дыхания, мягкий, спокойный, безболезненный Перистальтика отчетливая Печень Верхняя граница печени совпадает с нижней границей правого легкого, нижняя проходит по правой реберной дуге. Пальпаторно нижний край печени эластичный, острый, безболезненный. Поверхность ровная, гладкая Желчный пузырь не пальпируется Селезенка не увеличена Патологические симптомы: Симптомы раздражения брюшины отрицательные. Напряжение мышц передней брюшной стенки не выявлено </td>
+														</tr>
+														<tr>
+															<th>Костно-мышечная система</th>
+															<td align="center">Норма</td>
+															<td align="center">В конфигурации скелета деформаций не выявлено, суставы правильной конфигурации, движения в них в полном объеме, безболезнены. Деформации черепа отсутствуют, движения шейного отдела позвоночника в полном объеме. Степень развития мышц, сила и тонус - удовлетворительно, пальпация отдельных мышечных групп безболезненна.</td>
+														</tr>
+														<tr>
+															<th>Мочеполовая система</th>
+															<td align="center">Норма</td>
+															<td align="center">Область почек при пальпации безболезненная, почки не пальпируются. Симптом Пастернацкого отрицательный с обеих сторон. Мочеиспускание безболезненное, регулярное. Диурез 1-1,5 л в сутки Патологические симптомы отсутствуют</td>
+														</tr>
+														<tr>
+															<th>Молочные железы</th>
+															<td align="center">Норма</td>
+															<td align="center">Патологических состояний не выявлено</td>
+														</tr>
+													</tbody>
+												</table>
+											</item>
+										</list>
+									</item>
+								</list>
+							</text>
+							<!-- Функциональное обследование начало-->
+							<component>
+								<section classCode="DOCSECT" moodCode="EVN">
+									<templateId root="1.2.643.5.1.13.2.7.5.2.29"/>
+									<code code="FUNC" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Функциональное обследование"/>
+									<title>Функциональное обследование</title>
+									<text>
+										<list>
+											<item>
+												<caption>Функциональное обследование</caption>
+												<table border="1">
+													<thead>
+														<tr>
+															<th>Параметр функционального обследования</th>
+															<th>Результат осмотра</th>
+															<th>Контрольное значение</th>
+															<th>Единицы измерения</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td align="center">Частота дыхательных движений</td>
+															<td align="center">20</td>
+															<td align="center">16-20</td>
+															<td align="center">в/мин.</td>
+														</tr>
+														<tr>
+															<td align="center">Частота сердечных сокращений</td>
+															<td align="center">75</td>
+															<td align="center">60-90</td>
+															<td align="center">в/мин.</td>
+														</tr>
+														<tr>
+															<td align="center">Систолическое артериальное давление</td>
+															<td align="center">120</td>
+															<td align="center">120-130</td>
+															<td align="center">мм.рт.ст.</td>
+														</tr>
+														<tr>
+															<td align="center">Диастолическое артериальное давление</td>
+															<td align="center">80</td>
+															<td align="center">80-85</td>
+															<td align="center">мм.рт.ст.</td>
+														</tr>
+														<tr>
+															<td align="center">Температура тела</td>
+															<td align="center">36.6</td>
+															<td align="center">35.5 до 37.4</td>
+															<td align="center">°C</td>
+														</tr>
+														<tr>
+															<td align="center">Рост</td>
+															<td align="center">176</td>
+														</tr>
+														<tr>
+															<td align="center">Вес</td>
+															<td align="center">60</td>
+														</tr>
+														<tr>
+															<td align="center">ИМТ</td>
+															<td align="center">19</td>
+														</tr>
+														<tr>
+															<td align="center">Кожная складка (область живота)</td>
+															<td align="center">13</td>
+															<td/>
+															<td align="center">см</td>
+														</tr>
+													</tbody>
+												</table>
+											</item>
+										</list>
+									</text>
+									<entry>
+										<!--<templateId root="1.2.643.5.1.13.2.7.5.4.7"/>-->
+										<organizer classCode="CLUSTER" moodCode="EVN">
+											<templateId root="1.2.643.5.1.13.2.7.5.3.15"/>
+											<code code="FUNC" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Параметры функционального обследования"/>
+											<statusCode code="completed"/>
+											<effectiveTime value="20130404114723"/>
+											<component>
+												<observation classCode="OBS" moodCode="EVN">
+													<code code="1" codeSystem="1.2.643.5.1.13.2.7.1.69" codeSystemName="Параметры функционального обследования" displayName="Частота дыхательных движений">
+														<originalText/>
+													</code>
+													<value xsi:type="PQ" value="20" unit="/мин."/>
+													<referenceRange typeCode="REFV">
+														<observationRange classCode="OBS" moodCode="EVN.CRT">
+															<!-- контрольные значения -->
+															<text>16-20</text>
+														</observationRange>
+													</referenceRange>
+												</observation>
+											</component>
+											<component>
+												<observation classCode="OBS" moodCode="EVN">
+													<code code="2" codeSystem="1.2.643.5.1.13.2.7.1.69" codeSystemName="Параметры функционального обследования" displayName="Частота сердечных сокращений">
+														<originalText/>
+													</code>
+													<statusCode code="completed"/>
+													<value xsi:type="PQ" value="75" unit="/мин."/>
+													<referenceRange typeCode="REFV">
+														<observationRange classCode="OBS" moodCode="EVN.CRT">
+															<!-- контрольные значения -->
+															<text>60-90</text>
+														</observationRange>
+													</referenceRange>
+												</observation>
+											</component>
+											<component>
+												<observation classCode="OBS" moodCode="EVN">
+													<code code="3" codeSystem="1.2.643.5.1.13.2.7.1.69" codeSystemName="Параметры функционального обследования" displayName="Систолическое артериальное давление">
+														<originalText/>
+													</code>
+													<statusCode code="completed"/>
+													<value xsi:type="PQ" value="120" unit="мм.рт.ст."/>
+													<referenceRange typeCode="REFV">
+														<observationRange classCode="OBS" moodCode="EVN.CRT">
+															<!-- контрольные значения -->
+															<text>120-130</text>
+														</observationRange>
+													</referenceRange>
+												</observation>
+											</component>
+											<component>
+												<observation classCode="OBS" moodCode="EVN">
+													<code code="4" codeSystem="1.2.643.5.1.13.2.7.1.69" codeSystemName="Параметры функционального обследования" displayName="Диастолическое артериальное давление">
+														<originalText/>
+													</code>
+													<statusCode code="completed"/>
+													<value xsi:type="PQ" value="80" unit="мм.рт.ст."/>
+													<referenceRange typeCode="REFV">
+														<observationRange classCode="OBS" moodCode="EVN.CRT">
+															<!-- контрольные значения -->
+															<text>80-85</text>
+														</observationRange>
+													</referenceRange>
+												</observation>
+											</component>
+											<component>
+												<observation classCode="OBS" moodCode="EVN">
+													<code code="5" codeSystem="1.2.643.5.1.13.2.7.1.69" codeSystemName="Параметры функционального обследования" displayName="Температура тела"/>
+													<statusCode code="completed"/>
+													<value xsi:type="PQ" value="37.8" unit="°C"/>
+													<referenceRange typeCode="REFV">
+														<observationRange classCode="OBS" moodCode="EVN.CRT">
+															<!-- контрольные значения -->
+															<text>35,5 до 37,4</text>
+														</observationRange>
+													</referenceRange>
+												</observation>
+											</component>
+											<component>
+												<observation classCode="OBS" moodCode="EVN">
+													<code code="6" codeSystem="1.2.643.5.1.13.2.7.1.69" codeSystemName="Параметры функционального обследования" displayName="Рост">
+														<originalText/>
+													</code>
+													<statusCode code="completed"/>
+													<value xsi:type="PQ" value="176" unit="см."/>
+												</observation>
+											</component>
+											<component>
+												<observation classCode="OBS" moodCode="EVN">
+													<code code="7" codeSystem="1.2.643.5.1.13.2.7.1.69" codeSystemName="Параметры функционального обследования" displayName="Вес"/>
+													<statusCode code="completed"/>
+													<value xsi:type="PQ" value="80" unit="кг."/>
+												</observation>
+											</component>
+											<component>
+												<observation classCode="OBS" moodCode="EVN">
+													<code code="10" codeSystem="1.2.643.5.1.13.2.7.1.69" codeSystemName="Параметры функционального обследования" displayName="Кожная складка (область живота)"/>
+													<statusCode code="completed"/>
+													<value xsi:type="PQ" value="13" unit="см."/>
+												</observation>
+											</component>
+										</organizer>
+									</entry>
+								</section>
+							</component>
+							<component typeCode="COMP">
+								<section classCode="DOCSECT" moodCode="EVN">
+									<templateId root="1.2.643.5.1.13.2.7.5.2.30"/>
+									<!-- Код секции [1] "PSYCH" -->
+									<code code="PSYCH" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Психический статус"/>
+									<title>Психическое статус</title>
+									<text>
+										<list>
+											<item>
+												<caption>Психический статус:</caption>
+												<content>Сознание ясное. Контактен, поведение адекватное. Реально оценивает тяжесть собственного состояния. Настроение спокойное, подавленности, раздражительности не отмечено</content>
+											</item>
+										</list>
+									</text>
+									<!-- Конец текстового описания -->
+								</section>
+							</component>
+							<component typeCode="COMP">
+								<section classCode="DOCSECT" moodCode="EVN">
+									<templateId root="1.2.643.5.1.13.2.7.5.2.31"/>
+									<!-- Код секции [1] "NEUROL" -->
+									<code code="NEUROL" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Неврологический статус"/>
+									<!-- Наименование секции [1] -->
+									<title>Неврологический статус</title>
+									<text>
+										<list>
+											<item>
+												<caption>Неврологический статус:</caption>
+												<content>	Координация движений в норме. Глубокие сухожильные рефлексы в норме. Чувствительность сохранена в полном объеме. Патологические симптомы: функция черепно-мозговых нервов сохранны. Патологических рефлексов и менингеальных знаков не выявлено. Дермографизм нестойкий розовый.</content>
+											</item>
+										</list>
+									</text>
+								</section>
+							</component>
+							<component typeCode="COMP">
+								<section classCode="DOCSECT" moodCode="EVN">
+									<templateId root="1.2.643.5.1.13.2.7.5.2.36"/>
+									<!-- Код секции [1] "PHYS" -->
+									<code code="PHYS" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Физикальное обследование"/>
+									<!-- Наименование секции [1] -->
+									<title>Физикальное обследование</title>
+									<text>
+										<list>
+											<caption>Физикальное обследование</caption>
+											<item>
+												<table border="1">
+													<tbody>
+														<tr>
+															<th>Кожные покровы</th>
+															<td align="center">Норма</td>
+															<td align="center">Кожные покровы без патологических изменений, физиологической окраски. Тургор и эластичность кожи удовлетворительные</td>
+														</tr>
+														<tr>
+															<th>Видимые слизистые оболочки</th>
+															<td align="center">Норма</td>
+															<td align="center">Слизистая ротовой полости розовая, важная, блестящая, гиперсаливации нет. Конъюктива чистая, блестящая, влажная. Задняя стенка глотки розовая, налетов нет</td>
+														</tr>
+														<tr>
+															<th>Ногти</th>
+															<td align="center">Норма</td>
+															<td align="center">Округлой формы, бледно-розового цвет, без трофических изменений. Патологических маркеров не выявлено</td>
+														</tr>
+														<tr>
+															<th>Подкожно-жировая клетчатка</th>
+															<td align="center">Норма</td>
+															<td align="center">Округлой формы, имеют розовый цвет, без трофических изменений</td>
+														</tr>
+														<tr>
+															<th>Лимфатическая система</th>
+															<td align="center">Норма</td>
+															<td align="center">Периферические лимфатические узлы не пальпируются</td>
+														</tr>
+														<tr>
+															<th>Эндокринная система</th>
+															<td align="center">Норма</td>
+															<td align="center">Оволосение по мужскому типу, масса тела не увеличена. Патологических маркеров не выявлено</td>
+														</tr>
+														<tr>
+															<th>Щитовидная железа</th>
+															<td align="center">Норма</td>
+															<td align="center">Не увеличена</td>
+														</tr>
+														<tr>
+															<th>Система органов кровообращения</th>
+															<td align="center">Норма</td>
+															<td align="center">Сердечные тоны ясные. Ритм синусовый. Границы абсолютной и относительной тупости сердца не изменены. Пульс умеренного наполнения и напряжения. Дефицита пульса нет. Патологические симптомы:"сердечный горб" не определяется. Пульсации сосудов не видно. Пальпаторно верхушечный толчок определяется на 1 см кнутри от срединно-ключичной линии в 5 межреберье слева. На основании сердца пульсация сосудов пальпаторно не определяется </td>
+														</tr>
+														<tr>
+															<th>Система органов дыхания</th>
+															<td align="center">Норма</td>
+															<td align="center">При перкуссии границы легких определяются на обычном уровне, высота стояния верхушек легких спереди 3,5 см от ключицы справа и слева. Поля Кренига справа 6 см, слева 6 см. Границы легких не изменены. При сравнительной перкуссии над обоими легкими определяется ясный легочный звук Дыхание везикулярное. Бронхофония сохранена. Хрипы не выслушиваются Патологические симптомы: крепитация и шум трения плевры не прослушивается, голосовое дрожание на симметричных участках проводится одинаково</td>
+														</tr>
+														<tr>
+															<th>Система органов пищеварения</th>
+															<td align="center">Норма</td>
+															<td align="center">Язык влажный, обложен белым налетом Зубы требуют санации Глотание и прохождение пищи по пищеводу свободное Живот Обычной формы, участвует а акте дыхания, мягкий, спокойный, безболезненный Перистальтика отчетливая Печень Верхняя граница печени совпадает с нижней границей правого легкого, нижняя проходит по правой реберной дуге. Пальпаторно нижний край печени эластичный, острый, безболезненный. Поверхность ровная, гладкая Желчный пузырь не пальпируется Селезенка не увеличена Патологические симптомы: Симптомы раздражения брюшины отрицательные. Напряжение мышц передней брюшной стенки не выявлено </td>
+														</tr>
+														<tr>
+															<th>Костно-мышечная система</th>
+															<td align="center">Норма</td>
+															<td align="center">В конфигурации скелета деформаций не выявлено, суставы правильной конфигурации, движения в них в полном объеме, безболезнены. Деформации черепа отсутствуют, движения шейного отдела позвоночника в полном объеме. Степень развития мышц, сила и тонус - удовлетворительно, пальпация отдельных мышечных групп безболезненна.</td>
+														</tr>
+														<tr>
+															<th>Мочеполовая система</th>
+															<td align="center">Норма</td>
+															<td align="center">Область почек при пальпации безболезненная, почки не пальпируются. Симптом Пастернацкого отрицательный с обеих сторон. Мочеиспускание безболезненное, регулярное. Диурез 1-1,5 л в сутки Патологические симптомы отсутствуют</td>
+														</tr>
+														<tr>
+															<th>Молочные железы</th>
+															<td align="center">Норма</td>
+															<td align="center">Патологических состояний не выявлено</td>
+														</tr>
+													</tbody>
+												</table>
+											</item>
+										</list>
+									</text>
+									<!-- Конец текстового описания-->
+									<entry typeCode="COMP">
+										<templateId root="1.2.643.5.1.13.2.7.5.4.7"/>
+										<organizer classCode="CLUSTER" moodCode="EVN">
+											<templateId root="1.2.643.5.1.13.2.7.5.3.21"/>
+											<code code="PHYS" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Параметры физикального обследования"/>
+											<statusCode code="completed"/>
+											<effectiveTime value="20130404134720"/>
+											<component>
+												<observation classCode="OBS" moodCode="EVN">
+													<!--Кожа -->
+													<code code="1" codeSystem="1.2.643.5.1.13.2.7.1.21" codeSystemName="Параметры физикального обследования" displayName="Состояние кожных покровов"/>
+													<value xsi:type="CD" code="NORMAL" codeSystem="1.2.643.5.1.13.2.7.1.8" codeSystemName="Состояние параметра" displayName="Норма">
+														<originalText>Кожные покровы без изменений, физиологической окраски. Тургор и эластичность кожи удовлетворительные</originalText>
+													</value>
+												</observation>
+											</component>
+											<component>
+												<observation classCode="OBS" moodCode="EVN">
+													<!--Слизистые -->
+													<code code="2" codeSystem="1.2.643.5.1.13.2.7.1.21" codeSystemName="Параметры физикального обследования" displayName="Видимые слизистые оболочки"/>
+													<value xsi:type="CD" code="NORMAL" codeSystem="1.2.643.5.1.13.2.7.1.8" codeSystemName="Состояние параметра" displayName="Норма">
+														<originalText>Слизистая ротовой полости розовая, важная, блестящая, гиперсаливации нет. Конъюктива чистая, блестящая, влажная. Задняя стенка глотки розовая, налетов нет</originalText>
+													</value>
+												</observation>
+											</component>
+											<component>
+												<observation classCode="OBS" moodCode="EVN">
+													<!--Ногти -->
+													<code code="3" codeSystem="1.2.643.5.1.13.2.7.1.21" codeSystemName="Параметры физикального обследования" displayName="Ногти"/>
+													<value xsi:type="CD" code="NORMAL" codeSystem="1.2.643.5.1.13.2.7.1.8" codeSystemName="Состояние параметра" displayName="Норма">
+														<originalText>Округлой формы, бледно-розового цвет, без трофических изменений. Патологических маркеров не выявлено</originalText>
+													</value>
+												</observation>
+											</component>
+											<component>
+												<observation classCode="OBS" moodCode="EVN">
+													<!--Подкожно-жировая клетчатка -->
+													<code code="4" codeSystem="1.2.643.5.1.13.2.7.1.21" codeSystemName="Параметры физикального обследования" displayName="Подкожно-жировая клетчатка"/>
+													<value xsi:type="CD" code="NORMAL" codeSystem="1.2.643.5.1.13.2.7.1.8" codeSystemName="Состояние параметра" displayName="Норма">
+														<originalText>Выражена умеренно, распределена равномерно</originalText>
+													</value>
+												</observation>
+											</component>
+											<component>
+												<observation classCode="OBS" moodCode="EVN">
+													<!--Лимфатическая система-->
+													<code code="5" codeSystem="1.2.643.5.1.13.2.7.1.21" codeSystemName="Параметры физикального обследования" displayName="Лимфатическая система"/>
+													<value xsi:type="CD" code="NORMAL" codeSystem="1.2.643.5.1.13.2.7.1.8" codeSystemName="Состояние параметра" displayName="Норма">
+														<originalText>Периферические лимфатические узлы не пальпируются</originalText>
+													</value>
+												</observation>
+											</component>
+											<component>
+												<observation classCode="OBS" moodCode="EVN">
+													<!--Эндокринная система -->
+													<code code="6" codeSystem="1.2.643.5.1.13.2.7.1.21" codeSystemName="Параметры физикального обследования" displayName="Эндокринная система"/>
+													<value xsi:type="CD" code="NORMAL" codeSystem="1.2.643.5.1.13.2.7.1.8" codeSystemName="Состояние параметра" displayName="Норма">
+														<originalText>Оволосение по мужскому типу, масса тела не увеличена. Патологических маркеров не выявлено</originalText>
+													</value>
+												</observation>
+											</component>
+											<component>
+												<observation classCode="OBS" moodCode="EVN">
+													<!--Щитовидная железа -->
+													<code code="7" codeSystem="1.2.643.5.1.13.2.7.1.21" codeSystemName="Параметры физикального обследования" displayName="Щитовидная железа"/>
+													<value xsi:type="CD" code="NORMAL" codeSystem="1.2.643.5.1.13.2.7.1.8" codeSystemName="Состояние параметра" displayName="Норма">
+														<originalText>Не увеличена</originalText>
+													</value>
+												</observation>
+											</component>
+											<component>
+												<observation classCode="OBS" moodCode="EVN">
+													<!--Система органов кровообращения -->
+													<code code="8" codeSystem="1.2.643.5.1.13.2.7.1.21" codeSystemName="Параметры физикального обследования" displayName="Система органов кровообращения"/>
+													<value xsi:type="CD" code="NORMAL" codeSystem="1.2.643.5.1.13.2.7.1.8" codeSystemName="Состояние параметра" displayName="Норма">
+														<originalText>Сердечные тоны ясные. Ритм синусовый. Границы абсолютной и относительной тупости сердца не изменены. Пульс умеренного наполнения и напряжения. Дефицита пульса нет. Патологические симптомы:"сердечный горб" не определяется. Пульсации сосудов не видно. Пальпаторно верхушечный толчок определяется на 1 см кнутри от срединно-ключичной линии в 5 межреберье слева. На основании сердца пульсация сосудов пальпаторно не определяется</originalText>
+													</value>
+												</observation>
+											</component>
+											<component>
+												<observation classCode="OBS" moodCode="EVN">
+													<!-- Система органов дыхания -->
+													<code code="9" codeSystem="1.2.643.5.1.13.2.7.1.21" codeSystemName="Параметры физикального обследования" displayName="Система органов дыхания"/>
+													<value xsi:type="CD" code="NORMAL" codeSystem="1.2.643.5.1.13.2.7.1.8" codeSystemName="Состояние параметра" displayName="Норма">
+														<originalText>При перкуссии границы легких определяются на обычном уровне, высота стояния верхушек легких спереди 3,5 см от ключицы справа и слева. Поля Кренига: справа 6 см, слева 6 см. Границы легких не изменены. При сравнительной перкуссии над обоими легкими определяется легочный звук. Дыхание везикулярное. Бронхофония сохранена. Хрипы не выслушиваются Патологические симптомы: Крепитация и шум трения плевры не прослушивается, голосовое дрожание на симметричных участках проводится одинаково.</originalText>
+													</value>
+												</observation>
+											</component>
+											<component>
+												<observation classCode="OBS" moodCode="EVN">
+													<!-- Система органов пищеварения -->
+													<code code="10" codeSystem="1.2.643.5.1.13.2.7.1.21" codeSystemName="Параметры физикального обследования" displayName="Система органов пищеварения"/>
+													<value xsi:type="CD" code="NORMAL" codeSystem="1.2.643.5.1.13.2.7.1.8" codeSystemName="Состояние параметра" displayName="Норма">
+														<originalText>Язык влажный, обложен белым налетом. Зубы санированы. Глотание и прохождение пищи по пищеводу свободное. Живот округлой формы, участвует а акте дыхания, мягкий, спокойный, безболезненный. Перистальтика отчетливая. Печень: верхняя граница печени совпадает с нижней границей правого легкого, нижняя проходит по правой реберной дуге. Пальпаторно нижний край печени эластичный, острый, безболезненный. Поверхность ровная, гладкая. Желчный пузырь не пальпируется. Селезенка не увеличена. Патологические симптомы: Симптомы раздражения брюшины отрицательные. Напряжение мышц передней брюшной стенки не выявлено </originalText>
+													</value>
+												</observation>
+											</component>
+											<component>
+												<observation classCode="OBS" moodCode="EVN">
+													<!-- Костно-мышечная система  -->
+													<code code="11" codeSystem="1.2.643.5.1.13.2.7.1.21" codeSystemName="Параметры физикального обследования" displayName="Костно-мышечная система"/>
+													<value xsi:type="CD" code="NORMAL" codeSystem="1.2.643.5.1.13.2.7.1.8" codeSystemName="Состояние параметра" displayName="Норма">
+														<originalText>В конфигурации скелета деформаций не выявлено, суставы правильной конфигурации, движения в них в полном объеме, безболезнены. Деформации черепа отсутствуют, движения шейного отдела позвоночника в полном объеме. Степень развития мышц, сила и тонус - удовлетворительно, пальпация отдельных мышечных групп безболезненна.</originalText>
+													</value>
+												</observation>
+											</component>
+											<component>
+												<observation classCode="OBS" moodCode="EVN">
+													<!-- Мочеполовая система[0..1] -->
+													<code code="12" codeSystem="1.2.643.5.1.13.2.7.1.21" codeSystemName="Параметры физикального обследования" displayName="Мочеполовая система"/>
+													<value xsi:type="CD" code="NORMAL" codeSystem="1.2.643.5.1.13.2.7.1.8" codeSystemName="Состояние параметра" displayName="Норма">
+														<originalText>Область почек при пальпации безболезненная, почки не пальпируются. Симптом Пастернацкого отрицательный с обеих сторон. Мочеиспускание безболезненное, регулярное. Диурез 1-1,5 л в сутки Патологические симптомы отсутствуют</originalText>
+													</value>
+												</observation>
+											</component>
+											<component>
+												<observation classCode="OBS" moodCode="EVN">
+													<!-- Молочные железы[0..1] -->
+													<code code="13" codeSystem="1.2.643.5.1.13.2.7.1.21" codeSystemName="Параметры физикального обследования" displayName="Молочные железы"/>
+													<value xsi:type="CD" nullFlavor="NA">
+														<originalText>Патологических состояний не выявлено</originalText>
+													</value>
+												</observation>
+											</component>
+										</organizer>
+									</entry>
+								</section>
+							</component>
+						</section>
+					</component>
+					<!--ОБЪЕКТИВНЫЕ ДАННЫЕ КОНЕЦ -->
+					<!--ПРЕДВАРИТЕЛЬНЫЙ ДИАГНОЗ НАЧАЛО -->
+					<component typeCode="COMP">
+						<section classCode="DOCSECT" moodCode="EVN">
+							<templateId root="1.2.643.5.1.13.2.7.5.2.19"/>
+							<!-- Код секции [1] "PRLMNDGN" -->
+							<code code="PRLMNDGN" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Предварительный диагноз"/>
+							<title>Предварительный диагноз</title>
+							<text>
+								<list>
+									<item>
+										<table border="1">
+											<tbody align="center">
+												<tr>
+													<th align="center">Предварительный диагноз</th>
+													<td align="center">Гонартроз коленного сустава</td>
+												</tr>
+											</tbody>
+										</table>
+									</item>
+								</list>
+							</text>
+						</section>
+					</component>
+					<!--ПРЕДВАРИТЕЛЬНЫЙ ДИАГНОЗ КОНЕЦ -->
+					<!--ПЛАН ОБСЛЕДОВАНИЯ НАЧАЛО -->
+					<component typeCode="COMP">
+						<section classCode="DOCSECT" moodCode="EVN">
+							<templateId root="1.2.643.5.1.13.2.7.5.2.20"/>
+							<!-- Код секции [1] "OBSPLAN" -->
+							<code code="OBSPLAN" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="План обследования"/>
+							<title>План обследования</title>
+							<text>
+								<list>
+									<item>
+										<paragraph/>
+										<table border="1">
+											<thead>
+												<tr>
+													<th/>
+													<th>План обследования</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<th>Лабораторные исследования:</th>
+													<td align="center">Общий (клинический) анализ крови; Биохимический анализ крови; Общий анализ мочи</td>
+												</tr>
+												<tr>
+													<th>Инструментальные исследования</th>
+													<td align="center">Рентгенография коленного сустава; Рентгеноскопия грудной клетки; Электрокардиография</td>
+												</tr>
+											</tbody>
+										</table>
+									</item>
+								</list>
+							</text>
+						</section>
+					</component>
+					<!--ПЛАН ОБСЛЕДОВАНИЯ КОНЕЦ -->
+					<!--ПЛАН ЛЕЧЕНИЯ НАЧАЛО -->
+					<component typeCode="COMP">
+						<section classCode="DOCSECT" moodCode="EVN">
+							<templateId root="1.2.643.5.1.13.2.7.5.2.21"/>
+							<!-- Код секции [1] "TRTMPLAN" -->
+							<code code="TRTMPLAN" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="План лечения"/>
+							<title>План лечения</title>
+							<text>
+								<list>
+									<item>
+										<caption>План обследования</caption>
+										<table>
+											<thead>
+												<tr>
+													<th>Диагностика</th>
+													<td align="center">>Исследования и процедуры</td>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<th/>
+													<td align="center">Клинический анализ крови</td>
+													<td align="center">Биохимический анализ крови</td>
+													<td align="center">Общий анализ мочи</td>
+													<td align="center">Анализ кала (на яйца гельминтов)</td>
+													<td align="center">Анализ крови на RW</td>
+													<td align="center">Рентгеноскопия грудной клетки</td>
+													<td align="center">Электрокардиография</td>
+												</tr>
+											</tbody>
+										</table>
+										<content>Показанао эндопротезирование коленного сустава</content>
+									</item>
+									<item>
+										<caption>Медикаментозное лечение</caption>
+										<content>Противовоспальтельные средства</content>
+									</item>
+								</list>
+							</text>
+						</section>
+					</component>
+					<!--ПЛАН ЛЕЧЕНИЯ КОНЕЦ -->
+				</section>
+			</component>
+			<!--ПЕРВИЧНЫЙ ОСМОТР КОНЕЦ-->
+			<!--АЛЛЕРГИЯ НАЧАЛО -->
+			<!--Шаблон: Аллергия и непереносимость [0..1] -->
+			<component typeCode="COMP">
+				<section classCode="DOCSECT" moodCode="EVN">
+					<templateId root="1.2.643.5.1.13.2.7.5.2.4"/>
+					<!-- Код секции [1] "ALL" -->
+					<code code="ALL" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Аллергия и непереносимость"/>
+					<title>Аллергия и непереносимость</title>
+					<text>
+						<table border="1">
+							<thead>
+								<tr>
+									<th>Дата/период проявления</th>
+									<th>Вид аллергии</th>
+									<th>Аллергические агенты</th>
+									<th>Аллергены</th>
+									<th>Реакции на аллергические агенты</th>
+									<th>Степень проявления реакции на аллерген</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td align="center">06-2013 - 07-2013</td>
+									<td align="center">Респираторная аллергия</td>
+									<td align="center">Аллергены пыльцы растений</td>
+									<td align="center">Тополь</td>
+									<td align="center">Чихание, заложенность носа</td>
+									<td align="center">Умеренная</td>
+								</tr>
+							</tbody>
+						</table>
+					</text>
+					<!-- Шаблон: Аллергия и непереносимость [1..*] -->
+					<entry typeCode="COMP">
+						<templateId root="1.2.643.5.1.13.2.7.5.4.5"/>
+						<act classCode="ACT" moodCode="EVN">
+							<templateId root="1.2.643.5.1.13.2.7.5.3.6"/>
+							<code code="1" codeSystem="1.2.643.5.1.13.2.7.1.53" codeSystemName="Виды аллергии (непереносимости)" displayName="Респираторная (дыхательная) аллергия"/>
+							<statusCode code="completed"/>
+							<entryRelationship typeCode="SUBJ">
+								<observation classCode="OBS" moodCode="EVN">
+									<code code="1" codeSystem="1.2.643.5.1.13.2.7.1.54" codeSystemName="Аллергические агенты" displayName="Аллергены пыльцы растений"/>
+									<statusCode code="completed"/>
+									<effectiveTime>
+										<!--Период проявления (дата возникновения) -->
+										<low value="201306"/>
+										<high value="201307"/>
+									</effectiveTime>
+									<participant typeCode="CSM">
+										<participantRole classCode="MANU">
+											<playingEntity classCode="MMAT">
+												<code code="9" codeSystem="1.2.643.5.1.13.2.7.1.55" codeSystemName="Аллергены" displayName="Тополь"/>
+											</playingEntity>
+										</participantRole>
+									</participant>
+									<entryRelationship typeCode="MFST" inversionInd="true">
+										<observation classCode="OBS" moodCode="EVN">
+											<code code="3" codeSystem="1.2.643.5.1.13.2.7.1.56" codeSystemName="Реакции на аллергические агенты" displayName="Аллергический ринит">
+												<qualifier>
+													<value code="3" codeSystem="1.2.643.5.1.13.2.7.1.57" codeSystemName="Степень проявления реакции на аллерген" displayName="Умеренная"/>
+												</qualifier>
+											</code>
+										</observation>
+									</entryRelationship>
+								</observation>
+							</entryRelationship>
+						</act>
+					</entry>
+				</section>
+			</component>
+			<!-- АЛЛЕРГИЯ КОНЕЦ -->
+			<!-- ИССЛЕДОВАНИЯ И ПРОЦЕДУРЫ НАЧАЛО -->
+			<!-- Шаблон: Исследование / Процедура [0..1] -->
+			<component typeCode="COMP">
+				<section classCode="DOCSECT" moodCode="EVN">
+					<templateId root="1.2.643.5.1.13.2.7.5.2.5"/>
+					<!-- Код секции "PROC" [1] -->
+					<code code="PROC" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Исследования и процедуры"/>
+					<title>Исследования и процедуры</title>
+					<text>
+						<paragraph>
+							<caption>Лабораторные исследования:</caption>
+						</paragraph>
+						<list>
+							<item>
+								<caption>Общий (клинический) анализ крови от 05-04-2013</caption>
+								<paragraph/>
+								<table border="1">
+									<thead>
+										<tr>
+											<th>Параметр исследования</th>
+											<th>Результат</th>
+											<th>Контрольные значения</th>
+											<th>Единицы измерения</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td align="center">Гемоглобин</td>
+											<td align="center">121.3</td>
+											<td align="center">130-175</td>
+											<td align="center">г/л</td>
+										</tr>
+										<tr>
+											<td align="center">Эритроциты</td>
+											<td align="center">3.93</td>
+											<td align="center">4-5.6</td>
+											<td align="center">10*12/л</td>
+										</tr>
+										<tr>
+											<td align="center">СОЭ</td>
+											<td align="center">30</td>
+											<td align="center">1-14.6</td>
+											<td align="center">мм/ч</td>
+										</tr>
+										<tr>
+											<td align="center">Тромбоциты</td>
+											<td align="center">302</td>
+											<td align="center">180-320.6</td>
+											<td align="center">10*9/л</td>
+										</tr>
+										<tr>
+											<td align="center">Лейкоциты</td>
+											<td align="center">12.0</td>
+											<td align="center">4.3-11.3</td>
+											<td align="center">10*9/л</td>
+										</tr>
+										<tr>
+											<td align="center">Нейтрофилы палочкоядерные</td>
+											<td align="center">1</td>
+											<td align="center">1-6</td>
+											<td align="center">%</td>
+										</tr>
+										<tr>
+											<td align="center">Нейтрофилы сегментоядерные</td>
+											<td align="center">56</td>
+											<td align="center">47-72</td>
+											<td align="center">%</td>
+										</tr>
+										<tr>
+											<td align="center">Эозинофилы</td>
+											<td align="center">4</td>
+											<td align="center">0.5-5</td>
+											<td align="center">%</td>
+										</tr>
+										<tr>
+											<td align="center">Базофилы</td>
+											<td align="center">4</td>
+											<td align="center">0.5-5</td>
+											<td align="center">%</td>
+										</tr>
+										<tr>
+											<td align="center">Лимфоциты</td>
+											<td align="center">35</td>
+											<td align="center">19-37</td>
+											<td align="center">%</td>
+										</tr>
+										<tr>
+											<td align="center">Моноциты</td>
+											<td align="center">3</td>
+											<td align="center">3-11</td>
+											<td align="center">%</td>
+										</tr>
+									</tbody>
+								</table>
+								<paragraph/>
+							</item>
+							<item>
+								<caption>Определение основных групп крови (А, В, 0) от 05-04-2013</caption>
+								<paragraph/>
+								<table border="1">
+									<thead>
+										<tr>
+											<th>Параметр исследования</th>
+											<th>Результат</th>
+											<th>Контрольные значения</th>
+											<th>Единицы измерения</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td align="center">Определение группы крови</td>
+											<td align="center">B</td>
+											<td/>
+											<td/>
+										</tr>
+									</tbody>
+								</table>
+								<paragraph/>
+							</item>
+							<item>
+								<caption>Определение резус-принадлежности от 05-04-2013</caption>
+								<paragraph/>
+								<table border="1">
+									<thead>
+										<tr>
+											<th>Параметр исследования</th>
+											<th>Результат</th>
+											<th>Контрольные значения</th>
+											<th>Единицы измерения</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td align="center">Резус-фактор</td>
+											<td align="center">Rh+</td>
+											<td/>
+											<td/>
+										</tr>
+									</tbody>
+								</table>
+							</item>
+						</list>
+						<paragraph>
+							<caption>Инструментальные исследования:</caption>
+						</paragraph>
+						<list>
+							<item>
+								<caption>Рентгенография коленного сустава от 06-07-2013</caption>
+								<paragraph/>
+								<linkHtml href="http://iemk-bal.at-consulting.ru/temp/dicom/TG18-MM-2k-01.dcm" title="Вложение"/>
+							</item>
+						</list>
+					</text>
+					<entry>
+						<templateId root="1.2.643.5.1.13.2.7.5.4.7"/>
+						<organizer classCode="CLUSTER" moodCode="EVN">
+							<templateId root="1.2.643.5.1.13.2.7.5.3.7"/>
+							<code code="PROC" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Исследования и процедуры">
+								<originalText xsi:type="SC" code="A0604006" codeSystem="1.2.643.5.1.13.2.1.1.473" codeSystemName="Номенклатура медицинских услуг" displayName="Рентгенография коленного сустава"/>
+							</code>
+							<statusCode code="completed"/>
+							<effectiveTime value="20130607123010"/>
+							<component typeCode="COMP">
+								<observationMedia classCode="DGIMG" moodCode="EVN" ID="DICOMimage1">
+									<value xsi:type="ED" mediaType="application/dicom">
+										<reference value="http://iemk-bal.at-consulting.ru/temp/dicom/TG18-MM-2k-01.dcm"/>
+									</value>
+								</observationMedia>
+							</component>
+						</organizer>
+					</entry>
+					<entry>
+						<templateId root="1.2.643.5.1.13.2.7.5.4.7"/>
+						<organizer classCode="BATTERY" moodCode="EVN">
+							<templateId root="1.2.643.5.1.13.2.7.5.3.7"/>
+							<code code="PROC" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Исследования и процедуры">
+								<originalText xsi:type="SC" code="B03.016.002" codeSystem="1.2.643.5.1.13.2.1.1.473" codeSystemName="Номенклатура медицинских услуг" displayName="Общий (клинический) анализ крови"/>
+							</code>
+							<statusCode code="completed"/>
+							<effectiveTime value="20130607123010"/>
+							<component typeCode="COMP">
+								<observation classCode="OBS" moodCode="EVN">
+									<!-- Справочник параметров исследования-->
+									<code code="1" codeSystem="1.2.643.5.1.13.2.7.1.52" codeSystemName="Параметры исследования крови" displayName="Гемоглобин"/>
+									<!-- Разделитель "точка"-->
+									<value xsi:type="PQ" value="121.3 " unit="г/л"/>
+									<referenceRange typeCode="REFV">
+										<observationRange classCode="OBS" moodCode="EVN.CRT">
+											<!-- контрольные значения -->
+											<text>130-175</text>
+										</observationRange>
+									</referenceRange>
+								</observation>
+							</component>
+							<component typeCode="COMP">
+								<observation classCode="OBS" moodCode="EVN">
+									<!-- Справочник параметров исследования-->
+									<code code="2" codeSystem="1.2.643.5.1.13.2.7.1.52" codeSystemName="Параметры исследования крови" displayName="Эритроциты"/>
+									<!-- Разделитель "точка"-->
+									<value xsi:type="PQ" value="3.93" unit="10*12/л"/>
+									<referenceRange typeCode="REFV">
+										<observationRange classCode="OBS" moodCode="EVN.CRT">
+											<!-- контрольные значения -->
+											<text>4-5.6</text>
+										</observationRange>
+									</referenceRange>
+								</observation>
+							</component>
+							<component typeCode="COMP">
+								<observation classCode="OBS" moodCode="EVN">
+									<!-- Справочник параметров исследования-->
+									<code code="3" codeSystem="1.2.643.5.1.13.2.7.1.52" codeSystemName="Параметры исследования крови" displayName="СОЭ"/>
+									<value xsi:type="PQ" value="30" unit="мм/ч"/>
+									<referenceRange typeCode="REFV">
+										<observationRange classCode="OBS" moodCode="EVN.CRT">
+											<!-- контрольные значения -->
+											<text>1-14.6</text>
+										</observationRange>
+									</referenceRange>
+								</observation>
+							</component>
+							<component typeCode="COMP">
+								<observation classCode="OBS" moodCode="EVN">
+									<!-- Справочник параметров исследования-->
+									<code code="4" codeSystem="1.2.643.5.1.13.2.7.1.52" codeSystemName="Параметры исследования крови" displayName="Тромбоциты"/>
+									<value xsi:type="PQ" value="302" unit="10*9/л"/>
+									<referenceRange typeCode="REFV">
+										<observationRange classCode="OBS" moodCode="EVN.CRT">
+											<!-- контрольные значения -->
+											<text>180-320.6</text>
+										</observationRange>
+									</referenceRange>
+								</observation>
+							</component>
+							<component typeCode="COMP">
+								<observation classCode="OBS" moodCode="EVN">
+									<!-- Справочник параметров исследования-->
+									<code code="5" codeSystem="1.2.643.5.1.13.2.7.1.52" codeSystemName="Параметры исследования крови" displayName="Лейкоциты"/>
+									<statusCode code="completed"/>
+									<!-- Разделитель "точка"-->
+									<value xsi:type="PQ" value="12.0" unit="10*9/л"/>
+									<referenceRange typeCode="REFV">
+										<observationRange classCode="OBS" moodCode="EVN.CRT">
+											<!-- контрольные значения -->
+											<text>4.3-11.3</text>
+										</observationRange>
+									</referenceRange>
+								</observation>
+							</component>
+							<component typeCode="COMP">
+								<observation classCode="OBS" moodCode="EVN">
+									<!-- Справочник параметров исследования-->
+									<code code="6" codeSystem="1.2.643.5.1.13.2.7.1.52" codeSystemName="Параметры исследования крови" displayName="Нейтрофилы палочкоядерные"/>
+									<statusCode code="completed"/>
+									<value xsi:type="PQ" value="1" unit="%"/>
+									<referenceRange typeCode="REFV">
+										<observationRange classCode="OBS" moodCode="EVN.CRT">
+											<!-- контрольные значения -->
+											<text>1-6</text>
+										</observationRange>
+									</referenceRange>
+								</observation>
+							</component>
+							<component typeCode="COMP">
+								<observation classCode="OBS" moodCode="EVN">
+									<!-- Справочник параметров исследования-->
+									<code code="7" codeSystem="1.2.643.5.1.13.2.7.1.52" codeSystemName="Параметры исследования крови" displayName="Нейтрофилы сегментоядерные"/>
+									<statusCode code="completed"/>
+									<!-- Разделитель "точка"-->
+									<value xsi:type="PQ" value="56" unit="%"/>
+									<referenceRange typeCode="REFV">
+										<observationRange classCode="OBS" moodCode="EVN.CRT">
+											<!-- контрольные значения -->
+											<text>47-72</text>
+										</observationRange>
+									</referenceRange>
+								</observation>
+							</component>
+							<component typeCode="COMP">
+								<observation classCode="OBS" moodCode="EVN">
+									<!-- Справочник параметров исследования-->
+									<code code="8" codeSystem="1.2.643.5.1.13.2.7.1.52" codeSystemName="Параметры исследования крови" displayName="Эозинофилы"/>
+									<value xsi:type="PQ" value="4" unit="%"/>
+									<referenceRange typeCode="REFV">
+										<observationRange classCode="OBS" moodCode="EVN.CRT">
+											<!-- контрольные значения -->
+											<text>0.5-5</text>
+										</observationRange>
+									</referenceRange>
+								</observation>
+							</component>
+							<component typeCode="COMP">
+								<observation classCode="OBS" moodCode="EVN">
+									<!-- Справочник параметров исследования-->
+									<code code="9" codeSystem="1.2.643.5.1.13.2.7.1.52" codeSystemName="Параметры исследования крови" displayName="Базофилы"/>
+									<value xsi:type="PQ" value="1" unit="%"/>
+									<referenceRange typeCode="REFV">
+										<observationRange classCode="OBS" moodCode="EVN.CRT">
+											<!-- контрольные значения -->
+											<text>0-1</text>
+										</observationRange>
+									</referenceRange>
+								</observation>
+							</component>
+							<component typeCode="COMP">
+								<observation classCode="OBS" moodCode="EVN">
+									<!-- Справочник параметров исследования-->
+									<code code="10" codeSystem="1.2.643.5.1.13.2.7.1.52" codeSystemName="Параметры исследования крови" displayName="Лимфоциты"/>
+									<value xsi:type="PQ" value="35" unit="%"/>
+									<referenceRange typeCode="REFV">
+										<observationRange classCode="OBS" moodCode="EVN.CRT">
+											<!-- контрольные значения -->
+											<text>19-37</text>
+										</observationRange>
+									</referenceRange>
+								</observation>
+							</component>
+							<component typeCode="COMP">
+								<observation classCode="OBS" moodCode="EVN">
+									<!-- Справочник параметров исследования-->
+									<code code="11" codeSystem="1.2.643.5.1.13.2.7.1.52" codeSystemName="Параметры исследования крови" displayName="Моноциты"/>
+									<value xsi:type="PQ" value="3" unit="%"/>
+									<referenceRange typeCode="REFV">
+										<observationRange classCode="OBS" moodCode="EVN.CRT">
+											<!-- контрольные значения -->
+											<text>3-11</text>
+										</observationRange>
+									</referenceRange>
+								</observation>
+							</component>
+						</organizer>
+					</entry>
+					<entry>
+						<templateId root="1.2.643.5.1.13.2.7.5.4.7"/>
+						<organizer classCode="CLUSTER" moodCode="EVN">
+							<templateId root="1.2.643.5.1.13.2.7.5.3.7"/>
+							<code code="PROC" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Исследования и процедуры">
+								<originalText xsi:type="SC" code="A12.05.005" codeSystem="1.2.643.5.1.13.2.1.1.473" codeSystemName="Номенклатура медицинских услуг" displayName="Определение основных групп крови (А, В, 0)"/>
+							</code>
+							<statusCode code="completed"/>
+							<effectiveTime>
+								<low value="20131029173500"/>
+								<high value="20130607133000"/>
+							</effectiveTime>
+							<component typeCode="COMP">
+								<observation classCode="OBS" moodCode="EVN">
+									<code code="12" codeSystem="1.2.643.5.1.13.2.7.1.52" codeSystemName="Параметры исследования крови" displayName="Определение группы крови"/>
+									<value xsi:type="ED">B</value>
+								</observation>
+							</component>
+						</organizer>
+					</entry>
+					<entry>
+						<templateId root="1.2.643.5.1.13.2.7.5.4.7"/>
+						<organizer classCode="CLUSTER" moodCode="EVN">
+							<templateId root="1.2.643.5.1.13.2.7.5.3.7"/>
+							<code code="PROC" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Исследования и процедуры">
+								<originalText xsi:type="SC" code="A12.05.006 " codeSystem="1.2.643.5.1.13.2.1.1.473" codeSystemName="Номенклатура медицинских услуг" displayName="Определение резус-принадлежности"/>
+							</code>
+							<statusCode code="completed"/>
+							<effectiveTime value="20130607123010"/>
+							<component typeCode="COMP">
+								<observation classCode="OBS" moodCode="EVN">
+									<code code="13" codeSystem="1.2.643.5.1.13.2.7.1.52" codeSystemName="Параметры исследования крови" displayName="Резус-фактор"/>
+									<value xsi:type="ED">Rh+</value>
+								</observation>
+							</component>
+						</organizer>
+					</entry>
+				</section>
+			</component>
+			<!--ИССЛЕДОВАНИЯ И ПРОЦЕДУРЫ КОНЕЦ -->
+			<!-- ОПЕРАЦИИ НАЧАЛО -->
+			<component typeCode="COMP">
+				<section classCode="DOCSECT" moodCode="EVN">
+					<templateId root="1.2.643.5.1.13.2.7.5.2.6"/>
+					<!-- Код секции [1] "SUR" -->
+					<code code="SUR" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Операции"/>
+					<!-- Название секции -->
+					<title>Операции</title>
+					<text>
+						<table border="1">
+							<thead>
+								<tr>
+									<th>Дата операции</th>
+									<th>Наименовние операции</th>
+									<th>Тип оперативного вмешательства</th>
+									<th>Тип анестезии</th>
+									<th>Интраоперационное осложнение</th>
+									<th>Постоперационное осложнение</th>
+									<th>Дополнительныe материалы</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td align="center">11-03-2013</td>
+									<td align="center">Эндопротезирование ортопедическое коленного сустава</td>
+									<td align="center">На костях и суставах</td>
+									<td align="center">Комбинированный эндотрахеальный наркоз</td>
+									<td/>
+									<td/>
+									<td align="center">Протез (эндопротез) тазобедренного сустава; Винт для остеосинтеза, винт-шило</td>
+								</tr>
+							</tbody>
+						</table>
+					</text>
+					<!-- Текстовое описание конец -->
+					<!-- Операция 1 начало -->
+					<entry typeCode="COMP">
+						<templateId root="1.2.643.5.1.13.2.7.5.4.8"/>
+						<procedure classCode="PROC" moodCode="EVN">
+							<templateId root="1.2.643.5.1.13.2.7.5.3.8"/>
+							<!-- Код операции -->
+							<code code="A16.03.063.006" codeSystem="1.2.643.5.1.13.2.1.1.473" codeSystemName="Номенклатура медицинских услуг" displayName="Эндопротезирование ортопедическое коленного сустава">
+								<!-- Дополнительные коды -->
+								<qualifier>
+									<value code="151" codeSystem="1.2.643.5.1.13.2.1.1.85" codeSystemName="Классификатор типов оперативных вмешательств в статистическом учете" displayName="На костях и суставах"/>
+								</qualifier>
+							</code>
+							<!-- Дата проведения операции -->
+							<effectiveTime value="20130611"/>
+							<!-- Применяемая аппаратура -->
+							<methodCode nullFlavor="UNK"/>
+							<!--Анестезия и медикация-->
+							<entryRelationship typeCode="REFR">
+								<templateId root="1.2.643.5.1.13.2.7.5.4.8"/>
+								<procedure classCode="PROC" moodCode="EVN">
+									<templateId root="1.2.643.5.1.13.2.7.5.3.30"/>
+									<code code="ANEST" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Анестезия и медикация"/>
+									<methodCode code="7" codeSystem="1.2.643.5.1.13.2.1.1.137" codeSystemName="Классификатор услуг анестезии по способу введения" displayName="Эндотрах. наркоз"/>
+									<entryRelationship typeCode="COMP">
+										<substanceAdministration classCode="SBADM" moodCode="EVN">
+											<templateId root="1.2.643.5.1.13.2.7.5.3.29"/>
+											<!-- Номер назначения [1] -->
+											<id root="1.2.643.5.1.13.3.25.64.109" extension="12"/>
+											<!-- Тип выдачи препарата -->
+											<code code="CURE" codeSystem="1.2.643.5.1.13.2.7.1.36" codeSystemName="Тип выдачи препарата" displayName="Выдано пациенту медицинским работником"/>
+											<!-- Дата назначения препарата -->
+											<effectiveTime value="20130408"/>
+											<routeCode code="13" codeSystem="1.2.643.5.1.13.2.7.1.64" codeSystemName="Способ введения медикамента" displayName="Ингаляционно"/>
+											<!-- Разовая доза -->
+											<doseQuantity value="80" unit="%"/>
+											<!-- Назначение -->
+											<rateQuantity value="1" unit="однократно"/>
+											<!-- Лекарственная форма -->
+											<administrationUnitCode code="641" codeSystem="1.2.643.5.1.13.2.1.1.331" codeSystemName="Классификатор лекарственных форм" displayName="жидк.д/ингал.наркоза"/>
+											<!-- Препарат начало -->
+											<consumable typeCode="CSM">
+												<manufacturedProduct classCode="MANU">
+													<manufacturedMaterial classCode="MMAT" determinerCode="KIND">
+														<!-- Активное вещество код и наименование (по классификатору Анатомо-Терапевтически-Химическая (АТХ)) -->
+														<code code="N01AX13" codeSystem="1.2.643.5.1.13.2.1.1.56" codeSystemName="Анатомо-терапевтическо-химическая классификация" displayName="Nitrogenium oxydulatum"/>
+													</manufacturedMaterial>
+												</manufacturedProduct>
+											</consumable>
+											<!-- Препарат конец -->
+										</substanceAdministration>
+									</entryRelationship>
+								</procedure>
+							</entryRelationship>
+							<!-- Интраоперационное осложнение-->
+							<entryRelationship typeCode="REFR">
+								<templateId root="1.2.643.5.1.13.2.7.5.4.4"/>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="1.2.643.5.1.13.2.7.5.3.23"/>
+									<code code="INTOP" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Интраоперационное осложнение"/>
+									<value xsi:type="CD" code="4" codeSystem="1.2.643.5.1.13.2.1.1.139" codeSystemName="Классификатор осложнений операции" displayName="Кровотечение">
+										<originalText/>
+									</value>
+								</observation>
+							</entryRelationship>
+							<!-- Постоперационное осложнение-->
+							<entryRelationship typeCode="REFR">
+								<templateId root="1.2.643.5.1.13.2.7.5.4.4"/>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="1.2.643.5.1.13.2.7.5.3.24"/>
+									<code code="POSTOP" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Постоперационное осложнение"/>
+									<value xsi:type="CD" code="5" codeSystem="1.2.643.5.1.13.2.1.1.139" codeSystemName="Классификатор осложнений операции" displayName="Тромбозы и эмболии">
+										<originalText/>
+									</value>
+								</observation>
+							</entryRelationship>
+							<!-- Дополнительныe материалы -->
+							<entryRelationship typeCode="REFR">
+								<organizer classCode="CLUSTER" moodCode="EVN">
+									<statusCode code="completed"/>
+									<component typeCode="COMP">
+										<supply classCode="SPLY" moodCode="EVN">
+											<!-- Дополнительный материал наименование и код -->
+											<code code="1557" codeSystem="1.2.643.5.1.13.2.1.1.61" codeSystemName="Классификатор медицинских изделий (изделий медицинского назначения и медицинской техники)" displayName="Протез (эндопротез) тазобедренного сустава"/>
+										</supply>
+									</component>
+									<component typeCode="COMP">
+										<supply classCode="SPLY" moodCode="EVN">
+											<!-- Дополнительный материал наименование и код -->
+											<code code="6064" codeSystem="1.2.643.5.1.13.2.1.1.61" codeSystemName="Классификатор медицинских изделий (изделий медицинского назначения и медицинской техники)" displayName="Винт для остеосинтеза, винт-шило"/>
+										</supply>
+									</component>
+								</organizer>
+							</entryRelationship>
+							<reference typeCode="REFR">
+								<externalDocument classCode="DOC" moodCode="EVN">
+									<!-- Номер документа -->
+									<id root="1.2.643.5.1.13.3.25.64.109" extension="12322313"/>
+									<!-- Тип документа -->
+									<code code="CONS" codeSystem="1.2.643.5.1.13.2.7.1.38" codeSystemName="Тип внешнего документа" displayName="Согласие пациента">
+										<originalText/>
+									</code>
+								</externalDocument>
+							</reference>
+						</procedure>
+					</entry>
+				</section>
+			</component>
+			<!-- ОПЕРАЦИИ КОНЕЦ -->
+			<!-- ИНФОРМАЦИЯ О ЛЕЧЕНИИ НАЧАЛО -->
+			<component typeCode="COMP">
+				<section classCode="DOCSECT" moodCode="EVN">
+					<templateId root="1.2.643.5.1.13.2.7.5.2.7"/>
+					<!-- Код секции [1] "SUM" -->
+					<code code="SUM" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Информация о лечении"/>
+					<!-- Название секции -->
+					<title>Информация о лечении пациента</title>
+					<!-- Текстовое описание начало -->
+					<text>
+						<list>
+							<item>
+								<caption>Применяемые стандарты</caption>
+								<content>Cтандарт специализированной медицинской помощи при заболеваниях костно-мышечной системы</content>
+							</item>
+						</list>
+					</text>
+				</section>
+			</component>
+			<!-- КРАТКАЯ ИНФОРМАЦИЯ О ЛЕЧЕНИИ КОНЕЦ -->
+			<!-- СОСТОЯНИЕ ПАЦИЕНТА НАЧАЛО -->
+			<component typeCode="COMP">
+				<section classCode="DOCSECT" moodCode="EVN">
+					<templateId root="1.2.643.5.1.13.2.7.5.2.8"/>
+					<!-- Код секции [1] "STATE" -->
+					<code code="STATE" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Состояние пациента"/>
+					<!-- Название секции -->
+					<title>Состояние пациента</title>
+					<text>Улучшение</text>
+					<!-- Текстовое описание конец -->
+					<!-- Назначение начало -->
+					<entry typeCode="COMP">
+						<templateId root="1.2.643.5.1.13.2.7.5.4.4"/>
+						<observation classCode="OBS" moodCode="EVN">
+							<templateId root="1.2.643.5.1.13.2.7.5.3.16"/>
+							<!-- Тип события "DEC" [1] -->
+							<code code="DEC" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Принятие решения"/>
+							<!--Результат госпитализации/исход заболевания-->
+							<value code="2" codeSystem="1.2.643.5.1.13.2.1.1.357" codeSystemName="Классификатор результатов госпитализации (исхода заболевания, причин выписки)" displayName="Улучшение" xsi:type="CD">
+								<originalText>После проведения эндопротезирования отмечается улучшение моторной функции коленного сустава</originalText>
+							</value>
+						</observation>
+					</entry>
+				</section>
+			</component>
+			<!-- СОСТОЯНИЕ ПАЦИЕНТА КОНЕЦ -->
+			<!-- РЕЖИМ И РЕКОМЕНДАЦИИ НАЧАЛО -->
+			<component typeCode="COMP">
+				<section classCode="DOCSECT" moodCode="EVN">
+					<templateId root="1.2.643.5.1.13.2.7.5.2.9"/>
+					<!-- Код секции [1] "REGIME" -->
+					<code code="REGIME" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Режим и рекомендации"/>
+					<!-- Название секции -->
+					<title>Режим и рекомендации</title>
+					<text>
+						<list>
+							<item>
+								<caption>Режим:</caption>
+								<content>Общий</content>
+							</item>
+							<item>
+								<caption>Диета:</caption>
+								<content>Стол №0</content>
+							</item>
+							<item>
+								<caption>Общие рекомендации:</caption>
+								<content>Динамическое наблюдение лечащего врача, травматолога-ортопеда, врача-физиотерапевта, реабилитолога.Постепенное повышение нагрузки на сустав.Рентгенологический контроль при необходимости. </content>
+							</item>
+						</list>
+					</text>
+					<!-- Текстовое описание конец -->
+				</section>
+			</component>
+			<!-- РЕЖИМ И РЕКОМЕНДАЦИИ ПО ЛЕЧЕНИЮ КОНЕЦ -->
+			<!-- ИЗМЕНЕНИЕ УСЛОВИЙ ТРУДА -->
+			<component typeCode="COMP">
+				<section classCode="DOCSECT" moodCode="EVN">
+					<templateId root="1.2.643.5.1.13.2.7.5.2.10"/>
+					<!-- Код секции [1] "WORK" -->
+					<code code="WORK" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Изменения условий труда"/>
+					<!-- Название секции -->
+					<title>Изменения условий труда</title>
+					<text>Умеренные физические нагрузки</text>
+					<!-- Текстовое описание конец -->
+				</section>
+			</component>
+			<!-- ИЗМЕНЕНИЕ УСЛОВИЙ ТРУДА ИЛИ ОРГАНИЗАЦИИ ТРУДА КОНЕЦ -->
+			<!-- НАЗНАЧЕННЫЕ ПРЕПАРАТЫ НАЧАЛО -->
+			<component typeCode="COMP">
+				<section classCode="DOCSECT" moodCode="EVN">
+					<templateId root="1.2.643.5.1.13.2.7.5.2.11"/>
+					<!-- Код секции "DRUG"[1]  -->
+					<code code="DRUG" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Назначенные препараты"/>
+					<!-- Название секции -->
+					<title>Назначенные препараты</title>
+					<text>
+						<table border="1">
+							<thead>
+								<tr>
+									<th>Дата</th>
+									<th>Наименование препарата</th>
+									<th>Разовая доза</th>
+									<th>Способ введения</th>
+									<th>Назначено</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td align="center">01-06-2013</td>
+									<td align="center">Amoxicillin</td>
+									<td align="center">300 mg</td>
+									<td align="center">Перарально</td>
+									<td align="center">3 раза в день</td>
+								</tr>
+								<tr>
+									<td align="center">01-06-2013</td>
+									<td align="center">Diclofenac</td>
+									<td align="center">50 mg</td>
+									<td align="center">Перарально</td>
+									<td align="center">2 раза в день</td>
+								</tr>
+							</tbody>
+						</table>
+					</text>
+					<!-- Текстовое описание конец -->
+					<!-- Данные препарата 1 начало -->
+					<entry typeCode="COMP">
+						<templateId root="1.2.643.5.1.13.2.7.5.4.10"/>
+						<substanceAdministration classCode="SBADM" moodCode="EVN">
+							<templateId root="1.2.643.5.1.13.2.7.5.3.29"/>
+							<!-- Номер назначения [1] -->
+							<id root="1.2.643.5.1.13.3.25.64.109" extension="0001"/>
+							<!-- Тип выдачи препарата -->
+							<code code="CURE" codeSystem="1.2.643.5.1.13.2.7.1.36" codeSystemName="Тип выдачи препарата" displayName="Выдано пациенту медицинским работником"/>
+							<!-- Дата назначения -->
+							<effectiveTime value="20130601"/>
+							<!--Способ введения медикамента-->
+							<routeCode code="7" codeSystem="1.2.643.5.1.13.2.7.1.64" codeSystemName="Способ введения медикамента" displayName="Перорально"/>
+							<!-- Разовая доза -->
+							<doseQuantity value="300" unit="мг"/>
+							<!-- Назначение : 3 раза в день -->
+							<rateQuantity value="3" unit="день"/>
+							<!-- Лекарственная форма -->
+							<administrationUnitCode code="156" codeSystem="1.2.643.5.1.13.2.1.1.331" codeSystemName="Классификатор лекарственных форм" displayName="Таблетки покрытые пленочной оболочкой"/>
+							<!-- Препарат начало -->
+							<consumable typeCode="CSM">
+								<manufacturedProduct classCode="MANU">
+									<manufacturedMaterial classCode="MMAT" determinerCode="KIND">
+										<!-- Активное вещество код и наименование (по классификатору Анатомо-Терапевтически-Химическая (АТХ)) -->
+										<code code="J01CA04" codeSystem="1.2.643.5.1.13.2.1.1.56" codeSystemName="Анатомо-терапевтическо-химическая классификация" displayName="Amoxicillin"/>
+									</manufacturedMaterial>
+								</manufacturedProduct>
+							</consumable>
+							<!-- Препарат конец -->
+						</substanceAdministration>
+					</entry>
+					<!-- Данные препарата 1 конец -->
+					<!-- Данные препарата 2 начало -->
+					<entry typeCode="COMP">
+						<templateId root="1.2.643.5.1.13.2.7.5.4.10"/>
+						<substanceAdministration classCode="SBADM" moodCode="EVN">
+							<templateId root="1.2.643.5.1.13.2.7.5.3.29"/>
+							<!-- Номер назначения [1] -->
+							<id root="1.2.643.5.1.13.3.25.64.109" extension="0002"/>
+							<!-- Тип выдачи препарата -->
+							<code code="CURE" codeSystem="1.2.643.5.1.13.2.7.1.36" codeSystemName="Тип выдачи препарата" displayName="Выдано пациенту медицинским работником"/>
+							<!-- Дата назначения -->
+							<effectiveTime value="20130601"/>
+							<!-- Разовая доза -->
+							<doseQuantity value="50" unit="mg"/>
+							<!-- Назначение -->
+							<rateQuantity value="2" unit="день"/>
+							<!-- Лекарственная форма -->
+							<administrationUnitCode code="168" codeSystem="1.2.643.5.1.13.2.1.1.331" codeSystemName="Классификатор лекарственных форм" displayName="Таблетки с контролируемым высвобождением покрытые оболочкой"/>
+							<!-- Препарат начало -->
+							<consumable typeCode="CSM">
+								<manufacturedProduct classCode="MANU">
+									<manufacturedMaterial classCode="MMAT" determinerCode="KIND">
+										<!-- Активное вещество код и наименование (по классификатору Анатомо-Терапевтически-Химическая (АТХ)) -->
+										<code code="S01BC03" codeSystem="1.2.643.5.1.13.2.1.1.56" codeSystemName="Анатомо-терапевтическо-химическая классификация" displayName="Diclofenac"/>
+									</manufacturedMaterial>
+								</manufacturedProduct>
+							</consumable>
+							<!-- Препарат конец -->
+						</substanceAdministration>
+					</entry>
+					<!-- Данные препарата 2 конец -->
+				</section>
+			</component>
+			<!-- НАЗНАЧЕНЫЕ ПРЕПАРАТЫ КОНЕЦ -->
+			<!-- ВЫДАННЫЕ ДОКУМЕНТЫ НАЧАЛО -->
+			<component typeCode="COMP">
+				<section classCode="DOCSECT" moodCode="EVN">
+					<templateId root="1.2.643.5.1.13.2.7.5.2.12"/>
+					<!-- Код секции [1] "DOC" -->
+					<code code="DOC" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Выданные документы"/>
+					<!-- Название секции -->
+					<title>Выданные документы</title>
+					<text>
+						<list>
+							<item>Документ о временной нетрудоспособности</item>
+						</list>
+						<table border="1">
+							<thead>
+								<tr>
+									<th>Тип документа о ВНС</th>
+									<th>Номер документа</th>
+									<th>Начало периода</th>
+									<th>Конец периода</th>
+									<th>Статус</th>
+									<th>Причина выдачи</th>
+								</tr>
+							</thead>
+							<tbody align="center">
+								<tr>
+									<td rowspan="2">Лист нетрудоспособности</td>
+									<td rowspan="2">07 0089076</td>
+									<td align="center">31-05-2013</td>
+									<td align="center">10-06-2013</td>
+									<td align="center">Открыт</td>
+									<td rowspan="2">Заболевание</td>
+								</tr>
+							</tbody>
+						</table>
+						<list>
+							<item>Дополнительные документы</item>
+						</list>
+						<table border="1">
+							<thead>
+								<tr>
+									<th>Дата</th>
+									<th>Номер</th>
+									<th>Документ</th>
+									<th>Организация направления</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td align="center">31-05-2013</td>
+									<td/>
+									<td align="center">Извещение о ДТП</td>
+									<td align="center">Страховая компания "Первая старховая"</td>
+								</tr>
+							</tbody>
+						</table>
+					</text>
+					<!-- Текстовое описание конец -->
+					<!-- Лист нетрудоспособности начало -->
+					<entry typeCode="COMP">
+						<templateId root="1.2.643.5.1.13.2.7.5.4.5"/>
+						<act classCode="ACT" moodCode="EVN">
+							<templateId root="1.2.643.5.1.13.2.7.5.3.25"/>
+							<!-- Тип события "CIW" [1] -->
+							<code code="CIW" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Выдача документа о нетрудоспособности"/>
+							<!-- Документ о ВН период 1 начало -->
+							<entryRelationship typeCode="COMP">
+								<templateId root="1.2.643.5.1.13.2.7.5.4.5"/>
+								<act moodCode="EVN" classCode="ACT">
+									<templateId root="1.2.643.5.1.13.2.7.5.3.26"/>
+									<!-- Тип события "CIWPER" [1] -->
+									<code code="CIWPER" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Установление периода нетрудоспособности"/>
+									<effectiveTime>
+										<!-- начало -->
+										<low value="20130531"/>
+										<!-- конец -->
+										<high value="20130616"/>
+									</effectiveTime>
+								</act>
+							</entryRelationship>
+							<!-- Документ о ВН конец -->
+							<!-- Дополнительные документы начало -->
+							<reference typeCode="REFR">
+								<externalDocument classCode="DOC" moodCode="EVN">
+									<!-- Документ о ВН номер -->
+									<id root="1.2.643.5.1.13.3.25.64.109" extension="07 0089076"/>
+									<!-- Тип документа (DL внешний) -->
+									<code code="CIW" codeSystem="1.2.643.5.1.13.2.7.1.38" codeSystemName="Тип внешнего документа" displayName="Документ о временной нетрудоспособности">
+										<qualifier>
+											<value code="1" codeSystem="1.2.643.5.1.13.2.7.1.37" codeSystemName="Тип документа о временной нетрудоспособности" displayName="Лист нетрудоспособности"/>
+										</qualifier>
+										<qualifier>
+											<value code="1" codeSystem="1.2.643.5.1.13.2.1.1.532" codeSystemName="Справочник документов временной нетрудоспособности" displayName="Открыт"/>
+										</qualifier>
+										<qualifier>
+											<value code="1" codeSystem="1.2.643.5.1.13.2.1.1.121" codeSystemName="Классификатор причин выдачи больничных листов" displayName="Заболевание"/>
+										</qualifier>
+									</code>
+								</externalDocument>
+							</reference>
+							<!-- Дополнительные документы конец -->
+						</act>
+					</entry>
+					<!-- Лист нетрудоспособности конец -->
+					<!-- Уведомление начало -->
+					<entry typeCode="COMP">
+						<templateId root="1.2.643.5.1.13.2.7.5.4.5"/>
+						<act classCode="ACT" moodCode="EVN">
+							<templateId root="1.2.643.5.1.13.2.7.5.3.27"/>
+							<!-- Тип события "INFO" [1] -->
+							<code code="INFO" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Выписка извещения"/>
+							<!-- Дата уведомления -->
+							<effectiveTime value="20130531"/>
+							<!-- Учреждение, для которого был выдан документ начало -->
+							<participant typeCode="TRC">
+								<participantRole classCode="ROL">
+									<!-- Название учреждения -->
+									<playingEntity classCode="ENT" determinerCode="INSTANCE">
+										<name>Страховая компания "Первая страховая"</name>
+									</playingEntity>
+								</participantRole>
+							</participant>
+							<!-- Учреждение, для которого был выдан документ конец -->
+							<!-- Дополнительные данные о документе начало -->
+							<reference typeCode="REFR">
+								<externalDocument classCode="DOC" moodCode="EVN">
+									<!-- Номер документа -->
+									<id root="1.2.643.5.1.13.2.7.6.1.2.321.987654321.1.1" extension="12322313"/>
+									<!-- Тип документа -->
+									<code code="INFO" codeSystem="1.2.643.5.1.13.2.7.1.38" codeSystemName="Тип внешнего документа" displayName="Извещение о ДТП">
+										<originalText> Извещение о ДТП</originalText>
+									</code>
+								</externalDocument>
+							</reference>
+							<!-- Дополнительные данные о документе конец -->
+						</act>
+					</entry>
+					<!-- Уведомление конец -->
+				</section>
+			</component>
+			<!-- ВЫДАННЫЕ ДОКУМЕНТЫ КОНЕЦ -->
+			<!-- ДАННЫЕ ПО УСЛУГАМ НАЧАЛО -->
+			<component typeCode="COMP">
+				<section classCode="DOCSECT" moodCode="EVN">
+					<templateId root="1.2.643.5.1.13.2.7.5.2.13"/>
+					<!-- Код секции [1] "SERVICES" -->
+					<code code="SERVICES" codeSystem="1.2.643.5.1.13.2.7.1.18" codeSystemName="Система кодирования секций компонентов CDA" displayName="Оказанные услуги"/>
+					<title>Оказанные услуги</title>
+					<text>
+						<table border="1">
+							<thead>
+								<tr>
+									<th>Наименование услуги</th>
+									<th>Наименование единицы учета медицинской помощи</th>
+									<th>Профиль</th>
+									<th>Источник финансирования</th>
+									<th>Тариф</th>
+									<th>Количество оказанных услуг</th>
+									<th>Статус оплаты</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td align="center">Ежедневный осмотр врачом - травматологом-ортопедом с наблюдением и уходом среднего и младшего медицинского персонала в отделении стационара</td>
+									<td align="center">Койко-день в круглосуточном стационаре</td>
+									<td align="center">Ортопедические для взрослых</td>
+									<td align="center">Пациенты с полисами ОМС</td>
+									<td align="center">255.32</td>
+									<td align="center">11</td>
+									<td align="center">Частично оплачено</td>
+								</tr>
+								<tr>
+									<td align="center">Ежедневный осмотр врачом-терапевтом с наблюдением и уходом среднего и младшего медицинского персонала в отделении стационара</td>
+									<td align="center">Койко-день в круглосуточном стационаре</td>
+									<td align="center">Ортопедические для взрослых</td>
+									<td align="center">Пациенты с полисами ОМС</td>
+									<td align="center">255.32</td>
+									<td align="center">5</td>
+									<td align="center">Частично оплачено</td>
+								</tr>
+							</tbody>
+						</table>
+					</text>
+					<entry>
+						<templateId root="1.2.643.5.1.13.2.7.5.4.5"/>
+						<act classCode="CTTEVENT" moodCode="EVN">
+							<templateId root="1.2.643.5.1.13.2.7.5.3.9"/>
+							<!-- Услуга 1 начало-->
+							<code code="B01.050.003" codeSystem="1.2.643.5.1.13.2.1.1.473" codeSystemName="Номенклатура медицинских услуг" displayName="Ежедневный осмотр врачом - травматологом-ортопедом с наблюдением и уходом среднего и младшего медицинского персонала в отделении стационара">
+								<qualifier>
+									<value xsi:type="PQR" value="255.32" displayName="Тариф"/>
+								</qualifier>
+								<qualifier>
+									<value code="1" codeSystem="1.2.643.5.1.13.2.1.1.104" codeSystemName="Классификатор посещений по видам оплаты" displayName="Пациенты с полисами ОМС"/>
+								</qualifier>
+								<qualifier>
+									<value code="2" codeSystem="1.2.643.5.1.13.2.1.1.141" codeSystemName="Классификатор статусов оплаты услуги" displayName="Частично оплачено"/>
+								</qualifier>
+								<translation code="5" codeSystem="1.2.643.5.1.13.2.1.1.80" codeSystemName="Классификатор единиц учета медицинской помощи" displayName="Койко-день в круглосуточном стационаре"/>
+							</code>
+							<!-- Количество услуг -->
+							<serviceQuantity value="11"/>
+							<entryRelationship typeCode="RSON">
+								<observation classCode="OBS" moodCode="EVN">
+									<code code="STAT" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Отделение пребывания"/>
+									<!-- Время поступления и выбытия [1] -->
+									<effectiveTime>
+										<!-- Время поступления -->
+										<low value="20130531081300"/>
+										<!-- Время выбытия -->
+										<high value="20130610100000"/>
+									</effectiveTime>
+									<!-- Исполнитель [1] -->
+									<performer typeCode="PRF">
+										<!-- Тип исполнителя [1] -->
+										<modeCode code="DEP" codeSystem="1.2.643.5.1.13.2.7.1.30" codeSystemName="Роль в оказании медицинской помощи" displayName="Отделение"/>
+										<assignedEntity>
+											<!-- Регистрационный код отделения в МО [1] (возможно из Паспорта ЛПУ) -->
+											<id root="1.2.643.5.1.13.3.25.64.109" extension="14" assigningAuthorityName="Волгоградская областная больница"/>
+											<!-- Расширение стандарта [1] -->
+											<ext:asBedProfile HL7-ClassName="LIC" HL7-Domain="PRPM_RM000000" realmCode="RU">
+												<!-- Профиль койки [1] -->
+												<ext:code code="29" codeSystem="1.2.643.5.1.13.2.1.1.221" codeSystemName="Номенклатура коечного фонда медицинской организации" displayName="Ортопедические для взрослых"/>
+											</ext:asBedProfile>
+											<representedOrganization>
+												<!-- Название отделения [1] -->
+												<name>Отделение ортопедической хирургии №1</name>
+											</representedOrganization>
+										</assignedEntity>
+									</performer>
+								</observation>
+							</entryRelationship>
+						</act>
+					</entry>
+					<!-- Услуга 1 конец-->
+					<!-- Услуга 2 начало-->
+					<entry>
+						<templateId root="1.2.643.5.1.13.2.7.5.4.5"/>
+						<act classCode="CTTEVENT" moodCode="EVN">
+							<templateId root="1.2.643.5.1.13.2.7.5.3.9"/>
+							<!-- Код услуги -->
+							<code code="B01.047.009" codeSystem="1.2.643.5.1.13.2.1.1.473" codeSystemName="Номенклатура медицинских услуг" displayName="Ежедневный осмотр врачом-терапевтом с наблюдением и уходом среднего и младшего медицинского персонала в отделении стационара">
+								<qualifier>
+									<value xsi:type="PQR" value="255.32" displayName="Тариф"/>
+								</qualifier>
+								<qualifier>
+									<value code="1" codeSystem="1.2.643.5.1.13.2.1.1.104" codeSystemName="Классификатор посещений по видам оплаты" displayName="Пациенты с полисами ОМС"/>
+								</qualifier>
+								<qualifier>
+									<value code="2" codeSystem="1.2.643.5.1.13.2.1.1.141" codeSystemName="Классификатор статусов оплаты услуги" displayName="Частично оплачено"/>
+								</qualifier>
+								<translation code="5" codeSystem="1.2.643.5.1.13.2.1.1.80" codeSystemName="Классификатор единиц учета медицинской помощи" displayName="Койко-день в круглосуточном стационаре"/>
+							</code>
+							<serviceQuantity value="5"/>
+							<entryRelationship typeCode="RSON">
+								<observation classCode="OBS" moodCode="EVN">
+									<code code="STAT" codeSystem="1.2.643.5.1.13.2.7.1.12" codeSystemName="Система кодирования событий" displayName="Отделение пребывания"/>
+									<!-- Время поступления и выбытия [1] -->
+									<effectiveTime>
+										<!-- Время поступления -->
+										<low value="20130610100000"/>
+										<!-- Время выбытия -->
+										<high value="20130615232212"/>
+									</effectiveTime>
+									<!-- Исполнитель [1] -->
+									<performer typeCode="PRF">
+										<!-- Тип исполнителя [1] -->
+										<modeCode code="DEP" codeSystem="1.2.643.5.1.13.2.7.1.30" codeSystemName="Роль в оказании медицинской помощи" displayName="Отделение"/>
+										<assignedEntity>
+											<!-- Регистрационный код отделения в МО [1] (возможно из Паспорта ЛПУ) -->
+											<id root="1.2.643.5.1.13.3.25.64.109" extension="7" assigningAuthorityName="Волгоградская областная больница"/>
+											<!-- Расширение стандарта [1] -->
+											<ext:asBedProfile HL7-ClassName="LIC" HL7-Domain="PRPM_RM000000" realmCode="RU">
+												<!-- Профиль койки [1] -->
+												<ext:code code="1" codeSystem="1.2.643.5.1.13.2.1.1.221" codeSystemName="Номенклатура коечного фонда медицинской организации" displayName="Терапевтические"/>
+											</ext:asBedProfile>
+											<representedOrganization>
+												<!-- Название отделения [1] -->
+												<name>Терапевтическое отделение №2</name>
+											</representedOrganization>
+										</assignedEntity>
+									</performer>
+								</observation>
+							</entryRelationship>
+						</act>
+					</entry>
+					<!-- Услуга 2 конец-->
+				</section>
+			</component>
+			<!-- ДАННЫЕ ПО УСЛУГАМ КОНЕЦ -->
+		</structuredBody>
+	</component>
+	<!-- СОДЕРЖАНИЕ КОНЕЦ -->
+</ClinicalDocument>

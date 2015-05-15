@@ -1,0 +1,52 @@
+﻿{
+  "id": "Element",
+  "description": "Базовый тип для визуальных элементов представления",
+  "type": "object",
+  "properties": {
+    "Name": {
+      "description": "Наименование элемента",
+      "type": "string"
+    },
+    "Text": {
+      "description": "Текст заголовка элемента",
+      "type": "string"
+    },
+    "Enabled": {
+      "description": "Возможен ли доступ к элементу",
+      "type": "boolean",
+      "default": true
+    },
+    "Visible": {
+      "description": "Отображается ли элемент в интерфейсе",
+      "type": "boolean",
+      "default": true
+    },
+    "VerticalAlignment": {
+      "description": "Вертикальное выравнивание в родительском элементе",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/ElementVerticalAlignment",
+      "default": "Stretch"
+    },
+    "HorizontalAlignment": {
+      "description": "Горизонтальное выравнивание в родительском элементе",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/ElementHorizontalAlignment",
+      "default": "Stretch"
+    },
+    "Style": {
+      "description": "Наименование стиля элемента",
+      "type": "string"
+    },
+    "OnLoaded": {
+      "description": "Обработчик события о том, что элемент загружен",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+    },
+    "OnGotFocus": {
+      "description": "Обработчик события о том, что элемент получил фокус ввода",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+    },
+    "OnLostFocus": {
+      "description": "Обработчик события о том, что элемент потерял фокус ввода",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+    }
+  },
+  "additionalProperties": false
+}

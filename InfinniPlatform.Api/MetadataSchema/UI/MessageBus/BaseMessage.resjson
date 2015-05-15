@@ -1,0 +1,11 @@
+﻿{
+  "id": "BaseMessage",
+  "description": "Базовый класс для тела сообщения",
+  "type": "object",
+  "properties": {
+    "Source": {
+      "description": "Источник сообщения",
+      "type": "any"
+    }
+  }
+}

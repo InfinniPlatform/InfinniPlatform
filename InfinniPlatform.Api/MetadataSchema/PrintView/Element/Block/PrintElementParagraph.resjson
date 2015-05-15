@@ -1,0 +1,30 @@
+﻿{
+  "id": "PrintElementParagraph",
+  "description": "Блочный элемент печатного представления для группировки однострочных элементов в абзац",
+  "type": "object",
+  "extends": {
+    "$ref": "http://demo.infinnity.ru:8081/display/MC/PrintElementBlock"
+  },
+  "properties": {
+    "IndentSize": {
+      "description": "Отступ первой строки",
+      "type": "number",
+      "default": 0,
+      "minimum": 0,
+      "exclusiveMinimum": false
+    },
+    "IndentSizeUnit": {
+      "description": "Единица измерения отступа первой строки",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/SizeUnit",
+      "default": "Pt"
+    },
+    "Inlines": {
+      "description": "Список однострочных элементов печатного представления",
+      "type": "array",
+      "items": {
+        "$ref": "http://demo.infinnity.ru:8081/display/MC/PrintElementInlineContainer"
+      }
+    }
+  },
+  "additionalProperties": false
+}

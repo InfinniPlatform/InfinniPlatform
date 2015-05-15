@@ -1,0 +1,84 @@
+<ns2:PRPA_IN201306RU02 xmlns="http://egisz.rosminzdrav.ru" xmlns:ns2="urn:hl7-org:v3">
+  <ns2:id root="PIXManager" extension="d8449891-1e42-4826-8688-b7a2f5155709"/>
+  <ns2:sender>
+    <ns2:device>
+      <ns2:id root="PIXManager"/>
+    </ns2:device>
+  </ns2:sender>
+  <ns2:acknowledgement>
+    <ns2:typeCode code="CA"/>
+    <ns2:targetMessage xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+  </ns2:acknowledgement>
+  <ns2:controlActProcess>
+    <ns2:subject>
+      <ns2:registrationEvent>
+        <ns2:subject1>
+          <ns2:patient>
+            <ns2:id root="1.2.643.5.1.13.3.25.77.761" extension="950700957"/>
+            <ns2:patientPerson>
+              <ns2:name>
+                <ns2:family>Ядренцев</ns2:family>
+                <ns2:given>Денис</ns2:given>
+                <ns2:given>Борисович</ns2:given>
+              </ns2:name>
+              <ns2:telecom value="tel:+7-926-333-22-44"/>
+              <ns2:telecom value="tel:+7-123-456-78-90"/>
+              <ns2:administrativeGenderCode code="M"/>
+              <ns2:birthTime value="19280717"/>
+              <ns2:addr>
+                <ns2:state>Российская Федерация</ns2:state>
+                <ns2:city>Обнинск</ns2:city>
+                <ns2:streetAddressLine>Ленинаул., 19,,,3</ns2:streetAddressLine>
+              </ns2:addr>
+              <ns2:asMember>
+                <ns2:group>
+                  <ns2:code code="02" codeSystem="1.2.643.5.1.13.2.1.1.185" displayName="УчастникиВОВ"/>
+                </ns2:group>
+              </ns2:asMember>
+              <ns2:asOtherIDs>
+                <ns2:id root="1.2.643.100.3" extension="11223344588"/>
+                <ns2:scopingOrganization>
+                  <ns2:id root="dict" extension="dictPFR"/>
+                </ns2:scopingOrganization>
+              </ns2:asOtherIDs>
+              <ns2:asOtherIDs>
+                <ns2:id root="1.2.643.100.3" extension="12345678900"/>
+                <ns2:scopingOrganization>
+                  <ns2:id root="dict" extension="dictPFR"/>
+                </ns2:scopingOrganization>
+              </ns2:asOtherIDs>
+              <ns2:asOtherIDs>
+                <ns2:id root="1.2.643.5.1.13.2.7.100.3" extension="4601123321"/>
+                <ns2:effectiveTime value="20110902"/>
+                <ns2:scopingOrganization>
+                  <ns2:id root="dict" extension="dictFMSUnit"/>
+                </ns2:scopingOrganization>
+              </ns2:asOtherIDs>
+              <ns2:asOtherIDs>
+                <ns2:id root="1.2.643.5.1.13.2.7.100.2" extension="3334879650"/>
+                <ns2:effectiveTime>
+                  <ns2:low inclusive="true" value="20081221"/>
+                  <ns2:high inclusive="true" value="20191221"/>
+                </ns2:effectiveTime>
+                <ns2:scopingOrganization>
+                  <ns2:id root="dict" extension="dictROSNO"/>
+                </ns2:scopingOrganization>
+              </ns2:asOtherIDs>
+              <ns2:birthPlace>
+                <ns2:addr>
+                  <ns2:state>Российская Федерация</ns2:state>
+                  <ns2:city>Красноярск</ns2:city>
+                </ns2:addr>
+              </ns2:birthPlace>
+              <ns2:asUnidentified value="false"/>
+              <ns2:extraMark displayName="Отсутствуют"/>
+            </ns2:patientPerson>
+          </ns2:patient>
+        </ns2:subject1>
+        <ns2:custodian xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+      </ns2:registrationEvent>
+    </ns2:subject>
+  </ns2:controlActProcess>
+</ns2:PRPA_IN201306RU02>
+ 
+

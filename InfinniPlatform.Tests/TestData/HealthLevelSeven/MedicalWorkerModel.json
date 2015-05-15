@@ -1,0 +1,213 @@
+{
+	"Id": "35a15f36-e1a5-4f63-93f6-880a33eb093d",
+	"Name": "Сведения о медицинском работнике",
+	"Type": "Document",
+	"Description": "Представляет описание сведений о медицинском работнике",
+	"Model": {
+		"Name": "MedicalWorkerDataModel",
+		"Caption": "Сведения о пациенте",
+		"Description": "Сведения о пациенте",
+		"MultiplicityFrom": 1,
+		"MultiplicityTo": 1,
+		"Groups": [{
+			"Name": "MedicalWorker",
+			"Caption": "Данные о медицинском работнике",
+			"Description": "Данные о медицинском работнике",
+			"MultiplicityFrom": 1,
+			"MultiplicityTo": 1,			
+			"Properties": [{
+				"Type": "Uuid",
+				"Name": "Id",
+				"Caption": "Уникальный идентификатор медицинского работника",
+				"Description": "Уникальный идентификатор медицинского работника",
+				"MultiplicityFrom": 1,
+				"MultiplicityTo": 1				
+			},
+			{
+				"Type": "Uuid",
+				"Name": "OrganizationId",
+				"Caption": "Идентификатор организации",
+				"Description": "Публичный уникальный идентификатор организации медицинского работника",
+				"MultiplicityFrom": 1,
+				"MultiplicityTo": 1
+			},			
+			{
+				"Type": "String",
+				"Name": "UniqueNumber",
+				"Caption": "Уникальный номер медицинского работника",
+				"Description": "Уникальный номер медицинского работника",
+				"MultiplicityFrom": 1,
+				"MultiplicityTo": 1
+			},			
+            {
+              "Type": "String",
+              "Name": "LastName",
+              "Caption": "Фамилия",
+              "Description": "Фамилия",
+              "MultiplicityFrom": 1,
+              "MultiplicityTo": 1
+            },
+            {
+              "Type": "String",
+              "Name": "FirstName",
+              "Caption": "Имя",
+              "Description": "Имя",
+              "MultiplicityFrom": 1,
+              "MultiplicityTo": 1
+            },
+            {
+              "Type": "String",
+              "Name": "MiddleName",
+              "Caption": "Отчество",
+              "Description": "Отчество",
+              "MultiplicityFrom": 1,
+              "MultiplicityTo": 1
+            },
+			{
+				"Type": "String",
+				"Name": "EmployeeCode",
+				"Caption": "Табельный номер медицинского работника",
+				"Description": "Табельный номер медицинского работника",
+				"MultiplicityFrom": 1,
+				"MultiplicityTo": 1
+			},	
+			{
+				"Type": "DateTime",
+				"Name": "EmploymentDate",
+				"Caption": "Дата трудоустройства медицинского работника",
+				"Description": "Дата трудоустройства медицинского работника",
+				"MultiplicityFrom": 1,
+				"MultiplicityTo": 1
+			},
+			{
+				"Type": "DateTime",
+				"Name": "DismissalDate",
+				"Caption": "Дата увольнения медицинского работника",
+				"Description": "Дата увольнения медицинского работника",
+				"MultiplicityFrom": 0,
+				"MultiplicityTo": 1
+			},
+			{
+			    "Type": "LinkClassifier",
+			    "Name": "Specialities",
+			    "Caption": "Специальности",
+			    "Description": "Список специальностей медицинского работника",
+			    "MultiplicityFrom": 1,
+			    "MultiplicityTo": null,
+			    "Attributes": {
+			        "ClassifierLink": {
+			            "ConfigId": "ClassifierStorage",
+			            "ConfigVersion": "1.0.0.0",
+			            "ClassifierId": "1.2.643.5.1.13.2.1.1.181"
+			        }
+			    }
+			},
+			{
+			    "Type": "LinkClassifier",
+			    "Name": "Posts",
+			    "Caption": "Список должностей медицинского работника",
+			    "Description": "Список должностей медицинского работника",
+			    "MultiplicityFrom": 1,
+			    "MultiplicityTo": null,
+			    "Attributes": {
+			        "ClassifierLink": {
+			            "ConfigId": "ClassifierStorage",
+			            "ConfigVersion": "1.0.0.0",
+			            "ClassifierId": "1.2.643.5.1.13.2.1.1.607"
+			        }
+			    }
+			},
+			{
+				"Type": "ComplexType",
+				"Name": "IdentityCards",
+				"Caption": "Список удостоверений личности медицинского работника",
+				"Description": "Желательно, чтобы было указано, как минимум, одно удостоверение личности",
+				"MultiplicityFrom": 1,
+				"MultiplicityTo": null,
+				"Attributes": {
+					"ComplexTypeLink": {
+						"ConfigId": "FederalIntegration",
+						"ConfigVersion": "1.0.0.0",
+						"ObjectMetadataId": "IdentityCard"
+					}
+				}
+			},			
+			{
+				"Type": "ComplexType",
+				"Name": "Addresses",
+				"Caption": "Список адресов медицинского работника",
+				"Description": "Должен быть указан, как минимум, один адрес",
+				"MultiplicityFrom": 0,
+				"MultiplicityTo": null,
+				"Attributes": {
+					"ComplexTypeLink": {
+						"ConfigId": "FederalIntegration",
+						"ConfigVersion": "1.0.0.0",
+						"ObjectMetadataId": "Address"
+					}
+				}
+			},
+			{
+				"Type": "ComplexType",
+				"Name": "Phones",
+				"Caption": "Список телефонов медицинского работника",
+				"Description": "Должен быть указан, как минимум, один телефон",
+				"MultiplicityFrom": 0,
+				"MultiplicityTo": null,
+				"Attributes": {
+					"ComplexTypeLink": {
+						"ConfigId": "FederalIntegration",
+						"ConfigVersion": "1.0.0.0",
+						"ObjectMetadataId": "ContactInformation"
+					}
+				}
+			},
+			{
+				"Type": "ComplexType",
+				"Name": "Emails",
+				"Caption": "Список электронных почтовых адресов (email) медицинского работника",
+				"Description": "Может быть указан, например, рабочий электронный почтовый адрес (email)",
+				"MultiplicityFrom": 0,
+				"MultiplicityTo": null,
+				"Attributes": {
+					"ComplexTypeLink": {
+						"ConfigId": "FederalIntegration",
+						"ConfigVersion": "1.0.0.0",
+						"ObjectMetadataId": "ContactInformation"
+					}
+				}
+			},
+			{
+				"Type": "ComplexType",
+				"Name": "Faxes",
+				"Caption": "Факсы медицинского работника",
+				"Description": "Факсы медицинского работника",
+				"MultiplicityFrom": 0,
+				"MultiplicityTo": null,
+				"Attributes": {
+					"ComplexTypeLink": {
+						"ConfigId": "FederalIntegration",
+						"ConfigVersion": "1.0.0.0",
+						"ObjectMetadataId": "ContactInformation"
+					}
+				}
+			},
+			{
+				"Type": "ComplexType",
+				"Name": "Requisites",
+				"Caption": "Список реквизитов медицинского работника",
+				"Description": "Обязательно должен быть указан СНИЛС",
+				"MultiplicityFrom": 1,
+				"MultiplicityTo": null,
+				"Attributes": {
+					"ComplexTypeLink": {
+						"ConfigId": "FederalIntegration",
+						"ConfigVersion": "1.0.0.0",
+						"ObjectMetadataId": "Requisite"
+					}
+				}
+			}		
+			]
+		}]
+	}
+}

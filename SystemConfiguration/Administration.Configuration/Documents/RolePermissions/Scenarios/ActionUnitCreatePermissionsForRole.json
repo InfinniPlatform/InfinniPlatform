@@ -1,0 +1,13 @@
+{
+  "Id": "2de09485-e30e-46bb-a5a1-59469b61647f",
+  "ScriptUnitType": 1,
+  "ContextType": 2,
+  "ScenarioId": "ActionUnitCreatePermissionsForRole",
+  "Description": "",
+  "Caption": "ActionUnitCreatePermissionsForRole",
+  "Name": "ActionUnitCreatePermissionsForRole",
+  "ParentId": "cf4d2816-9dde-4143-8e53-1bcaa1972bcf",
+  "Version": "version_systemconfig",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "scenariometadata"
+}

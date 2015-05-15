@@ -1,0 +1,21 @@
+﻿{
+  "From": {
+    "Index": "TestQueryConfig",
+    "Type": "Patient",
+    "Alias": "Patient"
+  },
+  "Join": [
+    {
+      "Index": "TestQueryConfig",
+      "Type": "Address",
+      "Alias": "Addr",
+      "Path": "Address.Id"
+    },
+    {
+      "Index": "TestQueryConfig",
+      "Type": "Policy",
+      "Alias": "Policies",
+      "Path": "Policies.$.Id"
+    }
+  ]
+}

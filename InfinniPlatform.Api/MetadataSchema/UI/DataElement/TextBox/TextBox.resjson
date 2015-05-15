@@ -1,0 +1,20 @@
+﻿{
+  "id": "TextBox",
+  "description": "Элемент представления для отображения или редактирования неформатированного текста",
+  "type": "object",
+  "extends": {
+    "$ref": "http://demo.infinnity.ru:8081/display/MC/BaseTextElement"
+  },
+  "properties": {
+    "Multiline": {
+      "description": "Разрешен ли многострочный текст",
+      "type": "boolean",
+      "default": false
+    },
+    "LineCount": {
+      "description": "Видимое количество строк",
+      "type": "integer"
+    }
+  },
+  "additionalProperties": false
+}

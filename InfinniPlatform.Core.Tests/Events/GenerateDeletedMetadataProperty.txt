@@ -1,0 +1,219 @@
+﻿{
+  "FormMetadata": [
+    {
+      "Id": 500,
+      "IdTree": false,
+      "IdTreeParent": false,
+      "Parent": {
+        "Id": 111,
+        "FieldCode": {
+          "Id": 10111,
+          "FieldMetadata": {
+            "Id": 100291,
+            "IdTree": false,
+            "IdTreeParent": false,
+            "MetadataName": "Идентификатор объекта",
+            "MetadataDataType": {
+              "MetadataTypeKind": "SimpleType",
+              "MetadataIdentifier": "string"
+            },
+            "IsEditable": false,
+            "IsFilterable": false,
+            "IsIdentifier": false
+          },
+          "Value": "REF_CLPHPOINTER"
+        },
+        "FieldName": {
+          "Id": 10112,
+          "FieldMetadata": {
+            "Id": 10030,
+            "IdTree": false,
+            "IdTreeParent": false,
+            "MetadataId": "OBJECT_NAME",
+            "MetadataName": "Наименование объекта",
+            "MetadataDataType": {
+              "MetadataTypeKind": "SimpleType",
+              "MetadataIdentifier": "string"
+            },
+            "IsEditable": false,
+            "IsFilterable": false,
+            "IsIdentifier": false
+          },
+          "Value": "Клинико-фармакологический указатель"
+        }
+      },
+      "MetadataId": "ID",
+      "MetadataName": "Идентификатор пункта КФУ",
+      "MetadataDataType": {
+        "MetadataTypeKind": "SimpleType",
+        "MetadataIdentifier": "string"
+      },
+      "IsEditable": false,
+      "IsFilterable": false,
+      "DataFieldName": "Id",
+      "IsIdentifier": true
+    },
+    {
+      "Id": 501,
+      "IdTree": false,
+      "IdTreeParent": false,
+      "Parent": {
+        "Id": 111,
+        "FieldCode": {
+          "Id": 10111,
+          "FieldMetadata": {
+            "Id": 100291,
+            "IdTree": false,
+            "IdTreeParent": false,
+            "MetadataId": "OBJECT_CODE",
+            "MetadataName": "Идентификатор объекта",
+            "MetadataDataType": {
+              "MetadataTypeKind": "SimpleType",
+              "MetadataIdentifier": "string"
+            },
+            "IsEditable": false,
+            "IsFilterable": false,
+            "IsIdentifier": false
+          },
+          "Value": "REF_CLPHPOINTER"
+        },
+        "FieldName": {
+          "Id": 10112,
+          "FieldMetadata": {
+            "Id": 10030,
+            "IdTree": false,
+            "IdTreeParent": false,
+            "MetadataId": "OBJECT_NAME",
+            "MetadataName": "Наименование объекта",
+            "MetadataDataType": {
+              "MetadataTypeKind": "SimpleType",
+              "MetadataIdentifier": "string"
+            },
+            "IsEditable": false,
+            "IsFilterable": false,
+            "IsIdentifier": false
+          },
+          "Value": "Клинико-фармакологический указатель"
+        }
+      },
+      "MetadataId": "Name",
+      "MetadataName": "Наименование пункта КФУ",
+      "MetadataDataType": {
+        "MetadataTypeKind": "SimpleType",
+        "MetadataIdentifier": "string"
+      },
+      "IsEditable": false,
+      "IsFilterable": false,
+      "DataFieldName": "Name",
+      "IsIdentifier": false
+    },
+    {
+      "Id": 501,
+      "IdTree": true,
+      "IdTreeParent": false,
+      "Parent": {
+        "Id": 111,
+        "FieldCode": {
+          "Id": 10111,
+          "FieldMetadata": {
+            "Id": 100291,
+            "IdTree": false,
+            "IdTreeParent": false,
+            "MetadataId": "OBJECT_CODE",
+            "MetadataName": "Идентификатор объекта",
+            "MetadataDataType": {
+              "MetadataTypeKind": "SimpleType",
+              "MetadataIdentifier": "string"
+            },
+            "IsEditable": false,
+            "IsFilterable": false,
+            "IsIdentifier": false
+          },
+          "Value": "REF_CLPHPOINTER"
+        },
+        "FieldName": {
+          "Id": 10112,
+          "FieldMetadata": {
+            "Id": 10030,
+            "IdTree": false,
+            "IdTreeParent": false,
+            "MetadataId": "OBJECT_NAME",
+            "MetadataName": "Наименование объекта",
+            "MetadataDataType": {
+              "MetadataTypeKind": "SimpleType",
+              "MetadataIdentifier": "string"
+            },
+            "IsEditable": false,
+            "IsFilterable": false,
+            "IsIdentifier": false
+          },
+          "Value": "Клинико-фармакологический указатель"
+        }
+      },
+      "MetadataId": "Code",
+      "MetadataName": "Код КФУ",
+      "MetadataDataType": {
+        "MetadataTypeKind": "SimpleType",
+        "MetadataIdentifier": "string"
+      },
+      "IsEditable": false,
+      "IsFilterable": false,
+      "DataFieldName": "Code",
+      "IsIdentifier": false
+    },
+    {
+      "Id": 501,
+      "IdTree": false,
+      "IdTreeParent": true,
+      "Parent": {
+        "Id": 111,
+        "FieldCode": {
+          "Id": 10111,
+          "FieldMetadata": {
+            "Id": 100291,
+            "IdTree": false,
+            "IdTreeParent": false,
+            "MetadataId": "OBJECT_CODE",
+            "MetadataName": "Идентификатор объекта",
+            "MetadataDataType": {
+              "MetadataTypeKind": "SimpleType",
+              "MetadataIdentifier": "string"
+            },
+            "IsEditable": false,
+            "IsFilterable": false,
+            "IsIdentifier": false
+          },
+          "Value": "REF_CLPHPOINTER"
+        },
+        "FieldName": {
+          "Id": 10112,
+          "FieldMetadata": {
+            "Id": 10030,
+            "IdTree": false,
+            "IdTreeParent": false,
+            "MetadataId": "OBJECT_NAME",
+            "MetadataName": "Наименование объекта",
+            "MetadataDataType": {
+              "MetadataTypeKind": "SimpleType",
+              "MetadataIdentifier": "string"
+            },
+            "IsEditable": false,
+            "IsFilterable": false,
+            "IsIdentifier": false
+          },
+          "Value": "Клинико-фармакологический указатель"
+        }
+      },
+      "MetadataId": "ParentCode",
+      "MetadataName": "Код родительского элемента КФУ",
+      "MetadataDataType": {
+        "MetadataTypeKind": "SimpleType",
+        "MetadataIdentifier": "string"
+      },
+      "IsEditable": false,
+      "IsFilterable": false,
+      "DataFieldName": "ParentCode",
+      "IsIdentifier": false
+    }
+  ]
+}

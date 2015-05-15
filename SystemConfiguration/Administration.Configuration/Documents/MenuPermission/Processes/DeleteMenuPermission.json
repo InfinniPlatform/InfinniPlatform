@@ -1,0 +1,21 @@
+{
+  "Id": "03691bd3-54bd-4818-be39-269b7d928b37",
+  "Type": 2,
+  "Caption": "DeleteMenuPermission",
+  "Name": "DeleteMenuPermission",
+  "Transitions": [
+    {
+      "Id": "263aecbe-78a9-4240-bf13-2925b9828c8f",
+      "Name": "DeleteMenuPermission",
+      "ActionPoint": {
+        "TypeName": "Action",
+        "ScenarioId": "1144cfaf-040a-44e0-9f37-eba331263f22"
+      }
+    }
+  ],
+  "SettingsType": "Custom",
+  "ParentId": "bd4bfcb7-daf8-4e52-b317-a2b9ed6b0480",
+  "Version": "version_systemconfig",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "processmetadata"
+}

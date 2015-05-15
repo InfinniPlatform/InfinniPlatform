@@ -1,0 +1,10 @@
+﻿{
+  "id": "PrintElementTextDecoration",
+  "description": "Оформление текста элемента печатного представления",
+  "enum": [
+    "Normal",
+    "Overline",
+    "Strikethrough",
+    "Underline"
+  ]
+}

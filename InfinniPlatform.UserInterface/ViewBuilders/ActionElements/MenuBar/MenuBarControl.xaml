@@ -1,0 +1,116 @@
+﻿<UserControl x:Class="InfinniPlatform.UserInterface.ViewBuilders.ActionElements.MenuBar.MenuBarControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:themes="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
+             xmlns:app="clr-namespace:InfinniPlatform.UserInterface.AppHost"
+             mc:Ignorable="d" 
+             d:DesignHeight="300"
+			 d:DesignWidth="300"
+			 >
+
+	<UserControl.Resources>
+		<SolidColorBrush x:Key="HighlightElementBrush" 
+						 Color="{x:Static SystemColors.HighlightColor}" 
+						 Opacity="0.4"
+						 />
+		<Style x:Key="HighlightElementStyle"
+			   TargetType="{x:Type dxg:GridRowContent}"
+			   BasedOn="{StaticResource {themes:GridRowThemeKey ResourceKey=RowStyle, ThemeName={x:Static app:AppRunner.ApplicationThemeName}}}"
+			   >
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True">
+					<Setter Property="Background" Value="{StaticResource HighlightElementBrush}" />
+					<Setter Property="Foreground" Value="{x:Static Brushes.Black}" />
+				</DataTrigger>
+				<DataTrigger Binding="{Binding Path=IsSelected}" Value="True">
+					<Setter Property="Foreground" Value="{x:Static Brushes.White}" />
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
+	</UserControl.Resources>
+
+	<Grid SizeChanged="OnMenuSizeChanged">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"></RowDefinition>
+			<RowDefinition Height="Auto"></RowDefinition>
+			<RowDefinition Name="MenuTreeListRow" Height="*"></RowDefinition>
+		</Grid.RowDefinitions>
+
+		<dxe:ComboBoxEdit Name="MenuComboBox"
+						  Grid.Row="0" Grid.Column="0"
+						  Width="250" Margin="0,0,0,5"
+						  VerticalAlignment="Top" 
+						  HorizontalAlignment="Left"
+						  FilterCondition="Contains"
+						  IsTextEditable="False"
+						  DisplayMember="Text"
+						  NullText="Menu"
+						  SelectedIndexChanged="OnSelectMenu"
+						  />
+
+		<dxe:SearchControl Name="MenuSearchControl"
+						   Grid.Row="1" Grid.Column="0"
+						   Width="250" Margin="0,0,0,5"
+						   VerticalAlignment="Top"
+						   HorizontalAlignment="Left"
+						   ShowMRUButton="False"
+						   FilterCondition="Contains"
+						   SearchTextPostDelay="500"
+						   PostMode="Delayed"
+						   />
+		<dxg:TreeListControl Name="MenuTreeList"
+							 Grid.Row="2" Grid.Column="0"
+							 VerticalAlignment="Top"
+							 ShowBorder="False"
+							 SelectionMode="None"
+							 Height="0"
+							 >
+			<dxg:TreeListControl.Columns>
+				<dxg:TreeListColumn Header="Menu"
+									FieldName="Text"
+									ReadOnly="True"
+									AllowEditing="False"
+									SortMode="DisplayText"
+									AllowSearchPanel="True"
+									AllowColumnFiltering="True"
+									AutoFilterCondition="Contains"
+									ColumnFilterMode="DisplayText"
+									/>
+			</dxg:TreeListControl.Columns>
+			<dxg:TreeListControl.View>
+				<dxg:TreeListView Name="MenuTreeListView"
+								  KeyFieldName="Key"
+								  ParentFieldName="Parent"
+								  ImageFieldName="Image"
+								  TreeLineStyle="None"
+								  AutoWidth="True"
+								  AllowEditing="False"
+								  ShowIndicator="False"
+								  ShowNodeImages="True"
+								  ShowTotalSummary="False"
+								  ShowColumnHeaders="False"
+								  ShowVerticalLines="False"
+								  ShowHorizontalLines="False"
+								  SearchPanelAllowFilter="True"
+								  VerticalScrollbarVisibility="Auto"
+								  SearchControl="{Binding ElementName=MenuSearchControl}"
+								  RowDoubleClick="OnMenuItemDoubleClick"
+								  NavigationStyle="Row"
+								  RowStyle="{StaticResource HighlightElementStyle}"
+								  />
+			</dxg:TreeListControl.View>
+			<dxg:TreeListControl.InputBindings>
+				<KeyBinding Command="ApplicationCommands.NotACommand" Gesture="Ctrl+X" />
+				<KeyBinding Command="ApplicationCommands.NotACommand" Gesture="Ctrl+C" />
+				<KeyBinding Command="ApplicationCommands.NotACommand" Gesture="Ctrl+V" />
+			</dxg:TreeListControl.InputBindings>
+		</dxg:TreeListControl>
+	</Grid>
+</UserControl>

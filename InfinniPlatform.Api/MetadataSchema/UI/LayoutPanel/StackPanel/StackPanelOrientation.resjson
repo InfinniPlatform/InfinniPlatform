@@ -1,0 +1,8 @@
+﻿{
+  "id": "StackPanelOrientation",
+  "description": "Ориентация стека элементов",
+  "enum": [
+    "Horizontal",
+    "Vertical"
+  ]
+}

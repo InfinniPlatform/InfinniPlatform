@@ -1,0 +1,410 @@
+[
+{
+  "Name": "Relationship",
+  "Description": "Характеризует родителя/опекуна пациента",  
+  "Properties": [{
+    "Type": "LinkClassifier",
+    "Name": "Type",
+    "Caption": "Тип отношений",
+    "Description": "Тип отношений",
+    "MultiplicityFrom": 1,
+    "MultiplicityTo": 1,
+    "Attributes": {
+      "ClassifierLink": {
+        "ConfigId": "ClassifierStorage",
+        "ConfigVersion": "1.0.0.0",
+        "ClassifierId": "1.2.643.5.1.13.2.1.1.186"
+      }
+    }
+  },
+  {
+    "Type": "Uuid",
+    "Name": "PatientId",
+    "Caption": "Уникальный идентификатор пациента",
+    "Description": "Уникальный идентификатор пациента",
+    "MultiplicityFrom": 1,
+    "MultiplicityTo": 1
+  }]
+},
+{
+  "Name": "ContactInformation",
+  "Description": "Представляет контактную информацию",  
+  "Properties": [
+  {
+    "Type": "String",
+    "Name": "Name",
+    "Caption": "Наименование контакта",
+    "Description": "Представляет дополнительные сведения о контактной информации",
+    "MultiplicityFrom": 0,
+    "MultiplicityTo": 1
+  },
+  {
+    "Type": "String",
+    "Name": "Value",
+    "Caption": "Значение контакта",
+    "Description": "Значение определяется контекстом использования (телефон или e-mail)",
+    "MultiplicityFrom": 1,
+    "MultiplicityTo": 1
+  }]
+},
+{
+  "Name": "Address",
+  "Groups": [],
+  "Properties": [
+  {
+    "Type": "LinkClassifier",
+    "Name": "Country",
+    "Caption": "Страна",
+    "Description": "Страна",
+    "MultiplicityFrom": 0,
+    "MultiplicityTo": 1,
+    "Attributes": {
+      "ClassifierLink": {
+        "ConfigId": "ClassifierStorage",
+        "ConfigVersion": "1.0.0.0",
+        "ClassifierId": "1.2.643.5.1.13.2.1.1.63"
+      }
+    }
+  },
+  {
+    "Type": "LinkClassifier",
+    "Name": "Region",
+    "Caption": "Область/Край",
+    "Description": "Область/Край",
+    "MultiplicityFrom": 0,
+    "MultiplicityTo": 1,
+    "Attributes": {
+      "ClassifierLink": {
+        "ConfigId": "ClassifierStorage",
+        "ConfigVersion": "1.0.0.0",
+        "ClassifierId": "1.2.643.5.1.13.2.1.1.196"
+      }
+    }
+  },
+  {
+    "Type": "LinkClassifier",
+    "Name": "City",
+    "Caption": "Город",
+    "Description": "Город",
+    "MultiplicityFrom": 0,
+    "MultiplicityTo": 1,
+    "Attributes": {
+      "ClassifierLink": {
+        "ConfigId": "ClassifierStorage",
+        "ConfigVersion": "1.0.0.0",
+        "ClassifierId": "1.2.643.5.1.13.2.1.1.196"
+      }
+    }
+  },
+  {
+    "Type": "String",
+    "Name": "AddressLine",
+    "Caption": "Неструктурированный адрес",
+    "Description": "Используется только для неструктурированного указания адреса",
+    "MultiplicityFrom": 0,
+    "MultiplicityTo": 1    
+  },
+  {
+    "Type": "LinkClassifier",
+    "Name": "Street",
+    "Caption": "Улица",
+    "Description": "Улица",
+    "MultiplicityFrom": 0,
+    "MultiplicityTo": 1,
+    "Attributes": {
+      "ClassifierLink": {
+        "ConfigId": "ClassifierStorage",
+        "ConfigVersion": "1.0.0.0",
+        "ClassifierId": "1.2.643.5.1.13.2.1.1.196"
+      }
+    }
+  },
+  {
+    "Type": "String",
+    "Name": "House",
+    "Caption": "Номер дома",
+    "Description": "Номер дома",
+    "MultiplicityFrom": 0,
+    "MultiplicityTo": 1
+  },
+  {
+    "Type": "String",
+    "Name": "Apartment",
+    "Caption": "Квартира",
+    "Description": "Квартира",
+    "MultiplicityFrom": 0,
+    "MultiplicityTo": 1
+  },
+  {
+    "Type": "String",
+    "Name": "PostalCode",
+    "Caption": "Почтовый индекс",
+    "Description": "Почтовый индекс",
+    "MultiplicityFrom": 0,
+    "MultiplicityTo": 1
+  },  
+  {
+    "Type": "String",
+    "Name": "Direction",
+    "Caption": "Геокоординаты объекта",
+    "Description": "Геокоординаты объекта",
+    "MultiplicityFrom": 0,
+    "MultiplicityTo": 1    
+  },
+  {
+    "Type": "LinkClassifier",
+    "Name": "Type",
+    "Caption": "Использование адреса",
+    "Description": "Использование адреса",
+    "MultiplicityFrom": 0,
+    "MultiplicityTo": 1,
+    "Attributes": {
+      "ClassifierLink": {
+        "ConfigId": "ClassifierStorage",
+        "ConfigVersion": "1.0.0.0",
+        "ClassifierId": "1.2.643.5.1.13.2.1.1.229"
+      }
+    }
+  }]
+},
+{
+  "Name": "IdentityCard",
+  "Properties": [{
+    "Type": "LinkClassifier",
+    "Name": "Type",
+    "Caption": "Тип документа",
+    "Description": "Тип документа",
+    "MultiplicityFrom": 1,
+    "MultiplicityTo": 1,
+    "Attributes": {
+      "ClassifierLink": {
+        "ConfigId": "ClassifierStorage",
+        "ConfigVersion": "1.0.0.0",
+        "ClassifierId": "1.2.643.5.1.13.2.7.1.62"
+      }
+    }
+  },
+  {
+    "Type": "LinkClassifier",
+    "Name": "TypeTranslation",
+    "Caption": "Тип документа, удостоверяющего личность",
+    "Description": "Тип документа, удостоверяющего личность (расшифровка)",
+    "MultiplicityFrom": 0,
+    "MultiplicityTo": 1,
+    "Attributes": {
+      "ClassifierLink": {
+        "ConfigId": "ClassifierStorage",
+        "ConfigVersion": "1.0.0.0",
+        "ClassifierId": "1.2.643.5.1.13.2.1.1.498"
+      }
+    }
+  },
+  {
+    "Type": "String",
+    "Name": "Series",
+    "Caption": "Серия документа",
+    "Description": "Серия документа",
+    "MultiplicityFrom": 1,
+    "MultiplicityTo": 1
+  },
+  {
+    "Type": "String",
+    "Name": "Number",
+    "Caption": "Номер документа",
+    "Description": "Номер документа",
+    "MultiplicityFrom": 1,
+    "MultiplicityTo": 1
+  },
+  {
+    "Type": "DateTime",
+    "Name": "IssueDate",
+    "Caption": "Дата выдачи документа",
+    "Description": "Дата выдачи документа",
+    "MultiplicityFrom": 1,
+    "MultiplicityTo": 1
+  },
+  {
+    "Type": "DateTime",
+    "Name": "ExpiryDate",
+    "Caption": "Окончание срока действия документа",
+    "Description": "Окончание срока действия документа",
+    "MultiplicityFrom": 0,
+    "MultiplicityTo": 1
+  },
+  {
+    "Type": "String",
+    "Name": "Issuer",
+    "Caption": "Наименование организации, выдавшей документ",
+    "Description": "Наименование организации, выдавшей документ",
+    "MultiplicityFrom": 1,
+    "MultiplicityTo": 1
+  }]
+},
+{
+  "Name": "Policie",
+  "Properties": [{
+    "Type": "LinkClassifier",
+    "Name": "Type",
+    "Caption": "Тип документа",
+    "Description": "Тип документа",
+    "MultiplicityFrom": 1,
+    "MultiplicityTo": 1,
+    "Attributes": {
+      "ClassifierLink": {
+        "ConfigId": "ClassifierStorage",
+        "ConfigVersion": "1.0.0.0",
+        "ClassifierId": "1.2.643.5.1.13.2.7.1.62"
+      }
+    }
+  },
+  {
+    "Type": "LinkClassifier",
+    "Name": "TypeTranslation",
+    "Caption": "Тип документа, удостоверяющего личность",
+    "Description": "Тип документа, удостоверяющего личность (расшифровка)",
+    "MultiplicityFrom": 0,
+    "MultiplicityTo": 1,
+    "Attributes": {
+      "ClassifierLink": {
+        "ConfigId": "ClassifierStorage",
+        "ConfigVersion": "1.0.0.0",
+        "ClassifierId": "1.2.643.5.1.13.2.1.1.498"
+      }
+    }
+  },
+  {
+    "Type": "String",
+    "Name": "Series",
+    "Caption": "Серия документа",
+    "Description": "Серия документа",
+    "MultiplicityFrom": 1,
+    "MultiplicityTo": 1
+  },
+  {
+    "Type": "String",
+    "Name": "Number",
+    "Caption": "Номер документа",
+    "Description": "Номер документа",
+    "MultiplicityFrom": 1,
+    "MultiplicityTo": 1
+  },
+  {
+    "Type": "DateTime",
+    "Name": "IssueDate",
+    "Caption": "Дата выдачи полиса",
+    "Description": "Дата выдачи полиса",
+    "MultiplicityFrom": 1,
+    "MultiplicityTo": 1
+  },
+  {
+    "Type": "DateTime",
+    "Name": "ExpiryDate",
+    "Caption": "Окончание срока действия полиса",
+    "Description": "Окончание срока действия полиса",
+    "MultiplicityFrom": 0,
+    "MultiplicityTo": 1
+  },
+  {
+    "Type": "String",
+    "Name": "Issuer",
+    "Caption": "Имя страховой компании",
+    "Description": "Имя страховой компании",
+    "MultiplicityFrom": 1,
+    "MultiplicityTo": 1
+  },
+  {
+    "Type": "LinkClassifier",
+    "Name": "IssuerId",
+    "Caption": "Идентификатор страховой компании",
+    "Description": "Идентификатор страховой компании, по справочнику в данном случае ФОМС",
+    "MultiplicityFrom": 0,
+    "MultiplicityTo": 1,
+    "Attributes": {
+      "ClassifierLink": {
+        "ConfigId": "ClassifierStorage",
+        "ConfigVersion": "1.0.0.0",
+        "ClassifierId": "1.2.643.5.1.13.2.1.1.635"
+      }
+    }
+  },
+  {
+    "Type": "LinkClassifier",
+    "Name": "InsuredTerritory",
+    "Caption": "Код территории страхования",
+    "Description": "Код территории страхования по справочникам ОКАТО, ОКТМО, КЛАДР",
+    "MultiplicityFrom": 0,
+    "MultiplicityTo": 1,
+    "Attributes": {
+      "ClassifierLink": {
+        "ConfigId": "ClassifierStorage",
+        "ConfigVersion": "1.0.0.0",
+        "ClassifierId": "1.2.643.5.1.13.2.1.1.196"
+      }
+    }
+  }]
+},
+{
+  "Name": "Requisite",
+  "Properties": [{
+    "Type": "LinkClassifier",
+    "Name": "Type",
+    "Caption": "Тип документа",
+    "Description": "Тип документа",
+    "MultiplicityFrom": 1,
+    "MultiplicityTo": 1,
+    "Attributes": {
+      "ClassifierLink": {
+        "ConfigId": "ClassifierStorage",
+        "ConfigVersion": "1.0.0.0",
+        "ClassifierId": "1.2.643.5.1.13.2.7.1.62"
+      }
+    }
+  },
+  {
+    "Type": "String",
+    "Name": "Value",
+    "Caption": "Значение реквизита",
+    "Description": "Значение реквизита",
+    "MultiplicityFrom": 1,
+    "MultiplicityTo": 1
+  },
+  {
+    "Type": "DateTime",
+    "Name": "IssueDate",
+    "Caption": "Дата выдачи документа",
+    "Description": "Дата выдачи документа",
+    "MultiplicityFrom": 0,
+    "MultiplicityTo": 1
+  },
+  {
+    "Type": "DateTime",
+    "Name": "ExpiryDate",
+    "Caption": "Окончание срока действия документа",
+    "Description": "Окончание срока действия документа",
+    "MultiplicityFrom": 0,
+    "MultiplicityTo": 1
+  },
+  {
+    "Type": "String",
+    "Name": "Issuer",
+    "Caption": "Наименование организации, выдавшей документ",
+    "Description": "Наименование организации, выдавшей документ",
+    "MultiplicityFrom": 0,
+    "MultiplicityTo": 1
+  },
+  {
+    "Type": "LinkClassifier",
+    "Name": "InsuredTerritory",
+    "Caption": "Код территории страхования",
+    "Description": "Код территории страхования по справочникам ОКАТО, ОКТМО, КЛАДР",
+    "MultiplicityFrom": 0,
+    "MultiplicityTo": 1,
+    "Attributes": {
+      "ClassifierLink": {
+        "ConfigId": "ClassifierStorage",
+        "ConfigVersion": "1.0.0.0",
+        "ClassifierId": "1.2.643.5.1.13.2.1.1.196"
+      }
+    }
+  }]
+}]

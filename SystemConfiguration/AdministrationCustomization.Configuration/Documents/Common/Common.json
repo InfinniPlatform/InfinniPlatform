@@ -1,0 +1,62 @@
+{
+  "Id": "e08fd960-2166-44d9-aa3c-3525d71518e9",
+  "Name": "Common",
+  "Caption": "Common options",
+  "Description": "Common options",
+  "Versioning": 2,
+  "MetadataIndex": "Common",
+  "Services": [
+    {
+      "Id": "dee89089-adf4-49ba-90fb-28b80bcda26b",
+      "Name": "OnAddUserEvent",
+      "Caption": ""
+    },
+    {
+      "Id": "d0106430-d5b0-429f-86ab-ce56356d61f6",
+      "Name": "OnRemoveUserEvent",
+      "Caption": ""
+    }
+  ],
+  "Processes": [
+    {
+      "Id": "0d04522c-eea3-471b-b987-7558eb379e32",
+      "Name": "OnAddUserEvent",
+      "Caption": "OnAddUserEvent"
+    },
+    {
+      "Id": "498ec15a-affb-4459-8d38-331587666bf6",
+      "Name": "OnRemoveUserEvent",
+      "Caption": "OnRemoveUserEvent"
+    }
+  ],
+  "Scenarios": [
+    {
+      "Id": "aec718fe-c04c-467a-b5ab-78f458bc04ef",
+      "Name": "ActionUnitOnAddUserEvent",
+      "Caption": "ActionUnitOnAddUserEvent",
+      "Description": ""
+    },
+    {
+      "Id": "4fb7ac22-dd28-4141-a427-85b1085e2b03",
+      "Name": "ActionUnitOnRemoveUserEvent",
+      "Caption": "ActionUnitOnRemoveUserEvent",
+      "Description": ""
+    },
+    {
+      "Id": "ab3345cf-6638-487b-924c-5c4438100908",
+      "Name": "ActionUnitGetCredentials",
+      "Caption": "ActionUnitGetCredentials",
+      "Description": ""
+    }
+  ],
+  "Generators": [],
+  "Views": [],
+  "PrintViews": [],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "DocumentStatuses": [],
+  "ParentId": "0a787a70-d52f-4d9d-8018-8f3dee8d229e",
+  "Version": "version_systemconfig",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "documentmetadata"
+}

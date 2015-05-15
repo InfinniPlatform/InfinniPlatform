@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>InfinniPlatform</RootNamespace>
+    <AssemblyName>InfinniPlatform.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Compression\GZipDataCompressor.cs" />
+    <Compile Include="Compression\IDataCompressor.cs" />
+    <Compile Include="ContextComponents\BlobStorageComponent.cs" />
+    <Compile Include="ContextComponents\ConfigurationMediatorComponent.cs" />
+    <Compile Include="ContextComponents\CrossConfigSearchComponent.cs" />
+    <Compile Include="ContextComponents\DependencyContainerComponent.cs" />
+    <Compile Include="ContextComponents\EventStorageComponent.cs" />
+    <Compile Include="ContextComponents\IndexComponent.cs" />
+    <Compile Include="ContextComponents\InprocessDocumentComponent.cs" />
+    <Compile Include="ContextComponents\LogComponent.cs" />
+    <Compile Include="ContextComponents\MetadataComponent.cs" />
+    <Compile Include="ContextComponents\PrintViewComponent.cs" />
+    <Compile Include="ContextComponents\ProfilerComponent.cs" />
+    <Compile Include="ContextComponents\RegistryComponent.cs" />
+    <Compile Include="ContextComponents\ScriptRunnerComponent.cs" />
+    <Compile Include="ContextComponents\SecurityComponent.cs" />
+    <Compile Include="ContextComponents\SystemComponent.cs" />
+    <Compile Include="ContextComponents\TransactionComponent.cs" />
+    <Compile Include="ContextComponents\WebClientNotificationComponent.cs" />
+    <Compile Include="Factories\IPrintViewBuilderFactory.cs" />
+    <Compile Include="Factories\IIndexRoutingFactory.cs" />
+    <Compile Include="Hosting\ExtensionPointHandlerConfig.cs" />
+    <Compile Include="Hosting\HostingContext.cs" />
+    <Compile Include="Hosting\HostingContextBuilder.cs" />
+    <Compile Include="Hosting\IHostingContext.cs" />
+    <Compile Include="Hosting\IStartupInitializer.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Factories\AggregateProvider.cs" />
+    <Compile Include="Factories\GlobalContext.cs" />
+    <Compile Include="Factories\IBlobStorageFactory.cs" />
+    <Compile Include="Factories\IEventStorageFactory.cs" />
+    <Compile Include="Factories\IHostingServiceFactory.cs" />
+    <Compile Include="Factories\IIntegrationBusFactory.cs" />
+    <Compile Include="Factories\IIntegrationBusStorageFactory.cs" />
+    <Compile Include="Factories\IOpenEhrFactory.cs" />
+    <Compile Include="Factories\IScriptFactoryBuilder.cs" />
+    <Compile Include="Factories\IServiceRegistrationContainerFactory.cs" />
+    <Compile Include="Factories\IWebClientNotificationServiceFactory.cs" />
+    <Compile Include="Hosting\IHostingService.cs" />
+    <Compile Include="Hosting\IWebRoutingHandler.cs" />
+    <Compile Include="Hosting\LocalDataProvider.cs" />
+    <Compile Include="Hosting\MethodInvokationInfo.cs" />
+    <Compile Include="Hosting\QueryHandler.cs" />
+    <Compile Include="Hosting\ReflectedParameterInfo.cs" />
+    <Compile Include="Factories\IAggregateProvider.cs" />
+    <Compile Include="Index\DimensionType.cs" />
+    <Compile Include="Index\ICalculatedFieldFactory.cs" />
+    <Compile Include="Index\IndexObject.cs" />
+    <Compile Include="Json\BackboneBuilder.cs" />
+    <Compile Include="Json\EventBuilders\ChangeCollectionItemIndexBuilder.cs" />
+    <Compile Include="Json\JsonCollectionLastItemTokenProvider.cs" />
+    <Compile Include="Json\EventBuilders\BackboneBuilderJson.cs" />
+    <Compile Include="Json\EventBuilders\CollectionItemBuilder.cs" />
+    <Compile Include="Json\EventBuilders\ContainerBuilder.cs" />
+    <Compile Include="Json\EventBuilders\ContainerCollectionBuilder.cs" />
+    <Compile Include="Json\EventBuilders\ObjectRemoveBuilder.cs" />
+    <Compile Include="Json\EventBuilders\PropertyBuilder.cs" />
+    <Compile Include="Json\IJsonObjectBuilder.cs" />
+    <Compile Include="Json\IJsonTokenFilter.cs" />
+    <Compile Include="Json\IJsonTokenProvider.cs" />
+    <Compile Include="Json\JsonArrayStreamEnumerable.cs" />
+    <Compile Include="Json\JsonArrayStreamEnumerator.cs" />
+    <Compile Include="Json\JsonCollectionItemsTokenProvider.cs" />
+    <Compile Include="Json\JsonCollectionItemTokenProvider.cs" />
+    <Compile Include="Json\JsonCollectionSearchByPropertyProvider.cs" />
+    <Compile Include="Json\JsonParser.cs" />
+    <Compile Include="Json\JsonPropertyTokenProvider.cs" />
+    <Compile Include="Json\JsonStringExtensions.cs" />
+    <Compile Include="Json\ParsedToken.cs" />
+    <Compile Include="Json\JsonTokenConfiguration.cs" />
+    <Compile Include="Json\ObjectRenderingHandler.cs" />
+    <Compile Include="Json\ParsedTokenContainer.cs" />
+    <Compile Include="Logging\ILogFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MessageQueue\Integration\IIntegrationBus.cs" />
+    <Compile Include="MessageQueue\Integration\IIntegrationBusSubscriptionStorage.cs" />
+    <Compile Include="MessageQueue\Integration\IIntegrationBusSubscriptionStorageManager.cs" />
+    <Compile Include="MessageQueue\Integration\IntegrationBusMessage.cs" />
+    <Compile Include="MessageQueue\Integration\IntegrationBusSubscription.cs" />
+    <Compile Include="Metadata\ExtensionPointType.cs" />
+    <Compile Include="Metadata\IMetadataConfigurationProvider.cs" />
+    <Compile Include="Metadata\IMetadataIndexNameProvider.cs" />
+    <Compile Include="Metadata\IObjectMetadataHandler.cs" />
+    <Compile Include="Metadata\IStateTransitionApprover.cs" />
+    <Compile Include="Metadata\IStateTransitionInvalid.cs" />
+    <Compile Include="Modules\IModuleInstaller.cs" />
+    <Compile Include="Modules\ITemplateInstaller.cs" />
+    <Compile Include="Modules\ModuleExtension.cs" />
+    <Compile Include="Runtime\IChangeListener.cs" />
+    <Compile Include="Runtime\IVersionLoader.cs" />
+    <Compile Include="Runtime\IdentityMap.cs" />
+    <Compile Include="Factories\IScriptFactory.cs" />
+    <Compile Include="Runtime\IScriptMetadataProvider.cs" />
+    <Compile Include="Runtime\ReflectionExtensions.cs" />
+    <Compile Include="Runtime\MethodInvokationCacheList.cs" />
+    <Compile Include="Runtime\MethodInvokationCache.cs" />
+    <Compile Include="Runtime\ScriptMetadata.cs" />
+    <Compile Include="BlobStorage\IBlobStorageManager.cs" />
+    <Compile Include="EventStorage\IEventStorageManager.cs" />
+    <Compile Include="Extensions\CommonExtensions.cs" />
+    <Compile Include="Security\CustomApplicationUserPasswordHasher.cs" />
+    <Compile Include="Security\DefaultApplicationUserPasswordHasher.cs" />
+    <Compile Include="Security\MemoryApplicationUserStore.cs" />
+    <Compile Include="Security\StringHasher.cs" />
+    <Compile Include="Sql\ISqlQueryExecutor.cs" />
+    <Compile Include="Sql\SqlQueryObject.cs" />
+    <Compile Include="Factories\IMessageQueueFactory.cs" />
+    <Compile Include="Factories\ISqlQueryExecutorFactory.cs" />
+    <Compile Include="Factories\IVersionProviderFactory.cs" />
+    <Compile Include="Logging\Log4netLog.cs" />
+    <Compile Include="Logging\Log4NetLogFactory.cs" />
+    <Compile Include="Logging\Logger.cs" />
+    <Compile Include="MessageQueue\IAcknowledgePolicy.cs" />
+    <Compile Include="MessageQueue\IExchangeConfig.cs" />
+    <Compile Include="MessageQueue\IExchangeDirectBinding.cs" />
+    <Compile Include="MessageQueue\IExchangeFanoutBinding.cs" />
+    <Compile Include="MessageQueue\IExchangeHeadersBinding.cs" />
+    <Compile Include="MessageQueue\IExchangeTopicBinding.cs" />
+    <Compile Include="MessageQueue\IMessageQueueListener.cs" />
+    <Compile Include="MessageQueue\IMessageQueuePublisher.cs" />
+    <Compile Include="MessageQueue\IMessageQueueManager.cs" />
+    <Compile Include="MessageQueue\IQueueConfig.cs" />
+    <Compile Include="MessageQueue\IQueueConsumer.cs" />
+    <Compile Include="MessageQueue\IRejectPolicy.cs" />
+    <Compile Include="MessageQueue\Message.cs" />
+    <Compile Include="MessageQueue\MessageHeaders.cs" />
+    <Compile Include="MessageQueue\MessageProperties.cs" />
+    <Compile Include="MessageQueue\MessageQueueExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AssemblyInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Hosting\WebRequestHelper.cs" />
+    <Compile Include="SystemInfo\ISystemInfoProvider.cs" />
+    <Compile Include="SystemInfo\SystemInfoProvider.cs" />
+    <Compile Include="Transactions\TransactionManager.cs" />
+    <Compile Include="Transactions\TransactionMaster.cs" />
+    <Compile Include="Transactions\TransactionSlave.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Actions\" />
+    <Folder Include="Reporting\" />
+    <Folder Include="SearchOptions\" />
+    <Folder Include="Settings\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
+      <Project>{7ca0f96c-7ff4-44b2-9d44-851984df4532}</Project>
+      <Name>InfinniPlatform.Api</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\Files\Build\TransformOnBuild.targets" />
+  <ItemGroup>
+    <None Include="Properties\AssemblyInfo.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AssemblyInfo.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

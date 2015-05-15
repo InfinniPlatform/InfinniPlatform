@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C4D8DDAE-6A41-479D-8DC7-652FEA918741}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>InfinniPlatform.FlowDocument.Tests</RootNamespace>
+    <AssemblyName>InfinniPlatform.FlowDocument.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Builders\Factories\Blocks\PrintElementTableFactoryTest.cs" />
+    <Compile Include="Builders\Factories\Blocks\PrintElementListFactoryTest.cs" />
+    <Compile Include="Builders\Factories\Blocks\PrintElementSectionFactoryTest.cs" />
+    <Compile Include="Builders\Factories\Blocks\PrintElementParagraphFactoryTest.cs" />
+    <Compile Include="Builders\Factories\Blocks\PrintElementLineFactoryTest.cs" />
+    <Compile Include="Builders\Factories\Blocks\PrintElementPageBreakFactoryTest.cs" />
+    <Compile Include="Builders\Factories\DisplayFormats\ObjectFormatFactoryTest.cs" />
+    <Compile Include="Builders\Factories\DisplayFormats\NumberFormatFactoryTest.cs" />
+    <Compile Include="Builders\Factories\DisplayFormats\DateTimeFormatFactoryTest.cs" />
+    <Compile Include="Builders\Factories\DisplayFormats\BooleanFormatFactoryTest.cs" />
+    <Compile Include="Builders\Factories\Inlines\PrintElementBarcodeQrFactoryTest.cs" />
+    <Compile Include="Builders\Factories\Inlines\PrintElementBarcodeEan13FactoryTest.cs" />
+    <Compile Include="Builders\Factories\Inlines\PrintElementImageFactoryTest.cs" />
+    <Compile Include="Builders\Factories\Inlines\PrintElementLineBreakFactoryTest.cs" />
+    <Compile Include="Builders\Factories\Inlines\PrintElementHyperlinkFactoryTest.cs" />
+    <Compile Include="Builders\Factories\Inlines\PrintElementBoldFactoryTest.cs" />
+    <Compile Include="Builders\Factories\Inlines\PrintElementItalicFactoryTest.cs" />
+    <Compile Include="Builders\Factories\Inlines\PrintElementSpanFactoryTest.cs" />
+    <Compile Include="Builders\Factories\Inlines\PrintElementRunFactoryTest.cs" />
+    <Compile Include="Builders\BuildTestHelper.cs" />
+    <Compile Include="Builders\Factories\Inlines\PrintElementUnderlineFactoryTest.cs" />
+    <Compile Include="Builders\Factories\Views\PrintViewFactoryTest.cs" />
+    <Compile Include="Builders\ImageTestHelper.cs" />
+    <Compile Include="ImageTestHelper.cs" />
+    <Compile Include="PrintView\FlowDocumentPrintViewBuilderTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AssemblyInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
+      <Project>{7CA0F96C-7FF4-44B2-9D44-851984DF4532}</Project>
+      <Name>InfinniPlatform.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.FlowDocument\InfinniPlatform.FlowDocument.csproj">
+      <Project>{e47f0c5b-f775-44b4-9e2e-e4c044864125}</Project>
+      <Name>InfinniPlatform.FlowDocument</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Tests\InfinniPlatform.Tests.csproj">
+      <Project>{a46f638c-c9c5-49be-bc8d-8144e8c8f87a}</Project>
+      <Name>InfinniPlatform.Tests</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\BarcodeEan13Rotate0.bmp" />
+    <Content Include="Images\BarcodeEan13Rotate180.bmp" />
+    <Content Include="Images\BarcodeEan13Rotate270.bmp" />
+    <Content Include="Images\BarcodeEan13Rotate90.bmp" />
+    <Content Include="Images\BarcodeQrErrorCorrectionHigh.bmp" />
+    <Content Include="Images\BarcodeQrErrorCorrectionLow.bmp" />
+    <Content Include="Images\BarcodeQrErrorCorrectionMedium.bmp" />
+    <Content Include="Images\BarcodeQrErrorCorrectionQuartile.bmp" />
+    <Content Include="Images\BarcodeQrRotate0.bmp" />
+    <Content Include="Images\BarcodeQrRotate180.bmp" />
+    <Content Include="Images\BarcodeQrRotate270.bmp" />
+    <Content Include="Images\BarcodeQrRotate90.bmp" />
+    <Content Include="Images\Image.jpg" />
+    <Content Include="Images\ImageRotate0.bmp" />
+    <Content Include="Images\ImageRotate180.bmp" />
+    <Content Include="Images\ImageRotate270.bmp" />
+    <Content Include="Images\ImageRotate90.bmp" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\Files\Build\TransformOnBuild.targets" />
+  <ItemGroup>
+    <None Include="Properties\AssemblyInfo.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AssemblyInfo.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

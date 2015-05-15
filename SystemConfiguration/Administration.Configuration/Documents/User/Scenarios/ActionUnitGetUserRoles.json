@@ -1,0 +1,13 @@
+{
+  "Id": "2f3f7a4a-f8d7-4097-9682-1087861bda38",
+  "ScriptUnitType": 1,
+  "ContextType": 2,
+  "ScenarioId": "ActionUnitGetUserRoles",
+  "Description": "",
+  "Caption": "ActionUnitGetUserRoles",
+  "Name": "ActionUnitGetUserRoles",
+  "ParentId": "30700424-13b6-450b-8b91-53821c143cdc",
+  "Version": "version_systemconfig",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "scenariometadata"
+}

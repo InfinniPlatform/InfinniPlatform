@@ -1,0 +1,85 @@
+{
+  "Id": "11d2dabc-905b-4dc1-b18a-dbf5bf1a9465",
+  "__DocumentId": "viewmetadata",
+  "__ConfigId": "systemconfig",
+  "Version": "version_systemconfig",
+  "ParentId": "47db35a8-9185-4fc9-ab5e-cd42360b5d4d",
+  "Name": "EditViewMenuItem",
+  "Caption": "Форма редактирования настроек разрешений пункта меню",
+  "Description": "",
+  "MetadataType": "EditView",
+  "LayoutPanel": {
+    "StackPanel": {
+      "Items": [
+        {
+          "SearchPanel": {
+            "DataSource": "SelectedRoleDataSource"
+          }
+        },
+        {
+          "DataGrid": {
+            "Columns": [
+              {
+                "Text": "Роль",
+                "DisplayProperty": "Name"
+              }
+            ],
+            "Items": {
+              "PropertyBinding": {
+                "DataSource": "SelectedRoleDataSource"
+              }
+            },
+            "ToolBar": {
+              "Items": [
+                {
+                  "ToolBarButton": {
+                    "Text": "Выбрать",
+                    "OnClick": {
+                      "Name": "SaveMenuItemRolePermissions"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  "DataSources": [
+    {
+      "DocumentDataSource": {
+        "Name": "MainDataSource",
+        "ConfigId": "",
+        "DocumentId": ""
+      }
+    },
+    {
+      "DocumentDataSource": {
+        "Name": "PermissionsDataSource",
+        "ConfigId": "Administration",
+        "DocumentId": "Role"
+      }
+    },
+    {
+      "DocumentDataSource": {
+        "Name": "SelectedRoleDataSource",
+        "ConfigId": "Administration",
+        "DocumentId": "Role"
+      }
+    },
+    {
+      "DocumentDataSource": {
+        "Name": "SaveItemDataSource",
+        "ConfigId": "Administration",
+        "DocumentId": "MenuItemSettings"
+      }
+    }
+  ],
+  "Scripts": [
+    {
+      "Name": "SaveMenuItemRolePermissions",
+      "Body": "\r\nvar menuItemId = context.ParentView.getParentView().getContext().Parameters['EditItem'].getValue().Id;\r\nvar selectedPermissions = context.DataSources['SelectedRoleDataSource'].getSelectedItem();\r\nif(selectedPermissions && menuItemId) {\r\n   var saveItem = {};\r\n   saveItem.MenuItemId = menuItemId;\r\n   saveItem.Role = selectedPermissions;\r\n   context.DataSources['SaveItemDataSource'].setSelectedItem(saveItem);\r\n\r\n   context.Global.executeAction({\r\n      SaveAction : {\r\n         DataSource : 'SaveItemDataSource'\r\n      }\r\n   }, function(data) {\r\n   \r\n      context.ParentView.getParentView().getContext().DataSources['SubItemRolesDataSource'].resumeUpdate();\r\n   });\r\n}"
+    }
+  ]
+}

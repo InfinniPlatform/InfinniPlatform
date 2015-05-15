@@ -1,0 +1,19 @@
+﻿{
+  "id": "IsAbsoluteUri",
+  "description": "Объект является абсолютным URI",
+  "type": "object",
+  "extends": {
+    "$ref": "http://wiki.infinnity.lan:8081/display/MC/BaseValidationOperator"
+  },
+  "properties": {
+    "Message": {
+      "description": "Сообщение об ошибке",
+      "type": "string"
+    },
+    "Property": {
+      "description": "Наименование свойства",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

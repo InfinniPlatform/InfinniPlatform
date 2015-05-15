@@ -1,0 +1,21 @@
+{
+  "Id": "314673c2-b2ae-43b2-8052-2ac361e1b002",
+  "SettingsType": "Custom",
+  "Transitions": [
+    {
+      "Id": "f94fa5a4-5b99-4daf-ab41-3b2bc1f9ac04",
+      "Name": "GetUserRoles",
+      "ActionPoint": {
+        "TypeName": "Action",
+        "ScenarioId": "2f3f7a4a-f8d7-4097-9682-1087861bda38"
+      }
+    }
+  ],
+  "Type": 2,
+  "Caption": "GetUserRoles",
+  "Name": "GetUserRoles",
+  "ParentId": "30700424-13b6-450b-8b91-53821c143cdc",
+  "Version": "version_systemconfig",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "processmetadata"
+}

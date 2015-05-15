@@ -1,0 +1,21 @@
+{
+  "Id": "4d256357-5793-4465-a9c2-02f7d5aef0c4",
+  "Name": "Authorization_Registers",
+  "Caption": "Registers common options",
+  "Description": "Storage for register's common information (e.g. actual date)",
+  "Versioning": 4,
+  "MetadataIndex": "Authorization_Registers",
+  "Services": [],
+  "Processes": [],
+  "Scenarios": [],
+  "Generators": [],
+  "Views": [],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "DocumentStatuses": [],
+  "SearchAbility": 0,
+  "ParentId": "980b279b-26a5-4a5d-9e78-bef695322a6f",
+  "Version": "version_systemconfig",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "documentmetadata"
+}

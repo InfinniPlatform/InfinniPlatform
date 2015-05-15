@@ -1,0 +1,10 @@
+﻿{
+  "id": "PrintElementLine",
+  "description": "Блочный элемент печатного представления для отображения горизонтальной линии",
+  "type": "object",
+  "extends": {
+    "$ref": "http://demo.infinnity.ru:8081/display/MC/PrintElementBlock"
+  },
+  "properties": {},
+  "additionalProperties": false
+}

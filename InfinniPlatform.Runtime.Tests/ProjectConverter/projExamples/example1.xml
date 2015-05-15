@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" >
+  <PropertyGroup>
+    <ProjectGuid>{E4FA5829-B1C4-40EA-9FCF-F877D0C34E86}</ProjectGuid>
+    <ProjectTypeGuids>{E53F8FEA-EAE0-44A6-8774-FFD645390401}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>InfinniConfiguration.Integration</RootNamespace>
+    <AssemblyName>InfinniConfiguration.Integration</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <Optimize>false</Optimize>
+    <DebugType>full</DebugType>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Nest, Version=0.9.21.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NEST.0.9.21.0\lib\NET4\Nest.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActionUnits\ActionUnitDeleteDocument.cs" />
+    <Compile Include="ActionUnits\ActionUnitDeleteDocumentAttachment.cs" />
+    <Compile Include="ActionUnits\ActionUnitDeleteDocumentContent.cs" />
+    <Compile Include="ActionUnits\ActionUnitDeleteDocumentContentResult.cs" />
+    <Compile Include="ActionUnits\ActionUnitDeleteDocumentResult.cs" />
+    <Compile Include="ActionUnits\ActionUnitDocumentContentSearchModel.cs" />
+    <Compile Include="ActionUnits\ActionUnitDocumentDataFilterEvents.cs" />
+    <Compile Include="ActionUnits\ActionUnitDocumentDeleteFilterEvents.cs" />
+    <Compile Include="ActionUnits\ActionUnitDocumentFilterEvents.cs" />
+    <Compile Include="ActionUnits\ActionUnitExtensions.cs" />
+    <Compile Include="ActionUnits\ActionUnitMedicalWorkerFilterEvents.cs" />
+    <Compile Include="ActionUnits\ActionUnitOrganizationFilterEvents.cs" />
+    <Compile Include="ActionUnits\ActionUnitOrganizationSearchModel.cs" />
+    <Compile Include="ActionUnits\ActionUnitPersonFilterEvents.cs" />
+    <Compile Include="ActionUnits\ActionUnitPersonSearchModel.cs" />
+    <Compile Include="ActionUnits\ActionUnitPublishResultOrganization.cs" />
+    <Compile Include="ActionUnits\ActionUnitPublishResultStandard.cs" />
+    <Compile Include="ActionUnits\ActionUnitSaveDocumentAttachment.cs" />
+    <Compile Include="ActionUnits\ActionUnitSaveDocumentContent.cs" />
+    <Compile Include="ActionUnits\ActionUnitSaveOrganization.cs" />
+    <Compile Include="ActionUnits\ActionUnitSavePersonUniqueNumber.cs" />
+    <Compile Include="ActionUnits\ActionUnitSaveVersion.cs" />
+    <Compile Include="CustomValidators\IsInnValidator.cs" />
+    <Compile Include="CustomValidators\IsSnilsValueValidator.cs" />
+    <Compile Include="Installers\IntegrationConfigInstaller.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ValidationUnits\ValidationExtensions.cs" />
+    <Compile Include="ValidationUnits\ValidationUnitDocumentContentSearch.cs" />
+    <Compile Include="ValidationUnits\ValidationUnitDocumentSave.cs" />
+    <Compile Include="ValidationUnits\ValidationUnitDocumentSearch.cs" />
+    <Compile Include="ValidationUnits\ValidationUnitMedicalWorkerSave.cs" />
+    <Compile Include="ValidationUnits\ValidationUnitMedicalWorkerSearch.cs" />
+    <Compile Include="ValidationUnits\ValidationUnitOrganizationSave.cs" />
+    <Compile Include="ValidationUnits\ValidationUnitOrganizationSearch.cs" />
+    <Compile Include="ValidationUnits\ValidationUnitPatientSave.cs" />
+    <Compile Include="ValidationUnits\ValidationUnitPatientSearch.cs" />
+    <Compile Include="..\Files\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
+      <Project>{7ca0f96c-7ff4-44b2-9d44-851984df4532}</Project>
+      <Name>InfinniPlatform.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
+      <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
+      <Name>InfinniPlatform.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Hosting.WebApi\InfinniPlatform.Hosting.WebApi.csproj">
+      <Project>{D6FBC1D7-48E7-4819-8C8B-DD7FA398D2CC}</Project>
+      <Name>InfinniPlatform.Hosting.WebApi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Metadata\InfinniPlatform.Metadata.csproj">
+      <Project>{F1239C4B-CA5F-4B5E-83AC-DA686E81030F}</Project>
+      <Name>InfinniPlatform.Metadata</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Modules.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

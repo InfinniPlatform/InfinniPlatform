@@ -1,0 +1,573 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9E7FD106-8434-41ED-8DB1-10761C25A25C}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>InfinniPlatform.DesignControls</RootNamespace>
+    <AssemblyName>InfinniPlatform.DesignControls</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v13.2, Version=13.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DevExpressWinForms.13.2.5\lib\DevExpress.Data.v13.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DevExpressWinForms.13.2.5\lib\DevExpress.Utils.v13.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DevExpressWinForms.13.2.5\lib\DevExpress.XtraBars.v13.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DevExpressWinForms.13.2.5\lib\DevExpress.XtraCharts.v13.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v13.2.UI, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DevExpressWinForms.13.2.5\lib\DevExpress.XtraCharts.v13.2.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DevExpressWinForms.13.2.5\lib\DevExpress.XtraEditors.v13.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DevExpressWinForms.13.2.5\lib\DevExpress.XtraGrid.v13.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraLayout.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DevExpressWinForms.13.2.5\lib\DevExpress.XtraLayout.v13.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraNavBar.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DevExpressWinForms.13.2.5\lib\DevExpress.XtraNavBar.v13.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraPivotGrid.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DevExpressWinForms.13.2.5\lib\DevExpress.XtraPivotGrid.v13.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraRichEdit.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DevExpressWinForms.13.2.5\lib\DevExpress.XtraRichEdit.v13.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DevExpressWinForms.13.2.5\lib\DevExpress.XtraScheduler.v13.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraTreeList.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DevExpressWinForms.13.2.5\lib\DevExpress.XtraTreeList.v13.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraVerticalGrid.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DevExpressWinForms.13.2.5\lib\DevExpress.XtraVerticalGrid.v13.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DigitalRune.Windows.TextEditor">
+      <HintPath>..\packages\InfinniPlatform.ScriptEditor.1.0.0\lib\DigitalRune.Windows.TextEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BusinessLevelControls\PopupButtonBusinessProcess.cs" />
+    <Compile Include="Controls\ActionElements\Button.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ActionElements\Button.Designer.cs">
+      <DependentUpon>Button.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ActionElements\MenuBar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ActionElements\MenuBar.Designer.cs">
+      <DependentUpon>MenuBar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ActionElements\PopupButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ActionElements\PopupButton.Designer.cs">
+      <DependentUpon>PopupButton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ActionElements\ToolBar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ActionElements\ToolBar.Designer.cs">
+      <DependentUpon>ToolBar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Alignment\ResizerCalculator.cs" />
+    <Compile Include="Controls\Alignment\ResizerFixed.cs" />
+    <Compile Include="Controls\ChildViews\ChildView.cs" />
+    <Compile Include="Controls\CompositPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CompositPanel.Designer.cs">
+      <DependentUpon>CompositPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ContainerPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ContainerPanel.Designer.cs">
+      <DependentUpon>ContainerPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DataElements\CheckBoxElement.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DataElements\CheckBoxElement.Designer.cs">
+      <DependentUpon>CheckBoxElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DataElements\ComboBoxElement.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DataElements\ComboBoxElement.Designer.cs">
+      <DependentUpon>ComboBoxElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DataElements\CriteriaStubLayout.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DataElements\CriteriaStubLayout.Designer.cs">
+      <DependentUpon>CriteriaStubLayout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DataElements\DataGridElement.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DataElements\DataGridElement.Designer.cs">
+      <DependentUpon>DataGridElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DataElements\DatePickerElement.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DataElements\DatePickerElement.Designer.cs">
+      <DependentUpon>DatePickerElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DataElements\FilterPanelElement.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DataElements\FilterPanelElement.Designer.cs">
+      <DependentUpon>FilterPanelElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DataElements\LabelElement.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DataElements\LabelElement.Designer.cs">
+      <DependentUpon>LabelElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DataElements\ListBoxElement.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DataElements\ListBoxElement.Designer.cs">
+      <DependentUpon>ListBoxElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DataElements\SearchPanelElement.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DataElements\SearchPanelElement.Designer.cs">
+      <DependentUpon>SearchPanelElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DataElements\TextEditElement.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DataElements\TextEditElement.Designer.cs">
+      <DependentUpon>TextEditElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DataElements\ToggleButtonElement.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DataElements\ToggleButtonElement.Designer.cs">
+      <DependentUpon>ToggleButtonElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DataSources\ObjectDataSource.cs" />
+    <Compile Include="Controls\LayoutPanels\GridPanels\GridPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\LayoutPanels\GridPanels\GridPanel.Designer.cs">
+      <DependentUpon>GridPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LayoutPanels\GridPanels\GridPanelCellMap.cs" />
+    <Compile Include="Controls\LayoutPanels\GridPanels\GridPanelRowConstructor.cs" />
+    <Compile Include="Controls\LayoutPanels\GridPanels\SizeCalculator.cs" />
+    <Compile Include="Controls\LayoutPanels\Panel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\LayoutPanels\Panel.Designer.cs">
+      <DependentUpon>Panel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LayoutPanels\ScrollPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\LayoutPanels\ScrollPanel.Designer.cs">
+      <DependentUpon>ScrollPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LayoutPanels\StackPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\LayoutPanels\StackPanel.Designer.cs">
+      <DependentUpon>StackPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LayoutPanels\TabPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\LayoutPanels\TabPanel.Designer.cs">
+      <DependentUpon>TabPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LayoutPanels\ViewPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\LayoutPanels\ViewPanel.Designer.cs">
+      <DependentUpon>ViewPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\NotImplemented\NotImplementedControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\NotImplemented\NotImplementedControl.Designer.cs">
+      <DependentUpon>NotImplementedControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Parameters\Parameter.cs" />
+    <Compile Include="Controls\Properties\Action.cs" />
+    <Compile Include="Controls\Properties\ActionElement.cs" />
+    <Compile Include="Controls\Properties\BaseElement.cs" />
+    <Compile Include="Controls\Properties\BaseLinkView.cs" />
+    <Compile Include="Controls\Properties\Binding.cs" />
+    <Compile Include="Controls\Properties\Common.cs" />
+    <Compile Include="Controls\Properties\DataElement.cs" />
+    <Compile Include="Controls\Properties\LayoutPanel.cs" />
+    <Compile Include="Controls\Properties\LinkView.cs" />
+    <Compile Include="Controls\DataSources\DocumentDataSource.cs" />
+    <Compile Include="Controls\DataSources\BaseDataSource.cs" />
+    <Compile Include="Controls\Properties\ToolBar.cs" />
+    <Compile Include="Controls\Scripts\Script.cs" />
+    <Compile Include="DesignerSurface\ChildViewObject.cs" />
+    <Compile Include="DesignerSurface\ChildViewSurface.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DesignerSurface\ChildViewSurface.Designer.cs">
+      <DependentUpon>ChildViewSurface.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DesignerSurface\DataSourceObject.cs" />
+    <Compile Include="DesignerSurface\DataSourceSurface.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DesignerSurface\DataSourceSurface.Designer.cs">
+      <DependentUpon>DataSourceSurface.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DesignerSurface\ParameterObject.cs" />
+    <Compile Include="DesignerSurface\ParameterSurface.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DesignerSurface\ParameterSurface.Designer.cs">
+      <DependentUpon>ParameterSurface.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DesignerSurface\ScriptSourceObject.cs" />
+    <Compile Include="DesignerSurface\ScriptSurface.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DesignerSurface\ScriptSurface.Designer.cs">
+      <DependentUpon>ScriptSurface.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layout\IAlignment.cs" />
+    <Compile Include="Layout\IClientHeightProvider.cs" />
+    <Compile Include="Layout\ILayoutContainer.cs" />
+    <Compile Include="Layout\LayoutExtensions.cs" />
+    <Compile Include="ObjectInspector\ControlRepository.cs" />
+    <Compile Include="ObjectInspector\FocusedNodeMemento.cs" />
+    <Compile Include="ObjectInspector\IControlHost.cs" />
+    <Compile Include="ObjectInspector\IFocusControl.cs" />
+    <Compile Include="ObjectInspector\IInspectedItem.cs" />
+    <Compile Include="ObjectInspector\PropertiesNode.cs" />
+    <Compile Include="ObjectInspector\ObjectInspectorPopupMenu.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ObjectInspector\ObjectInspectorPopupMenu.Designer.cs">
+      <DependentUpon>ObjectInspectorPopupMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ObjectInspector\ObjectInspectorTree.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ObjectInspector\ObjectInspectorTree.Designer.cs">
+      <DependentUpon>ObjectInspectorTree.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyDesigner\CollectionEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PropertyDesigner\CollectionEditor.Designer.cs">
+      <DependentUpon>CollectionEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyDesigner\CollectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PropertyDesigner\CollectionForm.Designer.cs">
+      <DependentUpon>CollectionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyDesigner\CollectionProperty.cs" />
+    <Compile Include="PropertyDesigner\IControlProperty.cs" />
+    <Compile Include="PropertyDesigner\SimpleProperty.cs" />
+    <Compile Include="PropertyEditors\AlignmentEditor.cs" />
+    <Compile Include="PropertyEditors\BooleanEditor.cs" />
+    <Compile Include="PropertyEditors\ValuesListEditor.cs" />
+    <Compile Include="PropertyEditors\CriteriaTypeEditor.cs" />
+    <Compile Include="PropertyEditors\DataSourceEditor.cs" />
+    <Compile Include="PropertyEditors\ScriptIdEditor.cs" />
+    <Compile Include="ScriptEditor\CodeFoldingStrategy.cs" />
+    <Compile Include="PropertyDesigner\DesignerExtensions.cs" />
+    <Compile Include="PropertyDesigner\EditorRepository.cs" />
+    <Compile Include="PropertyDesigner\IPropertiesProvider.cs" />
+    <Compile Include="PropertyDesigner\ObjectProperty.cs" />
+    <Compile Include="PropertyDesigner\PropertiesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PropertyDesigner\PropertiesControl.Designer.cs">
+      <DependentUpon>PropertiesControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyDesigner\PropertiesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PropertyDesigner\PropertiesForm.Designer.cs">
+      <DependentUpon>PropertiesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ScriptEditor\ScriptEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScriptEditor\ScriptEditForm.Designer.cs">
+      <DependentUpon>ScriptEditForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ScriptEditor\ScriptEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ScriptEditor\ScriptEditor.Designer.cs">
+      <DependentUpon>ScriptEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyDesigner\ValueEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PropertyDesigner\ValueEdit.Designer.cs">
+      <DependentUpon>ValueEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DesignerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DesignerControl.Designer.cs">
+      <DependentUpon>DesignerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layout\ILayoutProvider.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AssemblyInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyEditors\ConfigIdEditor.cs" />
+    <Compile Include="PropertyEditors\DocumentIdEditor.cs" />
+    <Compile Include="PropertyEditors\IPropertyEditor.cs" />
+    <Compile Include="PropertyEditors\JsonObjectEditor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\ActionElements\Button.resx">
+      <DependentUpon>Button.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ActionElements\MenuBar.resx">
+      <DependentUpon>MenuBar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ActionElements\PopupButton.resx">
+      <DependentUpon>PopupButton.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ActionElements\ToolBar.resx">
+      <DependentUpon>ToolBar.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CompositPanel.resx">
+      <DependentUpon>CompositPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ContainerPanel.resx">
+      <DependentUpon>ContainerPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DataElements\CheckBoxElement.resx">
+      <DependentUpon>CheckBoxElement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DataElements\ComboBoxElement.resx">
+      <DependentUpon>ComboBoxElement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DataElements\CriteriaStubLayout.resx">
+      <DependentUpon>CriteriaStubLayout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DataElements\DataGridElement.resx">
+      <DependentUpon>DataGridElement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DataElements\DatePickerElement.resx">
+      <DependentUpon>DatePickerElement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DataElements\FilterPanelElement.resx">
+      <DependentUpon>FilterPanelElement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DataElements\LabelElement.resx">
+      <DependentUpon>LabelElement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DataElements\ListBoxElement.resx">
+      <DependentUpon>ListBoxElement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DataElements\SearchPanelElement.resx">
+      <DependentUpon>SearchPanelElement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DataElements\TextEditElement.resx">
+      <DependentUpon>TextEditElement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DataElements\ToggleButtonElement.resx">
+      <DependentUpon>ToggleButtonElement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\LayoutPanels\GridPanels\GridPanel.resx">
+      <DependentUpon>GridPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\LayoutPanels\Panel.resx">
+      <DependentUpon>Panel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\LayoutPanels\StackPanel.resx">
+      <DependentUpon>StackPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\LayoutPanels\TabPanel.resx">
+      <DependentUpon>TabPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\LayoutPanels\ViewPanel.resx">
+      <DependentUpon>ViewPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\NotImplemented\NotImplementedControl.resx">
+      <DependentUpon>NotImplementedControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DesignerSurface\ChildViewSurface.resx">
+      <DependentUpon>ChildViewSurface.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DesignerSurface\DataSourceSurface.resx">
+      <DependentUpon>DataSourceSurface.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DesignerSurface\ParameterSurface.resx">
+      <DependentUpon>ParameterSurface.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DesignerSurface\ScriptSurface.resx">
+      <DependentUpon>ScriptSurface.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ObjectInspector\ObjectInspectorPopupMenu.resx">
+      <DependentUpon>ObjectInspectorPopupMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ObjectInspector\ObjectInspectorTree.resx">
+      <DependentUpon>ObjectInspectorTree.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="PropertyDesigner\CollectionEditor.resx">
+      <DependentUpon>CollectionEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertyDesigner\CollectionForm.resx">
+      <DependentUpon>CollectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertyDesigner\PropertiesControl.resx">
+      <DependentUpon>PropertiesControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertyDesigner\PropertiesForm.resx">
+      <DependentUpon>PropertiesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScriptEditor\ScriptEditForm.resx">
+      <DependentUpon>ScriptEditForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScriptEditor\ScriptEditor.resx">
+      <DependentUpon>ScriptEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertyDesigner\ValueEdit.resx">
+      <DependentUpon>ValueEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DesignerControl.resx">
+      <DependentUpon>DesignerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
+      <Project>{7CA0F96C-7FF4-44B2-9D44-851984DF4532}</Project>
+      <Name>InfinniPlatform.Api</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\zoom_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\next_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Files\Platform\App.config">
+      <Link>App.config</Link>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Resources\zoom_16x161.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\close_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\close_16x161.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\close_16x162.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\close_16x163.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\Files\Build\TransformOnBuild.targets" />
+  <ItemGroup>
+    <None Include="Properties\AssemblyInfo.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AssemblyInfo.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

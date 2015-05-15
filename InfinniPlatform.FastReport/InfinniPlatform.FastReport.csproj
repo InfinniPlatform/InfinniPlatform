@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{774D0E71-1848-4074-B537-F182FEFED717}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>InfinniPlatform.FastReport</RootNamespace>
+    <AssemblyName>InfinniPlatform.FastReport</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FastReport, Version=2013.4.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FastReport.Net.2013.4.6\lib\net40\FastReport.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ReportObjectBuilders\Data\JsonObjectDataSource.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ReportObjectBuilders\Data\PropertyMapper.cs" />
+    <Compile Include="ReportObjectBuilders\FrReport.cs" />
+    <Compile Include="ReportObjectBuilders\FrReportObjectBuilderContextFactory.cs" />
+    <Compile Include="ReportObjectBuilders\IReportBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\IReport.cs" />
+    <Compile Include="ReportObjectBuilders\IReportObjectBuilderContextFactory.cs" />
+    <Compile Include="ReportTemplateBuilders\Bands\ReportBandPrintSetupTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\Bands\ReportBandTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\Bands\ReportDataBandTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\Bands\ReportGroupBandTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\Bands\ReportPageBandTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\Borders\BorderTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\Data\CollectionBindTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\Data\ConstantBindTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\Data\DataBindTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\Data\ParameterBindTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\Data\DataSourceBindHelper.cs" />
+    <Compile Include="ReportTemplateBuilders\Data\PropertyBindTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\Data\TotalBindTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\Elements\ElementLayoutTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\Elements\ElementTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\Elements\TableElementTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\Elements\TextElementStyleTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\Elements\TextElementTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\Format\BooleanFormatTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\Format\CurrencyFormatTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\Format\CustomFormatTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\Format\DateFormatTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\Format\FormatTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\Format\NumberFormatTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\Format\PercentFormatTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\Format\TimeFormatTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\FrReportObjectTemplateBuilderContext.cs" />
+    <Compile Include="ReportTemplateBuilders\FrReportTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\IReportObjectTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\IReportObjectTemplateBuilderContext.cs" />
+    <Compile Include="ReportTemplateBuilders\IReportTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\Print\PrintSetupTemplateBuilder.cs" />
+    <Compile Include="ReportTemplateBuilders\Reports\ReportTemplateBuilder.cs" />
+    <Compile Include="Serialization\ReportTemplateSerializer.cs" />
+    <Compile Include="TemplatesFluent\Data\RegisterDataProviderInfoConfig.cs" />
+    <Compile Include="TemplatesFluent\Reports\ReportInfoConfig.cs" />
+    <Compile Include="Templates\Data\DataExtensions.cs" />
+    <Compile Include="Templates\Data\RegisterDataProviderInfo.cs" />
+    <Compile Include="TemplatesFluent\Bands\ReportBandConfig.cs" />
+    <Compile Include="TemplatesFluent\Bands\ReportBandElementsConfig.cs" />
+    <Compile Include="TemplatesFluent\Bands\ReportBandPrintSetupConfig.cs" />
+    <Compile Include="TemplatesFluent\Bands\ReportDataBandConfig.cs" />
+    <Compile Include="TemplatesFluent\Bands\ReportGroupBandConfig.cs" />
+    <Compile Include="TemplatesFluent\Bands\ReportPageBandConfig.cs" />
+    <Compile Include="TemplatesFluent\Borders\BorderConfig.cs" />
+    <Compile Include="TemplatesFluent\Borders\BorderLineConfig.cs" />
+    <Compile Include="TemplatesFluent\Data\CollectionDataSchemaConfig.cs" />
+    <Compile Include="TemplatesFluent\Data\DataBindConfig.cs" />
+    <Compile Include="TemplatesFluent\Data\DataExtensions.cs" />
+    <Compile Include="TemplatesFluent\Data\DataProviderInfoConfig.cs" />
+    <Compile Include="TemplatesFluent\Data\DataSourceInfoConfig.cs" />
+    <Compile Include="TemplatesFluent\Data\DataSourcesConfig.cs" />
+    <Compile Include="TemplatesFluent\Data\ObjectDataSchemaConfig.cs" />
+    <Compile Include="TemplatesFluent\Data\ParameterConstantValueProviderInfoConfig.cs" />
+    <Compile Include="TemplatesFluent\Data\ParameterInfoConfig.cs" />
+    <Compile Include="TemplatesFluent\Data\ParametersConfig.cs" />
+    <Compile Include="TemplatesFluent\Data\ParameterValueProviderInfoConfig.cs" />
+    <Compile Include="TemplatesFluent\Data\RestDataProviderInfoConfig.cs" />
+    <Compile Include="TemplatesFluent\Data\SqlDataProviderInfoConfig.cs" />
+    <Compile Include="TemplatesFluent\Data\TotalsConfig.cs" />
+    <Compile Include="TemplatesFluent\Elements\ElementLayoutConfig.cs" />
+    <Compile Include="TemplatesFluent\Elements\FontSetupConfig.cs" />
+    <Compile Include="TemplatesFluent\Elements\TableCellConfig.cs" />
+    <Compile Include="TemplatesFluent\Elements\TableCellsConfig.cs" />
+    <Compile Include="TemplatesFluent\Elements\TableColumnConfig.cs" />
+    <Compile Include="TemplatesFluent\Elements\TableColumnsConfig.cs" />
+    <Compile Include="TemplatesFluent\Elements\TableElementConfig.cs" />
+    <Compile Include="TemplatesFluent\Elements\TableRowConfig.cs" />
+    <Compile Include="TemplatesFluent\Elements\TableRowsConfig.cs" />
+    <Compile Include="TemplatesFluent\Elements\TextElementConfig.cs" />
+    <Compile Include="TemplatesFluent\Elements\TextElementStyleConfig.cs" />
+    <Compile Include="TemplatesFluent\Formats\BooleanFormatConfig.cs" />
+    <Compile Include="TemplatesFluent\Formats\CurrencyFormatConfig.cs" />
+    <Compile Include="TemplatesFluent\Formats\DateFormatConfig.cs" />
+    <Compile Include="TemplatesFluent\Formats\FormatConfig.cs" />
+    <Compile Include="TemplatesFluent\Formats\NumberFormatConfig.cs" />
+    <Compile Include="TemplatesFluent\Formats\PercentFormatConfig.cs" />
+    <Compile Include="TemplatesFluent\Formats\TimeFormatConfig.cs" />
+    <Compile Include="TemplatesFluent\Print\PrinterConfig.cs" />
+    <Compile Include="TemplatesFluent\Print\PrintExtensions.cs" />
+    <Compile Include="TemplatesFluent\Print\PrintPaperConfig.cs" />
+    <Compile Include="TemplatesFluent\Print\PrintPaperMarginConfig.cs" />
+    <Compile Include="TemplatesFluent\Print\PrintSetupConfig.cs" />
+    <Compile Include="TemplatesFluent\Reports\ReportTemplateConfig.cs" />
+    <Compile Include="TemplatesFluent\Reports\ReportTemplateFluent.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AssemblyInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ReportObjectBuilders\Bands\ReportBandBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\Bands\ReportBandPrintSetupBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\Bands\ReportDataBandBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\Bands\ReportGroupBandBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\Bands\ReportPageBandBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\Borders\BorderBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\Data\CollectionBindBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\Data\ConstantBindBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\Data\DataBindHelper.cs" />
+    <Compile Include="ReportObjectBuilders\Data\DataSourceInfoBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\Data\ParameterBindBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\Data\ParameterInfoBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\Data\PropertyBindBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\Data\TotalBindBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\Data\TotalInfoBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\Elements\ElementLayoutBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\Elements\TableElementBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\Elements\TextElementBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\Elements\TextElementStyleBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\FrReportBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\FrReportObjectBuilderContext.cs" />
+    <Compile Include="ReportObjectBuilders\Format\BooleanFormatBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\Format\CurrencyFormatBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\Format\CustomFormatBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\Format\DateFormatBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\Format\NumberFormatBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\Format\PercentFormatBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\Format\TimeFormatBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\IReportObjectBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\IReportObjectBuilderContext.cs" />
+    <Compile Include="ReportObjectBuilders\Print\PrintSetupBuilder.cs" />
+    <Compile Include="ReportObjectBuilders\Reports\ReportObjectBuilder.cs" />
+    <Compile Include="Templates\Bands\PrintTargets.cs" />
+    <Compile Include="Templates\Bands\ReportBand.cs" />
+    <Compile Include="Templates\Bands\ReportBandPrintSetup.cs" />
+    <Compile Include="Templates\Bands\ReportDataBand.cs" />
+    <Compile Include="Templates\Bands\ReportGroupBand.cs" />
+    <Compile Include="Templates\Bands\ReportPageBand.cs" />
+    <Compile Include="Templates\Borders\Border.cs" />
+    <Compile Include="Templates\Borders\BorderLine.cs" />
+    <Compile Include="Templates\Borders\BorderLineStyle.cs" />
+    <Compile Include="Templates\Data\CollectionBind.cs" />
+    <Compile Include="Templates\Data\ConstantBind.cs" />
+    <Compile Include="Templates\Data\DataSourceInfo.cs" />
+    <Compile Include="Templates\Data\IDataBind.cs" />
+    <Compile Include="Templates\Data\IDataProviderInfo.cs" />
+    <Compile Include="Templates\Data\IParameterValueProviderInfo.cs" />
+    <Compile Include="Templates\Data\ParameterBind.cs" />
+    <Compile Include="Templates\Data\ParameterConstantValueProviderInfo.cs" />
+    <Compile Include="Templates\Data\ParameterDataSourceValueProviderInfo.cs" />
+    <Compile Include="Templates\Data\ParameterInfo.cs" />
+    <Compile Include="Templates\Data\ParameterValues.cs" />
+    <Compile Include="Templates\Data\PropertyBind.cs" />
+    <Compile Include="Templates\Data\RestDataProviderInfo.cs" />
+    <Compile Include="Templates\Data\SortField.cs" />
+    <Compile Include="Templates\Data\SortOrder.cs" />
+    <Compile Include="Templates\Data\SqlDataProviderInfo.cs" />
+    <Compile Include="Templates\Data\SqlServerType.cs" />
+    <Compile Include="Templates\Data\TotalBind.cs" />
+    <Compile Include="Templates\Data\TotalFunc.cs" />
+    <Compile Include="Templates\Data\TotalInfo.cs" />
+    <Compile Include="Templates\Elements\ElementLayout.cs" />
+    <Compile Include="Templates\Elements\HorizontalAlignment.cs" />
+    <Compile Include="Templates\Elements\IDataBindElement.cs" />
+    <Compile Include="Templates\Elements\IElement.cs" />
+    <Compile Include="Templates\Elements\IFormatElement.cs" />
+    <Compile Include="Templates\Elements\TableCell.cs" />
+    <Compile Include="Templates\Elements\TableColumn.cs" />
+    <Compile Include="Templates\Elements\TableElement.cs" />
+    <Compile Include="Templates\Elements\TableRow.cs" />
+    <Compile Include="Templates\Elements\TextElement.cs" />
+    <Compile Include="Templates\Elements\TextElementStyle.cs" />
+    <Compile Include="Templates\Elements\VerticalAlignment.cs" />
+    <Compile Include="Templates\Font\FontSetup.cs" />
+    <Compile Include="Templates\Font\FontSizeUnit.cs" />
+    <Compile Include="Templates\Font\FontStretch.cs" />
+    <Compile Include="Templates\Font\FontStyle.cs" />
+    <Compile Include="Templates\Font\FontVerticalAlign.cs" />
+    <Compile Include="Templates\Font\FontWeight.cs" />
+    <Compile Include="Templates\Font\TextDecoration.cs" />
+    <Compile Include="Templates\Formats\BooleanFormat.cs" />
+    <Compile Include="Templates\Formats\CurrencyFormat.cs" />
+    <Compile Include="Templates\Formats\CustomFormat.cs" />
+    <Compile Include="Templates\Formats\DateFormat.cs" />
+    <Compile Include="Templates\Formats\DateFormats.cs" />
+    <Compile Include="Templates\Formats\IFormat.cs" />
+    <Compile Include="Templates\Formats\NumberFormat.cs" />
+    <Compile Include="Templates\Formats\PercentFormat.cs" />
+    <Compile Include="Templates\Formats\TimeFormat.cs" />
+    <Compile Include="Templates\Formats\TimeFormats.cs" />
+    <Compile Include="Templates\Print\PaperOrientation.cs" />
+    <Compile Include="Templates\Print\PrinterSettings.cs" />
+    <Compile Include="Templates\Print\PrintMode.cs" />
+    <Compile Include="Templates\Print\PrintPaper.cs" />
+    <Compile Include="Templates\Print\PrintPaperMargin.cs" />
+    <Compile Include="Templates\Print\PrintSetup.cs" />
+    <Compile Include="Templates\Reports\ReportInfo.cs" />
+    <Compile Include="Templates\Reports\ReportTemplate.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Templates\Bands\Diagrams\ReportBand.cd" />
+    <None Include="Templates\Borders\Diagrams\Border.cd" />
+    <None Include="Templates\Data\Diagrams\Data.cd" />
+    <None Include="Templates\Data\Diagrams\DataBind.cd" />
+    <None Include="Templates\Elements\Diagrams\Elements.cd" />
+    <None Include="Templates\Elements\Diagrams\TableElement.cd" />
+    <None Include="Templates\Elements\Diagrams\TextElement.cd" />
+    <None Include="Templates\Formats\Diagrams\Formats.cd" />
+    <None Include="Templates\Print\Diagrams\Print.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
+      <Project>{7ca0f96c-7ff4-44b2-9d44-851984df4532}</Project>
+      <Name>InfinniPlatform.Api</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\Files\Build\TransformOnBuild.targets" />
+  <ItemGroup>
+    <None Include="Properties\AssemblyInfo.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AssemblyInfo.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

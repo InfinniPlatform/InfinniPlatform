@@ -1,0 +1,23 @@
+﻿{
+  "id": "Button",
+  "description": "Элемент представления в виде кнопки",
+  "type": "object",
+  "extends": {
+    "$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
+  },
+  "properties": {
+    "Image": {
+      "description": "Изображение кнопки",
+      "type": "string"
+    },
+    "Action": {
+      "description": "Действие при нажатии на кнопку",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/Action"
+    },
+    "OnClick": {
+      "description": "Обработчик события нажатия на кнопку",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+    }
+  },
+  "additionalProperties": false
+}

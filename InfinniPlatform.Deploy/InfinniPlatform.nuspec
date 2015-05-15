@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <!--Download and install  http://github.com/bspell1/NuBuild to create nuget package automatically.
+    Executable file link: http://visualstudiogallery.msdn.microsoft.com/3efbfdea-7d51-4d45-a954-74a2df51c5d0-->
+    <id>InfinniPlatform</id>
+    <version>0.0.0.6786</version>
+    <authors>Infinnity Solutions</authors>
+    <owners>Infinnity Solutions</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Package contains all InfinniPlatform core assemblies</description>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="Microsoft.CSharp" targetFramework="" />
+      <frameworkAssembly assemblyName="System" targetFramework="" />
+      <frameworkAssembly assemblyName="System.Core" targetFramework="" />
+      <frameworkAssembly assemblyName="System.Data" targetFramework="" />
+      <frameworkAssembly assemblyName="System.Data.DataSetExtensions" targetFramework="" />
+      <frameworkAssembly assemblyName="System.Xml" targetFramework="" />
+      <frameworkAssembly assemblyName="System.Xml.Linq" targetFramework="" />
+    </frameworkAssemblies>
+  </metadata>
+  <files>
+    <file src="..\Assemblies\Autofac.xml" target="content" />
+    <file src="..\Assemblies\InfinniPlatform.RestfulApi.exe.config" target="content" />
+    <file src="..\Assemblies\Log.config" target="content" />
+    <file src="..\Assemblies\ArchetypeBuilder.dll" target="lib" />
+    <file src="..\Assemblies\ArtefactBuilders.dll" target="lib" />
+    <file src="..\Assemblies\Autofac.Configuration.dll" target="lib" />
+    <file src="..\Assemblies\Autofac.dll" target="lib" />
+    <file src="..\Assemblies\Cassandra.dll" target="lib" />
+    <file src="..\Assemblies\Dapper.dll" target="lib" />
+    <file src="..\Assemblies\DesignByContract.dll" target="lib" />
+    <file src="..\Assemblies\EhrReaders.dll" target="lib" />
+    <file src="..\Assemblies\EiffelSoftware.Runtime.dll" target="lib" />
+    <file src="..\Assemblies\Elasticsearch.Net.dll" target="lib" />
+    <file src="..\Assemblies\FastReport.Editor.dll" target="lib" />
+    <file src="..\Assemblies\HL7Profiles.dll" target="lib" />
+    <file src="..\Assemblies\InfinniPlatform.RestfulApi.exe" target="lib" />
+    <file src="..\Assemblies\InfinniPlatform.SystemConfig.dll" target="lib" />
+    <file src="..\Assemblies\InfinniPlatform.Update.dll" target="lib" />
+    <file src="..\Assemblies\InfinniPlatform.Api.dll" target="lib" />
+    <file src="..\Assemblies\InfinniPlatform.BlobStorage.dll" target="lib" />
+    <file src="..\Assemblies\InfinniPlatform.Cassandra.dll" target="lib" />
+    <file src="..\Assemblies\InfinniPlatform.Core.dll" target="lib" />
+    <file src="..\Assemblies\InfinniPlatform.Cors.dll" target="lib" />
+    <file src="..\Assemblies\InfinniPlatform.ElasticSearch.dll" target="lib" />
+    <file src="..\Assemblies\InfinniPlatform.EventStorage.dll" target="lib" />
+    <file src="..\Assemblies\InfinniPlatform.Hosting.dll" target="lib" />
+    <file src="..\Assemblies\InfinniPlatform.Index.ElasticSearch.dll" target="lib" />
+    <file src="..\Assemblies\InfinniPlatform.Index.QueryLanguage.dll" target="lib" />
+    <file src="..\Assemblies\InfinniPlatform.MessageQueue.dll" target="lib" />
+    <file src="..\Assemblies\InfinniPlatform.Metadata.dll" target="lib" />
+    <file src="..\Assemblies\InfinniPlatform.ModelRepository.dll" target="lib" />
+    <file src="..\Assemblies\InfinniPlatform.OceanInformatics.dll" target="lib" />
+    <file src="..\Assemblies\InfinniPlatform.Owin.dll" target="lib" />
+    <file src="..\Assemblies\InfinniPlatform.RabbitMq.dll" target="lib" />
+    <file src="..\Assemblies\InfinniPlatform.ReportDesigner.dll" target="lib" />
+    <file src="..\Assemblies\InfinniPlatform.Reporting.dll" target="lib" />
+    <file src="..\Assemblies\InfinniPlatform.Runtime.dll" target="lib" />
+    <file src="..\Assemblies\InfinniPlatform.SignalR.dll" target="lib" />
+    <file src="..\Assemblies\InfinniPlatform.Sql.dll" target="lib" />
+    <file src="..\Assemblies\InfinniPlatform.WebApi.dll" target="lib" />
+    <file src="..\Assemblies\log4net.dll" target="lib" />
+    <file src="..\Assemblies\Microsoft.AspNet.SignalR.Client.dll" target="lib" />
+    <file src="..\Assemblies\Microsoft.AspNet.SignalR.Core.dll" target="lib" />
+    <file src="..\Assemblies\Microsoft.AspNet.SignalR.Owin.dll" target="lib" />
+    <file src="..\Assemblies\Microsoft.Owin.Cors.dll" target="lib" />
+    <file src="..\Assemblies\Microsoft.Owin.dll" target="lib" />
+    <file src="..\Assemblies\Microsoft.Owin.Host.HttpListener.dll" target="lib" />
+    <file src="..\Assemblies\Microsoft.Owin.Hosting.dll" target="lib" />
+    <file src="..\Assemblies\Microsoft.Owin.xml" target="lib" />
+    <file src="..\Assemblies\Nest.dll" target="lib" />
+    <file src="..\Assemblies\Newtonsoft.Json.dll" target="lib" />
+    <file src="..\Assemblies\OceanEhr.Common.dll" target="lib" />
+    <file src="..\Assemblies\OceanEhr.OpenEhrV1.dll" target="lib" />
+    <file src="..\Assemblies\OceanInformatics.AdlParser.dll" target="lib" />
+    <file src="..\Assemblies\OpenEhr.V1.Its.Xml.dll" target="lib" />
+    <file src="..\Assemblies\Owin.dll" target="lib" />
+    <file src="..\Assemblies\RabbitMQ.Client.dll" target="lib" />
+    <file src="..\Assemblies\RestSharp.dll" target="lib" />
+    <file src="..\Assemblies\System.Net.Http.Formatting.dll" target="lib" />
+    <file src="..\Assemblies\System.Web.Cors.dll" target="lib" />
+    <file src="..\Assemblies\System.Web.Http.dll" target="lib" />
+    <file src="..\Assemblies\System.Web.Http.Owin.dll" target="lib" />
+    <file src="..\Assemblies\System.Web.Http.SelfHost.dll" target="lib" />
+  </files>
+</package>

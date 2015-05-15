@@ -1,0 +1,19 @@
+﻿{
+  "id": "IsNullOrWhiteSpace",
+  "description": "Объект является нулевым указателем или строкой из пробелов",
+  "type": "object",
+  "extends": {
+    "$ref": "http://wiki.infinnity.lan:8081/display/MC/BaseValidationOperator"
+  },
+  "properties": {
+    "Message": {
+      "description": "Сообщение об ошибке",
+      "type": "string"
+    },
+    "Property": {
+      "description": "Наименование свойства",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

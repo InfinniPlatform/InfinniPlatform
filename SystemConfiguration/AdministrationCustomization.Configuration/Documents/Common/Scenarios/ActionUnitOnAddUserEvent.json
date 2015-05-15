@@ -1,0 +1,13 @@
+{
+  "Id": "aec718fe-c04c-467a-b5ab-78f458bc04ef",
+  "Description": "",
+  "Caption": "ActionUnitOnAddUserEvent",
+  "Name": "ActionUnitOnAddUserEvent",
+  "ScenarioId": "ActionUnitOnAddUserEvent",
+  "ContextType": 2,
+  "ScriptUnitType": 1,
+  "ParentId": "e08fd960-2166-44d9-aa3c-3525d71518e9",
+  "Version": "version_systemconfig",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "scenariometadata"
+}

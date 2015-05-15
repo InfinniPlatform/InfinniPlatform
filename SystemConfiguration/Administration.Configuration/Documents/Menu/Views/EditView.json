@@ -1,0 +1,165 @@
+{
+  "Id": "82cda322-2ecc-4246-84d5-047cca5b5c58",
+  "__DocumentId": "viewmetadata",
+  "__ConfigId": "systemconfig",
+  "Version": "version_systemconfig",
+  "ParentId": "d2da06bc-80c7-40a9-b882-6276210eb229",
+  "Name": "EditView",
+  "Caption": "Пункт меню",
+  "Description": "",
+  "MetadataType": "EditView",
+  "Text": "Пункт меню",
+  "Parameters": [
+    {
+      "Name": "EditItem"
+    }
+  ],
+  "DataSources": [
+    {
+      "DocumentDataSource": {
+        "Name": "MainDataSource",
+        "ConfigId": "Administration",
+        "DocumentId": "Menu",
+        "UpdateAction": "SaveMenu",
+        "IdProperty": "Id"
+      }
+    }
+  ],
+  "Scripts": [
+    {
+      "Name": "OnLoadedEditViewHandler",
+      "Body": "var parentView = context.ParentView.getParentView();\r\nvar editItem = parentView.getParameter('EditItem').getValue();\r\n\r\nif (editItem === null || editItem === undefined) {\r\n\tvar parentItem = parentView.getDataSource('MenuObjectDataSource').getSelectedItem();\r\n\r\n\teditItem = {\r\n\t\tParentId: parentItem.Id,\r\n\t\tConfigId: parentItem.ConfigId,\r\n\t\tMenuId: parentItem.MenuId,\r\n\t\tLevel: parentItem.Level + 1\r\n\t};\r\n}\r\n\r\neditItem = JSON.parse(JSON.stringify(editItem));\r\n\r\ncontext.DataSources['MainDataSource'].setDataItems([ editItem ]);\r\ncontext.DataSources['MainDataSource'].setSelectedItem(editItem);"
+    },
+    {
+      "Name": "OnSaveHandler",
+      "Body": "context.Global.executeAction({\r\n\t\tSaveAction: {\r\n\t\t\tDataSource: 'MainDataSource',\r\n\t\t\tCanClose: false\r\n\t\t}\r\n\t},\r\n\tfunction(isUpdated) {\r\n\t\tvar parentView = context.ParentView.getParentView();\r\n\r\n\t\tif (isUpdated === true) {\r\n\t\t\tvar parentContext = parentView.getContext();\r\n\r\n\t\t\tvar onRefreshSubItems = parentContext.Scripts['OnSelectMenuItem'];\r\n\t\t\tonRefreshSubItems.Run(parentContext, null);\r\n\r\n\t\t\tvar onRefreshMenu = parentContext.Scripts['OnLoadedHandler'];\r\n\t\t\tonRefreshMenu.Run(parentContext, null);\r\n\t\t}\r\n\r\n\t\tcontext.ParentView.close();\r\n\t\tdebugger;\r\n\t\tcontext.ParentView.getParentView().getContext().Scripts['OnLoadedHandler'].Run(\r\n\t\t   context.ParentView.getParentView().getContext());\r\n\t}\r\n);"
+    }
+  ],
+  "OnLoaded": {
+    "Name": "OnLoadedEditViewHandler"
+  },
+  "LayoutPanel": {
+    "StackPanel": {
+      "Items": [
+        {
+          "GridPanel": {
+            "Rows": [
+              {
+                "Cells": [
+                  {
+                    "ColumnSpan": 3,
+                    "Items": [
+                      {
+                        "Label": {
+                          "Text": "Заголовок"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "ColumnSpan": 9,
+                    "Items": [
+                      {
+                        "TextBox": {
+                          "Value": {
+                            "PropertyBinding": {
+                              "DataSource": "MainDataSource",
+                              "Property": "Text"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "Cells": [
+                  {
+                    "ColumnSpan": 3,
+                    "Items": [
+                      {
+                        "Label": {
+                          "Text": "Порядок"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "ColumnSpan": 9,
+                    "Items": [
+                      {
+                        "NumericBox": {
+                          "MinValue": 0,
+                          "Value": {
+                            "PropertyBinding": {
+                              "DataSource": "MainDataSource",
+                              "Property": "Index"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "Cells": [
+                  {
+                    "ColumnSpan": 3,
+                    "Items": [
+                      {
+                        "Label": {
+                          "Text": "Действие"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "ColumnSpan": 9,
+                    "Items": [
+                      {
+                        "TextBox": {
+                          "Multiline": true,
+                          "LineCount": 10,
+                          "Value": {
+                            "PropertyBinding": {
+                              "DataSource": "MainDataSource",
+                              "Property": "Action"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "ToolBar": {
+            "Items": [
+              {
+                "ToolBarButton": {
+                  "Text": "OK",
+                  "OnClick": {
+                    "Name": "OnSaveHandler"
+                  }
+                }
+              },
+              {
+                "ToolBarButton": {
+                  "Text": "Отмена",
+                  "Action": {
+                    "CancelAction": {}
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

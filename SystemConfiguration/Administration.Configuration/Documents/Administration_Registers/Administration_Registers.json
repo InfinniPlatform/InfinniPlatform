@@ -1,0 +1,22 @@
+{
+  "Id": "8b1fcf5e-ad66-4202-bcd4-73d7aa953a52",
+  "Name": "Administration_Registers",
+  "Caption": "Registers common options",
+  "Description": "Storage for register's common information (e.g. actual date)",
+  "Versioning": 4,
+  "MetadataIndex": "Administration_Registers",
+  "Services": [],
+  "Processes": [],
+  "Scenarios": [],
+  "Generators": [],
+  "Views": [],
+  "PrintViews": [],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "DocumentStatuses": [],
+  "SearchAbility": 0,
+  "ParentId": "232b5c7f-6d7d-43da-a76f-9c1b9abba672",
+  "Version": "version_systemconfig",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "documentmetadata"
+}

@@ -1,0 +1,436 @@
+{
+	"Id": "d96cb046-f1a5-4298-ad9b-408a8f47c82d",
+	"Name": "Сведения о пациенте",
+	"Type": "Document",
+	"Description": "Сведения о пациенте",
+	"Model": {
+		"Name": "PatientDataModel",
+		"Caption": "Сведения о пациенте",
+		"Description": "Сведения о пациенте",
+		"MultiplicityFrom": 1,
+		"MultiplicityTo": 1,
+		"Groups": [{
+			"Name": "Patient",
+			"Caption": "Данные о пациенте",
+			"Description": "Данные о пациенте",
+			"MultiplicityFrom": 1,
+			"MultiplicityTo": 1,	
+			"Groups":[{
+				"Name": "Summary",
+				"Caption": "Сведения о пациенте медицинского характера",
+				"Description": "Сведения о пациенте медицинского характера",
+				"MultiplicityFrom": 0,
+				"MultiplicityTo": 1,	
+				"Properties": [
+				{
+					"Type": "Bool",
+					"Name": "IsMultipleBirth",
+					"Caption": "Индикатор многоплодных родов",
+					"Description": "Указывается true, если ребенок родился в результате многоплодных родов",
+					"MultiplicityFrom": 0,
+					"MultiplicityTo": 1				
+				},
+				{
+					"Type": "Integer",
+					"Name": "MultipleBirthOrderNumber",
+					"Caption": "Порядковый номер рождения ребёнка при многоплодных родах",
+					"Description": "Должен больше или равен 1, если ребенок родился в результате многоплодных родов",
+					"MultiplicityFrom": 0,
+					"MultiplicityTo": 1				
+				}
+			]},
+			{
+				"Name": "Privilege",
+				"Caption": "Категория льготности",
+				"Description": "Категория льготности",
+				"MultiplicityFrom": 0,
+				"MultiplicityTo": 1,	
+				"Properties": [
+				{
+				    "Type": "DateTime",
+				    "Name": "IssueDate",
+				    "Caption": "Дата и время начала дейстия льготы",
+				    "Description": "Дата и время начала дейстия льготы",
+				    "MultiplicityFrom": 1,
+				    "MultiplicityTo": 1
+				},
+				{
+				    "Type": "DateTime",
+				    "Name": "ExpiryDate",
+				    "Caption": "Дата и время окончания дейстия льготы",
+				    "Description": "Дата и время окончания дейстия льготы",
+				    "MultiplicityFrom": 1,
+				    "MultiplicityTo": 1
+				},
+				{
+					"Type": "LinkClassifier",
+					"Name": "Group",
+					"Caption": "Категория льготности",
+					"Description": "Группа, к которой относится пациент",
+					"MultiplicityFrom": 0,
+					"MultiplicityTo": 1,
+					"Attributes": {
+						"ClassifierLink": {
+							"ConfigId": "ClassifierStorage",
+							"ConfigVersion": "1.0.0.0",
+							"ClassifierId": "1.2.643.5.1.13.2.1.1.358"
+						}
+					}
+				}		
+			]}
+			],		
+			"Properties": [{
+				"Type": "Uuid",
+				"Name": "Id",
+				"Caption": "Код пациента",
+				"Description": "Уникальный идентификатор пациента",
+				"MultiplicityFrom": 1,
+				"MultiplicityTo": 1				
+			},
+			{
+				"Type": "Uuid",
+				"Name": "OrganizationId",
+				"Caption": "Идентификатор организации",
+				"Description": "Публичный уникальный идентификатор организации, которая предоставила сведения о пациенте",
+				"MultiplicityFrom": 1,
+				"MultiplicityTo": 1
+			},			
+			{
+				"Type": "String",
+				"Name": "UniqueNumber",
+				"Caption": "Уникальный номер пациента",
+				"Description": "Уникальный номер пациента",
+				"MultiplicityFrom": 1,
+				"MultiplicityTo": 1
+			},
+			{
+                "Type": "LinkClassifier",
+                "Name": "Confidentiality",
+                "Caption": "Уровень конфиденциальности",
+                "Description": "Уровень конфиденциальности сведений о пациенте",
+                "MultiplicityFrom": 1,
+                "MultiplicityTo": 1,
+                "Attributes": {
+                    "ClassifierLink": {
+                        "ConfigId": "ClassifierStorage",
+                        "ConfigVersion": "1.0.0.0",
+                        "ClassifierId": "2.16.840.1.113883.5.25"
+                    }
+                }
+            },
+            {
+              "Type": "String",
+              "Name": "LastName",
+              "Caption": "Фамилия",
+              "Description": "Фамилия",
+              "MultiplicityFrom": 1,
+              "MultiplicityTo": 1
+            },
+            {
+              "Type": "String",
+              "Name": "FirstName",
+              "Caption": "Имя",
+              "Description": "Имя",
+              "MultiplicityFrom": 1,
+              "MultiplicityTo": 1
+            },
+            {
+              "Type": "String",
+              "Name": "MiddleName",
+              "Caption": "Отчество",
+              "Description": "Отчество",
+              "MultiplicityFrom": 1,
+              "MultiplicityTo": 1
+            },
+			{
+				"Type": "ComplexType",
+				"Name": "Birthplace",
+				"Caption": "Место рождения",
+				"Description": "Место рождения",
+				"MultiplicityFrom": 0,
+				"MultiplicityTo": 1,
+				"Attributes": {
+					"ComplexTypeLink": {
+						"ConfigId": "FederalIntegration",
+						"ConfigVersion": "1.0.0.0",
+						"ObjectMetadataId": "Address"
+					}
+				}
+			},
+			{
+				"Type": "DateTime",
+				"Name": "BirthTime",
+				"Caption": "Дата рождения",
+				"Description": "Дата рождения",
+				"MultiplicityFrom": 1,
+				"MultiplicityTo": 1
+			},
+			{
+				"Type": "Bool",
+				"Name": "IsDeceased",
+				"Caption": "Признак того, что пациент умер",
+				"Description": "Указывается, если пациент умер, так как дата смерти может быть не известна",
+				"MultiplicityFrom": 0,
+				"MultiplicityTo": 1
+			},
+			{
+				"Type": "DateTime",
+				"Name": "DeceasedTime",
+				"Caption": "Дата и время смерти пациента",
+				"Description": "Дата и время смерти пациента",
+				"MultiplicityFrom": 0,
+				"MultiplicityTo": 1
+			},
+			{
+				"Type": "LinkClassifier",
+				"Name": "Sex",
+				"Caption": "Пол пациента",
+				"Description": "Пол пациента",
+				"MultiplicityFrom": 1,
+				"MultiplicityTo": 1,
+				"Attributes": {
+					"ClassifierLink": {
+						"ConfigId": "ClassifierStorage",
+						"ConfigVersion": "1.0.0.0",
+						"ClassifierId": "1.2.643.5.1.13.2.1.1.156"
+					}
+				}
+			},
+			{
+				"Type": "ComplexType",
+				"Name": "IdentityCards",
+				"Caption": "Список удостоверений личности пациента",
+				"Description": "Желательно, чтобы было указано, как минимум, одно удостоверение личности",
+				"MultiplicityFrom": 0,
+				"MultiplicityTo": null,
+				"Attributes": {
+					"ComplexTypeLink": {
+						"ConfigId": "FederalIntegration",
+						"ConfigVersion": "1.0.0.0",
+						"ObjectMetadataId": "IdentityCard"
+					}
+				}
+			},
+			{
+				"Type": "ComplexType",
+				"Name": "Policies",
+				"Caption": "Список страховых медицинских полисов",
+				"Description": "Желательно, чтобы список содержал сведения о полисе ОМС (если допустимо)",
+				"MultiplicityFrom": 0,
+				"MultiplicityTo": null,
+				"Attributes": {
+					"ComplexTypeLink": {
+						"ConfigId": "FederalIntegration",
+						"ConfigVersion": "1.0.0.0",
+						"ObjectMetadataId": "Policie"
+					}
+				}
+			},
+			{
+				"Type": "ComplexType",
+				"Name": "Addresses",
+				"Caption": "Список адресов пациента",
+				"Description": "Желательно, чтобы список содержал адрес регистрации, фактический или рабочий адрес",
+				"MultiplicityFrom": 0,
+				"MultiplicityTo": null,
+				"Attributes": {
+					"ComplexTypeLink": {
+						"ConfigId": "FederalIntegration",
+						"ConfigVersion": "1.0.0.0",
+						"ObjectMetadataId": "Address"
+					}
+				}
+			},
+			{
+				"Type": "ComplexType",
+				"Name": "Phones",
+				"Caption": "Список телефонов пациента",
+				"Description": "Желательно, чтобы список содержал прямой домашний или мобильный номер телефона",
+				"MultiplicityFrom": 0,
+				"MultiplicityTo": null,
+				"Attributes": {
+					"ComplexTypeLink": {
+						"ConfigId": "FederalIntegration",
+						"ConfigVersion": "1.0.0.0",
+						"ObjectMetadataId": "ContactInformation"
+					}
+				}
+			},
+			{
+				"Type": "ComplexType",
+				"Name": "Emails",
+				"Caption": "Список электронных почтовых адресов (email) пациента",
+				"Description": "Может быть указан, например, с целью отправки результатов анализов",
+				"MultiplicityFrom": 0,
+				"MultiplicityTo": null,
+				"Attributes": {
+					"ComplexTypeLink": {
+						"ConfigId": "FederalIntegration",
+						"ConfigVersion": "1.0.0.0",
+						"ObjectMetadataId": "ContactInformation"
+					}
+				}
+			},
+			{
+				"Type": "ComplexType",
+				"Name": "Faxes",
+				"Caption": "Факсы пациента",
+				"Description": "Факсы пациента",
+				"MultiplicityFrom": 0,
+				"MultiplicityTo": null,
+				"Attributes": {
+					"ComplexTypeLink": {
+						"ConfigId": "FederalIntegration",
+						"ConfigVersion": "1.0.0.0",
+						"ObjectMetadataId": "ContactInformation"
+					}
+				}
+			},
+			{
+				"Type": "ComplexType",
+				"Name": "Requisites",
+				"Caption": "Другие идентификаторы пациента",
+				"Description": "Другие идентификаторы пациента (например, СНИЛС или ИНН)",
+				"MultiplicityFrom": 1,
+				"MultiplicityTo": null,
+				"Attributes": {
+					"ComplexTypeLink": {
+						"ConfigId": "FederalIntegration",
+						"ConfigVersion": "1.0.0.0",
+						"ObjectMetadataId": "Requisite"
+					}
+				}
+			},
+			{
+				"Type": "ComplexType",
+				"Name": "Relationships",
+				"Caption": "Список личных отношений пациента",
+				"Description": "Опекуна/попечитель",
+				"MultiplicityFrom": 0,
+				"MultiplicityTo": null,
+				"Attributes": {
+					"ComplexTypeLink": {
+						"ConfigId": "FederalIntegration",
+						"ConfigVersion": "1.0.0.0",
+						"ObjectMetadataId": "Relationship"
+					}
+				}
+			},
+			{
+				"Type": "LinkClassifier",
+				"Name": "Importance",
+				"Caption": "Категория льготности пациента",
+				"Description": "Категория льготности пациента",
+				"MultiplicityFrom": 0,
+				"MultiplicityTo": 1,
+				"Attributes": {
+					"ClassifierLink": {
+						"ConfigId": "ClassifierStorage",
+						"ConfigVersion": "1.0.0.0",
+						"ClassifierId": "1.2.643.5.1.13.2.1.1.149"
+					}
+				}
+			},
+			{
+				"Type": "LinkClassifier",
+				"Name": "MaritalStatus",
+				"Caption": "Семейное положение пациента",
+				"Description": "Семейное положение пациента",
+				"MultiplicityFrom": 0,
+				"MultiplicityTo": 1,
+				"Attributes": {
+					"ClassifierLink": {
+						"ConfigId": "ClassifierStorage",
+						"ConfigVersion": "1.0.0.0",
+						"ClassifierId": "1.2.643.5.1.13.2.1.1.215"
+					}
+				}
+			},
+			{
+				"Type": "LinkClassifier",
+				"Name": "Citizenship",
+				"Caption": "Гражданство пациента",
+				"Description": "Гражданство пациента",
+				"MultiplicityFrom": 0,
+				"MultiplicityTo": 1,
+				"Attributes": {
+					"ClassifierLink": {
+						"ConfigId": "ClassifierStorage",
+						"ConfigVersion": "1.0.0.0",
+						"ClassifierId": "1.2.643.5.1.13.2.1.1.63"
+					}
+				}
+			},
+			{
+				"Type": "String",
+				"Name": "Language",
+				"Caption": "Родной язык общения пациента",
+				"Description": "Родной язык общения пациента",
+				"MultiplicityFrom": 0,
+				"MultiplicityTo": 1
+			},
+			{
+				"Type": "LinkClassifier",
+				"Name": "ResidenceType",
+				"Caption": "Тип места жительства",
+				"Description": "Тип места жительства",
+				"MultiplicityFrom": 1,
+				"MultiplicityTo": 1,
+				"Attributes": {
+					"ClassifierLink": {
+						"ConfigId": "ClassifierStorage",
+						"ConfigVersion": "1.0.0.0",
+						"ClassifierId": "1.2.643.5.1.13.2.1.1.573"
+					}
+				}
+			},
+			{
+				"Type": "LinkClassifier",
+				"Name": "SocialStatus",
+				"Caption": "Группа, к которой относится пациент",
+				"Description": "Группа, к которой относится пациент",
+				"MultiplicityFrom": 1,
+				"MultiplicityTo": 1,
+				"Attributes": {
+					"ClassifierLink": {
+						"ConfigId": "ClassifierStorage",
+						"ConfigVersion": "1.0.0.0",
+						"ClassifierId": "1.2.643.5.1.13.2.1.1.366"
+					}
+				}
+			},			
+			{
+				"Type": "LinkClassifier",
+				"Name": "JobCode",
+				"Caption": "Название отрасли",
+				"Description": "Название отрасли",
+				"MultiplicityFrom": 0,
+				"MultiplicityTo": 1,
+				"Attributes": {
+					"ClassifierLink": {
+						"ConfigId": "ClassifierStorage",
+						"ConfigVersion": "1.0.0.0",
+						"ClassifierId": "1.2.643.5.1.13.2.1.1.62"
+					}
+				}
+			},
+			{
+				"Type": "String",
+				"Name": "JobTitleName",
+				"Caption": "Должность",
+				"Description": "Должность",
+				"MultiplicityFrom": 0,
+				"MultiplicityTo": 1
+			},			
+			{
+				"Type": "String",
+				"Name": "OrganizationName",
+				"Caption": "Название предприятия",
+				"Description": "Название предприятия",
+				"MultiplicityFrom": 0,
+				"MultiplicityTo": 1
+			}				
+			]
+		}]
+	}
+}

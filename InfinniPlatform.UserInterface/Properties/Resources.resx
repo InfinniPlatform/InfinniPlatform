@@ -1,0 +1,561 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="AppViewText" xml:space="preserve">
+    <value>InfinniPlatform: Designer</value>
+  </data>
+  <data name="AssemblyContainer" xml:space="preserve">
+    <value>Assemblies</value>
+  </data>
+  <data name="CaptionColumnHeader" xml:space="preserve">
+    <value>Caption</value>
+  </data>
+  <data name="CloneElementName" xml:space="preserve">
+    <value>{0}_Copy</value>
+  </data>
+  <data name="CloseViewQuestion" xml:space="preserve">
+    <value>Do you want close the window without saving?</value>
+  </data>
+  <data name="CodeEditorControlCopyButton" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CodeEditorControlCopyButtonToolTip" xml:space="preserve">
+    <value>Copy (Ctrl+C)</value>
+  </data>
+  <data name="CodeEditorControlCutButton" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CodeEditorControlCutButtonToolTip" xml:space="preserve">
+    <value>Cut (Ctrl+X)</value>
+  </data>
+  <data name="CodeEditorControlEditButton" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="CodeEditorControlFindButton" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CodeEditorControlFindButtonToolTip" xml:space="preserve">
+    <value>Find and Replace (Ctrl+F)</value>
+  </data>
+  <data name="CodeEditorControlFormatButton" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CodeEditorControlFormatButtonToolTip" xml:space="preserve">
+    <value>Format (Ctrl+Shift+F)</value>
+  </data>
+  <data name="CodeEditorControlPasteButton" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CodeEditorControlPasteButtonToolTip" xml:space="preserve">
+    <value>Paste (Ctrl+V)</value>
+  </data>
+  <data name="CodeEditorControlRedoButton" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CodeEditorControlRedoButtonToolTip" xml:space="preserve">
+    <value>Redo (Ctrl+Y)</value>
+  </data>
+  <data name="CodeEditorControlUndoButton" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CodeEditorControlUndoButtonToolTip" xml:space="preserve">
+    <value>Undo (Ctrl+Z)</value>
+  </data>
+  <data name="ConfigDesignerAddButton" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="ConfigDesignerAddDocumentButton" xml:space="preserve">
+    <value>Add Document</value>
+  </data>
+  <data name="ConfigDesignerAddMenuButton" xml:space="preserve">
+    <value>Add Menu</value>
+  </data>
+  <data name="ConfigDesignerAssemblies" xml:space="preserve">
+    <value>Assemblies</value>
+  </data>
+  <data name="ConfigDesignerConfiguration" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="ConfigDesignerDeleteButton" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="ConfigDesignerDeleteQuestion" xml:space="preserve">
+    <value>Delete configuration item '{0}'?</value>
+  </data>
+  <data name="ConfigDesignerDocuments" xml:space="preserve">
+    <value>Documents</value>
+  </data>
+  <data name="ConfigDesignerEditButton" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="ConfigDesignerExchanges" xml:space="preserve">
+    <value>Exchanges</value>
+  </data>
+  <data name="ConfigDesignerMenu" xml:space="preserve">
+    <value>Menu</value>
+  </data>
+  <data name="ConfigDesignerRefreshButton" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="ConfigTreeCaption" xml:space="preserve">
+    <value>Solution Explorer</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="Cut" xml:space="preserve">
+    <value>Cut</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DeleteActionQuestion" xml:space="preserve">
+    <value>Delete selected item?</value>
+  </data>
+  <data name="DeleteConfigElementQuestion" xml:space="preserve">
+    <value>Delete '{0}'?</value>
+  </data>
+  <data name="DeleteItemActionQuestion" xml:space="preserve">
+    <value>Delete selected item?</value>
+  </data>
+  <data name="DeployView" xml:space="preserve">
+    <value>Deploy</value>
+  </data>
+  <data name="DesignerView" xml:space="preserve">
+    <value>Designer</value>
+  </data>
+  <data name="DocumentContainer" xml:space="preserve">
+    <value>Documents</value>
+  </data>
+  <data name="DocumentDesignerAddButton" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="DocumentDesignerDeleteButton" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DocumentDesignerDeleteQuestion" xml:space="preserve">
+    <value>Delete document item '{0}'?</value>
+  </data>
+  <data name="DocumentDesignerEditButton" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="DocumentDesignerRefreshButton" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="DocumentSchemaDesignerAddButton" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="DocumentSchemaDesignerCannotContainProperties" xml:space="preserve">
+    <value>Only Object and Array can contain properties.</value>
+  </data>
+  <data name="DocumentSchemaDesignerCannotMoveParentToChild" xml:space="preserve">
+    <value>The destination item is a subitem of the source item.</value>
+  </data>
+  <data name="DocumentSchemaDesignerCopyButton" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="DocumentSchemaDesignerCopyButtonToolTip" xml:space="preserve">
+    <value>Copy (Ctrl+C)</value>
+  </data>
+  <data name="DocumentSchemaDesignerCutButton" xml:space="preserve">
+    <value>Cut</value>
+  </data>
+  <data name="DocumentSchemaDesignerCutButtonToolTip" xml:space="preserve">
+    <value>Cut (Ctrl+X)</value>
+  </data>
+  <data name="DocumentSchemaDesignerDeleteButton" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DocumentSchemaDesignerDeleteQuestion" xml:space="preserve">
+    <value>Delete property '{0}'?</value>
+  </data>
+  <data name="DocumentSchemaDesignerEditButton" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="DocumentSchemaDesignerMoveDownButton" xml:space="preserve">
+    <value>Move Down</value>
+  </data>
+  <data name="DocumentSchemaDesignerMoveDownButtonToolTip" xml:space="preserve">
+    <value>Move Down (Alt+Down)</value>
+  </data>
+  <data name="DocumentSchemaDesignerMoveUpButton" xml:space="preserve">
+    <value>Move Up</value>
+  </data>
+  <data name="DocumentSchemaDesignerMoveUpButtonToolTip" xml:space="preserve">
+    <value>Move Up (Alt+Up)</value>
+  </data>
+  <data name="DocumentSchemaDesignerPasteButton" xml:space="preserve">
+    <value>Paste</value>
+  </data>
+  <data name="DocumentSchemaDesignerPasteButtonToolTip" xml:space="preserve">
+    <value>Paste (Ctrl+V)</value>
+  </data>
+  <data name="DocumentSchemaDesignerRootText" xml:space="preserve">
+    <value>Schema</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="EditPanelCaption" xml:space="preserve">
+    <value>Elements</value>
+  </data>
+  <data name="FindAndReplaceDialogTitle" xml:space="preserve">
+    <value>Find And Replace</value>
+  </data>
+  <data name="FindAndReplaceElementCloseButtonToolTip" xml:space="preserve">
+    <value>Close (Esc)</value>
+  </data>
+  <data name="FindAndReplaceElementFindNextButton" xml:space="preserve">
+    <value>Find Next</value>
+  </data>
+  <data name="FindAndReplaceElementFindNextButtonToolTip" xml:space="preserve">
+    <value>Find Next (F3)</value>
+  </data>
+  <data name="FindAndReplaceElementFindPreviousButton" xml:space="preserve">
+    <value>Find Previous</value>
+  </data>
+  <data name="FindAndReplaceElementFindPreviousButtonToolTip" xml:space="preserve">
+    <value>Find Previous (Shift+F3)</value>
+  </data>
+  <data name="FindAndReplaceElementFindWhat" xml:space="preserve">
+    <value>Find...</value>
+  </data>
+  <data name="FindAndReplaceElementMatchCase" xml:space="preserve">
+    <value>Match case</value>
+  </data>
+  <data name="FindAndReplaceElementReplaceAllButton" xml:space="preserve">
+    <value>Replace All</value>
+  </data>
+  <data name="FindAndReplaceElementReplaceAllButtonToolTip" xml:space="preserve">
+    <value>Replace All (Alt+A)</value>
+  </data>
+  <data name="FindAndReplaceElementReplaceButton" xml:space="preserve">
+    <value>Replace</value>
+  </data>
+  <data name="FindAndReplaceElementReplaceButtonToolTip" xml:space="preserve">
+    <value>Replace Next (Alt+R)</value>
+  </data>
+  <data name="FindAndReplaceElementReplaceWith" xml:space="preserve">
+    <value>Replace...</value>
+  </data>
+  <data name="FindAndReplaceElementWholeWord" xml:space="preserve">
+    <value>Whole word</value>
+  </data>
+  <data name="GeneratorContainer" xml:space="preserve">
+    <value>Generators</value>
+  </data>
+  <data name="GridPanelCannotDeleteColumns" xml:space="preserve">
+    <value>Cannot delete columns.</value>
+  </data>
+  <data name="GridPanelColumnSpanCannotBeLessOne" xml:space="preserve">
+    <value>ColumnSpan cannot be less one.</value>
+  </data>
+  <data name="HomePageText" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="MenuContainer" xml:space="preserve">
+    <value>Menu</value>
+  </data>
+  <data name="MenuDesignerAddButton" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="MenuDesignerCannotMoveParentToChild" xml:space="preserve">
+    <value>The destination item is a subitem of the source item.</value>
+  </data>
+  <data name="MenuDesignerCopyButton" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="MenuDesignerCopyButtonToolTip" xml:space="preserve">
+    <value>Copy (Ctrl+C)</value>
+  </data>
+  <data name="MenuDesignerCutButton" xml:space="preserve">
+    <value>Cut</value>
+  </data>
+  <data name="MenuDesignerCutButtonToolTip" xml:space="preserve">
+    <value>Cut (Ctrl+X)</value>
+  </data>
+  <data name="MenuDesignerDeleteButton" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="MenuDesignerDeleteQuestion" xml:space="preserve">
+    <value>Delete menu item '{0}'?</value>
+  </data>
+  <data name="MenuDesignerEditButton" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="MenuDesignerMoveDownButton" xml:space="preserve">
+    <value>Move Down</value>
+  </data>
+  <data name="MenuDesignerMoveDownButtonToolTip" xml:space="preserve">
+    <value>Move Down (Alt+Down)</value>
+  </data>
+  <data name="MenuDesignerMoveUpButton" xml:space="preserve">
+    <value>Move Up</value>
+  </data>
+  <data name="MenuDesignerMoveUpButtonToolTip" xml:space="preserve">
+    <value>Move Up (Alt+Up)</value>
+  </data>
+  <data name="MenuDesignerPasteButton" xml:space="preserve">
+    <value>Paste</value>
+  </data>
+  <data name="MenuDesignerPasteButtonToolTip" xml:space="preserve">
+    <value>Paste (Ctrl+V)</value>
+  </data>
+  <data name="MenuDesignerRootItemText" xml:space="preserve">
+    <value>Menu</value>
+  </data>
+  <data name="MetadataTypeAssembly" xml:space="preserve">
+    <value>Assembly</value>
+  </data>
+  <data name="MetadataTypeConfiguration" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="MetadataTypeDocument" xml:space="preserve">
+    <value>Document</value>
+  </data>
+  <data name="MetadataTypeGenerator" xml:space="preserve">
+    <value>Generator</value>
+  </data>
+  <data name="MetadataTypeIsNotSupported" xml:space="preserve">
+    <value>Metadata type '{0}' is not supported.</value>
+  </data>
+  <data name="MetadataTypeMenu" xml:space="preserve">
+    <value>Menu</value>
+  </data>
+  <data name="MetadataTypePrintView" xml:space="preserve">
+    <value>PrintView</value>
+  </data>
+  <data name="MetadataTypeProcess" xml:space="preserve">
+    <value>Process</value>
+  </data>
+  <data name="MetadataTypeRegister" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="MetadataTypeReport" xml:space="preserve">
+    <value>Report</value>
+  </data>
+  <data name="MetadataTypeScenario" xml:space="preserve">
+    <value>Scenario</value>
+  </data>
+  <data name="MetadataTypeService" xml:space="preserve">
+    <value>Service</value>
+  </data>
+  <data name="MetadataTypeStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="MetadataTypeValidationError" xml:space="preserve">
+    <value>ValidationError</value>
+  </data>
+  <data name="MetadataTypeValidationWarning" xml:space="preserve">
+    <value>ValidationWarning</value>
+  </data>
+  <data name="MetadataTypeView" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="MetadataView" xml:space="preserve">
+    <value>Metadata</value>
+  </data>
+  <data name="MigrationView" xml:space="preserve">
+    <value>Migration</value>
+  </data>
+  <data name="NameColumnHeader" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Paste" xml:space="preserve">
+    <value>Paste</value>
+  </data>
+  <data name="PrintViewContainer" xml:space="preserve">
+    <value>PrintViews</value>
+  </data>
+  <data name="ProcessContainer" xml:space="preserve">
+    <value>Processes</value>
+  </data>
+  <data name="PropertyEditorControlCaption" xml:space="preserve">
+    <value>Editor</value>
+  </data>
+  <data name="PropertyEditorControlDeletePropertyQuestion" xml:space="preserve">
+    <value>Delete '{0}'?</value>
+  </data>
+  <data name="Reconnect" xml:space="preserve">
+    <value>Reconnect</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="RegisterContainer" xml:space="preserve">
+    <value>Registers</value>
+  </data>
+  <data name="ReportContainer" xml:space="preserve">
+    <value>Reports</value>
+  </data>
+  <data name="ReportDesigner" xml:space="preserve">
+    <value>Report Designer</value>
+  </data>
+  <data name="SaveValidateViewError" xml:space="preserve">
+    <value>Please correct the errors to save.</value>
+  </data>
+  <data name="ScenarioContainer" xml:space="preserve">
+    <value>Scenarios</value>
+  </data>
+  <data name="ServiceContainer" xml:space="preserve">
+    <value>Services</value>
+  </data>
+  <data name="ShouldSpecifyEvent" xml:space="preserve">
+    <value>Should specify the event.</value>
+  </data>
+  <data name="ShouldSpecifyEventHandler" xml:space="preserve">
+    <value>Should specify event handler.</value>
+  </data>
+  <data name="SourceHasNoEvent" xml:space="preserve">
+    <value>Source '{0}' has no event '{1}'.</value>
+  </data>
+  <data name="StatusContainer" xml:space="preserve">
+    <value>Statuses</value>
+  </data>
+  <data name="ToggleButtonControlTextOff" xml:space="preserve">
+    <value>OFF</value>
+  </data>
+  <data name="ToggleButtonControlTextOn" xml:space="preserve">
+    <value>ON</value>
+  </data>
+  <data name="ValidationErrorContainer" xml:space="preserve">
+    <value>ValidationErrors</value>
+  </data>
+  <data name="ValidationWarningContainer" xml:space="preserve">
+    <value>ValidationWarnings</value>
+  </data>
+  <data name="ViewContainer" xml:space="preserve">
+    <value>Views</value>
+  </data>
+  <data name="ViewPropertyEditorControlAddButtonToolTip" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="ViewPropertyEditorControlDeleteButtonToolTip" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="ViewPropertyEditorControlEditButtonToolTip" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+</root>

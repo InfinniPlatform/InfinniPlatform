@@ -1,0 +1,14 @@
+﻿{
+  "Name": "App",
+  "Image": "App",
+  "Text": "InfinniPlatform: Designer",
+  "LayoutPanel": {
+    "StackPanel": {
+      "Items": [
+        {
+          "ConfigEditor": {}
+        }
+      ]
+    }
+  }
+}

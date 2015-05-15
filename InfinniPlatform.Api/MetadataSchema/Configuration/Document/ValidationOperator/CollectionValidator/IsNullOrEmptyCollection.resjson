@@ -1,0 +1,15 @@
+﻿{
+  "id": "IsNullOrEmptyCollection",
+  "description": "Коллекция является нулевым указателем или пустой коллекцией",
+  "type": "object",
+  "extends": {
+    "$ref": "http://wiki.infinnity.lan:8081/display/MC/BaseValidationOperator"
+  },
+  "properties": {
+    "Message": {
+      "description": "Сообщение об ошибке",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

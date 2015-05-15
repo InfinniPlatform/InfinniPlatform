@@ -1,0 +1,26 @@
+{
+  "Id": "498ec15a-affb-4459-8d38-331587666bf6",
+  "__DocumentId": "processmetadata",
+  "__ConfigId": "systemconfig",
+  "Version": "version_systemconfig",
+  "ParentId": "e08fd960-2166-44d9-aa3c-3525d71518e9",
+  "Name": "OnRemoveUserEvent",
+  "Caption": "OnRemoveUserEvent",
+  "Type": 2,
+  "Transitions": [
+    {
+      "Id": "8cc2f418-d82f-4842-b166-90516e239c84",
+      "Name": "OnRemoveUserEvent",
+      "ActionPoint": {
+        "TypeName": "Action",
+        "ScenarioId": "4fb7ac22-dd28-4141-a427-85b1085e2b03"
+      },
+      "CredentialsPoint": {
+        "TypeName": "Action",
+        "ScenarioId": "4fb7ac22-dd28-4141-a427-85b1085e2b03"
+      },
+      "CredentialsType": "CustomCredentials"
+    }
+  ],
+  "SettingsType": "Custom"
+}

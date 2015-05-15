@@ -1,0 +1,38 @@
+﻿using System;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Formatting;
+using InfinniPlatform.Api.Dynamic;
+
+namespace InfinniPlatform.WebApi.HttpResultHandlers
+{
+	public sealed class HttpResultHandlerBadRequest : IHttpResultHandler
+	{
+		public HttpResponseMessage WrapResult(object result)
+		{
+			var validProperty = result.GetProperty("IsValid");
+			var isInternalServerError = result.GetProperty("IsInternalServerError");
+
+			if (validProperty == null || Convert.ToBoolean(validProperty))
+			{
+				return new HttpResponseMessage(HttpStatusCode.OK)
+					       {
+						       Content = new ObjectContent(typeof (object),result , new JsonMediaTypeFormatter())                               
+					       };
+			}
+			
+			if (isInternalServerError != null && Convert.ToBoolean(isInternalServerError))
+			{
+				return new HttpResponseMessage(HttpStatusCode.InternalServerError)
+				{
+					Content = new ObjectContent(typeof(object), result , new JsonMediaTypeFormatter())
+				};
+			}
+			
+            return new HttpResponseMessage(HttpStatusCode.BadRequest)
+                       {
+                           Content = new ObjectContent(typeof(object), result, new JsonMediaTypeFormatter())
+                       };
+		}
+	}
+}

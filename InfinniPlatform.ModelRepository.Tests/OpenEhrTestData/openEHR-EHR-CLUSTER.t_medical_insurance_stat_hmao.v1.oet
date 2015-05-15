@@ -1,0 +1,78 @@
+﻿<?xml version="1.0"?>
+<template xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="openEHR/v1/Template">
+  <id>2DAAEB31-CC11-4BAE-8F15-DD39FD614469</id>
+  <name>Полис</name>
+  <description>
+    <lifecycle_state>Initial</lifecycle_state>
+    <details>
+      <purpose />
+      <use />
+      <misuse />
+    </details>
+    <other_details>
+      <item>
+        <key>MetaDataSet:Sample Set </key>
+        <value>Template metadata sample set </value>
+      </item>
+      <item>
+        <key>Acknowledgements</key>
+        <value />
+      </item>
+      <item>
+        <key>Business Process Level</key>
+        <value />
+      </item>
+      <item>
+        <key>Care setting</key>
+        <value />
+      </item>
+      <item>
+        <key>Client group</key>
+        <value />
+      </item>
+      <item>
+        <key>Clinical Record Element</key>
+        <value />
+      </item>
+      <item>
+        <key>Copyright</key>
+        <value />
+      </item>
+      <item>
+        <key>Issues</key>
+        <value />
+      </item>
+      <item>
+        <key>Owner</key>
+        <value />
+      </item>
+      <item>
+        <key>Sign off</key>
+        <value />
+      </item>
+      <item>
+        <key>Speciality</key>
+        <value />
+      </item>
+      <item>
+        <key>User roles</key>
+        <value />
+      </item>
+    </other_details>
+  </description>
+  <definition xsi:type="CLUSTER" archetype_id="openEHR-EHR-CLUSTER.medical_insurance.v1" concept_name="Информация об оплате" max="1" min="1" annotation="showCaption(&quot;false&quot;);print(&quot;false&quot;);">
+    <Rule path="/items[at0001]" default="PaymentType::1::ОМС" annotation="width(&quot;1&quot;);dropdown(&quot;true&quot;);value(&quot;PaymentType::1::ОМС&quot;);">
+      <constraint xsi:type="textConstraint">
+        <termQueryId terminologyID="PaymentType" terminologyLang="en-GB" queryName="PaymentType" />
+      </constraint>
+    </Rule>
+    <Rule path="/items[at0002]" hide_on_form="true" annotation="width(&quot;1&quot;);hidden(&quot;true&quot;);" />
+    <Rule path="/items[at0003]" hide_on_form="true" annotation="width(&quot;1&quot;);hidden(&quot;true&quot;);" />
+    <Rule path="/items[at0004]" hide_on_form="true" annotation="width(&quot;1&quot;);br(&quot;true&quot;);hidden(&quot;true&quot;);" />
+    <Rule path="/items[at0005]" hide_on_form="true" annotation="width(&quot;1&quot;);hidden(&quot;true&quot;);" />
+    <Rule path="/items[at0006]" hide_on_form="true" annotation="width(&quot;1&quot;);hidden(&quot;true&quot;);" />
+    <Rule path="/items[at0007]" hide_on_form="true" annotation="width(&quot;1&quot;);hidden(&quot;true&quot;);" />
+	<Rule path="/items[at0008]" annotation="br(&quot;true&quot;);margin(&quot;1&quot;);hidden(&quot;true&quot;);" />
+	<Rule path="/items[at0009]" annotation="width(&quot;2&quot;); br(&quot;true&quot;);margin(&quot;1&quot;);hidden(&quot;true&quot;);" />
+  </definition>
+</template>
