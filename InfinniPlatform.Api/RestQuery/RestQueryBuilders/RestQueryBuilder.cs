@@ -8,6 +8,7 @@ using InfinniPlatform.Api.RestApi.CommonApi.RouteTraces;
 using InfinniPlatform.Api.RestQuery.EventObjects;
 using InfinniPlatform.Api.RestQuery.EventObjects.EventSerializers;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using InfinniPlatform.Api.RestQuery.RestQueryExecutors;
 using InfinniPlatform.Api.SearchOptions;
@@ -195,7 +196,26 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 			return response;
 		}
 
-		/// <summary>
+	    public RestQueryResponse QueryPostFile(object linkedData, string fileName, Stream fileStream, CookieContainer cookieContainer)
+	    {
+	        var url = _controllerRoutingFactory.BuildRestRoutingUrlUpload(_configuration, _metadata, _action);
+
+	        RestQueryResponse response = null;
+
+            ExecuteProfiledOperation(() =>
+                                        {
+                                            response = new RestQueryExecutor(cookieContainer).QueryPostFile(
+                                               url,
+                                               linkedData,
+                                               fileName,
+                                               fileStream);
+                                        },null);
+
+	        return response;
+	    }
+
+
+        /// <summary>
 		///  Выполнить POST-запрос на сервер 
 		/// </summary>
 		/// <param name="linkedData">Связанный объект</param>

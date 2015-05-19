@@ -20,6 +20,37 @@ namespace InfinniPlatform.Sdk
         }
 
         /// <summary>
+        ///   Сформировать роутинг запроса для запросов на загрузку файла на сервер
+        /// </summary>
+        /// <param name="version">Версия приложения</param>
+        /// <param name="application">Приложение</param>
+        /// <returns>Роутинг для запросов на загрузку файлов</returns>
+        public string BuildRestRoutingUploadFile(string version, string application)
+        {
+            return GetCompleteUrl(GetFileUploadPath()
+                .ReplaceFormat("version", version)
+                .ReplaceFormat("application", application));
+        }
+
+        public string BuildRestRoutingDownloadFile(string version, string application)
+        {
+            return GetCompleteUrl(GetFileDownloadPath()
+                .ReplaceFormat("version", version)
+                .ReplaceFormat("application", application));
+        }
+
+
+        private string GetFileUploadPath()
+        {
+            return GetBaseApplicationPath() + "/files/upload";
+        }
+
+        private string GetFileDownloadPath()
+        {
+            return GetBaseApplicationPath() + "/files/download";
+        }
+
+        /// <summary>
         ///   Сформировать роутинг запроса для кастомных запросов к платформе
         /// </summary>
         /// <param name="version">Версия приложения</param>
@@ -29,7 +60,7 @@ namespace InfinniPlatform.Sdk
         /// <returns>Роутинг для кастомных запросов к платформе</returns>
         public string BuildRestRoutingUrl(string version, string application, string documentType, string service)
         {
-            return GetCustomRouting(GetRestTemplate()
+            return GetCompleteUrl(GetRestTemplate()
                                         .ReplaceFormat("version", version)
                                         .ReplaceFormat("application", application)
                                         .ReplaceFormat("documentType", documentType)
@@ -45,7 +76,7 @@ namespace InfinniPlatform.Sdk
         /// <returns>Роутинг для стандартного запроса документа указанного типа</returns>
         public string BuildRestRoutingUrlDefault(string version, string application, string documentType)
         {
-            return GetCustomRouting(GetRestTemplateDocument()
+            return GetCompleteUrl(GetRestTemplateDocument()
                                         .ReplaceFormat("version", version)
                                         .ReplaceFormat("application", application)
                                         .ReplaceFormat("documentType", documentType));
@@ -61,7 +92,7 @@ namespace InfinniPlatform.Sdk
         /// <returns>Роутинг для стандартного запроса документа указанного типа</returns>
         public string BuildRestRoutingUrlDefaultById(string version, string application, string documentType, string instanceId)
         {
-            return GetCustomRouting(GetRestTemplateDocumentById()
+            return GetCompleteUrl(GetRestTemplateDocumentById()
                                         .ReplaceFormat("version", version)
                                         .ReplaceFormat("application", application)
                                         .ReplaceFormat("documentType", documentType)
@@ -77,7 +108,7 @@ namespace InfinniPlatform.Sdk
         /// <returns>Роутинг для запроса на создание клиентской сессии</returns>
         public string BuildRestRoutingUrlDefaultSession(string version)
         {
-            return GetCustomRouting(GetRestTemplateSession().ReplaceFormat("version",version));
+            return GetCompleteUrl(GetRestTemplateSession().ReplaceFormat("version", version));
         }
 
 
@@ -89,9 +120,9 @@ namespace InfinniPlatform.Sdk
         /// <returns>Роутинг для запроса на создание клиентской сессии</returns>
         public string BuildRestRoutingUrlDefaultSessionById(string sessionId, string version)
         {
-            return GetCustomRouting(GetRestTemplateSessionById()
+            return GetCompleteUrl(GetRestTemplateSessionById()
                 .ReplaceFormat("version", version)
-                .ReplaceFormat("sessionId",sessionId)
+                .ReplaceFormat("sessionId", sessionId)
                 );
         }
 
@@ -104,7 +135,7 @@ namespace InfinniPlatform.Sdk
         /// <returns>Роутинг для запроса на присоединение документа к клиентской сессии</returns>
         public string BuildRestRoutingUrlAttachDocument(string sessionId, string version)
         {
-            return GetCustomRouting(GetRestTemplateSessionById()
+            return GetCompleteUrl(GetRestTemplateSessionById()
                 .ReplaceFormat("version", version)
                 .ReplaceFormat("sessionId", sessionId)
                 );
@@ -119,35 +150,11 @@ namespace InfinniPlatform.Sdk
         /// <returns>Роутинг для запроса на отсоединение документа к клиентской сессии</returns>
         public string BuildRestRoutingUrlDetachDocument(string sessionId, string version, string attachmentId)
         {
-            return GetCustomRouting(GetRestTemplateSessionDocument()
+            return GetCompleteUrl(GetRestTemplateSessionDocument()
                 .ReplaceFormat("version", version)
                 .ReplaceFormat("sessionId", sessionId)
                 .ReplaceFormat("attachmentId", attachmentId)
                 );
-        }
-
-        /// <summary>
-        ///   Сформировать роутинг запроса для синхронного Post документов указанного типа
-        /// </summary>
-        /// <param name="version">Версия приложения</param>
-        /// <param name="application">Приложение</param>
-        /// <param name="documentType">Тип документа</param>
-        /// <returns>Роутинг запроса для синхронного Post документов указанного типа</returns>
-        public string BuildRestRoutingUrlEncodedData(string version, string application, string documentType)
-        {
-            return BuildRestRoutingUrl(version, application, documentType, "UrlEncodedData");
-        }
-
-        /// <summary>
-        ///   Сформировать роутинг запроса для синхронной загрузки/выгрузки бинарных данных
-        /// </summary>
-        /// <param name="version">Версия приложения</param>
-        /// <param name="application">Приложение</param>
-        /// <param name="documentType">Тип документа</param>
-        /// <returns>Роутинг запроса для загрузки/выгрузки данных указанного типа</returns>
-        public string BuildRestRoutingUrlUploadData(string version, string application, string documentType)
-        {
-            return BuildRestRoutingUrl(version, application, documentType, "Upload");
         }
 
         /// <summary>
@@ -220,7 +227,7 @@ namespace InfinniPlatform.Sdk
         /// </summary>
         /// <param name="relativePath">Сформированный относительный роутинг запроса</param>
         /// <returns>Относительный роутинг запроса</returns>
-        public string GetCustomRouting(string relativePath)
+        public string GetCompleteUrl(string relativePath)
         {
             return string.Format(AppServerAddressFormat,
                                  _serverName,

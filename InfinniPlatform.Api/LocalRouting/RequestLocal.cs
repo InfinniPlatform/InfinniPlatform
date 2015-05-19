@@ -70,9 +70,20 @@ namespace InfinniPlatform.Api.LocalRouting
 
         }
 
-        public static string InvokeRestOperation(string configuration, string metadata, string action, object requestBody, string filePath, string userName)
+        public static string InvokeRestOperationUpload(string configuration, string metadata, string action, object requestBody, string filePath, string userName)
         {
-			return Instance.InvokeRestOperation(configuration, metadata, action, requestBody, filePath, userName);
+			return Instance.InvokeRestOperationUpload(configuration, metadata, action, requestBody, filePath, userName);
+        }
+
+        public static string InvokeRestOperationUpload(string configuration, string metadata, string action, object requestBody, string fileName, Stream file, string userName)
+        {
+            return Instance.InvokeRestOperationUpload(configuration, metadata, action, requestBody, fileName, file, userName);
+        }
+
+        public static string InvokeRestOperationDownload(string configuration, string metadata, string action,
+            object requestBody, string userName)
+        {
+            return Instance.InvokeRestOperationDownload(configuration, metadata, action, requestBody, userName);
         }
     }
 }

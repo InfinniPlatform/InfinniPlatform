@@ -152,4 +152,10 @@
   <data name="FailToCommitException" xml:space="preserve">
     <value>Fail to commit session with exception: {0}</value>
   </data>
+  <data name="FailToUploadFileOnServer" xml:space="preserve">
+    <value>Fail to upload file on server with exception: {0}</value>
+  </data>
+  <data name="FailToDownloadFileFromServer" xml:space="preserve">
+    <value>Fail to download file from server with exception: {0}</value>
+  </data>
 </root>

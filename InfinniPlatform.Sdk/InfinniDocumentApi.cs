@@ -69,16 +69,16 @@ namespace InfinniPlatform.Sdk
         ///   Присоединить документ к указанной сессии
         /// </summary>
         /// <param name="session">Идентификатор сессии</param>
-        /// <param name="configId">Идентификатор конфигурации</param>
+        /// <param name="applicationId">Идентификатор приложения</param>
         /// <param name="documentId">Идентификатор документа</param>
         /// <param name="document">Экземпляр документа</param>
-        public dynamic Attach(string session, string configId, string documentId, dynamic document)
+        public dynamic Attach(string session, string applicationId, string documentId, dynamic document)
         {
             var restQueryExecutor = new RequestExecutor(_cookieContainer);
 
             var changesObject = new
             {
-                ConfigId = configId,
+                ConfigId = applicationId,
                 DocumentId = documentId,
                 Document = document
             };

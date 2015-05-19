@@ -133,6 +133,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fail to download file from server with exception: {0}.
+        /// </summary>
+        internal static string FailToDownloadFileFromServer {
+            get {
+                return ResourceManager.GetString("FailToDownloadFileFromServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fail to get session with exception: {0}.
         /// </summary>
         internal static string FailToGetSession {
@@ -156,6 +165,15 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string FailToUpdateDocument {
             get {
                 return ResourceManager.GetString("FailToUpdateDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fail to upload file on server with exception: {0}.
+        /// </summary>
+        internal static string FailToUploadFileOnServer {
+            get {
+                return ResourceManager.GetString("FailToUploadFileOnServer", resourceCulture);
             }
         }
         

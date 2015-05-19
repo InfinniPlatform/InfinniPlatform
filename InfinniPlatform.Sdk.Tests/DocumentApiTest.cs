@@ -30,7 +30,6 @@ namespace InfinniPlatform.Sdk.Tests
             _api.GetDocument("gameshop", "catalogue",
                  f => f.AddCriteria(cr => cr.Property("Name").IsContains("gta")), 0, 100,
                  s => s.AddSorting("Price", "descending"));
-
         }
 
         [Test]

@@ -61,6 +61,12 @@ namespace InfinniPlatform.RestfulApi.Binary
 
 			dynamic infoBlobProperty = ObjectHelper.GetProperty(documentWithBinaryField, target.LinkedData.FieldName);
 
+		    if (infoBlobProperty == null)
+		    {
+		        infoBlobProperty = new DynamicWrapper();
+                infoBlobProperty.Info = new DynamicWrapper();
+		        ObjectHelper.SetProperty(documentWithBinaryField, target.LinkedData.FieldName, infoBlobProperty);		        
+		    }
 			infoBlobProperty.Info.ContentId = contentId.ToString();
 
 			ObjectHelper.SetProperty(documentWithBinaryField, target.LinkedData.FieldName, infoBlobProperty);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -30,9 +31,13 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 	    private readonly Func<string, string, string, dynamic, IOperationProfiler> _operationProfiler;
 
 	    private void ExecuteProfiledOperation(Action operation, dynamic body)
-		{
-			dynamic bodyObject = JObject.FromObject(body).ToString();
-			if (_operationProfiler != null)
+	    {
+	        dynamic bodyObject = null;
+	        if (body != null)
+	        {
+	            bodyObject = JObject.FromObject(body).ToString();
+	        }
+	        if (_operationProfiler != null)
 			{
 				var profiler = _operationProfiler(_configuration, _metadata, _action, bodyObject);
 				profiler.Reset();
@@ -119,7 +124,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 	        string result = null;
 			ExecuteProfiledOperation(() =>
 				                         {
-											 result = RequestLocal.InvokeRestOperation(_configuration, _metadata, _action, linkedData, filePath, _userName);
+											 result = RequestLocal.InvokeRestOperationUpload(_configuration, _metadata, _action, linkedData, filePath, _userName);
 				                         },null);
 
             return new RestQueryResponse()
@@ -128,6 +133,22 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
                     HttpStatusCode = HttpStatusCode.OK
                 };
         }
+
+        public RestQueryResponse QueryPostFile(object linkedData, string fileName, Stream file, CookieContainer cookieContainer = null)
+        {
+            string result = null;
+            ExecuteProfiledOperation(() =>
+            {
+                result = RequestLocal.InvokeRestOperationUpload(_configuration, _metadata, _action, linkedData, fileName, file, _userName);
+            }, null);
+
+            return new RestQueryResponse()
+            {
+                Content = result,
+                HttpStatusCode = HttpStatusCode.OK
+            };
+        }
+
 
         public RestQueryResponse QueryAggregation(string aggregationConfiguration, string aggregationMetadata, IEnumerable<object> filterObject, IEnumerable<object> dimensions, IEnumerable<AggregationType> aggregationTypes, IEnumerable<string> aggregationFields, int pageNumber, int pageSize, CookieContainer cookieContainer = null)
         {
@@ -203,9 +224,30 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 		    throw new NotImplementedException("Can't make multipart data operations on server side");
 	    }
 
-	    public RestQueryResponse QueryGetUrlEncodedData(object linkedData)
+	    public RestQueryResponse QueryGetUrlEncodedData(dynamic linkedData)
 	    {
-			throw new NotImplementedException("Can't make multipart data operations on server side");		    
+            string result = null;
+
+            Dictionary<string,object> body = new Dictionary<string, object>
+				           {
+					           {"Configuration", linkedData.Configuration},					           
+					           {"Metadata", linkedData.Metadata},
+                               {"DocumentId",linkedData.DocumentId },
+                               {"FieldName",linkedData.FieldName}
+				           };
+
+           
+            ExecuteProfiledOperation(() =>
+            {
+                result = RequestLocal.InvokeRestOperationDownload(_configuration, _metadata, _action, body, _userName);
+            }, body);
+
+
+            return new RestQueryResponse()
+            {
+                Content = result,
+                HttpStatusCode = HttpStatusCode.OK
+            };
 	    }
     }
 }

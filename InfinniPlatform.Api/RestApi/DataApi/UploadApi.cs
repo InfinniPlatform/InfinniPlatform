@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 	public sealed class UploadApi
 	{
 		/// <summary>
-		///   Выгрузить на сервер двоичный контент
+		///   Выгрузить на сервер бинарный контент
 		/// </summary>
 		/// <param name="configuration">Конфигурация</param>
 		/// <param name="metadata">Тип документа</param>
@@ -34,6 +35,30 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
 			return RestQueryApi.QueryPostFile("RestfulApi", "configuration", "uploadbinarycontent", linkedData, filePath).ToDynamic();
 		}
+
+        /// <summary>
+        ///   Выгрузить на сервер бинарный контент
+        /// </summary>
+        /// <param name="configuration">Конфигурация</param>
+        /// <param name="metadata">Тип документа</param>
+        /// <param name="documentId">Идентификатор экземпляра</param>
+        /// <param name="fieldName">Поле, содержащее ссылку на бинарный контент</param>
+        /// <param name="fileName">Путь к загружаемому файлу</param>
+        /// <param name="stream">Результат загрузки файла</param>
+        /// <returns>Результат загрузки файла</returns>
+	    public dynamic UploadBinaryContent(string configuration, string metadata, string documentId, string fieldName,
+	        string fileName, Stream stream)
+        {
+            var linkedData = new
+            {
+                Configuration = configuration,
+                Metadata = metadata,
+                DocumentId = documentId,
+                FieldName = fieldName,
+            };
+
+            return RestQueryApi.QueryPostFile("RestfulApi", "configuration", "uploadbinarycontent", linkedData, fileName, stream).ToDynamic();
+	    }
 
 		/// <summary>
 		///   Загрузить бинарный контент для указанного поля указанного документа 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 
 using InfinniPlatform.Api.Profiling;
@@ -81,6 +82,21 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
 
 			return response;
 		}
+
+        public static RestQueryResponse QueryPostFile(string configuration, string metadata, string action, object linkedData, string fileName, Stream fileStream)
+        {
+            var builder = _queryBuilder(configuration, metadata, action);
+
+            var profiler = _operationProfiler(configuration, metadata, action, null);
+
+            profiler.Reset();
+            var response = builder.QueryPostFile(linkedData, fileName, fileStream, SignInApi.CookieContainer);
+            profiler.TakeSnapshot();
+
+            CheckResponse(response);
+
+            return response;
+        }
 
 		public static RestQueryResponse QueryPostUrlEncodedData(string configuration, string metadata, string action, object linkedData)
 		{

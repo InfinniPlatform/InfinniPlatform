@@ -26,20 +26,20 @@ namespace InfinniPlatform.Authentication.Middleware
 			: base(next)
 		{
 			// Методы, связанные с учетной записью пользователя
-			RegisterGetRequestHandler(GetCurrentUserPath, GetCurrentUser);
-			RegisterPostRequestHandler(ChangePasswordPath, ChangePassword);
-			RegisterPostRequestHandler(ChangeProfilePath, ChangeProfile);
-			RegisterPostRequestHandler(ChangeActiveRolePath, ChangeActiveRole);
+			RegisterGetRequestHandler(GetCurrentUserPath.Create(Priority.Standard), GetCurrentUser);
+			RegisterPostRequestHandler(ChangePasswordPath.Create(Priority.Standard), ChangePassword);
+			RegisterPostRequestHandler(ChangeProfilePath.Create(Priority.Standard), ChangeProfile);
+			RegisterPostRequestHandler(ChangeActiveRolePath.Create(Priority.Standard), ChangeActiveRole);
 
 			// Методы, связанные с входом пользователя в систему
-			RegisterGetRequestHandler(GetExternalProvidersPath, GetExternalProviders);
-			RegisterPostRequestHandler(SignInInternalPath, SignInInternal);
-			RegisterPostRequestHandler(SignInExternalPath, SignInExternal);
-			RegisterGetRequestHandler(SignInExternalCallbackPath, SignInExternalCallback);
-			RegisterPostRequestHandler(LinkExternalLoginPath, LinkExternalLogin);
-			RegisterGetRequestHandler(LinkExternalLoginCallbackPath, LinkExternalLoginCallback);
-			RegisterPostRequestHandler(UnlinkExternalLoginPath, UnlinkExternalLogin);
-			RegisterPostRequestHandler(SignOutPath, SignOut);
+            RegisterGetRequestHandler(GetExternalProvidersPath.Create(Priority.Standard), GetExternalProviders);
+            RegisterPostRequestHandler(SignInInternalPath.Create(Priority.Standard), SignInInternal);
+            RegisterPostRequestHandler(SignInExternalPath.Create(Priority.Standard), SignInExternal);
+            RegisterGetRequestHandler(SignInExternalCallbackPath.Create(Priority.Standard), SignInExternalCallback);
+            RegisterPostRequestHandler(LinkExternalLoginPath.Create(Priority.Standard), LinkExternalLogin);
+            RegisterGetRequestHandler(LinkExternalLoginCallbackPath.Create(Priority.Standard), LinkExternalLoginCallback);
+            RegisterPostRequestHandler(UnlinkExternalLoginPath.Create(Priority.Standard), UnlinkExternalLogin);
+            RegisterPostRequestHandler(SignOutPath.Create(Priority.Standard), SignOut);
 		}
 
 

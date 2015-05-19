@@ -91,6 +91,14 @@
     <Compile Include="IHttpResultHandlerFactory.cs" />
     <Compile Include="Logging\LogExceptionFilterAttribute.cs" />
     <Compile Include="Logging\LogExtensions.cs" />
+    <Compile Include="Middleware\MultipartFormData\BinaryStreamStack.cs" />
+    <Compile Include="Middleware\MultipartFormData\FilePart.cs" />
+    <Compile Include="Middleware\MultipartFormData\MultipartFormDataParser.cs" />
+    <Compile Include="Middleware\MultipartFormData\MultipartParseException.cs" />
+    <Compile Include="Middleware\MultipartFormData\ParameterPart.cs" />
+    <Compile Include="Middleware\MultipartFormData\RebufferableBinaryReader.cs" />
+    <Compile Include="Middleware\MultipartFormData\StreamingMultipartFormDataParser.cs" />
+    <Compile Include="Middleware\MultipartFormData\SubsequenceFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -19,26 +19,26 @@ namespace InfinniPlatform.WebApi.ProvidersLocal
 {
     public sealed class ApiControllerLocal : IRequestLocal
     {
-	    private readonly IApiControllerFactory _apiControllerFactory;
+        private readonly IApiControllerFactory _apiControllerFactory;
 
-		private readonly IHttpResultHandlerFactory _httpResultHandlerFactory;
+        private readonly IHttpResultHandlerFactory _httpResultHandlerFactory;
 
 
-	    public ApiControllerLocal(IApiControllerFactory apiControllerFactory)
+        public ApiControllerLocal(IApiControllerFactory apiControllerFactory)
         {
             _apiControllerFactory = apiControllerFactory;
 
-		    _httpResultHandlerFactory = new HttpResultHandlerFactory();
+            _httpResultHandlerFactory = new HttpResultHandlerFactory();
         }
 
 
         private IRestVerbsContainer GetMetadata(string configuration, string metadata)
         {
-            var serviceMetadata = _apiControllerFactory.GetTemplate(configuration,metadata);
+            var serviceMetadata = _apiControllerFactory.GetTemplate(configuration, metadata);
 
             if (serviceMetadata == null)
             {
-                throw new ArgumentException(string.Format("Не найдены метаданные для {0} ({1})",configuration,metadata ));
+                throw new ArgumentException(string.Format("Не найдены метаданные для {0} ({1})", configuration, metadata));
             }
             return serviceMetadata;
         }
@@ -48,10 +48,10 @@ namespace InfinniPlatform.WebApi.ProvidersLocal
 
             TargetDelegate verbProcessor = GetMetadata(configuration, metadata).FindVerbPost(action, requestBody);
 
-			var httpResultHandler = _httpResultHandlerFactory.GetResultHandler(verbProcessor.HttpResultHandler);
+            var httpResultHandler = _httpResultHandlerFactory.GetResultHandler(verbProcessor.HttpResultHandler);
 
-	        return httpResultHandler.WrapResult(InvokeRestVerb(verbProcessor,configuration,metadata,action,userName)).Content.ReadAsStringAsync().Result;
-            
+            return httpResultHandler.WrapResult(InvokeRestVerb(verbProcessor, configuration, metadata, action, userName)).Content.ReadAsStringAsync().Result;
+
         }
 
         public string InvokeRestOperationGet(string configuration, string metadata, string action, IDictionary<string, object> requestBody, string userName)
@@ -61,37 +61,57 @@ namespace InfinniPlatform.WebApi.ProvidersLocal
 
             var httpResultHandler = _httpResultHandlerFactory.GetResultHandler(verbProcessor.HttpResultHandler);
 
-            return httpResultHandler.WrapResult(InvokeRestVerb(verbProcessor, configuration, metadata, action,userName)).Content.ReadAsStringAsync().Result;
+            return httpResultHandler.WrapResult(InvokeRestVerb(verbProcessor, configuration, metadata, action, userName)).Content.ReadAsStringAsync().Result;
 
         }
 
-	    public string InvokeRestOperation(string configuration, string metadata, string action, object requestBody, string filePath, string userName)
+        public string InvokeRestOperationUpload(string configuration, string metadata, string action, object requestBody, string filePath, string userName)
         {
             using (var stream = new FileStream(filePath, FileMode.Open))
             {
                 TargetDelegate verbProcessor = GetMetadata(configuration, metadata)
                     .FindUploadVerb(action, requestBody, stream);
 
-				var httpResultHandler = _httpResultHandlerFactory.GetResultHandler(verbProcessor.HttpResultHandler);
+                var httpResultHandler = _httpResultHandlerFactory.GetResultHandler(verbProcessor.HttpResultHandler);
 
-	            return httpResultHandler.WrapResult(InvokeRestVerb(verbProcessor,configuration,metadata,action,userName)).Content.ReadAsStringAsync().Result;
+                return httpResultHandler.WrapResult(InvokeRestVerb(verbProcessor, configuration, metadata, action, userName)).Content.ReadAsStringAsync().Result;
 
             }
         }
 
-		private object InvokeRestVerb(TargetDelegate verbProcessor, string configuration, string metadata, string action, string userName)
-		{
-			if (verbProcessor != null)
-			{
-				var prop = verbProcessor.Target.GetType().GetProperties().FirstOrDefault(p => p.PropertyType.IsAssignableFrom(typeof(IConfigRequestProvider)));
-				if (prop != null)
-				{
-					prop.SetValue(verbProcessor.Target, new LocalDataProvider(configuration, metadata, action, userName));
-				}
-				return verbProcessor.Invoke();
-			}
-			return null;
-		}
+        public string InvokeRestOperationUpload(string configuration, string metadata, string action, object requestBody, string fileName, Stream file, string userName)
+        {
+            TargetDelegate verbProcessor = GetMetadata(configuration, metadata)
+                .FindUploadVerb(action, requestBody, file);
+
+            var httpResultHandler = _httpResultHandlerFactory.GetResultHandler(verbProcessor.HttpResultHandler);
+
+            return httpResultHandler.WrapResult(InvokeRestVerb(verbProcessor, configuration, metadata, action, userName)).Content.ReadAsStringAsync().Result;
+        }
+
+        public string InvokeRestOperationDownload(string configuration, string metadata, string action, object requestBody, string userName)
+        {
+            TargetDelegate verbProcessor = GetMetadata(configuration, metadata)
+                .FindVerbUrlEncodedData(action, requestBody);
+
+            var httpResultHandler = _httpResultHandlerFactory.GetResultHandler(verbProcessor.HttpResultHandler);
+            
+            return httpResultHandler.WrapResult(InvokeRestVerb(verbProcessor, configuration, metadata, action, userName)).Content.ReadAsStringAsync().Result;
+        }
+
+        private object InvokeRestVerb(TargetDelegate verbProcessor, string configuration, string metadata, string action, string userName)
+        {
+            if (verbProcessor != null)
+            {
+                var prop = verbProcessor.Target.GetType().GetProperties().FirstOrDefault(p => p.PropertyType.IsAssignableFrom(typeof(IConfigRequestProvider)));
+                if (prop != null)
+                {
+                    prop.SetValue(verbProcessor.Target, new LocalDataProvider(configuration, metadata, action, userName));
+                }
+                return verbProcessor.Invoke();
+            }
+            return null;
+        }
 
 
     }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Policy;
 using System.Threading.Tasks;
 
 using Microsoft.Owin;
@@ -28,7 +30,7 @@ namespace InfinniPlatform.Owin.Middleware
 		/// <summary>
 		/// Регистрирует обработчик GET-запросов.
 		/// </summary>
-		public void RegisterGetRequestHandler(PathString path, Func<IOwinContext, IRequestHandlerResult> handler)
+		public void RegisterGetRequestHandler(PathStringProvider path, Func<IOwinContext, IRequestHandlerResult> handler)
 		{
 			RegisterRequestHandler("GET", (context) => path, handler);
 		}
@@ -36,7 +38,7 @@ namespace InfinniPlatform.Owin.Middleware
 		/// <summary>
 		/// Регистрирует обработчик POST-запросов.
 		/// </summary>
-		public void RegisterPostRequestHandler(PathString path, Func<IOwinContext, IRequestHandlerResult> handler)
+        public void RegisterPostRequestHandler(PathStringProvider path, Func<IOwinContext, IRequestHandlerResult> handler)
 		{
 			RegisterRequestHandler("POST", context => path, handler);
 		}
@@ -44,7 +46,7 @@ namespace InfinniPlatform.Owin.Middleware
 		/// <summary>
 		///   Регистрирует обработчик DELETE-запросов
 		/// </summary>
-		public void RegisterDeleteRequestHandler(PathString path, Func<IOwinContext, IRequestHandlerResult> handler)
+        public void RegisterDeleteRequestHandler(PathStringProvider path, Func<IOwinContext, IRequestHandlerResult> handler)
 		{
 			RegisterRequestHandler("DELETE", context => path, handler);
 		}
@@ -52,7 +54,7 @@ namespace InfinniPlatform.Owin.Middleware
 		/// <summary>
 		///   Регистрирует обработчик PUT-запросов
 		/// </summary>
-		public void RegisterPutRequestHandler(PathString path, Func<IOwinContext, IRequestHandlerResult> handler)
+        public void RegisterPutRequestHandler(PathStringProvider path, Func<IOwinContext, IRequestHandlerResult> handler)
 		{
 			RegisterRequestHandler("PUT", context => path, handler);
 		}
@@ -60,7 +62,7 @@ namespace InfinniPlatform.Owin.Middleware
 		/// <summary>
 		/// Регистрирует обработчик GET-запросов.
 		/// </summary>
-		public void RegisterGetRequestHandler(Func<IOwinContext, PathString> path, Func<IOwinContext, IRequestHandlerResult> handler)
+        public void RegisterGetRequestHandler(Func<IOwinContext, PathStringProvider> path, Func<IOwinContext, IRequestHandlerResult> handler)
 		{
 			RegisterRequestHandler("GET", path, handler);
 		}
@@ -68,7 +70,7 @@ namespace InfinniPlatform.Owin.Middleware
 		/// <summary>
 		/// Регистрирует обработчик POST-запросов.
 		/// </summary>
-		public void RegisterPostRequestHandler(Func<IOwinContext, PathString> path, Func<IOwinContext, IRequestHandlerResult> handler)
+		public void RegisterPostRequestHandler(Func<IOwinContext, PathStringProvider> path, Func<IOwinContext, IRequestHandlerResult> handler)
 		{
 			RegisterRequestHandler("POST", path, handler);
 		}
@@ -76,7 +78,7 @@ namespace InfinniPlatform.Owin.Middleware
 		/// <summary>
 		///   Регистрирует обработчик DELETE-запросов
 		/// </summary>
-		public void RegisterDeleteRequestHandler(Func<IOwinContext, PathString> path, Func<IOwinContext, IRequestHandlerResult> handler)
+        public void RegisterDeleteRequestHandler(Func<IOwinContext, PathStringProvider> path, Func<IOwinContext, IRequestHandlerResult> handler)
 		{
 			RegisterRequestHandler("DELETE", path, handler);
 		}
@@ -84,7 +86,7 @@ namespace InfinniPlatform.Owin.Middleware
 		/// <summary>
 		///   Регистрирует обработчик PUT-запросов
 		/// </summary>
-		public void RegisterPutRequestHandler(Func<IOwinContext, PathString> path, Func<IOwinContext, IRequestHandlerResult> handler)
+        public void RegisterPutRequestHandler(Func<IOwinContext, PathStringProvider> path, Func<IOwinContext, IRequestHandlerResult> handler)
 		{
 			RegisterRequestHandler("PUT", path, handler);
 		}
@@ -92,7 +94,7 @@ namespace InfinniPlatform.Owin.Middleware
 		/// <summary>
 		/// Регистрирует обработчик HTTP-запросов.
 		/// </summary>
-		public void RegisterRequestHandler(string method, Func<IOwinContext, PathString> path, Func<IOwinContext, IRequestHandlerResult> handler)
+        public void RegisterRequestHandler(string method, Func<IOwinContext, PathStringProvider> path, Func<IOwinContext, IRequestHandlerResult> handler)
 		{
             _handlers.Add(new HandlerRouting()
             {
@@ -115,14 +117,19 @@ namespace InfinniPlatform.Owin.Middleware
 
 			HandlerRouting handlerInfo;
 
-			var handlersRegistered = _handlers.Select(h => new KeyValuePair<string, HandlerRouting>(NormalizePath(h.ContextRouting.Invoke(context)),h)).Where(h => h.Key == requestPath).ToList();
+//			var handlersRegistered = _handlers.Select(h => new KeyValuePair<string, HandlerRouting>(
+//                NormalizePath(h.ContextRouting.Invoke(context).PathString),h)).Where(h => h.Key == requestPath).ToList();
+
+            var handlersRegistered = _handlers.Select(h => new KeyValuePair<PathStringProvider, HandlerRouting>(
+                h.ContextRouting.Invoke(context), h)).Where(h => NormalizePath(h.Key.PathString) == requestPath).ToList();
+
 
 			// Если найден обработчик входящего запроса
 			if (handlersRegistered.Any())
 			{
 				IRequestHandlerResult result;
 
-				handlerInfo = handlersRegistered.Where(h => string.Equals(request.Method, h.Value.Method, StringComparison.OrdinalIgnoreCase)).Select(h => h.Value).FirstOrDefault();
+				handlerInfo = handlersRegistered.OrderByDescending(h => h.Key.Priority).Where(h => string.Equals(request.Method, h.Value.Method, StringComparison.OrdinalIgnoreCase)).Select(h => h.Value).FirstOrDefault();
 
 			    if (handlersRegistered.Any() && handlerInfo == null)
 			    {
@@ -162,10 +169,14 @@ namespace InfinniPlatform.Owin.Middleware
 
 		private static string NormalizePath(PathString path)
 		{
-			return path.HasValue ? path.Value.TrimEnd('/').ToLower() : string.Empty;
+		    if (path.HasValue)
+		    {
+		        return path.Value.Split(new[] {'?'}, StringSplitOptions.RemoveEmptyEntries).First().TrimEnd('/').ToLower();
+		    }
+		    return string.Empty;
 		}
 
-		private static object BuildErrorMessage(Exception error)
+	    private static object BuildErrorMessage(Exception error)
 		{
 			var aggregateException = error as AggregateException;
 

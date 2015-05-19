@@ -601,6 +601,15 @@ namespace InfinniPlatform.Api.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Incorrect file download request..
+        /// </summary>
+        public static string IncorrectDownloadRequest {
+            get {
+                return ResourceManager.GetString("IncorrectDownloadRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to index name should not be empty..
         /// </summary>
         public static string IndexNameShouldNotBeEmpty {
@@ -714,6 +723,15 @@ namespace InfinniPlatform.Api.Properties {
         public static string NoItemSelected {
             get {
                 return ResourceManager.GetString("NoItemSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not all request params are specified..
+        /// </summary>
+        public static string NotAllRequestParamsAreSpecified {
+            get {
+                return ResourceManager.GetString("NotAllRequestParamsAreSpecified", resourceCulture);
             }
         }
         

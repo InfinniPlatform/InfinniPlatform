@@ -50,6 +50,7 @@
     <Compile Include="AttachedInstance.cs" />
     <Compile Include="FilterBuilder.cs" />
     <Compile Include="InfinniDocumentApi.cs" />
+    <Compile Include="InfinniFileApi.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

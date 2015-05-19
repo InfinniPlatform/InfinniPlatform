@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Reflection;
 using Newtonsoft.Json;
 using RestSharp;
+using RestSharp.Extensions;
 
 namespace InfinniPlatform.Api.RestQuery.RestQueryExecutors
 {
@@ -75,6 +76,19 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryExecutors
 															 .AddFile(Path.GetFileName(filePath), File.ReadAllBytes(filePath), Path.GetFileName(filePath), "multipart/form-data"));
 			return restResponse.ToQueryResponse();
 		}
+
+	    public RestQueryResponse QueryPostFile(string url, object linkedData, string fileName, Stream fileStream)
+	    {
+            var restClient = new RestClient(url);
+
+            restClient.CookieContainer = _cookieContainer;
+            restClient.Timeout = 1000 * 60 * 200;
+
+            IRestResponse restResponse = restClient.Post(new RestRequest("?linkedData={argument}") { RequestFormat = DataFormat.Json }
+                                                             .AddUrlSegment("argument", JsonConvert.SerializeObject(linkedData))
+                                                             .AddFile(fileName, fileStream.ReadAsBytes(), fileName, "multipart/form-data"));
+            return restResponse.ToQueryResponse();
+	    }
 
 		public RestQueryResponse QueryPostUrlEncodedData(string url, object formData)
 		{

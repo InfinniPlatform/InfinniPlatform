@@ -21,8 +21,8 @@ namespace InfinniPlatform.Owin.Middleware
 
 			_systemInfoProvider = systemInfoProvider;
 
-			RegisterGetRequestHandler(new PathString("/Info"), GetSystemInfo);
-			RegisterGetRequestHandler(new PathString("/favicon.ico"), GetFavicon);
+			RegisterGetRequestHandler(new PathString("/Info").Create(Priority.Standard), GetSystemInfo);
+            RegisterGetRequestHandler(new PathString("/favicon.ico").Create(Priority.Standard), GetFavicon);
 		}
 
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using InfinniPlatform.Api.SearchOptions;
 
@@ -36,9 +37,19 @@ namespace InfinniPlatform.Api.RestQuery
 		/// </summary>
 		/// <param name="linkedData">Связанный объект</param>
 		/// <param name="filePath">Путь к файлу</param>
-		/// <param name="cookieContainer"></param>
+		/// <param name="cookieContainer">Контейнер Cookie</param>
 		/// <returns>Ответ на вызов сервиса</returns>
 		RestQueryResponse QueryPostFile(object linkedData, string filePath, CookieContainer cookieContainer);
+
+	    /// <summary>
+	    ///   Выгрузить файл из указанного потока на сервер
+	    /// </summary>
+	    /// <param name="linkedData">Связанный информационный объект</param>
+	    /// <param name="fileName">Наименование файла</param>
+	    /// <param name="file">Файловый поток</param>
+	    /// <param name="cookieContainer">Контейнер Cookie</param>
+	    /// <returns>Ответ на вызов сервиса</returns>
+	    RestQueryResponse QueryPostFile(object linkedData, string fileName, Stream file, CookieContainer cookieContainer);
 
 		/// <summary>
 		///   Сформировать и выполнить запрос на агрегацию данных

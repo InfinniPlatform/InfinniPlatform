@@ -15,7 +15,7 @@ namespace InfinniPlatform.Owin.Middleware
         /// <summary>
         ///   Способ получения роутинга из контекста запроса
         /// </summary>
-        public Func<IOwinContext, PathString> ContextRouting { get; set; }
+        public Func<IOwinContext, PathStringProvider> ContextRouting { get; set; }
 
         /// <summary>
         ///   Метод (POST/GET/DELETE) запроса

@@ -53,6 +53,7 @@
     <Compile Include="Middleware\ErrorRequestHandlerResult.cs" />
     <Compile Include="Middleware\HandlerRouting.cs" />
     <Compile Include="Middleware\IRequestHandlerResult.cs" />
+    <Compile Include="Middleware\PathStringProvider.cs" />
     <Compile Include="Middleware\SystemInfoOwinMiddleware.cs" />
     <Compile Include="Middleware\UnhandledExceptionOwinMiddleware.cs" />
     <Compile Include="Modules\SystemInfoOwinHostingModule.cs" />

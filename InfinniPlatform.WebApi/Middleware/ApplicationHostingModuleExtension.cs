@@ -54,11 +54,11 @@ namespace InfinniPlatform.WebApi.Middleware
         } 
 
         /// <summary>
-        ///   Получить параметр роутинга из контекста запроса
+        ///   Форматировать шаблон роутинга запроса, используя параметры запроса
         /// </summary>
         /// <param name="context">Контекст запроса</param>
-        /// <param name="path">Роутинг запроса</param>
-        /// <returns>Значение параметра роутинга</returns>
+        /// <param name="path">Шаблон роутинга запроса</param>
+        /// <returns>Форматированный роутинг запроса</returns>
         public static PathString FormatRoutePath(this IOwinContext context, PathString path)
         {
             var routeDictionary = context.GetRouteDictionary();
@@ -71,6 +71,8 @@ namespace InfinniPlatform.WebApi.Middleware
                     .ReplaceFormat("_service_", routeDictionary["service"]) 
                     .ReplaceFormat("_instanceId_", routeDictionary["instanceId"]) : string.Empty);
         }
+
+
 
         public static PathString FormatSessionRoutePath(this IOwinContext context, PathString path)
         {

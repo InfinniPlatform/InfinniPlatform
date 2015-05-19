@@ -423,4 +423,10 @@
   <data name="DeletedDocumentsIdentifiersShouldNotBeNull" xml:space="preserve">
     <value>Deleted documents identifiers list must be not null.</value>
   </data>
+  <data name="NotAllRequestParamsAreSpecified" xml:space="preserve">
+    <value>Not all request params are specified.</value>
+  </data>
+  <data name="IncorrectDownloadRequest" xml:space="preserve">
+    <value>Incorrect file download request.</value>
+  </data>
 </root>
