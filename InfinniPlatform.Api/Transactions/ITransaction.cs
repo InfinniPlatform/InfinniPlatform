@@ -56,8 +56,16 @@ namespace InfinniPlatform.Api.Transactions
         /// с указанным идентификатором
         /// </summary>
         /// <param name="instanceId">Идентификатор документа</param>
-        /// <param name="fieldName"></param>
+        /// <param name="fieldName">Наименование поля бинарных данных в схеме документа</param>
         /// <param name="stream">Файловый поток</param>
         void AttachFile(string instanceId, string fieldName, Stream stream);
+
+        /// <summary>
+        ///   Отсоединить файл от участника транзакции, ссылающегося на документ
+        /// с указанным идентификатором
+        /// </summary>
+        /// <param name="instanceId">Идентификатор документа</param>
+        /// <param name="fieldName">Наименование поля бинарных данных в схеме документа</param>
+        void DetachFile(string instanceId, string fieldName);
     }
 }

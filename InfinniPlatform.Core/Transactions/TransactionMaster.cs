@@ -109,6 +109,17 @@ namespace InfinniPlatform.Transactions
         }
 
         /// <summary>
+        ///   Отсоединить файл от участника транзакции, ссылающегося на документ
+        /// с указанным идентификатором
+        /// </summary>
+        /// <param name="instanceId">Идентификатор документа</param>
+        /// <param name="fieldName">Наименование поля бинарных данных в схеме документа</param>
+        public void DetachFile(string instanceId, string fieldName)
+        {
+            
+        }
+
+        /// <summary>
         ///   Присоединить документ к транзакции
         /// </summary>
         /// <param name="configId">Идентификатор конфигурации</param>

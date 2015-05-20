@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace InfinniPlatform.Sdk.Tests
@@ -36,7 +38,7 @@ namespace InfinniPlatform.Sdk.Tests
 
             using (var fileStream = new FileStream(@"TestData\avatar.gif", FileMode.Open))
             {
-                _fileApi.UploadFile("Gameshop", "UserProfile", profileId,"Avatar", "avatar.gif", fileStream);
+                _fileApi.UploadFile("Gameshop", "UserProfile", profileId, "Avatar", "avatar.gif", fileStream);
             }
 
             var result = _fileApi.DownloadFile("Gameshop", "UserProfile", profileId, "Avatar");
@@ -46,7 +48,7 @@ namespace InfinniPlatform.Sdk.Tests
         }
 
         [Test]
-        public void ShouldUploadFileInSession()
+        public void ShouldAttachFileInSession()
         {
             var document = new
             {
@@ -56,7 +58,7 @@ namespace InfinniPlatform.Sdk.Tests
 
             var sessionId = _documentApi.CreateSession();
 
-            var instanceId = _documentApi.Attach(sessionId, "Gameshop", "UserProfile",Guid.NewGuid().ToString(), document);
+            var instanceId = _documentApi.Attach(sessionId, "Gameshop", "UserProfile", Guid.NewGuid().ToString(), document);
 
 
             using (var fileStream = new FileStream(@"TestData\avatar.gif", FileMode.Open))
@@ -73,5 +75,34 @@ namespace InfinniPlatform.Sdk.Tests
             Assert.AreEqual(((string)result.Content.ToString()).Length, 9928);
         }
 
+
+        [Test]
+        public void ShouldDetachFileInSession()
+        {
+            var document = new
+            {
+                FirstName = "Ronald",
+                LastName = "McDonald",
+            };
+
+            var sessionId = _documentApi.CreateSession();
+
+            var instanceId = _documentApi.Attach(sessionId, "Gameshop", "UserProfile", Guid.NewGuid().ToString(), document);
+
+
+            using (var fileStream = new FileStream(@"TestData\avatar.gif", FileMode.Open))
+            {
+                _documentApi.AttachFile(sessionId, instanceId, "Avatar", "avatar.gif", fileStream);
+            }
+
+            _documentApi.DetachFile(sessionId, instanceId, "Avatar");
+
+            _documentApi.SaveSession(sessionId);
+
+            dynamic result = JsonConvert.DeserializeObject<ExpandoObject>(_fileApi.DownloadFile("Gameshop", "UserProfile", instanceId, "Avatar").ToString());
+
+            Assert.IsNotNull(result);          
+            Assert.True(((string)result.Content).Contains("Content not found."));
+        }
     }
 }

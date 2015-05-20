@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using InfinniPlatform.Api.Dynamic;
 
 namespace InfinniPlatform.Api.Transactions
 {
@@ -86,6 +87,20 @@ namespace InfinniPlatform.Api.Transactions
         public bool ContainsInstance(string instanceId)
         {
             return Documents.Any(d => d.Id != null && d.Id.Equals(instanceId));
+        }
+
+        /// <summary>
+        ///   Удалить файл из списка присоединенных
+        /// </summary>
+        /// <param name="fieldName">Наименование поля ссылки в документе</param>
+        public void RemoveFile(string fieldName)
+        {
+            var fileDescription = Files.FirstOrDefault(f => f.FieldName == fieldName);
+            if (fileDescription != null)
+            {
+                ObjectHelper.RemoveItem(Files,fileDescription);
+            }
+
         }
 	}
 

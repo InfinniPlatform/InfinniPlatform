@@ -83,15 +83,23 @@ namespace InfinniPlatform.Sdk
             return restResponse.ToQueryResponse();
         }
 
-        public RestQueryResponse QueryDelete(string url)
+        public RestQueryResponse QueryDelete(string url, dynamic body = null)
         {
             var restClient = new RestClient(url);
 
             restClient.CookieContainer = _cookieContainer;
-            IRestResponse restResponse = restClient.Delete(new RestRequest
+
+            var restRequest = new RestRequest
             {
                 RequestFormat = DataFormat.Json
-            });
+            };
+
+            if (body != null)
+            {
+                restRequest.AddBody(body);
+            }
+
+            IRestResponse restResponse = restClient.Delete(restRequest);
 
             return restResponse.ToQueryResponse();
         }

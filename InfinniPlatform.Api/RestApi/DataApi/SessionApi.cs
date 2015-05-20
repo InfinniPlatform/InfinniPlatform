@@ -70,13 +70,23 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         ///   Присоединяемый файл
         /// </summary>
         /// <param name="version">Версия конфигурации</param>
-        /// <param name="sessionId">Идентификатор клиентской сессии</param>
         /// <param name="linkedData">Связанные с указанным файлом данные</param>
         /// <param name="file">Присоединяемый файл</param>
         /// <returns>Результат присоединения</returns>
-        public dynamic AttachFile(string version, string sessionId, dynamic linkedData, Stream file)
+        public dynamic AttachFile(string version, dynamic linkedData, Stream file)
         {
             return RestQueryApi.QueryPostFile("RestfulApi", "configuration", "attachfile",linkedData, file).ToDynamic();
+        }
+
+        /// <summary>
+        ///   Отсоединяемый файл
+        /// </summary>
+        /// <param name="version">Версия конфигурации</param>
+        /// <param name="linkedData">Связанные с отсоединяемым файлом данные</param>
+        /// <returns></returns>
+        public dynamic DetachFile(string version, dynamic linkedData)
+        {
+            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "detachfile", null, linkedData).ToDynamic();
         }
 
         /// <summary>

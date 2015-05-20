@@ -46,6 +46,7 @@ namespace InfinniPlatform.WebApi.Middleware
             RegisterGetRequestHandler(GetRestTemplateFileDownload, InvokeFileDownload);
 
             RegisterPostRequestHandler(GetSessionTemplate, InvokeFileAttach);
+            RegisterDeleteRequestHandler(GetSessionTemplate, InvokeFileDetach);
             RegisterPutRequestHandler(GetSessionTemplate, InvokeSessionService);
             RegisterPostRequestHandler(GetSessionTemplateById, InvokeSessionServiceCommit);
             RegisterDeleteRequestHandler(GetSessionTemplateById, InvokeSessionServiceRemove);
@@ -183,16 +184,28 @@ namespace InfinniPlatform.WebApi.Middleware
 
             using (var fileStream = new MultipartFormDataParser(context.Request.Body, Encoding.UTF8).Files.Select(f => f.Data).First())
             {
-                if (linkedData.InstanceId != null && linkedData.FieldName != null)
+                if (linkedData.InstanceId != null && linkedData.FieldName != null && linkedData.SessionId != null)
                 {
-                    return new ValueRequestHandlerResult(new SessionApi().AttachFile(routeDictionary["version"], routeDictionary["sessionId"], linkedData, fileStream));
+                    return new ValueRequestHandlerResult(new SessionApi().AttachFile(routeDictionary["version"], linkedData, fileStream));
                 }
                 throw new ArgumentException(Resources.NotAllRequestParamsAreSpecified);
             }
         }
 
 
+        public static IRequestHandlerResult InvokeFileDetach(IOwinContext context)
+        {
+            var routeDictionary = context.GetSessionRouteDictionary();
 
+            dynamic body = JObject.Parse(ReadRequestBody(context).ToString());
+
+            if (body.InstanceId != null && body.FieldName != null && body.SessionId != null)
+            {
+                return new ValueRequestHandlerResult(new SessionApi().DetachFile(routeDictionary["version"], body));
+            }
+            throw new ArgumentException(Resources.NotAllRequestParamsAreSpecified);
+
+        }
         private static IRequestHandlerResult InvokeCustomService(IOwinContext context)
         {
             throw new NotImplementedException();

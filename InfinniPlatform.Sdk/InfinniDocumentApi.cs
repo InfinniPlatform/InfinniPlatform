@@ -148,8 +148,50 @@ namespace InfinniPlatform.Sdk
                 }
             }
 
-            throw new ArgumentException(string.Format(Resources.FailToAttachFileToSession, response.GetErrorContent()));
-            
+            throw new ArgumentException(string.Format(Resources.FailToAttachFileToSession, response.GetErrorContent()));            
+        }
+
+        /// <summary>
+        ///   Отсоединить от сессии указанный файл
+        /// </summary>
+        /// <param name="session">Идентификатор сессии</param>
+        /// <param name="instanceId">Идентификатор документа</param>
+        /// <param name="fieldName">Наименование поля для присоединения</param>
+        public void DetachFile(string session, string instanceId, string fieldName)
+        {
+            var restQueryExecutor = new RequestExecutor(_cookieContainer);
+
+            dynamic body = new
+            {
+                InstanceId = instanceId,
+                FieldName = fieldName,
+                SessionId = session
+            };
+
+            var response = restQueryExecutor.QueryDelete(_routeBuilder.BuildRestRoutingUrlDefaultSession(_version), body);
+
+            if (response.IsAllOk)
+            {
+                try
+                {
+                    if (!string.IsNullOrEmpty(response.Content))
+                    {
+                        //гребаный JsonObjectSerializer вставляет служебный символ в начало строки
+                        dynamic responseObject = JObject.Parse(response.Content.Remove(0, 1));
+                        if (responseObject.IsValid != true)
+                        {
+                            throw new ArgumentException(string.Format(Resources.FailToDetachFileFromSession, response.GetErrorContent()));
+                        }
+                        return;
+                    }
+                }
+                catch (Exception)
+                {
+                    throw new ArgumentException(Resources.ResultIsNotOfObjectType);
+                }
+            }
+
+            throw new ArgumentException(string.Format(Resources.FailToDetachFileFromSession, response.GetErrorContent()));
         }
 
         /// <summary>

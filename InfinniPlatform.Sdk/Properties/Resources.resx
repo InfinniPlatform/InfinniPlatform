@@ -161,4 +161,7 @@
   <data name="FailToAttachFileToSession" xml:space="preserve">
     <value>Fail to attach file to session with exception: {0}</value>
   </data>
+  <data name="FailToDetachFileFromSession" xml:space="preserve">
+    <value>Fail to detach file from session with exception: {0}</value>
+  </data>
 </root>

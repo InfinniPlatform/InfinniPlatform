@@ -42,6 +42,13 @@ namespace InfinniPlatform.Transactions
             get { return _masterTransaction; }
         }
 
+        /// <summary>
+        ///   Присоединить файл к участнику транзакции, ссылающемуся на документ 
+        /// с указанным идентификатором
+        /// </summary>
+        /// <param name="instanceId">Идентификатор документа</param>
+        /// <param name="fieldName">Наименование поля бинарных данных в схеме документа</param>
+        /// <param name="stream">Файловый поток</param>
         public void AttachFile(string instanceId, string fieldName, Stream stream)
         {
             var attachedInstance = _itemsList.FirstOrDefault(i => i.ContainsInstance(instanceId));
@@ -53,6 +60,21 @@ namespace InfinniPlatform.Transactions
             else
             {
                 throw new ArgumentException(string.Format(Resources.InstanceNotFoundToAttachFile, instanceId));
+            }
+        }
+
+        /// <summary>
+        ///   Отсоединить файл от участника транзакции, ссылающегося на документ
+        /// с указанным идентификатором
+        /// </summary>
+        /// <param name="instanceId">Идентификатор документа</param>
+        /// <param name="fieldName">Наименование поля бинарных данных в схеме документа</param>
+        public void DetachFile(string instanceId, string fieldName)
+        {
+            var attachedInstance = _itemsList.FirstOrDefault(i => i.ContainsInstance(instanceId));
+            if (attachedInstance != null)
+            {
+                attachedInstance.RemoveFile(fieldName);
             }
         }
 

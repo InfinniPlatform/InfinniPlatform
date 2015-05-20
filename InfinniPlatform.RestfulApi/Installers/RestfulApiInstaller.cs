@@ -39,6 +39,7 @@ namespace InfinniPlatform.RestfulApi.Installers
             actionUnits.RegisterActionUnitDistributedStorage("getsession","ActionUnitGetSession");
             actionUnits.RegisterActionUnitDistributedStorage("removesession", "ActionUnitRemoveSession");
             actionUnits.RegisterActionUnitDistributedStorage("attachfile","ActionUnitAttachFile");
+            actionUnits.RegisterActionUnitDistributedStorage("detachfile", "ActionUnitDetachFile");
 
             actionUnits.RegisterActionUnitDistributedStorage("setdocument", "ActionUnitSetDocument");
             actionUnits.RegisterActionUnitDistributedStorage("successsetdocument", "ActionUnitSuccessSetDocument");
@@ -381,6 +382,11 @@ namespace InfinniPlatform.RestfulApi.Installers
                     .Move(ws => ws
                         .WithAction(() => actionUnits.GetAction("attachfile")))));
 
+            metadataConfiguration.RegisterWorkflow("configuration", "detachfile",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("detachfile")))));
+
             metadataConfiguration.RegisterWorkflow("configuration", "detachdocumentsession",
                 f => f.FlowWithoutState(wc => wc
                     .Move(ws => ws
@@ -456,6 +462,8 @@ namespace InfinniPlatform.RestfulApi.Installers
                                                                 .RegisterExtensionPoint("Move", "attachdocumentsession"))
                     .RegisterHandlerInstance("detachdocumentsession", insance => insance
                                                                 .RegisterExtensionPoint("Move", "detachdocumentsession"))
+                    .RegisterHandlerInstance("detachfile", insance => insance
+                                                                .RegisterExtensionPoint("Move", "detachfile"))
                     .RegisterHandlerInstance("getsession", insance => insance
                                                                 .RegisterExtensionPoint("Move", "getsession"))
                     .RegisterHandlerInstance("removesession", insance => insance

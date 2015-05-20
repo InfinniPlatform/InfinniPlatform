@@ -142,6 +142,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fail to detach file from session with exception: {0}.
+        /// </summary>
+        internal static string FailToDetachFileFromSession {
+            get {
+                return ResourceManager.GetString("FailToDetachFileFromSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fail to download file from server with exception: {0}.
         /// </summary>
         internal static string FailToDownloadFileFromServer {
