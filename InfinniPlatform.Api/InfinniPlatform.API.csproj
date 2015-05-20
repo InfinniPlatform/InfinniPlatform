@@ -210,7 +210,7 @@
     <Compile Include="Metadata\IManagerFactoryDocument.cs" />
     <Compile Include="Metadata\IManagerIdentifiers.cs" />
     <Compile Include="Metadata\IMetadataConfiguration.cs" />
-    <Compile Include="Metadata\MetadataBuilderExtensions.cs" />
+    <Compile Include="Deprecated\MetadataBuilderExtensions.cs" />
     <Compile Include="Metadata\MetadataContainers\MetadataContainerRegister.cs" />
     <Compile Include="Metadata\MetadataContainers\MetadataContainerStatus.cs" />
     <Compile Include="Metadata\MetadataContainers\MetadataContainerAssembly.cs" />
@@ -392,6 +392,8 @@
     <Compile Include="Threading\ProcessDispatcher.cs" />
     <Compile Include="Threading\ProcessEvent.cs" />
     <Compile Include="Transactions\AttachedInstance.cs" />
+    <Compile Include="Transactions\BinaryManager.cs" />
+    <Compile Include="Transactions\FileDescription.cs" />
     <Compile Include="Transactions\ITransaction.cs" />
     <Compile Include="Transactions\ITransactionManager.cs" />
     <Compile Include="Validation\CollectionValidators\AllCollectionValidator.cs" />

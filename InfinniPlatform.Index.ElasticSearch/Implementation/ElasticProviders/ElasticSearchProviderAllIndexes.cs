@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Index;
+using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 {
@@ -46,6 +47,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
                     )
                 );
 
+
+            
             dynamic indexObject =
                 response.Documents.FirstOrDefault(
                      d => d.Values.Status == null ||
@@ -54,7 +57,17 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
             if (indexObject != null)
             {
-                return DynamicWrapperExtensions.ToDynamic(indexObject.Values);
+                var index = response.Hits.First().Index;
+                var type = response.Hits.First().Type;
+
+                var typeName = type.Substring(0,type.LastIndexOf(IndexTypeMapper.MappingTypeVersionPattern,
+                    StringComparison.Ordinal));
+
+                dynamic result = DynamicWrapperExtensions.ToDynamic(indexObject.Values);
+
+                result.__ConfigId = index;
+                result.__DocumentId = typeName;
+                return result;
             }
             return null;
         }

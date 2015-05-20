@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using InfinniPlatform.Sdk.Properties;
 using Newtonsoft.Json.Linq;
@@ -33,7 +34,7 @@ namespace InfinniPlatform.Sdk
         {
             var restQueryExecutor = new RequestExecutor(_cookieContainer);
 
-            var response = restQueryExecutor.QueryPost(_routeBuilder.BuildRestRoutingUrlDefaultSession(_version));
+            var response = restQueryExecutor.QueryPut(_routeBuilder.BuildRestRoutingUrlDefaultSession(_version));
 
             string sessionId = null;
 
@@ -69,21 +70,24 @@ namespace InfinniPlatform.Sdk
         ///   Присоединить документ к указанной сессии
         /// </summary>
         /// <param name="session">Идентификатор сессии</param>
-        /// <param name="applicationId">Идентификатор приложения</param>
-        /// <param name="documentId">Идентификатор документа</param>
+        /// <param name="application">Идентификатор приложения</param>
+        /// <param name="documentType">Идентификатор документа</param>
+        /// <param name="instanceId">Идентификатор элкземпляра документа</param>
         /// <param name="document">Экземпляр документа</param>
-        public dynamic Attach(string session, string applicationId, string documentId, dynamic document)
+        public dynamic Attach(string session, string application, string documentType, string instanceId, dynamic document)
         {
             var restQueryExecutor = new RequestExecutor(_cookieContainer);
-
-            var changesObject = new
+           
+            dynamic changesObject = JObject.FromObject(new
             {
-                ConfigId = applicationId,
-                DocumentId = documentId,
+                Application = application,
+                DocumentType = documentType,
                 Document = document
-            };
+            });
 
-            var response = restQueryExecutor.QueryPut(_routeBuilder.BuildRestRoutingUrlDefaultSessionById(session, _version), JObject.FromObject(changesObject).ToString());
+            changesObject.Document.Id = instanceId;
+
+            var response = restQueryExecutor.QueryPut(_routeBuilder.BuildRestRoutingUrlDefaultSessionById(session, _version), changesObject.ToString());
 
             if (response.IsAllOk)
             {
@@ -92,7 +96,12 @@ namespace InfinniPlatform.Sdk
                     if (!string.IsNullOrEmpty(response.Content))
                     {
                         //гребаный JsonObjectSerializer вставляет служебный символ в начало строки
-                        return JObject.Parse(response.Content.Remove(0, 1));
+                        dynamic responseObject = JObject.Parse(response.Content.Remove(0, 1));
+                        if (responseObject.IsValid == true && responseObject.Id != null)
+                        {
+                            return responseObject.Id.ToString();
+                        }
+                        throw new ArgumentException(string.Format(Resources.FailToAttachDocumentToSession, response.GetErrorContent()));
                     }
                 }
                 catch (Exception)
@@ -100,7 +109,47 @@ namespace InfinniPlatform.Sdk
                     throw new ArgumentException(Resources.ResultIsNotOfObjectType);
                 }
             }
+
             throw new ArgumentException(string.Format(Resources.FailToAttachDocumentToSession, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Присоединить к сессии файл, возвращая идентификатор ссылки
+        /// </summary>
+        /// <param name="session">Идентификатор сессии</param>
+        /// <param name="instanceId">Идентификатор документа</param>
+        /// <param name="fieldName">Наименование поля для присоединения</param>
+        /// <param name="fileName">Наименование файла</param>
+        /// <param name="fileStream">Файловый поток</param>
+        public void AttachFile(string session, string instanceId, string fieldName, string fileName, Stream fileStream)
+        {
+            var restQueryExecutor = new RequestExecutor(_cookieContainer);
+
+            var response = restQueryExecutor.QueryPostFile(_routeBuilder.BuildRestRoutingUrlDefaultSession(_version), instanceId, fieldName, fileName, fileStream, session);
+
+            if (response.IsAllOk)
+            {
+                try
+                {
+                    if (!string.IsNullOrEmpty(response.Content))
+                    {
+                        //гребаный JsonObjectSerializer вставляет служебный символ в начало строки
+                        dynamic responseObject = JObject.Parse(response.Content.Remove(0, 1));
+                        if (responseObject.IsValid != true)
+                        {
+                            throw new ArgumentException(string.Format(Resources.FailToAttachFileToSession, response.GetErrorContent()));
+                        }
+                        return;
+                    }
+                }
+                catch (Exception)
+                {
+                    throw new ArgumentException(Resources.ResultIsNotOfObjectType);
+                }
+            }
+
+            throw new ArgumentException(string.Format(Resources.FailToAttachFileToSession, response.GetErrorContent()));
+            
         }
 
         /// <summary>

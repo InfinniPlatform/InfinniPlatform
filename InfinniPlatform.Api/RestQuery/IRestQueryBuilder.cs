@@ -45,11 +45,10 @@ namespace InfinniPlatform.Api.RestQuery
 	    ///   Выгрузить файл из указанного потока на сервер
 	    /// </summary>
 	    /// <param name="linkedData">Связанный информационный объект</param>
-	    /// <param name="fileName">Наименование файла</param>
 	    /// <param name="file">Файловый поток</param>
 	    /// <param name="cookieContainer">Контейнер Cookie</param>
 	    /// <returns>Ответ на вызов сервиса</returns>
-	    RestQueryResponse QueryPostFile(object linkedData, string fileName, Stream file, CookieContainer cookieContainer);
+	    RestQueryResponse QueryPostFile(object linkedData, Stream file, CookieContainer cookieContainer);
 
 		/// <summary>
 		///   Сформировать и выполнить запрос на агрегацию данных

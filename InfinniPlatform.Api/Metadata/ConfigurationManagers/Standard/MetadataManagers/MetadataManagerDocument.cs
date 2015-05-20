@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using InfinniPlatform.Api.Deprecated;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataReaders;

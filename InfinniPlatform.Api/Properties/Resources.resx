@@ -429,4 +429,10 @@
   <data name="IncorrectDownloadRequest" xml:space="preserve">
     <value>Incorrect file download request.</value>
   </data>
+  <data name="InstanceNotFoundToAttachFile" xml:space="preserve">
+    <value>Instance not found to attach file. InstanceId: {0}</value>
+  </data>
+  <data name="FileAttachedSuccessfully" xml:space="preserve">
+    <value>File attached successfully.</value>
+  </data>
 </root>

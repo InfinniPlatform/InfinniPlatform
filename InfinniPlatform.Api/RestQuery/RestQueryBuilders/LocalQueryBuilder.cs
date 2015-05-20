@@ -134,12 +134,12 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
                 };
         }
 
-        public RestQueryResponse QueryPostFile(object linkedData, string fileName, Stream file, CookieContainer cookieContainer = null)
+        public RestQueryResponse QueryPostFile(object linkedData, Stream file, CookieContainer cookieContainer = null)
         {
             string result = null;
             ExecuteProfiledOperation(() =>
             {
-                result = RequestLocal.InvokeRestOperationUpload(_configuration, _metadata, _action, linkedData, fileName, file, _userName);
+                result = RequestLocal.InvokeRestOperationUpload(_configuration, _metadata, _action, linkedData, file, _userName);
             }, null);
 
             return new RestQueryResponse()
@@ -230,9 +230,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 
             Dictionary<string,object> body = new Dictionary<string, object>
 				           {
-					           {"Configuration", linkedData.Configuration},					           
-					           {"Metadata", linkedData.Metadata},
-                               {"DocumentId",linkedData.DocumentId },
+                               {"InstanceId",linkedData.InstanceId },
                                {"FieldName",linkedData.FieldName}
 				           };
 

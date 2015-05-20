@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using InfinniPlatform.Api.Context;
 using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.SearchOptions;
+using InfinniPlatform.Api.Metadata;
 
-namespace InfinniPlatform.Api.Metadata
+namespace InfinniPlatform.Api.Deprecated
 {
 	public static class MetadataBuilderExtensions
 	{

@@ -10,6 +10,7 @@ using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.SearchOptions.Builders;
+using InfinniPlatform.Api.Transactions;
 
 namespace InfinniPlatform.RestfulApi.Binary
 {
@@ -36,42 +37,23 @@ namespace InfinniPlatform.RestfulApi.Binary
 
 		public void Action(IUploadContext target)
 		{
-			//ищем документ, для которого необходимо сохранить контент
-			Action<FilterBuilder> filter = f =>
-			             f.AddCriteria(cr => cr.Property("Id").IsEquals(target.LinkedData.DocumentId));
 
-			IEnumerable<dynamic> docs = new DocumentApi().GetDocument(target.LinkedData.Configuration, target.LinkedData.Metadata, filter , 0,1 );
-
-			dynamic documentWithBinaryField = docs.FirstOrDefault();
+            dynamic documentWithBinaryField = new DocumentApi().GetDocument(target.LinkedData.InstanceId);
 
 			if (documentWithBinaryField == null)
 			{
 				target.IsValid = false;
-				target.ValidationMessage = string.Format("Document from configuration {0}, document type {1}, with identifier {2}, not found.",
-					target.LinkedData.Configuration, target.LinkedData.Metadata, target.LinkedData.DocumentId);
+				target.ValidationMessage = string.Format("Document with identifier {0}, not found.",
+					target.LinkedData.InstanceId);
 				return;
 			}
 
-			var blobStorage = target.Context.GetComponent<IBlobStorageComponent>().GetBlobStorage();
+            fileContent = ReadAllBytes(target.FileContent);
 
-			fileContent = ReadAllBytes(target.FileContent);
-
-			var contentId = Guid.NewGuid();
-			blobStorage.SaveBlob(contentId, target.LinkedData.FieldName, fileContent);
-
-			dynamic infoBlobProperty = ObjectHelper.GetProperty(documentWithBinaryField, target.LinkedData.FieldName);
-
-		    if (infoBlobProperty == null)
-		    {
-		        infoBlobProperty = new DynamicWrapper();
-                infoBlobProperty.Info = new DynamicWrapper();
-		        ObjectHelper.SetProperty(documentWithBinaryField, target.LinkedData.FieldName, infoBlobProperty);		        
-		    }
-			infoBlobProperty.Info.ContentId = contentId.ToString();
-
-			ObjectHelper.SetProperty(documentWithBinaryField, target.LinkedData.FieldName, infoBlobProperty);
-
-			new DocumentApi().SetDocument(target.LinkedData.Configuration, target.LinkedData.Metadata, documentWithBinaryField);
+		    new BinaryManager(target.Context.GetComponent<IBlobStorageComponent>().GetBlobStorage()).SaveBinary(new [] {documentWithBinaryField}, 
+                documentWithBinaryField.__ConfigId,
+                documentWithBinaryField.__DocumentId,
+		        target.LinkedData.FieldName, fileContent);
 		}
 	}
 }

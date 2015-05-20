@@ -538,6 +538,15 @@ namespace InfinniPlatform.Api.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File attached successfully..
+        /// </summary>
+        public static string FileAttachedSuccessfully {
+            get {
+                return ResourceManager.GetString("FileAttachedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File upload context.
         /// </summary>
         public static string FileUploadContext {
@@ -624,6 +633,15 @@ namespace InfinniPlatform.Api.Properties {
         public static string InstanceIsNotAnObject {
             get {
                 return ResourceManager.GetString("InstanceIsNotAnObject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Instance not found to attach file. InstanceId: {0}.
+        /// </summary>
+        public static string InstanceNotFoundToAttachFile {
+            get {
+                return ResourceManager.GetString("InstanceNotFoundToAttachFile", resourceCulture);
             }
         }
         

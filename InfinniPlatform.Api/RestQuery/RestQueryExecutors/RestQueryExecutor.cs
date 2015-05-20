@@ -77,12 +77,14 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryExecutors
 			return restResponse.ToQueryResponse();
 		}
 
-	    public RestQueryResponse QueryPostFile(string url, object linkedData, string fileName, Stream fileStream)
+	    public RestQueryResponse QueryPostFile(string url, object linkedData, Stream fileStream)
 	    {
             var restClient = new RestClient(url);
 
             restClient.CookieContainer = _cookieContainer;
             restClient.Timeout = 1000 * 60 * 200;
+
+	        string fileName = ((dynamic)linkedData).FileName.ToString();
 
             IRestResponse restResponse = restClient.Post(new RestRequest("?linkedData={argument}") { RequestFormat = DataFormat.Json }
                                                              .AddUrlSegment("argument", JsonConvert.SerializeObject(linkedData))

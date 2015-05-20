@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using DevExpress.XtraEditors.Controls;
 using InfinniPlatform.Api.Context;
+using InfinniPlatform.Api.Deprecated;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;

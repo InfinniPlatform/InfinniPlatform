@@ -79,7 +79,7 @@ namespace InfinniPlatform.WebApi.ProvidersLocal
             }
         }
 
-        public string InvokeRestOperationUpload(string configuration, string metadata, string action, object requestBody, string fileName, Stream file, string userName)
+        public string InvokeRestOperationUpload(string configuration, string metadata, string action, object requestBody, Stream file, string userName)
         {
             TargetDelegate verbProcessor = GetMetadata(configuration, metadata)
                 .FindUploadVerb(action, requestBody, file);

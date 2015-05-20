@@ -55,12 +55,12 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
 			Assert.AreNotEqual(result.IsValid,false);
 
-			dynamic uploadResult = new UploadApi().UploadBinaryContent(_configurationId, _documentId, testDocument.Id, "ContentField",
+			dynamic uploadResult = new UploadApi().UploadBinaryContent(testDocument.Id, "ContentField",
 			                                    @"TestData\Configurations\Authorization.zip");
 
 			Assert.AreNotEqual(uploadResult.IsValid,false);
 
-			dynamic resultBlob =new UploadApi().DownloadBinaryContent(_configurationId, _documentId, testDocument.Id, "ContentField");
+			dynamic resultBlob =new UploadApi().DownloadBinaryContent(testDocument.Id, "ContentField");
 
 			Assert.IsNotNull(resultBlob);
 

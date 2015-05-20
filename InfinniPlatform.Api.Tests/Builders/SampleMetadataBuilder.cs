@@ -1,4 +1,5 @@
 ﻿using System;
+using InfinniPlatform.Api.Deprecated;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Metadata;
 

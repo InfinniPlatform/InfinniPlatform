@@ -180,7 +180,7 @@ namespace InfinniPlatform.Sdk.Tests
                 Price = -1
             };
 
-            dynamic attachResult = JsonConvert.DeserializeObject<ExpandoObject>(_api.Attach(session, "gameshop", "catalogue", documentObject).Content.ToString());
+            dynamic attachResult = JsonConvert.DeserializeObject<ExpandoObject>(_api.Attach(session, "gameshop", "catalogue",documentObject.Id, documentObject).Content.ToString());
 
             Assert.AreEqual(attachResult.IsValid, true);
 
@@ -188,8 +188,8 @@ namespace InfinniPlatform.Sdk.Tests
 
             Assert.AreEqual(sessionItems.Count, 1);
 
-            _api.Attach(session, "gameshop", "catalogue", additionalObject);
-            _api.Attach(session, "gameshop", "catalogue", failObject);
+            _api.Attach(session, "gameshop", "catalogue",additionalObject.Id, additionalObject);
+            _api.Attach(session, "gameshop", "catalogue",failObject.Id, failObject);
 
             _api.Detach(session, failObject.Id);
 
@@ -222,7 +222,7 @@ namespace InfinniPlatform.Sdk.Tests
                 Price = 400
             };
 
-            _api.Attach(session, "gameshop", "catalogue", documentObject);
+            _api.Attach(session, "gameshop", "catalogue", documentObject.Id, documentObject);
 
             _api.RemoveSession(session);
 

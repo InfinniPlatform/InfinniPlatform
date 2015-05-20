@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using InfinniPlatform.Api.Deprecated;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Metadata;
 using NUnit.Framework;

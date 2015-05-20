@@ -16,9 +16,7 @@ namespace InfinniPlatform.RestfulApi.Binary
 	{
 		public void Action(IUrlEncodedDataContext target)
 		{
-			Action<FilterBuilder> builder = f => f.AddCriteria(cr => cr.Property("Id").IsEquals(target.FormData.DocumentId));
-			IEnumerable<dynamic> documents = new DocumentApi().GetDocument(target.FormData.Configuration, target.FormData.Metadata, builder, 0,1);
-			dynamic document = documents.FirstOrDefault();
+            dynamic document = new DocumentApi().GetDocument(target.FormData.InstanceId);
 
 			if (document != null)
 			{

@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
 
 namespace InfinniPlatform.Api.Transactions
 {
@@ -7,6 +10,8 @@ namespace InfinniPlatform.Api.Transactions
     /// </summary>
 	public sealed class AttachedInstance
 	{
+        private readonly IList<FileDescription> _files = new List<FileDescription>();
+
         /// <summary>
         ///   Идентификатор конфигурации
         /// </summary>
@@ -23,6 +28,14 @@ namespace InfinniPlatform.Api.Transactions
 		public IEnumerable<dynamic> Documents { get; set; }
 
         /// <summary>
+        ///   Связанные с документами файлы
+        /// </summary>
+        public IEnumerable<FileDescription> Files
+        {
+            get { return _files; }
+        }
+
+        /// <summary>
         ///   Версия конфигурации
         /// </summary>
 		public string Version { get; set; }
@@ -36,5 +49,45 @@ namespace InfinniPlatform.Api.Transactions
         ///   Признак отсоединения от транзакции
         /// </summary>
         public bool Detached { get; set; }
+
+        /// <summary>
+        ///   Добавить связанный с документом файл
+        /// </summary>
+        /// <param name="fieldName">Наименование поля</param>
+        /// <param name="stream">Файловый поток, связанный с полем документа</param>
+        public void AddFile(string fieldName, Stream stream)
+        {
+            _files.Add(new FileDescription()
+            {
+                FieldName = fieldName,
+                Bytes = ReadAllBytes(stream)
+            });
+        }
+
+        private byte[] ReadAllBytes(Stream stream)
+        {
+            byte[] buffer = new byte[16 * 1024];
+            using (MemoryStream ms = new MemoryStream())
+            {
+                int read;
+                while ((read = stream.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    ms.Write(buffer, 0, read);
+                }
+                return ms.ToArray();
+            }
+        }
+
+        /// <summary>
+        ///   Содержит ли присоединенный экземпляр документ с указанным идентификатором
+        /// </summary>
+        /// <param name="instanceId">Идентификатор документа</param>
+        /// <returns>Признак наличия документа с указанным идентификатором</returns>
+        public bool ContainsInstance(string instanceId)
+        {
+            return Documents.Any(d => d.Id != null && d.Id.Equals(instanceId));
+        }
 	}
+
+
 }

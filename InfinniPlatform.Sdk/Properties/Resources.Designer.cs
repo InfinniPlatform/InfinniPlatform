@@ -97,6 +97,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fail to attach file to session with exception: {0}.
+        /// </summary>
+        internal static string FailToAttachFileToSession {
+            get {
+                return ResourceManager.GetString("FailToAttachFileToSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fail to commit session with exception: {0}.
         /// </summary>
         internal static string FailToCommitException {

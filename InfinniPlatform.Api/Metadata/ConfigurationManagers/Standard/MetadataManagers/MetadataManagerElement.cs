@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using InfinniPlatform.Api.Context;
 using InfinniPlatform.Api.ContextTypes;
+using InfinniPlatform.Api.Deprecated;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestQuery.EventObjects.EventSerializers;

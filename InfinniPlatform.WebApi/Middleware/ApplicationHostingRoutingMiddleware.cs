@@ -45,7 +45,8 @@ namespace InfinniPlatform.WebApi.Middleware
             RegisterPostRequestHandler(GetRestTemplateFileUpload, InvokeFileUpload);
             RegisterGetRequestHandler(GetRestTemplateFileDownload, InvokeFileDownload);
 
-            RegisterPostRequestHandler(GetSessionTemplate, InvokeSessionService);
+            RegisterPostRequestHandler(GetSessionTemplate, InvokeFileAttach);
+            RegisterPutRequestHandler(GetSessionTemplate, InvokeSessionService);
             RegisterPostRequestHandler(GetSessionTemplateById, InvokeSessionServiceCommit);
             RegisterDeleteRequestHandler(GetSessionTemplateById, InvokeSessionServiceRemove);
             RegisterDeleteRequestHandler(GetSessionTemplateAttachmentById, InvokeDetachSessionDocumentService);
@@ -129,14 +130,14 @@ namespace InfinniPlatform.WebApi.Middleware
             using (var fileStream = new MultipartFormDataParser(context.Request.Body, Encoding.UTF8).Files.Select(
                         f => f.Data).First())
             {
-                if (linkedData.Configuration != null && linkedData.Metadata != null && linkedData.DocumentId != null &&
-                    linkedData.FieldName != null)
+                if (linkedData.InstanceId != null &&
+                    linkedData.FieldName != null && 
+                    linkedData.FileName != null)
                 {
 
                     return
-                        new ValueRequestHandlerResult(new UploadApi().UploadBinaryContent(linkedData.Configuration.ToString(),
-                            linkedData.Metadata.ToString(), linkedData.DocumentId.ToString(),
-                            linkedData.FieldName.ToString(), nameValueCollection.Get("fileName"), fileStream));
+                        new ValueRequestHandlerResult(new UploadApi().UploadBinaryContent(linkedData.InstanceId.ToString(),
+                            linkedData.FieldName.ToString(), linkedData.FileName.ToString(), fileStream));
                 }
                 throw new ArgumentException(Resources.NotAllRequestParamsAreSpecified);
             }
@@ -155,18 +156,41 @@ namespace InfinniPlatform.WebApi.Middleware
             {
                 dynamic formData = JObject.Parse(HttpUtility.UrlDecode(nameValueCollection.Get("Form")));
 
-                if (formData.Configuration == null || formData.Metadata == null || formData.DocumentId == null ||
+                if (formData.InstanceId == null ||
                     formData.FieldName == null)
                 {
                     throw new ArgumentException(Resources.NotAllRequestParamsAreSpecified);
                 }
 
                 return new ValueRequestHandlerResult(new UploadApi().DownloadBinaryContent(
-                    formData.Configuration.ToString(),formData.Metadata.ToString(),formData.DocumentId.ToString(),formData.FieldName.ToString()));    
+                    formData.InstanceId.ToString(), formData.FieldName.ToString()));    
             }
 
             throw new ArgumentException(Resources.IncorrectDownloadRequest);
         }
+
+        public static IRequestHandlerResult InvokeFileAttach(IOwinContext context)
+        {
+            var routeDictionary = context.GetSessionRouteDictionary();
+
+            NameValueCollection nameValueCollection = new NameValueCollection();
+            if (context.Request.QueryString.HasValue)
+            {
+                nameValueCollection = HttpUtility.ParseQueryString(HttpUtility.UrlDecode(context.Request.QueryString.Value));
+            }
+
+            dynamic linkedData = JObject.Parse(nameValueCollection.Get("linkedData"));
+
+            using (var fileStream = new MultipartFormDataParser(context.Request.Body, Encoding.UTF8).Files.Select(f => f.Data).First())
+            {
+                if (linkedData.InstanceId != null && linkedData.FieldName != null)
+                {
+                    return new ValueRequestHandlerResult(new SessionApi().AttachFile(routeDictionary["version"], routeDictionary["sessionId"], linkedData, fileStream));
+                }
+                throw new ArgumentException(Resources.NotAllRequestParamsAreSpecified);
+            }
+        }
+
 
 
         private static IRequestHandlerResult InvokeCustomService(IOwinContext context)

@@ -23,19 +23,21 @@ namespace InfinniPlatform.RestfulApi.Session
 
             if (!string.IsNullOrEmpty(target.Item.SessionId) && 
                 target.Item.AttachedInfo.Document != null &&
-                !string.IsNullOrEmpty(target.Item.AttachedInfo.ConfigId) &&
-                !string.IsNullOrEmpty(target.Item.AttachedInfo.DocumentId))
+                !string.IsNullOrEmpty(target.Item.AttachedInfo.Application) &&
+                !string.IsNullOrEmpty(target.Item.AttachedInfo.DocumentType) &&
+                !string.IsNullOrEmpty(target.Item.AttachedInfo.Document.Id))
             {
                ITransaction transaction = manager.GetTransaction(target.Item.SessionId);
 
                transaction.Attach(
-                   target.Item.AttachedInfo.ConfigId,
-                   target.Item.AttachedInfo.DocumentId, 
+                   target.Item.AttachedInfo.Application,
+                   target.Item.AttachedInfo.DocumentType, 
                    target.Version,
                    new [] {target.Item.AttachedInfo.Document}, 
                    target.Context.GetComponent<ISecurityComponent>().GetClaim(AuthorizationStorageExtensions.OrganizationClaim, target.UserName) ?? AuthorizationStorageExtensions.AnonimousUser);
 
                 target.Result = new DynamicWrapper();
+                target.Result.Id = target.Item.AttachedInfo.Document.Id;
                 target.Result.IsValid = true;
                 target.Result.ValidationMessage = Resources.DocumentAttachedSuccessfully;
 
@@ -43,6 +45,7 @@ namespace InfinniPlatform.RestfulApi.Session
             else
             {
                 target.Result = new DynamicWrapper();
+                target.Result.Id = target.Item.AttachedInfo.Document.Id;
                 target.Result.IsValid = false;
                 target.Result.ValidationMessage = Resources.SessionIdAndDocumentShouldntBeEmpty;
             }

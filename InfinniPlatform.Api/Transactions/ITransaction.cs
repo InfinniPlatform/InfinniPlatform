@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,5 +50,14 @@ namespace InfinniPlatform.Api.Transactions
         ///   Главная транзакция
         /// </summary>
         ITransaction MasterTransaction { get; }
+
+        /// <summary>
+        ///   Присоединить файл к участнику транзакции, ссылающемуся на документ 
+        /// с указанным идентификатором
+        /// </summary>
+        /// <param name="instanceId">Идентификатор документа</param>
+        /// <param name="fieldName"></param>
+        /// <param name="stream">Файловый поток</param>
+        void AttachFile(string instanceId, string fieldName, Stream stream);
     }
 }

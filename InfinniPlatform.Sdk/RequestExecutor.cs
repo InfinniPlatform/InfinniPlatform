@@ -60,7 +60,7 @@ namespace InfinniPlatform.Sdk
         /// <param name="url">Url</param>
         /// <param name="body">Тело запроса</param>
         /// <returns>Результат выполнения запроса</returns>
-        public RestQueryResponse QueryPut(string url, object body)
+        public RestQueryResponse QueryPut(string url, object body = null)
         {
             var restClient = new RestClient(url);
 
@@ -68,11 +68,17 @@ namespace InfinniPlatform.Sdk
             restClient.CookieContainer = _cookieContainer;
             restClient.Timeout = 1000 * 60 * 300;
 
-            IRestResponse restResponse = restClient.Put(
-                new RestRequest
-                {
-                    RequestFormat = DataFormat.Json
-                }.AddBody(body));
+            var restRequest = new RestRequest
+            {
+                RequestFormat = DataFormat.Json
+            };
+
+            if (body != null)
+            {
+                restRequest.AddBody(body);
+            }
+
+            IRestResponse restResponse = restClient.Put(restRequest);
 
             return restResponse.ToQueryResponse();
         }
@@ -103,25 +109,20 @@ namespace InfinniPlatform.Sdk
             return restResponse.ToQueryResponse();
         }
 
-        public RestQueryResponse QueryPostFile(string url, object linkedData, string filePath)
+        public RestQueryResponse QueryPostFile(string url, string instanceId, string fieldName, string fileName, Stream fileStream, string sessionId = null)
         {
             var restClient = new RestClient(url);
 
             restClient.CookieContainer = _cookieContainer;
             restClient.Timeout = 1000 * 60 * 200;
 
-            IRestResponse restResponse = restClient.Post(new RestRequest("?linkedData={argument}") { RequestFormat = DataFormat.Json }
-                                                             .AddUrlSegment("argument", JsonConvert.SerializeObject(linkedData))
-                                                             .AddFile(Path.GetFileName(filePath), File.ReadAllBytes(filePath), Path.GetFileName(filePath), "multipart/form-data"));
-            return restResponse.ToQueryResponse();
-        }
-
-        public RestQueryResponse QueryPostFile(string url, object linkedData, string fileName, Stream fileStream)
-        {
-            var restClient = new RestClient(url);
-
-            restClient.CookieContainer = _cookieContainer;
-            restClient.Timeout = 1000 * 60 * 200;
+            var linkedData = new
+            {
+                InstanceId = instanceId,
+                FieldName = fieldName,
+                FileName = fileName,
+                SessionId = sessionId
+            };
 
             IRestResponse restResponse = restClient.Post(new RestRequest("?linkedData={argument}") { RequestFormat = DataFormat.Json }
                                                              .AddUrlSegment("argument", JsonConvert.SerializeObject(linkedData))

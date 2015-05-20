@@ -196,7 +196,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 			return response;
 		}
 
-	    public RestQueryResponse QueryPostFile(object linkedData, string fileName, Stream fileStream, CookieContainer cookieContainer)
+	    public RestQueryResponse QueryPostFile(object linkedData, Stream fileStream, CookieContainer cookieContainer)
 	    {
 	        var url = _controllerRoutingFactory.BuildRestRoutingUrlUpload(_configuration, _metadata, _action);
 
@@ -207,7 +207,6 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
                                             response = new RestQueryExecutor(cookieContainer).QueryPostFile(
                                                url,
                                                linkedData,
-                                               fileName,
                                                fileStream);
                                         },null);
 

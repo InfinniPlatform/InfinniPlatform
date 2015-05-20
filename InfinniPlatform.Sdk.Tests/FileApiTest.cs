@@ -45,5 +45,33 @@ namespace InfinniPlatform.Sdk.Tests
             Assert.AreEqual(((string)result.Content.ToString()).Length, 9928);
         }
 
+        [Test]
+        public void ShouldUploadFileInSession()
+        {
+            var document = new
+            {
+                FirstName = "Ronald",
+                LastName = "McDonald",
+            };
+
+            var sessionId = _documentApi.CreateSession();
+
+            var instanceId = _documentApi.Attach(sessionId, "Gameshop", "UserProfile",Guid.NewGuid().ToString(), document);
+
+
+            using (var fileStream = new FileStream(@"TestData\avatar.gif", FileMode.Open))
+            {
+                _documentApi.AttachFile(sessionId, instanceId, "Avatar", "avatar.gif", fileStream);
+            }
+
+
+            _documentApi.SaveSession(sessionId);
+
+            var result = _fileApi.DownloadFile("Gameshop", "UserProfile", instanceId, "Avatar");
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(((string)result.Content.ToString()).Length, 9928);
+        }
+
     }
 }

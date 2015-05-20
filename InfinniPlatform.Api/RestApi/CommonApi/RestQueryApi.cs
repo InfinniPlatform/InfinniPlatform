@@ -83,14 +83,14 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
 			return response;
 		}
 
-        public static RestQueryResponse QueryPostFile(string configuration, string metadata, string action, object linkedData, string fileName, Stream fileStream)
+        public static RestQueryResponse QueryPostFile(string configuration, string metadata, string action, object linkedData, Stream fileStream)
         {
             var builder = _queryBuilder(configuration, metadata, action);
 
             var profiler = _operationProfiler(configuration, metadata, action, null);
 
             profiler.Reset();
-            var response = builder.QueryPostFile(linkedData, fileName, fileStream, SignInApi.CookieContainer);
+            var response = builder.QueryPostFile(linkedData, fileStream, SignInApi.CookieContainer);
             profiler.TakeSnapshot();
 
             CheckResponse(response);

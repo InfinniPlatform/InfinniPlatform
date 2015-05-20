@@ -25,8 +25,8 @@ namespace InfinniPlatform.RestfulApi.Session
             target.Result = new DynamicWrapper();
             target.Result.Items = transaction.GetTransactionItems().Where(g => !g.Detached).Select(tr => new
             {
-                ConfigId = tr.ConfigId,
-                DocumentId = tr.DocumentId,
+                Application = tr.ConfigId,
+                DocumentType = tr.DocumentId,
                 Document = tr.Documents.FirstOrDefault(),
                 Version = tr.Version
             });

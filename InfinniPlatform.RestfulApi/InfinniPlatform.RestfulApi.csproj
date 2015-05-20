@@ -114,6 +114,7 @@
     </Compile>
     <Compile Include="Auth\ActionUnitSimpleAuth.cs" />
     <Compile Include="Session\ActionUnitAttachDocumentSession.cs" />
+    <Compile Include="Session\ActionUnitAttachFile.cs" />
     <Compile Include="Session\ActionUnitCreateSession.cs" />
     <Compile Include="Session\ActionUnitRemoveSession.cs" />
     <Compile Include="Session\ActionUnitDetachDocumentSession.cs" />

@@ -38,6 +38,7 @@ namespace InfinniPlatform.RestfulApi.Installers
             actionUnits.RegisterActionUnitDistributedStorage("savesession", "ActionUnitSaveSession");
             actionUnits.RegisterActionUnitDistributedStorage("getsession","ActionUnitGetSession");
             actionUnits.RegisterActionUnitDistributedStorage("removesession", "ActionUnitRemoveSession");
+            actionUnits.RegisterActionUnitDistributedStorage("attachfile","ActionUnitAttachFile");
 
             actionUnits.RegisterActionUnitDistributedStorage("setdocument", "ActionUnitSetDocument");
             actionUnits.RegisterActionUnitDistributedStorage("successsetdocument", "ActionUnitSuccessSetDocument");
@@ -375,6 +376,11 @@ namespace InfinniPlatform.RestfulApi.Installers
                     .Move(ws => ws
                         .WithAction(() => actionUnits.GetAction("attachdocumentsession")))));
 
+            metadataConfiguration.RegisterWorkflow("configuration", "attachfile",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("attachfile")))));
+
             metadataConfiguration.RegisterWorkflow("configuration", "detachdocumentsession",
                 f => f.FlowWithoutState(wc => wc
                     .Move(ws => ws
@@ -436,6 +442,9 @@ namespace InfinniPlatform.RestfulApi.Installers
                 .RegisterHandlerInstance("signin", insance => insance.RegisterExtensionPoint("Move", "signin"))
                 .SetResultHandler(HttpResultHandlerType.SignIn));
 
+            servicesConfiguration.AddRegistration("configuration", "Upload", reg => reg
+                    .RegisterHandlerInstance("attachfile", insance => insance.RegisterExtensionPoint("Upload", "attachfile")));
+
             servicesConfiguration.AddRegistration("configuration", "ApplyJson", reg => reg
                     .RegisterHandlerInstance("status", insance => insance
                                                                 .RegisterExtensionPoint("GetResult", "status"))
@@ -453,7 +462,6 @@ namespace InfinniPlatform.RestfulApi.Installers
                                                                 .RegisterExtensionPoint("Move", "removesession"))
                     .RegisterHandlerInstance("getdocument", insance => insance
                                                                 .RegisterExtensionPoint("Move", "getdocument"))
-
                     .RegisterHandlerInstance("getdocumentbyid", insance => insance
                                                                 .RegisterExtensionPoint("Move", "getdocumentbyid"))
 
@@ -481,6 +489,7 @@ namespace InfinniPlatform.RestfulApi.Installers
 
             servicesConfiguration.AddRegistration("configuration", "Upload", reg => reg
                     .RegisterHandlerInstance("uploadbinarycontent", insance => insance.RegisterExtensionPoint("Upload", "uploadbinarycontent")));
+
 
             servicesConfiguration.AddRegistration("configuration", "UrlEncodedData", reg => reg
                     .RegisterHandlerInstance("downloadbinarycontent", insance => insance.RegisterExtensionPoint("ProcessUrlEncodedData", "downloadbinarycontent"))

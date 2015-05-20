@@ -1,5 +1,6 @@
 ﻿using System;
 using InfinniPlatform.Api.ContextTypes;
+using InfinniPlatform.Api.Deprecated;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;

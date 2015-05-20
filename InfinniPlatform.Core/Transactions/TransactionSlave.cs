@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.Transactions;
 
 namespace InfinniPlatform.Transactions
@@ -38,6 +40,20 @@ namespace InfinniPlatform.Transactions
         public ITransaction MasterTransaction
         {
             get { return _masterTransaction; }
+        }
+
+        public void AttachFile(string instanceId, string fieldName, Stream stream)
+        {
+            var attachedInstance = _itemsList.FirstOrDefault(i => i.ContainsInstance(instanceId));
+
+            if (attachedInstance != null)
+            {
+                attachedInstance.AddFile(fieldName, stream);
+            }
+            else
+            {
+                throw new ArgumentException(string.Format(Resources.InstanceNotFoundToAttachFile, instanceId));
+            }
         }
 
 

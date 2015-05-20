@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using InfinniPlatform.Api.ContextComponents;
+using InfinniPlatform.Api.Factories;
 using InfinniPlatform.Api.Index;
+using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.Transactions;
+using InfinniPlatform.Factories;
 
 namespace InfinniPlatform.Transactions
 {
@@ -12,20 +17,23 @@ namespace InfinniPlatform.Transactions
     public sealed class TransactionMaster : ITransaction
     {
         private readonly string _transactionMarker;
-	    private readonly List<AttachedInstance> _itemsList;
+        private readonly List<AttachedInstance> _itemsList;
         private readonly IIndexFactory _indexFactory;
+        private readonly IBlobStorageFactory _blobStorageFactory;
 
         /// <summary>
         ///   Конструктор мастер-транзакции
         /// </summary>
         /// <param name="indexFactory">Фабрика для работы с индексами</param>
+        /// <param name="blobStorageFactory">Фабрика хранилища бинарных данных</param>
         /// <param name="transactionMarker">Идентификатор создаваемой транзакции</param>
         /// <param name="itemsList">Разделяемый между различными экземплярами ITransaction список присоединенных элементов</param>
-	    public TransactionMaster(IIndexFactory indexFactory, string transactionMarker, List<AttachedInstance> itemsList)
+        public TransactionMaster(IIndexFactory indexFactory, IBlobStorageFactory blobStorageFactory, string transactionMarker, List<AttachedInstance> itemsList)
         {
             _indexFactory = indexFactory;
-	        _transactionMarker = transactionMarker;
-	        _itemsList = itemsList;
+            _blobStorageFactory = blobStorageFactory;
+            _transactionMarker = transactionMarker;
+            _itemsList = itemsList;
         }
 
         /// <summary>
@@ -35,12 +43,19 @@ namespace InfinniPlatform.Transactions
         {
             try
             {
+                var binaryManager = new BinaryManager(_blobStorageFactory.CreateBlobStorage());
                 foreach (var item in _itemsList.Where(i => !i.Detached).ToList())
                 {
-	                
+
                     IVersionProvider versionProvider = _indexFactory.BuildVersionProvider(item.ConfigId, item.DocumentId, item.Routing);
 
-					versionProvider.SetDocuments(item.Documents);
+                    versionProvider.SetDocuments(item.Documents);
+
+                    foreach (var fileDescription in item.Files)
+                    {
+                        binaryManager.SaveBinary(item.Documents, item.ConfigId, item.DocumentId,
+                            fileDescription.FieldName, fileDescription.Bytes);
+                    }
                 }
 
 
@@ -52,7 +67,7 @@ namespace InfinniPlatform.Transactions
             }
             catch (Exception e)
             {
-                
+
                 throw new ArgumentException("Fail to commit transaction: " + e.Message);
             }
         }
@@ -69,6 +84,28 @@ namespace InfinniPlatform.Transactions
                 itemDetached.Detached = true;
             }
 
+        }
+
+
+        /// <summary>
+        ///   Присоединить файл к участнику транзакции, ссылающемуся на документ 
+        /// с указанным идентификатором
+        /// </summary>
+        /// <param name="instanceId">Идентификатор документа</param>
+        /// <param name="fieldName">Поле ссылки в документе</param>
+        /// <param name="stream">Файловый поток</param>
+        public void AttachFile(string instanceId, string fieldName, Stream stream)
+        {
+            var attachedInstance = _itemsList.FirstOrDefault(i => i.ContainsInstance(instanceId));
+
+            if (attachedInstance != null)
+            {
+                attachedInstance.AddFile(fieldName, stream);
+            }
+            else
+            {
+                throw new ArgumentException(string.Format(Resources.InstanceNotFoundToAttachFile, instanceId));
+            }
         }
 
         /// <summary>
@@ -116,6 +153,7 @@ namespace InfinniPlatform.Transactions
         {
             return _itemsList;
         }
+
 
         public Action<ITransaction> OnCommit { get; set; }
     }

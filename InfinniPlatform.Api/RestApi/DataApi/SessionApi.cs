@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.RestApi.CommonApi;
 
 namespace InfinniPlatform.Api.RestApi.DataApi
@@ -50,9 +52,9 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         /// </summary>
         /// <param name="version">Версия конфигурации</param>
         /// <param name="sessionId">Идентификатор клиентской сессии</param>
-        /// <param name="attachedInfo">Присоединяемый документ</param>
+        /// <param name="attachedDocument">Присоединяемый документ</param>
         /// <returns>Результат присоединения</returns>
-        public dynamic Attach(string version, string sessionId, dynamic attachedInfo)
+        public dynamic Attach(string version, string sessionId, dynamic attachedDocument)
         {
             
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "attachdocumentsession", null,
@@ -60,8 +62,21 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                {
                    Version = version,
                    SessionId = sessionId,
-                   AttachedInfo = attachedInfo
-               } );
+                   AttachedInfo = attachedDocument
+               } ).ToDynamic();
+        }
+
+        /// <summary>
+        ///   Присоединяемый файл
+        /// </summary>
+        /// <param name="version">Версия конфигурации</param>
+        /// <param name="sessionId">Идентификатор клиентской сессии</param>
+        /// <param name="linkedData">Связанные с указанным файлом данные</param>
+        /// <param name="file">Присоединяемый файл</param>
+        /// <returns>Результат присоединения</returns>
+        public dynamic AttachFile(string version, string sessionId, dynamic linkedData, Stream file)
+        {
+            return RestQueryApi.QueryPostFile("RestfulApi", "configuration", "attachfile",linkedData, file).ToDynamic();
         }
 
         /// <summary>
@@ -79,7 +94,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                     Version = version,
                     SessionId = sessionId,
                     AttachmentId = attachmentId
-                });
+                }).ToDynamic();
         }
 
         /// <summary>

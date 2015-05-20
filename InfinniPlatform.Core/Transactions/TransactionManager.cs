@@ -2,6 +2,8 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using InfinniPlatform.Api.ContextComponents;
+using InfinniPlatform.Api.Factories;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Transactions;
 using InfinniPlatform.Factories;
@@ -12,12 +14,14 @@ namespace InfinniPlatform.Transactions
     public sealed class TransactionManager : ITransactionManager
     {
         private readonly IIndexFactory _indexFactory;
+        private readonly IBlobStorageFactory _blobStorageFactory;
         private readonly ConcurrentDictionary<string, ITransaction> _transactions = new ConcurrentDictionary<string, ITransaction>();
 
 
-        public TransactionManager(IIndexFactory indexFactory)
+        public TransactionManager(IIndexFactory indexFactory, IBlobStorageFactory blobStorageFactory)
         {
             _indexFactory = indexFactory;
+            _blobStorageFactory = blobStorageFactory;
         }
 
         /// <summary>
@@ -59,7 +63,7 @@ namespace InfinniPlatform.Transactions
 
             else
             {
-                var transactionMaster = new TransactionMaster(_indexFactory, transactionMarker, new List<AttachedInstance>())
+                var transactionMaster = new TransactionMaster(_indexFactory, _blobStorageFactory, transactionMarker, new List<AttachedInstance>())
                 {
                     OnCommit = RemoveTransaction
                 };

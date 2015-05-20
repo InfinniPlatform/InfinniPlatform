@@ -158,4 +158,7 @@
   <data name="FailToDownloadFileFromServer" xml:space="preserve">
     <value>Fail to download file from server with exception: {0}</value>
   </data>
+  <data name="FailToAttachFileToSession" xml:space="preserve">
+    <value>Fail to attach file to session with exception: {0}</value>
+  </data>
 </root>

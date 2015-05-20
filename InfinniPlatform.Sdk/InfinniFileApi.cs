@@ -32,27 +32,20 @@ namespace InfinniPlatform.Sdk
         /// <summary>
         ///   Загрузить файл на сервер
         /// </summary>
-        /// <param name="applicationId">Приложение</param>
-        /// <param name="documentId">Идентификатор документа</param>
+        /// <param name="application">Приложение</param>
+        /// <param name="documentType">Идентификатор документа</param>
         /// <param name="instanceId">Экземпляр документа</param>
         /// <param name="fieldName">Наименование поля в документе, хранящее ссылку на файл</param>
         /// <param name="fileName">Наименование файла</param>
         /// <param name="fileStream">Файловый поток</param>
         /// <returns>Результат загрузки файла на сервер</returns>
-        public dynamic UploadFile(string applicationId, string documentId, string instanceId, string fieldName, string fileName,
+        public dynamic UploadFile(string application, string documentType, string instanceId, string fieldName, string fileName,
             Stream fileStream)
         {
             var restQueryExecutor = new RequestExecutor(_cookieContainer);
 
-            var linkedData = new
-            {
-                Configuration = applicationId,
-                Metadata = documentId,
-                DocumentId = instanceId,
-                FieldName = fieldName               
-            };
 
-            var response = restQueryExecutor.QueryPostFile(_routeBuilder.BuildRestRoutingUploadFile(_version,applicationId), linkedData, fileName, fileStream);
+            var response = restQueryExecutor.QueryPostFile(_routeBuilder.BuildRestRoutingUploadFile(_version,application), instanceId, fieldName, fileName, fileStream);
 
             if (response.IsAllOk)
             {
@@ -75,25 +68,25 @@ namespace InfinniPlatform.Sdk
         /// <summary>
         ///   Загрузить файл с сервера
         /// </summary>
-        /// <param name="applicationId">Идентификатор приложения</param>
-        /// <param name="documentId">Идентификатор документа</param>
+        /// <param name="application">Идентификатор приложения</param>
+        /// <param name="documentType">Идентификатор документа</param>
         /// <param name="instanceId">Идентификатор экземпляра документа</param>
         /// <param name="fieldName">Наименование поля ссылки</param>
         /// <returns>Выгруженный контент</returns>
-        public dynamic DownloadFile(string applicationId, string documentId, string instanceId, string fieldName)
+        public dynamic DownloadFile(string application, string documentType, string instanceId, string fieldName)
         {
             var restQueryExecutor = new RequestExecutor(_cookieContainer);
 
             var linkedData = new
             {
-                Configuration = applicationId,
-                Metadata = documentId,
-                DocumentId = instanceId,
+                Application = application,
+                DocumentType = documentType,
+                InstanceId = instanceId,
                 FieldName = fieldName
             };
 
             var response = restQueryExecutor.QueryGetUrlEncodedData(
-                    _routeBuilder.BuildRestRoutingDownloadFile(_version, applicationId), linkedData);
+                    _routeBuilder.BuildRestRoutingDownloadFile(_version, application), linkedData);
 
             if (response.IsAllOk)
             {

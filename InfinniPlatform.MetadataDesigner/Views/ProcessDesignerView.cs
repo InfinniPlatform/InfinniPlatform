@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using InfinniPlatform.Api.Deprecated;
 
 namespace InfinniPlatform.MetadataDesigner.Views
 {
