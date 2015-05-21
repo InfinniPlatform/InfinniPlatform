@@ -73,7 +73,6 @@ namespace InfinniPlatform.WebApi.Middleware
         }
 
 
-
         public static PathString FormatSessionRoutePath(this IOwinContext context, PathString path)
         {
             var routeDictionary = context.GetSessionRouteDictionary();

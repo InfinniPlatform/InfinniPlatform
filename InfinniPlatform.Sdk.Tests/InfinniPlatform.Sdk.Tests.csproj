@@ -52,6 +52,7 @@
     <Compile Include="DocumentApiTest.cs" />
     <Compile Include="FileApiTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SignInApiTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

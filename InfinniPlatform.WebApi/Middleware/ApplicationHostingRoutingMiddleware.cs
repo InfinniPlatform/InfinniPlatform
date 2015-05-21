@@ -10,6 +10,7 @@ using System.Text;
 using System.Web;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Properties;
+using InfinniPlatform.Api.RestApi.AuthApi;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.SearchOptions.Converters;
@@ -53,6 +54,15 @@ namespace InfinniPlatform.WebApi.Middleware
             RegisterDeleteRequestHandler(GetSessionTemplateAttachmentById, InvokeDetachSessionDocumentService);
             RegisterPutRequestHandler(GetSessionTemplateById, InvokeAttachSessionDocumentService);
             RegisterGetRequestHandler(GetSessionTemplateById, InvokeGetSessionService);
+
+            RegisterPostRequestHandler(GetRestTemplateSignIn,InvokeSignInService);
+            RegisterPostRequestHandler(GetRestTemplateSignOut,InvokeSignOutService);
+            RegisterPostRequestHandler(GetRestTemplateChangePassword, InvokeChangePassword);
+        }
+
+        private PathString GetVersionPath()
+        {
+            return new PathString("/_version_");
         }
 
         private PathString GetBaseApplicationPath()
@@ -117,6 +127,23 @@ namespace InfinniPlatform.WebApi.Middleware
             return context.FormatRoutePath(new PathString(GetBaseApplicationPath() + "/files/download")).Create(Priority.Higher);
         }
 
+        private PathStringProvider GetRestTemplateSignIn(IOwinContext context)
+        {
+            return context.FormatRoutePath(new PathString(GetVersionPath() + "/signin")).Create(Priority.Higher);
+        }
+
+        private PathStringProvider GetRestTemplateSignOut(IOwinContext context)
+        {
+            return context.FormatRoutePath(new PathString(GetVersionPath() + "/signout"))
+                .Create(Priority.Higher);
+        }
+
+        private PathStringProvider GetRestTemplateChangePassword(IOwinContext context)
+        {
+            return context.FormatRoutePath(new PathString(GetVersionPath() + "/changepassword"))
+                .Create(Priority.Higher);
+        }
+ 
         private static IRequestHandlerResult InvokeFileUpload(IOwinContext context)
         {
             NameValueCollection nameValueCollection = new NameValueCollection();
@@ -140,7 +167,7 @@ namespace InfinniPlatform.WebApi.Middleware
                         new ValueRequestHandlerResult(new UploadApi().UploadBinaryContent(linkedData.InstanceId.ToString(),
                             linkedData.FieldName.ToString(), linkedData.FileName.ToString(), fileStream));
                 }
-                throw new ArgumentException(Resources.NotAllRequestParamsAreSpecified);
+                return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreSpecified);
             }
         }
 
@@ -167,7 +194,7 @@ namespace InfinniPlatform.WebApi.Middleware
                     formData.InstanceId.ToString(), formData.FieldName.ToString()));    
             }
 
-            throw new ArgumentException(Resources.IncorrectDownloadRequest);
+            return new ErrorRequestHandlerResult(Resources.IncorrectDownloadRequest);
         }
 
         public static IRequestHandlerResult InvokeFileAttach(IOwinContext context)
@@ -188,7 +215,7 @@ namespace InfinniPlatform.WebApi.Middleware
                 {
                     return new ValueRequestHandlerResult(new SessionApi().AttachFile(routeDictionary["version"], linkedData, fileStream));
                 }
-                throw new ArgumentException(Resources.NotAllRequestParamsAreSpecified);
+                return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
             }
         }
 
@@ -203,12 +230,18 @@ namespace InfinniPlatform.WebApi.Middleware
             {
                 return new ValueRequestHandlerResult(new SessionApi().DetachFile(routeDictionary["version"], body));
             }
-            throw new ArgumentException(Resources.NotAllRequestParamsAreSpecified);
+            return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
 
         }
+
         private static IRequestHandlerResult InvokeCustomService(IOwinContext context)
         {
-            throw new NotImplementedException();
+            var routeDictionary = context.GetRouteDictionary();
+
+            var body = JObject.Parse(ReadRequestBody(context).ToString());
+
+            return new ValueRequestHandlerResult(RestQueryApi.QueryPostJsonRaw(
+                routeDictionary["application"],routeDictionary["documenttype"],routeDictionary["service"],null,body));
         }
 
         private static IRequestHandlerResult InvokeSessionService(IOwinContext context)
@@ -321,6 +354,53 @@ namespace InfinniPlatform.WebApi.Middleware
             var routeDictionary = context.GetRouteDictionary();
 
             return new ValueRequestHandlerResult(new DocumentApi().DeleteDocument(routeDictionary["application"], routeDictionary["documentType"], routeDictionary["instanceId"]));
+        }
+
+        private static IRequestHandlerResult InvokeSignInService(IOwinContext context)
+        {
+            dynamic body = JObject.Parse(ReadRequestBody(context).ToString());
+
+            if (body.UserName == null || body.Password == null || body.Remember == null)
+            {
+                return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
+            }
+
+            return new ValueRequestHandlerResult(new SignInApi().SignInInternal(body.UserName.ToString(), body.Password.ToString(), Convert.ToBoolean(body.Remember)));
+        }
+
+        private static IRequestHandlerResult InvokeSignOutService(IOwinContext context)
+        {
+            dynamic result = null;
+            try
+            {
+                result = new SignInApi().SignOutInternal();
+            }
+            catch(Exception e)
+            {
+                return new ErrorRequestHandlerResult(e.Message);
+            }
+
+            return new ValueRequestHandlerResult(result);
+        }
+
+        private static IRequestHandlerResult InvokeChangePassword(IOwinContext context)
+        {
+            dynamic body = JObject.Parse(ReadRequestBody(context).ToString());
+
+            if (body.UserName == null || body.OldPassword == null || body.NewPassword == null)
+            {
+                return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
+            }
+
+            try
+            {
+               return new ValueRequestHandlerResult(new SignInApi().ChangePassword(body.UserName.ToString(), body.OldPassword.ToString(),
+                    body.NewPassword.ToString()));
+            }
+            catch (Exception e)
+            {
+                return new ErrorRequestHandlerResult(e.Message);
+            }            
         }
 
 

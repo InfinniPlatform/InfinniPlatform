@@ -5,7 +5,7 @@ using System.Net;
 using InfinniPlatform.Sdk.Properties;
 using Newtonsoft.Json.Linq;
 
-namespace InfinniPlatform.Sdk
+namespace InfinniPlatform.Sdk.Api
 {
     /// <summary>
     ///   API для работы с документами

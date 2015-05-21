@@ -79,6 +79,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fail to change password for user with exception: {0}.
+        /// </summary>
+        internal static string FaiilToChangePasswordUser {
+            get {
+                return ResourceManager.GetString("FaiilToChangePasswordUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fail to get document with exception: {0}.
         /// </summary>
         internal static string FailGetDocument {
@@ -174,6 +183,24 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string FailToSetDocument {
             get {
                 return ResourceManager.GetString("FailToSetDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fail to sign out user with exception: {0}.
+        /// </summary>
+        internal static string FailToSignOutUser {
+            get {
+                return ResourceManager.GetString("FailToSignOutUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fail to sign in user with exception: {0}.
+        /// </summary>
+        internal static string FailToSignUser {
+            get {
+                return ResourceManager.GetString("FailToSignUser", resourceCulture);
             }
         }
         

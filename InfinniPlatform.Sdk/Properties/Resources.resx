@@ -164,4 +164,13 @@
   <data name="FailToDetachFileFromSession" xml:space="preserve">
     <value>Fail to detach file from session with exception: {0}</value>
   </data>
+  <data name="FailToSignUser" xml:space="preserve">
+    <value>Fail to sign in user with exception: {0}</value>
+  </data>
+  <data name="FailToSignOutUser" xml:space="preserve">
+    <value>Fail to sign out user with exception: {0}</value>
+  </data>
+  <data name="FaiilToChangePasswordUser" xml:space="preserve">
+    <value>Fail to change password for user with exception: {0}</value>
+  </data>
 </root>

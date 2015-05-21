@@ -108,7 +108,7 @@ namespace InfinniPlatform.Sdk
         /// <returns>Роутинг для запроса на создание клиентской сессии</returns>
         public string BuildRestRoutingUrlDefaultSession(string version)
         {
-            return GetCompleteUrl(GetRestTemplateSession().ReplaceFormat("version", version));
+            return GetCompleteUrl(GetRestTemplateVersionBase().ReplaceFormat("version", version));
         }
 
 
@@ -158,6 +158,36 @@ namespace InfinniPlatform.Sdk
         }
 
         /// <summary>
+        /// Сформировать роутинг для входа пользователя в систему
+        /// </summary>
+        /// <param name="version">Версия приложения</param>
+        /// <returns>Роутинг для запроса на вход пользователя в систему</returns>
+        public string BuildRestRoutingUrlSignIn(string version)
+        {
+            return GetCompleteUrl(GetRestTemplateSignIn().ReplaceFormat("version", version));
+        }
+
+        /// <summary>
+        ///  Сформировать роутинг для выхода пользователя из системы
+        /// </summary>
+        /// <param name="version">Версия приложения</param>
+        /// <returns>Роутинг для запроса на выход пользователя из системы</returns>
+        public string BuildRestRoutingUrlSignOut(string version)
+        {
+            return GetCompleteUrl(GetRestTemplateSignOut().ReplaceFormat("version", version));
+        }
+
+        /// <summary>
+        ///  Сформировать роутинг для смены пароля пользователя
+        /// </summary>
+        /// <param name="version">Версия приложения</param>
+        /// <returns>Роутинг для запроса смены пароля пользователя</returns>
+        public string BuildRestRoutingChangePassword(string version)
+        {
+            return GetCompleteUrl(GetRestTemplateChangePassword().ReplaceFormat("version", version));
+        }
+
+        /// <summary>
         ///   Шаблон базового роутинга для обращения к конкретному приложению
         /// </summary>
         /// <returns>Базовая часть шаблона строки роутинга</returns>
@@ -176,10 +206,10 @@ namespace InfinniPlatform.Sdk
         }
 
         /// <summary>
-        ///   Шаблон роутинга для клиентской сессии для указанной версии сервисов
+        ///   Шаблон роутинга для указанной версии сервисов
         /// </summary>
         /// <returns>Шаблон роутинга</returns>
-        private string GetRestTemplateSession()
+        private string GetRestTemplateVersionBase()
         {
             return "{version}";
         }
@@ -206,7 +236,7 @@ namespace InfinniPlatform.Sdk
         /// <summary>
         ///   Получить шаблон запроса для работы со стандартным сервисом документов
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Шаблон роутинга запроса</returns>
         private string GetRestTemplateDocument()
         {
             return GetBaseApplicationPath() + "/{documentType}";
@@ -215,12 +245,38 @@ namespace InfinniPlatform.Sdk
         /// <summary>
         ///   Получить шаблон запроса для работы со стандартным сервисом документов
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Шаблон роутинга запроса</returns>
         private string GetRestTemplateDocumentById()
         {
             return GetRestTemplateDocument() + "/{instanceId}";
         }
 
+        /// <summary>
+        ///   Получить шаблон роутинга для сервиса входа пользователя
+        /// </summary>
+        /// <returns>Шаблон роутинга запроса</returns>
+        private string GetRestTemplateSignIn()
+        {
+            return GetRestTemplateVersionBase() + "/signin";
+        }
+
+        /// <summary>
+        ///   Получить шаблон роутинга для сервиса выхода пользователя
+        /// </summary>
+        /// <returns>Шаблон роутинга пользователя</returns>
+        private string GetRestTemplateSignOut()
+        {
+            return GetRestTemplateVersionBase() + "/signout";
+        }
+
+        /// <summary>
+        ///   Получить шаблон роутинга для смены пароля пользователя
+        /// </summary>
+        /// <returns>Шаблон роутинга пользователя</returns>
+        private string GetRestTemplateChangePassword()
+        {
+            return GetRestTemplateVersionBase() + "/changepassword";
+        }
 
         /// <summary>
         ///   Сформировать роутинг для кастомного запроса REST

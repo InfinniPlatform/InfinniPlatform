@@ -79,13 +79,15 @@ namespace InfinniPlatform.Api.RestApi.AuthApi
 
             result.ResponseCookies = responseCookies.ToEnumerable();
 
+		    result.IsValid = true;
+
 		    return result;
 		}
 
 		/// <summary>
 		///   Выйти из системы
 		/// </summary>
-		public void SignOutInternal()
+		public dynamic SignOutInternal()
 		{
 			//----------------------------------------------------
 			var signOutInternalUrl = ControllerRoutingFactory.Instance.GetCustomRouting("Auth/SignOut");
@@ -106,6 +108,12 @@ namespace InfinniPlatform.Api.RestApi.AuthApi
 			//----------------------------------------------------
 			//необходима доработка разлогинивания пользователей (при текущей реализации не разлогинивает пользователя на клиенте)
 			CookieContainer = null;
+            
+            dynamic result = new DynamicWrapper();
+		    result.IsValid = true;
+		    result.ValidationMessage = "User sign out successfully";
+
+		    return result;
 		}
 
 		/// <summary>
