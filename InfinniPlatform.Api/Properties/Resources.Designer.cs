@@ -961,6 +961,15 @@ namespace InfinniPlatform.Api.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to find user with user name: {0}.
+        /// </summary>
+        public static string UnableToFindUser {
+            get {
+                return ResourceManager.GetString("UnableToFindUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to UnsatifiedAppVersion.
         /// </summary>
         public static string UnsatisfiedVersionNumber {
@@ -975,6 +984,15 @@ namespace InfinniPlatform.Api.Properties {
         public static string UrlEncodedDataProcessingComplete {
             get {
                 return ResourceManager.GetString("UrlEncodedDataProcessingComplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User created successfully.
+        /// </summary>
+        public static string UserCreatedSuccessfully {
+            get {
+                return ResourceManager.GetString("UserCreatedSuccessfully", resourceCulture);
             }
         }
         

@@ -74,7 +74,7 @@ namespace InfinniPlatform.Sdk.Api
                     throw new ArgumentException(Resources.ResultIsNotOfObjectType);
                 }
             }
-            throw new ArgumentException(string.Format(Resources.FailToSignUser, response.GetErrorContent()));
+            throw new ArgumentException(string.Format(Resources.UnableToSignUser, response.GetErrorContent()));
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace InfinniPlatform.Sdk.Api
                     throw new ArgumentException(Resources.ResultIsNotOfObjectType);
                 }
             }
-            throw new ArgumentException(string.Format(Resources.FaiilToChangePasswordUser, response.GetErrorContent()));
+            throw new ArgumentException(string.Format(Resources.UnableToChangePasswordUser, response.GetErrorContent()));
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace InfinniPlatform.Sdk.Api
                     throw new ArgumentException(Resources.ResultIsNotOfObjectType);
                 }
             }
-            throw new ArgumentException(string.Format(Resources.FailToSignOutUser, response.GetErrorContent()));
+            throw new ArgumentException(string.Format(Resources.UnableToSignOutUser, response.GetErrorContent()));
         }
 
         private void CreateCookieContainer(dynamic result)

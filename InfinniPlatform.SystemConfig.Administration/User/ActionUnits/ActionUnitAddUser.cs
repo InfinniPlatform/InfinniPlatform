@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using InfinniPlatform.Api.ContextTypes;
+using InfinniPlatform.Api.Dynamic;
+using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.RestApi.AuthApi;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
@@ -12,7 +14,9 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 		{
 			var aclApi = target.Context.GetComponent<AclApi>();
 
-			var user = target.Item.Document;
+		    dynamic user = null;
+
+			user = target.Item.Document ?? target.Item;
 
 			if (user == null || string.IsNullOrEmpty(user.UserName))
 			{
@@ -45,18 +49,22 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 		    }
 
 
-		    if (target.Item.Document.IsAdmin == true)
+		    if (user.IsAdmin == true)
 			{				
 				aclApi.AddUserToRole(user.UserName,AuthorizationStorageExtensions.AdminRole);
 			}
 
-            target.Item.Document.Password = null;
+            user.Password = null;
 
 			target.Context.GetComponent<DocumentApi>()
 			      .SetDocument(AuthorizationStorageExtensions.AdministrationConfigId, "User",
-			                   target.Item.Document);
+			                   user);
 		   
-			RestQueryApi.QueryPostJsonRaw("AdministrationCustomization", "Common", "OnAddUserEvent", null, target.Item.Document);
+			RestQueryApi.QueryPostJsonRaw("AdministrationCustomization", "Common", "OnAddUserEvent", null, user);
+
+		    target.Result = new DynamicWrapper();
+		    target.Result.IsValid = true;
+		    target.Result.ValidationMessage = Resources.UserCreatedSuccessfully;
 
 		}
 	}

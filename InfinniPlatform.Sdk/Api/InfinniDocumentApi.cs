@@ -60,7 +60,7 @@ namespace InfinniPlatform.Sdk.Api
 
             if (string.IsNullOrEmpty(sessionId))
             {
-                throw new ArgumentException(Resources.FailToCreateNewSession);
+                throw new ArgumentException(Resources.UnableToCreateNewSession);
             }
 
             return sessionId;
@@ -101,7 +101,7 @@ namespace InfinniPlatform.Sdk.Api
                         {
                             return responseObject.Id.ToString();
                         }
-                        throw new ArgumentException(string.Format(Resources.FailToAttachDocumentToSession, response.GetErrorContent()));
+                        throw new ArgumentException(string.Format(Resources.UnableToAttachDocumentToSession, response.GetErrorContent()));
                     }
                 }
                 catch (Exception)
@@ -110,7 +110,7 @@ namespace InfinniPlatform.Sdk.Api
                 }
             }
 
-            throw new ArgumentException(string.Format(Resources.FailToAttachDocumentToSession, response.GetErrorContent()));
+            throw new ArgumentException(string.Format(Resources.UnableToAttachDocumentToSession, response.GetErrorContent()));
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace InfinniPlatform.Sdk.Api
                         dynamic responseObject = JObject.Parse(response.Content.Remove(0, 1));
                         if (responseObject.IsValid != true)
                         {
-                            throw new ArgumentException(string.Format(Resources.FailToAttachFileToSession, response.GetErrorContent()));
+                            throw new ArgumentException(string.Format(Resources.UnableToAttachFileToSession, response.GetErrorContent()));
                         }
                         return;
                     }
@@ -148,7 +148,7 @@ namespace InfinniPlatform.Sdk.Api
                 }
             }
 
-            throw new ArgumentException(string.Format(Resources.FailToAttachFileToSession, response.GetErrorContent()));            
+            throw new ArgumentException(string.Format(Resources.UnableToAttachFileToSession, response.GetErrorContent()));            
         }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace InfinniPlatform.Sdk.Api
                         dynamic responseObject = JObject.Parse(response.Content.Remove(0, 1));
                         if (responseObject.IsValid != true)
                         {
-                            throw new ArgumentException(string.Format(Resources.FailToDetachFileFromSession, response.GetErrorContent()));
+                            throw new ArgumentException(string.Format(Resources.UnableToDetachFileFromSession, response.GetErrorContent()));
                         }
                         return;
                     }
@@ -191,7 +191,7 @@ namespace InfinniPlatform.Sdk.Api
                 }
             }
 
-            throw new ArgumentException(string.Format(Resources.FailToDetachFileFromSession, response.GetErrorContent()));
+            throw new ArgumentException(string.Format(Resources.UnableToDetachFileFromSession, response.GetErrorContent()));
         }
 
         /// <summary>
@@ -225,7 +225,7 @@ namespace InfinniPlatform.Sdk.Api
                     throw new ArgumentException(Resources.ResultIsNotOfObjectType);
                 }
             }
-            throw new ArgumentException(string.Format(Resources.FailToDetachDocument, response.GetErrorContent()));
+            throw new ArgumentException(string.Format(Resources.UnableToDetachDocument, response.GetErrorContent()));
         }
 
         /// <summary>
@@ -254,7 +254,7 @@ namespace InfinniPlatform.Sdk.Api
                     throw new ArgumentException(Resources.ResultIsNotOfObjectType);
                 }
             }
-            throw new ArgumentException(string.Format(Resources.FailToDetachDocument, response.GetErrorContent()));
+            throw new ArgumentException(string.Format(Resources.UnableToDetachDocument, response.GetErrorContent()));
         }
 
         /// <summary>
@@ -283,7 +283,7 @@ namespace InfinniPlatform.Sdk.Api
                     throw new ArgumentException(Resources.ResultIsNotOfObjectType);
                 }
             }
-            throw new ArgumentException(string.Format(Resources.FailToGetSession, response.GetErrorContent()));
+            throw new ArgumentException(string.Format(Resources.UnableToGetSession, response.GetErrorContent()));
         }
 
         /// <summary>
@@ -312,7 +312,7 @@ namespace InfinniPlatform.Sdk.Api
                     throw new ArgumentException(Resources.ResultIsNotOfObjectType);
                 }
             }
-            throw new ArgumentException(string.Format(Resources.FailToCommitException, response.GetErrorContent()));
+            throw new ArgumentException(string.Format(Resources.UnableToCommitException, response.GetErrorContent()));
         }
 
 
@@ -345,7 +345,7 @@ namespace InfinniPlatform.Sdk.Api
                     throw new ArgumentException(Resources.ResultIsNotOfArrayType);
                 }
             }
-            throw new ArgumentException(string.Format(Resources.FailGetDocument, response.GetErrorContent()));
+            throw new ArgumentException(string.Format(Resources.UnableToGetDocument, response.GetErrorContent()));
         }
 
         /// <summary>
@@ -402,7 +402,7 @@ namespace InfinniPlatform.Sdk.Api
                     throw new ArgumentException(Resources.ResultIsNotOfArrayType);
                 }
             }
-            throw new ArgumentException(string.Format(Resources.FailGetDocument, response.GetErrorContent()));
+            throw new ArgumentException(string.Format(Resources.UnableToGetDocument, response.GetErrorContent()));
         }
 
         /// <summary>
@@ -446,7 +446,7 @@ namespace InfinniPlatform.Sdk.Api
                 return null;
 
             }
-            throw new ArgumentException(string.Format(Resources.FailToSetDocument, response.GetErrorContent()));
+            throw new ArgumentException(string.Format(Resources.UnableToSetDocument, response.GetErrorContent()));
         }
 
         /// <summary>
@@ -487,7 +487,7 @@ namespace InfinniPlatform.Sdk.Api
                     throw new ArgumentException(Resources.ResultIsNotOfObjectType);
                 }
             }
-            throw new ArgumentException(string.Format(Resources.FailToSetDocument, response.GetErrorContent()));
+            throw new ArgumentException(string.Format(Resources.UnableToSetDocument, response.GetErrorContent()));
         }
 
 
@@ -516,7 +516,7 @@ namespace InfinniPlatform.Sdk.Api
 
             if (!response.IsAllOk)
             {
-                throw new ArgumentException(string.Format(Resources.FailToUpdateDocument, response.GetErrorContent()));
+                throw new ArgumentException(string.Format(Resources.UnableToUpdateDocument, response.GetErrorContent()));
             }
         }
 
@@ -552,7 +552,7 @@ namespace InfinniPlatform.Sdk.Api
                     throw new ArgumentException(Resources.ResultIsNotOfObjectType);
                 }
             }
-            throw new ArgumentException(string.Format(Resources.FailToDeleteDocument, response.GetErrorContent()));
+            throw new ArgumentException(string.Format(Resources.UnableToDeleteDocument, response.GetErrorContent()));
 
         }
     }

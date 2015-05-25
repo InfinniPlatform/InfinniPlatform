@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Policy;
 using System.ServiceModel.Configuration;
 using System.Text;
+using System.Threading;
 using System.Web;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Properties;
@@ -42,7 +43,8 @@ namespace InfinniPlatform.WebApi.Middleware
 
             RegisterGetRequestHandler(GetRestTemplateDocumentById, InvokeGetByIdDocumentService);
 
-            RegisterPostRequestHandler(GetRestTemplate, InvokeCustomService);
+            RegisterPostRequestHandler(GetRestTemplate, InvokeCustomServicePost);
+
             RegisterPostRequestHandler(GetRestTemplateFileUpload, InvokeFileUpload);
             RegisterGetRequestHandler(GetRestTemplateFileDownload, InvokeFileDownload);
 
@@ -134,14 +136,12 @@ namespace InfinniPlatform.WebApi.Middleware
 
         private PathStringProvider GetRestTemplateSignOut(IOwinContext context)
         {
-            return context.FormatRoutePath(new PathString(GetVersionPath() + "/signout"))
-                .Create(Priority.Higher);
+            return context.FormatRoutePath(new PathString(GetVersionPath() + "/signout")).Create(Priority.Higher);
         }
 
         private PathStringProvider GetRestTemplateChangePassword(IOwinContext context)
         {
-            return context.FormatRoutePath(new PathString(GetVersionPath() + "/changepassword"))
-                .Create(Priority.Higher);
+            return context.FormatRoutePath(new PathString(GetVersionPath() + "/changepassword")).Create(Priority.Higher);
         }
  
         private static IRequestHandlerResult InvokeFileUpload(IOwinContext context)
@@ -234,14 +234,14 @@ namespace InfinniPlatform.WebApi.Middleware
 
         }
 
-        private static IRequestHandlerResult InvokeCustomService(IOwinContext context)
+        private static IRequestHandlerResult InvokeCustomServicePost(IOwinContext context)
         {
             var routeDictionary = context.GetRouteDictionary();
 
             var body = JObject.Parse(ReadRequestBody(context).ToString());
 
             return new ValueRequestHandlerResult(RestQueryApi.QueryPostJsonRaw(
-                routeDictionary["application"],routeDictionary["documenttype"],routeDictionary["service"],null,body));
+                routeDictionary["application"],routeDictionary["documentType"],routeDictionary["service"],null,body));
         }
 
         private static IRequestHandlerResult InvokeSessionService(IOwinContext context)

@@ -438,4 +438,10 @@
   <data name="NotAllRequestParamsAreFiled" xml:space="preserve">
     <value>Not all request parameters are filed.</value>
   </data>
+  <data name="UserCreatedSuccessfully" xml:space="preserve">
+    <value>User created successfully</value>
+  </data>
+  <data name="UnableToFindUser" xml:space="preserve">
+    <value>Unable to find user with user name: {0}</value>
+  </data>
 </root>

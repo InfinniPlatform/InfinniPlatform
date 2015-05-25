@@ -79,150 +79,6 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fail to change password for user with exception: {0}.
-        /// </summary>
-        internal static string FaiilToChangePasswordUser {
-            get {
-                return ResourceManager.GetString("FaiilToChangePasswordUser", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fail to get document with exception: {0}.
-        /// </summary>
-        internal static string FailGetDocument {
-            get {
-                return ResourceManager.GetString("FailGetDocument", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fail to attach document to session with exception: {0}.
-        /// </summary>
-        internal static string FailToAttachDocumentToSession {
-            get {
-                return ResourceManager.GetString("FailToAttachDocumentToSession", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fail to attach file to session with exception: {0}.
-        /// </summary>
-        internal static string FailToAttachFileToSession {
-            get {
-                return ResourceManager.GetString("FailToAttachFileToSession", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fail to commit session with exception: {0}.
-        /// </summary>
-        internal static string FailToCommitException {
-            get {
-                return ResourceManager.GetString("FailToCommitException", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fail to create new session..
-        /// </summary>
-        internal static string FailToCreateNewSession {
-            get {
-                return ResourceManager.GetString("FailToCreateNewSession", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fail to delete document with exception: {0}.
-        /// </summary>
-        internal static string FailToDeleteDocument {
-            get {
-                return ResourceManager.GetString("FailToDeleteDocument", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fail to detach document from session with exception: {0}.
-        /// </summary>
-        internal static string FailToDetachDocument {
-            get {
-                return ResourceManager.GetString("FailToDetachDocument", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fail to detach file from session with exception: {0}.
-        /// </summary>
-        internal static string FailToDetachFileFromSession {
-            get {
-                return ResourceManager.GetString("FailToDetachFileFromSession", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fail to download file from server with exception: {0}.
-        /// </summary>
-        internal static string FailToDownloadFileFromServer {
-            get {
-                return ResourceManager.GetString("FailToDownloadFileFromServer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fail to get session with exception: {0}.
-        /// </summary>
-        internal static string FailToGetSession {
-            get {
-                return ResourceManager.GetString("FailToGetSession", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fail to set document with exception: {0}.
-        /// </summary>
-        internal static string FailToSetDocument {
-            get {
-                return ResourceManager.GetString("FailToSetDocument", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fail to sign out user with exception: {0}.
-        /// </summary>
-        internal static string FailToSignOutUser {
-            get {
-                return ResourceManager.GetString("FailToSignOutUser", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fail to sign in user with exception: {0}.
-        /// </summary>
-        internal static string FailToSignUser {
-            get {
-                return ResourceManager.GetString("FailToSignUser", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fail to update document with exception: {0}.
-        /// </summary>
-        internal static string FailToUpdateDocument {
-            get {
-                return ResourceManager.GetString("FailToUpdateDocument", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fail to upload file on server with exception: {0}.
-        /// </summary>
-        internal static string FailToUploadFileOnServer {
-            get {
-                return ResourceManager.GetString("FailToUploadFileOnServer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to There is an internal server error..
         /// </summary>
         internal static string InternalServerError {
@@ -282,6 +138,177 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string SessionNotInitialized {
             get {
                 return ResourceManager.GetString("SessionNotInitialized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to add user with exception: {0}.
+        /// </summary>
+        internal static string UnableToAddUser {
+            get {
+                return ResourceManager.GetString("UnableToAddUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to attach document to session with exception: {0}.
+        /// </summary>
+        internal static string UnableToAttachDocumentToSession {
+            get {
+                return ResourceManager.GetString("UnableToAttachDocumentToSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to attach file to session with exception: {0}.
+        /// </summary>
+        internal static string UnableToAttachFileToSession {
+            get {
+                return ResourceManager.GetString("UnableToAttachFileToSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to change password for user with exception: {0}.
+        /// </summary>
+        internal static string UnableToChangePasswordUser {
+            get {
+                return ResourceManager.GetString("UnableToChangePasswordUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to commit session with exception: {0}.
+        /// </summary>
+        internal static string UnableToCommitException {
+            get {
+                return ResourceManager.GetString("UnableToCommitException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to create new session..
+        /// </summary>
+        internal static string UnableToCreateNewSession {
+            get {
+                return ResourceManager.GetString("UnableToCreateNewSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to delete document with exception: {0}.
+        /// </summary>
+        internal static string UnableToDeleteDocument {
+            get {
+                return ResourceManager.GetString("UnableToDeleteDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to delete user with exception: {0}.
+        /// </summary>
+        internal static string UnableToDeleteUser {
+            get {
+                return ResourceManager.GetString("UnableToDeleteUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to detach document from session with exception: {0}.
+        /// </summary>
+        internal static string UnableToDetachDocument {
+            get {
+                return ResourceManager.GetString("UnableToDetachDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to detach file from session with exception: {0}.
+        /// </summary>
+        internal static string UnableToDetachFileFromSession {
+            get {
+                return ResourceManager.GetString("UnableToDetachFileFromSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to download file from server with exception: {0}.
+        /// </summary>
+        internal static string UnableToDownloadFileFromServer {
+            get {
+                return ResourceManager.GetString("UnableToDownloadFileFromServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to get document with exception: {0}.
+        /// </summary>
+        internal static string UnableToGetDocument {
+            get {
+                return ResourceManager.GetString("UnableToGetDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to get session with exception: {0}.
+        /// </summary>
+        internal static string UnableToGetSession {
+            get {
+                return ResourceManager.GetString("UnableToGetSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to get user with exception: {0}.
+        /// </summary>
+        internal static string UnableToGetUser {
+            get {
+                return ResourceManager.GetString("UnableToGetUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to set document with exception: {0}.
+        /// </summary>
+        internal static string UnableToSetDocument {
+            get {
+                return ResourceManager.GetString("UnableToSetDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to sign out user with exception: {0}.
+        /// </summary>
+        internal static string UnableToSignOutUser {
+            get {
+                return ResourceManager.GetString("UnableToSignOutUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to sign in user with exception: {0}.
+        /// </summary>
+        internal static string UnableToSignUser {
+            get {
+                return ResourceManager.GetString("UnableToSignUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to update document with exception: {0}.
+        /// </summary>
+        internal static string UnableToUpdateDocument {
+            get {
+                return ResourceManager.GetString("UnableToUpdateDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to upload file on server with exception: {0}.
+        /// </summary>
+        internal static string UnableToUploadFileOnServer {
+            get {
+                return ResourceManager.GetString("UnableToUploadFileOnServer", resourceCulture);
             }
         }
     }

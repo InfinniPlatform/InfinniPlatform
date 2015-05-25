@@ -49,6 +49,7 @@
     <Compile Include="Formatting\FormBodyFormatter.cs" />
     <Compile Include="Formatting\IBodyFormatter.cs" />
     <Compile Include="Formatting\JsonBodyFormatter.cs" />
+    <Compile Include="Middleware\CurrentPrincipalTransmitter.cs" />
     <Compile Include="Middleware\EmptyRequestHandlerResult.cs" />
     <Compile Include="Middleware\ErrorRequestHandlerResult.cs" />
     <Compile Include="Middleware\HandlerRouting.cs" />

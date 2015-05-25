@@ -187,6 +187,49 @@ namespace InfinniPlatform.Sdk
             return GetCompleteUrl(GetRestTemplateChangePassword().ReplaceFormat("version", version));
         }
 
+
+        /// <summary>
+        ///  Сформировать роутинг для добавления нового пользователя
+        /// </summary>
+        /// <param name="version">Версия приложения</param>
+        /// <returns>Строка роутинга запросоа для добавления нового пользователя</returns>
+        public string BuildRestRoutingUrlAddUser(string version)
+        {
+            return GetCompleteUrl(GetRestTemplate()
+                .ReplaceFormat("version", version)
+                .ReplaceFormat("application","Administration")
+                .ReplaceFormat("documentType","User")
+                .ReplaceFormat("service","AddUser"));
+        }
+
+        /// <summary>
+        ///  Сформировать роутинг для удаления существующего пользователя  
+        /// </summary>
+        /// <param name="version">Версия приложения</param>
+        /// <returns>Строка роутинга запроса для удаления существующего пользователя</returns>
+        public string BuildRestRoutingUrlDeleteUser(string version)
+        {
+            return GetCompleteUrl(GetRestTemplate()
+                .ReplaceFormat("version", version)
+                .ReplaceFormat("application", "Administration")
+                .ReplaceFormat("documentType", "User")
+                .ReplaceFormat("service", "DeleteUser"));
+        }
+
+        /// <summary>
+        ///   Сформировать роутинг для получения существующего пользователя по имени
+        /// </summary>
+        /// <param name="version">Версия приложения</param>
+        /// <returns>Строка роутинга запроса для получения существующего пользователя</returns>
+        public string BuildRestRoutingUrlGetUser(string version)
+        {
+            return GetCompleteUrl(GetRestTemplate()
+                .ReplaceFormat("version", version)
+                .ReplaceFormat("application", "Administration")
+                .ReplaceFormat("documentType", "User")
+                .ReplaceFormat("service", "GetUser"));
+        }
+
         /// <summary>
         ///   Шаблон базового роутинга для обращения к конкретному приложению
         /// </summary>

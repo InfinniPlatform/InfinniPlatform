@@ -70,7 +70,7 @@ namespace InfinniPlatform.RestfulApi.Installers
             actionUnits.RegisterActionUnitDistributedStorage("getroles", "ActionUnitGetRoles");
             actionUnits.RegisterActionUnitDistributedStorage("getuserroles", "ActionUnitGetUserRoles");
             actionUnits.RegisterActionUnitDistributedStorage("getusers", "ActionUnitGetUsers");
-
+            actionUnits.RegisterActionUnitDistributedStorage("getuser","ActionUnitGetUser");
 
             actionUnits.RegisterActionUnitDistributedStorage("updateroles", "ActionUnitUpdateUserRoles");
             actionUnits.RegisterActionUnitDistributedStorage("setdefaultacl", "ActionUnitSetDefaultAcl");
@@ -262,6 +262,12 @@ namespace InfinniPlatform.RestfulApi.Installers
                         .WithAction(() => actionUnits.GetAction("getusers"))
                         )));
 
+            metadataConfiguration.RegisterWorkflow("authorization", "getuser",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("getuser"))
+                        )));
+
             metadataConfiguration.RegisterWorkflow("authorization", "updateacl",
                 f => f.FlowWithoutState(wc => wc
                     .Move(ws => ws
@@ -433,6 +439,7 @@ namespace InfinniPlatform.RestfulApi.Installers
                     .RegisterHandlerInstance("changepassword", insance => insance.RegisterExtensionPoint("Move", "changepassword"))
 
                     .RegisterHandlerInstance("getusers", insance => insance.RegisterExtensionPoint("Move", "getusers"))
+                    .RegisterHandlerInstance("getuser", insance => insance.RegisterExtensionPoint("Move", "getuser"))
                     .RegisterHandlerInstance("getuserroles", insance => insance.RegisterExtensionPoint("Move", "getuserroles"))
                     .RegisterHandlerInstance("getroles", insance => insance.RegisterExtensionPoint("Move", "getroles"))
                     .RegisterHandlerInstance("getacl", insance => insance.RegisterExtensionPoint("Move", "getacl"))

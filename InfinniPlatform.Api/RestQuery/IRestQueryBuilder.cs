@@ -39,7 +39,7 @@ namespace InfinniPlatform.Api.RestQuery
 		/// <param name="filePath">Путь к файлу</param>
 		/// <param name="cookieContainer">Контейнер Cookie</param>
 		/// <returns>Ответ на вызов сервиса</returns>
-		RestQueryResponse QueryPostFile(object linkedData, string filePath, CookieContainer cookieContainer);
+		RestQueryResponse QueryPostFile(object linkedData, string filePath, CookieContainer cookieContainer = null);
 
 	    /// <summary>
 	    ///   Выгрузить файл из указанного потока на сервер
@@ -48,7 +48,7 @@ namespace InfinniPlatform.Api.RestQuery
 	    /// <param name="file">Файловый поток</param>
 	    /// <param name="cookieContainer">Контейнер Cookie</param>
 	    /// <returns>Ответ на вызов сервиса</returns>
-	    RestQueryResponse QueryPostFile(object linkedData, Stream file, CookieContainer cookieContainer);
+	    RestQueryResponse QueryPostFile(object linkedData, Stream file, CookieContainer cookieContainer = null);
 
 		/// <summary>
 		///   Сформировать и выполнить запрос на агрегацию данных

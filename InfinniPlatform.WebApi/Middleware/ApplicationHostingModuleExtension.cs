@@ -63,13 +63,17 @@ namespace InfinniPlatform.WebApi.Middleware
         {
             var routeDictionary = context.GetRouteDictionary();
 
-            return new PathString( path.HasValue
+            Guid guid = Guid.NewGuid();
+            bool isInstanceRoute = Guid.TryParse(routeDictionary["instanceId"], out guid);
+
+
+            return new PathString(path.HasValue
                 ? path.Value
                     .ReplaceFormat("_version_", routeDictionary["version"])
                     .ReplaceFormat("_application_", routeDictionary["application"])
                     .ReplaceFormat("_documentType_", routeDictionary["documentType"])
-                    .ReplaceFormat("_service_", routeDictionary["service"]) 
-                    .ReplaceFormat("_instanceId_", routeDictionary["instanceId"]) : string.Empty);
+                    .ReplaceFormat("_service_", routeDictionary["service"])
+                    .ReplaceFormat("_instanceId_", isInstanceRoute ? routeDictionary["instanceId"] : string.Empty) :string.Empty);
         }
 
 

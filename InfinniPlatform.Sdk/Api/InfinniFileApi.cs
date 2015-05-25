@@ -58,7 +58,7 @@ namespace InfinniPlatform.Sdk.Api
                     throw new ArgumentException(Resources.ResultIsNotOfObjectType);
                 }
             }
-            throw new ArgumentException(string.Format(Resources.FailToUploadFileOnServer, response.GetErrorContent()));
+            throw new ArgumentException(string.Format(Resources.UnableToUploadFileOnServer, response.GetErrorContent()));
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace InfinniPlatform.Sdk.Api
                     throw new ArgumentException(Resources.ResultIsNotOfObjectType);
                 }
             }
-            throw new ArgumentException(string.Format(Resources.FailToDownloadFileFromServer, response.GetErrorContent()));
+            throw new ArgumentException(string.Format(Resources.UnableToDownloadFileFromServer, response.GetErrorContent()));
         }
     }
 }

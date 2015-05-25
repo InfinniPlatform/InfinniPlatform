@@ -1,4 +1,5 @@
 ﻿using InfinniPlatform.Api.ContextTypes;
+using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.RestApi.AuthApi;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
@@ -11,19 +12,26 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 		{
 			var aclApi = target.Context.GetComponent<AclApi>();
 
-			var user = target.Item.Document;
+			var user = target.Item.Document ?? target.Item;
 
 			aclApi.RemoveUser(user.UserName);
 
-			foreach (var userRole in user.UserRoles)
-			{
-				aclApi.RemoveUserRole(user.UserName, userRole.DisplayName);
-			}
+		    if (user.UserRoles != null)
+		    {
+		        foreach (var userRole in user.UserRoles)
+		        {
+		            aclApi.RemoveUserRole(user.UserName, userRole.DisplayName);
+		        }
+		    }
 
-			var api = target.Context.GetComponent<DocumentApi>();
+		    var api = target.Context.GetComponent<DocumentApi>();
 			api.DeleteDocument(AuthorizationStorageExtensions.AdministrationConfigId,"user",user.Id);
 
-			RestQueryApi.QueryPostJsonRaw("AdministrationCustomization", "Common", "OnRemoveUserEvent", null, target.Item.Document);
+            RestQueryApi.QueryPostJsonRaw("AdministrationCustomization", "Common", "OnRemoveUserEvent", null, user);
+
+		    target.Result = new DynamicWrapper();
+		    target.Result.IsValid = true;
+		    target.Result.ValidationMessage = string.Format("User \"{0}\" deleted successfully", user.UserName);
 		}
 	}
 }

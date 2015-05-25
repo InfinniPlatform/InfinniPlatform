@@ -32,7 +32,7 @@ namespace InfinniPlatform.Owin.Middleware
 		/// </summary>
 		public void RegisterGetRequestHandler(PathStringProvider path, Func<IOwinContext, IRequestHandlerResult> handler)
 		{
-			RegisterRequestHandler("GET", (context) => path, handler);
+            RegisterRequestHandler("GET", (context) => path, handler.CreateAuthenticatedRequest());
 		}
 
 		/// <summary>
@@ -40,7 +40,7 @@ namespace InfinniPlatform.Owin.Middleware
 		/// </summary>
         public void RegisterPostRequestHandler(PathStringProvider path, Func<IOwinContext, IRequestHandlerResult> handler)
 		{
-			RegisterRequestHandler("POST", context => path, handler);
+			RegisterRequestHandler("POST", context => path, handler.CreateAuthenticatedRequest());
 		}
 
 		/// <summary>
@@ -48,7 +48,7 @@ namespace InfinniPlatform.Owin.Middleware
 		/// </summary>
         public void RegisterDeleteRequestHandler(PathStringProvider path, Func<IOwinContext, IRequestHandlerResult> handler)
 		{
-			RegisterRequestHandler("DELETE", context => path, handler);
+			RegisterRequestHandler("DELETE", context => path, handler.CreateAuthenticatedRequest());
 		}
 
 		/// <summary>
@@ -56,7 +56,7 @@ namespace InfinniPlatform.Owin.Middleware
 		/// </summary>
         public void RegisterPutRequestHandler(PathStringProvider path, Func<IOwinContext, IRequestHandlerResult> handler)
 		{
-			RegisterRequestHandler("PUT", context => path, handler);
+			RegisterRequestHandler("PUT", context => path, handler.CreateAuthenticatedRequest());
 		}
 
 		/// <summary>
@@ -64,7 +64,7 @@ namespace InfinniPlatform.Owin.Middleware
 		/// </summary>
         public void RegisterGetRequestHandler(Func<IOwinContext, PathStringProvider> path, Func<IOwinContext, IRequestHandlerResult> handler)
 		{
-			RegisterRequestHandler("GET", path, handler);
+			RegisterRequestHandler("GET", path, handler.CreateAuthenticatedRequest());
 		}
 
 		/// <summary>
@@ -72,7 +72,7 @@ namespace InfinniPlatform.Owin.Middleware
 		/// </summary>
 		public void RegisterPostRequestHandler(Func<IOwinContext, PathStringProvider> path, Func<IOwinContext, IRequestHandlerResult> handler)
 		{
-			RegisterRequestHandler("POST", path, handler);
+			RegisterRequestHandler("POST", path, handler.CreateAuthenticatedRequest());
 		}
 
 		/// <summary>
@@ -80,7 +80,7 @@ namespace InfinniPlatform.Owin.Middleware
 		/// </summary>
         public void RegisterDeleteRequestHandler(Func<IOwinContext, PathStringProvider> path, Func<IOwinContext, IRequestHandlerResult> handler)
 		{
-			RegisterRequestHandler("DELETE", path, handler);
+			RegisterRequestHandler("DELETE", path, handler.CreateAuthenticatedRequest());
 		}
 
 		/// <summary>
@@ -116,9 +116,6 @@ namespace InfinniPlatform.Owin.Middleware
 			var requestPath = NormalizePath(request.Path);
 
 			HandlerRouting handlerInfo;
-
-//			var handlersRegistered = _handlers.Select(h => new KeyValuePair<string, HandlerRouting>(
-//                NormalizePath(h.ContextRouting.Invoke(context).PathString),h)).Where(h => h.Key == requestPath).ToList();
 
             var handlersRegistered = _handlers.Select(h => new KeyValuePair<PathStringProvider, HandlerRouting>(
                 h.ContextRouting.Invoke(context), h)).Where(h => NormalizePath(h.Key.PathString) == requestPath).ToList();

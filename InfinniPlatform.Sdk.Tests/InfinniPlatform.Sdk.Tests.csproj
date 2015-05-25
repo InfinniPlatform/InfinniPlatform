@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\Assemblies\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -53,6 +53,7 @@
     <Compile Include="FileApiTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SignInApiTest.cs" />
+    <Compile Include="AuthApiTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

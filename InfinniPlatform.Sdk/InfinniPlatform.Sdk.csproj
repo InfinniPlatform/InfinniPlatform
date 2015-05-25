@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\BaseApi.cs" />
+    <Compile Include="Api\InfinniAuthApi.cs" />
     <Compile Include="Api\InfinniSignInApi.cs" />
     <Compile Include="AttachedInstance.cs" />
     <Compile Include="FilterBuilder.cs" />
