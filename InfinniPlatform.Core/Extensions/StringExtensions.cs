@@ -19,7 +19,21 @@ namespace InfinniPlatform.Extensions
         /// </summary>
         public static string ToTranslit(this string source)
         {
-            return Words.Aggregate(source, (current, pair) => current.Replace(pair.Key, pair.Value));
+            foreach (var c in source.Where(c => !Char.IsLetterOrDigit(c) && c != '_'))
+            {
+                source = source.Replace(c, '_');
+            }
+
+            var translated = Words.Aggregate(source, (current, word) => current.Replace(word.Key, word.Value));
+            translated = translated.TrimStart(' ')
+                                   .TrimEnd('_');
+
+            while (translated.Contains("__"))
+            {
+                translated = translated.Replace("__", "_");
+            }
+
+            return translated;
         }
 
         private static readonly Dictionary<string, string> Words = new Dictionary<string, string>
