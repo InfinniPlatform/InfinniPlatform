@@ -38,10 +38,10 @@ namespace InfinniPlatform.WebApi.Middleware
             int versionNumber = -1;
 
             var versionApp = routeValues.Any() ? int.TryParse(routeValues[0], out versionNumber) ? routeValues[0] : Resources.UnsatisfiedVersionNumber : string.Empty;
-            var application = routeValues.Count() > 1 ? routeValues[1] : "Unknown";
-            var documentType = routeValues.Count() > 2 ? routeValues[2] : "Unknown";
-            var service = routeValues.Count() > 3 ? routeValues[3] : "Unknown";
-            var instanceId = routeValues.Count() > 3 ? routeValues[3] : "Unknown";
+            var application = routeValues.Count() > 1 ? routeValues[1] : Resources.UnknownRouteSection;
+            var documentType = routeValues.Count() > 2 ? routeValues[2] : Resources.UnknownRouteSection;
+            var service = routeValues.Count() > 3 ? routeValues[3] : Resources.UnknownRouteSection;
+            var instanceId = routeValues.Count() > 3 ? routeValues[3] : Resources.UnknownRouteSection;
 
             return new Dictionary<string, string>()
             {
@@ -50,6 +50,31 @@ namespace InfinniPlatform.WebApi.Middleware
                 {"documentType",documentType},                
                 {"service",service},
                 {"instanceId",instanceId}
+            };
+        }
+
+        public static Dictionary<string, string> GetAccessRouteDictionary(this IOwinContext context)
+        {
+            var routeValues = context.Request.Path.HasValue
+                ? context.Request.Path.Value.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries) : new string[] { };
+
+            int versionNumber = -1;
+
+            var versionApp = routeValues.Any() ? int.TryParse(routeValues[0], out versionNumber) ? routeValues[0] : Resources.UnsatisfiedVersionNumber : string.Empty;
+            var application = routeValues.Count() > 1 ? routeValues[1] : Resources.UnknownRouteSection;
+            var documentType = routeValues.Count() > 2 ? routeValues[2] : Resources.UnknownRouteSection;
+            var service = routeValues.Count() > 3 ? routeValues[3] : Resources.UnknownRouteSection;
+            var instanceId = routeValues.Count() > 4 ? routeValues[4] : Resources.UnknownRouteSection;
+            var userName = routeValues.Count() > 5 ? routeValues[5] : Resources.UnknownRouteSection;
+
+            return new Dictionary<string, string>()
+            {
+                {"version",versionApp },
+                {"application",application},
+                {"documentType",documentType},                
+                {"service",service},
+                {"instanceId",instanceId},
+                {"userName", userName}
             };
         } 
 

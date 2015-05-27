@@ -231,6 +231,34 @@ namespace InfinniPlatform.Sdk
         }
 
         /// <summary>
+        ///   Сформировать роутинг для предоставления прав пользователю
+        /// </summary>
+        /// <param name="version">Версия приложения</param>
+        /// <returns>Роутинг запроса</returns>
+        public string BuildRestRoutingUrlGrantAccess(string version)
+        {
+            return GetCompleteUrl(GetRestTemplate()
+                .ReplaceFormat("version", version)
+                .ReplaceFormat("application", "Administration")
+                .ReplaceFormat("documentType", "User")
+                .ReplaceFormat("service", "GrantAccess"));
+        }
+
+        /// <summary>
+        ///   Сформировать роутинг для установки запрета прав
+        /// </summary>
+        /// <param name="version">Версия приложения</param>
+        /// <returns>Роутинг запроса</returns>
+        public string BuildRestRoutingUrlDenyAccess(string version)
+        {
+            return GetCompleteUrl(GetRestTemplate()
+                .ReplaceFormat("version", version)
+                .ReplaceFormat("application", "Authorization")
+                .ReplaceFormat("documentType", "User")
+                .ReplaceFormat("service", "DenyAccess"));
+        }
+
+        /// <summary>
         ///   Шаблон базового роутинга для обращения к конкретному приложению
         /// </summary>
         /// <returns>Базовая часть шаблона строки роутинга</returns>

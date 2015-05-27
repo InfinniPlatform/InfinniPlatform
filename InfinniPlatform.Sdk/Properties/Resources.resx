@@ -201,4 +201,7 @@
   <data name="UnableToGetUser" xml:space="preserve">
     <value>Unable to get user with exception: {0}</value>
   </data>
+  <data name="UnableToGrantAccessToUser" xml:space="preserve">
+    <value>Unable to grant access to user with exception: {0}</value>
+  </data>
 </root>

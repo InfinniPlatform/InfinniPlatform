@@ -60,5 +60,61 @@ namespace InfinniPlatform.Sdk.Api
                 f => f.AddCriteria(cr => cr.Property("UserName").IsEquals(userName)), 0, 1).FirstOrDefault();            
         }
 
+        /// <summary>
+        ///   Предоставить доступ пользователю к указанному ресурсу
+        /// </summary>
+        /// <param name="userName">Логин пользователя</param>
+        /// <param name="application">Приложение</param>
+        /// <param name="documentType">Тип документа</param>
+        /// <param name="service">Наименование сервиса</param>
+        /// <param name="instanceId">Идентификатор экземпляра сущности</param>
+        /// <returns>Признак успешной установки прав</returns>
+        public dynamic GrantAccess(string userName, string application, string documentType = null, string service = null, string instanceId = null)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            dynamic body = new
+            {
+                UserName = userName,
+                Application = application,
+                DocumentType = documentType,
+                Service = service,
+                InstanceId = instanceId
+            };
+
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlGrantAccess(Version), body);
+
+            return ProcessAsObjectResult(response,
+                string.Format((string)Resources.UnableToGrantAccessToUser, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///  Запретить доступ пользователю к указанному ресурсу 
+        /// </summary>
+        /// <param name="userName">Логин пользователя</param>
+        /// <param name="application">Приложение</param>
+        /// <param name="documentType">Тип документа</param>
+        /// <param name="service">Наименование се</param>
+        /// <param name="instanceId"></param>
+        /// <returns></returns>
+        public dynamic DenyAccess(string userName, string application, string documentType = null, string service = null,
+            string instanceId = null)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            dynamic body = new
+            {
+                UserName = userName,
+                Application = application,
+                DocumentType = documentType,
+                Service = service,
+                InstanceId = instanceId
+            };
+
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlDenyAccess(Version), body);
+
+            return ProcessAsObjectResult(response,
+                string.Format((string)Resources.UnableToGrantAccessToUser, response.GetErrorContent()));
+        }
     }
 }

@@ -51,6 +51,9 @@ namespace InfinniPlatform.RestfulApi.Auth
 			                              AuthorizationStorageExtensions.AclStore, instance);
 
 			target.Context.GetComponent<SecurityComponent>().UpdateAcl();
+
+		    target.Result = new DynamicWrapper();
+		    target.Result.IsValid = true;
 		}
 	}
 }

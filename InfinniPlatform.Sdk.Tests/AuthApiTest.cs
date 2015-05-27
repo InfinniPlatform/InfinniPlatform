@@ -25,16 +25,15 @@ namespace InfinniPlatform.Sdk.Tests
         {
             _api = new InfinniAuthApi(InfinniSessionServer, InfinniSessionPort, InfinniSessionVersion);
             _signInApi = new InfinniSignInApi(InfinniSessionServer, InfinniSessionPort, InfinniSessionVersion);
+            _signInApi.SignInInternal("Admin", "Admin", false);
+            _api.CookieContainer = _signInApi.CookieContainer;
+
         }
 
 
         [Test]
         public void ShouldAddAndDeleteUser()
         {
-            _signInApi.SignInInternal("Admin", "Admin", false);
-
-            _api.CookieContainer = _signInApi.CookieContainer;
-
             var user =  "NewUser_" + Guid.NewGuid();
 
             dynamic result = JsonConvert.DeserializeObject<ExpandoObject>(_api.AddUser(user, user).Content.ToString());
@@ -47,5 +46,30 @@ namespace InfinniPlatform.Sdk.Tests
 
             Assert.AreEqual(true, result.IsValid);
         }
+
+        [Test]
+        public void ShouldGrantAcl()
+        {
+            var user = "NewUser_" + Guid.NewGuid();
+
+            _api.AddUser(user, user);
+
+            dynamic accessResult = JsonConvert.DeserializeObject<ExpandoObject>(_api.GrantAccess(user, "Gameshop", "UserProfile", "GetDocument").ToString());
+
+            Assert.AreEqual(accessResult.IsValid,true);
+        }
+
+        [Test]
+        public void ShouldDenyAcl()
+        {
+            var user = "NewUser_" + Guid.NewGuid();
+
+            _api.AddUser(user, user);
+
+            dynamic accessResult = JsonConvert.DeserializeObject<ExpandoObject>(_api.DenyAccess(user, "Gameshop", "UserProfile", "GetDocument").ToString());
+
+            Assert.AreEqual(accessResult.IsValid,true);
+        }
+
     }
 }

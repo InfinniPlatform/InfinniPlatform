@@ -60,6 +60,8 @@ namespace InfinniPlatform.WebApi.Middleware
             RegisterPostRequestHandler(GetRestTemplateSignIn,InvokeSignInService);
             RegisterPostRequestHandler(GetRestTemplateSignOut,InvokeSignOutService);
             RegisterPostRequestHandler(GetRestTemplateChangePassword, InvokeChangePassword);
+
+            RegisterPostRequestHandler(GetRestTemplateGrantAccess, InvokeGrantAccessUser);
         }
 
         private PathString GetVersionPath()
@@ -143,7 +145,15 @@ namespace InfinniPlatform.WebApi.Middleware
         {
             return context.FormatRoutePath(new PathString(GetVersionPath() + "/changepassword")).Create(Priority.Higher);
         }
- 
+
+        private PathStringProvider GetRestTemplateGrantAccess(IOwinContext context)
+        {
+            return
+                context.FormatRoutePath(new PathString(GetVersionPath() + "/Administration/User/GrantAccess"))
+                    .Create(Priority.Higher);
+        }
+
+
         private static IRequestHandlerResult InvokeFileUpload(IOwinContext context)
         {
             NameValueCollection nameValueCollection = new NameValueCollection();
@@ -242,6 +252,31 @@ namespace InfinniPlatform.WebApi.Middleware
 
             return new ValueRequestHandlerResult(RestQueryApi.QueryPostJsonRaw(
                 routeDictionary["application"],routeDictionary["documentType"],routeDictionary["service"],null,body));
+        }
+
+        private static IRequestHandlerResult InvokeGrantAccessUser(IOwinContext context)
+        {
+            dynamic body = JObject.Parse(ReadRequestBody(context).ToString());
+
+            if (body.Application != null && body.UserName != null && body.Application.ToString() != string.Empty && body.UserName.ToString() != string.Empty)
+            {
+                return new ValueRequestHandlerResult(new AclApi().GrantAccess(
+                    body.UserName.ToString(),
+                    body.Application.ToString(),
+                    body.DocumentType != null ? body.DocumentType.ToString() : null,
+                    body.Service != null ? body.Service.ToString() : null,
+                    body.InstanceId != null ? body.InstanceId.ToString() : null));
+            }
+
+            return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
+        }
+
+        private static IRequestHandlerResult InvokeDenyAccessUser(IOwinContext context)
+        {
+            var routeDictionary = context.GetAccessRouteDictionary();
+
+            return new ValueRequestHandlerResult(new AclApi().DenyAccess(
+                routeDictionary["userName"], routeDictionary["application"], routeDictionary["documentType"], routeDictionary["service"], routeDictionary["instanceId"]));
         }
 
         private static IRequestHandlerResult InvokeSessionService(IOwinContext context)

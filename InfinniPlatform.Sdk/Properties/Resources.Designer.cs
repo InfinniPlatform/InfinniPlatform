@@ -268,6 +268,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to grant access to user with exception: {0}.
+        /// </summary>
+        internal static string UnableToGrantAccessToUser {
+            get {
+                return ResourceManager.GetString("UnableToGrantAccessToUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to set document with exception: {0}.
         /// </summary>
         internal static string UnableToSetDocument {

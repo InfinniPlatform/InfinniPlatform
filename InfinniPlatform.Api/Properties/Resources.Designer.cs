@@ -970,6 +970,15 @@ namespace InfinniPlatform.Api.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unknown.
+        /// </summary>
+        public static string UnknownRouteSection {
+            get {
+                return ResourceManager.GetString("UnknownRouteSection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to UnsatifiedAppVersion.
         /// </summary>
         public static string UnsatisfiedVersionNumber {
