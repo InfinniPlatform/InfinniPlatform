@@ -64,6 +64,12 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
 			Assert.IsNotNull(resultBlob);
 
+
+		    dynamic storedDocument = new DocumentApi().GetDocument(_configurationId, _documentId, cr => cr.AddCriteria(f => f.Property("Id").IsEquals(testDocument.Id)) ,0,1).FirstOrDefault();
+
+		    resultBlob = new UploadApi().DownloadBinaryContent(storedDocument.ContentField.Info.ContentId);
+
+            Assert.IsNotNull(resultBlob);
 		}
 
 		private void CreateTestConfig()

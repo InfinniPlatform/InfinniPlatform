@@ -53,5 +53,18 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 																														FieldName = fieldName
 				                                                                                                    });
 		}
+
+        /// <summary>
+        ///   Загрузить бинарный контент для указанного идентификатора ссылки на бинарный контент
+        /// </summary>
+        /// <param name="contentId">Идентификатор ссылки на бинарный контент</param>
+        /// <returns>Данные бинарного контента</returns>
+	    public dynamic DownloadBinaryContent(string contentId)
+        {
+            return RestQueryApi.QueryGetUrlEncodedData("RestfulApi", "configuration", "downloadbinarycontent", new
+            {
+                ContentId = contentId
+            });
+        }
 	}
 }

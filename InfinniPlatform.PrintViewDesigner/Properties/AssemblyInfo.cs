@@ -1,9 +1,19 @@
-﻿// 1
+﻿
+
+
+
+
+
+
+
+
+
+// 1
 // 0
 // 0
-// 5
-// f904396b-47bf-4d38-b126-f9e832090889
-// 8F89FA59E6A1DFDFBB9901444A665B17
+// 0
+// 7edbb6cc-a0e4-4b16-bbc0-51b0a29f5775
+// 88C0D2E5126BF49FBFB84625894877A1
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -16,8 +26,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
-[assembly: Guid("f904396b-47bf-4d38-b126-f9e832090889")]
-[assembly: AssemblyVersion("1.0.0.5")]
-[assembly: AssemblyFileVersion("1.0.0.5")]
+[assembly: Guid("7edbb6cc-a0e4-4b16-bbc0-51b0a29f5775")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: InternalsVisibleTo("InfinniPlatform.PrintViewDesigner.Tests")]
+
 [assembly: AssemblyDescription("InfinniPlatform.PrintViewDesigner")]
