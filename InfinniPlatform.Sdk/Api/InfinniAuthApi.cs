@@ -116,5 +116,69 @@ namespace InfinniPlatform.Sdk.Api
             return ProcessAsObjectResult(response,
                 string.Format((string)Resources.UnableToGrantAccessToUser, response.GetErrorContent()));
         }
+
+
+        /// <summary>
+        /// Установить пользователю указанное значение для claim указанного типа
+        /// </summary>
+        /// <param name="userName">Логин пользователя</param>
+        /// <param name="claimType">Тип claim</param>
+        /// <param name="claimValue">Значение claim для указанного типа claim</param>
+        /// <returns>Результат запроса добавления утверждения</returns>
+        public dynamic AddUserClaim(string userName, string claimType, string claimValue)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            dynamic body = new
+            {
+                UserName = userName,
+                ClaimType = claimType,
+                ClaimValue = claimValue
+            };
+
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingAddUserClaim(Version), body);
+
+            return ProcessAsObjectResult(response,
+                string.Format(Resources.UnableToAddUserClaim, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///Получить значение утверждение относительно пользователя
+        /// </summary>
+        /// <param name="userName">Логин пользователя</param>
+        /// <param name="claimType">Тип утверждениия относительно пользователя</param>
+        /// <returns>Значение утверждения относительно пользователя</returns>
+        public dynamic GetUserClaim(string userName, string claimType)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingGetUserClaim(Version, userName, claimType));
+
+            return ProcessAsObjectResult(response,
+                string.Format(Resources.UnableToGetUserClaim, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        /// Удалить у пользователя утверждение указанного типа
+        /// </summary>
+        /// <param name="userName">Логин пользователя</param>
+        /// <param name="claimType">Тип утверждения относительно пользователя</param>
+        /// <returns>Результат запроса удаления утверждения</returns>
+        public dynamic RemoveUserClaim(string userName, string claimType)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            dynamic body = new
+            {
+                UserName = userName,
+                ClaimType = claimType,
+            };
+
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingRemoveUserClaim(Version), body);
+
+            return ProcessAsObjectResult(response,
+                string.Format(Resources.UnableToRemoveUserClaim, response.GetErrorContent()));
+        }
+
     }
 }

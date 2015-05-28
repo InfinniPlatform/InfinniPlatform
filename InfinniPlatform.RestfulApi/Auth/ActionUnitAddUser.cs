@@ -33,7 +33,9 @@ namespace InfinniPlatform.RestfulApi.Auth
 										   PasswordHash = new CustomApplicationUserPasswordHasher(target.Context).HashPassword(userParams.Password)
 					                   });
 				//добавляем доступ на чтение пользователей
-				target.Context.GetComponent<SecurityComponent>().UpdateAcl();
+                var securityComponent = target.Context.GetComponent<CachedSecurityComponent>();
+
+				securityComponent.UpdateUsers();
 				target.Result = new DynamicWrapper();
 				target.Result.ValidationMessage = "User created successfully";
 				target.Result.IsValid = true;

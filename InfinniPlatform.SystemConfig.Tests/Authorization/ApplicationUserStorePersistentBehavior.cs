@@ -138,7 +138,7 @@ namespace InfinniPlatform.SystemConfig.Tests.Authorization
 			Assert.Throws<ArgumentException>(() => storage.RemoveClaimType(claimType));
 
 			//should delete user claim
-			storage.RemoveUserClaim(userWithClaim, claimType, "1");
+			storage.RemoveUserClaim(userWithClaim, claimType);
 
 			var userWithoutClaim = storage.FindUserByName(userWithClaim.UserName);
 			Assert.AreEqual(userWithoutClaim.Claims.Count(),0);

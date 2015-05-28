@@ -62,7 +62,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
 
 			if (configurationId.ToLowerInvariant() == "authorization")
 			{
-				SecurityComponent.WarmUpAcl();
+				CachedSecurityComponent.WarmUpAcl();
 			}
 		}
 

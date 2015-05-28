@@ -74,8 +74,7 @@ namespace InfinniPlatform.Api.Security
 		/// </summary>
 		/// <param name="user">Сведения о пользователе системы.</param>
 		/// <param name="claimType">Уникальный идентификатор типа утверждения.</param>
-		/// <param name="claimValue">Значение утверждения заданного типа.</param>
-		void RemoveUserClaim(ApplicationUser user, string claimType, string claimValue);
+		void RemoveUserClaim(ApplicationUser user, string claimType);
 
 		/// <summary>
 		/// Добавляет пользователю имя входа у внешнего провайдера.

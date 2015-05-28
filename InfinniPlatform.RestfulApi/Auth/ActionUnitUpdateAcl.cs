@@ -15,7 +15,7 @@ namespace InfinniPlatform.RestfulApi.Auth
     {
         public void Action(IApplyContext target)
         {
-			target.Context.GetComponent<SecurityComponent>().UpdateAcl();
+			target.Context.GetComponent<CachedSecurityComponent>().UpdateAcl();
         }
     }
 }

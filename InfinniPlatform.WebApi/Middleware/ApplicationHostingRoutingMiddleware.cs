@@ -62,6 +62,12 @@ namespace InfinniPlatform.WebApi.Middleware
             RegisterPostRequestHandler(GetRestTemplateChangePassword, InvokeChangePassword);
 
             RegisterPostRequestHandler(GetRestTemplateGrantAccess, InvokeGrantAccessUser);
+            RegisterPostRequestHandler(GetRestTemplateDenyAccess, InvokeDenyAccessUser);
+
+            RegisterPostRequestHandler(GetRestTemplateAddUserClaim, InvokeAddUserClaim);
+            RegisterPostRequestHandler(GetRestTemplateRemoveUserClaim, InvokeRemoveUserClaim);
+            
+            RegisterGetRequestHandler(GetRestTemplateGetUserClaim, InvokeGetUserClaim);
         }
 
         private PathString GetVersionPath()
@@ -153,6 +159,31 @@ namespace InfinniPlatform.WebApi.Middleware
                     .Create(Priority.Higher);
         }
 
+        private PathStringProvider GetRestTemplateDenyAccess(IOwinContext context)
+        {
+            return
+                context.FormatRoutePath(new PathString(GetVersionPath() + "/Administration/User/DenyAccess"))
+                    .Create(Priority.Higher);
+        }
+
+        private PathStringProvider GetRestTemplateAddUserClaim(IOwinContext context)
+        {
+            return context.FormatRoutePath(new PathString(GetVersionPath() + "/Administration/User/AddUserClaim"))
+                .Create(Priority.Higher);
+        }
+
+        private PathStringProvider GetRestTemplateRemoveUserClaim(IOwinContext context)
+        {
+            return context.FormatRoutePath(new PathString(GetVersionPath() + "/Administration/User/RemoveUserClaim"))
+                .Create(Priority.Higher);
+        }
+
+        private PathStringProvider GetRestTemplateGetUserClaim(IOwinContext context)
+        {
+            return
+                context.FormatClaimRoutePath(new PathString(GetRestTemplate(context).PathString + "/_userName_/_claimType_"))
+                    .Create(Priority.Higher);
+        }
 
         private static IRequestHandlerResult InvokeFileUpload(IOwinContext context)
         {
@@ -273,10 +304,50 @@ namespace InfinniPlatform.WebApi.Middleware
 
         private static IRequestHandlerResult InvokeDenyAccessUser(IOwinContext context)
         {
-            var routeDictionary = context.GetAccessRouteDictionary();
+            dynamic body = JObject.Parse(ReadRequestBody(context).ToString());
 
-            return new ValueRequestHandlerResult(new AclApi().DenyAccess(
-                routeDictionary["userName"], routeDictionary["application"], routeDictionary["documentType"], routeDictionary["service"], routeDictionary["instanceId"]));
+            if (body.Application != null && body.UserName != null && body.Application.ToString() != string.Empty && body.UserName.ToString() != string.Empty)
+            {
+                return new ValueRequestHandlerResult(new AclApi().GrantAccess(
+                    body.UserName.ToString(),
+                    body.Application.ToString(),
+                    body.DocumentType != null ? body.DocumentType.ToString() : null,
+                    body.Service != null ? body.Service.ToString() : null,
+                    body.InstanceId != null ? body.InstanceId.ToString() : null));
+            }
+
+            return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
+        }
+
+        private static IRequestHandlerResult InvokeAddUserClaim(IOwinContext context)
+        {
+            dynamic body = JObject.Parse(ReadRequestBody(context).ToString());
+
+            if (body.UserName != null && body.ClaimType != null && body.ClaimValue != null)
+            {
+                return new ValueRequestHandlerResult(new AclApi().AddClaim(body.UserName.ToString(), body.ClaimType.ToString(), body.ClaimValue.ToString()));
+            }
+            
+            return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
+        }
+
+        private static IRequestHandlerResult InvokeGetUserClaim(IOwinContext context)
+        {
+            var routeDictionary = context.GetClaimRouteDictionary();
+
+            return new ValueRequestHandlerResult(new AclApi().GetClaim(routeDictionary["userName"],routeDictionary["claimType"]));
+        }
+
+        private static IRequestHandlerResult InvokeRemoveUserClaim(IOwinContext context)
+        {
+            dynamic body = JObject.Parse(ReadRequestBody(context).ToString());
+
+            if (body.UserName != null && body.ClaimType != null)
+            {
+                return new ValueRequestHandlerResult(new AclApi().RemoveClaim(body.UserName.ToString(), body.ClaimType.ToString()));
+            }
+
+            return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
         }
 
         private static IRequestHandlerResult InvokeSessionService(IOwinContext context)

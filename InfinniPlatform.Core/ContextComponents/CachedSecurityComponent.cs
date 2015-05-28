@@ -14,7 +14,7 @@ namespace InfinniPlatform.ContextComponents
 	/// <summary>
 	///   Компонент безопасности глобалього контекста
 	/// </summary>
-	public sealed class SecurityComponent : ISecurityComponent
+	public sealed class CachedSecurityComponent : ISecurityComponent
 	{
 		private static IEnumerable<dynamic> _roles;
 		private static IEnumerable<dynamic> _acl;

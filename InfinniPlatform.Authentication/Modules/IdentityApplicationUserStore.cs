@@ -147,7 +147,7 @@ namespace InfinniPlatform.Authentication.Modules
 
 		public Task RemoveClaimAsync(IdentityApplicationUser user, Claim claim)
 		{
-			return InvokeUserStore((s, u, v) => s.RemoveUserClaim(u, v.Type, v.Value), user, claim);
+			return InvokeUserStore((s, u, v) => s.RemoveUserClaim(u, v.Type), user, claim);
 		}
 
 

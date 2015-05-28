@@ -253,9 +253,50 @@ namespace InfinniPlatform.Sdk
         {
             return GetCompleteUrl(GetRestTemplate()
                 .ReplaceFormat("version", version)
-                .ReplaceFormat("application", "Authorization")
+                .ReplaceFormat("application", "Administration")
                 .ReplaceFormat("documentType", "User")
                 .ReplaceFormat("service", "DenyAccess"));
+        }
+
+        /// <summary>
+        ///   Сформировать роутинг для установки значения утверждения относительно пользователя (Claim)
+        /// </summary>
+        /// <param name="version">Версия приложения</param>
+        /// <returns>Роутинг запроса</returns>
+        public string BuildRestRoutingAddUserClaim(string version)
+        {
+            return GetCompleteUrl(GetRestTemplate()
+                .ReplaceFormat("version", version)
+                .ReplaceFormat("application", "Administration")
+                .ReplaceFormat("documentType", "User")
+                .ReplaceFormat("service", "AddUserClaim")
+                );
+        }
+
+        public string BuildRestRoutingGetUserClaim(string version, string userName, string claimType)
+        {
+            return GetCompleteUrl(GetUserClaimTemplate()
+                .ReplaceFormat("version",version)
+                .ReplaceFormat("application","Administration")
+                .ReplaceFormat("documentType","User")
+                .ReplaceFormat("service","GetUserClaim")
+                .ReplaceFormat("userName",userName)
+                .ReplaceFormat("claimType",claimType));
+        }
+
+        /// <summary>
+        ///   Сформировать роутинг для удаления значения утверждения относительно пользователя (Claim)
+        /// </summary>
+        /// <param name="version">Версия приложения</param>
+        /// <returns>Роутинг запроса</returns>
+        public string BuildRestRoutingRemoveUserClaim(string version)
+        {
+            return GetCompleteUrl(GetRestTemplate()
+                .ReplaceFormat("version", version)
+                .ReplaceFormat("application", "Administration")
+                .ReplaceFormat("documentType", "User")
+                .ReplaceFormat("service", "RemoveUserClaim")
+                );
         }
 
         /// <summary>
@@ -274,6 +315,15 @@ namespace InfinniPlatform.Sdk
         private string GetRestTemplate()
         {
             return GetBaseApplicationPath() + "/{documentType}/{service}";
+        }
+
+        /// <summary>
+        ///   Шаблон роутинга для получения утверждения относительно пользователя
+        /// </summary>
+        /// <returns>Шаблон роутинга</returns>
+        private string GetUserClaimTemplate()
+        {
+            return GetRestTemplate() + "/{userName}/{claimType}";
         }
 
         /// <summary>

@@ -204,4 +204,13 @@
   <data name="UnableToGrantAccessToUser" xml:space="preserve">
     <value>Unable to grant access to user with exception: {0}</value>
   </data>
+  <data name="UnableToAddUserClaim" xml:space="preserve">
+    <value>Unable to add user claim with exception: {0}</value>
+  </data>
+  <data name="UnableToRemoveUserClaim" xml:space="preserve">
+    <value>Unable to remove user claim with exception:{0}</value>
+  </data>
+  <data name="UnableToGetUserClaim" xml:space="preserve">
+    <value>Unable to get user claim with exception: {0}</value>
+  </data>
 </root>

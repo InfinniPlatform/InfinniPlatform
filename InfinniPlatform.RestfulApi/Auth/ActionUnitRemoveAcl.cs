@@ -18,7 +18,7 @@ namespace InfinniPlatform.RestfulApi.Auth
 		{
 			var storage = new ApplicationUserStorePersistentStorage();
 			storage.RemoveAcl(target.Item.AclId);
-			target.Context.GetComponent<SecurityComponent>().UpdateAcl();
+			target.Context.GetComponent<CachedSecurityComponent>().UpdateAcl();
 		}
 	}
 }

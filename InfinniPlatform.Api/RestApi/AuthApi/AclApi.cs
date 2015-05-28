@@ -143,14 +143,45 @@ namespace InfinniPlatform.Api.RestApi.AuthApi
         /// <param name="userName">Пользователь</param>
         /// <param name="claimType">Тип утверждения</param>
         /// <param name="claimValue">Значение утверждения</param>
-        public void AddClaim(string userName, string claimType, string claimValue)
+        public dynamic AddClaim(string userName, string claimType, string claimValue)
         {
-            RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "addclaim", null, new
+            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "addclaim", null, new
                 {
                     UserName = userName,
                     ClaimType = claimType,
                     ClaimValue = claimValue
-                });
+                }).ToDynamic();
+        }
+
+        /// <summary>
+        ///   Удалить значение утверждения для пользователя
+        /// </summary>
+        /// <param name="userName">Пользователь</param>
+        /// <param name="claimType">Тип утверждения</param>
+        /// <returns>Результат удаления</returns>
+	    public dynamic RemoveClaim(string userName, string claimType)
+        {
+            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "removeclaim", null, new
+            {
+                UserName = userName,
+                ClaimType = claimType
+            }).ToDynamic();
+        }
+
+        /// <summary>
+        /// Получить значение утверждения относительно пользователя
+        /// </summary>
+        /// <param name="userName">Логин пользователя</param>
+        /// <param name="claimType">Тип утверждения</param>
+        /// <returns>Значение утверждения относительно пользователя</returns>
+	    public dynamic GetClaim(string userName, string claimType)
+        {
+            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "getclaim", null, new
+            {
+                UserName = userName,
+                ClaimType = claimType
+            }).ToDynamic();
+            
         }
 
 	    /// <summary>

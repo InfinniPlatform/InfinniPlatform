@@ -16,16 +16,26 @@ namespace InfinniPlatform.Sdk
         }
 
 
-        public RestQueryResponse QueryGet(string url, string arguments)
+        public RestQueryResponse QueryGet(string url, string arguments = null)
         {
             var restClient = new RestClient(url);
 
             restClient.CookieContainer = _cookieContainer;
 
             restClient.Timeout = 1000 * 60 * 200;
-            
-            IRestResponse restResponse = restClient.Get(new RestRequest("?{argument}") { RequestFormat = DataFormat.Json }
-                                                            .AddUrlSegment("argument", arguments));
+
+            IRestRequest request = null;
+            if (arguments != null)
+            {
+                request = new RestRequest("?{argument}") {RequestFormat = DataFormat.Json}
+                    .AddUrlSegment("argument", arguments);
+            }
+            else
+            {
+                request = new RestRequest() { RequestFormat = DataFormat.Json };
+            }
+
+            IRestResponse restResponse = restClient.Get(request);
 
             return restResponse.ToQueryResponse();
         }

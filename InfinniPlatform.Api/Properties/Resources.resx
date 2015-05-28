@@ -447,4 +447,10 @@
   <data name="UnknownRouteSection" xml:space="preserve">
     <value>Unknown</value>
   </data>
+  <data name="ClaimRemovedSuccessfully" xml:space="preserve">
+    <value>Claim removed successfully</value>
+  </data>
+  <data name="UserToRemoveClaimNotFound" xml:space="preserve">
+    <value>User "{0}" not found.</value>
+  </data>
 </root>

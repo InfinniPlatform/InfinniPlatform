@@ -60,6 +60,8 @@ namespace InfinniPlatform.RestfulApi.Installers
             actionUnits.RegisterActionUnitDistributedStorage("adduserrole", "ActionUnitAddUserRole");
             actionUnits.RegisterActionUnitDistributedStorage("addrole", "ActionUnitAddRole");
             actionUnits.RegisterActionUnitDistributedStorage("addclaim", "ActionUnitAddClaim");
+            actionUnits.RegisterActionUnitDistributedStorage("removeclaim","ActionUnitRemoveClaim");
+            actionUnits.RegisterActionUnitDistributedStorage("getclaim", "ActionUnitGetClaim");
 
             actionUnits.RegisterActionUnitDistributedStorage("removeuser", "ActionUnitRemoveUser");
             actionUnits.RegisterActionUnitDistributedStorage("removeuserrole", "ActionUnitRemoveUserRole");
@@ -206,6 +208,18 @@ namespace InfinniPlatform.RestfulApi.Installers
                 f => f.FlowWithoutState(wc => wc
                     .Move(ws => ws
                         .WithAction(() => actionUnits.GetAction("addclaim"))
+                        )));
+
+            metadataConfiguration.RegisterWorkflow("authorization", "removeclaim",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("removeclaim"))
+                        )));
+
+            metadataConfiguration.RegisterWorkflow("authorization", "getclaim",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("getclaim"))
                         )));
 
             metadataConfiguration.RegisterWorkflow("authorization", "removeuser",
@@ -428,6 +442,8 @@ namespace InfinniPlatform.RestfulApi.Installers
                     .RegisterHandlerInstance("addrole", insance => insance.RegisterExtensionPoint("Move", "addrole"))
                     .RegisterHandlerInstance("adduserrole", insance => insance.RegisterExtensionPoint("Move", "adduserrole"))
                     .RegisterHandlerInstance("addclaim", insance => insance.RegisterExtensionPoint("Move", "addclaim"))
+                    .RegisterHandlerInstance("removeclaim", insance => insance.RegisterExtensionPoint("Move", "removeclaim"))
+                    .RegisterHandlerInstance("getclaim", insance => insance.RegisterExtensionPoint("Move", "getclaim"))
 
                     .RegisterHandlerInstance("setdefaultacl", insance => insance.RegisterExtensionPoint("Move", "setdefaultacl"))
                     .RegisterHandlerInstance("grantadminacl", insance => insance.RegisterExtensionPoint("Move", "grantadminacl"))

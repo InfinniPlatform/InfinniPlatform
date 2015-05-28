@@ -262,7 +262,7 @@ namespace InfinniPlatform.Security
 			UpdateInfo(user, userEntry);
 		}
 
-		public void RemoveUserClaim(ApplicationUser user, string claimType, string claimValue)
+		public void RemoveUserClaim(ApplicationUser user, string claimType)
 		{
 			if (user == null)
 			{
@@ -272,11 +272,6 @@ namespace InfinniPlatform.Security
 			if (string.IsNullOrEmpty(claimType))
 			{
 				throw new ArgumentNullException("claimType");
-			}
-
-			if (string.IsNullOrEmpty(claimValue))
-			{
-				throw new ArgumentNullException("claimValue");
 			}
 
 			// Поиск указанного пользователя

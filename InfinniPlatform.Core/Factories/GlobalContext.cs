@@ -37,7 +37,7 @@ namespace InfinniPlatform.Factories
 			_components.Add(new ProfilerComponent(logger));
 			_components.Add(new RegistryComponent());
 			_components.Add(new ScriptRunnerComponent(metadataConfigurationProvider));
-			_components.Add(new SecurityComponent());
+			_components.Add(new CachedSecurityComponent());
 			_components.Add(new TransactionComponent(dependencyContainerComponent.ResolveDependency<ITransactionManager>()));
 			_components.Add(new WebClientNotificationComponent(dependencyContainerComponent.ResolveDependency<IWebClientNotificationServiceFactory>()));
 			_components.Add(new ConfigurationMediatorComponent(
@@ -59,7 +59,7 @@ namespace InfinniPlatform.Factories
 			_components.Add(new InprocessDocumentComponent(new ConfigurationMediatorComponent(
 																dependencyContainerComponent.ResolveDependency<IConfigurationObjectBuilder>()                                                                
 																),
-														   new SecurityComponent(),
+														   new CachedSecurityComponent(),
                                                            dependencyContainerComponent.ResolveDependency<IIndexFactory>()));
             _components.Add(metadataConfigurationProvider);
 

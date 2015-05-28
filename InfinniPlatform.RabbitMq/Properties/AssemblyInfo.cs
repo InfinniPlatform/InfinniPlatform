@@ -12,7 +12,7 @@
 // 0
 // 0
 // 0
-// 98ca156d-57e1-44d8-8b91-3ea99ad293cf
+// f637337b-2f6f-4250-a8d8-7380b9dc791a
 // 8DAA0A70E390E415924E51FCF7C32160
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
-[assembly: Guid("98ca156d-57e1-44d8-8b91-3ea99ad293cf")]
+[assembly: Guid("f637337b-2f6f-4250-a8d8-7380b9dc791a")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: InternalsVisibleTo("InfinniPlatform.RabbitMq.Tests")]

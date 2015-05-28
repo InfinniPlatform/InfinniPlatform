@@ -172,7 +172,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 			}
 		}
 
-		public void RemoveUserClaim(ApplicationUser user, string claimType, string claimValue)
+		public void RemoveUserClaim(ApplicationUser user, string claimType)
 		{
 			var claims = user.Claims.ToList().Where(c => c.Type.DisplayName != claimType).ToList();
 			user.Claims = claims;

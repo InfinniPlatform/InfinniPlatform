@@ -151,6 +151,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to add user claim with exception: {0}.
+        /// </summary>
+        internal static string UnableToAddUserClaim {
+            get {
+                return ResourceManager.GetString("UnableToAddUserClaim", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to attach document to session with exception: {0}.
         /// </summary>
         internal static string UnableToAttachDocumentToSession {
@@ -268,11 +277,29 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to get user claim with exception: {0}.
+        /// </summary>
+        internal static string UnableToGetUserClaim {
+            get {
+                return ResourceManager.GetString("UnableToGetUserClaim", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to grant access to user with exception: {0}.
         /// </summary>
         internal static string UnableToGrantAccessToUser {
             get {
                 return ResourceManager.GetString("UnableToGrantAccessToUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to remove user claim with exception:{0}.
+        /// </summary>
+        internal static string UnableToRemoveUserClaim {
+            get {
+                return ResourceManager.GetString("UnableToRemoveUserClaim", resourceCulture);
             }
         }
         

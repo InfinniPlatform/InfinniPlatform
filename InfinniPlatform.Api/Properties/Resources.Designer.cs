@@ -223,6 +223,15 @@ namespace InfinniPlatform.Api.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Claim removed successfully.
+        /// </summary>
+        public static string ClaimRemovedSuccessfully {
+            get {
+                return ResourceManager.GetString("ClaimRemovedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clipboard is empty..
         /// </summary>
         public static string ClipboardIsEmpty {
@@ -1011,6 +1020,15 @@ namespace InfinniPlatform.Api.Properties {
         public static string UserNotFound {
             get {
                 return ResourceManager.GetString("UserNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User &quot;{0}&quot; not found..
+        /// </summary>
+        public static string UserToRemoveClaimNotFound {
+            get {
+                return ResourceManager.GetString("UserToRemoveClaimNotFound", resourceCulture);
             }
         }
         

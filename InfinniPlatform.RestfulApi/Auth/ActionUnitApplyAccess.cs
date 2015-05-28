@@ -50,7 +50,7 @@ namespace InfinniPlatform.RestfulApi.Auth
 			new DocumentApi().SetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
 			                              AuthorizationStorageExtensions.AclStore, instance);
 
-			target.Context.GetComponent<SecurityComponent>().UpdateAcl();
+			target.Context.GetComponent<CachedSecurityComponent>().UpdateAcl();
 
 		    target.Result = new DynamicWrapper();
 		    target.Result.IsValid = true;

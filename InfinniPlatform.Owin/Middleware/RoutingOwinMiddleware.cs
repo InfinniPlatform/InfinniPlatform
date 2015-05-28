@@ -118,7 +118,7 @@ namespace InfinniPlatform.Owin.Middleware
 			HandlerRouting handlerInfo;
 
             var handlersRegistered = _handlers.Select(h => new KeyValuePair<PathStringProvider, HandlerRouting>(
-                h.ContextRouting.Invoke(context), h)).Where(h => NormalizePath(h.Key.PathString) == requestPath).ToList();
+                h.ContextRouting.Invoke(context), h)).Where(h => NormalizePath(h.Key.PathString).ToLowerInvariant() == requestPath.ToLowerInvariant()).ToList();
 
 
 			// Если найден обработчик входящего запроса

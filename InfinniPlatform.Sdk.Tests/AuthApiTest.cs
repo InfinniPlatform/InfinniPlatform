@@ -71,5 +71,33 @@ namespace InfinniPlatform.Sdk.Tests
             Assert.AreEqual(accessResult.IsValid,true);
         }
 
+        [Test]
+        public void ShouldAddAndRemoveUserClaim()
+        {
+            var user = "NewUser_" + Guid.NewGuid();
+
+            string claimType = "OrganizationId";
+
+            _api.AddUser(user, user);
+
+            dynamic accessResult =
+                JsonConvert.DeserializeObject<ExpandoObject>(_api.AddUserClaim(user,claimType,
+                    "TestOrganization").ToString());
+
+            Assert.AreEqual(accessResult.IsValid,true);
+
+            dynamic userClaim = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetUserClaim(user,claimType).ToString());
+
+            Assert.AreEqual(userClaim.ClaimValue, "TestOrganization");
+
+            accessResult =  JsonConvert.DeserializeObject<ExpandoObject>(_api.RemoveUserClaim(user, "OrganizationId").ToString());
+            Assert.AreEqual(accessResult.IsValid, true);
+
+            userClaim = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetUserClaim(user, claimType).ToString());
+
+            Assert.False(((IDictionary<string,object>) userClaim).ContainsKey("ClaimValue"));
+        }
+
+
     }
 }
