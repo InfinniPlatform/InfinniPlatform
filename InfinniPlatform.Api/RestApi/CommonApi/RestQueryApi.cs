@@ -7,7 +7,7 @@ using System.Threading;
 using InfinniPlatform.Api.Profiling;
 using InfinniPlatform.Api.Profiling.Implementation;
 using InfinniPlatform.Api.Properties;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
 using InfinniPlatform.Api.SearchOptions;

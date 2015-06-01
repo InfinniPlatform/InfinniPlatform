@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 
 namespace InfinniPlatform.ContextComponents
 {
@@ -16,19 +16,19 @@ namespace InfinniPlatform.ContextComponents
 	/// </summary>
 	public sealed class CachedSecurityComponent : ISecurityComponent
 	{
-		private static IEnumerable<dynamic> _roles;
+		private static IEnumerable<dynamic> _userRoles;
 		private static IEnumerable<dynamic> _acl;
 		private static IEnumerable<dynamic> _users;
+	    private static IEnumerable<dynamic> _roles;
 
-
-		public void UpdateRoles()
+		public void UpdateUserRoles()
 		{
-			InternalUpdateRoles();
+			InternalUpdateUserRoles();
 		}
 
-		private static void InternalUpdateRoles()
+		private static void InternalUpdateUserRoles()
 		{
-			_roles = new AclApi().GetUserRoles();
+			_userRoles = new AuthApi().GetUserRoles(false);
 		}
 
 		public void UpdateUsers()
@@ -38,7 +38,7 @@ namespace InfinniPlatform.ContextComponents
 
 		private static void InternalUpdateUsers()
 		{
-			_users = new AclApi().GetUsers();
+			_users = new AuthApi().GetUsers(false);
 		}
 
 		public IEnumerable<dynamic> Roles
@@ -49,16 +49,31 @@ namespace InfinniPlatform.ContextComponents
 			}
 		}
 
+	    public IEnumerable<dynamic> UserRoles
+	    {
+	        get { return _userRoles; }
+	    }
 
-		public void UpdateAcl()
+
+	    public void UpdateAcl()
 		{
 			InternalUpdateAcl();
 		}
 
-		private static void InternalUpdateAcl()
+	    public void UpdateRoles()
+	    {
+	        InternalUpdateRoles();
+	    }
+
+	    private static void InternalUpdateAcl()
 		{
-			_acl = new AclApi().GetAcl();
+			_acl = new AuthApi().GetAcl(false);
 		}
+
+	    private static void InternalUpdateRoles()
+	    {
+	        _roles = new AuthApi().GetRoles(false);
+	    }
 
 		public IEnumerable<dynamic> Acl
 		{
@@ -135,8 +150,9 @@ namespace InfinniPlatform.ContextComponents
 		public static void WarmUpAcl()
 		{
 			InternalUpdateUsers();
-			InternalUpdateRoles();
+			InternalUpdateUserRoles();
 			InternalUpdateAcl();
+            InternalUpdateRoles();
 		}
 	}
 }

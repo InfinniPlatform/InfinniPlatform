@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.TestEnvironment;
 using InfinniPlatform.SystemConfig.UserStorage;
@@ -43,8 +43,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			new SignInApi().SignInInternal("Admin", "Admin", false);
 
 			//password: "Password1"
-			new AclApi().AddUser("TestUser", "Password1");
-			new AclApi().AddUser("TestUser1", "Password1");
+			new AuthApi().AddUser("TestUser", "Password1");
+			new AuthApi().AddUser("TestUser1", "Password1");
 
 			//добавляем пользователю доступ к настройке прав
 			new AdminApi().GrantAdminAcl("TestUser");
@@ -56,7 +56,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			new SignInApi().SignInInternal("TestUser", "Password1", false);
 
 
-			dynamic result = new AclApi().DenyAccess("TestUser1", "Test");
+			dynamic result = new AuthApi().DenyAccess("TestUser1", "Test");
 
 			Assert.AreNotEqual(result.IsValid, false);
 
@@ -64,7 +64,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			new AdminApi().SetDefaultAcl();
 
 			//проверяем, что доступ по-прежнему присутствует
-			result = new AclApi().DenyAccessAll("Test");
+			result = new AuthApi().DenyAccessAll("Test");
 
 			Assert.AreNotEqual(result.IsValid,false);
 
@@ -98,7 +98,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 		{
 			new SignInApi().SignInInternal("Admin", "Admin", false);
 
-			var aclApi = new AclApi();
+			var aclApi = new AuthApi();
 
 			var userRoles = aclApi.GetUserRoles();
 			foreach (var userRole in userRoles)

@@ -6,7 +6,6 @@ using System.Reflection;
 
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.RestApi.AuthApi;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Api.Settings;
 using InfinniPlatform.Logging;

@@ -2,7 +2,6 @@
 using InfinniPlatform.Api.Context;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard;
-using InfinniPlatform.Api.RestApi.AuthApi;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.Security;
 using InfinniPlatform.Factories;

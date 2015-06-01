@@ -8,7 +8,7 @@ using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 
 namespace InfinniPlatform.Api.Security
 {

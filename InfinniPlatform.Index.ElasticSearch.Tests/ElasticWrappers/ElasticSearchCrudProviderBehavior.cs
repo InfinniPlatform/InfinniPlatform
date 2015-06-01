@@ -1,11 +1,11 @@
 ﻿using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Properties;
-using InfinniPlatform.Api.RestApi.AuthApi;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using InfinniPlatform.Api.RestApi.Auth;
 
 namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 {

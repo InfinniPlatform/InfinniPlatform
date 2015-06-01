@@ -3,7 +3,7 @@ using System.IO;
 
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Factories;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.BlobStorage;
 using InfinniPlatform.Cassandra.Client;
 using InfinniPlatform.Index.ElasticSearch.Factories;

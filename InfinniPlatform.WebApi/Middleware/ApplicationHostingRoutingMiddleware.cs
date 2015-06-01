@@ -9,9 +9,10 @@ using System.ServiceModel.Configuration;
 using System.Text;
 using System.Threading;
 using System.Web;
+using System.Web.SessionState;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Properties;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.SearchOptions.Converters;
@@ -35,11 +36,11 @@ namespace InfinniPlatform.WebApi.Middleware
             //в результате обработки шаблона
 
             RegisterGetRequestHandler(GetRestTemplateDocumentList, InvokeGetDocumentService);
-            RegisterPostRequestHandler(GetRestTemplateDocument, InvokePostDocumentService);
-            RegisterPutRequestHandler(GetRestTemplateDocument, InvokePutDocumentService);
+            RegisterPostRequestHandler(GetRestTemplateSpecifiedDocument, InvokePostDocumentService);
+            RegisterPutRequestHandler(GetRestTemplateSpecifiedDocument, InvokePutDocumentService);
             RegisterDeleteRequestHandler(GetRestTemplateDocumentDelete, InvokeDeleteDocumentService);
 
-            RegisterPutRequestHandler(GetRestTemplateDocuments, InvokePutDocumentsService);
+            RegisterPutRequestHandler(GetRestTemplateDocument, InvokePutDocumentsService);
 
             RegisterGetRequestHandler(GetRestTemplateDocumentById, InvokeGetByIdDocumentService);
 
@@ -64,10 +65,16 @@ namespace InfinniPlatform.WebApi.Middleware
             RegisterPostRequestHandler(GetRestTemplateGrantAccess, InvokeGrantAccessUser);
             RegisterPostRequestHandler(GetRestTemplateDenyAccess, InvokeDenyAccessUser);
 
-            RegisterPostRequestHandler(GetRestTemplateAddUserClaim, InvokeAddUserClaim);
-            RegisterPostRequestHandler(GetRestTemplateRemoveUserClaim, InvokeRemoveUserClaim);
-            
+            RegisterPutRequestHandler(GetRestTemplateAddUserClaim, InvokeAddUserClaim);
+            RegisterDeleteRequestHandler(GetRestTemplateRemoveUserClaim, InvokeRemoveUserClaim);
             RegisterGetRequestHandler(GetRestTemplateGetUserClaim, InvokeGetUserClaim);
+            
+            RegisterPutRequestHandler(GetRestTemplateAddRole, InvokeAddRole);
+            RegisterDeleteRequestHandler(GetRestTemplateDeleteRole, InvokeDeleteRole);
+
+            RegisterPutRequestHandler(GetRestTemplateAddUser, InvokeAddUser);
+            RegisterDeleteRequestHandler(GetRestTemplateDeleteUser, InvokeDeleteUser);
+            RegisterGetRequestHandler(GetRestTemplateGetUser, InvokeGetUser);
         }
 
         private PathString GetVersionPath()
@@ -80,20 +87,46 @@ namespace InfinniPlatform.WebApi.Middleware
             return new PathString("/_version_/_application_");
         }
 
+        private PathString GetUserPath()
+        {
+            return new PathString(GetBaseApplicationPath() + "/User");
+        }
+
+        private PathString GetRolePath()
+        {
+            return new PathString(GetBaseApplicationPath() + "/Role");
+        }
+
+        private PathString GetSpecifiedUserPath()
+        {
+            return new PathString(GetUserPath() + "/_userName_");
+        }
+
+        private PathString GetSpecifiedRolePath()
+        {
+            return new PathString(GetRolePath() + "/_userName_");
+        }
+
+        private PathString GetSpecifiedUserClaimPath()
+        {
+            return new PathString(GetSpecifiedUserPath() + "/_claimType_");
+        }
+
+
         private PathStringProvider GetSessionTemplate(IOwinContext context)
         {
-            return context.FormatSessionRoutePath(new PathString("/_version_")).Create(Priority.Standard);
+            return context.FormatSessionRoutePath(GetVersionPath()).Create(Priority.Standard);
         }
 
 
         private PathStringProvider GetSessionTemplateById(IOwinContext context)
         {
-            return context.FormatSessionRoutePath(new PathString("/_version_/_sessionId_")).Create(Priority.Standard);
+            return context.FormatSessionRoutePath(new PathString(GetVersionPath() + "/_sessionId_")).Create(Priority.Standard);
         }
 
         private PathStringProvider GetSessionTemplateAttachmentById(IOwinContext context)
         {
-            return context.FormatSessionRoutePath(new PathString("/_version_/_sessionId_/_attachmentId_")).Create(Priority.Standard);
+            return context.FormatSessionRoutePath(new PathString(GetVersionPath() + "/_sessionId_/_attachmentId_")).Create(Priority.Standard);
         }
 
         private PathStringProvider GetRestTemplate(IOwinContext context)
@@ -106,12 +139,12 @@ namespace InfinniPlatform.WebApi.Middleware
             return context.FormatRoutePath(new PathString(GetBaseApplicationPath() + "/_documentType_")).Create(Priority.Standard);
         }
 
-        private PathStringProvider GetRestTemplateDocument(IOwinContext context)
+        private PathStringProvider GetRestTemplateSpecifiedDocument(IOwinContext context)
         {
             return context.FormatRoutePath(new PathString(GetBaseApplicationPath() + "/_documentType_/_instanceId_")).Create(Priority.Standard);
         }
 
-        private PathStringProvider GetRestTemplateDocuments(IOwinContext context)
+        private PathStringProvider GetRestTemplateDocument(IOwinContext context)
         {
             return context.FormatRoutePath(new PathString(GetBaseApplicationPath() + "/_documentType_")).Create(Priority.Standard);
         }
@@ -155,33 +188,62 @@ namespace InfinniPlatform.WebApi.Middleware
         private PathStringProvider GetRestTemplateGrantAccess(IOwinContext context)
         {
             return
-                context.FormatRoutePath(new PathString(GetVersionPath() + "/Administration/User/GrantAccess"))
+                context.FormatRoutePath(new PathString(GetUserPath() + "/GrantAccess"))
                     .Create(Priority.Higher);
         }
 
         private PathStringProvider GetRestTemplateDenyAccess(IOwinContext context)
         {
             return
-                context.FormatRoutePath(new PathString(GetVersionPath() + "/Administration/User/DenyAccess"))
+                context.FormatRoutePath(new PathString(GetUserPath() + "/DenyAccess"))
                     .Create(Priority.Higher);
         }
 
         private PathStringProvider GetRestTemplateAddUserClaim(IOwinContext context)
         {
-            return context.FormatRoutePath(new PathString(GetVersionPath() + "/Administration/User/AddUserClaim"))
+            return context.FormatAuthRoutePath(GetSpecifiedUserClaimPath())
                 .Create(Priority.Higher);
         }
 
         private PathStringProvider GetRestTemplateRemoveUserClaim(IOwinContext context)
         {
-            return context.FormatRoutePath(new PathString(GetVersionPath() + "/Administration/User/RemoveUserClaim"))
+            return context.FormatAuthRoutePath(GetSpecifiedUserClaimPath())
                 .Create(Priority.Higher);
         }
 
         private PathStringProvider GetRestTemplateGetUserClaim(IOwinContext context)
         {
-            return
-                context.FormatClaimRoutePath(new PathString(GetRestTemplate(context).PathString + "/_userName_/_claimType_"))
+            return context.FormatAuthRoutePath(GetSpecifiedUserClaimPath())
+                    .Create(Priority.Higher);
+        }
+
+        private PathStringProvider GetRestTemplateDeleteRole(IOwinContext context)
+        {
+            return context.FormatAuthRoutePath(GetSpecifiedRolePath())
+                .Create(Priority.Higher);
+        }
+
+        private PathStringProvider GetRestTemplateAddRole(IOwinContext context)
+        {
+            return context.FormatAuthRoutePath(GetRolePath())
+                    .Create(Priority.Higher);
+        }
+
+        private PathStringProvider GetRestTemplateDeleteUser(IOwinContext context)
+        {
+            return context.FormatAuthRoutePath(GetSpecifiedUserPath())
+                .Create(Priority.Higher);
+        }
+
+        private PathStringProvider GetRestTemplateAddUser(IOwinContext context)
+        {
+            return context.FormatAuthRoutePath(GetUserPath())
+                    .Create(Priority.Higher);
+        }
+
+        private PathStringProvider GetRestTemplateGetUser(IOwinContext context)
+        {
+            return context.FormatAuthRoutePath(GetSpecifiedUserPath())
                     .Create(Priority.Higher);
         }
 
@@ -291,7 +353,7 @@ namespace InfinniPlatform.WebApi.Middleware
 
             if (body.Application != null && body.UserName != null && body.Application.ToString() != string.Empty && body.UserName.ToString() != string.Empty)
             {
-                return new ValueRequestHandlerResult(new AclApi().GrantAccess(
+                return new ValueRequestHandlerResult(new AuthApi().GrantAccess(
                     body.UserName.ToString(),
                     body.Application.ToString(),
                     body.DocumentType != null ? body.DocumentType.ToString() : null,
@@ -308,7 +370,7 @@ namespace InfinniPlatform.WebApi.Middleware
 
             if (body.Application != null && body.UserName != null && body.Application.ToString() != string.Empty && body.UserName.ToString() != string.Empty)
             {
-                return new ValueRequestHandlerResult(new AclApi().GrantAccess(
+                return new ValueRequestHandlerResult(new AuthApi().GrantAccess(
                     body.UserName.ToString(),
                     body.Application.ToString(),
                     body.DocumentType != null ? body.DocumentType.ToString() : null,
@@ -321,11 +383,13 @@ namespace InfinniPlatform.WebApi.Middleware
 
         private static IRequestHandlerResult InvokeAddUserClaim(IOwinContext context)
         {
+            var routeDictionary = context.GetAuthRouteDictionary();
+
             dynamic body = JObject.Parse(ReadRequestBody(context).ToString());
 
-            if (body.UserName != null && body.ClaimType != null && body.ClaimValue != null)
+            if (body.ClaimValue != null)
             {
-                return new ValueRequestHandlerResult(new AclApi().AddClaim(body.UserName.ToString(), body.ClaimType.ToString(), body.ClaimValue.ToString()));
+                return new ValueRequestHandlerResult(new AuthApi().AddClaim(routeDictionary["userName"], routeDictionary["claimType"], body.ClaimValue.ToString()));
             }
             
             return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
@@ -333,22 +397,64 @@ namespace InfinniPlatform.WebApi.Middleware
 
         private static IRequestHandlerResult InvokeGetUserClaim(IOwinContext context)
         {
-            var routeDictionary = context.GetClaimRouteDictionary();
+            var routeDictionary = context.GetAuthRouteDictionary();
 
-            return new ValueRequestHandlerResult(new AclApi().GetClaim(routeDictionary["userName"],routeDictionary["claimType"]));
+            return new ValueRequestHandlerResult(new AuthApi().GetClaim(routeDictionary["userName"],routeDictionary["claimType"]));
         }
 
         private static IRequestHandlerResult InvokeRemoveUserClaim(IOwinContext context)
         {
+            var routeDictionary = context.GetAuthRouteDictionary();
+
+            return new ValueRequestHandlerResult(new AuthApi().RemoveClaim(routeDictionary["userName"], routeDictionary["claimType"]));
+        }
+
+        private static IRequestHandlerResult InvokeAddRole(IOwinContext context)
+        {                        
             dynamic body = JObject.Parse(ReadRequestBody(context).ToString());
 
-            if (body.UserName != null && body.ClaimType != null)
+            if (body.RoleName != null)
             {
-                return new ValueRequestHandlerResult(new AclApi().RemoveClaim(body.UserName.ToString(), body.ClaimType.ToString()));
+                return new ValueRequestHandlerResult(new UsersApi().AddRole(body.RoleName.ToString(), body.RoleName.ToString(), body.RoleName.ToString()));
             }
 
             return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
         }
+
+
+        private static IRequestHandlerResult InvokeDeleteRole(IOwinContext context)
+        {
+            var routeDictionary = context.GetAuthRouteDictionary();
+
+            return new ValueRequestHandlerResult(new UsersApi().DeleteRole(routeDictionary["roleName"]));
+        }
+
+        private static IRequestHandlerResult InvokeAddUser(IOwinContext context)
+        {
+            dynamic body = JObject.Parse(ReadRequestBody(context).ToString());
+
+            if (body.UserName != null && body.Password != null)
+            {
+                return new ValueRequestHandlerResult(new UsersApi().AddUser(body.UserName.ToString(), body.Password.ToString()));
+            }
+
+            return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
+        }
+
+        private static IRequestHandlerResult InvokeDeleteUser(IOwinContext context)
+        {
+            var routeDictionary = context.GetAuthRouteDictionary();
+
+            return new ValueRequestHandlerResult(new UsersApi().RemoveUser(routeDictionary["userName"]));
+        }
+
+        private static IRequestHandlerResult InvokeGetUser(IOwinContext context)
+        {
+            var routeDictionary = context.GetAuthRouteDictionary();
+
+            return new ValueRequestHandlerResult(new UsersApi().GetUser(routeDictionary["userName"]));
+        }
+
 
         private static IRequestHandlerResult InvokeSessionService(IOwinContext context)
         {

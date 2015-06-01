@@ -7,7 +7,7 @@ using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Properties;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.Validation;
 
 namespace InfinniPlatform.RestfulApi.Utils
@@ -27,6 +27,15 @@ namespace InfinniPlatform.RestfulApi.Utils
 
 	    public ValidationResult CheckDocumentAccess(string configId, string documentId, string action, string recordId)
         {
+	        if (_userName == AuthorizationStorageExtensions.AdminRole ||
+	            _userName == AuthorizationStorageExtensions.AdminUser)
+	        {
+                return new ValidationResult()
+                {
+                    IsValid = true
+                };
+	        }
+
             IEnumerable<dynamic> roles = _securityComponent.Roles ?? new List<dynamic>();
 			//роли по умолчанию
 			var defaultRoles = roles.Where(r => r.UserName == "Default").ToList();

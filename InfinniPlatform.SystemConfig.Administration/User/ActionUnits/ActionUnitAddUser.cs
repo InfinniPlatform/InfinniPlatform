@@ -2,7 +2,7 @@
 using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Properties;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 
@@ -12,7 +12,7 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 	{
 		public void Action(IApplyContext target)
 		{
-			var aclApi = target.Context.GetComponent<AclApi>();
+			var aclApi = target.Context.GetComponent<AuthApi>();
 
 		    dynamic user = null;
 
@@ -25,7 +25,7 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 				return;				
 			}
 
-			var userFound = aclApi.GetUsers().FirstOrDefault(r => r.UserName.ToLowerInvariant() == user.UserName.ToLowerInvariant());
+			var userFound = aclApi.GetUsers(false).FirstOrDefault(r => r.UserName.ToLowerInvariant() == user.UserName.ToLowerInvariant());
 
 			if (userFound != null && user.Password != null)
 			{

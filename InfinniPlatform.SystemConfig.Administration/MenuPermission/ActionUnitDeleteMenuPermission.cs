@@ -1,7 +1,7 @@
 ﻿using System;
 
 using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.DataApi;
 
 namespace InfinniPlatform.SystemConfig.Administration.MenuPermission
@@ -19,7 +19,7 @@ namespace InfinniPlatform.SystemConfig.Administration.MenuPermission
 
 			var documentApi = target.Context.GetComponent<DocumentApi>();
 
-			var aclApi = target.Context.GetComponent<AclApi>();
+			var aclApi = target.Context.GetComponent<AuthApi>();
 
 			try
 			{

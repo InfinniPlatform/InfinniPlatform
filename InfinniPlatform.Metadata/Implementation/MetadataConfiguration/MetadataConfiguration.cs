@@ -5,12 +5,12 @@ using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.RestApi.AuthApi;
 using InfinniPlatform.Api.Worklow;
 using InfinniPlatform.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using InfinniPlatform.Api.RestApi.Auth;
 
 namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 {

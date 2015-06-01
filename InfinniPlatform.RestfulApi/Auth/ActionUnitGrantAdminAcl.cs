@@ -8,7 +8,7 @@ using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Properties;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.DataApi;
 
 namespace InfinniPlatform.RestfulApi.Auth
@@ -20,7 +20,7 @@ namespace InfinniPlatform.RestfulApi.Auth
 		{
 			var userName = target.Item.UserName;
 
-			var aclApi = new AclApi();
+			var aclApi = new AuthApi();
 
 			aclApi.GrantAccess(userName, AuthorizationStorageExtensions.AuthorizationConfigId);
 			aclApi.GrantAccess(userName, AuthorizationStorageExtensions.AdministrationConfigId);			

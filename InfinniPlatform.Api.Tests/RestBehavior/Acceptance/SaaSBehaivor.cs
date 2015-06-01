@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.TestEnvironment;
@@ -54,7 +54,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             //залогиниваемся под админом, чтобы добавить пользователя
             new SignInApi().SignInInternal("Admin", "Admin", false);
 
-            var aclApi = new AclApi();
+            var aclApi = new AuthApi();
 
             aclApi.AddUser("TestUser1", "Password1");
             aclApi.AddUser("TestUser2", "Password2");

@@ -2,7 +2,7 @@
 using System.Reflection;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Packages;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.Factories;

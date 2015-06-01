@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Compression;
 using InfinniPlatform.Hosting;

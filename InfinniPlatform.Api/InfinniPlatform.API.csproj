@@ -276,9 +276,10 @@
     <Compile Include="Registers\RegisterPeriod.cs" />
     <Compile Include="Registers\RegisterType.cs" />
     <Compile Include="Reporting\ReportFileFormat.cs" />
-    <Compile Include="RestApi\AuthApi\AuthorizationStorageExtensions.cs" />
-    <Compile Include="RestApi\AuthApi\AclApi.cs" />
-    <Compile Include="RestApi\AuthApi\SignInApi.cs" />
+    <Compile Include="RestApi\Auth\AuthorizationStorageExtensions.cs" />
+    <Compile Include="RestApi\Auth\AuthApi.cs" />
+    <Compile Include="RestApi\Auth\SignInApi.cs" />
+    <Compile Include="RestApi\Auth\UsersApi.cs" />
     <Compile Include="RestApi\CommonApi\IRouteTrace.cs" />
     <Compile Include="RestApi\CommonApi\RouteTraces\RouteTraceNoTrace.cs" />
     <Compile Include="RestApi\CommonApi\RouteTraces\RouteTraceSaveQueryLog.cs" />

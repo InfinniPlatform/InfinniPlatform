@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.RestfulApi.ActionUnits;
@@ -15,7 +15,11 @@ namespace InfinniPlatform.RestfulApi.Auth
 	{
 		public void Action(IApplyContext target)
 		{
-			if (IndexApi.IndexExists(AuthorizationStorageExtensions.AuthorizationConfigId,
+		    if (target.Item.FromCache)
+		    {
+		        target.Result = target.Context.GetComponent<ISecurityComponent>().Roles;
+		    }
+            else if (IndexApi.IndexExists(AuthorizationStorageExtensions.AuthorizationConfigId,
 									 AuthorizationStorageExtensions.RoleStore))
 			{
 				target.Item.Configuration = AuthorizationStorageExtensions.AuthorizationConfigId;

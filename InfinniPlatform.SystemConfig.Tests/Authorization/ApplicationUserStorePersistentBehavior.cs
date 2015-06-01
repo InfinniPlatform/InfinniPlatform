@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.Security;
 using InfinniPlatform.Api.TestEnvironment;

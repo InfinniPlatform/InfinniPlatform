@@ -4,11 +4,11 @@ using System.IO;
 using System.Linq;
 using InfinniPlatform.Api.Index.SearchOptions;
 using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.RestApi.AuthApi;
 using InfinniPlatform.SystemConfig.RoutingFactory;
 using Newtonsoft.Json.Linq;
 
 using InfinniPlatform.Api.Dynamic;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.BlobStorage;
 using InfinniPlatform.Cassandra.Client;
 using InfinniPlatform.Compression;

@@ -6,7 +6,6 @@ using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.RestApi.AuthApi;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.Index;

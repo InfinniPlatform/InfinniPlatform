@@ -10,7 +10,6 @@ using InfinniPlatform.Api.Events;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.RestApi.AuthApi;
 using InfinniPlatform.Api.RestQuery.EventObjects;
 using InfinniPlatform.Api.RestQuery.EventObjects.EventSerializers;
 using InfinniPlatform.ContextComponents;

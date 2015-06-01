@@ -3,11 +3,11 @@ using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Index.SearchOptions;
-using InfinniPlatform.Api.RestApi.AuthApi;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using System.Collections.Generic;
 using System.Linq;
+using InfinniPlatform.Api.RestApi.Auth;
 
 namespace InfinniPlatform.Metadata.Implementation.Handlers
 {

@@ -36,15 +36,22 @@ namespace InfinniPlatform.Sdk.Tests
         {
             var user =  "NewUser_" + Guid.NewGuid();
 
-            dynamic result = JsonConvert.DeserializeObject<ExpandoObject>(_api.AddUser(user, user).Content.ToString());
+            dynamic result = JsonConvert.DeserializeObject<ExpandoObject>(_api.AddUser(user, user).ToString());
 
             Assert.AreEqual(true, result.IsValid);
 
             dynamic userObject = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetUser(user).ToString());
 
-            result = JsonConvert.DeserializeObject<ExpandoObject>(_api.DeleteUser(userObject).Content.ToString());
+            Assert.IsNotNull(userObject);
+
+            result = JsonConvert.DeserializeObject<ExpandoObject>(_api.DeleteUser(user).ToString());
 
             Assert.AreEqual(true, result.IsValid);
+
+            userObject = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetUser(user).ToString());
+
+            Assert.AreEqual(userObject.IsValid, false);
+            Assert.True(((string) userObject.ValidationMessage).Contains("not found"));
         }
 
         [Test]
@@ -90,12 +97,25 @@ namespace InfinniPlatform.Sdk.Tests
 
             Assert.AreEqual(userClaim.ClaimValue, "TestOrganization");
 
-            accessResult =  JsonConvert.DeserializeObject<ExpandoObject>(_api.RemoveUserClaim(user, "OrganizationId").ToString());
+            accessResult =  JsonConvert.DeserializeObject<ExpandoObject>(_api.DeleteUserClaim(user, "OrganizationId").ToString());
             Assert.AreEqual(accessResult.IsValid, true);
 
             userClaim = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetUserClaim(user, claimType).ToString());
 
             Assert.False(((IDictionary<string,object>) userClaim).ContainsKey("ClaimValue"));
+        }
+
+        [Test]
+        public void ShouldAddAndRemoveRole()
+        {
+            string roleName = "TestRole" + Guid.NewGuid();
+
+            dynamic accessResult = JsonConvert.DeserializeObject<ExpandoObject>(_api.AddRole(roleName).ToString());
+            Assert.AreEqual(accessResult.IsValid, true);
+
+            accessResult = JsonConvert.DeserializeObject<ExpandoObject>(_api.DeleteRole(roleName).ToString());
+            Assert.AreEqual(accessResult.IsValid, true);
+
         }
 
 

@@ -7,7 +7,7 @@ using System.Threading;
 using System.Web.Http;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Index;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Factories;
 using InfinniPlatform.Hosting;

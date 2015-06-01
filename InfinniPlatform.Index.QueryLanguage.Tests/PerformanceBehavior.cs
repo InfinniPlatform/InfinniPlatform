@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Index.SearchOptions;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;

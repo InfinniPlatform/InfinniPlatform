@@ -1,20 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Text;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestQuery;
-using InfinniPlatform.Api.RestQuery.RestQueryExecutors;
-using InfinniPlatform.Api.Serialization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
 using RestSharp;
 
-namespace InfinniPlatform.Api.RestApi.AuthApi
+namespace InfinniPlatform.Api.RestApi.Auth
 {
 	/// <summary>
 	///   API для входа и выхода из системы

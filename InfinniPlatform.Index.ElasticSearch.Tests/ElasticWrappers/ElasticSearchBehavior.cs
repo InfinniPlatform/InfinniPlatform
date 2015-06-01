@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Index.SearchOptions;
-using InfinniPlatform.Api.RestApi.AuthApi;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Tests.Builders;
 using InfinniPlatform.SystemConfig.RoutingFactory;
 using NUnit.Framework;
 using System;
 using System.Dynamic;
+using InfinniPlatform.Api.RestApi.Auth;
 using Nest;
 
 namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers

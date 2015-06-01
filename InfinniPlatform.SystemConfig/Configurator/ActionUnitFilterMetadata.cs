@@ -2,7 +2,6 @@
 using System.Linq;
 using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.RestApi.AuthApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 
 namespace InfinniPlatform.SystemConfig.Configurator

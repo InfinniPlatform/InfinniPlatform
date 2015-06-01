@@ -1,6 +1,6 @@
 ﻿using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 
 namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 {

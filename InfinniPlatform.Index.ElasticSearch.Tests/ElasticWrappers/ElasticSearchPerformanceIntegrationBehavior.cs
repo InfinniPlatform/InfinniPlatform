@@ -2,7 +2,6 @@
 using System.Linq;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Index.SearchOptions;
-using InfinniPlatform.Api.RestApi.AuthApi;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
@@ -12,6 +11,7 @@ using NUnit.Framework;
 using System;
 using System.Diagnostics;
 using System.Dynamic;
+using InfinniPlatform.Api.RestApi.Auth;
 
 namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 {

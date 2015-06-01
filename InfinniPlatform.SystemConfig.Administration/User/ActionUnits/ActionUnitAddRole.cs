@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.Dynamic;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.DataApi;
 
 namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
@@ -16,14 +17,16 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 	{
 		public void Action(IApplyContext target)
 		{
-			var aclApi = target.Context.GetComponent<AclApi>();
+			var aclApi = target.Context.GetComponent<AuthApi>();
 
-			var role = target.Item.Document;
+			var role = target.Item.Document ?? target.Item;
 
-			if (role == null || string.IsNullOrEmpty(role.Name))
+            target.Result = new DynamicWrapper();
+
+            if (role == null || string.IsNullOrEmpty(role.Name))
 			{
-				target.IsValid = false;
-				target.ValidationMessage = "Role name is not specified";
+                target.Result.IsValid = false;
+                target.Result.ValidationMessage = "Role name is not specified";
 				return;
 			}
 
@@ -31,16 +34,20 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 
 			if (roleFound != null)
 			{
-				target.IsValid = false;
-				target.ValidationMessage = "Role with name " + role.Name + " already exists.";
+                target.Result.IsValid = false;
+                target.Result.ValidationMessage = "Role with name " + role.Name + " already exists.";
 				return;
 			}
 
-			aclApi.AddRole(role.Name, role.Name, role.Name);
+            aclApi.AddRole(role.Name, role.Name, role.Name);
 
 			target.Context.GetComponent<DocumentApi>()
 				.SetDocument(AuthorizationStorageExtensions.AdministrationConfigId, "Role",
-				   target.Item.Document);
+				   role);
+
+		    
+            target.Result.IsValid = true;
+            target.Result.ValidationMessage = "Role added.";
 		}
 	}
 }

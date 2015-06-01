@@ -142,6 +142,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to add role with exception:{0}.
+        /// </summary>
+        internal static string UnableToAddRole {
+            get {
+                return ResourceManager.GetString("UnableToAddRole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to add user with exception: {0}.
         /// </summary>
         internal static string UnableToAddUser {
@@ -210,6 +219,15 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string UnableToDeleteDocument {
             get {
                 return ResourceManager.GetString("UnableToDeleteDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to delete role with exception: {0}.
+        /// </summary>
+        internal static string UnableToDeleteRole {
+            get {
+                return ResourceManager.GetString("UnableToDeleteRole", resourceCulture);
             }
         }
         

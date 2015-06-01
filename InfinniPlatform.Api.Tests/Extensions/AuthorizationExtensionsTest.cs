@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 
 namespace InfinniPlatform.Api.Tests.Extensions
 {
@@ -13,7 +13,7 @@ namespace InfinniPlatform.Api.Tests.Extensions
         {
             new SignInApi().SignInInternal("Admin", "Admin", false);
 
-            var aclApi = new AclApi();
+            var aclApi = new AuthApi();
 
             var userRoles = aclApi.GetUserRoles();
             foreach (var userRole in userRoles)

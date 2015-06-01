@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Index;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Index;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;

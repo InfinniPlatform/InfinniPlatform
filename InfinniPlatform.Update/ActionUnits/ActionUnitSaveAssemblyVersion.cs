@@ -3,7 +3,6 @@ using System.IO;
 using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.RestApi.AuthApi;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Update.Properties;
 

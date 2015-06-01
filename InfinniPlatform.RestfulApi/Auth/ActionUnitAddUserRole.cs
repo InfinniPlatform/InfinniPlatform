@@ -31,7 +31,7 @@ namespace InfinniPlatform.RestfulApi.Auth
             }
 
 			storage.AddUserToRole(user, userRoleParams.RoleName);
-			target.Context.GetComponent<CachedSecurityComponent>().UpdateRoles();
+			target.Context.GetComponent<CachedSecurityComponent>().UpdateUserRoles();
 			target.Context.GetComponent<CachedSecurityComponent>().UpdateAcl();
         }
     }

@@ -4,7 +4,7 @@ using System.Linq;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Properties;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.Security;
 using InfinniPlatform.Api.Settings;
@@ -303,12 +303,12 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 		public static void CheckStorage()
 		{
 			var adminApi = new AdminApi();
-			var aclApi = new AclApi();
+			var aclApi = new AuthApi();
 
 			//добавляем роль анонимного пользователя. Данная роль имеет право на чтение каталога пользователей и ролей
 			//в нее не должен входить ни один пользователь системы.
 
-			var acl = aclApi.GetAcl().ToList();
+			var acl = aclApi.GetAcl(false).ToList();
 
 			var rolesAnonimous = acl.FirstOrDefault(a => a.UserName == AuthorizationStorageExtensions.AnonimousUser);
 			if (rolesAnonimous == null)
@@ -316,7 +316,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 				adminApi.AddAnonimousUserAcl(AuthorizationStorageExtensions.AnonimousUser);
 			}
 
-			var roles = aclApi.GetRoles();
+			var roles = aclApi.GetRoles(false);
 			//если отсутствует роль админа, добавляем ее
 			var roleAdmin = roles.FirstOrDefault(a => a.Name == AuthorizationStorageExtensions.AdminRole);
 
@@ -325,13 +325,13 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 				aclApi.AddRole(AuthorizationStorageExtensions.AdminRole, AuthorizationStorageExtensions.AdminRole,AuthorizationStorageExtensions.AdminRole);
 			}
 
-			var users = aclApi.GetUsers();
+			var users = aclApi.GetUsers(false);
 			if (users.FirstOrDefault(u => u.UserName == AuthorizationStorageExtensions.AdminUser) == null)
 			{
 				aclApi.AddUser(AuthorizationStorageExtensions.AdminUser, AppSettings.GetValue("AdminPassword","Admin"));
 
 				//проверяем, удалось ли добавить пользователя
-				users = aclApi.GetUsers();
+				users = aclApi.GetUsers(false);
 				if (users.FirstOrDefault(u => u.UserName == AuthorizationStorageExtensions.AdminUser) == null)
 				{
 					//если не удалось, завершаем
@@ -354,7 +354,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 			}
 
 
-			aclApi.UpdateAcl();
+			aclApi.InvalidateAcl();
 
 		}
 	}

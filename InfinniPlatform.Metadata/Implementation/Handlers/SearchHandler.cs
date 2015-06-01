@@ -6,7 +6,7 @@ using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
 using InfinniPlatform.Api.Factories;
 using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Metadata.Properties;

@@ -1,6 +1,6 @@
 ﻿using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 
@@ -10,7 +10,7 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 	{
 		public void Action(IApplyContext target)
 		{
-			var aclApi = target.Context.GetComponent<AclApi>();
+			var aclApi = target.Context.GetComponent<AuthApi>();
 
 			var user = target.Item.Document ?? target.Item;
 

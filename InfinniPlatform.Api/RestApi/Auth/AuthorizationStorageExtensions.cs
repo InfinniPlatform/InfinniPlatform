@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Api.RestApi.AuthApi
+﻿namespace InfinniPlatform.Api.RestApi.Auth
 {
 	public static class AuthorizationStorageExtensions
 	{

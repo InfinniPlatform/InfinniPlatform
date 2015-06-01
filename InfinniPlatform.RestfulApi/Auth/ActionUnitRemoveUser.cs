@@ -24,8 +24,9 @@ namespace InfinniPlatform.RestfulApi.Auth
 			{
 				storage.DeleteUser(user);
 				//добавляем доступ на чтение пользователей
+                target.Context.GetComponent<CachedSecurityComponent>().UpdateUsers();
 				target.Context.GetComponent<CachedSecurityComponent>().UpdateAcl();
-				target.Context.GetComponent<CachedSecurityComponent>().UpdateRoles();
+				target.Context.GetComponent<CachedSecurityComponent>().UpdateUserRoles();
 				target.Result = new DynamicWrapper();
 				target.Result.IsValid = true;
 				target.Result.ValidationMessage = "User deleted";

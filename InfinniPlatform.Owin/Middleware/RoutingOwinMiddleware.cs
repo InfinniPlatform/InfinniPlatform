@@ -88,7 +88,7 @@ namespace InfinniPlatform.Owin.Middleware
 		/// </summary>
         public void RegisterPutRequestHandler(Func<IOwinContext, PathStringProvider> path, Func<IOwinContext, IRequestHandlerResult> handler)
 		{
-			RegisterRequestHandler("PUT", path, handler);
+			RegisterRequestHandler("PUT", path, handler.CreateAuthenticatedRequest());
 		}
 
 		/// <summary>

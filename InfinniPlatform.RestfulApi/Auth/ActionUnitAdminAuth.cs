@@ -3,7 +3,6 @@ using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
 using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.RestApi.AuthApi;
 using InfinniPlatform.RestfulApi.Utils;
 
 namespace InfinniPlatform.RestfulApi.Auth

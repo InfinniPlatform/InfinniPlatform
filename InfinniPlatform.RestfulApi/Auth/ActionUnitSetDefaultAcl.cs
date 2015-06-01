@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Properties;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 
 namespace InfinniPlatform.RestfulApi.Auth
 {
@@ -15,7 +15,7 @@ namespace InfinniPlatform.RestfulApi.Auth
 
 		public void Action(IApplyContext target)
 		{
-			var aclApi = new AclApi();
+			var aclApi = new AuthApi();
 			
 			aclApi.GrantAccessAll(AuthorizationStorageExtensions.AdministrationConfigId, "User", "getdocument");
 

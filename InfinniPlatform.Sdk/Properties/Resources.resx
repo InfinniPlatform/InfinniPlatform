@@ -213,4 +213,10 @@
   <data name="UnableToGetUserClaim" xml:space="preserve">
     <value>Unable to get user claim with exception: {0}</value>
   </data>
+  <data name="UnableToAddRole" xml:space="preserve">
+    <value>Unable to add role with exception:{0}</value>
+  </data>
+  <data name="UnableToDeleteRole" xml:space="preserve">
+    <value>Unable to delete role with exception: {0}</value>
+  </data>
 </root>

@@ -78,7 +78,7 @@ namespace InfinniPlatform.WebApi.Middleware
             };
         }
 
-        public static Dictionary<string, string> GetClaimRouteDictionary(this IOwinContext context)
+        public static Dictionary<string, string> GetAuthRouteDictionary(this IOwinContext context)
         {
             var routeValues = context.Request.Path.HasValue
                 ? context.Request.Path.Value.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries) : new string[] { };
@@ -88,17 +88,17 @@ namespace InfinniPlatform.WebApi.Middleware
             var versionApp = routeValues.Any() ? int.TryParse(routeValues[0], out versionNumber) ? routeValues[0] : Resources.UnsatisfiedVersionNumber : string.Empty;
             var application = routeValues.Count() > 1 ? routeValues[1] : Resources.UnknownRouteSection;
             var documentType = routeValues.Count() > 2 ? routeValues[2] : Resources.UnknownRouteSection;
-            var service = routeValues.Count() > 3 ? routeValues[3] : Resources.UnknownRouteSection;
-            var userName = routeValues.Count() > 4 ? routeValues[4] : Resources.UnknownRouteSection;
-            var claimType = routeValues.Count() > 5 ? routeValues[5] : Resources.UnknownRouteSection;
+            var userName = routeValues.Count() > 3 ? routeValues[3] : Resources.UnknownRouteSection;
+            var roleName = routeValues.Count() > 3 ? routeValues[3] : Resources.UnknownRouteSection;
+            var claimType = routeValues.Count() > 4 ? routeValues[4] : Resources.UnknownRouteSection;
 
             return new Dictionary<string, string>()
             {
                 {"version",versionApp },
                 {"application",application},
                 {"documentType",documentType},                
-                {"service",service},
                 {"userName", userName},
+                {"roleName", roleName},
                 {"claimType",claimType},                
             };
         } 
@@ -139,17 +139,17 @@ namespace InfinniPlatform.WebApi.Middleware
                     : string.Empty);
         }
 
-        public static PathString FormatClaimRoutePath(this IOwinContext context, PathString path)
+        public static PathString FormatAuthRoutePath(this IOwinContext context, PathString path)
         {
-            var routeDictionary = context.GetClaimRouteDictionary();
+            var routeDictionary = context.GetAuthRouteDictionary();
 
             return new PathString(path.HasValue
                 ? path.Value
                     .ReplaceFormat("_version_", routeDictionary["version"])
                     .ReplaceFormat("_application_", routeDictionary["application"])
                     .ReplaceFormat("_documentType_", routeDictionary["documentType"])
-                    .ReplaceFormat("_service_", routeDictionary["service"])
                     .ReplaceFormat("_userName_", routeDictionary["userName"])
+                    .ReplaceFormat("_roleName_", routeDictionary["roleName"])
                     .ReplaceFormat("_claimType_", routeDictionary["claimType"]) 
                     : string.Empty);
         }

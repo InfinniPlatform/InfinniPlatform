@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 
 using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.DataApi;
 
 namespace InfinniPlatform.SystemConfig.Administration.RolePermissions.ActionUnits
@@ -17,7 +17,7 @@ namespace InfinniPlatform.SystemConfig.Administration.RolePermissions.ActionUnit
 			var sectionFull = api.GetDocument("Administration", "Section",
 											  f => f.AddCriteria(cr => cr.Property("Id").IsEquals(parameters.Id)), 0, 1).FirstOrDefault();
 
-			var aclApi = target.Context.GetComponent<AclApi>();
+			var aclApi = target.Context.GetComponent<AuthApi>();
 
 			//это необходимо делать в платформе при инициализации системы авторизации
 			var role = aclApi.GetRoles().FirstOrDefault(r => r.RoleName == "Default");

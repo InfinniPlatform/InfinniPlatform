@@ -7,9 +7,9 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.SchemaReaders;
-using InfinniPlatform.Api.RestApi.AuthApi;
 using InfinniPlatform.MetadataDesigner.Views.ViewModel;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.Schema;
 
 namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates

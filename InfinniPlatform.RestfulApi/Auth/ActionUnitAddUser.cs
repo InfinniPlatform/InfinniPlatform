@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.RestApi.AuthApi;
 using InfinniPlatform.Api.Security;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.Security;

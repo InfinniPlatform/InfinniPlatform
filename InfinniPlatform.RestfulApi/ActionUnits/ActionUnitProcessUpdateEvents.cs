@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.RestApi.AuthApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Factories;
 using InfinniPlatform.Metadata;

@@ -8,7 +8,7 @@ using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.RestfulApi.Utils;
 using System;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.Transactions;
 
 namespace InfinniPlatform.RestfulApi.ActionUnits

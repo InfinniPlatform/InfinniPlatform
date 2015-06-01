@@ -11,12 +11,18 @@ namespace InfinniPlatform.Api.ContextComponents
 	/// </summary>
 	public interface ISecurityComponent
 	{
-		void UpdateRoles();
+		void UpdateUserRoles();
 		void UpdateUsers();
 		void UpdateAcl();
-		IEnumerable<object> Acl { get; }
-		IEnumerable<object> Users { get; }
-		IEnumerable<object> Roles { get; }
+
+	    void UpdateRoles();
+
+		IEnumerable<dynamic> Acl { get; }
+		IEnumerable<dynamic> Users { get; }
+		IEnumerable<dynamic> Roles { get; }
+
+        IEnumerable<dynamic> UserRoles { get;  }
+
 		string GetClaim(string claimType, string userName);
 		void UpdateClaim(string userName, string claimType, string claimValue);
 	}

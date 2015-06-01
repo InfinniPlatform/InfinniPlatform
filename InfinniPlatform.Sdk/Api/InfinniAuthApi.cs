@@ -22,7 +22,7 @@ namespace InfinniPlatform.Sdk.Api
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlAddUser(Version), new
+            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlAddUser(Version), new
             {
                 UserName = userName,
                 Password = password
@@ -35,13 +35,13 @@ namespace InfinniPlatform.Sdk.Api
         /// <summary>
         ///  Удалить пользователя
         /// </summary>
-        /// <param name="user">Пользователь системы</param>
+        /// <param name="userName">Логин пользователя</param>
         /// <returns>Результат удаления пользователя</returns>
-        public dynamic DeleteUser(dynamic user)
+        public dynamic DeleteUser(string userName)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlDeleteUser(Version), user);
+            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingToSpecifiedUser(Version,userName));
 
             return ProcessAsObjectResult(response, 
                 string.Format(Resources.UnableToDeleteUser, response.GetErrorContent()));
@@ -52,12 +52,14 @@ namespace InfinniPlatform.Sdk.Api
         /// </summary>
         /// <param name="userName">Логин пользователя</param>
         /// <returns>Пользователь системы</returns>
-        public dynamic GetUser(string userName)
-        {
-            var infinniDocumentApi = new InfinniDocumentApi(Server, Port, Version);
+        public dynamic GetUser(string userName) {
 
-            return infinniDocumentApi.GetDocument("Administration", "User",
-                f => f.AddCriteria(cr => cr.Property("UserName").IsEquals(userName)), 0, 1).FirstOrDefault();            
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingToSpecifiedUser(Version,userName));
+
+            return ProcessAsObjectResult(response, 
+                string.Format(Resources.UnableToGetUser, response.GetErrorContent()));        
         }
 
         /// <summary>
@@ -131,12 +133,10 @@ namespace InfinniPlatform.Sdk.Api
 
             dynamic body = new
             {
-                UserName = userName,
-                ClaimType = claimType,
                 ClaimValue = claimValue
             };
 
-            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingAddUserClaim(Version), body);
+            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingToSpecifiedUserClaim(Version, userName, claimType), body);
 
             return ProcessAsObjectResult(response,
                 string.Format(Resources.UnableToAddUserClaim, response.GetErrorContent()));
@@ -152,7 +152,7 @@ namespace InfinniPlatform.Sdk.Api
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingGetUserClaim(Version, userName, claimType));
+            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingToSpecifiedUserClaim(Version, userName, claimType));
 
             return ProcessAsObjectResult(response,
                 string.Format(Resources.UnableToGetUserClaim, response.GetErrorContent()));
@@ -164,21 +164,50 @@ namespace InfinniPlatform.Sdk.Api
         /// <param name="userName">Логин пользователя</param>
         /// <param name="claimType">Тип утверждения относительно пользователя</param>
         /// <returns>Результат запроса удаления утверждения</returns>
-        public dynamic RemoveUserClaim(string userName, string claimType)
+        public dynamic DeleteUserClaim(string userName, string claimType)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingToSpecifiedUserClaim(Version,userName,claimType));
+
+            return ProcessAsObjectResult(response,
+                string.Format(Resources.UnableToRemoveUserClaim, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Добавить роль пользователя
+        /// </summary>
+        /// <param name="roleName">Наименование роли</param>
+        /// <returns>Результат добавления роли пользователя</returns>
+        public dynamic AddRole(string roleName)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
             dynamic body = new
             {
-                UserName = userName,
-                ClaimType = claimType,
+                RoleName = roleName
             };
 
-            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingRemoveUserClaim(Version), body);
+            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingAddRole(Version), body);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToAddRole,response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Удалить роль пользователя
+        /// </summary>
+        /// <param name="roleName">Наименование роли</param>
+        /// <returns>Результат удаления роли пользователя</returns>
+        public dynamic DeleteRole(string roleName)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingToSpecifiedRole(Version, roleName));
 
             return ProcessAsObjectResult(response,
-                string.Format(Resources.UnableToRemoveUserClaim, response.GetErrorContent()));
+                string.Format(Resources.UnableToDeleteRole, response.GetErrorContent()));
         }
+
 
     }
 }

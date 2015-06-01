@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Threading;
 
 using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.Settings;
 using InfinniPlatform.UserInterface.AppHost;
 

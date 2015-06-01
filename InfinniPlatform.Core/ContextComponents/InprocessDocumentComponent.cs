@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Index;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 
 namespace InfinniPlatform.ContextComponents
 {

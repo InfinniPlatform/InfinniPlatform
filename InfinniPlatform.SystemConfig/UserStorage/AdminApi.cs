@@ -1,7 +1,7 @@
 ﻿using System;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Properties;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.CommonApi;
 
 namespace InfinniPlatform.SystemConfig.UserStorage
@@ -23,7 +23,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 		/// <param name="userName">Имя пользователя</param>
 		public void AddAnonimousUserAcl(string userName)
 		{
-			var aclApi = new AclApi();
+			var aclApi = new AuthApi();
 
 			TryApplyAccess(() => aclApi.GrantAccess(userName, AuthorizationStorageExtensions.AuthorizationConfigId,
 													AuthorizationStorageExtensions.AclStore, "getdocument"));

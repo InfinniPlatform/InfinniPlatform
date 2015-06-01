@@ -8,7 +8,7 @@ using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Properties;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.TestEnvironment;
@@ -48,7 +48,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 		{
             AuthorizationExtensionsTest.ClearAuthConfig();
 
-			new AclApi().AddUser("TestUser", "Password1");
+			new AuthApi().AddUser("TestUser", "Password1");
 
 			new SignInApi().SignInInternal("TestUser", "Password1", false);
 			new SignInApi().SignOutInternal();
@@ -60,7 +60,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 		{
             AuthorizationExtensionsTest.ClearAuthConfig();
 
-			new AclApi().AddUser("TestUser", "Password1");
+			new AuthApi().AddUser("TestUser", "Password1");
 
 			new SignInApi().SignInInternal("TestUser", "Password1", false);
 
@@ -81,7 +81,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			new SignInApi().SignInInternal("Admin", "Admin", false);
 
 			//password: "Password1"
-			new AclApi().AddUser("TestUser", "Password1");
+			new AuthApi().AddUser("TestUser", "Password1");
 
 			new SignInApi().SignOutInternal();
 
@@ -107,7 +107,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			new SignInApi().SignInInternal("Admin", "Admin", false);
 
             //отбираем доступ пользователя к документу
-            new AclApi().DenyAccess("TestUser",_configurationId, _documentId);
+            new AuthApi().DenyAccess("TestUser",_configurationId, _documentId);
 
 			new SignInApi().SignOutInternal();
 
@@ -150,7 +150,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			new SignInApi().SignInInternal("Admin", "Admin", false);
 
             //password: "Password1"
-			new AclApi().AddUser("TestUser", "Password1");
+			new AuthApi().AddUser("TestUser", "Password1");
 
 			new SignInApi().SignOutInternal();
 
@@ -172,7 +172,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			new SignInApi().SignInInternal("Admin", "Admin", false);
 
             //отбираем доступ пользователя к документу на запись, на чтение не меняем (по умолчанию - если нет явного запрета - разрешено)
-            new AclApi().DenyAccess("TestUser", _configurationId, _documentId, "setdocument");
+            new AuthApi().DenyAccess("TestUser", _configurationId, _documentId, "setdocument");
 
 			new SignInApi().SignOutInternal();
 
@@ -221,7 +221,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			new SignInApi().SignInInternal("Admin", "Admin", false);
 
             //password: "Password1"
-			new AclApi().AddUser("TestUser", "Password1");
+			new AuthApi().AddUser("TestUser", "Password1");
 
 			new SignInApi().SignOutInternal();
 
@@ -249,7 +249,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			new SignInApi().SignInInternal("Admin", "Admin", false);
 
             //отбираем доступ на просмотр конкретного экземпляра документа
-            new AclApi().DenyAccess("TestUser", _configurationId, _documentId, "getdocument", id);
+            new AuthApi().DenyAccess("TestUser", _configurationId, _documentId, "getdocument", id);
 
 			new SignInApi().SignOutInternal();
 
@@ -273,7 +273,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			new SignInApi().SignInInternal("Admin", "Admin", false);
 
             //password: "Password1"
-			new AclApi().AddUser("TestUser", "Password1");
+			new AuthApi().AddUser("TestUser", "Password1");
 
 
             var id = Guid.NewGuid().ToString();
@@ -282,10 +282,10 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             testDocument.TestProperty = "1";
 
             //добавляем доступ на редактирование конкретного экземпляра документа
-            new AclApi().GrantAccess("TestUser", _configurationId, _documentId, "setdocument", id);
+            new AuthApi().GrantAccess("TestUser", _configurationId, _documentId, "setdocument", id);
 
             //отбираем доступ пользователя к документу
-            new AclApi().DenyAccess("TestUser", _configurationId, _documentId);
+            new AuthApi().DenyAccess("TestUser", _configurationId, _documentId);
 
 			new SignInApi().SignOutInternal();
 
@@ -325,7 +325,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			new SignInApi().SignInInternal("Admin", "Admin", false);
 
             //password: "Password1"
-			new AclApi().AddUser("TestUser", "Password1");
+			new AuthApi().AddUser("TestUser", "Password1");
 
             var id = Guid.NewGuid().ToString();
             dynamic testDocument = new DynamicWrapper();
@@ -333,7 +333,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             testDocument.TestProperty = "1";
           
             //отбираем доступ пользователя к документу
-            new AclApi().DenyAccess("TestUser", _configurationId, _documentId, "setdocument",id);
+            new AuthApi().DenyAccess("TestUser", _configurationId, _documentId, "setdocument",id);
 
 			new SignInApi().SignOutInternal();
 
@@ -367,7 +367,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             CreateTestConfig();
 
             //password: "Password1"
-			new AclApi().AddUser("TestUser", "Password1");
+			new AuthApi().AddUser("TestUser", "Password1");
 
             //залогиниваемся под админом
             new SignInApi().SignInInternal("Admin", "Admin", false);
@@ -379,7 +379,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             testDocument.TestProperty = "1";
 
             //отбираем доступ у всех пользователей
-            new AclApi().DenyAccessAll(_configurationId, _documentId);
+            new AuthApi().DenyAccessAll(_configurationId, _documentId);
 
 			new SignInApi().SignOutInternal();
 
@@ -430,18 +430,18 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             CreateTestConfig();
 
             //password: "Password1"
-			new AclApi().AddUser("TestUser", "Password1");
+			new AuthApi().AddUser("TestUser", "Password1");
 
-            new AclApi().AddRole("TestRole","TestRole","TestRole");
+            new AuthApi().AddRole("TestRole","TestRole","TestRole");
 
-            new AclApi().AddUserToRole("TestUser", "TestRole");
+            new AuthApi().AddUserToRole("TestUser", "TestRole");
 		
             //залогиниваемся под администратором
 
 			new SignInApi().SignInInternal("Admin", "Admin", false);
 
 			//запрещаем роли доступ к тестовому документу
-			new AclApi().DenyAccessRole("TestRole", _configurationId, _documentId);
+			new AuthApi().DenyAccessRole("TestRole", _configurationId, _documentId);
 
 			//разлогиниваемся из-под админа
 			new SignInApi().SignOutInternal();
@@ -475,10 +475,10 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			new SignInApi().SignInInternal("Admin", "Admin", false);
 
 			//password: "Password1"
-			new AclApi().AddUser("TestUser", "Password1");
+			new AuthApi().AddUser("TestUser", "Password1");
 
 			//отбираем доступ пользователя к документу
-			new AclApi().DenyAccess("TestUser", _configurationId, _documentId);
+			new AuthApi().DenyAccess("TestUser", _configurationId, _documentId);
 			
 			new SignInApi().SignOutInternal();
 
@@ -489,7 +489,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			//пытаемся получить документы
 			try
 			{
-				new AclApi().GrantAccess("TestUser", _configurationId, _documentId);
+				new AuthApi().GrantAccess("TestUser", _configurationId, _documentId);
 			}
 			catch (Exception e)
 			{
@@ -504,7 +504,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			new SignInApi().SignInInternal("Admin", "Admin", false);
 
 			//возвращаем права
-			dynamic result = new AclApi().GrantAccess("TestUser", _configurationId, _documentId);
+			dynamic result = new AuthApi().GrantAccess("TestUser", _configurationId, _documentId);
 
 			Assert.AreNotEqual(result.IsValid,false);
 

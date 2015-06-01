@@ -4,7 +4,6 @@ using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Dynamic;
 using System;
 using System.Collections.Generic;
-using InfinniPlatform.Api.RestApi.AuthApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.RestfulApi.Utils;

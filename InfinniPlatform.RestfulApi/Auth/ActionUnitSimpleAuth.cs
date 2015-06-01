@@ -5,7 +5,6 @@ using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Properties;
-using InfinniPlatform.Api.RestApi.AuthApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.Validation;
 using InfinniPlatform.RestfulApi.Utils;

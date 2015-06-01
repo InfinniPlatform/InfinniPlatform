@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.Dynamic;
+﻿using System.Collections.Generic;
 using InfinniPlatform.Api.RestApi.CommonApi;
 
-namespace InfinniPlatform.Api.RestApi.AuthApi
+namespace InfinniPlatform.Api.RestApi.Auth
 {
 	/// <summary>
 	///    API для работы с Access control list
 	/// </summary>
-	public sealed class AclApi
+	public sealed class AuthApi
 	{
 		/// <summary>
 		///   Предоставить доступ пользователю
@@ -123,20 +118,6 @@ namespace InfinniPlatform.Api.RestApi.AuthApi
 			}).ToDynamic();
 		}
 
-		/// <summary>
-		///   Добавить пользователя во внутреннее хранилище
-		/// </summary>
-		/// <param name="userName">Пользователь</param>
-		/// <param name="password">пароль</param>
-		public dynamic AddUser(string userName, string password)
-		{
-			return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "adduser", null, new
-			{
-				UserName = userName,
-				Password = password
-			}).ToDynamic();		
-		}
-
         /// <summary>
         ///   Установить значение утверждения для пользователя
         /// </summary>
@@ -168,36 +149,22 @@ namespace InfinniPlatform.Api.RestApi.AuthApi
             }).ToDynamic();
         }
 
-        /// <summary>
-        /// Получить значение утверждения относительно пользователя
-        /// </summary>
-        /// <param name="userName">Логин пользователя</param>
-        /// <param name="claimType">Тип утверждения</param>
-        /// <returns>Значение утверждения относительно пользователя</returns>
-	    public dynamic GetClaim(string userName, string claimType)
+	    /// <summary>
+	    /// Получить значение утверждения относительно пользователя
+	    /// </summary>
+	    /// <param name="userName">Логин пользователя</param>
+	    /// <param name="claimType">Тип утверждения</param>
+	    /// <param name="fromCache">Получить информацию из кэша</param>
+	    /// <returns>Значение утверждения относительно пользователя</returns>
+	    public dynamic GetClaim(string userName, string claimType, bool fromCache = true)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "getclaim", null, new
             {
                 UserName = userName,
-                ClaimType = claimType
+                ClaimType = claimType,
+                FromCache = fromCache
             }).ToDynamic();
             
-        }
-
-	    /// <summary>
-	    ///   Добавить роль
-	    /// </summary>
-	    /// <param name="roleName">Роль</param>
-	    /// <param name="roleCaption"></param>
-	    /// <param name="roleDescription"></param>
-		public dynamic AddRole(string roleName, string roleCaption, string roleDescription)
-        {
-            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "addrole", null, new
-            {
-                Name = roleName,
-                Caption = roleCaption,
-                Description = roleDescription
-            }).ToDynamic();
         }
 
         /// <summary>
@@ -213,31 +180,6 @@ namespace InfinniPlatform.Api.RestApi.AuthApi
                 RoleName = roleName
             }).ToDynamic();	
         }
-
-		/// <summary>
-		///   Удалить пользователя из внутреннего хранилища
-		/// </summary>
-		/// <param name="userName">Пользователь</param>
-		public dynamic RemoveUser(string userName)
-		{
-			return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "removeuser", null, new
-			{
-				UserName = userName,
-			}).ToDynamic();
-		}
-
-
-		/// <summary>
-		///   Удалить роль
-		/// </summary>
-		/// <param name="roleName">Роль</param>
-		public dynamic RemoveRole(string roleName)
-		{
-			return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "removerole", null, new
-			{
-				RoleName = roleName,
-			}).ToDynamic();
-		}
 
 		/// <summary>
 		///   Удалить роль пользователя
@@ -268,44 +210,130 @@ namespace InfinniPlatform.Api.RestApi.AuthApi
         /// <summary>
         ///   Получить список доступных ролей пользователей
         /// </summary>
+        /// <param name="fromCache">Получить информацию из кэша</param>
         /// <returns>Список ролей пользователей</returns>
-	    public IEnumerable<dynamic> GetRoles()
+	    public IEnumerable<dynamic> GetRoles(bool fromCache = true)
 	    {
-            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "getroles", null, null).ToDynamicList();	
+            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "getroles", null, new
+	        {
+	            FromCache = fromCache
+	        }).ToDynamicList();	
 	    }
 
 		/// <summary>
 		///   Получить список связанных с пользователями ролей
 		/// </summary>
+        /// <param name="fromCache">Получить информацию из кэша</param>
 		/// <returns>Список связок</returns>
-		public IEnumerable<dynamic> GetUserRoles()
+		public IEnumerable<dynamic> GetUserRoles(bool fromCache = true)
 		{
-			return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "getuserroles", null, null).ToDynamicList();
+			return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "getuserroles", null, new
+			{
+			    FromCache = fromCache
+			}).ToDynamicList();
 		}
+
 
 		/// <summary>
 		///   Получить список прав доступа для всех пользователей
 		/// </summary>
+        /// <param name="fromCache">Получить информацию из кэша</param>
 		/// <returns></returns>
-	    public IEnumerable<dynamic> GetAcl()
+	    public IEnumerable<dynamic> GetAcl(bool fromCache = true)
 	    {
-            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "getacl", null, null).ToDynamicList();	
+            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "getacl", null, new
+            {
+                FromCache = fromCache
+            }).ToDynamicList();	
 	    }
 
 		/// <summary>
 		///   Получить список зарегистрированных пользователей
 		/// </summary>
+        /// <param name="fromCache">Получить информацию из кэша</param>
 		/// <returns></returns>
-		public IEnumerable<dynamic> GetUsers()
+		public IEnumerable<dynamic> GetUsers(bool fromCache = true)
 		{
-			return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "getusers", null, null).ToDynamicList();
+			return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "getusers", null, new
+			{
+			    FromCache = fromCache
+			}).ToDynamicList();
 		}
+
+	    /// <summary>
+	    ///   Получить указанного пользователя системы
+	    /// </summary>
+	    /// <param name="userName">Логин пользователя</param>
+	    /// <param name="fromCache">Получить информацию из кэша</param>
+	    /// <returns>Пользователь системы</returns>
+	    public dynamic GetUser(string userName, bool fromCache = true)
+        {
+            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "getuser", null, new
+            {
+                UserName = userName,
+                FromCache = fromCache
+            }).ToDynamic();
+        }
+
+        /// <summary>
+        ///   Добавить пользователя во внутреннее хранилище
+        /// </summary>
+        /// <param name="userName">Пользователь</param>
+        /// <param name="password">пароль</param>
+        public dynamic AddUser(string userName, string password)
+        {
+            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "Authorization", "adduser", null, new
+            {
+                UserName = userName,
+                Password = password
+            }).ToDynamic();
+        }
+
+        /// <summary>
+        ///   Удалить пользователя из внутреннего хранилища
+        /// </summary>
+        /// <param name="userName">Пользователь</param>
+        public dynamic RemoveUser(string userName)
+        {
+            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "Authorization", "removeuser", null, new
+            {
+                UserName = userName,
+            }).ToDynamic();
+        }
+
+        /// <summary>
+        ///   Добавить роль
+        /// </summary>
+        /// <param name="roleName">Роль</param>
+        /// <param name="roleCaption"></param>
+        /// <param name="roleDescription"></param>
+        public dynamic AddRole(string roleName, string roleCaption, string roleDescription)
+        {
+            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "Authorization", "addrole", null, new
+            {
+                Name = roleName,
+                Caption = roleCaption,
+                Description = roleDescription
+            }).ToDynamic();
+        }
+
+        /// <summary>
+        ///   Удалить роль
+        /// </summary>
+        /// <param name="roleName">Роль</param>
+        public dynamic RemoveRole(string roleName)
+        {
+            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "Authorization", "removerole", null, new
+            {
+                RoleName = roleName,
+            }).ToDynamic();
+        }
 
         /// <summary>
         ///   Обновить список доступных ролей пользователей на сервере
         /// </summary>
         /// <returns>Список ролей пользователей</returns>
-        public void UpdateRoles()
+        public void InvalidateRoles()
         {
             RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "updateroles", null, null);
         }
@@ -314,7 +342,7 @@ namespace InfinniPlatform.Api.RestApi.AuthApi
         ///   Обновить ACL на сервере
         /// </summary>
         /// <returns></returns>
-        public void UpdateAcl()
+        public void InvalidateAcl()
         {
             RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "updateacl", null, null);
         }
@@ -322,7 +350,7 @@ namespace InfinniPlatform.Api.RestApi.AuthApi
 		/// <summary>
 		///   Обновить утверждения относительно пользователей на сервере
 		/// </summary>
-		public void UpdateUserClaims()
+		public void InvalidateUserClaims()
 		{
 			RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "updateuserclaims", null, null);
 		}

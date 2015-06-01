@@ -5,7 +5,7 @@ using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Factories;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.Security;
 using InfinniPlatform.Api.Transactions;
@@ -53,7 +53,7 @@ namespace InfinniPlatform.Factories
 			_components.Add(new ReportApi());
 			_components.Add(new UploadApi());
 			_components.Add(new MetadataApi());
-			_components.Add(new AclApi());
+			_components.Add(new AuthApi());
 			_components.Add(new SignInApi());
 			_components.Add(new PasswordVerifierComponent(this));
 			_components.Add(new InprocessDocumentComponent(new ConfigurationMediatorComponent(
