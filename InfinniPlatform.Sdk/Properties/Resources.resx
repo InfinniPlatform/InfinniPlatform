@@ -219,4 +219,10 @@
   <data name="UnableToDeleteRole" xml:space="preserve">
     <value>Unable to delete role with exception: {0}</value>
   </data>
+  <data name="UnableToAddUserRole" xml:space="preserve">
+    <value>Unable to add role to user with exception: {0}</value>
+  </data>
+  <data name="UnableToDeleteUserRole" xml:space="preserve">
+    <value>Unable to delete user role with exception: {0}</value>
+  </data>
 </root>

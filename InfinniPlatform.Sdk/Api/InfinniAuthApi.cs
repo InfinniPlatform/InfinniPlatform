@@ -183,12 +183,7 @@ namespace InfinniPlatform.Sdk.Api
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            dynamic body = new
-            {
-                RoleName = roleName
-            };
-
-            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingAddRole(Version), body);
+            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingToSpecifiedRole(Version, roleName));
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToAddRole,response.GetErrorContent()));
         }
@@ -208,6 +203,36 @@ namespace InfinniPlatform.Sdk.Api
                 string.Format(Resources.UnableToDeleteRole, response.GetErrorContent()));
         }
 
+        /// <summary>
+        ///  Добавить роль пользователю
+        /// </summary>
+        /// <param name="userName">Логин пользователя</param>
+        /// <param name="roleName">Роль</param>
+        /// <returns>Результат добавления роли пользователю</returns>
+        public dynamic AddUserRole(string userName, string roleName)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
 
+            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingToSpecifiedUserRole(Version, userName, roleName));
+
+            return ProcessAsObjectResult(response,
+                string.Format(Resources.UnableToAddUserRole, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        /// Удалить роль пользователя
+        /// </summary>
+        /// <param name="userName">Логин пользователя</param>
+        /// <param name="roleName">Роль пользователя</param>
+        /// <returns>Результат удаления роли пользователя</returns>
+        public dynamic DeleteUserRole(string userName, string roleName)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingToSpecifiedUserRole(Version, userName, roleName));
+
+            return ProcessAsObjectResult(response,
+                string.Format(Resources.UnableToDeleteUserRole, response.GetErrorContent()));
+        }
     }
 }

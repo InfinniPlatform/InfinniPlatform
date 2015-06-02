@@ -235,30 +235,33 @@ namespace InfinniPlatform.Sdk
         /// <param name="version">Версия приложения</param>
         /// <param name="userName">Логин пользователя</param>
         /// <returns>Строка роутинга запроса для получения существующего пользователя</returns>
-        public string BuildRestRoutingToSpecifiedUser(string version, string userName)
+        public string BuildRestRoutingToSpecifiedUserRoles(string version, string userName)
         {
             return GetCompleteUrl(GetRestTemplateStandardSpecifiedUserName()
                 .ReplaceFormat("version", version)
                 .ReplaceFormat("application", "Administration")
                 .ReplaceFormat("documentType", "User")
-                .ReplaceFormat("userName",userName)
+                .ReplaceFormat("userName", userName)
                 );
         }
 
         /// <summary>
-        ///   Сформировать роутинг для установки значения утверждения относительно пользователя (Claim)
+        ///   Сформировать роутинг для обращения к указанному пользователю
         /// </summary>
         /// <param name="version">Версия приложения</param>
-        /// <returns>Роутинг запроса</returns>
-        public string BuildRestRoutingAddUserClaim(string version)
+        /// <param name="userName">Логин пользователя</param>
+        /// <param name="roleName">Роль пользователя</param>
+        /// <returns>Строка роутинга запроса для получения существующего пользователя</returns>
+        public string BuildRestRoutingToSpecifiedUserRole(string version, string userName, string roleName)
         {
-            return GetCompleteUrl(GetRestTemplateStandard()
+            return GetCompleteUrl(GetRestTemplateStandardSpecifiedUserRole()
                 .ReplaceFormat("version", version)
                 .ReplaceFormat("application", "Administration")
                 .ReplaceFormat("documentType", "User")
+                .ReplaceFormat("userName", userName)
+                .ReplaceFormat("roleName", roleName)
                 );
         }
-
 
         /// <summary>
         ///  Сформировать роутинг для обращения (GET,PUT, DELETE)  к указанному утверждению (Claim)
@@ -270,24 +273,26 @@ namespace InfinniPlatform.Sdk
         public string BuildRestRoutingToSpecifiedUserClaim(string version, string userName, string claimType)
         {
             return GetCompleteUrl(GetRestTemplateStandardSpecifiedUserClaim()
-                .ReplaceFormat("version",version)
-                .ReplaceFormat("application","Administration")
+                .ReplaceFormat("version", version)
+                .ReplaceFormat("application", "Administration")
                 .ReplaceFormat("documentType", "User")
-                .ReplaceFormat("userName",userName)
-                .ReplaceFormat("claimType",claimType));
+                .ReplaceFormat("userName", userName)
+                .ReplaceFormat("claimType", claimType));
         }
 
         /// <summary>
-        ///   Сформировать роутинг для добавления роли
+        ///   Сформировать роутинг для обращения к указанному пользователю
         /// </summary>
         /// <param name="version">Версия приложения</param>
-        /// <returns>Роутинг запроса</returns>
-        public string BuildRestRoutingAddRole(string version)
+        /// <param name="userName">Логин пользователя</param>
+        /// <returns>Строка роутинга запроса для получения существующего пользователя</returns>
+        public string BuildRestRoutingToSpecifiedUser(string version, string userName)
         {
-            return GetCompleteUrl(GetRestTemplateStandard()
-                .ReplaceFormat("version",version)
-                .ReplaceFormat("application","Administration")
-                .ReplaceFormat("documentType","Role")
+            return GetCompleteUrl(GetRestTemplateStandardSpecifiedUserName()
+                .ReplaceFormat("version", version)
+                .ReplaceFormat("application", "Administration")
+                .ReplaceFormat("documentType", "User")
+                .ReplaceFormat("userName", userName)
                 );
         }
 
@@ -299,11 +304,11 @@ namespace InfinniPlatform.Sdk
         /// <returns>Роутинг запроса</returns>
         public string BuildRestRoutingToSpecifiedRole(string version, string roleName)
         {
-            return GetCompleteUrl(GetRestTemplateStandardSpecifiedUserName()
+            return GetCompleteUrl(GetRestTemplateStandardSpecifiedRoleName()
                 .ReplaceFormat("version", version)
                 .ReplaceFormat("application", "Administration")
                 .ReplaceFormat("documentType", "Role")
-                .ReplaceFormat("userName",roleName)
+                .ReplaceFormat("roleName", roleName)
                 );
         }
 
@@ -372,12 +377,30 @@ namespace InfinniPlatform.Sdk
         }
 
         /// <summary>
+        ///   Получить шаблона стандартного запроса с действием по умолчанию с указанием роли пользователя
+        /// </summary>
+        /// <returns>Шаблон роутинга запроса</returns>
+        private string GetRestTemplateStandardSpecifiedRoleName()
+        {
+            return GetRestTemplateStandard() + "/{roleName}";
+        }
+
+        /// <summary>
+        ///  Получить шаблон стандартного запроса с действием по умолчанию с указанием имени пользователя и наименования роли
+        /// </summary>
+        /// <returns>Шаблон роутинга роли</returns>
+        private string GetRestTemplateStandardSpecifiedUserRole()
+        {
+            return GetRestTemplateStandardSpecifiedUserName() + "/Roles/{roleName}";
+        }
+
+        /// <summary>
         ///   Получить шаблон стандартного запроса с действием по умолчанию с указанием типа утверждения
         /// </summary>
         /// <returns>Шаблон роутинга запроса</returns>
         private string GetRestTemplateStandardSpecifiedUserClaim()
         {
-            return GetRestTemplateStandardSpecifiedUserName() + "/{claimType}";
+            return GetRestTemplateStandardSpecifiedUserName() + "/Claims/{claimType}";
         }
 
         /// <summary>

@@ -79,5 +79,36 @@ namespace InfinniPlatform.Api.RestApi.Auth
             }).ToDynamic();
         }
 
+        /// <summary>
+        ///   Добавить пользователю указанную роль
+        /// </summary>
+        /// <param name="userName">Логин пользователя</param>
+        /// <param name="roleName">Роль пользователя</param>
+        /// <returns>Результат добавления пользователя</returns>
+        public dynamic AddUserRole(string userName, string roleName)
+        {
+            return RestQueryApi.QueryPostJsonRaw("Administration", "User", "adduserrole", null, new
+            {
+                UserName = userName,
+                RoleName = roleName
+            }).ToDynamic();
+        }
+
+        /// <summary>
+        ///  Удалить у пользователя указанную роль
+        /// </summary>
+        /// <param name="userName">Логин пользователя</param>
+        /// <param name="roleName">Роль пользователя</param>
+        /// <returns>Результат удаления роли пользователя</returns>
+        public dynamic DeleteUserRole(string userName, string roleName)
+        {
+            return RestQueryApi.QueryPostJsonRaw("Administration", "User", "deleteuserrole", null, new
+            {
+                UserName = userName,
+                RoleName = roleName
+            }).ToDynamic();
+        }
+
+
     }
 }

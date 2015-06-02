@@ -60,9 +60,11 @@
     <Compile Include="UserRoleStore\ActionUnits\ActionUnitGetFilteredUserRoles.cs" />
     <Compile Include="User\ActionUnits\ActionUnitAddRole.cs" />
     <Compile Include="User\ActionUnits\ActionUnitAddUser.cs" />
+    <Compile Include="User\ActionUnits\ActionUnitAddUserRole.cs" />
     <Compile Include="User\ActionUnits\ActionUnitChangePassword.cs" />
     <Compile Include="User\ActionUnits\ActionUnitDeleteRole.cs" />
     <Compile Include="User\ActionUnits\ActionUnitDeleteUser.cs" />
+    <Compile Include="User\ActionUnits\ActionUnitDeleteUserRole.cs" />
     <Compile Include="User\ActionUnits\ActionUnitGetUser.cs" />
   </ItemGroup>
   <ItemGroup>

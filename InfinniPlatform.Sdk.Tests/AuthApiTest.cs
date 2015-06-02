@@ -10,7 +10,7 @@ using NUnit.Framework;
 
 namespace InfinniPlatform.Sdk.Tests
 {
-    [Ignore("Тесты SDK не выполняют запуск сервера InfinniPlatform. Необходимо существование уже запущенного сервера на localhost : 9900")]
+    //[Ignore("Тесты SDK не выполняют запуск сервера InfinniPlatform. Необходимо существование уже запущенного сервера на localhost : 9900")]
     [TestFixture]
     public class AuthApiTest
     {
@@ -115,9 +115,26 @@ namespace InfinniPlatform.Sdk.Tests
 
             accessResult = JsonConvert.DeserializeObject<ExpandoObject>(_api.DeleteRole(roleName).ToString());
             Assert.AreEqual(accessResult.IsValid, true);
-
         }
 
+
+        [Test]
+        public void ShouldAddAndRemoveUserRole()
+        {
+            var user = "NewUser_" + Guid.NewGuid();
+
+            _api.AddUser(user, user);
+
+            string roleName = "TestRole" + Guid.NewGuid();
+
+            _api.AddRole(roleName);
+
+            dynamic accessResult = JsonConvert.DeserializeObject<ExpandoObject>(_api.AddUserRole(user, roleName).ToString());
+            Assert.AreEqual(accessResult.IsValid, true);
+
+            accessResult = JsonConvert.DeserializeObject<ExpandoObject>(_api.DeleteUserRole(user, roleName).ToString());
+            Assert.AreEqual(accessResult.IsValid, true);
+        }
 
     }
 }
