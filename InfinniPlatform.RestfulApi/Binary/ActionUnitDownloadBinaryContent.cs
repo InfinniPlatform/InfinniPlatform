@@ -16,28 +16,39 @@ namespace InfinniPlatform.RestfulApi.Binary
 	{
 		public void Action(IUrlEncodedDataContext target)
 		{
-			Action<FilterBuilder> builder = f => f.AddCriteria(cr => cr.Property("Id").IsEquals(target.FormData.DocumentId));
-			IEnumerable<dynamic> documents = new DocumentApi().GetDocument(target.FormData.Configuration, target.FormData.Metadata, builder, 0,1);
-			dynamic document = documents.FirstOrDefault();
-
-			if (document != null)
-			{
-                var linkValue = ObjectHelper.GetProperty(document, target.FormData.FieldName);
-				if (linkValue != null)
-				{
-					var blobStorage = target.Context.GetComponent<IBlobStorageComponent>().GetBlobStorage();
-					var blobData = blobStorage.GetBlobData(Guid.Parse(linkValue.Info.ContentId));
-					target.Result = blobData;
-				}
-				else
-				{
-					target.Result = null;
-				}
-			}
-			else
-			{
-				target.Result = null;
-			}
+		    if (target.FormData.ContentId != null)
+		    {
+		        target.Result = LoadBlobData(target.Context.GetComponent<IBlobStorageComponent>(), target.FormData.ContentId);
+		    }
+		    else
+		    {
+		        target.Result = FillContentByDocumentId(target.Context.GetComponent<IBlobStorageComponent>(), target.FormData);
+		    }
 		}
+
+	    private dynamic LoadBlobData(IBlobStorageComponent blobStorageComponent, string contentId)
+	    {
+            var blobStorage = blobStorageComponent.GetBlobStorage();
+            var blobData = blobStorage.GetBlobData(Guid.Parse(contentId));
+            return blobData;	        
+	    }
+
+	    private dynamic FillContentByDocumentId(IBlobStorageComponent blobStorageComponent, dynamic formData)
+	    {
+            Action<FilterBuilder> builder = f => f.AddCriteria(cr => cr.Property("Id").IsEquals(formData.DocumentId));
+            IEnumerable<dynamic> documents = new DocumentApi().GetDocument(formData.Configuration, formData.Metadata, builder, 0, 1);
+            dynamic document = documents.FirstOrDefault();
+
+            if (document != null)
+            {
+                var linkValue = ObjectHelper.GetProperty(document, formData.FieldName);
+                if (linkValue != null)
+                {
+                    return LoadBlobData(blobStorageComponent, linkValue.Info.ContentId);
+                }
+                return null;
+            }
+	        return null;
+	    }
 	}
 }
