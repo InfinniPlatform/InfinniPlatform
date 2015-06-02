@@ -1,6 +1,6 @@
 ﻿{
   "id": "MetadataDataSource",
-  "description": "Источник данных представления для метаданных конфигурации",
+  "description": "Источник данных представления для метаданных InfinniPlatform",
   "type": "object",
   "extends": {
     "$ref": "http://demo.infinnity.ru:8081/display/MC/BaseDataSource"

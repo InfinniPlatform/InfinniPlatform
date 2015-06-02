@@ -1,6 +1,6 @@
 ﻿{
   "id": "DocumentDataSource",
-  "description": "Источник данных представления для документов",
+  "description": "Источник данных представления для документов InfinniPlatform",
   "type": "object",
   "extends": {
     "$ref": "http://demo.infinnity.ru:8081/display/MC/BaseDataSource"

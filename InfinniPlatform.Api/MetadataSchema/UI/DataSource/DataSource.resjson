@@ -8,11 +8,11 @@
       "$ref": "http://demo.infinnity.ru:8081/display/MC/ObjectDataSource"
     },
     "DocumentDataSource": {
-      "description": "Источник данных представления для документов",
+      "description": "Источник данных представления для документов InfinniPlatform",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/DocumentDataSource"
     },
     "MetadataDataSource": {
-      "description": "Источник данных представления для метаданных конфигурации",
+      "description": "Источник данных представления для метаданных InfinniPlatform",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/MetadataDataSource"
     }
   },
