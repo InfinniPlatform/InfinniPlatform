@@ -579,8 +579,8 @@
     <EmbeddedResource Include="MetadataSchema\UI\DataElement\UploadFileBox\UploadFileBox.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\DataSource\BaseDataSource.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\DataSource\DataSource.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataSource\DocumentDataSource\Criteria.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataSource\DocumentDataSource\CriteriaType.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\DataSource\Criteria.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\DataSource\CriteriaType.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\DataSource\DocumentDataSource\DocumentDataSource.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\DataSource\MetadataDataSource\MetadataDataSource.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\DataSource\MetadataDataSource\MetadataType.resjson" />

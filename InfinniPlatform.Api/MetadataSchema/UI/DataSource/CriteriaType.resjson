@@ -1,0 +1,22 @@
+﻿{
+  "id": "CriteriaType",
+  "description": "Оператор фильтрации",
+  "enum": [
+    "Equals",
+    "NotEquals",
+    "MoreThan",
+    "LessThan",
+    "MoreThanOrEquals",
+    "LessThanOrEquals",
+    "Contains",
+    "NotContains",
+    "Empty",
+    "NotEmpty",
+    "StartsWith",
+    "NotStartsWith",
+    "EndsWith",
+    "NotEndsWith",
+    "In",
+    "NotIn"
+  ]
+}
