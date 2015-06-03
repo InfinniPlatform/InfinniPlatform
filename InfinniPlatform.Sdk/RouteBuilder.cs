@@ -92,7 +92,7 @@ namespace InfinniPlatform.Sdk
         /// <returns>Роутинг для стандартного запроса документа указанного типа</returns>
         public string BuildRestRoutingUrlDefaultById(string version, string application, string documentType, string instanceId)
         {
-            return GetCompleteUrl(GetRestTemplateStandardSpecifiedUserName()
+            return GetCompleteUrl(GetRestTemplateStandardSpecifiedInstanceId()
                                         .ReplaceFormat("version", version)
                                         .ReplaceFormat("application", application)
                                         .ReplaceFormat("documentType", documentType)
@@ -374,6 +374,15 @@ namespace InfinniPlatform.Sdk
         private string GetRestTemplateStandardSpecifiedUserName()
         {
             return GetRestTemplateStandard() + "/{userName}";
+        }
+
+        /// <summary>
+        ///Получить шаблон стандартного запроса с действием по умолчанию для указанного идентификатора сущности
+        /// </summary>
+        /// <returns>Шаблон роутинга запроса</returns>
+        private string GetRestTemplateStandardSpecifiedInstanceId()
+        {
+            return GetRestTemplateStandard() + "/{instanceId}";
         }
 
         /// <summary>

@@ -12,8 +12,8 @@
 // 0
 // 0
 // 0
-// ad230f31-b22c-41a5-bb25-3f5142aba12a
-// C244194FA2333B2FA4378ABE42E6910B
+// 56b058ac-0100-4f95-952b-2f8111ecad19
+// 280A8D9AA2FDEE44E77F0C2DB03C99DE
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
-[assembly: Guid("ad230f31-b22c-41a5-bb25-3f5142aba12a")]
+[assembly: Guid("56b058ac-0100-4f95-952b-2f8111ecad19")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: InternalsVisibleTo("InfinniPlatform.Owin.Tests")]

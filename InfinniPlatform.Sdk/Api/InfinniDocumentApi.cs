@@ -96,12 +96,7 @@ namespace InfinniPlatform.Sdk.Api
                     if (!string.IsNullOrEmpty(response.Content))
                     {
                         //гребаный JsonObjectSerializer вставляет служебный символ в начало строки
-                        dynamic responseObject = JObject.Parse(response.Content.Remove(0, 1));
-                        if (responseObject.IsValid == true && responseObject.Id != null)
-                        {
-                            return responseObject.Id.ToString();
-                        }
-                        throw new ArgumentException(string.Format(Resources.UnableToAttachDocumentToSession, response.GetErrorContent()));
+                        return JObject.Parse(response.Content.Remove(0, 1));
                     }
                 }
                 catch (Exception)

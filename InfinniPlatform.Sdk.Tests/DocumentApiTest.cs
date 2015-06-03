@@ -10,7 +10,7 @@ using NUnit.Framework;
 
 namespace InfinniPlatform.Sdk.Tests
 {
-    [Ignore("Тесты SDK не выполняют запуск сервера InfinniPlatform. Необходимо существование уже запущенного сервера на localhost : 9900")]
+    //[Ignore("Тесты SDK не выполняют запуск сервера InfinniPlatform. Необходимо существование уже запущенного сервера на localhost : 9900")]
     [TestFixture]
     public class DocumentApiTest
     {
@@ -56,7 +56,7 @@ namespace InfinniPlatform.Sdk.Tests
             };
 
             var ex = Assert.Throws<ArgumentException>(() => _api.SetDocument("gameshop", "catalogue", Guid.NewGuid().ToString(), documentObject));
-            Assert.AreEqual(ex.Message, "Fail to set document with exception: There an business logic error on request execution./r/nAdditional info: ﻿{\"Error\":\"Fail to commit transaction: \\r\\nExpected value for field 'Price' should have Float type, but value has System.String type ('someStringValueThatNotConvertToFloat')\"}");
+            Assert.AreEqual(ex.Message, "Unable to set document with exception: There an business logic error on request execution./r/nAdditional info: ﻿{\"Error\":\"Fail to commit transaction: \\r\\nExpected value for field 'Price' should have Float type, but value has System.String type ('someStringValueThatNotConvertToFloat')\"}");
         }
 
         [Test]
@@ -181,7 +181,7 @@ namespace InfinniPlatform.Sdk.Tests
                 Price = -1
             };
 
-            dynamic attachResult = JsonConvert.DeserializeObject<ExpandoObject>(_api.Attach(session, "gameshop", "catalogue",documentObject.Id, documentObject).Content.ToString());
+            dynamic attachResult = JsonConvert.DeserializeObject<ExpandoObject>(_api.Attach(session, "gameshop", "catalogue",documentObject.Id, documentObject).ToString());
 
             Assert.AreEqual(attachResult.IsValid, true);
 

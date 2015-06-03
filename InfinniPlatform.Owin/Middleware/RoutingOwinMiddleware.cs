@@ -24,85 +24,14 @@ namespace InfinniPlatform.Owin.Middleware
 		}
 
 
-        private readonly List<HandlerRouting> _handlers = new List<HandlerRouting>(); 
+        private readonly List<IHandlerRegistration> _handlers = new List<IHandlerRegistration>(); 
 
 
-		/// <summary>
-		/// Регистрирует обработчик GET-запросов.
-		/// </summary>
-		public void RegisterGetRequestHandler(PathStringProvider path, Func<IOwinContext, IRequestHandlerResult> handler)
-		{
-            RegisterRequestHandler("GET", (context) => path, handler.CreateAuthenticatedRequest());
-		}
 
-		/// <summary>
-		/// Регистрирует обработчик POST-запросов.
-		/// </summary>
-        public void RegisterPostRequestHandler(PathStringProvider path, Func<IOwinContext, IRequestHandlerResult> handler)
-		{
-			RegisterRequestHandler("POST", context => path, handler.CreateAuthenticatedRequest());
-		}
-
-		/// <summary>
-		///   Регистрирует обработчик DELETE-запросов
-		/// </summary>
-        public void RegisterDeleteRequestHandler(PathStringProvider path, Func<IOwinContext, IRequestHandlerResult> handler)
-		{
-			RegisterRequestHandler("DELETE", context => path, handler.CreateAuthenticatedRequest());
-		}
-
-		/// <summary>
-		///   Регистрирует обработчик PUT-запросов
-		/// </summary>
-        public void RegisterPutRequestHandler(PathStringProvider path, Func<IOwinContext, IRequestHandlerResult> handler)
-		{
-			RegisterRequestHandler("PUT", context => path, handler.CreateAuthenticatedRequest());
-		}
-
-		/// <summary>
-		/// Регистрирует обработчик GET-запросов.
-		/// </summary>
-        public void RegisterGetRequestHandler(Func<IOwinContext, PathStringProvider> path, Func<IOwinContext, IRequestHandlerResult> handler)
-		{
-			RegisterRequestHandler("GET", path, handler.CreateAuthenticatedRequest());
-		}
-
-		/// <summary>
-		/// Регистрирует обработчик POST-запросов.
-		/// </summary>
-		public void RegisterPostRequestHandler(Func<IOwinContext, PathStringProvider> path, Func<IOwinContext, IRequestHandlerResult> handler)
-		{
-			RegisterRequestHandler("POST", path, handler.CreateAuthenticatedRequest());
-		}
-
-		/// <summary>
-		///   Регистрирует обработчик DELETE-запросов
-		/// </summary>
-        public void RegisterDeleteRequestHandler(Func<IOwinContext, PathStringProvider> path, Func<IOwinContext, IRequestHandlerResult> handler)
-		{
-			RegisterRequestHandler("DELETE", path, handler.CreateAuthenticatedRequest());
-		}
-
-		/// <summary>
-		///   Регистрирует обработчик PUT-запросов
-		/// </summary>
-        public void RegisterPutRequestHandler(Func<IOwinContext, PathStringProvider> path, Func<IOwinContext, IRequestHandlerResult> handler)
-		{
-			RegisterRequestHandler("PUT", path, handler.CreateAuthenticatedRequest());
-		}
-
-		/// <summary>
-		/// Регистрирует обработчик HTTP-запросов.
-		/// </summary>
-        public void RegisterRequestHandler(string method, Func<IOwinContext, PathStringProvider> path, Func<IOwinContext, IRequestHandlerResult> handler)
-		{
-            _handlers.Add(new HandlerRouting()
-            {
-                ContextRouting = path,
-                Handler = handler,
-                Method = method
-            });			
-		}
+	    public void RegisterHandler(IHandlerRegistration handlerRegistration)
+	    {
+	        _handlers.Add(handlerRegistration);
+	    }
 
 
 		/// <summary>
@@ -115,10 +44,12 @@ namespace InfinniPlatform.Owin.Middleware
 			var request = context.Request;
 			var requestPath = NormalizePath(request.Path);
 
-			HandlerRouting handlerInfo;
+			IHandlerRegistration handlerInfo;
 
-            var handlersRegistered = _handlers.Select(h => new KeyValuePair<PathStringProvider, HandlerRouting>(
-                h.ContextRouting.Invoke(context), h)).Where(h => NormalizePath(h.Key.PathString).ToLowerInvariant() == requestPath.ToLowerInvariant()).ToList();
+            //var handlersRegistered = _handlers.Select(h => new KeyValuePair<PathStringProvider, HandlerRouting>(
+            //    h.ContextRouting.Invoke(context), h)).Where(h => NormalizePath(h.Key.PathString).ToLowerInvariant() == requestPath.ToLowerInvariant()).ToList();
+
+		    var handlersRegistered = _handlers.Where(h => h.CanProcessRequest(context, requestPath)).ToList();
 
 
 			// Если найден обработчик входящего запроса
@@ -126,11 +57,11 @@ namespace InfinniPlatform.Owin.Middleware
 			{
 				IRequestHandlerResult result;
 
-				handlerInfo = handlersRegistered.OrderByDescending(h => h.Key.Priority).Where(h => string.Equals(request.Method, h.Value.Method, StringComparison.OrdinalIgnoreCase)).Select(h => h.Value).FirstOrDefault();
+				handlerInfo = handlersRegistered.OrderByDescending(h => h.Priority).FirstOrDefault(h => string.Equals(request.Method, h.Method, StringComparison.OrdinalIgnoreCase));
 
 			    if (handlersRegistered.Any() && handlerInfo == null)
 			    {
-                    result = new ErrorRequestHandlerResult(string.Format(Resources.MethodIsNotSupported, request.Method, request.Path, request.Method));
+                    result = new ErrorRequestHandlerResult(string.Format(Resources.MethodIsNotSupported, request.Method, request.Path));
 			    }
 
 				// Если метод входящего запроса совпадает с ожидаемым
@@ -138,7 +69,7 @@ namespace InfinniPlatform.Owin.Middleware
 				{
 					try
 					{
-						result = handlerInfo.Handler(context);
+						result = handlerInfo.Execute(context);
 					}
 					catch (Exception error)
 					{
@@ -182,7 +113,7 @@ namespace InfinniPlatform.Owin.Middleware
 				: error.Message;
 		}
 
-		protected static object ReadRequestBody(IOwinContext context)
+		public static object ReadRequestBody(IOwinContext context)
 		{
 			object result;
 

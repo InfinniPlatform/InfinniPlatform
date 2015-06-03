@@ -83,7 +83,6 @@
   <ItemGroup>
     <Compile Include="ApplicationHostingModule.cs" />
     <Compile Include="HttpResultHandlers\HttpResultHandlerSignIn.cs" />
-    <Compile Include="Middleware\ApplicationHostingModuleExtension.cs" />
     <Compile Include="Middleware\ApplicationHostingRoutingMiddleware.cs" />
     <Compile Include="ConfigRequestProviders\ConfigRequestProvider.cs" />
     <Compile Include="Controllers\UploadController.cs" />
@@ -99,6 +98,8 @@
     <Compile Include="IHttpResultHandlerFactory.cs" />
     <Compile Include="Logging\LogExceptionFilterAttribute.cs" />
     <Compile Include="Logging\LogExtensions.cs" />
+    <Compile Include="Middleware\HandlerRegistration.cs" />
+    <Compile Include="Middleware\IRouteFormatter.cs" />
     <Compile Include="Middleware\MultipartFormData\BinaryStreamStack.cs" />
     <Compile Include="Middleware\MultipartFormData\FilePart.cs" />
     <Compile Include="Middleware\MultipartFormData\MultipartFormDataParser.cs" />
@@ -107,6 +108,43 @@
     <Compile Include="Middleware\MultipartFormData\RebufferableBinaryReader.cs" />
     <Compile Include="Middleware\MultipartFormData\StreamingMultipartFormDataParser.cs" />
     <Compile Include="Middleware\MultipartFormData\SubsequenceFinder.cs" />
+    <Compile Include="Middleware\RequestPathConstructor.cs" />
+    <Compile Include="Middleware\RoleAuthHandlers\AddRoleHandlerRegistration.cs" />
+    <Compile Include="Middleware\RoleAuthHandlers\DeleteRoleHandlerRegistration.cs" />
+    <Compile Include="Middleware\RouteFormatters\RouteFormatterAuthRole.cs" />
+    <Compile Include="Middleware\RouteFormatters\RouteFormatterAuthUser.cs" />
+    <Compile Include="Middleware\RouteFormatters\RouteFormatterSession.cs" />
+    <Compile Include="Middleware\RouteFormatters\RouteFormatterStandard.cs" />
+    <Compile Include="Middleware\SessionHandlers\AttachDocumentHandlerRegistration.cs" />
+    <Compile Include="Middleware\SessionHandlers\CreateSessionHandlerRegistration.cs" />
+    <Compile Include="Middleware\SessionHandlers\DetachDocumentHandlerRegistration.cs" />
+    <Compile Include="Middleware\SessionHandlers\FileAttachHandlerRegistration.cs" />
+    <Compile Include="Middleware\SessionHandlers\FileDetachHandlerRegistration.cs" />
+    <Compile Include="Middleware\SessionHandlers\GetSessionByIdHandlerRegistration.cs" />
+    <Compile Include="Middleware\SessionHandlers\SessionRemoveHandlerRegistration.cs" />
+    <Compile Include="Middleware\SessionHandlers\SessionCommitHandlerRegistration.cs" />
+    <Compile Include="Middleware\StandardHandlers\ChangePasswordHandlerRegistration.cs" />
+    <Compile Include="Middleware\StandardHandlers\CustomServiceRegistrationHandler.cs" />
+    <Compile Include="Middleware\StandardHandlers\DeleteDocumentHandlerRegistration.cs" />
+    <Compile Include="Middleware\StandardHandlers\DenyAccessHandlerRegistration.cs" />
+    <Compile Include="Middleware\StandardHandlers\FileDownloadHandlerRegistration.cs" />
+    <Compile Include="Middleware\StandardHandlers\FileUploadHandlerRegistration.cs" />
+    <Compile Include="Middleware\StandardHandlers\GetDocumentByIdHandlerRegistration.cs" />
+    <Compile Include="Middleware\StandardHandlers\GetDocumentHandlerRegistration.cs" />
+    <Compile Include="Middleware\StandardHandlers\GrantAccessHandlerRegistration.cs" />
+    <Compile Include="Middleware\StandardHandlers\SetDocumentHandlerRegistration.cs" />
+    <Compile Include="Middleware\StandardHandlers\SetDocumentsHandlerRegistration.cs" />
+    <Compile Include="Middleware\StandardHandlers\SignInRegistrationHandler.cs" />
+    <Compile Include="Middleware\StandardHandlers\SignOutRegistrationHandler.cs" />
+    <Compile Include="Middleware\StandardHandlers\UpdateDocumentHandlerRegistration.cs" />
+    <Compile Include="Middleware\UserAuthHandlers\AddUserClaimHandlerRegistration.cs" />
+    <Compile Include="Middleware\UserAuthHandlers\AddUserHandlerRegistration.cs" />
+    <Compile Include="Middleware\UserAuthHandlers\AddUserRoleHandlerRegistration.cs" />
+    <Compile Include="Middleware\UserAuthHandlers\DeleteUserHandlerRegistration.cs" />
+    <Compile Include="Middleware\UserAuthHandlers\DeleteUserRoleHandlerRegistration.cs" />
+    <Compile Include="Middleware\UserAuthHandlers\GetUserClaimHandlerRegistration.cs" />
+    <Compile Include="Middleware\UserAuthHandlers\GetUserHandlerRegistration.cs" />
+    <Compile Include="Middleware\UserAuthHandlers\RemoveUserClaimHandlerRegistration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

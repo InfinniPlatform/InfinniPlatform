@@ -26,20 +26,22 @@ namespace InfinniPlatform.Authentication.Middleware
 			: base(next)
 		{
 			// Методы, связанные с учетной записью пользователя
-			RegisterGetRequestHandler(GetCurrentUserPath.Create(Priority.Standard), GetCurrentUser);
-			RegisterPostRequestHandler(ChangePasswordPath.Create(Priority.Standard), ChangePassword);
-			RegisterPostRequestHandler(ChangeProfilePath.Create(Priority.Standard), ChangeProfile);
-			RegisterPostRequestHandler(ChangeActiveRolePath.Create(Priority.Standard), ChangeActiveRole);
+			RegisterHandler(new RegistrationHandlerBase("GET", GetCurrentUserPath, GetCurrentUser));
+            RegisterHandler(new RegistrationHandlerBase("POST", ChangePasswordPath, ChangePassword));
+            RegisterHandler(new RegistrationHandlerBase("POST", ChangeProfilePath, ChangeProfile));
+            RegisterHandler(new RegistrationHandlerBase("POST", ChangeActiveRolePath, ChangeActiveRole));
 
 			// Методы, связанные с входом пользователя в систему
-            RegisterGetRequestHandler(GetExternalProvidersPath.Create(Priority.Standard), GetExternalProviders);
-            RegisterPostRequestHandler(SignInInternalPath.Create(Priority.Standard), SignInInternal);
-            RegisterPostRequestHandler(SignInExternalPath.Create(Priority.Standard), SignInExternal);
-            RegisterGetRequestHandler(SignInExternalCallbackPath.Create(Priority.Standard), SignInExternalCallback);
-            RegisterPostRequestHandler(LinkExternalLoginPath.Create(Priority.Standard), LinkExternalLogin);
-            RegisterGetRequestHandler(LinkExternalLoginCallbackPath.Create(Priority.Standard), LinkExternalLoginCallback);
-            RegisterPostRequestHandler(UnlinkExternalLoginPath.Create(Priority.Standard), UnlinkExternalLogin);
-            RegisterPostRequestHandler(SignOutPath.Create(Priority.Standard), SignOut);
+            RegisterHandler(new RegistrationHandlerBase("GET", GetExternalProvidersPath, GetExternalProviders));
+            RegisterHandler(new RegistrationHandlerBase("POST", GetExternalProvidersPath, GetExternalProviders));
+            RegisterHandler(new RegistrationHandlerBase("POST", SignInInternalPath, SignInInternal));
+            RegisterHandler(new RegistrationHandlerBase("POST", SignInExternalPath, SignInExternal));
+
+            RegisterHandler(new RegistrationHandlerBase("GET", SignInExternalCallbackPath, SignInExternalCallback));
+            RegisterHandler(new RegistrationHandlerBase("POST", LinkExternalLoginPath, LinkExternalLogin));
+            RegisterHandler(new RegistrationHandlerBase("GET", LinkExternalLoginCallbackPath, LinkExternalLoginCallback));
+            RegisterHandler(new RegistrationHandlerBase("POST", UnlinkExternalLoginPath, UnlinkExternalLogin));
+            RegisterHandler(new RegistrationHandlerBase("POST", SignOutPath, SignOut));
 		}
 
 
