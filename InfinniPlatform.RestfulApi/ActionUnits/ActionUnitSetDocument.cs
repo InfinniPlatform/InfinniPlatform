@@ -75,15 +75,11 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                 target.Result = new DynamicWrapper();
 
 				target.Result.IsValid = true;
-				target.Result.ValidationMessage = string.Empty;
-
-				target.Result.ConfigId = target.Item.Configuration;
-				target.Result.DocumentId = target.Item.Metadata;
-				target.Result.ActionId = "SetDocument";
+				target.Result.ValidationMessage = "Document successfully saved.";
 
 				if (instanceId != null)
 				{
-					target.Result.InstanceId = instanceId;
+					target.Result.Id = instanceId;
 				}
 
 				return;

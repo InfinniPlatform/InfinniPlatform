@@ -11,7 +11,7 @@ using NUnit.Framework;
 
 namespace InfinniPlatform.Sdk.Tests
 {
-    [Ignore("Тесты SDK не выполняют запуск сервера InfinniPlatform. Необходимо существование уже запущенного сервера на localhost : 9900")]
+    //[Ignore("Тесты SDK не выполняют запуск сервера InfinniPlatform. Необходимо существование уже запущенного сервера на localhost : 9900")]
     public sealed class FileApiTest
     {
         private const string InfinniSessionPort = "9900";
@@ -36,7 +36,7 @@ namespace InfinniPlatform.Sdk.Tests
                 LastName = "McDonald",
             };
 
-            var profileId = _documentApi.SetDocument("Gameshop", "UserProfile", Guid.NewGuid().ToString(), document);
+            var profileId = _documentApi.SetDocument("Gameshop", "UserProfile", Guid.NewGuid().ToString(), document).Id.ToString();
 
             using (var fileStream = new FileStream(@"TestData\avatar.gif", FileMode.Open))
             {
@@ -58,9 +58,9 @@ namespace InfinniPlatform.Sdk.Tests
                 LastName = "McDonald",
             };
 
-            var sessionId = _documentApi.CreateSession();
+            var sessionId = _documentApi.CreateSession().SessionId.ToString();
 
-            var instanceId = _documentApi.Attach(sessionId, "Gameshop", "UserProfile", Guid.NewGuid().ToString(), document);
+            var instanceId = _documentApi.Attach(sessionId, "Gameshop", "UserProfile", Guid.NewGuid().ToString(), document).Id.ToString();
 
 
             using (var fileStream = new FileStream(@"TestData\avatar.gif", FileMode.Open))
@@ -87,9 +87,9 @@ namespace InfinniPlatform.Sdk.Tests
                 LastName = "McDonald",
             };
 
-            var sessionId = _documentApi.CreateSession();
+            var sessionId = _documentApi.CreateSession().SessionId.ToString();
 
-            var instanceId = _documentApi.Attach(sessionId, "Gameshop", "UserProfile", Guid.NewGuid().ToString(), document);
+            var instanceId = _documentApi.Attach(sessionId, "Gameshop", "UserProfile", Guid.NewGuid().ToString(), document).Id.ToString();
 
 
             using (var fileStream = new FileStream(@"TestData\avatar.gif", FileMode.Open))

@@ -39,8 +39,13 @@ namespace InfinniPlatform.Sdk.Api
         /// <param name="exceptionMessage">Сообщение в случае ошибки выполнения запроса</param>
         protected dynamic ProcessAsObjectResult(RestQueryResponse response, string exceptionMessage)
         {
-            //гребаный JsonObjectSerializer вставляет служебный символ в начало строки
-            return ProcessRequestResult(response, () => JObject.Parse(response.Content.Remove(0, 1)), () => Resources.ResultIsNotOfObjectType, () => exceptionMessage);
+            if (!string.IsNullOrEmpty(response.Content))
+            {
+                //гребаный JsonObjectSerializer вставляет служебный символ в начало строки
+                return ProcessRequestResult(response, () => JObject.Parse(response.Content.Remove(0, 1)),
+                    () => Resources.ResultIsNotOfObjectType, () => exceptionMessage);
+            }
+            return null;
         }
 
 

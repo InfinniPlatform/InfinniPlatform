@@ -10,60 +10,24 @@ namespace InfinniPlatform.Sdk.Api
     /// <summary>
     ///   API для работы с документами
     /// </summary>
-    public class InfinniDocumentApi
+    public class InfinniDocumentApi : BaseApi
     {
-        private readonly string _server;
-        private readonly string _port;
-        private readonly string _version;
-        private CookieContainer _cookieContainer;
-        private readonly RouteBuilder _routeBuilder;
-
         public InfinniDocumentApi(string server, string port, string version)
+            : base(server, port, version)
         {
-            _server = server;
-            _port = port;
-            _version = version;
-            _routeBuilder = new RouteBuilder(_server, _port);
         }
 
         /// <summary>
         ///   Создать клиентскую сессию
         /// </summary>
         /// <returns>Клиентская сессия</returns>
-        public string CreateSession()
+        public dynamic CreateSession()
         {
-            var restQueryExecutor = new RequestExecutor(_cookieContainer);
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryPut(_routeBuilder.BuildRestRoutingUrlDefaultSession(_version));
+            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlDefaultSession(Version));
 
-            string sessionId = null;
-
-            if (response.IsAllOk)
-            {
-                try
-                {
-                    if (!string.IsNullOrEmpty(response.Content))
-                    {
-                        //гребаный JsonObjectSerializer вставляет служебный символ в начало строки
-                        dynamic result = JObject.Parse(response.Content.Remove(0, 1));
-                        if (result.SessionId != null && result.IsValid == true)
-                        {
-                            sessionId = result.SessionId;
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-                    throw new ArgumentException(Resources.ResultIsNotOfObjectType);
-                }
-            }
-
-            if (string.IsNullOrEmpty(sessionId))
-            {
-                throw new ArgumentException(Resources.UnableToCreateNewSession);
-            }
-
-            return sessionId;
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToCreateNewSession, response.GetErrorContent())); 
         }
 
         /// <summary>
@@ -76,7 +40,7 @@ namespace InfinniPlatform.Sdk.Api
         /// <param name="document">Экземпляр документа</param>
         public dynamic Attach(string session, string application, string documentType, string instanceId, dynamic document)
         {
-            var restQueryExecutor = new RequestExecutor(_cookieContainer);
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
            
             dynamic changesObject = JObject.FromObject(new
             {
@@ -87,25 +51,9 @@ namespace InfinniPlatform.Sdk.Api
 
             changesObject.Document.Id = instanceId;
 
-            var response = restQueryExecutor.QueryPut(_routeBuilder.BuildRestRoutingUrlDefaultSessionById(session, _version), changesObject.ToString());
+            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlDefaultSessionById(session, Version), changesObject.ToString());
 
-            if (response.IsAllOk)
-            {
-                try
-                {
-                    if (!string.IsNullOrEmpty(response.Content))
-                    {
-                        //гребаный JsonObjectSerializer вставляет служебный символ в начало строки
-                        return JObject.Parse(response.Content.Remove(0, 1));
-                    }
-                }
-                catch (Exception)
-                {
-                    throw new ArgumentException(Resources.ResultIsNotOfObjectType);
-                }
-            }
-
-            throw new ArgumentException(string.Format(Resources.UnableToAttachDocumentToSession, response.GetErrorContent()));
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToAttachDocumentToSession, response.GetErrorContent())); 
         }
 
         /// <summary>
@@ -118,32 +66,11 @@ namespace InfinniPlatform.Sdk.Api
         /// <param name="fileStream">Файловый поток</param>
         public void AttachFile(string session, string instanceId, string fieldName, string fileName, Stream fileStream)
         {
-            var restQueryExecutor = new RequestExecutor(_cookieContainer);
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryPostFile(_routeBuilder.BuildRestRoutingUrlDefaultSession(_version), instanceId, fieldName, fileName, fileStream, session);
+            var response = restQueryExecutor.QueryPostFile(RouteBuilder.BuildRestRoutingUrlDefaultSession(Version), instanceId, fieldName, fileName, fileStream, session);
 
-            if (response.IsAllOk)
-            {
-                try
-                {
-                    if (!string.IsNullOrEmpty(response.Content))
-                    {
-                        //гребаный JsonObjectSerializer вставляет служебный символ в начало строки
-                        dynamic responseObject = JObject.Parse(response.Content.Remove(0, 1));
-                        if (responseObject.IsValid != true)
-                        {
-                            throw new ArgumentException(string.Format(Resources.UnableToAttachFileToSession, response.GetErrorContent()));
-                        }
-                        return;
-                    }
-                }
-                catch (Exception)
-                {
-                    throw new ArgumentException(Resources.ResultIsNotOfObjectType);
-                }
-            }
-
-            throw new ArgumentException(string.Format(Resources.UnableToAttachFileToSession, response.GetErrorContent()));            
+            ProcessAsObjectResult(response, string.Format(Resources.UnableToAttachFileToSession, response.GetErrorContent()));            
         }
 
         /// <summary>
@@ -154,7 +81,7 @@ namespace InfinniPlatform.Sdk.Api
         /// <param name="fieldName">Наименование поля для присоединения</param>
         public void DetachFile(string session, string instanceId, string fieldName)
         {
-            var restQueryExecutor = new RequestExecutor(_cookieContainer);
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
 
             dynamic body = new
             {
@@ -163,30 +90,9 @@ namespace InfinniPlatform.Sdk.Api
                 SessionId = session
             };
 
-            var response = restQueryExecutor.QueryDelete(_routeBuilder.BuildRestRoutingUrlDefaultSession(_version), body);
+            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingUrlDefaultSession(Version), body);
 
-            if (response.IsAllOk)
-            {
-                try
-                {
-                    if (!string.IsNullOrEmpty(response.Content))
-                    {
-                        //гребаный JsonObjectSerializer вставляет служебный символ в начало строки
-                        dynamic responseObject = JObject.Parse(response.Content.Remove(0, 1));
-                        if (responseObject.IsValid != true)
-                        {
-                            throw new ArgumentException(string.Format(Resources.UnableToDetachFileFromSession, response.GetErrorContent()));
-                        }
-                        return;
-                    }
-                }
-                catch (Exception)
-                {
-                    throw new ArgumentException(Resources.ResultIsNotOfObjectType);
-                }
-            }
-
-            throw new ArgumentException(string.Format(Resources.UnableToDetachFileFromSession, response.GetErrorContent()));
+            ProcessAsObjectResult(response, string.Format(Resources.UnableToDetachFileFromSession, response.GetErrorContent())); 
         }
 
         /// <summary>
@@ -196,31 +102,16 @@ namespace InfinniPlatform.Sdk.Api
         /// <param name="instanceId">Идентификатор отсоединяемого документа</param>
         public dynamic Detach(string session, string instanceId)
         {
-            var restQueryExecutor = new RequestExecutor(_cookieContainer);
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
 
             if (string.IsNullOrEmpty(instanceId))
             {
                 throw new ArgumentException(Resources.DocumentToDetachShouldntBeEmpty);
             }
 
-            var response = restQueryExecutor.QueryDelete(_routeBuilder.BuildRestRoutingUrlDetachDocument(session, _version, instanceId));
+            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingUrlDetachDocument(session, Version, instanceId));
 
-            if (response.IsAllOk)
-            {
-                try
-                {
-                    if (!string.IsNullOrEmpty(response.Content))
-                    {
-                        //гребаный JsonObjectSerializer вставляет служебный символ в начало строки
-                        return JObject.Parse(response.Content.Remove(0, 1));
-                    }
-                }
-                catch (Exception)
-                {
-                    throw new ArgumentException(Resources.ResultIsNotOfObjectType);
-                }
-            }
-            throw new ArgumentException(string.Format(Resources.UnableToDetachDocument, response.GetErrorContent()));
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToDetachDocument, response.GetErrorContent())); 
         }
 
         /// <summary>
@@ -230,26 +121,11 @@ namespace InfinniPlatform.Sdk.Api
         /// <returns>Результат удаления сессии</returns>
         public dynamic RemoveSession(string sessionId)
         {
-            var restQueryExecutor = new RequestExecutor(_cookieContainer);
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryDelete(_routeBuilder.BuildRestRoutingUrlDefaultSessionById(sessionId, _version));
+            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingUrlDefaultSessionById(sessionId, Version));
 
-            if (response.IsAllOk)
-            {
-                try
-                {
-                    if (!string.IsNullOrEmpty(response.Content))
-                    {
-                        //гребаный JsonObjectSerializer вставляет служебный символ в начало строки
-                        return JObject.Parse(response.Content.Remove(0, 1));
-                    }
-                }
-                catch (Exception)
-                {
-                    throw new ArgumentException(Resources.ResultIsNotOfObjectType);
-                }
-            }
-            throw new ArgumentException(string.Format(Resources.UnableToDetachDocument, response.GetErrorContent()));
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToRemoveSession, response.GetErrorContent())); 
         }
 
         /// <summary>
@@ -259,26 +135,11 @@ namespace InfinniPlatform.Sdk.Api
         /// <returns>Объект сессии</returns>
         public dynamic GetSession(string sessionId)
         {
-            var restQueryExecutor = new RequestExecutor(_cookieContainer);
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryGetById(_routeBuilder.BuildRestRoutingUrlDefaultSessionById(sessionId, _version));
+            var response = restQueryExecutor.QueryGetById(RouteBuilder.BuildRestRoutingUrlDefaultSessionById(sessionId, Version));
 
-            if (response.IsAllOk)
-            {
-                try
-                {
-                    if (!string.IsNullOrEmpty(response.Content))
-                    {
-                        //гребаный JsonObjectSerializer вставляет служебный символ в начало строки
-                        return JObject.Parse(response.Content.Remove(0, 1));
-                    }
-                }
-                catch (Exception)
-                {
-                    throw new ArgumentException(Resources.ResultIsNotOfObjectType);
-                }
-            }
-            throw new ArgumentException(string.Format(Resources.UnableToGetSession, response.GetErrorContent()));
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetSession, response.GetErrorContent()));
         }
 
         /// <summary>
@@ -288,26 +149,11 @@ namespace InfinniPlatform.Sdk.Api
         /// <returns>Список результатов фиксации клиентской сессии</returns>
         public dynamic SaveSession(string sessionId)
         {
-            var restQueryExecutor = new RequestExecutor(_cookieContainer);
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryPost(_routeBuilder.BuildRestRoutingUrlDefaultSessionById(sessionId, _version));
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlDefaultSessionById(sessionId, Version));
 
-            if (response.IsAllOk)
-            {
-                try
-                {
-                    if (!string.IsNullOrEmpty(response.Content))
-                    {
-                        //гребаный JsonObjectSerializer вставляет служебный символ в начало строки
-                        return JObject.Parse(response.Content.Remove(0, 1));
-                    }
-                }
-                catch (Exception)
-                {
-                    throw new ArgumentException(Resources.ResultIsNotOfObjectType);
-                }
-            }
-            throw new ArgumentException(string.Format(Resources.UnableToCommitException, response.GetErrorContent()));
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToCommitException, response.GetErrorContent()));
         }
 
 
@@ -320,27 +166,11 @@ namespace InfinniPlatform.Sdk.Api
         /// <returns>Документ с указанным идентификатором</returns>
         public dynamic GetDocumentById(string applicationId, string documentType, string instanceId)
         {
-            var restQueryExecutor = new RequestExecutor(_cookieContainer);
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryGetById(_routeBuilder.BuildRestRoutingUrlDefaultById(_version, applicationId, documentType, instanceId));
+            var response = restQueryExecutor.QueryGetById(RouteBuilder.BuildRestRoutingUrlDefaultById(Version, applicationId, documentType, instanceId));
 
-            if (response.IsAllOk)
-            {
-                try
-                {
-                    if (!string.IsNullOrEmpty(response.Content))
-                    {
-                        //гребаный JsonObjectSerializer вставляет служебный символ в начало строки
-                        return JObject.Parse(response.Content.Remove(0, 1));
-                    }
-                    return null;
-                }
-                catch (Exception)
-                {
-                    throw new ArgumentException(Resources.ResultIsNotOfArrayType);
-                }
-            }
-            throw new ArgumentException(string.Format(Resources.UnableToGetDocument, response.GetErrorContent()));
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetDocument, response.GetErrorContent()));
         }
 
         /// <summary>
@@ -362,9 +192,9 @@ namespace InfinniPlatform.Sdk.Api
             Action<SortingBuilder> sorting = null)
         {
 
-            var restQueryExecutor = new RequestExecutor(_cookieContainer);
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var routeBuilder = new RouteBuilder(_server, _port);
+            var routeBuilder = new RouteBuilder(Server, Port);
 
             var filterBuilder = new FilterBuilder();
             if (filter != null)
@@ -378,26 +208,11 @@ namespace InfinniPlatform.Sdk.Api
                 sorting.Invoke(sortingBuilder);
             }
 
-            var response = restQueryExecutor.QueryGet(routeBuilder.BuildRestRoutingUrlDefault(_version, applicationId, documentType),
+            var response = restQueryExecutor.QueryGet(routeBuilder.BuildRestRoutingUrlDefault(Version, applicationId, documentType),
                 RequestExecutorExtensions.CreateQueryString(filterBuilder.GetFilter(), pageNumber, pageSize, sortingBuilder.GetSorting()));
 
-            if (response.IsAllOk)
-            {
-                try
-                {
-                    if (!string.IsNullOrEmpty(response.Content))
-                    {
-                        //гребаный JsonObjectSerializer вставляет служебный символ в начало строки
-                        return JArray.Parse(response.Content.Remove(0, 1));
-                    }
-                    return null;
-                }
-                catch (Exception)
-                {
-                    throw new ArgumentException(Resources.ResultIsNotOfArrayType);
-                }
-            }
-            throw new ArgumentException(string.Format(Resources.UnableToGetDocument, response.GetErrorContent()));
+            return ProcessAsArrayResult(response,
+                string.Format(Resources.UnableToGetDocument, response.GetErrorContent()));
         }
 
         /// <summary>
@@ -408,40 +223,17 @@ namespace InfinniPlatform.Sdk.Api
         /// <param name="documentId">Идентификатор документа</param>
         /// <param name="document">Экземпляр сохраняемого документа</param>
         /// <returns>Идентификатор сохраненного документа</returns>
-        public string SetDocument(string applicationId, string documentType, string documentId, object document)
+        public dynamic SetDocument(string applicationId, string documentType, string documentId, object document)
         {
-            var restQueryExecutor = new RequestExecutor(_cookieContainer);
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var routeBuilder = new RouteBuilder(_server, _port);
+            var routeBuilder = new RouteBuilder(Server, Port);
 
             var response = restQueryExecutor.QueryPut(
-                routeBuilder.BuildRestRoutingUrlDefaultById(_version, applicationId, documentType, documentId),
+                routeBuilder.BuildRestRoutingUrlDefaultById(Version, applicationId, documentType, documentId),
                 JObject.FromObject(document).ToString());
 
-            if (response.IsAllOk)
-            {
-                if (!string.IsNullOrEmpty(response.Content))
-                {
-                    //гребаный JsonObjectSerializer вставляет служебный символ в начало строки
-                    dynamic result = null;
-                    try
-                    {
-                        result = JObject.Parse(response.Content.Remove(0, 1));
-                    }
-                    catch (Exception)
-                    {
-                        throw new ArgumentException(Resources.ResultIsNotOfObjectType);
-                    }
-
-                    if (result.InstanceId != null && result.IsValid == true)
-                    {
-                        return result.InstanceId;
-                    }
-                }
-                return null;
-
-            }
-            throw new ArgumentException(string.Format(Resources.UnableToSetDocument, response.GetErrorContent()));
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToSetDocument, response.GetErrorContent()));
         }
 
         /// <summary>
@@ -451,38 +243,19 @@ namespace InfinniPlatform.Sdk.Api
         /// <param name="documentType">Тип документа</param>
         /// <param name="documents">Список сохраняемых документов</param>
         /// <returns>Идентификатор сохраненного документа</returns>
-        public string SetDocuments(string applicationId, string documentType, IEnumerable<dynamic> documents)
+        public dynamic SetDocuments(string applicationId, string documentType, IEnumerable<dynamic> documents)
         {
-            var restQueryExecutor = new RequestExecutor(_cookieContainer);
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var routeBuilder = new RouteBuilder(_server, _port);
+            var routeBuilder = new RouteBuilder(Server, Port);
 
             var response = restQueryExecutor.QueryPut(
-                routeBuilder.BuildRestRoutingUrlDefault(_version, applicationId, documentType),
+                routeBuilder.BuildRestRoutingUrlDefault(Version, applicationId, documentType),
                 JArray.FromObject(documents).ToString());
 
-            if (response.IsAllOk)
-            {
-                try
-                {
-                    if (!string.IsNullOrEmpty(response.Content))
-                    {
-                        //гребаный JsonObjectSerializer вставляет служебный символ в начало строки
-                        dynamic result = JObject.Parse(response.Content.Remove(0, 1));
-                        if (result.InstanceId != null && result.IsValid == true)
-                        {
-                            return result.InstanceId;
-                        }
-                        return null;
-                    }
-                    return null;
-                }
-                catch (Exception)
-                {
-                    throw new ArgumentException(Resources.ResultIsNotOfObjectType);
-                }
-            }
-            throw new ArgumentException(string.Format(Resources.UnableToSetDocument, response.GetErrorContent()));
+            return ProcessAsObjectResult(response,
+                string.Format(Resources.UnableToSetDocument, response.GetErrorContent()));
+
         }
 
 
@@ -495,9 +268,9 @@ namespace InfinniPlatform.Sdk.Api
         /// <param name="changesObject">Объект, содержащий изменения</param>
         public void UpdateDocument(string applicationId, string documentType, string instanceId, object changesObject)
         {
-            var restQueryExecutor = new RequestExecutor(_cookieContainer);
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var routeBuilder = new RouteBuilder(_server, _port);
+            var routeBuilder = new RouteBuilder(Server, Port);
 
             var parameters = new
             {
@@ -506,7 +279,7 @@ namespace InfinniPlatform.Sdk.Api
             };
 
             var response = restQueryExecutor.QueryPost(
-                routeBuilder.BuildRestRoutingUrlDefaultById(_version, applicationId, documentType, instanceId),
+                routeBuilder.BuildRestRoutingUrlDefaultById(Version, applicationId, documentType, instanceId),
                 JObject.FromObject(parameters).ToString());
 
             if (!response.IsAllOk)
@@ -524,31 +297,18 @@ namespace InfinniPlatform.Sdk.Api
         /// <returns>Результат удаления документа</returns>
         public dynamic DeleteDocument(string applicationId, string documentType, string instanceId)
         {
-            var restQueryExecutor = new RequestExecutor(_cookieContainer);
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var routeBuilder = new RouteBuilder(_server, _port);
+            var routeBuilder = new RouteBuilder(Server, Port);
 
             var response = restQueryExecutor.QueryDelete(
-                routeBuilder.BuildRestRoutingUrlDefaultById(_version, applicationId, documentType, instanceId));
+                routeBuilder.BuildRestRoutingUrlDefaultById(Version, applicationId, documentType, instanceId));
 
-            if (response.IsAllOk)
-            {
-                try
-                {
-                    if (!string.IsNullOrEmpty(response.Content))
-                    {
-                        //гребаный JsonObjectSerializer вставляет служебный символ в начало строки
-                        return JObject.Parse(response.Content.Remove(0, 1));
-                    }
-                    return null;
-                }
-                catch (Exception)
-                {
-                    throw new ArgumentException(Resources.ResultIsNotOfObjectType);
-                }
-            }
-            throw new ArgumentException(string.Format(Resources.UnableToDeleteDocument, response.GetErrorContent()));
+            return ProcessAsObjectResult(response,
+                            string.Format(Resources.UnableToDeleteDocument, response.GetErrorContent()));
 
         }
+
+
     }
 }

@@ -13,28 +13,12 @@ namespace InfinniPlatform.Sdk.Api
     /// <summary>
     ///   API для аутентификации пользователей
     /// </summary>
-    public sealed class InfinniSignInApi
+    public sealed class InfinniSignInApi : BaseApi
     {
-        private readonly string _server;
-        private readonly string _port;
-        private readonly string _version;
-        private CookieContainer _cookieContainer;
-        private readonly RouteBuilder _routeBuilder;
 
         public InfinniSignInApi(string server, string port, string version)
+            : base(server, port, version)
         {
-            _server = server;
-            _port = port;
-            _version = version;
-            _routeBuilder = new RouteBuilder(_server, _port);
-        }
-
-        /// <summary>
-        ///   Контейнер аутентификационной информации
-        /// </summary>
-        public CookieContainer CookieContainer
-        {
-            get { return _cookieContainer; }
         }
 
         /// <summary>
@@ -46,7 +30,7 @@ namespace InfinniPlatform.Sdk.Api
         /// <returns>Результат попытки регистрации</returns>
         public dynamic SignInInternal(string userName, string password, bool remember)
         {
-            var restQueryExecutor = new RequestExecutor(_cookieContainer);
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
 
             var requestBody = new
             {
@@ -55,26 +39,14 @@ namespace InfinniPlatform.Sdk.Api
                 Remember = remember
             };
 
-            var response = restQueryExecutor.QueryPost(_routeBuilder.BuildRestRoutingUrlSignIn(_version),requestBody);
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlSignIn(Version),requestBody);
 
-            if (response.IsAllOk)
-            {
-                try
-                {
-                    if (!string.IsNullOrEmpty(response.Content))
-                    {
-                        //гребаный JsonObjectSerializer вставляет служебный символ в начало строки
-                        dynamic result = JObject.Parse(response.Content.Remove(0, 1));
-                        CreateCookieContainer(result);
-                        return result;
-                    }
-                }
-                catch (Exception)
-                {
-                    throw new ArgumentException(Resources.ResultIsNotOfObjectType);
-                }
-            }
-            throw new ArgumentException(string.Format(Resources.UnableToSignUser, response.GetErrorContent()));
+            var cookieContainer = ProcessAsObjectResult(response,
+                            string.Format(Resources.UnableToSignInUser, response.GetErrorContent()));   
+
+            CreateCookieContainer(cookieContainer);
+
+            return cookieContainer;
         }
 
         /// <summary>
@@ -86,7 +58,7 @@ namespace InfinniPlatform.Sdk.Api
         /// <returns>Признак успешной смены пароля пользователя</returns>
         public dynamic ChangePassword(string userName, string oldPassword, string newPassword)
         {
-            var restQueryExecutor = new RequestExecutor(_cookieContainer);
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
 
             var requestBody = new
             {
@@ -95,24 +67,11 @@ namespace InfinniPlatform.Sdk.Api
                 NewPassword = newPassword
             };
 
-            var response = restQueryExecutor.QueryPost(_routeBuilder.BuildRestRoutingChangePassword(_version), requestBody);
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingChangePassword(Version), requestBody);
 
-            if (response.IsAllOk)
-            {
-                try
-                {
-                    if (!string.IsNullOrEmpty(response.Content))
-                    {
-                        //гребаный JsonObjectSerializer вставляет служебный символ в начало строки
-                        return JObject.Parse(response.Content.Remove(0, 1));
-                    }
-                }
-                catch (Exception)
-                {
-                    throw new ArgumentException(Resources.ResultIsNotOfObjectType);
-                }
-            }
-            throw new ArgumentException(string.Format(Resources.UnableToChangePasswordUser, response.GetErrorContent()));
+            return ProcessAsObjectResult(response,
+                            string.Format(Resources.UnableToChangePasswordUser, response.GetErrorContent()));   
+
         }
 
         /// <summary>
@@ -121,33 +80,20 @@ namespace InfinniPlatform.Sdk.Api
         /// <returns>Признак успешного выхода из системы</returns>
         public dynamic SignOut()
         {
-            var restQueryExecutor = new RequestExecutor(_cookieContainer);
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryPost(_routeBuilder.BuildRestRoutingUrlSignOut(_version));
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlSignOut(Version));
 
-            if (response.IsAllOk)
-            {
-                try
-                {
-                    if (!string.IsNullOrEmpty(response.Content))
-                    {
-                        //гребаный JsonObjectSerializer вставляет служебный символ в начало строки
-                        return JObject.Parse(response.Content.Remove(0, 1));
-                    }
-                }
-                catch (Exception)
-                {
-                    throw new ArgumentException(Resources.ResultIsNotOfObjectType);
-                }
-            }
-            throw new ArgumentException(string.Format(Resources.UnableToSignOutUser, response.GetErrorContent()));
+            return ProcessAsObjectResult(response,
+                            string.Format(Resources.UnableToSignOutUser, response.GetErrorContent())); 
+
         }
 
         private void CreateCookieContainer(dynamic result)
         {
             if (result != null && result.ResponseCookies != null && result.UserInfo != null)
             {
-                _cookieContainer = new CookieContainer();
+                CookieContainer = new CookieContainer();
 
                 foreach (var cookie in result.ResponseCookies)
                 {
@@ -160,9 +106,11 @@ namespace InfinniPlatform.Sdk.Api
                         Path = cookie.Path.ToString(),
                         Discard = Convert.ToBoolean(cookie.Discard)
                     };
-                    _cookieContainer.Add(responseCookie);
+                    CookieContainer.Add(responseCookie);
                 }
             }
         }
+
+
     }
 }

@@ -9,21 +9,13 @@ namespace InfinniPlatform.Sdk.Api
     /// <summary>
     ///   API для работы с файлами
     /// </summary>
-    public sealed class InfinniFileApi
+    public sealed class InfinniFileApi : BaseApi
     {
-        private readonly string _server;
-        private readonly string _port;
-        private readonly string _version;
-        private CookieContainer _cookieContainer;
-        private readonly RouteBuilder _routeBuilder;
-
         public InfinniFileApi(string server, string port, string version)
+            : base(server, port, version)
         {
-            _server = server;
-            _port = port;
-            _version = version;
-            _routeBuilder = new RouteBuilder(_server, _port);
         }
+
 
         /// <summary>
         ///   Загрузить файл на сервер
@@ -38,27 +30,12 @@ namespace InfinniPlatform.Sdk.Api
         public dynamic UploadFile(string application, string documentType, string instanceId, string fieldName, string fileName,
             Stream fileStream)
         {
-            var restQueryExecutor = new RequestExecutor(_cookieContainer);
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
 
 
-            var response = restQueryExecutor.QueryPostFile(_routeBuilder.BuildRestRoutingUploadFile(_version,application), instanceId, fieldName, fileName, fileStream);
+            var response = restQueryExecutor.QueryPostFile(RouteBuilder.BuildRestRoutingUploadFile(Version,application), instanceId, fieldName, fileName, fileStream);
 
-            if (response.IsAllOk)
-            {
-                try
-                {
-                    if (!string.IsNullOrEmpty(response.Content))
-                    {
-                        //гребаный JsonObjectSerializer вставляет служебный символ в начало строки
-                        return JObject.Parse(response.Content.Remove(0, 1));
-                    }
-                }
-                catch (Exception)
-                {
-                    throw new ArgumentException(Resources.ResultIsNotOfObjectType);
-                }
-            }
-            throw new ArgumentException(string.Format(Resources.UnableToUploadFileOnServer, response.GetErrorContent()));
+            return ProcessAsObjectResult(response,string.Format(Resources.UnableToUploadFileOnServer, response.GetErrorContent()));   
         }
 
         /// <summary>
@@ -71,7 +48,7 @@ namespace InfinniPlatform.Sdk.Api
         /// <returns>Выгруженный контент</returns>
         public dynamic DownloadFile(string application, string documentType, string instanceId, string fieldName)
         {
-            var restQueryExecutor = new RequestExecutor(_cookieContainer);
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
 
             var linkedData = new
             {
@@ -82,24 +59,10 @@ namespace InfinniPlatform.Sdk.Api
             };
 
             var response = restQueryExecutor.QueryGetUrlEncodedData(
-                    _routeBuilder.BuildRestRoutingDownloadFile(_version, application), linkedData);
+                    RouteBuilder.BuildRestRoutingDownloadFile(Version, application), linkedData);
 
-            if (response.IsAllOk)
-            {
-                try
-                {
-                    if (!string.IsNullOrEmpty(response.Content))
-                    {
-                        //гребаный JsonObjectSerializer вставляет служебный символ в начало строки
-                        return JObject.Parse(response.Content.Remove(0, 1));
-                    }
-                }
-                catch (Exception)
-                {
-                    throw new ArgumentException(Resources.ResultIsNotOfObjectType);
-                }
-            }
-            throw new ArgumentException(string.Format(Resources.UnableToDownloadFileFromServer, response.GetErrorContent()));
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToDownloadFileFromServer, response.GetErrorContent())); 
         }
+
     }
 }

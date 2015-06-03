@@ -225,4 +225,10 @@
   <data name="UnableToDeleteUserRole" xml:space="preserve">
     <value>Unable to delete user role with exception: {0}</value>
   </data>
+  <data name="UnableToSignInUser" xml:space="preserve">
+    <value>Unable to sign in user with exception: {0}</value>
+  </data>
+  <data name="UnableToRemoveSession" xml:space="preserve">
+    <value>Unable to remove session with exception: {0}</value>
+  </data>
 </root>

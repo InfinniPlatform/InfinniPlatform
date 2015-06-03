@@ -331,6 +331,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to remove session with exception: {0}.
+        /// </summary>
+        internal static string UnableToRemoveSession {
+            get {
+                return ResourceManager.GetString("UnableToRemoveSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to remove user claim with exception:{0}.
         /// </summary>
         internal static string UnableToRemoveUserClaim {
@@ -345,6 +354,15 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string UnableToSetDocument {
             get {
                 return ResourceManager.GetString("UnableToSetDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to sign in user with exception: {0}.
+        /// </summary>
+        internal static string UnableToSignInUser {
+            get {
+                return ResourceManager.GetString("UnableToSignInUser", resourceCulture);
             }
         }
         
