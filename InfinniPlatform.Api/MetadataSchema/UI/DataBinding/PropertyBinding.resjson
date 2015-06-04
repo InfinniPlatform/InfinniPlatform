@@ -1,6 +1,6 @@
 ﻿{
   "id": "PropertyBinding",
-  "description": "Описывает связь между элементом представления и свойством источника данных",
+  "description": "Привязка элемента и источника данных",
   "type": "object",
   "extends": {
     "$ref": "http://demo.infinnity.ru:8081/display/MC/BaseDataBinding"

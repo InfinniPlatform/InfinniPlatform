@@ -1,6 +1,6 @@
 ﻿{
   "id": "ObjectBinding",
-  "description": "Описывает связь между элементом представления и произвольным объектом",
+  "description": "Привязка элемента и произвольного объекта",
   "extends": {
     "$ref": "http://demo.infinnity.ru:8081/display/MC/BaseDataBinding"
   },

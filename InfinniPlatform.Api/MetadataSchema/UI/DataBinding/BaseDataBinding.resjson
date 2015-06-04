@@ -1,6 +1,6 @@
 ﻿{
   "id": "BaseDataBinding",
-  "description": "Базовый тип для привязки данных",
+  "description": "Базовый тип для привязок данных",
   "type": "object",
   "properties": {
     "OnSetPropertyValue": {

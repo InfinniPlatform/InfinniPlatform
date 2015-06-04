@@ -1,6 +1,6 @@
 ﻿{
   "id": "ParameterBinding",
-  "description": "Описывает связь между элементом представления и параметром представления",
+  "description": "Привязка элемента и параметра представления",
   "type": "object",
   "extends": {
     "$ref": "http://demo.infinnity.ru:8081/display/MC/BaseDataBinding"

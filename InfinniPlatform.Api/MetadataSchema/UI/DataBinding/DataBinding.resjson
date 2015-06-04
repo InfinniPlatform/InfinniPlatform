@@ -4,15 +4,15 @@
   "type": "object",
   "properties": {
     "ObjectBinding": {
-      "description": "Описывает связь между элементом представления и произвольным объектом",
+      "description": "Привязка элемента и произвольного объекта",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/ObjectBinding"
     },
     "PropertyBinding": {
-      "description": "Описывает связь между элементом представления и свойством источника данных",
+      "description": "Привязка элемента и источника данных",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/PropertyBinding"
     },
     "ParameterBinding": {
-      "description": "Описывает связь между элементом представления и параметром представления",
+      "description": "Привязка элемента и параметра представления",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/ParameterBinding"
     }
   },
