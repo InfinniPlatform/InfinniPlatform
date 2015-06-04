@@ -136,5 +136,33 @@ namespace InfinniPlatform.Sdk.Tests
             Assert.AreEqual(accessResult.IsValid, true);
         }
 
+        [Test]
+        public void ShouldGetUsers()
+        {
+            var user = "NewUser_" + Guid.NewGuid();
+
+            _api.AddUser(user, user);
+
+            IEnumerable<dynamic> users = _api.GetAclList(AclType.User, f => f.AddCriteria(cr => cr.Property("UserName").IsEquals(user)), 0, 1);
+
+            Assert.AreEqual(users.Count(),1);
+
+            Assert.AreEqual(users.First().UserName.ToString(), user);
+        }
+
+
+        [Test]
+        public void ShouldGetRoles()
+        {
+            var role = "NewRole_" + Guid.NewGuid();
+
+            _api.AddRole(role);
+
+            IEnumerable<dynamic> roles = _api.GetAclList(AclType.Role, f => f.AddCriteria(cr => cr.Property("Name").IsEquals(role)), 0, 1);
+
+            Assert.AreEqual(roles.Count(), 1);
+
+            Assert.AreEqual(roles.First().Name.ToString(), role);
+        }
     }
 }

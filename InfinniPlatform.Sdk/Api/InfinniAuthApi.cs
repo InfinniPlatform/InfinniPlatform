@@ -1,8 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using InfinniPlatform.Sdk.Properties;
 
 namespace InfinniPlatform.Sdk.Api
 {
+    public enum AclType { User, Role }
+
     /// <summary>
     ///   API для работы с ролями, пользователями и правами
     /// </summary>
@@ -233,6 +237,37 @@ namespace InfinniPlatform.Sdk.Api
 
             return ProcessAsObjectResult(response,
                 string.Format(Resources.UnableToDeleteUserRole, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///Получить список объектов ACL указанного типа
+        /// </summary>
+        /// <param name="aclType">Тип объекта ACL</param>
+        /// <param name="filter">Фильтр получаемых объектов</param>
+        /// <param name="pageNumber">Номер страницы</param>
+        /// <param name="pageSize">Размер страницы</param>
+        /// <param name="sorting">Порядок сортировки</param>
+        /// <returns>Список объектов ACL</returns>
+        public IEnumerable<dynamic> GetAclList(
+            AclType aclType,
+            Action<FilterBuilder> filter,
+            int pageNumber,
+            int pageSize,
+            Action<SortingBuilder> sorting = null)
+        {
+            var docApi = new InfinniDocumentApi(Server, Port, Version);
+
+            docApi.CookieContainer = CookieContainer;
+
+            if (aclType == AclType.User)
+            {
+                return docApi.GetDocument("Administration", "User", filter, pageNumber, pageSize, sorting);
+            }
+            if (aclType == AclType.Role)
+            {
+                return docApi.GetDocument("Administration", "Role", filter, pageNumber, pageSize, sorting);
+            }
+            throw new ArgumentException(string.Format(Resources.CantGetAclListForSpecifiedType,aclType));
         }
     }
 }

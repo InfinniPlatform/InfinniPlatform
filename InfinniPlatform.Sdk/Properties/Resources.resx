@@ -231,4 +231,7 @@
   <data name="UnableToRemoveSession" xml:space="preserve">
     <value>Unable to remove session with exception: {0}</value>
   </data>
+  <data name="CantGetAclListForSpecifiedType" xml:space="preserve">
+    <value>Can't get acl list with selected aclType: {0}</value>
+  </data>
 </root>

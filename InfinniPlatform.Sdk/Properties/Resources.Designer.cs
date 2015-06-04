@@ -70,6 +70,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t get acl list with selected aclType: {0}.
+        /// </summary>
+        internal static string CantGetAclListForSpecifiedType {
+            get {
+                return ResourceManager.GetString("CantGetAclListForSpecifiedType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Document to detach should not be null..
         /// </summary>
         internal static string DocumentToDetachShouldntBeEmpty {
