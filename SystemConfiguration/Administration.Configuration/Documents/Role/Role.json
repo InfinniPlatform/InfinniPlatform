@@ -10,6 +10,11 @@
       "Id": "5654a6bc-3f94-43ec-93ce-87877b657695",
       "Name": "AddRole",
       "Caption": "AddRole"
+    },
+    {
+      "Id": "599653c9-d735-49dc-a1e8-e85ba8991304",
+      "Name": "DeleteRole",
+      "Caption": "DeleteRole"
     }
   ],
   "Processes": [
@@ -17,6 +22,11 @@
       "Id": "4ad3e87c-7f78-4e68-85b5-efbd359b7754",
       "Name": "AddRole",
       "Caption": "AddRole"
+    },
+    {
+      "Id": "04115a82-4fa3-4342-83d6-174e95422199",
+      "Name": "DeleteRole",
+      "Caption": "DeleteRole"
     }
   ],
   "Scenarios": [
@@ -24,6 +34,12 @@
       "Id": "7a9894d4-7799-4efe-ab08-8e8648efdecd",
       "Name": "ActionUnitAddRole",
       "Caption": "ActionUnitAddRole",
+      "Description": ""
+    },
+    {
+      "Id": "3bfb2833-4cdc-4fbe-aa66-4d29e59aaab0",
+      "Name": "ActionUnitDeleteRole",
+      "Caption": "ActionUnitDeleteRole",
       "Description": ""
     }
   ],

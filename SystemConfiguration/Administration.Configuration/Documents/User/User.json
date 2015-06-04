@@ -25,6 +25,21 @@
       "Id": "789eb27c-36df-41c6-866f-f4cf9fc9876e",
       "Name": "DeleteUser",
       "Caption": "DeleteUser"
+    },
+    {
+      "Id": "66a894cb-65cf-493f-96e3-18ca6f112873",
+      "Name": "GetUser",
+      "Caption": "GetUser"
+    },
+    {
+      "Id": "8eec336d-ef38-47f0-8bd9-a88b08db7117",
+      "Name": "AddUserRole",
+      "Caption": "AddUserRole"
+    },
+    {
+      "Id": "b4a362cc-14a3-43ac-8266-25430bd71058",
+      "Name": "DeleteUserRole",
+      "Caption": "DeleteUserRole"
     }
   ],
   "Processes": [
@@ -47,6 +62,21 @@
       "Id": "49b0e724-9f58-4be2-b43e-578bcd3f825b",
       "Name": "DeleteUser",
       "Caption": "DeleteUser"
+    },
+    {
+      "Id": "31173441-3bc4-4574-a673-42265cc71802",
+      "Name": "GetUser",
+      "Caption": "GetUser"
+    },
+    {
+      "Id": "a37fba82-3749-4531-a228-5e551f739bfd",
+      "Name": "AddUserRole",
+      "Caption": "AddUserRole"
+    },
+    {
+      "Id": "f42ecf23-4796-4378-bd9b-efabfbb57eb0",
+      "Name": "DeleteUserRole",
+      "Caption": "DeleteUserRole"
     }
   ],
   "Scenarios": [
@@ -72,6 +102,24 @@
       "Id": "b4c7303f-97e2-41b7-8287-d2984ab24cc8",
       "Name": "ActionUnitDeleteUser",
       "Caption": "ActionUnitDeleteUser",
+      "Description": ""
+    },
+    {
+      "Id": "88919c72-715a-4e6d-b844-553b98a834b3",
+      "Name": "ActionUnitGetUser",
+      "Caption": "ActionUnitGetUser",
+      "Description": ""
+    },
+    {
+      "Id": "dcf01568-a424-4d17-b68f-880a06189e90",
+      "Name": "ActionUnitAddUserRole",
+      "Caption": "ActionUnitAddUserRole",
+      "Description": ""
+    },
+    {
+      "Id": "414fc600-b56f-4e9a-8b6f-c560f2da639b",
+      "Name": "ActionUnitDeleteUserRole",
+      "Caption": "ActionUnitDeleteUserRole",
       "Description": ""
     }
   ],
