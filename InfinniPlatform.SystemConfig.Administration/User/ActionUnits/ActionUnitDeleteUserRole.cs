@@ -28,7 +28,7 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 
             if (user != null)
             {
-                IEnumerable<dynamic> userRoles = DynamicWrapperExtensions.ToDynamicList(user.UserRoles);
+                IEnumerable<dynamic> userRoles = DynamicWrapperExtensions.ToEnumerable(user.UserRoles);
                 user.UserRoles = userRoles.Where(r => r.DisplayName != item.RoleName).ToList();
                 target.Context.GetComponent<DocumentApi>().SetDocument("Administration", "User", user);
             }
