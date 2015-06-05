@@ -71,6 +71,14 @@
     "OnItemsAdded": {
       "description": "Обработчик события о том, что в список элементов добавлены новые",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+    },
+    "OnErrorValidator": {
+      "description": "Обработчик события о том, что проверка на ошибки завершена",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+    },
+    "OnWarningValidator": {
+      "description": "Обработчик события о том, что проверка на предупреждения завершена",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
     }
   }
 }
