@@ -67,6 +67,10 @@
     "OnItemsUpdated": {
       "description": "Обработчик события о том, что список элементов обновлен",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+    },
+    "OnItemsAdded": {
+      "description": "Обработчик события о том, что в список элементов добавлены новые",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
     }
   }
 }
