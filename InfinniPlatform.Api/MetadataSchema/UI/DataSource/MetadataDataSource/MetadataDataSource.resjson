@@ -17,7 +17,7 @@
       "required": false
     },
     "MetadataType": {
-      "description": "Тип метаданных конфигурации",
+      "description": "Тип метаданных",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/MetadataType",
       "required": true
     }
