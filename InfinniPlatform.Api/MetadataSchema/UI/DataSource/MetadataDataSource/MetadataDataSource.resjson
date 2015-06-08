@@ -20,11 +20,6 @@
       "description": "Тип метаданных конфигурации",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/MetadataType",
       "required": true
-    },
-    "MetadataName": {
-      "description": "Наименование элемента метаданных конфигурации",
-      "type": "string",
-      "required": false
     }
   },
   "additionalProperties": false
