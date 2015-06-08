@@ -35,13 +35,6 @@
       "description": "Действие на удаление",
       "type": "string",
       "default": "DeleteDocument"
-    },
-    "Query": {
-      "description": "Фильтр по умолчанию",
-      "type": "array",
-      "items": {
-        "$ref": "http://demo.infinnity.ru:8081/display/MC/Criteria"
-      }
     }
   },
   "additionalProperties": false

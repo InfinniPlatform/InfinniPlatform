@@ -28,6 +28,13 @@
       "type": "integer",
       "default": 10
     },
+    "Query": {
+      "description": "Фильтр по умолчанию",
+      "type": "array",
+      "items": {
+        "$ref": "http://demo.infinnity.ru:8081/display/MC/Criteria"
+      }
+    },
     "ValidationErrors": {
       "description": "Оператор проверки модели данных документа на ошибки",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/BooleanValidator"
