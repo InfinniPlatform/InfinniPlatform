@@ -19,7 +19,7 @@
     "MetadataType": {
       "description": "Тип метаданных конфигурации",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/MetadataType",
-      "required": false
+      "required": true
     },
     "MetadataName": {
       "description": "Наименование элемента метаданных конфигурации",

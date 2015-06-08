@@ -3,17 +3,18 @@
   "description": "Тип метаданных",
   "enum": [
     "Configuration",
-    "Document",
-    "Classifier",
-    "ComplexType",
-    "Scenario",
-    "Workflow",
-    "Service",
-    "View",
-    "Report",
     "Menu",
-    "Exchange",
-    "ValidationErrors",
-    "ValidationWarnings"
+    "Document",
+    "Register",
+    "Assembly",
+    "PrintView",
+    "Service",
+    "Process",
+    "Scenario",
+    "Generator",
+    "Report",
+    "ValidationWarning",
+    "ValidationError",
+    "DocumentStatus"
   ]
 }
