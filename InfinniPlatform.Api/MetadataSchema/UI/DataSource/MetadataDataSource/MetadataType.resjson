@@ -14,8 +14,8 @@
     "Scenario",
     "Generator",
     "Report",
-    "ValidationWarning",
     "ValidationError",
+    "ValidationWarning",
     "DocumentStatus"
   ]
 }
