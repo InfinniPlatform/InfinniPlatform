@@ -6,6 +6,11 @@
     "$ref": "http://demo.infinnity.ru:8081/display/MC/BaseDataSource"
   },
   "properties": {
+    "MetadataType": {
+      "description": "Тип метаданных",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/MetadataType",
+      "required": true
+    },
     "ConfigId": {
       "description": "Идентификатор конфигурации",
       "type": "string",
@@ -15,11 +20,6 @@
       "description": "Идентификатор документа",
       "type": "string",
       "required": false
-    },
-    "MetadataType": {
-      "description": "Тип метаданных",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/MetadataType",
-      "required": true
     }
   },
   "additionalProperties": false
