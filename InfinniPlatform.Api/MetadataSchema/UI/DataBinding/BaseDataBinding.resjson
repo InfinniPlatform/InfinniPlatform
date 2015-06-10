@@ -10,7 +10,17 @@
     },
     "Converter": {
       "description": "Преобразователь данных между элементом и источником",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+      "type": "object",
+      "properties": {
+        "ToSource": {
+          "description": "Функция конвертации, осуществляющая преобразование данных элемента в формат данных источника",
+          "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+        },
+        "ToElement": {
+          "description": "Функция конвертации, осуществляющая преобразование данных источника в формат данных элемента",
+          "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+        }
+      }
     },
     "OnElementChanged": {
       "description": "Обработчик события о том, что данные в элементе изменились",
