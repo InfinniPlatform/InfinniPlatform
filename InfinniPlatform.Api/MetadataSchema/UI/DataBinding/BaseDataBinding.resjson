@@ -3,12 +3,21 @@
   "description": "Базовый тип для привязок данных",
   "type": "object",
   "properties": {
-    "OnSetPropertyValue": {
-      "description": "Обработчик события изменения значения в элементе представления",
+    "Mode": {
+      "description": "Направление обмена данными в привязке",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/BindingMode",
+      "default": "ToWay"
+    },
+    "Converter": {
+      "description": "Преобразователь данных между элементом и источником",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
     },
-    "OnPropertyValueChanged": {
-      "description": "Обработчик события изменения значения в источнике данных",
+    "OnElementChanged": {
+      "description": "Обработчик события о том, что данные в элементе изменились",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+    },
+    "OnSourceChanged": {
+      "description": "Обработчик события о том, что данные в источнике изменились",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
     }
   }

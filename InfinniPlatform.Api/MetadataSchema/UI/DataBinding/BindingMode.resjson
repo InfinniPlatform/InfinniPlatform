@@ -1,0 +1,9 @@
+﻿{
+  "id": "BindingMode",
+  "description": "Направление обмена данными в привязке",
+  "enum": [
+    "ToWay",
+    "ToSource",
+    "ToElement"
+  ]
+}
