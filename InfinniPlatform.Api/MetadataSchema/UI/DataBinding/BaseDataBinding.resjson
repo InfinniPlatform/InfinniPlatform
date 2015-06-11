@@ -9,7 +9,7 @@
       "default": "ToWay"
     },
     "Property": {
-      "description": "Путь к свойству элемента источника данных",
+      "description": "Путь к свойству объекта источника данных",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/BindingMode",
       "default": "ToWay"
     },
