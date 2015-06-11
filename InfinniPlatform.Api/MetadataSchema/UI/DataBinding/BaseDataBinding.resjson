@@ -10,8 +10,7 @@
     },
     "Property": {
       "description": "Путь к свойству объекта источника данных",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/BindingMode",
-      "default": "ToWay"
+      "type": "string"
     },
     "Converter": {
       "description": "Преобразователь данных между элементом и источником",
