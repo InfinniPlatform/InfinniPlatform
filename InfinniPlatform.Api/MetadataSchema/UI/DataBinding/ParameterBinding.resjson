@@ -10,10 +10,6 @@
       "description": "Наименование параметра",
       "type": "string",
       "required": true
-    },
-    "Property": {
-      "description": "Путь к свойству значения параметра",
-      "type": "string"
     }
   },
   "additionalProperties": false

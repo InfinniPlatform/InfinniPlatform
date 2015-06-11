@@ -10,14 +10,6 @@
       "description": "Наименование источника данных",
       "type": "string",
       "required": true
-    },
-    "Property": {
-      "description": "Путь к свойству элемента источника данных",
-      "type": "string"
-    },
-    "DefaultValue": {
-      "description": "Значение свойства источника данных по умолчанию",
-      "type": "any"
     }
   },
   "additionalProperties": false
