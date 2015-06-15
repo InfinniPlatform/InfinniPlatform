@@ -2,6 +2,7 @@
   "id": "MetadataType",
   "description": "Тип метаданных",
   "enum": [
+    "Solution",
     "Configuration",
     "Menu",
     "Document",
