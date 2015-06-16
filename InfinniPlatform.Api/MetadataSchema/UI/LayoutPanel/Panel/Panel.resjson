@@ -1,6 +1,6 @@
 ﻿{
   "id": "Panel",
-  "description": "Контейнер элементов представления в виде сворачиваемой прямоугольной области",
+  "description": "Контейнер в виде прямоугольной области",
   "type": "object",
   "extends": {
     "$ref": "http://demo.infinnity.ru:8081/display/MC/Element"

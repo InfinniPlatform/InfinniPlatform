@@ -1,6 +1,6 @@
 ﻿{
   "id": "TabPanel",
-  "description": "Контейнер элементов представления в виде набора закладок для страниц",
+  "description": "Контейнер в виде набора закладок",
   "type": "object",
   "extends": {
     "$ref": "http://demo.infinnity.ru:8081/display/MC/Element"

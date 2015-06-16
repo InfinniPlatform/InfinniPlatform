@@ -1,6 +1,6 @@
 ﻿{
   "id": "ScrollPanel",
-  "description": "Контейнер элементов представления в виде области, содержимое которой может прокручиваться по вертикали и горизонтали",
+  "description": "Контейнер в виде прокручиваемой области",
   "type": "object",
   "extends": {
     "$ref": "http://demo.infinnity.ru:8081/display/MC/Element"

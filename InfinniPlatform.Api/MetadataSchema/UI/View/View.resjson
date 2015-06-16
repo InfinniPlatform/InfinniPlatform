@@ -23,7 +23,7 @@
       "description": "Тип представления",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/ViewType"
     },
-    "Image": {
+    "Icon": {
       "description": "Изображение заголовка представления",
       "type": "string"
     },

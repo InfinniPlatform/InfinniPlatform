@@ -4,32 +4,28 @@
   "type": "object",
   "properties": {
     "Panel": {
-      "description": "Контейнер элементов представления в виде прямоугольной области",
+      "description": "Контейнер в виде прямоугольной области",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/Panel"
     },
     "TabPanel": {
-      "description": "Контейнер элементов представления в виде набора закладок для страниц",
+      "description": "Контейнер в виде набора закладок",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/TabPanel"
     },
     "StackPanel": {
-      "description": "Контейнер элементов представления в виде стека",
+      "description": "Контейнер в виде стека элементов",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/StackPanel"
     },
     "GridPanel": {
-      "description": "Контейнер элементов представления в виде сетки",
+      "description": "Контейнер в виде сетки из столбцов и строк",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/GridPanel"
     },
-    "WrapPanel": {
-      "description": "Контейнер элементов представления для размещения элементов слева направо и сверху вниз",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/WrapPanel"
+    "ScrollPanel": {
+      "description": "Контейнер в виде прокручиваемой области",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/ScrollPanel"
     },
     "ViewPanel": {
-      "description": "Контейнер элементов представления в виде прямоугольной области, в которую помещается указанное представление",
+      "description": "Контейнер для встраивания представления",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/ViewPanel"
-    },
-    "ScrollPanel": {
-      "description": "Контейнер элементов представления в виде области, содержимое которой может прокручиваться по вертикали и горизонтали",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/ScrollPanel"
     },
     "ExtensionPanel": {
       "description": "Контейнер для встраивания внешнего компонента",
