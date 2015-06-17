@@ -12,7 +12,7 @@
 // 0
 // 0
 // 0
-// 45beef00-a905-42fc-9662-d9ca5d6df1c9
+// 2ecdcced-210f-4ffa-a2aa-9300ad4eae6f
 // 49DD435372641E087A8440CA3B74743E
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
-[assembly: Guid("45beef00-a905-42fc-9662-d9ca5d6df1c9")]
+[assembly: Guid("2ecdcced-210f-4ffa-a2aa-9300ad4eae6f")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 

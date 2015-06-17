@@ -64,6 +64,24 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ProcessDesigner
 			Control.DocumentId = value;
 		}
 
+        /// <summary>
+        /// Получить версию конфигурации
+        /// </summary>
+        /// <returns></returns>
+	    public Func<string> GetVersion()
+        {
+            return Control.Version;
+        }
+
+        /// <summary>
+        /// Установить версию конфигурации
+        /// </summary>
+        /// <param name="value"></param>
+	    public void SetVersion(Func<string> value)
+        {
+            Control.Version = value;
+        }
+
 
 		// Value
 

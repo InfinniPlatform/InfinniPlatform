@@ -186,9 +186,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 
 			ReloadValidationRuleErrorHandlers(ValidationErrors);
            
-			ComboBoxFromState.Properties.Items.Clear();
-			ComboBoxFromState.Properties.Items.AddRange(DocumentStates.BuildImageComboBoxItemsString().ToList());
-
+			
 		}
 
 		public IEnumerable<HandlerDescription> ActionHandlers { get; set; }

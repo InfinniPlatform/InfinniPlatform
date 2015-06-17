@@ -64,7 +64,15 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ScenarioDesigner
 			Control.DocumentId = value;
 		}
 
+	    public Func<string> GetVersion()
+	    {
+	        return Control.Version;
+	    }
 
+	    public void SetVersion(Func<string> value)
+	    {
+	        Control.Version = value;
+	    }
 		// Value
 
 		/// <summary>

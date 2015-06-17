@@ -30,6 +30,12 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ProcessDesigner
 			set { Designer.ConfigId = value; }
 		}
 
+	    public Func<string> Version
+	    {
+            get { return Designer.Version; }
+            set { Designer.Version = value; }
+	    } 
+
 		public Func<string> DocumentId
 		{
 			get { return Designer.DocumentId; }

@@ -21,6 +21,8 @@ namespace InfinniPlatform.MetadataDesigner.Views
 
 		public Func<string> DocumentId { get; set; }
 
+        public Func<string> Version { get; set; } 
+
 		public object Value
 		{
 			get { return _validation; }
@@ -71,7 +73,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
             _validation.Name = NameEditor.EditValue.ToString();
             _validation.Caption = CaptionEditor.EditValue != null ? CaptionEditor.EditValue.ToString() : "";
             _validation.Description = DescriptionEditor.EditValue != null ? DescriptionEditor.EditValue.ToString() : "";
-            
+		    
 
 			OnValueChanged(_validation, new EventArgs());
 

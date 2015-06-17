@@ -54,6 +54,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 			_view.Caption = CaptionEditor.EditValue;
 			_view.Description = DescriptionEditor.EditValue;
 			_view.MetadataType = ComboBoxSelectViewType.EditValue;
+
 			OnValueChanged(_view, new EventArgs());
 			
 		}

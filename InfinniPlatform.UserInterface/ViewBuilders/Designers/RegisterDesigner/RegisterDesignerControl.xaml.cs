@@ -37,6 +37,12 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.RegisterDesigner
             set { Designer.DocumentId = value; }
         }
 
+        public Func<string> Version
+        {
+            get { return Designer.Version; }
+            set { Designer.Version = value; }
+        }
+
         public object Value
         {
             get { return Designer.Value; }

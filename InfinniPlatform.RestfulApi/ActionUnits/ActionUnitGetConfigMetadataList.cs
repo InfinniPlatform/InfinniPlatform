@@ -31,7 +31,8 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
 
             target.Result = target.Context.GetComponent<IMetadataComponent>(target.Version)
-								  .GetMetadataList(paramsDoc.Version, paramsDoc.Configuration, paramsDoc.Metadata, paramsDoc.MetadataType);
+								  .GetMetadataList(target.Version, paramsDoc.Configuration, paramsDoc.Metadata, paramsDoc.MetadataType);
+
 
 			var result = new List<dynamic>();
 			foreach (dynamic o in target.Result)
