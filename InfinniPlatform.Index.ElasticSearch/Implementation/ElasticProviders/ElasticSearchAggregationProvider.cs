@@ -494,7 +494,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         ///  
         /// new {
         ///         Property = "Age",
-        ///         CriteriaType = CriteriaType.ValueSet,
+        ///         CriteriaType = CriteriaType.IsIn,
         ///         Value = 10\n20\n30
         ///     }
         ///  

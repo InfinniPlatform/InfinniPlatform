@@ -84,7 +84,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 
             dynamic points = new DynamicWrapper();
             points.Property = "Rating";
-            points.CriteriaType = CriteriaType.ValueSet;
+            points.CriteriaType = CriteriaType.IsIn;
             points.Value = "2.5\n4.5";
 
             // Пример агрегации по диапазонам
@@ -101,7 +101,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             // Пример агрегации по временным диапазонам
             dynamic datapoint1 = new DynamicWrapper();
             datapoint1.Property = "FoundationDate";
-            datapoint1.CriteriaType = CriteriaType.ValueSet;
+            datapoint1.CriteriaType = CriteriaType.IsIn;
             datapoint1.Value = string.Join("\n", new DateTime(1980, 1, 1), new DateTime(1990, 1, 1));
 
             var dateRangeDim = new
@@ -232,7 +232,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
                             ValueSet = new
                             {
                                 Property = "Rating",
-                                CriteriaType = CriteriaType.ValueSet,
+                                CriteriaType = CriteriaType.IsIn,
                                 Value = string.Join("\n", new DateTime(1980, 1, 1), new DateTime(1990, 1, 1))
                             }
                         }.ToDynamic(),

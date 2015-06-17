@@ -617,7 +617,6 @@
     <EmbeddedResource Include="MetadataSchema\UI\LayoutPanel\TabPanel\TabPage.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\LayoutPanel\TabPanel\TabPanel.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\LayoutPanel\ViewPanel\ViewPanel.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\LayoutPanel\WrapPanel\WrapPanel.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\LinkView\AutoView.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\LinkView\BaseLinkView.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\LinkView\ChildView.resjson" />

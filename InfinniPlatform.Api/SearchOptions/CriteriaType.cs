@@ -16,7 +16,7 @@
 		IsNotStartsWith = 2048,
 		IsEndsWith = 4096,
 		IsNotEndsWith = 8192,
-		ValueSet = 16384,
+		IsIn = 16384,
 		Script = 32768,
 		FullTextSearch = 65536,
 		IsIdIn = 131072

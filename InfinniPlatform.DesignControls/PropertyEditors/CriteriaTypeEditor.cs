@@ -44,7 +44,7 @@ namespace InfinniPlatform.DesignControls.PropertyEditors
 			var dataSource = new List<CriteriaTypeValue>();
 			foreach (var enumValue in Enum.GetValues(typeof(CriteriaType)))
 			{
-				if ((int)enumValue == (int)CriteriaType.Script || (int)enumValue == (int)CriteriaType.ValueSet)
+				if ((int)enumValue == (int)CriteriaType.Script || (int)enumValue == (int)CriteriaType.IsIn)
 				{
 					continue;					
 				}

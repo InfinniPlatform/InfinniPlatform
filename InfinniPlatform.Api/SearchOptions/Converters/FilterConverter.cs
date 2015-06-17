@@ -29,7 +29,7 @@ namespace InfinniPlatform.Api.SearchOptions.Converters
             {"isendswith",CriteriaType.IsEndsWith},
             {"isnotendswith",CriteriaType.IsNotEndsWith},
             {"fulltextsearch",CriteriaType.FullTextSearch},
-            {"valueset",CriteriaType.ValueSet},
+            {"valueset",CriteriaType.IsIn},
             {"isidin",CriteriaType.IsIdIn}
         };
 

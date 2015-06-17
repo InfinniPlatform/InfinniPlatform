@@ -257,7 +257,7 @@ namespace InfinniPlatform.Metadata.Tests.HandlersBehavior
                         ValueSet = new
                         {
                             Property = "Rating",
-                            CriteriaType = CriteriaType.ValueSet,
+                            CriteriaType = CriteriaType.IsIn,
                             Value = "0.9\n1.1"
                         }
                     }

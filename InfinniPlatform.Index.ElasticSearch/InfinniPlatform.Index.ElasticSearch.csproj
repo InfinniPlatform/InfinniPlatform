@@ -86,7 +86,7 @@
     <Compile Include="Implementation\Filters\NestFilters\ConcreteFilterBuilders\NestFilterNotEqualsBuilder.cs" />
     <Compile Include="Implementation\Filters\NestFilters\ConcreteFilterBuilders\NestFilterNotStartsWithBuilder.cs" />
     <Compile Include="Implementation\Filters\NestFilters\ConcreteFilterBuilders\NestFilterStartsWithBuilder.cs" />
-    <Compile Include="Implementation\Filters\NestFilters\ConcreteFilterBuilders\NestFilterValueSetBuilder.cs" />
+    <Compile Include="Implementation\Filters\NestFilters\ConcreteFilterBuilders\IsInValueSetBuilder.cs" />
     <Compile Include="Implementation\Filters\NestFilters\NestFilter.cs" />
     <Compile Include="Implementation\Filters\NestFilters\ConcreteFilterBuilders\NestFilterContainsBuilder.cs" />
     <Compile Include="Implementation\Filters\NestFilters\ConcreteFilterBuilders\NestFilterEqualsBuilder.cs" />
