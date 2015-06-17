@@ -13,9 +13,9 @@ namespace InfinniPlatform.RestfulApi.Auth
     /// </summary>
     public sealed class ActionUnitUpdateUserRoles
     {
-        public void Action(IApplyContext applyContext)
+        public void Action(IApplyContext target)
         {
-            applyContext.Context.GetComponent<CachedSecurityComponent>().UpdateUserRoles();
+            target.Context.GetComponent<CachedSecurityComponent>(target.Version).UpdateUserRoles();
         }
     }
 }

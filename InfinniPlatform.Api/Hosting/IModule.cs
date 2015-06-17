@@ -14,5 +14,10 @@
 		///   Контейнер шаблонов обработчиков для модуля
 		/// </summary>
 		IServiceTemplateConfiguration ServiceTemplateConfiguration { get; }
+
+	    /// <summary>
+	    ///   Версия конфигурации метаданных
+	    /// </summary>
+	    string Version { get; set; }
 	}
 }

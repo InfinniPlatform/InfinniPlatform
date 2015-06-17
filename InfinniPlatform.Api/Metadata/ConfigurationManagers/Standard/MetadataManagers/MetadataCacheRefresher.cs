@@ -5,13 +5,15 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 {
 	public sealed class MetadataCacheRefresher
 	{
-		private readonly string _configId;
+	    private readonly string _version;
+	    private readonly string _configId;
 		private readonly string _documentId;
 		private readonly string _metadataType;
 
-		public MetadataCacheRefresher(string configId, string documentId, string metadataType)
+		public MetadataCacheRefresher(string version, string configId, string documentId, string metadataType)
 		{
-			_configId = configId;
+		    _version = version;
+		    _configId = configId;
 			_documentId = documentId;
 			_metadataType = metadataType;
 		}
@@ -23,7 +25,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 			body.DocumentId = _documentId;
 			body.MetadataType = _metadataType;
 			body.MetadataName = metadataName;
-			RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "RefreshMetadataCache", null, body);
+			RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "RefreshMetadataCache", null, body,_version);
 		}
 
         public void RefreshMetadataAfterDeleting(string metadataName)
@@ -34,7 +36,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
             body.MetadataType = _metadataType;
             body.MetadataName = metadataName;
             body.IsElementDeleted = true;
-            RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "RefreshMetadataCache", null, body);
+            RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "RefreshMetadataCache", null, body,_version);
         }
 
 

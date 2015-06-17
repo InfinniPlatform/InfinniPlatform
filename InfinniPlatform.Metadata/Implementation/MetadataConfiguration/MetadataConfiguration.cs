@@ -97,10 +97,7 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 		/// <summary>
         ///   Актуальная версия конфигурации метаданных
         /// </summary>
-        public string ActualVersion
-        {
-            get { return ScriptConfiguration.GetActualVersion(); }
-        }
+        public string Version { get; set; }
 
 		/// <summary>
 		///   Признак того, что конфигурация является встроенной в код C# (не хранится в JSON)

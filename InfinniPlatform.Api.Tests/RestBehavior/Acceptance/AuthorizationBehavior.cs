@@ -91,14 +91,14 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 		    testDocument.Id = id;
 		    testDocument.TestProperty = "1";
 
-		    dynamic result = new DocumentApi().SetDocument(_configurationId, _documentId, testDocument);
+		    dynamic result = new DocumentApi(null).SetDocument(_configurationId, _documentId, testDocument);
             Assert.AreEqual(result.IsValid, true);
                        
             //залогиниваемся под обычным пользователем
             new SignInApi().SignInInternal("TestUser","Password1",false);
 
             //успешно обновляем документ
-		    result = new DocumentApi().SetDocument(_configurationId, _documentId, testDocument);
+		    result = new DocumentApi(null).SetDocument(_configurationId, _documentId, testDocument);
             Assert.AreEqual(result.IsValid, true);
 
 			new SignInApi().SignOutInternal();
@@ -117,7 +117,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             //проверяем отсутствие доступа к документу при сохранении
 			try
 			{
-				result = new DocumentApi().SetDocument(_configurationId, _documentId, testDocument);
+				result = new DocumentApi(null).SetDocument(_configurationId, _documentId, testDocument);
 			}
 			catch (Exception e)
 			{
@@ -127,7 +127,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             //проверяем отсутствие доступа к документам на чтение
 		    try
 		    {
-		        new DocumentApi().GetDocument(_configurationId, _documentId, null, 0, 1);
+		        new DocumentApi(null).GetDocument(_configurationId, _documentId, null, 0, 1);
 		    }
 		    catch (Exception e)
 		    {
@@ -163,7 +163,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             new SignInApi().SignInInternal("TestUser", "Password1", false);
 
             //записываем документ
-            var result = new DocumentApi().SetDocument(_configurationId, _documentId, testDocument);
+            var result = new DocumentApi(null).SetDocument(_configurationId, _documentId, testDocument);
 
             Assert.AreEqual(result.IsValid, true);
 
@@ -182,7 +182,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 	        try
 	        {
 		        //проверяем отсутствие доступа к этому же документу при попытке сохранения
-		        new DocumentApi().SetDocument(_configurationId, _documentId, testDocument);
+		        new DocumentApi(null).SetDocument(_configurationId, _documentId, testDocument);
 	        }
 			catch (Exception e)
 			{
@@ -196,7 +196,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             testDocument1.TestProperty = "2";
 	        try
 	        {
-		        new DocumentApi().SetDocument(_configurationId, _documentId, testDocument1);
+		        new DocumentApi(null).SetDocument(_configurationId, _documentId, testDocument1);
 	        }
 	        catch (Exception e)
 	        {
@@ -206,7 +206,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
 	        //проверяем доступность на чтение
 
-            IEnumerable<dynamic> docs = new DocumentApi().GetDocument(_configurationId, _documentId, null, 0, 1000);
+            IEnumerable<dynamic> docs = new DocumentApi(null).GetDocument(_configurationId, _documentId, null, 0, 1000);
             Assert.True(docs.Any());
 
 			new SignInApi().SignOutInternal();
@@ -233,7 +233,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             testDocument.Id = id;
             testDocument.TestProperty = "1";
             
-            var result = new DocumentApi().SetDocument(_configurationId, _documentId, testDocument);
+            var result = new DocumentApi(null).SetDocument(_configurationId, _documentId, testDocument);
             Assert.AreEqual(result.IsValid,true);
 
             var id1 = Guid.NewGuid().ToString();
@@ -241,7 +241,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             testDocument1.Id = id1;
             testDocument1.TestProperty = "2";
 
-            result = new DocumentApi().SetDocument(_configurationId, _documentId, testDocument1);
+            result = new DocumentApi(null).SetDocument(_configurationId, _documentId, testDocument1);
             Assert.AreEqual(result.IsValid,true);
 
 			new SignInApi().SignOutInternal();
@@ -256,7 +256,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             //проверяем, что при запросе возвращает только один документ
 			new SignInApi().SignInInternal("TestUser", "Password1", false);
 
-            IEnumerable<dynamic> docs = new DocumentApi().GetDocument(_configurationId, _documentId, null, 0, 10);
+            IEnumerable<dynamic> docs = new DocumentApi(null).GetDocument(_configurationId, _documentId, null, 0, 10);
 
             Assert.AreEqual(1, docs.Count());
             Assert.AreEqual(docs.First().Id, id1);
@@ -293,14 +293,14 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			new SignInApi().SignInInternal("TestUser", "Password1", false);
 
             //проверяем наличие доступа к конкретному экземпляру
-            var result = new DocumentApi().SetDocument(_configurationId, _documentId, testDocument);
+            var result = new DocumentApi(null).SetDocument(_configurationId, _documentId, testDocument);
 
             Assert.AreEqual(result.IsValid, true);
 
             //проверяем отсутствие доступа ко все документам
             try
             {
-                new DocumentApi().GetDocument(_configurationId, _documentId, null, 0, 10);
+                new DocumentApi(null).GetDocument(_configurationId, _documentId, null, 0, 10);
             }
             catch (Exception e)
             {
@@ -347,13 +347,13 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             testDocument1.Id = id1;
             testDocument1.TestProperty = "2";
             
-            var result = new DocumentApi().SetDocument(_configurationId, _documentId, testDocument1);
+            var result = new DocumentApi(null).SetDocument(_configurationId, _documentId, testDocument1);
             Assert.AreEqual(result.IsValid, true);
 
             //проверяем отсутствие доступа к конкретному экземпляру
 	        try
 	        {
-		        new DocumentApi().SetDocument(_configurationId, _documentId, testDocument);
+		        new DocumentApi(null).SetDocument(_configurationId, _documentId, testDocument);
 	        }
 	        catch (Exception e)
 	        {
@@ -389,7 +389,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             //проверяем отсутствие доступа у пользователя
 	        try
 	        {
-		        new DocumentApi().SetDocument(_configurationId, _documentId, testDocument);
+		        new DocumentApi(null).SetDocument(_configurationId, _documentId, testDocument);
 	        }
 	        catch (Exception e)
 	        {
@@ -409,14 +409,14 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                 testDocument.Id = id;
                 testDocument.TestProperty = i.ToString();
 
-                new DocumentApi().SetDocument(_configurationId, _documentId, testDocument);
+                new DocumentApi(null).SetDocument(_configurationId, _documentId, testDocument);
             }
 
-            new DocumentApi().GetDocument(_configurationId, _documentId, null, 0, 1000);
+            new DocumentApi(null).GetDocument(_configurationId, _documentId, null, 0, 1000);
 
             var watch = Stopwatch.StartNew();
 
-            new DocumentApi().GetDocument(_configurationId, _documentId, null, 0, 1000);
+            new DocumentApi(null).GetDocument(_configurationId, _documentId, null, 0, 1000);
 
             watch.Stop();
             Console.WriteLine(watch.ElapsedMilliseconds);
@@ -457,7 +457,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             //проверяем отсутствие доступа у пользователя
 	        try
 	        {
-		        var result = new DocumentApi().SetDocument(_configurationId, _documentId, testDocument);
+		        var result = new DocumentApi(null).SetDocument(_configurationId, _documentId, testDocument);
 	        }
 	        catch (Exception e)
 	        {
@@ -519,7 +519,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			testDocument.TestProperty = "1";
 
 			//проверяем наличие доступа у пользователя
-			result = new DocumentApi().SetDocument(_configurationId, _documentId, testDocument);
+			result = new DocumentApi(null).SetDocument(_configurationId, _documentId, testDocument);
 			Assert.AreEqual(result.IsValid, true);
 
 		}
@@ -527,20 +527,20 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 		private void CreateTestConfig()
 		{
             AuthorizationExtensionsTest.ClearAuthConfig();
-			IndexApi.RebuildIndex(_configurationId,_documentId);
+			new IndexApi().RebuildIndex(_configurationId,_documentId);
 
-            var managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager();
+            var managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager(null);
             dynamic config = managerConfig.CreateItem(_configurationId);
             managerConfig.DeleteItem(config);
             managerConfig.MergeItem(config);
 
-            var managerFactoryDocument = new ManagerFactoryConfiguration(_configurationId);
+            var managerFactoryDocument = new ManagerFactoryConfiguration(null, _configurationId);
             var documentManager = managerFactoryDocument.BuildDocumentManager();
             dynamic doc = documentManager.CreateItem(_documentId);
             documentManager.MergeItem(doc);
             
-            RestQueryApi.QueryPostNotify(_configurationId);
-            UpdateApi.UpdateStore(_configurationId);
+            RestQueryApi.QueryPostNotify(null, _configurationId);
+            new UpdateApi(null).UpdateStore(_configurationId);
 
 
 		}

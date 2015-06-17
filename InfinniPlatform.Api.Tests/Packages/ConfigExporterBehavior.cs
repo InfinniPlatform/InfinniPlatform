@@ -44,7 +44,7 @@ namespace InfinniPlatform.Api.Tests.Packages
 
 			var exporter = new ConfigExporter(new ZipStructure(@"TestData\TestZip.zip"));
 
-			exporter.ExportHeaderToStructure(_configurationId);
+			exporter.ExportHeaderToStructure(null, _configurationId);
 
 			DeleteTestConfiguration();
 
@@ -106,7 +106,7 @@ namespace InfinniPlatform.Api.Tests.Packages
 
 			var exporter = new ConfigExporter(new DirectoryStructure(@"TestData\TestExportToDirectory"));
 
-			exporter.ExportHeaderToStructure(_configurationId);
+			exporter.ExportHeaderToStructure(null, _configurationId);
 
 			exporter = new ConfigExporter(new DirectoryStructure(@"TestData\TestExportToDirectory"));
 
@@ -119,54 +119,54 @@ namespace InfinniPlatform.Api.Tests.Packages
 
 		private void CheckConfiguration()
 		{
-			var managerConfiguration = ManagerFactoryConfiguration.BuildConfigurationMetadataReader();
+			var managerConfiguration = ManagerFactoryConfiguration.BuildConfigurationMetadataReader(null);
 			var config = managerConfiguration.GetItem(_configurationId);
 
 			Assert.IsNotNull(config);
 
-			var managerMenu = new ManagerFactoryConfiguration(_configurationId).BuildMenuMetadataReader();
+			var managerMenu = new ManagerFactoryConfiguration(null, _configurationId).BuildMenuMetadataReader();
 			Assert.IsNotNull(managerMenu.GetItem("testmenu"));
 
-			var managerReport = new ManagerFactoryConfiguration(_configurationId).BuildReportMetadataReader();
+			var managerReport = new ManagerFactoryConfiguration(null, _configurationId).BuildReportMetadataReader();
 			Assert.IsNotNull(managerReport.GetItem("testreport"));
 
-			var managerDocument = new ManagerFactoryConfiguration(_configurationId).BuildDocumentMetadataReader();
+			var managerDocument = new ManagerFactoryConfiguration(null, _configurationId).BuildDocumentMetadataReader();
 			Assert.IsNotNull(managerDocument.GetItem("testdoc1"));
 			Assert.IsNotNull(managerDocument.GetItem("testdoc2"));
 
-			var managerAssembly = new ManagerFactoryConfiguration(_configurationId).BuildAssemblyMetadataReader();
+			var managerAssembly = new ManagerFactoryConfiguration(null, _configurationId).BuildAssemblyMetadataReader();
 			Assert.IsNotNull(managerAssembly.GetItem(_configurationId));
 
-			var managerWarning = new ManagerFactoryDocument(_configurationId, "testdoc1").BuildValidationWarningsMetadataReader();
+			var managerWarning = new ManagerFactoryDocument(null, _configurationId, "testdoc1").BuildValidationWarningsMetadataReader();
 			Assert.IsNotNull(managerWarning.GetItem("TestWarning1"));
 
-			var managerErrors = new ManagerFactoryDocument(_configurationId, "testdoc1").BuildValidationErrorsMetadataReader();
+			var managerErrors = new ManagerFactoryDocument(null, _configurationId, "testdoc1").BuildValidationErrorsMetadataReader();
 			Assert.IsNotNull(managerErrors.GetItem("TestError1"));
 
-			var managerView = new ManagerFactoryDocument(_configurationId, "testdoc1").BuildViewMetadataReader();
+			var managerView = new ManagerFactoryDocument(null, _configurationId, "testdoc1").BuildViewMetadataReader();
 			Assert.IsNotNull(managerView.GetItem("TestView1"));
 
-			var managerScenario = new ManagerFactoryDocument(_configurationId, "testdoc1").BuildScenarioMetadataReader();
+			var managerScenario = new ManagerFactoryDocument(null,_configurationId, "testdoc1").BuildScenarioMetadataReader();
 			Assert.IsNotNull(managerScenario.GetItem("TestScenario1"));
 
-			var managerProcess = new ManagerFactoryDocument(_configurationId, "testdoc1").BuildProcessMetadataReader();
+			var managerProcess = new ManagerFactoryDocument(null,_configurationId, "testdoc1").BuildProcessMetadataReader();
 			Assert.IsNotNull(managerProcess.GetItem("TestProcess1"));
 
-			var managerService = new ManagerFactoryDocument(_configurationId, "testdoc1").BuildServiceMetadataReader();
+			var managerService = new ManagerFactoryDocument(null,_configurationId, "testdoc1").BuildServiceMetadataReader();
 			Assert.IsNotNull(managerService.GetItem("TestService1"));
 
-			var managerGenerator = new ManagerFactoryDocument(_configurationId, "testdoc1").BuildGeneratorMetadataReader();
+			var managerGenerator = new ManagerFactoryDocument(null,_configurationId, "testdoc1").BuildGeneratorMetadataReader();
 			Assert.IsNotNull(managerGenerator.GetItem("TestGenerator1"));
 
-			var managerStatus = new ManagerFactoryDocument(_configurationId, "testdoc1").BuildStatusMetadataReader();
+			var managerStatus = new ManagerFactoryDocument(null,_configurationId, "testdoc1").BuildStatusMetadataReader();
 			Assert.IsNotNull(managerStatus.GetItem("JustCreated"));
 
 		}
 
 		private void DeleteTestConfiguration()
 		{
-			var managerConfiguration = ManagerFactoryConfiguration.BuildConfigurationManager();
-		    var readerConfiguration = ManagerFactoryConfiguration.BuildConfigurationMetadataReader();
+			var managerConfiguration = ManagerFactoryConfiguration.BuildConfigurationManager(null);
+		    var readerConfiguration = ManagerFactoryConfiguration.BuildConfigurationMetadataReader(null);
 
 		    var config = readerConfiguration.GetItem(_configurationId);
 		    if (config != null)
@@ -178,22 +178,22 @@ namespace InfinniPlatform.Api.Tests.Packages
 
 		private static void CreateTestConfiguration()
 		{
-			var managerConfiguration = ManagerFactoryConfiguration.BuildConfigurationManager();
+			var managerConfiguration = ManagerFactoryConfiguration.BuildConfigurationManager(null);
 			var config = managerConfiguration.CreateItem(_configurationId);
 
 			managerConfiguration.DeleteItem(config);
             managerConfiguration.MergeItem(config);
 
-			var menuManager = new ManagerFactoryConfiguration(_configurationId).BuildMenuManager();
+			var menuManager = new ManagerFactoryConfiguration(null, _configurationId).BuildMenuManager();
 			dynamic menu = menuManager.CreateItem("testmenu");
             menuManager.MergeItem(menu);
 
 
-			var reportManager = new ManagerFactoryConfiguration(_configurationId).BuildReportManager();
+			var reportManager = new ManagerFactoryConfiguration(null, _configurationId).BuildReportManager();
 			dynamic report = reportManager.CreateItem("testreport");
             reportManager.MergeItem(report);
 
-			var assemblyManager = new ManagerFactoryConfiguration(_configurationId).BuildAssemblyManager();
+			var assemblyManager = new ManagerFactoryConfiguration(null, _configurationId).BuildAssemblyManager();
 
 			dynamic assembly = new DynamicWrapper();
 			assembly.Id = Guid.NewGuid().ToString();
@@ -233,40 +233,40 @@ namespace InfinniPlatform.Api.Tests.Packages
 
             assemblyManager.MergeItem(assembly);
 
-			var managerDocument = new ManagerFactoryConfiguration(_configurationId).BuildDocumentManager();
+			var managerDocument = new ManagerFactoryConfiguration(null, _configurationId).BuildDocumentManager();
 			dynamic documentMetadata1 = managerDocument.CreateItem("testdoc1");
 			dynamic documentMetadata2 = managerDocument.CreateItem("testdoc2");
 
             managerDocument.MergeItem(documentMetadata1);
             managerDocument.MergeItem(documentMetadata2);
 
-			var managerWarning = new ManagerFactoryDocument(_configurationId, "testdoc1").BuildValidationWarningsManager();
+			var managerWarning = new ManagerFactoryDocument(null,_configurationId, "testdoc1").BuildValidationWarningsManager();
             managerWarning.MergeItem(instanceWarning);
 
-			var managerError = new ManagerFactoryDocument(_configurationId, "testdoc1").BuildValidationErrorsManager();
+            var managerError = new ManagerFactoryDocument(null, _configurationId, "testdoc1").BuildValidationErrorsManager();
             managerError.MergeItem(instanceError);
 
-			var managerView = new ManagerFactoryDocument(_configurationId, "testdoc1").BuildViewManager();
+            var managerView = new ManagerFactoryDocument(null, _configurationId, "testdoc1").BuildViewManager();
             managerView.MergeItem(instanceView);
 
-			var managerScenario = new ManagerFactoryDocument(_configurationId, "testdoc1").BuildScenarioManager();
+            var managerScenario = new ManagerFactoryDocument(null, _configurationId, "testdoc1").BuildScenarioManager();
             managerScenario.MergeItem(instanceScenario);
 
-			var managerProcess = new ManagerFactoryDocument(_configurationId, "testdoc1").BuildProcessManager();
+            var managerProcess = new ManagerFactoryDocument(null, _configurationId, "testdoc1").BuildProcessManager();
             managerProcess.MergeItem(instanceProcess);
 
-			var managerService = new ManagerFactoryDocument(_configurationId, "testdoc1").BuildServiceManager();
+            var managerService = new ManagerFactoryDocument(null, _configurationId, "testdoc1").BuildServiceManager();
             managerService.MergeItem(instanceService);
 
-			var managerStatus = new ManagerFactoryDocument(_configurationId, "testdoc1").BuildStatusManager();
+            var managerStatus = new ManagerFactoryDocument(null, _configurationId, "testdoc1").BuildStatusManager();
             managerStatus.MergeItem(instanceStatus);
 
-			var managerGenerator = new ManagerFactoryDocument(_configurationId, "testdoc1").BuildGeneratorManager();
+            var managerGenerator = new ManagerFactoryDocument(null, _configurationId, "testdoc1").BuildGeneratorManager();
             managerGenerator.MergeItem(instanceGenerator);
 
-			RestQueryApi.QueryPostNotify(_configurationId);
+			RestQueryApi.QueryPostNotify(null, _configurationId);
 
-			UpdateApi.UpdateStore(_configurationId);
+            new UpdateApi(null).UpdateStore(_configurationId);
 		}
 	}
 }

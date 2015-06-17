@@ -29,9 +29,11 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
         {
             dynamic body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
 
+            var routeDictionary = RouteFormatter.GetRouteDictionary(context);
+
             if (body.Application != null && body.UserName != null && body.Application.ToString() != string.Empty && body.UserName.ToString() != string.Empty)
             {
-                return new ValueRequestHandlerResult(new AuthApi().GrantAccess(
+                return new ValueRequestHandlerResult(new AuthApi(routeDictionary["version"]).GrantAccess(
                     body.UserName.ToString(),
                     body.Application.ToString(),
                     body.DocumentType != null ? body.DocumentType.ToString() : null,

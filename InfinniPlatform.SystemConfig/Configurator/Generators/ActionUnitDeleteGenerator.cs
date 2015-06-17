@@ -16,13 +16,13 @@ namespace InfinniPlatform.SystemConfig.Configurator.Generators
 						{
                             ActionName = target.Item.GeneratorName,
 							Configuration = target.Item.Configuration,
-							Metadata = target.Item.Metadata
+							Metadata = target.Item.Metadata,
 						};
 
-            RestQueryApi.QueryPostJsonRaw("systemconfig", "metadata", "deletegeneratedservice", null, target.Item);
+            RestQueryApi.QueryPostJsonRaw("systemconfig", "metadata", "deletegeneratedservice", null, target.Item, target.Version);
 
 			//удаляем метаданные самого генератора
-			var generatorManager = new ManagerFactoryDocument(target.Item.Configuration, target.Item.Metadata).BuildGeneratorManager();
+			var generatorManager = new ManagerFactoryDocument(target.Version, target.Item.Configuration, target.Item.Metadata).BuildGeneratorManager();
 
 		    var generator = generatorManager.MetadataReader.GetItem(target.Item.GeneratorName);
 

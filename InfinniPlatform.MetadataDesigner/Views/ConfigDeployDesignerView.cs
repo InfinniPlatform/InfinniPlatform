@@ -33,7 +33,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 					var configurationPath = dialog.SelectedPath;
 					var process = new StatusProcess();
 					process.StartOperation(() =>
-					exportConfig.ExportJsonConfigToDirectory(configurationPath));
+					exportConfig.ExportJsonConfigToDirectory(configurationPath, Value.Version));
 					process.EndOperation();
 
 					MessageBox.Show(string.Format("Экспорт конфигурации в каталог \"{0}\" завершен", configurationPath));
@@ -53,7 +53,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 				if (dialog.ShowDialog() == DialogResult.OK)
 				{
 					var process = new StatusProcess();
-					process.StartOperation(() => exportConfig.ExportJsonConfigToZip(dialog.FileName));
+					process.StartOperation(() => exportConfig.ExportJsonConfigToZip(dialog.FileName, Value.Version));
 					process.EndOperation();
 
 					MessageBox.Show(@"Экспорт конфигурации завершен");

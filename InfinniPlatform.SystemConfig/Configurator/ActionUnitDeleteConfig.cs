@@ -18,7 +18,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
             var config = target.Item.ConfigurationName;
 
             IEnumerable<dynamic> deleteConfig = DynamicWrapperExtensions.ToEnumerable(
-                new DocumentApi().GetDocument("system", "configuration", f => f.AddCriteria(c => c.Property("Id").IsEquals(config)), 0, 1));
+               target.Context.GetComponent<DocumentApi>(target.Version).GetDocument("system", "configuration", f => f.AddCriteria(c => c.Property("Id").IsEquals(config)), 0, 1));
 
             if (!deleteConfig.Any())
             {
@@ -27,7 +27,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
                 return;
             }
 
-            new DocumentApi().DeleteDocument("system", "configuration", deleteConfig.First().Id);
+            target.Context.GetComponent<DocumentApi>(target.Version).DeleteDocument("system", "configuration", deleteConfig.First().Id);
         }
     }
 }

@@ -41,14 +41,14 @@ namespace InfinniPlatform.Utils
 			return name.Split('.').Last();
 		}
 
-		public void Download(string config)
+		public void Download(string config, string version)
 		{
 			ProcessConfigurations(config, configuration =>
 			{
 				Console.WriteLine("Downloading configuration '{0}' started", configuration.Name);
 
 				var exchangeDirector = CreateExchangeDirector(configuration.Name);
-				exchangeDirector.ExportJsonConfigToDirectory(configuration.Path);
+				exchangeDirector.ExportJsonConfigToDirectory(configuration.Path, version);
 
 				Console.WriteLine("Downloading configuration '{0}' done", configuration.Name);
 			});

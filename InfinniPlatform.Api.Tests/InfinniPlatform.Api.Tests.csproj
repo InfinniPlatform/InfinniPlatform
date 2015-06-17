@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -62,6 +62,7 @@
     <Compile Include="RestBehavior\Acceptance\AfterDocumentSaveEventsBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\ActionUnitExceptionHandlingBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\AuthorizationBehavior.cs" />
+    <Compile Include="RestBehavior\Acceptance\ConfigurationVersionBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\ContentUploadBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\SaaSBehaivor.cs" />
     <Compile Include="RestBehavior\Acceptance\SortingBehavior.cs" />
@@ -96,12 +97,13 @@
     <Compile Include="RestBehavior\TestActions\DeleteRegisterEntriesAction.cs" />
     <Compile Include="RestBehavior\TestActions\HospitalRegisterMoveAction.cs" />
     <Compile Include="RestBehavior\TestActions\TestRegisterMoveAction.cs" />
-    <Compile Include="RestBehavior\TestActions\TestAction.cs" />
+    <Compile Include="RestBehavior\TestActions\Versions\TestAction_v2.cs" />
+    <Compile Include="RestBehavior\TestActions\Versions\TestAction_v1.cs" />
+    <Compile Include="RestBehavior\TestActions\Versions\TestAction.cs" />
     <Compile Include="RestBehavior\TestActions\TestComplexAction.cs" />
     <Compile Include="RestBehavior\TestActions\TestComplexFillDocumentAction.cs" />
     <Compile Include="RestBehavior\TestActions\TestComplexValidator.cs" />
     <Compile Include="RestBehavior\TestActions\TestSignalRAction.cs" />
-    <Compile Include="RestBehavior\TestActions\Transactions\TestSaveDocumentFailAction.cs" />
     <Compile Include="RestBehavior\TestActions\YetAnotherTestComplexAction.cs" />
     <Compile Include="Schema\SchemaCreatorBehavior.cs" />
     <Compile Include="Serialization\JsonObjectSerializerTest.cs" />

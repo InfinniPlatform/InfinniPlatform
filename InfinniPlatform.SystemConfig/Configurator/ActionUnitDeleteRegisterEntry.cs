@@ -31,10 +31,10 @@ namespace InfinniPlatform.SystemConfig.Configurator
                 throw new ArgumentException("registar should be specified via 'Registar' property");
             }
 
-            var api = new DocumentApi();
+            var api = target.Context.GetComponent<DocumentApi>(target.Version);
 
             // Находим все записи в регистре, соответствующие регистратору
-            var registerEntries = new RegisterApi().GetRegisterEntries(
+            var registerEntries = target.Context.GetComponent<RegisterApi>(target.Version).GetRegisterEntries(
                 configuration,
                 registerId,
                 f => f.AddCriteria(
@@ -54,7 +54,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
             }
 
             // Необходимо удалить все записи регистра после earliestDocumentDate
-            var notActualRegisterEntries = new RegisterApi().GetRegisterEntries(
+            var notActualRegisterEntries = target.Context.GetComponent<RegisterApi>(target.Version).GetRegisterEntries(
                 configuration,
                 registerId,
                 f => f.AddCriteria(

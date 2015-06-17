@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using InfinniPlatform.Api.Hosting;
+using InfinniPlatform.Hosting;
 using InfinniPlatform.Runtime;
 
 namespace InfinniPlatform.Metadata.Implementation.Handlers
@@ -10,7 +12,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
 	/// <summary>
 	///   Обработчик системных изменений, выполняющий нотификацию слушателей изменений
 	/// </summary>
-	public sealed class SystemEventsHandler
+	public sealed class SystemEventsHandler : IWebRoutingHandler
 	{
 		private readonly IChangeListener _changeListener;
 
@@ -26,9 +28,10 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
 		{
 		    if (_changeListener != null)
 		    {
-		        _changeListener.Invoke(metadataConfigurationId);
+		        _changeListener.Invoke(ConfigRequestProvider.GetVersion(), metadataConfigurationId);
 		    }
 		}
 
+        public IConfigRequestProvider ConfigRequestProvider { get; set; }
 	}
 }

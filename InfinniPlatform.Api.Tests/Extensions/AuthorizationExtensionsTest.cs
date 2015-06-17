@@ -11,9 +11,9 @@ namespace InfinniPlatform.Api.Tests.Extensions
     {
         public static void ClearAuthConfig()
         {
-            new SignInApi().SignInInternal("Admin", "Admin", false);
+            new SignInApi(null).SignInInternal("Admin", "Admin", false);
 
-            var aclApi = new AuthApi();
+            var aclApi = new AuthApi(null);
 
             var userRoles = aclApi.GetUserRoles();
             foreach (var userRole in userRoles)
@@ -57,7 +57,7 @@ namespace InfinniPlatform.Api.Tests.Extensions
                 }
             }
 
-            new SignInApi().SignOutInternal();
+            new SignInApi(null).SignOutInternal();
 
         }
 

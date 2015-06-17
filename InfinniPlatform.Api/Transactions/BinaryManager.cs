@@ -50,7 +50,7 @@ namespace InfinniPlatform.Api.Transactions
 
                 ObjectHelper.SetProperty(containingDocument, fieldName, infoBlobProperty);
 
-                new DocumentApi().SetDocument(application, documentType, containingDocument);
+                new DocumentApi(containingDocument.Version).SetDocument(application, documentType, containingDocument);
             }
         }
 

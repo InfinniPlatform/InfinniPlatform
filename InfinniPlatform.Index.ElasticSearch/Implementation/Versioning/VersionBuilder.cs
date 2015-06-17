@@ -13,9 +13,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.Versioning
 		private readonly IIndexStateProvider _indexStateProvider;
 	    private readonly string _indexName;
 	    private readonly string _typeName;
-	    private readonly SearchAbilityType _searchAbility;
 
-        private readonly ElasticConnection _connection;
+	    private readonly ElasticConnection _connection;
 
 	    public VersionBuilder(
             IIndexStateProvider indexStateProvider, 
@@ -26,9 +25,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.Versioning
 			_indexStateProvider = indexStateProvider;
 		    _indexName = indexName;
 	        _typeName = typeName;
-	        _searchAbility = searchAbility;
 
-            _connection = new ElasticConnection(); 
+	        _connection = new ElasticConnection(); 
 		}
 
         /// <summary>

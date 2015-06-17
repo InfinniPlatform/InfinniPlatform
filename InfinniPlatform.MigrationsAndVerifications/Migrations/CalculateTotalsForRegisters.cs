@@ -18,7 +18,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         /// Конфигурация, к которой применяется миграция
         /// </summary>
         private string _activeConfiguration;
-        
+
+        private string _version;
+
         /// <summary>
         /// Текстовое описание миграции
         /// </summary>
@@ -64,9 +66,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         {
             var resultMessage = new StringBuilder();
 
-            if (IndexApi.IndexExists(_activeConfiguration, _activeConfiguration + RegisterConstants.RegistersCommonInfo))
+            if (new IndexApi().IndexExists(_activeConfiguration, _activeConfiguration + RegisterConstants.RegistersCommonInfo))
             {
-                var registersInfo = new DocumentApi().GetDocument(_activeConfiguration,
+                var registersInfo = new DocumentApi(_version).GetDocument(_activeConfiguration,
                     _activeConfiguration + RegisterConstants.RegistersCommonInfo, null, 0, 1000);
 
                 foreach (var registerInfo in registersInfo)
@@ -96,7 +98,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                     {
                         item.Id = Guid.NewGuid().ToString();
                         item[RegisterConstants.DocumentDateProperty] = calculationDate;
-                        new DocumentApi().SetDocument(_activeConfiguration,
+                        new DocumentApi(_version).SetDocument(_activeConfiguration,
                             RegisterConstants.RegisterTotalNamePrefix + registerId, item);
                     }
                 }
@@ -125,8 +127,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         /// <summary>
         /// Устанавливает активную конфигурацию для миграции
         /// </summary>
-        public void AssignActiveConfiguration(string configurationId, IGlobalContext context)
+        public void AssignActiveConfiguration(string version, string configurationId, IGlobalContext context)
         {
+            _version = version;
             _activeConfiguration = configurationId;
         }
 

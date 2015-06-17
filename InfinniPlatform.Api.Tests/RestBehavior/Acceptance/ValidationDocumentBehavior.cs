@@ -55,14 +55,14 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
 		    if (resultValidation)
 		    {
-		        dynamic result = new DocumentApi().SetDocument("testconfigvalidator", "testdoc1", document, ignoreWarnings);
+		        dynamic result = new DocumentApi(null).SetDocument("testconfigvalidator", "testdoc1", document, ignoreWarnings);
 		        Assert.IsTrue(result.IsValid);
 		    }
 		    else
 		    {
 		        try
 		        {
-                    new DocumentApi().SetDocument("testconfigvalidator", "testdoc1", document, ignoreWarnings);
+                    new DocumentApi(null).SetDocument("testconfigvalidator", "testdoc1", document, ignoreWarnings);
 		        }
 		        catch (ArgumentException e)
 		        {
@@ -83,7 +83,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
 		    try
 		    {
-                new DocumentApi().SetDocument("testconfigvalidator", "testdoc1", document, false);
+                new DocumentApi(null).SetDocument("testconfigvalidator", "testdoc1", document, false);
 		    }
 		    catch (Exception e)
 		    {
@@ -104,7 +104,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
 			try
 			{
-				new DocumentApi().SetDocument("testconfigvalidator", "testdoc1", document, false);
+				new DocumentApi(null).SetDocument("testconfigvalidator", "testdoc1", document, false);
 			}
 			catch (Exception e)
 			{
@@ -120,13 +120,13 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			string configurationId = "testconfigvalidator";
 			string documentId = "testdoc1";
 
-			var managerConfiguration = ManagerFactoryConfiguration.BuildConfigurationManager();
+			var managerConfiguration = ManagerFactoryConfiguration.BuildConfigurationManager(null);
 
 			var config = managerConfiguration.CreateItem(configurationId);
             managerConfiguration.DeleteItem(config);
             managerConfiguration.MergeItem(config);
 
-			var managerDocument = new ManagerFactoryConfiguration(configurationId).BuildDocumentManager();
+			var managerDocument = new ManagerFactoryConfiguration(null, configurationId).BuildDocumentManager();
 			dynamic documentMetadata1 = managerDocument.CreateItem(documentId);
             managerDocument.MergeItem(documentMetadata1);
 
@@ -153,18 +153,18 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
 			if (addWarnings)
 			{
-				var managerWarning = new ManagerFactoryDocument(configurationId, documentId).BuildValidationWarningsManager();
+				var managerWarning = new ManagerFactoryDocument(null,configurationId, documentId).BuildValidationWarningsManager();
                 managerWarning.MergeItem(validationWarning);
 			}
 
 			if (addErrors)
 			{
-				var managerError = new ManagerFactoryDocument(configurationId, documentId).BuildValidationErrorsManager();
+				var managerError = new ManagerFactoryDocument(null,configurationId, documentId).BuildValidationErrorsManager();
                 managerError.MergeItem(validationError);
 			}
 
 			//добавляем бизнес-процесс по умолчанию
-			var processManager = new ManagerFactoryDocument(configurationId, documentId).BuildProcessManager();
+			var processManager = new ManagerFactoryDocument(null,configurationId, documentId).BuildProcessManager();
 			var defaultProcess = processManager.CreateItem("Default");
 
 			dynamic instance = new DynamicWrapper();
@@ -198,16 +198,16 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             processManager.MergeItem(defaultProcess);
 
-			RestQueryApi.QueryPostNotify(configurationId);
+			RestQueryApi.QueryPostNotify(null, configurationId);
 
-			UpdateApi.UpdateStore(configurationId);
+            new UpdateApi(null).UpdateStore(configurationId);
 
 			if (addComplexErrors)
 			{
 
 
 				//указываем ссылку на тестовый сценарий комплексного предзаполнения
-				var scenarioManager = new ManagerFactoryDocument(configurationId, documentId).BuildScenarioManager();
+				var scenarioManager = new ManagerFactoryDocument(null,configurationId, documentId).BuildScenarioManager();
 				string scenarioId = "TestComplexValidator";
 				dynamic scenarioItem = scenarioManager.CreateItem(scenarioId);
 				scenarioItem.ScenarioId = scenarioId;
@@ -219,16 +219,16 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
 				//добавляем ссылку на сборку, в которой находится прикладной модуль
 
-				var assemblyManager = new ManagerFactoryConfiguration(configurationId).BuildAssemblyManager();
+				var assemblyManager = new ManagerFactoryConfiguration(null, configurationId).BuildAssemblyManager();
 				dynamic assemblyItem = assemblyManager.CreateItem("InfinniPlatform.Api.Tests");
                 assemblyManager.MergeItem(assemblyItem);
 
 				var package = new PackageBuilder().BuildPackage(configurationId, "test_version", this.GetType().Assembly.Location);
-				UpdateApi.InstallPackages(new[] { package });
+				new UpdateApi(null).InstallPackages(new[] { package });
 			}
-			RestQueryApi.QueryPostNotify(configurationId);
+			RestQueryApi.QueryPostNotify(null, configurationId);
 
-			UpdateApi.UpdateStore(configurationId);
+			new UpdateApi(null).UpdateStore(configurationId);
 		}
 
 

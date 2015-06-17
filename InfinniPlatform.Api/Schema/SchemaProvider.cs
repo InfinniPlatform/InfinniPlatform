@@ -15,9 +15,16 @@ namespace InfinniPlatform.Api.Schema
 			_metadataComponent = metadataComponent;
 		}
 
-		public dynamic GetSchema(string configId, string documentId)
+	    /// <summary>
+	    ///  Получить схему документа
+	    /// </summary>
+	    /// <param name="version">Версия конфигурации</param>
+	    /// <param name="configId">Идентификатор конфигурации</param>
+	    /// <param name="documentId">Идентификатор документа</param>
+	    /// <returns>Схема документа</returns>
+	    public dynamic GetSchema(string version, string configId, string documentId)
 		{
-			IEnumerable<dynamic> schemaMetadata = _metadataComponent.GetMetadataList(configId, documentId,MetadataType.Schema);
+			IEnumerable<dynamic> schemaMetadata = _metadataComponent.GetMetadataList(version, configId, documentId,MetadataType.Schema);
 			return schemaMetadata.FirstOrDefault();
 		}
 	}

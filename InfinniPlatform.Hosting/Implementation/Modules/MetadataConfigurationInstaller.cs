@@ -31,7 +31,7 @@ namespace InfinniPlatform.Hosting.Implementation.Modules
         public IModule InstallModule()
         {
             _actionConfiguration.ModuleName = ModuleName;
-            var configuration = _metadataConfigurationProvider.AddConfiguration(ModuleName, _actionConfiguration,true);
+            var configuration = _metadataConfigurationProvider.AddConfiguration(null, ModuleName, _actionConfiguration, true);
             RegisterConfiguration(configuration);
             RegisterServices(configuration.ServiceRegistrationContainer);
             return configuration;

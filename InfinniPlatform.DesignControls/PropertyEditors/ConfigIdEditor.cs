@@ -95,7 +95,7 @@ namespace InfinniPlatform.DesignControls.PropertyEditors
 
 		private IEnumerable<dynamic> GetConfigList()
 		{
-			return new MetadataApi().GetMetadataList();
+			return new MetadataApi(null).GetMetadataList();
 		}
 	}
 }

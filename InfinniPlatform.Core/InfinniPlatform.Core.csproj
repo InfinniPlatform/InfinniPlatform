@@ -66,7 +66,9 @@
     <Compile Include="ContextComponents\CachedSecurityComponent.cs" />
     <Compile Include="ContextComponents\SystemComponent.cs" />
     <Compile Include="ContextComponents\TransactionComponent.cs" />
+    <Compile Include="ContextComponents\VersionedScriptProcessor.cs" />
     <Compile Include="ContextComponents\WebClientNotificationComponent.cs" />
+    <Compile Include="Factories\ContextRegistration.cs" />
     <Compile Include="Factories\IPrintViewBuilderFactory.cs" />
     <Compile Include="Factories\IIndexRoutingFactory.cs" />
     <Compile Include="Hosting\ExtensionPointHandlerConfig.cs" />

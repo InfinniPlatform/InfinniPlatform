@@ -12,15 +12,17 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories
 	{
 		private readonly Dictionary<string, IDataManager> _managers = new Dictionary<string, IDataManager>();
 
-		private readonly Dictionary<string, IDataReader> _readers = new Dictionary<string, IDataReader>(); 
+		private readonly Dictionary<string, IDataReader> _readers = new Dictionary<string, IDataReader>();
 
-		/// <summary>
-		/// Конструктор.
-		/// </summary>
-		/// <param name="configId">Идентификатор конфигурации (например, "Integration").</param>
-		public ManagerFactoryConfiguration(string configId)
+	    /// <summary>
+	    /// Конструктор.
+	    /// </summary>
+	    /// <param name="version">Идентификатор версии конфигурации</param>
+	    /// <param name="configId">Идентификатор конфигурации (например, "Integration").</param>
+	    public ManagerFactoryConfiguration(string version, string configId)
 		{
 			_configId = configId;
+	        _version = version;
 
 			_managers.Add(MetadataType.Document, BuildDocumentManager());
 			_managers.Add(MetadataType.Assembly, BuildAssemblyManager());
@@ -37,81 +39,99 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories
 
 
 		private readonly string _configId;
+	    private readonly string _version;
 
 
-		public static IDataReader BuildConfigurationMetadataReader()
+	    public static IDataReader BuildConfigurationMetadataReader(string version)
 		{
-			return new MetadataReaderConfiguration();
+			return new MetadataReaderConfiguration(version);
 		}
+
+	    public static IDataReader BuildVersionMetadataReader()
+	    {
+	        return new MetadataReaderVersion();
+	    }
 
 		public IDataReader BuildMenuMetadataReader()
 		{
-			return new MetadataReaderConfigurationElement(_configId, new MetadataContainerMenu());
+			return new MetadataReaderConfigurationElement(_version, _configId, new MetadataContainerMenu());
 		}
 
 		public IDataReader BuildDocumentMetadataReader()
 		{
-			return new MetadataReaderConfigurationElement(_configId, new MetadataContainerDocument());
+			return new MetadataReaderConfigurationElement(_version, _configId, new MetadataContainerDocument());
 		}
 
 		public IDataReader BuildRegisterMetadataReader()
 		{
-			return new MetadataReaderConfigurationElement(_configId, new MetadataContainerRegister());
+            return new MetadataReaderConfigurationElement(_version, _configId, new MetadataContainerRegister());
 		}
 
 		public IDataReader BuildAssemblyMetadataReader()
 		{
-			return new MetadataReaderConfigurationElement(_configId, new MetadataContainerAssembly());
+            return new MetadataReaderConfigurationElement(_version, _configId, new MetadataContainerAssembly());
 		}
 
 		public IDataReader BuildReportMetadataReader()
 		{
-			return new MetadataReaderConfigurationElement(_configId, new MetadataContainerReport());
+            return new MetadataReaderConfigurationElement(_version, _configId, new MetadataContainerReport());
 		}
 
-
-		public static MetadataManagerConfiguration BuildConfigurationManager()
+        /// <summary>
+        ///   Получить менеджер конфигураций для работы с указанной версией прикладной конфигурации
+        /// </summary>
+        /// <param name="version">Версия прикладной конфигурации</param>
+        /// <returns>Менеджер метаданных конфигураций</returns>
+		public static MetadataManagerConfiguration BuildConfigurationManager(string version)
 		{
-			return new MetadataManagerConfiguration(new MetadataReaderConfiguration());
+			return new MetadataManagerConfiguration(new MetadataReaderConfiguration(version), version);
 		}
 
+        /// <summary>
+        ///  Получить менеджер для управления метаданными меню конфигураций
+        /// </summary>
+        /// <returns>Менеджер метаданных меню</returns>
 		public MetadataManagerElement BuildMenuManager()
 		{
-			return new MetadataManagerElement(_configId, 
+			return new MetadataManagerElement(_version, _configId, 
 				null,
-				new MetadataReaderConfigurationElement(_configId, new MetadataContainerMenu()), 				
+				new MetadataReaderConfigurationElement(_version, _configId, new MetadataContainerMenu()), 				
 				new MetadataContainerMenu(), 
 				MetadataType.Configuration);
 		}
 
-		public MetadataManagerDocument BuildDocumentManager()
+	    /// <summary>
+	    ///  Получить менеджер метаданных документов
+	    /// </summary>
+	    /// <returns>Менеджер метаданных документов</returns>
+	    public MetadataManagerDocument BuildDocumentManager()
 		{
-			return new MetadataManagerDocument(_configId, new MetadataContainerDocument(), MetadataType.Configuration);
+			return new MetadataManagerDocument(_version, _configId, new MetadataContainerDocument(), MetadataType.Configuration);
 		}
 
 		public MetadataManagerElement BuildRegisterManager()
 		{
-			return new MetadataManagerElement(_configId,
+			return new MetadataManagerElement(_version, _configId,
 				null,
-				new MetadataReaderConfigurationElement(_configId, new MetadataContainerRegister()), 
+				new MetadataReaderConfigurationElement(_version, _configId, new MetadataContainerRegister()), 
 				new MetadataContainerRegister(), 
 				MetadataType.Configuration);
 		}
 
 		public MetadataManagerElement BuildAssemblyManager()
 		{
-			return new MetadataManagerElement(_configId, 
+			return new MetadataManagerElement(_version, _configId, 
 				null,
-				new MetadataReaderConfigurationElement(_configId, new MetadataContainerAssembly()), 
+				new MetadataReaderConfigurationElement(_version, _configId, new MetadataContainerAssembly()), 
 				new MetadataContainerAssembly(), 
 				MetadataType.Configuration);
 		}
 
 		public MetadataManagerElement BuildReportManager()
 		{
-			return new MetadataManagerElement(_configId, 
+			return new MetadataManagerElement(_version, _configId, 
 				null,
-				new MetadataReaderConfigurationElement(_configId, new MetadataContainerReport()), 
+				new MetadataReaderConfigurationElement(_version, _configId, new MetadataContainerReport()), 
 				new MetadataContainerReport(), 
 				MetadataType.Configuration);
 		}

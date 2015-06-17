@@ -9,19 +9,19 @@ namespace InfinniPlatform.Runtime.Implementation.ChangeListeners
 	/// </summary>
     public class ChangeListener : IChangeListener
     {
-		private readonly ConcurrentDictionary<string, Action<string>> _registeredActions = new ConcurrentDictionary<string, Action<string>>();
+		private readonly ConcurrentDictionary<string, Action<string,string>> _registeredActions = new ConcurrentDictionary<string, Action<string,string>>();
 
-		public void RegisterOnChange(string registrator, Action<string> action)
+		public void RegisterOnChange(string registrator, Action<string, string> action)
 		{
 			_registeredActions.AddOrUpdate(registrator,action, (key,newAction) =>  action);
 		}
 
-		public void Invoke(string changedModule)
+		public void Invoke(string version, string changedModule)
 		{
 			var invokeActions = _registeredActions.Select(r => r.Value).ToList();
 			for (int i = 0; i < invokeActions.Count(); i++)
 			{
-				invokeActions[i].Invoke(changedModule);
+				invokeActions[i].Invoke(version, changedModule);
 			}
 		}
     }

@@ -20,17 +20,17 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 		public void Action(IApplyContext target)
 		{
 			dynamic documentProvider =
-				target.Context.GetComponent<InprocessDocumentComponent>()
-				      .GetDocumentProvider(target.Item.Configuration, target.Item.Metadata, target.UserName);
+                target.Context.GetComponent<InprocessDocumentComponent>(target.Version)
+				      .GetDocumentProvider(target.Version, target.Item.Configuration, target.Item.Metadata, target.UserName);
 
 			dynamic instanceId = null;
 			if (documentProvider != null)
 			{
 				ApplyTransactionMarker(target);
 
-			    _metadataComponent = target.Context.GetComponent<IMetadataComponent>();
+                _metadataComponent = target.Context.GetComponent<IMetadataComponent>(target.Version);
 
-				IEnumerable<dynamic> result = _metadataComponent.GetMetadataList(target.Item.Configuration, target.Item.Metadata,
+				IEnumerable<dynamic> result = _metadataComponent.GetMetadataList(target.Version, target.Item.Configuration, target.Item.Metadata,
 				                                                        MetadataType.Schema);
 
 				var documentSchema = result.FirstOrDefault();
@@ -40,9 +40,9 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
 			    if (target.Item.Document != null)
 				{
-                    target.Item.Document = AdjustDocumentContent(target.Item.Document, documentSchema, allowNonSchemaProperties);
-                    
-					target.Context.GetComponent<ILogComponent>().GetLog().Info(
+                    target.Item.Document = AdjustDocumentContent(target.Version, target.Item.Document, documentSchema, allowNonSchemaProperties);
+
+                    target.Context.GetComponent<ILogComponent>(target.Version).GetLog().Info(
 						"document \"{0}\" save completed to \"{1}\", type {2}",
 						target.Item.Configuration,
                         target.Item.Document.ToString(),
@@ -56,9 +56,9 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
 					foreach (var document in target.Item.Documents)
 					{
-					    adjustedDocs.Add(AdjustDocumentContent(document, documentSchema, allowNonSchemaProperties));
-                        
-						target.Context.GetComponent<ILogComponent>().GetLog().Info(
+					    adjustedDocs.Add(AdjustDocumentContent(target.Version, document, documentSchema, allowNonSchemaProperties));
+
+                        target.Context.GetComponent<ILogComponent>(target.Version).GetLog().Info(
 							"document \"{0}\" save completed to \"{1}\", type {2}",
 							target.Item.Configuration,
                             document.ToString(),
@@ -67,7 +67,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
 				    target.Item.Documents = adjustedDocs.ToArray();
 
-                    target.Context.GetComponent<ILogComponent>()
+                    target.Context.GetComponent<ILogComponent>(target.Version)
                         .GetLog()
                         .Info("documents save completed to \"{0}\", type {1}", target.Item.Configuration,
                             target.Item.Metadata);
@@ -84,7 +84,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
 				return;
 			}
-			target.Context.GetComponent<ILogComponent>().GetLog().Error("document \"{0}\" type \"{1}\" not exists", target.Item.Configuration, target.Item.Metadata);
+            target.Context.GetComponent<ILogComponent>(target.Version).GetLog().Error("document \"{0}\" type \"{1}\" not exists", target.Item.Configuration, target.Item.Metadata);
             // throw new ArgumentException(string.Format("document \"{0}\" type \"{1}\" not exists", target.Item.Configuration, target.Item.Metadata));
 		}
 
@@ -93,7 +93,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
         /// 1. Добавление поля Id (если его нет)
         /// 2. Удаление полей, несоответствующих схеме документа
         /// </summary>
-        private static dynamic AdjustDocumentContent(dynamic document, dynamic documentSchema, bool allowNonSchemaProperties)
+        private static dynamic AdjustDocumentContent(string version, dynamic document, dynamic documentSchema, bool allowNonSchemaProperties)
 	    {
             if (document.Id == null)
             {
@@ -102,7 +102,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
 	        if (documentSchema != null && !allowNonSchemaProperties)
 	        {
-	            return RemoveInappropriateProperties(document, documentSchema);
+	            return RemoveInappropriateProperties(version, document, documentSchema);
 	        }
 
             return document;
@@ -111,7 +111,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 	    /// <summary>
 	    /// Удаление свойств, несоответствующих схеме документа
 	    /// </summary>
-	    private static dynamic RemoveInappropriateProperties(dynamic document, dynamic schema)
+	    private static dynamic RemoveInappropriateProperties(string version, dynamic document, dynamic schema)
 	    {
 	        if (document == null) 
                 return null;
@@ -138,7 +138,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 	            {
 	                if (propertyMetadata.Type == "Object")
 	                {
-	                    ProcessInnerObjectProperties(propertyMetadata.TypeInfo, documentProperty);
+	                    ProcessInnerObjectProperties(version, propertyMetadata.TypeInfo, documentProperty);
 	                }
 	                else if (propertyMetadata.Type == "Array")
 	                {
@@ -147,7 +147,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 	                        continue;
 	                    }
 
-	                    ProcessInnerArrayProperties(propertyMetadata.Items.TypeInfo, documentProperty);
+	                    ProcessInnerArrayProperties(version, propertyMetadata.Items.TypeInfo, documentProperty);
 	                }
 	            }
 	        }
@@ -163,7 +163,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 	    /// <summary>
         /// Обработка вложенных свойств объектов
         /// </summary>
-        private static void ProcessInnerObjectProperties(dynamic propertyTypeInfo, dynamic documentProperty)
+        private static void ProcessInnerObjectProperties(string version, dynamic propertyTypeInfo, dynamic documentProperty)
 	    {
             if (propertyTypeInfo == null)
             {
@@ -179,8 +179,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 	                dynamic documentSchema = null;
 	                if (propertyTypeInfo.DocumentLink.ConfigId != null && propertyTypeInfo.DocumentLink.DocumentId != null)
 	                {
-	                    IEnumerable<dynamic> metadataList = _metadataComponent.GetMetadataList(
-	                        propertyTypeInfo.DocumentLink.ConfigId,
+	                    IEnumerable<dynamic> metadataList = _metadataComponent.GetMetadataList(version, propertyTypeInfo.DocumentLink.ConfigId,
 	                        propertyTypeInfo.DocumentLink.DocumentId,
 	                        MetadataType.Schema);
 
@@ -189,7 +188,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
 	                if (documentSchema != null)
 	                {
-	                    RemoveInappropriateProperties(document, documentSchema);
+	                    RemoveInappropriateProperties(version, document, documentSchema);
 	                }
 	            }
 	            else
@@ -208,14 +207,14 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 	        }
 	        else
 	        {
-	            RemoveInappropriateProperties(documentProperty.Value, propertyTypeInfo);
+	            RemoveInappropriateProperties(version, documentProperty.Value, propertyTypeInfo);
 	        }
 	    }
 
         /// <summary>
         /// Обработка вложенных свойств массивов
         /// </summary>
-        private static void ProcessInnerArrayProperties(dynamic propertyTypeInfo, dynamic documentProperty)
+        private static void ProcessInnerArrayProperties(string version, dynamic propertyTypeInfo, dynamic documentProperty)
         {
             if (propertyTypeInfo == null)
             {
@@ -229,8 +228,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 	                dynamic documentSchema = null;
 					if (propertyTypeInfo.DocumentLink.ConfigId != null && propertyTypeInfo.DocumentLink.DocumentId != null)
 					{
-						IEnumerable<dynamic> metadataList = _metadataComponent.GetMetadataList(
-							propertyTypeInfo.DocumentLink.ConfigId,
+						IEnumerable<dynamic> metadataList = _metadataComponent.GetMetadataList(version, propertyTypeInfo.DocumentLink.ConfigId,
 							propertyTypeInfo.DocumentLink.DocumentId,
 							MetadataType.Schema);
 
@@ -242,7 +240,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                     {
                         foreach (var documentValue in DynamicWrapperExtensions.ToEnumerable(documentProperty.Value))
                         {
-                            RemoveInappropriateProperties(documentValue, documentSchema);
+                            RemoveInappropriateProperties(version, documentValue, documentSchema);
                         }
                     }
                 }
@@ -262,7 +260,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             {
 				foreach (var documentValue in DynamicWrapperExtensions.ToEnumerable(documentProperty.Value))
                 {
-                    RemoveInappropriateProperties(documentValue, propertyTypeInfo);
+                    RemoveInappropriateProperties(version, documentValue, propertyTypeInfo);
                 }
             }
         }
@@ -299,13 +297,13 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
                 if (docs != null)
                 {
-                    target.Context.GetComponent<ITransactionComponent>().GetTransactionManager()
+                    target.Context.GetComponent<ITransactionComponent>(target.Version).GetTransactionManager()
                         .GetTransaction(target.TransactionMarker)
                         .Attach(target.Item.Configuration,
                                 target.Item.Metadata,
                                 target.Version,
                                 docs,
-                                target.Context.GetComponent<ISecurityComponent>().GetClaim(AuthorizationStorageExtensions.OrganizationClaim, target.UserName) ?? AuthorizationStorageExtensions.AnonimousUser);
+                                target.Context.GetComponent<ISecurityComponent>(target.Version).GetClaim(AuthorizationStorageExtensions.OrganizationClaim, target.UserName) ?? AuthorizationStorageExtensions.AnonimousUser);
                 }
             }
 

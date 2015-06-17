@@ -10,7 +10,7 @@ namespace InfinniPlatform.Api.Tests.Builders
 	{
 		public static object BuildSampleConfiguration(string configName, string configCaption, string configDescription)
 		{
-			var config = MetadataBuilderExtensions.BuildConfiguration(configName, configCaption, configDescription);
+			var config = MetadataBuilderExtensions.BuildConfiguration(configName, configCaption, configDescription, null);
 		    config.Id = "ConfigIdentifier";
 		    return config;
 		}
@@ -107,7 +107,7 @@ namespace InfinniPlatform.Api.Tests.Builders
 
         public static object BuildEmptyDocument(string documentName, string documentId)
         {
-	        dynamic doc =  MetadataBuilderExtensions.BuildDocument(documentName, documentName, documentName, documentName);
+	        dynamic doc =  MetadataBuilderExtensions.BuildDocument(documentName, documentName, documentName, documentName,null);
 	        doc.Id = documentId;
 	        return doc;
         }

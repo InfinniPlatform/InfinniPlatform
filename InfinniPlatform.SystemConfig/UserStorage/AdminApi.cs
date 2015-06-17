@@ -23,7 +23,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 		/// <param name="userName">Имя пользователя</param>
 		public void AddAnonimousUserAcl(string userName)
 		{
-			var aclApi = new AuthApi();
+			var aclApi = new AuthApi(null);
 
 			TryApplyAccess(() => aclApi.GrantAccess(userName, AuthorizationStorageExtensions.AuthorizationConfigId,
 													AuthorizationStorageExtensions.AclStore, "getdocument"));
@@ -39,9 +39,9 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 		public dynamic GrantAdminAcl(string userName)
 		{
 			return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "grantadminacl", null, new
-				                                                                                 {
-					                                                                                 UserName = userName
-				                                                                                 }).ToDynamic();
+			{
+			    UserName = userName
+			}).ToDynamic();
 		}
 
 		public dynamic SetDefaultAcl()

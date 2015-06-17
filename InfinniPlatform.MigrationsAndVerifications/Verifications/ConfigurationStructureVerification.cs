@@ -53,7 +53,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
             var result = true;
             var resultMessage = new StringBuilder();
 
-            var configReader = new MetadataReaderConfiguration();
+            var configReader = new MetadataReaderConfiguration(null);
 
             var configMetadata = configReader.GetItem(_activeConfiguration);
 
@@ -112,7 +112,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
         /// <summary>
         /// Устанавливает активную конфигурацию для правила проверки
         /// </summary>
-        public void AssignActiveConfiguration(string configurationId, IGlobalContext context)
+        public void AssignActiveConfiguration(string version, string configurationId, IGlobalContext context)
         {
             _activeConfiguration = configurationId;
         }

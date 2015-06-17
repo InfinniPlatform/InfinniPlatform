@@ -6,9 +6,9 @@
     public interface IApiControllerFactory
     {
 
-		IRestVerbsContainer GetTemplate(string metadataConfigurationId, string metadataName);
+		IRestVerbsContainer GetTemplate(string version, string metadataConfigurationId, string metadataName);
 
 
-		void RemoveTemplates(string metadataConfigurationId);
+		void RemoveTemplates(string version, string metadataConfigurationId);
     }
 }

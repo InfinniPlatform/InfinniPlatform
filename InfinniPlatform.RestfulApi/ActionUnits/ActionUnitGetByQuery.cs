@@ -21,8 +21,8 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 			IFilterBuilder filterFactory = FilterBuilderFactory.GetInstance();
 
 
-			_jsonQueryExecutor = new JsonQueryExecutor(target.Context.GetComponent<IIndexComponent>().IndexFactory, filterFactory, 
-				target.Context.GetComponent<ISecurityComponent>().GetClaim(AuthorizationStorageExtensions.OrganizationClaim, target.UserName) ?? AuthorizationStorageExtensions.AnonimousUser);
+            _jsonQueryExecutor = new JsonQueryExecutor(target.Context.GetComponent<IIndexComponent>(target.Version).IndexFactory, filterFactory,
+                target.Context.GetComponent<ISecurityComponent>(target.Version).GetClaim(AuthorizationStorageExtensions.OrganizationClaim, target.UserName) ?? AuthorizationStorageExtensions.AnonimousUser);
 
             dynamic query = DynamicWrapperExtensions.ToDynamic((string)target.Item.QueryText);
 

@@ -23,10 +23,11 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 
         protected override IRequestHandlerResult ExecuteHandler(IOwinContext context)
         {
+            var routeDictionary = RouteFormatter.GetRouteDictionary(context);
             dynamic result = null;
             try
             {
-                result = new SignInApi().SignOutInternal();
+                result = new SignInApi(routeDictionary["version"]).SignOutInternal();
             }
             catch (Exception e)
             {

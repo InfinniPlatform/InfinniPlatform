@@ -16,14 +16,14 @@ namespace InfinniPlatform.RestfulApi.Binary
 	{
 		public void Action(IUrlEncodedDataContext target)
 		{
-            dynamic document = new DocumentApi().GetDocument(target.FormData.InstanceId);
+            dynamic document = target.Context.GetComponent<DocumentApi>(target.Version).GetDocument(target.FormData.InstanceId);
 
 			if (document != null)
 			{
                 var linkValue = ObjectHelper.GetProperty(document, target.FormData.FieldName);
 				if (linkValue != null)
 				{
-					var blobStorage = target.Context.GetComponent<IBlobStorageComponent>().GetBlobStorage();
+					var blobStorage = target.Context.GetComponent<IBlobStorageComponent>(target.Version).GetBlobStorage();
 					var blobData = blobStorage.GetBlobData(Guid.Parse(linkValue.Info.ContentId));
 					target.Result = blobData;
 				}

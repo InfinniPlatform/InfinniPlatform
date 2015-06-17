@@ -36,9 +36,9 @@ namespace InfinniPlatform.Update.Tests.Controllers
 		[Test]
 		public void ShouldSaveAssemblyVersion()
 		{
-			var package = new PackageBuilder().BuildPackage("Update", "version_for_test_update_" + Guid.NewGuid(), "InfinniPlatform.Update.dll");
+			var package = new PackageBuilder().BuildPackage("Update", null, "InfinniPlatform.Update.dll");
 
-			UpdateApi.InstallPackages(new[] { package });
+            new UpdateApi(null).InstallPackages(new[] { package });
 		}
 
 		[Test]

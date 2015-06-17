@@ -32,12 +32,12 @@ namespace InfinniPlatform.SystemConfig.Tests.Utils
 
             jsonFileConfigManager.ReadConfigurations();
 
-            var configList = jsonFileConfigManager.GetConfigurationList();
+            var configList = jsonFileConfigManager.GetConfigurationList(null);
 
             
             Assert.True(configList.Select(c => c.ToLowerInvariant()).Contains("classifierstorage"));
             Assert.True(configList.Select(c => c.ToLowerInvariant()).Contains("classifierloader"));
-            dynamic config = jsonFileConfigManager.GetJsonFileConfig("classifierstorage");
+            dynamic config = jsonFileConfigManager.GetJsonFileConfig(null, "classifierstorage");
             Assert.IsNotNull(config);
             Assert.True(config.Documents.Count > 0);
 

@@ -25,12 +25,12 @@ namespace InfinniPlatform.QueryDesigner.Views
 			QueryConstructorWhere.ControlType = typeof(QueryConstructorWhereCondition);
 			QueryConstructorWhere.OnItemAdded = control =>
 				                                    {
-					                                    var propInfo = control.GetType().GetProperty("DataProvider");
-					                                    if (propInfo != null)
-					                                    {
-						                                    IDataProvider dp = new DataProviderStandard();
-						                                    propInfo.SetValue(control, dp, null);
-					                                    }
+                                                        //var propInfo = control.GetType().GetProperty("DataProvider");
+                                                        //if (propInfo != null)
+                                                        //{
+                                                        //    IDataProvider dp = new DataProviderStandard();
+                                                        //    propInfo.SetValue(control, dp, null);
+                                                        //}
 				                                    };
 			itemsCounter++;
 			Name = string.Format("{0}{1}", Name, itemsCounter.ToString());

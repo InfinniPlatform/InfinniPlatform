@@ -79,7 +79,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         {
             var index = new MultipleTypeIndex();
 
-            var schemaVersionName = index.CreateIndexType(indexName, typeName, deleteExistingVersion, SearchAbilityType.KeywordBasedSearch);
+            var schemaVersionName = index.CreateIndexType(indexName, typeName, deleteExistingVersion);
 
             if (indexTypeMapping != null)
             {
@@ -87,8 +87,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
                     _connection.Client, 
                     indexName, 
                     schemaVersionName, 
-                    indexTypeMapping.Properties,
-                    SearchAbilityType.KeywordBasedSearch);
+                    indexTypeMapping.Properties);
             }
         }
 

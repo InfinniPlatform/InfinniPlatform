@@ -17,7 +17,7 @@ namespace InfinniPlatform.RestfulApi.Session
         {
             if (!string.IsNullOrEmpty(target.Item.SessionId))
             {
-                target.Context.GetComponent<ITransactionComponent>()
+                target.Context.GetComponent<ITransactionComponent>(target.Version)
                     .GetTransactionManager()
                     .RemoveTransaction(target.Item.SessionId);
             }

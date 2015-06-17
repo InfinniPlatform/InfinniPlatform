@@ -33,8 +33,8 @@ namespace InfinniPlatform.Metadata.Tests.HandlersBehavior
 
         private void InitData()
         {
-            IndexApi.RebuildIndex("integration", "document");
-            IndexApi.RebuildIndex("integration", "organization");
+            new IndexApi().RebuildIndex("integration", "document");
+            new IndexApi().RebuildIndex("integration", "organization");
 
             //документы первой организации
             dynamic document1 = new
@@ -145,16 +145,16 @@ namespace InfinniPlatform.Metadata.Tests.HandlersBehavior
                 FullName = "Больница 3"
             };
 
-            IndexApi.InsertDocumentWithTimestamp(organization1, DateTime.Now, "integration", "organization");
-            IndexApi.InsertDocumentWithTimestamp(organization2, DateTime.Now, "integration", "organization");
-            IndexApi.InsertDocumentWithTimestamp(organization3, DateTime.Now, "integration", "organization");
+            new IndexApi().InsertDocumentWithTimestamp(organization1, DateTime.Now, "integration", "organization");
+            new IndexApi().InsertDocumentWithTimestamp(organization2, DateTime.Now, "integration", "organization");
+            new IndexApi().InsertDocumentWithTimestamp(organization3, DateTime.Now, "integration", "organization");
 
-            IndexApi.InsertDocumentWithTimestamp(document1, DateTime.Now.AddDays(-25), "integration", "document");
-            IndexApi.InsertDocumentWithTimestamp(document2, DateTime.Now.AddDays(-20), "integration", "document");
-            IndexApi.InsertDocumentWithTimestamp(document3, DateTime.Now, "integration", "document");
-            IndexApi.InsertDocumentWithTimestamp(document4, DateTime.Now, "integration", "document");
-            IndexApi.InsertDocumentWithTimestamp(document5, DateTime.Now.AddDays(20), "integration", "document");
-            IndexApi.InsertDocumentWithTimestamp(document6, DateTime.Now.AddDays(25), "integration", "document");
+            new IndexApi().InsertDocumentWithTimestamp(document1, DateTime.Now.AddDays(-25), "integration", "document");
+            new IndexApi().InsertDocumentWithTimestamp(document2, DateTime.Now.AddDays(-20), "integration", "document");
+            new IndexApi().InsertDocumentWithTimestamp(document3, DateTime.Now, "integration", "document");
+            new IndexApi().InsertDocumentWithTimestamp(document4, DateTime.Now, "integration", "document");
+            new IndexApi().InsertDocumentWithTimestamp(document5, DateTime.Now.AddDays(20), "integration", "document");
+            new IndexApi().InsertDocumentWithTimestamp(document6, DateTime.Now.AddDays(25), "integration", "document");
 
         }
 

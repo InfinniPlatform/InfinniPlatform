@@ -13,14 +13,16 @@ namespace InfinniPlatform.Api.RestQuery.EventObjects.EventSerializers
 	public sealed class RemoveCollectionItem : IObjectToEventSerializer
 	{
 		private readonly string _collectionItemPath;
-	    
-	    public RemoveCollectionItem(string collectionItemPath)
-		{
-		    _collectionItemPath = collectionItemPath;
-		}
+        private readonly string _version;
+
+        public RemoveCollectionItem(string collectionItemPath, string version)
+        {
+            _collectionItemPath = collectionItemPath;
+            _version = version;
+        }
 
 
-	    /// <summary>
+        /// <summary>
 	    ///   Получить список событий по созданию указанного в аргументах объекта
 	    /// </summary>
 	    /// <returns>Список событий изменения/создания объекта</returns>
@@ -31,7 +33,7 @@ namespace InfinniPlatform.Api.RestQuery.EventObjects.EventSerializers
 	                Action = EventType.RemoveItemFromCollection,
 	                Property = _collectionItemPath,
 	            };
-	        return new List<EventDefinition>() {eventDefinition};
+	        return new List<EventDefinition>() {eventDefinition}.AddVersionDefinition(_version);
 	    }
 	}
 }

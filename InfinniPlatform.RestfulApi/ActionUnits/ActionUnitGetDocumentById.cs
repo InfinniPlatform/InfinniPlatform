@@ -19,10 +19,10 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
         public void Action(IApplyContext target)
         {
 
-            var executor = new DocumentExecutor(target.Context.GetComponent<IConfigurationMediatorComponent>(),
-                                                target.Context.GetComponent<IMetadataComponent>(),
-                                                target.Context.GetComponent<InprocessDocumentComponent>(),
-                                                target.Context.GetComponent<IProfilerComponent>());
+            var executor = new DocumentExecutor(target.Context.GetComponent<IConfigurationMediatorComponent>(target.Version),
+                                                target.Context.GetComponent<IMetadataComponent>(target.Version),
+                                                target.Context.GetComponent<InprocessDocumentComponent>(target.Version),
+                                                target.Context.GetComponent<IProfilerComponent>(target.Version));
 
             if (string.IsNullOrEmpty(target.Item.ConfigId) || string.IsNullOrEmpty(target.Item.DocumentId))
             {
@@ -30,7 +30,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             }
             else
             {
-                target.Result = executor.GetCompleteDocument(target.Item.ConfigId, target.Item.DocumentId,
+                target.Result = executor.GetCompleteDocument(target.Version, target.Item.ConfigId, target.Item.DocumentId,
                     target.UserName, target.Item.Id);
             }
         }

@@ -21,8 +21,8 @@ namespace InfinniPlatform.Metadata.Tests.HandlersBehavior
 			_server = TestApi.StartServer(c => c.SetHostingConfig(TestSettings.DefaultHostingConfig)
 												.AddConfigurationFromAssembly("InfinniPlatform.Metadata.Tests"));
 
-			UpdateApi.ForceReload("Handlers");
-			UpdateApi.UpdateStore("Handlers");
+            new UpdateApi(null).ForceReload("Handlers");
+            new UpdateApi(null).UpdateStore("Handlers");
 		}
 
 		[TestFixtureTearDown]
@@ -76,7 +76,7 @@ namespace InfinniPlatform.Metadata.Tests.HandlersBehavior
 				TestField1 = 1,
 				TestField = 2
 			};
-			result = RestQueryApi.QueryPostRaw("Handlers", "patienttest", "checkevents", result.Id, bodyReplace, true).ToDynamic();
+			result = RestQueryApi.QueryPostRaw("Handlers", "patienttest", "checkevents", result.Id, bodyReplace,null, true).ToDynamic();
 			Assert.IsNotNull(result);
 			Assert.IsNull(result.TestItems);
 			Assert.AreEqual(1, result.TestField1);
@@ -126,7 +126,7 @@ namespace InfinniPlatform.Metadata.Tests.HandlersBehavior
 				TestField1 = 1,
 				TestField = 2
 			};
-			result = RestQueryApi.QueryPostJsonRaw("Handlers", "patienttest", "checkjson", result.Id, bodyReplace, true).ToDynamic();
+			result = RestQueryApi.QueryPostJsonRaw("Handlers", "patienttest", "checkjson", result.Id, bodyReplace, null, true).ToDynamic();
 			Assert.IsNotNull(result);
 			Assert.IsNull(result.TestItems);
 			Assert.AreEqual(1, result.TestField1);

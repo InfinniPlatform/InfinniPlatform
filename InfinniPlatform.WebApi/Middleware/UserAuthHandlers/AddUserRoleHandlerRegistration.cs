@@ -24,7 +24,9 @@ namespace InfinniPlatform.WebApi.Middleware.UserAuthHandlers
 
         protected override IRequestHandlerResult ExecuteHandler(IOwinContext context)
         {
-            return new ValueRequestHandlerResult(new UsersApi().AddUserRole(RouteFormatter.GetRouteDictionary(context)["userName"], RouteFormatter.GetRouteDictionary(context)["roleName"]));
+            var routeDictionary = RouteFormatter.GetRouteDictionary(context);
+
+            return new ValueRequestHandlerResult(new UsersApi(routeDictionary["version"]).AddUserRole(RouteFormatter.GetRouteDictionary(context)["userName"], RouteFormatter.GetRouteDictionary(context)["roleName"]));
         }
     }
 }

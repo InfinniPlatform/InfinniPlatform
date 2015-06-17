@@ -23,7 +23,9 @@ namespace InfinniPlatform.WebApi.Middleware.SessionHandlers
 
         protected override IRequestHandlerResult ExecuteHandler(IOwinContext context)
         {
-            return new ValueRequestHandlerResult(new SessionApi().CreateSession());
+            var routeDictionary = RouteFormatter.GetRouteDictionary(context);
+
+            return new ValueRequestHandlerResult(new SessionApi(routeDictionary["version"]).CreateSession());
         }
     }
 }

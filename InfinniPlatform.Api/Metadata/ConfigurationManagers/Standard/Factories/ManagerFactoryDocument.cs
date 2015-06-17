@@ -16,14 +16,18 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories
 		private readonly string _configId;
 		private readonly string _documentId;
 		private readonly string _documentUid;
+	    private readonly string _version;
+
+
 		private readonly Dictionary<string, MetadataManagerElement> _managers = new Dictionary<string, MetadataManagerElement>();
 
-		/// <summary>
-		/// Публичный конструктор.
-		/// </summary>
-		/// <param name="configId">Идентификатор конфигурации (например "Integration").</param>
-		/// <param name="documentId">Идентификатор документа (например "Patient").</param>
-		public ManagerFactoryDocument(string configId, string documentId)
+	    /// <summary>
+	    /// Публичный конструктор.
+	    /// </summary>
+	    /// <param name="version">Версия конфигурации</param>
+	    /// <param name="configId">Идентификатор конфигурации (например "Integration").</param>
+	    /// <param name="documentId">Идентификатор документа (например "Patient").</param>
+	    public ManagerFactoryDocument(string version, string configId, string documentId)
 		{
 			if (string.IsNullOrEmpty(configId))
 			{
@@ -36,15 +40,16 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories
 			}
 
 			// внутренний идентификатор (GUid) используемый для однозначного определения элемента на уровне фабрики метаданных
-			_documentUid = new ManagerIdentifiersStandard().GetDocumentUid(configId, documentId);
+			_documentUid = new ManagerIdentifiersStandard().GetDocumentUid(version, configId, documentId);
 
 			if (_documentUid == null)
 			{
-				throw new ArgumentException(string.Format(Resources.DocumentMetadataNotFound, documentId));
+				throw new ApplicationException(string.Format(Resources.DocumentMetadataNotFound, documentId));
 			}
 
 			_configId = configId;
 			_documentId = documentId;
+	        _version = version;
 
 			_managers.Add(MetadataType.View, BuildViewManager());
 			_managers.Add(MetadataType.PrintView, BuildPrintViewManager());
@@ -134,7 +139,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories
 
 		private IDataReader BuildMetadataReader(IMetadataContainerInfo metadataContainer)
 		{
-			return new MetadataReaderDocumentElement(_configId, _documentId, metadataContainer);
+			return new MetadataReaderDocumentElement(_version, _configId, _documentId, metadataContainer);
 		}
 
 
@@ -197,8 +202,8 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories
 		private MetadataManagerElement BuildMetadataManager(IMetadataContainerInfo metadataContainer, string metadataType)
 		{
 			var metadataReader = BuildMetadataReader(metadataContainer);
-			var metadataCacheRefresher = new MetadataCacheRefresher(_configId, _documentId, metadataType);
-			return new MetadataManagerElement(_documentUid, metadataCacheRefresher, metadataReader, metadataContainer, MetadataType.Document);
+			var metadataCacheRefresher = new MetadataCacheRefresher(_version, _configId, _documentId, metadataType);
+			return new MetadataManagerElement(_version, _documentUid, metadataCacheRefresher, metadataReader, metadataContainer, MetadataType.Document);
 		}
 	}
 }

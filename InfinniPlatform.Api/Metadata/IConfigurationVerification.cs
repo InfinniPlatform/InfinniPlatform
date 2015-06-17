@@ -36,6 +36,6 @@ namespace InfinniPlatform.Api.Metadata
         /// <summary>
         /// Устанавливает активную конфигурацию для правила проверки
         /// </summary>
-        void AssignActiveConfiguration(string configurationId, IGlobalContext context);
+        void AssignActiveConfiguration(string version, string configurationId, IGlobalContext context);
     }
 }

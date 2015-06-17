@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Packages;
@@ -32,25 +33,21 @@ namespace InfinniPlatform.SystemConfig.Initializers
 
 		public void OnStart(HostingContextBuilder contextBuilder)
 		{
-
-            Logger.Log.Info("System configurations installed");
+            Logger.Log.Info("Start install system config");
 
 			var packageBuilder = new PackageBuilder();
 
 			//При создании системных конфигураций не указываем Сборки. Сборки системных пакетов устанавливаются из текущей папки запуска
-			var package1 = packageBuilder.BuildSystemPackage("Update", "version_update",
-										"InfinniPlatform.Update.dll");
-			var package2 = packageBuilder.BuildSystemPackage("RestfulApi", "version_restfulapi",
-										"InfinniPlatform.RestfulApi.exe");
-			var package3 = packageBuilder.BuildSystemPackage("SystemConfig", "version_systemconfig",
-										"InfinniPlatform.SystemConfig.dll");
+			var package1 = packageBuilder.BuildSystemPackage("Update", "InfinniPlatform.Update.dll");
+			var package2 = packageBuilder.BuildSystemPackage("RestfulApi", "InfinniPlatform.RestfulApi.exe");
+			var package3 = packageBuilder.BuildSystemPackage("SystemConfig", "InfinniPlatform.SystemConfig.dll");
 
             CreateSystemStore("Update");
             CreateSystemStore("RestfulApi");
             CreateSystemStore("SystemConfig");
 
 
-			UpdateApi.InstallPackages(new[] {package1, package2, package3});
+            new UpdateApi(null).InstallPackages(new[] { package1, package2, package3 });
 
 			CreateStorage(AuthorizationStorageExtensions.AuthorizationConfigId, AuthorizationStorageExtensions.UserStore);
 			CreateStorage(AuthorizationStorageExtensions.AuthorizationConfigId, AuthorizationStorageExtensions.AclStore);
@@ -64,16 +61,17 @@ namespace InfinniPlatform.SystemConfig.Initializers
 
 		private void CreateStorage(string configId, string metadata)
 		{
-			if (!IndexApi.IndexExists(configId, metadata))
+			if (!new IndexApi().IndexExists(configId, metadata))
 			{
-				IndexApi.RebuildIndex(configId,metadata);
+				new IndexApi().RebuildIndex(configId,metadata);
 			}
 
 		}
 
 		private void CreateSystemStore(string configName)
 	    {
-            var metadataConfiguration = _metadataConfigurationProvider.GetMetadataConfiguration(configName);
+            //для системных конфигураций версия не указывается (только один экземпляр каждой системной конфигурации существует в один момент)
+            var metadataConfiguration = _metadataConfigurationProvider.GetMetadataConfiguration(null, configName);
 
             if (metadataConfiguration != null)
             {

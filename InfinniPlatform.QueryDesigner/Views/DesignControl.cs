@@ -159,16 +159,16 @@ namespace InfinniPlatform.QueryDesigner.Views
 		{
 			IInitializedOnLoad loadInitializer = argument as IInitializedOnLoad;
 
-			Control control = argument as Control;
-			if (control != null)
-			{
-				var propInfo = control.GetType().GetProperty("DataProvider");
-				if (propInfo != null)
-				{
-					IDataProvider dp = new DataProviderStandard();
-					propInfo.SetValue(control, dp, null);
-				}
-			}
+            //Control control = argument as Control;
+            //if (control != null)
+            //{
+            //    var propInfo = control.GetType().GetProperty("DataProvider");
+            //    if (propInfo != null)
+            //    {
+            //        IDataProvider dp = new DataProviderStandard();
+            //        propInfo.SetValue(control, dp, null);
+            //    }
+            //}
 
 			var requestExecutor = argument as IRequestExecutor;
 
@@ -185,7 +185,7 @@ namespace InfinniPlatform.QueryDesigner.Views
 
 		private void CreateDatabaseButtonClick(object sender, EventArgs e)
 		{
-			new DataProviderStandard().CreateTestDatabase();
+
 		}
 
 		private void ButtonExecuteQueryClick(object sender, EventArgs e)

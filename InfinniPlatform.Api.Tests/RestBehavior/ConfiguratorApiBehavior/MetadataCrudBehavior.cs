@@ -65,7 +65,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
 
         public ManagerFactoryDocument MetadataFactoryDocument(string documentId)
         {
-            return new ManagerFactoryDocument(ConfigurationFirstId, documentId);
+            return new ManagerFactoryDocument(null,ConfigurationFirstId, documentId);
         }
 
         public Func<IDataManager> Manager { get; set; }
@@ -82,7 +82,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
 
         public static dynamic BuildTestConfig(string configUid, string configName)
         {
-			var managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager();
+			var managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager(null);
 			dynamic existConfig = managerConfig.CreateItem(configName);
 	        existConfig.Id = configUid;
 			existConfig.Name = configName;
@@ -136,8 +136,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
 						       return CrudSettings.BuildTestConfig(metadataId, metadataName);
 
 						    },
-						Reader = () => new MetadataReaderConfiguration(),
-						Manager = () => ManagerFactoryConfiguration.BuildConfigurationManager(),						
+						Reader = () => new MetadataReaderConfiguration(null),
+						Manager = () => ManagerFactoryConfiguration.BuildConfigurationManager(null),						
 					},
 				new CrudSettings(MetadataType.Menu)
 					{
@@ -146,8 +146,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
 						SecondMetadataId = "B37E7AF6-B460-45D3-80C4-9767BFC308BE",
 						SecondMetadataName = "TestMenu1",
 						BuildInstanceAction = (metadataId,metadataName) => new DynamicWrapper().BuildSampleMenu(metadataName, metadataId),
-						Reader = () => new ManagerFactoryConfiguration(CrudSettings.ConfigurationFirstId).BuildMenuMetadataReader(),
-						Manager = () => new ManagerFactoryConfiguration(CrudSettings.ConfigurationFirstId).BuildMenuManager(),	
+						Reader = () => new ManagerFactoryConfiguration(null, CrudSettings.ConfigurationFirstId).BuildMenuMetadataReader(),
+						Manager = () => new ManagerFactoryConfiguration(null, CrudSettings.ConfigurationFirstId).BuildMenuManager(),	
 						AdditionalOperationCheck = null,
 						InitTest = () => CrudSettings.BuildTestConfig(ConfigurationFirstUid,CrudSettings.ConfigurationFirstId)
 					},
@@ -158,8 +158,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
 						SecondMetadataId = "B37E7AF6-B460-45D3-80C4-9767BFC308BE",
 						SecondMetadataName = "TestRegister1",
 						BuildInstanceAction = (metadataId,metadataName) => new DynamicWrapper().BuildSampleRegister(metadataName, metadataId),
-						Reader = () => new ManagerFactoryConfiguration(CrudSettings.ConfigurationFirstId).BuildRegisterMetadataReader(),
-						Manager = () => new ManagerFactoryConfiguration(CrudSettings.ConfigurationFirstId).BuildRegisterManager(),	
+						Reader = () => new ManagerFactoryConfiguration(null, CrudSettings.ConfigurationFirstId).BuildRegisterMetadataReader(),
+						Manager = () => new ManagerFactoryConfiguration(null, CrudSettings.ConfigurationFirstId).BuildRegisterManager(),	
 						AdditionalOperationCheck = null,
 						InitTest = () => CrudSettings.BuildTestConfig(ConfigurationFirstUid,CrudSettings.ConfigurationFirstId)
 					},
@@ -170,8 +170,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
 						SecondMetadataId = "B37E7AF6-B460-45D3-80C4-9767BFC308BE",
 						SecondMetadataName = "TestReport1",
 						BuildInstanceAction = (metadataId,metadataName) => new DynamicWrapper().BuildSampleReport(metadataName, metadataId),
-						Reader = () => new ManagerFactoryConfiguration(CrudSettings.ConfigurationFirstId).BuildReportMetadataReader(),
-						Manager = () => new ManagerFactoryConfiguration(CrudSettings.ConfigurationFirstId).BuildReportManager(),	
+						Reader = () => new ManagerFactoryConfiguration(null, CrudSettings.ConfigurationFirstId).BuildReportMetadataReader(),
+						Manager = () => new ManagerFactoryConfiguration(null, CrudSettings.ConfigurationFirstId).BuildReportManager(),	
 						AdditionalOperationCheck = null,
                         InitTest = () => CrudSettings.BuildTestConfig(ConfigurationFirstUid,CrudSettings.ConfigurationFirstId)
 					},
@@ -182,8 +182,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
 						SecondMetadataId = "C4608DB0-73E3-4CDC-B0E6-2A8396CEBDB5",
 						SecondMetadataName = "TestAssembly1",
 						BuildInstanceAction = (metadataId,metadataName) => new DynamicWrapper().BuildSampleAssembly(metadataName, metadataId),
-						Reader = () => new ManagerFactoryConfiguration(CrudSettings.ConfigurationFirstId).BuildAssemblyMetadataReader(),
-						Manager = () => new ManagerFactoryConfiguration(CrudSettings.ConfigurationFirstId).BuildAssemblyManager(),	
+						Reader = () => new ManagerFactoryConfiguration(null, CrudSettings.ConfigurationFirstId).BuildAssemblyMetadataReader(),
+						Manager = () => new ManagerFactoryConfiguration(null, CrudSettings.ConfigurationFirstId).BuildAssemblyManager(),	
 						AdditionalOperationCheck = null,
 						InitTest = () => CrudSettings.BuildTestConfig(ConfigurationFirstUid,CrudSettings.ConfigurationFirstId)
 					},
@@ -194,8 +194,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
 						SecondMetadataId = "F4C963EC-C764-4F16-9706-C2176FEDA7FC",
 						SecondMetadataName = "TestDocument1",
 						BuildInstanceAction = (metadataId,metadataName) => SampleMetadataBuilder.BuildEmptyDocument(metadataName, metadataId),
-						Reader = () => new ManagerFactoryConfiguration(CrudSettings.ConfigurationFirstId).BuildDocumentMetadataReader(),
-						Manager = () => new ManagerFactoryConfiguration(CrudSettings.ConfigurationFirstId).BuildDocumentManager(),
+						Reader = () => new ManagerFactoryConfiguration(null, CrudSettings.ConfigurationFirstId).BuildDocumentMetadataReader(),
+						Manager = () => new ManagerFactoryConfiguration(null, CrudSettings.ConfigurationFirstId).BuildDocumentManager(),
 						AdditionalOperationCheck = settings =>
 							                           {
 								                           var nameView = CheckAddView(settings);

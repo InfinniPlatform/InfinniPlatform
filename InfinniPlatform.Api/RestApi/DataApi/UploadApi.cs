@@ -14,7 +14,14 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 	/// </summary>
 	public sealed class UploadApi
 	{
-		/// <summary>
+	    private readonly string _version;
+
+	    public UploadApi(string version)
+	    {
+	        _version = version;
+	    }
+
+	    /// <summary>
 		///   Выгрузить на сервер бинарный контент
 		/// </summary>
 		/// <param name="instanceId">Идентификатор экземпляра</param>
@@ -29,7 +36,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 				FieldName = fieldName,
 			};
 
-			return RestQueryApi.QueryPostFile("RestfulApi", "configuration", "uploadbinarycontent", linkedData, filePath).ToDynamic();
+			return RestQueryApi.QueryPostFile("RestfulApi", "configuration", "uploadbinarycontent", linkedData, filePath,_version).ToDynamic();
 		}
 
 
@@ -51,7 +58,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                 FileName = fileName
             };
 
-            return RestQueryApi.QueryPostFile("RestfulApi", "configuration", "uploadbinarycontent", linkedData, stream).ToDynamic();
+            return RestQueryApi.QueryPostFile("RestfulApi", "configuration", "uploadbinarycontent", linkedData, stream,_version).ToDynamic();
 	    }
 
 		/// <summary>
@@ -63,10 +70,10 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 		public dynamic DownloadBinaryContent(string instanceId, string fieldName)
 		{
 			return RestQueryApi.QueryGetUrlEncodedData("RestfulApi", "configuration", "downloadbinarycontent", new
-				                                                                                                    {
-					                                                                                                    InstanceId = instanceId,
-																														FieldName = fieldName
-				                                                                                                    });
+			{
+			    InstanceId = instanceId,
+			    FieldName = fieldName
+			},_version);
 		}
 	}
 }

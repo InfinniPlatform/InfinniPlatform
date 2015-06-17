@@ -13,7 +13,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.DocumentSelector
 		{
 			var element = new DocumentSelectorElement(parent);
 			element.ApplyElementMeatadata((object)metadata);
-			element.SetDocumentsFunc(GetDocuments);
+			element.SetDocumentsFunc((version,configId) => GetDocuments(version, configId));
 
 			// Привязка к источнику данных
 
@@ -35,11 +35,11 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.DocumentSelector
 			return element;
 		}
 
-		private static IEnumerable GetDocuments(string configId)
+		private static IEnumerable GetDocuments(string version, string configId)
 		{
 			if (!string.IsNullOrWhiteSpace(configId))
 			{
-				var documentService = new DocumentMetadataService(configId);
+				var documentService = new DocumentMetadataService(version, configId);
 				return documentService.GetItems();
 			}
 

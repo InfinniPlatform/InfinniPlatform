@@ -14,10 +14,11 @@ namespace InfinniPlatform.Api.Metadata
         /// <summary>
         ///   Получить идентификатор элемента конфигурации
         /// </summary>
+        /// <param name="version"></param>
         /// <param name="name">Наименование элемента</param>
         /// <returns>Идентификатор элемента</returns>
-        string GetConfigurationUid(string name);
+        string GetConfigurationUid(string version, string name);
 
-        string GetDocumentUid(string configurationId, string documentId);
+        string GetDocumentUid(string version, string configurationId, string documentId);
     }
 }

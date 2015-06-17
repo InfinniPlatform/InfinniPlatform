@@ -17,9 +17,9 @@ namespace InfinniPlatform.SystemConfig.Administration.MenuPermission
 				return;
 			}
 
-			var documentApi = target.Context.GetComponent<DocumentApi>();
+			var documentApi = target.Context.GetComponent<DocumentApi>(target.Version);
 
-			var aclApi = target.Context.GetComponent<AuthApi>();
+			var aclApi = target.Context.GetComponent<AuthApi>(target.Version);
 
 			try
 			{
@@ -28,7 +28,7 @@ namespace InfinniPlatform.SystemConfig.Administration.MenuPermission
 								   target.Item.Document.Menu.Id);
 
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
 				target.IsValid = false;
 				target.ValidationMessage = string.Format("User {0} access denied to change user access. ", target.UserName);

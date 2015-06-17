@@ -14,7 +14,7 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
     {
         public void Action(IApplyContext target)
         {
-            var aclApi = target.Context.GetComponent<AuthApi>();
+            var aclApi = target.Context.GetComponent<AuthApi>(target.Version);
 
             var role = target.Item.Document ?? target.Item;
 
@@ -29,7 +29,7 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 
             aclApi.RemoveRole(role.RoleName);
 
-            var api = target.Context.GetComponent<DocumentApi>();
+            var api = target.Context.GetComponent<DocumentApi>(target.Version);
             dynamic extendedRole = api.GetDocument(AuthorizationStorageExtensions.AdministrationConfigId, "role",
                 f => f.AddCriteria(cr => cr.Property("Name").IsEquals(roleFound.Name)),0,1).FirstOrDefault();
 

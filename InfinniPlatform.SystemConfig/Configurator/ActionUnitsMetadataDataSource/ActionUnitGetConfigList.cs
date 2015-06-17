@@ -1,4 +1,5 @@
-﻿using InfinniPlatform.Api.ContextTypes;
+﻿using System.Diagnostics;
+using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataReaders;
 
@@ -13,8 +14,8 @@ namespace InfinniPlatform.SystemConfig.Configurator.ActionUnitsMetadataDataSourc
 	    {
             //получаем список всех прикладных конфигураций в системе
             target.Result = new DynamicWrapper();
-	        target.Result.ConfigList = QueryMetadata.QueryConfiguration(QueryMetadata.GetConfigurationShortListIql());
-	        //new DocumentApi().GetDocument("systemconfig", "metadata", null, 0, 10000);
+            target.Result.ConfigList = QueryMetadata.QueryConfiguration(target.Version, QueryMetadata.GetConfigurationShortListIql(), 
+                target.Item.DoNotCheckVersion != null ? target.Item.DoNotCheckVersion : false);
 	    }
     }
 }

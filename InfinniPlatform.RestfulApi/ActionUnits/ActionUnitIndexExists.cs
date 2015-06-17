@@ -15,7 +15,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 			result.ValidationMessage = "Index status successfully checked";
 			target.Result = result;
 
-			target.Context.GetComponent<ILogComponent>().GetLog().Info("metadata index \"{0}\" status checked for configuration \"{1}\" ", target.Item.Metadata, target.Item.Configuration);
+            target.Context.GetComponent<ILogComponent>(target.Version).GetLog().Info("metadata index \"{0}\" status checked for configuration \"{1}\" ", target.Item.Metadata, target.Item.Configuration);
 		}
 	}
 }

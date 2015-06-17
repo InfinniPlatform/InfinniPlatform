@@ -7,10 +7,10 @@ namespace InfinniPlatform.Modules
     /// </summary>
 	public interface IModuleInstaller
     {
-		/// <summary>
-		///  Установить модуль приложения
-		/// </summary>
-	    IModule InstallModule();
+        /// <summary>
+        ///  Установить модуль приложения
+        /// </summary>
+        IModule InstallModule();
 
 		/// <summary>
 		///   Получить наименование модуля приложения

@@ -33,7 +33,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
                 throw new ArgumentException("Path to archive should be specified via 'PathToZip' property");
             }
 
-            var documentProvider = new DocumentApi();
+            var documentProvider = target.Context.GetComponent<DocumentApi>(target.Version);
 
             var page = 0;
 

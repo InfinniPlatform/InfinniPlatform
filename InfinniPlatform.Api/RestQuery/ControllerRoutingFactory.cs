@@ -54,34 +54,35 @@ namespace InfinniPlatform.Api.RestQuery
 		}
 
 
-		public string BuildRestRoutingUrlStandardApi(string configuration, string metadata, string action)
+		public string BuildRestRoutingUrlStandardApi(string version, string configuration, string metadata, string action)
 		{
-			return BuildRestRoutingUrl(configuration, "StandardApi", metadata, action);
+			return BuildRestRoutingUrl(version, configuration, "StandardApi", metadata, action);
 		}
 
-		public string BuildRestRoutingUrlUpload(string configuration, string metadata, string action)
+		public string BuildRestRoutingUrlUpload(string version, string configuration, string metadata, string action)
 		{
-			return BuildRestRoutingUrl(configuration, "Upload", metadata, action);
+			return BuildRestRoutingUrl(version, configuration, "Upload", metadata, action);
 		}
 
-		private string BuildRestRoutingUrl(string configuration, string controller, string metadata, string action)
+		private string BuildRestRoutingUrl(string version, string configuration, string controller, string metadata, string action)
 		{
 			return GetCustomRouting(GetRestTemplatePath()
+                                        .ReplaceFormat("version",version)
 										.ReplaceFormat("configuration", configuration)
 										.ReplaceFormat("controller", controller)
 										.ReplaceFormat("metadata", metadata)
 										.ReplaceFormat("service", action));
 		}
 
-		public string BuildRestRoutingUrlUrlEncodedData(string configuration, string metadata, string action)
+		public string BuildRestRoutingUrlUrlEncodedData(string version, string configuration, string metadata, string action)
 		{
-			return BuildRestRoutingUrl(configuration, "UrlEncodedData", metadata, action);
+			return BuildRestRoutingUrl(version, configuration, "UrlEncodedData", metadata, action);
 		}
 
 
 		public string GetRestTemplatePath()
 		{
-			return "{configuration}/{controller}/{metadata}/{service}";
+			return "{version}/{configuration}/{controller}/{metadata}/{service}";
 		}
 
 		public string GetCustomRouting(string relativePath)

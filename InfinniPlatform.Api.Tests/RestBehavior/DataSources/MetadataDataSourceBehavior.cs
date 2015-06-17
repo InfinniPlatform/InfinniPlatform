@@ -238,17 +238,17 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.DataSources
 
 		private static void CreateTestConfiguration()
 		{
-			var managerConfiguration = ManagerFactoryConfiguration.BuildConfigurationManager();
+			var managerConfiguration = ManagerFactoryConfiguration.BuildConfigurationManager(null);
 			var config = managerConfiguration.CreateItem(_configurationId);
             managerConfiguration.DeleteItem(config);
             managerConfiguration.MergeItem(config);
 
-			var menuManager = new ManagerFactoryConfiguration(_configurationId).BuildMenuManager();
+			var menuManager = new ManagerFactoryConfiguration(null, _configurationId).BuildMenuManager();
 			dynamic menu = menuManager.CreateItem("testmenu");
             menuManager.MergeItem(menu);
 
 
-			var managerDocument = new ManagerFactoryConfiguration(_configurationId).BuildDocumentManager();
+			var managerDocument = new ManagerFactoryConfiguration(null, _configurationId).BuildDocumentManager();
 			dynamic documentMetadata1 = managerDocument.CreateItem("testdoc1");
 			dynamic documentMetadata2 = managerDocument.CreateItem("testdoc2");
 
@@ -314,18 +314,18 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.DataSources
 
 
 
-			var managerWarning = new ManagerFactoryDocument(_configurationId, "testdoc1").BuildValidationWarningsManager();
+			var managerWarning = new ManagerFactoryDocument(null,_configurationId, "testdoc1").BuildValidationWarningsManager();
             managerWarning.MergeItem(validationWarning);
 
-			var managerError = new ManagerFactoryDocument(_configurationId, "testdoc1").BuildValidationErrorsManager();
+            var managerError = new ManagerFactoryDocument(null, _configurationId, "testdoc1").BuildValidationErrorsManager();
             managerError.MergeItem(validationError);
 
 
 
 
-			RestQueryApi.QueryPostNotify(_configurationId);
+			RestQueryApi.QueryPostNotify(null, _configurationId);
 
-			UpdateApi.UpdateStore(_configurationId);
+            new UpdateApi(null).UpdateStore(_configurationId);
 		}
 	}
 }

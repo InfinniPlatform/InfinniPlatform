@@ -29,7 +29,7 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
             while (true)
             {
                 // Постранично считываем данные и таблицы итогов и ищем итоги с датой, ближайшей к заданной
-                var totals = new DocumentApi().GetDocument(
+                var totals = target.Context.GetComponent<DocumentApi>(target.Version).GetDocument(
                     configurationId,
                     RegisterConstants.RegisterTotalNamePrefix + registerId,
                     f => f.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty).IsLessThan(requestDate)),

@@ -13,6 +13,7 @@ using InfinniPlatform.Logging;
 using InfinniPlatform.Metadata;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace InfinniPlatform.Hosting.Implementation.Modules
@@ -74,7 +75,7 @@ namespace InfinniPlatform.Hosting.Implementation.Modules
 			scriptConfiguration.ModuleName = metadataConfiguration.ConfigurationId;
 
 
-			foreach (var document in _documents.Where(d => d.ConfigId == metadataConfiguration.ConfigurationId).ToList())
+			foreach (var document in _documents.Where(d => d.ConfigId == metadataConfiguration.ConfigurationId && d.Version == metadataConfiguration.Version).ToList())
 			{
 				try
 				{
@@ -82,33 +83,33 @@ namespace InfinniPlatform.Hosting.Implementation.Modules
 					RegisterSchema(metadataConfiguration, document);
 
 					RegisterScenario(
-						_scenario.Where(sc => sc.DocumentId == document.Name && sc.ConfigId == metadataConfiguration.ConfigurationId).ToList(),
+						_scenario.Where(sc => sc.DocumentId == document.Name && sc.ConfigId == metadataConfiguration.ConfigurationId && sc.Version == metadataConfiguration.Version).ToList(),
 						metadataConfiguration,document.Name);
 
 					SetCommonOptions(metadataConfiguration, document);
                     
 					RegisterProcesses(
-						_processes.Where(pr => pr.DocumentId == document.Name && pr.ConfigId == metadataConfiguration.ConfigurationId).ToList(),
+                        _processes.Where(pr => pr.DocumentId == document.Name && pr.ConfigId == metadataConfiguration.ConfigurationId && pr.Version == metadataConfiguration.Version).ToList(),
 						metadataConfiguration, document.Name);
                     
 					RegisterServices(
-						_services.Where(pr => pr.DocumentId == document.Name && pr.ConfigId == metadataConfiguration.ConfigurationId).ToList(),
+                        _services.Where(pr => pr.DocumentId == document.Name && pr.ConfigId == metadataConfiguration.ConfigurationId && pr.Version == metadataConfiguration.Version).ToList(),
 						metadataConfiguration, document.Name);
 
 					RegisterGenerators(
-						_generators.Where(pr => pr.DocumentId == document.Name && pr.ConfigId == metadataConfiguration.ConfigurationId).ToList(),
+                        _generators.Where(pr => pr.DocumentId == document.Name && pr.ConfigId == metadataConfiguration.ConfigurationId && pr.Version == metadataConfiguration.Version).ToList(),
 						metadataConfiguration, document.Name);
 
 					RegisterViews(
-						_views.Where(pr => pr.DocumentId == document.Name && pr.ConfigId == metadataConfiguration.ConfigurationId).ToList(),
+                        _views.Where(pr => pr.DocumentId == document.Name && pr.ConfigId == metadataConfiguration.ConfigurationId && pr.Version == metadataConfiguration.Version).ToList(),
 						metadataConfiguration, document.Name);
 
 					RegisterPrintViews(
-						_printViews.Where(pr => pr.DocumentId == document.Name && pr.ConfigId == metadataConfiguration.ConfigurationId).ToList(),
+                        _printViews.Where(pr => pr.DocumentId == document.Name && pr.ConfigId == metadataConfiguration.ConfigurationId && pr.Version == metadataConfiguration.Version).ToList(),
 					    metadataConfiguration, document.Name);
 
 					RegisterValidators(
-						_validationErrors.Where(pr => pr.DocumentId == document.Name && pr.ConfigId == metadataConfiguration.ConfigurationId).ToList(),
+                        _validationErrors.Where(pr => pr.DocumentId == document.Name && pr.ConfigId == metadataConfiguration.ConfigurationId && pr.Version == metadataConfiguration.Version).ToList(),
 					    metadataConfiguration, document.Name, true);
 
 					RegisterValidators(
@@ -327,12 +328,13 @@ namespace InfinniPlatform.Hosting.Implementation.Modules
 					if ((ScriptUnitType)scenario.ScriptUnitType == ScriptUnitType.Action)
 					{
 						metadataConfiguration.ScriptConfiguration.RegisterActionUnitDistributedStorage(scenario.Id,
-																									   scenario.ScenarioId);
+																									   scenario.ScenarioId, metadataConfiguration.Version);
 					}
 					else
 					{
 						metadataConfiguration.ScriptConfiguration.RegisterValidationUnitDistributedStorage(scenario.Id,
-																										   scenario.ScenarioId);
+																										   scenario.ScenarioId,
+                                                                                                           metadataConfiguration.Version);
 					}
 					Logger.Log.Info("Config:{0}, Document{1}, Scenario: {2} registered", metadataConfiguration.ConfigurationId, metadataName, scenario.Name);
 				}

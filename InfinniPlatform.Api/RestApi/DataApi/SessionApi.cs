@@ -14,13 +14,20 @@ namespace InfinniPlatform.Api.RestApi.DataApi
     /// </summary>
     public sealed class SessionApi
     {
+        private readonly string _version;
+
+        public SessionApi(string version)
+        {
+            _version = version;
+        }
+
         /// <summary>
         ///  Создать клиентскую сессию на сервере
         /// </summary>
         /// <returns>Идентификатор созданной сессии</returns>
         public dynamic CreateSession()
         {
-            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "createsession", null,null).ToDynamic();
+            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "createsession", null,null,_version).ToDynamic();
         }
 
         /// <summary>
@@ -30,9 +37,9 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         public dynamic SaveSession(string sessionId)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "savesession", null, new
-                {
-                    SessionId = sessionId,
-                }).ToDynamic();
+            {
+                SessionId = sessionId,
+            },_version).ToDynamic();
         }
 
         /// <summary>
@@ -44,80 +51,73 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "removesession", null, new
             {
                 SessionId = sessionId,
-            }).ToDynamic();
+            },_version).ToDynamic();
         }
 
         /// <summary>
         ///   Присоединить экземпляр документа к клиентской сессии
         /// </summary>
-        /// <param name="version">Версия конфигурации</param>
         /// <param name="sessionId">Идентификатор клиентской сессии</param>
         /// <param name="attachedDocument">Присоединяемый документ</param>
         /// <returns>Результат присоединения</returns>
-        public dynamic Attach(string version, string sessionId, dynamic attachedDocument)
+        public dynamic Attach(string sessionId, dynamic attachedDocument)
         {
             
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "attachdocumentsession", null,
                new
                {
-                   Version = version,
                    SessionId = sessionId,
                    AttachedInfo = attachedDocument
-               } ).ToDynamic();
+               },_version).ToDynamic();
         }
 
         /// <summary>
         ///   Присоединяемый файл
         /// </summary>
-        /// <param name="version">Версия конфигурации</param>
         /// <param name="linkedData">Связанные с указанным файлом данные</param>
         /// <param name="file">Присоединяемый файл</param>
         /// <returns>Результат присоединения</returns>
-        public dynamic AttachFile(string version, dynamic linkedData, Stream file)
+        public dynamic AttachFile(dynamic linkedData, Stream file)
         {
-            return RestQueryApi.QueryPostFile("RestfulApi", "configuration", "attachfile",linkedData, file).ToDynamic();
+            return RestQueryApi.QueryPostFile("RestfulApi", "configuration", "attachfile",linkedData, file, _version).ToDynamic();
         }
 
         /// <summary>
         ///   Отсоединяемый файл
         /// </summary>
-        /// <param name="version">Версия конфигурации</param>
         /// <param name="linkedData">Связанные с отсоединяемым файлом данные</param>
         /// <returns></returns>
-        public dynamic DetachFile(string version, dynamic linkedData)
+        public dynamic DetachFile(dynamic linkedData)
         {
-            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "detachfile", null, linkedData).ToDynamic();
+            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "detachfile", null, linkedData, _version).ToDynamic();
         }
 
         /// <summary>
         ///   Отсоединить экземпляр документа от клиентской сессии
         /// </summary>
-        /// <param name="version">Версия конфигурации</param>
         /// <param name="sessionId">Идентификатор клиентской сессии</param>
         /// <param name="attachmentId">Отсоединяемый документ</param>
         /// <returns>Результат отсоединения</returns>
-        public dynamic Detach(string version, string sessionId, string attachmentId)
+        public dynamic Detach(string sessionId, string attachmentId)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "detachdocumentsession", null,
                 new
                 {
-                    Version = version,
                     SessionId = sessionId,
                     AttachmentId = attachmentId
-                }).ToDynamic();
+                },_version).ToDynamic();
         }
 
         /// <summary>
         ///   Получить данные из клиентской сессии с указанным идентификатором
         /// </summary>
         /// <returns>Данные клиентской сессии</returns>
-        public dynamic GetSession(string version, string sessionId)
+        public dynamic GetSession(string sessionId)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getsession", null, new
             {
-                Version = version,
                 SessionId = sessionId
-            });
+            },_version);
         } 
 
     }

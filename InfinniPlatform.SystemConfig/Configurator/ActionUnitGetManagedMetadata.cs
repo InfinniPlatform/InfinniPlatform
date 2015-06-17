@@ -45,7 +45,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
 			{
 				dynamic itemMetadata = null;
 
-				itemMetadata = target.Context.GetComponent<IMetadataComponent>().GetMetadataItem(target.Item.Configuration, target.Item.MetadataObject,MetadataType.View, predicate);
+                itemMetadata = target.Context.GetComponent<IMetadataComponent>(target.Version).GetMetadataItem(target.Version, target.Item.Configuration, target.Item.MetadataObject, MetadataType.View, predicate);
 
 				//если нашли существующие метаданные - возвращаем их
 				if (itemMetadata != null)
@@ -58,11 +58,11 @@ namespace InfinniPlatform.SystemConfig.Configurator
 				{
 					var generatorDocument = target.Item.MetadataObject;
 
-					dynamic generatorMetadataItem = target.Context.GetComponent<IMetadataComponent>().GetMetadataItem(target.Item.Configuration, target.Item.MetadataObject, MetadataType.Generator, predicate);
+                    dynamic generatorMetadataItem = target.Context.GetComponent<IMetadataComponent>(target.Version).GetMetadataItem(target.Version, target.Item.Configuration, target.Item.MetadataObject, MetadataType.Generator, predicate);
 					if (generatorMetadataItem == null)
 					{
 						generatorDocument = "Common";
-						generatorMetadataItem = target.Context.GetComponent<IMetadataComponent>().GetMetadataItem(target.Item.Configuration, generatorDocument,MetadataType.Generator, predicate);
+                        generatorMetadataItem = target.Context.GetComponent<IMetadataComponent>(target.Version).GetMetadataItem(target.Version, target.Item.Configuration, generatorDocument, MetadataType.Generator, predicate);
 
 					}
 
@@ -85,7 +85,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
 							Parameters = target.Item.Parameters
 						};
 
-						target.Result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "generatemetadata", null, body).ToDynamic();
+						target.Result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "generatemetadata", null, body, target.Version).ToDynamic();
 						target.Result.Parameters = CreateParametersArray(target.Item.Parameters);
 						target.ValidationMessage = string.Format("Metadata generated for \"{0}\" successfully", generatorMetadataItem.Name);
 					}

@@ -11,9 +11,9 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 	/// </summary>
 	sealed class ProcessMetadataService : BaseMetadataService
 	{
-		public ProcessMetadataService(string configId, string documentId)
+		public ProcessMetadataService(string version, string configId, string documentId)
 		{
-			_factory = new Lazy<ManagerFactoryDocument>(() => new ManagerFactoryDocument(configId, documentId), LazyThreadSafetyMode.ExecutionAndPublication);
+			_factory = new Lazy<ManagerFactoryDocument>(() => new ManagerFactoryDocument(version, configId, documentId), LazyThreadSafetyMode.ExecutionAndPublication);
 		}
 
 

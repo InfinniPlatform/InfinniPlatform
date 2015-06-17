@@ -10,44 +10,41 @@ namespace InfinniPlatform.WebApi.WebApi
     public class ApiControllerFactory : IApiControllerFactory {
 	    private readonly Func<IContainer> _container;
 	    
-	    private Dictionary<string, RestVerbsContainer> _restVerbsContainers = new Dictionary<string, RestVerbsContainer>();
+	    private List<RestVerbsContainer> _restVerbsContainers = new List<RestVerbsContainer>();
 
         public ApiControllerFactory(Func<IContainer> container)
         {
 	        _container = container;
         }
 
-		private string FormatTemplateName(string metadataConfigurationId, string metadataName)
-		{
-			return string.Format("{0}_{1}", metadataConfigurationId, metadataName).ToLowerInvariant();
-		}
 
-	    public IRestVerbsRegistrator CreateTemplate(string metadataConfigurationId, string metadataName)
+
+	    public IRestVerbsRegistrator CreateTemplate(string version, string metadataConfigurationId, string metadataName)
 	    {
 
-			var verbsContainer = GetRegistrator(metadataConfigurationId, metadataName);
+			var verbsContainer = GetRegistrator(version, metadataConfigurationId, metadataName);
 	        if (verbsContainer == null)
 	        {
-	            verbsContainer = new RestVerbsContainer(FormatTemplateName(metadataConfigurationId,metadataName), _container);
-				_restVerbsContainers.Add(FormatTemplateName(metadataConfigurationId, metadataName), verbsContainer);
+	            verbsContainer = new RestVerbsContainer(version, metadataConfigurationId,metadataName, _container);
+				_restVerbsContainers.Add(verbsContainer);
 	        }
 	        return verbsContainer;
 	    }
 
-		private RestVerbsContainer GetRegistrator(string metadataConfigurationId, string metadataName)
+		private RestVerbsContainer GetRegistrator(string version, string metadataConfigurationId, string metadataName)
 		{
-			return _restVerbsContainers.Where(r => r.Key.ToLowerInvariant() == FormatTemplateName(metadataConfigurationId, metadataName)).Select(r => r.Value).FirstOrDefault();
+			return _restVerbsContainers.FirstOrDefault(r => r.HasRoute(version, metadataConfigurationId, metadataName));
 		}
 
 
-		public IRestVerbsContainer GetTemplate(string metadataConfigurationId, string metadataName)
+		public IRestVerbsContainer GetTemplate(string version, string metadataConfigurationId, string metadataName)
 		{
-			return _restVerbsContainers.Where(r => r.Key.ToLowerInvariant() == FormatTemplateName(metadataConfigurationId,metadataName)).Select(r => r.Value).FirstOrDefault();
+			return _restVerbsContainers.FirstOrDefault(r => r.HasRoute(version, metadataConfigurationId,metadataName));
         }
 
-	    public void RemoveTemplates(string metadataConfigurationId)
+	    public void RemoveTemplates(string version, string metadataConfigurationId)
 	    {
-		    _restVerbsContainers = _restVerbsContainers.Where(r => !r.Key.ToLowerInvariant().StartsWith(metadataConfigurationId.ToLowerInvariant())).ToDictionary(r => r.Key, r => r.Value);
+            _restVerbsContainers = _restVerbsContainers.Where(r => !r.HasRoute(version, metadataConfigurationId)).ToList();
 	    }
     }
 }

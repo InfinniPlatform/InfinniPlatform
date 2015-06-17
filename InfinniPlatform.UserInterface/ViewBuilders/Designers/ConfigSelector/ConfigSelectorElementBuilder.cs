@@ -13,7 +13,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigSelector
 		{
 			var element = new ConfigSelectorElement(parent);
 			element.ApplyElementMeatadata((object)metadata);
-			element.SetConfigurationsFunc(GetConfigurations);
+			element.SetConfigurationsFunc(GetConfigurations(context.AppView.GetContext().Version));
 
 			// Привязка к источнику данных
 
@@ -29,9 +29,9 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigSelector
 		}
 
 
-		private static IEnumerable GetConfigurations()
+		private static IEnumerable GetConfigurations(string version)
 		{
-			return ConfigurationMetadataService.Instance.GetItems();
+			return new ConfigurationMetadataService(version).GetItems();
 		}
 	}
 }

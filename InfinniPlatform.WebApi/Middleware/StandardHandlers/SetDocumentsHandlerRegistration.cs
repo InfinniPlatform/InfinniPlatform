@@ -28,7 +28,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            return new ValueRequestHandlerResult(new DocumentApi().SetDocuments(routeDictionary["application"], routeDictionary["documentType"], body));
+            return new ValueRequestHandlerResult(new DocumentApi(routeDictionary["version"]).SetDocuments(routeDictionary["application"], routeDictionary["documentType"], body));
         }
     }
 }

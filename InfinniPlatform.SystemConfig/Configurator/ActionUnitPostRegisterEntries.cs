@@ -21,6 +21,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
             string configuration = target.Item.Configuration;
             string register = target.Item.Register;
             dynamic registerEntries = target.Item.RegisterEntries;
+            string version = target.Version;
 
             if (string.IsNullOrEmpty(configuration))
             {
@@ -37,7 +38,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
                 throw new ArgumentException("Register entries should be specified via 'RegisterEntries' property");
             }
 
-            var registerMetadata = target.Context.GetComponent<IMetadataComponent>().GetMetadataList(configuration, register,MetadataType.Register).FirstOrDefault() ;
+            var registerMetadata = target.Context.GetComponent<IMetadataComponent>(target.Version).GetMetadataList(version, configuration, register,MetadataType.Register).FirstOrDefault() ;
 
             var dimensionNames = new List<string>();
 
@@ -77,7 +78,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
                 }
             }
 
-            new DocumentApi().SetDocuments(configuration, RegisterConstants.RegisterNamePrefix + register, registerEntries);
+            target.Context.GetComponent<DocumentApi>(target.Version).SetDocuments(configuration, RegisterConstants.RegisterNamePrefix + register, registerEntries);
         }
     }
 }

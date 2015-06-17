@@ -40,7 +40,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
 		{
 			CreateTestConfig();
 
-			var managerDocument = new ManagerFactoryDocument(ConfigurationId, DocumentId);
+			var managerDocument = new ManagerFactoryDocument(null, ConfigurationId, DocumentId);
 			var managerView = managerDocument.BuildViewManager();
 			var view = managerView.CreateItem(ViewName);
 			view.MetadataType = ViewType.EditView;
@@ -62,7 +62,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
 		private void CreateTestConfig()
 		{
 			//добавили конфигурацию
-			var manager = ManagerFactoryConfiguration.BuildConfigurationManager();
+			var manager = ManagerFactoryConfiguration.BuildConfigurationManager(null);
 
 			var item = manager.CreateItem(ConfigurationId);
             manager.DeleteItem(item);
@@ -70,12 +70,12 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
 
 			//добавляем именованный View в конкретном документе
 			//---------------------------------------------------
-			var documentManager = new ManagerFactoryConfiguration(ConfigurationId).BuildDocumentManager();
+			var documentManager = new ManagerFactoryConfiguration(null, ConfigurationId).BuildDocumentManager();
 
 			var doc = documentManager.CreateItem(DocumentId);
             documentManager.MergeItem(doc);
 
-			var managerDocument = new ManagerFactoryDocument(ConfigurationId, DocumentId);
+			var managerDocument = new ManagerFactoryDocument(null,ConfigurationId, DocumentId);
 			var managerView = managerDocument.BuildViewManager();
 			var view = managerView.CreateItem(ViewName);
 			view.MetadataType = ViewType.EditView;
@@ -84,7 +84,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
 			//----------------------------------------------------
 
 			//перезагрузим конфигурации
-			RestQueryApi.QueryPostNotify(ConfigurationId);
+			RestQueryApi.QueryPostNotify(null, ConfigurationId);
 
 		}
 

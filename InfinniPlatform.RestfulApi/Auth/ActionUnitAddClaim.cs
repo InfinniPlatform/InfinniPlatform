@@ -35,7 +35,7 @@ namespace InfinniPlatform.RestfulApi.Auth
 
             //обновляем утверждение для указанного пользователя системы
 
-            target.Context.GetComponent<ISecurityComponent>().UpdateClaim(target.Item.UserName, target.Item.ClaimType, target.Item.ClaimValue);
+            target.Context.GetComponent<ISecurityComponent>(target.Version).UpdateClaim(target.Item.UserName, target.Item.ClaimType, target.Item.ClaimValue);
             target.Result = new DynamicWrapper();
             target.Result.ValidationMessage = "Claim added successfully";
             target.Result.IsValid = true;

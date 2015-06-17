@@ -17,15 +17,16 @@ namespace InfinniPlatform.Api.Index.SearchOptions
 		private readonly IEnumerable<dynamic> _filter;
 		private readonly dynamic _schema;
 		private SchemaIterator _metadataIterator;
-		private List<SchemaObject> resolveProperties = new List<SchemaObject>(); 
+		private List<SchemaObject> resolveProperties = new List<SchemaObject>();
 
 
-		/// <summary>
-		///   Конструктор
-		/// </summary>
-		/// <param name="metadataComponent">Провайдер метаданных сервисной части</param>
-		/// <param name="schema">Схема данных документа, к которому выполняется запрос</param>
-		public QueryCriteriaAnalyzer(IMetadataComponent metadataComponent, dynamic schema)
+	    /// <summary>
+	    ///   Конструктор
+	    /// </summary>
+	    /// <param name="metadataComponent">Провайдер метаданных сервисной части</param>
+	    /// <param name="version">Версия конфигурации</param>
+	    /// <param name="schema">Схема данных документа, к которому выполняется запрос</param>
+	    public QueryCriteriaAnalyzer(IMetadataComponent metadataComponent, string version, dynamic schema)
 		{
 			_metadataComponent = metadataComponent;
 			_schema = schema;
@@ -44,7 +45,7 @@ namespace InfinniPlatform.Api.Index.SearchOptions
 						                                    resolveProperties.Add(schemaObject);
 					                                    }
 				                                    };
-			_metadataIterator.ProcessSchema(_schema);
+			_metadataIterator.ProcessSchema(version,_schema);
 		}
 
 		/// <summary>

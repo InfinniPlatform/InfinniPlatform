@@ -187,6 +187,15 @@ namespace InfinniPlatform.Api.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t get specific configuration without specification of configuration version.
+        /// </summary>
+        public static string CantGetSpecificConfigurationWithoutVersion {
+            get {
+                return ResourceManager.GetString("CantGetSpecificConfigurationWithoutVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Can&apos;t parse IQL query.
         /// </summary>
         public static string CantParseIQLQuery {

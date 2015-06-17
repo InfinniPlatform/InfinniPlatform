@@ -23,6 +23,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         private List<string> configurationContainers;
 
         readonly List<MigrationParameter> _parameters = new List<MigrationParameter>();
+        private string _version;
 
         /// <summary>
         /// Текстовое описание миграции
@@ -67,7 +68,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         /// <param name="parameters"></param>
         public void Up(out string message, object[] parameters)
         {
-            var api = new DocumentApi();
+            var api = new DocumentApi(_version);
 
             var resultMessage = new StringBuilder();
             
@@ -108,13 +109,14 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         /// <summary>
         /// Устанавливает активную конфигурацию для миграции
         /// </summary>
-        public void AssignActiveConfiguration(string configurationId, IGlobalContext context)
+        public void AssignActiveConfiguration(string version, string configurationId, IGlobalContext context)
         {
+            _version = version;
             _activeConfiguration = configurationId;
 
 	        var configObject =
-		        context.GetComponent<IConfigurationMediatorComponent>()
-		               .ConfigurationBuilder.GetConfigurationObject(_activeConfiguration);
+		        context.GetComponent<IConfigurationMediatorComponent>(_version)
+		               .ConfigurationBuilder.GetConfigurationObject(_version, _activeConfiguration);
 
 	        IMetadataConfiguration metadataConfiguration = null;
 	        if (configObject != null)

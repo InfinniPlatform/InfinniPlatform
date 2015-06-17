@@ -28,6 +28,8 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 
         protected override IRequestHandlerResult ExecuteHandler(IOwinContext context)
         {
+            var routeDictionary = RouteFormatter.GetRouteDictionary(context);
+
             NameValueCollection nameValueCollection = new NameValueCollection();
             if (context.Request.QueryString.HasValue)
             {
@@ -44,7 +46,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
                     throw new ArgumentException(Resources.NotAllRequestParamsAreSpecified);
                 }
 
-                return new ValueRequestHandlerResult(new UploadApi().DownloadBinaryContent(
+                return new ValueRequestHandlerResult(new UploadApi(routeDictionary["version"]).DownloadBinaryContent(
                     formData.InstanceId.ToString(), formData.FieldName.ToString()));
             }
 

@@ -44,9 +44,6 @@
     <Compile Include="Common\StringHasher.cs" />
     <Compile Include="MenuPermission\ActionUnitDeleteMenuPermission.cs" />
     <Compile Include="MenuPermission\ActionUnitSaveMenuPermission.cs" />
-    <Compile Include="Menu\ActionUnits\ActionUnitDeleteMenu.cs" />
-    <Compile Include="Menu\ActionUnits\ActionUnitSaveMenu.cs" />
-    <Compile Include="Menu\ActionUnits\ActionUnitGetMenu.cs" />
     <Compile Include="Menu\MenuCache.cs" />
     <Compile Include="Menu\MenuHelper.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

@@ -36,7 +36,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
                 Item = id
 			};
 
-			var metadataConfig = _metadataConfigurationProvider.GetMetadataConfiguration(ConfigRequestProvider.GetConfiguration());
+			var metadataConfig = _metadataConfigurationProvider.GetMetadataConfiguration(TODO, ConfigRequestProvider.GetConfiguration());
 
 			metadataConfig.MoveWorkflow(metadata, metadataConfig.GetExtensionPointValue(ConfigRequestProvider, "GetHelp"), target);
 

@@ -453,4 +453,7 @@
   <data name="UserToRemoveClaimNotFound" xml:space="preserve">
     <value>User "{0}" not found.</value>
   </data>
+  <data name="CantGetSpecificConfigurationWithoutVersion" xml:space="preserve">
+    <value>Can't get specific configuration without specification of configuration version</value>
+  </data>
 </root>

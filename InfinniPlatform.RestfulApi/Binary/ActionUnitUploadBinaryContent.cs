@@ -38,7 +38,7 @@ namespace InfinniPlatform.RestfulApi.Binary
 		public void Action(IUploadContext target)
 		{
 
-            dynamic documentWithBinaryField = new DocumentApi().GetDocument(target.LinkedData.InstanceId);
+            dynamic documentWithBinaryField = target.Context.GetComponent<DocumentApi>(target.Version).GetDocument(target.LinkedData.InstanceId);
 
 			if (documentWithBinaryField == null)
 			{
@@ -50,7 +50,7 @@ namespace InfinniPlatform.RestfulApi.Binary
 
             fileContent = ReadAllBytes(target.FileContent);
 
-		    new BinaryManager(target.Context.GetComponent<IBlobStorageComponent>().GetBlobStorage()).SaveBinary(new [] {documentWithBinaryField}, 
+            new BinaryManager(target.Context.GetComponent<IBlobStorageComponent>(target.Version).GetBlobStorage()).SaveBinary(new[] { documentWithBinaryField }, 
                 documentWithBinaryField.__ConfigId,
                 documentWithBinaryField.__DocumentId,
 		        target.LinkedData.FieldName, fileContent);

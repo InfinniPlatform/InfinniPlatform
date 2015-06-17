@@ -33,8 +33,7 @@ namespace InfinniPlatform.WebApi.Controllers
 
         private IRestVerbsContainer GetMetadata()
         {
-            var metadata = Request.GetRouteData().Values.ContainsKey("metadata") ? _apiControllerFactory.GetTemplate(
-                (string)Request.GetRouteData().Values["configuration"],
+            var metadata = Request.GetRouteData().Values.ContainsKey("metadata") ? _apiControllerFactory.GetTemplate((string)Request.GetRouteData().Values["version"], (string)Request.GetRouteData().Values["configuration"],
                 (string)Request.GetRouteData().Values["metadata"]) : null;
             if (metadata == null)
             {

@@ -13,7 +13,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
     {
         public void Action(IApplyContext target)
         {
-            var result = new DocumentApi().SetDocument(target.Configuration, target.Metadata, target.Item);
+            var result = target.Context.GetComponent<DocumentApi>(target.Version).SetDocument(target.Configuration, target.Metadata, target.Item);
 	        
 			target.Result = new DynamicWrapper();
 	        target.Result.Name = target.Item.Name;

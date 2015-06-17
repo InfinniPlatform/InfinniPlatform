@@ -20,7 +20,7 @@ namespace InfinniPlatform.RestfulApi.Session
         {
             string transactionMarker = Guid.NewGuid().ToString();
 
-            target.Context.GetComponent<ITransactionComponent>().GetTransactionManager().GetTransaction(transactionMarker);
+            target.Context.GetComponent<ITransactionComponent>(target.Version).GetTransactionManager().GetTransaction(transactionMarker);
 
             target.Result = new DynamicWrapper();
             target.Result.IsValid = true;

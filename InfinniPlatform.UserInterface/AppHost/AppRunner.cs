@@ -85,6 +85,8 @@ namespace InfinniPlatform.UserInterface.AppHost
 			// Построение главного представления приложения
 			context.AppView = context.Build(null, "View", appViewMetadata);
 
+            //TODO: здесь необходимо засунуть нужный идентификатор версии проекта
+		    context.AppView.GetContext().Version = "0";
 			// Открытие главного представления приложения
 
 			var linkView = new LinkView(context.AppView, null, () => context.AppView);

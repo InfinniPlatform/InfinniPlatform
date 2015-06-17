@@ -10,7 +10,7 @@ namespace InfinniPlatform.SystemConfig.Administration.UserRoleStore.ActionUnits
 	{
 		public void Action(IApplyContext target)
 		{
-			var api = target.Context.GetComponent<DocumentApiUnsecured>();
+			var api = target.Context.GetComponent<DocumentApiUnsecured>(target.Version);
 
 			var session = api.GetDocument("Administration", "UserOrganizationSession",
 				f => f.AddCriteria(cr => cr.Property("User.DisplayName").IsEquals(target.UserName)), 0, 1).FirstOrDefault();

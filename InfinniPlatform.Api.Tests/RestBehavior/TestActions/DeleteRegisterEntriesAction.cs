@@ -8,8 +8,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
         public void Action(IApplyContext target)
         {
             // После удаления документа, удаляем соответсвующие записи в регистрах
-            target.Context.GetComponent<IRegistryComponent>().DeleteRegisterEntry(target.Item.Configuration, "availablebeds", target.Item.Id);
-			target.Context.GetComponent<IRegistryComponent>().DeleteRegisterEntry(target.Item.Configuration, "inforegister", target.Item.Id);
+            target.Context.GetComponent<IRegistryComponent>(target.Version).DeleteRegisterEntry(target.Item.Configuration, "availablebeds", target.Item.Id);
+			target.Context.GetComponent<IRegistryComponent>(target.Version).DeleteRegisterEntry(target.Item.Configuration, "inforegister", target.Item.Id);
         }
 	}
 }

@@ -7,12 +7,12 @@ namespace InfinniPlatform.Api.Metadata
 	/// </summary>
 	public interface IDataManager
 	{
-		/// <summary>
-		///   Сформировать предзаполненный объект метаданных
-		/// </summary>
-		/// <param name="name"></param>
-		/// <returns>Предзаполненный объект метаданных</returns>
-		dynamic CreateItem(string name);
+	    /// <summary>
+	    ///   Сформировать предзаполненный объект метаданных
+	    /// </summary>
+	    /// <param name="name"></param>
+	    /// <returns>Предзаполненный объект метаданных</returns>
+	    dynamic CreateItem(string name);
 
 		/// <summary>
 		///   Добавить метаданные объекта конфигурации
@@ -25,13 +25,6 @@ namespace InfinniPlatform.Api.Metadata
 	    /// </summary>
 	    /// <param name="metadataObject"></param>
 	    void DeleteItem(dynamic metadataObject);
-
-		/// <summary>
-		///   Применить изменения метаданных
-		/// </summary>
-		/// <param name="metadataName">Наименование объекта метаданных</param>
-		/// <param name="eventDefinitions">События для применения к метаданным</param>
-		void ApplyMetadataChanges(string metadataName, IEnumerable<object> eventDefinitions);
 
 		/// <summary>
 		///   Обновить метаданные указанного объекта  в указанной конфигурации

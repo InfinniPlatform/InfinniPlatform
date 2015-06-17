@@ -35,7 +35,7 @@ namespace InfinniPlatform.RestfulApi.Utils
 	    }
 
 
-	    public void ProcessMetadata(dynamic document, dynamic typeInfo)
+	    public void ProcessMetadata(string version, dynamic document, dynamic typeInfo)
 		{
 			if (document == null)
 			{
@@ -49,7 +49,7 @@ namespace InfinniPlatform.RestfulApi.Utils
 			}
 
 
-		    IEnumerable<dynamic> metadataList = _metadataComponent.GetMetadataList(typeInfo.ConfigId, typeInfo.DocumentId, MetadataType.Schema);
+		    IEnumerable<dynamic> metadataList = _metadataComponent.GetMetadataList(version, typeInfo.ConfigId, typeInfo.DocumentId, MetadataType.Schema);
 
 		    var schema = metadataList.FirstOrDefault();
 
@@ -89,7 +89,7 @@ namespace InfinniPlatform.RestfulApi.Utils
 
 			            if (property.Value.TypeInfo.DocumentLink.Inline == true && documentLink != null)
 			            {
-			                ProcessMetadata(documentLink, property.Value.TypeInfo.DocumentLink);
+			                ProcessMetadata(version, documentLink, property.Value.TypeInfo.DocumentLink);
 			            }
 			        }
 
@@ -150,7 +150,7 @@ namespace InfinniPlatform.RestfulApi.Utils
                                     _typeInfoChain.Add(property.Value.Items.TypeInfo.DocumentLink);
 
 
-                                    ProcessMetadata(documentLink, property.Value.Items.TypeInfo.DocumentLink);
+                                    ProcessMetadata(version, documentLink, property.Value.Items.TypeInfo.DocumentLink);
 
                                     foreach (dynamic innerProperty in property.Value.Items.Properties)
                                     {

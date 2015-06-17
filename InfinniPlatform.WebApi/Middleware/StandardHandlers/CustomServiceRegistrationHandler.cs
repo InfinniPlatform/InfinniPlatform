@@ -26,10 +26,9 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
         {
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            var body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
+            dynamic body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
 
-            return new ValueRequestHandlerResult(RestQueryApi.QueryPostJsonRaw(
-                routeDictionary["application"], routeDictionary["documentType"], routeDictionary["service"], null, body));
+            return new ValueRequestHandlerResult(RestQueryApi.QueryPostJsonRaw(routeDictionary["application"], routeDictionary["documentType"], routeDictionary["service"], null, body, routeDictionary["version"]));
         }
     }
 }

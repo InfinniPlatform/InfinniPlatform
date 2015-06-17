@@ -35,7 +35,7 @@ namespace InfinniPlatform.RestfulApi.Utils
 			
 		}
 
-		public void ResolveLinks(dynamic resolvingTypeInfo, IEnumerable<dynamic> typeInfoChain)
+		public void ResolveLinks(string version,  dynamic resolvingTypeInfo, IEnumerable<dynamic> typeInfoChain)
 		{
 			var groupsLinks = _links.GroupBy(l => new
 				                                        {
@@ -55,7 +55,7 @@ namespace InfinniPlatform.RestfulApi.Utils
                     continue;                    
                 }
 
-                if ( HasCircularRefs(groupsLink.Key.ConfigId, groupsLink.Key.DocumentId))
+                if ( HasCircularRefs(version, groupsLink.Key.ConfigId, groupsLink.Key.DocumentId))
                 {
                     continue;   
                 }
@@ -69,7 +69,7 @@ namespace InfinniPlatform.RestfulApi.Utils
 				Action<FilterBuilder> builder =
 					f => f.AddCriteria(c => c.Property("Id").IsIdIn(values.Select(i => (string)i.InstanceId).ToList()));
 
-				IEnumerable<dynamic> resolvedLinks = new DocumentApiUnsecured().GetDocument(groupsLink.Key.ConfigId, groupsLink.Key.DocumentId, builder , 0, 100000, typeInfoChainUpdated).ToList();
+				IEnumerable<dynamic> resolvedLinks = new DocumentApiUnsecured(version).GetDocument(groupsLink.Key.ConfigId, groupsLink.Key.DocumentId, builder , 0, 100000, typeInfoChainUpdated).ToList();
 
 				foreach (var resolvedLink in resolvedLinks)
 				{
@@ -82,9 +82,9 @@ namespace InfinniPlatform.RestfulApi.Utils
 			}
 		}
 
-	    private bool HasCircularRefs(string configId, string documentId)
+	    private bool HasCircularRefs(string version, string configId, string documentId)
 	    {
-            IEnumerable<dynamic> metadata = _metadataComponent.GetMetadataList(configId, documentId, MetadataType.Schema);
+            IEnumerable<dynamic> metadata = _metadataComponent.GetMetadataList(version, configId, documentId, MetadataType.Schema);
 
 		    dynamic schema = metadata.FirstOrDefault();
             if (schema != null)

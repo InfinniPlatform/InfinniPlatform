@@ -34,7 +34,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
 
 		public void UpdateConfigurationMetadataFromZip(string fileName)
 		{
-            UpdateApi.UpdateConfigFromJson(VersionName, fileName);
+            new UpdateApi(VersionName).UpdateConfigFromJson(fileName);
 		}
 
 	    public void UpdateConfigurationMetadataFromDirectory(string pathToConfigDirectory)
@@ -46,7 +46,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
         {
             try
             {
-                if (!_assemblyDiscovery.DiscoverAppliedAssemblies(configuration))
+                if (!_assemblyDiscovery.DiscoverAppliedAssemblies(VersionName, configuration))
                 {
                     var failedAssemblies = string.Join(",",
                         _assemblyDiscovery.SourceAssemblyList.Where(s => s.Assembly == null).Select(s => s.Name));
@@ -64,12 +64,12 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
                 foreach (var appliedAssembly in instance.AppliedAssemblyList)
                 {
                     var package = packageBuilder.BuildPackage(configuration, VersionName, appliedAssembly);
-                    UpdateApi.InstallPackages(new[] { package });
+                    new UpdateApi(VersionName).InstallPackages(new[] { package });
                     Console.WriteLine(@"Assembly ""{0}"" installed", appliedAssembly);
                 }
 
-                RestQueryApi.QueryPostNotify(configuration);
-                UpdateApi.UpdateStore(configuration);
+                RestQueryApi.QueryPostNotify(VersionName, configuration);
+                new UpdateApi(VersionName).UpdateStore(configuration);
             }
             catch (Exception e)
             {

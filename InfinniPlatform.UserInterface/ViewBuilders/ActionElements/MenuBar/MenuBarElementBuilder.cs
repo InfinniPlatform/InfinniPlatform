@@ -12,7 +12,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.ActionElements.MenuBar
 		public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
 		{
 			var menuBar = new MenuBarElement(parent,
-											 () => GetMenuListMetadata(metadata.ConfigId),
+											 () => GetMenuListMetadata(metadata.Version, metadata.ConfigId),
 											 menuItem => ExecuteMenuItemAction(context, parent, menuItem));
 
 			menuBar.ApplyElementMeatadata((object)metadata);
@@ -20,9 +20,9 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.ActionElements.MenuBar
 			return menuBar;
 		}
 
-		private IEnumerable GetMenuListMetadata(string configId)
+		private IEnumerable GetMenuListMetadata(string version, string configId)
 		{
-			var menuMetadataService = new MenuMetadataService(configId);
+			var menuMetadataService = new MenuMetadataService(version, configId);
 			return menuMetadataService.GetItems();
 		}
 

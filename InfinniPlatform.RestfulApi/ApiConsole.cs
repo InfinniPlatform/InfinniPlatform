@@ -21,7 +21,7 @@ namespace InfinniPlatform.RestfulApi
 {
 	public sealed class ApiConsole
 	{
-		private const string TestVersionName = "for_test_version";
+		
 		private IHostingService _service;
 
 		private IHostingService ConstructServer(string configurationList, HostingConfig hostingConfig)
@@ -85,7 +85,7 @@ namespace InfinniPlatform.RestfulApi
 			var assemblies = ModuleExtension.LoadModules(configList);
 			foreach (var assembly in assemblies)
 			{
-				var installResult = assembly.InstallFromAssembly(packageBuilder, TestVersionName);
+				var installResult = assembly.InstallFromAssembly(packageBuilder, null);
 				foreach (var result in installResult)
 				{
 					Console.WriteLine(@"Assembly configuration installed: {0}", result);
@@ -108,7 +108,8 @@ namespace InfinniPlatform.RestfulApi
 
 			if (realConfigNeeds)
 			{
-				var result = UpdateApi.UpdateConfigFromJson(TestVersionName, GetFullPathToConfiguration(configurationInfo.ConfigurationFilePath));
+                //системные конфигурации в любой момент времени существуют в единственном экземпляре, поэтому указываем версию null
+				var result = new UpdateApi(null).UpdateConfigFromJson(GetFullPathToConfiguration(configurationInfo.ConfigurationFilePath));
 				Console.WriteLine(@"------Install configuration log------------");
 
 				IEnumerable<string> log = result.Result.InstallLog.ToArray();
@@ -122,14 +123,14 @@ namespace InfinniPlatform.RestfulApi
 
 			if (!configurationInfo.AppliedAssemblyList.Any())
 			{
-				RestQueryApi.QueryPostNotify(configurationId);
+				RestQueryApi.QueryPostNotify(null, configurationId);
 			}
 
 			foreach (var appliedAssembly in configurationInfo.AppliedAssemblyList)
 			{
-				var package = packageBuilder.BuildPackage(configurationId, TestVersionName, appliedAssembly);
+				var package = packageBuilder.BuildPackage(configurationId, null, appliedAssembly);
 
-				UpdateApi.InstallPackages(new[] { package });
+				new UpdateApi(null).InstallPackages(new[] { package });
 				Console.WriteLine(@"Assembly ""{0}"" installed", appliedAssembly);
 			}
 		}

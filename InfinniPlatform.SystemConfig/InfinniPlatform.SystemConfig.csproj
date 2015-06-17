@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -69,7 +69,6 @@
     <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetDocumentElementListMetadata.cs" />
     <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetDocumentElementMetadata.cs" />
     <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetDocumentListMetadata.cs" />
-    <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetDocumentMetadata.cs" />
     <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetMenuListMetadata.cs" />
     <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetValidationErrorMetadata.cs" />
     <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetValidationWarningMetadata.cs" />

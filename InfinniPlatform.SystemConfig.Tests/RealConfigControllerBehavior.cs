@@ -34,7 +34,7 @@ namespace InfinniPlatform.SystemConfig.Tests
 
 		private void GenerateTestConfig()
 		{
-			var manager = ManagerFactoryConfiguration.BuildConfigurationManager();
+			var manager = ManagerFactoryConfiguration.BuildConfigurationManager(null);
 			var item = manager.CreateItem(configurationId);
 			manager.DeleteItem(item);
 			manager.MergeItem(item);
@@ -48,7 +48,7 @@ namespace InfinniPlatform.SystemConfig.Tests
 			GenerateTestConfig();
 
 			//создаем метаданные справочника для тестирования
-			var builder = new RestQueryBuilder("SystemConfig", "metadata", "generateservicewithoutstate", null);
+			var builder = new RestQueryBuilder(null,"SystemConfig", "metadata", "generateservicewithoutstate", null);
 
 			var eventObject = new
 			{
@@ -61,7 +61,7 @@ namespace InfinniPlatform.SystemConfig.Tests
 
 			var response = builder.QueryPostJson(null, eventObject);
 
-			var factory = new ManagerFactoryDocument(configurationId, "Common");
+			var factory = new ManagerFactoryDocument(null, configurationId, "Common");
 			var readerServices = factory.BuildServiceMetadataReader();
 			var readerProcesses = factory.BuildProcessMetadataReader();
 			var readerScenario = factory.BuildScenarioMetadataReader();
@@ -83,7 +83,7 @@ namespace InfinniPlatform.SystemConfig.Tests
 
 			GenerateTestConfig();
 			//создаем метаданные справочника для тестирования
-			var builder = new RestQueryBuilder("SystemConfig", "metadata", "creategenerator", null);
+			var builder = new RestQueryBuilder(null,"SystemConfig", "metadata", "creategenerator", null);
 
 			var eventObject = new
 			{
@@ -97,7 +97,7 @@ namespace InfinniPlatform.SystemConfig.Tests
 
 			var response = builder.QueryPostJson(null, eventObject);
 
-			var factory = new ManagerFactoryDocument(configurationId, "Common");
+			var factory = new ManagerFactoryDocument(null, configurationId, "Common");
 			var readerServices = factory.BuildServiceMetadataReader();
 			var readerProcesses = factory.BuildProcessMetadataReader();
 			var readerScenario = factory.BuildScenarioMetadataReader();

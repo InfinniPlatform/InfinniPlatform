@@ -43,7 +43,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
                     }
                 }
             }
-	        return items.FirstOrDefault(i => i.Name == metadataObject.Name);
+	        return items.FirstOrDefault(i => i.Name == metadataObject.Name && i.Version == metadataObject.Version);
 	    } 
 
     }

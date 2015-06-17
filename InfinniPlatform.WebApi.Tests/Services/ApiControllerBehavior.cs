@@ -43,7 +43,7 @@ namespace InfinniPlatform.WebApi.Tests.Services
 
 			_service = factory.CreateHostingService();
 
-			factory.InfinniPlatformHostServer.InstallServices(container);
+			factory.InfinniPlatformHostServer.InstallServices(null, container);
 
 			_service.Start();
 

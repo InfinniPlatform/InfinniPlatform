@@ -11,9 +11,9 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 	/// </summary>
 	sealed class AssemblyMetadataService : BaseMetadataService
 	{
-		public AssemblyMetadataService(string configId)
+		public AssemblyMetadataService(string version, string configId)
 		{
-			_factory = new Lazy<ManagerFactoryConfiguration>(() => new ManagerFactoryConfiguration(configId), LazyThreadSafetyMode.ExecutionAndPublication);
+			_factory = new Lazy<ManagerFactoryConfiguration>(() => new ManagerFactoryConfiguration(version, configId), LazyThreadSafetyMode.ExecutionAndPublication);
 		}
 
 

@@ -34,24 +34,24 @@ namespace InfinniPlatform.RestfulApi.Utils
 	        return documentProvider.GetItem(instanceId);
 	    }
 
-        public dynamic GetCompleteDocument(string configId, string documentId, string userName, string instanceId)
+        public dynamic GetCompleteDocument(string version, string configId, string documentId, string userName, string instanceId)
         {
             var docsToResolve = new[] {GetBaseDocument(userName, instanceId)};
-            new ReferenceResolver(_metadataComponent).ResolveReferences(configId, documentId,
+            new ReferenceResolver(_metadataComponent).ResolveReferences(version, configId, documentId,
                 docsToResolve, null);
             return docsToResolve.FirstOrDefault();
         }
 
-		public IEnumerable<dynamic> GetCompleteDocuments(string configId, string documentId, string userName, int pageNumber, int pageSize,
+		public IEnumerable<dynamic> GetCompleteDocuments(string version, string configId, string documentId, string userName, int pageNumber, int pageSize,
 			IEnumerable<dynamic> filter, IEnumerable<dynamic> sorting, IEnumerable<dynamic> ignoreResolve)
 		{
-			var documentProvider = _documentComponent.GetDocumentProvider(configId, documentId, userName);
+			var documentProvider = _documentComponent.GetDocumentProvider(version, configId, documentId, userName);
 
 			if (documentProvider != null)
 			{
 				var metadataConfiguration =
 					_configurationMediatorComponent
-						  .ConfigurationBuilder.GetConfigurationObject(configId)
+						  .ConfigurationBuilder.GetConfigurationObject(version, configId)
 						  .MetadataConfiguration;
 
 				if (metadataConfiguration == null)
@@ -67,7 +67,7 @@ namespace InfinniPlatform.RestfulApi.Utils
 				if (schema != null)
 				{
 					// Ивлекаем информацию о полях, по которым можно проводить сортировку из метаданных документа
-					sortingFields = ExtractSortingProperties("", schema.Properties, _configurationMediatorComponent.ConfigurationBuilder);
+					sortingFields = ExtractSortingProperties(version,"", schema.Properties, _configurationMediatorComponent.ConfigurationBuilder);
 				}
 
 				if (sorting != null && sorting.Any())
@@ -101,12 +101,12 @@ namespace InfinniPlatform.RestfulApi.Utils
 
 				var criteriaInterpreter = new QueryCriteriaInterpreter();
 
-				var queryAnalyzer = new QueryCriteriaAnalyzer(_metadataComponent, schema);
+				var queryAnalyzer = new QueryCriteriaAnalyzer(_metadataComponent,version, schema);
 
 				IEnumerable<dynamic> result = documentProvider.GetDocument(queryAnalyzer.GetBeforeResolveCriteriaList(filter), 0, 
 					Convert.ToInt32(pageSizeUnresolvedDocuments), sorting, pageNumber > 0 ? pageNumber * pageSize : 0 );
 
-				new ReferenceResolver(_metadataComponent).ResolveReferences(configId, documentId, result, ignoreResolve);
+				new ReferenceResolver(_metadataComponent).ResolveReferences(version, configId, documentId, result, ignoreResolve);
 
 				result = criteriaInterpreter.ApplyFilter(queryAnalyzer.GetAfterResolveCriteriaList(filter), result);
 
@@ -117,7 +117,7 @@ namespace InfinniPlatform.RestfulApi.Utils
 			return new List<dynamic>();
 		}
 
-		private static IEnumerable<object> ExtractSortingProperties(string rootName, dynamic properties, IConfigurationObjectBuilder configurationObjectBuilder)
+		private static IEnumerable<object> ExtractSortingProperties(string version, string rootName, dynamic properties, IConfigurationObjectBuilder configurationObjectBuilder)
 		{
 			var sortingProperties = new List<object>();
 
@@ -139,11 +139,8 @@ namespace InfinniPlatform.RestfulApi.Utils
 						{
 							// inline ссылка на документ: необходимо получить схему документа, на который сделана ссылка,
 							// чтобы получить сортировочные поля 
-							//var inlineMetadataConfiguration = metadataConfigurationProvider.Configurations.FirstOrDefault(
-							//	c => c.ConfigurationId == propertyMapping.Value.TypeInfo.DocumentLink.ConfigId);
-
 							var inlineMetadataConfiguration =
-								configurationObjectBuilder.GetConfigurationObject(propertyMapping.Value.TypeInfo.DocumentLink.ConfigId)
+								configurationObjectBuilder.GetConfigurationObject(version, propertyMapping.Value.TypeInfo.DocumentLink.ConfigId)
 														  .MetadataConfiguration;
 
 							if (inlineMetadataConfiguration != null)
@@ -152,13 +149,13 @@ namespace InfinniPlatform.RestfulApi.Utils
 
 								if (inlineDocumentSchema != null)
 								{
-									childProps = ExtractSortingProperties(formattedPropertyName, inlineDocumentSchema.Properties, configurationObjectBuilder);
+									childProps = ExtractSortingProperties(version, formattedPropertyName, inlineDocumentSchema.Properties, configurationObjectBuilder);
 								}
 							}
 						}
 						else
 						{
-							childProps = ExtractSortingProperties(formattedPropertyName, propertyMapping.Value.Properties, configurationObjectBuilder);
+							childProps = ExtractSortingProperties(version, formattedPropertyName, propertyMapping.Value.Properties, configurationObjectBuilder);
 						}
 
 						sortingProperties.AddRange(childProps);
@@ -169,7 +166,7 @@ namespace InfinniPlatform.RestfulApi.Utils
 						if (propertyMapping.Value.Items != null)
 						{
 							sortingProperties.AddRange(
-								ExtractSortingProperties(formattedPropertyName, propertyMapping.Value.Items.Properties, configurationObjectBuilder));
+								ExtractSortingProperties(version, formattedPropertyName, propertyMapping.Value.Items.Properties, configurationObjectBuilder));
 						}
 					}
 					else

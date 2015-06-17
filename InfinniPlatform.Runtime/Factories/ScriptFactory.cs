@@ -12,18 +12,20 @@ namespace InfinniPlatform.Runtime.Factories
 	{
 	    private readonly string _metadataConfigurationId;
 
+        private readonly string _version;
+
 	    private readonly IVersionLoader _versionLoader;
 	    
         private readonly IChangeListener _changeListener;
 
 	    private IScriptMetadataProvider _scriptMetadataProvider;
 
-	    private ScriptProcessor _scriptProcessor;
+	    private volatile ScriptProcessor _scriptProcessor;
 
         /// <summary>
         ///  Кэш версий конфигурации скриптов
         /// </summary>
-	    private MethodInvokationCacheList _versionCacheList;
+	    private volatile MethodInvokationCacheList _versionCacheList;
 
 	    /// <summary>
 	    ///   Конструктор принимает идентификатор конфигурации метаданных, для которой создается фабрика
@@ -32,12 +34,14 @@ namespace InfinniPlatform.Runtime.Factories
 	    /// <param name="changeListener"></param>
 	    /// <param name="metadataConfigurationId">Идентификатор конфигурации метаданных</param>
 	    /// <param name="versionLoader"></param>
-	    public ScriptFactory(IVersionLoader versionLoader, IChangeListener changeListener, string metadataConfigurationId)
+	    /// <param name="version"></param>
+	    public ScriptFactory(IVersionLoader versionLoader, IChangeListener changeListener, string metadataConfigurationId, string version)
         {
             _versionLoader = versionLoader;
             _changeListener = changeListener;
             _changeListener.RegisterOnChange(metadataConfigurationId, UpdateCache);
             _metadataConfigurationId = metadataConfigurationId;
+	        _version = version;
         }
 
 	    /// <summary>
@@ -49,50 +53,42 @@ namespace InfinniPlatform.Runtime.Factories
 	    {
 	        if (_scriptProcessor == null)
 	        {
-	            UpdateCache(_metadataConfigurationId);
+	            UpdateCache(_version, _metadataConfigurationId);
 	        }
 	        return _scriptProcessor;
 	    }
 
-        private void UpdateCache(string metadataConfigurationId)
+        private readonly object _lockCache = new object();
+	    
+
+	    private void UpdateCache(string version, string metadataConfigurationId)
         {
             //если событие обновления соответствует текущей конфигурации метаданных, то выполняем обновление кэша метаданных
-            if (metadataConfigurationId.ToLowerInvariant() == _metadataConfigurationId.ToLowerInvariant())
+            if (metadataConfigurationId.ToLowerInvariant() == _metadataConfigurationId.ToLowerInvariant() && _version == version)
             {
-
-                _versionCacheList = _versionLoader.ConstructInvokationCache(_metadataConfigurationId);
-                if (_scriptProcessor == null)
+                lock (_lockCache)
                 {
-                    _scriptProcessor = new ScriptProcessor(_versionCacheList, _scriptMetadataProvider);
+                    if (_versionCacheList != null)
+                    {
+                        _versionLoader.UpdateInvokationCache(version, _metadataConfigurationId, _versionCacheList);
+                    }
+                    else
+                    {
+                        _versionCacheList = _versionLoader.ConstructInvokationCache(version, _metadataConfigurationId);
+                    }
+
+
+                    if (_scriptProcessor == null)
+                    {
+                        _scriptProcessor = new ScriptProcessor(_versionCacheList, _scriptMetadataProvider);
+                    }
+                    _scriptProcessor.UpdateCache(_versionCacheList);
                 }
-                _scriptProcessor.UpdateCache(_versionCacheList);
             }
         }
 
-        /// <summary>
-        ///   Получить актуальную версию скриптовой конфигурации
-        /// </summary>
-        /// <returns>Актуальная версия скриптовой конфигурации</returns>
-        public string GetActualVersion()
-        {
-            
-            if (_versionCacheList == null)
-            {
-                UpdateCache(_metadataConfigurationId);
-            }
 
-            //кэш может отсутствовать, в случае если ни одной версии конфигурации еще не установлено
-            var actualCache = _versionCacheList.GetActualCache();
-            if (actualCache != null)
-            {
-                return actualCache.Version;
-            }
-
-            return null;
-        }
-
-
-		/// <summary>
+	    /// <summary>
         ///   Создать провайдер метаданных прикладных скриптов
         /// </summary>
         /// <returns>Провайдер метаданных прикладных скриптов</returns>

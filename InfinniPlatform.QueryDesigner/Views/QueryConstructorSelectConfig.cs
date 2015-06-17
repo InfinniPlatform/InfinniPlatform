@@ -28,8 +28,8 @@ namespace InfinniPlatform.QueryDesigner.Views
 				var propInfo = control.GetType().GetProperty("DataProvider");
 				if (propInfo != null)
 				{
-					IDataProvider dp = new DataProviderStandard();
-					propInfo.SetValue(control, dp, null);
+					//IDataProvider dp = new DataProviderStandard();
+					//propInfo.SetValue(control, dp, null);
 				}
 			};
 

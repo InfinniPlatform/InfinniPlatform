@@ -33,12 +33,12 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         [Test]
 		public void ShouldDeleteDocumentWithReferenceCorrectly()
 		{
-			var managerConfiguration = ManagerFactoryConfiguration.BuildConfigurationManager();
+			var managerConfiguration = ManagerFactoryConfiguration.BuildConfigurationManager(null);
 			var config = managerConfiguration.CreateItem("testconfig");
             managerConfiguration.DeleteItem(config);
             managerConfiguration.MergeItem(config);
 
-			var managerDocument = new ManagerFactoryConfiguration("testconfig").BuildDocumentManager();
+			var managerDocument = new ManagerFactoryConfiguration(null, "testconfig").BuildDocumentManager();
 			dynamic documentMetadata1 = managerDocument.CreateItem("testdoc1");
 			dynamic documentMetadata2 = managerDocument.CreateItem("testdoc2");
 
@@ -81,9 +81,9 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             managerDocument.MergeItem(documentMetadata2);
 
 
-			RestQueryApi.QueryPostNotify("testconfig");
+			RestQueryApi.QueryPostNotify(null, "testconfig");
 
-			UpdateApi.UpdateStore("testconfig");
+            new UpdateApi(null).UpdateStore("testconfig");
 
 
 			var uid1 = Guid.NewGuid().ToString();
@@ -100,20 +100,20 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			testDoc2Instance.Id = uid2;
 			testDoc2Instance.Street = "Lenina";
 
-			new DocumentApi().SetDocument("testconfig", "testdoc1", testDoc1Instance);
-			new DocumentApi().SetDocument("testconfig", "testdoc2", testDoc2Instance);
+			new DocumentApi(null).SetDocument("testconfig", "testdoc1", testDoc1Instance);
+			new DocumentApi(null).SetDocument("testconfig", "testdoc2", testDoc2Instance);
 
 
-			dynamic storedDoc1 = new DocumentApi().GetDocument("testconfig", "testdoc1", filter => filter.AddCriteria(c => c.Property("Id").IsEquals(uid1)), 0, 1);
-			dynamic storedDoc2 = new DocumentApi().GetDocument("testconfig", "testdoc2", filter => filter.AddCriteria(c => c.Property("Id").IsEquals(uid2)), 0, 1);
+			dynamic storedDoc1 = new DocumentApi(null).GetDocument("testconfig", "testdoc1", filter => filter.AddCriteria(c => c.Property("Id").IsEquals(uid1)), 0, 1);
+			dynamic storedDoc2 = new DocumentApi(null).GetDocument("testconfig", "testdoc2", filter => filter.AddCriteria(c => c.Property("Id").IsEquals(uid2)), 0, 1);
 
 			Assert.IsNotNull(storedDoc1);
 			Assert.IsNotNull(storedDoc2);
 
-			new DocumentApi().DeleteDocument("testconfig", "testdoc1", uid1);
+			new DocumentApi(null).DeleteDocument("testconfig", "testdoc1", uid1);
 
-			storedDoc1 = new DocumentApi().GetDocument("testconfig", "testdoc1", filter => filter.AddCriteria(c => c.Property("Id").IsEquals(uid1)), 0, 1);
-			storedDoc2 = new DocumentApi().GetDocument("testconfig", "testdoc2", filter => filter.AddCriteria(c => c.Property("Id").IsEquals(uid2)), 0, 1);
+			storedDoc1 = new DocumentApi(null).GetDocument("testconfig", "testdoc1", filter => filter.AddCriteria(c => c.Property("Id").IsEquals(uid1)), 0, 1);
+			storedDoc2 = new DocumentApi(null).GetDocument("testconfig", "testdoc2", filter => filter.AddCriteria(c => c.Property("Id").IsEquals(uid2)), 0, 1);
 
 			Assert.AreEqual(storedDoc1.Count, 0);
 			Assert.AreEqual(storedDoc2.Count, 1);

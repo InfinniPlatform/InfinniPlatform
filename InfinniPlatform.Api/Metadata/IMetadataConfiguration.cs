@@ -23,11 +23,6 @@ namespace InfinniPlatform.Api.Metadata
 		IScriptConfiguration ScriptConfiguration { get; }
 
 	    /// <summary>
-	    ///   Актуальная версия конфигурации метаданных
-	    /// </summary>
-	    string ActualVersion { get; }
-
-	    /// <summary>
 	    ///   Список индексов метаданных
 	    /// </summary>
 	    IEnumerable<string> Containers { get; }

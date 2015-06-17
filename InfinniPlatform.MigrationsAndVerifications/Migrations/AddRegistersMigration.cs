@@ -17,6 +17,8 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
     {
         private string _activeConfiguration;
 
+        private string _version;
+
         /// <summary>
         /// Текстовое описание миграции
         /// </summary>
@@ -65,19 +67,19 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         {
             var resultMessage = new StringBuilder();
 
-            var configReader = new MetadataReaderConfiguration();
+            var configReader = new MetadataReaderConfiguration(null);
 
             var configMetadata = configReader.GetItem(_activeConfiguration);
 
             if (configMetadata.Registers == null)
             {
                 configMetadata.Registers = new List<dynamic>();
-                new MetadataManagerConfiguration(configReader).MergeItem(configMetadata);
+                new MetadataManagerConfiguration(configReader,null).MergeItem(configMetadata);
 
                 resultMessage.AppendLine();
                 resultMessage.AppendFormat("Registers container was added.");
 
-                UpdateApi.ForceReload(_activeConfiguration);
+                new UpdateApi(_version).ForceReload(_activeConfiguration);
             }
 
             resultMessage.AppendLine();
@@ -101,10 +103,11 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         /// <summary>
         /// Устанавливает активную конфигурацию для миграции
         /// </summary>
-        public void AssignActiveConfiguration(string configurationId, IGlobalContext context)
+        public void AssignActiveConfiguration(string version, string configurationId, IGlobalContext context)
         {
             _activeConfiguration = configurationId;
-         
+            _version = version;
+
         }
 
         /// <summary>

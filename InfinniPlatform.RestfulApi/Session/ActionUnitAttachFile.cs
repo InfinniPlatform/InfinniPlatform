@@ -19,7 +19,7 @@ namespace InfinniPlatform.RestfulApi.Session
         public void Action(IUploadContext target)
         {
             ITransaction transaction =
-                target.Context.GetComponent<ITransactionComponent>()
+                target.Context.GetComponent<ITransactionComponent>(target.Version)
                     .GetTransactionManager()
                     .GetTransaction(target.LinkedData.SessionId);
 

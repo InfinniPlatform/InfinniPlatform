@@ -50,7 +50,18 @@ namespace InfinniPlatform.WebApi.ConfigRequestProviders
 			return UserName;
 		}
 
-		public IHttpRouteData RequestData { get; set; }
+
+	    /// <summary>
+	    ///  Получить идентификатор работающей версии сервисов
+	    /// </summary>
+	    /// <returns></returns>
+	    public string GetVersion()
+	    {
+	        var version = GetDataFromRoute("version");
+	        return version == "0" ? null : version;
+	    }
+
+	    public IHttpRouteData RequestData { get; set; }
 
 		public string UserName { get; set; }
     }

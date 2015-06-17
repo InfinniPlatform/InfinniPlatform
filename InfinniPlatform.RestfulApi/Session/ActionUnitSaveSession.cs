@@ -18,7 +18,7 @@ namespace InfinniPlatform.RestfulApi.Session
     {
         public void Action(IApplyContext target)
         {
-            target.Context.GetComponent<ITransactionComponent>()
+            target.Context.GetComponent<ITransactionComponent>(target.Version)
                 .GetTransactionManager()
                 .CommitTransaction(target.Item.SessionId);
 

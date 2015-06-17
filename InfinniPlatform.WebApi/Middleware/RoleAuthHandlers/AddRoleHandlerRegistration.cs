@@ -27,7 +27,7 @@ namespace InfinniPlatform.WebApi.Middleware.RoleAuthHandlers
 
             string roleName = routeDictionary["roleName"];
 
-            return new ValueRequestHandlerResult(new UsersApi().AddRole(roleName, roleName, roleName));
+            return new ValueRequestHandlerResult(new UsersApi(routeDictionary["version"]).AddRole(roleName, roleName, roleName));
         }
     }
 }

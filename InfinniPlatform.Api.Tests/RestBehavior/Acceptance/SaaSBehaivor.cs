@@ -78,13 +78,13 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             //when
             new SignInApi().SignInInternal("TestUser1", "Password1", false);
 
-            new DocumentApi().SetDocument(configId, documentId,documentForUser1);
+            new DocumentApi(null).SetDocument(configId, documentId,documentForUser1);
 
             new SignInApi().SignOutInternal();
 
             new SignInApi().SignInInternal("TestUser2", "Password2", false);
 
-            new DocumentApi().SetDocument(configId, documentId, documentForUser2);
+            new DocumentApi(null).SetDocument(configId, documentId, documentForUser2);
 
             new SignInApi().SignOutInternal();
 
@@ -94,7 +94,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             //проверяем документы первого пользователя
             new SignInApi().SignInInternal("TestUser1", "Password1", false);
 
-            IEnumerable<dynamic> docsForUser1 = new DocumentApi().GetDocument(configId, documentId, null, 0, 100).ToList();
+            IEnumerable<dynamic> docsForUser1 = new DocumentApi(null).GetDocument(configId, documentId, null, 0, 100).ToList();
 
             Assert.AreEqual(1, docsForUser1.Count());
             Assert.AreEqual(documentForUser1.Id, docsForUser1.First().Id);
@@ -104,7 +104,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             new SignInApi().SignInInternal("TestUser2", "Password2", false);
 
             //проверяем документы второго пользователя
-            IEnumerable<dynamic> docsForUser2 = new DocumentApi().GetDocument(configId, documentId, null, 0, 100).ToList();
+            IEnumerable<dynamic> docsForUser2 = new DocumentApi(null).GetDocument(configId, documentId, null, 0, 100).ToList();
 
             Assert.AreEqual(1, docsForUser2.Count());
             Assert.AreEqual(documentForUser2.Id, docsForUser2.First().Id);
@@ -117,16 +117,16 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             
 
-            var managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager();
+            var managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager(null);
 
             dynamic config = managerConfig.CreateItem(configId);
             managerConfig.DeleteItem(config);
             managerConfig.MergeItem(config);
 
-            var managerDocument = new ManagerFactoryConfiguration(configId).BuildDocumentManager();
+            var managerDocument = new ManagerFactoryConfiguration(null, configId).BuildDocumentManager();
 
 
-            IndexApi.RebuildIndex(configId, documentId);
+            new IndexApi().RebuildIndex(configId, documentId);
 
             var documentMetadata1 = managerDocument.CreateItem(documentId);
 
@@ -144,9 +144,9 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             managerDocument.MergeItem(documentMetadata1);
 
-            RestQueryApi.QueryPostNotify(configId);
+            RestQueryApi.QueryPostNotify(null, configId);
 
-            UpdateApi.UpdateStore(configId);
+            new UpdateApi(null).UpdateStore(configId);
         }
     }
 }

@@ -47,7 +47,7 @@ namespace InfinniPlatform.SystemConfig.Administration.Menu.ActionUnits
             // Конфигурация является корневым пунктом меню
             var configMenuItem = CreateMenuItem(configId, null, 0, configIndex++, "Система", null);
 
-            var menuReader = new ManagerFactoryConfiguration(configId).BuildMenuMetadataReader();
+            var menuReader = new ManagerFactoryConfiguration(TODO, configId).BuildMenuMetadataReader();
             var menuInfoItems = GetMenuInfoItems(menuReader);
 
             foreach (var menuInfo in menuInfoItems)

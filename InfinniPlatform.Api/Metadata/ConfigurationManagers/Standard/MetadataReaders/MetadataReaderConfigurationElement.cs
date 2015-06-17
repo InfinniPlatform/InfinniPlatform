@@ -10,22 +10,22 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
 {
 	public sealed class MetadataReaderConfigurationElement : MetadataReader
 	{
-		private readonly IMetadataContainerInfo _metadataContainerInfo;
+	    private readonly IMetadataContainerInfo _metadataContainerInfo;
 
-		public MetadataReaderConfigurationElement(string configurationId, IMetadataContainerInfo metadataContainerInfo)
-			: base(configurationId, metadataContainerInfo.GetMetadataTypeName())
+		public MetadataReaderConfigurationElement(string version, string configurationId, IMetadataContainerInfo metadataContainerInfo)
+			: base(version, configurationId, metadataContainerInfo.GetMetadataTypeName())
 		{
-			_metadataContainerInfo = metadataContainerInfo;
+		    _metadataContainerInfo = metadataContainerInfo;
 		}
 
-		/// <summary>
+	    /// <summary>
 		///   Получить метаданные объекта в кратком виде (ссылки на метаданные объектов конфигурации)
 		/// </summary>
 		/// <returns>Список описаний метаданных объекта в кратком формате</returns>
 		public override IEnumerable<dynamic> GetItems()
 		{
 
-			dynamic result = QueryMetadata.QueryConfiguration(QueryMetadata.GetConfigurationMetadataShortListIql(ConfigurationId, _metadataContainerInfo.GetMetadataContainerName())).FirstOrDefault();
+			dynamic result = QueryMetadata.QueryConfiguration(Version, QueryMetadata.GetConfigurationMetadataShortListIql(ConfigurationId, _metadataContainerInfo.GetMetadataContainerName())).FirstOrDefault();
 			if (result != null)
 			{
                 var searchResult = result[_metadataContainerInfo.GetMetadataContainerName()];
@@ -40,16 +40,15 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
 
 		}
 
-		/// <summary>
-		///   Получить метаданные конкретного объекта
-		/// </summary>
-		/// <param name="metadataName">наименование объекта</param>
-		/// <returns>Метаданные объекта конфигурации</returns>
-		public override dynamic GetItem(string metadataName)
+	    /// <summary>
+	    ///   Получить метаданные конкретного объекта
+	    /// </summary>
+	    /// <param name="metadataName">наименование объекта</param>
+	    /// <returns>Метаданные объекта конфигурации</returns>
+	    public override dynamic GetItem(string metadataName)
 		{
 
-			var result = QueryMetadata.QueryConfiguration(QueryMetadata
-				.GetConfigurationMetadataByNameIql(ConfigurationId, metadataName, _metadataContainerInfo.GetMetadataContainerName(), _metadataContainerInfo.GetMetadataTypeName())).FirstOrDefault();
+            var result = QueryMetadata.QueryConfiguration(Version, QueryMetadata.GetConfigurationMetadataByNameIql(ConfigurationId, metadataName, _metadataContainerInfo.GetMetadataContainerName(), _metadataContainerInfo.GetMetadataTypeName())).FirstOrDefault();
 
 
 			if (result != null)

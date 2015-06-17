@@ -27,7 +27,7 @@ namespace InfinniPlatform.SystemConfig.Configurator.Generators
 
 
 
-			var metadataFactory = new ManagerFactoryDocument(target.Item.Configuration,target.Item.Metadata);
+			var metadataFactory = new ManagerFactoryDocument(target.Version, target.Item.Configuration,target.Item.Metadata);
 
 			MetadataManagerElement scenarioManager = metadataFactory.BuildScenarioManager();
 			MetadataManagerElement processManager = metadataFactory.BuildProcessManager();

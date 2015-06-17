@@ -40,9 +40,10 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         private string _activeConfiguration;
 
 	    private IGlobalContext _context;
+        private string _version;
 
 
-	    /// <summary>
+        /// <summary>
         /// Текстовое описание миграции
         /// </summary>
         public string Description
@@ -90,8 +91,8 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
             _updatedContainers.Clear();
 
 			var configObject =
-				_context.GetComponent<IConfigurationMediatorComponent>()
-					   .ConfigurationBuilder.GetConfigurationObject(_activeConfiguration);
+				_context.GetComponent<IConfigurationMediatorComponent>(_version)
+					   .ConfigurationBuilder.GetConfigurationObject(_version, _activeConfiguration);
 
 			IMetadataConfiguration metadataConfiguration = null;
 			if (configObject != null)
@@ -116,7 +117,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                     if (schema != null)
                     {
                         // convert document schema to index mapping
-                        props = DocumentSchemaHelper.ExtractProperties(schema.Properties, _context.GetComponent<IConfigurationMediatorComponent>().ConfigurationBuilder);
+                        props = DocumentSchemaHelper.ExtractProperties(_version, schema.Properties, _context.GetComponent<IConfigurationMediatorComponent>(_version).ConfigurationBuilder);
                     }
 
                     if (!versionBuilder.VersionExists(props.Count > 0 ? new IndexTypeMapping(props) : null) &&
@@ -158,8 +159,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         /// <summary>
         /// Устанавливает активную конфигурацию для миграции
         /// </summary>
-        public void AssignActiveConfiguration(string configurationId, IGlobalContext context)
+        public void AssignActiveConfiguration(string version, string configurationId, IGlobalContext context)
         {
+            _version = version;
             _activeConfiguration = configurationId;
 	        _context = context;
         }
@@ -172,7 +174,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
             StringBuilder messagesIntegrator)
         {
 	        var configList =
-		        _context.GetComponent<IConfigurationMediatorComponent>().ConfigurationBuilder.GetConfigurationList();
+                _context.GetComponent<IConfigurationMediatorComponent>(_version).ConfigurationBuilder.GetConfigurationList();
             foreach (var metadataConfiguration in configList)
             {
                 var containers = metadataConfiguration.Containers;
@@ -192,7 +194,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                         if (DocumentSchemaHelper.CheckObjectForSpecifiedInline(schema, configId, documentId))
                         {
                             // convert document schema to index mapping
-							List<PropertyMapping> props = DocumentSchemaHelper.ExtractProperties(schema.Properties, _context.GetComponent<IConfigurationMediatorComponent>().ConfigurationBuilder);
+                            List<PropertyMapping> props = DocumentSchemaHelper.ExtractProperties(_version, schema.Properties, _context.GetComponent<IConfigurationMediatorComponent>(_version).ConfigurationBuilder);
 
                             if (!_updatedContainers.Contains(metadataConfiguration.ConfigurationId + "_" + containerId))
                             {

@@ -23,12 +23,12 @@ namespace InfinniPlatform.RestfulApi.Auth
             if (target.Item.FromCache)
             {
                 user = target.Context
-                        .GetComponent<ISecurityComponent>()
+                        .GetComponent<ISecurityComponent>(target.Version)
                         .Users.Cast<dynamic>().FirstOrDefault(u => u.UserName == target.Item.UserName);
             }
             else
             {
-                user = target.Context.GetComponent<DocumentApi>()
+                user = target.Context.GetComponent<DocumentApi>(target.Version)
                         .GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
                             AuthorizationStorageExtensions.UserStore,
                             f => f.AddCriteria(cr => cr.Property("UserName").IsEquals(target.Item.UserName)), 0, 1)

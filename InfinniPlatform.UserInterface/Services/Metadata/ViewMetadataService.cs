@@ -13,11 +13,11 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 	/// </summary>
 	sealed class ViewMetadataService : BaseMetadataService
 	{
-		public ViewMetadataService(string configId, string documentId)
+		public ViewMetadataService(string version, string configId, string documentId)
 		{
 			_configId = configId;
 			_documentId = documentId;
-			_factory = new Lazy<ManagerFactoryDocument>(() => new ManagerFactoryDocument(configId, documentId), LazyThreadSafetyMode.ExecutionAndPublication);
+			_factory = new Lazy<ManagerFactoryDocument>(() => new ManagerFactoryDocument(version, configId, documentId), LazyThreadSafetyMode.ExecutionAndPublication);
 		}
 
 

@@ -17,30 +17,38 @@ namespace InfinniPlatform.ContextComponents
 	{
 		private readonly IMetadataConfigurationProvider _metadataConfigurationProvider;
 
-		private Dictionary<string, IScriptProcessor> _scriptProcessors = new Dictionary<string, IScriptProcessor>();
+        private readonly List<VersionedScriptProcessor> _scriptProcessors = new List<VersionedScriptProcessor>();
 
 		public ScriptRunnerComponent(IMetadataConfigurationProvider metadataConfigurationProvider)
 		{
 			_metadataConfigurationProvider = metadataConfigurationProvider;
 		}
 
-		/// <summary>
-		///   Получить исполнителя скриптов для указанного идентификатора метаданных конфигурации
-		/// </summary>
-		/// <param name="configurationId">Идентификатор метаданных конфигурации</param>
-		/// <returns>Исполнитель скриптов</returns>
-		public IScriptProcessor GetScriptRunner(string configurationId)
-		{
-			if (_scriptProcessors.ContainsKey(configurationId))
-			{
-				return _scriptProcessors[configurationId];
-			}
+	    /// <summary>
+	    ///   Получить исполнителя скриптов для указанного идентификатора метаданных конфигурации
+	    /// </summary>
+	    /// <param name="version"></param>
+	    /// <param name="configurationId">Идентификатор метаданных конфигурации</param>
+	    /// <returns>Исполнитель скриптов</returns>
+	    public IScriptProcessor GetScriptRunner(string version, string configurationId)
+	    {
+	        var scriptProcessorVersioned = _scriptProcessors.FirstOrDefault(sc => sc.ConfigurationId == configurationId && sc.Version == version);
 
-			var scriptProcessor = _metadataConfigurationProvider.GetMetadataConfiguration(configurationId).ScriptConfiguration.GetScriptProcessor();
+	        if (scriptProcessorVersioned == null)
+	        {
+	            var scriptProcessor = _metadataConfigurationProvider.GetMetadataConfiguration(version, configurationId).ScriptConfiguration.GetScriptProcessor(version);
 
-			_scriptProcessors.Add(configurationId, scriptProcessor);
+	            scriptProcessorVersioned = new VersionedScriptProcessor()
+	            {
+	                ConfigurationId = configurationId,
+	                ScriptProcessor = scriptProcessor,
+	                Version = version
+	            };
 
-			return scriptProcessor;
+	            _scriptProcessors.Add(scriptProcessorVersioned);
+	        }
+
+	        return scriptProcessorVersioned.ScriptProcessor;
 		}
 	}
 }

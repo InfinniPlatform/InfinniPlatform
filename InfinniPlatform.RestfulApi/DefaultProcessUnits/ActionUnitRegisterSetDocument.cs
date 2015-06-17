@@ -22,7 +22,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                 target.Item.Configuration.ToLowerInvariant() != "restfulapi")
             {
                 //ищем метаданные бизнес-процесса по умолчанию документа 
-				defaultBusinessProcess = target.Context.GetComponent<IMetadataComponent>().GetMetadata(target.Item.Configuration, target.Item.Metadata, MetadataType.Process, "Default");
+                defaultBusinessProcess = target.Context.GetComponent<IMetadataComponent>(target.Version).GetMetadata(target.Version, target.Item.Configuration, target.Item.Metadata, MetadataType.Process, "Default");
 			}
             else
             {
@@ -40,7 +40,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                 scriptArguments.Item.Metadata = target.Item.Metadata;
                 scriptArguments.Context = target.Context;
 
-				target.Context.GetComponent<IScriptRunnerComponent>().GetScriptRunner(target.Item.Configuration).InvokeScript(
+                target.Context.GetComponent<IScriptRunnerComponent>(target.Version).GetScriptRunner(target.Version, target.Item.Configuration).InvokeScript(
                     defaultBusinessProcess.Transitions[0].RegisterPoint.ScenarioId, scriptArguments);
             }
         }

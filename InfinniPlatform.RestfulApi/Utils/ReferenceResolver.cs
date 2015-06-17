@@ -18,7 +18,7 @@ namespace InfinniPlatform.RestfulApi.Utils
 			_metadataComponent = metadataComponent;
 		}
 
-		public void ResolveReferences(string configId, string documentId, dynamic documents, IEnumerable<dynamic> ignoreResolve)
+		public void ResolveReferences(string version, string configId, string documentId, dynamic documents, IEnumerable<dynamic> ignoreResolve)
 		{
 			var linkMap = new DocumentLinkMap(_metadataComponent);
 
@@ -33,14 +33,14 @@ namespace InfinniPlatform.RestfulApi.Utils
 			{
 				foreach (var doc in documents)
 				{
-					metadataOperator.ProcessMetadata(doc, typeInfo);
+					metadataOperator.ProcessMetadata(version,doc, typeInfo);
 				}
 			}
 			else if (documents != null)
 			{
-				metadataOperator.ProcessMetadata(documents, typeInfo);
+				metadataOperator.ProcessMetadata(version,documents, typeInfo);
 			}
-			linkMap.ResolveLinks(typeInfo, metadataOperator.TypeInfoChain);
+			linkMap.ResolveLinks(version,typeInfo, metadataOperator.TypeInfoChain);
 		}
 	}
 }

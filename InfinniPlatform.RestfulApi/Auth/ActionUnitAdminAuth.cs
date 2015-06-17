@@ -14,7 +14,7 @@ namespace InfinniPlatform.RestfulApi.Auth
     {
         public void Action(IApplyContext target)
         {
-            var authResult = new AuthUtils(target.Context.GetComponent<ISecurityComponent>(),target.UserName, null).CheckDocumentAccess(target.Item.Configuration, target.Item.Metadata, "applyaccess",target.Item.RecordId);
+            var authResult = new AuthUtils(target.Context.GetComponent<ISecurityComponent>(target.Version), target.UserName, null).CheckDocumentAccess(target.Item.Configuration, target.Item.Metadata, "applyaccess", target.Item.RecordId);
 
             target.IsValid = authResult.IsValid;
             target.ValidationMessage = string.Join("\r\n",authResult.Items);

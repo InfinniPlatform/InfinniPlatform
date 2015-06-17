@@ -19,17 +19,17 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
             string documentId = target.Item.Metadata;
 
-            dynamic schema = target.Context.GetComponent<IMetadataComponent>()
-                .GetMetadataList(configId, documentId, MetadataType.Schema).FirstOrDefault();
+            dynamic schema = target.Context.GetComponent<IMetadataComponent>(target.Version)
+                .GetMetadataList(target.Version, configId, documentId, MetadataType.Schema).FirstOrDefault();
 
             //если для документа указана схема, то предзаполняем документ
             if (schema != null)
             {
 
-                dynamic prefiledInstance = CreatePrefiledInstance(new SchemaProvider(target.Context.GetComponent<IMetadataComponent>()), schema);
-                
-                dynamic metadataProcess = target.Context.GetComponent<IMetadataComponent>()
-                    .GetMetadata(configId, documentId, MetadataType.Process, "Default");
+                dynamic prefiledInstance = CreatePrefiledInstance(target.Version, new SchemaProvider(target.Context.GetComponent<IMetadataComponent>(target.Version)), schema);
+
+                dynamic metadataProcess = target.Context.GetComponent<IMetadataComponent>(target.Version)
+                    .GetMetadata(target.Version, configId, documentId, MetadataType.Process, "Default");
 
                 if (metadataProcess != null && metadataProcess.Transitions != null &&
                     metadataProcess.Transitions.Count > 0)
@@ -40,10 +40,10 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                     {
                         dynamic schemaPrefill = schemaPrefillString.ToDynamic();
 
-                        var schemaIterator = new SchemaIterator(new SchemaProvider(target.Context.GetComponent<IMetadataComponent>()));
+                        var schemaIterator = new SchemaIterator(new SchemaProvider(target.Context.GetComponent<IMetadataComponent>(target.Version)));
 
                         IEnumerable<string> prefillItems =
-                            RestQueryApi.QueryPostJsonRaw("systemconfig", "prefill", "getfillitems", null, null)
+                            RestQueryApi.QueryPostJsonRaw("systemconfig", "prefill", "getfillitems", null, null, target.Version)
                                 .ToDynamicList()
                                 .Cast<string>();
 
@@ -59,7 +59,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                                 prefillItems);
                         };
 
-                        schemaIterator.ProcessSchema(schemaPrefill);
+                        schemaIterator.ProcessSchema(target.Version, schemaPrefill);
 
                     }
 
@@ -70,8 +70,8 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                     {
                         var scriptArguments = target;
                         scriptArguments.Item = prefiledInstance;
-                        target.Context.GetComponent<IScriptRunnerComponent>()
-                            .GetScriptRunner(configId)
+                        target.Context.GetComponent<IScriptRunnerComponent>(target.Version)
+                            .GetScriptRunner(target.Version, configId)
                             .InvokeScript(metadataProcess.Transitions[0].ActionPoint.ScenarioId, scriptArguments);
 
                     }
@@ -87,7 +87,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
         }
 
-        private dynamic CreatePrefiledInstance(ISchemaProvider schemaProvider, dynamic schema)
+        private dynamic CreatePrefiledInstance(string version, ISchemaProvider schemaProvider, dynamic schema)
         {
             dynamic instance = new DynamicWrapper();
 
@@ -107,14 +107,14 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             schemaIterator.OnPrimitiveProperty = processAction;
             schemaIterator.OnArrayProperty = processAction;
 
-            schemaIterator.OnObjectProperty = FillObjectProperty(schemaProvider, instance);
+            schemaIterator.OnObjectProperty = FillObjectProperty(version, schemaProvider, instance);
 
 
-            schemaIterator.ProcessSchema(schema);
+            schemaIterator.ProcessSchema(version, schema);
             return instance;
         }
 
-        private Action<SchemaObject> FillObjectProperty(ISchemaProvider schemaProvider, dynamic instance)
+        private Action<SchemaObject> FillObjectProperty(string version, ISchemaProvider schemaProvider, dynamic instance)
         {
             return schemaObject =>
             {
@@ -123,7 +123,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                 dynamic prefiledInnerObjectInstance = null;
                 if (schemaObject.ObjectSchema != null && schemaObject.Inline)
                 {
-                    prefiledInnerObjectInstance = CreatePrefiledInstance(schemaProvider, schemaObject.ObjectSchema);
+                    prefiledInnerObjectInstance = CreatePrefiledInstance(version, schemaProvider, schemaObject.ObjectSchema);
 
                 }
 
@@ -164,7 +164,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
                 if (prefillItems.Any(f => f.Contains(prefiledField.Value.DefaultValue.ToString())))
                 {
-                    target.Context.GetComponent<IScriptRunnerComponent>().GetScriptRunner("systemconfig").InvokeScript(
+                    target.Context.GetComponent<IScriptRunnerComponent>(target.Version).GetScriptRunner(target.Version, "systemconfig").InvokeScript(
                         prefiledField.Value.DefaultValue.ToString(),
                         scriptArguments);
 

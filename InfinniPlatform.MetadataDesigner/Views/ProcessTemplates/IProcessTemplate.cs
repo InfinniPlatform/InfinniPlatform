@@ -23,6 +23,8 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 
 		string DocumentId { get; set; }
 
+        string Version { get; set; }
+
 		IEnumerable<string> DocumentStates { get; set; }
 		IProcessBuilder ProcessBuilder { get; set; }
 		dynamic Process { get; set; }

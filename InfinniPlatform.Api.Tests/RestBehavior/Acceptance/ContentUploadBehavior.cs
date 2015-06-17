@@ -51,16 +51,16 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			testDocument.ContentField.Info.Size = 11723;
 			
 
-			var result = new DocumentApi().SetDocument(_configurationId, _documentId, testDocument);
+			var result = new DocumentApi(null).SetDocument(_configurationId, _documentId, testDocument);
 
 			Assert.AreNotEqual(result.IsValid,false);
 
-			dynamic uploadResult = new UploadApi().UploadBinaryContent(testDocument.Id, "ContentField",
+			dynamic uploadResult = new UploadApi(null).UploadBinaryContent(testDocument.Id, "ContentField",
 			                                    @"TestData\Configurations\Authorization.zip");
 
 			Assert.AreNotEqual(uploadResult.IsValid,false);
 
-			dynamic resultBlob =new UploadApi().DownloadBinaryContent(testDocument.Id, "ContentField");
+			dynamic resultBlob =new UploadApi(null).DownloadBinaryContent(testDocument.Id, "ContentField");
 
 			Assert.IsNotNull(resultBlob);
 
@@ -69,14 +69,14 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 		private void CreateTestConfig()
 		{
 			
-			IndexApi.RebuildIndex(_configurationId, _documentId);
+			new IndexApi().RebuildIndex(_configurationId, _documentId);
 
-			var managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager();
+			var managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager(null);
 			dynamic config = managerConfig.CreateItem(_configurationId);
 			managerConfig.DeleteItem(config);
 			managerConfig.MergeItem(config);
 
-			var managerFactoryDocument = new ManagerFactoryConfiguration(_configurationId);
+			var managerFactoryDocument = new ManagerFactoryConfiguration(null, _configurationId);
 			var documentManager = managerFactoryDocument.BuildDocumentManager();
 			dynamic doc = documentManager.CreateItem(_documentId);
 			
@@ -89,8 +89,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
 			documentManager.MergeItem(doc);
 
-			RestQueryApi.QueryPostNotify(_configurationId);
-			UpdateApi.UpdateStore(_configurationId);
+			RestQueryApi.QueryPostNotify(null, _configurationId);
+            new UpdateApi(null).UpdateStore(_configurationId);
 
 		}
 

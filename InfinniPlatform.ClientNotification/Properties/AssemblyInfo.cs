@@ -12,7 +12,7 @@
 // 0
 // 0
 // 0
-// 3df65878-e8ac-4ee0-910d-33866f765e3d
+// 656b8596-d193-429d-a006-b377c513f383
 // AA27159548D1FEAD8A175C9DB7D54563
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
-[assembly: Guid("3df65878-e8ac-4ee0-910d-33866f765e3d")]
+[assembly: Guid("656b8596-d193-429d-a006-b377c513f383")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: InternalsVisibleTo("InfinniPlatform.ClientNotification.Tests")]

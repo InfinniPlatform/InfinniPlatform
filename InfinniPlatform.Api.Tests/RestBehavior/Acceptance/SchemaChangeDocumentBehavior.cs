@@ -44,15 +44,15 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             string documentId = "TestDocument12";
 
-			IndexApi.RebuildIndex(configId, documentId);
+			new IndexApi().RebuildIndex(configId, documentId);
 
-            var managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager();
+            var managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager(null);
 
             dynamic config = managerConfig.CreateItem(configId);
 
             managerConfig.MergeItem(config);
 
-            var managerDocument = new ManagerFactoryConfiguration(configId).BuildDocumentManager();
+            var managerDocument = new ManagerFactoryConfiguration(null, configId).BuildDocumentManager();
 
             
             
@@ -80,9 +80,9 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             managerDocument.MergeItem(documentMetadata1);
 
-            RestQueryApi.QueryPostNotify(configId);
+            RestQueryApi.QueryPostNotify(null, configId);
 
-            UpdateApi.UpdateStore(configId);
+            new UpdateApi(null).UpdateStore(configId);
 
             //сохраняем документ с первой схемой
             dynamic documentFirstSchema = new DynamicWrapper();
@@ -92,7 +92,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             documentFirstSchema.Address.Id = Guid.NewGuid().ToString();
             documentFirstSchema.Address.DisplayName = "Челябинск";
 
-            new DocumentApi().SetDocument(configId, documentId, documentFirstSchema);
+            new DocumentApi(null).SetDocument(configId, documentId, documentFirstSchema);
 
             //Изменяем схему
             
@@ -116,9 +116,9 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             managerDocument.MergeItem(documentMetadata1);
 
-            RestQueryApi.QueryPostNotify(configId);
+            RestQueryApi.QueryPostNotify(null, configId);
 
-            UpdateApi.UpdateStore(configId);
+            new UpdateApi(null).UpdateStore(configId);
 			
             //Сохраняем новый документ
 
@@ -128,10 +128,10 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             documentSecondSchema.Name = "TestPatient1";
             documentSecondSchema.Address = "Челябинск";
 
-            new DocumentApi().SetDocument(configId, documentId, documentSecondSchema);
+            new DocumentApi(null).SetDocument(configId, documentId, documentSecondSchema);
 
             //получаем оба документа
-            var documents =  new DocumentApi().GetDocument(configId, documentId, null, 0, 10);
+            var documents =  new DocumentApi(null).GetDocument(configId, documentId, null, 0, 10);
 
             Assert.AreEqual(documents.Count(),2);
         }

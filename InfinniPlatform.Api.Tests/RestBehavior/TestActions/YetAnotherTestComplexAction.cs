@@ -13,7 +13,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
             {
                 dynamic item = new DynamicWrapper();
                 item.TestValue = "AnotherTest";
-                new DocumentApi().SetDocument(target.Item.Configuration, target.Item.Metadata, item);
+                new DocumentApi(target.Version).SetDocument(target.Item.Configuration, target.Item.Metadata, item);
             }
         }
     }

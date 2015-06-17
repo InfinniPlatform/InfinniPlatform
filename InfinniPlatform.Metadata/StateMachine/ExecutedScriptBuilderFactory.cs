@@ -52,7 +52,7 @@ namespace InfinniPlatform.Metadata.StateMachine
 				                                          {
 					                                          Identifier = unitIdentifier,
 															  Type = type,
-															  Method = action
+															  Method = action,
 				                                          });
 		}
 	}

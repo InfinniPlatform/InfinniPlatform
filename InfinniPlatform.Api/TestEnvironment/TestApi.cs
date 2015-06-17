@@ -47,10 +47,10 @@ namespace InfinniPlatform.Api.TestEnvironment
 			return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "settestdocument", null,
 												 new
 												 {
-													 Configuration = configId,
-													 Metadata = documentId,
-													 PrefillItems = prefillItems,
-													 TimesCount = timesCount
+												     Configuration = configId,
+												     Metadata = documentId,
+												     PrefillItems = prefillItems,
+												     TimesCount = timesCount
 												 }).ToDynamic();
 		}
 	}

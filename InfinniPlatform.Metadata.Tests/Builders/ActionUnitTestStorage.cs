@@ -8,7 +8,7 @@ namespace InfinniPlatform.Metadata.Tests.Builders
     {
         public void Action(IApplyContext applyContext)
         {
-			IndexApi.InsertDocument(applyContext.Item, "Handlers", "patienttest");
+			new IndexApi().InsertDocument(applyContext.Item, "Handlers", "patienttest");
         }
     }
 }

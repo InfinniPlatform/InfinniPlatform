@@ -21,7 +21,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.LinkViews.ExistsView
 			View view = null;
 
 			// Получение метаданных представления
-			var viewMetadataService = new ViewMetadataService(metadata.ConfigId, metadata.DocumentId);
+			var viewMetadataService = new ViewMetadataService(null, metadata.ConfigId, metadata.DocumentId);
 			var viewMetadata = viewMetadataService.GetItem(metadata.ViewId);
 
 			if (viewMetadata != null)

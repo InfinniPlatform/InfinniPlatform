@@ -14,9 +14,9 @@ namespace InfinniPlatform.SystemConfig.Configurator
 			//получаем список всех прикладных конфигураций в системе
 			target.Result = new DynamicWrapper();
 
-			var profiler = target.Context.GetComponent<IProfilerComponent>().GetOperationProfiler("GetItemId", target.Item.Name);
+			var profiler = target.Context.GetComponent<IProfilerComponent>(target.Version).GetOperationProfiler("GetItemId", target.Item.Name);
 			profiler.Reset();
-            IEnumerable<dynamic> documents = new DocumentApi().GetDocument("systemconfig", target.Metadata, f => f.AddCriteria(c => c.Property("Name").IsEquals(target.Item.Name)), 0, 10000);
+            IEnumerable<dynamic> documents = target.Context.GetComponent<DocumentApi>(target.Version).GetDocument("systemconfig", target.Metadata, f => f.AddCriteria(c => c.Property("Name").IsEquals(target.Item.Name)), 0, 10000);
 			target.Result.Id = documents.Count() != 0 ? documents.First().Id : null;
 			profiler.TakeSnapshot();
 		}

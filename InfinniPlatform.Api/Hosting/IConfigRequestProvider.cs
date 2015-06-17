@@ -28,5 +28,11 @@
 		/// </summary>
 		/// <returns></returns>
 		string GetUserName();
+
+        /// <summary>
+        ///  Получить идентификатор работающей версии сервисов
+        /// </summary>
+        /// <returns></returns>
+	    string GetVersion();
     }
 }

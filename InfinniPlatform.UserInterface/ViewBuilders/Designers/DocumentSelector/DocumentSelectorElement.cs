@@ -22,12 +22,12 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.DocumentSelector
 
 		// ItemsFunc
 
-		private Func<string, IEnumerable> _documentsFunc;
+		private Func<string, string, IEnumerable> _documentsFunc;
 
 		/// <summary>
 		/// Возвращает функцию загрузки списка документов.
 		/// </summary>
-		public Func<string, IEnumerable> GetDocumentsFunc()
+		public Func<string, string, IEnumerable> GetDocumentsFunc()
 		{
 			return _documentsFunc;
 		}
@@ -35,7 +35,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.DocumentSelector
 		/// <summary>
 		/// Устанавливает функцию загрузки списка документов.
 		/// </summary>
-		public void SetDocumentsFunc(Func<string, IEnumerable> value)
+		public void SetDocumentsFunc(Func<string, string, IEnumerable> value)
 		{
 			_documentsFunc = value;
 		}
@@ -45,6 +45,8 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.DocumentSelector
 
 		private string _configId;
 
+	    private string _version;
+
 		/// <summary>
 		/// Возвращает идентификатор конфигурации.
 		/// </summary>
@@ -52,6 +54,14 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.DocumentSelector
 		{
 			return _configId;
 		}
+
+        /// <summary>
+        ///  Возвращает версию конфигурации
+        /// </summary>
+	    public string GetVersion()
+	    {
+	        return _version;
+	    }
 
 		/// <summary>
 		/// Устанавливает идентификатор конфигурации.
@@ -65,6 +75,16 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.DocumentSelector
 				LoadItems(false);
 			}
 		}
+
+	    public void SetVersion(string value)
+	    {
+	        if (!Equals(_version, value))
+	        {
+	            _version = value;
+
+                LoadItems(false);
+	        }
+	    }
 
 
 		// Value
@@ -120,9 +140,11 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.DocumentSelector
 
 			var configId = GetConfigId();
 
+		    var version = GetVersion();
+
 			if (!string.IsNullOrWhiteSpace(configId))
 			{
-				var cacheKey = "Documents_" + configId;
+				var cacheKey = "Documents_" + configId + version;
 
 				items = ControlCache.Get<IEnumerable>(cacheKey);
 
@@ -134,7 +156,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.DocumentSelector
 					{
 						try
 						{
-							items = itemsFunc(configId);
+							items = itemsFunc(configId,version);
 
 							ControlCache.Set(cacheKey, items);
 						}

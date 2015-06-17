@@ -77,7 +77,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                 {
                     item["PathToZip"] = parameters[3].ToString();
 
-                    RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "ExportDataToJson", null, item);
+                    RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "ExportDataToJson", null, item, _version);
                 }
                 else if (operationType == "Import")
                 {
@@ -85,7 +85,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                         File.ReadAllBytes(Path.Combine(parameters[3].ToString(),
                             string.Format("{0}_{1}.zip", configuration, metadata))));
 
-                    RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "ImportDataFromJson", null, item);
+                    RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "ImportDataFromJson", null, item,_version);
                 }
                 else
                 {
@@ -114,11 +114,15 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
             throw new NotSupportedException();
         }
 
+        private string _version;
+
         /// <summary>
         /// Устанавливает активную конфигурацию для миграции
         /// </summary>
-        public void AssignActiveConfiguration(string configurationId, IGlobalContext context)
+        public void AssignActiveConfiguration(string version, string configurationId, IGlobalContext context)
         {
+            _version = version;
+
             _parameters.Add(new MigrationParameter { Caption = "Operation", PossibleValues = new[] { "Export", "Import" } });
 
             _parameters.Add(new MigrationParameter { Caption = "Configuration" });

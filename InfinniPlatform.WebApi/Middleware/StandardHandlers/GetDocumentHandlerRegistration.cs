@@ -49,7 +49,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            IEnumerable<dynamic> result = new DocumentApi().GetDocument(routeDictionary["application"], routeDictionary["documentType"], criteriaList,
+            IEnumerable<dynamic> result = new DocumentApi(routeDictionary["version"]).GetDocument(routeDictionary["application"], routeDictionary["documentType"], criteriaList,
                 Convert.ToInt32(nameValueCollection["pagenumber"]), Convert.ToInt32(nameValueCollection["pageSize"]), null, sortingList);
 
             return new ValueRequestHandlerResult(result);

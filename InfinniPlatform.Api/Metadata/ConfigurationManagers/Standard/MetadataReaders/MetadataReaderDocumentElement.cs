@@ -13,7 +13,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
 		private readonly string _documentId;
 	    private readonly IMetadataContainerInfo _metadataContainerInfo;
 
-	    public MetadataReaderDocumentElement(string configurationId,string documentId, IMetadataContainerInfo metadataContainerInfo) : base(configurationId, metadataContainerInfo.GetMetadataTypeName())
+	    public MetadataReaderDocumentElement(string version, string configurationId,string documentId, IMetadataContainerInfo metadataContainerInfo) : base(version, configurationId, metadataContainerInfo.GetMetadataTypeName())
 		{
 		    _documentId = documentId;
 		    _metadataContainerInfo = metadataContainerInfo;
@@ -21,8 +21,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
 
 	    public override IEnumerable<dynamic> GetItems()
 		{
-            dynamic result = QueryMetadata.QueryConfiguration(
-                QueryMetadata.GetDocumentMetadataShortListIql(ConfigurationId, _documentId,_metadataContainerInfo.GetMetadataContainerName())).FirstOrDefault();
+            dynamic result = QueryMetadata.QueryConfiguration(Version, QueryMetadata.GetDocumentMetadataShortListIql(ConfigurationId, _documentId, _metadataContainerInfo.GetMetadataContainerName())).FirstOrDefault();
 
 		    if (result != null)
 		    {
@@ -41,8 +40,8 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
 		public override dynamic GetItem(string metadataName)
 		{
 
-            var result = QueryMetadata.QueryConfiguration(QueryMetadata.GetDocumentMetadataByNameIql(ConfigurationId, _documentId, metadataName,
-			                                                                                                      _metadataContainerInfo.GetMetadataContainerName(),_metadataContainerInfo.GetMetadataTypeName())).FirstOrDefault();
+            var result = QueryMetadata.QueryConfiguration(Version, QueryMetadata.GetDocumentMetadataByNameIql(ConfigurationId, _documentId, metadataName,
+                _metadataContainerInfo.GetMetadataContainerName(),_metadataContainerInfo.GetMetadataTypeName())).FirstOrDefault();
 
             //если наши метаданные элемента документа
 			if (result != null)

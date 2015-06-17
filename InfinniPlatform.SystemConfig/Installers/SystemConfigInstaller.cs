@@ -78,7 +78,7 @@ namespace InfinniPlatform.SystemConfig.Installers
 				"ActionUnitGetDocumentElementMetadata");
 			actionUnits.RegisterActionUnitDistributedStorage("GetDocumentListMetadata",
 				"ActionUnitGetDocumentListMetadata");
-			actionUnits.RegisterActionUnitDistributedStorage("GetDocumentMetadata", "ActionUnitGetDocumentMetadata");
+			//actionUnits.RegisterActionUnitDistributedStorage("GetDocumentMetadata", "ActionUnitGetDocumentMetadata");
 			actionUnits.RegisterActionUnitDistributedStorage("GetMenuListMetadata", "ActionUnitGetMenuListMetadata");
 			//actionUnits.RegisterActionUnitDistributedStorage("GetMenuMetadata", "ActionUnitGetMenuMetadata");
 			actionUnits.RegisterActionUnitDistributedStorage("GetValidationErrorMetadata",
@@ -164,10 +164,10 @@ namespace InfinniPlatform.SystemConfig.Installers
 					.Move(ws => ws
 						.WithAction(() => actionUnits.GetAction("GetDocumentListMetadata")))));
 
-			metadataConfiguration.RegisterWorkflow("metadata", "GetDocumentMetadata",
-				f => f.FlowWithoutState(wc => wc
-					.Move(ws => ws
-						.WithAction(() => actionUnits.GetAction("GetDocumentMetadata")))));
+            //metadataConfiguration.RegisterWorkflow("metadata", "GetDocumentMetadata",
+            //    f => f.FlowWithoutState(wc => wc
+            //        .Move(ws => ws
+            //            .WithAction(() => actionUnits.GetAction("GetDocumentMetadata")))));
 
 			metadataConfiguration.RegisterWorkflow("metadata", "GetMenuListMetadata",
 				f => f.FlowWithoutState(wc => wc

@@ -45,7 +45,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 
         private IEnumerable<string> LoadPropertiesNames()
         {
-            var document = new ManagerFactoryConfiguration(ConfigId).BuildDocumentMetadataReader().GetItem(DocumentId);
+            var document = new ManagerFactoryConfiguration(Version, ConfigId).BuildDocumentMetadataReader().GetItem(DocumentId);
             
             var properiesNames = new List<string>();
 
@@ -55,7 +55,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
                 OnPrimitiveProperty = schemaObject => properiesNames.Add(schemaObject.Name)
             };
 
-            schemaIterator.ProcessSchema(document.Schema);
+            schemaIterator.ProcessSchema(Version, document.Schema);
             
             return properiesNames;
         }
@@ -195,9 +195,14 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 		public IEnumerable<HandlerDescription> ValidationHandlers { get; set; }
 		public IEnumerable<string> ValidationWarnings { get; set; }
 		public IEnumerable<string> ValidationErrors { get; set; }
-		public string ConfigId { get; set; }
-		public string DocumentId { get; set; }
-		public IEnumerable<string> DocumentStates { get; set; }
+		
+        public string ConfigId { get; set; }
+		
+        public string DocumentId { get; set; }
+
+        public string Version { get; set; }
+
+	    public IEnumerable<string> DocumentStates { get; set; }
 
 		public IProcessBuilder ProcessBuilder { get; set; }
 

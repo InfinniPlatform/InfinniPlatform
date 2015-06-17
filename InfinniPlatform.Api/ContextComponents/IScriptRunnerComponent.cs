@@ -12,11 +12,12 @@ namespace InfinniPlatform.Api.ContextComponents
 	/// </summary>
 	public interface IScriptRunnerComponent
 	{
-		/// <summary>
-		///   Получить исполнителя скриптов для указанного идентификатора метаданных конфигурации
-		/// </summary>
-		/// <param name="configurationId">Идентификатор метаданных конфигурации</param>
-		/// <returns>Исполнитель скриптов</returns>
-		IScriptProcessor GetScriptRunner(string configurationId);
+	    /// <summary>
+	    ///   Получить исполнителя скриптов для указанного идентификатора метаданных конфигурации
+	    /// </summary>
+	    /// <param name="version"></param>
+	    /// <param name="configurationId">Идентификатор метаданных конфигурации</param>
+	    /// <returns>Исполнитель скриптов</returns>
+	    IScriptProcessor GetScriptRunner(string version, string configurationId);
 	}
 }

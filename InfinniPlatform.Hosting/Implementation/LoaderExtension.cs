@@ -50,7 +50,7 @@ namespace InfinniPlatform.Hosting.Implementation
                     versionName,
                     installer.AssemblyName + (assembly.IsExecutable ? ".exe" : ".dll"));
 
-                UpdateApi.InstallPackages(new[] { package });
+                new UpdateApi(versionName).InstallPackages(new[] { package });
 
                 result.Add(package.ConfigurationName.ToString());
             }

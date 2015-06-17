@@ -37,12 +37,13 @@ namespace InfinniPlatform.SystemConfig.Initializers
 		}
 
 		//TODO Дублирование кода обработчиков в нескольких Initializer
-		/// <summary>
-		///   Обновление конфигурации при получении события обновления сборок
-		///   Пока атомарность обновления не обеспечивается - в момент обновления обращающиеся к серверу запросы получат отлуп
-		/// </summary>
-		/// <param name="configurationId">Идентификатор конфигурации</param>
-		private void OnChangeModules(string configurationId)
+	    /// <summary>
+	    ///   Обновление конфигурации при получении события обновления сборок
+	    ///   Пока атомарность обновления не обеспечивается - в момент обновления обращающиеся к серверу запросы получат отлуп
+	    /// </summary>
+	    /// <param name="version">Версия конфигурации</param>
+	    /// <param name="configurationId">Идентификатор конфигурации</param>
+	    private void OnChangeModules(string version, string configurationId)
 		{
 			if (configurationId == "Authorization")
 			{

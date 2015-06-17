@@ -32,7 +32,7 @@ namespace InfinniPlatform.WebApi.Middleware.SessionHandlers
 
             if (body.InstanceId != null && body.FieldName != null && body.SessionId != null)
             {
-                return new ValueRequestHandlerResult(new SessionApi().DetachFile(routeDictionary["version"], body));
+                return new ValueRequestHandlerResult(new SessionApi(routeDictionary["version"]).DetachFile(body));
             }
             return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
         }

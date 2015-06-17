@@ -34,7 +34,7 @@ namespace InfinniPlatform.Security
 			var success = StringHasher.VerifyValue(hashedPassword, providedPassword);
 			if (!success)
 			{
-				success = _globalContext.GetComponent<IPasswordVerifierComponent>().VerifyPassword(hashedPassword,providedPassword);
+				success = _globalContext.GetComponent<IPasswordVerifierComponent>(null).VerifyPassword(hashedPassword,providedPassword);
 			}
 			return success;
 		}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -39,9 +40,10 @@ namespace InfinniPlatform.Runtime.Implementation.AssemblyDispatch
 			return false;
 		}
 
-		private IEnumerable<dynamic> LoadVersions(string configurationId)
+		private IEnumerable<dynamic> LoadVersions(string version, string configurationId)
 		{
-			var configurationObject = _configurationObjectBuilder.GetConfigurationObject("update");
+		    //функционал всех версий конфигурации 'update' одинаков, можно не указывать версию
+            var configurationObject = _configurationObjectBuilder.GetConfigurationObject(null, "update");
 			var packageProvider = configurationObject.GetDocumentProvider("package", null);
 
 			// если индекс не существует, конфигурация еще не развернута
@@ -55,8 +57,14 @@ namespace InfinniPlatform.Runtime.Implementation.AssemblyDispatch
 			criteria.Value = configurationId;
 			criteria.CriteriaType = CriteriaType.IsEquals;
 
+		    dynamic criteriaVersion = new DynamicWrapper();
+            criteriaVersion.Property = "Version";
+            criteriaVersion.Value = version;
+            criteriaVersion.CriteriaType = CriteriaType.IsEquals;
+
+
 			// получаем актуальные версии сохраненных сборок конфигурации
-			IEnumerable<dynamic> searchResult = DynamicWrapperExtensions.ToEnumerable(packageProvider.GetDocument(new[] { criteria }, 0, 10000));
+			IEnumerable<dynamic> searchResult = DynamicWrapperExtensions.ToEnumerable(packageProvider.GetDocument(new[] { criteria, criteriaVersion }, 0, 10000));
 
 			var blobStorage = configurationObject.GetBlobStorage();
 
@@ -107,8 +115,7 @@ namespace InfinniPlatform.Runtime.Implementation.AssemblyDispatch
 			return searchResult;
 		}
 
-
-		public MethodInvokationCacheList ConstructInvokationCache(string metadataConfigurationId)
+		public MethodInvokationCacheList RefreshInvokationCache(string version, string metadataConfigurationId, MethodInvokationCacheList invokationCacheList)
 		{
 			var assemblyVersionPath = AppSettings.GetValue("AssemblyVersionPath");
 
@@ -117,9 +124,7 @@ namespace InfinniPlatform.Runtime.Implementation.AssemblyDispatch
 				throw new ArgumentException(Resources.AssemblyVersionRepositoryNotSpecified);
 			}
 
-			var invokationCacheResult = new MethodInvokationCacheList();
-
-			var versionAssemblies = LoadVersions(metadataConfigurationId).ToList();
+            var versionAssemblies = LoadVersions(version, metadataConfigurationId).ToList();
 
 			foreach (var configurationVersion in versionAssemblies)
 			{
@@ -129,46 +134,62 @@ namespace InfinniPlatform.Runtime.Implementation.AssemblyDispatch
 
 				if (configurationVersion.Assembly != null)
 				{
-					var assemblyLocation = Path.Combine(directory, configurationVersion.ModuleId);
-					var pdbLocation = Path.Combine(directory, Path.GetFileNameWithoutExtension(configurationVersion.ModuleId) + ".pdb");
+					LoadAppliedAssemblies(directory, configurationVersion, assemblyResult);
 
-					try
-					{
-						File.WriteAllBytes(assemblyLocation, configurationVersion.Assembly);
-
-						if (configurationVersion.Pdb != null)
-						{
-							File.WriteAllBytes(pdbLocation, configurationVersion.Pdb);
-						}
-					}
-					catch (Exception)
-					{
-						throw new ArgumentException(string.Format("Cannot write file in location: {0}.", assemblyLocation));
-					}
-
-                    // Желательно загрузить еще pdb file, чтобы в случае возникновения исключения получить информацию о строке,
-                    // в которой это исключение произошло
-				    assemblyResult.Add(configurationVersion.Pdb == null
-                        ? Assembly.Load(File.ReadAllBytes(assemblyLocation))
-                        : Assembly.Load(File.ReadAllBytes(assemblyLocation), File.ReadAllBytes(pdbLocation)));
-
-				    MethodInvokationCache cacheExisting = invokationCacheResult.GetCache(configurationVersion.Version, false);
+				    MethodInvokationCache cacheExisting = invokationCacheList.GetCache(configurationVersion.Version, false);
 
 					if (cacheExisting == null)
 					{
-						invokationCacheResult.AddCache(configurationVersion.Version,
-													   new MethodInvokationCache(configurationVersion.Version,
+						invokationCacheList.AddCache(new MethodInvokationCache(configurationVersion.Version,
 																				 configurationVersion.TimeStamp,
 																				 assemblyResult));
 					}
 					else
-					{
+					{                        
 						cacheExisting.AddVersionAssembly(assemblyResult);
 					}
 				}
 			}
 
-			return invokationCacheResult;
+			return invokationCacheList;
 		}
+
+	    public MethodInvokationCacheList ConstructInvokationCache(string version, string metadataConfigurationId)
+	    {
+	        return RefreshInvokationCache(version, metadataConfigurationId,new MethodInvokationCacheList());
+	    }
+
+        public void UpdateInvokationCache(string version, string metadataConfigurationId, MethodInvokationCacheList versionCacheList)
+        {
+            RefreshInvokationCache(version, metadataConfigurationId, versionCacheList);
+        }
+
+	    private static void LoadAppliedAssemblies(dynamic directory, dynamic configurationVersion, List<Assembly> assemblyResult)
+	    {
+	        var assemblyLocation = Path.Combine(directory, configurationVersion.ModuleId);
+	        var pdbLocation = Path.Combine(directory, Path.GetFileNameWithoutExtension(configurationVersion.ModuleId) + ".pdb");
+
+	        try
+	        {
+	            File.WriteAllBytes(assemblyLocation, configurationVersion.Assembly);
+
+	            if (configurationVersion.Pdb != null)
+	            {
+	                File.WriteAllBytes(pdbLocation, configurationVersion.Pdb);
+	            }
+	        }
+	        catch (Exception)
+	        {
+	            throw new ArgumentException(string.Format("Cannot write file in location: {0}.", assemblyLocation));
+	        }
+
+	        // Желательно загрузить еще pdb file, чтобы в случае возникновения исключения получить информацию о строке,
+	        // в которой это исключение произошло
+	        assemblyResult.Add(configurationVersion.Pdb == null
+	            ? Assembly.Load(File.ReadAllBytes(assemblyLocation))
+	            : Assembly.Load(File.ReadAllBytes(assemblyLocation), File.ReadAllBytes(pdbLocation)));
+	    }
+
+
 	}
 }

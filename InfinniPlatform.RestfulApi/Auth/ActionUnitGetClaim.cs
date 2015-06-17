@@ -19,7 +19,7 @@ namespace InfinniPlatform.RestfulApi.Auth
             target.Result = new DynamicWrapper();
             target.Result.ClaimType = target.Item.ClaimType;
             target.Result.UserName = target.Item.UserName;
-            target.Result.ClaimValue = target.Context.GetComponent<ISecurityComponent>()
+            target.Result.ClaimValue = target.Context.GetComponent<ISecurityComponent>(target.Version)
                 .GetClaim(target.Item.ClaimType, target.Item.UserName);
         }
     }

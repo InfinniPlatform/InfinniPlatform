@@ -13,10 +13,10 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 	/// </summary>
 	sealed class MenuMetadataService : BaseMetadataService
 	{
-		public MenuMetadataService(string configId)
+		public MenuMetadataService(string version, string configId)
 		{
 			_configId = configId;
-			_factory = new Lazy<ManagerFactoryConfiguration>(() => new ManagerFactoryConfiguration(configId), LazyThreadSafetyMode.ExecutionAndPublication);
+			_factory = new Lazy<ManagerFactoryConfiguration>(() => new ManagerFactoryConfiguration(version, configId), LazyThreadSafetyMode.ExecutionAndPublication);
 		}
 
 

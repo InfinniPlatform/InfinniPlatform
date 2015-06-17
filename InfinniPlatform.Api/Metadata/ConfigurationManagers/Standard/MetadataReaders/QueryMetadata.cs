@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.RestApi.CommonApi;
+using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Api.SearchOptions;
 using Newtonsoft.Json.Linq;
 
@@ -13,32 +15,41 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
 	    /// <summary>
 	    ///   Выполнить IQL запрос к метаданным конфигурации
 	    /// </summary>
+	    /// <param name="version">Версия конфигурации</param>
 	    /// <param name="iqlQuery">IQL запрос</param>
+	    /// <param name="doNotCheckVersion">Не проверять версию метаданных</param>
 	    /// <returns>Выборка из конфигурации</returns>
-	    public static IEnumerable<dynamic> QueryConfiguration(string iqlQuery)
-		{
+	    public static IEnumerable<dynamic> QueryConfiguration(string version, string iqlQuery, bool doNotCheckVersion = false)
+	    {
 			dynamic jsonQuery;
 			try
 			{
-				jsonQuery = DynamicWrapperExtensions.ToDynamic((string)iqlQuery);
+				jsonQuery = iqlQuery.ToDynamic();
 			}
 			catch
 			{
 				throw new ArgumentException("Fail to parse IQL query. There is a syntax error.");
 			}
 
-            var response = RestQueryApi.QueryPostJsonRaw("systemconfig", "metadata", "getmetadata",null, jsonQuery);
+	        jsonQuery.DoNotCheckVersion = doNotCheckVersion;
 
-			//индекс 0 в нижеследующем выражении используется, так как в данном случае идет запрос к конкретной конфигурации
-			//соответственно, будет возвращена выборка, содержащая данные из одной конфигурации, но в общем случае выборка может быть и из нескольких
-			if (response.ToDynamic().QueryResult.Count > 0)
-			{
-			    IEnumerable<dynamic> results = DynamicWrapperExtensions.ToEnumerable(response.ToDynamic().QueryResult);
-				return results.Select(r => r.Result).ToList();
-			}
+            RestQueryResponse response = RestQueryApi.QueryPostJsonRaw("systemconfig", "metadata", "getmetadata",null, jsonQuery,version);
 
-			return new List<dynamic>();
-		}
+	        return response.GetResults().ToList();
+	    }
+
+	    private static IEnumerable<dynamic> GetResults(this RestQueryResponse response)
+	    {
+            //индекс 0 в нижеследующем выражении используется, так как в данном случае идет запрос к конкретной конфигурации
+            //соответственно, будет возвращена выборка, содержащая данные из одной конфигурации, но в общем случае выборка может быть и из нескольких
+
+            if (response.ToDynamic().QueryResult.Count > 0)
+            {
+                IEnumerable<dynamic> results = DynamicWrapperExtensions.ToEnumerable(response.ToDynamic().QueryResult);
+                return results.Select(r => r.Result).ToList();
+            }
+	        return new List<dynamic>();
+	    } 
 
         /// <summary>
         ///   Получить список заголовков конфигураций
@@ -59,6 +70,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
 							"Name",
 							"Caption",
 							"Description",
+                            "Version",
 							"Documents.$"
 						}
             }).ToString();
@@ -79,7 +91,8 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
 							"Id",
 							"Name",
 							"Caption",
-							"Description",							
+							"Description",	
+						    "Version",
 							string.Format("{0}.$.Id",metadataContainer),
 							string.Format("{0}.$.Name",metadataContainer),
                             string.Format("{0}.$.Caption",metadataContainer),
@@ -104,6 +117,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
 							"Name",
 							"Caption",
 							"Description",
+                            "Version",
 							string.Format("{0}.$.Id",metadataContainer),
 							string.Format("{0}.$.Name",metadataContainer),
                             string.Format("{0}.$.Caption",metadataContainer),
@@ -173,7 +187,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
 								Property = string.Format("{0}Full.Name",metadataType),
 								CriteriaType = CriteriaType.IsEquals,
 								Value = metadataName
-							},               
+							}       
 				}
             }).ToString();
         }

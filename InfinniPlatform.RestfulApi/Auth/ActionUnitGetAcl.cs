@@ -17,18 +17,18 @@ namespace InfinniPlatform.RestfulApi.Auth
          {
              if (target.Item.FromCache)
              {
-                 target.Result = target.Context.GetComponent<ISecurityComponent>().Acl;
+                 target.Result = target.Context.GetComponent<ISecurityComponent>(target.Version).Acl;
              }
 
-	         else if (IndexApi.IndexExists(AuthorizationStorageExtensions.AuthorizationConfigId,
+	         else if (new IndexApi().IndexExists(AuthorizationStorageExtensions.AuthorizationConfigId,
 	                                  AuthorizationStorageExtensions.AclStore))
 	         {
 				 target.Item.Configuration = AuthorizationStorageExtensions.AuthorizationConfigId;
 				 target.Item.Metadata = AuthorizationStorageExtensions.AclStore;
 
 		         var documentProvider =
-			         target.Context.GetComponent<InprocessDocumentComponent>()
-			               .GetDocumentProvider(target.Item.Configuration, target.Item.Metadata, target.UserName);
+			         target.Context.GetComponent<InprocessDocumentComponent>(target.Version)
+			               .GetDocumentProvider(target.Version, target.Item.Configuration, target.Item.Metadata, target.UserName);
 
 		         if (documentProvider != null)
 		         {

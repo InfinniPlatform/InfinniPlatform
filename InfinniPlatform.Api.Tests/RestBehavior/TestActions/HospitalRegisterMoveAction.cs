@@ -14,7 +14,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
             if (target.Item.OldRoom != null &&
 		        target.Item.OldBed != null)
 		    {
-				incomeEntry = target.Context.GetComponent<IRegistryComponent>().CreateAccumulationRegisterEntry(target.Item.Configuration, "availablebeds", target.Item.Metadata, target.Item, target.Item.Date);
+				incomeEntry = target.Context.GetComponent<IRegistryComponent>(target.Version).CreateAccumulationRegisterEntry(target.Item.Configuration, "availablebeds", target.Item.Metadata, target.Item, target.Item.Date);
                 incomeEntry.Value = 1; // Изменение количества на единицу
 
                 // Койка освободилась - income
@@ -26,7 +26,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
             if (target.Item.NewRoom != null &&
                 target.Item.NewBed != null)
             {
-                consumptionEntry = target.Context.GetComponent<IRegistryComponent>().CreateAccumulationRegisterEntry(target.Item.Configuration, "availablebeds", target.Item.Metadata, target.Item, target.Item.Date);
+                consumptionEntry = target.Context.GetComponent<IRegistryComponent>(target.Version).CreateAccumulationRegisterEntry(target.Item.Configuration, "availablebeds", target.Item.Metadata, target.Item, target.Item.Date);
                 consumptionEntry.Value = 1; // Изменение количества на единицу
 
                 // Койку заняли - consumption
@@ -37,12 +37,12 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
 
 		    if (incomeEntry != null)
 		    {
-				target.Context.GetComponent<IRegistryComponent>().PostRegisterEntries(target.Item.Configuration, "availablebeds", new[] { incomeEntry });
+                target.Context.GetComponent<IRegistryComponent>(target.Version).PostRegisterEntries(target.Item.Configuration, "availablebeds", new[] { incomeEntry });
 		    }
 
 		    if (consumptionEntry != null)
 		    {
-				target.Context.GetComponent<IRegistryComponent>().PostRegisterEntries(target.Item.Configuration, "availablebeds", new[] { consumptionEntry });
+                target.Context.GetComponent<IRegistryComponent>(target.Version).PostRegisterEntries(target.Item.Configuration, "availablebeds", new[] { consumptionEntry });
 		    }
 		}
 	}

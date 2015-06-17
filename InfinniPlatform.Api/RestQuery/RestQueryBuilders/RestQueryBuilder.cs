@@ -23,15 +23,17 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 	/// </summary>
 	public class RestQueryBuilder : IRestQueryBuilder
 	{
-		private readonly string _configuration;
+	    private readonly string _version;
+	    private readonly string _configuration;
 		private readonly string _metadata;
 		private readonly string _action;
 		private readonly Func<string, string, string, dynamic, IOperationProfiler> _operationProfiler;
 		private readonly ControllerRoutingFactory _controllerRoutingFactory;
 
-		public RestQueryBuilder(string configuration, string metadata, string action, Func<string, string, string, dynamic, IOperationProfiler> operationProfiler)
+		public RestQueryBuilder(string version, string configuration, string metadata, string action, Func<string, string, string, dynamic, IOperationProfiler> operationProfiler)
 		{
-			_configuration = configuration;
+		    _version = version ?? "0";
+		    _configuration = configuration;
 			_metadata = metadata;
 			_action = action;
 			_operationProfiler = operationProfiler;
@@ -61,15 +63,15 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 		}
 
 
-		/// <summary>
-		///   Сформировать и выполнить запрос на применение изменений 
-		/// </summary>
-		/// <param name="id">Идентификатор объекта, который необходимо изменить</param>
-		/// <param name="changesObject">Объект, из которого будет сформирован список изменений</param>
-		/// <param name="replaceObject">Заменить существующий объект в хранилище</param>
-		/// <param name="cookieContainer"></param>
-		/// <returns>Ответ на вызов сервиса</returns>
-		public RestQueryResponse QueryPost(string id, object changesObject, bool replaceObject, CookieContainer cookieContainer)
+	    /// <summary>
+	    ///   Сформировать и выполнить запрос на применение изменений 
+	    /// </summary>
+	    /// <param name="id">Идентификатор объекта, который необходимо изменить</param>
+	    /// <param name="changesObject">Объект, из которого будет сформирован список изменений</param>
+	    /// <param name="replaceObject">Заменить существующий объект в хранилище</param>
+	    /// <param name="cookieContainer"></param>
+	    /// <returns>Ответ на вызов сервиса</returns>
+	    public RestQueryResponse QueryPost(string id, object changesObject, bool replaceObject, CookieContainer cookieContainer = null)
 		{
 			IEnumerable<EventDefinition> events = new List<EventDefinition>();
 
@@ -84,10 +86,10 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 				           {
 					           {"id", id},					           
 					           {"events", events},
-                               {"replace",replaceObject}
+                               {"replace",replaceObject},
 				           };
 
-			var url = _controllerRoutingFactory.BuildRestRoutingUrlStandardApi(_configuration, _metadata, _action);
+			var url = _controllerRoutingFactory.BuildRestRoutingUrlStandardApi(_version, _configuration, _metadata, _action);
 
 			RestQueryResponse response = null;
 			ExecuteProfiledOperation(() =>
@@ -100,24 +102,24 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 		}
 
 
-		/// <summary>
-		///   Сформировать и выполнить запрос на применение изменений, представленных в виде JSON-объекта
-		/// </summary>
-		/// <param name="id">Идентификатор объекта, к которому будут применены изменения</param>
-		/// <param name="jsonObject">Объект, который будет представлен в виде событий</param>
-		/// <param name="replaceObject">Выполнить замену существующего в хранилище объекта</param>
-		/// <param name="cookieContainer"></param>
-		/// <returns>Ответ сервиса</returns>
-		public RestQueryResponse QueryPostJson(string id, object jsonObject, bool replaceObject = false, CookieContainer cookieContainer = null)
+	    /// <summary>
+	    ///   Сформировать и выполнить запрос на применение изменений, представленных в виде JSON-объекта
+	    /// </summary>
+	    /// <param name="id">Идентификатор объекта, к которому будут применены изменения</param>
+	    /// <param name="jsonObject">Объект, который будет представлен в виде событий</param>
+	    /// <param name="replaceObject">Выполнить замену существующего в хранилище объекта</param>
+	    /// <param name="cookieContainer"></param>
+	    /// <returns>Ответ сервиса</returns>
+	    public RestQueryResponse QueryPostJson(string id, object jsonObject, bool replaceObject = false, CookieContainer cookieContainer = null)
 		{
 			var body = new Dictionary<string, object>()
 	            {
 	                {"id", id},
 	                {"changesObject", JsonConvert.SerializeObject(jsonObject, Formatting.Indented)},
-	                {"replace", replaceObject}
+	                {"replace", replaceObject},
 	            };
 
-			var url = _controllerRoutingFactory.BuildRestRoutingUrlStandardApi(_configuration, _metadata, _action);
+			var url = _controllerRoutingFactory.BuildRestRoutingUrlStandardApi(_version, _configuration, _metadata, _action);
 
 			RestQueryResponse response = null;
 			ExecuteProfiledOperation(() =>
@@ -134,18 +136,18 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 		///   Сформировать и выполнить запрос на системную нотификацию
 		/// </summary>
 		/// <returns>Ответ на вызов сервиса</returns>
-		public RestQueryResponse QueryNotify(string metadataConfigurationId)
+		public RestQueryResponse QueryNotify(string metadataConfigurationId, CookieContainer cookieContainer = null)
 		{
-			var url = _controllerRoutingFactory.BuildRestRoutingUrlStandardApi(_configuration, _metadata, _action);
+			var url = _controllerRoutingFactory.BuildRestRoutingUrlStandardApi(_version, _configuration, _metadata, _action);
 			var body = new
 				{
-					metadataConfigurationId
+					metadataConfigurationId,
 				};
 
 			RestQueryResponse response = null;
 			ExecuteProfiledOperation(() =>
 										 {
-											 response = new RestQueryExecutor().QueryPost(url, body);
+                                             response = new RestQueryExecutor(cookieContainer).QueryPost(url, body);
 										 }, body);
 			return response;
 		}
@@ -154,35 +156,35 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 		///   Сформировать и выполнить запрос на системную нотификацию
 		/// </summary>
 		/// <returns>Ответ на вызов сервиса</returns>
-		public RestQueryResponse QueryHelp(string metadataConfigurationId)
+        public RestQueryResponse QueryHelp(string metadataConfigurationId, CookieContainer cookieContainer = null)
 		{
 			var searchBody = new Dictionary<string, object>
 				           {
-							   {"id",metadataConfigurationId}
+							   {"id",metadataConfigurationId},
 				           };
 
-			var url = _controllerRoutingFactory.BuildRestRoutingUrlStandardApi(_configuration, _metadata, _action);
+			var url = _controllerRoutingFactory.BuildRestRoutingUrlStandardApi(_version, _configuration, _metadata, _action);
 
 			RestQueryResponse response = null;
 			ExecuteProfiledOperation(() =>
 										 {
-											 response = new RestQueryExecutor().QueryGet(
+                                             response = new RestQueryExecutor(cookieContainer).QueryGet(
 														url,
 														searchBody);
 										 }, null);
 			return response;
 		}
 
-		/// <summary>
-		///  Выгрузить файл на сервер
-		/// </summary>
-		/// <param name="linkedData">Связанный объект</param>
-		/// <param name="filePath">Путь к файлу</param>
-		/// <param name="cookieContainer"></param>
-		/// <returns>Ответ на вызов сервиса</returns>
-		public RestQueryResponse QueryPostFile(object linkedData, string filePath, CookieContainer cookieContainer)
+	    /// <summary>
+	    ///  Выгрузить файл на сервер
+	    /// </summary>
+	    /// <param name="linkedData">Связанный объект</param>
+	    /// <param name="filePath">Путь к файлу</param>
+	    /// <param name="cookieContainer"></param>
+	    /// <returns>Ответ на вызов сервиса</returns>
+	    public RestQueryResponse QueryPostFile(object linkedData, string filePath, CookieContainer cookieContainer = null)
 		{
-			var url = _controllerRoutingFactory.BuildRestRoutingUrlUpload(_configuration, _metadata, _action);
+			var url = _controllerRoutingFactory.BuildRestRoutingUrlUpload(_version, _configuration, _metadata, _action);
 
 			RestQueryResponse response = null;
 			ExecuteProfiledOperation(() =>
@@ -196,9 +198,9 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 			return response;
 		}
 
-	    public RestQueryResponse QueryPostFile(object linkedData, Stream fileStream, CookieContainer cookieContainer)
+	    public RestQueryResponse QueryPostFile(object linkedData, Stream fileStream, CookieContainer cookieContainer = null)
 	    {
-	        var url = _controllerRoutingFactory.BuildRestRoutingUrlUpload(_configuration, _metadata, _action);
+	        var url = _controllerRoutingFactory.BuildRestRoutingUrlUpload(_version, _configuration, _metadata, _action);
 
 	        RestQueryResponse response = null;
 
@@ -214,19 +216,19 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 	    }
 
 
-        /// <summary>
-		///  Выполнить POST-запрос на сервер 
-		/// </summary>
-		/// <param name="linkedData">Связанный объект</param>
-		/// <returns>Ответ на вызов сервиса</returns>
-		public RestQueryResponse QueryPostUrlEncodedData(object linkedData)
+	    /// <summary>
+	    ///  Выполнить POST-запрос на сервер 
+	    /// </summary>
+	    /// <param name="linkedData">Связанный объект</param>
+	    /// <returns>Ответ на вызов сервиса</returns>
+        public RestQueryResponse QueryPostUrlEncodedData(object linkedData, CookieContainer cookieContainer = null)
 		{
-			var url = _controllerRoutingFactory.BuildRestRoutingUrlUrlEncodedData(_configuration, _metadata, _action);
+			var url = _controllerRoutingFactory.BuildRestRoutingUrlUrlEncodedData(_version, _configuration, _metadata, _action);
 
 			RestQueryResponse response = null;
 			ExecuteProfiledOperation(() =>
 				                         {
-					                         response = new RestQueryExecutor().QueryPostUrlEncodedData(
+					                         response = new RestQueryExecutor(cookieContainer).QueryPostUrlEncodedData(
 						                         url,
 						                         linkedData);
 				                         }, null);
@@ -234,14 +236,14 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 			return response;
 		}
 
-		public RestQueryResponse QueryGetUrlEncodedData(object linkedData)
+        public RestQueryResponse QueryGetUrlEncodedData(object linkedData, CookieContainer cookieContainer = null)
 		{
-			var url = _controllerRoutingFactory.BuildRestRoutingUrlUrlEncodedData(_configuration, _metadata, _action);
+			var url = _controllerRoutingFactory.BuildRestRoutingUrlUrlEncodedData(_version, _configuration, _metadata, _action);
 
 			RestQueryResponse response = null;
 			ExecuteProfiledOperation(() =>
 			{
-				response = new RestQueryExecutor().QueryGetUrlEncodedData(
+				response = new RestQueryExecutor(cookieContainer).QueryGetUrlEncodedData(
 					url,
 					linkedData);
 			}, null);
@@ -249,19 +251,18 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 			return response;
 		}
 
-		/// <summary>
-		///   Сформировать и выполнить запрос на поиск данных
-		/// </summary>
-		/// <param name="filterObject">Фильтр по данным</param>
-		/// <param name="pageNumber">Номер страницы данных</param>
-		/// <param name="pageSize">Размер страницы</param>
-		/// <param name="searchType">Тип поиска записей</param>
-		/// <param name="version">Версия конфигурации, для которой осуществляется поиск объектов (если null - поиск по всем версиям объектов)</param>
-		/// <param name="cookieContainer"></param>
-		/// <returns>Ответ на вызов сервиса</returns>
-		public RestQueryResponse QueryGet(IEnumerable<object> filterObject, int pageNumber, int pageSize, int searchType = 1, string version = null, CookieContainer cookieContainer = null)
+	    /// <summary>
+	    ///   Сформировать и выполнить запрос на поиск данных
+	    /// </summary>
+	    /// <param name="filterObject">Фильтр по данным</param>
+	    /// <param name="pageNumber">Номер страницы данных</param>
+	    /// <param name="pageSize">Размер страницы</param>
+	    /// <param name="searchType">Тип поиска записей</param>
+	    /// <param name="cookieContainer"></param>
+	    /// <returns>Ответ на вызов сервиса</returns>
+	    public RestQueryResponse QueryGet(IEnumerable<object> filterObject, int pageNumber, int pageSize, int searchType = 1, CookieContainer cookieContainer = null)
 		{
-			var url = _controllerRoutingFactory.BuildRestRoutingUrlStandardApi(_configuration, _metadata, _action);
+			var url = _controllerRoutingFactory.BuildRestRoutingUrlStandardApi(_version, _configuration, _metadata, _action);
 
 			var searchBody = new Dictionary<string, object>
 				           {
@@ -269,7 +270,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 					           {"PageNumber", pageNumber},
 							   {"PageSize",pageSize},
 			           		   {"SearchType",searchType},
-							   {"Version",version}
+							   {"Version",_version}
 				           };
 
 			RestQueryResponse response = null;
@@ -283,22 +284,22 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 			return response;
 		}
 
-		/// <summary>
-		///   Сформировать и выполнить запрос на агрегацию данных
-		/// </summary>
-		/// <param name="aggregationConfiguration">Конфигурация для выполнения агрегации</param>
-		/// <param name="aggregationMetadata">Метаданные для выполнения агрегации</param>
-		/// <param name="filterObject">Фильтр записей</param>
-		/// <param name="dimensions">Описание срезов куба</param>
-		/// <param name="aggregationTypes">Тип агрегации</param>
-		/// <param name="aggregationFields">Имя поля, по которому необходимо рассчитать значение агрегации</param>
-		/// <param name="pageNumber">Номер страницы данных</param>
-		/// <param name="pageSize">Размер страницы</param>
-		/// <param name="cookieContainer"></param>
-		/// <returns>Ответ на вызов сервиса</returns>
-		public RestQueryResponse QueryAggregation(string aggregationConfiguration, string aggregationMetadata, IEnumerable<object> filterObject, IEnumerable<object> dimensions, IEnumerable<AggregationType> aggregationTypes, IEnumerable<string> aggregationFields, int pageNumber, int pageSize, CookieContainer cookieContainer = null)
+	    /// <summary>
+	    ///   Сформировать и выполнить запрос на агрегацию данных
+	    /// </summary>
+	    /// <param name="aggregationConfiguration">Конфигурация для выполнения агрегации</param>
+	    /// <param name="aggregationMetadata">Метаданные для выполнения агрегации</param>
+	    /// <param name="filterObject">Фильтр записей</param>
+	    /// <param name="dimensions">Описание срезов куба</param>
+	    /// <param name="aggregationTypes">Тип агрегации</param>
+	    /// <param name="aggregationFields">Имя поля, по которому необходимо рассчитать значение агрегации</param>
+	    /// <param name="pageNumber">Номер страницы данных</param>
+	    /// <param name="pageSize">Размер страницы</param>
+	    /// <param name="cookieContainer"></param>
+	    /// <returns>Ответ на вызов сервиса</returns>
+	    public RestQueryResponse QueryAggregation(string aggregationConfiguration, string aggregationMetadata, IEnumerable<object> filterObject, IEnumerable<object> dimensions, IEnumerable<AggregationType> aggregationTypes, IEnumerable<string> aggregationFields, int pageNumber, int pageSize, CookieContainer cookieContainer = null)
 		{
-			var url = _controllerRoutingFactory.BuildRestRoutingUrlStandardApi(_configuration, _metadata, _action);
+			var url = _controllerRoutingFactory.BuildRestRoutingUrlStandardApi(_version, _configuration, _metadata, _action);
 
 			var searchBody = new Dictionary<string, object>
 				           {

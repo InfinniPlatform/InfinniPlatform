@@ -24,7 +24,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
 		public void Action(IUrlEncodedDataContext target)
 		{
 			// необходимо избавиться от ссылок на FastReport сборку
-			ReportTemplate reportTemplate = LoadReportTemplate(target.FormData.Configuration, target.FormData.Template);
+			ReportTemplate reportTemplate = LoadReportTemplate(target.FormData.Version, target.FormData.Configuration, target.FormData.Template);
 
 			var dict = new Dictionary<string, object>();
 			var parameters = target.FormData.Parameters;
@@ -45,9 +45,9 @@ namespace InfinniPlatform.SystemConfig.Configurator
 			target.Result.Info.Type = fileExtensionTypeProvider.GetBlobType(Formats[(ReportFileFormat)target.FormData.FileFormat]);
 		}
 
-		private static ReportTemplate LoadReportTemplate(string configuration, string report)
+		private static ReportTemplate LoadReportTemplate(string version, string configuration, string report)
 		{
-			var reportMetadata = new ManagerFactoryConfiguration(configuration).BuildReportMetadataReader().GetItem(report);
+			var reportMetadata = new ManagerFactoryConfiguration(version, configuration).BuildReportMetadataReader().GetItem(report);
 			return ReportTemplateSerializer.Instance.Deserialize(Convert.FromBase64String(reportMetadata.Content));
 		}
 	}

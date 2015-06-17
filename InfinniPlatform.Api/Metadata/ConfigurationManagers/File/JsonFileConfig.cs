@@ -55,5 +55,14 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.File
         {
             return ConfigObject != null ? ConfigObject.Name : string.Empty;
         }
+
+        /// <summary>
+        ///   Получить версию конфигурации
+        /// </summary>
+        /// <returns>Идентификатор версии</returns>
+        public string GetVersion()
+        {
+            return ConfigObject != null ? ConfigObject.Version : string.Empty;
+        }
     }
 }

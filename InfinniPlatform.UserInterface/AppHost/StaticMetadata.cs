@@ -14,7 +14,7 @@ namespace InfinniPlatform.UserInterface.AppHost
 		public static dynamic CreateAppView()
 		{
 			var configId = AppSettings.GetValue("ConfigId");
-			var viewMetadataService = new ViewMetadataService(configId, "Common");
+			var viewMetadataService = new ViewMetadataService(null, configId, "Common");
 			return viewMetadataService.GetItem("App");
 		}
 	}

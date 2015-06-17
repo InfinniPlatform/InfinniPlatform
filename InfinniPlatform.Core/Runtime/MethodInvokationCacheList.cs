@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace InfinniPlatform.Runtime
@@ -9,42 +10,46 @@ namespace InfinniPlatform.Runtime
 	/// </summary>
 	public sealed class MethodInvokationCacheList
 	{
-		private readonly Dictionary<string,MethodInvokationCache> _versions = new Dictionary<string, MethodInvokationCache>();
+		private readonly List<MethodInvokationCache> _versions = new List<MethodInvokationCache>();
 
 	    public IEnumerable<MethodInvokationCache> CacheList
 	    {
-            get { return _versions.Select(v => v.Value).OrderByDescending(v => v.TimeStamp); }
+            get { return _versions.OrderByDescending(v => v.TimeStamp); }
 	    }
 
-	    public void AddCache(string version, MethodInvokationCache methodInvokationCache)
-		{
-			_versions.Add(version,methodInvokationCache);
+	    public void AddCache(MethodInvokationCache methodInvokationCache)
+	    {
+			_versions.Add(methodInvokationCache);
 		}
 
         public MethodInvokationCache GetCache(string version, bool returnsActual)
 		{
 			if (string.IsNullOrEmpty(version))
 			{
-				return _versions.Select(v => v.Value).OrderByDescending(v => v.TimeStamp).FirstOrDefault();
+				return _versions.OrderByDescending(v => v.TimeStamp).FirstOrDefault();
 			}
 
-			MethodInvokationCache result;
-			_versions.TryGetValue(version, out result);
+            var versionCache = _versions.FirstOrDefault(v => v.Version == version);
 
             if (returnsActual)
             {
-                return result ?? (_versions.Select(v => v.Value).OrderByDescending(v => v.TimeStamp).FirstOrDefault());
+                return versionCache ?? (_versions.OrderByDescending(v => v.TimeStamp).FirstOrDefault());
             }
-            return result;
+            return versionCache;
 		}
+
+        private readonly object _lockObject = new object();
 
 		public void RemoveCache(string version)
 		{
-			MethodInvokationCache cache;
-			if (_versions.TryGetValue(version, out cache))
-			{
-				_versions.Remove(version);
-			}
+		    lock (_lockObject)
+		    {
+		        var excludeVersion = _versions.FirstOrDefault(v => v.Version == version);
+		        if (excludeVersion != null)
+		        {
+		            _versions.Remove(excludeVersion);
+		        }
+		    }
 		}
 
 		public void ClearCache()

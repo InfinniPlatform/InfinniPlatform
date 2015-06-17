@@ -13,7 +13,7 @@ namespace InfinniPlatform.Runtime
 	{
 	    private readonly string _version;
 	    private readonly DateTime _timeStamp;
-		private readonly List<Assembly> _versionAssemblies;
+		private List<Assembly> _versionAssemblies;
 
 		private readonly ConcurrentBag<MethodInfo> _methodCache = new ConcurrentBag<MethodInfo>();
 
@@ -73,15 +73,8 @@ namespace InfinniPlatform.Runtime
 			}
 		}
 
-		private object lockObject = new object();
 
-		private void CacheMethodInfo(IEnumerable<MethodInfo> methodInfoList)
-		{
-			lock (lockObject)
-			{
-				methodInfoList.ToList().ForEach(m => _methodCache.Add(m));
-			}
-		}
+	    private readonly object _assemblyLock = new object();
 
         /// <summary>
         ///   Добавить версии сборок в кэш для поиска
@@ -89,7 +82,12 @@ namespace InfinniPlatform.Runtime
         /// <param name="assemblies">Список сборок для поиска методов</param>
         public void AddVersionAssembly(IEnumerable<Assembly> assemblies)
         {
-            _versionAssemblies.AddRange(assemblies);
+            lock (_assemblyLock)
+            {
+                _versionAssemblies =
+                    _versionAssemblies.Where(v => assemblies.All(asm => asm.FullName != v.FullName)).ToList();
+                _versionAssemblies.AddRange(assemblies);    
+            }                
         }
 
         /// <summary>

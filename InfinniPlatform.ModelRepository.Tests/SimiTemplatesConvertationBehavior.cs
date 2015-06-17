@@ -44,7 +44,7 @@ namespace InfinniPlatform.ModelRepository.Tests
             IArchetypeExtractor archetypeExtractor = new ArchetypeExtractor("BasicTemplates");
             IComplexTypeExtractor complexTypeExtractor = new ComplexTypeExtractor("BasicTemplates");
 
-            var managerDocument = new ManagerFactoryConfiguration("basictemplates").BuildDocumentManager();
+            var managerDocument = new ManagerFactoryConfiguration(null, "basictemplates").BuildDocumentManager();
 
             // Сложные типы добавляем в конфигурацию как отдельные документы
             var complexTypes = complexTypeExtractor.ExtractComplexTypeModels();
@@ -158,7 +158,7 @@ namespace InfinniPlatform.ModelRepository.Tests
             }
 
             // Обновляем сведения о метаданных конфигураций после добавления всех документов в run-time 
-            RestQueryApi.QueryPostNotify("basictemplates");
+            RestQueryApi.QueryPostNotify(null, "basictemplates");
         }
 
         /// <summary>

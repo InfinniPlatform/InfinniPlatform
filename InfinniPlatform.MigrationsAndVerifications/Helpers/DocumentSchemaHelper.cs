@@ -10,8 +10,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Helpers
         /// <summary>
         /// Метод преобразует схему данных документа в схему, применимую к контейнеру документов
         /// </summary>
-        public static IEnumerable<PropertyMapping> ExtractProperties(dynamic schemaProperties,
-            IConfigurationObjectBuilder configurationObjectBuilder)
+        public static IEnumerable<PropertyMapping> ExtractProperties(string version, dynamic schemaProperties, IConfigurationObjectBuilder configurationObjectBuilder)
         {
             var properties = new List<PropertyMapping>();
 
@@ -62,8 +61,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Helpers
                             // inline ссылка на документ: необходимо получить схему документа, на который сделана ссылка,
                             // чтобы получить сортировочные поля 
                             var builder =
-                                configurationObjectBuilder.GetConfigurationObject(
-                                    propertyModel.Value.TypeInfo.DocumentLink.ConfigId);
+                                configurationObjectBuilder.GetConfigurationObject(version, propertyModel.Value.TypeInfo.DocumentLink.ConfigId);
                             //.Configurations.FirstOrDefault(
                             //c => c.ConfigurationId == propertyModel.Value.TypeInfo.DocumentLink.ConfigId);
                             var inlineMetadataConfiguration = builder.MetadataConfiguration;
@@ -77,20 +75,20 @@ namespace InfinniPlatform.MigrationsAndVerifications.Helpers
                                 if (inlineDocumentSchema != null)
                                 {
                                     properties.Add(new PropertyMapping(propertyModel.Key,
-                                        ExtractProperties(inlineDocumentSchema.Properties, configurationObjectBuilder)));
+                                        ExtractProperties(version, inlineDocumentSchema.Properties, configurationObjectBuilder)));
                                 }
                             }
                         }
                         else
                         {
                             properties.Add(new PropertyMapping(propertyModel.Key,
-                                ExtractProperties(propertyModel.Value.Properties, configurationObjectBuilder)));
+                                ExtractProperties(version, propertyModel.Value.Properties, configurationObjectBuilder)));
                         }
                     }
                     else if (propertyModel.Value.Type.ToString() == "Array")
                     {
                         properties.Add(new PropertyMapping(propertyModel.Key,
-                            ExtractProperties(propertyModel.Value.Items.Properties, configurationObjectBuilder)));
+                            ExtractProperties(version, propertyModel.Value.Items.Properties, configurationObjectBuilder)));
                     }
                 }
             }

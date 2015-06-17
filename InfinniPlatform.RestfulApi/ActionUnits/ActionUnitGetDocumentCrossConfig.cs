@@ -25,12 +25,12 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 	        {
 		        foreach (string document in documents)
 		        {
-					var executor = new DocumentExecutor(target.Context.GetComponent<IConfigurationMediatorComponent>(),
-														target.Context.GetComponent<IMetadataComponent>(),
-														target.Context.GetComponent<InprocessDocumentComponent>(),
-														target.Context.GetComponent<IProfilerComponent>());
+                    var executor = new DocumentExecutor(target.Context.GetComponent<IConfigurationMediatorComponent>(target.Version),
+                                                        target.Context.GetComponent<IMetadataComponent>(target.Version),
+                                                        target.Context.GetComponent<InprocessDocumentComponent>(target.Version),
+                                                        target.Context.GetComponent<IProfilerComponent>(target.Version));
 
-					resultDocuments.AddRange(executor.GetCompleteDocuments(config, document, target.UserName,
+					resultDocuments.AddRange(executor.GetCompleteDocuments(target.Version, config, document, target.UserName,
 										  Convert.ToInt32(target.Item.PageNumber), Convert.ToInt32(target.Item.PageSize),
 										  filter, sorting, target.Item.IgnoreResolve));
 		        }
@@ -38,7 +38,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
 	        target.Result = resultDocuments;
 
-			target.Context.GetComponent<ILogComponent>().GetLog().Info("Cross configuration document search completed");
+            target.Context.GetComponent<ILogComponent>(target.Version).GetLog().Info("Cross configuration document search completed");
         }
     }
 }

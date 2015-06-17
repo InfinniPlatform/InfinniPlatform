@@ -10,7 +10,7 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 	{
 		public void Action(IApplyContext target)
 		{
-			var aclApi = target.Context.GetComponent<AuthApi>();
+			var aclApi = target.Context.GetComponent<AuthApi>(target.Version);
 
 			var user = target.Item.Document ?? target.Item;
 
@@ -24,10 +24,10 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 		        }
 		    }
 
-		    var api = target.Context.GetComponent<DocumentApi>();
+		    var api = target.Context.GetComponent<DocumentApi>(target.Version);
 			api.DeleteDocument(AuthorizationStorageExtensions.AdministrationConfigId,"user",user.Id);
 
-            RestQueryApi.QueryPostJsonRaw("AdministrationCustomization", "Common", "OnRemoveUserEvent", null, user);
+            RestQueryApi.QueryPostJsonRaw("AdministrationCustomization", "Common", "OnRemoveUserEvent", null, user, target.Version);
 
 		    target.Result = new DynamicWrapper();
 		    target.Result.IsValid = true;

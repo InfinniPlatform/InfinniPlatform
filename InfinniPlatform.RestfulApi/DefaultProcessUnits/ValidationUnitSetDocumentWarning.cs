@@ -24,7 +24,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
 			if (target.Item.Configuration.ToLowerInvariant() != "systemconfig" && target.Item.Configuration.ToLowerInvariant() != "update" && target.Item.Configuration.ToLowerInvariant() != "restfulapi")
 			{
 				//ищем метаданные бизнес-процесса по умолчанию документа 
-				defaultBusinessProcess = target.Context.GetComponent<IMetadataComponent>().GetMetadata(target.Item.Configuration, target.Item.Metadata, MetadataType.Process, "Default");
+                defaultBusinessProcess = target.Context.GetComponent<IMetadataComponent>(target.Version).GetMetadata(target.Version, target.Item.Configuration, target.Item.Metadata, MetadataType.Process, "Default");
 			}
 
 			if (defaultBusinessProcess == null || defaultBusinessProcess.Transitions.Count == 0 )
@@ -37,7 +37,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
 			//выполняем валидацию документа на warning
 			if ((target.Item.IgnoreWarnings == null || target.Item.IgnoreWarnings == false) && defaultBusinessProcess.Transitions[0].ValidationRuleWarning != null )
 			{
-				var validationOperator = target.Context.GetComponent<IMetadataComponent>().GetMetadata((string) target.Item.Configuration, (string) target.Item.Metadata, (string) MetadataType.ValidationWarning, (string) defaultBusinessProcess.Transitions[0].ValidationRuleWarning).ValidationOperator;
+                var validationOperator = target.Context.GetComponent<IMetadataComponent>(target.Version).GetMetadata(target.Version, (string)target.Item.Configuration, (string)target.Item.Metadata, (string)MetadataType.ValidationWarning, (string)defaultBusinessProcess.Transitions[0].ValidationRuleWarning).ValidationOperator;
 					
 					//.GetValidationWarning(target.Item.Configuration, target.Item.Metadata,
 					//							  defaultBusinessProcess.Transitions[0].ValidationRuleWarning).ValidationOperator;
@@ -50,9 +50,9 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
 			if (defaultBusinessProcess.Transitions[0].ValidationPointWarning != null)
 			{
 				//получаем конструктор метаданных конфигураций
-				var configBuilder = target.Context.GetComponent<IConfigurationMediatorComponent>().ConfigurationBuilder;
+                var configBuilder = target.Context.GetComponent<IConfigurationMediatorComponent>(target.Version).ConfigurationBuilder;
 
-				IConfigurationObject configurationObject = configBuilder.GetConfigurationObject(target.Item.Configuration);
+				IConfigurationObject configurationObject = configBuilder.GetConfigurationObject(target.Version, target.Item.Configuration);
 
 				if (configurationObject == null)
 				{

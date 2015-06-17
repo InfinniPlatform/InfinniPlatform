@@ -8,6 +8,6 @@ namespace InfinniPlatform.QueryDesigner.Contracts
 {
 	public interface IQueryExecutor
 	{
-        IEnumerable<dynamic> ExecuteQuery(string queryText, bool denormalizeResult = false);
+        IEnumerable<dynamic> ExecuteQuery(string version, string queryText, bool denormalizeResult = false);
 	}
 }

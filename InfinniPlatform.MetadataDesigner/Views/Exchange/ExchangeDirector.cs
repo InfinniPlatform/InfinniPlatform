@@ -20,19 +20,19 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
 		    _configurationArchiveName = string.Format("exportconfig_{0}.zip", _configurationId);
 		}
 
-		public void ExportJsonConfigToZip(string fileName)
+		public void ExportJsonConfigToZip(string fileName, string version)
 		{
 			if (_updatePrepareConfig.PrepareRoutingOperation())
 			{
-				new ConfigExporter(new ZipStructure(fileName)).ExportHeaderToStructure(_configurationId);
+				new ConfigExporter(new ZipStructure(fileName)).ExportHeaderToStructure(version, _configurationId);
 			}
 		}
 
-		public void ExportJsonConfigToDirectory(string exportDir)
+		public void ExportJsonConfigToDirectory(string exportDir, string version)
 		{
 			if (_updatePrepareConfig.PrepareRoutingOperation())
 			{
-				new ConfigExporter(new DirectoryStructure(exportDir)).ExportHeaderToStructure(_configurationId);
+				new ConfigExporter(new DirectoryStructure(exportDir)).ExportHeaderToStructure(version, _configurationId);
 			}
 		}
 
@@ -41,7 +41,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
 			if (_updatePrepareConfig.PrepareRoutingOperation())
 			{
 				var configUpdater = new ConfigUpdater(_updatePrepareConfig.Version);
-                ExportJsonConfigToZip(Path.Combine(Directory.GetCurrentDirectory(), _configurationArchiveName));
+                ExportJsonConfigToZip(Path.Combine(Directory.GetCurrentDirectory(), _configurationArchiveName), _updatePrepareConfig.Version);
                 configUpdater.UpdateConfigurationMetadataFromZip(_configurationArchiveName);
 			}
 		}

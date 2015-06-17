@@ -49,7 +49,7 @@ namespace InfinniPlatform.Api.Metadata
         /// <summary>
         /// Устанавливает активную конфигурацию для миграции
         /// </summary>
-        void AssignActiveConfiguration(string configurationId, IGlobalContext globalContext);
+        void AssignActiveConfiguration(string version, string configurationId, IGlobalContext globalContext);
 
         /// <summary>
         /// Возвращает параметры миграции

@@ -28,7 +28,7 @@ namespace InfinniPlatform.ContextComponents
 
 		private static void InternalUpdateUserRoles()
 		{
-			_userRoles = new AuthApi().GetUserRoles(false);
+			_userRoles = new AuthApi(null).GetUserRoles(false);
 		}
 
 		public void UpdateUsers()
@@ -38,7 +38,7 @@ namespace InfinniPlatform.ContextComponents
 
 		private static void InternalUpdateUsers()
 		{
-			_users = new AuthApi().GetUsers(false);
+			_users = new AuthApi(null).GetUsers(false);
 		}
 
 		public IEnumerable<dynamic> Roles
@@ -67,12 +67,12 @@ namespace InfinniPlatform.ContextComponents
 
 	    private static void InternalUpdateAcl()
 		{
-			_acl = new AuthApi().GetAcl(false);
+			_acl = new AuthApi(null).GetAcl(false);
 		}
 
 	    private static void InternalUpdateRoles()
 	    {
-	        _roles = new AuthApi().GetRoles(false);
+	        _roles = new AuthApi(null).GetRoles(false);
 	    }
 
 		public IEnumerable<dynamic> Acl

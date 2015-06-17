@@ -14,13 +14,13 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryExecutors
 	{
 		private readonly CookieContainer _cookieContainer;
 
-		public RestQueryExecutor(CookieContainer cookieContainer = null)
-		{
-			_cookieContainer = cookieContainer;
-		}
+	    public RestQueryExecutor(CookieContainer cookieContainer = null)
+	    {
+	        _cookieContainer = cookieContainer;
+	    }
 
 
-		public RestQueryResponse QueryGet(string url, object queryObject)
+	    public RestQueryResponse QueryGet(string url, object queryObject)
 		{
 			var restClient = new RestClient(url);
 
@@ -55,10 +55,11 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryExecutors
 			restClient.Timeout = 1000 * 60 * 300;
 
 			IRestResponse restResponse = restClient.Post(
-				new RestRequest
+                new RestRequest()
 					{
 						RequestFormat = DataFormat.Json
-					}.AddBody(body));
+					}
+                    .AddBody(body));
 
 			return restResponse.ToQueryResponse();
 		}
@@ -72,7 +73,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryExecutors
 			restClient.Timeout = 1000 * 60 * 200;
 
 			IRestResponse restResponse = restClient.Post(new RestRequest("?linkedData={argument}") { RequestFormat = DataFormat.Json }
-															 .AddUrlSegment("argument", JsonConvert.SerializeObject(linkedData))
+															 .AddUrlSegment("argument", JsonConvert.SerializeObject(linkedData))                                                             
 															 .AddFile(Path.GetFileName(filePath), File.ReadAllBytes(filePath), Path.GetFileName(filePath), "multipart/form-data"));
 			return restResponse.ToQueryResponse();
 		}
@@ -115,8 +116,9 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryExecutors
 			restClient.Timeout = 1000 * 60 * 200;
 
 			var argumentsString = JsonConvert.SerializeObject(formData);
-			IRestResponse restResponse = restClient.Get(new RestRequest("?Form={formData}") { RequestFormat = DataFormat.Json }
-															.AddUrlSegment("formData", argumentsString));
+            IRestResponse restResponse = restClient.Get(new RestRequest("?Form={formData}") { RequestFormat = DataFormat.Json }
+															.AddUrlSegment("formData", argumentsString)
+                                                            );
 			return restResponse.ToQueryResponse();
 		}
 

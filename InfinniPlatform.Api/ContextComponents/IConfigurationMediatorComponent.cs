@@ -16,7 +16,7 @@ namespace InfinniPlatform.Api.ContextComponents
 		/// <summary>
 		///  Объект конфигурации метаданных для скриптового доступа
 		/// </summary>
-		IConfigurationObject GetConfiguration(string configurationId);
+		IConfigurationObject GetConfiguration(string version, string configurationId);
 
 		/// <summary>
 		///  Конструктор объектов конфигураций для скриптового доступа

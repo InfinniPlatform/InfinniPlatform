@@ -13,24 +13,24 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Data.DataProviders
 	/// </summary>
 	public sealed class MetadataProvider : IDataProvider
 	{
-		private static readonly Dictionary<string, Func<string, string, IMetadataService>> MetadataServices
-			= new Dictionary<string, Func<string, string, IMetadataService>>
+		private static readonly Dictionary<string, Func<string, string, string, IMetadataService>> MetadataServices
+			= new Dictionary<string, Func<string, string, string, IMetadataService>>
 			  {
-				  { MetadataType.Configuration, (configId, documentId) => ConfigurationMetadataService.Instance },
-				  { MetadataType.Menu, (configId, documentId) => new MenuMetadataService(configId) },
-				  { MetadataType.Document, (configId, documentId) => new DocumentMetadataService(configId) },
-				  { MetadataType.Assembly, (configId, documentId) => new AssemblyMetadataService(configId) },
-				  { MetadataType.Register, (configId, documentId) => new RegisterMetadataService(configId) },
-				  { MetadataType.Report, (configId, documentId) => new ReportMetadataService(configId) },
-				  { MetadataType.View, (configId, documentId) => new ViewMetadataService(configId, documentId) },
-				  { MetadataType.PrintView, (configId, documentId) => new PrintViewMetadataService(configId, documentId) },
-				  { MetadataType.Service, (configId, documentId) => new ServiceMetadataService(configId, documentId) },
-				  { MetadataType.Process, (configId, documentId) => new ProcessMetadataService(configId, documentId) },
-				  { MetadataType.Scenario, (configId, documentId) => new ScenarioMetadataService(configId, documentId) },
-				  { MetadataType.Generator, (configId, documentId) => new GeneratorMetadataService(configId, documentId) },
-				  { MetadataType.ValidationError, (configId, documentId) => new ValidationErrorMetadataService(configId,documentId)},
-				  { MetadataType.ValidationWarning, (configId, documentId) => new ValidationWarningMetadataService(configId,documentId)},
-                  { MetadataType.Status, (configId, documentId) => new StatusMetadataService(configId,documentId)}
+				  { MetadataType.Configuration, (version, configId, documentId) => new ConfigurationMetadataService(version) },
+				  { MetadataType.Menu, (version, configId, documentId) => new MenuMetadataService(version, configId) },
+				  { MetadataType.Document, (version, configId, documentId) => new DocumentMetadataService(version, configId) },
+				  { MetadataType.Assembly, (version, configId, documentId) => new AssemblyMetadataService(version, configId) },
+				  { MetadataType.Register, (version, configId, documentId) => new RegisterMetadataService(version, configId) },
+				  { MetadataType.Report, (version, configId, documentId) => new ReportMetadataService(version, configId) },
+				  { MetadataType.View, (version, configId, documentId) => new ViewMetadataService(version, configId, documentId) },
+				  { MetadataType.PrintView, (version, configId, documentId) => new PrintViewMetadataService(version, configId, documentId) },
+				  { MetadataType.Service, (version, configId, documentId) => new ServiceMetadataService(version, configId, documentId) },
+				  { MetadataType.Process, (version, configId, documentId) => new ProcessMetadataService(version, configId, documentId) },
+				  { MetadataType.Scenario, (version, configId, documentId) => new ScenarioMetadataService(version, configId, documentId) },
+				  { MetadataType.Generator, (version, configId, documentId) => new GeneratorMetadataService(version, configId, documentId) },
+				  { MetadataType.ValidationError, (version, configId, documentId) => new ValidationErrorMetadataService(version, configId,documentId)},
+				  { MetadataType.ValidationWarning, (version, configId, documentId) => new ValidationWarningMetadataService(version, configId,documentId)},
+                  { MetadataType.Status, (version, configId, documentId) => new StatusMetadataService(version, configId,documentId)}
 			  };
 
 
@@ -44,6 +44,8 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Data.DataProviders
 
 
 		private string _configId;
+
+	    private string _versionId;
 
 		public string GetConfigId()
 		{
@@ -78,6 +80,16 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Data.DataProviders
 			}
 		}
 
+	    public void SetVersionId(string value)
+	    {
+	        if (Equals(_versionId, value) == false)
+	        {
+	            _versionId = value;
+
+                ResetMetadataService();
+	        }
+	    }
+
 
 		private IMetadataService _metadataService;
 
@@ -100,14 +112,14 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Data.DataProviders
 				{
 					if (_metadataService == null)
 					{
-						Func<string, string, IMetadataService> metadataServiceFunc;
+						Func<string, string, string, IMetadataService> metadataServiceFunc;
 
 						if (MetadataServices.TryGetValue(_metadataType, out metadataServiceFunc) == false)
 						{
 							throw new NotSupportedException(_metadataType);
 						}
 
-						_metadataService = metadataServiceFunc(_configId, _documentId);
+						_metadataService = metadataServiceFunc(_versionId, _configId, _documentId);
 					}
 				}
 			}

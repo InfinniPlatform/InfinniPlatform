@@ -3,19 +3,27 @@ using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace InfinniPlatform.Api.RestApi.CommonApi
 {
-	public static class UpdateApi
+	public sealed class UpdateApi
 	{
-		/// <summary>
-		///   Установить JSON-конфигурацию системы
-		/// </summary>
-		/// <param name="configurationId">Идентификатор конфигурации</param>
-		/// <param name="documentId">Идентификатор документа, если необходимо</param>
-		/// <param name="metadataObject">Конфигурация системы</param>
-		/// <param name="metadataType">Тип метаданных системы</param>
-		public static void UpdateMetadataObject(string configurationId, string documentId, dynamic metadataObject, string metadataType)
+	    private readonly string _version;
+
+	    public UpdateApi(string version)
+	    {
+	        _version = version;
+	    }
+
+	    /// <summary>
+	    ///   Установить JSON-конфигурацию системы
+	    /// </summary>
+	    /// <param name="configurationId">Идентификатор конфигурации</param>
+	    /// <param name="documentId">Идентификатор документа, если необходимо</param>
+	    /// <param name="metadataObject">Конфигурация системы</param>
+	    /// <param name="metadataType">Тип метаданных системы</param>
+	    public void UpdateMetadataObject(string configurationId, string documentId, dynamic metadataObject, string metadataType)
 		{
 			if (metadataObject.Name == null)
 			{
@@ -26,23 +34,22 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
 					              ConfigurationId = configurationId,
 								  DocumentId = documentId,
 					              MetadataType = metadataType,
-					              MetadataObject = metadataObject
+					              MetadataObject = metadataObject,
 				              };
 
-            RestQueryApi.QueryPostJsonRaw("Update", "Package", "installjsonmetadata", null, request);
+            RestQueryApi.QueryPostJsonRaw("Update", "Package", "installjsonmetadata", null, request, _version);
 		}
 
-		/// <summary>
-		///   Обновить метаданные конфигурации в JSON
-		/// </summary>
-		/// <param name="version">Обновляемая версия</param>
-		/// <param name="filePath">Путь к файлу JSON конфигурации</param>
-		public static dynamic UpdateConfigFromJson(string version,string filePath)
+	    /// <summary>
+	    ///   Обновить метаданные конфигурации в JSON
+	    /// </summary>
+	    /// <param name="filePath">Путь к файлу JSON конфигурации</param>
+	    public dynamic UpdateConfigFromJson(string filePath)
 		{
-			var builder = new RestQueryBuilder("SystemConfig", "update", "updateconfigfromjson", null);
+			var builder = new RestQueryBuilder(_version,"SystemConfig", "update", "updateconfigfromjson", null);
 			var linkedData = new
 			{
-				Version = version
+				Version = _version
 			};
 
 			var response = builder.QueryPostFile(linkedData, filePath, null);
@@ -60,9 +67,9 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
 		/// <summary>
 		///   Принудительно вызвать обновление конфигурации
 		/// </summary>
-		public static void ForceReload(string configurationId)
+		public void ForceReload(string configurationId)
 		{
-			var response = RestQueryApi.QueryPostNotify(configurationId);
+			var response = RestQueryApi.QueryPostNotify(_version, configurationId);
 
 			if (!response.IsAllOk)
 			{
@@ -77,7 +84,7 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
 	    ///   Необходимо переписать на выполнение запросов через высокоуровневый API системы
 	    /// </summary>
 	    /// <param name="updatePackages">Список устанавливаемых модулей</param>
-	    public static void InstallPackages(IEnumerable<dynamic> updatePackages)
+	    public void InstallPackages(IEnumerable<dynamic> updatePackages)
 	    {
 	        foreach (var updatePackage in updatePackages)
 	        {
@@ -89,7 +96,7 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
         /// <summary>
         ///   Принудительно вызвать процедуру создания необходимых контейнеров для конфигурации
         /// </summary>
-        public static void UpdateStore(string configurationId)
+        public void UpdateStore(string configurationId)
 	    {
 	        // Создаем индексы под системные конфигурации в случае необходимости
 	        RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "runmigration",null,
@@ -97,20 +104,20 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
 	        new
 	        {
 	            MigrationName = "UpdateStoreMigration",
-                ConfigurationName = configurationId
-	        });
+	            ConfigurationName = configurationId
+	        }, _version);
 
 
 	    }
 
 	    /// <summary>
-		///   Установить пакет обновления конфигурации
-		/// </summary>
-		/// <param name="updatePackage">Пакет обновления</param>
-		private static void InstallPackage(dynamic updatePackage)
+	    ///   Установить пакет обновления конфигурации
+	    /// </summary>
+	    /// <param name="updatePackage">Пакет обновления</param>
+	    private void InstallPackage(dynamic updatePackage)
 		{
 			//выполняем обновление метаданных с помощью пакета обновления
-            var response = RestQueryApi.QueryPostJsonRaw("Update", "Package", "Install", null, updatePackage);
+            var response = RestQueryApi.QueryPostJsonRaw("Update", "Package", "Install", null, updatePackage, _version);
 
 
 			if (!response.IsAllOk)

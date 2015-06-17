@@ -34,6 +34,8 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
         /// </summary>
         private string _activeConfiguration;
 
+        private string _version;
+
 	    private IGlobalContext _context;
 
 
@@ -76,8 +78,8 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
             var resultMessage = new StringBuilder();
 
 	        var metadataConfiguration =
-		        _context.GetComponent<IConfigurationMediatorComponent>()
-		                .ConfigurationBuilder.GetConfigurationObject(_activeConfiguration)
+		        _context.GetComponent<IConfigurationMediatorComponent>(_version)
+		                .ConfigurationBuilder.GetConfigurationObject(_version, _activeConfiguration)
 		                .MetadataConfiguration;
 				//_metadataConfigurationProvider.Configurations.FirstOrDefault(
 				//	c => c.ConfigurationId == _activeConfiguration);
@@ -99,7 +101,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
                     if (schema != null)
                     {
                         // convert document schema to index mapping
-						props = DocumentSchemaHelper.ExtractProperties(schema.Properties, _context.GetComponent<IConfigurationMediatorComponent>().ConfigurationBuilder);
+						props = DocumentSchemaHelper.ExtractProperties(_version, schema.Properties, _context.GetComponent<IConfigurationMediatorComponent>(_version).ConfigurationBuilder);
                     }
 
                     if (!versionBuilder.VersionExists(props.Count > 0 ? new IndexTypeMapping(props) : null))
@@ -109,7 +111,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
                         resultMessage.AppendLine();
                         resultMessage.AppendFormat("Version creation required for {0} document.", containerId);
 
-                        if (new ManagerFactoryDocument(_activeConfiguration, containerId)
+                        if (new ManagerFactoryDocument(_version, _activeConfiguration, containerId)
                             .BuildValidationWarningsMetadataReader().GetItems().Any())
                         {
                             resultMessage.AppendLine();
@@ -118,7 +120,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
                                 containerId);
                         }
 
-                        if (new ManagerFactoryDocument(_activeConfiguration, containerId)
+                        if (new ManagerFactoryDocument(_version, _activeConfiguration, containerId)
                             .BuildValidationErrorsMetadataReader().GetItems().Any())
                         {
                             resultMessage.AppendLine();
@@ -128,7 +130,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
                         }
 
                         foreach (var process in
-                            new ManagerFactoryDocument(_activeConfiguration, containerId).BuildProcessMetadataReader()
+                            new ManagerFactoryDocument(_version, _activeConfiguration, containerId).BuildProcessMetadataReader()
                                 .GetItems())
                         {
                             if (process.Transitions != null)
@@ -163,10 +165,11 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
         /// <summary>
         /// Устанавливает активную конфигурацию для правила проверки
         /// </summary>
-        public void AssignActiveConfiguration(string configurationId, IGlobalContext context)
+        public void AssignActiveConfiguration(string version, string configurationId, IGlobalContext context)
         {
 	        _context = context;
             _activeConfiguration = configurationId;
+            _version = version;
         }
     }
 }

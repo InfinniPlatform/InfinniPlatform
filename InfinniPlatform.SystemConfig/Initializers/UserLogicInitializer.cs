@@ -46,7 +46,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
 			foreach (var metadataConfiguration in configList)
 			{
 				IMetadataConfiguration configuration = metadataConfiguration;
-				_changeListener.RegisterOnChange("UserLogic", module =>
+				_changeListener.RegisterOnChange("UserLogic", (version,module) =>
 					                                  {
 						                                  if (configuration.ConfigurationId.ToLowerInvariant() ==
 						                                      module.ToLowerInvariant())

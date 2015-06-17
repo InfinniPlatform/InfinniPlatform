@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
-using System.Threading;
 using System.Web.Http;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestQuery;
-using InfinniPlatform.Factories;
-using InfinniPlatform.Hosting;
-using InfinniPlatform.Logging;
 using InfinniPlatform.WebApi.ConfigRequestProviders;
-using InfinniPlatform.WebApi.WebApi;
 using Newtonsoft.Json;
 
 namespace InfinniPlatform.WebApi.Controllers
@@ -36,8 +30,9 @@ namespace InfinniPlatform.WebApi.Controllers
 
 	    private IRestVerbsContainer GetMetadata()
         {
-            var metadata =  Request.GetRouteData().Values.ContainsKey("metadata") ? _apiControllerFactory.GetTemplate(
-				(string)Request.GetRouteData().Values["configuration"],
+            var metadata = Request.GetRouteData().Values.ContainsKey("metadata") ? _apiControllerFactory.GetTemplate(
+                (string)Request.GetRouteData().Values["version"], 
+                (string)Request.GetRouteData().Values["configuration"],
 				(string)Request.GetRouteData().Values["metadata"]) : null;
 			if (metadata == null)
 			{

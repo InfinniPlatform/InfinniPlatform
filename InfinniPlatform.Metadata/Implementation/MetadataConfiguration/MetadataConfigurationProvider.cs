@@ -32,34 +32,52 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 	        get { return _configurations; }
 	    }
 
-		public void RemoveConfiguration(string metadataConfigurationId)
+
+	    /// <summary>
+	    ///   Удалить указанную конфигурацию метаданных из списка загруженных конфигурации
+	    /// </summary>
+	    /// <param name="version">Версия конфигурации</param>
+	    /// <param name="metadataConfigurationId">Идентификатор конфигурации</param>
+	    public void RemoveConfiguration(string version, string metadataConfigurationId)
 		{
-			_configurations = _configurations.Where(c => c.ConfigurationId != metadataConfigurationId).ToList();
+            //в случае системной конфигурации версия не имеет значения, т.к. для всех системных конфигурациц Version = null (одновременно запускается только одна версия платформы)
+            _configurations = _configurations.Where(c => c.ConfigurationId.ToLowerInvariant() != metadataConfigurationId.ToLowerInvariant() || 
+                                                      c.Version != version || c.Version == null).ToList();
 		}
 
-		/// <summary>
+	    /// <summary>
 	    ///   Получить метаданные конфигурации
 	    /// </summary>
+	    /// <param name="version">Версия конфигурации</param>
 	    /// <param name="metadataConfigurationId">Идентификатор метаданных конфигурации</param>
 	    /// <returns>Метаданные конфигурации</returns>
-	    public IMetadataConfiguration GetMetadataConfiguration(string metadataConfigurationId) {
-			return Configurations.FirstOrDefault(c => c.ConfigurationId.ToLowerInvariant() == metadataConfigurationId.ToLowerInvariant());
+	    public IMetadataConfiguration GetMetadataConfiguration(string version, string metadataConfigurationId) 
+        {
+            //в случае системной конфигурации версия не имеет значения, т.к. для всех системных конфигурациц Version = null (одновременно запускается только одна версия платформы)
+			return Configurations.FirstOrDefault(c => c.ConfigurationId.ToLowerInvariant() == metadataConfigurationId.ToLowerInvariant() &&
+                                                      (c.Version == version || c.Version == null));
 		}
 
-		/// <summary>
-		///   Добавить конфигурацию метаданных
-		/// </summary>
-		/// <param name="metadataConfigurationId">Идентификатор конфигурации метаданных</param>
-		/// <param name="actionConfiguration">Конфигурация скриптовых модулей</param>
-		/// <param name="isEmbeddedConfiguration">Признак встроенной в код конфигурации C#</param>
-		/// <returns>Конфигурация метаданных</returns>
-		public IMetadataConfiguration AddConfiguration(string metadataConfigurationId, IScriptConfiguration actionConfiguration, bool isEmbeddedConfiguration)
+	    /// <summary>
+	    ///   Добавить конфигурацию метаданных
+	    /// </summary>
+	    /// <param name="version"></param>
+	    /// <param name="metadataConfigurationId">Идентификатор конфигурации метаданных</param>
+	    /// <param name="actionConfiguration">Конфигурация скриптовых модулей</param>
+	    /// <param name="isEmbeddedConfiguration">Признак встроенной в код конфигурации C#</param>
+	    /// <returns>Конфигурация метаданных</returns>
+	    public IMetadataConfiguration AddConfiguration(string version, string metadataConfigurationId, IScriptConfiguration actionConfiguration, bool isEmbeddedConfiguration)
 		{
-            var metadataConfiguration = new MetadataConfiguration(actionConfiguration,_serviceRegistrationContainerFactory.BuildServiceRegistrationContainer(metadataConfigurationId), _serviceTemplateConfiguration, isEmbeddedConfiguration) { ConfigurationId = metadataConfigurationId };
+            var metadataConfiguration = new MetadataConfiguration(actionConfiguration,_serviceRegistrationContainerFactory.BuildServiceRegistrationContainer(metadataConfigurationId), _serviceTemplateConfiguration, isEmbeddedConfiguration)
+            {
+                ConfigurationId = metadataConfigurationId,
+                Version = version
+            };
 			_configurations.Add(metadataConfiguration);
 			return metadataConfiguration;
 		}
 
 	}
+
 
 }

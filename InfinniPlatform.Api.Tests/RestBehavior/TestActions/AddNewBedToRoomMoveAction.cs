@@ -14,7 +14,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
 
 		        // Койка освободилась - income
 
-		        var entry = target.Context.GetComponent<IRegistryComponent>().CreateAccumulationRegisterEntry(target.Item.Configuration, "availablebeds", target.Item.Metadata,
+		        var entry = target.Context.GetComponent<IRegistryComponent>(target.Version).CreateAccumulationRegisterEntry(target.Item.Configuration, "availablebeds", target.Item.Metadata,
 		            target.Item, target.Item.Date);
 
 		        entry.EntryType = RegisterEntryType.Income;
@@ -22,13 +22,13 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
 		        entry.Bed = target.Item.Bed;
 		        entry.Value = 1; // Изменение количества на единицу
 
-		        target.Context.GetComponent<IRegistryComponent>().PostRegisterEntries(target.Item.Configuration, "availablebeds", new[]{entry});
+		        target.Context.GetComponent<IRegistryComponent>(target.Version).PostRegisterEntries(target.Item.Configuration, "availablebeds", new[]{entry});
 		    }
 		    else
 		    {
 		        // Добавляем данные в регистр сведений
-                
-		        var infoEntry = target.Context.GetComponent<IRegistryComponent>().CreateInfoRegisterEntry(target.Item.Configuration, "inforegister",
+
+                var infoEntry = target.Context.GetComponent<IRegistryComponent>(target.Version).CreateInfoRegisterEntry(target.Item.Configuration, "inforegister",
 		            target.Item.Metadata, target.Item, target.Item.Date);
 
 		        infoEntry.EntryType = RegisterEntryType.Income;
@@ -36,7 +36,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
 		        infoEntry.Bed = target.Item.Bed;
 		        infoEntry.Value = 1; // Изменение количества на единицу
 
-		        target.Context.GetComponent<IRegistryComponent>().PostRegisterEntries(target.Item.Configuration, "inforegister", new[]{infoEntry});
+                target.Context.GetComponent<IRegistryComponent>(target.Version).PostRegisterEntries(target.Item.Configuration, "inforegister", new[] { infoEntry });
 		    }
 
 		}

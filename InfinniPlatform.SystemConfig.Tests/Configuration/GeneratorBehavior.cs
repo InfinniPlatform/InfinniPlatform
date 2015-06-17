@@ -38,7 +38,7 @@ namespace InfinniPlatform.SystemConfig.Tests.Configuration
 
 			string configurationId = "Integration";
 
-			var manager = ManagerFactoryConfiguration.BuildConfigurationManager();
+			var manager = ManagerFactoryConfiguration.BuildConfigurationManager(null);
 
 			var item = manager.CreateItem(configurationId);
 			manager.DeleteItem(item);
@@ -51,7 +51,7 @@ namespace InfinniPlatform.SystemConfig.Tests.Configuration
             manager.MergeItem(item);
 
 			//создаем метаданные справочника для тестирования
-			var builder = new RestQueryBuilder("SystemConfig", "metadata", "creategenerator", null);
+			var builder = new RestQueryBuilder(null,"SystemConfig", "metadata", "creategenerator", null);
 
 			var eventObject = new
 			{
@@ -68,14 +68,14 @@ namespace InfinniPlatform.SystemConfig.Tests.Configuration
 			var package = new PackageBuilder().BuildPackage(configurationId, "test",
 														  "InfinniPlatform.SystemConfig.Tests.dll");
 
-			UpdateApi.InstallPackages(new[] { package });
+			new UpdateApi(null).InstallPackages(new[] { package });
 
-			RestQueryApi.QueryPostNotify(configurationId);
+			RestQueryApi.QueryPostNotify(null, configurationId);
 
-			UpdateApi.UpdateStore(configurationId);
+            new UpdateApi(null).UpdateStore(configurationId);
 
 			//генерируем метаданные напрямую
-			builder = new RestQueryBuilder("SystemConfig", "metadata", "generatemetadata", null);
+			builder = new RestQueryBuilder(null,"SystemConfig", "metadata", "generatemetadata", null);
 
 			var body = new
 						   {
@@ -97,7 +97,7 @@ namespace InfinniPlatform.SystemConfig.Tests.Configuration
 					MetadataName = "TestView"
 				};
 
-			builder = new RestQueryBuilder("SystemConfig", "metadata", "getmanagedmetadata", null);
+			builder = new RestQueryBuilder(null,"SystemConfig", "metadata", "getmanagedmetadata", null);
 			result = builder.QueryPostJson(null, bodyMetadata).ToDynamic();
 
 			Assert.IsNotNull(result);

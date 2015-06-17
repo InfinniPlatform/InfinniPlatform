@@ -12,9 +12,9 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 	/// </summary>
 	sealed class ReportMetadataService : BaseMetadataService
 	{
-		public ReportMetadataService(string configId)
+		public ReportMetadataService(string version, string configId)
 		{
-			_factory = new Lazy<ManagerFactoryConfiguration>(() => new ManagerFactoryConfiguration(configId), LazyThreadSafetyMode.ExecutionAndPublication);
+			_factory = new Lazy<ManagerFactoryConfiguration>(() => new ManagerFactoryConfiguration(version, configId), LazyThreadSafetyMode.ExecutionAndPublication);
 		}
 
 

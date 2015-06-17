@@ -43,17 +43,17 @@ namespace InfinniPlatform.SystemConfig.Configurator.Generators
 
 			//генерируем сервис
             RestQueryApi.QueryPostJsonRaw("systemconfig", "metadata", "generateservicewithoutstate", null, new
-																									   {
-                                                                                                           ActionName = target.Item.GeneratorName,
-																										   Configuration = target.Item.Configuration,
-																										   ActionUnit = target.Item.ActionUnit,
-																										   ContextTypeKind = ContextTypeKind.ApplyMove,
-																										   Metadata = target.Item.Metadata
-																									   });
+            {
+                ActionName = target.Item.GeneratorName,
+                Configuration = target.Item.Configuration,
+                ActionUnit = target.Item.ActionUnit,
+                ContextTypeKind = ContextTypeKind.ApplyMove,
+                Metadata = target.Item.Metadata,
+            }, target.Version);
 			//создаем генератор
             dynamic generator = MetadataBuilderExtensions.BuildGenerator(target.Item.GeneratorName, target.Item.GeneratorName,target.Item.ActionUnit, target.Item.MetadataType);
 
-			MetadataManagerElement manager = new ManagerFactoryDocument(target.Item.Configuration, target.Item.Metadata).BuildGeneratorManager();
+			MetadataManagerElement manager = new ManagerFactoryDocument(target.Version, target.Item.Configuration, target.Item.Metadata).BuildGeneratorManager();
 
 			//создаем новый генератор в конфигурации
 			manager.MergeItem(generator);

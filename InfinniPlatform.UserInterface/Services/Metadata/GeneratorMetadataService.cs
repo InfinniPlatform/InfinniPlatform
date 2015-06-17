@@ -11,9 +11,9 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 	/// </summary>
 	sealed class GeneratorMetadataService : BaseMetadataService
 	{
-		public GeneratorMetadataService(string configId, string documentId)
+		public GeneratorMetadataService(string version, string configId, string documentId)
 		{
-			_factory = new Lazy<ManagerFactoryDocument>(() => new ManagerFactoryDocument(configId, documentId), LazyThreadSafetyMode.ExecutionAndPublication);
+			_factory = new Lazy<ManagerFactoryDocument>(() => new ManagerFactoryDocument(version, configId, documentId), LazyThreadSafetyMode.ExecutionAndPublication);
 		}
 
 

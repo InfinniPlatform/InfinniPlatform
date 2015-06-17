@@ -24,7 +24,9 @@ namespace InfinniPlatform.Api.Security
 
 		public bool VerifyPassword(string hashedPassword, string providedPassword)
 		{
-			var processMetadata =  _globalContext.GetComponent<IMetadataComponent>().GetMetadata(AuthorizationStorageExtensions.AuthorizationConfigId, "Common", MetadataType.Process,
+            //Не предполагается версионности конфигурации авторизации.
+            //Для любой прикладной конфигурации предполагается использование одной актуальной конфигурации авторизации
+			var processMetadata =  _globalContext.GetComponent<IMetadataComponent>(null).GetMetadata(null, AuthorizationStorageExtensions.AuthorizationConfigId, "Common", MetadataType.Process,
 			                               "VerifyPassword");
 
 			
@@ -35,7 +37,7 @@ namespace InfinniPlatform.Api.Security
 				scriptArguments.Item.HashedPassword = hashedPassword;
 				scriptArguments.Item.ProvidedPassword = providedPassword;
 				scriptArguments.Context = _globalContext;
-				_globalContext.GetComponent<IScriptRunnerComponent>().GetScriptRunner(AuthorizationStorageExtensions.AuthorizationConfigId)
+				_globalContext.GetComponent<IScriptRunnerComponent>(null).GetScriptRunner(null, AuthorizationStorageExtensions.AuthorizationConfigId)
 					.InvokeScript(processMetadata.Transitions[0].ActionPoint.ScenarioId, scriptArguments);
 
 				//устанавливаем в качестве результата роли, которые вернула точка расширения

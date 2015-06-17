@@ -11,13 +11,13 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             target.Result = IndexedStorageExtension.GetDocument(target.Item.Id, target.Item.Configuration, target.Item.Metadata ?? string.Empty);
             if (target.Result != null)
             {
-                target.Context.GetComponent<ILogComponent>().GetLog().Info(
+                target.Context.GetComponent<ILogComponent>(target.Version).GetLog().Info(
                     "find \"{0}\" document from index \"{1}\", type \"{2}\" ", target.Result.ToString(),
                     target.Item.Configuration,target.Item.Metadata);
             }
             else
             {
-                target.Context.GetComponent<ILogComponent>().GetLog().Error("no documents found from type \"{0}\"", target.Item.Metadata);
+                target.Context.GetComponent<ILogComponent>(target.Version).GetLog().Error("no documents found from type \"{0}\"", target.Item.Metadata);
             }
         }
     }

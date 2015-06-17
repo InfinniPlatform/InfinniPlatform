@@ -23,10 +23,10 @@ namespace InfinniPlatform.SystemConfig.Tests.Authorization
 
 			TestApi.InitClientRouting(TestSettings.DefaultHostingConfig);
 
-			IndexApi.RebuildIndex(AuthorizationStorageExtensions.AuthorizationConfigId,AuthorizationStorageExtensions.UserStore);
-			IndexApi.RebuildIndex(AuthorizationStorageExtensions.AuthorizationConfigId, AuthorizationStorageExtensions.RoleStore);
-			IndexApi.RebuildIndex(AuthorizationStorageExtensions.AuthorizationConfigId, AuthorizationStorageExtensions.UserRoleStore);
-			IndexApi.RebuildIndex(AuthorizationStorageExtensions.AuthorizationConfigId, AuthorizationStorageExtensions.ClaimStore);
+			new IndexApi().RebuildIndex(AuthorizationStorageExtensions.AuthorizationConfigId,AuthorizationStorageExtensions.UserStore);
+			new IndexApi().RebuildIndex(AuthorizationStorageExtensions.AuthorizationConfigId, AuthorizationStorageExtensions.RoleStore);
+			new IndexApi().RebuildIndex(AuthorizationStorageExtensions.AuthorizationConfigId, AuthorizationStorageExtensions.UserRoleStore);
+			new IndexApi().RebuildIndex(AuthorizationStorageExtensions.AuthorizationConfigId, AuthorizationStorageExtensions.ClaimStore);
 		}
 
 		[TestFixtureTearDown]

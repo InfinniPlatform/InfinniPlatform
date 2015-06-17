@@ -18,7 +18,7 @@ namespace InfinniPlatform.RestfulApi.Auth
         public void Action(IApplyContext target)
         {
 
-	        if (IndexApi.IndexExists(AuthorizationStorageExtensions.AuthorizationConfigId,
+	        if (new IndexApi().IndexExists(AuthorizationStorageExtensions.AuthorizationConfigId,
 	                                 AuthorizationStorageExtensions.UserRoleStore))
 	        {
 
@@ -27,8 +27,8 @@ namespace InfinniPlatform.RestfulApi.Auth
 				target.Item.Metadata = AuthorizationStorageExtensions.UserRoleStore;
 
 
-				var documentProvider = target.Context.GetComponent<InprocessDocumentComponent>()
-						  .GetDocumentProvider(target.Item.Configuration, target.Item.Metadata, target.UserName);
+                var documentProvider = target.Context.GetComponent<InprocessDocumentComponent>(target.Version)
+						  .GetDocumentProvider(target.Version, target.Item.Configuration, target.Item.Metadata, target.UserName);
 
 		        if (documentProvider != null)
 		        {

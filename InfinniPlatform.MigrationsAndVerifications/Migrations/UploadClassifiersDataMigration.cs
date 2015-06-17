@@ -21,7 +21,8 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         readonly List<MigrationParameter> _parameters = new List<MigrationParameter>();
 
         private IMetadataConfiguration _metadataConfiguration;
-        
+        private string _version;
+
         /// <summary>
         /// Текстовое описание миграции
         /// </summary>
@@ -84,7 +85,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                         item.Metadata = containerName;
                         item.FileContent = Convert.ToBase64String(File.ReadAllBytes(classifier));
 
-                        RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "ImportDataFromJson", null, item);
+                        RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "ImportDataFromJson", null, item,_version);
                     }
                     else
                     {
@@ -116,15 +117,15 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         /// <summary>
         /// Устанавливает активную конфигурацию для миграции
         /// </summary>
-        public void AssignActiveConfiguration(string configurationId, IGlobalContext context)
+        public void AssignActiveConfiguration(string version, string configurationId, IGlobalContext context)
         {
-
+            _version = version;
 
             _parameters.Add(new MigrationParameter { Caption = "Path to folder" });
 
 			var configObject =
-				context.GetComponent<IConfigurationMediatorComponent>()
-					   .ConfigurationBuilder.GetConfigurationObject("classifierstorage");
+				context.GetComponent<IConfigurationMediatorComponent>(_version)
+					   .ConfigurationBuilder.GetConfigurationObject(_version, "classifierstorage");
 
 			if (configObject != null)
 			{

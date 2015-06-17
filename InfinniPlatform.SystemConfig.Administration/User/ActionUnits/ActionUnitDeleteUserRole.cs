@@ -17,12 +17,12 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
         {
             dynamic item = target.Item.Document ?? target.Item;
 
-            var api = target.Context.GetComponent<ISecurityComponent>();
+            var api = target.Context.GetComponent<ISecurityComponent>(target.Version);
 
             dynamic user = api.Users.FirstOrDefault(u => u.UserName == item.UserName);
 
             //добавляем роль в конфигурации Authorization
-            var authApi = target.Context.GetComponent<AuthApi>();
+            var authApi = target.Context.GetComponent<AuthApi>(target.Version);
 
             authApi.RemoveUserRole(item.UserName, item.RoleName);
 
@@ -30,7 +30,7 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
             {
                 IEnumerable<dynamic> userRoles = DynamicWrapperExtensions.ToEnumerable(user.UserRoles);
                 user.UserRoles = userRoles.Where(r => r.DisplayName != item.RoleName).ToList();
-                target.Context.GetComponent<DocumentApi>().SetDocument("Administration", "User", user);
+                target.Context.GetComponent<DocumentApi>(target.Version).SetDocument("Administration", "User", user);
             }
 
             target.Result = new DynamicWrapper();

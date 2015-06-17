@@ -16,6 +16,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 	public class MetadataManagerElement : IDataManager
 	{
 		private readonly string _parentUid;
+	    private readonly string _version;
 		private readonly MetadataCacheRefresher _metadataCacheRefresher;
 
 		private readonly IDataReader _metadataReader;
@@ -23,15 +24,16 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 		private readonly string _metadataType;
 		private readonly string _rootMetadataIndex;
 
-		/// <summary>
-		///   Публичный конструктор менеджера метаданных объектов конфигурации
-		/// </summary>
-		/// <param name="parentUid">Наименование корневого объекта метаданных (Name элемента метаданных)</param>
-		/// <param name="metadataCacheRefresher">Механизм обновления кэша метаданных</param>
-		/// <param name="metadataReader">Провайдер для чтения метаданных указанного типа</param>
-		/// <param name="metadataContainerInfo">Информация о контейнере метаданных</param>
-		/// <param name="ownerMetadataType">Контейнер, содержащий метаданные, по которым выполняется поиск данных</param>
-		public MetadataManagerElement(string parentUid, MetadataCacheRefresher metadataCacheRefresher, IDataReader metadataReader, IMetadataContainerInfo metadataContainerInfo, string ownerMetadataType)
+	    /// <summary>
+	    ///   Публичный конструктор менеджера метаданных объектов конфигурации
+	    /// </summary>
+	    /// <param name="version">Версия конфигурации</param>
+	    /// <param name="parentUid">Идентификатор (Id) родительского контейнера метаданных</param>
+	    /// <param name="metadataCacheRefresher">Механизм обновления кэша метаданных</param>
+	    /// <param name="metadataReader">Провайдер для чтения метаданных указанного типа</param>
+	    /// <param name="metadataContainerInfo">Информация о контейнере метаданных</param>
+	    /// <param name="ownerMetadataType">Контейнер, содержащий метаданные, по которым выполняется поиск данных</param>
+	    public MetadataManagerElement(string version, string parentUid, MetadataCacheRefresher metadataCacheRefresher, IDataReader metadataReader, IMetadataContainerInfo metadataContainerInfo, string ownerMetadataType)
 		{
 			if (parentUid == null)
 			{
@@ -39,6 +41,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 			}
 
 			_parentUid = parentUid;
+	        _version = version;
 			_metadataCacheRefresher = metadataCacheRefresher;
 
 			_metadataReader = metadataReader;
@@ -56,16 +59,17 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 			get { return _metadataReader; }
 		}
 
-		/// <summary>
-		///   Сформировать предзаполненный объект метаданных
-		/// </summary>
-		/// <param name="name"></param>
-		/// <returns>Предзаполненный объект метаданных</returns>
-		public dynamic CreateItem(string name)
+	    /// <summary>
+	    ///   Сформировать предзаполненный объект метаданных
+	    /// </summary>
+	    /// <param name="name"></param>
+	    /// <returns>Предзаполненный объект метаданных</returns>
+	    public dynamic CreateItem(string name)
 		{
 			var instance = new DynamicWrapper();
 			instance
 				.BuildId(Guid.NewGuid().ToString())
+                .BuildProperty("Version",_version)
 				.BuildName(name)
 				.BuildCaption(name)
 				.BuildDescription(name);
@@ -78,7 +82,8 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 		/// <param name="objectToCreate">Метаданные создаваемого объекта</param>
 		public void InsertItem(dynamic objectToCreate)
 		{
-			MergeItem(objectToCreate);
+
+            MergeItem(objectToCreate);
 
 		}
 
@@ -87,6 +92,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 		    var updatingMetadata = MetadataExtensions.GetStoredMetadata(_metadataReader, objectToCreate) ?? objectToCreate;
             
 			objectToCreate.ParentId = _parentUid;
+		    objectToCreate.Version = _version;
 
 			//создаем заголовочную часть метаданных
 			dynamic metadataHeader = MetadataBuilderExtensions.BuildMetadataHeader(objectToCreate);
@@ -108,22 +114,23 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 			if (container.Index > -1)
 			{
 				//если находим, то апдейтим существующее
-				body = new UpdateCollectionItem(_metadataContainerName, container.Index, metadataHeader);
+				body = new UpdateCollectionItem(_metadataContainerName, container.Index, metadataHeader,_version);
 				
 			}
 			else
 			{
 				//иначе создаем новое 
-				body = new AddCollectionItem(_metadataContainerName, metadataHeader);
+				body = new AddCollectionItem(_metadataContainerName, metadataHeader,_version);
 			}
+
 
 			//обновляем заголовочную часть в метаданных родительского объекта (ссылку на метаданные конкретного типа)
 			//заменяем объект заголовочной части
-			RestQueryApi.QueryPostRaw("SystemConfig", RootMetadataIndex, "changemetadata", _parentUid, body);
+			RestQueryApi.QueryPostRaw("SystemConfig", RootMetadataIndex, "changemetadata", _parentUid, body,_version);
 
 			//обновляем полные метаданные конкретного типа
 			//заменяем полные метаданные в индексе
-			RestQueryApi.QueryPostRaw("SystemConfig", MetadataIndex, "changemetadata", objectToCreate.Id, objectToCreate, true);
+			RestQueryApi.QueryPostRaw("SystemConfig", MetadataIndex, "changemetadata", objectToCreate.Id, objectToCreate,_version, true);
 
 			if (_metadataCacheRefresher != null)
 			{
@@ -162,19 +169,19 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 
 	            //удаляем из метаданных конфигурации
 	            var configurationBody =
-	                new RemoveCollectionItem(string.Format("{0}.$.Name:{1}", _metadataContainerName, element.Name));
+                    new RemoveCollectionItem(string.Format("{0}.$.Name:{1}", _metadataContainerName, element.Name), _version);
 
 	            dynamic metadataContainer = GetMetadataContainer(element.Name);
 
 	            RestQueryApi.QueryPostRaw("SystemConfig", RootMetadataIndex, "changemetadata", _parentUid,
-	                                      configurationBody);
+	                                      configurationBody, _version);
 
 	            if (metadataContainer.Index > -1)
 	            {
 
 	                if (metadataContainer.Id != null)
 	                {
-	                    RestQueryApi.QueryPostJsonRaw("SystemConfig", MetadataIndex, "deletemetadata", metadataContainer.Id, null);
+	                    RestQueryApi.QueryPostJsonRaw("SystemConfig", MetadataIndex, "deletemetadata", metadataContainer.Id, null, _version);
 
                         if (_metadataCacheRefresher != null)
                         {
@@ -186,27 +193,6 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 	        }
 
 	    }
-
-		/// <summary>
-		///   Применить изменения метаданных
-		/// </summary>
-		/// <param name="metadataName">Наименование объекта метаданных</param>
-		/// <param name="eventDefinitions">События для применения к метаданным</param>
-		public void ApplyMetadataChanges(string metadataName, IEnumerable<object> eventDefinitions)
-		{
-			foreach (var objectToEventSerializer in eventDefinitions)
-			{
-
-				var metadataId = GetMetadataContainer(metadataName);
-				//обновляем заголовочную часть в метаданных конфигурации
-				RestQueryApi.QueryPostRaw("SystemConfig", RootMetadataIndex, "changemetadata", _parentUid, MetadataBuilderExtensions.BuildMetadataHeader(objectToEventSerializer));
-
-				//обновляем полные метаданные меню
-				RestQueryApi.QueryPostRaw("SystemConfig", MetadataIndex, "changemetadata", metadataId, objectToEventSerializer);
-
-			}
-
-		}
 
 
 		/// <summary>

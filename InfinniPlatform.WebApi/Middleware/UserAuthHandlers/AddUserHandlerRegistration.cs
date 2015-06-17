@@ -30,9 +30,11 @@ namespace InfinniPlatform.WebApi.Middleware.UserAuthHandlers
         {
             dynamic body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
 
+            var routeDictionary = RouteFormatter.GetRouteDictionary(context);
+
             if (body.UserName != null && body.Password != null)
             {
-                return new ValueRequestHandlerResult(new UsersApi().AddUser(body.UserName.ToString(), body.Password.ToString()));
+                return new ValueRequestHandlerResult(new UsersApi(routeDictionary["version"]).AddUser(body.UserName.ToString(), body.Password.ToString()));
             }
 
             return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);

@@ -25,6 +25,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
 		{
 			string config = ConfigRequestProvider.GetConfiguration();
 			string metadata = ConfigRequestProvider.GetMetadataIdentifier();
+		    string version = ConfigRequestProvider.GetVersion();
 			
 			var target = new UploadContext
 			{
@@ -36,7 +37,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
 				Context = _globalContext
 			};
 
-			var metadataConfig = _globalContext.GetComponent<IMetadataConfigurationProvider>().GetMetadataConfiguration(ConfigRequestProvider.GetConfiguration());
+            var metadataConfig = _globalContext.GetComponent<IMetadataConfigurationProvider>(ConfigRequestProvider.GetVersion()).GetMetadataConfiguration(version, ConfigRequestProvider.GetConfiguration());
 
 			metadataConfig.MoveWorkflow(metadata, metadataConfig.GetExtensionPointValue(ConfigRequestProvider, "Upload"), target);
 

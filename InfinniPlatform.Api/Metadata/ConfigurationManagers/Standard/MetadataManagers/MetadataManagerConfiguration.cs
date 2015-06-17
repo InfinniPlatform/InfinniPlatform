@@ -15,10 +15,12 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
     public sealed class MetadataManagerConfiguration : IDataManager
     {
         private readonly IDataReader _metadataReader;
+        private readonly string _version;
 
-        public MetadataManagerConfiguration(IDataReader metadataReader)
+        public MetadataManagerConfiguration(IDataReader metadataReader, string version)
         {
             _metadataReader = metadataReader;
+            _version = version;
         }
 
         private void SetConfiguration(string name, dynamic metadataConfig)
@@ -29,11 +31,11 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
         /// <summary>
         ///   Сформировать предзаполненный объект метаданных
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="name">Наименование создаваемой конфигурации</param>
         /// <returns>Предзаполненный объект метаданных</returns>
         public dynamic CreateItem(string name)
         {
-            return MetadataBuilderExtensions.BuildConfiguration(name, name, name);
+            return MetadataBuilderExtensions.BuildConfiguration(name, name, name, _version);
         }
 
         /// <summary>
@@ -59,7 +61,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
             }
 
             var metadataConfig = MetadataBuilderExtensions.BuildConfiguration(objectToCreate.Name, objectToCreate.Caption,
-                                                                              objectToCreate.Description);
+                                                                              objectToCreate.Description, objectToCreate.Version);
 
             metadataConfig.Id = objectToCreate.Id;
 
@@ -72,9 +74,9 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 
         private void InsertCommonDocument(string configurationId)
         {
-            var manager = new ManagerFactoryConfiguration(configurationId).BuildDocumentManager();
+            var manager = new ManagerFactoryConfiguration(_version, configurationId).BuildDocumentManager();
 
-            var document = MetadataBuilderExtensions.BuildDocument("Common", "Common options", "Common options", "Common");
+            var document = MetadataBuilderExtensions.BuildDocument("Common", "Common options", "Common options", "Common",_version);
 
             manager.InsertItem(document);
         }
@@ -82,12 +84,12 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
         private void InsertRegistersCommonDocument(string configurationId)
         {
             // В конфигурации должен быть один документ, хранящий общие сведения по всем регистрам
-            var manager = new ManagerFactoryConfiguration(configurationId).BuildDocumentManager();
+            var manager = new ManagerFactoryConfiguration(_version, configurationId).BuildDocumentManager();
             var document = MetadataBuilderExtensions.BuildDocument(
                 configurationId + RegisterConstants.RegistersCommonInfo,
                 "Registers common options",
                 "Storage for register's common information (e.g. actual date)",
-                configurationId + RegisterConstants.RegistersCommonInfo);
+                configurationId + RegisterConstants.RegistersCommonInfo,_version);
 
             document.SearchAbility = 0; // SearchAbilityType.KeywordBasedSearch;
             document.Versioning = 4;
@@ -98,17 +100,16 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
         /// <summary>
         ///   Удалить метаданные указанной конфигурации
         /// </summary>
-        /// <param name="metadataObject"></param>
+        /// <param name="metadataObject">Удаляемый объект метаданных</param>
         public void DeleteItem(dynamic metadataObject)
         {
 
             var configHeader =
-                MetadataExtensions.GetStoredMetadata(ManagerFactoryConfiguration.BuildConfigurationMetadataReader(),
-                                                     metadataObject);
+                MetadataExtensions.GetStoredMetadata(ManagerFactoryConfiguration.BuildConfigurationMetadataReader(_version),metadataObject);
 
             if (configHeader != null)
             {
-                var managerConfig = new ManagerFactoryConfiguration(configHeader.Name);
+                var managerConfig = new ManagerFactoryConfiguration(_version, configHeader.Name);
                 foreach (var configMetadataType in MetadataType.GetConfigMetadataTypes())
                 {
                     var manager = managerConfig.BuildManagerByType(configMetadataType);
@@ -118,28 +119,9 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
                     {
                         manager.DeleteItem(item);
                     }
-
-
                 }
-                RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "deletemetadata", configHeader.Name, null);
-            }
-        }
 
-        /// <summary>
-        ///   Применить изменения метаданных конфигурации
-        /// </summary>
-        /// <param name="metadataName">Наименование объекта метаданных</param>
-        /// <param name="eventDefinitions">События для применения к метаданным</param>
-        public void ApplyMetadataChanges(string metadataName, IEnumerable<object> eventDefinitions)
-        {
-            foreach (var @event in eventDefinitions)
-            {
-                //имзменение метаданных описывается только с использованием механизма событий
-                var result = RestQueryApi.QueryPostRaw("SystemConfig", "metadata", "changemetadata", metadataName, @event);
-                if (!result.IsAllOk)
-                {
-                    throw new ArgumentException(result.Content);
-                }
+                RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "deletemetadata", configHeader.Name, null, _version);
             }
         }
 

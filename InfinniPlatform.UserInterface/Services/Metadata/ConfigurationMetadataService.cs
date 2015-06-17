@@ -11,9 +11,15 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 	/// </summary>
 	sealed class ConfigurationMetadataService : BaseMetadataService
 	{
-		public static readonly ConfigurationMetadataService Instance = new ConfigurationMetadataService();
+	    private readonly string _version;
 
-		public override IEnumerable GetItems()
+	    public ConfigurationMetadataService(string version)
+	    {
+	        _version = version;
+            
+	    }
+
+	    public override IEnumerable GetItems()
 		{
 			var items = base.GetItems();
 
@@ -27,12 +33,12 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		protected override IDataReader CreateDataReader()
 		{
-			return ManagerFactoryConfiguration.BuildConfigurationMetadataReader();
+			return ManagerFactoryConfiguration.BuildConfigurationMetadataReader(_version);
 		}
 
 		protected override IDataManager CreateDataManager()
 		{
-			return ManagerFactoryConfiguration.BuildConfigurationManager();
+			return ManagerFactoryConfiguration.BuildConfigurationManager(_version);
 		}
 	}
 }

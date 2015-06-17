@@ -2,6 +2,7 @@
 using System.Linq;
 using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes;
+using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.RestApi.DataApi;
 
 namespace InfinniPlatform.SystemConfig.Configurator
@@ -23,20 +24,19 @@ namespace InfinniPlatform.SystemConfig.Configurator
 
 			if (!Guid.TryParse(target.Id, out guid))
 			{
-
+               
 				var eventNameMetadata = target.Id;
 
-			    var managerIdentifiers = target.Context.GetComponent<ISystemComponent>().ManagerIdentifiers;
+			    var managerIdentifiers = target.Context.GetComponent<ISystemComponent>(target.Version).ManagerIdentifiers;
 
-			    target.Id = managerIdentifiers.GetConfigurationUid(eventNameMetadata);
-
+                target.Id = managerIdentifiers.GetConfigurationUid(target.Version, eventNameMetadata);
 			}
 
             dynamic document;
 
             if (!string.IsNullOrEmpty(target.Id))
             {
-                var documentApi = target.Context.GetComponent<DocumentApi>();
+                var documentApi = target.Context.GetComponent<DocumentApi>(target.Version);
 
                 document = documentApi.GetDocument(target.Id);
                 if (document != null)

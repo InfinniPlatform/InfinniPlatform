@@ -7,9 +7,16 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
 {
 	public sealed class MetadataReaderConfiguration : IDataReader
 	{
-		public IEnumerable<dynamic> GetItems()
+	    private readonly string _version;
+
+	    public MetadataReaderConfiguration(string version)
+	    {
+	        _version = version;
+	    }
+
+	    public IEnumerable<dynamic> GetItems()
 		{
-            return DynamicWrapperExtensions.ToEnumerable(RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getregisteredconfiglist", null, null).ToDynamic().ConfigList);
+            return DynamicWrapperExtensions.ToEnumerable(RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getregisteredconfiglist", null, null, _version).ToDynamic().ConfigList);
 		}
 
 		public dynamic GetItem(string metadataName)
@@ -17,7 +24,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
 			dynamic bodyQuery = new DynamicWrapper();
 			bodyQuery.ConfigId = metadataName;
 
-            dynamic itemResult = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getmetadata", null, bodyQuery).ToDynamic();
+            dynamic itemResult = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getmetadata", null, null, _version ).ToDynamic();
 
 			if (itemResult.QueryResult == null)
 			{

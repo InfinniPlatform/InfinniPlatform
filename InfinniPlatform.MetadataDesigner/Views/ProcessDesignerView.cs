@@ -43,16 +43,11 @@ namespace InfinniPlatform.MetadataDesigner.Views
 			IEnumerable<string> validationRuleErrorHandlers = null;
 			IEnumerable<string> states = null;
 
-			actionHandlers = ViewModelExtension.BuildActionHandlerDescriptions(ConfigId(), DocumentId());
-			validationHandlers = ViewModelExtension.BuildValidationHandlerDescriptions(ConfigId(), DocumentId());
-			validationRuleWarningHandlers = ViewModelExtension.BuildValidationRuleWarningDescriptions(ConfigId(), DocumentId());
-			validationRuleErrorHandlers = ViewModelExtension.BuildValidationRuleErrorDescriptions(ConfigId(), DocumentId());
+			actionHandlers = ViewModelExtension.BuildActionHandlerDescriptions(Version(), ConfigId(), DocumentId());
+            validationHandlers = ViewModelExtension.BuildValidationHandlerDescriptions(Version(), ConfigId(), DocumentId());
+            validationRuleWarningHandlers = ViewModelExtension.BuildValidationRuleWarningDescriptions(Version(), ConfigId(), DocumentId());
+            validationRuleErrorHandlers = ViewModelExtension.BuildValidationRuleErrorDescriptions(Version(), ConfigId(), DocumentId());
 			
-            //TODO: Везде отказываемся от применения метаданных статусов документов
-            //Пока не отказываемся
-			states = ViewModelExtension.BuildStatuses(ConfigId(), DocumentId());
-
-
 			_selectedTemplate.ActionHandlers = actionHandlers;
 			_selectedTemplate.ValidationErrors = validationRuleErrorHandlers;
 			_selectedTemplate.ValidationWarnings = validationRuleWarningHandlers;
@@ -75,8 +70,9 @@ namespace InfinniPlatform.MetadataDesigner.Views
 
 				if (stateFrom != null)
 				{
-					transition.BuildProperty("StateFrom",
-						ViewModelExtension.BuildStatusByName(ConfigId(), DocumentId(), stateFrom));
+                    //TODO Убрать комбо-бокс для статусов
+                    //transition.BuildProperty("StateFrom",
+                    //    ViewModelExtension.BuildStatusByName(ConfigId(), DocumentId(), stateFrom));
 				}
 
 				if (validationPointError != null)
@@ -227,6 +223,8 @@ namespace InfinniPlatform.MetadataDesigner.Views
 		public Func<string> ConfigId { get; set; }
 
 		public Func<string> DocumentId { get; set; }
+
+        public Func<string> Version { get; set; } 
 
 		public EditMode EditMode { get; set; }
 

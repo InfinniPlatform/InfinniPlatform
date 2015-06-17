@@ -26,11 +26,11 @@ namespace InfinniPlatform.RestfulApi.Auth
 			aclApi.GrantAccess(userName, AuthorizationStorageExtensions.AdministrationConfigId);			
 
 			//ищем конфигурацию авторизации и добавляем права на меню авторизации
-			var metadataComponent = target.Context.GetComponent<IMetadataComponent>();
+            var metadataComponent = target.Context.GetComponent<IMetadataComponent>(target.Version);
 
-			var menuAuth = metadataComponent.GetMetadata(AuthorizationStorageExtensions.AuthorizationConfigId, "Common", MetadataType.Menu, "MainMenu");
-			var menuAdmin = metadataComponent.GetMetadata(AuthorizationStorageExtensions.AdministrationConfigId, "Common", MetadataType.Menu, "MainMenu");
-			IEnumerable<dynamic> configs = metadataComponent.GetConfigMetadata();
+			var menuAuth = metadataComponent.GetMetadata(target.Version, AuthorizationStorageExtensions.AuthorizationConfigId, "Common", MetadataType.Menu, "MainMenu");
+			var menuAdmin = metadataComponent.GetMetadata(target.Version, AuthorizationStorageExtensions.AdministrationConfigId, "Common", MetadataType.Menu, "MainMenu");
+			IEnumerable<dynamic> configs = metadataComponent.GetConfigMetadata(target.Version);
 
 			var configAuth = configs.FirstOrDefault(c => c.Name == AuthorizationStorageExtensions.AuthorizationConfigId);
 			var configAdmin = configs.FirstOrDefault(c => c.Name == AuthorizationStorageExtensions.AdministrationConfigId);

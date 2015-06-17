@@ -47,13 +47,5 @@ namespace InfinniPlatform.Api.ContextTypes
 	    ///   Маркер транзакции используемой при обработке запроса
 	    /// </summary>
 	    string TransactionMarker { get; set; }
-
-	    /// <summary>
-        ///   Сохранить документ
-        /// </summary>
-        /// <param name="configuration">Идентификатор конфигурации</param>
-        /// <param name="metadata">Идентификатор метаданных объекта</param>
-        /// <param name="document">Экземпляр сохраняемого документа</param>
-        void SetDocument(string configuration, string metadata, dynamic document);
 	}
 }

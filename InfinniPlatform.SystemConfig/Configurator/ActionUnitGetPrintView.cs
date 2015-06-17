@@ -28,8 +28,8 @@ namespace InfinniPlatform.SystemConfig.Configurator
 
 			Func<dynamic, bool> printViewSelector =
 				(f) => f.Name == parameters.PrintViewId && f.ViewType == parameters.PrintViewType;
-			
-			dynamic printViewMetadata = target.Context.GetComponent<IMetadataComponent>().GetMetadataItem(parameters.ConfigId, parameters.DocumentId, MetadataType.PrintView, printViewSelector);
+
+            dynamic printViewMetadata = target.Context.GetComponent<IMetadataComponent>(target.Version).GetMetadataItem(target.Version, parameters.ConfigId, parameters.DocumentId, MetadataType.PrintView, printViewSelector);
 
 			int pageNumber = parameters.PageNumber != null ? (int)parameters.PageNumber : 0;
 			int pageSize = parameters.PageNumber != null ? (int)parameters.PageNumber : 10;
@@ -37,7 +37,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
 			string documentId = parameters.DocumentId;
 			string updateAction = parameters.ActionId;
 
-			IEnumerable<dynamic> printViewSource = new DocumentApi().GetDocument(configId, documentId, parameters.Query, pageNumber, pageSize);
+			IEnumerable<dynamic> printViewSource = new DocumentApi(target.Version).GetDocument(configId, documentId, parameters.Query, pageNumber, pageSize);
 
 			dynamic context = new DynamicWrapper();
 			context.Parameters = parameters;
@@ -45,14 +45,14 @@ namespace InfinniPlatform.SystemConfig.Configurator
 
 			if (!string.IsNullOrEmpty(updateAction))
 			{
-				printViewSource = RestQueryApi.QueryPostJsonRaw(configId, documentId, updateAction, null, context).ToDynamicList();
+				printViewSource = RestQueryApi.QueryPostJsonRaw(configId, documentId, updateAction, null, context,target.Version).ToDynamicList();
 			}
 
 
 			byte[] data = new byte[0];
 			if (printViewMetadata != null)
 			{
-				data = target.Context.GetComponent<IPrintViewComponent>().BuildPrintView(printViewMetadata, printViewSource,
+                data = target.Context.GetComponent<IPrintViewComponent>(target.Version).BuildPrintView(printViewMetadata, printViewSource,
 				                                                          PrintViewFileFormat.Pdf);
 			}
 

@@ -63,21 +63,6 @@ namespace InfinniPlatform.Api.ContextTypes.ContextImpl
 		public string TransactionMarker { get; set; }
 
 	    /// <summary>
-	    ///   Сохранить документ
-	    /// </summary>
-	    /// <param name="configuration">Идентификатор конфигурации</param>
-	    /// <param name="metadata">Идентификатор метаданных объекта</param>
-	    /// <param name="document">Экземпляр сохраняемого документа</param>
-	    public void SetDocument(string configuration, string metadata, dynamic document)
-	    {
-	        if (!string.IsNullOrEmpty(TransactionMarker))
-	        {
-	            document.TransactionMarker = TransactionMarker;
-	        }
-	        new DocumentApi().SetDocument(configuration, metadata, document);
-	    }
-
-	    /// <summary>
 		///   Признак успешности обработки события фильтрации событий
 		/// </summary>
 		public bool IsValid { get; set; }
@@ -125,11 +110,12 @@ namespace InfinniPlatform.Api.ContextTypes.ContextImpl
 			Action = context.Action;
 			Result = context.Result;
 			UserName = context.UserName;
-		    Version = context.Version;
+		    //Version = context.Version;
 		    Id = context.Id;
 		    Type = context.Type;
 		    Item = context.Item;
 		    TransactionMarker = context.TransactionMarker;
+		    Version = context.Version;
 	    }
 
 	}

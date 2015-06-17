@@ -29,7 +29,7 @@ namespace InfinniPlatform.WebApi.Middleware.SessionHandlers
 
             var body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
 
-            return new ValueRequestHandlerResult(new SessionApi().Attach(routeDictionary["version"], routeDictionary["sessionId"], body));
+            return new ValueRequestHandlerResult(new SessionApi(routeDictionary["version"]).Attach(routeDictionary["sessionId"], body));
         }
     }
 }

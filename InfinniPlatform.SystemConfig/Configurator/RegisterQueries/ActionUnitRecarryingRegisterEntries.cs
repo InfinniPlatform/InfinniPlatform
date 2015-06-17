@@ -38,7 +38,7 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
             while (true)
             {
                 // Получаем записи из регистра постранично
-                var registerEntries = new DocumentApi().GetDocument(
+                var registerEntries = target.Context.GetComponent<DocumentApi>(target.Version).GetDocument(
                     configurationId,
                     RegisterConstants.RegisterNamePrefix + registerId,
                     f =>
@@ -61,13 +61,13 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
                     // Получаем документ-регистратор
                     string registrarId = registerEntry.Registrar;
                     string registrarType = registerEntry.RegistrarType;
-                    var documentRegistrar = new DocumentApi().GetDocument(configurationId, registrarType,
+                    var documentRegistrar = target.Context.GetComponent<DocumentApi>(target.Version).GetDocument(configurationId, registrarType,
                         f => f.AddCriteria(c => c.Property("Id").IsEquals(registrarId)), 0, 1).FirstOrDefault();
 
                     if (deteleExistingRegisterEntries)
                     {
                         // Удаляем запись из регистра
-                        new DocumentApi().DeleteDocument(configurationId,
+                        new DocumentApi(target.Version).DeleteDocument(configurationId,
                             RegisterConstants.RegisterNamePrefix + registerId, registerEntry.Id);
                     }
 
@@ -81,12 +81,12 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
                 foreach (var document in documentsToRecarry)
                 {
                     // Перепроводка документа
-                    target.SetDocument(configurationId, document.Item1, document.Item2);
+                    target.Context.GetComponent<DocumentApi>(target.Version).SetDocument(configurationId, document.Item1, document.Item2);
                 }
             }
 
             // Удаляем значения из таблицы итогов
-            var registerTotalEntries = new DocumentApi().GetDocument(
+            var registerTotalEntries = target.Context.GetComponent<DocumentApi>(target.Version).GetDocument(
                 configurationId,
                 RegisterConstants.RegisterTotalNamePrefix + registerId,
                 f =>
@@ -95,7 +95,7 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
 
             foreach (var registerEntry in registerTotalEntries)
             {
-                new DocumentApi().DeleteDocument(configurationId,
+                new DocumentApi(target.Version).DeleteDocument(configurationId,
                     RegisterConstants.RegisterTotalNamePrefix + registerId, registerEntry.Id);
             }
         }

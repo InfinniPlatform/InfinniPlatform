@@ -41,18 +41,18 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             //Given
             
             
-            var managerConfiguration = ManagerFactoryConfiguration.BuildConfigurationManager();
+            var managerConfiguration = ManagerFactoryConfiguration.BuildConfigurationManager(null);
             string configurationId = "testconfigreferences";
             var config = managerConfiguration.CreateItem(configurationId);
             managerConfiguration.DeleteItem(config);
             managerConfiguration.MergeItem(config);
 
-            var managerDocument = new ManagerFactoryConfiguration(configurationId).BuildDocumentManager();
+            var managerDocument = new ManagerFactoryConfiguration(null, configurationId).BuildDocumentManager();
 	        string patientDoc = "patient";
 			string addressDoc = "address";
 			string regionDoc = "region";
 
-            IndexApi.RebuildIndex(configurationId,patientDoc);
+            new IndexApi().RebuildIndex(configurationId,patientDoc);
 
 	        dynamic metadataPatient = managerDocument.CreateItem(patientDoc);	        
 	        dynamic metadataAddress = managerDocument.CreateItem(addressDoc);	        
@@ -122,9 +122,9 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             managerDocument.MergeItem(metadataAddress);
             managerDocument.MergeItem(metadataRegion);
 
-            RestQueryApi.QueryPostNotify(configurationId);
+            RestQueryApi.QueryPostNotify(null, configurationId);
 
-            UpdateApi.UpdateStore(configurationId);
+            new UpdateApi(null).UpdateStore(configurationId);
 
 	        string firstItemId = null;
 
@@ -195,24 +195,24 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                     itemDoc2.PreviousRegions.Add(refRegion);
                 }
                 
-                new DocumentApi().SetDocument(configurationId, patientDoc, itemDoc1);
-                new DocumentApi().SetDocument(configurationId, addressDoc, itemDoc2);
+                new DocumentApi(null).SetDocument(configurationId, patientDoc, itemDoc1);
+                new DocumentApi(null).SetDocument(configurationId, addressDoc, itemDoc2);
 
                 if (!inline)
                 {
-                    new DocumentApi().SetDocument(configurationId, regionDoc, itemDoc3);
-                    new DocumentApi().SetDocument(configurationId, regionDoc, itemDoc4[0]);
+                    new DocumentApi(null).SetDocument(configurationId, regionDoc, itemDoc3);
+                    new DocumentApi(null).SetDocument(configurationId, regionDoc, itemDoc4[0]);
                 }
             }
 
             //Then
-            dynamic document = new DocumentApi().GetDocument(configurationId, patientDoc,
+            dynamic document = new DocumentApi(null).GetDocument(configurationId, patientDoc,
                 null, 0, 20)
                 .FirstOrDefault();
 
             //повторно для исключения времени динамической инициализации CallSite
             var watch = Stopwatch.StartNew();
-            document = new DocumentApi().GetDocument(configurationId, patientDoc,
+            document = new DocumentApi(null).GetDocument(configurationId, patientDoc,
                                                  null, 0,50)
                                     .FirstOrDefault();
 
@@ -221,7 +221,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
 	        if (!inline)
 	        {
-		        document = new DocumentApi().GetDocument(configurationId, patientDoc,
+		        document = new DocumentApi(null).GetDocument(configurationId, patientDoc,
 		                                                 f =>
 		                                                 f.AddCriteria(
 															 c => c.Property("Address.Region.RegionName").IsEquals("УРАЛЬСКИЙ РЕГИОН")), 0, 10).FirstOrDefault();

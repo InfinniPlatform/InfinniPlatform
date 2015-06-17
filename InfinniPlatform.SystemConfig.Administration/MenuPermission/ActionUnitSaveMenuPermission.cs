@@ -17,9 +17,9 @@ namespace InfinniPlatform.SystemConfig.Administration.MenuPermission
 				return;
 			}
 
-			var documentApi = target.Context.GetComponent<DocumentApi>();
+			var documentApi = target.Context.GetComponent<DocumentApi>(target.Version);
 
-			var aclApi = target.Context.GetComponent<AuthApi>();
+			var aclApi = target.Context.GetComponent<AuthApi>(target.Version);
 
 			try
 			{

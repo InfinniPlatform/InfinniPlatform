@@ -33,12 +33,12 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
 
 		private void CreateTestConfiguration()
 		{
-			var manager = ManagerFactoryConfiguration.BuildConfigurationManager();
+			var manager = ManagerFactoryConfiguration.BuildConfigurationManager(null);
 			var item = manager.CreateItem(_configurationId);
             manager.DeleteItem(item);
 			manager.MergeItem(item);
-			RestQueryApi.QueryPostNotify(_configurationId);//загружаем обновленную конфигурацию
-			UpdateApi.UpdateStore(_configurationId);
+			RestQueryApi.QueryPostNotify(null, _configurationId);//загружаем обновленную конфигурацию
+			new UpdateApi(null).UpdateStore(_configurationId);
 		}
 
 		[Test]
@@ -47,7 +47,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
 
 			//given
 			CreateTestConfiguration(); //создаем тестовую конфигурацию для проверки
-			var broker = new GeneratorBroker(_configurationId, "common");
+			var broker = new GeneratorBroker(null, _configurationId, "common");
 			//when
 			string testGeneratorName = "TestGenerator";
 			var eventObject = new
@@ -59,7 +59,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
 
 			broker.CreateGenerator(eventObject);
 			//then
-			var manager = new ManagerFactoryDocument(_configurationId, "common");
+			var manager = new ManagerFactoryDocument(null,_configurationId, "common");
 
 			var managerGenerator = manager.BuildGeneratorMetadataReader();
 			var managerScenario = manager.BuildScenarioMetadataReader();

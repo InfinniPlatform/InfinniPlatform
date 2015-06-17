@@ -16,6 +16,6 @@ namespace InfinniPlatform.Factories
 	    ///   Создать фабрику прикладных скриптов для указанной версии конфигурации
 	    /// </summary>
 	    /// <returns>Фабрика скриптов</returns>
-        IScriptFactory BuildScriptFactory(string metadataConfigurationId);
+        IScriptFactory BuildScriptFactory(string metadataConfigurationId, string version);
 	}
 }

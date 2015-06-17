@@ -63,7 +63,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
                 ids.Add(next);
 
-                new DocumentApi().SetDocument(ConfigurationId, DocumentWithOneStringSortingField, new
+                new DocumentApi(null).SetDocument(ConfigurationId, DocumentWithOneStringSortingField, new
                 {
                     Id = Guid.NewGuid(),
                     StringProperty = "где абв эюя" + next,
@@ -77,7 +77,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             _sw.Restart();
 
             // Автоматически должно отсортироваться по возрастанию SortableStringProperty
-            var sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithOneStringSortingField, null, 0, 10);
+            var sortedData = new DocumentApi(null).GetDocument(ConfigurationId, DocumentWithOneStringSortingField, null, 0, 10);
 
             _sw.Stop();
             
@@ -88,7 +88,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             _sw.Restart();
 
             // Постраничная выборка - берем вторую страницу
-            sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithOneStringSortingField, null, 1, 10);
+            sortedData = new DocumentApi(null).GetDocument(ConfigurationId, DocumentWithOneStringSortingField, null, 1, 10);
 
             _sw.Stop();
 
@@ -97,7 +97,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             Assert.AreEqual(ids.Skip(10).First(), sortedData.First().RandomNumber);
 
             // Crossconfig call
-			sortedData = new DocumentApi().GetDocumentCrossConfig(null, 0, 10, new[] { ConfigurationId }, new[] { DocumentWithOneStringSortingField }, s => s.AddSorting("SortableStringProperty"));
+			sortedData = new DocumentApi(null).GetDocumentCrossConfig(null, 0, 10, new[] { ConfigurationId }, new[] { DocumentWithOneStringSortingField }, s => s.AddSorting("SortableStringProperty"));
             Assert.AreEqual(ids.Min(), sortedData.First().RandomNumber);
         }
 
@@ -112,7 +112,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
                 ids.Add(next);
 
-                new DocumentApi().SetDocument(ConfigurationId, DocumentWithOneIntSortingField, new
+                new DocumentApi(null).SetDocument(ConfigurationId, DocumentWithOneIntSortingField, new
                 {
                     Id = Guid.NewGuid(),
                     StringProperty = "где абв эюя" + next,
@@ -126,7 +126,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             _sw.Restart();
 
             // Автоматически должно отсортироваться по возрастанию SortableIntProperty
-            var sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithOneIntSortingField, null, 0, 10);
+            var sortedData = new DocumentApi(null).GetDocument(ConfigurationId, DocumentWithOneIntSortingField, null, 0, 10);
 
             _sw.Stop();
 
@@ -137,7 +137,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             _sw.Restart();
 
             // Постраничная выборка - берем пятую страницу
-            sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithOneIntSortingField, null, 5, 10);
+            sortedData = new DocumentApi(null).GetDocument(ConfigurationId, DocumentWithOneIntSortingField, null, 5, 10);
 
             _sw.Stop();
 
@@ -157,7 +157,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
                 ids.Add(next);
 
-                new DocumentApi().SetDocument(ConfigurationId, DocumentWithOneDateSortingField, new
+                new DocumentApi(null).SetDocument(ConfigurationId, DocumentWithOneDateSortingField, new
                 {
                     Id = Guid.NewGuid(),
                     StringProperty = "где абв эюя" + next,
@@ -171,7 +171,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             _sw.Restart();
 
             // Автоматически должно отсортироваться по возрастанию SortableDateProperty
-            var sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithOneDateSortingField, null, 0, 10);
+            var sortedData = new DocumentApi(null).GetDocument(ConfigurationId, DocumentWithOneDateSortingField, null, 0, 10);
 
             _sw.Stop();
 
@@ -182,7 +182,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             _sw.Restart();
 
             // Постраничная выборка - берем пятую страницу
-            sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithOneDateSortingField, null, 5, 5);
+            sortedData = new DocumentApi(null).GetDocument(ConfigurationId, DocumentWithOneDateSortingField, null, 5, 5);
 
             _sw.Stop();
 
@@ -194,7 +194,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         [Test]
         public void ShouldSortByArrayField()
         {
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithOneSortingFieldInArray, new
+            new DocumentApi(null).SetDocument(ConfigurationId, DocumentWithOneSortingFieldInArray, new
             {
                 Id = Guid.NewGuid(),
                 ArrayProperty = new[]
@@ -213,7 +213,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                 DateProperty = new DateTime(2014, 01, 02)
             });
 
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithOneSortingFieldInArray, new
+            new DocumentApi(null).SetDocument(ConfigurationId, DocumentWithOneSortingFieldInArray, new
             {
                 Id = Guid.NewGuid(),
                 ArrayProperty = new[]
@@ -232,7 +232,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                 DateProperty = new DateTime(2014, 01, 02)
             });
 
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithOneSortingFieldInArray, new
+            new DocumentApi(null).SetDocument(ConfigurationId, DocumentWithOneSortingFieldInArray, new
             {
                 Id = Guid.NewGuid(),
                 ArrayProperty = new[]
@@ -254,7 +254,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             _sw.Restart();
 
             // Автоматически должно отсортироваться по возрастанию SortableStringProperty
-            var sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithOneSortingFieldInArray, null, 0, 10);
+            var sortedData = new DocumentApi(null).GetDocument(ConfigurationId, DocumentWithOneSortingFieldInArray, null, 0, 10);
             
             _sw.Stop();
             Console.WriteLine("Sorting by array time: " + _sw.ElapsedMilliseconds + " ms");
@@ -264,7 +264,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             _sw.Restart();
 
             // Сортировка по убыванию
-            sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithOneSortingFieldInArray, null, 0, 10, 
+            sortedData = new DocumentApi(null).GetDocument(ConfigurationId, DocumentWithOneSortingFieldInArray, null, 0, 10, 
                 s => s.AddSorting("ArrayProperty.SortableStringProperty", SortOrder.Descending));
 
             _sw.Stop();
@@ -276,7 +276,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         [Test]
         public void ShouldSortByObjectField()
         {
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithOneSortingFieldInNestedObject, new
+            new DocumentApi(null).SetDocument(ConfigurationId, DocumentWithOneSortingFieldInNestedObject, new
             {
                 Id = Guid.NewGuid(),
                 ObjectProperty = new
@@ -288,7 +288,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                 DateProperty = new DateTime(2014, 01, 02)
             });
 
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithOneSortingFieldInNestedObject, new
+            new DocumentApi(null).SetDocument(ConfigurationId, DocumentWithOneSortingFieldInNestedObject, new
             {
                 Id = Guid.NewGuid(),
                 ObjectProperty = new
@@ -300,7 +300,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                 DateProperty = new DateTime(2014, 01, 02)
             });
 
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithOneSortingFieldInNestedObject, new
+            new DocumentApi(null).SetDocument(ConfigurationId, DocumentWithOneSortingFieldInNestedObject, new
             {
                 Id = Guid.NewGuid(),
                 ObjectProperty = new
@@ -315,7 +315,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             _sw.Restart();
 
             // Автоматически должно отсортироваться по возрастанию SortableStringProperty
-            var sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithOneSortingFieldInNestedObject, null, 0, 10);
+            var sortedData = new DocumentApi(null).GetDocument(ConfigurationId, DocumentWithOneSortingFieldInNestedObject, null, 0, 10);
 
             _sw.Stop();
             Console.WriteLine("Sorting by object field time: " + _sw.ElapsedMilliseconds + " ms");
@@ -325,7 +325,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             _sw.Restart();
 
             // Сортировка по убыванию
-            sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithOneSortingFieldInNestedObject, null, 0, 10,
+            sortedData = new DocumentApi(null).GetDocument(ConfigurationId, DocumentWithOneSortingFieldInNestedObject, null, 0, 10,
                 s => s.AddSorting("ObjectProperty.SortableStringProperty", SortOrder.Descending));
 
             _sw.Stop();
@@ -337,7 +337,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         [Test]
         public void ShouldSortByInlinedDocumentField()
         {
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithInlineSorting, new
+            new DocumentApi(null).SetDocument(ConfigurationId, DocumentWithInlineSorting, new
             {
                 Id = Guid.NewGuid(),
                 ObjectProperty = new
@@ -349,7 +349,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                 DateProperty = new DateTime(2014, 01, 02)
             });
 
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithInlineSorting, new
+            new DocumentApi(null).SetDocument(ConfigurationId, DocumentWithInlineSorting, new
             {
                 Id = Guid.NewGuid(),
                 ObjectProperty = new
@@ -361,7 +361,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                 DateProperty = new DateTime(2014, 01, 02)
             });
 
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithInlineSorting, new
+            new DocumentApi(null).SetDocument(ConfigurationId, DocumentWithInlineSorting, new
             {
                 Id = Guid.NewGuid(),
                 ObjectProperty = new
@@ -376,7 +376,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             _sw.Restart();
 
             // Автоматически должно отсортироваться по возрастанию SortableStringProperty
-            var sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithInlineSorting, null, 0, 10);
+            var sortedData = new DocumentApi(null).GetDocument(ConfigurationId, DocumentWithInlineSorting, null, 0, 10);
 
             _sw.Stop();
             Console.WriteLine("Sorting by inline object field time: " + _sw.ElapsedMilliseconds + " ms");
@@ -386,7 +386,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             _sw.Restart();
 
             // Сортировка по убыванию
-            sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithInlineSorting, null, 0, 10,
+            sortedData = new DocumentApi(null).GetDocument(ConfigurationId, DocumentWithInlineSorting, null, 0, 10,
                 s => s.AddSorting("ObjectProperty.SortableStringProperty", SortOrder.Descending));
 
             _sw.Stop();
@@ -398,7 +398,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         [Test]
         public void ShouldSortByTwoFields()
         {
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithTwoSortingFields, new
+            new DocumentApi(null).SetDocument(ConfigurationId, DocumentWithTwoSortingFields, new
             {
                 Id = Guid.NewGuid(),
                 SortableStringProperty = "aaaaa",
@@ -407,7 +407,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                 IntProperty = 2
             });
 
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithTwoSortingFields, new
+            new DocumentApi(null).SetDocument(ConfigurationId, DocumentWithTwoSortingFields, new
             {
                 Id = Guid.NewGuid(),
                 SortableStringProperty = "aaaaa",
@@ -416,7 +416,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                 IntProperty = 2
             });
 
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithTwoSortingFields, new
+            new DocumentApi(null).SetDocument(ConfigurationId, DocumentWithTwoSortingFields, new
             {
                 Id = Guid.NewGuid(),
                 SortableStringProperty = "aaaaa",
@@ -425,7 +425,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                 IntProperty = 2
             });
 
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithTwoSortingFields, new
+            new DocumentApi(null).SetDocument(ConfigurationId, DocumentWithTwoSortingFields, new
             {
                 Id = Guid.NewGuid(),
                 SortableStringProperty = "bbbbb",
@@ -434,7 +434,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                 IntProperty = 2
             });
 
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithTwoSortingFields, new
+            new DocumentApi(null).SetDocument(ConfigurationId, DocumentWithTwoSortingFields, new
             {
                 Id = Guid.NewGuid(),
                 SortableStringProperty = "bbbbb",
@@ -443,7 +443,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                 IntProperty = 2
             });
 
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithTwoSortingFields, new
+            new DocumentApi(null).SetDocument(ConfigurationId, DocumentWithTwoSortingFields, new
             {
                 Id = Guid.NewGuid(),
                 SortableStringProperty = "bbbbb",
@@ -456,7 +456,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             _sw.Restart();
 
             // Автоматически должно отсортироваться по возрастанию SortableStringProperty и SortableIntProperty
-            var sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithTwoSortingFields, null, 0, 10);
+            var sortedData = new DocumentApi(null).GetDocument(ConfigurationId, DocumentWithTwoSortingFields, null, 0, 10);
 
             _sw.Stop();
             Console.WriteLine("Sorting by 2 fields time: " + _sw.ElapsedMilliseconds + " ms");
@@ -467,7 +467,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             _sw.Restart();
 
             // Сортировка по убыванию
-            sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithTwoSortingFields, null, 0, 10,
+            sortedData = new DocumentApi(null).GetDocument(ConfigurationId, DocumentWithTwoSortingFields, null, 0, 10,
                 s => s.AddSorting("SortableStringProperty", SortOrder.Descending).AddSorting("SortableIntProperty"));
 
             _sw.Stop();
@@ -489,7 +489,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
                 ids.Add(next);
 
-                new DocumentApi().SetDocument(ConfigurationId, DocumentWithOneStringSortingField, new
+                new DocumentApi(null).SetDocument(ConfigurationId, DocumentWithOneStringSortingField, new
                 {
                     Id = Guid.NewGuid(),
                     StringProperty = "где абв эюя" + next,
@@ -497,7 +497,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                     RandomNumber = next
                 });
 
-                new DocumentApi().SetDocument(ConfigurationId, DocumentWithNoSorting, new
+                new DocumentApi(null).SetDocument(ConfigurationId, DocumentWithNoSorting, new
                 {
                     Id = Guid.NewGuid(),
                     StringProperty1 = "где абв эюя" + next,
@@ -510,20 +510,20 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             _sw.Restart();
             // Автоматически должно отсортироваться по возрастанию SortableStringProperty
-            var sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithOneStringSortingField, null, 0, 10);
+            var sortedData = new DocumentApi(null).GetDocument(ConfigurationId, DocumentWithOneStringSortingField, null, 0, 10);
             _sw.Stop();
 
             Assert.AreEqual(ids.Min(), sortedData.First().RandomNumber);
 
             _sw.Restart();
-            new DocumentApi().GetDocument(ConfigurationId, DocumentWithNoSorting, null, 0, 10);
+            new DocumentApi(null).GetDocument(ConfigurationId, DocumentWithNoSorting, null, 0, 10);
             _sw.Stop();
 
             
             _sw.Restart();
             // Постраничная выборка
             for (var i = 0; i < 10; i++)
-                sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithOneStringSortingField, null, 5, 10);
+                sortedData = new DocumentApi(null).GetDocument(ConfigurationId, DocumentWithOneStringSortingField, null, 5, 10);
             
             _sw.Stop();
 
@@ -533,7 +533,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             _sw.Restart();
             for (var i = 0; i < 10; i++)
-                new DocumentApi().GetDocument(ConfigurationId, DocumentWithNoSorting, null, 5, 10);
+                new DocumentApi(null).GetDocument(ConfigurationId, DocumentWithNoSorting, null, 5, 10);
             _sw.Stop();
 
             Console.WriteLine("Take page 5 without sorting: " + _sw.ElapsedMilliseconds/10 + " ms");
@@ -541,7 +541,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             // Изменение размера страницы до 100
             _sw.Restart();
             for (var i = 0; i < 10; i++)
-                sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithOneStringSortingField, null, 5, 100);
+                sortedData = new DocumentApi(null).GetDocument(ConfigurationId, DocumentWithOneStringSortingField, null, 5, 100);
             _sw.Stop();
 
             Console.WriteLine("Take page 5 (pagesize 100) with sorting: " + _sw.ElapsedMilliseconds/10 + " ms");
@@ -550,7 +550,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             _sw.Restart();
             for (var i = 0; i < 10; i++)
-                new DocumentApi().GetDocument(ConfigurationId, DocumentWithNoSorting, null, 5, 100);
+                new DocumentApi(null).GetDocument(ConfigurationId, DocumentWithNoSorting, null, 5, 100);
             _sw.Stop();
 
             Console.WriteLine("Take page 5 (pagesize 100) without sorting: " + _sw.ElapsedMilliseconds/10 + " ms");
@@ -558,7 +558,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             // Изменение размера страницы до 1000
             _sw.Restart();
             for (var i = 0; i < 10; i++)
-                sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithOneStringSortingField, null, 5, 1000);
+                sortedData = new DocumentApi(null).GetDocument(ConfigurationId, DocumentWithOneStringSortingField, null, 5, 1000);
             _sw.Stop();
 
             Console.WriteLine("Take page 5 (pagesize 1000) with sorting: " + _sw.ElapsedMilliseconds/10 + " ms");
@@ -567,7 +567,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             _sw.Restart();
             for (var i = 0; i < 10; i++)
-                new DocumentApi().GetDocument(ConfigurationId, DocumentWithNoSorting, null, 5, 1000);
+                new DocumentApi(null).GetDocument(ConfigurationId, DocumentWithNoSorting, null, 5, 1000);
             _sw.Stop();
 
             Console.WriteLine("Take page 5 (pagesize 1000) without sorting: " + _sw.ElapsedMilliseconds/10 + " ms");
@@ -585,20 +585,20 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         
         private void CreateTestConfig()
         {
-            IndexApi.RebuildIndex(ConfigurationId, DocumentWithOneStringSortingField);
-            IndexApi.RebuildIndex(ConfigurationId, DocumentWithOneIntSortingField);
-            IndexApi.RebuildIndex(ConfigurationId, DocumentWithOneDateSortingField);
-            IndexApi.RebuildIndex(ConfigurationId, DocumentWithOneSortingFieldInArray);
-            IndexApi.RebuildIndex(ConfigurationId, DocumentWithOneSortingFieldInNestedObject);
-            IndexApi.RebuildIndex(ConfigurationId, DocumentWithTwoSortingFields);
-            IndexApi.RebuildIndex(ConfigurationId, DocumentWithInlineSorting);
+            new IndexApi().RebuildIndex(ConfigurationId, DocumentWithOneStringSortingField);
+            new IndexApi().RebuildIndex(ConfigurationId, DocumentWithOneIntSortingField);
+            new IndexApi().RebuildIndex(ConfigurationId, DocumentWithOneDateSortingField);
+            new IndexApi().RebuildIndex(ConfigurationId, DocumentWithOneSortingFieldInArray);
+            new IndexApi().RebuildIndex(ConfigurationId, DocumentWithOneSortingFieldInNestedObject);
+            new IndexApi().RebuildIndex(ConfigurationId, DocumentWithTwoSortingFields);
+            new IndexApi().RebuildIndex(ConfigurationId, DocumentWithInlineSorting);
          
-            var managerConfiguration = ManagerFactoryConfiguration.BuildConfigurationManager();
+            var managerConfiguration = ManagerFactoryConfiguration.BuildConfigurationManager(null);
             var config = managerConfiguration.CreateItem(ConfigurationId);
 			managerConfiguration.DeleteItem(config);
             managerConfiguration.MergeItem(config);
 
-            var managerDocument = new ManagerFactoryConfiguration(ConfigurationId).BuildDocumentManager();
+            var managerDocument = new ManagerFactoryConfiguration(null, ConfigurationId).BuildDocumentManager();
             
             dynamic stringPropertyModel = new DynamicWrapper();
             stringPropertyModel.Type = DataType.String.ToString();
@@ -750,9 +750,9 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             documentWithInlineSorting.Schema.Properties = schemaProperties;
             managerDocument.MergeItem(documentWithInlineSorting);
 
-            UpdateApi.ForceReload(ConfigurationId);
+            new UpdateApi(null).ForceReload(ConfigurationId);
 
-            UpdateApi.UpdateStore(ConfigurationId);
+            new UpdateApi(null).UpdateStore(ConfigurationId);
         }
     }
 }

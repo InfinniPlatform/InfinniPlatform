@@ -131,7 +131,7 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 		/// <returns>Версия конфигурации</returns>
 		public string GetConfigurationVersion()
 		{
-			return MetadataConfiguration.ActualVersion;
+			return MetadataConfiguration.Version;
 		}
 
 	    /// <summary>

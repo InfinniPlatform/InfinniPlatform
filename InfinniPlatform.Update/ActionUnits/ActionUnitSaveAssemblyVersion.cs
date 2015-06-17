@@ -13,18 +13,12 @@ namespace InfinniPlatform.Update.ActionUnits
 		public void Action(IApplyContext target)
 		{
 			// получаем конструктор метаданных конфигураций
-			var configBuilder = target.Context.GetComponent<IConfigurationMediatorComponent>().ConfigurationBuilder;
+			var configBuilder = target.Context.GetComponent<IConfigurationMediatorComponent>(target.Version).ConfigurationBuilder;
 
 			// получаем конфигурацию обновления
-			var config = configBuilder.GetConfigurationObject("update");
+			var config = configBuilder.GetConfigurationObject(null, "update");
 
-			string version = target.Item.Version;
-
-			if (string.IsNullOrEmpty(version))
-			{
-				throw new ArgumentException(Resources.InstalledPackageVersionShouldBeSpecified);
-			}
-
+			string version = target.Version;
 
 			var documentProvider = config.GetDocumentProvider("package","system");
 
@@ -34,7 +28,7 @@ namespace InfinniPlatform.Update.ActionUnits
 
 			if (contentEvent != null)
 			{
-				var blobStorage = target.Context.GetComponent<IBlobStorageComponent>().GetBlobStorage();
+				var blobStorage = target.Context.GetComponent<IBlobStorageComponent>(target.Version).GetBlobStorage();
 
 				byte[] contentData = Convert.FromBase64String(contentEvent);
 				var contentName = target.Item.ModuleId;

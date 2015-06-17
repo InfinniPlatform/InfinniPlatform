@@ -47,7 +47,7 @@ namespace InfinniPlatform.QueryDesigner.Views
 			var stopwatch = Stopwatch.StartNew();
 			try
 			{
-				var result = IndexQueryExecutor.ExecuteQuery(QueryText, DenormalizeCheckEdit.Checked);
+				var result = IndexQueryExecutor.ExecuteQuery(null, QueryText, DenormalizeCheckEdit.Checked);
 
                 MemoEditResultJSON.Text = string.Join(Environment.NewLine, result);
 			}

@@ -37,13 +37,13 @@ namespace InfinniPlatform.ContextComponents
 	               AuthorizationStorageExtensions.AnonimousUser;
 	    }
 
-		public IVersionProvider GetDocumentProvider(string configId, string documentId, string userName)
+		public IVersionProvider GetDocumentProvider(string version, string configId, string documentId, string userName)
 		{
 			//получаем конструктор метаданных конфигураций
 			var configBuilder =_configurationMediatorComponent.ConfigurationBuilder;
 
 			//получаем конфигурацию, указанную в метаданных запроса
-			var config = configBuilder.GetConfigurationObject(configId);
+			var config = configBuilder.GetConfigurationObject(version, configId);
 
 			if (config != null)
 			{

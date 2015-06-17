@@ -115,6 +115,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 
         }
 
+        public Func<string> Version { get; set; } 
 
         public Func<string> ConfigId { get; set; }
 
@@ -128,8 +129,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
                 ComboBoxServiceType.Properties.Items.Clear();
                 ComboBoxServiceType.Properties.Items.AddRange(ViewModelExtension.BuildServiceTypesHeaders().BuildImageComboBoxItemsString().ToList());
 
-                IEnumerable<ProcessDescription> descriptions = ViewModelExtension.GetDocumentProcessesList(
-                    ConfigId(), DocumentId());
+                IEnumerable<ProcessDescription> descriptions = ViewModelExtension.GetDocumentProcessesList(Version(), ConfigId(), DocumentId());
 
 
                 ComboBoxScenarioId.Properties.Items.Clear();

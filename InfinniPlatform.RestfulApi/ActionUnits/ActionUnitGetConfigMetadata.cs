@@ -27,12 +27,11 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 			}
 
 
-			var authUtils = new AuthUtils(target.Context.GetComponent<ISecurityComponent>(), target.UserName, null);
+            var authUtils = new AuthUtils(target.Context.GetComponent<ISecurityComponent>(target.Version), target.UserName, null);
 
 			//если указано конкретное наименование искомых метаданных
-			target.Result = target.Context.GetComponent<IMetadataComponent>()
-								  .GetMetadata(paramsDoc.Configuration, paramsDoc.Metadata, paramsDoc.MetadataType,
-											   paramsDoc.MetadataName);
+            target.Result = target.Context.GetComponent<IMetadataComponent>(target.Version)
+								  .GetMetadata(target.Version, paramsDoc.Configuration, paramsDoc.Metadata, paramsDoc.MetadataType, paramsDoc.MetadataName);
 
 			if (target.Result != null)
 			{
@@ -45,19 +44,26 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 				}
 			}
 
-			var service = target.Context.GetComponent<IMetadataComponent>()
-								.GetMetadata(paramsDoc.Configuration, "Common", MetadataType.Service, "FilterMetadata");
+		    if (target.Result != null)
+		    {
 
-			if (service != null)
-			{
-				var filterMetadata = RestQueryApi.QueryPostJsonRaw(paramsDoc.Configuration, "Common", "FilterMetadata", null,
-																		   target.Result).ToDynamic();
+                var service = target.Context.GetComponent<IMetadataComponent>(target.Version)
+		            .GetMetadata(target.Version, paramsDoc.Configuration, "Common", MetadataType.Service, "FilterMetadata");
 
-				if (filterMetadata != null)
-				{
-					target.Result = filterMetadata;
-				}
-			}
+		        if (service != null)
+		        {
+		            target.Result.Version = target.Version;
+
+		            var filterMetadata =
+		                RestQueryApi.QueryPostJsonRaw(paramsDoc.Configuration, "Common", "FilterMetadata", null,
+		                    target.Result, target.Version).ToDynamic();
+
+		            if (filterMetadata != null)
+		            {
+		                target.Result = filterMetadata;
+		            }
+		        }
+		    }
 		}
 	}
 }

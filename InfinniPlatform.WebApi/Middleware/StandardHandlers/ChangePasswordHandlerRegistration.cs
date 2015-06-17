@@ -27,6 +27,8 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
         {
             dynamic body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
 
+            var routeDictionary = RouteFormatter.GetRouteDictionary(context);
+
             if (body.UserName == null || body.OldPassword == null || body.NewPassword == null)
             {
                 return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
@@ -34,7 +36,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 
             try
             {
-                return new ValueRequestHandlerResult(new SignInApi().ChangePassword(body.UserName.ToString(), body.OldPassword.ToString(),
+                return new ValueRequestHandlerResult(new SignInApi(routeDictionary["version"]).ChangePassword(body.UserName.ToString(), body.OldPassword.ToString(),
                      body.NewPassword.ToString()));
             }
             catch (Exception e)

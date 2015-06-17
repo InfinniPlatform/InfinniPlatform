@@ -12,6 +12,14 @@ namespace InfinniPlatform.Api.RestApi.Auth
     /// </summary>
     public sealed class UsersApi
     {
+        private readonly string _version;
+
+        public UsersApi(string version = null)
+        {
+            _version = version;
+        }
+
+
         /// <summary>
         ///   Добавить пользователя во внутреннее хранилище
         /// </summary>
@@ -23,7 +31,7 @@ namespace InfinniPlatform.Api.RestApi.Auth
             {
                 UserName = userName,
                 Password = password
-            }).ToDynamic();
+            }, _version).ToDynamic();
         }
 
         /// <summary>
@@ -35,7 +43,7 @@ namespace InfinniPlatform.Api.RestApi.Auth
             return RestQueryApi.QueryPostJsonRaw("Administration", "User", "DeleteUser", null, new
             {
                 UserName = userName,
-            }).ToDynamic();
+            }, _version).ToDynamic();
         }
 
         /// <summary>
@@ -51,7 +59,7 @@ namespace InfinniPlatform.Api.RestApi.Auth
                 Name = roleName,
                 Caption = roleCaption,
                 Description = roleDescription
-            }).ToDynamic();
+            }, _version).ToDynamic();
         }
 
         /// <summary>
@@ -63,7 +71,7 @@ namespace InfinniPlatform.Api.RestApi.Auth
             return RestQueryApi.QueryPostJsonRaw("Administration", "Role", "deleterole", null, new
             {
                 RoleName = roleName,
-            }).ToDynamic();
+            }, _version).ToDynamic();
         }
 
         /// <summary>
@@ -76,7 +84,7 @@ namespace InfinniPlatform.Api.RestApi.Auth
             return RestQueryApi.QueryPostJsonRaw("Administration", "User", "getuser", null, new
             {
                 UserName = userName
-            }).ToDynamic();
+            }, _version).ToDynamic();
         }
 
         /// <summary>
@@ -91,7 +99,7 @@ namespace InfinniPlatform.Api.RestApi.Auth
             {
                 UserName = userName,
                 RoleName = roleName
-            }).ToDynamic();
+            }, _version).ToDynamic();
         }
 
         /// <summary>
@@ -106,7 +114,7 @@ namespace InfinniPlatform.Api.RestApi.Auth
             {
                 UserName = userName,
                 RoleName = roleName
-            }).ToDynamic();
+            }, _version).ToDynamic();
         }
 
 

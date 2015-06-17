@@ -26,9 +26,9 @@ namespace InfinniPlatform.Runtime.Factories
 	    ///   Создать фабрику прикладных скриптов для указанной версии конфигурации
 	    /// </summary>
 	    /// <returns>Фабрика скриптов</returns>
-	    public IScriptFactory BuildScriptFactory(string metadataConfigurationId)
+	    public IScriptFactory BuildScriptFactory(string metadataConfigurationId, string version)
 		{
-            return new ScriptFactory(new AssemblyVersionLoader(_configurationObjectBuilder),_changeListener,metadataConfigurationId);
+            return new ScriptFactory(new AssemblyVersionLoader(_configurationObjectBuilder),_changeListener,metadataConfigurationId,version);
 		}
 	}
 }

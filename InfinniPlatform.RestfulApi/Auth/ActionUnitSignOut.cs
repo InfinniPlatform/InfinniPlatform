@@ -12,7 +12,7 @@ namespace InfinniPlatform.RestfulApi.Auth
 	{
 		public void Action(IApplyContext target)
 		{
-			target.Context.GetComponent<SignInApi>().SignOutInternal();
+            target.Context.GetComponent<SignInApi>(target.Version).SignOutInternal();
 		}
 		
 	}

@@ -64,7 +64,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 				MetadataName = TestViewName
 			};
 
-			builder = new RestQueryBuilder("SystemConfig", "metadata", "getmanagedmetadata", null);
+			builder = new RestQueryBuilder(null, "SystemConfig", "metadata", "getmanagedmetadata", null);
 
 			builder.QueryPostJson(null, bodyMetadata).ToDynamic();
 
@@ -112,7 +112,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 				Parameters = parameters
 			};
 
-			builder = new RestQueryBuilder("SystemConfig", "metadata", "getmanagedmetadata", null);
+			builder = new RestQueryBuilder(null, "SystemConfig", "metadata", "getmanagedmetadata", null);
 
 			builder.QueryPostJson(null, bodyMetadata).ToDynamic();
 
@@ -150,7 +150,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 		private void CreateTestConfig()
 		{
 			//добавили конфигурацию
-			var manager = ManagerFactoryConfiguration.BuildConfigurationManager();
+			var manager = ManagerFactoryConfiguration.BuildConfigurationManager(null);
 
 			var item = manager.CreateItem(ConfigurationId);
             manager.DeleteItem(item);
@@ -162,12 +162,12 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
 			//добавляем именованный View в конкретном документе
 			//---------------------------------------------------
-			var documentManager = new ManagerFactoryConfiguration(ConfigurationId).BuildDocumentManager();
+			var documentManager = new ManagerFactoryConfiguration(null, ConfigurationId).BuildDocumentManager();
 
 			var doc = documentManager.CreateItem(DocumentId);
             documentManager.MergeItem(doc);
 
-			var managerDocument = new ManagerFactoryDocument(ConfigurationId, DocumentId);
+			var managerDocument = new ManagerFactoryDocument(null,ConfigurationId, DocumentId);
 			var managerView = managerDocument.BuildViewManager();
 			var view = managerView.CreateItem(ExistsViewName);
 			view.MetadataType = ViewType.EditView;
@@ -176,12 +176,12 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			//----------------------------------------------------
 
 			//перезагрузим конфигурации
-			RestQueryApi.QueryPostNotify(ConfigurationId);
+			RestQueryApi.QueryPostNotify(null, ConfigurationId);
 
 			//добавляем генератор в документе Common
 			//----------------------------------------------------
 
-			var builder = new RestQueryBuilder("SystemConfig", "metadata", "creategenerator", null);
+			var builder = new RestQueryBuilder(null, "SystemConfig", "metadata", "creategenerator", null);
 
 			var eventObject = new
 								  {
@@ -196,7 +196,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			builder.QueryPostJson(null, eventObject);
 			//----------------------------------------------------
 			//добавляем генератор в документе _documentId
-			builder = new RestQueryBuilder("SystemConfig", "metadata", "creategenerator", null);
+			builder = new RestQueryBuilder(null, "SystemConfig", "metadata", "creategenerator", null);
 
 			eventObject = new
 			{
@@ -216,13 +216,13 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			var package = new PackageBuilder().BuildPackage(ConfigurationId, "test",
 															"InfinniPlatform.Api.Tests.dll");
 			//установка пакета
-			UpdateApi.InstallPackages(new[] { package });
+			new UpdateApi(null).InstallPackages(new[] { package });
 
 			//обновление конфигурации
-			RestQueryApi.QueryPostNotify(ConfigurationId);
+			RestQueryApi.QueryPostNotify(null, ConfigurationId);
 
 			//генерируем метаданные напрямую
-			builder = new RestQueryBuilder("SystemConfig", "metadata", "generatemetadata", null);
+			builder = new RestQueryBuilder(null, "SystemConfig", "metadata", "generatemetadata", null);
 
 
 

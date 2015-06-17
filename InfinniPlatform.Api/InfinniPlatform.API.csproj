@@ -182,7 +182,6 @@
     <Compile Include="Metadata\ConfigurationManagers\File\JsonFileRegisterReader.cs" />
     <Compile Include="Metadata\ConfigurationManagers\File\MetadataReaders\JsonFileDocumentElementReader.cs" />
     <Compile Include="Metadata\ConfigurationManagers\File\JsonFileDocumentReader.cs" />
-    <Compile Include="Metadata\ConfigurationManagers\File\JsonConfigReaderFile.cs" />
     <Compile Include="Metadata\ConfigurationManagers\File\JsonFileConfig.cs" />
     <Compile Include="Metadata\ConfigurationManagers\File\JsonFileConfigManager.cs" />
     <Compile Include="Metadata\ConfigurationManagers\Standard\JsonConfigReaderStandard.cs" />
@@ -190,6 +189,7 @@
     <Compile Include="Metadata\ConfigurationManagers\Standard\Factories\ManagerFactoryDocument.cs" />
     <Compile Include="Metadata\ConfigurationManagers\Standard\Factories\MetadataContainerInfoFactory.cs" />
     <Compile Include="Metadata\ConfigurationManagers\Standard\MetadataManagers\MetadataCacheRefresher.cs" />
+    <Compile Include="Metadata\ConfigurationManagers\Standard\MetadataReaders\MetadataReaderVersion.cs" />
     <Compile Include="Metadata\ConfigurationManagers\Standard\SchemaReaders\SchemaConverter.cs" />
     <Compile Include="Metadata\ConfigurationManagers\Standard\SchemaReaders\SchemaReaderManager.cs" />
     <Compile Include="Metadata\IConfigurationObject.cs">
@@ -297,11 +297,11 @@
     <Compile Include="RestApi\DataApi\DocumentApiUnsecured.cs" />
     <Compile Include="RestApi\DataApi\MetadataApi.cs" />
     <Compile Include="RestApi\DataApi\SessionApi.cs" />
+    <Compile Include="RestQuery\EventObjects\EventSerializerExtensions.cs" />
     <Compile Include="SearchOptions\Builders\SortingBuilder.cs" />
     <Compile Include="RestApi\DataApi\PrintViewApi.cs" />
     <Compile Include="RestApi\DataApi\RegisterApi.cs" />
     <Compile Include="SearchOptions\Builders\FilterBuilder.cs" />
-    <Compile Include="RestApi\DataApi\FederalIntegrationApi.cs" />
     <Compile Include="Metadata\ConfigurationManagers\Standard\MetadataManagers\MetadataExtensions.cs" />
     <Compile Include="Metadata\ConfigurationManagers\Standard\MetadataReaders\MetadataReaderConfiguration.cs" />
     <Compile Include="Metadata\ConfigurationManagers\Standard\MetadataReaders\QueryMetadata.cs" />
@@ -353,8 +353,10 @@
     <Compile Include="SystemExtensions\InstallerInfo.cs" />
     <Compile Include="SystemExtensions\InstallExtension.cs" />
     <Compile Include="TestEnvironment\ConfigurationInfo.cs" />
+    <Compile Include="TestEnvironment\TestApi.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TestEnvironment\TestServerParameters.cs" />
-    <Compile Include="TestEnvironment\TestApi.cs" />
     <Compile Include="TestEnvironment\TestServer.cs" />
     <Compile Include="TestEnvironment\TestServerTracker.cs" />
     <Compile Include="TestEnvironment\TestServerInfo.cs" />

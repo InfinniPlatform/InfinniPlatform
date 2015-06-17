@@ -97,7 +97,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 			var discovery = new AssemblyDiscovery();
 			process.StartOperation(() =>
 			{
-				discoverResult = discovery.DiscoverAppliedAssemblies(ConfigId());
+				discoverResult = discovery.DiscoverAppliedAssemblies(Version(), ConfigId());
 			});
 			process.EndOperation();
 			if (!discoverResult)
@@ -127,7 +127,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 			var process = new StatusProcess();
 			process.StartOperation(() =>
 			{
-				result = ViewModelExtension.BuildDocumentScenarios(ConfigId(), DocumentId());
+				result = ViewModelExtension.BuildDocumentScenarios(Version(), ConfigId(), DocumentId());
 			});
 			process.EndOperation();
 			return result;
@@ -152,6 +152,8 @@ namespace InfinniPlatform.MetadataDesigner.Views
 		}
 
 		public Func<string> ConfigId { get; set; }
+
+        public Func<string> Version { get; set; }
 
 		public Func<string> DocumentId { get; set; }
 

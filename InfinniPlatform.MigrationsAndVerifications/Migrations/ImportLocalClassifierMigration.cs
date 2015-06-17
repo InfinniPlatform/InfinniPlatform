@@ -15,7 +15,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
     public sealed class ImportLocalClassifierMigration : IConfigurationMigration
     {
         readonly List<MigrationParameter> _parameters = new List<MigrationParameter>();
-        
+
+        private string _version;
+
         /// <summary>
         /// Текстовое описание миграции
         /// </summary>
@@ -82,7 +84,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                 
                 item["Overwrite"] = true;
 
-                RestQueryApi.QueryPostJsonRaw("ClassifierLoader", "classifiers", "Publish", null, item);
+                RestQueryApi.QueryPostJsonRaw("ClassifierLoader", "classifiers", "Publish", null, item, _version);
 
                 resultMessage.AppendLine();
                 resultMessage.AppendFormat("Classifier {0} imported", parameters[0]);
@@ -109,8 +111,10 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         /// <summary>
         /// Устанавливает активную конфигурацию для миграции
         /// </summary>
-        public void AssignActiveConfiguration(string configurationId, IGlobalContext context)
+        public void AssignActiveConfiguration(string version, string configurationId, IGlobalContext context)
         {
+            _version = version;
+
             _parameters.Add(new MigrationParameter { Caption = "Import source", PossibleValues = new[] { "Dbf", "Excel", "Xml" } });
 
             _parameters.Add(new MigrationParameter { Caption = "Path to content file" });

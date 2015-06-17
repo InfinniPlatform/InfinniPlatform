@@ -42,7 +42,7 @@ namespace InfinniPlatform.WebApi.Middleware.SessionHandlers
             {
                 if (linkedData.InstanceId != null && linkedData.FieldName != null && linkedData.SessionId != null)
                 {
-                    return new ValueRequestHandlerResult(new SessionApi().AttachFile(routeDictionary["version"], linkedData, fileStream));
+                    return new ValueRequestHandlerResult(new SessionApi(routeDictionary["version"]).AttachFile(linkedData, fileStream));
                 }
                 return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
             }

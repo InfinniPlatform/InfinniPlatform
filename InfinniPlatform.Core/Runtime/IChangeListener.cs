@@ -16,12 +16,13 @@ namespace InfinniPlatform.Runtime
 		/// </summary>
 		/// <param name="registrator">Зарегистрированный слушатель изменений</param>
 		/// <param name="action">Действие</param>
-	    void RegisterOnChange(string registrator, Action<string> action);
+        void RegisterOnChange(string registrator, Action<string, string> action);
 
-		/// <summary>
-		///   Выполнить список действий, зарегистрированных для события изменения модуля
-		/// </summary>
-		/// <param name="changedModule">Изменившийся модуль</param>
-	    void Invoke(string changedModule);
+        /// <summary>
+        ///   Выполнить список действий, зарегистрированных для события изменения модуля
+        /// </summary>
+        /// <param name="version">Версия модуля</param>
+        /// <param name="changedModule">Изменившийся модуль</param>
+        void Invoke(string version, string changedModule);
     }
 }

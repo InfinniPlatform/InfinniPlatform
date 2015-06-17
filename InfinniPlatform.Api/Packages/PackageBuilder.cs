@@ -9,7 +9,7 @@ namespace InfinniPlatform.Api.Packages
     /// </summary>
     public sealed class PackageBuilder 
     {
-		public dynamic BuildSystemPackage(string configurationName, string versionIdentifier,
+		public dynamic BuildSystemPackage(string configurationName,
 										  string fileName)
 		{
 		    dynamic package = new
@@ -17,7 +17,6 @@ namespace InfinniPlatform.Api.Packages
 
 		        ModuleId = fileName,
 		        ConfigurationName = configurationName,
-		        Version = versionIdentifier,
 		    }.ToDynamic();
 
 			return package;

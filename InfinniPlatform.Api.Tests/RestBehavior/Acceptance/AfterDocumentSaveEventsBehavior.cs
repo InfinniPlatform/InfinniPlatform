@@ -48,9 +48,9 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
 			CreateTestConfig(true, false);
 
-			new DocumentApi().SetDocument(_configurationId, "testdoc1", document, false);
+			new DocumentApi(null).SetDocument(_configurationId, "testdoc1", document, false);
 
-			IEnumerable<dynamic> documents = new DocumentApi().GetDocument(_configurationId, "testdoc1", f => f.AddCriteria(cr => cr.Property("TestValue").IsEquals("Test")), 0, 1);
+			IEnumerable<dynamic> documents = new DocumentApi(null).GetDocument(_configurationId, "testdoc1", f => f.AddCriteria(cr => cr.Property("TestValue").IsEquals("Test")), 0, 1);
 
 			Assert.AreEqual("Test", documents.First().TestValue);
 		}
@@ -67,15 +67,15 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             CreateTestConfig(true, false);
 
             // Замена точки расширения
-            var processManager = new ManagerFactoryDocument(_configurationId, "testdoc1").BuildProcessManager();
+            var processManager = new ManagerFactoryDocument(null,_configurationId, "testdoc1").BuildProcessManager();
 			var defaultProcess = processManager.MetadataReader.GetItem("Default");
             defaultProcess.Transitions[0].SuccessPoint.ScenarioId = "yetanothertestcomplexaction";
             
             processManager.MergeItem(defaultProcess);
             
-            new DocumentApi().SetDocument(_configurationId, "testdoc1", document);
+            new DocumentApi(null).SetDocument(_configurationId, "testdoc1", document);
 
-            IEnumerable<dynamic> documents = new DocumentApi().GetDocument(_configurationId, "testdoc1", f => f.AddCriteria(cr => cr.Property("TestValue").IsEquals("AnotherTest")), 0, 1);
+            IEnumerable<dynamic> documents = new DocumentApi(null).GetDocument(_configurationId, "testdoc1", f => f.AddCriteria(cr => cr.Property("TestValue").IsEquals("AnotherTest")), 0, 1);
 
             Assert.AreEqual("AnotherTest", documents.First().TestValue);
         }
@@ -93,9 +93,9 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
 			CreateTestConfig(true, true);
 
-			new DocumentApi().SetDocument(_configurationId, "testdoc1", document, false);
+			new DocumentApi(null).SetDocument(_configurationId, "testdoc1", document, false);
 
-			IEnumerable<dynamic> documents = new DocumentApi().GetDocument(_configurationId, "testdoc1", f => f.AddCriteria(cr => cr.Property("TestValue").IsEquals("Test")), 0, 1);
+			IEnumerable<dynamic> documents = new DocumentApi(null).GetDocument(_configurationId, "testdoc1", f => f.AddCriteria(cr => cr.Property("TestValue").IsEquals("Test")), 0, 1);
 
 			Assert.AreEqual("Test", documents.First().TestValue);
 		}
@@ -107,20 +107,20 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			string configurationId = _configurationId;
 			string documentId = "testdoc1";
 
-			IndexApi.RebuildIndex(configurationId, documentId);
+			new IndexApi().RebuildIndex(configurationId, documentId);
 
-			var managerConfiguration = ManagerFactoryConfiguration.BuildConfigurationManager();
+			var managerConfiguration = ManagerFactoryConfiguration.BuildConfigurationManager(null);
 
 			var config = managerConfiguration.CreateItem(configurationId);
             managerConfiguration.DeleteItem(config);
             managerConfiguration.MergeItem(config);
 
-			var managerDocument = new ManagerFactoryConfiguration(configurationId).BuildDocumentManager();
+			var managerDocument = new ManagerFactoryConfiguration(null, configurationId).BuildDocumentManager();
 			dynamic documentMetadata1 = managerDocument.CreateItem(documentId);
             managerDocument.MergeItem(documentMetadata1);
 
 			//добавляем бизнес-процесс по умолчанию
-			var processManager = new ManagerFactoryDocument(configurationId, documentId).BuildProcessManager();
+			var processManager = new ManagerFactoryDocument(null,configurationId, documentId).BuildProcessManager();
 			var defaultProcess = processManager.CreateItem("Default");
 
 			dynamic instance = new DynamicWrapper();
@@ -146,7 +146,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             processManager.MergeItem(defaultProcess);
 
 			//указываем ссылку на тестовый сценарий комплексного предзаполнения
-			var scenarioManager = new ManagerFactoryDocument(configurationId, documentId).BuildScenarioManager();
+			var scenarioManager = new ManagerFactoryDocument(null,configurationId, documentId).BuildScenarioManager();
 
 			if (hasOnSuccessPoint)
 			{
@@ -183,16 +183,16 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
 			//добавляем ссылку на сборку, в которой находится прикладной модуль
 
-			var assemblyManager = new ManagerFactoryConfiguration(configurationId).BuildAssemblyManager();
+			var assemblyManager = new ManagerFactoryConfiguration(null, configurationId).BuildAssemblyManager();
 			dynamic assemblyItem = assemblyManager.CreateItem("InfinniPlatform.Api.Tests");
             assemblyManager.MergeItem(assemblyItem);
 
-			var package = new PackageBuilder().BuildPackage(configurationId, "test_version", this.GetType().Assembly.Location);
-			UpdateApi.InstallPackages(new[] { package });
+			var package = new PackageBuilder().BuildPackage(configurationId, "test_version", GetType().Assembly.Location);
+			new UpdateApi(null).InstallPackages(new[] { package });
 
-			RestQueryApi.QueryPostNotify(configurationId);
+			RestQueryApi.QueryPostNotify(null, configurationId);
 
-			UpdateApi.UpdateStore(configurationId);
+			new UpdateApi(null).UpdateStore(configurationId);
 		}
 
 	}

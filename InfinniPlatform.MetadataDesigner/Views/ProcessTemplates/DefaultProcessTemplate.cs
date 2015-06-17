@@ -43,13 +43,13 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 
 		private void ReloadSchema()
 		{
-			_schemaPrefill = new MetadataApi().GetDocumentSchema(ConfigId, DocumentId);
+			_schemaPrefill = new MetadataApi(Version).GetDocumentSchema(ConfigId, DocumentId);
 			FillPropertiesBySchema();
 		}
 
 		private IEnumerable<string> LoadPropertiesNames()
 		{
-			var schema = new MetadataApi().GetDocumentSchema(ConfigId, DocumentId);
+            var schema = new MetadataApi(Version).GetDocumentSchema(ConfigId, DocumentId);
 
 			var properiesNames = new List<string>();
 
@@ -59,7 +59,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 				OnPrimitiveProperty = schemaObject => properiesNames.Add(schemaObject.Name)
 			};
 
-			schemaIterator.ProcessSchema(schema);
+			schemaIterator.ProcessSchema(Version, schema);
 
 			return properiesNames;
 		}
@@ -142,7 +142,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 																								row.Properties.Value = obj.Value.DefaultValue;
 																								return row;
 																							});
-			schemaIterator.ProcessSchema(_schemaPrefill);
+			schemaIterator.ProcessSchema(Version,_schemaPrefill);
 
 
 		}
@@ -193,7 +193,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 			schemaIterator.OnPrimitiveProperty = action;
 			schemaIterator.OnObjectProperty = action;
 
-			schemaIterator.ProcessSchema(_schemaPrefill);
+			schemaIterator.ProcessSchema(Version,_schemaPrefill);
 			return _schemaPrefill;
 		}
 
@@ -211,7 +211,9 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 		public IEnumerable<string> ValidationErrors { get; set; }
 		public string ConfigId { get; set; }
 		public string DocumentId { get; set; }
-		public IEnumerable<string> DocumentStates { get; set; }
+        public string Version { get; set; }
+
+	    public IEnumerable<string> DocumentStates { get; set; }
 		public IProcessBuilder ProcessBuilder { get; set; }
 
 
@@ -353,7 +355,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 		{
 			ProcessBuilder.EditTransition(GetTransition());
 
-			var processManager = new ManagerFactoryDocument(ConfigId, DocumentId).BuildProcessManager();
+			var processManager = new ManagerFactoryDocument(Version, ConfigId, DocumentId).BuildProcessManager();
 			processManager.DeleteItem(_process);
 			processManager.MergeItem(_process);
 

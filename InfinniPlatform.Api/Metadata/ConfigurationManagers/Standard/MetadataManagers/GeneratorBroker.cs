@@ -18,14 +18,16 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 	/// </summary>
 	public sealed class GeneratorBroker
 	{
-		public GeneratorBroker(string configurationId, string documentId)
+		public GeneratorBroker(string version, string configurationId, string documentId)
 		{
-			_configurationId = configurationId;
+		    _version = version;
+		    _configurationId = configurationId;
 			_documentId = documentId;
 		}
 
 
-		private readonly string _configurationId;
+	    private readonly string _version;
+	    private readonly string _configurationId;
 		private readonly string _documentId;
 
 
@@ -51,10 +53,10 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 									  Configuration = _configurationId,
 									  Metadata = _documentId,
 									  MetadataType = generatorObject.MetadataType,
-									  ContextTypeKind = ContextTypeKind.ApplyMove
+									  ContextTypeKind = ContextTypeKind.ApplyMove,
 								  };
 
-				RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "creategenerator",null, eventObject);
+				RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "creategenerator",null, eventObject,_version);
 			}
 			else
 			{
@@ -71,7 +73,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 						   GeneratorName = generatorName
 					   };
 
-			RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "deletegenerator", null, body);
+			RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "deletegenerator", null, body,_version);
 		}
 	}
 }

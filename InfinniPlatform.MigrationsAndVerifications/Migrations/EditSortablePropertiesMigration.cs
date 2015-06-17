@@ -24,7 +24,8 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         private IMetadataConfiguration _metadataConfiguration;
 
         readonly List<MigrationParameter> _parameters = new List<MigrationParameter>();
-        
+        private string _version;
+
 
         /// <summary>
         /// Текстовое описание миграции
@@ -71,7 +72,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         {
             var resultMessage = new StringBuilder();
            
-            var managerDocument = new ManagerFactoryConfiguration(_activeConfiguration).BuildDocumentManager();
+            var managerDocument = new ManagerFactoryConfiguration(_version, _activeConfiguration).BuildDocumentManager();
 
             if (_metadataConfiguration != null)
             {
@@ -92,15 +93,15 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                         managerDocument.MergeItem(document);
                     }
                 }
-                
-                UpdateApi.ForceReload(_activeConfiguration);
+
+                new UpdateApi(_version).ForceReload(_activeConfiguration);
                 
                 var responce = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "runmigration", null,
                     new
                     {
                         MigrationName = "UpdateStoreMigration",
                         ConfigurationName = _activeConfiguration
-                    });
+                    },_version);
 
                 var updateStoreMigrationLines = responce.Content
                     .Replace("\\r", "\r")
@@ -133,12 +134,14 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         /// <summary>
         /// Устанавливает активную конфигурацию для миграции
         /// </summary>
-        public void AssignActiveConfiguration(string configurationId, IGlobalContext context)
+        public void AssignActiveConfiguration(string version, string configurationId, IGlobalContext context)
         {
+            _version = version;
+
             _activeConfiguration = configurationId;
 			var configObject =
-				context.GetComponent<IConfigurationMediatorComponent>()
-					   .ConfigurationBuilder.GetConfigurationObject(_activeConfiguration);
+                context.GetComponent<IConfigurationMediatorComponent>(_version)
+					   .ConfigurationBuilder.GetConfigurationObject(_version, _activeConfiguration);
             
 			if (configObject != null)
 			{

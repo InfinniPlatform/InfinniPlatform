@@ -59,27 +59,29 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.File
         /// <summary>
         ///   Получить список существующих конфигураций
         /// </summary>
+        /// <param name="version"></param>
         /// <returns>Список конфигураций</returns>
-        public IEnumerable<string> GetConfigurationList()
+        public IEnumerable<string> GetConfigurationList(string version)
         {
-            return _configList.Select(c => c.GetConfigurationId()).ToList();
-        } 
+            return _configList.Where(c => c.GetVersion().ToLowerInvariant() == version.ToLowerInvariant()).Select(c => c.GetConfigurationId()).ToList();
+        }
 
         /// <summary>
         ///   Получить конфигурацию из JSON-файла по указанному идентификатору конфигурации
         /// </summary>
+        /// <param name="version">Версия приложения</param>
         /// <param name="configurationId">Идентификатор конфигурации</param>
         /// <returns>Конфигурация JSON</returns>
-        public dynamic GetJsonFileConfig(string configurationId)
+        public dynamic GetJsonFileConfig(string version, string configurationId)
         {
             return
                 _configList.Where(
-                    c => c.GetConfigurationId().ToLowerInvariant() == configurationId.ToLowerInvariant()).Select(c => c.ConfigObject).FirstOrDefault();
+                    c => c.GetConfigurationId().ToLowerInvariant() == configurationId.ToLowerInvariant() && c.GetVersion().ToLowerInvariant() == version.ToLowerInvariant() ).Select(c => c.ConfigObject).FirstOrDefault();
         }
 
-        public IDataReader BuildDocumentReader(string configurationId)
+        public IDataReader BuildDocumentReader(string version, string configurationId)
         {
-            var jsonConfig = GetJsonFileConfig(configurationId);
+            var jsonConfig = GetJsonFileConfig(version, configurationId);
             if (jsonConfig != null)
             {
                 return new JsonFileDocumentReader(jsonConfig);
@@ -87,9 +89,9 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.File
             throw new ArgumentException(string.Format("configuration: {0} not found.", configurationId));
         }
 
-        public IDataReader BuildRegisterReader(string configurationId)
+        public IDataReader BuildRegisterReader(string version, string configurationId)
         {
-            var jsonConfig = GetJsonFileConfig(configurationId);
+            var jsonConfig = GetJsonFileConfig(version, configurationId);
             if (jsonConfig != null)
             {
                 return new JsonFileRegisterReader(jsonConfig);
@@ -97,9 +99,9 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.File
             throw new ArgumentException(string.Format("configuration: {0} not found.", configurationId));
         }
 
-        public IDataReader BuildDocumentElementReader(string configurationId, string documentName, string metadataType)
+        public IDataReader BuildDocumentElementReader(string version, string configurationId, string documentName, string metadataType)
         {
-            var jsonConfig = GetJsonFileConfig(configurationId);
+            var jsonConfig = GetJsonFileConfig(version, configurationId);
             if (jsonConfig != null)
             {
                 IEnumerable<dynamic> documents = jsonConfig.Documents;
@@ -114,15 +116,15 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.File
         }
 
 
-        public string GetConfigurationUid(string name)
+        public string GetConfigurationUid(string version, string name)
         {
-            var config = GetJsonFileConfig(name);
+            var config = GetJsonFileConfig(version, name);
             return config != null ? config.Id : null;
         }
 
-        public string GetDocumentUid(string configurationId, string documentId)
+        public string GetDocumentUid(string version, string configurationId, string documentId)
         {
-            var config = GetJsonFileConfig(configurationId);
+            var config = GetJsonFileConfig(version, configurationId);
             IEnumerable<dynamic> documents = config.Documents;
             return documents.Where(d => d.Name == documentId).Select(d => d.Id).FirstOrDefault();
         }

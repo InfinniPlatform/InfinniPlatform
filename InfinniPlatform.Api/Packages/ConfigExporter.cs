@@ -17,9 +17,9 @@ namespace InfinniPlatform.Api.Packages
             _configStructure = configStructure;
         }
 
-        public void ExportHeaderToStructure(string configurationId)
+        public void ExportHeaderToStructure(string version, string configurationId)
         {
-            var managerConfig = ManagerFactoryConfiguration.BuildConfigurationMetadataReader();
+            var managerConfig = ManagerFactoryConfiguration.BuildConfigurationMetadataReader(version);
 
             dynamic config = managerConfig.GetItem(configurationId);
 
@@ -32,7 +32,7 @@ namespace InfinniPlatform.Api.Packages
 
                 _configStructure.AddConfiguration(result);
 
-                var menuReader = new ManagerFactoryConfiguration(configurationId).BuildMenuMetadataReader();
+                var menuReader = new ManagerFactoryConfiguration(version, configurationId).BuildMenuMetadataReader();
                 var menuList = menuReader.GetItems();
 
                 foreach (dynamic menu in menuList)
@@ -45,7 +45,7 @@ namespace InfinniPlatform.Api.Packages
                     _configStructure.AddMenu(menu.Name, result);
                 }
 
-                var reportReader = new ManagerFactoryConfiguration(configurationId).BuildReportMetadataReader();
+                var reportReader = new ManagerFactoryConfiguration(version, configurationId).BuildReportMetadataReader();
                 var reportList = reportReader.GetItems();
 
                 foreach (dynamic report in reportList)
@@ -58,7 +58,7 @@ namespace InfinniPlatform.Api.Packages
                 }
 
                 var documentReader =
-                    new ManagerFactoryConfiguration(configurationId).BuildDocumentMetadataReader();
+                    new ManagerFactoryConfiguration(version, configurationId).BuildDocumentMetadataReader();
                 var documents = documentReader.GetItems();
 
                 foreach (dynamic document in documents)
@@ -73,7 +73,7 @@ namespace InfinniPlatform.Api.Packages
                     {
                         try
                         {
-                            ProcessMetadataType(configurationId, document.Name, containedMetadataType);
+                            ProcessMetadataType(version, configurationId, document.Name, containedMetadataType);
                         }
                         catch (Exception e)
                         {
@@ -83,7 +83,7 @@ namespace InfinniPlatform.Api.Packages
                 }
 
                 var registerReader =
-                    new ManagerFactoryConfiguration(configurationId).BuildRegisterMetadataReader();
+                    new ManagerFactoryConfiguration(version, configurationId).BuildRegisterMetadataReader();
                 var registers = registerReader.GetItems();
 
                 foreach (dynamic register in registers)
@@ -102,10 +102,10 @@ namespace InfinniPlatform.Api.Packages
             }
         }
 
-        private void ProcessMetadataType(string configId, string documentId, string metadataType)
+        private void ProcessMetadataType(string version, string configId, string documentId, string metadataType)
         {
             IDataReader metadataReader =
-                new ManagerFactoryDocument(configId, documentId).BuildManagerByType(metadataType).MetadataReader;
+                new ManagerFactoryDocument(version, configId, documentId).BuildManagerByType(metadataType).MetadataReader;
             foreach (dynamic item in metadataReader.GetItems())
             {
                 dynamic fullItemMetadata = metadataReader.GetItem(item.Name);
@@ -119,9 +119,9 @@ namespace InfinniPlatform.Api.Packages
         /// <summary>
         ///     Загрузить конфигурацию из архива
         /// </summary>
-        /// <param name="versionName">Наименование версии конфигурации</param>
+        /// <param name="version">Наименование версии конфигурации</param>
         /// <returns>Объект конфигурации</returns>
-        public dynamic ImportHeaderFromStructure(string versionName)
+        public dynamic ImportHeaderFromStructure(string version)
         {
             _configStructure.Start();
 

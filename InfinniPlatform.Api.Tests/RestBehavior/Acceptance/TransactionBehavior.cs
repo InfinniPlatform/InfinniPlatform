@@ -40,16 +40,16 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
 		private void CreateDocumentSchema()
 		{
-			IndexApi.RebuildIndex(_configurationId, _documentIdPatient);
-			IndexApi.RebuildIndex(_configurationId, _documentIdAddress);
+			new IndexApi().RebuildIndex(_configurationId, _documentIdPatient);
+			new IndexApi().RebuildIndex(_configurationId, _documentIdAddress);
 
-			var managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager();
+			var managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager(null);
 
 			dynamic config = managerConfig.CreateItem(_configurationId);
             managerConfig.DeleteItem(config);
             managerConfig.MergeItem(config);
 
-			var managerDocument = new ManagerFactoryConfiguration(_configurationId).BuildDocumentManager();
+			var managerDocument = new ManagerFactoryConfiguration(null, _configurationId).BuildDocumentManager();
 
 
 			var documentMetadata1 = managerDocument.CreateItem(_documentIdPatient);
@@ -127,7 +127,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
 
 			//указываем ссылку на тестовый сценарий 
-			var scenarioManager = new ManagerFactoryDocument(_configurationId, _documentIdPatient).BuildScenarioManager();
+			var scenarioManager = new ManagerFactoryDocument(null,_configurationId, _documentIdPatient).BuildScenarioManager();
 			string scenarioId = "TestSaveDocumentFailAction";
 			dynamic scenarioItem = scenarioManager.CreateItem(scenarioId);
 			scenarioItem.ScenarioId = scenarioId;
@@ -137,13 +137,13 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			scenarioItem.ContextType = ContextTypeKind.ApplyMove;
             scenarioManager.MergeItem(scenarioItem);
 
-			var assemblyManager = new ManagerFactoryConfiguration(_configurationId).BuildAssemblyManager();
+			var assemblyManager = new ManagerFactoryConfiguration(null, _configurationId).BuildAssemblyManager();
 			dynamic assemblyItem = assemblyManager.CreateItem("InfinniPlatform.Api.Tests");
             assemblyManager.MergeItem(assemblyItem);
 
 
 			//Описываем схему предзаполнения в умолчательном бизнес-процессе
-			var processManager = new ManagerFactoryDocument(_configurationId, _documentIdPatient).BuildProcessManager();
+			var processManager = new ManagerFactoryDocument(null,_configurationId, _documentIdPatient).BuildProcessManager();
 			var process = processManager.CreateItem("Default");
 
 			process.Type = WorkflowTypes.WithoutState;
@@ -157,13 +157,13 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             processManager.MergeItem(process);
 
-			var package = new PackageBuilder().BuildPackage(_configurationId, "test_version", GetType().Assembly.Location);
-			UpdateApi.InstallPackages(new[] { package });
+			var package = new PackageBuilder().BuildPackage(_configurationId, null, GetType().Assembly.Location);
+			new UpdateApi(null).InstallPackages(new[] { package });
 
 
-			RestQueryApi.QueryPostNotify(_configurationId);
+			RestQueryApi.QueryPostNotify(null, _configurationId);
 
-			UpdateApi.UpdateStore(_configurationId);
+			new UpdateApi(null).UpdateStore(_configurationId);
 
 		}
 
@@ -173,7 +173,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 		{
 			CreateDocumentSchema();
 
-			dynamic document = new DocumentApi().CreateDocument(_configurationId, _documentIdPatient);
+			dynamic document = new DocumentApi(null).CreateDocument(_configurationId, _documentIdPatient);
 
 
 			document.Id = Guid.NewGuid().ToString();
@@ -182,19 +182,19 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			//при обработке документа в OnSuccess возникнет исключение
 			try
 			{
-				new DocumentApi().SetDocument(_configurationId, _documentIdPatient, document);
+				new DocumentApi(null).SetDocument(_configurationId, _documentIdPatient, document);
 			}
 			catch
 			{
 
 			}
 
-			IEnumerable<dynamic> addresses = new DocumentApi().GetDocument(_configurationId, _documentIdAddress, null, 0, 1);
+			IEnumerable<dynamic> addresses = new DocumentApi(null).GetDocument(_configurationId, _documentIdAddress, null, 0, 1);
 
 			Assert.AreEqual(0, addresses.Count());
 
 
-			IEnumerable<dynamic> documents = new DocumentApi().GetDocument(_configurationId, _documentIdPatient, null, 0, 1);
+			IEnumerable<dynamic> documents = new DocumentApi(null).GetDocument(_configurationId, _documentIdPatient, null, 0, 1);
 
 			Assert.AreEqual(0, documents.Count());
 

@@ -14,9 +14,5 @@ namespace InfinniPlatform.Api.ContextComponents
 		/// </summary>
 		IManagerIdentifiers ManagerIdentifiers { get; set; }
 
-		/// <summary>
-		///   Контракт для чтения метаданных конфигурации
-		/// </summary>
-		IJsonConfigReader ConfigurationReader { get; set; }
 	}
 }

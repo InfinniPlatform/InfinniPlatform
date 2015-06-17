@@ -26,7 +26,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
 			if (target.Item.Configuration.ToLowerInvariant() != "systemconfig" && target.Item.Configuration.ToLowerInvariant() != "update" && target.Item.Configuration.ToLowerInvariant() != "restfulapi")
 			{
 				//ищем метаданные бизнес-процесса по умолчанию документа 
-				defaultBusinessProcess = target.Context.GetComponent<IMetadataComponent>().GetMetadata(target.Item.Configuration, target.Item.Metadata, MetadataType.Process, "Default");
+                defaultBusinessProcess = target.Context.GetComponent<IMetadataComponent>(target.Version).GetMetadata(target.Version, target.Item.Configuration, target.Item.Metadata, MetadataType.Process, "Default");
 			}
 
 			if (defaultBusinessProcess == null || defaultBusinessProcess.Transitions.Count == 0 )
@@ -39,7 +39,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
 			//выполняем валидацию на error
 			if (defaultBusinessProcess.Transitions[0].ValidationRuleError != null)
 			{
-				var validationOperator = target.Context.GetComponent<IMetadataComponent>().GetMetadata(target.Item.Configuration, target.Item.Metadata,
+                var validationOperator = target.Context.GetComponent<IMetadataComponent>(target.Version).GetMetadata(target.Version, target.Item.Configuration, target.Item.Metadata,
 												  MetadataType.ValidationError,	
 				                                 (string)defaultBusinessProcess.Transitions[0].ValidationRuleError).ValidationOperator;
 				var op = ValidationExtensions.CreateValidatorFromConfigValidator(validationOperator);
@@ -51,9 +51,9 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
 			if (defaultBusinessProcess.Transitions[0].ValidationPointError != null)
 			{
 				//получаем конструктор метаданных конфигураций
-				var configBuilder = target.Context.GetComponent<IConfigurationMediatorComponent>().ConfigurationBuilder;
+                var configBuilder = target.Context.GetComponent<IConfigurationMediatorComponent>(target.Version).ConfigurationBuilder;
 
-				IConfigurationObject configurationObject = configBuilder.GetConfigurationObject(target.Item.Configuration);
+				IConfigurationObject configurationObject = configBuilder.GetConfigurationObject(target.Version, target.Item.Configuration);
 
 				if (configurationObject == null)
 				{

@@ -26,7 +26,7 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
             string registerId = target.Item.Register.ToString();
             var specifiedDimensions = target.Item.Dimensions;
 
-            var registerObject = target.Context.GetComponent<IMetadataComponent>().GetMetadataList(configurationId, registerId,MetadataType.Register).FirstOrDefault();
+            var registerObject = target.Context.GetComponent<IMetadataComponent>(target.Version).GetMetadataList(target.Version, configurationId, registerId,MetadataType.Register).FirstOrDefault();
 
             if (registerObject == null)
             {
@@ -42,7 +42,7 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
                     Configuration = configurationId,
                     Register = registerId,
                     Date = aggregationDate
-                }).ToDynamic();
+                }, target.Version).ToDynamic();
 
             var filetrBuilder = new FilterBuilder();
             filetrBuilder.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty).IsLessThanOrEquals(aggregationDate));
@@ -51,7 +51,7 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
 
             if (closestDate != null)
             {
-                aggregatedTotals = new DocumentApi().GetDocument(
+                aggregatedTotals = new DocumentApi(target.Version).GetDocument(
                     configurationId,
                     RegisterConstants.RegisterTotalNamePrefix + registerId,
                     f => f.AddCriteria(

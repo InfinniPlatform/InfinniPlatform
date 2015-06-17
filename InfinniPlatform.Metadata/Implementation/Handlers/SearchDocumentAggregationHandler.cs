@@ -36,7 +36,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
             //получаем тип метаданных/индекс, по которому выполняем поиск документов
             var idType = ConfigRequestProvider.GetMetadataIdentifier();
 
-			var metadataConfig = _globalContext.GetComponent<IMetadataConfigurationProvider>().GetMetadataConfiguration(ConfigRequestProvider.GetConfiguration());
+            var metadataConfig = _globalContext.GetComponent<IMetadataConfigurationProvider>(ConfigRequestProvider.GetVersion()).GetMetadataConfiguration(ConfigRequestProvider.GetVersion(), ConfigRequestProvider.GetConfiguration());
 
             var target = new SearchContext();
             target.Context = _globalContext;
@@ -49,8 +49,8 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
             metadataConfig.MoveWorkflow(idType, metadataConfig.GetExtensionPointValue(ConfigRequestProvider, "Join"), target);
 
 			//в качестве routing используется клэйм организации пользователя
-			var executor = target.Context.GetComponent<IIndexComponent>().IndexFactory.BuildAggregationProvider(aggregationConfiguration, aggregationMetadata, 
-				target.Context.GetComponent<ISecurityComponent>().GetClaim(AuthorizationStorageExtensions.OrganizationClaim, target.UserName) ?? AuthorizationStorageExtensions.AnonimousUser);
+            var executor = target.Context.GetComponent<IIndexComponent>(ConfigRequestProvider.GetVersion()).IndexFactory.BuildAggregationProvider(aggregationConfiguration, aggregationMetadata,
+                target.Context.GetComponent<ISecurityComponent>(ConfigRequestProvider.GetVersion()).GetClaim(AuthorizationStorageExtensions.OrganizationClaim, target.UserName) ?? AuthorizationStorageExtensions.AnonimousUser);
             
             //заполняем предварительные результаты поиска
             target.SearchResult = executor.ExecuteAggregation(

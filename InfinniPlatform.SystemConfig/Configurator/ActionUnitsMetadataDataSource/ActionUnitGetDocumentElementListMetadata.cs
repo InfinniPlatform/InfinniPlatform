@@ -15,9 +15,9 @@ namespace InfinniPlatform.SystemConfig.Configurator.ActionUnitsMetadataDataSourc
         {
             IMetadataContainerInfo containerInfo = new MetadataContainerInfoFactory().BuildMetadataContainerInfo(target.Item.MetadataType);
 
-            dynamic bodyQuery = DynamicWrapperExtensions.ToDynamic((string)QueryMetadata.GetDocumentMetadataShortListIql(target.Item.ConfigId, target.Item.DocumentId,containerInfo.GetMetadataContainerName()));
+            dynamic bodyQuery = QueryMetadata.GetDocumentMetadataShortListIql(target.Item.ConfigId, target.Item.DocumentId,containerInfo.GetMetadataContainerName()).ToDynamic();
 
-            var response = RestQueryApi.QueryPostJsonRaw("systemconfig", "metadata", "getmetadata", null, bodyQuery);
+            var response = RestQueryApi.QueryPostJsonRaw("systemconfig", "metadata", "getmetadata", null, bodyQuery, target.Version);
             IEnumerable<dynamic> queryResult = DynamicWrapperExtensions.ToEnumerable(response.ToDynamic().QueryResult);
 
             target.Result = 

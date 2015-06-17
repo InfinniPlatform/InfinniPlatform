@@ -32,7 +32,7 @@ namespace InfinniPlatform.WebApi.Middleware.UserAuthHandlers
 
             if (body.ClaimValue != null)
             {
-                return new ValueRequestHandlerResult(new AuthApi().AddClaim(routeDictionary["userName"], routeDictionary["claimType"], body.ClaimValue.ToString()));
+                return new ValueRequestHandlerResult(new AuthApi(routeDictionary["version"]).AddClaim(routeDictionary["userName"], routeDictionary["claimType"], body.ClaimValue.ToString()));
             }
 
             return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);

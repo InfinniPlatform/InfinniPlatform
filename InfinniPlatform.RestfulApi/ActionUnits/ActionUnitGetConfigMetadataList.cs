@@ -27,11 +27,11 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 			}
 
 
-			var authUtils = new AuthUtils(target.Context.GetComponent<ISecurityComponent>(), target.UserName, null);
+            var authUtils = new AuthUtils(target.Context.GetComponent<ISecurityComponent>(target.Version), target.UserName, null);
 
-			
-			target.Result = target.Context.GetComponent<IMetadataComponent>()
-								  .GetMetadataList(paramsDoc.Configuration, paramsDoc.Metadata, paramsDoc.MetadataType);
+
+            target.Result = target.Context.GetComponent<IMetadataComponent>(target.Version)
+								  .GetMetadataList(paramsDoc.Version, paramsDoc.Configuration, paramsDoc.Metadata, paramsDoc.MetadataType);
 
 			var result = new List<dynamic>();
 			foreach (dynamic o in target.Result)

@@ -28,6 +28,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 	{
 		private string _configurationName;
 		private string _documentName;
+	    private string _version;
 
 		private dynamic _generator;
 		private readonly AssemblyDiscovery _assemblyDiscovery;
@@ -49,19 +50,19 @@ namespace InfinniPlatform.MetadataDesigner.Views
 		{
 			_configurationName = ConfigId();
 			_documentName = DocumentId();
+		    _version = Version();
 
-
-			RefreshUnits();
+			RefreshUnits(_version);
 
 		}
 
-		private void RefreshUnits()
+		private void RefreshUnits(string version)
 		{
 			var process = new StatusProcess();
 			bool discoverResult = false;
 			process.StartOperation(() =>
 			{
-				discoverResult = _assemblyDiscovery.DiscoverAppliedAssemblies(_configurationName);
+				discoverResult = _assemblyDiscovery.DiscoverAppliedAssemblies(version, _configurationName);
 			});
 			process.EndOperation();
 			if (!discoverResult)
@@ -103,7 +104,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 			var process = new StatusProcess();
 			process.StartOperation(() =>
 			{
-				var generatorBroker = new GeneratorBroker(_configurationName, _documentName);
+				var generatorBroker = new GeneratorBroker(_version, _configurationName, _documentName);
 
 				var generator = new
 									{
@@ -116,7 +117,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 				generatorBroker.CreateGenerator(generator);
 
 				var manager =
-					new ManagerFactoryDocument(_configurationName, _documentName).BuildManagerByType(MetadataType.Generator);
+					new ManagerFactoryDocument(_version, _configurationName, _documentName).BuildManagerByType(MetadataType.Generator);
 
 				_generator = manager.MetadataReader.GetItem(TextEditGeneratorName.Text);
 				
@@ -146,7 +147,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 
 			var tracer = new RouteTraceSaveQueryLog();
 
-			var result = ViewModelExtension.CheckGetView(ConfigId(), DocumentId(), "", ComboBoxSelectViewType.EditValue.ToString(), jsonParams);
+			var result = ViewModelExtension.CheckGetView(Version(), ConfigId(), DocumentId(), "", ComboBoxSelectViewType.EditValue.ToString(), jsonParams);
 
 
 			var checkForm = new CheckForm
@@ -163,6 +164,9 @@ namespace InfinniPlatform.MetadataDesigner.Views
 		public Func<string> ConfigId { get; set; }
 
 		public Func<string> DocumentId { get; set; }
+
+
+        public Func<string> Version { get; set; } 
 
 		public object Value
 		{
@@ -206,7 +210,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 
 		private void ButtonRefreshScenario_Click(object sender, EventArgs e)
 		{
-			RefreshUnits();
+			RefreshUnits(Version());
 		}
 	}
 }

@@ -28,7 +28,7 @@ namespace InfinniPlatform.RestfulApi.Auth
             storage.RemoveUserClaim(user, target.Item.ClaimType);
 
             //обновляем пользователей системы
-            target.Context.GetComponent<CachedSecurityComponent>().UpdateUsers();
+            target.Context.GetComponent<CachedSecurityComponent>(target.Version).UpdateUsers();
             target.Result = new DynamicWrapper();
             target.Result.ValidationMessage = Resources.ClaimRemovedSuccessfully;
             target.Result.IsValid = true;

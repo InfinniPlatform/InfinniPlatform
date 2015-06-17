@@ -41,7 +41,6 @@
   <ItemGroup>
     <Compile Include="Implementation\Handlers\AggregateExtensions.cs" />
     <Compile Include="Implementation\Handlers\ApplyChangesHandler.cs" />
-    <Compile Include="Implementation\Handlers\HelpHandler.cs" />
     <Compile Include="Implementation\Handlers\SearchDocumentAggregationHandler.cs" />
     <Compile Include="Implementation\Handlers\SearchHandler.cs">
       <SubType>Code</SubType>

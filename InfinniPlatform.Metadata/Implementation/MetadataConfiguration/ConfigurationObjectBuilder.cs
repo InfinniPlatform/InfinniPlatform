@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Metadata;
@@ -26,14 +27,15 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 		    _metadataConfigurationProvider = metadataConfigurationProvider;
 		}
 
-        /// <summary>
-        ///   Получить объект конфигурации метаданных для указанного идентификатора
-        /// </summary>
-        /// <param name="metadataIdentifier">Идентификатор метаданных</param>
-        /// <returns>Объект конфигурации метаданных</returns>
-        public IConfigurationObject GetConfigurationObject(string metadataIdentifier)
-        {
-            var metadataConfiguration = _metadataConfigurationProvider.GetMetadataConfiguration(metadataIdentifier);
+	    /// <summary>
+	    ///   Получить объект конфигурации метаданных для указанного идентификатора
+	    /// </summary>
+	    /// <param name="version">Версия конфигурации</param>
+	    /// <param name="metadataIdentifier">Идентификатор метаданных</param>
+	    /// <returns>Объект конфигурации метаданных</returns>
+	    public IConfigurationObject GetConfigurationObject(string version, string metadataIdentifier)
+	    {
+            var metadataConfiguration = _metadataConfigurationProvider.GetMetadataConfiguration(version, metadataIdentifier);
             if (metadataConfiguration == null)
             {
                 Logger.Log.Error(string.Format("Metadata configuration not registered: \"{0}\"",

@@ -23,8 +23,8 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
 	        //получаем провайдер версий документов
 		    dynamic documentProvider =
-			    target.Context.GetComponent<InprocessDocumentComponent>()
-			          .GetDocumentProvider(target.Item.Configuration, target.Item.Metadata, target.UserName);
+                target.Context.GetComponent<InprocessDocumentComponent>(target.Version)
+			          .GetDocumentProvider(target.Version, target.Item.Configuration, target.Item.Metadata, target.UserName);
 	        if (documentProvider == null)
 	        {
 	            throw new ArgumentException(string.Format(Resources.DocumentProviderTypeNotFound,target.Item.Metadata));
@@ -48,8 +48,8 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 	        }
 
 	        documentProvider.DeleteDocument(target.Item.Id);
-            
-	        target.Context.GetComponent<ILogComponent>().GetLog().Info(Resources.LogDocumentDeleted, indexName);
+
+            target.Context.GetComponent<ILogComponent>(target.Version).GetLog().Info(Resources.LogDocumentDeleted, indexName);
 
 	        target.Result = new DynamicWrapper();
 	        target.Result.IsValid = true;

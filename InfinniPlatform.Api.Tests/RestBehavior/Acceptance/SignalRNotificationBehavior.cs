@@ -39,7 +39,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			dynamic document = new DynamicWrapper();
 			document.Name = "test";
 
-			new DocumentApi().SetDocument(_configId, _documentId, document);
+			new DocumentApi(null).SetDocument(_configId, _documentId, document);
 		}
 
 		private string _configId = "testsignalr";
@@ -48,18 +48,18 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
 		private void CreateTestConfig()
 		{
-			var managerConfiguration = ManagerFactoryConfiguration.BuildConfigurationManager();
+			var managerConfiguration = ManagerFactoryConfiguration.BuildConfigurationManager(null);
 
 			var config = managerConfiguration.CreateItem(_configId);
 			managerConfiguration.DeleteItem(config);
 			managerConfiguration.MergeItem(config);
 
-			var managerDocument = new ManagerFactoryConfiguration(_configId).BuildDocumentManager();
+			var managerDocument = new ManagerFactoryConfiguration(null, _configId).BuildDocumentManager();
 			dynamic documentMetadata1 = managerDocument.CreateItem(_documentId);
 			managerDocument.MergeItem(documentMetadata1);
 
 			//добавляем бизнес-процесс по умолчанию
-			var processManager = new ManagerFactoryDocument(_configId, _documentId).BuildProcessManager();
+			var processManager = new ManagerFactoryDocument(null,_configId, _documentId).BuildProcessManager();
 			var defaultProcess = processManager.CreateItem("Default");
 
 			dynamic instance = new DynamicWrapper();
@@ -75,7 +75,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			processManager.MergeItem(defaultProcess);
 
 			//указываем ссылку на тестовый сценарий комплексного предзаполнения
-			var scenarioManager = new ManagerFactoryDocument(_configId, _documentId).BuildScenarioManager();
+			var scenarioManager = new ManagerFactoryDocument(null,_configId, _documentId).BuildScenarioManager();
 
 
 			string scenarioSuccessId = "TestSignalRAction";
@@ -90,16 +90,16 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
 			//добавляем ссылку на сборку, в которой находится прикладной модуль
 
-			var assemblyManager = new ManagerFactoryConfiguration(_configId).BuildAssemblyManager();
+			var assemblyManager = new ManagerFactoryConfiguration(null, _configId).BuildAssemblyManager();
 			dynamic assemblyItem = assemblyManager.CreateItem("InfinniPlatform.Api.Tests");
 			assemblyManager.MergeItem(assemblyItem);
 
-			var package = new PackageBuilder().BuildPackage(_configId, "test_version", this.GetType().Assembly.Location);
-			UpdateApi.InstallPackages(new[] { package });
+			var package = new PackageBuilder().BuildPackage(_configId, null, this.GetType().Assembly.Location);
+			new UpdateApi(null).InstallPackages(new[] { package });
 
-			RestQueryApi.QueryPostNotify(_configId);
+			RestQueryApi.QueryPostNotify(null, _configId);
 
-			UpdateApi.UpdateStore(_configId);
+            new UpdateApi(null).UpdateStore(_configId);
 		}
 
 	}

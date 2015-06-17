@@ -40,23 +40,23 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 		{
 
 			ClearAuthConfig();
-			new SignInApi().SignInInternal("Admin", "Admin", false);
+			new SignInApi(null).SignInInternal("Admin", "Admin", false);
 
 			//password: "Password1"
-			new AuthApi().AddUser("TestUser", "Password1");
-			new AuthApi().AddUser("TestUser1", "Password1");
+            new AuthApi(null).AddUser("TestUser", "Password1");
+            new AuthApi(null).AddUser("TestUser1", "Password1");
 
 			//добавляем пользователю доступ к настройке прав
 			new AdminApi().GrantAdminAcl("TestUser");
 
 
-			new SignInApi().SignOutInternal();
+            new SignInApi(null).SignOutInternal();
 
 			//залогиниваемся
-			new SignInApi().SignInInternal("TestUser", "Password1", false);
+            new SignInApi(null).SignInInternal("TestUser", "Password1", false);
 
 
-			dynamic result = new AuthApi().DenyAccess("TestUser1", "Test");
+            dynamic result = new AuthApi(null).DenyAccess("TestUser1", "Test");
 
 			Assert.AreNotEqual(result.IsValid, false);
 
@@ -64,12 +64,12 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			new AdminApi().SetDefaultAcl();
 
 			//проверяем, что доступ по-прежнему присутствует
-			result = new AuthApi().DenyAccessAll("Test");
+            result = new AuthApi(null).DenyAccessAll("Test");
 
 			Assert.AreNotEqual(result.IsValid,false);
 
 			//разлогиниваемся
-			new SignInApi().SignOutInternal();
+            new SignInApi(null).SignOutInternal();
 
 			//пробуем установить права
 
@@ -83,7 +83,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			}
 
 			//логинимся под другим пользователем, у которого нет прав
-			new SignInApi().SignInInternal("TestUser1","Password1",false);
+            new SignInApi(null).SignInInternal("TestUser1", "Password1", false);
 			try
 			{
 				new AdminApi().SetDefaultAcl();
@@ -96,9 +96,9 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
 		private static void ClearAuthConfig()
 		{
-			new SignInApi().SignInInternal("Admin", "Admin", false);
+            new SignInApi(null).SignInInternal("Admin", "Admin", false);
 
-			var aclApi = new AuthApi();
+            var aclApi = new AuthApi(null);
 
 			var userRoles = aclApi.GetUserRoles();
 			foreach (var userRole in userRoles)
@@ -142,7 +142,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 				}
 			}
 
-			new SignInApi().SignOutInternal();
+            new SignInApi(null).SignOutInternal();
 
 		}
 

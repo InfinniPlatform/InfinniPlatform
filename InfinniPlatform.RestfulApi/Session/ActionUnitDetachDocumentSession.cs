@@ -16,7 +16,7 @@ namespace InfinniPlatform.RestfulApi.Session
     {
         public void Action(IApplyContext target)
         {
-            var manager = target.Context.GetComponent<ITransactionComponent>().GetTransactionManager();
+            var manager = target.Context.GetComponent<ITransactionComponent>(target.Version).GetTransactionManager();
 
             if (!string.IsNullOrEmpty(target.Item.SessionId) && target.Item.AttachmentId != null)
             {

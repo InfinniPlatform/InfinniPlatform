@@ -9,6 +9,13 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 {
     public sealed class RegisterApi
     {
+        private readonly string _version;
+
+        public RegisterApi(string version)
+        {
+            _version = version;
+        }
+
         /// <summary>
         /// Получение результата агрегации по регистру на определенную дату
         /// </summary>
@@ -48,7 +55,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                     ValueProperties = valueProperties,
                     ValueAggregationTypes = valueAggregationTypes,
                     Filter = filter == null ? null : filterBuilder.GetFilter(),
-                });
+                },_version);
 
             return response.ToDynamicList();
         }
@@ -95,7 +102,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                     ValueProperties = valueProperties,
                     ValueAggregationTypes = valueAggregationTypes,
                     Filter = filter == null ? null : filterBuilder.GetFilter(),
-                });
+                },_version);
 
             return response.ToDynamicList();
         }
@@ -145,7 +152,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                     ValueProperty = valueProperties,
                     TimeZone = timezone,
                     Filter = filter == null ? null : filterBuilder.GetFilter(),
-                });
+                },_version);
 
 
             IEnumerable<dynamic> result;
@@ -188,7 +195,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                     Registrar = registrar,
                     Dimensions = dimensions,
                     ValueProperties = valueProperties
-                });
+                },_version);
 
             return response.ToDynamicList();
         }
@@ -219,7 +226,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                     RegistrarType = registrarType,
                     Dimensions = dimensions,
                     ValueProperties = valueProperties
-                });
+                },_version);
 
             return response.ToDynamicList();
         }
@@ -254,7 +261,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                 Filter = filter == null ? null : filterBuilder.GetFilter(),
                 PageNumber = pageNumber,
                 PageSize = pageSize
-            });
+            },_version);
 
             return response.ToDynamicList();
         }
@@ -277,11 +284,11 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                     Configuration = configuration,
                     Register = register,
                     Date = totalsDate
-                }).ToDynamic();
+                },_version).ToDynamic();
 
             if (closestDate != null)
             {
-                return new DocumentApi().GetDocument(
+                return new DocumentApi(_version).GetDocument(
                     configuration,
                     RegisterConstants.RegisterTotalNamePrefix + register,
                     f => f.AddCriteria(

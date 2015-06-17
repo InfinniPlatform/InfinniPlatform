@@ -18,7 +18,7 @@ namespace InfinniPlatform.RestfulApi.Auth
     {
         public void Action(IApplyContext target)
         {
-            new AuthUtils(target.Context.GetComponent<ISecurityComponent>(),target.UserName, null).CheckDocumentAccess(target.Item.Configuration, target.Item.Metadata, target.Item.Action, target.Item.RecordId);
+            new AuthUtils(target.Context.GetComponent<ISecurityComponent>(target.Version),target.UserName, null).CheckDocumentAccess(target.Item.Configuration, target.Item.Metadata, target.Item.Action, target.Item.RecordId);
 
             target.Result = new DynamicWrapper();
             target.Result.IsValid = target.IsValid;

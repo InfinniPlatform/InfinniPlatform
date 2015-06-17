@@ -19,7 +19,7 @@ namespace InfinniPlatform.RestfulApi.Session
     {
         public void Action(IApplyContext target)
         {
-            var manager = target.Context.GetComponent<ITransactionComponent>().GetTransactionManager();
+            var manager = target.Context.GetComponent<ITransactionComponent>(target.Version).GetTransactionManager();
 
             if (!string.IsNullOrEmpty(target.Item.SessionId) && 
                 target.Item.AttachedInfo.Document != null &&
@@ -33,8 +33,8 @@ namespace InfinniPlatform.RestfulApi.Session
                    target.Item.AttachedInfo.Application,
                    target.Item.AttachedInfo.DocumentType, 
                    target.Version,
-                   new [] {target.Item.AttachedInfo.Document}, 
-                   target.Context.GetComponent<ISecurityComponent>().GetClaim(AuthorizationStorageExtensions.OrganizationClaim, target.UserName) ?? AuthorizationStorageExtensions.AnonimousUser);
+                   new [] {target.Item.AttachedInfo.Document},
+                   target.Context.GetComponent<ISecurityComponent>(target.Version).GetClaim(AuthorizationStorageExtensions.OrganizationClaim, target.UserName) ?? AuthorizationStorageExtensions.AnonimousUser);
 
                 target.Result = new DynamicWrapper();
                 target.Result.Id = target.Item.AttachedInfo.Document.Id;

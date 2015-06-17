@@ -20,6 +20,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
         private string _activeConfiguration;
 
         private IMetadataConfigurationProvider _metadataConfigurationProvider;
+        private string _version;
 
         /// <summary>
         /// Текстовое описание правила проверки
@@ -62,7 +63,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
             // Получаем информацию обо всех сценариях из сборок, подцепленных к конфигурации
 
             var assemblyMetadataReader =
-                new ManagerFactoryConfiguration(_activeConfiguration).BuildAssemblyMetadataReader();
+                new ManagerFactoryConfiguration(_version, _activeConfiguration).BuildAssemblyMetadataReader();
             
             var scripts = new List<string>();
 
@@ -80,7 +81,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
             // проверяем, что сценарии имеются в списке scripts, сформированном ранее
 
             var documentMetadataReader =
-                new ManagerFactoryConfiguration(_activeConfiguration).BuildDocumentMetadataReader();
+                new ManagerFactoryConfiguration(_version, _activeConfiguration).BuildDocumentMetadataReader();
 
             foreach (var document in documentMetadataReader.GetItems())
             {
@@ -90,7 +91,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
                     continue;
                 }
 
-                var scenariosReader =  new ManagerFactoryDocument(_activeConfiguration, document.Name.ToString())
+                var scenariosReader =  new ManagerFactoryDocument(_version, _activeConfiguration, document.Name.ToString())
                     .BuildScenarioManager().MetadataReader;
 
                 foreach (var scenario in scenariosReader.GetItems())
@@ -126,10 +127,11 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
         /// <summary>
         /// Устанавливает активную конфигурацию для правила проверки
         /// </summary>
-        public void AssignActiveConfiguration(string configurationId, IGlobalContext context)
+        public void AssignActiveConfiguration(string version, string configurationId, IGlobalContext context)
         {
             _activeConfiguration = configurationId;
-            
+            _version = version;
+
         }
 
         private static Assembly LoadAppliedAssembly(string assemblyName)

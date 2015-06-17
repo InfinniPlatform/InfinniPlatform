@@ -4,14 +4,11 @@ using System.Linq;
 using InfinniPlatform.Api.Context;
 using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
-using InfinniPlatform.Api.Factories;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Metadata.Properties;
-using IConfigurationObjectBuilder = InfinniPlatform.Api.Metadata.IConfigurationObjectBuilder;
-
 
 namespace InfinniPlatform.Metadata.Implementation.Handlers
 {
@@ -33,10 +30,9 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
 	    /// <param name="filterObject">Фильтр поиска объектов</param>
 	    /// <param name="pageNumber">Номер страницы результатов поиска</param>
 	    /// <param name="pageSize">Размер страницы результатов</param>
-	    /// <param name="version">Версия конфигурации, для которой выполняется поиск объектов</param>
 	    /// <param name="searchType">Искать только актуальную версию объектов</param>
 	    /// <returns>Список результатов поиска</returns>
-	    public object GetSearchResult(IEnumerable<dynamic> filterObject, int pageNumber, int pageSize, SearchType searchType = SearchType.All, string version = null)
+	    public object GetSearchResult(IEnumerable<dynamic> filterObject, int pageNumber, int pageSize, SearchType searchType = SearchType.All)
 	    {
             
 		    List<dynamic> filters = null;
@@ -53,11 +49,11 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
 			}
 
 			var idType = ConfigRequestProvider.GetMetadataIdentifier();
-			var config = _globalContext.GetComponent<IConfigurationMediatorComponent>().ConfigurationBuilder.GetConfigurationObject(ConfigRequestProvider.GetConfiguration()).MetadataConfiguration;
+            var config = _globalContext.GetComponent<IConfigurationMediatorComponent>(ConfigRequestProvider.GetVersion()).ConfigurationBuilder.GetConfigurationObject(ConfigRequestProvider.GetVersion(), ConfigRequestProvider.GetConfiguration()).MetadataConfiguration;
 
 			//устанавливаем контекст прикладной конфигурации. В ходе рефакторинга необходимо обдумать, как вынести это на более высокий уровень абстракции
 		    var appliedConfig =
-			    _globalContext.GetComponent<IConfigurationMediatorComponent>().GetConfiguration(ConfigRequestProvider.GetConfiguration()); 
+                _globalContext.GetComponent<IConfigurationMediatorComponent>(ConfigRequestProvider.GetVersion()).GetConfiguration(ConfigRequestProvider.GetVersion(), ConfigRequestProvider.GetConfiguration()); 
 	        
 
 			if (string.IsNullOrEmpty(idType))
@@ -75,7 +71,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
 					Configuration = ConfigRequestProvider.GetConfiguration(),
 					Metadata = ConfigRequestProvider.GetMetadataIdentifier(),
 					Action = ConfigRequestProvider.GetServiceName(),
-
+                    Version = ConfigRequestProvider.GetVersion(),
 					PageNumber = pageNumber,
 					PageSize = pageSize
 			    };
@@ -88,13 +84,13 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
 			    string configVersion = null;
 			    if (searchType != SearchType.All)
 			    {
-			        configVersion = version ?? appliedConfig.GetConfigurationVersion();
+			        configVersion = ConfigRequestProvider.GetVersion() ?? appliedConfig.GetConfigurationVersion();
 			    }
 
 
 			    var documentProvider = appliedConfig
-			        .GetDocumentProvider(ConfigRequestProvider.GetMetadataIdentifier(), configVersion, 
-					target.Context.GetComponent<ISecurityComponent>().GetClaim(AuthorizationStorageExtensions.OrganizationClaim,target.UserName) ?? AuthorizationStorageExtensions.AnonimousUser);
+			        .GetDocumentProvider(ConfigRequestProvider.GetMetadataIdentifier(), configVersion,
+                    target.Context.GetComponent<ISecurityComponent>(ConfigRequestProvider.GetVersion()).GetClaim(AuthorizationStorageExtensions.OrganizationClaim, target.UserName) ?? AuthorizationStorageExtensions.AnonimousUser);
 
 			    dynamic sr = null;
 			    if (documentProvider != null)

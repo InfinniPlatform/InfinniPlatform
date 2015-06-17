@@ -47,7 +47,7 @@ namespace InfinniPlatform.Update.Tests.Builders
 
 		public static ApplyChangesHandler BuildQueryContextUpdate(this ApplyChangesHandler query)
 		{
-			var documentContentConfigRequestProvider = new LocalDataProvider("update", "package", "install",null);
+			var documentContentConfigRequestProvider = new LocalDataProvider("update", "package", "install",null,null);
 			query.ConfigRequestProvider = documentContentConfigRequestProvider;
 			return query;
 		}
@@ -61,7 +61,7 @@ namespace InfinniPlatform.Update.Tests.Builders
 				new ServiceRegistrationContainerFactory(templateConfig), templateConfig);
 			var installer = (IModuleInstaller)Activator.CreateInstance(configurationModule, metadataConfigurationProvider, BuildActionConfig(metadataConfigurationProvider));
 			var config = (IMetadataConfiguration)installer.InstallModule();
-			config.ScriptConfiguration.InitActionUnitStorage();
+			config.ScriptConfiguration.InitActionUnitStorage(null);
 			return metadataConfigurationProvider;
 		}
 

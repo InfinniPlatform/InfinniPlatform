@@ -25,6 +25,8 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 
         protected override IRequestHandlerResult ExecuteHandler(IOwinContext context)
         {
+            var routeDictionary = RouteFormatter.GetRouteDictionary(context);
+
             dynamic body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
 
             if (body.UserName == null || body.Password == null || body.Remember == null)
@@ -32,7 +34,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
                 return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
             }
 
-            return new ValueRequestHandlerResult(new SignInApi().SignInInternal(body.UserName.ToString(), body.Password.ToString(), Convert.ToBoolean(body.Remember)));
+            return new ValueRequestHandlerResult(new SignInApi(routeDictionary["version"]).SignInInternal(body.UserName.ToString(), body.Password.ToString(), Convert.ToBoolean(body.Remember)));
         }
     }
 }

@@ -30,7 +30,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 
             body.Id = routeDictionary["instanceId"];
 
-            return new ValueRequestHandlerResult(new DocumentApi().SetDocument(routeDictionary["application"], routeDictionary["documentType"], body));
+            return new ValueRequestHandlerResult(new DocumentApi(routeDictionary["version"]).SetDocument(routeDictionary["application"], routeDictionary["documentType"], body));
         }
     }
 }

@@ -26,7 +26,7 @@ namespace InfinniPlatform.RestfulApi.Auth
 
 				foreach (dynamic document in result)
 				{
-					var validationResult = new AuthUtils(target.Context.GetComponent<ISecurityComponent>(), target.UserName, null).CheckDocumentAccess(target.Item.Configuration, target.Item.Metadata, "getdocument", document.Id);
+                    var validationResult = new AuthUtils(target.Context.GetComponent<ISecurityComponent>(target.Version), target.UserName, null).CheckDocumentAccess(target.Item.Configuration, target.Item.Metadata, "getdocument", document.Id);
 
 					if (validationResult.IsValid)
 					{

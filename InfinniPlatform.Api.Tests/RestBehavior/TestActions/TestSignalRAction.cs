@@ -16,7 +16,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
 			dynamic testObject = new DynamicWrapper();
 			testObject.TestProperty = "Hello world";
 
-			target.Context.GetComponent<IWebClientNotificationComponent>().Notify("routingKey", testObject.ToString());
+            target.Context.GetComponent<IWebClientNotificationComponent>(target.Version).Notify("routingKey", testObject.ToString());
 			
 		}
 	}

@@ -31,7 +31,7 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
             string registerId = target.Item.Register.ToString();
             var specifiedDimensions = target.Item.Dimensions;
 
-			var registerObject = target.Context.GetComponent<IMetadataComponent>().GetMetadataList(configurationId, registerId, MetadataType.Register).FirstOrDefault();
+            var registerObject = target.Context.GetComponent<IMetadataComponent>(target.Version).GetMetadataList(target.Version, configurationId, registerId, MetadataType.Register).FirstOrDefault();
 
             if (registerObject == null)
             {

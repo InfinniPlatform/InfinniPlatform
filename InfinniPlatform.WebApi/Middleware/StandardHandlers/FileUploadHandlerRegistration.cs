@@ -36,6 +36,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 
             dynamic linkedData = JObject.Parse(nameValueCollection.Get("linkedData"));
 
+            var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
             using (var fileStream = new MultipartFormDataParser(context.Request.Body, Encoding.UTF8).Files.Select(
                         f => f.Data).First())
@@ -46,7 +47,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
                 {
 
                     return
-                        new ValueRequestHandlerResult(new UploadApi().UploadBinaryContent(linkedData.InstanceId.ToString(),
+                        new ValueRequestHandlerResult(new UploadApi(routeDictionary["version"]).UploadBinaryContent(linkedData.InstanceId.ToString(),
                             linkedData.FieldName.ToString(), linkedData.FileName.ToString(), fileStream));
                 }
                 return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreSpecified);

@@ -15,12 +15,13 @@ namespace InfinniPlatform.Api.Actions
 		/// <param name="actionUnitBuilder">Конструктор модуля</param>
 		void RegisterActionUnitEmbedded(string unitIdentifier, IActionOperatorBuilder actionUnitBuilder);
 
-		/// <summary>
-		///   Зарегистрировать скриптовый модуль из распределенного хранилища
-		/// </summary>
-		/// <param name="unitIdentifier">Идентификатор метаданных</param>
-		/// <param name="type">Тип модуля</param>
-		void RegisterActionUnitDistributedStorage(string unitIdentifier, string type);
+	    /// <summary>
+	    ///   Зарегистрировать скриптовый модуль из распределенного хранилища
+	    /// </summary>
+	    /// <param name="unitIdentifier">Идентификатор метаданных</param>
+	    /// <param name="type">Тип модуля</param>
+	    /// <param name="version"></param>
+	    void RegisterActionUnitDistributedStorage(string unitIdentifier, string type, string version = null);
 
 		/// <summary>
 		///   Получить модуль по идентификатору 
@@ -29,11 +30,13 @@ namespace InfinniPlatform.Api.Actions
 		/// <returns>Скриптовый оператор</returns>
 		IActionOperator GetAction(string unitIdentifier);
 
-		void InitActionUnitStorage();
+		/// <summary>
+		///  Инииализировать хранилище прикладных модулей
+		/// </summary>
+		/// <param name="version"></param>
+		void InitActionUnitStorage(string version);
 
-	    string GetActualVersion();
-
-        /// <summary>
+	    /// <summary>
         ///   Идентификатор модуля/конфигурации, к которой относится конфигурация прикладных скриптов
         /// </summary>
 	    string ModuleName { get; set; }
@@ -45,7 +48,13 @@ namespace InfinniPlatform.Api.Actions
 	    /// <param name="validationUnitBuilder">Конструктор валидации</param>
 	    void RegisterValidationUnitEmbedded(string unitIdentifier, IValidationUnitBuilder validationUnitBuilder);
 
-	    void RegisterValidationUnitDistributedStorage(string unitIdentifier, string type);
+	    /// <summary>
+	    /// Зарегистрировать модули валидации
+	    /// </summary>
+	    /// <param name="unitIdentifier"></param>
+	    /// <param name="type"></param>
+	    /// <param name="version"></param>
+	    void RegisterValidationUnitDistributedStorage(string unitIdentifier, string type, string version = null);
 
 	    /// <summary>
 	    ///   Получить оператор валидации по указанному идентификатору
@@ -54,10 +63,10 @@ namespace InfinniPlatform.Api.Actions
 	    /// <returns>Оператор валидации</returns>
 	    IValidationOperator GetValidator(string unitIdentifier);
 
-		/// <summary>
-		///   Получить исполнитель скриптов конфигурации
-		/// </summary>
-		/// <returns></returns>
-		IScriptProcessor GetScriptProcessor();
+	    /// <summary>
+	    ///   Получить исполнитель скриптов конфигурации
+	    /// </summary>
+	    /// <returns></returns>
+	    IScriptProcessor GetScriptProcessor(string version);
 	}
 }
