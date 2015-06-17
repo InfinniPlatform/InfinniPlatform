@@ -38,7 +38,8 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Comman
 			_builder.EditPanel.AddElement(_elementEditor,
 										  parentNode.GetNodePath(),
 										  parentNode.ConfigId,
-										  parentNode.DocumentId,
+										  parentNode.DocumentId, 
+                                          parentNode.Version,
 										  _elementType,
 										  () => RefreshNode(parentNode));
 		}

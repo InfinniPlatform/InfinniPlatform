@@ -42,15 +42,11 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories
 	    private readonly string _version;
 
 
-	    public static IDataReader BuildConfigurationMetadataReader(string version)
+	    public static IDataReader BuildConfigurationMetadataReader(string version, bool doNotCheckVersion = false)
 		{
-			return new MetadataReaderConfiguration(version);
+			return new MetadataReaderConfiguration(version,doNotCheckVersion);
 		}
 
-	    public static IDataReader BuildVersionMetadataReader()
-	    {
-	        return new MetadataReaderVersion();
-	    }
 
 		public IDataReader BuildMenuMetadataReader()
 		{

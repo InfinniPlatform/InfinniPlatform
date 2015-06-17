@@ -19,7 +19,7 @@ namespace InfinniPlatform.Api.Packages
 
         public void ExportHeaderToStructure(string version, string configurationId)
         {
-            var managerConfig = ManagerFactoryConfiguration.BuildConfigurationMetadataReader(version);
+            var managerConfig = ManagerFactoryConfiguration.BuildConfigurationMetadataReader(version,false);
 
             dynamic config = managerConfig.GetItem(configurationId);
 

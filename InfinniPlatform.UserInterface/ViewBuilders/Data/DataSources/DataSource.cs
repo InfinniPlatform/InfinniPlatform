@@ -112,8 +112,18 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Data.DataSources
 			_dataProvider.SetDocumentId(value);
 		}
 
+	    public string GetVersion()
+	    {
+	        return _dataProvider.GetVersion();
+	    }
 
-		// State
+	    public void SetVersion(string version)
+	    {
+	        _dataProvider.SetVersion(version);
+	    }
+
+
+	    // State
 
 		private bool _suspended;
 

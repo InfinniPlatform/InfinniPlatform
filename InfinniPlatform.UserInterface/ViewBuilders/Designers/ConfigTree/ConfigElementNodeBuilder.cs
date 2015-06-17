@@ -43,6 +43,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree
 					{
 						element.ConfigId = elementParent.ConfigId;
 						element.DocumentId = elementParent.DocumentId;
+					    element.Version = elementParent.Version;
 					}
 
 					elements.Add(element);

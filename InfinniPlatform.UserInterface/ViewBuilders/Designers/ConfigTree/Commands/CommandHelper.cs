@@ -14,6 +14,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Comman
 			var metadataProvider = new MetadataProvider(elementType);
 			metadataProvider.SetConfigId(elementNode.ConfigId);
 			metadataProvider.SetDocumentId(elementNode.DocumentId);
+            metadataProvider.SetVersion(elementNode.Version);
 			return metadataProvider;
 		}
 

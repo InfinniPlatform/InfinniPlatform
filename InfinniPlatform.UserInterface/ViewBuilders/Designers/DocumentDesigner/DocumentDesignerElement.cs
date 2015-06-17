@@ -145,7 +145,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.DocumentDesigner
 
 			if (treeItem != null)
 			{
-				EditItem(null, treeItem.DocumentId, metadataType);
+				EditItem(null, treeItem.DocumentId, treeItem.Version, metadataType);
 			}
 		}
 
@@ -155,7 +155,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.DocumentDesigner
 
 			if (treeItem != null)
 			{
-				EditItem(treeItem.ItemId, treeItem.DocumentId, treeItem.MetadataType);
+				EditItem(treeItem.ItemId, treeItem.DocumentId, treeItem.Version, treeItem.MetadataType);
 			}
 		}
 
@@ -165,37 +165,38 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.DocumentDesigner
 
 			if (treeItem != null)
 			{
-				DeleteItem(treeItem.ItemId, treeItem.Text, treeItem.DocumentId, treeItem.MetadataType);
+				DeleteItem(treeItem.ItemId, treeItem.Text, treeItem.DocumentId, treeItem.Version, treeItem.MetadataType);
 			}
 		}
 
-		private void EditItem(string itemId, string documentId, string metadataType)
+		private void EditItem(string itemId, string documentId, string version, string metadataType)
 		{
 			if (string.IsNullOrEmpty(documentId) == false && string.IsNullOrEmpty(metadataType) == false)
 			{
-				ViewHelper.ShowView(GetChildViewKey(itemId, documentId),
+				ViewHelper.ShowView(GetChildViewKey(itemId, documentId,version),
 									() => FindLinkView(metadataType),
-									childDataSource => OnInitializeChildView(childDataSource, itemId, documentId),
+									childDataSource => OnInitializeChildView(childDataSource, itemId, documentId, version),
 									childDataSource => InvokeUpdateItems());
 			}
 		}
 
-		private string GetChildViewKey(string itemId, string documentId)
+		private string GetChildViewKey(string itemId, string documentId, string version)
 		{
-			return string.IsNullOrEmpty(itemId) ? null : (GetConfigIdValue() + documentId + itemId);
+			return string.IsNullOrEmpty(itemId) ? null : (GetConfigIdValue() + documentId + itemId + version);
 		}
 
-		private void OnInitializeChildView(IDataSource childDataSource, string itemId, string documentId)
+		private void OnInitializeChildView(IDataSource childDataSource, string itemId, string documentId, string version)
 		{
 			childDataSource.SuspendUpdate();
 			childDataSource.SetEditMode();
 			childDataSource.SetConfigId(GetConfigIdValue());
 			childDataSource.SetDocumentId(documentId);
+            childDataSource.SetVersion(version);
 			childDataSource.SetIdFilter(itemId);
 			childDataSource.ResumeUpdate();
 		}
 
-		private void DeleteItem(string itemId, string itemText, string documentId, string metadataType)
+		private void DeleteItem(string itemId, string itemText, string documentId, string version, string metadataType)
 		{
 			if (string.IsNullOrEmpty(itemId) == false
 				&& string.IsNullOrEmpty(documentId) == false
@@ -204,6 +205,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.DocumentDesigner
 				var dataProvider = new MetadataProvider(metadataType);
 				dataProvider.SetConfigId(GetConfigIdValue());
 				dataProvider.SetDocumentId(documentId);
+                dataProvider.SetVersion(version);
 				dataProvider.DeleteItem(itemId);
 
 				InvokeUpdateItems();

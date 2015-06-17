@@ -62,6 +62,17 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Data
 		/// </summary>
 		void SetDocumentId(string value);
 
+        /// <summary>
+        ///  Возвращает идентификатор версии конфигурации
+        /// </summary>
+        /// <returns></returns>
+	    string GetVersion();
+
+        /// <summary>
+        ///   Устанавливает идентификатор версии элемента источника данных
+        /// </summary>
+        /// <param name="version"></param>
+	    void SetVersion(string version);
 
 		// State
 

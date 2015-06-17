@@ -39,8 +39,9 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Data.DataProviders
 
 
 		private string _documentId;
+	    private string _version;
 
-		public string GetDocumentId()
+	    public string GetDocumentId()
 		{
 			return _documentId;
 		}
@@ -50,8 +51,13 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Data.DataProviders
 			_documentId = value;
 		}
 
+	    public string GetVersion()
+	    {
+	        throw new NotImplementedException();
+	    }
 
-		public object CreateItem()
+
+	    public object CreateItem()
 		{
 			return new DynamicWrapper();
 		}
@@ -87,5 +93,10 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Data.DataProviders
 		{
 			return _items;
 		}
+
+	    public void SetVersion(string version)
+	    {
+	        _version = version;
+	    }
 	}
 }

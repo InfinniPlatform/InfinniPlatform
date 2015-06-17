@@ -29,6 +29,19 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Data
 		void SetDocumentId(string value);
 
 
+        /// <summary>
+        ///   Получить версию конфигурации
+        /// </summary>
+        /// <returns></returns>
+	    string GetVersion();
+
+        /// <summary>
+        ///   Устанавливает версию конфигурации
+        /// </summary>
+        /// <param name="version">Идентификатор версии</param>
+        void SetVersion(string version);
+
+
 		/// <summary>
 		/// Создать объект по умолчанию.
 		/// </summary>
@@ -65,5 +78,6 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Data
 		/// <param name="pageNumber">Номер страницы.</param>
 		/// <param name="pageSize">Размер страницы.</param>
 		IEnumerable GetItems(IEnumerable criterias, int pageNumber, int pageSize);
+
 	}
 }

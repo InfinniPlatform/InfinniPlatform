@@ -49,10 +49,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Comman
 			_builder.EditPanel.AddElement(_elementEditor,
 										  parentNode.GetNodePath(),
 										  parentNode.ConfigId,
-										  parentNode.DocumentId,
-										  copyElement.ElementType,
-										  elementTemplate,
-										  () => RefreshNode(parentNode));
+										  parentNode.DocumentId, parentNode.Version, copyElement.ElementType, elementTemplate, () => RefreshNode(parentNode));
 
 			CommandHelper.Clipboard = null;
 		}

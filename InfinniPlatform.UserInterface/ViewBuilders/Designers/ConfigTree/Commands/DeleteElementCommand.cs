@@ -36,7 +36,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Comman
 				// Закрытие зависимых редакторов, если они открыты
 				if (_builder.EditPanel != null)
 				{
-					_builder.EditPanel.DeleteElement(_elementNode.ConfigId, _elementNode.DocumentId, _elementNode.ElementType, _elementNode.ElementId);
+					_builder.EditPanel.DeleteElement(_elementNode.ConfigId, _elementNode.DocumentId, _elementNode.Version, _elementNode.ElementType, _elementNode.ElementId);
 				}
 			}
 		}

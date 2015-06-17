@@ -25,10 +25,10 @@
 			_builder.EditPanel.EditElement(_elementEditor,
 										   _elementNode.GetNodePath(),
 										   _elementNode.ConfigId,
-										   _elementNode.DocumentId,
+										   _elementNode.DocumentId, 
+                                           _elementNode.Version,
 										   _elementNode.ElementType,
-										   _elementNode.ElementId,
-										   () => RefreshNode(parentNode));
+										   _elementNode.ElementId, () => RefreshNode(parentNode));
 		}
 
 		private static void RefreshNode(ConfigElementNode parentNode)

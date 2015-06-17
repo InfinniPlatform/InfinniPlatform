@@ -12,7 +12,7 @@
 // 0
 // 0
 // 0
-// 1f0991cf-cd5b-48c4-8608-4cffed4598d4
+// 974e6c9b-73d1-448a-9085-63450f55c611
 // E6C285E423CC38261462BBAD9EEDF1EF
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
-[assembly: Guid("1f0991cf-cd5b-48c4-8608-4cffed4598d4")]
+[assembly: Guid("974e6c9b-73d1-448a-9085-63450f55c611")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: InternalsVisibleTo("InfinniPlatform.EventStorage.Tests")]

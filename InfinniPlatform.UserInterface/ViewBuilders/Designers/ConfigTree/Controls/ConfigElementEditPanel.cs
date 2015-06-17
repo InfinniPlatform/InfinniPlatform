@@ -29,27 +29,27 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Contro
 			get { return _layoutPanel; }
 		}
 
-		public void AddElement(string elementEditor, string elementPath, string configId, string documentId, string elementType, Action onSave)
+		public void AddElement(string elementEditor, string elementPath, string configId, string documentId, string version, string elementType, Action onSave)
 		{
-			ShowEditorView(elementEditor, elementPath, configId, documentId, elementType, null, null, onSave);
+			ShowEditorView(elementEditor, elementPath, configId, documentId, version, elementType, null, null, onSave);
 		}
 
-		public void AddElement(string elementEditor, string elementPath, string configId, string documentId, string elementType, object template, Action onSave)
+		public void AddElement(string elementEditor, string elementPath, string configId, string documentId, string version, string elementType, object template, Action onSave)
 		{
-			ShowEditorView(elementEditor, elementPath, configId, documentId, elementType, null, template, onSave);
+			ShowEditorView(elementEditor, elementPath, configId, documentId, version, elementType, null, template, onSave);
 		}
 
-		public void EditElement(string elementEditor, string elementPath, string configId, string documentId, string elementType, string elementId, Action onSave)
+		public void EditElement(string elementEditor, string elementPath, string configId, string documentId, string version, string elementType, string elementId, Action onSave)
 		{
-			ShowEditorView(elementEditor, elementPath, configId, documentId, elementType, elementId, null, onSave);
+			ShowEditorView(elementEditor, elementPath, configId, documentId, version, elementType, elementId, null, onSave);
 		}
 
-		public void EditElement(string elementEditor, string elementPath, string configId, string documentId, string elementType, string elementId, object template, Action onSave)
+		public void EditElement(string elementEditor, string elementPath, string configId, string documentId, string version, string elementType, string elementId, object template, Action onSave)
 		{
-			ShowEditorView(elementEditor, elementPath, configId, documentId, elementType, elementId, template, onSave);
+			ShowEditorView(elementEditor, elementPath, configId, documentId, version, elementType, elementId, template, onSave);
 		}
 
-		public void DeleteElement(string configId, string documentId, string elementType, string elementId)
+		public void DeleteElement(string configId, string documentId, string version, string elementType, string elementId)
 		{
 			var closeEditors = new List<View>();
 
@@ -61,11 +61,14 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Contro
 
 					|| (elementType == MetadataType.Document
 						&& dataSource.GetConfigId() == configId
-						&& dataSource.GetDocumentId() == documentId)
+						&& dataSource.GetDocumentId() == documentId
+                        && dataSource.GetVersion() == version
+                        )
 
 					|| (dataSource.GetConfigId() == configId
 						&& dataSource.GetDocumentId() == documentId
-						&& dataSource.GetIdFilter() == elementId))
+						&& dataSource.GetIdFilter() == elementId
+                        && dataSource.GetVersion() == version))
 				{
 					closeEditors.Add(dataSource.GetView());
 				}
@@ -87,13 +90,13 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Contro
 		}
 
 
-		private void ShowEditorView(string elementEditor, string elementPath, string configId, string documentId, string elementType, string elementId, object template, Action onSave)
+		private void ShowEditorView(string elementEditor, string elementPath, string configId, string documentId, string version, string elementType, string elementId, object template, Action onSave)
 		{
 			var editorId = GetViewKey(elementEditor, configId, documentId, elementId);
 
 			ViewHelper.ShowView(editorId,
 								() => _linkViewFactory(elementType, elementEditor),
-								dataSource => OnInitView(dataSource, elementPath, configId, documentId, elementId, template),
+								dataSource => OnInitView(dataSource, elementPath, configId, documentId, version, elementId, template),
 								dataSource => OnAcceptView(onSave));
 		}
 
@@ -102,7 +105,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Contro
 			return string.IsNullOrEmpty(elementId) ? null : string.Format("{0}/{1}/{2}/{3}", elementEditor, configId, documentId, elementId);
 		}
 
-		private void OnInitView(IDataSource dataSource, string elementPath, string configId, string documentId, string elementId, object template)
+		private void OnInitView(IDataSource dataSource, string elementPath, string configId, string documentId, string version, string elementId, object template)
 		{
 			if (dataSource != null)
 			{
@@ -118,6 +121,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Contro
 				dataSource.SetConfigId(configId);
 				dataSource.SetDocumentId(documentId);
 				dataSource.SetIdFilter(elementId);
+			    dataSource.SetVersion(version);
 				dataSource.ResumeUpdate();
 
 				if (template != null)

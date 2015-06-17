@@ -105,7 +105,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
         {
 
             var configHeader =
-                MetadataExtensions.GetStoredMetadata(ManagerFactoryConfiguration.BuildConfigurationMetadataReader(_version),metadataObject);
+                MetadataExtensions.GetStoredMetadata(ManagerFactoryConfiguration.BuildConfigurationMetadataReader(_version,false),metadataObject);
 
             if (configHeader != null)
             {

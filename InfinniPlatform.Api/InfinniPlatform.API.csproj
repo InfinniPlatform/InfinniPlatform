@@ -189,7 +189,6 @@
     <Compile Include="Metadata\ConfigurationManagers\Standard\Factories\ManagerFactoryDocument.cs" />
     <Compile Include="Metadata\ConfigurationManagers\Standard\Factories\MetadataContainerInfoFactory.cs" />
     <Compile Include="Metadata\ConfigurationManagers\Standard\MetadataManagers\MetadataCacheRefresher.cs" />
-    <Compile Include="Metadata\ConfigurationManagers\Standard\MetadataReaders\MetadataReaderVersion.cs" />
     <Compile Include="Metadata\ConfigurationManagers\Standard\SchemaReaders\SchemaConverter.cs" />
     <Compile Include="Metadata\ConfigurationManagers\Standard\SchemaReaders\SchemaReaderManager.cs" />
     <Compile Include="Metadata\IConfigurationObject.cs">

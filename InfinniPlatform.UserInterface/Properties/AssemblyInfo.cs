@@ -12,8 +12,8 @@
 // 0
 // 0
 // 0
-// 4a324b6a-67aa-45d3-a26c-3ce32b088892
-// C938757968CA73750C583ADF88775E0A
+// ef0d21e4-b5ba-4b70-8310-f239f11a9ccb
+// 9D5472F402A3279059FD8115CD751D2F
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
-[assembly: Guid("4a324b6a-67aa-45d3-a26c-3ce32b088892")]
+[assembly: Guid("ef0d21e4-b5ba-4b70-8310-f239f11a9ccb")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: InternalsVisibleTo("InfinniPlatform.UserInterface.Tests")]

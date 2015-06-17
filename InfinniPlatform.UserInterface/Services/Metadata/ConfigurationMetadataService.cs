@@ -33,7 +33,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		protected override IDataReader CreateDataReader()
 		{
-			return ManagerFactoryConfiguration.BuildConfigurationMetadataReader(_version);
+			return ManagerFactoryConfiguration.BuildConfigurationMetadataReader(_version,true);
 		}
 
 		protected override IDataManager CreateDataManager()

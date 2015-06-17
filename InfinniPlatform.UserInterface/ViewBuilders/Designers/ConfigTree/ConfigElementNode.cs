@@ -24,8 +24,13 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree
 		public bool IsLoaded { get; set; }
 
 		public string ConfigId { get; set; }
+
 		public string DocumentId { get; set; }
+
+        public string Version { get; set; }
+
 		public string ElementId { get; set; }
+
 		public string ElementType { get; set; }
 
 		private string _elementName;

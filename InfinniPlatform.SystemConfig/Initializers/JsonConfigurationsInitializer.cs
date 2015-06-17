@@ -35,7 +35,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
 
 		public void OnStart(HostingContextBuilder contextBuilder)
 		{
-			var managerApi = ManagerFactoryConfiguration.BuildVersionMetadataReader();
+			var managerApi = ManagerFactoryConfiguration.BuildConfigurationMetadataReader(null,true);
 			IEnumerable<dynamic> configurations = managerApi.GetItems();
 
 			_changeListener.RegisterOnChange("JsonConfig", (version,configurationId) => OnChangeModules(version, configurationId));

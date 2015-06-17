@@ -22,6 +22,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Factor
 		public void Create(ConfigElementNodeBuilder builder, ICollection<ConfigElementNode> elements, ConfigElementNode elementNode)
 		{
 			elementNode.ConfigId = elementNode.ElementMetadata.Name;
+		    elementNode.Version = elementNode.ElementMetadata.Version;
 			elementNode.ElementId = FactoryHelper.BuildId(elementNode);
 			elementNode.ElementName = FactoryHelper.BuildName(elementNode);
 

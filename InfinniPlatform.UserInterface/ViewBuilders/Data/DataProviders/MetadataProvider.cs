@@ -80,7 +80,12 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Data.DataProviders
 			}
 		}
 
-	    public void SetVersionId(string value)
+	    public string GetVersion()
+	    {
+	        return _versionId;
+	    }
+
+	    public void SetVersion(string value)
 	    {
 	        if (Equals(_versionId, value) == false)
 	        {
@@ -157,5 +162,6 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Data.DataProviders
 		{
 			return GetMetadataService().GetItems();
 		}
+
 	}
 }

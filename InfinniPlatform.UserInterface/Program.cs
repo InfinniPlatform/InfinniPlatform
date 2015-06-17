@@ -27,7 +27,7 @@ namespace InfinniPlatform.UserInterface
 #endif
 			try
 			{
-				new SignInApi(null).SignInInternal(AuthorizationStorageExtensions.AdminUser,
+				new SignInApi().SignInInternal(AuthorizationStorageExtensions.AdminUser,
 				                               AppSettings.GetValue("AdminPassword", "Admin"), true);
 			}
 			catch 
