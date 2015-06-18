@@ -22,12 +22,12 @@
 	{
 		using(var stream = OpenResultFile())
 		{
-			major = int.Parse(stream.ReadLine().Substring(3));
-			minor = int.Parse(stream.ReadLine().Substring(3));
-			build = int.Parse(stream.ReadLine().Substring(3));
-			revision = int.Parse(stream.ReadLine().Substring(3));
-			projectGuid = stream.ReadLine().Substring(3);
-			projectHash = stream.ReadLine().Substring(3);
+			int.TryParse(ReadHeaderLine(stream), out major);
+			int.TryParse(ReadHeaderLine(stream), out minor);
+			int.TryParse(ReadHeaderLine(stream), out build);
+			int.TryParse(ReadHeaderLine(stream), out revision);
+			projectGuid = ReadHeaderLine(stream);
+			projectHash = ReadHeaderLine(stream);
 
 			if (!string.Equals(projectHash, currentProjectHash, StringComparison.OrdinalIgnoreCase))
 			{
@@ -95,6 +95,20 @@ using System.Runtime.InteropServices;
 		return File.OpenText(Host.ResolvePath("AssemblyInfo.cs"));
 	}
 
+	string ReadHeaderLine(StreamReader stream)
+	{
+		while (!stream.EndOfStream)
+		{
+			var line = stream.ReadLine();
+
+			if (!string.IsNullOrWhiteSpace(line) && line.Length > 3)
+			{
+				return line.Substring(3);
+			}
+		}
+
+		return null;
+	}
 
 	static readonly string[] DefaultExcludeFiles =
 	{

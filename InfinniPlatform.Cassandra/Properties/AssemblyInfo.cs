@@ -1,19 +1,9 @@
-﻿
-
-
-
-
-
-
-
-
-
+﻿// 1
+// 0
+// 0
 // 1
-// 0
-// 0
-// 0
 // 6fc517b7-2353-4402-a24b-b2b5a53c6a1a
-// E3052F503A675DEC7A8DE3CF3D5A9FC8
+// DD69379FB93B1C51615F35BE52529C5F
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -27,8 +17,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: Guid("6fc517b7-2353-4402-a24b-b2b5a53c6a1a")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.0.1")]
+[assembly: AssemblyFileVersion("1.0.0.1")]
 [assembly: InternalsVisibleTo("InfinniPlatform.Cassandra.Tests")]
-
 [assembly: AssemblyDescription("InfinniPlatform.Cassandra")]
