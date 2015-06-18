@@ -4,7 +4,7 @@
 		<id>InfinniPlatform.Api</id>
 		<title>InfinniPlatform.Api</title>
 		<description>InfinniPlatform SDK for .NET</description>
-		<version>1.0.0.2</version>
+		<version>1.0.0.3</version>
 		<authors>Infinnity Solutions</authors>
 		<licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>

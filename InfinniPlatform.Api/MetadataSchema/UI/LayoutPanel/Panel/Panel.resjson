@@ -21,11 +21,11 @@
       "default": false
     },
     "ItemTemplate": {
-      "description": "Шаблон отображения элементов источника",
+      "description": "Шаблон отображения дочерних элементов панели",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/VisualElement"
     },
     "Items": {
-      "description": "Список дочерних элементов",
+      "description": "Список дочерних элементов панели",
       "type": "array",
       "items": {
         "$ref": "http://demo.infinnity.ru:8081/display/MC/VisualElement"
