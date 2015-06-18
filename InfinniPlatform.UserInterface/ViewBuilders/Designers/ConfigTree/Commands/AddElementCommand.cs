@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using InfinniPlatform.UserInterface.AppHost;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Commands
 {
@@ -35,11 +36,18 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Comman
 							 ?? _elementNode;
 			}
 
+            //TODO: Необходимо переосмыслить механизм указания значения версии для новой конфигурации
+		    string version = parentNode.Version;
+		    if (_elementType == "Configuration" && parentNode.Version == null)
+		    {
+		        version = StaticMetadata.CreateVersion();
+		    }
+
 			_builder.EditPanel.AddElement(_elementEditor,
 										  parentNode.GetNodePath(),
 										  parentNode.ConfigId,
 										  parentNode.DocumentId, 
-                                          parentNode.Version,
+                                          version,
 										  _elementType,
 										  () => RefreshNode(parentNode));
 		}

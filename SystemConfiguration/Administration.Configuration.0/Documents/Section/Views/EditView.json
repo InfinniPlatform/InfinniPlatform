@@ -1,0 +1,393 @@
+{
+  "Id": "f370eed8-ff2e-4476-b5ab-db7d5d63d1f0",
+  "LayoutPanel": {
+    "StackPanel": {
+      "Items": [
+        {
+          "ScrollPanel": {
+            "LayoutPanel": {
+              "GridPanel": {
+                "Rows": [
+                  {
+                    "Cells": [
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "Label": {
+                              "Text": "Наименование раздела"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 9,
+                        "Items": [
+                          {
+                            "TextBox": {
+                              "Value": {
+                                "PropertyBinding": {
+                                  "DataSource": "MainDataSource",
+                                  "Property": "Name"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 12,
+                        "Items": [
+                          {
+                            "Panel": {
+                              "Text": "Список документов, на которые установлены права для роли",
+                              "Items": [
+                                {
+                                  "Button": {
+                                    "Text": "Добавить",
+                                    "Action": {
+                                      "AddItemAction": {
+                                        "View": {
+                                          "ChildView": {
+                                            "Name": "DocumentTypeListView",
+                                            "OpenMode": "Dialog"
+                                          }
+                                        },
+                                        "Items": {
+                                          "PropertyBinding": {
+                                            "DataSource": "MainDataSource",
+                                            "Property": "DocumentTypeList"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                {
+                                  "ListBox": {
+                                    "ItemTemplate": {
+                                      "StackPanel": {
+                                        "Orientation": "Horizontal",
+                                        "Items": [
+                                          {
+                                            "Label": {
+                                              "HorizontalTextAlignment": "Left",
+                                              "DisplayFormat": {
+                                                "ObjectFormat": {
+                                                  "Format": "Конфигурация: {}"
+                                                }
+                                              },
+                                              "Value": {
+                                                "PropertyBinding": {
+                                                  "DataSource": "MainDataSource",
+                                                  "Property": "$.ConfigId"
+                                                }
+                                              }
+                                            }
+                                          },
+                                          {
+                                            "Label": {
+                                              "HorizontalTextAlignment": "Left",
+                                              "DisplayFormat": {
+                                                "ObjectFormat": {
+                                                  "Format": "Документ: {}"
+                                                }
+                                              },
+                                              "Value": {
+                                                "PropertyBinding": {
+                                                  "DataSource": "MainDataSource",
+                                                  "Property": "$.DocumentId"
+                                                }
+                                              }
+                                            }
+                                          },
+                                          {
+                                            "Button": {
+                                              "Image": "times",
+                                              "HorizontalAlignment": "Right",
+                                              "Action": {
+                                                "DeleteItemAction": {
+                                                  "Items": {
+                                                    "PropertyBinding": {
+                                                      "DataSource": "MainDataSource",
+                                                      "Property": "DocumentTypeList"
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "Items": {
+                                      "PropertyBinding": {
+                                        "DataSource": "MainDataSource",
+                                        "Property": "DocumentTypeList"
+                                      }
+                                    },
+                                    "ToolBar": {
+                                      "Items": [
+                                        {
+                                          "ToolBarButton": {
+                                            "Action": {
+                                              "AddItemAction": {
+                                                "View": {
+                                                  "ChildView": {
+                                                    "Name": "DocumentTypeListView",
+                                                    "OpenMode": "Dialog"
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        },
+                                        {
+                                          "ToolBarButton": {
+                                            "Action": {
+                                              "EditItemAction": {
+                                                "View": {
+                                                  "ChildView": {
+                                                    "Name": "DocumentTypeListView",
+                                                    "OpenMode": "Dialog"
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ToolBar": {
+            "Items": [
+              {
+                "ToolBarButton": {
+                  "Text": "Сохранить",
+                  "Action": {
+                    "SaveAction": {
+                      "DataSource": "MainDataSource"
+                    }
+                  }
+                }
+              },
+              {
+                "ToolBarButton": {
+                  "Text": "Отмена",
+                  "Action": {
+                    "CancelAction": {}
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "DataSources": [
+    {
+      "DocumentDataSource": {
+        "Name": "MainDataSource",
+        "ConfigId": "Administration",
+        "DocumentId": "Section"
+      }
+    }
+  ],
+  "ChildViews": [
+    {
+      "Name": "DocumentTypeListView",
+      "LinkView": {
+        "InlineView": {
+          "View": {
+            "Text": "Список документов, на которые установлены права для роли",
+            "ChildViews": [],
+            "OnLoaded": {
+              "Name": "ViewLoaded"
+            },
+            "Scripts": [
+              {
+                "Name": "ViewLoaded",
+                "Body": "debugger;\r\nvar item = {}; item.someFuckingField = '1111';\r\ncontext.DataSources['MetadataDataSource'].setSelectedItem(item);\r\ncontext.Global.executeAction({\r\n   SaveAction : {\r\n      DataSource : \"MetadataDataSource\",\r\n      CanClose : false\r\n   }  \r\n}, function(data) {\r\n\r\n      context.DataSources['ConfigIdDataSource'].setDataItems(data);\r\n});"
+              },
+              {
+                "Name": "UpdateDocumentMetadataList",
+                "Body": "debugger;\r\nvar selectedItemSection = context.DataSources['MainDataSource'].getSelectedItem();\r\nif(selectedItemSection && selectedItemSection.ConfigId && selectedItemSection.ConfigId.DisplayName) {\r\n   \r\n   selectedItemSection.DocumentId = null;\r\n   context.DataSources['MainDataSource'].setSelectedItem(selectedItemSection);\r\n   \r\n   var selectedItem = {};\r\n   selectedItem.Configuration = selectedItemSection.ConfigId.DisplayName;\r\n   \r\n   context.DataSources['MetadataDataSource'].setSelectedItem(selectedItem);\r\n   \r\n   context.Global.executeAction({\r\n      SaveAction : {\r\n         DataSource : \"MetadataDataSource\",\r\n         CanClose : false\r\n      }\r\n   }, function(data) { \r\n context.DataSources['DocumentIdDataSource'].setDataItems(data);   \r\n   });    \r\n\r\n}"
+              },
+              {
+                "Name": "OnPrepareSave",
+                "Body": "\r\nvar selectedItem = context.DataSources['MainDataSource'].getSelectedItem();\r\nif(selectedItem) {\r\n   var configId = selectedItem.ConfigId;\r\n   var documentId = selectedItem.DocumentId;\r\n   selectedItem.ConfigId = null;\r\n   selectedItem.DocumentId = null;\r\n   if(configId) {\r\n      selectedItem.ConfigId = configId.DisplayName;\r\n      \r\n      if(documentId) {\r\n         selectedItem.DocumentId = documentId.DisplayName;\r\n      }\r\n   }\r\n   context.DataSources['MainDataSource'].setSelectedItem(selectedItem);\r\n}"
+              }
+            ],
+            "DataSources": [
+              {
+                "DocumentDataSource": {
+                  "Name": "MainDataSource",
+                  "ConfigId": "",
+                  "DocumentId": ""
+                }
+              },
+              {
+                "DocumentDataSource": {
+                  "Name": "MetadataDataSource",
+                  "ConfigId": "RestfulApi",
+                  "DocumentId": "Configuration",
+                  "UpdateAction": "GetConfigMetadataList"
+                }
+              },
+              {
+                "ObjectDataSource": {
+                  "Name": "ConfigIdDataSource"
+                }
+              },
+              {
+                "ObjectDataSource": {
+                  "Name": "DocumentIdDataSource"
+                }
+              }
+            ],
+            "LayoutPanel": {
+              "StackPanel": {
+                "Items": [
+                  {
+                    "ScrollPanel": {
+                      "LayoutPanel": {
+                        "GridPanel": {
+                          "Rows": [
+                            {
+                              "Cells": [
+                                {
+                                  "ColumnSpan": 3,
+                                  "Items": [
+                                    {
+                                      "Label": {
+                                        "Text": "Конфигурация"
+                                      }
+                                    }
+                                  ]
+                                },
+                                {
+                                  "ColumnSpan": 3,
+                                  "Items": [
+                                    {
+                                      "ComboBox": {
+                                        "ValueProperty": "Id",
+                                        "DisplayProperty": "Name",
+                                        "Autocomplete": "None",
+                                        "OnValueChanged": {
+                                          "Name": "UpdateDocumentMetadataList"
+                                        },
+                                        "Value": {
+                                          "PropertyBinding": {
+                                            "DataSource": "MainDataSource",
+                                            "Property": "ConfigId"
+                                          }
+                                        },
+                                        "Items": {
+                                          "PropertyBinding": {
+                                            "DataSource": "ConfigIdDataSource"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  ]
+                                },
+                                {
+                                  "ColumnSpan": 3,
+                                  "Items": [
+                                    {
+                                      "Label": {
+                                        "Text": "Документ"
+                                      }
+                                    }
+                                  ]
+                                },
+                                {
+                                  "ColumnSpan": 3,
+                                  "Items": [
+                                    {
+                                      "ComboBox": {
+                                        "ValueProperty": "Id",
+                                        "DisplayProperty": "Name",
+                                        "Autocomplete": "None",
+                                        "Value": {
+                                          "PropertyBinding": {
+                                            "DataSource": "MainDataSource",
+                                            "Property": "DocumentId"
+                                          }
+                                        },
+                                        "Items": {
+                                          "PropertyBinding": {
+                                            "DataSource": "DocumentIdDataSource"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "ToolBar": {
+                      "Items": [
+                        {
+                          "ToolBarButton": {
+                            "Text": "Сохранить",
+                            "OnClick": {
+                              "Name": "OnPrepareSave"
+                            },
+                            "Action": {
+                              "SaveItemAction": {
+                                "DataSource": "MainDataSource"
+                              }
+                            }
+                          }
+                        },
+                        {
+                          "ToolBarButton": {
+                            "Text": "Отмена",
+                            "Action": {
+                              "CancelAction": {}
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "Scripts": [],
+  "Text": "Раздел",
+  "MetadataType": "EditView",
+  "Description": "",
+  "Caption": "Форма редактирования раздела",
+  "Name": "EditView",
+  "ParentId": "8d8f3304-7f36-46a8-8198-101f5f3666a1",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "viewmetadata"
+}

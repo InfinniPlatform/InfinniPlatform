@@ -25,12 +25,12 @@ namespace InfinniPlatform.Utils
 			{
 				Console.WriteLine("Uploading configuration '{0}' started", configuration.Name);
 
-				var exchangeDirector = CreateExchangeDirector(AdjustConfigName(configuration.Name));
+				var exchangeDirector = CreateExchangeDirector(AdjustConfigName(configuration.Name),configuration.Version);
 
 				if (uploadMetadata)
 					exchangeDirector.UpdateConfigurationMetadataFromDirectory(configuration.Path);
 
-				exchangeDirector.UpdateConfigurationAppliedAssemblies(configuration.Name);
+				exchangeDirector.UpdateConfigurationAppliedAssemblies();
 
 				Console.WriteLine("Uploading configuration '{0}' done", configuration.Name);
 			});
@@ -41,14 +41,14 @@ namespace InfinniPlatform.Utils
 			return name.Split('.').Last();
 		}
 
-		public void Download(string config, string version)
+		public void Download(string config)
 		{
 			ProcessConfigurations(config, configuration =>
 			{
 				Console.WriteLine("Downloading configuration '{0}' started", configuration.Name);
 
-				var exchangeDirector = CreateExchangeDirector(configuration.Name);
-				exchangeDirector.ExportJsonConfigToDirectory(configuration.Path, version);
+				var exchangeDirector = CreateExchangeDirector(configuration.Name, configuration.Version);
+                exchangeDirector.ExportJsonConfigToDirectory(configuration.Path, configuration.Version);
 
 				Console.WriteLine("Downloading configuration '{0}' done", configuration.Name);
 			});
@@ -69,9 +69,9 @@ namespace InfinniPlatform.Utils
 			}
 		}
 
-		private static ExchangeDirector CreateExchangeDirector(string configName)
+		private static ExchangeDirector CreateExchangeDirector(string configName, string version)
 		{
-			var remoteHost = new ExchangeRemoteHost(new HostingConfig(), "hz");
+			var remoteHost = new ExchangeRemoteHost(new HostingConfig(), version);
 			return new ExchangeDirector(remoteHost, configName);
 		}
 	}

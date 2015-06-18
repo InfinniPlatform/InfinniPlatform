@@ -1,0 +1,130 @@
+{
+  "Id": "bce4965e-1df3-44e0-bf49-7c1f8ec003a1",
+  "__DocumentId": "viewmetadata",
+  "__ConfigId": "systemconfig",
+  "ParentId": "5d6656d6-9523-4e7d-9e09-be46773046a7",
+  "Name": "EditView",
+  "Caption": "Форма добавления сессии пользователя в организации",
+  "Description": "",
+  "MetadataType": "EditView",
+  "Text": "Выберите ЛПУ для работы",
+  "ChildViews": [],
+  "DataSources": [
+    {
+      "DocumentDataSource": {
+        "Name": "MainDataSource",
+        "ConfigId": "Administration",
+        "DocumentId": "UserOrganizationSession",
+        "UpdateAction": "AddSession"
+      }
+    },
+    {
+      "DocumentDataSource": {
+        "ConfigId": "Administration",
+        "DocumentId": "User",
+        "Name": "UserDataSource",
+        "Query": [
+          {
+            "Property": "Id",
+            "Value": "111111",
+            "CriteriaType": 1
+          }
+        ],
+        "OnItemsUpdated": {
+          "Name": "OnUserDataSourceItemsUpdated"
+        }
+      }
+    },
+    {
+      "ObjectDataSource": {
+        "Name": "RolesDataSource"
+      }
+    }
+  ],
+  "OnLoaded": {
+    "Name": "LoadUserMedicalOrganizations"
+  },
+  "OnClosed": {
+    "Name": "LoginCompleted"
+  },
+  "LayoutPanel": {
+    "StackPanel": {
+      "Items": [
+        {
+          "GridPanel": {
+            "Rows": [
+              {
+                "Cells": [
+                  {
+                    "ColumnSpan": 3,
+                    "Items": [
+                      {
+                        "Label": {
+                          "Text": "Роль пользователя"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "ColumnSpan": 9,
+                    "Items": [
+                      {
+                        "ComboBox": {
+                          "ValueProperty": "Id",
+                          "DisplayProperty": "Name",
+                          "Value": {
+                            "PropertyBinding": {
+                              "DataSource": "MainDataSource",
+                              "Property": "SelectedRole"
+                            }
+                          },
+                          "Items": {
+                            "PropertyBinding": {
+                              "DataSource": "RolesDataSource"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "ToolBar": {
+            "Items": [
+              {
+                "ToolBarButton": {
+                  "OnClick": {
+                    "Name": "SaveSelection"
+                  },
+                  "Text": "Выбрать"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "Scripts": [
+    {
+      "Name": "LoadUserMedicalOrganizations",
+      "Body": "\r\nvar userName = getCurrentUserName();\r\nif(userName) {\r\n   \tvar criteria = new Criteria();\r\n\r\n    var userDataSource = context.DataSources['UserDataSource'];\r\n\tcriteria.setItems([ {Property: 'UserName', Value: userName, CriteriaType: 1} ]);\r\n\tuserDataSource.setQueryFilter(criteria);\r\n\r\n\tcontext.DataSources['MainDataSource'].setSelectedItem({});\r\n}\r\n\r\n"
+    },
+    {
+      "Name": "OnUserDataSourceItemsUpdated",
+      "Body": "//для администратора доступны все организации в системе\r\ndebugger;\r\nif(getCurrentUserName() == 'Admin') {\r\n   context.DataSources['RolesDataSource'].setDataItems([]);\r\n   return;\r\n}\r\n\r\n\r\nvar dataItems = context.DataSources['UserDataSource'].getDataItems();\r\n\r\nif(dataItems.length == 0) {\r\n   return;\r\n}\r\n\r\nvar user = dataItems[0];\r\n\r\nvar selectedItem = context.DataSources['MainDataSource'].getSelectedItem(); if(!selectedItem) { selectedItem = {}; }  \r\nuser.DisplayName = user.UserName;\r\nselectedItem.User = user;\r\ncontext.DataSources['MainDataSource'].setSelectedItem(selectedItem);\r\n\r\ncontext.DataSources['RolesDataSource'].setDataItems(user.UserRoles);\r\n"
+    },
+    {
+      "Name": "SaveSelection",
+      "Body": "debugger;\r\nvar selectedItem = context.DataSources['MainDataSource'].getSelectedItem();\r\nif(selectedItem && selectedItem.SelectedRole) {\r\n   selectedItem.User = context.DataSources['UserDataSource'].getDataItems()[0];\r\n   context.Global.executeAction({\r\n      SaveAction :{\r\n         DataSource : 'MainDataSource',         \r\n      }\r\n   }, function(data) {\r\n      window.location.reload();\r\n   });\r\n}\r\nelse {\r\n   \tnew MessageBox({\r\n        text: 'Необходимо выбрать роль из списка!',\r\n        buttons: [\r\n            {\r\n\t\t\t\t\tname: 'ОК'             \t\t\t       \r\n            }\r\n        ]\r\n     })\r\n}"
+    },
+    {
+      "Name": "LoginCompleted",
+      "Body": ""
+    }
+  ]
+}

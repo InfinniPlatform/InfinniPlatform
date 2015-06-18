@@ -1,4 +1,5 @@
-﻿using InfinniPlatform.Api.Settings;
+﻿using System;
+using InfinniPlatform.Api.Settings;
 using InfinniPlatform.UserInterface.Services.Metadata;
 
 namespace InfinniPlatform.UserInterface.AppHost
@@ -17,5 +18,14 @@ namespace InfinniPlatform.UserInterface.AppHost
 			var viewMetadataService = new ViewMetadataService(null, configId, "Common");
 			return viewMetadataService.GetItem("App");
 		}
+
+        /// <summary>
+        /// Сгенерировать версию конфигурации
+        /// </summary>
+        /// <returns></returns>
+	    public static string CreateVersion()
+        {
+            return Guid.NewGuid().ToString();
+        }
 	}
 }

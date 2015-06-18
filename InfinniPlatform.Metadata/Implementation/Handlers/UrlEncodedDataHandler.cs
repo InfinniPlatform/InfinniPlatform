@@ -28,6 +28,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
 		{
 			string config = ConfigRequestProvider.GetConfiguration();
 			string metadata = ConfigRequestProvider.GetMetadataIdentifier();
+		    string version = ConfigRequestProvider.GetVersion();
 			
 			var target = new UrlEncodedDataContext()
 			{
@@ -35,7 +36,8 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
 				FormData = parameters,
 				Configuration = config,
 				Metadata = metadata,
-				Context = _globalContext
+				Context = _globalContext,
+                Version = version
 			};
 
             var metadataConfig = _globalContext.GetComponent<IMetadataConfigurationProvider>(ConfigRequestProvider.GetVersion()).GetMetadataConfiguration(ConfigRequestProvider.GetVersion(), ConfigRequestProvider.GetConfiguration());

@@ -1,7 +1,10 @@
-﻿using InfinniPlatform.Api.Packages;
+﻿using System;
+using InfinniPlatform.Api.Packages;
 using InfinniPlatform.Api.Packages.ConfigStructure;
 using InfinniPlatform.MetadataDesigner.Views.Update;
 using System.IO;
+using System.Linq;
+using DevExpress.Data.PLinq.Helpers;
 
 namespace InfinniPlatform.MetadataDesigner.Views.Exchange
 {
@@ -36,41 +39,45 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
 			}
 		}
 
-		public void UpdateConfigurationMetadataFromSelf()
-		{
-			if (_updatePrepareConfig.PrepareRoutingOperation())
-			{
-				var configUpdater = new ConfigUpdater(_updatePrepareConfig.Version);
-                ExportJsonConfigToZip(Path.Combine(Directory.GetCurrentDirectory(), _configurationArchiveName), _updatePrepareConfig.Version);
-                configUpdater.UpdateConfigurationMetadataFromZip(_configurationArchiveName);
-			}
-		}
-
 		public void UpdateConfigurationMetadataFromDirectory(string pathToDirectory)
 		{
 			if (_updatePrepareConfig.PrepareRoutingOperation())
 			{
-				var configUpdater = new ConfigUpdater(_updatePrepareConfig.Version);
+				var configUpdater = new ConfigUpdater(GetVersionFromPath(pathToDirectory));
                 ZipLoader.CreateZipArchiveFromDirectory(pathToDirectory, _configurationArchiveName);
                 configUpdater.UpdateConfigurationMetadataFromZip(_configurationArchiveName);
 			}
 		}
 
-		public void UpdateConfigurationMetadataFromZip(string fileName)
+	    private string GetVersionFromPath(string path)
+	    {
+	        var dir = Path.GetFileName(path);
+	        if (!string.IsNullOrEmpty(dir))
+	        {
+	            var pathConfig = dir.Split(new[] {"."}, StringSplitOptions.RemoveEmptyEntries);
+	            if (pathConfig.Count() == 3 && pathConfig[1].ToLowerInvariant() == "configuration")
+	            {
+	                return pathConfig[2];
+	            }
+	        }
+	        return null;
+	    }
+
+	    public void UpdateConfigurationMetadataFromZip(string fileName)
 		{
 			if (_updatePrepareConfig.PrepareRoutingOperation())
 			{
-				var configUpdater = new ConfigUpdater(_updatePrepareConfig.Version);
+				var configUpdater = new ConfigUpdater(GetVersionFromPath(fileName));
 				configUpdater.UpdateConfigurationMetadataFromZip(fileName);
 			}
 		}
 
-        public void UpdateConfigurationAppliedAssemblies(string configuration)
+	    public void UpdateConfigurationAppliedAssemblies()
         {
             if (_updatePrepareConfig.PrepareRoutingOperation())
             {
                 var configUpdater = new ConfigUpdater(_updatePrepareConfig.Version);
-                configUpdater.UpdateConfigurationAppliedAssemblies(configuration);
+                configUpdater.UpdateConfigurationAppliedAssemblies(_configurationId);
             }
         }
 	}

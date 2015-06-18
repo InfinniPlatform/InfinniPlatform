@@ -47,12 +47,8 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
 	    public dynamic UpdateConfigFromJson(string filePath)
 		{
 			var builder = new RestQueryBuilder(_version,"SystemConfig", "update", "updateconfigfromjson", null);
-			var linkedData = new
-			{
-				Version = _version
-			};
 
-			var response = builder.QueryPostFile(linkedData, filePath, null);
+			var response = builder.QueryPostFile(null, filePath, null);
 
 			if (!response.IsAllOk)
 			{

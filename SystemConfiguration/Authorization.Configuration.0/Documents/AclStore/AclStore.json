@@ -1,0 +1,59 @@
+{
+  "Id": "a9b9a3d1-822c-43bf-9dd4-74397fa36bd9",
+  "Name": "AclStore",
+  "Caption": "AclStore",
+  "Description": "",
+  "Versioning": 2,
+  "MetadataIndex": "AclStore",
+  "Services": [],
+  "Processes": [],
+  "Scenarios": [],
+  "Generators": [],
+  "Views": [
+    {
+      "Id": "676dc4a4-a3d5-41d8-9382-658328d3d9f3",
+      "Name": "ListView",
+      "Caption": "Список прав пользователей и ролей",
+      "Description": ""
+    }
+  ],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "DocumentStatuses": [],
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "UserName": {
+        "Caption": "Логин пользователя или роль пользователя",
+        "Description": "Логин пользователя или роль пользователя",
+        "Type": "String"
+      },
+      "Configuration": {
+        "Caption": "Конфигурация",
+        "Type": "String"
+      },
+      "Metadata": {
+        "Caption": "Объект метаданных",
+        "Type": "String"
+      },
+      "Action": {
+        "Caption": "Выполняемое действие",
+        "Type": "String"
+      },
+      "RecordId": {
+        "Caption": "Идентификатор записи",
+        "Description": "Идентификатор записи, для которой установлено правило доступа",
+        "Type": "String"
+      },
+      "Result": {
+        "Caption": "Результат, возвращаемый правилом",
+        "Description": "True-действие разрешено,\r\nFalse-действие запрещено",
+        "Type": "Bool"
+      }
+    }
+  },
+  "ParentId": "980b279b-26a5-4a5d-9e78-bef695322a6f",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "documentmetadata"
+}

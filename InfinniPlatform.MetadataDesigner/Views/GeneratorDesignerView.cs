@@ -41,7 +41,6 @@ namespace InfinniPlatform.MetadataDesigner.Views
 
 			ButtonCreateGenerator.Click += ButtonCreateGenerator_Click;
 			ButtonCheckGenerator.Click += ButtonCheckGenerator_Click;
-			ButtonRefreshConfig.Click += ButtonRefreshConfig_Click;
 
 
 		}
@@ -127,12 +126,6 @@ namespace InfinniPlatform.MetadataDesigner.Views
 			OnValueChanged(_generator, new EventArgs());
 		}
 
-		void ButtonRefreshConfig_Click(object sender, EventArgs e)
-		{
-			var process = new StatusProcess();
-			process.StartOperation(() => new ExchangeDirector(new ExchangeLocalHost(), _configurationName).UpdateConfigurationMetadataFromSelf());
-			process.EndOperation();
-		}
 
 		void ButtonCheckGenerator_Click(object sender, EventArgs e)
 		{

@@ -1,0 +1,12 @@
+{
+  "Id": "91eec078-261d-4535-90a9-af0452362141",
+  "ScriptUnitType": 1,
+  "ContextType": 2,
+  "ScenarioId": "ActionUnitRemoveSession",
+  "Description": "",
+  "Caption": "ActionUnitRemoveSession",
+  "Name": "ActionUnitRemoveSession",
+  "ParentId": "5d6656d6-9523-4e7d-9e09-be46773046a7",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "scenariometadata"
+}

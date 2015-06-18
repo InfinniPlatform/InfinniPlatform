@@ -1,0 +1,56 @@
+{
+  "Id": "1a7a4c6a-956c-4727-9a6f-88bb5af22aaf",
+  "Name": "MainMenu",
+  "Caption": "Авторизация",
+  "Description": "",
+  "Items": [
+    {
+      "Action": {
+        "OpenViewAction": {
+          "View": {
+            "AutoView": {
+              "ConfigId": "Authorization",
+              "DocumentId": "UserStore",
+              "MetadataName": "ListView",
+              "OpenMode": "Application"
+            }
+          }
+        }
+      },
+      "Text": "Пользователи"
+    },
+    {
+      "Action": {
+        "OpenViewAction": {
+          "View": {
+            "AutoView": {
+              "ConfigId": "Authorization",
+              "DocumentId": "RoleStore",
+              "MetadataName": "ListView",
+              "OpenMode": "Application"
+            }
+          }
+        }
+      },
+      "Text": "Роли"
+    },
+    {
+      "Action": {
+        "OpenViewAction": {
+          "View": {
+            "AutoView": {
+              "ConfigId": "Authorization",
+              "DocumentId": "AclStore",
+              "MetadataName": "ListView",
+              "OpenMode": "Application"
+            }
+          }
+        }
+      },
+      "Text": "Права"
+    }
+  ],
+  "ParentId": "Authorization",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "menumetadata"
+}

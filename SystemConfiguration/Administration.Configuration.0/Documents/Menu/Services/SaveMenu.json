@@ -1,0 +1,38 @@
+{
+  "Id": "40afcdd7-d0fa-4f35-9473-c2240da38126",
+  "ExtensionPoints": [
+    {
+      "TypeName": {
+        "Name": "Move",
+        "ContextType": 2,
+        "Caption": "Document move context"
+      },
+      "ScenarioId": "SaveMenu"
+    }
+  ],
+  "Caption": "SaveMenu",
+  "Type": {
+    "Name": "applyjson",
+    "WorkflowExtensionPoints": [
+      {
+        "Name": "FilterEvents",
+        "ContextType": 4,
+        "Caption": "Document filter events context"
+      },
+      {
+        "Name": "Move",
+        "ContextType": 2,
+        "Caption": "Document move context"
+      },
+      {
+        "Name": "GetResult",
+        "ContextType": 8,
+        "Caption": "Document move result context"
+      }
+    ]
+  },
+  "Name": "SaveMenu",
+  "ParentId": "d2da06bc-80c7-40a9-b882-6276210eb229",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "servicemetadata"
+}

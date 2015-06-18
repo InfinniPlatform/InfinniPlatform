@@ -1,0 +1,13 @@
+{
+  "Id": "dcf01568-a424-4d17-b68f-880a06189e90",
+  "Secured": true,
+  "Name": "ActionUnitAddUserRole",
+  "Caption": "ActionUnitAddUserRole",
+  "Description": "",
+  "ScenarioId": "ActionUnitAddUserRole",
+  "ContextType": 2,
+  "ScriptUnitType": 1,
+  "ParentId": "30700424-13b6-450b-8b91-53821c143cdc",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "scenariometadata"
+}

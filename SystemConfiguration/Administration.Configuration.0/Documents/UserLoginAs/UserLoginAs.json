@@ -1,0 +1,55 @@
+{
+  "Id": "4800b20f-01fb-4637-a571-398c7c8b2142",
+  "Name": "UserLoginAs",
+  "Caption": "Пользователь для подключения",
+  "Description": "",
+  "Versioning": 2,
+  "MetadataIndex": "UserLoginAs",
+  "Services": [],
+  "Processes": [],
+  "Scenarios": [],
+  "Generators": [],
+  "Views": [
+    {
+      "Id": "97e669f5-bb05-4623-a74e-d1f6d6ad4e5c",
+      "Name": "EditViewAddLogin",
+      "Caption": "Добавление логина пользователя",
+      "Description": ""
+    }
+  ],
+  "PrintViews": [],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "DocumentStatuses": [],
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "User": {
+        "Caption": "Пользователь",
+        "Type": "Object",
+        "TypeInfo": {
+          "DocumentLink": {
+            "ConfigId": "Administration",
+            "DocumentId": "User"
+          }
+        },
+        "Properties": {}
+      },
+      "LoginAs": {
+        "Caption": "Пользователь, под которым подключаться",
+        "Type": "Object",
+        "TypeInfo": {
+          "DocumentLink": {
+            "ConfigId": "Administration",
+            "DocumentId": "User"
+          }
+        },
+        "Properties": {}
+      }
+    }
+  },
+  "ParentId": "232b5c7f-6d7d-43da-a76f-9c1b9abba672",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "documentmetadata"
+}

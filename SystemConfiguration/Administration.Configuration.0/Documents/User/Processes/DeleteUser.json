@@ -1,0 +1,20 @@
+{
+  "Id": "49b0e724-9f58-4be2-b43e-578bcd3f825b",
+  "SettingsType": "Custom",
+  "Transitions": [
+    {
+      "Id": "e3e4880c-feeb-46f5-8195-c084462d173d",
+      "Name": "DeleteUser",
+      "ActionPoint": {
+        "TypeName": "Action",
+        "ScenarioId": "b4c7303f-97e2-41b7-8287-d2984ab24cc8"
+      }
+    }
+  ],
+  "Type": 2,
+  "Caption": "DeleteUser",
+  "Name": "DeleteUser",
+  "ParentId": "30700424-13b6-450b-8b91-53821c143cdc",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "processmetadata"
+}

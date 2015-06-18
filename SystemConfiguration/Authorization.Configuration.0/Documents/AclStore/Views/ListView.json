@@ -1,0 +1,169 @@
+{
+  "Id": "676dc4a4-a3d5-41d8-9382-658328d3d9f3",
+  "__DocumentId": "viewmetadata",
+  "__ConfigId": "systemconfig",
+  "ParentId": "a9b9a3d1-822c-43bf-9dd4-74397fa36bd9",
+  "Name": "ListView",
+  "Caption": "Список прав пользователей и ролей",
+  "Description": "",
+  "MetadataType": "ListView",
+  "Text": "Журнал 'AclStore'",
+  "DataSources": [
+    {
+      "DocumentDataSource": {
+        "Name": "MainDataSource",
+        "ConfigId": "Authorization",
+        "DocumentId": "AclStore"
+      }
+    }
+  ],
+  "LayoutPanel": {
+    "StackPanel": {
+      "Items": [
+        {
+          "SearchPanel": {
+            "DataSource": "MainDataSource"
+          }
+        },
+        {
+          "DataGrid": {
+            "Columns": [
+              {
+                "Text": "Логин пользователя или роль пользователя",
+                "DisplayProperty": "UserName"
+              },
+              {
+                "Text": "Конфигурация",
+                "DisplayProperty": "Configuration"
+              },
+              {
+                "Text": "Объект метаданных",
+                "DisplayProperty": "Metadata"
+              },
+              {
+                "Text": "Выполняемое действие",
+                "DisplayProperty": "Action"
+              },
+              {
+                "Text": "Идентификатор записи",
+                "DisplayProperty": "RecordId"
+              },
+              {
+                "Text": "Результат, возвращаемый правилом",
+                "DisplayProperty": "Result"
+              }
+            ],
+            "Items": {
+              "PropertyBinding": {
+                "DataSource": "MainDataSource"
+              }
+            },
+            "AutoLoad": true,
+            "ToolBar": {
+              "Items": [
+                {
+                  "ToolBarButton": {
+                    "Text": "Добавить",
+                    "Action": {
+                      "AddAction": {
+                        "View": {
+                          "AutoView": {
+                            "ConfigId": "Authorization",
+                            "DocumentId": "AclStore",
+                            "ViewType": "EditView",
+                            "OpenMode": "Page"
+                          }
+                        },
+                        "DataSource": "MainDataSource"
+                      }
+                    }
+                  }
+                },
+                {
+                  "ToolBarButton": {
+                    "Text": "Редактировать",
+                    "Action": {
+                      "EditAction": {
+                        "View": {
+                          "AutoView": {
+                            "ConfigId": "Authorization",
+                            "DocumentId": "AclStore",
+                            "ViewType": "EditView",
+                            "OpenMode": "Page"
+                          }
+                        },
+                        "DataSource": "MainDataSource"
+                      }
+                    }
+                  }
+                },
+                {
+                  "ToolBarButton": {
+                    "Text": "Удалить",
+                    "Action": {
+                      "DeleteAction": {
+                        "DataSource": "MainDataSource"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "ToolBar": {
+            "Items": [
+              {
+                "ToolBarButton": {
+                  "Text": "Добавить",
+                  "Action": {
+                    "AddAction": {
+                      "View": {
+                        "AutoView": {
+                          "ConfigId": "Authorization",
+                          "DocumentId": "AclStore",
+                          "ViewType": "EditView",
+                          "OpenMode": "Page"
+                        }
+                      },
+                      "DataSource": "MainDataSource"
+                    }
+                  }
+                }
+              },
+              {
+                "ToolBarButton": {
+                  "Text": "Редактировать",
+                  "Action": {
+                    "EditAction": {
+                      "View": {
+                        "AutoView": {
+                          "ConfigId": "Authorization",
+                          "DocumentId": "AclStore",
+                          "ViewType": "EditView",
+                          "OpenMode": "Page"
+                        }
+                      },
+                      "DataSource": "MainDataSource"
+                    }
+                  }
+                }
+              },
+              {
+                "ToolBarButton": {
+                  "Text": "Удалить",
+                  "Action": {
+                    "DeleteAction": {
+                      "DataSource": "MainDataSource"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

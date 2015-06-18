@@ -1,0 +1,40 @@
+{
+  "Id": "c5cc3a4f-f7b1-4434-88cf-f3ce8498172d",
+  "Secured": true,
+  "Name": "UserProfile",
+  "Caption": "Профиль пользователя",
+  "Description": "",
+  "Versioning": 2,
+  "Version" : "1",
+  "MetadataIndex": "UserProfile",
+  "Services": [],
+  "Processes": [],
+  "Scenarios": [],
+  "Generators": [],
+  "Views": [],
+  "PrintViews": [],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "DocumentStatuses": [],
+  "ParentId": "f17a31e9-3872-419e-882f-b9cdc3a29e76",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "documentmetadata",
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "LastName": {
+        "Caption": "Фамилия",
+        "Type": "String"
+      },
+      "FirstName": {
+        "Caption": "Имя",
+        "Type": "String"
+      },
+      "Birth": {
+        "Caption": "Дата рождения",
+        "Type": "DateTime"
+      }
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "Id": "1e82cd00-9e28-49c4-a965-c7a78eb69cc0",
+  "Name": "Catalogue",
+  "Caption": "Каталог игр",
+  "Description": "",
+  "Versioning": 2,
+  "Version" : "1",
+  "MetadataIndex": "Catalogue",
+  "Services": [],
+  "Processes": [],
+  "Scenarios": [],
+  "Generators": [],
+  "Views": [],
+  "PrintViews": [],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "DocumentStatuses": [],
+  "ParentId": "f17a31e9-3872-419e-882f-b9cdc3a29e76",
+  "Version": "1",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "documentmetadata",
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "Name": {
+        "Caption": "Наименование",
+        "Type": "String"
+      },
+      "Price": {
+        "Caption": "Цена",
+        "Type": "Float"
+      },
+      "Availability": {
+        "Caption": "Доступность для продажи",
+        "Type": "Object",
+        "Properties": {
+          "Available": {
+            "Caption": "Доступно для продажи",
+            "Type": "Bool"
+          },
+          "SaleStartDate": {
+            "Caption": "Дата старта продаж",
+            "Type": "DateTime"
+          }
+        }
+      }
+    }
+  }
+}

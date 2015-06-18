@@ -1,0 +1,112 @@
+{
+  "Id": "232b5c7f-6d7d-43da-a76f-9c1b9abba672",
+  "Name": "Administration",
+  "Caption": "Администрирование",
+  "Description": "",
+  "Menu": [
+    {
+      "Id": "d388a5d4-3fd0-49a0-863e-1d070b32b100",
+      "Name": "MainMenu",
+      "Caption": "Администрирование",
+      "Description": ""
+    }
+  ],
+  "Documents": [
+    {
+      "Id": "a915920d-e561-48ab-9c19-4e61bae90b7b",
+      "Name": "Common",
+      "Caption": "Common options",
+      "Description": "Common options"
+    },
+    {
+      "Id": "8b1fcf5e-ad66-4202-bcd4-73d7aa953a52",
+      "Name": "Administration_Registers",
+      "Caption": "Registers common options",
+      "Description": "Storage for register's common information (e.g. actual date)"
+    },
+    {
+      "Id": "6d20dd54-4cdd-4245-be18-86e06bc9f7c7",
+      "Name": "EventLog",
+      "Caption": "Журнал событий",
+      "Description": "Действия пользователей по конкретному разделу, за выбранный промежуток времени."
+    },
+    {
+      "Id": "d2da06bc-80c7-40a9-b882-6276210eb229",
+      "Name": "Menu",
+      "Caption": "Меню",
+      "Description": ""
+    },
+    {
+      "Id": "47db35a8-9185-4fc9-ab5e-cd42360b5d4d",
+      "Name": "MenuItemSettings",
+      "Caption": "Настройка главного меню",
+      "Description": ""
+    },
+    {
+      "Id": "73746851-7217-44da-b5cb-5d54c3a6171a",
+      "Name": "Role",
+      "Caption": "Роль пользователя",
+      "Description": ""
+    },
+    {
+      "Id": "30700424-13b6-450b-8b91-53821c143cdc",
+      "Name": "User",
+      "Caption": "Пользователь системы",
+      "Description": ""
+    },
+    {
+      "Id": "8d8f3304-7f36-46a8-8198-101f5f3666a1",
+      "Name": "Section",
+      "Caption": "Раздел",
+      "Description": ""
+    },
+    {
+      "Id": "5fffaf06-d1dd-42e6-b6d2-bd582b8e5df6",
+      "Name": "SectionPermissions",
+      "Caption": "Права доступа на раздел",
+      "Description": ""
+    },
+    {
+      "Id": "cf4d2816-9dde-4143-8e53-1bcaa1972bcf",
+      "Name": "RolePermissions",
+      "Caption": "Права доступа для роли",
+      "Description": ""
+    },
+    {
+      "Id": "5d6656d6-9523-4e7d-9e09-be46773046a7",
+      "Name": "UserOrganizationSession",
+      "Caption": "Организация пользователя в сессии",
+      "Description": ""
+    },
+    {
+      "Id": "4800b20f-01fb-4637-a571-398c7c8b2142",
+      "Name": "UserLoginAs",
+      "Caption": "Пользователь для подключения",
+      "Description": ""
+    },
+    {
+      "Id": "8dd1f306-5379-49eb-90f4-7ca766d1a157",
+      "Name": "Organization",
+      "Caption": "Organization",
+      "Description": ""
+    },
+    {
+      "Id": "bd4bfcb7-daf8-4e52-b317-a2b9ed6b0480",
+      "Name": "MenuPermission",
+      "Caption": "Права на меню",
+      "Description": ""
+    }
+  ],
+  "Registers": [],
+  "Assemblies": [
+    {
+      "Id": "a3510acf-517e-4bc5-acf7-f78be019405f",
+      "Name": "InfinniPlatform.SystemConfig.Administration",
+      "Caption": "InfinniPlatform.SystemConfig.Administration",
+      "Description": ""
+    }
+  ],
+  "Reports": [],
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "metadata"
+}

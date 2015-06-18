@@ -1,4 +1,6 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace InfinniPlatform.Utils
 {
@@ -7,10 +9,22 @@ namespace InfinniPlatform.Utils
 		public Configuration(string path)
 		{
 			Path = path;
-			Name = Regex.Match(path, @"([\w\.]+?)\.Configuration").Groups[1].Value;
+		    var pathConfig = path.Split(new [] {"."}, StringSplitOptions.RemoveEmptyEntries);
+		    if (pathConfig.Count() == 3)
+		    {
+		        Name = pathConfig[0];
+		        Version = pathConfig[2];
+		    }
+		    else
+		    {
+		        throw new ArgumentException(string.Format("Not an configuration folder: {0}",path));
+		    }
 		}
 
 		public string Path { get; set; }
+
 		public string Name { get; set; }
+
+        public string Version { get; set; }
 	}
 }

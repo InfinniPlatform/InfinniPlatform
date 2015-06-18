@@ -12,7 +12,7 @@
 // 0
 // 0
 // 0
-// 5f71de24-9d2b-4cca-ab65-da929527e6ef
+// 01804527-d8c5-468d-8f29-9c16c8471409
 // 1380FC946CB3763525A21B3A3EEEB865
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
-[assembly: Guid("5f71de24-9d2b-4cca-ab65-da929527e6ef")]
+[assembly: Guid("01804527-d8c5-468d-8f29-9c16c8471409")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 

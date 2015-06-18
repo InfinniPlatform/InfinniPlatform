@@ -1,0 +1,13 @@
+{
+  "Id": "3bfb2833-4cdc-4fbe-aa66-4d29e59aaab0",
+  "Secured": true,
+  "Name": "ActionUnitDeleteRole",
+  "Caption": "ActionUnitDeleteRole",
+  "Description": "",
+  "ScenarioId": "ActionUnitDeleteRole",
+  "ContextType": 2,
+  "ScriptUnitType": 1,
+  "ParentId": "73746851-7217-44da-b5cb-5d54c3a6171a",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "scenariometadata"
+}

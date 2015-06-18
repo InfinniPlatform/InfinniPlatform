@@ -34,7 +34,8 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
 				Configuration = config,
 				Metadata = metadata,
 				FileContent = uploadStream,
-				Context = _globalContext
+				Context = _globalContext,
+                Version = version
 			};
 
             var metadataConfig = _globalContext.GetComponent<IMetadataConfigurationProvider>(ConfigRequestProvider.GetVersion()).GetMetadataConfiguration(version, ConfigRequestProvider.GetConfiguration());

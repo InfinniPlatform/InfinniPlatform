@@ -15,7 +15,7 @@ namespace InfinniPlatform.Utils
 					new ConfigManager().Upload(arguments.Length > 0 ? arguments[0] : null, arguments.Length > 1);
 					break;
 				case "download":
-					new ConfigManager().Download(arguments.Length > 0 ? arguments[0] : null, arguments.Length > 1 ? arguments[1] : null);
+					new ConfigManager().Download(arguments.Length > 0 ? arguments[0] : null);
 					break;
 				case "importdata":
 					new DataManager().Import(arguments.Length > 0 ? arguments[0] : null);
