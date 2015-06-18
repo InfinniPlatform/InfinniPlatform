@@ -6,7 +6,7 @@
     "$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
   },
   "properties": {
-    "Image": {
+    "Icon": {
       "description": "Изображение заголовка панели",
       "type": "string"
     },
@@ -20,6 +20,10 @@
       "type": "boolean",
       "default": false
     },
+    "ItemTemplate": {
+      "description": "Шаблон отображения элементов источника",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/VisualElement"
+    },
     "Items": {
       "description": "Список дочерних элементов",
       "type": "array",
@@ -27,12 +31,20 @@
         "$ref": "http://demo.infinnity.ru:8081/display/MC/VisualElement"
       }
     },
+    "OnExpanding": {
+      "description": "Обработчик события о том, что панель разворачивается",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+    },
     "OnExpanded": {
-      "description": "Обработчик события разворачивания панели",
+      "description": "Обработчик события о том, что панель была развернута",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+    },
+    "OnCollapsing": {
+      "description": "Обработчик события о том, что панель сворачивается",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
     },
     "OnCollapsed": {
-      "description": "Обработчик события сворачивания панели",
+      "description": "Обработчик события о том, что панель была свернута",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
     }
   },

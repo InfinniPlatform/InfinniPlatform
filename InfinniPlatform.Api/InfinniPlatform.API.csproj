@@ -472,6 +472,7 @@
     <None Include="InfinniPlatform.Api.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="MetadataSchema\UI\Components\" />
     <Folder Include="Metadata\ConfigurationManagers\File\MetadataManagers\" />
   </ItemGroup>
   <ItemGroup>
@@ -543,11 +544,7 @@
     <EmbeddedResource Include="MetadataSchema\UI\Action\SelectAction.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\Action\StateAction.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\Action\UpdateAction.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataBinding\BaseDataBinding.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\DataBinding\DataBinding.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataBinding\ObjectBinding.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataBinding\ParameterBinding.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataBinding\PropertyBinding.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\DataElement\BaseListElement.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\DataElement\BaseTextElement.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\DataElement\CheckBox\CheckBox.resjson" />
@@ -712,6 +709,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MetadataSchema\UI\DataBinding\BindingMode.resjson" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MetadataSchema\UI\DataBinding\BindingConverter.resjson" />
   </ItemGroup>
   <PropertyGroup>
     <PreBuildEvent>rem $(ProjectDir)\..\InfinniPlatform.Deploy\GenerateNuGetPackageRevision.exe  "$(ProjectDir)\..\InfinniPlatform.Deploy\InfinniPlatform.nuspec"</PreBuildEvent>

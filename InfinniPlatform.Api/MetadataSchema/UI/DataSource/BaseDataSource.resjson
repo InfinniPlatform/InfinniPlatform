@@ -51,16 +51,16 @@
       "description": "Обработчик события о том, что размер страницы изменился",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
     },
+    "OnFilterChanged": {
+      "description": "Обработчик события о том, что фильтр элементов изменился",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+    },
     "OnSelectedItemChanged": {
       "description": "Обработчик события о том, что выделенный элемент изменился",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
     },
-    "OnSelectedItemModified": {
-      "description": "Обработчик события изменения о том, что данные выделенного элемента изменились",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
-    },
-    "OnFilterChanged": {
-      "description": "Обработчик события о том, что фильтр элементов изменился",
+    "OnPropertyChanged": {
+      "description": "Обработчик события о том, что одно из свойств изменилось",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
     },
     "OnItemSaved": {
@@ -85,6 +85,10 @@
     },
     "OnWarningValidator": {
       "description": "Обработчик события о том, что проверка на предупреждения завершена",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+    },
+    "OnError": {
+      "description": "Обработчик события о том, что произошла ошибка",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
     }
   }

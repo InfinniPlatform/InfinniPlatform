@@ -11,8 +11,8 @@
       "description": "Значение параметра",
       "type": "any"
     },
-    "OnValueChanged": {
-      "description": "Обработчик события изменения значения",
+    "OnPropertyChanged": {
+      "description": "Обработчик события о том, что одно из свойств изменилось",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
     }
   },

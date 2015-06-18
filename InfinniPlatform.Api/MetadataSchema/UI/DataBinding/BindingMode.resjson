@@ -1,6 +1,6 @@
 ﻿{
   "id": "BindingMode",
-  "description": "Направление обмена данными в привязке",
+  "description": "Направление потока данных в привязке",
   "enum": [
     "TwoWay",
     "ToSource",

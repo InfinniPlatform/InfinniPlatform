@@ -31,12 +31,8 @@
       "$ref": "http://demo.infinnity.ru:8081/display/MC/ElementHorizontalAlignment",
       "default": "Stretch"
     },
-    "Style": {
-      "description": "Наименование стиля элемента",
-      "type": "string"
-    },
     "OnLoaded": {
-      "description": "Обработчик события о том, что элемент загружен",
+      "description": "Обработчик события о том, что элемент был загружен",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
     },
     "OnGotFocus": {
@@ -45,6 +41,10 @@
     },
     "OnLostFocus": {
       "description": "Обработчик события о том, что элемент потерял фокус ввода",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+    },
+    "OnPropertyChanged": {
+      "description": "Обработчик события о том, что одно из свойств изменилось",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
     }
   },

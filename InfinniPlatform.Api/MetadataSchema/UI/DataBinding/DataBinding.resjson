@@ -1,19 +1,25 @@
 ﻿{
   "id": "DataBinding",
-  "description": "Контейнер для описания связи между элементом представления и данными",
+  "description": "Привязка данных между элементом и источником",
   "type": "object",
   "properties": {
-    "ObjectBinding": {
-      "description": "Привязка элемента и произвольного объекта",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/ObjectBinding"
+    "Mode": {
+      "description": "Направление потока данных в привязке",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/BindingMode",
+      "default": "ToWay"
     },
-    "ParameterBinding": {
-      "description": "Привязка элемента и параметра представления",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/ParameterBinding"
+    "Source": {
+      "description": "Наименование источника данных привязки",
+      "type": "string",
+      "required": true
     },
-    "PropertyBinding": {
-      "description": "Привязка элемента и источника данных представления",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/PropertyBinding"
+    "Property": {
+      "description": "Путь к свойству источника данных привязки",
+      "type": "string"
+    },
+    "Converter": {
+      "description": "Преобразователь данных между элементом и источником",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/BindingConverter"
     }
   },
   "additionalProperties": false
