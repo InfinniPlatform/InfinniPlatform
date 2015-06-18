@@ -5,7 +5,8 @@
   "properties": {
     "Name": {
       "description": "Наименование параметра",
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "Value": {
       "description": "Значение параметра",
