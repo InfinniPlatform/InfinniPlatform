@@ -42,7 +42,7 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 		{
             //в случае системной конфигурации версия не имеет значения, т.к. для всех системных конфигурациц Version = null (одновременно запускается только одна версия платформы)
             _configurations = _configurations.Where(c => c.ConfigurationId.ToLowerInvariant() != metadataConfigurationId.ToLowerInvariant() || 
-                                                      c.Version != version || c.Version == null).ToList();
+                                                      c.Version != version ).ToList();
 		}
 
 	    /// <summary>

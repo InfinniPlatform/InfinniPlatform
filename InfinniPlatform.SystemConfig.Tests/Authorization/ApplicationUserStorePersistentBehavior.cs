@@ -22,11 +22,6 @@ namespace InfinniPlatform.SystemConfig.Tests.Authorization
 			_server = TestApi.StartServer(c => c.SetHostingConfig(TestSettings.DefaultHostingConfig));
 
 			TestApi.InitClientRouting(TestSettings.DefaultHostingConfig);
-
-			new IndexApi().RebuildIndex(AuthorizationStorageExtensions.AuthorizationConfigId,AuthorizationStorageExtensions.UserStore);
-			new IndexApi().RebuildIndex(AuthorizationStorageExtensions.AuthorizationConfigId, AuthorizationStorageExtensions.RoleStore);
-			new IndexApi().RebuildIndex(AuthorizationStorageExtensions.AuthorizationConfigId, AuthorizationStorageExtensions.UserRoleStore);
-			new IndexApi().RebuildIndex(AuthorizationStorageExtensions.AuthorizationConfigId, AuthorizationStorageExtensions.ClaimStore);
 		}
 
 		[TestFixtureTearDown]

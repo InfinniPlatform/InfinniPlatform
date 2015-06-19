@@ -50,7 +50,7 @@ namespace InfinniPlatform.Api.Tests.Packages
 
 			exporter = new ConfigExporter(new ZipStructure(@"TestData\TestZip.zip", @"TestData\UnzipTest"));
 
-			dynamic config = exporter.ImportHeaderFromStructure("testversionimport");
+			dynamic config = exporter.ImportHeaderFromStructure(null);
 
             CheckDynamicConfig(config);
 
@@ -87,14 +87,13 @@ namespace InfinniPlatform.Api.Tests.Packages
 			Assert.IsNotNull(testDoc1.Processes);
 			Assert.IsNotNull(testDoc1.Generators);
 			Assert.IsNotNull(testDoc1.Views);
-			Assert.IsNotNull(testDoc1.DocumentStatuses);
 
 			Assert.AreEqual(1, testDoc1.Services.Count);
 			Assert.AreEqual(1, testDoc1.Scenarios.Count);
 			Assert.AreEqual(1, testDoc1.Processes.Count);
 			Assert.AreEqual(1, testDoc1.Generators.Count);
 			Assert.AreEqual(1, testDoc1.Views.Count);
-			Assert.AreEqual(1, testDoc1.DocumentStatuses.Count);
+
 		}
 
 		[Test]
@@ -110,7 +109,7 @@ namespace InfinniPlatform.Api.Tests.Packages
 
 			exporter = new ConfigExporter(new DirectoryStructure(@"TestData\TestExportToDirectory"));
 
-			exporter.ImportHeaderFromStructure("testversionimport");
+			exporter.ImportHeaderFromStructure(null);
 
 			CheckConfiguration();
 		}
@@ -158,8 +157,6 @@ namespace InfinniPlatform.Api.Tests.Packages
 			var managerGenerator = new ManagerFactoryDocument(null,_configurationId, "testdoc1").BuildGeneratorMetadataReader();
 			Assert.IsNotNull(managerGenerator.GetItem("TestGenerator1"));
 
-			var managerStatus = new ManagerFactoryDocument(null,_configurationId, "testdoc1").BuildStatusMetadataReader();
-			Assert.IsNotNull(managerStatus.GetItem("JustCreated"));
 
 		}
 
@@ -206,10 +203,6 @@ namespace InfinniPlatform.Api.Tests.Packages
 			dynamic instanceService = new DynamicWrapper();
 			instanceService.Id = Guid.NewGuid().ToString();
 			instanceService.Name = "TestService1";
-
-			dynamic instanceStatus = new DynamicWrapper();
-			instanceStatus.Id = Guid.NewGuid().ToString();
-			instanceStatus.Name = "JustCreated";
 
 			dynamic instanceProcess = new DynamicWrapper();
 			instanceProcess.Id = Guid.NewGuid().ToString();
@@ -258,8 +251,6 @@ namespace InfinniPlatform.Api.Tests.Packages
             var managerService = new ManagerFactoryDocument(null, _configurationId, "testdoc1").BuildServiceManager();
             managerService.MergeItem(instanceService);
 
-            var managerStatus = new ManagerFactoryDocument(null, _configurationId, "testdoc1").BuildStatusManager();
-            managerStatus.MergeItem(instanceStatus);
 
             var managerGenerator = new ManagerFactoryDocument(null, _configurationId, "testdoc1").BuildGeneratorManager();
             managerGenerator.MergeItem(instanceGenerator);

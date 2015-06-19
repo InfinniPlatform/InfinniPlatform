@@ -193,7 +193,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 												url,
 												linkedData,
 												filePath);
-				                         },_version);
+				                         },null);
 
 			return response;
 		}
@@ -210,7 +210,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
                                                url,
                                                linkedData,
                                                fileStream);
-                                        },_version);
+                                        },null);
 
 	        return response;
 	    }
@@ -231,7 +231,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 					                         response = new RestQueryExecutor(cookieContainer).QueryPostUrlEncodedData(
 						                         url,
 						                         linkedData);
-				                         }, _version);
+				                         }, null);
 
 			return response;
 		}
@@ -246,7 +246,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 				response = new RestQueryExecutor(cookieContainer).QueryGetUrlEncodedData(
 					url,
 					linkedData);
-			}, _version);
+			}, null);
 
 			return response;
 		}

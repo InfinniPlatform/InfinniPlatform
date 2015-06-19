@@ -78,10 +78,7 @@ namespace InfinniPlatform.Runtime.Factories
                     }
 
 
-                    if (_scriptProcessor == null)
-                    {
-                        _scriptProcessor = new ScriptProcessor(_versionCacheList, _scriptMetadataProvider);
-                    }
+                    _scriptProcessor = new ScriptProcessor(_versionCacheList, _scriptMetadataProvider);
                     _scriptProcessor.UpdateCache(_versionCacheList);
                 }
             }

@@ -66,22 +66,7 @@ namespace InfinniPlatform.ModelRepository.Tests
                     Generators = new object[0],
                     Views = new object[0],
                     ValidationWarnings = new object[0],
-                    ValidationErrors = new object[0],
-                    DocumentStatuses = new[]
-                    {
-                        new
-                        {
-                            Id = Guid.NewGuid().ToString(),
-                            Name = "Invalid",
-                            Caption = "Invalid"
-                        },
-                        new
-                        {
-                            Id = Guid.NewGuid().ToString(),
-                            Name = "Deleted",
-                            Caption = "Deleted"
-                        }
-                    }
+                    ValidationErrors = new object[0]
                 }.ToDynamic();
 
                 documentModel.Schema = ProcessSchema(complexType.Value);

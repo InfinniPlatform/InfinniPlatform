@@ -213,7 +213,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
 
 			//создание пакета со сборкой
-			var package = new PackageBuilder().BuildPackage(ConfigurationId, "test",
+			var package = new PackageBuilder().BuildPackage(ConfigurationId, null,
 															"InfinniPlatform.Api.Tests.dll");
 			//установка пакета
 			new UpdateApi(null).InstallPackages(new[] { package });

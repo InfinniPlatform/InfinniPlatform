@@ -65,7 +65,7 @@ namespace InfinniPlatform.SystemConfig.Tests.Configuration
 
 			builder.QueryPostJson(null, eventObject);
 
-			var package = new PackageBuilder().BuildPackage(configurationId, "test",
+			var package = new PackageBuilder().BuildPackage(configurationId, null,
 														  "InfinniPlatform.SystemConfig.Tests.dll");
 
 			new UpdateApi(null).InstallPackages(new[] { package });

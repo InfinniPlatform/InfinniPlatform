@@ -69,7 +69,6 @@
     <Compile Include="RestBehavior\Acceptance\GetManagedMetadataBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\RegistersBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\DeleteReferencedDocumentBehavior.cs" />
-    <Compile Include="RestBehavior\Acceptance\CreateDocumentBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\PrefillDocumentBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\ReportingBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\ResolveReferencesDocumentBehavior.cs" />
@@ -107,7 +106,6 @@
     <Compile Include="RestBehavior\TestActions\YetAnotherTestComplexAction.cs" />
     <Compile Include="Schema\SchemaCreatorBehavior.cs" />
     <Compile Include="Serialization\JsonObjectSerializerTest.cs" />
-    <Compile Include="TestDataGenerator\TestDataGeneratorBehavior.cs" />
     <Compile Include="Validation\BaseValidationOperatorTest.cs" />
     <Compile Include="Validation\BooleanValidators\AndValidatorTest.cs" />
     <Compile Include="Validation\BooleanValidators\NotValidatorTest.cs" />

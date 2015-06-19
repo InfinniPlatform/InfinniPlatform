@@ -46,10 +46,11 @@ namespace InfinniPlatform.Api.Tests.Events
 			var addCollectionItem = new AddCollectionItem("Test", obj,null);
 
 			var events = addCollectionItem.GetEvents().Select(e => (JsonConvert.SerializeObject(e))).ToArray();
-			Assert.AreEqual(events.Count(), 3);
+			Assert.AreEqual(events.Count(), 4);
 			Assert.AreEqual(events[0], "{\"Property\":\"Test\",\"Value\":null,\"Action\":16,\"Index\":-1}");
 			Assert.AreEqual(events[1], "{\"Property\":\"Test.@.TestObject\",\"Value\":null,\"Action\":1,\"Index\":-1}");
 			Assert.AreEqual(events[2], "{\"Property\":\"Test.@.TestObject.TestProperty\",\"Value\":\"Test\",\"Action\":2,\"Index\":-1}");
+            Assert.AreEqual(events[3], "{\"Property\":\"Version\",\"Value\":null,\"Action\":2,\"Index\":-1}");
 		}
 
         [Test]
@@ -58,8 +59,9 @@ namespace InfinniPlatform.Api.Tests.Events
             var removeCollectionItem = new RemoveCollectionItem("Test:123",null);
 
             var events = removeCollectionItem.GetEvents().Select(e => (JsonConvert.SerializeObject(e))).ToArray();
-            Assert.AreEqual(events.Count(), 1);
+            Assert.AreEqual(events.Count(), 2);
             Assert.AreEqual(events.First(), "{\"Property\":\"Test:123\",\"Value\":null,\"Action\":32,\"Index\":-1}");
+            Assert.AreEqual(events[1], "{\"Property\":\"Version\",\"Value\":null,\"Action\":2,\"Index\":-1}");
         }
 
         [Test]
@@ -76,9 +78,10 @@ namespace InfinniPlatform.Api.Tests.Events
             var updateCollectionItem = new UpdateCollectionItem("Test", 1, objectToUpdate,null);
             
             var events = updateCollectionItem.GetEvents().Select(e => (JsonConvert.SerializeObject(e))).ToArray();
-			Assert.AreEqual(events.Count(), 2);
+            Assert.AreEqual(events.Count(), 3);
 			Assert.AreEqual(events[0], "{\"Property\":\"Test.1.TestObject\",\"Value\":null,\"Action\":1,\"Index\":-1}");
 			Assert.AreEqual(events[1], "{\"Property\":\"Test.1.TestObject.TestProperty\",\"Value\":\"Test\",\"Action\":2,\"Index\":-1}");
+            Assert.AreEqual(events[2], "{\"Property\":\"Version\",\"Value\":null,\"Action\":2,\"Index\":-1}");
 
         }
 	}

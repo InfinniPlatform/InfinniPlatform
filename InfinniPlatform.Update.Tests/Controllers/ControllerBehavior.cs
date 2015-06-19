@@ -49,7 +49,7 @@ namespace InfinniPlatform.Update.Tests.Controllers
 				           { "metadataConfigurationId", "systemconfig" }
 			           };
 
-			var restClient = new RestClient(string.Format("{0}://{1}:{2}/Update/StandardApi/Package/Notify/", TestSettings.DefaultHostingConfig.ServerScheme, TestSettings.DefaultHostingConfig.ServerName, TestSettings.DefaultHostingConfig.ServerPort));
+			var restClient = new RestClient(string.Format("{0}://{1}:{2}/0/Update/StandardApi/Package/Notify/", TestSettings.DefaultHostingConfig.ServerScheme, TestSettings.DefaultHostingConfig.ServerName, TestSettings.DefaultHostingConfig.ServerPort));
 
 			var restResponse = restClient.Post(new RestRequest { RequestFormat = DataFormat.Json }.AddBody(body));
 

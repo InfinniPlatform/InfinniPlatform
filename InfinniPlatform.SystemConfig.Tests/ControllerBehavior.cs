@@ -32,33 +32,8 @@ namespace InfinniPlatform.SystemConfig.Tests
 			_server.Dispose();
 		}
 
-		[Test]
-		public void ShouldGetConfigurationVersions()
-		{
-			var builder = new RestQueryBuilder(null,"SystemConfig", "update", "getversionlist", null);
-			var response = builder.QueryGet(null, 0, 10000);
-			Assert.AreEqual(true, response.IsAllOk);
-			var versionlist = response.ToDynamicList();
 
-			Assert.True(versionlist.Any());
-			Assert.True(versionlist.Contains("version_update"));
-			Assert.True(versionlist.Contains("version_systemconfig"));
-			Assert.True(versionlist.Contains("version_restfulapi"));
-		}
 
-		[Test]
-		public void ShouldGetInstalledConfigurations()
-		{
-			var builder = new RestQueryBuilder(null,"SystemConfig", "update", "getinstalledconfigurations", null);
-			var response = builder.QueryGet(null, 0, 10000);
-			Assert.AreEqual(true, response.IsAllOk);
-			var versionlist = response.ToDynamicList().Where(v => v.Version != null).Select(v => v.Version.ToLowerInvariant()).ToList();
-
-			Assert.True(versionlist.Any());
-			Assert.True(versionlist.Contains("version_update"));
-			Assert.True(versionlist.Contains("version_systemconfig"));
-			Assert.True(versionlist.Contains("version_restfulapi"));
-		}
 
 
 		[Test]

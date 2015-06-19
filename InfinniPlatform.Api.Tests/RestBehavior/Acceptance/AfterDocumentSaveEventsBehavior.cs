@@ -187,7 +187,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			dynamic assemblyItem = assemblyManager.CreateItem("InfinniPlatform.Api.Tests");
             assemblyManager.MergeItem(assemblyItem);
 
-			var package = new PackageBuilder().BuildPackage(configurationId, "test_version", GetType().Assembly.Location);
+			var package = new PackageBuilder().BuildPackage(configurationId, null, GetType().Assembly.Location);
 			new UpdateApi(null).InstallPackages(new[] { package });
 
 			RestQueryApi.QueryPostNotify(null, configurationId);

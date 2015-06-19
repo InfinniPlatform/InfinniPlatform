@@ -699,7 +699,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             managerRegister.MergeItem(registerInfoMetadata);
 
-            var package = new PackageBuilder().BuildPackage(ConfigurationId, "test_version", GetType().Assembly.Location);
+            var package = new PackageBuilder().BuildPackage(ConfigurationId, null, GetType().Assembly.Location);
 
             new UpdateApi(null).InstallPackages(new[] { package });
 
@@ -836,7 +836,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             managerRegister.MergeItem(registerInfoMetadata);
 
-            package = new PackageBuilder().BuildPackage(ConfigurationId, "test_version", GetType().Assembly.Location);
+            package = new PackageBuilder().BuildPackage(ConfigurationId, null, GetType().Assembly.Location);
 
             new UpdateApi(null).InstallPackages(new[] { package });
 
@@ -1114,7 +1114,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             managerRegister.MergeItem(registerInfoMetadata);
 
-            var package = new PackageBuilder().BuildPackage(ConfigurationId, "test_version", GetType().Assembly.Location);
+            var package = new PackageBuilder().BuildPackage(ConfigurationId, null, GetType().Assembly.Location);
 
             new UpdateApi(null).InstallPackages(new[] { package });
 

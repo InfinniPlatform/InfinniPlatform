@@ -210,8 +210,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
 														   CheckDeleteValidationWarning(settings,nameWarnings);
 														   var nameErrors = CheckAddValidationError(settings);
                                                            CheckDeleteValidationError(settings, nameErrors);
-                                                           var nameStatus = CheckAddStatus(settings);
-                                                           CheckDeleteStatus(settings, nameStatus);
+
 													   },
 						InitTest = () => CrudSettings.BuildTestConfig(ConfigurationFirstUid,CrudSettings.ConfigurationFirstId)
 					}
@@ -512,43 +511,6 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
 
         }
 
-        private static string CheckAddStatus(CrudSettings settings)
-        {
-            dynamic status = new DynamicWrapper();
-            status.Id = Guid.NewGuid().ToString();
-            status.Name = "Status1";
-            status.Caption = "Первый статус";
-            status.Description = "Описание первого статуса";
-
-            var managerStatus = settings.MetadataFactoryDocument(settings.FirstMetadataName).BuildStatusManager();
-
-            managerStatus.MergeItem(status);
-
-            IEnumerable<dynamic> statuses =
-                DynamicWrapperExtensions.ToEnumerable(managerStatus.MetadataReader.GetItems());
-            var statusMetadata = managerStatus.MetadataReader.GetItem(status.Name);
-
-            Assert.True(statuses.Any(sc => sc.Name == status.Name));
-            Assert.IsNotNull(statusMetadata);
-
-            return status.Name;
-        }
-
-        private static void CheckDeleteStatus(CrudSettings settings, string statusName)
-        {
-            var managerStatus = settings.MetadataFactoryDocument(settings.FirstMetadataName).BuildStatusManager();
-
-            var status = managerStatus.MetadataReader.GetItem(statusName);
-
-            managerStatus.DeleteItem(status);
-
-            var documentMetadata = managerStatus.MetadataReader.GetItem(settings.FirstMetadataName);
-            IEnumerable<dynamic> processes = DynamicWrapperExtensions.ToEnumerable(managerStatus.MetadataReader.GetItems());
-
-            Assert.AreEqual(0, processes.Count(sc => sc.Name == statusName));
-            Assert.IsNull(documentMetadata);
-
-        }
 
     }
 }

@@ -63,7 +63,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.File
         /// <returns>Список конфигураций</returns>
         public IEnumerable<string> GetConfigurationList(string version)
         {
-            return _configList.Where(c => c.GetVersion().ToLowerInvariant() == version.ToLowerInvariant()).Select(c => c.GetConfigurationId()).ToList();
+            return _configList.Where(c => (c.GetVersion() == null && version == null) || (c.GetVersion() != null && version != null && c.GetVersion().ToLowerInvariant() == version.ToLowerInvariant())).Select(c => c.GetConfigurationId()).ToList();
         }
 
         /// <summary>

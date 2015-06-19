@@ -30,7 +30,6 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 		{
 			_server = TestApi.StartServer(c => c
 				.SetHostingConfig(HostingConfig.Default)
-				.InstallFromJson("Authorization.zip",new string[0])
 				);
 
 			TestApi.InitClientRouting(HostingConfig.Default);
