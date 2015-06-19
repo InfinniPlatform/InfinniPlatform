@@ -1,111 +1,465 @@
-﻿  <data xsi:type="COMPOSITION" archetype_node_id="openEHR-EHR-COMPOSITION.form66.v1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.openehr.org/v1">
+﻿<data xsi:type="COMPOSITION" archetype_node_id="openEHR-EHR-COMPOSITION.form66.v1"
+      xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://schemas.openehr.org/v1">
+  <name>
+    <value>Форма 66</value>
+  </name>
+  <uid xsi:type="OBJECT_VERSION_ID">
+    <value>4c35886a-bc4d-465c-b103-b35dd8007bd3::ru.openhealth.74.777::1</value>
+  </uid>
+  <links>
+    <meaning>
+      <value>Выдан на основании</value>
+    </meaning>
+    <type>
+      <value>openEHR-ADMIN-ENTRY.t_form_66.v1</value>
+    </type>
+    <target>
+      <value>4c35886a-bc4d-465c-b103-b35dd8007bd3</value>
+    </target>
+  </links>
+  <links>
+    <meaning>
+      <value>Законченный случай</value>
+    </meaning>
+    <type>
+      <value>openEHR-EHR-COMPOSITION.t_encouner.v1</value>
+    </type>
+    <target>
+      <value>cd1522d0-494c-47b7-a3b1-ed25d427e7f1</value>
+    </target>
+  </links>
+  <archetype_details>
+    <archetype_id>
+      <value>openEHR-EHR-COMPOSITION.form66.v1</value>
+    </archetype_id>
+    <template_id>
+      <value>openEHR-ADMIN-ENTRY.t_form_66.v1</value>
+    </template_id>
+    <rm_version>1.0.1</rm_version>
+  </archetype_details>
+  <language>
+    <terminology_id>
+      <value>ISO_639-1</value>
+    </terminology_id>
+    <code_string>ru</code_string>
+  </language>
+  <territory>
+    <terminology_id>
+      <value>ISO_3166-1</value>
+    </terminology_id>
+    <code_string>RU</code_string>
+  </territory>
+  <category>
+    <value>event</value>
+    <defining_code>
+      <terminology_id>
+        <value>openehr</value>
+      </terminology_id>
+      <code_string>433</code_string>
+    </defining_code>
+  </category>
+  <composer xsi:type="PARTY_IDENTIFIED">
+    <name>=composer=</name>
+  </composer>
+  <context>
+    <start_time>
+      <value>2013-11-25T13:51:28.0984853+06:00</value>
+    </start_time>
+    <setting>
+      <value>other care</value>
+      <defining_code>
+        <terminology_id>
+          <value>openehr</value>
+        </terminology_id>
+        <code_string>238</code_string>
+      </defining_code>
+    </setting>
+  </context>
+  <content xsi:type="ADMIN_ENTRY" archetype_node_id="openEHR-EHR-ADMIN_ENTRY.general_information.v1">
     <name>
-      <value>Форма 66</value>
+      <value>Общая информация$0$</value>
     </name>
-    <uid xsi:type="OBJECT_VERSION_ID">
-      <value>4c35886a-bc4d-465c-b103-b35dd8007bd3::ru.openhealth.74.777::1</value>
-    </uid>
-    <links>
-      <meaning>
-        <value>Выдан на основании</value>
-      </meaning>
-      <type>
-        <value>openEHR-ADMIN-ENTRY.t_form_66.v1</value>
-      </type>
-      <target>
-        <value>4c35886a-bc4d-465c-b103-b35dd8007bd3</value>
-      </target>
-    </links>
-    <links>
-      <meaning>
-        <value>Законченный случай</value>
-      </meaning>
-      <type>
-        <value>openEHR-EHR-COMPOSITION.t_encouner.v1</value>
-      </type>
-      <target>
-        <value>cd1522d0-494c-47b7-a3b1-ed25d427e7f1</value>
-      </target>
-    </links>
-    <archetype_details>
-      <archetype_id>
-        <value>openEHR-EHR-COMPOSITION.form66.v1</value>
-      </archetype_id>
-      <template_id>
-        <value>openEHR-ADMIN-ENTRY.t_form_66.v1</value>
-      </template_id>
-      <rm_version>1.0.1</rm_version>
-    </archetype_details>
     <language>
       <terminology_id>
         <value>ISO_639-1</value>
       </terminology_id>
       <code_string>ru</code_string>
     </language>
-    <territory>
+    <encoding>
       <terminology_id>
-        <value>ISO_3166-1</value>
+        <value>IANA_character-sets</value>
       </terminology_id>
-      <code_string>RU</code_string>
-    </territory>
-    <category>
-      <value>event</value>
-      <defining_code>
-        <terminology_id>
-          <value>openehr</value>
-        </terminology_id>
-        <code_string>433</code_string>
-      </defining_code>
-    </category>
-    <composer xsi:type="PARTY_IDENTIFIED">
-      <name>=composer=</name>
-    </composer>
-    <context>
-      <start_time>
-        <value>2013-11-25T13:51:28.0984853+06:00</value>
-      </start_time>
-      <setting>
-        <value>other care</value>
-        <defining_code>
-          <terminology_id>
-            <value>openehr</value>
-          </terminology_id>
-          <code_string>238</code_string>
-        </defining_code>
-      </setting>
-    </context>
-    <content xsi:type="ADMIN_ENTRY" archetype_node_id="openEHR-EHR-ADMIN_ENTRY.general_information.v1">
+      <code_string>UTF-8</code_string>
+    </encoding>
+    <subject xsi:type="PARTY_SELF" />
+    <data xsi:type="ITEM_TREE" archetype_node_id="at0001">
       <name>
-        <value>Общая информация$0$</value>
+        <value>data</value>
       </name>
-      <language>
-        <terminology_id>
-          <value>ISO_639-1</value>
-        </terminology_id>
-        <code_string>ru</code_string>
-      </language>
-      <encoding>
-        <terminology_id>
-          <value>IANA_character-sets</value>
-        </terminology_id>
-        <code_string>UTF-8</code_string>
-      </encoding>
-      <subject xsi:type="PARTY_SELF" />
-      <data xsi:type="ITEM_TREE" archetype_node_id="at0001">
+      <items xsi:type="ELEMENT" archetype_node_id="at0032">
         <name>
-          <value>data</value>
+          <value>Дата выписки$0$</value>
         </name>
-        <items xsi:type="ELEMENT" archetype_node_id="at0032">
+        <value xsi:type="DV_DATE_TIME">
+          <value>2013-11-25T13:48:00.0+06:00</value>
+        </value>
+      </items>
+      <items xsi:type="ELEMENT" archetype_node_id="at0003">
+        <name>
+          <value>Специалист$0$</value>
+        </name>
+        <value xsi:type="DV_IDENTIFIER">
+          <issuer>ru.openhealth.74.777</issuer>
+          <assigner>Яков Яков Яков</assigner>
+          <id>8d6c0ed7-a67f-43b4-832e-f75826146b62::ru.openhealth.74.777::9</id>
+          <type>Врач</type>
+        </value>
+      </items>
+      <items xsi:type="ELEMENT" archetype_node_id="at0004">
+        <name>
+          <value>Специальность$0$</value>
+        </name>
+        <value xsi:type="DV_CODED_TEXT">
+          <value>Терапия</value>
+          <defining_code>
+            <terminology_id>
+              <value>Speciality</value>
+            </terminology_id>
+            <code_string>123</code_string>
+          </defining_code>
+        </value>
+      </items>
+      <items xsi:type="ELEMENT" archetype_node_id="at0031">
+        <name>
+          <value>Отделение$0$</value>
+        </name>
+        <value xsi:type="DV_IDENTIFIER">
+          <issuer>ru.openhealth.74.777</issuer>
+          <assigner>Терапевтическое № 12</assigner>
+          <id>d99f24ef-a8f4-4ac5-b451-1fbdf53a8a15::ru.openhealth.74.777::1</id>
+          <type>Отделение</type>
+        </value>
+      </items>
+      <items xsi:type="ELEMENT" archetype_node_id="at0069">
+        <name>
+          <value>Вид медицинской помощи$0$</value>
+        </name>
+        <value xsi:type="DV_CODED_TEXT">
+          <value>АБДОМИНАЛЬНАЯ ХИРУРГИЯ</value>
+          <defining_code>
+            <terminology_id>
+              <value>CureType</value>
+            </terminology_id>
+            <code_string>53</code_string>
+          </defining_code>
+        </value>
+      </items>
+      <items xsi:type="CLUSTER" archetype_node_id="openEHR-EHR-CLUSTER.medical_insurance.v1">
+        <name>
+          <value>Информация об оплате$0$</value>
+        </name>
+        <items xsi:type="ELEMENT" archetype_node_id="at0001">
           <name>
-            <value>Дата выписки$0$</value>
+            <value>Вид оплаты$0$</value>
           </name>
-          <value xsi:type="DV_DATE_TIME">
-            <value>2013-11-25T13:48:00.0+06:00</value>
+          <value xsi:type="DV_CODED_TEXT">
+            <value>ОМС</value>
+            <defining_code>
+              <terminology_id>
+                <value>PaymentType</value>
+              </terminology_id>
+              <code_string>1</code_string>
+            </defining_code>
           </value>
         </items>
         <items xsi:type="ELEMENT" archetype_node_id="at0003">
           <name>
-            <value>Специалист$0$</value>
+            <value>Номер полиса$0$</value>
+          </name>
+          <value xsi:type="DV_TEXT">
+            <value>41261136</value>
+          </value>
+        </items>
+        <items xsi:type="ELEMENT" archetype_node_id="at0004">
+          <name>
+            <value>Серия полиса$0$</value>
+          </name>
+          <value xsi:type="DV_TEXT">
+            <value>ЧБ</value>
+          </value>
+        </items>
+        <items xsi:type="ELEMENT" archetype_node_id="at0005">
+          <name>
+            <value>Тип полиса$0$</value>
+          </name>
+          <value xsi:type="DV_TEXT">
+            <value>1</value>
+          </value>
+        </items>
+        <items xsi:type="ELEMENT" archetype_node_id="at0002">
+          <name>
+            <value>Страховая компания$0$</value>
+          </name>
+          <value xsi:type="DV_TEXT">
+            <value>15</value>
+          </value>
+        </items>
+      </items>
+      <items xsi:type="ELEMENT" archetype_node_id="at0070">
+        <name>
+          <value>Вид посещения$0$</value>
+        </name>
+        <value xsi:type="DV_CODED_TEXT">
+          <value>Посещение по поводу заболевания</value>
+          <defining_code>
+            <terminology_id>
+              <value>NsiOmsOutpatientVisit</value>
+            </terminology_id>
+            <code_string>1</code_string>
+          </defining_code>
+        </value>
+      </items>
+      <items xsi:type="ELEMENT" archetype_node_id="at0071">
+        <name>
+          <value>Условия оказания медицинской помощи$0$</value>
+        </name>
+        <value xsi:type="DV_CODED_TEXT">
+          <value>Стационар</value>
+          <defining_code>
+            <terminology_id>
+              <value>NsiDepartmentType</value>
+            </terminology_id>
+            <code_string>1</code_string>
+          </defining_code>
+        </value>
+      </items>
+      <items xsi:type="ELEMENT" archetype_node_id="at0072">
+        <name>
+          <value>Вид помощи$0$</value>
+        </name>
+        <value xsi:type="DV_CODED_TEXT">
+          <value>Специализированная медицинская помощь</value>
+          <defining_code>
+            <terminology_id>
+              <value>NsiTypeCare</value>
+            </terminology_id>
+            <code_string>2</code_string>
+          </defining_code>
+        </value>
+      </items>
+    </data>
+  </content>
+  <content xsi:type="ADMIN_ENTRY" archetype_node_id="openEHR-EHR-ADMIN_ENTRY.begin_day_hospital.v1">
+    <name>
+      <value>Информация о госпитализации$0$</value>
+    </name>
+    <language>
+      <terminology_id>
+        <value>ISO_639-1</value>
+      </terminology_id>
+      <code_string>ru</code_string>
+    </language>
+    <encoding>
+      <terminology_id>
+        <value>IANA_character-sets</value>
+      </terminology_id>
+      <code_string>UTF-8</code_string>
+    </encoding>
+    <subject xsi:type="PARTY_SELF" />
+    <data xsi:type="ITEM_TREE" archetype_node_id="at0001">
+      <name>
+        <value>data</value>
+      </name>
+      <items xsi:type="ELEMENT" archetype_node_id="at0420">
+        <name>
+          <value>Тип стационара$0$</value>
+        </name>
+        <value xsi:type="DV_CODED_TEXT">
+          <value>Стационар круглосуточный</value>
+          <defining_code>
+            <terminology_id>
+              <value>HospitalType</value>
+            </terminology_id>
+            <code_string>1</code_string>
+          </defining_code>
+        </value>
+      </items>
+      <items xsi:type="ELEMENT" archetype_node_id="at0190">
+        <name>
+          <value>Дата и время поступления$0$</value>
+        </name>
+        <value xsi:type="DV_DATE_TIME">
+          <value>2013-11-19T13:48:00.0+06:00</value>
+        </value>
+      </items>
+      <items xsi:type="ELEMENT" archetype_node_id="at0193">
+        <name>
+          <value>Номер истории болезни$0$</value>
+        </name>
+        <value xsi:type="DV_TEXT">
+          <value>1324857485</value>
+        </value>
+      </items>
+      <items xsi:type="CLUSTER" archetype_node_id="at0141">
+        <name>
+          <value>Кем направлен$0$</value>
+        </name>
+        <items xsi:type="ELEMENT" archetype_node_id="at0147">
+          <name>
+            <value>Пациент направлен$0$</value>
+          </name>
+          <value xsi:type="DV_CODED_TEXT">
+            <value>данным ЛПУ</value>
+            <defining_code>
+              <terminology_id>
+                <value>local</value>
+              </terminology_id>
+              <code_string>at0165</code_string>
+            </defining_code>
+          </value>
+        </items>
+        <items xsi:type="ELEMENT" archetype_node_id="at0194">
+          <name>
+            <value>Направившее отделение$0$</value>
+          </name>
+          <value xsi:type="DV_IDENTIFIER">
+            <issuer>ru.openhealth.74.777</issuer>
+            <assigner>Неврология</assigner>
+            <id>de78e1c6-4520-4551-9a49-b9eaae6b3213::ru.openhealth.74.000::1</id>
+            <type>Отделение</type>
+          </value>
+        </items>
+      </items>
+      <items xsi:type="CLUSTER" archetype_node_id="at0129">
+        <name>
+          <value>Диагноз направившего учреждения$0$</value>
+        </name>
+        <items xsi:type="ELEMENT" archetype_node_id="at0130">
+          <name>
+            <value>Код по МКБ$0$</value>
+          </name>
+          <value xsi:type="DV_CODED_TEXT">
+            <value>I83.9 Варикозное расширение вен нижних конечностей без язвы или воспаления</value>
+            <defining_code>
+              <terminology_id>
+                <value>Disease</value>
+              </terminology_id>
+              <code_string>I83.9</code_string>
+            </defining_code>
+          </value>
+        </items>
+      </items>
+      <items xsi:type="CLUSTER" archetype_node_id="at0042">
+        <name>
+          <value>Госпитализирован по поводу данного заболевания в текущем году$0$</value>
+        </name>
+        <items xsi:type="ELEMENT" archetype_node_id="at0043">
+          <name>
+            <value>Показания$0$</value>
+          </name>
+          <value xsi:type="DV_CODED_TEXT">
+            <value>плановый</value>
+            <defining_code>
+              <terminology_id>
+                <value>Statement</value>
+              </terminology_id>
+              <code_string>1</code_string>
+            </defining_code>
+          </value>
+        </items>
+      </items>
+    </data>
+  </content>
+  <content xsi:type="ADMIN_ENTRY" archetype_node_id="openEHR-EHR-ADMIN_ENTRY.end_day_hospital.v1">
+    <name>
+      <value>Выписка$0$</value>
+    </name>
+    <language>
+      <terminology_id>
+        <value>ISO_639-1</value>
+      </terminology_id>
+      <code_string>ru</code_string>
+    </language>
+    <encoding>
+      <terminology_id>
+        <value>IANA_character-sets</value>
+      </terminology_id>
+      <code_string>UTF-8</code_string>
+    </encoding>
+    <subject xsi:type="PARTY_SELF" />
+    <data xsi:type="ITEM_TREE" archetype_node_id="at0001">
+      <name>
+        <value>data</value>
+      </name>
+      <items xsi:type="ELEMENT" archetype_node_id="at0182">
+        <name>
+          <value>Койко-дни$0$</value>
+        </name>
+        <value xsi:type="DV_COUNT">
+          <magnitude>6</magnitude>
+        </value>
+      </items>
+      <items xsi:type="ELEMENT" archetype_node_id="at0076">
+        <name>
+          <value>Исход госпитализации$0$</value>
+        </name>
+        <value xsi:type="DV_CODED_TEXT">
+          <value>выздоровление</value>
+          <defining_code>
+            <terminology_id>
+              <value>GeneralOutcome</value>
+            </terminology_id>
+            <code_string>1</code_string>
+          </defining_code>
+        </value>
+      </items>
+      <items xsi:type="ELEMENT" archetype_node_id="at0081">
+        <name>
+          <value>Результат госпитализации$0$</value>
+        </name>
+        <value xsi:type="DV_CODED_TEXT">
+          <value>выписан</value>
+          <defining_code>
+            <terminology_id>
+              <value>GeneralResult</value>
+            </terminology_id>
+            <code_string>1</code_string>
+          </defining_code>
+        </value>
+      </items>
+      <items xsi:type="CLUSTER" archetype_node_id="openEHR-EHR-CLUSTER.movement_of_departments.v1">
+        <name>
+          <value>Движение пациента по отделениям$0$</value>
+        </name>
+        <items xsi:type="ELEMENT" archetype_node_id="at0007">
+          <name>
+            <value>Отделение$0$</value>
+          </name>
+          <value xsi:type="DV_IDENTIFIER">
+            <issuer>ru.openhealth.74.777</issuer>
+            <assigner>Гинекологическое отделение №5</assigner>
+            <id>8d4129c2-9ee4-4b51-a0ac-712490045f7d::ru.openhealth.74.000::4</id>
+            <type>Отделение</type>
+          </value>
+        </items>
+        <items xsi:type="ELEMENT" archetype_node_id="at0022">
+          <name>
+            <value>Профиль койки$0$</value>
+          </name>
+          <value xsi:type="DV_CODED_TEXT">
+            <value>Ревматологическая</value>
+            <defining_code>
+              <terminology_id>
+                <value>BedProfile</value>
+              </terminology_id>
+              <code_string>302</code_string>
+            </defining_code>
+          </value>
+        </items>
+        <items xsi:type="ELEMENT" archetype_node_id="at0008">
+          <name>
+            <value>ФИО врача$0$</value>
           </name>
           <value xsi:type="DV_IDENTIFIER">
             <issuer>ru.openhealth.74.777</issuer>
@@ -114,7 +468,7 @@
             <type>Врач</type>
           </value>
         </items>
-        <items xsi:type="ELEMENT" archetype_node_id="at0004">
+        <items xsi:type="ELEMENT" archetype_node_id="at0009">
           <name>
             <value>Специальность$0$</value>
           </name>
@@ -128,375 +482,107 @@
             </defining_code>
           </value>
         </items>
-        <items xsi:type="ELEMENT" archetype_node_id="at0031">
+        <items xsi:type="ELEMENT" archetype_node_id="at0010">
           <name>
-            <value>Отделение$0$</value>
-          </name>
-          <value xsi:type="DV_IDENTIFIER">
-            <issuer>ru.openhealth.74.777</issuer>
-            <assigner>Терапевтическое № 12</assigner>
-            <id>d99f24ef-a8f4-4ac5-b451-1fbdf53a8a15::ru.openhealth.74.777::1</id>
-            <type>Отделение</type>
-          </value>
-        </items>
-        <items xsi:type="ELEMENT" archetype_node_id="at0069">
-          <name>
-            <value>Вид медицинской помощи$0$</value>
-          </name>
-          <value xsi:type="DV_CODED_TEXT">
-            <value>АБДОМИНАЛЬНАЯ ХИРУРГИЯ</value>
-            <defining_code>
-              <terminology_id>
-                <value>CureType</value>
-              </terminology_id>
-              <code_string>53</code_string>
-            </defining_code>
-          </value>
-        </items>
-        <items xsi:type="CLUSTER" archetype_node_id="openEHR-EHR-CLUSTER.medical_insurance.v1">
-          <name>
-            <value>Информация об оплате$0$</value>
-          </name>
-          <items xsi:type="ELEMENT" archetype_node_id="at0001">
-            <name>
-              <value>Вид оплаты$0$</value>
-            </name>
-            <value xsi:type="DV_CODED_TEXT">
-              <value>ОМС</value>
-              <defining_code>
-                <terminology_id>
-                  <value>PaymentType</value>
-                </terminology_id>
-                <code_string>1</code_string>
-              </defining_code>
-            </value>
-          </items>
-          <items xsi:type="ELEMENT" archetype_node_id="at0003">
-            <name>
-              <value>Номер полиса$0$</value>
-            </name>
-            <value xsi:type="DV_TEXT">
-              <value>41261136</value>
-            </value>
-          </items>
-          <items xsi:type="ELEMENT" archetype_node_id="at0004">
-            <name>
-              <value>Серия полиса$0$</value>
-            </name>
-            <value xsi:type="DV_TEXT">
-              <value>ЧБ</value>
-            </value>
-          </items>
-          <items xsi:type="ELEMENT" archetype_node_id="at0005">
-            <name>
-              <value>Тип полиса$0$</value>
-            </name>
-            <value xsi:type="DV_TEXT">
-              <value>1</value>
-            </value>
-          </items>
-          <items xsi:type="ELEMENT" archetype_node_id="at0002">
-            <name>
-              <value>Страховая компания$0$</value>
-            </name>
-            <value xsi:type="DV_TEXT">
-              <value>15</value>
-            </value>
-          </items>
-        </items>
-        <items xsi:type="ELEMENT" archetype_node_id="at0070">
-          <name>
-            <value>Вид посещения$0$</value>
-          </name>
-          <value xsi:type="DV_CODED_TEXT">
-            <value>Посещение по поводу заболевания</value>
-            <defining_code>
-              <terminology_id>
-                <value>NsiOmsOutpatientVisit</value>
-              </terminology_id>
-              <code_string>1</code_string>
-            </defining_code>
-          </value>
-        </items>
-        <items xsi:type="ELEMENT" archetype_node_id="at0071">
-          <name>
-            <value>Условия оказания медицинской помощи$0$</value>
-          </name>
-          <value xsi:type="DV_CODED_TEXT">
-            <value>Стационар</value>
-            <defining_code>
-              <terminology_id>
-                <value>NsiDepartmentType</value>
-              </terminology_id>
-              <code_string>1</code_string>
-            </defining_code>
-          </value>
-        </items>
-        <items xsi:type="ELEMENT" archetype_node_id="at0072">
-          <name>
-            <value>Вид помощи$0$</value>
-          </name>
-          <value xsi:type="DV_CODED_TEXT">
-            <value>Специализированная медицинская помощь</value>
-            <defining_code>
-              <terminology_id>
-                <value>NsiTypeCare</value>
-              </terminology_id>
-              <code_string>2</code_string>
-            </defining_code>
-          </value>
-        </items>
-      </data>
-    </content>
-    <content xsi:type="ADMIN_ENTRY" archetype_node_id="openEHR-EHR-ADMIN_ENTRY.begin_day_hospital.v1">
-      <name>
-        <value>Информация о госпитализации$0$</value>
-      </name>
-      <language>
-        <terminology_id>
-          <value>ISO_639-1</value>
-        </terminology_id>
-        <code_string>ru</code_string>
-      </language>
-      <encoding>
-        <terminology_id>
-          <value>IANA_character-sets</value>
-        </terminology_id>
-        <code_string>UTF-8</code_string>
-      </encoding>
-      <subject xsi:type="PARTY_SELF" />
-      <data xsi:type="ITEM_TREE" archetype_node_id="at0001">
-        <name>
-          <value>data</value>
-        </name>
-        <items xsi:type="ELEMENT" archetype_node_id="at0420">
-          <name>
-            <value>Тип стационара$0$</value>
-          </name>
-          <value xsi:type="DV_CODED_TEXT">
-            <value>Стационар круглосуточный</value>
-            <defining_code>
-              <terminology_id>
-                <value>HospitalType</value>
-              </terminology_id>
-              <code_string>1</code_string>
-            </defining_code>
-          </value>
-        </items>
-        <items xsi:type="ELEMENT" archetype_node_id="at0190">
-          <name>
-            <value>Дата и время поступления$0$</value>
+            <value>Дата госпитализации$0$</value>
           </name>
           <value xsi:type="DV_DATE_TIME">
             <value>2013-11-19T13:48:00.0+06:00</value>
           </value>
         </items>
-        <items xsi:type="ELEMENT" archetype_node_id="at0193">
+        <items xsi:type="ELEMENT" archetype_node_id="at0011">
           <name>
-            <value>Номер истории болезни$0$</value>
+            <value>Дата выписки$0$</value>
           </name>
-          <value xsi:type="DV_TEXT">
-            <value>1324857485</value>
+          <value xsi:type="DV_DATE_TIME">
+            <value>2013-11-25T13:48:00.0+06:00</value>
           </value>
         </items>
-        <items xsi:type="CLUSTER" archetype_node_id="at0141">
+        <items xsi:type="ELEMENT" archetype_node_id="at0012">
           <name>
-            <value>Кем направлен$0$</value>
+            <value>Код по МКБ$0$</value>
           </name>
-          <items xsi:type="ELEMENT" archetype_node_id="at0147">
-            <name>
-              <value>Пациент направлен$0$</value>
-            </name>
-            <value xsi:type="DV_CODED_TEXT">
-              <value>данным ЛПУ</value>
-              <defining_code>
-                <terminology_id>
-                  <value>local</value>
-                </terminology_id>
-                <code_string>at0165</code_string>
-              </defining_code>
-            </value>
-          </items>
-          <items xsi:type="ELEMENT" archetype_node_id="at0194">
-            <name>
-              <value>Направившее отделение$0$</value>
-            </name>
-            <value xsi:type="DV_IDENTIFIER">
-              <issuer>ru.openhealth.74.777</issuer>
-              <assigner>Неврология</assigner>
-              <id>de78e1c6-4520-4551-9a49-b9eaae6b3213::ru.openhealth.74.000::1</id>
-              <type>Отделение</type>
-            </value>
-          </items>
+          <value xsi:type="DV_CODED_TEXT">
+            <value>I83.0 Варикозное расширение вен нижних конечностей с язвой</value>
+            <defining_code>
+              <terminology_id>
+                <value>Disease</value>
+              </terminology_id>
+              <code_string>I83.0</code_string>
+            </defining_code>
+          </value>
         </items>
-        <items xsi:type="CLUSTER" archetype_node_id="at0129">
+        <items xsi:type="ELEMENT" archetype_node_id="at0023">
           <name>
-            <value>Диагноз направившего учреждения$0$</value>
+            <value>Код прерванного случая$0$</value>
           </name>
-          <items xsi:type="ELEMENT" archetype_node_id="at0130">
-            <name>
-              <value>Код по МКБ$0$</value>
-            </name>
-            <value xsi:type="DV_CODED_TEXT">
-              <value>I83.9 Варикозное расширение вен нижних конечностей без язвы или воспаления</value>
-              <defining_code>
-                <terminology_id>
-                  <value>Disease</value>
-                </terminology_id>
-                <code_string>I83.9</code_string>
-              </defining_code>
-            </value>
-          </items>
+          <value xsi:type="DV_CODED_TEXT">
+            <value>Законченный случай</value>
+            <defining_code>
+              <terminology_id>
+                <value>NsiHospitalInterrupdedCase</value>
+              </terminology_id>
+              <code_string>1</code_string>
+            </defining_code>
+          </value>
         </items>
-        <items xsi:type="CLUSTER" archetype_node_id="at0042">
+        <items xsi:type="ELEMENT" archetype_node_id="at0024">
           <name>
-            <value>Госпитализирован по поводу данного заболевания в текущем году$0$</value>
+            <value>Вид оплаты$0$</value>
           </name>
-          <items xsi:type="ELEMENT" archetype_node_id="at0043">
-            <name>
-              <value>Показания$0$</value>
-            </name>
-            <value xsi:type="DV_CODED_TEXT">
-              <value>плановый</value>
-              <defining_code>
-                <terminology_id>
-                  <value>Statement</value>
-                </terminology_id>
-                <code_string>1</code_string>
-              </defining_code>
-            </value>
-          </items>
+          <value xsi:type="DV_CODED_TEXT">
+            <value>ОМС</value>
+            <defining_code>
+              <terminology_id>
+                <value>PaymentType</value>
+              </terminology_id>
+              <code_string>1</code_string>
+            </defining_code>
+          </value>
         </items>
-      </data>
-    </content>
-    <content xsi:type="ADMIN_ENTRY" archetype_node_id="openEHR-EHR-ADMIN_ENTRY.end_day_hospital.v1">
-      <name>
-        <value>Выписка$0$</value>
-      </name>
-      <language>
-        <terminology_id>
-          <value>ISO_639-1</value>
-        </terminology_id>
-        <code_string>ru</code_string>
-      </language>
-      <encoding>
-        <terminology_id>
-          <value>IANA_character-sets</value>
-        </terminology_id>
-        <code_string>UTF-8</code_string>
-      </encoding>
-      <subject xsi:type="PARTY_SELF" />
-      <data xsi:type="ITEM_TREE" archetype_node_id="at0001">
+      </items>
+      <items xsi:type="CLUSTER" archetype_node_id="at0097">
         <name>
-          <value>data</value>
+          <value>Обследован$0$</value>
         </name>
-        <items xsi:type="ELEMENT" archetype_node_id="at0182">
+        <items xsi:type="ELEMENT" archetype_node_id="at0098">
           <name>
-            <value>Койко-дни$0$</value>
-          </name>
-          <value xsi:type="DV_COUNT">
-            <magnitude>6</magnitude>
-          </value>
-        </items>
-        <items xsi:type="ELEMENT" archetype_node_id="at0076">
-          <name>
-            <value>Исход госпитализации$0$</value>
+            <value>RW$0$</value>
           </name>
           <value xsi:type="DV_CODED_TEXT">
-            <value>выздоровление</value>
+            <value>Отрицательный</value>
             <defining_code>
               <terminology_id>
-                <value>GeneralOutcome</value>
+                <value>NsiStatusRw</value>
               </terminology_id>
-              <code_string>1</code_string>
+              <code_string>101</code_string>
             </defining_code>
           </value>
         </items>
-        <items xsi:type="ELEMENT" archetype_node_id="at0081">
+        <items xsi:type="ELEMENT" archetype_node_id="at0099">
           <name>
-            <value>Результат госпитализации$0$</value>
+            <value>AIDS$0$</value>
           </name>
           <value xsi:type="DV_CODED_TEXT">
-            <value>выписан</value>
+            <value>Отрицательный</value>
             <defining_code>
               <terminology_id>
-                <value>GeneralResult</value>
+                <value>NsiStatusAids</value>
               </terminology_id>
-              <code_string>1</code_string>
+              <code_string>101</code_string>
             </defining_code>
           </value>
         </items>
-        <items xsi:type="CLUSTER" archetype_node_id="openEHR-EHR-CLUSTER.movement_of_departments.v1">
+      </items>
+      <items xsi:type="CLUSTER" archetype_node_id="at0111">
+        <name>
+          <value>Диагноз стационара (при выписке)$0$</value>
+        </name>
+        <items xsi:type="CLUSTER" archetype_node_id="openEHR-EHR-CLUSTER.app_diagnosed_disease.v1">
           <name>
-            <value>Движение пациента по отделениям$0$</value>
+            <value>Основное заболевание$0$</value>
           </name>
-          <items xsi:type="ELEMENT" archetype_node_id="at0007">
-            <name>
-              <value>Отделение$0$</value>
-            </name>
-            <value xsi:type="DV_IDENTIFIER">
-              <issuer>ru.openhealth.74.777</issuer>
-              <assigner>Гинекологическое отделение №5</assigner>
-              <id>8d4129c2-9ee4-4b51-a0ac-712490045f7d::ru.openhealth.74.000::4</id>
-              <type>Отделение</type>
-            </value>
-          </items>
-          <items xsi:type="ELEMENT" archetype_node_id="at0022">
-            <name>
-              <value>Профиль койки$0$</value>
-            </name>
-            <value xsi:type="DV_CODED_TEXT">
-              <value>Ревматологическая</value>
-              <defining_code>
-                <terminology_id>
-                  <value>BedProfile</value>
-                </terminology_id>
-                <code_string>302</code_string>
-              </defining_code>
-            </value>
-          </items>
-          <items xsi:type="ELEMENT" archetype_node_id="at0008">
-            <name>
-              <value>ФИО врача$0$</value>
-            </name>
-            <value xsi:type="DV_IDENTIFIER">
-              <issuer>ru.openhealth.74.777</issuer>
-              <assigner>Яков Яков Яков</assigner>
-              <id>8d6c0ed7-a67f-43b4-832e-f75826146b62::ru.openhealth.74.777::9</id>
-              <type>Врач</type>
-            </value>
-          </items>
-          <items xsi:type="ELEMENT" archetype_node_id="at0009">
-            <name>
-              <value>Специальность$0$</value>
-            </name>
-            <value xsi:type="DV_CODED_TEXT">
-              <value>Терапия</value>
-              <defining_code>
-                <terminology_id>
-                  <value>Speciality</value>
-                </terminology_id>
-                <code_string>123</code_string>
-              </defining_code>
-            </value>
-          </items>
-          <items xsi:type="ELEMENT" archetype_node_id="at0010">
-            <name>
-              <value>Дата госпитализации$0$</value>
-            </name>
-            <value xsi:type="DV_DATE_TIME">
-              <value>2013-11-19T13:48:00.0+06:00</value>
-            </value>
-          </items>
-          <items xsi:type="ELEMENT" archetype_node_id="at0011">
-            <name>
-              <value>Дата выписки$0$</value>
-            </name>
-            <value xsi:type="DV_DATE_TIME">
-              <value>2013-11-25T13:48:00.0+06:00</value>
-            </value>
-          </items>
-          <items xsi:type="ELEMENT" archetype_node_id="at0012">
+          <items xsi:type="ELEMENT" archetype_node_id="at0001">
             <name>
               <value>Код по МКБ$0$</value>
             </name>
@@ -510,155 +596,71 @@
               </defining_code>
             </value>
           </items>
-          <items xsi:type="ELEMENT" archetype_node_id="at0023">
-            <name>
-              <value>Код прерванного случая$0$</value>
-            </name>
-            <value xsi:type="DV_CODED_TEXT">
-              <value>Законченный случай</value>
-              <defining_code>
-                <terminology_id>
-                  <value>NsiHospitalInterrupdedCase</value>
-                </terminology_id>
-                <code_string>1</code_string>
-              </defining_code>
-            </value>
-          </items>
-          <items xsi:type="ELEMENT" archetype_node_id="at0024">
-            <name>
-              <value>Вид оплаты$0$</value>
-            </name>
-            <value xsi:type="DV_CODED_TEXT">
-              <value>ОМС</value>
-              <defining_code>
-                <terminology_id>
-                  <value>PaymentType</value>
-                </terminology_id>
-                <code_string>1</code_string>
-              </defining_code>
-            </value>
-          </items>
-        </items>
-        <items xsi:type="CLUSTER" archetype_node_id="at0097">
-          <name>
-            <value>Обследован$0$</value>
-          </name>
-          <items xsi:type="ELEMENT" archetype_node_id="at0098">
-            <name>
-              <value>RW$0$</value>
-            </name>
-            <value xsi:type="DV_CODED_TEXT">
-              <value>Отрицательный</value>
-              <defining_code>
-                <terminology_id>
-                  <value>NsiStatusRw</value>
-                </terminology_id>
-                <code_string>101</code_string>
-              </defining_code>
-            </value>
-          </items>
-          <items xsi:type="ELEMENT" archetype_node_id="at0099">
-            <name>
-              <value>AIDS$0$</value>
-            </name>
-            <value xsi:type="DV_CODED_TEXT">
-              <value>Отрицательный</value>
-              <defining_code>
-                <terminology_id>
-                  <value>NsiStatusAids</value>
-                </terminology_id>
-                <code_string>101</code_string>
-              </defining_code>
-            </value>
-          </items>
-        </items>
-        <items xsi:type="CLUSTER" archetype_node_id="at0111">
-          <name>
-            <value>Диагноз стационара (при выписке)$0$</value>
-          </name>
-          <items xsi:type="CLUSTER" archetype_node_id="openEHR-EHR-CLUSTER.app_diagnosed_disease.v1">
-            <name>
-              <value>Основное заболевание$0$</value>
-            </name>
-            <items xsi:type="ELEMENT" archetype_node_id="at0001">
-              <name>
-                <value>Код по МКБ$0$</value>
-              </name>
-              <value xsi:type="DV_CODED_TEXT">
-                <value>I83.0 Варикозное расширение вен нижних конечностей с язвой</value>
-                <defining_code>
-                  <terminology_id>
-                    <value>Disease</value>
-                  </terminology_id>
-                  <code_string>I83.0</code_string>
-                </defining_code>
-              </value>
-            </items>
-            <items xsi:type="ELEMENT" archetype_node_id="at0003">
-              <name>
-                <value>Характер заболевания$0$</value>
-              </name>
-              <value xsi:type="DV_CODED_TEXT">
-                <value>острое</value>
-                <defining_code>
-                  <terminology_id>
-                    <value>DiseaseCharacter</value>
-                  </terminology_id>
-                  <code_string>1</code_string>
-                </defining_code>
-              </value>
-            </items>
-          </items>
-        </items>
-        <items xsi:type="CLUSTER" archetype_node_id="openEHR-EHR-CLUSTER.rendered_service_hmao.v1">
-          <name>
-            <value>Оказанные услуги$0$</value>
-          </name>
-          <items xsi:type="ELEMENT" archetype_node_id="at0001">
-            <name>
-              <value>Код медицинской услуги$0$</value>
-            </name>
-            <value xsi:type="DV_CODED_TEXT">
-              <value>Варикозное расширение вен нижних конечностей</value>
-              <defining_code>
-                <terminology_id>
-                  <value>NsiServiceType</value>
-                </terminology_id>
-                <code_string>G.1.IX.11.22.8</code_string>
-              </defining_code>
-            </value>
-          </items>
-          <items xsi:type="ELEMENT" archetype_node_id="at0002">
-            <name>
-              <value>Единицы учета медицинской помощи$0$</value>
-            </name>
-            <value xsi:type="DV_CODED_TEXT">
-              <value>Посещение для  амбулаторно-поликлинической помощи  (количество посещений)</value>
-              <defining_code>
-                <terminology_id>
-                  <value>NsiAccountingUnitOfCare</value>
-                </terminology_id>
-                <code_string>1</code_string>
-              </defining_code>
-            </value>
-          </items>
           <items xsi:type="ELEMENT" archetype_node_id="at0003">
             <name>
-              <value>Количество услуг$0$</value>
+              <value>Характер заболевания$0$</value>
             </name>
-            <value xsi:type="DV_COUNT">
-              <magnitude>1</magnitude>
-            </value>
-          </items>
-          <items xsi:type="ELEMENT" archetype_node_id="at0005">
-            <name>
-              <value>Код$0$</value>
-            </name>
-            <value xsi:type="DV_COUNT">
-              <magnitude>71</magnitude>
+            <value xsi:type="DV_CODED_TEXT">
+              <value>острое</value>
+              <defining_code>
+                <terminology_id>
+                  <value>DiseaseCharacter</value>
+                </terminology_id>
+                <code_string>1</code_string>
+              </defining_code>
             </value>
           </items>
         </items>
-      </data>
-    </content>
-  </data>
+      </items>
+      <items xsi:type="CLUSTER" archetype_node_id="openEHR-EHR-CLUSTER.rendered_service_hmao.v1">
+        <name>
+          <value>Оказанные услуги$0$</value>
+        </name>
+        <items xsi:type="ELEMENT" archetype_node_id="at0001">
+          <name>
+            <value>Код медицинской услуги$0$</value>
+          </name>
+          <value xsi:type="DV_CODED_TEXT">
+            <value>Варикозное расширение вен нижних конечностей</value>
+            <defining_code>
+              <terminology_id>
+                <value>NsiServiceType</value>
+              </terminology_id>
+              <code_string>G.1.IX.11.22.8</code_string>
+            </defining_code>
+          </value>
+        </items>
+        <items xsi:type="ELEMENT" archetype_node_id="at0002">
+          <name>
+            <value>Единицы учета медицинской помощи$0$</value>
+          </name>
+          <value xsi:type="DV_CODED_TEXT">
+            <value>Посещение для  амбулаторно-поликлинической помощи  (количество посещений)</value>
+            <defining_code>
+              <terminology_id>
+                <value>NsiAccountingUnitOfCare</value>
+              </terminology_id>
+              <code_string>1</code_string>
+            </defining_code>
+          </value>
+        </items>
+        <items xsi:type="ELEMENT" archetype_node_id="at0003">
+          <name>
+            <value>Количество услуг$0$</value>
+          </name>
+          <value xsi:type="DV_COUNT">
+            <magnitude>1</magnitude>
+          </value>
+        </items>
+        <items xsi:type="ELEMENT" archetype_node_id="at0005">
+          <name>
+            <value>Код$0$</value>
+          </name>
+          <value xsi:type="DV_COUNT">
+            <magnitude>71</magnitude>
+          </value>
+        </items>
+      </items>
+    </data>
+  </content>
+</data>

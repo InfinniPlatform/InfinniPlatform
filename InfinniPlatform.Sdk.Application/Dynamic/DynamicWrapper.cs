@@ -1,15 +1,14 @@
-﻿using InfinniPlatform.Api.Extensions;
-using InfinniPlatform.Api.Properties;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Dynamic;
 using System.Linq.Expressions;
+using InfinniPlatform.Sdk.Application.Extensions;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
-namespace InfinniPlatform.Api.Dynamic
+namespace InfinniPlatform.Sdk.Application.Dynamic
 {
     /// <summary>
     /// Динамический объект.
@@ -111,8 +110,7 @@ namespace InfinniPlatform.Api.Dynamic
 
             if (!success)
             {
-                throw new InvalidOperationException(string.Format(Resources.MemberWasNotFoundOrCannotBeInvoked,
-                    memberName));
+                throw new InvalidOperationException(memberName);
             }
 
             return invokeResult;

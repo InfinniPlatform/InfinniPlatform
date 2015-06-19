@@ -3,18 +3,18 @@
     public static class RegisterConstants
     {
         /// <summary>
-        /// Префикс имени служебного документа регистра
+        ///     Префикс имени служебного документа регистра
         /// </summary>
         public const string RegisterNamePrefix = "Register_";
 
         /// <summary>
-        /// Префикс имени служебного документа регистра, хранящего промежуточные итоги
+        ///     Префикс имени служебного документа регистра, хранящего промежуточные итоги
         /// </summary>
         public const string RegisterTotalNamePrefix = "RegisterTotals_";
 
         /// <summary>
-        /// Служебный документ, хранящий общие данные по всем регистрам конфигурации 
-        /// (перед символом '_' будет находится имя конфигурации)
+        ///     Служебный документ, хранящий общие данные по всем регистрам конфигурации
+        ///     (перед символом '_' будет находится имя конфигурации)
         /// </summary>
         public const string RegistersCommonInfo = "_Registers";
 
@@ -23,22 +23,22 @@
         //////////////////////////////////////////
 
         /// <summary>
-        /// Регистратор
+        ///     Регистратор
         /// </summary>
         public const string RegistrarProperty = "Registrar";
 
         /// <summary>
-        /// Тип Регистратора
+        ///     Тип Регистратора
         /// </summary>
         public const string RegistrarTypeProperty = "RegistrarType";
 
         /// <summary>
-        /// Дата Документа
+        ///     Дата Документа
         /// </summary>
         public const string DocumentDateProperty = "DocumentDate";
 
         /// <summary>
-        /// Тип записи регистра
+        ///     Тип записи регистра
         /// </summary>
         public const string EntryTypeProperty = "EntryType";
     }

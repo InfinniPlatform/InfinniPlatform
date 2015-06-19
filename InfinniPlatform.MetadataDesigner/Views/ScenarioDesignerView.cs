@@ -7,14 +7,11 @@ using System.Windows.Forms;
 using DevExpress.XtraEditors.Controls;
 using InfinniPlatform.Api.Context;
 using InfinniPlatform.Api.Deprecated;
-using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
 using InfinniPlatform.Api.Settings;
 using InfinniPlatform.MetadataDesigner.Views.Exchange;
 using InfinniPlatform.MetadataDesigner.Views.Status;
 using InfinniPlatform.MetadataDesigner.Views.ViewModel;
+using InfinniPlatform.Sdk.Application.Dynamic;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.MetadataDesigner.Views

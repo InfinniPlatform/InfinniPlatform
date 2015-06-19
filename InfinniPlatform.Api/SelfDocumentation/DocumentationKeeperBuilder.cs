@@ -1,11 +1,11 @@
-﻿using InfinniPlatform.Api.RestApi.CommonApi.RouteTraces;
-using Newtonsoft.Json.Linq;
-using NUnit.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using InfinniPlatform.Api.RestApi.CommonApi.RouteTraces;
+using Newtonsoft.Json.Linq;
+using NUnit.Framework;
 
 namespace InfinniPlatform.Api.SelfDocumentation
 {
@@ -17,9 +17,9 @@ namespace InfinniPlatform.Api.SelfDocumentation
         {
             get { return InnerTracer; }
         }
-        
+
         public static DocumentationKeeper Build(
-            string assemblyPath, 
+            string assemblyPath,
             IDocumentationFormatter documentationFormatter)
         {
             var documentationKeeper = new DocumentationKeeper(documentationFormatter);

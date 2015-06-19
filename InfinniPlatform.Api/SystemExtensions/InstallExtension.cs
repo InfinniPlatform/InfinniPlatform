@@ -1,10 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using System.Text.RegularExpressions;
-using System.Web.Configuration;
-using InfinniPlatform.Api.Packages;
-using InfinniPlatform.Api.RestApi.CommonApi;
+﻿using System.IO;
 
 namespace InfinniPlatform.Api.SystemExtensions
 {
@@ -23,10 +17,9 @@ namespace InfinniPlatform.Api.SystemExtensions
             }
         }
 
-
         private static void CopyStream(Stream input, Stream output)
         {
-            byte[] buffer = new byte[8 * 1024];
+            var buffer = new byte[8*1024];
             int len;
             while ((len = input.Read(buffer, 0, buffer.Length)) > 0)
             {

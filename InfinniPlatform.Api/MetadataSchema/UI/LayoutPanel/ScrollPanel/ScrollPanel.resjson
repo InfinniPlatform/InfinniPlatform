@@ -1,23 +1,23 @@
 ﻿{
-  "id": "ScrollPanel",
-  "description": "Контейнер элементов представления в виде области, содержимое которой может прокручиваться по вертикали и горизонтали",
-  "type": "object",
-  "extends": {
-    "$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
-  },
-  "properties": {
-    "VerticalScroll": {
-      "description": "Видимость полосы прокрутки по вертикали",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/ScrollVisibility"
-    },
-    "HorizontalScroll": {
-      "description": "Видимость полосы прокрутки по горизонтали",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/ScrollVisibility"
-    },
-    "LayoutPanel": {
-      "description": "Контейнер элементов",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/LayoutPanel"
-    }
-  },
-  "additionalProperties": false
+	"id": "ScrollPanel",
+	"description": "Контейнер элементов представления в виде области, содержимое которой может прокручиваться по вертикали и горизонтали",
+	"type": "object",
+	"extends": {
+		"$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
+	},
+	"properties": {
+		"VerticalScroll": {
+			"description": "Видимость полосы прокрутки по вертикали",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/ScrollVisibility"
+		},
+		"HorizontalScroll": {
+			"description": "Видимость полосы прокрутки по горизонтали",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/ScrollVisibility"
+		},
+		"LayoutPanel": {
+			"description": "Контейнер элементов",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/LayoutPanel"
+		}
+	},
+	"additionalProperties": false
 }

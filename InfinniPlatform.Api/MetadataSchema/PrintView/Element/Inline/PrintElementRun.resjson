@@ -1,19 +1,19 @@
 ﻿{
-  "id": "PrintElementRun",
-  "description": "Однострочный элемент печатного представления для вывода неформатированного текста",
-  "type": "object",
-  "extends": {
-    "$ref": "http://demo.infinnity.ru:8081/display/MC/PrintElementInline"
-  },
-  "properties": {
-    "Text": {
-      "description": "Текст",
-      "type": "string"
-    },
-    "SourceFormat": {
-      "description": "Формат отображения значения источника данных",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/DisplayFormat"
-    }
-  },
-  "additionalProperties": false
+	"id": "PrintElementRun",
+	"description": "Однострочный элемент печатного представления для вывода неформатированного текста",
+	"type": "object",
+	"extends": {
+		"$ref": "http://demo.infinnity.ru:8081/display/MC/PrintElementInline"
+	},
+	"properties": {
+		"Text": {
+			"description": "Текст",
+			"type": "string"
+		},
+		"SourceFormat": {
+			"description": "Формат отображения значения источника данных",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/DisplayFormat"
+		}
+	},
+	"additionalProperties": false
 }

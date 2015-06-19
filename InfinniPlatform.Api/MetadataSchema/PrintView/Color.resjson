@@ -1,5 +1,5 @@
 ﻿{
-  "id": "Color",
-  "type": "string",
-  "format": "color"
+	"id": "Color",
+	"type": "string",
+	"format": "color"
 }

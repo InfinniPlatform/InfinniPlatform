@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataReaders;
 using InfinniPlatform.Api.Metadata.MetadataContainers;
@@ -8,202 +7,203 @@ using InfinniPlatform.Api.Properties;
 
 namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories
 {
-	/// <summary>
-	/// Фабрика менеджеров для работы с метаданными документов.
-	/// </summary>
-	public class ManagerFactoryDocument : IManagerFactoryDocument
-	{
-		private readonly string _configId;
-		private readonly string _documentId;
-		private readonly string _documentUid;
-	    private readonly string _version;
+    /// <summary>
+    ///     Фабрика менеджеров для работы с метаданными документов.
+    /// </summary>
+    public class ManagerFactoryDocument : IManagerFactoryDocument
+    {
+        private readonly string _configId;
+        private readonly string _documentId;
+        private readonly string _documentUid;
 
+        private readonly Dictionary<string, MetadataManagerElement> _managers =
+            new Dictionary<string, MetadataManagerElement>();
 
-		private readonly Dictionary<string, MetadataManagerElement> _managers = new Dictionary<string, MetadataManagerElement>();
+        private readonly string _version;
 
-	    /// <summary>
-	    /// Публичный конструктор.
-	    /// </summary>
-	    /// <param name="version">Версия конфигурации</param>
-	    /// <param name="configId">Идентификатор конфигурации (например "Integration").</param>
-	    /// <param name="documentId">Идентификатор документа (например "Patient").</param>
-	    public ManagerFactoryDocument(string version, string configId, string documentId)
-		{
-			if (string.IsNullOrEmpty(configId))
-			{
-				throw new ArgumentException(Resources.ConfigurationIdShouldNotBeEmpty);
-			}
+        /// <summary>
+        ///     Публичный конструктор.
+        /// </summary>
+        /// <param name="version">Версия конфигурации</param>
+        /// <param name="configId">Идентификатор конфигурации (например "Integration").</param>
+        /// <param name="documentId">Идентификатор документа (например "Patient").</param>
+        public ManagerFactoryDocument(string version, string configId, string documentId)
+        {
+            if (string.IsNullOrEmpty(configId))
+            {
+                throw new ArgumentException(Resources.ConfigurationIdShouldNotBeEmpty);
+            }
 
-			if (string.IsNullOrEmpty(documentId))
-			{
-				throw new ArgumentException(Resources.DocumentIdShouldNotBeEmpty);
-			}
+            if (string.IsNullOrEmpty(documentId))
+            {
+                throw new ArgumentException(Resources.DocumentIdShouldNotBeEmpty);
+            }
 
-			// внутренний идентификатор (GUid) используемый для однозначного определения элемента на уровне фабрики метаданных
-			_documentUid = new ManagerIdentifiersStandard().GetDocumentUid(version, configId, documentId);
+            // внутренний идентификатор (GUid) используемый для однозначного определения элемента на уровне фабрики метаданных
+            _documentUid = new ManagerIdentifiersStandard().GetDocumentUid(version, configId, documentId);
 
-			if (_documentUid == null)
-			{
-				throw new ApplicationException(string.Format(Resources.DocumentMetadataNotFound, documentId));
-			}
+            if (_documentUid == null)
+            {
+                throw new ApplicationException(string.Format(Resources.DocumentMetadataNotFound, documentId));
+            }
 
-			_configId = configId;
-			_documentId = documentId;
-	        _version = version;
+            _configId = configId;
+            _documentId = documentId;
+            _version = version;
 
-			_managers.Add(MetadataType.View, BuildViewManager());
-			_managers.Add(MetadataType.PrintView, BuildPrintViewManager());
-			_managers.Add(MetadataType.Service, BuildServiceManager());
-			_managers.Add(MetadataType.Process, BuildProcessManager());
-			_managers.Add(MetadataType.Scenario, BuildScenarioManager());
-			_managers.Add(MetadataType.Generator, BuildGeneratorManager());
-			_managers.Add(MetadataType.ValidationError, BuildValidationErrorsManager());
-			_managers.Add(MetadataType.ValidationWarning, BuildValidationWarningsManager());
-			_managers.Add(MetadataType.Status, BuildStatusManager());
-		}
+            _managers.Add(MetadataType.View, BuildViewManager());
+            _managers.Add(MetadataType.PrintView, BuildPrintViewManager());
+            _managers.Add(MetadataType.Service, BuildServiceManager());
+            _managers.Add(MetadataType.Process, BuildProcessManager());
+            _managers.Add(MetadataType.Scenario, BuildScenarioManager());
+            _managers.Add(MetadataType.Generator, BuildGeneratorManager());
+            _managers.Add(MetadataType.ValidationError, BuildValidationErrorsManager());
+            _managers.Add(MetadataType.ValidationWarning, BuildValidationWarningsManager());
+            _managers.Add(MetadataType.Status, BuildStatusManager());
+        }
 
+        // Readers
 
-		// Readers
+        public IDataReader BuildViewMetadataReader()
+        {
+            return BuildMetadataReader(new MetadataContainerView());
+        }
 
-		public IDataReader BuildViewMetadataReader()
-		{
-			return BuildMetadataReader(new MetadataContainerView());
-		}
+        public IDataReader BuildServiceMetadataReader()
+        {
+            return BuildMetadataReader(new MetadataContainerService());
+        }
 
-		public IDataReader BuildPrintViewMetadataReader()
-		{
-			return BuildMetadataReader(new MetadataContainerPrintView());
-		}
+        public IDataReader BuildProcessMetadataReader()
+        {
+            return BuildMetadataReader(new MetadataContainerProcess());
+        }
 
-		public IDataReader BuildServiceMetadataReader()
-		{
-			return BuildMetadataReader(new MetadataContainerService());
-		}
+        public IDataReader BuildScenarioMetadataReader()
+        {
+            return BuildMetadataReader(new MetadataContainerScenario());
+        }
 
-		public IDataReader BuildProcessMetadataReader()
-		{
-			return BuildMetadataReader(new MetadataContainerProcess());
-		}
+        public IDataReader BuildGeneratorMetadataReader()
+        {
+            return BuildMetadataReader(new MetadataContainerGenerator());
+        }
 
-		public IDataReader BuildScenarioMetadataReader()
-		{
-			return BuildMetadataReader(new MetadataContainerScenario());
-		}
+        public IDataReader BuildValidationErrorsMetadataReader()
+        {
+            return BuildMetadataReader(new MetadataContainerValidationErrors());
+        }
 
-		public IDataReader BuildGeneratorMetadataReader()
-		{
-			return BuildMetadataReader(new MetadataContainerGenerator());
-		}
+        public IDataReader BuildValidationWarningsMetadataReader()
+        {
+            return BuildMetadataReader(new MetadataContainerValidationWarnings());
+        }
 
-		public IDataReader BuildValidationErrorsMetadataReader()
-		{
-			return BuildMetadataReader(new MetadataContainerValidationErrors());
-		}
+        // Managers
 
-		public IDataReader BuildValidationWarningsMetadataReader()
-		{
-			return BuildMetadataReader(new MetadataContainerValidationWarnings());
-		}
+        public MetadataManagerElement BuildViewManager()
+        {
+            return BuildMetadataManager(new MetadataContainerView(), MetadataType.View);
+        }
 
-		public IDataReader BuildStatusMetadataReader()
-		{
-			return BuildMetadataReader(new MetadataContainerStatus());
-		}
+        public MetadataManagerElement BuildGeneratorManager()
+        {
+            return BuildMetadataManager(new MetadataContainerGenerator(), MetadataType.Generator);
+        }
 
-		public IDataReader BuildMetadataReaderByType(string metadataType)
-		{
-			switch (metadataType)
-			{
-				case MetadataType.View:
-					return BuildViewMetadataReader();
-				case MetadataType.PrintView:
-					return BuildPrintViewMetadataReader();
-				case MetadataType.Service:
-					return BuildServiceMetadataReader();
-				case MetadataType.Process:
-					return BuildProcessMetadataReader();
-				case MetadataType.Scenario:
-					return BuildScenarioMetadataReader();
-				case MetadataType.Generator:
-					return BuildGeneratorMetadataReader();
-				case MetadataType.ValidationError:
-					return BuildValidationErrorsMetadataReader();
-				case MetadataType.ValidationWarning:
-					return BuildValidationWarningsMetadataReader();
-				case MetadataType.Status:
-					return BuildStatusMetadataReader();
-			}
+        public MetadataManagerElement BuildScenarioManager()
+        {
+            return BuildMetadataManager(new MetadataContainerScenario(), MetadataType.Scenario);
+        }
 
-			return null;
-		}
+        public MetadataManagerElement BuildProcessManager()
+        {
+            return BuildMetadataManager(new MetadataContainerProcess(), MetadataType.Process);
+        }
 
-		private IDataReader BuildMetadataReader(IMetadataContainerInfo metadataContainer)
-		{
-			return new MetadataReaderDocumentElement(_version, _configId, _documentId, metadataContainer);
-		}
+        public MetadataManagerElement BuildServiceManager()
+        {
+            return BuildMetadataManager(new MetadataContainerService(), MetadataType.Service);
+        }
 
+        public MetadataManagerElement BuildValidationErrorsManager()
+        {
+            return BuildMetadataManager(new MetadataContainerValidationErrors(), MetadataType.ValidationError);
+        }
 
-		// Managers
+        public MetadataManagerElement BuildValidationWarningsManager()
+        {
+            return BuildMetadataManager(new MetadataContainerValidationWarnings(), MetadataType.ValidationWarning);
+        }
 
-		public MetadataManagerElement BuildViewManager()
-		{
-			return BuildMetadataManager(new MetadataContainerView(), MetadataType.View);
-		}
+        public MetadataManagerElement BuildManagerByType(string metadataType)
+        {
+            MetadataManagerElement metadataManager;
 
-		public MetadataManagerElement BuildPrintViewManager()
-		{
-			return BuildMetadataManager(new MetadataContainerPrintView(), MetadataType.PrintView);
-		}
+            _managers.TryGetValue(metadataType, out metadataManager);
 
-		public MetadataManagerElement BuildGeneratorManager()
-		{
-			return BuildMetadataManager(new MetadataContainerGenerator(), MetadataType.Generator);
-		}
+            return metadataManager;
+        }
 
-		public MetadataManagerElement BuildScenarioManager()
-		{
-			return BuildMetadataManager(new MetadataContainerScenario(), MetadataType.Scenario);
-		}
+        public IDataReader BuildPrintViewMetadataReader()
+        {
+            return BuildMetadataReader(new MetadataContainerPrintView());
+        }
 
-		public MetadataManagerElement BuildProcessManager()
-		{
-			return BuildMetadataManager(new MetadataContainerProcess(), MetadataType.Process);
-		}
+        public IDataReader BuildStatusMetadataReader()
+        {
+            return BuildMetadataReader(new MetadataContainerStatus());
+        }
 
-		public MetadataManagerElement BuildServiceManager()
-		{
-			return BuildMetadataManager(new MetadataContainerService(), MetadataType.Service);
-		}
+        public IDataReader BuildMetadataReaderByType(string metadataType)
+        {
+            switch (metadataType)
+            {
+                case MetadataType.View:
+                    return BuildViewMetadataReader();
+                case MetadataType.PrintView:
+                    return BuildPrintViewMetadataReader();
+                case MetadataType.Service:
+                    return BuildServiceMetadataReader();
+                case MetadataType.Process:
+                    return BuildProcessMetadataReader();
+                case MetadataType.Scenario:
+                    return BuildScenarioMetadataReader();
+                case MetadataType.Generator:
+                    return BuildGeneratorMetadataReader();
+                case MetadataType.ValidationError:
+                    return BuildValidationErrorsMetadataReader();
+                case MetadataType.ValidationWarning:
+                    return BuildValidationWarningsMetadataReader();
+                case MetadataType.Status:
+                    return BuildStatusMetadataReader();
+            }
 
-		public MetadataManagerElement BuildValidationErrorsManager()
-		{
-			return BuildMetadataManager(new MetadataContainerValidationErrors(), MetadataType.ValidationError);
-		}
+            return null;
+        }
 
-		public MetadataManagerElement BuildValidationWarningsManager()
-		{
-			return BuildMetadataManager(new MetadataContainerValidationWarnings(), MetadataType.ValidationWarning);
-		}
+        private IDataReader BuildMetadataReader(IMetadataContainerInfo metadataContainer)
+        {
+            return new MetadataReaderDocumentElement(_version, _configId, _documentId, metadataContainer);
+        }
 
-		public MetadataManagerElement BuildStatusManager()
-		{
-			return BuildMetadataManager(new MetadataContainerStatus(), MetadataType.Status);
-		}
+        public MetadataManagerElement BuildPrintViewManager()
+        {
+            return BuildMetadataManager(new MetadataContainerPrintView(), MetadataType.PrintView);
+        }
 
-		public MetadataManagerElement BuildManagerByType(string metadataType)
-		{
-			MetadataManagerElement metadataManager;
+        public MetadataManagerElement BuildStatusManager()
+        {
+            return BuildMetadataManager(new MetadataContainerStatus(), MetadataType.Status);
+        }
 
-			_managers.TryGetValue(metadataType, out metadataManager);
-
-			return metadataManager;
-		}
-
-		private MetadataManagerElement BuildMetadataManager(IMetadataContainerInfo metadataContainer, string metadataType)
-		{
-			var metadataReader = BuildMetadataReader(metadataContainer);
-			var metadataCacheRefresher = new MetadataCacheRefresher(_version, _configId, _documentId, metadataType);
-			return new MetadataManagerElement(_version, _documentUid, metadataCacheRefresher, metadataReader, metadataContainer, MetadataType.Document);
-		}
-	}
+        private MetadataManagerElement BuildMetadataManager(IMetadataContainerInfo metadataContainer,
+            string metadataType)
+        {
+            var metadataReader = BuildMetadataReader(metadataContainer);
+            var metadataCacheRefresher = new MetadataCacheRefresher(_version, _configId, _documentId, metadataType);
+            return new MetadataManagerElement(_version, _documentUid, metadataCacheRefresher, metadataReader,
+                metadataContainer, MetadataType.Document);
+        }
+    }
 }

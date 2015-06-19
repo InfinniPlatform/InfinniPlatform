@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace InfinniPlatform.Api.Dynamic
+namespace InfinniPlatform.Sdk.Application.Dynamic
 {
     /// <summary>
     /// Осуществляет преобразование <see cref="DynamicWrapper"/> в JSON-представление и обратно на основе списка известных типов.

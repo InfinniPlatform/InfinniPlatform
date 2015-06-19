@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.Metadata;
+﻿using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 
 namespace InfinniPlatform.Api.Packages.ConfigStructure
@@ -18,7 +13,6 @@ namespace InfinniPlatform.Api.Packages.ConfigStructure
             return ConfigurationName + ExportFileExtension;
         }
 
-
         public static string GetExtendedFileName(string metadata)
         {
             return metadata + ExportFileExtension;
@@ -26,12 +20,13 @@ namespace InfinniPlatform.Api.Packages.ConfigStructure
 
         private static string GetMetadataTypeFolderName(string metadataType)
         {
-            return new MetadataContainerInfoFactory().BuildMetadataContainerInfo(metadataType).GetMetadataContainerName();
+            return
+                new MetadataContainerInfoFactory().BuildMetadataContainerInfo(metadataType).GetMetadataContainerName();
         }
 
         private static string GetDocumentsFolderName()
         {
-	        return MetadataType.DocumentContainer;
+            return MetadataType.DocumentContainer;
         }
 
         private static string GetRegistersFolderName()
@@ -39,20 +34,20 @@ namespace InfinniPlatform.Api.Packages.ConfigStructure
             return MetadataType.RegisterContainer;
         }
 
-		public static string GetMenuListFolderName()
-		{
-			return MetadataType.MenuContainer;
-		}
+        public static string GetMenuListFolderName()
+        {
+            return MetadataType.MenuContainer;
+        }
 
         private static string GetAssembliesFolderName()
         {
             return MetadataType.AssemblyContainer;
         }
 
-		private static string GetReportsFolderName()
-		{
-			return MetadataType.ReportContainer;
-		}
+        private static string GetReportsFolderName()
+        {
+            return MetadataType.ReportContainer;
+        }
 
         public static string GetConfigurationFolder()
         {
@@ -64,15 +59,15 @@ namespace InfinniPlatform.Api.Packages.ConfigStructure
             return GetDocumentsFolderName() + "/" + document + "/" + GetMetadataTypeFolderName(metadataType);
         }
 
-		public static string GetMetadataTypeFileName(string metadataFolder, string metadataName)
-		{
-			return metadataFolder + "/" + GetExtendedFileName(metadataName);
-		}
+        public static string GetMetadataTypeFileName(string metadataFolder, string metadataName)
+        {
+            return metadataFolder + "/" + GetExtendedFileName(metadataName);
+        }
 
-		public static string GetDocumentFolderName(string document)
-		{
-			return GetDocumentsFolderName() + "/" + document;
-		}
+        public static string GetDocumentFolderName(string document)
+        {
+            return GetDocumentsFolderName() + "/" + document;
+        }
 
         public static string GetRegisterFolderName(string register)
         {
@@ -89,37 +84,34 @@ namespace InfinniPlatform.Api.Packages.ConfigStructure
             return registerFolder + "/" + GetExtendedFileName(registerName);
         }
 
-		public static string GetMenuFileName(string menuFolder, string menuName)
-		{
-			return menuFolder + "/" + GetExtendedFileName(menuName);
-		}
+        public static string GetMenuFileName(string menuFolder, string menuName)
+        {
+            return menuFolder + "/" + GetExtendedFileName(menuName);
+        }
 
-		public static string GetMenuFolderName(string menuName)
-		{
-			return GetMenuListFolderName() + "/" + menuName;
-		}
-
+        public static string GetMenuFolderName(string menuName)
+        {
+            return GetMenuListFolderName() + "/" + menuName;
+        }
 
         public static string GetAssemblyFolderName(string assemblyName)
         {
             return GetAssembliesFolderName() + "/" + assemblyName;
         }
 
-		public static string GetAssemblyFileName(string assemblyFolder, string assemblyName)
-		{
-			return assemblyFolder + "/" + GetExtendedFileName(assemblyName);
-		}
+        public static string GetAssemblyFileName(string assemblyFolder, string assemblyName)
+        {
+            return assemblyFolder + "/" + GetExtendedFileName(assemblyName);
+        }
 
+        public static string GetReportFolderName(string reportName)
+        {
+            return GetReportsFolderName() + "/" + reportName;
+        }
 
-		public static string GetReportFolderName(string reportName)
-		{
-			return GetReportsFolderName() + "/" + reportName;
-		}
-
-
-	    public static string GetReportFileName(string reportFolder, string reportName)
-	    {
-			return reportFolder + "/" + GetExtendedFileName(reportName);
-	    }
+        public static string GetReportFileName(string reportFolder, string reportName)
+        {
+            return reportFolder + "/" + GetExtendedFileName(reportName);
+        }
     }
 }

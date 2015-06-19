@@ -69,7 +69,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
@@ -87,8 +86,6 @@
     <Compile Include="ContextComponents\IPasswordVerifierComponent.cs" />
     <Compile Include="ContextComponents\IReferenceResolver.cs" />
     <Compile Include="ContextComponents\ISystemComponent.cs" />
-    <Compile Include="Extensions\ReflectionCache.cs" />
-    <Compile Include="Dynamic\DynamicWrapperExtensions.cs" />
     <Compile Include="Factories\ICrossConfigSearcher.cs" />
     <Compile Include="ContextComponents\IEventStorageComponent.cs" />
     <Compile Include="ContextComponents\IIndexComponent.cs" />
@@ -113,24 +110,16 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ContextTypes\ContextTypeProvider.cs" />
-    <Compile Include="ContextTypes\IUploadContext.cs" />
     <Compile Include="ContextTypes\ContextImpl\SearchContext.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ContextTypes\ContextImpl\UploadContext.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ContextTypes\IUrlEncodedDataContext.cs" />
     <Compile Include="ContextTypes\WorkflowTypes.cs" />
     <Compile Include="Context\ScriptInfoProvider.cs" />
     <Compile Include="Context\ScriptUnitType.cs" />
-    <Compile Include="Dynamic\DynamicWrapper.cs" />
-    <Compile Include="Dynamic\DynamicWrapperJsonConverter.cs" />
-    <Compile Include="Dynamic\DynamicWrapperMetaObject.cs" />
-    <Compile Include="Dynamic\DynamicWrapperPropertyDescriptor.cs" />
-    <Compile Include="Dynamic\ObjectHelper.cs" />
     <Compile Include="Extensions\MonadExtensions.cs" />
-    <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="Factories\BlobData.cs" />
     <Compile Include="Factories\BlobInfo.cs" />
     <Compile Include="Factories\IBlobStorage.cs" />
@@ -371,14 +360,6 @@
     <Compile Include="SearchOptions\AggregationType.cs" />
     <Compile Include="SearchOptions\CriteriaType.cs" />
     <Compile Include="RestApi\DataApi\DocumentApi.cs" />
-    <Compile Include="ContextTypes\IApplyContext.cs" />
-    <Compile Include="ContextTypes\IApplyResultContext.cs" />
-    <Compile Include="ContextTypes\ICommonContext.cs" />
-    <Compile Include="ContextTypes\IProcessEventContext.cs" />
-    <Compile Include="ContextTypes\ISearchContext.cs" />
-    <Compile Include="Context\IGlobalContext.cs" />
-    <Compile Include="Events\EventDefinition.cs" />
-    <Compile Include="Events\EventType.cs" />
     <Compile Include="RestApi\CommonApi\IndexApi.cs" />
     <Compile Include="RestQuery\ControllerRoutingFactory.cs" />
     <Compile Include="RestQuery\EventObjects\EventList.cs" />
@@ -722,6 +703,12 @@
   <Import Project="..\Files\Build\TransformOnBuild.targets" />
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.Sdk.Application\InfinniPlatform.Sdk.Application.csproj">
+      <Project>{2322469d-7d54-4c76-97e2-ef40f15645f5}</Project>
+      <Name>InfinniPlatform.Sdk.Application</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <PreBuildEvent>rem $(ProjectDir)\..\InfinniPlatform.Deploy\GenerateNuGetPackageRevision.exe  "$(ProjectDir)\..\InfinniPlatform.Deploy\InfinniPlatform.nuspec"</PreBuildEvent>

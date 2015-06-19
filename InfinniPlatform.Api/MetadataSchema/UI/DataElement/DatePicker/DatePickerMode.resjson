@@ -1,9 +1,9 @@
 ﻿{
-  "id": "DatePickerMode",
-  "description": "Режим работы элемента DatePicker",
-  "enum": [
-    "Date",
-    "Time",
-    "DateTime"
-  ]
+	"id": "DatePickerMode",
+	"description": "Режим работы элемента DatePicker",
+	"enum": [
+		"Date",
+		"Time",
+		"DateTime"
+	]
 }

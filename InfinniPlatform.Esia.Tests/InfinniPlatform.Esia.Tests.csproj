@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -45,16 +45,6 @@
       <Link>App.config</Link>
     </None>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Esia\InfinniPlatform.Esia.csproj">
-      <Project>{da365183-b83d-4f73-a5bb-d8b0df4ee52b}</Project>
-      <Name>InfinniPlatform.Esia</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Tests\InfinniPlatform.Tests.csproj">
-      <Project>{a46f638c-c9c5-49be-bc8d-8144e8c8f87a}</Project>
-      <Name>InfinniPlatform.Tests</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\Files\Build\TransformOnBuild.targets" />

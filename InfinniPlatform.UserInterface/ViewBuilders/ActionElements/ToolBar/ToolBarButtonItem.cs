@@ -1,5 +1,4 @@
 ﻿using DevExpress.Xpf.Bars;
-
 using InfinniPlatform.UserInterface.ViewBuilders.Actions;
 using InfinniPlatform.UserInterface.ViewBuilders.Elements;
 using InfinniPlatform.UserInterface.ViewBuilders.Images;
@@ -8,90 +7,85 @@ using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.ActionElements.ToolBar
 {
-	/// <summary>
-	/// Элемент панели инструментов в виде кнопки.
-	/// </summary>
-	public sealed class ToolBarButtonItem : ToolBarItem<BarButtonItem>
-	{
-		public ToolBarButtonItem(View view)
-			: base(view)
-		{
-			Control.ItemClick += OnClickToolBarButton;
-		}
+    /// <summary>
+    ///     Элемент панели инструментов в виде кнопки.
+    /// </summary>
+    public sealed class ToolBarButtonItem : ToolBarItem<BarButtonItem>
+    {
+        // Action
 
-		private void OnClickToolBarButton(object sender, ItemClickEventArgs e)
-		{
-			this.InvokeScript(OnClick);
+        private BaseAction _action;
+        // Image
 
-			var action = GetAction();
+        private string _image;
 
-			if (action != null)
-			{
-				action.Execute();
-			}
-		}
+        public ToolBarButtonItem(View view)
+            : base(view)
+        {
+            Control.ItemClick += OnClickToolBarButton;
+        }
 
+        // OnClick
 
-		// Image
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события нажатия на кнопку.
+        /// </summary>
+        public ScriptDelegate OnClick { get; set; }
 
-		private string _image;
+        private void OnClickToolBarButton(object sender, ItemClickEventArgs e)
+        {
+            this.InvokeScript(OnClick);
 
-		/// <summary>
-		/// Возвращает изображение кнопки.
-		/// </summary>
-		public string GetImage()
-		{
-			return _image;
-		}
+            var action = GetAction();
 
-		/// <summary>
-		/// Устанавливает изображение кнопки.
-		/// </summary>
-		public void SetImage(string value)
-		{
-			_image = value;
+            if (action != null)
+            {
+                action.Execute();
+            }
+        }
 
-			Control.Glyph = ImageRepository.GetImage(value);
-		}
+        /// <summary>
+        ///     Возвращает изображение кнопки.
+        /// </summary>
+        public string GetImage()
+        {
+            return _image;
+        }
 
+        /// <summary>
+        ///     Устанавливает изображение кнопки.
+        /// </summary>
+        public void SetImage(string value)
+        {
+            _image = value;
 
-		// Action
+            Control.Glyph = ImageRepository.GetImage(value);
+        }
 
-		private BaseAction _action;
+        /// <summary>
+        ///     Возвращает действие при нажатии на кнопку.
+        /// </summary>
+        public BaseAction GetAction()
+        {
+            return _action;
+        }
 
-		/// <summary>
-		/// Возвращает действие при нажатии на кнопку.
-		/// </summary>
-		public BaseAction GetAction()
-		{
-			return _action;
-		}
+        /// <summary>
+        ///     Устанавливает действие при нажатии на кнопку.
+        /// </summary>
+        public void SetAction(BaseAction value)
+        {
+            _action = value;
+        }
 
-		/// <summary>
-		/// Устанавливает действие при нажатии на кнопку.
-		/// </summary>
-		public void SetAction(BaseAction value)
-		{
-			_action = value;
-		}
+        // Click
 
-
-		// OnClick
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события нажатия на кнопку.
-		/// </summary>
-		public ScriptDelegate OnClick { get; set; }
-
-
-		// Click
-
-		/// <summary>
-		/// Осуществляет программное нажатие на кнопку.
-		/// </summary>
-		public void Click()
-		{
-			Control.PerformClick();
-		}
-	}
+        /// <summary>
+        ///     Осуществляет программное нажатие на кнопку.
+        /// </summary>
+        public void Click()
+        {
+            Control.PerformClick();
+        }
+    }
 }

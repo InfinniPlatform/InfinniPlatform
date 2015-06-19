@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.UserInterface.Properties;
 using InfinniPlatform.UserInterface.ViewBuilders.ActionElements.ContextMenu;
 using InfinniPlatform.UserInterface.ViewBuilders.ActionElements.ToolBar;
@@ -21,434 +19,428 @@ using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.DocumentDesigner
 {
-	/// <summary>
-	/// Элемент представления для редактирования дерева документа.
-	/// </summary>
-	sealed class DocumentDesignerElement : BaseElement<UserControl>
-	{
-		public DocumentDesignerElement(View view)
-			: base(view)
-		{
-			var mainPanel = new StackPanelElement(view);
+    /// <summary>
+    ///     Элемент представления для редактирования дерева документа.
+    /// </summary>
+    internal sealed class DocumentDesignerElement : BaseElement<UserControl>
+    {
+        // ConfigId
 
-			// TreeView
-			var itemsTreeView = new TreeViewElement(view);
-			itemsTreeView.SetKeyProperty("Key");
-			itemsTreeView.SetParentProperty("Parent");
-			itemsTreeView.SetDisplayProperty("Text");
-			itemsTreeView.SetImageProperty("Image");
-			itemsTreeView.SetShowNodeImages(true);
-			itemsTreeView.OnDoubleClick += OnEditItemHandler;
-			mainPanel.AddItem(itemsTreeView);
+        private Func<string> _configId;
+        // Editors
 
-			// ToolBar
-			var toolBar = new ToolBarElement(view);
-			mainPanel.AddItem(toolBar);
+        private IEnumerable<ItemEditor> _editors;
+        // Items
 
-			// ContextMenu
-			var contextMenu = new ContextMenuElement(view);
-			itemsTreeView.SetContextMenu(contextMenu);
+        private IEnumerable _items;
+        private readonly ToolBarPopupButtonItem _addItemButton;
+        private readonly ContextMenuItem _addItemMenuButton;
+        private readonly TreeViewElement _itemsTreeView;
 
-			// Update
+        public DocumentDesignerElement(View view)
+            : base(view)
+        {
+            var mainPanel = new StackPanelElement(view);
 
-			var updateItemsButton = new ToolBarButtonItem(view);
-			updateItemsButton.SetText(Resources.DocumentDesignerRefreshButton);
-			updateItemsButton.SetImage("Actions/Refresh_16x16");
-			updateItemsButton.SetHotkey("F5");
-			updateItemsButton.OnClick += OnUpdateItemsHandler;
-			toolBar.AddItem(updateItemsButton);
+            // TreeView
+            var itemsTreeView = new TreeViewElement(view);
+            itemsTreeView.SetKeyProperty("Key");
+            itemsTreeView.SetParentProperty("Parent");
+            itemsTreeView.SetDisplayProperty("Text");
+            itemsTreeView.SetImageProperty("Image");
+            itemsTreeView.SetShowNodeImages(true);
+            itemsTreeView.OnDoubleClick += OnEditItemHandler;
+            mainPanel.AddItem(itemsTreeView);
 
-			var updateItemsMenuButton = new ContextMenuItem(view);
-			updateItemsMenuButton.SetText(Resources.DocumentDesignerRefreshButton);
-			updateItemsMenuButton.SetImage("Actions/Refresh_16x16");
-			updateItemsMenuButton.SetHotkey("F5");
-			updateItemsMenuButton.OnClick += OnUpdateItemsHandler;
-			contextMenu.AddItem(updateItemsMenuButton);
+            // ToolBar
+            var toolBar = new ToolBarElement(view);
+            mainPanel.AddItem(toolBar);
 
-			// Separator
+            // ContextMenu
+            var contextMenu = new ContextMenuElement(view);
+            itemsTreeView.SetContextMenu(contextMenu);
 
-			var separator = new ToolBarSeparatorItem(view);
-			toolBar.AddItem(separator);
+            // Update
 
-			var menuSeparator = new ContextMenuItemSeparator(view);
-			contextMenu.AddItem(menuSeparator);
+            var updateItemsButton = new ToolBarButtonItem(view);
+            updateItemsButton.SetText(Resources.DocumentDesignerRefreshButton);
+            updateItemsButton.SetImage("Actions/Refresh_16x16");
+            updateItemsButton.SetHotkey("F5");
+            updateItemsButton.OnClick += OnUpdateItemsHandler;
+            toolBar.AddItem(updateItemsButton);
 
-			// Add
+            var updateItemsMenuButton = new ContextMenuItem(view);
+            updateItemsMenuButton.SetText(Resources.DocumentDesignerRefreshButton);
+            updateItemsMenuButton.SetImage("Actions/Refresh_16x16");
+            updateItemsMenuButton.SetHotkey("F5");
+            updateItemsMenuButton.OnClick += OnUpdateItemsHandler;
+            contextMenu.AddItem(updateItemsMenuButton);
 
-			var addItemButton = new ToolBarPopupButtonItem(view);
-			addItemButton.SetText(Resources.DocumentDesignerAddButton);
-			addItemButton.SetImage("Actions/Add_16x16");
-			addItemButton.SetHotkey("Ctrl+N");
-			toolBar.AddItem(addItemButton);
+            // Separator
 
-			var addItemMenuButton = new ContextMenuItem(view);
-			addItemMenuButton.SetText(Resources.DocumentDesignerAddButton);
-			addItemMenuButton.SetImage("Actions/Add_16x16");
-			addItemMenuButton.SetHotkey("Ctrl+N");
-			contextMenu.AddItem(addItemMenuButton);
+            var separator = new ToolBarSeparatorItem(view);
+            toolBar.AddItem(separator);
 
-			// Edit
+            var menuSeparator = new ContextMenuItemSeparator(view);
+            contextMenu.AddItem(menuSeparator);
 
-			var editItemButton = new ToolBarButtonItem(view);
-			editItemButton.SetText(Resources.DocumentDesignerEditButton);
-			editItemButton.SetImage("Actions/Edit_16x16");
-			editItemButton.SetHotkey("Ctrl+O");
-			editItemButton.OnClick += OnEditItemHandler;
-			toolBar.AddItem(editItemButton);
+            // Add
 
-			var editItemMenuButton = new ContextMenuItem(view);
-			editItemMenuButton.SetText(Resources.DocumentDesignerEditButton);
-			editItemMenuButton.SetImage("Actions/Edit_16x16");
-			editItemMenuButton.SetHotkey("Ctrl+O");
-			editItemMenuButton.OnClick += OnEditItemHandler;
-			contextMenu.AddItem(editItemMenuButton);
+            var addItemButton = new ToolBarPopupButtonItem(view);
+            addItemButton.SetText(Resources.DocumentDesignerAddButton);
+            addItemButton.SetImage("Actions/Add_16x16");
+            addItemButton.SetHotkey("Ctrl+N");
+            toolBar.AddItem(addItemButton);
 
-			// Delete
+            var addItemMenuButton = new ContextMenuItem(view);
+            addItemMenuButton.SetText(Resources.DocumentDesignerAddButton);
+            addItemMenuButton.SetImage("Actions/Add_16x16");
+            addItemMenuButton.SetHotkey("Ctrl+N");
+            contextMenu.AddItem(addItemMenuButton);
 
-			var deleteItemButton = new ToolBarButtonItem(view);
-			deleteItemButton.SetText(Resources.DocumentDesignerDeleteButton);
-			deleteItemButton.SetImage("Actions/Delete_16x16");
-			deleteItemButton.SetHotkey("Ctrl+Delete");
-			deleteItemButton.OnClick += OnDeleteItemHandler;
-			toolBar.AddItem(deleteItemButton);
+            // Edit
 
-			var deleteItemMenuButton = new ContextMenuItem(view);
-			deleteItemMenuButton.SetText(Resources.DocumentDesignerDeleteButton);
-			deleteItemMenuButton.SetImage("Actions/Delete_16x16");
-			deleteItemMenuButton.SetHotkey("Ctrl+Delete");
-			deleteItemMenuButton.OnClick += OnDeleteItemHandler;
-			contextMenu.AddItem(deleteItemMenuButton);
+            var editItemButton = new ToolBarButtonItem(view);
+            editItemButton.SetText(Resources.DocumentDesignerEditButton);
+            editItemButton.SetImage("Actions/Edit_16x16");
+            editItemButton.SetHotkey("Ctrl+O");
+            editItemButton.OnClick += OnEditItemHandler;
+            toolBar.AddItem(editItemButton);
 
-			_itemsTreeView = itemsTreeView;
-			_addItemButton = addItemButton;
-			_addItemMenuButton = addItemMenuButton;
+            var editItemMenuButton = new ContextMenuItem(view);
+            editItemMenuButton.SetText(Resources.DocumentDesignerEditButton);
+            editItemMenuButton.SetImage("Actions/Edit_16x16");
+            editItemMenuButton.SetHotkey("Ctrl+O");
+            editItemMenuButton.OnClick += OnEditItemHandler;
+            contextMenu.AddItem(editItemMenuButton);
 
-			Control.Content = mainPanel.GetControl();
-		}
+            // Delete
 
+            var deleteItemButton = new ToolBarButtonItem(view);
+            deleteItemButton.SetText(Resources.DocumentDesignerDeleteButton);
+            deleteItemButton.SetImage("Actions/Delete_16x16");
+            deleteItemButton.SetHotkey("Ctrl+Delete");
+            deleteItemButton.OnClick += OnDeleteItemHandler;
+            toolBar.AddItem(deleteItemButton);
 
-		private readonly TreeViewElement _itemsTreeView;
-		private readonly ToolBarPopupButtonItem _addItemButton;
-		private readonly ContextMenuItem _addItemMenuButton;
+            var deleteItemMenuButton = new ContextMenuItem(view);
+            deleteItemMenuButton.SetText(Resources.DocumentDesignerDeleteButton);
+            deleteItemMenuButton.SetImage("Actions/Delete_16x16");
+            deleteItemMenuButton.SetHotkey("Ctrl+Delete");
+            deleteItemMenuButton.OnClick += OnDeleteItemHandler;
+            contextMenu.AddItem(deleteItemMenuButton);
 
+            _itemsTreeView = itemsTreeView;
+            _addItemButton = addItemButton;
+            _addItemMenuButton = addItemMenuButton;
 
-		// Handlers
+            Control.Content = mainPanel.GetControl();
+        }
 
-		private void OnUpdateItemsHandler(dynamic context, dynamic arguments)
-		{
-			InvokeUpdateItems();
-		}
+        // Events
 
-		private void OnAddItemHandler(string metadataType)
-		{
-			dynamic treeItem = _itemsTreeView.GetSelectedItem();
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события обновления списка.
+        /// </summary>
+        public ScriptDelegate OnUpdateItems { get; set; }
 
-			if (treeItem != null)
-			{
-				EditItem(null, treeItem.DocumentId, treeItem.Version, metadataType);
-			}
-		}
+        // Handlers
 
-		private void OnEditItemHandler(dynamic context, dynamic arguments)
-		{
-			dynamic treeItem = _itemsTreeView.GetSelectedItem();
+        private void OnUpdateItemsHandler(dynamic context, dynamic arguments)
+        {
+            InvokeUpdateItems();
+        }
 
-			if (treeItem != null)
-			{
-				EditItem(treeItem.ItemId, treeItem.DocumentId, treeItem.Version, treeItem.MetadataType);
-			}
-		}
+        private void OnAddItemHandler(string metadataType)
+        {
+            dynamic treeItem = _itemsTreeView.GetSelectedItem();
 
-		private void OnDeleteItemHandler(dynamic context, dynamic arguments)
-		{
-			dynamic treeItem = _itemsTreeView.GetSelectedItem();
+            if (treeItem != null)
+            {
+                EditItem(null, treeItem.DocumentId, treeItem.Version, metadataType);
+            }
+        }
 
-			if (treeItem != null)
-			{
-				DeleteItem(treeItem.ItemId, treeItem.Text, treeItem.DocumentId, treeItem.Version, treeItem.MetadataType);
-			}
-		}
+        private void OnEditItemHandler(dynamic context, dynamic arguments)
+        {
+            dynamic treeItem = _itemsTreeView.GetSelectedItem();
 
-		private void EditItem(string itemId, string documentId, string version, string metadataType)
-		{
-			if (string.IsNullOrEmpty(documentId) == false && string.IsNullOrEmpty(metadataType) == false)
-			{
-				ViewHelper.ShowView(GetChildViewKey(itemId, documentId,version),
-									() => FindLinkView(metadataType),
-									childDataSource => OnInitializeChildView(childDataSource, itemId, documentId, version),
-									childDataSource => InvokeUpdateItems());
-			}
-		}
+            if (treeItem != null)
+            {
+                EditItem(treeItem.ItemId, treeItem.DocumentId, treeItem.Version, treeItem.MetadataType);
+            }
+        }
 
-		private string GetChildViewKey(string itemId, string documentId, string version)
-		{
-			return string.IsNullOrEmpty(itemId) ? null : (GetConfigIdValue() + documentId + itemId + version);
-		}
+        private void OnDeleteItemHandler(dynamic context, dynamic arguments)
+        {
+            dynamic treeItem = _itemsTreeView.GetSelectedItem();
 
-		private void OnInitializeChildView(IDataSource childDataSource, string itemId, string documentId, string version)
-		{
-			childDataSource.SuspendUpdate();
-			childDataSource.SetEditMode();
-			childDataSource.SetConfigId(GetConfigIdValue());
-			childDataSource.SetDocumentId(documentId);
+            if (treeItem != null)
+            {
+                DeleteItem(treeItem.ItemId, treeItem.Text, treeItem.DocumentId, treeItem.Version, treeItem.MetadataType);
+            }
+        }
+
+        private void EditItem(string itemId, string documentId, string version, string metadataType)
+        {
+            if (string.IsNullOrEmpty(documentId) == false && string.IsNullOrEmpty(metadataType) == false)
+            {
+                ViewHelper.ShowView(GetChildViewKey(itemId, documentId, version),
+                    () => FindLinkView(metadataType),
+                    childDataSource => OnInitializeChildView(childDataSource, itemId, documentId, version),
+                    childDataSource => InvokeUpdateItems());
+            }
+        }
+
+        private string GetChildViewKey(string itemId, string documentId, string version)
+        {
+            return string.IsNullOrEmpty(itemId) ? null : (GetConfigIdValue() + documentId + itemId + version);
+        }
+
+        private void OnInitializeChildView(IDataSource childDataSource, string itemId, string documentId, string version)
+        {
+            childDataSource.SuspendUpdate();
+            childDataSource.SetEditMode();
+            childDataSource.SetConfigId(GetConfigIdValue());
+            childDataSource.SetDocumentId(documentId);
             childDataSource.SetVersion(version);
-			childDataSource.SetIdFilter(itemId);
-			childDataSource.ResumeUpdate();
-		}
+            childDataSource.SetIdFilter(itemId);
+            childDataSource.ResumeUpdate();
+        }
 
-		private void DeleteItem(string itemId, string itemText, string documentId, string version, string metadataType)
-		{
-			if (string.IsNullOrEmpty(itemId) == false
-				&& string.IsNullOrEmpty(documentId) == false
-				&& MessageBox.Show(string.Format(Resources.DocumentDesignerDeleteQuestion, itemText), GetView().GetText(), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-			{
-				var dataProvider = new MetadataProvider(metadataType);
-				dataProvider.SetConfigId(GetConfigIdValue());
-				dataProvider.SetDocumentId(documentId);
+        private void DeleteItem(string itemId, string itemText, string documentId, string version, string metadataType)
+        {
+            if (string.IsNullOrEmpty(itemId) == false
+                && string.IsNullOrEmpty(documentId) == false
+                &&
+                MessageBox.Show(string.Format(Resources.DocumentDesignerDeleteQuestion, itemText), GetView().GetText(),
+                    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                var dataProvider = new MetadataProvider(metadataType);
+                dataProvider.SetConfigId(GetConfigIdValue());
+                dataProvider.SetDocumentId(documentId);
                 dataProvider.SetVersion(version);
-				dataProvider.DeleteItem(itemId);
+                dataProvider.DeleteItem(itemId);
 
-				InvokeUpdateItems();
-			}
-		}
+                InvokeUpdateItems();
+            }
+        }
 
-		private LinkView FindLinkView(string metadataType)
-		{
-			var editors = GetEditors();
+        private LinkView FindLinkView(string metadataType)
+        {
+            var editors = GetEditors();
 
-			if (editors != null)
-			{
-				var editor = editors.FirstOrDefault(i => i.MetadataType == metadataType);
+            if (editors != null)
+            {
+                var editor = editors.FirstOrDefault(i => i.MetadataType == metadataType);
 
-				if (editor != null)
-				{
-					return editor.LinkView;
-				}
-			}
+                if (editor != null)
+                {
+                    return editor.LinkView;
+                }
+            }
 
-			return null;
-		}
+            return null;
+        }
 
-		private void InvokeUpdateItems()
-		{
-			this.InvokeScript(OnUpdateItems);
-		}
+        private void InvokeUpdateItems()
+        {
+            this.InvokeScript(OnUpdateItems);
+        }
 
+        /// <summary>
+        ///     Возвращает идентификатор конфигурации.
+        /// </summary>
+        public Func<string> GetConfigId()
+        {
+            return _configId;
+        }
 
-		// ConfigId
+        /// <summary>
+        ///     Устанавливает идентификатор конфигурации.
+        /// </summary>
+        public void SetConfigId(Func<string> value)
+        {
+            _configId = value;
+        }
 
-		private Func<string> _configId;
+        private string GetConfigIdValue()
+        {
+            var configId = GetConfigId();
 
-		/// <summary>
-		/// Возвращает идентификатор конфигурации.
-		/// </summary>
-		public Func<string> GetConfigId()
-		{
-			return _configId;
-		}
+            return (configId != null) ? configId() : null;
+        }
 
-		/// <summary>
-		/// Устанавливает идентификатор конфигурации.
-		/// </summary>
-		public void SetConfigId(Func<string> value)
-		{
-			_configId = value;
-		}
+        /// <summary>
+        ///     Возвращает список редакторов элементов документа.
+        /// </summary>
+        public IEnumerable<ItemEditor> GetEditors()
+        {
+            return _editors;
+        }
 
-		private string GetConfigIdValue()
-		{
-			var configId = GetConfigId();
+        /// <summary>
+        ///     Устанавливает список редакторов элементов документа.
+        /// </summary>
+        public void SetEditors(IEnumerable<ItemEditor> value)
+        {
+            if (Equals(_editors, value) == false)
+            {
+                _editors = value;
 
-			return (configId != null) ? configId() : null;
-		}
+                RefreshAddItemButton();
+                RefreshItemsTreeView();
+            }
+        }
 
+        private void RefreshAddItemButton()
+        {
+            var addButtons = _addItemButton.GetItems();
 
-		// Editors
+            if (addButtons != null)
+            {
+                foreach (var addButton in addButtons.ToArray())
+                {
+                    _addItemButton.RemoveItem(addButton);
+                }
+            }
 
-		private IEnumerable<ItemEditor> _editors;
+            var addMenuButtons = _addItemMenuButton.GetItems();
 
-		/// <summary>
-		/// Возвращает список редакторов элементов документа.
-		/// </summary>
-		public IEnumerable<ItemEditor> GetEditors()
-		{
-			return _editors;
-		}
+            if (addMenuButtons != null)
+            {
+                foreach (var addButton in addMenuButtons.ToArray())
+                {
+                    _addItemMenuButton.RemoveItem(addButton);
+                }
+            }
 
-		/// <summary>
-		/// Устанавливает список редакторов элементов документа.
-		/// </summary>
-		public void SetEditors(IEnumerable<ItemEditor> value)
-		{
-			if (Equals(_editors, value) == false)
-			{
-				_editors = value;
+            var editors = GetEditors();
 
-				RefreshAddItemButton();
-				RefreshItemsTreeView();
-			}
-		}
+            if (editors != null)
+            {
+                foreach (var editor in editors)
+                {
+                    var itemEditor = editor;
 
-		private void RefreshAddItemButton()
-		{
-			var addButtons = _addItemButton.GetItems();
+                    var addButton = new ToolBarButtonItem(GetView());
+                    addButton.SetText(itemEditor.Text);
+                    addButton.SetImage(itemEditor.Image);
+                    addButton.OnClick += (c, a) => OnAddItemHandler(itemEditor.MetadataType);
 
-			if (addButtons != null)
-			{
-				foreach (var addButton in addButtons.ToArray())
-				{
-					_addItemButton.RemoveItem(addButton);
-				}
-			}
+                    var addMenuButton = new ContextMenuItem(GetView());
+                    addMenuButton.SetText(itemEditor.Text);
+                    addMenuButton.SetImage(itemEditor.Image);
+                    addMenuButton.OnClick += (c, a) => OnAddItemHandler(itemEditor.MetadataType);
 
-			var addMenuButtons = _addItemMenuButton.GetItems();
+                    _addItemButton.AddItem(addButton);
+                    _addItemMenuButton.AddItem(addMenuButton);
+                }
+            }
+        }
 
-			if (addMenuButtons != null)
-			{
-				foreach (var addButton in addMenuButtons.ToArray())
-				{
-					_addItemMenuButton.RemoveItem(addButton);
-				}
-			}
+        /// <summary>
+        ///     Возвращает список документов.
+        /// </summary>
+        public IEnumerable GetItems()
+        {
+            return _items;
+        }
 
-			var editors = GetEditors();
+        /// <summary>
+        ///     Устанавливает список документов.
+        /// </summary>
+        public void SetItems(IEnumerable value)
+        {
+            if (Equals(_items, value) == false)
+            {
+                _items = value;
 
-			if (editors != null)
-			{
-				foreach (var editor in editors)
-				{
-					var itemEditor = editor;
+                RefreshItemsTreeView();
+            }
+        }
 
-					var addButton = new ToolBarButtonItem(GetView());
-					addButton.SetText(itemEditor.Text);
-					addButton.SetImage(itemEditor.Image);
-					addButton.OnClick += (c, a) => OnAddItemHandler(itemEditor.MetadataType);
+        private void RefreshItemsTreeView()
+        {
+            var items = GetItems();
+            var treeItems = new List<object>();
 
-					var addMenuButton = new ContextMenuItem(GetView());
-					addMenuButton.SetText(itemEditor.Text);
-					addMenuButton.SetImage(itemEditor.Image);
-					addMenuButton.OnClick += (c, a) => OnAddItemHandler(itemEditor.MetadataType);
+            if (items != null)
+            {
+                var key = 0;
+                var editors = GetEditors();
 
-					_addItemButton.AddItem(addButton);
-					_addItemMenuButton.AddItem(addMenuButton);
-				}
-			}
-		}
+                foreach (dynamic item in items)
+                {
+                    dynamic treeItem = new DynamicWrapper();
+                    treeItem.Key = ++key;
+                    treeItem.Text = FormatItemText(item);
+                    treeItem.Image = "System/Document_16x16";
+                    treeItem.DocumentId = item.Name;
+                    treeItems.Add(treeItem);
 
+                    if (editors != null)
+                    {
+                        foreach (var editor in editors)
+                        {
+                            FillChildItems(ref key, treeItem.Key, item, editor, treeItems);
+                        }
+                    }
+                }
+            }
 
-		// Items
+            var rootItem = treeItems.FirstOrDefault();
+            _itemsTreeView.SetItems(treeItems);
+            _itemsTreeView.SetSelectedItem(rootItem);
+            _itemsTreeView.ExpandItem(rootItem);
+        }
 
-		private IEnumerable _items;
+        private static void FillChildItems(ref int key, int? parent, dynamic document, ItemEditor editor,
+            ICollection<object> treeItems)
+        {
+            // Контейнер дочерних элементов
+            dynamic container = new DynamicWrapper();
+            container.Key = ++key;
+            container.Parent = parent;
+            container.Text = editor.Container;
+            container.Image = editor.Image;
+            container.DocumentId = document.Name;
+            treeItems.Add(container);
 
-		/// <summary>
-		/// Возвращает список документов.
-		/// </summary>
-		public IEnumerable GetItems()
-		{
-			return _items;
-		}
+            var childItems = document[editor.Container] as IEnumerable;
 
-		/// <summary>
-		/// Устанавливает список документов.
-		/// </summary>
-		public void SetItems(IEnumerable value)
-		{
-			if (Equals(_items, value) == false)
-			{
-				_items = value;
+            if (childItems != null)
+            {
+                var orderedChildItems = childItems.Cast<dynamic>().OrderBy(i => i.Name);
 
-				RefreshItemsTreeView();
-			}
-		}
+                // Список дочерних элементов контейнера
+                foreach (var childItem in orderedChildItems)
+                {
+                    dynamic treeItem = new DynamicWrapper();
+                    treeItem.Key = ++key;
+                    treeItem.Parent = container.Key;
+                    treeItem.Text = FormatItemText(childItem);
+                    treeItem.ItemId = childItem.Name;
+                    treeItem.DocumentId = document.Name;
+                    treeItem.MetadataType = editor.MetadataType;
+                    treeItems.Add(treeItem);
+                }
+            }
+        }
 
-		private void RefreshItemsTreeView()
-		{
-			var items = GetItems();
-			var treeItems = new List<object>();
+        private static string FormatItemText(dynamic item)
+        {
+            if (string.IsNullOrEmpty(item.Name))
+            {
+                return item.Caption;
+            }
 
-			if (items != null)
-			{
-				var key = 0;
-				var editors = GetEditors();
+            if (string.IsNullOrEmpty(item.Caption))
+            {
+                return item.Name;
+            }
 
-				foreach (dynamic item in items)
-				{
-					dynamic treeItem = new DynamicWrapper();
-					treeItem.Key = ++key;
-					treeItem.Text = FormatItemText(item);
-					treeItem.Image = "System/Document_16x16";
-					treeItem.DocumentId = item.Name;
-					treeItems.Add(treeItem);
-
-					if (editors != null)
-					{
-						foreach (var editor in editors)
-						{
-							FillChildItems(ref key, treeItem.Key, item, editor, treeItems);
-						}
-					}
-				}
-			}
-
-			var rootItem = treeItems.FirstOrDefault();
-			_itemsTreeView.SetItems(treeItems);
-			_itemsTreeView.SetSelectedItem(rootItem);
-			_itemsTreeView.ExpandItem(rootItem);
-		}
-
-		private static void FillChildItems(ref int key, int? parent, dynamic document, ItemEditor editor, ICollection<object> treeItems)
-		{
-			// Контейнер дочерних элементов
-			dynamic container = new DynamicWrapper();
-			container.Key = ++key;
-			container.Parent = parent;
-			container.Text = editor.Container;
-			container.Image = editor.Image;
-			container.DocumentId = document.Name;
-			treeItems.Add(container);
-
-			var childItems = document[editor.Container] as IEnumerable;
-
-			if (childItems != null)
-			{
-				var orderedChildItems = childItems.Cast<dynamic>().OrderBy(i => i.Name);
-
-				// Список дочерних элементов контейнера
-				foreach (var childItem in orderedChildItems)
-				{
-					dynamic treeItem = new DynamicWrapper();
-					treeItem.Key = ++key;
-					treeItem.Parent = container.Key;
-					treeItem.Text = FormatItemText(childItem);
-					treeItem.ItemId = childItem.Name;
-					treeItem.DocumentId = document.Name;
-					treeItem.MetadataType = editor.MetadataType;
-					treeItems.Add(treeItem);
-				}
-			}
-		}
-
-		private static string FormatItemText(dynamic item)
-		{
-			if (string.IsNullOrEmpty(item.Name))
-			{
-				return item.Caption;
-			}
-
-			if (string.IsNullOrEmpty(item.Caption))
-			{
-				return item.Name;
-			}
-
-			return string.Format("{0} ({1})", item.Name, item.Caption);
-		}
-
-
-		// Events
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события обновления списка.
-		/// </summary>
-		public ScriptDelegate OnUpdateItems { get; set; }
-	}
+            return string.Format("{0} ({1})", item.Name, item.Caption);
+        }
+    }
 }

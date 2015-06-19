@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 using DevExpress.XtraEditors.Controls;
 
-using InfinniPlatform.Api.Dynamic;
+
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.RestApi.CommonApi.RouteTraces;
@@ -12,7 +12,7 @@ using InfinniPlatform.DesignControls;
 using InfinniPlatform.MetadataDesigner.Views.GeneratorResult;
 using InfinniPlatform.MetadataDesigner.Views.JsonEditor;
 using InfinniPlatform.MetadataDesigner.Views.ViewModel;
-
+using InfinniPlatform.Sdk.Application.Dynamic;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.MetadataDesigner.Views

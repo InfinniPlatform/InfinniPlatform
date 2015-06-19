@@ -4,115 +4,113 @@ using System.Threading.Tasks;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Messaging
 {
-	/// <summary>
-	/// Точка обмена сообщениями.
-	/// </summary>
-	public sealed class MessageExchange : IMessageExchange
-	{
-		public MessageExchange(string exchangeName, MessageQueue<MessageRequest> messageQueue)
-		{
-			if (exchangeName == null)
-			{
-				throw new ArgumentNullException("exchangeName");
-			}
+    /// <summary>
+    ///     Точка обмена сообщениями.
+    /// </summary>
+    public sealed class MessageExchange : IMessageExchange
+    {
+        private readonly string _exchangeName;
+        private readonly MessageQueue<MessageRequest> _messageQueue;
+        private readonly SubscriptionList _subscriptions;
 
-			if (messageQueue == null)
-			{
-				throw new ArgumentNullException("messageQueue");
-			}
+        public MessageExchange(string exchangeName, MessageQueue<MessageRequest> messageQueue)
+        {
+            if (exchangeName == null)
+            {
+                throw new ArgumentNullException("exchangeName");
+            }
 
-			_exchangeName = exchangeName;
-			_messageQueue = messageQueue;
-			_subscriptions = new SubscriptionList();
-		}
+            if (messageQueue == null)
+            {
+                throw new ArgumentNullException("messageQueue");
+            }
 
+            _exchangeName = exchangeName;
+            _messageQueue = messageQueue;
+            _subscriptions = new SubscriptionList();
+        }
 
-		private readonly string _exchangeName;
-		private readonly MessageQueue<MessageRequest> _messageQueue;
-		private readonly SubscriptionList _subscriptions;
+        /// <summary>
+        ///     Отправляет сообщение асинхронно.
+        /// </summary>
+        /// <param name="messageType">Тип сообщения.</param>
+        /// <param name="messageBody">Тело сообщения.</param>
+        public void Send(string messageType, dynamic messageBody)
+        {
+            Task.WaitAll(SendAsync(messageType, messageBody));
+        }
 
+        /// <summary>
+        ///     Отправляет сообщение.
+        /// </summary>
+        /// <param name="messageType">Тип сообщения.</param>
+        /// <param name="messageBody">Тело сообщения.</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <returns>Задача обработки сообщения.</returns>
+        public Task SendAsync(string messageType, dynamic messageBody)
+        {
+            if (string.IsNullOrEmpty(messageType))
+            {
+                throw new ArgumentNullException("messageType");
+            }
 
-		/// <summary>
-		/// Отправляет сообщение асинхронно.
-		/// </summary>
-		/// <param name="messageType">Тип сообщения.</param>
-		/// <param name="messageBody">Тело сообщения.</param>
-		public void Send(string messageType, dynamic messageBody)
-		{
-			Task.WaitAll(SendAsync(messageType, messageBody));
-		}
+            var messageRequest = new MessageRequest(_exchangeName, messageType, messageBody);
 
-		/// <summary>
-		/// Отправляет сообщение.
-		/// </summary>
-		/// <param name="messageType">Тип сообщения.</param>
-		/// <param name="messageBody">Тело сообщения.</param>
-		/// <exception cref="ArgumentNullException"></exception>
-		/// <returns>Задача обработки сообщения.</returns>
-		public Task SendAsync(string messageType, dynamic messageBody)
-		{
-			if (string.IsNullOrEmpty(messageType))
-			{
-				throw new ArgumentNullException("messageType");
-			}
+            _messageQueue.Enqueue(messageRequest);
 
-			var messageRequest = new MessageRequest(_exchangeName, messageType, messageBody);
+            return messageRequest.RequestTask;
+        }
 
-			_messageQueue.Enqueue(messageRequest);
+        /// <summary>
+        ///     Подписывает на сообщения.
+        /// </summary>
+        /// <param name="messageType">Тип сообщения.</param>
+        /// <param name="messageHandler">Обработчик сообщения.</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <returns>Интерфейс для отписки от сообщения.</returns>
+        public IDisposable Subscribe(string messageType, Action<dynamic> messageHandler)
+        {
+            if (string.IsNullOrEmpty(messageType))
+            {
+                throw new ArgumentNullException("messageType");
+            }
 
-			return messageRequest.RequestTask;
-		}
+            if (messageHandler == null)
+            {
+                throw new ArgumentNullException("messageHandler");
+            }
 
-		/// <summary>
-		/// Обрабатывает сообщение.
-		/// </summary>
-		/// <param name="messageType">Тип сообщения.</param>
-		/// <param name="messageBody">Тело сообщения.</param>
-		public async Task HandleAsync(string messageType, dynamic messageBody)
-		{
-			var errors = new List<Exception>();
-			var subscriptions = _subscriptions.GetSubscriptions(messageType);
+            var subscription = _subscriptions.AddSubscription(messageType, messageHandler);
 
-			foreach (var subscription in subscriptions)
-			{
-				try
-				{
-					await subscription.HandleAsync(messageBody);
-				}
-				catch (Exception error)
-				{
-					errors.Add(error);
-				}
-			}
+            return subscription;
+        }
 
-			if (errors.Count > 0)
-			{
-				throw new AggregateException(errors);
-			}
-		}
+        /// <summary>
+        ///     Обрабатывает сообщение.
+        /// </summary>
+        /// <param name="messageType">Тип сообщения.</param>
+        /// <param name="messageBody">Тело сообщения.</param>
+        public async Task HandleAsync(string messageType, dynamic messageBody)
+        {
+            var errors = new List<Exception>();
+            var subscriptions = _subscriptions.GetSubscriptions(messageType);
 
-		/// <summary>
-		/// Подписывает на сообщения.
-		/// </summary>
-		/// <param name="messageType">Тип сообщения.</param>
-		/// <param name="messageHandler">Обработчик сообщения.</param>
-		/// <exception cref="ArgumentNullException"></exception>
-		/// <returns>Интерфейс для отписки от сообщения.</returns>
-		public IDisposable Subscribe(string messageType, Action<dynamic> messageHandler)
-		{
-			if (string.IsNullOrEmpty(messageType))
-			{
-				throw new ArgumentNullException("messageType");
-			}
+            foreach (var subscription in subscriptions)
+            {
+                try
+                {
+                    await subscription.HandleAsync(messageBody);
+                }
+                catch (Exception error)
+                {
+                    errors.Add(error);
+                }
+            }
 
-			if (messageHandler == null)
-			{
-				throw new ArgumentNullException("messageHandler");
-			}
-
-			var subscription = _subscriptions.AddSubscription(messageType, messageHandler);
-
-			return subscription;
-		}
-	}
+            if (errors.Count > 0)
+            {
+                throw new AggregateException(errors);
+            }
+        }
+    }
 }

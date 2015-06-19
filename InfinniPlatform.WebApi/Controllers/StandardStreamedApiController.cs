@@ -6,16 +6,12 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Compression;
-using InfinniPlatform.Factories;
-using InfinniPlatform.Hosting;
 using InfinniPlatform.Json;
 using InfinniPlatform.WebApi.ConfigRequestProviders;
-using InfinniPlatform.WebApi.WebApi;
 
 namespace InfinniPlatform.WebApi.Controllers
 {

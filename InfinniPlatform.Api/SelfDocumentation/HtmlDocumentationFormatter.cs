@@ -5,12 +5,12 @@ using System.Web.UI;
 namespace InfinniPlatform.Api.SelfDocumentation
 {
     /// <summary>
-    /// Позволяет отформатировать информацию по REST запросам в виде HTML таблиц
+    ///     Позволяет отформатировать информацию по REST запросам в виде HTML таблиц
     /// </summary>
     public sealed class HtmlDocumentationFormatter : IDocumentationFormatter
     {
         /// <summary>
-        /// Завершить форматирование целостного документа
+        ///     Завершить форматирование целостного документа
         /// </summary>
         /// <param name="configuration">Имя конфигурации</param>
         /// <param name="content">Содержимое, которое необходимо оформить в виде документа</param>
@@ -40,16 +40,15 @@ namespace InfinniPlatform.Api.SelfDocumentation
 
                 writer.Write(content);
                 writer.RenderEndTag(); // Body
-                
+
                 writer.RenderEndTag(); // Html
-                
             }
 
             return stringWriter.ToString().Trim();
         }
 
         /// <summary>
-        /// Отформатировать серию запросов, объединенных общим заголовком
+        ///     Отформатировать серию запросов, объединенных общим заголовком
         /// </summary>
         /// <param name="header">Заголовок для блока справочной информации</param>
         /// <param name="info">Непосредственно запросы для форматирования</param>
@@ -63,12 +62,12 @@ namespace InfinniPlatform.Api.SelfDocumentation
             using (var writer = new HtmlTextWriter(stringWriter))
             {
                 writer.RenderBeginTag(HtmlTextWriterTag.Div);
-                
+
                 writer.RenderBeginTag(HtmlTextWriterTag.H3);
                 writer.Write(header);
                 writer.RenderEndTag(); // H3
 
-                int index = 1;
+                var index = 1;
 
                 foreach (var tableInfo in info)
                 {
@@ -178,7 +177,6 @@ namespace InfinniPlatform.Api.SelfDocumentation
                 }
 
                 writer.RenderEndTag(); // Div
-
             }
 
             return stringWriter.ToString().Trim();

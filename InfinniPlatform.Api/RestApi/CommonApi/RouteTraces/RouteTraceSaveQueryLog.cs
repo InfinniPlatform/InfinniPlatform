@@ -1,28 +1,17 @@
-﻿using InfinniPlatform.Api.Dynamic;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace InfinniPlatform.Api.RestApi.CommonApi.RouteTraces
 {
     /// <summary>
-    ///   Трассировщик для создания лога запросов, анализируемого конструктором документации
+    ///     Трассировщик для создания лога запросов, анализируемого конструктором документации
     /// </summary>
     public class RouteTraceSaveQueryLog : IRouteTrace
     {
         private readonly List<CatchedQueryInfo> _queries = new List<CatchedQueryInfo>();
 
-        public void ClearQueries()
-        {
-            _queries.Clear();
-        }
-
-        public IEnumerable<CatchedQueryInfo> GetCatchedData()
-        {
-            return _queries.ToArray();
-        }
-
         /// <summary>
-        ///   Трассировать запрос
+        ///     Трассировать запрос
         /// </summary>
         /// <param name="configuration">Конфигурация</param>
         /// <param name="metadata">Метаданные</param>
@@ -43,20 +32,30 @@ namespace InfinniPlatform.Api.RestApi.CommonApi.RouteTraces
             var stringBody = JsonConvert.SerializeObject(body, Formatting.Indented);
             _queries.Add(new CatchedQueryInfo(configuration, metadata, action, verbType, url, stringBody, content));
         }
+
+        public void ClearQueries()
+        {
+            _queries.Clear();
+        }
+
+        public IEnumerable<CatchedQueryInfo> GetCatchedData()
+        {
+            return _queries.ToArray();
+        }
     }
 
     /// <summary>
-    /// Инкапсулирует информацию об одном REST запросе
+    ///     Инкапсулирует информацию об одном REST запросе
     /// </summary>
     public sealed class CatchedQueryInfo
     {
         public CatchedQueryInfo(
-            string configuration, 
-            string metadata, 
+            string configuration,
+            string metadata,
             string action,
-            string queryType, 
+            string queryType,
             string url,
-            string body, 
+            string body,
             string content)
         {
             Metadata = metadata;
@@ -69,17 +68,11 @@ namespace InfinniPlatform.Api.RestApi.CommonApi.RouteTraces
         }
 
         public string Metadata { get; private set; }
-
         public string Configuration { get; private set; }
-
         public string Action { get; private set; }
-
         public string QueryType { get; private set; }
-
         public string Url { get; private set; }
-
         public string Body { get; private set; }
-
         public string ResponseContent { get; private set; }
     }
 }

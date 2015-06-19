@@ -1,223 +1,214 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using DevExpress.Xpf.Core;
-
 using InfinniPlatform.UserInterface.ViewBuilders.Elements;
 using InfinniPlatform.UserInterface.ViewBuilders.Scripts;
 using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.LayoutPanels.TabPanel
 {
-	/// <summary>
-	/// Контейнер элементов представления в виде набора закладок для страниц.
-	/// </summary>
-	public sealed class TabPanelElement : BaseElement<DXTabControl>, ITabPanel
-	{
-		public TabPanelElement(View view)
-			: base(view)
-		{
-			Control.View = new TabControlScrollView
-						   {
-							   AllowHideTabItems = true,
-							   RemoveTabItemsOnHiding = true
-						   };
+    /// <summary>
+    ///     Контейнер элементов представления в виде набора закладок для страниц.
+    /// </summary>
+    public sealed class TabPanelElement : BaseElement<DXTabControl>, ITabPanel
+    {
+        // HeaderLocation
 
-			SetHeaderLocation(TabHeaderLocation.Top);
-			SetHeaderOrientation(TabHeaderOrientation.Horizontal);
+        private TabHeaderLocation _headerLocation;
+        // HeaderOrientation
 
-			Control.SelectionChanged += OnSelectionChangedTabPanel;
-		}
+        private TabHeaderOrientation _headerOrientation;
 
-		private void OnSelectionChangedTabPanel(object sender, TabControlSelectionChangedEventArgs e)
-		{
-			this.InvokeScript(OnSelectionChanged);
-		}
+        public TabPanelElement(View view)
+            : base(view)
+        {
+            Control.View = new TabControlScrollView
+            {
+                AllowHideTabItems = true,
+                RemoveTabItemsOnHiding = true
+            };
 
+            SetHeaderLocation(TabHeaderLocation.Top);
+            SetHeaderOrientation(TabHeaderOrientation.Horizontal);
 
-		// HeaderLocation
+            Control.SelectionChanged += OnSelectionChangedTabPanel;
+        }
 
-		private TabHeaderLocation _headerLocation;
+        /// <summary>
+        ///     Возвращает расположение закладок.
+        /// </summary>
+        public TabHeaderLocation GetHeaderLocation()
+        {
+            return _headerLocation;
+        }
 
-		/// <summary>
-		/// Возвращает расположение закладок.
-		/// </summary>
-		public TabHeaderLocation GetHeaderLocation()
-		{
-			return _headerLocation;
-		}
+        /// <summary>
+        ///     Устанавливает расположение закладок.
+        /// </summary>
+        public void SetHeaderLocation(TabHeaderLocation value)
+        {
+            _headerLocation = value;
 
-		/// <summary>
-		/// Устанавливает расположение закладок.
-		/// </summary>
-		public void SetHeaderLocation(TabHeaderLocation value)
-		{
-			_headerLocation = value;
+            var tabView = Control.View;
 
-			var tabView = Control.View;
+            if (tabView != null)
+            {
+                switch (value)
+                {
+                    case TabHeaderLocation.None:
+                        tabView.HeaderLocation = HeaderLocation.None;
+                        break;
+                    case TabHeaderLocation.Left:
+                        tabView.HeaderLocation = HeaderLocation.Left;
+                        break;
+                    case TabHeaderLocation.Top:
+                        tabView.HeaderLocation = HeaderLocation.Top;
+                        break;
+                    case TabHeaderLocation.Right:
+                        tabView.HeaderLocation = HeaderLocation.Right;
+                        break;
+                    case TabHeaderLocation.Bottom:
+                        tabView.HeaderLocation = HeaderLocation.Bottom;
+                        break;
+                }
+            }
+        }
 
-			if (tabView != null)
-			{
-				switch (value)
-				{
-					case TabHeaderLocation.None:
-						tabView.HeaderLocation = HeaderLocation.None;
-						break;
-					case TabHeaderLocation.Left:
-						tabView.HeaderLocation = HeaderLocation.Left;
-						break;
-					case TabHeaderLocation.Top:
-						tabView.HeaderLocation = HeaderLocation.Top;
-						break;
-					case TabHeaderLocation.Right:
-						tabView.HeaderLocation = HeaderLocation.Right;
-						break;
-					case TabHeaderLocation.Bottom:
-						tabView.HeaderLocation = HeaderLocation.Bottom;
-						break;
-				}
-			}
-		}
+        /// <summary>
+        ///     Возвращает ориентацию закладок.
+        /// </summary>
+        public TabHeaderOrientation GetHeaderOrientation()
+        {
+            return _headerOrientation;
+        }
 
+        /// <summary>
+        ///     Устанавливает ориентацию закладок.
+        /// </summary>
+        public void SetHeaderOrientation(TabHeaderOrientation value)
+        {
+            _headerOrientation = value;
 
-		// HeaderOrientation
+            var tabView = Control.View as TabControlScrollView;
 
-		private TabHeaderOrientation _headerOrientation;
+            if (tabView != null)
+            {
+                switch (value)
+                {
+                    case TabHeaderOrientation.Horizontal:
+                        tabView.HeaderOrientation = HeaderOrientation.Horizontal;
+                        break;
+                    case TabHeaderOrientation.Vertical:
+                        tabView.HeaderOrientation = HeaderOrientation.Vertical;
+                        break;
+                }
+            }
+        }
 
-		/// <summary>
-		/// Возвращает ориентацию закладок.
-		/// </summary>
-		public TabHeaderOrientation GetHeaderOrientation()
-		{
-			return _headerOrientation;
-		}
+        // SelectedPage
 
-		/// <summary>
-		/// Устанавливает ориентацию закладок.
-		/// </summary>
-		public void SetHeaderOrientation(TabHeaderOrientation value)
-		{
-			_headerOrientation = value;
+        /// <summary>
+        ///     Возвращает выделенную страницу.
+        /// </summary>
+        public ITabPage GetSelectedPage()
+        {
+            var tabPage = Control.SelectedTabItem;
 
-			var tabView = Control.View as TabControlScrollView;
+            if (tabPage != null)
+            {
+                return (ITabPage) tabPage.Tag;
+            }
 
-			if (tabView != null)
-			{
-				switch (value)
-				{
-					case TabHeaderOrientation.Horizontal:
-						tabView.HeaderOrientation = HeaderOrientation.Horizontal;
-						break;
-					case TabHeaderOrientation.Vertical:
-						tabView.HeaderOrientation = HeaderOrientation.Vertical;
-						break;
-				}
-			}
-		}
+            return null;
+        }
 
+        /// <summary>
+        ///     Устанавливает выделенную страницу.
+        /// </summary>
+        public void SetSelectedPage(ITabPage page)
+        {
+            var tabPage = page.GetControl<DXTabItem>();
 
-		// SelectedPage
+            if (tabPage != null)
+            {
+                Control.Dispatcher.BeginInvoke((Action) (() =>
+                {
+                    Control.SelectedItem = tabPage;
+                    tabPage.Focus();
+                }));
+            }
+        }
 
-		/// <summary>
-		/// Возвращает выделенную страницу.
-		/// </summary>
-		public ITabPage GetSelectedPage()
-		{
-			var tabPage = Control.SelectedTabItem;
+        // Pages
 
-			if (tabPage != null)
-			{
-				return (ITabPage)tabPage.Tag;
-			}
+        /// <summary>
+        ///     Создает страницу.
+        /// </summary>
+        public ITabPage CreatePage(View view)
+        {
+            return new TabPageElement(view);
+        }
 
-			return null;
-		}
+        /// <summary>
+        ///     Добавляет указанную страницу.
+        /// </summary>
+        public void AddPage(ITabPage page)
+        {
+            var tabPage = page.GetControl<DXTabItem>();
+            tabPage.Tag = page;
 
-		/// <summary>
-		/// Устанавливает выделенную страницу.
-		/// </summary>
-		public void SetSelectedPage(ITabPage page)
-		{
-			var tabPage = page.GetControl<DXTabItem>();
+            Control.Items.Add(tabPage);
+            page.SetParent(this);
+        }
 
-			if (tabPage != null)
-			{
-				Control.Dispatcher.BeginInvoke((Action)(() =>
-														{
-															Control.SelectedItem = tabPage;
-															tabPage.Focus();
-														}));
-			}
-		}
+        /// <summary>
+        ///     Удаляет указанную страницу.
+        /// </summary>
+        public void RemovePage(ITabPage page)
+        {
+            var tabPage = page.GetControl<DXTabItem>();
 
+            Control.Items.Remove(tabPage);
+            page.SetParent(null);
+        }
 
-		// Pages
+        /// <summary>
+        ///     Возвращает страницу с указанным именем.
+        /// </summary>
+        public ITabPage GetPage(string name)
+        {
+            return GetPages()
+                .FirstOrDefault(p => p.GetName() == name);
+        }
 
-		/// <summary>
-		/// Создает страницу.
-		/// </summary>
-		public ITabPage CreatePage(View view)
-		{
-			return new TabPageElement(view);
-		}
+        /// <summary>
+        ///     Возвращает список страниц.
+        /// </summary>
+        public IEnumerable<ITabPage> GetPages()
+        {
+            return Control.Items
+                .Cast<DXTabItem>()
+                .Select(p => (ITabPage) p.Tag);
+        }
 
-		/// <summary>
-		/// Добавляет указанную страницу.
-		/// </summary>
-		public void AddPage(ITabPage page)
-		{
-			var tabPage = page.GetControl<DXTabItem>();
-			tabPage.Tag = page;
+        // Events
 
-			Control.Items.Add(tabPage);
-			page.SetParent(this);
-		}
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события изменения выделенной страницы.
+        /// </summary>
+        public ScriptDelegate OnSelectionChanged { get; set; }
 
-		/// <summary>
-		/// Удаляет указанную страницу.
-		/// </summary>
-		public void RemovePage(ITabPage page)
-		{
-			var tabPage = page.GetControl<DXTabItem>();
+        // Elements
 
-			Control.Items.Remove(tabPage);
-			page.SetParent(null);
-		}
+        public override IEnumerable<IElement> GetChildElements()
+        {
+            return GetPages();
+        }
 
-		/// <summary>
-		/// Возвращает страницу с указанным именем.
-		/// </summary>
-		public ITabPage GetPage(string name)
-		{
-			return GetPages()
-				.FirstOrDefault(p => p.GetName() == name);
-		}
-
-		/// <summary>
-		/// Возвращает список страниц.
-		/// </summary>
-		public IEnumerable<ITabPage> GetPages()
-		{
-			return Control.Items
-				.Cast<DXTabItem>()
-				.Select(p => (ITabPage)p.Tag);
-		}
-
-
-		// Events
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события изменения выделенной страницы.
-		/// </summary>
-		public ScriptDelegate OnSelectionChanged { get; set; }
-
-
-		// Elements
-
-		public override IEnumerable<IElement> GetChildElements()
-		{
-			return GetPages();
-		}
-	}
+        private void OnSelectionChangedTabPanel(object sender, TabControlSelectionChangedEventArgs e)
+        {
+            this.InvokeScript(OnSelectionChanged);
+        }
+    }
 }

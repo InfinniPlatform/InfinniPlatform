@@ -1,7 +1,4 @@
 ﻿using DevExpress.XtraEditors.Controls;
-
-using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.MetadataDesigner.Views.ProcessTemplates;
 using InfinniPlatform.MetadataDesigner.Views.Status;
 using InfinniPlatform.MetadataDesigner.Views.ViewModel;
@@ -13,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using InfinniPlatform.Api.Deprecated;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.MetadataDesigner.Views
 {

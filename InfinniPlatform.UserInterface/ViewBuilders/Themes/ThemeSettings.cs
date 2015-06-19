@@ -2,112 +2,95 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-
 using DevExpress.Xpf.Core;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Themes
 {
-	/// <summary>
-	/// Настройки темы элементов управления.
-	/// </summary>
-	sealed class ThemeSettings : INotifyPropertyChanged
-	{
-		public ThemeSettings()
-		{
-			ThemeManager.ThemeChanged += OnThemeChanged;
+    /// <summary>
+    ///     Настройки темы элементов управления.
+    /// </summary>
+    internal sealed class ThemeSettings : INotifyPropertyChanged
+    {
+        private static ThemeSettings _instance;
+        private Brush _borderBrush;
+        private Thickness _borderThickness;
 
-			SetProperties(ThemeManager.ActualApplicationThemeName);
-		}
+        public ThemeSettings()
+        {
+            ThemeManager.ThemeChanged += OnThemeChanged;
 
+            SetProperties(ThemeManager.ActualApplicationThemeName);
+        }
 
-		private static ThemeSettings _instance;
+        public static ThemeSettings Instance
+        {
+            get { return _instance ?? (_instance = new ThemeSettings()); }
+        }
 
-		public static ThemeSettings Instance
-		{
-			get
-			{
-				return _instance ?? (_instance = new ThemeSettings());
-			}
-		}
+        /// <summary>
+        ///     Цвета границ.
+        /// </summary>
+        public Brush BorderBrush
+        {
+            get { return _borderBrush; }
+            set
+            {
+                if (Equals(_borderBrush, value) == false)
+                {
+                    _borderBrush = value;
 
+                    InvokePropertyChanged("BorderBrush");
+                }
+            }
+        }
 
-		private Brush _borderBrush;
+        /// <summary>
+        ///     Контуры границ.
+        /// </summary>
+        public Thickness BorderThickness
+        {
+            get { return _borderThickness; }
+            set
+            {
+                if (_borderThickness != value)
+                {
+                    _borderThickness = value;
 
-		/// <summary>
-		/// Цвета границ.
-		/// </summary>
-		public Brush BorderBrush
-		{
-			get
-			{
-				return _borderBrush;
-			}
-			set
-			{
-				if (Equals(_borderBrush, value) == false)
-				{
-					_borderBrush = value;
+                    InvokePropertyChanged("BorderThickness");
+                }
+            }
+        }
 
-					InvokePropertyChanged("BorderBrush");
-				}
-			}
-		}
+        public event PropertyChangedEventHandler PropertyChanged;
 
+        private void InvokePropertyChanged(string property)
+        {
+            var handler = PropertyChanged;
 
-		private Thickness _borderThickness;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(property));
+            }
+        }
 
-		/// <summary>
-		/// Контуры границ.
-		/// </summary>
-		public Thickness BorderThickness
-		{
-			get
-			{
-				return _borderThickness;
-			}
-			set
-			{
-				if (_borderThickness != value)
-				{
-					_borderThickness = value;
+        public static void OnThemeChanged(DependencyObject sender, ThemeChangedRoutedEventArgs e)
+        {
+            Instance.SetProperties(e.ThemeName);
+        }
 
-					InvokePropertyChanged("BorderThickness");
-				}
-			}
-		}
+        private void SetProperties(string name)
+        {
+            ThemeManager.ThemeChanged -= OnThemeChanged;
 
+            // Создаем стилизованный элемент
+            var element = new ListBox();
+            ThemeManager.SetThemeName(element, name);
 
-		public event PropertyChangedEventHandler PropertyChanged;
+            // Считываем стилизованные значения свойств
+            BorderBrush = element.BorderBrush;
+            BorderThickness = element.BorderThickness;
 
-		private void InvokePropertyChanged(string property)
-		{
-			var handler = PropertyChanged;
-
-			if (handler != null)
-			{
-				handler(this, new PropertyChangedEventArgs(property));
-			}
-		}
-
-
-		public static void OnThemeChanged(DependencyObject sender, ThemeChangedRoutedEventArgs e)
-		{
-			Instance.SetProperties(e.ThemeName);
-		}
-
-		private void SetProperties(string name)
-		{
-			ThemeManager.ThemeChanged -= OnThemeChanged;
-
-			// Создаем стилизованный элемент
-			var element = new ListBox();
-			ThemeManager.SetThemeName(element, name);
-
-			// Считываем стилизованные значения свойств
-			BorderBrush = element.BorderBrush;
-			BorderThickness = element.BorderThickness;
-
-			ThemeManager.ThemeChanged += OnThemeChanged;
-		}
-	}
+            ThemeManager.ThemeChanged += OnThemeChanged;
+        }
+    }
 }

@@ -4,14 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-
-using InfinniPlatform.Api.Properties;
-
+using InfinniPlatform.Sdk.Application.Properties;
 using Microsoft.CSharp.RuntimeBinder;
-
 using Binder = Microsoft.CSharp.RuntimeBinder.Binder;
 
-namespace InfinniPlatform.Api.Dynamic
+namespace InfinniPlatform.Sdk.Application.Dynamic
 {
 	public static class ObjectHelper
 	{

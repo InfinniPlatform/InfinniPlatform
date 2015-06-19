@@ -3,88 +3,83 @@ using InfinniPlatform.UserInterface.ViewBuilders.Scripts;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.LayoutPanels
 {
-	public interface ITabPage : IElement
-	{
-		// Parent
+    public interface ITabPage : IElement
+    {
+        // Events
 
-		/// <summary>
-		/// Возвращает родительскую панель закладок.
-		/// </summary>
-		ITabPanel GetParent();
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события о том, что представление получает фокус.
+        /// </summary>
+        ScriptDelegate OnGotFocus { get; set; }
 
-		/// <summary>
-		/// Устанавливает родительскую панель закладок.
-		/// </summary>
-		void SetParent(ITabPanel value);
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события о том, что представление теряет фокус.
+        /// </summary>
+        ScriptDelegate OnLostFocus { get; set; }
 
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события о том, что страница закрывается.
+        /// </summary>
+        ScriptDelegate OnClosing { get; set; }
 
-		// Image
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события о том, что страница закрыта.
+        /// </summary>
+        ScriptDelegate OnClosed { get; set; }
 
-		/// <summary>
-		/// Возвращает изображение заголовка страницы.
-		/// </summary>
-		string GetImage();
+        // Parent
 
-		/// <summary>
-		/// Устанавливает изображение заголовка страницы.
-		/// </summary>
-		void SetImage(string value);
+        /// <summary>
+        ///     Возвращает родительскую панель закладок.
+        /// </summary>
+        ITabPanel GetParent();
 
+        /// <summary>
+        ///     Устанавливает родительскую панель закладок.
+        /// </summary>
+        void SetParent(ITabPanel value);
 
-		// CanClose
+        // Image
 
-		/// <summary>
-		/// Возвращает значение, определяющее, разрешено ли закрытие страницы.
-		/// </summary>
-		bool GetCanClose();
+        /// <summary>
+        ///     Возвращает изображение заголовка страницы.
+        /// </summary>
+        string GetImage();
 
-		/// <summary>
-		/// Устанавливает значение, определяющее, разрешено ли закрытие страницы.
-		/// </summary>
-		void SetCanClose(bool value);
+        /// <summary>
+        ///     Устанавливает изображение заголовка страницы.
+        /// </summary>
+        void SetImage(string value);
 
+        // CanClose
 
-		// LayoutPanel
+        /// <summary>
+        ///     Возвращает значение, определяющее, разрешено ли закрытие страницы.
+        /// </summary>
+        bool GetCanClose();
 
-		/// <summary>
-		/// Возвращает контейнер элементов страницы.
-		/// </summary>
-		ILayoutPanel GetLayoutPanel();
+        /// <summary>
+        ///     Устанавливает значение, определяющее, разрешено ли закрытие страницы.
+        /// </summary>
+        void SetCanClose(bool value);
 
-		/// <summary>
-		/// Устанавливает контейнер элементов страницы.
-		/// </summary>
-		void SetLayoutPanel(ILayoutPanel layoutPanel);
+        // LayoutPanel
 
+        /// <summary>
+        ///     Возвращает контейнер элементов страницы.
+        /// </summary>
+        ILayoutPanel GetLayoutPanel();
 
-		// Close
+        /// <summary>
+        ///     Устанавливает контейнер элементов страницы.
+        /// </summary>
+        void SetLayoutPanel(ILayoutPanel layoutPanel);
 
-		/// <summary>
-		/// Закрывает страницу.
-		/// </summary>
-		bool Close(bool force = false);
+        // Close
 
-
-		// Events
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события о том, что представление получает фокус.
-		/// </summary>
-		ScriptDelegate OnGotFocus { get; set; }
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события о том, что представление теряет фокус.
-		/// </summary>
-		ScriptDelegate OnLostFocus { get; set; }
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события о том, что страница закрывается.
-		/// </summary>
-		ScriptDelegate OnClosing { get; set; }
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события о том, что страница закрыта.
-		/// </summary>
-		ScriptDelegate OnClosed { get; set; }
-	}
+        /// <summary>
+        ///     Закрывает страницу.
+        /// </summary>
+        bool Close(bool force = false);
+    }
 }

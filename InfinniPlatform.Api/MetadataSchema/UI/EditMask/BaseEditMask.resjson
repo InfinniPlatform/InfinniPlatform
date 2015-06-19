@@ -1,12 +1,12 @@
 ﻿{
-  "id": "BaseEditMask",
-  "description": "Базовый набор свойств маски ввода данных",
-  "type": "object",
-  "properties": {
-    "Mask": {
-      "description": "Маска ввода данных",
-      "type": "string",
-      "required": true
-    }
-  }
+	"id": "BaseEditMask",
+	"description": "Базовый набор свойств маски ввода данных",
+	"type": "object",
+	"properties": {
+		"Mask": {
+			"description": "Маска ввода данных",
+			"type": "string",
+			"required": true
+		}
+	}
 }

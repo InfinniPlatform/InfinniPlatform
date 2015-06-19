@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
-namespace InfinniPlatform.Api.ContextTypes
+namespace InfinniPlatform.Sdk.Application.Contracts
 {
 	public interface IUploadContext : ICommonContext
 	{

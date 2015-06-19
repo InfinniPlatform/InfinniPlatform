@@ -2,8 +2,8 @@
 
 namespace InfinniPlatform.QueryDesigner.Contracts
 {
-	public interface IRequestExecutor
-	{
-		void InitRouting(HostingConfig hostingConfig);
-	}
+    public interface IRequestExecutor
+    {
+        void InitRouting(HostingConfig hostingConfig);
+    }
 }

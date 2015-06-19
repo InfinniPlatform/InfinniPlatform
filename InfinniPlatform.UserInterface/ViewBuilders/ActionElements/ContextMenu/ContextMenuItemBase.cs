@@ -1,192 +1,170 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
-
 using InfinniPlatform.UserInterface.ViewBuilders.Elements;
 using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.ActionElements.ContextMenu
 {
-	public abstract class ContextMenuItemBase<TItem> : IContextMenuItem where TItem : FrameworkElement, new()
-	{
-		protected ContextMenuItemBase(View view)
-		{
-			Control = new TItem { Tag = this };
+    public abstract class ContextMenuItemBase<TItem> : IContextMenuItem where TItem : FrameworkElement, new()
+    {
+        // Enabled
 
-			// Установка значений по умолчанию
+        private bool _enabled;
+        // HorizontalAlignment
 
-			SetView(view);
-			SetEnabled(true);
-			SetVisible(true);
-		}
+        private ElementHorizontalAlignment _horizontalAlignment;
+        // Hotkey
 
+        private string _hotkey;
+        // Name
 
-		protected readonly TItem Control;
+        private string _name;
+        // Text
 
+        private string _text;
+        // ToolTip
 
-		// View
+        private string _toolTip;
+        // VerticalAlignment
 
-		private View _view;
+        private ElementVerticalAlignment _verticalAlignment;
+        // View
 
-		public View GetView()
-		{
-			return _view;
-		}
+        private View _view;
+        // Visible
 
-		private void SetView(View value)
-		{
-			_view = value;
-		}
+        private bool _visible;
+        protected readonly TItem Control;
 
+        protected ContextMenuItemBase(View view)
+        {
+            Control = new TItem {Tag = this};
 
-		// Name
+            // Установка значений по умолчанию
 
-		private string _name;
+            SetView(view);
+            SetEnabled(true);
+            SetVisible(true);
+        }
 
-		public string GetName()
-		{
-			return _name;
-		}
+        public View GetView()
+        {
+            return _view;
+        }
 
-		public void SetName(string value)
-		{
-			_name = value;
+        public string GetName()
+        {
+            return _name;
+        }
 
-			Control.Name = value ?? string.Empty;
-		}
+        public void SetName(string value)
+        {
+            _name = value;
 
+            Control.Name = value ?? string.Empty;
+        }
 
-		// Text
+        public virtual string GetText()
+        {
+            return _text;
+        }
 
-		private string _text;
+        public virtual void SetText(string value)
+        {
+            _text = value;
+        }
 
-		public virtual string GetText()
-		{
-			return _text;
-		}
+        public virtual string GetToolTip()
+        {
+            return _toolTip;
+        }
 
-		public virtual void SetText(string value)
-		{
-			_text = value;
-		}
+        public virtual void SetToolTip(string value)
+        {
+            _toolTip = value;
+        }
 
+        public bool GetEnabled()
+        {
+            return _enabled;
+        }
 
-		// ToolTip
+        public void SetEnabled(bool value)
+        {
+            _enabled = value;
 
-		private string _toolTip;
+            Control.IsEnabled = value;
+        }
 
-		public virtual string GetToolTip()
-		{
-			return _toolTip;
-		}
+        public bool GetVisible()
+        {
+            return _visible;
+        }
 
-		public virtual void SetToolTip(string value)
-		{
-			_toolTip = value;
-		}
+        public void SetVisible(bool value)
+        {
+            _visible = value;
 
+            Control.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+        }
 
-		// Enabled
+        public ElementVerticalAlignment GetVerticalAlignment()
+        {
+            return _verticalAlignment;
+        }
 
-		private bool _enabled;
+        public void SetVerticalAlignment(ElementVerticalAlignment value)
+        {
+            _verticalAlignment = value;
+        }
 
-		public bool GetEnabled()
-		{
-			return _enabled;
-		}
+        public ElementHorizontalAlignment GetHorizontalAlignment()
+        {
+            return _horizontalAlignment;
+        }
 
-		public void SetEnabled(bool value)
-		{
-			_enabled = value;
+        public void SetHorizontalAlignment(ElementHorizontalAlignment value)
+        {
+            _horizontalAlignment = value;
+        }
 
-			Control.IsEnabled = value;
-		}
+        // Elements
 
+        public virtual IEnumerable<IElement> GetChildElements()
+        {
+            return null;
+        }
 
-		// Visible
+        public virtual bool Validate()
+        {
+            return true;
+        }
 
-		private bool _visible;
+        public virtual void Focus()
+        {
+            Control.Focus();
+        }
 
-		public bool GetVisible()
-		{
-			return _visible;
-		}
+        // Control
 
-		public void SetVisible(bool value)
-		{
-			_visible = value;
+        public object GetControl()
+        {
+            return Control;
+        }
 
-			Control.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
-		}
+        private void SetView(View value)
+        {
+            _view = value;
+        }
 
+        public virtual string GetHotkey()
+        {
+            return _hotkey;
+        }
 
-		// VerticalAlignment
-
-		private ElementVerticalAlignment _verticalAlignment;
-
-		public ElementVerticalAlignment GetVerticalAlignment()
-		{
-			return _verticalAlignment;
-		}
-
-		public void SetVerticalAlignment(ElementVerticalAlignment value)
-		{
-			_verticalAlignment = value;
-		}
-
-
-		// HorizontalAlignment
-
-		private ElementHorizontalAlignment _horizontalAlignment;
-
-		public ElementHorizontalAlignment GetHorizontalAlignment()
-		{
-			return _horizontalAlignment;
-		}
-
-		public void SetHorizontalAlignment(ElementHorizontalAlignment value)
-		{
-			_horizontalAlignment = value;
-		}
-
-
-		// Hotkey
-
-		private string _hotkey;
-
-		public virtual string GetHotkey()
-		{
-			return _hotkey;
-		}
-
-		public virtual void SetHotkey(string value)
-		{
-			_hotkey = value;
-		}
-
-
-		// Elements
-
-		public virtual IEnumerable<IElement> GetChildElements()
-		{
-			return null;
-		}
-
-		public virtual bool Validate()
-		{
-			return true;
-		}
-
-		public virtual void Focus()
-		{
-			Control.Focus();
-		}
-
-
-		// Control
-
-		public object GetControl()
-		{
-			return Control;
-		}
-	}
+        public virtual void SetHotkey(string value)
+        {
+            _hotkey = value;
+        }
+    }
 }

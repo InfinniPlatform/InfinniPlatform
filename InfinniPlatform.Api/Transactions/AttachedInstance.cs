@@ -1,35 +1,34 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using InfinniPlatform.Api.Dynamic;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.Api.Transactions
 {
     /// <summary>
-    ///  Присоединенный к транзакции экземпляр документа
+    ///     Присоединенный к транзакции экземпляр документа
     /// </summary>
-	public sealed class AttachedInstance
-	{
+    public sealed class AttachedInstance
+    {
         private readonly IList<FileDescription> _files = new List<FileDescription>();
 
         /// <summary>
-        ///   Идентификатор конфигурации
+        ///     Идентификатор конфигурации
         /// </summary>
         public string ConfigId { get; set; }
 
         /// <summary>
-        ///   Идентификатор типа документа
+        ///     Идентификатор типа документа
         /// </summary>
-		public string DocumentId { get; set; }
+        public string DocumentId { get; set; }
 
         /// <summary>
-        ///   Список сохраняемых документов
+        ///     Список сохраняемых документов
         /// </summary>
-		public IEnumerable<dynamic> Documents { get; set; }
+        public IEnumerable<dynamic> Documents { get; set; }
 
         /// <summary>
-        ///   Связанные с документами файлы
+        ///     Связанные с документами файлы
         /// </summary>
         public IEnumerable<FileDescription> Files
         {
@@ -37,28 +36,28 @@ namespace InfinniPlatform.Api.Transactions
         }
 
         /// <summary>
-        ///   Версия конфигурации
+        ///     Версия конфигурации
         /// </summary>
-		public string Version { get; set; }
+        public string Version { get; set; }
 
         /// <summary>
-        ///   Роутинг пользователя
+        ///     Роутинг пользователя
         /// </summary>
-		public string Routing { get; set; }
+        public string Routing { get; set; }
 
         /// <summary>
-        ///   Признак отсоединения от транзакции
+        ///     Признак отсоединения от транзакции
         /// </summary>
         public bool Detached { get; set; }
 
         /// <summary>
-        ///   Добавить связанный с документом файл
+        ///     Добавить связанный с документом файл
         /// </summary>
         /// <param name="fieldName">Наименование поля</param>
         /// <param name="stream">Файловый поток, связанный с полем документа</param>
         public void AddFile(string fieldName, Stream stream)
         {
-            _files.Add(new FileDescription()
+            _files.Add(new FileDescription
             {
                 FieldName = fieldName,
                 Bytes = ReadAllBytes(stream)
@@ -67,8 +66,8 @@ namespace InfinniPlatform.Api.Transactions
 
         private byte[] ReadAllBytes(Stream stream)
         {
-            byte[] buffer = new byte[16 * 1024];
-            using (MemoryStream ms = new MemoryStream())
+            var buffer = new byte[16*1024];
+            using (var ms = new MemoryStream())
             {
                 int read;
                 while ((read = stream.Read(buffer, 0, buffer.Length)) > 0)
@@ -80,7 +79,7 @@ namespace InfinniPlatform.Api.Transactions
         }
 
         /// <summary>
-        ///   Содержит ли присоединенный экземпляр документ с указанным идентификатором
+        ///     Содержит ли присоединенный экземпляр документ с указанным идентификатором
         /// </summary>
         /// <param name="instanceId">Идентификатор документа</param>
         /// <returns>Признак наличия документа с указанным идентификатором</returns>
@@ -90,7 +89,7 @@ namespace InfinniPlatform.Api.Transactions
         }
 
         /// <summary>
-        ///   Удалить файл из списка присоединенных
+        ///     Удалить файл из списка присоединенных
         /// </summary>
         /// <param name="fieldName">Наименование поля ссылки в документе</param>
         public void RemoveFile(string fieldName)
@@ -98,11 +97,8 @@ namespace InfinniPlatform.Api.Transactions
             var fileDescription = Files.FirstOrDefault(f => f.FieldName == fieldName);
             if (fileDescription != null)
             {
-                ObjectHelper.RemoveItem(Files,fileDescription);
+                ObjectHelper.RemoveItem(Files, fileDescription);
             }
-
         }
-	}
-
-
+    }
 }

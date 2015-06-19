@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using InfinniPlatform.Api.Dynamic;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraGrid.Views.Base;
 using InfinniPlatform.DesignControls.Controls.Parameters;
 using InfinniPlatform.DesignControls.Layout;
 using InfinniPlatform.DesignControls.PropertyDesigner;
@@ -16,27 +13,46 @@ namespace InfinniPlatform.DesignControls.DesignerSurface
 {
     public partial class ParameterSurface : UserControl, ILayoutProvider
     {
+        private readonly List<ParameterObject> _parameters = new List<ParameterObject>();
+        private readonly EditorRepository _repository;
+
         public ParameterSurface()
         {
             InitializeComponent();
 
             gridBinding.DataSource = _parameters;
 
-			_repository = new EditorRepository(GetItemProperty);
+            _repository = new EditorRepository(GetItemProperty);
         }
 
-		protected dynamic GetItemProperty(string propertyName)
-		{
-			return GridViewParameters
-				.GetFocusedDataRow().Field<object>(propertyName);
-		}
+        public dynamic GetLayout()
+        {
+            dynamic instanceLayout = new List<dynamic>();
 
+            foreach (ILayoutProvider parameterObject in _parameters)
+            {
+                dynamic instance = parameterObject.GetLayout();
+                instanceLayout.Add(instance);
+            }
+            return instanceLayout;
+        }
 
-        private readonly List<ParameterObject> _parameters = new List<ParameterObject>();
+        public void SetLayout(dynamic value)
+        {
+        }
 
-	    private readonly EditorRepository _repository;
+        public string GetPropertyName()
+        {
+            return "Parameters";
+        }
 
-        private void repositoryItemButtonEditSource_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        protected dynamic GetItemProperty(string propertyName)
+        {
+            return GridViewParameters
+                .GetFocusedDataRow().Field<object>(propertyName);
+        }
+
+        private void repositoryItemButtonEditSource_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
             var dataSource = _parameters.ElementAt(GridViewParameters.FocusedRowHandle).Parameter as IPropertiesProvider;
             if (dataSource != null)
@@ -46,19 +62,19 @@ namespace InfinniPlatform.DesignControls.DesignerSurface
                 form.SetSimpleProperties(simpleProperties);
                 var collectionProperties = dataSource.GetCollections();
                 form.SetCollectionProperties(collectionProperties);
-				form.SetValidationRules(dataSource.GetValidationRules());				
-				form.SetPropertyEditors(_repository.Editors);
+                form.SetValidationRules(dataSource.GetValidationRules());
+                form.SetPropertyEditors(_repository.Editors);
 
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-	                dataSource.ApplySimpleProperties();
-	                dataSource.ApplyCollections();
-	                GridViewParameters.HideEditor();
-	                GridViewParameters.RefreshData();
+                    dataSource.ApplySimpleProperties();
+                    dataSource.ApplyCollections();
+                    GridViewParameters.HideEditor();
+                    GridViewParameters.RefreshData();
                 }
                 else
                 {
-	                form.RevertChanges();
+                    form.RevertChanges();
                 }
             }
         }
@@ -89,35 +105,13 @@ namespace InfinniPlatform.DesignControls.DesignerSurface
             valueEdit.ShowDialog();
         }
 
-        public dynamic GetLayout()
+        private void GridViewScripts_CustomColumnDisplayText(object sender, CustomColumnDisplayTextEventArgs e)
         {
-            dynamic instanceLayout = new List<dynamic>();
-
-            foreach (ILayoutProvider parameterObject in _parameters)
+            var value = (ParameterObject) GridViewParameters.GetRow(e.RowHandle);
+            if (value == null)
             {
-                dynamic instance = parameterObject.GetLayout();
-                instanceLayout.Add(instance);
+                return;
             }
-            return instanceLayout;
-        }
-
-        public void SetLayout(dynamic value)
-        {
-            
-        }
-
-        public string GetPropertyName()
-        {
-            return "Parameters";
-        }
-
-        private void GridViewScripts_CustomColumnDisplayText(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventArgs e)
-        {
-            var value = (ParameterObject)GridViewParameters.GetRow(e.RowHandle);
-			if (value == null)
-			{
-				return;
-			}
 
             if (string.IsNullOrEmpty(value.ParameterName))
             {
@@ -129,26 +123,26 @@ namespace InfinniPlatform.DesignControls.DesignerSurface
             }
         }
 
-	    public void ProcessJson(dynamic value)
-	    {
-			_parameters.Clear();
-			foreach (dynamic source in value)
-			{
-				var parameterObject = new ParameterObject();
+        public void ProcessJson(dynamic value)
+        {
+            _parameters.Clear();
+            foreach (var source in value)
+            {
+                var parameterObject = new ParameterObject();
 
-				var parameter = new Parameter();
-				parameter.LoadProperties(source);
-				parameterObject.Parameter = parameter;
+                var parameter = new Parameter();
+                parameter.LoadProperties(source);
+                parameterObject.Parameter = parameter;
 
-				_parameters.Add(parameterObject);
-			}
-			GridViewParameters.RefreshData();
-	    }
+                _parameters.Add(parameterObject);
+            }
+            GridViewParameters.RefreshData();
+        }
 
-	    public void Clear()
-	    {
-		    _parameters.Clear();
-			GridViewParameters.RefreshData();
-	    }
+        public void Clear()
+        {
+            _parameters.Clear();
+            GridViewParameters.RefreshData();
+        }
     }
 }

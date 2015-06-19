@@ -1,6 +1,6 @@
 ﻿{
-  "Name": "EditPanelView",
-  "LayoutPanel": {
-    "DockTabPanel": {}
-  }
+	"Name": "EditPanelView",
+	"LayoutPanel": {
+		"DockTabPanel": {}
+	}
 }

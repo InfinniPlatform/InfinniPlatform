@@ -1,19 +1,19 @@
 ﻿{
-  "id": "StateAction",
-  "description": "Действие изменения состояния текущего элемента источника данных",
-  "type": "object",
-  "extends": {
-    "$ref": "http://demo.infinnity.ru:8081/display/MC/Command"
-  },
-  "properties": {
-    "Workflow": {
-      "description": "Описание возможных переходов",
-      "type": "object"
-    },
-    "Items": {
-      "description": "Привязка данных для списка",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/DataBinding"
-    }
-  },
-  "additionalProperties": false
+	"id": "StateAction",
+	"description": "Действие изменения состояния текущего элемента источника данных",
+	"type": "object",
+	"extends": {
+		"$ref": "http://demo.infinnity.ru:8081/display/MC/Command"
+	},
+	"properties": {
+		"Workflow": {
+			"description": "Описание возможных переходов",
+			"type": "object"
+		},
+		"Items": {
+			"description": "Привязка данных для списка",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/DataBinding"
+		}
+	},
+	"additionalProperties": false
 }

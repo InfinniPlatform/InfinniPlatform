@@ -1,72 +1,72 @@
 ﻿{
-  "Name": "MetadataView",
-  "Image": "System/Metadata_16x16",
-  "Text": {
-    "PropertyBinding": {
-      "DataSource": "MainDataSource",
-      "Property": "Name"
-    }
-  },
-  "DataSources": [
-    {
-      "MetadataDataSource": {
-        "Name": "MainDataSource",
-        "FillCreatedItem": true,
-        "MetadataType": "Process"
-      }
-    }
-  ],
-  "LayoutPanel": {
-    "StackPanel": {
-      "Name": "MetadataPagePanel",
-      "Items": [
-        {
-          "CodeEditor": {
-            "Name": "MetadataEditor",
-            "Syntax": "JavaScript",
-            "Formatter": "JsonObjectFormatter",
-            "Value": {
-              "PropertyBinding": {
-                "DataSource": "MainDataSource",
-                "Property": "{this}"
-              }
-            }
-          }
-        },
-        {
-          "ToolBar": {
-            "Name": "MetadataToolBar",
-            "Items": [
-              {
-                "ToolBarButton": {
-                  "Name": "MetadataSaveButton",
-                  "Text": "Save",
-                  "Image": "Actions/Save_16x16",
-                  "Hotkey": "Ctrl+S",
-                  "Action": {
-                    "SaveAction": {
-                      "CanClose": false,
-                      "DataSource": "MainDataSource"
-                    }
-                  }
-                }
-              },
-              {
-                "ToolBarButton": {
-                  "Name": "MetadataCancelButton",
-                  "Text": "Cancel",
-                  "Image": "Actions/Cancel_16x16",
-                  "Action": {
-                    "CancelAction": {
-                      "DataSource": "MainDataSource"
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        }
-      ]
-    }
-  }
+	"Name": "MetadataView",
+	"Image": "System/Metadata_16x16",
+	"Text": {
+		"PropertyBinding": {
+			"DataSource": "MainDataSource",
+			"Property": "Name"
+		}
+	},
+	"DataSources": [
+		{
+			"MetadataDataSource": {
+				"Name": "MainDataSource",
+				"FillCreatedItem": true,
+				"MetadataType": "Process"
+			}
+		}
+	],
+	"LayoutPanel": {
+		"StackPanel": {
+			"Name": "MetadataPagePanel",
+			"Items": [
+				{
+					"CodeEditor": {
+						"Name": "MetadataEditor",
+						"Syntax": "JavaScript",
+						"Formatter": "JsonObjectFormatter",
+						"Value": {
+							"PropertyBinding": {
+								"DataSource": "MainDataSource",
+								"Property": "{this}"
+							}
+						}
+					}
+				},
+				{
+					"ToolBar": {
+						"Name": "MetadataToolBar",
+						"Items": [
+							{
+								"ToolBarButton": {
+									"Name": "MetadataSaveButton",
+									"Text": "Save",
+									"Image": "Actions/Save_16x16",
+									"Hotkey": "Ctrl+S",
+									"Action": {
+										"SaveAction": {
+											"CanClose": false,
+											"DataSource": "MainDataSource"
+										}
+									}
+								}
+							},
+							{
+								"ToolBarButton": {
+									"Name": "MetadataCancelButton",
+									"Text": "Cancel",
+									"Image": "Actions/Cancel_16x16",
+									"Action": {
+										"CancelAction": {
+											"DataSource": "MainDataSource"
+										}
+									}
+								}
+							}
+						]
+					}
+				}
+			]
+		}
+	}
 }

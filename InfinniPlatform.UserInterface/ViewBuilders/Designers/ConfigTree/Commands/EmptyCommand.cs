@@ -2,21 +2,21 @@
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Commands
 {
-	sealed class EmptyCommand<T> : CommandBase<T>
-	{
-		public static readonly ICommand<T> Instance = new EmptyCommand<T>();
+    internal sealed class EmptyCommand<T> : CommandBase<T>
+    {
+        public static readonly ICommand<T> Instance = new EmptyCommand<T>();
 
-		private EmptyCommand()
-		{
-		}
+        private EmptyCommand()
+        {
+        }
 
-		public override bool CanExecute(T parameter)
-		{
-			return false;
-		}
+        public override bool CanExecute(T parameter)
+        {
+            return false;
+        }
 
-		public override void Execute(T parameter)
-		{
-		}
-	}
+        public override void Execute(T parameter)
+        {
+        }
+    }
 }

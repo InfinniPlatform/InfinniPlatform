@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -69,6 +69,10 @@
     <ProjectReference Include="..\InfinniPlatform.OceanInformatics\InfinniPlatform.OceanInformatics.csproj">
       <Project>{42CB828F-E466-42C7-B0C4-6E3BDB56D328}</Project>
       <Name>InfinniPlatform.OceanInformatics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Sdk.Application\InfinniPlatform.Sdk.Application.csproj">
+      <Project>{2322469d-7d54-4c76-97e2-ef40f15645f5}</Project>
+      <Name>InfinniPlatform.Sdk.Application</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,33 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using InfinniPlatform.Api.Context;
 using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
-using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.Events;
 using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Api.Index;
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.RestQuery.EventObjects;
 using InfinniPlatform.Api.RestQuery.EventObjects.EventSerializers;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.Factories;
 using InfinniPlatform.Hosting;
-using Newtonsoft.Json;
+using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Application.Events;
 
 namespace InfinniPlatform.Metadata.Implementation.Handlers
 {
     /// <summary>
-    ///   Обработчик http - запросов  обработки событийной модели
+    ///     Обработчик http - запросов  обработки событийной модели
     /// </summary>
     public sealed class ApplyChangesHandler : IWebRoutingHandler
     {
         private readonly IGlobalContext _globalContext;
-
-
-        public IConfigRequestProvider ConfigRequestProvider { get; set; }
 
         public ApplyChangesHandler(
             IGlobalContext globalContext)
@@ -35,8 +26,10 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
             _globalContext = globalContext;
         }
 
+        public IConfigRequestProvider ConfigRequestProvider { get; set; }
+
         /// <summary>
-        ///   Применить изменения, представленные в виде объекта
+        ///     Применить изменения, представленные в виде объекта
         /// </summary>
         /// <param name="id">Идентификатор объекта, к которому следует применить изменения</param>
         /// <param name="changesObject">Объект JSON, содержащий события изменения объекта</param>
@@ -57,8 +50,8 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
         }
 
         /// <summary>
-        ///   Применить список событий изменения к объекту с указанным идентификатором
-        ///   (К новому объекту, если идентификатор объекта не указан)
+        ///     Применить список событий изменения к объекту с указанным идентификатором
+        ///     (К новому объекту, если идентификатор объекта не указан)
         /// </summary>
         /// <param name="id">Идентификатор изменяемого объекта</param>
         /// <param name="events">Список событий на изменение объекта</param>
@@ -69,7 +62,9 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
             var documentId = ConfigRequestProvider.GetMetadataIdentifier();
 
             var appliedConfig =
-                _globalContext.GetComponent<IMetadataConfigurationProvider>(ConfigRequestProvider.GetVersion()).GetMetadataConfiguration(ConfigRequestProvider.GetVersion(), ConfigRequestProvider.GetConfiguration());
+                _globalContext.GetComponent<IMetadataConfigurationProvider>(ConfigRequestProvider.GetVersion())
+                    .GetMetadataConfiguration(ConfigRequestProvider.GetVersion(),
+                        ConfigRequestProvider.GetConfiguration());
 
             if (string.IsNullOrEmpty(documentId))
             {
@@ -89,7 +84,9 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
             target.Version = ConfigRequestProvider.GetVersion();
 
             //Сохранение агрегата в кассандре
-            var eventStorage = _globalContext.GetComponent<IEventStorageComponent>(ConfigRequestProvider.GetVersion()).GetEventStorage();
+            var eventStorage =
+                _globalContext.GetComponent<IEventStorageComponent>(ConfigRequestProvider.GetVersion())
+                    .GetEventStorage();
 
             if (eventStorage != null)
             {
@@ -98,11 +95,15 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
             }
 
 
-            var profiler = target.Context.GetComponent<IProfilerComponent>(ConfigRequestProvider.GetVersion()).GetOperationProfiler("FilterEventsPoint",
-                                       string.Format("Config: {0}, Metadata {1}, ActionPoint {2}", target.Configuration, target.Metadata, appliedConfig.GetExtensionPointValue(ConfigRequestProvider, "FilterEvents")));
+            var profiler =
+                target.Context.GetComponent<IProfilerComponent>(ConfigRequestProvider.GetVersion())
+                    .GetOperationProfiler("FilterEventsPoint",
+                        string.Format("Config: {0}, Metadata {1}, ActionPoint {2}", target.Configuration,
+                            target.Metadata, appliedConfig.GetExtensionPointValue(ConfigRequestProvider, "FilterEvents")));
             profiler.Reset();
-            appliedConfig.MoveWorkflow(documentId, appliedConfig.GetExtensionPointValue(ConfigRequestProvider, "FilterEvents"), target);
-            
+            appliedConfig.MoveWorkflow(documentId,
+                appliedConfig.GetExtensionPointValue(ConfigRequestProvider, "FilterEvents"), target);
+
             if (!target.IsValid)
             {
                 return AggregateExtensions.PrepareInvalidFilterAggregate(target);
@@ -149,10 +150,14 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
                 target.Item.Version = ConfigRequestProvider.GetVersion();
             }
 
-            profiler = target.Context.GetComponent<ProfilerComponent>(ConfigRequestProvider.GetVersion()).GetOperationProfiler("MovePoint",
-               string.Format("Config: {0}, Metadata {1}, ActionPoint {2}", target.Configuration, target.Metadata, appliedConfig.GetExtensionPointValue(ConfigRequestProvider, "Move")));
+            profiler =
+                target.Context.GetComponent<ProfilerComponent>(ConfigRequestProvider.GetVersion())
+                    .GetOperationProfiler("MovePoint",
+                        string.Format("Config: {0}, Metadata {1}, ActionPoint {2}", target.Configuration,
+                            target.Metadata, appliedConfig.GetExtensionPointValue(ConfigRequestProvider, "Move")));
             profiler.Reset();
-            appliedConfig.MoveWorkflow(documentId, appliedConfig.GetExtensionPointValue(ConfigRequestProvider, "Move"), targetMove, target.Item.Status);
+            appliedConfig.MoveWorkflow(documentId, appliedConfig.GetExtensionPointValue(ConfigRequestProvider, "Move"),
+                targetMove, target.Item.Status);
             if (!targetMove.IsValid)
             {
                 return AggregateExtensions.PrepareInvalidFilterAggregate(targetMove);
@@ -170,11 +175,15 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
                 Version = ConfigRequestProvider.GetVersion()
             };
 
-            profiler = target.Context.GetComponent<IProfilerComponent>(ConfigRequestProvider.GetVersion()).GetOperationProfiler("GetResultEventsPoint",
-                           string.Format("Config: {0}, Metadata {1}, ActionPoint {2}", target.Configuration, target.Metadata, appliedConfig.GetExtensionPointValue(ConfigRequestProvider, "GetResult")));
+            profiler =
+                target.Context.GetComponent<IProfilerComponent>(ConfigRequestProvider.GetVersion())
+                    .GetOperationProfiler("GetResultEventsPoint",
+                        string.Format("Config: {0}, Metadata {1}, ActionPoint {2}", target.Configuration,
+                            target.Metadata, appliedConfig.GetExtensionPointValue(ConfigRequestProvider, "GetResult")));
             profiler.Reset();
             //формируем результат выполнения запроса
-            appliedConfig.MoveWorkflow(documentId, appliedConfig.GetExtensionPointValue(ConfigRequestProvider, "GetResult"), targetResult);
+            appliedConfig.MoveWorkflow(documentId,
+                appliedConfig.GetExtensionPointValue(ConfigRequestProvider, "GetResult"), targetResult);
 
             profiler.TakeSnapshot();
 
@@ -187,7 +196,5 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
 
             return AggregateExtensions.PrepareResultAggregate(targetResult.Result);
         }
-
-
     }
 }

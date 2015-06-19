@@ -2,125 +2,122 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
-using InfinniPlatform.Api.Dynamic;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.Expressions.Tests
 {
-	sealed class ObjectEqualityComparer : IEqualityComparer<object>
-	{
-		public static readonly ObjectEqualityComparer Default = new ObjectEqualityComparer();
+    internal sealed class ObjectEqualityComparer : IEqualityComparer<object>
+    {
+        public static readonly ObjectEqualityComparer Default = new ObjectEqualityComparer();
 
+        bool IEqualityComparer<object>.Equals(object expected, object actual)
+        {
+            return ObjectEquals(expected, actual);
+        }
 
-		bool IEqualityComparer<object>.Equals(object expected, object actual)
-		{
-			return ObjectEquals(expected, actual);
-		}
+        int IEqualityComparer<object>.GetHashCode(object obj)
+        {
+            return 0;
+        }
 
-		int IEqualityComparer<object>.GetHashCode(object obj)
-		{
-			return 0;
-		}
+        private static bool ObjectEquals(object expected, object actual)
+        {
+            var result = ReferenceEquals(expected, actual) || Equals(expected, actual);
 
+            if (!result
+                && expected != null && actual != null
+                && !expected.GetType().IsValueType && !actual.GetType().IsValueType)
+            {
+                if (expected is Array && actual is Array)
+                {
+                    result = ArrayEquals((Array) expected, (Array) actual);
+                }
+                else if (expected is IEnumerable && actual is IEnumerable)
+                {
+                    result = EnumerableEquals((IEnumerable) expected, (IEnumerable) actual);
+                }
+                else
+                {
+                    result = ObjectPropertyEquals(expected, actual);
+                }
+            }
 
-		private static bool ObjectEquals(object expected, object actual)
-		{
-			var result = ReferenceEquals(expected, actual) || Equals(expected, actual);
+            return result;
+        }
 
-			if (!result
-				&& expected != null && actual != null
-				&& !expected.GetType().IsValueType && !actual.GetType().IsValueType)
-			{
-				if (expected is Array && actual is Array)
-				{
-					result = ArrayEquals((Array)expected, (Array)actual);
-				}
-				else if (expected is IEnumerable && actual is IEnumerable)
-				{
-					result = EnumerableEquals((IEnumerable)expected, (IEnumerable)actual);
-				}
-				else
-				{
-					result = ObjectPropertyEquals(expected, actual);
-				}
-			}
+        private static bool ArrayEquals(Array expected, Array actual)
+        {
+            var result = false;
 
-			return result;
-		}
+            if (expected.Rank == actual.Rank)
+            {
+                var equalSize = true;
 
-		private static bool ArrayEquals(Array expected, Array actual)
-		{
-			var result = false;
+                for (var r = 0; r < expected.Rank; ++r)
+                {
+                    if (expected.GetLength(r) != actual.GetLength(r))
+                    {
+                        equalSize = false;
+                        break;
+                    }
+                }
 
-			if (expected.Rank == actual.Rank)
-			{
-				var equalSize = true;
+                if (equalSize)
+                {
+                    result = true;
+                    ArrayEquals(expected, actual, new int[expected.Rank], 0, ref result);
+                }
+            }
 
-				for (var r = 0; r < expected.Rank; ++r)
-				{
-					if (expected.GetLength(r) != actual.GetLength(r))
-					{
-						equalSize = false;
-						break;
-					}
-				}
+            return result;
+        }
 
-				if (equalSize)
-				{
-					result = true;
-					ArrayEquals(expected, actual, new int[expected.Rank], 0, ref result);
-				}
-			}
+        private static void ArrayEquals(Array expected, Array actual, int[] indexes, int rank, ref bool equalItems)
+        {
+            if (rank < expected.Rank)
+            {
+                for (var i = 0; i < expected.GetLength(rank); ++i)
+                {
+                    indexes[rank] = i;
 
-			return result;
-		}
+                    ArrayEquals(expected, actual, indexes, rank + 1, ref equalItems);
 
-		private static void ArrayEquals(Array expected, Array actual, int[] indexes, int rank, ref bool equalItems)
-		{
-			if (rank < expected.Rank)
-			{
-				for (var i = 0; i < expected.GetLength(rank); ++i)
-				{
-					indexes[rank] = i;
+                    if (!equalItems)
+                    {
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                equalItems = ObjectEquals(expected.GetValue(indexes), actual.GetValue(indexes));
+            }
+        }
 
-					ArrayEquals(expected, actual, indexes, rank + 1, ref equalItems);
+        private static bool ObjectPropertyEquals(object expected, object actual)
+        {
+            var result = true;
 
-					if (!equalItems)
-					{
-						break;
-					}
-				}
-			}
-			else
-			{
-				equalItems = ObjectEquals(expected.GetValue(indexes), actual.GetValue(indexes));
-			}
-		}
+            var expectedProperties = expected.GetType().GetProperties();
 
-		private static bool ObjectPropertyEquals(object expected, object actual)
-		{
-			var result = true;
+            foreach (var expectedProperty in expectedProperties)
+            {
+                var expectedValue = expectedProperty.GetValue(expected);
+                var actualValue = actual.GetProperty(expectedProperty.Name);
 
-			var expectedProperties = expected.GetType().GetProperties();
+                if (!ObjectEquals(expectedValue, actualValue))
+                {
+                    result = false;
+                    break;
+                }
+            }
 
-			foreach (var expectedProperty in expectedProperties)
-			{
-				var expectedValue = expectedProperty.GetValue(expected);
-				var actualValue = actual.GetProperty(expectedProperty.Name);
+            return result;
+        }
 
-				if (!ObjectEquals(expectedValue, actualValue))
-				{
-					result = false;
-					break;
-				}
-			}
-
-			return result;
-		}
-
-		private static bool EnumerableEquals(IEnumerable expected, IEnumerable actual)
-		{
-			return ArrayEquals(expected.Cast<object>().ToArray(), actual.Cast<object>().ToArray());
-		}
-	}
+        private static bool EnumerableEquals(IEnumerable expected, IEnumerable actual)
+        {
+            return ArrayEquals(expected.Cast<object>().ToArray(), actual.Cast<object>().ToArray());
+        }
+    }
 }

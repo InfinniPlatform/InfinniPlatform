@@ -2,195 +2,160 @@
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.DataElements.TreeView
 {
-	/// <summary>
-	/// Строка древовидного списка.
-	/// </summary>
-	sealed class TreeViewDataRow : INotifyPropertyChanged
-	{
-		private object _id;
+    /// <summary>
+    ///     Строка древовидного списка.
+    /// </summary>
+    internal sealed class TreeViewDataRow : INotifyPropertyChanged
+    {
+        private object _display;
+        private object _id;
+        private object _image;
+        private object _item;
+        private object _key;
+        private object _parent;
+        private object _value;
 
-		/// <summary>
-		/// Уникальный идентификатор элемента.
-		/// </summary>
-		public object Id
-		{
-			get
-			{
-				return _id;
-			}
-			set
-			{
-				if (!Equals(_id, value))
-				{
-					_id = value;
+        /// <summary>
+        ///     Уникальный идентификатор элемента.
+        /// </summary>
+        public object Id
+        {
+            get { return _id; }
+            set
+            {
+                if (!Equals(_id, value))
+                {
+                    _id = value;
 
-					InvokePropertyChanged("Id");
-				}
-			}
-		}
+                    InvokePropertyChanged("Id");
+                }
+            }
+        }
 
+        /// <summary>
+        ///     Идентификатор элемента.
+        /// </summary>
+        public object Key
+        {
+            get { return _key; }
+            set
+            {
+                if (!Equals(_key, value))
+                {
+                    _key = value;
 
-		private object _key;
+                    InvokePropertyChanged("Key");
+                }
+            }
+        }
 
-		/// <summary>
-		/// Идентификатор элемента.
-		/// </summary>
-		public object Key
-		{
-			get
-			{
-				return _key;
-			}
-			set
-			{
-				if (!Equals(_key, value))
-				{
-					_key = value;
+        /// <summary>
+        ///     Идентификатор родителя.
+        /// </summary>
+        public object Parent
+        {
+            get { return _parent; }
+            set
+            {
+                if (!Equals(_parent, value))
+                {
+                    _parent = value;
 
-					InvokePropertyChanged("Key");
-				}
-			}
-		}
+                    InvokePropertyChanged("Parent");
+                }
+            }
+        }
 
+        /// <summary>
+        ///     Изображение элемента.
+        /// </summary>
+        public object Image
+        {
+            get { return _image; }
+            set
+            {
+                if (!Equals(_image, value))
+                {
+                    _image = value;
 
-		private object _parent;
+                    InvokePropertyChanged("Image");
+                }
+            }
+        }
 
-		/// <summary>
-		/// Идентификатор родителя.
-		/// </summary>
-		public object Parent
-		{
-			get
-			{
-				return _parent;
-			}
-			set
-			{
-				if (!Equals(_parent, value))
-				{
-					_parent = value;
+        /// <summary>
+        ///     Значение элемента.
+        /// </summary>
+        public object Value
+        {
+            get { return _value; }
+            set
+            {
+                if (!Equals(_value, value))
+                {
+                    _value = value;
 
-					InvokePropertyChanged("Parent");
-				}
-			}
-		}
+                    InvokePropertyChanged("Value");
+                }
+            }
+        }
 
+        /// <summary>
+        ///     Наименование элемента.
+        /// </summary>
+        public object Display
+        {
+            get { return _display; }
+            set
+            {
+                if (!Equals(_display, value))
+                {
+                    _display = value;
 
-		private object _image;
+                    InvokePropertyChanged("Display");
+                }
+            }
+        }
 
-		/// <summary>
-		/// Изображение элемента.
-		/// </summary>
-		public object Image
-		{
-			get
-			{
-				return _image;
-			}
-			set
-			{
-				if (!Equals(_image, value))
-				{
-					_image = value;
+        /// <summary>
+        ///     Ссылка на элемент.
+        /// </summary>
+        public object Item
+        {
+            get { return _item; }
+            set
+            {
+                if (!Equals(_item, value))
+                {
+                    _item = value;
 
-					InvokePropertyChanged("Image");
-				}
-			}
-		}
+                    InvokePropertyChanged("Item");
+                }
+            }
+        }
 
+        public event PropertyChangedEventHandler PropertyChanged;
 
-		private object _value;
+        public override int GetHashCode()
+        {
+            return (Id != null) ? Id.GetHashCode() : 0;
+        }
 
-		/// <summary>
-		/// Значение элемента.
-		/// </summary>
-		public object Value
-		{
-			get
-			{
-				return _value;
-			}
-			set
-			{
-				if (!Equals(_value, value))
-				{
-					_value = value;
+        public override bool Equals(object obj)
+        {
+            var other = obj as TreeViewDataRow;
 
-					InvokePropertyChanged("Value");
-				}
-			}
-		}
+            return (other != null && Equals(other.Id, Id));
+        }
 
+        private void InvokePropertyChanged(string property)
+        {
+            var handler = PropertyChanged;
 
-		private object _display;
-
-		/// <summary>
-		/// Наименование элемента.
-		/// </summary>
-		public object Display
-		{
-			get
-			{
-				return _display;
-			}
-			set
-			{
-				if (!Equals(_display, value))
-				{
-					_display = value;
-
-					InvokePropertyChanged("Display");
-				}
-			}
-		}
-
-
-		private object _item;
-
-		/// <summary>
-		/// Ссылка на элемент.
-		/// </summary>
-		public object Item
-		{
-			get
-			{
-				return _item;
-			}
-			set
-			{
-				if (!Equals(_item, value))
-				{
-					_item = value;
-
-					InvokePropertyChanged("Item");
-				}
-			}
-		}
-
-
-		public override int GetHashCode()
-		{
-			return (Id != null) ? Id.GetHashCode() : 0;
-		}
-
-		public override bool Equals(object obj)
-		{
-			var other = obj as TreeViewDataRow;
-
-			return (other != null && Equals(other.Id, Id));
-		}
-
-
-		public event PropertyChangedEventHandler PropertyChanged;
-
-		private void InvokePropertyChanged(string property)
-		{
-			var handler = PropertyChanged;
-
-			if (handler != null)
-			{
-				handler(this, new PropertyChangedEventArgs(property));
-			}
-		}
-	}
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(property));
+            }
+        }
+    }
 }

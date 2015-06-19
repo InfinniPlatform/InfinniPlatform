@@ -3,17 +3,13 @@
 namespace InfinniPlatform.Api.Index
 {
     /// <summary>
-    /// Маппинг типа  индекса
+    ///     Маппинг типа  индекса
     /// </summary>
     public interface IIndexTypeMapping
     {
         /// <summary>
-        /// Список полей типа
+        ///     Список полей типа
         /// </summary>
-        IList<PropertyMapping> Properties
-        {
-            get;
-        }
-
+        IList<PropertyMapping> Properties { get; }
     }
 }

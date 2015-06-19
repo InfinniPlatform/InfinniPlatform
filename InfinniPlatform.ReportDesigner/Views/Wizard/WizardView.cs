@@ -3,86 +3,83 @@ using System.Windows.Forms;
 
 namespace InfinniPlatform.ReportDesigner.Views.Wizard
 {
-	sealed partial class WizardView : Form
-	{
-		public WizardView()
-		{
-			InitializeComponent();
-		}
+    sealed partial class WizardView : Form
+    {
+        private WizardRunner _wizardRunner;
 
+        public WizardView()
+        {
+            InitializeComponent();
+        }
 
-		private WizardRunner _wizardRunner;
+        public void SetupSteps(Control target, Action<WizardPageBuilder> page)
+        {
+            _wizardRunner = new WizardRunner(target, page);
 
-		public void SetupSteps(Control target, Action<WizardPageBuilder> page)
-		{
-			_wizardRunner = new WizardRunner(target, page);
+            SetCurrentPage();
+        }
 
-			SetCurrentPage();
-		}
+        public void Reset()
+        {
+            if (_wizardRunner != null)
+            {
+                _wizardRunner.ResetAll();
 
-		public void Reset()
-		{
-			if (_wizardRunner != null)
-			{
-				_wizardRunner.ResetAll();
+                SetCurrentPage();
+            }
+        }
 
-				SetCurrentPage();
-			}
-		}
+        private void OnNext(object sender, EventArgs e)
+        {
+            _wizardRunner.Next();
 
+            SetCurrentPage();
+        }
 
-		private void OnNext(object sender, EventArgs e)
-		{
-			_wizardRunner.Next();
+        private void OnBack(object sender, EventArgs e)
+        {
+            _wizardRunner.Back();
 
-			SetCurrentPage();
-		}
+            SetCurrentPage();
+        }
 
-		private void OnBack(object sender, EventArgs e)
-		{
-			_wizardRunner.Back();
+        private void OnFinish(object sender, EventArgs e)
+        {
+            if (_wizardRunner.Finish())
+            {
+                DialogResult = DialogResult.OK;
+                Close();
+            }
+        }
 
-			SetCurrentPage();
-		}
+        private void OnCancel(object sender, EventArgs e)
+        {
+            _wizardRunner.Cancel();
 
-		private void OnFinish(object sender, EventArgs e)
-		{
-			if (_wizardRunner.Finish())
-			{
-				DialogResult = DialogResult.OK;
-				Close();
-			}
-		}
+            DialogResult = DialogResult.Cancel;
+            Close();
+        }
 
-		private void OnCancel(object sender, EventArgs e)
-		{
-			_wizardRunner.Cancel();
+        private void OnReset(object sender, EventArgs e)
+        {
+            _wizardRunner.Reset();
+        }
 
-			DialogResult = DialogResult.Cancel;
-			Close();
-		}
+        private void SetCurrentPage()
+        {
+            var currentPageTarget = _wizardRunner.CurrentPage.Target;
 
-		private void OnReset(object sender, EventArgs e)
-		{
-			_wizardRunner.Reset();
-		}
+            if (MainPanel.Controls.Count == 0 || MainPanel.Controls[0] != currentPageTarget)
+            {
+                currentPageTarget.Dock = DockStyle.Fill;
 
+                MainPanel.Controls.Clear();
+                MainPanel.Controls.Add(currentPageTarget);
 
-		private void SetCurrentPage()
-		{
-			var currentPageTarget = _wizardRunner.CurrentPage.Target;
-
-			if (MainPanel.Controls.Count == 0 || MainPanel.Controls[0] != currentPageTarget)
-			{
-				currentPageTarget.Dock = DockStyle.Fill;
-
-				MainPanel.Controls.Clear();
-				MainPanel.Controls.Add(currentPageTarget);
-
-				NextBtn.Enabled = _wizardRunner.CanNext;
-				BackBtn.Enabled = _wizardRunner.CanBack;
-				FinishBtn.Enabled = _wizardRunner.CanFinish;
-			}
-		}
-	}
+                NextBtn.Enabled = _wizardRunner.CanNext;
+                BackBtn.Enabled = _wizardRunner.CanBack;
+                FinishBtn.Enabled = _wizardRunner.CanFinish;
+            }
+        }
+    }
 }

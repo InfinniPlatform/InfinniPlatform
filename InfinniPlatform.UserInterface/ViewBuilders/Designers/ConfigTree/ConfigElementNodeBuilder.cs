@@ -4,69 +4,68 @@ using System.Collections.Generic;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree
 {
-	sealed class ConfigElementNodeBuilder
-	{
-		public IConfigElementEditPanel EditPanel { get; set; }
+    internal sealed class ConfigElementNodeBuilder
+    {
+        private readonly Dictionary<string, IConfigElementNodeFactory> _factories
+            = new Dictionary<string, IConfigElementNodeFactory>(StringComparer.OrdinalIgnoreCase);
 
+        public IConfigElementEditPanel EditPanel { get; set; }
 
-		private readonly Dictionary<string, IConfigElementNodeFactory> _factories
-			= new Dictionary<string, IConfigElementNodeFactory>(StringComparer.OrdinalIgnoreCase);
+        public void Register(string elementType, IConfigElementNodeFactory elementFactory)
+        {
+            if (string.IsNullOrEmpty(elementType))
+            {
+                throw new ArgumentNullException("elementType");
+            }
 
+            if (elementFactory == null)
+            {
+                throw new ArgumentNullException("elementFactory");
+            }
 
-		public void Register(string elementType, IConfigElementNodeFactory elementFactory)
-		{
-			if (string.IsNullOrEmpty(elementType))
-			{
-				throw new ArgumentNullException("elementType");
-			}
+            _factories.Add(elementType, elementFactory);
+        }
 
-			if (elementFactory == null)
-			{
-				throw new ArgumentNullException("elementFactory");
-			}
+        public void BuildElement(ICollection<ConfigElementNode> elements, ConfigElementNode elementParent,
+            dynamic elementMetadata, string elementType)
+        {
+            if (!ReferenceEquals(elementMetadata, null))
+            {
+                IConfigElementNodeFactory factory;
 
-			_factories.Add(elementType, elementFactory);
-		}
+                if (_factories.TryGetValue(elementType, out factory))
+                {
+                    var element = new ConfigElementNode(elementParent, elementType, elementMetadata);
 
+                    if (elementParent != null)
+                    {
+                        element.ConfigId = elementParent.ConfigId;
+                        element.DocumentId = elementParent.DocumentId;
+                        element.Version = elementParent.Version;
+                    }
 
-		public void BuildElement(ICollection<ConfigElementNode> elements, ConfigElementNode elementParent, dynamic elementMetadata, string elementType)
-		{
-			if (!ReferenceEquals(elementMetadata, null))
-			{
-				IConfigElementNodeFactory factory;
+                    elements.Add(element);
 
-				if (_factories.TryGetValue(elementType, out factory))
-				{
-					var element = new ConfigElementNode(elementParent, elementType, elementMetadata);
+                    if (elementParent != null)
+                    {
+                        elementParent.Nodes.Add(element);
+                    }
 
-					if (elementParent != null)
-					{
-						element.ConfigId = elementParent.ConfigId;
-						element.DocumentId = elementParent.DocumentId;
-					    element.Version = elementParent.Version;
-					}
+                    factory.Create(this, elements, element);
+                }
+            }
+        }
 
-					elements.Add(element);
-
-					if (elementParent != null)
-					{
-						elementParent.Nodes.Add(element);
-					}
-
-					factory.Create(this, elements, element);
-				}
-			}
-		}
-
-		public void BuildElements(ICollection<ConfigElementNode> elements, ConfigElementNode elementParent, IEnumerable elementMetadata, string elementType)
-		{
-			if (!ReferenceEquals(elementMetadata, null))
-			{
-				foreach (var itemMetadata in elementMetadata)
-				{
-					BuildElement(elements, elementParent, itemMetadata, elementType);
-				}
-			}
-		}
-	}
+        public void BuildElements(ICollection<ConfigElementNode> elements, ConfigElementNode elementParent,
+            IEnumerable elementMetadata, string elementType)
+        {
+            if (!ReferenceEquals(elementMetadata, null))
+            {
+                foreach (var itemMetadata in elementMetadata)
+                {
+                    BuildElement(elements, elementParent, itemMetadata, elementType);
+                }
+            }
+        }
+    }
 }

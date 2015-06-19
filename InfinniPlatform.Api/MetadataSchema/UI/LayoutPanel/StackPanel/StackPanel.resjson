@@ -1,23 +1,23 @@
 ﻿{
-  "id": "StackPanel",
-  "description": "Контейнер элементов представления в виде стека",
-  "type": "object",
-  "extends": {
-    "$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
-  },
-  "properties": {
-    "Orientation": {
-      "description": "Ориентация стека",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/StackPanelOrientation",
-      "default": "Vertical"
-    },
-    "Items": {
-      "description": "Список дочерних элементов",
-      "type": "array",
-      "items": {
-        "$ref": "http://demo.infinnity.ru:8081/display/MC/VisualElement"
-      }
-    }
-  },
-  "additionalProperties": false
+	"id": "StackPanel",
+	"description": "Контейнер элементов представления в виде стека",
+	"type": "object",
+	"extends": {
+		"$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
+	},
+	"properties": {
+		"Orientation": {
+			"description": "Ориентация стека",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/StackPanelOrientation",
+			"default": "Vertical"
+		},
+		"Items": {
+			"description": "Список дочерних элементов",
+			"type": "array",
+			"items": {
+				"$ref": "http://demo.infinnity.ru:8081/display/MC/VisualElement"
+			}
+		}
+	},
+	"additionalProperties": false
 }

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.RestApi.CommonApi;
+﻿using InfinniPlatform.Api.RestApi.CommonApi;
 
 namespace InfinniPlatform.Api.RestApi.Auth
 {
     /// <summary>
-    ///   Публичный API для управления учетными записями пользователей
+    ///     Публичный API для управления учетными записями пользователей
     /// </summary>
     public sealed class UsersApi
     {
@@ -19,9 +14,8 @@ namespace InfinniPlatform.Api.RestApi.Auth
             _version = version;
         }
 
-
         /// <summary>
-        ///   Добавить пользователя во внутреннее хранилище
+        ///     Добавить пользователя во внутреннее хранилище
         /// </summary>
         /// <param name="userName">Пользователь</param>
         /// <param name="password">пароль</param>
@@ -35,19 +29,19 @@ namespace InfinniPlatform.Api.RestApi.Auth
         }
 
         /// <summary>
-        ///   Удалить пользователя из внутреннего хранилища
+        ///     Удалить пользователя из внутреннего хранилища
         /// </summary>
         /// <param name="userName">Пользователь</param>
         public dynamic RemoveUser(string userName)
         {
             return RestQueryApi.QueryPostJsonRaw("Administration", "User", "DeleteUser", null, new
             {
-                UserName = userName,
+                UserName = userName
             }, _version).ToDynamic();
         }
 
         /// <summary>
-        ///   Добавить роль
+        ///     Добавить роль
         /// </summary>
         /// <param name="roleName">Роль</param>
         /// <param name="roleCaption"></param>
@@ -63,19 +57,19 @@ namespace InfinniPlatform.Api.RestApi.Auth
         }
 
         /// <summary>
-        ///   Удалить роль
+        ///     Удалить роль
         /// </summary>
         /// <param name="roleName">Роль</param>
         public dynamic DeleteRole(string roleName)
         {
             return RestQueryApi.QueryPostJsonRaw("Administration", "Role", "deleterole", null, new
             {
-                RoleName = roleName,
+                RoleName = roleName
             }, _version).ToDynamic();
         }
 
         /// <summary>
-        ///   Получить указанного пользователя системы
+        ///     Получить указанного пользователя системы
         /// </summary>
         /// <param name="userName">Логин пользователя</param>
         /// <returns>Пользователь системы</returns>
@@ -88,7 +82,7 @@ namespace InfinniPlatform.Api.RestApi.Auth
         }
 
         /// <summary>
-        ///   Добавить пользователю указанную роль
+        ///     Добавить пользователю указанную роль
         /// </summary>
         /// <param name="userName">Логин пользователя</param>
         /// <param name="roleName">Роль пользователя</param>
@@ -103,7 +97,7 @@ namespace InfinniPlatform.Api.RestApi.Auth
         }
 
         /// <summary>
-        ///  Удалить у пользователя указанную роль
+        ///     Удалить у пользователя указанную роль
         /// </summary>
         /// <param name="userName">Логин пользователя</param>
         /// <param name="roleName">Роль пользователя</param>
@@ -116,7 +110,5 @@ namespace InfinniPlatform.Api.RestApi.Auth
                 RoleName = roleName
             }, _version).ToDynamic();
         }
-
-
     }
 }

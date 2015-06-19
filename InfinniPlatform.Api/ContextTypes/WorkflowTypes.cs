@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace InfinniPlatform.Api.ContextTypes
+﻿namespace InfinniPlatform.Api.ContextTypes
 {
     /// <summary>
-    ///   Типы потоков выполнения 
+    ///     Типы потоков выполнения
     /// </summary>
     public enum WorkflowTypes
     {

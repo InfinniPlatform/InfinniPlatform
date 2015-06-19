@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Windows.Forms;
-
+using InfinniPlatform.Api.TestEnvironment;
 using InfinniPlatform.QueryDesigner.Forms;
 
 namespace InfinniPlatform.QueryDesigner
 {
-	static class Program
-	{
-		[STAThread]
-		static void Main()
-		{
-			Api.TestEnvironment.TestApi.StartServer(p => { });
+    internal static class Program
+    {
+        [STAThread]
+        private static void Main()
+        {
+            TestApi.StartServer(p => { });
 
-			Application.EnableVisualStyles();
-			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new QueryDesignerForm());
-		}
-	}
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new QueryDesignerForm());
+        }
+    }
 }

@@ -1,126 +1,124 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-
 using InfinniPlatform.Api.Properties;
 
 namespace InfinniPlatform.Api.Serialization
 {
-	/// <summary>
-	/// Контейнер известных типов для сериализации.
-	/// </summary>
-	public sealed class KnownTypesContainer
-	{
-		private readonly Dictionary<string, Type> _names
-			= new Dictionary<string, Type>();
+    /// <summary>
+    ///     Контейнер известных типов для сериализации.
+    /// </summary>
+    public sealed class KnownTypesContainer
+    {
+        private readonly Dictionary<string, Type> _names
+            = new Dictionary<string, Type>();
 
-		private readonly Dictionary<Type, string> _types
-			= new Dictionary<Type, string>();
+        private readonly Dictionary<Type, string> _types
+            = new Dictionary<Type, string>();
 
+        /// <summary>
+        ///     Содержит указанный тип.
+        /// </summary>
+        /// <param name="type">Тип.</param>
+        public bool HasType(Type type)
+        {
+            return _types.ContainsKey(type);
+        }
 
-		/// <summary>
-		/// Содержит указанный тип.
-		/// </summary>
-		/// <param name="type">Тип.</param>
-		public bool HasType(Type type)
-		{
-			return _types.ContainsKey(type);
-		}
+        /// <summary>
+        ///     Содержит тип с указанным именем.
+        /// </summary>
+        /// <param name="name">Имя типа.</param>
+        public bool HasName(string name)
+        {
+            return _names.ContainsKey(name);
+        }
 
-		/// <summary>
-		/// Содержит тип с указанным именем.
-		/// </summary>
-		/// <param name="name">Имя типа.</param>
-		public bool HasName(string name)
-		{
-			return _names.ContainsKey(name);
-		}
+        /// <summary>
+        ///     Получить тип по имени типа.
+        /// </summary>
+        /// <param name="name">Имя типа.</param>
+        /// <returns>Тип.</returns>
+        public Type GetType(string name)
+        {
+            Type result;
 
+            _names.TryGetValue(name, out result);
 
-		/// <summary>
-		/// Получить тип по имени типа.
-		/// </summary>
-		/// <param name="name">Имя типа.</param>
-		/// <returns>Тип.</returns>
-		public Type GetType(string name)
-		{
-			Type result;
+            return result;
+        }
 
-			_names.TryGetValue(name, out result);
+        /// <summary>
+        ///     Получить имя типа по типу.
+        /// </summary>
+        /// <param name="type">Тип.</param>
+        /// <returns>Имя типа.</returns>
+        public string GetName(Type type)
+        {
+            string result;
 
-			return result;
-		}
+            _types.TryGetValue(type, out result);
 
-		/// <summary>
-		/// Получить имя типа по типу.
-		/// </summary>
-		/// <param name="type">Тип.</param>
-		/// <returns>Имя типа.</returns>
-		public string GetName(Type type)
-		{
-			string result;
+            return result;
+        }
 
-			_types.TryGetValue(type, out result);
+        /// <summary>
+        ///     Добавить тип.
+        /// </summary>
+        /// <param name="type">Тип.</param>
+        /// <param name="name">Имя типа.</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        public KnownTypesContainer Add(Type type, string name)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException("type");
+            }
 
-			return result;
-		}
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException("name");
+            }
 
+            if (_types.ContainsKey(type))
+            {
+                throw new ArgumentException(Resources.TypeIsAlreadyAdded, "type");
+            }
 
-		/// <summary>
-		/// Добавить тип.
-		/// </summary>
-		/// <param name="type">Тип.</param>
-		/// <param name="name">Имя типа.</param>
-		/// <exception cref="ArgumentNullException"></exception>
-		/// <exception cref="ArgumentException"></exception>
-		public KnownTypesContainer Add(Type type, string name)
-		{
-			if (type == null)
-			{
-				throw new ArgumentNullException("type");
-			}
+            if (_names.ContainsKey(name))
+            {
+                throw new ArgumentException(Resources.NameIsAlreadyAdded, "name");
+            }
 
-			if (string.IsNullOrWhiteSpace(name))
-			{
-				throw new ArgumentNullException("name");
-			}
+            if (type.IsInterface || type.IsAbstract)
+            {
+                throw new ArgumentException(Resources.TypeShouldNotBeAbstract, "type");
+            }
 
-			if (_types.ContainsKey(type))
-			{
-				throw new ArgumentException(Resources.TypeIsAlreadyAdded, "type");
-			}
+            if (
+                type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null,
+                    Type.EmptyTypes, null) == null)
+            {
+                throw new ArgumentException(Resources.TypeShouldHaveDefaultConstructor, "type");
+            }
 
-			if (_names.ContainsKey(name))
-			{
-				throw new ArgumentException(Resources.NameIsAlreadyAdded, "name");
-			}
+            _types.Add(type, name);
+            _names.Add(name, type);
 
-			if (type.IsInterface || type.IsAbstract)
-			{
-				throw new ArgumentException(Resources.TypeShouldNotBeAbstract, "type");
-			}
+            return this;
+        }
 
-			if (type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null) == null)
-			{
-				throw new ArgumentException(Resources.TypeShouldHaveDefaultConstructor, "type");
-			}
-
-			_types.Add(type, name);
-			_names.Add(name, type);
-
-			return this;
-		}
-
-		/// <summary>
-		/// Добавить тип.
-		/// </summary>
-		/// <typeparam name="T">Тип.</typeparam>
-		/// <param name="name">Имя типа.</param>
-		/// <exception cref="ArgumentNullException"></exception>
-		/// <exception cref="ArgumentException"></exception>
-		public KnownTypesContainer Add<T>(string name)
-		{
-			return Add(typeof(T), name);
-		}
-	}
+        /// <summary>
+        ///     Добавить тип.
+        /// </summary>
+        /// <typeparam name="T">Тип.</typeparam>
+        /// <param name="name">Имя типа.</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        public KnownTypesContainer Add<T>(string name)
+        {
+            return Add(typeof (T), name);
+        }
+    }
 }

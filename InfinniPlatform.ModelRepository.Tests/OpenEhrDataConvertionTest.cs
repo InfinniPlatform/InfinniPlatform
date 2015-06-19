@@ -1,18 +1,15 @@
-﻿using InfinniPlatform.Api.ModelRepository.MetadataObjectModel;
-using InfinniPlatform.ModelRepository.OpenEhrDataConverter;
-using InfinniPlatform.OceanInformatics.DataModelLoader;
-
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-
-using NUnit.Framework;
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using InfinniPlatform.Api.ModelRepository.MetadataObjectModel;
+using InfinniPlatform.ModelRepository.OpenEhrDataConverter;
+using InfinniPlatform.OceanInformatics.DataModelLoader;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using NUnit.Framework;
 
 namespace InfinniPlatform.ModelRepository.Tests
 {
@@ -31,7 +28,7 @@ namespace InfinniPlatform.ModelRepository.Tests
 
             var form25V2 =
                 JToken.ReadFrom(new JsonTextReader(new StreamReader("OpenEhrTestData/TemplateForm025.txt")))
-                      .ToObject<DataSchema>();
+                    .ToObject<DataSchema>();
             //var form66V2 =
             //    JToken.ReadFrom(new JsonTextReader(new StreamReader("OpenEhrTestData/TemplateForm066.txt")))
             //          .ToObject<DataSchema>();
@@ -66,17 +63,19 @@ namespace InfinniPlatform.ModelRepository.Tests
 
             var factory = new OceanOpenEhrFactory();
 
-            var archetypeExtractor = factory.BuildArchetypeExtractor(); 
-            var complexTypeExtractor = factory.BuildComplexTypeExtractor(); 
+            var archetypeExtractor = factory.BuildArchetypeExtractor();
+            var complexTypeExtractor = factory.BuildComplexTypeExtractor();
             var templateExtractor = factory.BuildTemplateExtractor();
-            var dataExtractor = factory.BuildDataConverter(); 
+            var dataExtractor = factory.BuildDataConverter();
 
             const string dataFileName1 = "OpenEhrTestData/025_1.xml";
             const string dataFileName2 = "OpenEhrTestData/025_2.xml";
             const string oetFileName = "OpenEhrTestData/template025.oet";
-            
+
             // Generating archetypes
-            foreach (var archetypeFile in Directory.GetFiles("OpenEhrTestData").Where(archetypeFile => archetypeFile.EndsWith("adl")))
+            foreach (
+                var archetypeFile in
+                    Directory.GetFiles("OpenEhrTestData").Where(archetypeFile => archetypeFile.EndsWith("adl")))
             {
                 var archetype = archetypeExtractor.Extract(archetypeFile);
                 Assert.IsNotNull(archetype);
@@ -134,25 +133,26 @@ namespace InfinniPlatform.ModelRepository.Tests
             // Convert first document 
             Assert.IsTrue(
                 dataExtractor.ConvertData(
-                new MemoryStream(Encoding.UTF8.GetBytes(compositions[0].ToString())), 
-                template, 
-                complexTypes, 
-                out errorCollection, 
-                out result));
+                    new MemoryStream(Encoding.UTF8.GetBytes(compositions[0].ToString())),
+                    template,
+                    complexTypes,
+                    out errorCollection,
+                    out result));
 
             sWatch.Stop();
 
             sourceFileContent = XDocument.Load(new FileStream(dataFileName2, FileMode.Open)).Root;
-            var sourceData = sourceFileContent.Element(XName.Get("data", sourceFileContent.GetDefaultNamespace().NamespaceName));
+            var sourceData =
+                sourceFileContent.Element(XName.Get("data", sourceFileContent.GetDefaultNamespace().NamespaceName));
 
             // Convert second document 
             Assert.IsTrue(
                 dataExtractor.ConvertData(
-                new MemoryStream(Encoding.UTF8.GetBytes(sourceData.ToString())), 
-                template,
-                complexTypes,
-                out errorCollection,
-                out result));
+                    new MemoryStream(Encoding.UTF8.GetBytes(sourceData.ToString())),
+                    template,
+                    complexTypes,
+                    out errorCollection,
+                    out result));
         }
     }
 }

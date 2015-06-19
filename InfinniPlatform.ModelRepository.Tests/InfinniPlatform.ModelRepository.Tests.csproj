@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -32,30 +32,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ArchetypeBuilder, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\ArchetypeBuilder.dll</HintPath>
-    </Reference>
-    <Reference Include="ArtefactBuilders, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\ArtefactBuilders.dll</HintPath>
-    </Reference>
-    <Reference Include="DesignByContract, Version=1.0.2746.28005, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\DesignByContract.dll</HintPath>
-    </Reference>
-    <Reference Include="EhrReaders, Version=1.5.2915.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\EhrReaders.dll</HintPath>
-    </Reference>
-    <Reference Include="EiffelSoftware.Runtime, Version=6.2.7.1629, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\EiffelSoftware.Runtime.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Moq">
-      <HintPath>..\packages\Moq.4.2.1408.0717\lib\net40\Moq.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -63,22 +40,6 @@
     <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="OceanEhr.Common, Version=1.5.4059.31483, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\OceanEhr.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="OceanEhr.OpenEhrV1, Version=1.5.3209.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\OceanEhr.OpenEhrV1.dll</HintPath>
-    </Reference>
-    <Reference Include="OceanInformatics.AdlParser, Version=1.4.0.1287, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\OceanInformatics.AdlParser.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenEhr.V1.Its.Xml, Version=1.0.1.4, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\OpenEhr.V1.Its.Xml.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -110,6 +71,10 @@
     <ProjectReference Include="..\InfinniPlatform.OceanInformatics\InfinniPlatform.OceanInformatics.csproj">
       <Project>{42cb828f-e466-42c7-b0c4-6e3bdb56d328}</Project>
       <Name>InfinniPlatform.OceanInformatics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Sdk.Application\InfinniPlatform.Sdk.Application.csproj">
+      <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
+      <Name>InfinniPlatform.Sdk.Application</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Tests\InfinniPlatform.Tests.csproj">
       <Project>{a46f638c-c9c5-49be-bc8d-8144e8c8f87a}</Project>

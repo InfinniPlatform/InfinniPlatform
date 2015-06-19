@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-
 using InfinniPlatform.UserInterface.ViewBuilders.Elements;
 using InfinniPlatform.UserInterface.ViewBuilders.Images;
 using InfinniPlatform.UserInterface.ViewBuilders.Scripts;
@@ -10,160 +9,152 @@ using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.LayoutPanels.Panel
 {
-	/// <summary>
-	/// Контейнер элементов представления в виде сворачиваемой прямоугольной области.
-	/// </summary>
-	public sealed class PanelElement : BaseElement<PanelControl>, ILayoutPanel
-	{
-		public PanelElement(View view)
-			: base(view)
-		{
-			Control.Expanded += OnPanelExpanded;
-			Control.Collapsed += OnPanelCollapsed;
-		}
+    /// <summary>
+    ///     Контейнер элементов представления в виде сворачиваемой прямоугольной области.
+    /// </summary>
+    public sealed class PanelElement : BaseElement<PanelControl>, ILayoutPanel
+    {
+        // Image
 
-		private void OnPanelExpanded(object sender, EventArgs e)
-		{
-			this.InvokeScript(OnExpanded);
-		}
+        private string _image;
+        // Items
 
-		private void OnPanelCollapsed(object sender, EventArgs e)
-		{
-			this.InvokeScript(OnCollapsed);
-		}
+        private readonly List<IElement> _items
+            = new List<IElement>();
 
+        public PanelElement(View view)
+            : base(view)
+        {
+            Control.Expanded += OnPanelExpanded;
+            Control.Collapsed += OnPanelCollapsed;
+        }
 
-		// Text
+        // Events
 
-		public override void SetText(string value)
-		{
-			base.SetText(value);
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события разворачивания.
+        /// </summary>
+        public ScriptDelegate OnExpanded { get; set; }
 
-			Control.Text = value;
-		}
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события сворачивания.
+        /// </summary>
+        public ScriptDelegate OnCollapsed { get; set; }
 
+        // Text
 
-		// Image
+        public override void SetText(string value)
+        {
+            base.SetText(value);
 
-		private string _image;
+            Control.Text = value;
+        }
 
-		/// <summary>
-		/// Возвращает изображение заголовка панели.
-		/// </summary>
-		public string GetImage()
-		{
-			return _image;
-		}
+        // Elements
 
-		/// <summary>
-		/// Устанавливает изображение заголовка панели.
-		/// </summary>
-		public void SetImage(string value)
-		{
-			_image = value;
+        public override IEnumerable<IElement> GetChildElements()
+        {
+            return GetItems();
+        }
 
-			Control.Image = ImageRepository.GetImage(value);
-		}
+        private void OnPanelExpanded(object sender, EventArgs e)
+        {
+            this.InvokeScript(OnExpanded);
+        }
 
+        private void OnPanelCollapsed(object sender, EventArgs e)
+        {
+            this.InvokeScript(OnCollapsed);
+        }
 
-		// Collapsible
+        /// <summary>
+        ///     Возвращает изображение заголовка панели.
+        /// </summary>
+        public string GetImage()
+        {
+            return _image;
+        }
 
-		/// <summary>
-		/// Возвращает значение, определяющее, разрешено ли сворачивание панели.
-		/// </summary>
-		public bool GetCollapsible()
-		{
-			return Control.IsCollapsible;
-		}
+        /// <summary>
+        ///     Устанавливает изображение заголовка панели.
+        /// </summary>
+        public void SetImage(string value)
+        {
+            _image = value;
 
-		/// <summary>
-		/// Устанавливает значение, определяющее, разрешено ли сворачивание панели.
-		/// </summary>
-		public void SetCollapsible(bool value)
-		{
-			Control.IsCollapsible = value;
-		}
+            Control.Image = ImageRepository.GetImage(value);
+        }
 
+        // Collapsible
 
-		// Collapsed
+        /// <summary>
+        ///     Возвращает значение, определяющее, разрешено ли сворачивание панели.
+        /// </summary>
+        public bool GetCollapsible()
+        {
+            return Control.IsCollapsible;
+        }
 
-		/// <summary>
-		/// Возвращает значение, определяющее, свернута ли панель.
-		/// </summary>
-		public bool GetCollapsed()
-		{
-			return Control.IsCollapsed;
-		}
+        /// <summary>
+        ///     Устанавливает значение, определяющее, разрешено ли сворачивание панели.
+        /// </summary>
+        public void SetCollapsible(bool value)
+        {
+            Control.IsCollapsible = value;
+        }
 
-		/// <summary>
-		/// Устанавливает значение, определяющее, свернута ли панель.
-		/// </summary>
-		public void SetCollapsed(bool value)
-		{
-			Control.IsCollapsed = value;
-		}
+        // Collapsed
 
+        /// <summary>
+        ///     Возвращает значение, определяющее, свернута ли панель.
+        /// </summary>
+        public bool GetCollapsed()
+        {
+            return Control.IsCollapsed;
+        }
 
-		// Items
+        /// <summary>
+        ///     Устанавливает значение, определяющее, свернута ли панель.
+        /// </summary>
+        public void SetCollapsed(bool value)
+        {
+            Control.IsCollapsed = value;
+        }
 
-		private readonly List<IElement> _items
-			= new List<IElement>();
+        /// <summary>
+        ///     Добавляет дочерний элемент.
+        /// </summary>
+        public void AddItem(IElement item)
+        {
+            _items.Add(item);
 
-		/// <summary>
-		/// Добавляет дочерний элемент.
-		/// </summary>
-		public void AddItem(IElement item)
-		{
-			_items.Add(item);
+            Control.Children.Add(item.GetControl<UIElement>());
+        }
 
-			Control.Children.Add(item.GetControl<UIElement>());
-		}
+        /// <summary>
+        ///     Удаляет дочерний элемент.
+        /// </summary>
+        public void RemoveItem(IElement item)
+        {
+            _items.Remove(item);
 
-		/// <summary>
-		/// Удаляет дочерний элемент.
-		/// </summary>
-		public void RemoveItem(IElement item)
-		{
-			_items.Remove(item);
+            Control.Children.Remove(item.GetControl<UIElement>());
+        }
 
-			Control.Children.Remove(item.GetControl<UIElement>());
-		}
+        /// <summary>
+        ///     Возвращает дочерний элемент по имени.
+        /// </summary>
+        public IElement GetItem(string name)
+        {
+            return _items.FirstOrDefault(i => i.GetName() == name);
+        }
 
-		/// <summary>
-		/// Возвращает дочерний элемент по имени.
-		/// </summary>
-		public IElement GetItem(string name)
-		{
-			return _items.FirstOrDefault(i => i.GetName() == name);
-		}
-
-		/// <summary>
-		/// Возвращает список дочерних элементов.
-		/// </summary>
-		public IEnumerable<IElement> GetItems()
-		{
-			return _items.AsReadOnly();
-		}
-
-
-		// Events
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события разворачивания.
-		/// </summary>
-		public ScriptDelegate OnExpanded { get; set; }
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события сворачивания.
-		/// </summary>
-		public ScriptDelegate OnCollapsed { get; set; }
-
-
-		// Elements
-
-		public override IEnumerable<IElement> GetChildElements()
-		{
-			return GetItems();
-		}
-	}
+        /// <summary>
+        ///     Возвращает список дочерних элементов.
+        /// </summary>
+        public IEnumerable<IElement> GetItems()
+        {
+            return _items.AsReadOnly();
+        }
+    }
 }

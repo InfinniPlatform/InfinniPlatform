@@ -1,11 +1,9 @@
-﻿using InfinniPlatform.Api.Events;
-using InfinniPlatform.Api.RestQuery.EventObjects;
-
-using Newtonsoft.Json.Linq;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using InfinniPlatform.Api.RestQuery.EventObjects;
+using InfinniPlatform.Sdk.Application.Events;
+using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Json
 {
@@ -29,33 +27,32 @@ namespace InfinniPlatform.Json
         }
 
         /// <summary>
-        ///   Получить список событий для генерации результата выборки
+        ///     Получить список событий для генерации результата выборки
         /// </summary>
         /// <param name="isLastToken">Признак последнего токена в списке</param>
         /// <returns>Список событий для генерации результата</returns>
         public IEnumerable<EventDefinition> GetResultObjectDefinitions(bool isLastToken)
         {
             var result = new List<EventDefinition>();
-            int collectionIndex = 0;
+            var collectionIndex = 0;
             //индекс элемента в коллекции выборки (в общем случае не совпадает с индексом элемента в выбираемой коллекции)
-            int projectionItemIndex = 0;
+            var projectionItemIndex = 0;
             foreach (var parsedToken in ParsedTokens)
             {
-
-                string tokenName = parsedToken.TokenName;
+                var tokenName = parsedToken.TokenName;
                 int index;
                 //список всех токенов по указанному пути
-                var tokenList = tokenName.Split(new char[] {'.'}, StringSplitOptions.RemoveEmptyEntries);
+                var tokenList = tokenName.Split(new[] {'.'}, StringSplitOptions.RemoveEmptyEntries);
                 //последний токен пути в списке, содержащий значение
                 var lastToken = tokenList.LastOrDefault();
                 //признак того, что последний токен является итемом коллекции
-                bool isCollectionItem = int.TryParse(lastToken, out index);
+                var isCollectionItem = int.TryParse(lastToken, out index);
                 //токен итема коллекции
-                string collectionItemToken = tokenList.Any()
+                var collectionItemToken = tokenList.Any()
                     ? string.Join(".", tokenList.Take(tokenList.Count() - 1))
                     : "";
 
-                JToken jToken = parsedToken.JToken;
+                var jToken = parsedToken.JToken;
 
                 var jProperty = jToken as JProperty;
                 if (jProperty != null)
@@ -70,7 +67,7 @@ namespace InfinniPlatform.Json
                         }
                         else
                         {
-                            result.Add(new EventDefinition()
+                            result.Add(new EventDefinition
                             {
                                 Action = EventType.CreateCollection,
                                 Property = tokenName
@@ -79,10 +76,10 @@ namespace InfinniPlatform.Json
                     }
                     else if (jProperty.Value.GetType() == typeof (JObject))
                     {
-                        result.Add(new EventDefinition()
+                        result.Add(new EventDefinition
                         {
                             Action = EventType.CreateContainer,
-                            Property = tokenName,
+                            Property = tokenName
                         });
                         if (isLastToken)
                         {
@@ -91,7 +88,7 @@ namespace InfinniPlatform.Json
                     }
                     else if (jProperty.Value.GetType() == typeof (JValue))
                     {
-                        result.Add(new EventDefinition()
+                        result.Add(new EventDefinition
                         {
                             Action = EventType.CreateProperty,
                             Property = tokenName,
@@ -106,7 +103,7 @@ namespace InfinniPlatform.Json
                         //событие генерируем с индексом в коллекции выборки
                         //т.к. tokenName м.б равно, например, ObjectMetadata.5, а в коллекции выборки индекс будет другим
                         var tokens = tokenList.ToList().Take(tokenList.Count() - 1).ToList();
-                        string tokenCollectionName = string.Join(".", tokens);
+                        var tokenCollectionName = string.Join(".", tokens);
 
                         result.AddRange(parsedToken.JToken.ToEventListCollectionItem(
                             tokenCollectionName,

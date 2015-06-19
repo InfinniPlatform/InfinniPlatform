@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.Repository;
-using InfinniPlatform.Api.Dynamic;
+using InfinniPlatform.DesignControls.Properties;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.DesignControls.PropertyDesigner
 {
@@ -13,7 +14,7 @@ namespace InfinniPlatform.DesignControls.PropertyDesigner
         {
             var repositoryItem = new RepositoryItemButtonEdit();
             var glyphButton = new EditorButton(ButtonPredefines.Glyph);
-            glyphButton.Image = Properties.Resources.zoom_16x16;
+            glyphButton.Image = Resources.zoom_16x16;
 
             repositoryItem.Buttons.Clear();
             repositoryItem.Buttons.Add(glyphButton);
@@ -25,9 +26,6 @@ namespace InfinniPlatform.DesignControls.PropertyDesigner
             return repositoryItem;
         }
 
-
-
-
         public static IEnumerable<dynamic> GetCollection(this object item, string property)
         {
             return item.GetProperty(property).ToEnumerable();
@@ -35,30 +33,29 @@ namespace InfinniPlatform.DesignControls.PropertyDesigner
 
         public static bool IsEmpty(dynamic value)
         {
-	        var result = true;
+            var result = true;
 
-	        if (value != null)
-	        {
-		        var valueAsString = value.ToString();
+            if (value != null)
+            {
+                var valueAsString = value.ToString();
 
-		        if (!string.IsNullOrEmpty(valueAsString))
-		        {
-			        var valueAsDynamic = DynamicWrapperExtensions.ToDynamic(value);
+                if (!string.IsNullOrEmpty(valueAsString))
+                {
+                    var valueAsDynamic = DynamicWrapperExtensions.ToDynamic(value);
 
-			        if (valueAsDynamic != null)
-			        {
-				        foreach (var property in valueAsDynamic)
-				        {
-					        result = false;
-							break;
-				        }
-			        }
-		        }
-	        }
+                    if (valueAsDynamic != null)
+                    {
+                        foreach (var property in valueAsDynamic)
+                        {
+                            result = false;
+                            break;
+                        }
+                    }
+                }
+            }
 
-	        return result;
+            return result;
         }
-
 
         public static void SetSimplePropertiesToInstance(this IPropertiesProvider propertiesProvider, dynamic instance)
         {
@@ -70,7 +67,8 @@ namespace InfinniPlatform.DesignControls.PropertyDesigner
             return properties.ContainsKey(propertyName) ? properties[propertyName].Value : null;
         }
 
-        public static void SetSimplePropertiesToInstance(this Dictionary<string, IControlProperty> simpleProperties, dynamic instance)
+        public static void SetSimplePropertiesToInstance(this Dictionary<string, IControlProperty> simpleProperties,
+            dynamic instance)
         {
             foreach (var simpleProperty in simpleProperties)
             {
@@ -84,12 +82,11 @@ namespace InfinniPlatform.DesignControls.PropertyDesigner
                 {
                     instance[simpleProperty.Key] = simpleProperty.Value.Value;
                 }
-
             }
         }
 
-
-        public static void SetSimplePropertiesFromInstance(this Dictionary<string, IControlProperty> simpleProperties, dynamic instance)
+        public static void SetSimplePropertiesFromInstance(this Dictionary<string, IControlProperty> simpleProperties,
+            dynamic instance)
         {
             foreach (var simpleProperty in simpleProperties.ToList())
             {
@@ -110,11 +107,11 @@ namespace InfinniPlatform.DesignControls.PropertyDesigner
                     }
                 }
             }
-
         }
 
-        public static void SetCollectionPropertiesFromInstance(this Dictionary<string, CollectionProperty> collectionProperties,
-                                                   dynamic instance)
+        public static void SetCollectionPropertiesFromInstance(
+            this Dictionary<string, CollectionProperty> collectionProperties,
+            dynamic instance)
         {
             foreach (var collectionProperty in collectionProperties)
             {
@@ -129,14 +126,14 @@ namespace InfinniPlatform.DesignControls.PropertyDesigner
             }
         }
 
-        public static void SetCollectionPropertiesToInstance(this Dictionary<string, CollectionProperty> collectionProperties,
-                                                   dynamic instance)
+        public static void SetCollectionPropertiesToInstance(
+            this Dictionary<string, CollectionProperty> collectionProperties,
+            dynamic instance)
         {
             foreach (var collectionProperty in collectionProperties)
             {
                 instance[collectionProperty.Key] = collectionProperty.Value.Items;
             }
         }
-
     }
 }

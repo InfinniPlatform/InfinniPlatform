@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.Dynamic;
+
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 {

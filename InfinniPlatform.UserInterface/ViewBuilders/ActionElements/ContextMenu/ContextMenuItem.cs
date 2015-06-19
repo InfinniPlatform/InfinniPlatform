@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-
 using InfinniPlatform.UserInterface.ViewBuilders.Actions;
 using InfinniPlatform.UserInterface.ViewBuilders.Elements;
 using InfinniPlatform.UserInterface.ViewBuilders.Images;
@@ -12,161 +11,152 @@ using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.ActionElements.ContextMenu
 {
-	/// <summary>
-	/// Элемент контекстного меню.
-	/// </summary>
-	public sealed class ContextMenuItem : ContextMenuItemBase<MenuItem>
-	{
-		public ContextMenuItem(View view)
-			: base(view)
-		{
-			_items = new ObservableCollection<FrameworkElement>();
+    /// <summary>
+    ///     Элемент контекстного меню.
+    /// </summary>
+    public sealed class ContextMenuItem : ContextMenuItemBase<MenuItem>
+    {
+        // Action
 
-			Control.ItemsSource = _items;
+        private BaseAction _action;
+        // Image
 
-			Control.Click += OnClickHandler;
-		}
+        private string _image;
+        // Items
 
+        private readonly ObservableCollection<FrameworkElement> _items;
 
-		private void OnClickHandler(object sender, RoutedEventArgs e)
-		{
-			this.InvokeScript(OnClick);
+        public ContextMenuItem(View view)
+            : base(view)
+        {
+            _items = new ObservableCollection<FrameworkElement>();
 
-			var action = GetAction();
+            Control.ItemsSource = _items;
 
-			if (action != null)
-			{
-				action.Execute();
-			}
-		}
+            Control.Click += OnClickHandler;
+        }
 
+        // OnClick
 
-		// Text
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события нажатия на элемент.
+        /// </summary>
+        public ScriptDelegate OnClick { get; set; }
 
-		public override void SetText(string value)
-		{
-			base.SetText(value);
+        private void OnClickHandler(object sender, RoutedEventArgs e)
+        {
+            this.InvokeScript(OnClick);
 
-			Control.Header = value;
-		}
+            var action = GetAction();
 
-		// Hotkey
+            if (action != null)
+            {
+                action.Execute();
+            }
+        }
 
-		public override void SetHotkey(string value)
-		{
-			base.SetHotkey(value);
+        // Text
 
-			Control.InputGestureText = value;
-		}
+        public override void SetText(string value)
+        {
+            base.SetText(value);
 
-		// Image
+            Control.Header = value;
+        }
 
-		private string _image;
+        // Hotkey
 
-		/// <summary>
-		/// Возвращает изображение элемента.
-		/// </summary>
-		public string GetImage()
-		{
-			return _image;
-		}
+        public override void SetHotkey(string value)
+        {
+            base.SetHotkey(value);
 
-		/// <summary>
-		/// Устанавливает изображение элемента.
-		/// </summary>
-		public void SetImage(string value)
-		{
-			_image = value;
+            Control.InputGestureText = value;
+        }
 
-			var image = ImageRepository.GetImage(value);
-			Control.Icon = (image != null) ? new Image { Source = image } : null;
-		}
+        /// <summary>
+        ///     Возвращает изображение элемента.
+        /// </summary>
+        public string GetImage()
+        {
+            return _image;
+        }
 
+        /// <summary>
+        ///     Устанавливает изображение элемента.
+        /// </summary>
+        public void SetImage(string value)
+        {
+            _image = value;
 
-		// Action
+            var image = ImageRepository.GetImage(value);
+            Control.Icon = (image != null) ? new Image {Source = image} : null;
+        }
 
-		private BaseAction _action;
+        /// <summary>
+        ///     Возвращает действие при нажатии на элемент.
+        /// </summary>
+        public BaseAction GetAction()
+        {
+            return _action;
+        }
 
-		/// <summary>
-		/// Возвращает действие при нажатии на элемент.
-		/// </summary>
-		public BaseAction GetAction()
-		{
-			return _action;
-		}
+        /// <summary>
+        ///     Устанавливает действие при нажатии на элемент.
+        /// </summary>
+        public void SetAction(BaseAction value)
+        {
+            _action = value;
+        }
 
-		/// <summary>
-		/// Устанавливает действие при нажатии на элемент.
-		/// </summary>
-		public void SetAction(BaseAction value)
-		{
-			_action = value;
-		}
+        /// <summary>
+        ///     Добавляет элемент в список.
+        /// </summary>
+        public void AddItem(IContextMenuItem item)
+        {
+            _items.Add(item.GetControl<FrameworkElement>());
+        }
 
+        /// <summary>
+        ///     Удаляет элемент из списка.
+        /// </summary>
+        public void RemoveItem(IContextMenuItem item)
+        {
+            _items.Remove(item.GetControl<FrameworkElement>());
+        }
 
-		// OnClick
+        /// <summary>
+        ///     Возвращает элемент по имени.
+        /// </summary>
+        public IContextMenuItem GetItem(string name)
+        {
+            var itemControl = _items.FirstOrDefault(i => i.Name == name);
 
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события нажатия на элемент.
-		/// </summary>
-		public ScriptDelegate OnClick { get; set; }
+            return (itemControl != null) ? ContextMenuElement.GetMenuItem(itemControl) : null;
+        }
 
+        /// <summary>
+        ///     Возвращает список элементов.
+        /// </summary>
+        public IEnumerable<IContextMenuItem> GetItems()
+        {
+            return _items.Select(ContextMenuElement.GetMenuItem).ToArray();
+        }
 
-		// Items
+        // Click
 
-		private readonly ObservableCollection<FrameworkElement> _items;
+        /// <summary>
+        ///     Осуществляет программное нажатие на элемент.
+        /// </summary>
+        public void Click()
+        {
+            Control.RaiseEvent(new RoutedEventArgs(MenuItem.ClickEvent));
+        }
 
-		/// <summary>
-		/// Добавляет элемент в список.
-		/// </summary>
-		public void AddItem(IContextMenuItem item)
-		{
-			_items.Add(item.GetControl<FrameworkElement>());
-		}
+        // Elements
 
-		/// <summary>
-		/// Удаляет элемент из списка.
-		/// </summary>
-		public void RemoveItem(IContextMenuItem item)
-		{
-			_items.Remove(item.GetControl<FrameworkElement>());
-		}
-
-		/// <summary>
-		/// Возвращает элемент по имени.
-		/// </summary>
-		public IContextMenuItem GetItem(string name)
-		{
-			var itemControl = _items.FirstOrDefault(i => i.Name == name);
-
-			return (itemControl != null) ? ContextMenuElement.GetMenuItem(itemControl) : null;
-		}
-
-		/// <summary>
-		/// Возвращает список элементов.
-		/// </summary>
-		public IEnumerable<IContextMenuItem> GetItems()
-		{
-			return _items.Select(ContextMenuElement.GetMenuItem).ToArray();
-		}
-
-
-		// Click
-
-		/// <summary>
-		/// Осуществляет программное нажатие на элемент.
-		/// </summary>
-		public void Click()
-		{
-			Control.RaiseEvent(new RoutedEventArgs(MenuItem.ClickEvent));
-		}
-
-
-		// Elements
-
-		public override IEnumerable<IElement> GetChildElements()
-		{
-			return GetItems();
-		}
-	}
+        public override IEnumerable<IElement> GetChildElements()
+        {
+            return GetItems();
+        }
+    }
 }

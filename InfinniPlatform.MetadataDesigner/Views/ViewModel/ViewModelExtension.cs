@@ -4,7 +4,6 @@ using DevExpress.XtraEditors.Controls;
 
 using InfinniPlatform.Api.Context;
 using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
@@ -22,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 {

@@ -2,8 +2,9 @@
 
 namespace InfinniPlatform.PrintViewDesigner.Controls.PrintViewTreeBuilders
 {
-	interface IPrintElementNodeFactory
-	{
-		void Create(PrintElementNodeBuilder builder, ICollection<PrintElementNode> elements, PrintElementNode elementNode);
-	}
+    internal interface IPrintElementNodeFactory
+    {
+        void Create(PrintElementNodeBuilder builder, ICollection<PrintElementNode> elements,
+            PrintElementNode elementNode);
+    }
 }

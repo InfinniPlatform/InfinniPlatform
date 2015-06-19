@@ -1,184 +1,178 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
-
+using EnvDTE;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Api.Settings;
-
-using EnvDTE;
-
 using InfinniPlatform.Api.Threading;
-
 using Newtonsoft.Json;
 
 namespace InfinniPlatform.Api.TestEnvironment
 {
-	sealed class TestServer : IDisposable
-	{
-		private volatile TestServerInfo _serverInfo;
-		private static readonly object ServerInfoSync = new object();
-		private const string TestServerExe = "InfinniPlatform.RestfulApi.exe";
-		private static readonly TimeSpan StartTimeout = TimeSpan.FromMinutes(20);
+    internal sealed class TestServer : IDisposable
+    {
+        private const string TestServerExe = "InfinniPlatform.RestfulApi.exe";
+        private static readonly object ServerInfoSync = new object();
+        private static readonly TimeSpan StartTimeout = TimeSpan.FromMinutes(20);
+        private volatile TestServerInfo _serverInfo;
 
+        /// <summary>
+        ///     Освобождает ресурсы.
+        /// </summary>
+        public void Dispose()
+        {
+            Stop();
+        }
 
-		/// <summary>
-		/// Запускает тестовый сервер.
-		/// </summary>
-		/// <param name="configParameters">Параметры тестового сервера.</param>
-		public void Start(Action<TestServerParametersBuilder> configParameters)
-		{
-			var parametersBuilder = new TestServerParametersBuilder();
-			configParameters(parametersBuilder);
+        /// <summary>
+        ///     Запускает тестовый сервер.
+        /// </summary>
+        /// <param name="configParameters">Параметры тестового сервера.</param>
+        public void Start(Action<TestServerParametersBuilder> configParameters)
+        {
+            var parametersBuilder = new TestServerParametersBuilder();
+            configParameters(parametersBuilder);
 
-			var parameters = parametersBuilder.GetParameters();
-			var hostingConfig = parameters.HostingConfig;
+            var parameters = parametersBuilder.GetParameters();
+            var hostingConfig = parameters.HostingConfig;
 
-			lock (ServerInfoSync)
-			{
-				// Поиск и остановка существующего сервера
-				var existingServer = TestServerTracker.FindTrackedServer(hostingConfig);
-				StopExistingTestServer(existingServer);
+            lock (ServerInfoSync)
+            {
+                // Поиск и остановка существующего сервера
+                var existingServer = TestServerTracker.FindTrackedServer(hostingConfig);
+                StopExistingTestServer(existingServer);
 
-				// Запуск нового сервера
-				_serverInfo = StartNewTestServer(parameters);
+                // Запуск нового сервера
+                _serverInfo = StartNewTestServer(parameters);
 
-				// Ожидание инициализации
-				WaitInitTestServer(parameters);
+                // Ожидание инициализации
+                WaitInitTestServer(parameters);
 
-				ControllerRoutingFactory.Instance = new ControllerRoutingFactory(hostingConfig);
+                ControllerRoutingFactory.Instance = new ControllerRoutingFactory(hostingConfig);
 
 #if DEBUG
-				if (!parameters.DoNotAttachDebug)
-				{
-					AttachToTestServer();
-				}
+                if (!parameters.DoNotAttachDebug)
+                {
+                    AttachToTestServer();
+                }
 #endif
-			}
-		}
+            }
+        }
 
-		/// <summary>
-		/// Останавливает тестовый сервер.
-		/// </summary>
-		public void Stop()
-		{
-			if (_serverInfo != null)
-			{
-				lock (ServerInfoSync)
-				{
-					if (_serverInfo != null)
-					{
-						StopExistingTestServer(_serverInfo);
+        /// <summary>
+        ///     Останавливает тестовый сервер.
+        /// </summary>
+        public void Stop()
+        {
+            if (_serverInfo != null)
+            {
+                lock (ServerInfoSync)
+                {
+                    if (_serverInfo != null)
+                    {
+                        StopExistingTestServer(_serverInfo);
 
-						_serverInfo = null;
-					}
-				}
-			}
-		}
+                        _serverInfo = null;
+                    }
+                }
+            }
+        }
 
-		/// <summary>
-		/// Освобождает ресурсы.
-		/// </summary>
-		public void Dispose()
-		{
-			Stop();
-		}
+        private static void StopExistingTestServer(TestServerInfo testServerInfo)
+        {
+            if (testServerInfo != null)
+            {
+                try
+                {
+                    testServerInfo.ServerProcess.StopProcess();
+                }
+                catch
+                {
+                    // Ошибка остановки сервера никому не интересна
+                }
+                finally
+                {
+                    TestServerTracker.RemoveTrackedServer(testServerInfo);
+                }
+            }
+        }
 
+        private static TestServerInfo StartNewTestServer(TestServerParameters parameters)
+        {
+            var testServerDir = AppSettings.GetValue("RestServerPath", Directory.GetCurrentDirectory());
+            var testServerExe = Path.Combine(testServerDir, TestServerExe);
+            var testServerExeArgs = JsonConvert.SerializeObject(parameters).Replace("\"", "'");
+            var testServerProcess = new ProcessDispatcher(testServerExe);
 
-		private static void StopExistingTestServer(TestServerInfo testServerInfo)
-		{
-			if (testServerInfo != null)
-			{
-				try
-				{
-					testServerInfo.ServerProcess.StopProcess();
-				}
-				catch
-				{
-					// Ошибка остановки сервера никому не интересна
-				}
-				finally
-				{
-					TestServerTracker.RemoveTrackedServer(testServerInfo);
-				}
-			}
-		}
+            var testServerInfo = new TestServerInfo
+            {
+                ServerProcess = testServerProcess,
+                HostingConfig = parameters.HostingConfig
+            };
 
-		private static TestServerInfo StartNewTestServer(TestServerParameters parameters)
-		{
-			var testServerDir = AppSettings.GetValue("RestServerPath", Directory.GetCurrentDirectory());
-			var testServerExe = Path.Combine(testServerDir, TestServerExe);
-			var testServerExeArgs = JsonConvert.SerializeObject(parameters).Replace("\"", "'");
-			var testServerProcess = new ProcessDispatcher(testServerExe);
+            testServerProcess.StartProcess(testServerExeArgs);
+            TestServerTracker.AddTrackedServer(testServerInfo);
 
-			var testServerInfo = new TestServerInfo
-								 {
-									 ServerProcess = testServerProcess,
-									 HostingConfig = parameters.HostingConfig
-								 };
+            return testServerInfo;
+        }
 
-			testServerProcess.StartProcess(testServerExeArgs);
-			TestServerTracker.AddTrackedServer(testServerInfo);
+        private static void WaitInitTestServer(TestServerParameters parameters)
+        {
+            var initEventName = string.Format("Api_{0}", parameters.GetServerBaseAddress());
 
-			return testServerInfo;
-		}
+            using (var initEvent = new ProcessEvent(initEventName))
+            {
+                initEvent.Wait(StartTimeout);
+            }
+        }
 
-		private static void WaitInitTestServer(TestServerParameters parameters)
-		{
-			var initEventName = string.Format("Api_{0}", parameters.GetServerBaseAddress());
+        private static void AttachToTestServer()
+        {
+            var repeats = 0;
 
-			using (var initEvent = new ProcessEvent(initEventName))
-			{
-				initEvent.Wait(StartTimeout);
-			}
-		}
+            DTE dte;
 
-		private static void AttachToTestServer()
-		{
-			var repeats = 0;
+            try
+            {
+                dte = (DTE) Marshal.GetActiveObject("VisualStudio.DTE.11.0");
+            }
+            catch
+            {
+                dte = (DTE) Marshal.GetActiveObject("VisualStudio.DTE.12.0");
+            }
 
-			DTE dte;
+            while (repeats < 20)
+            {
+                try
+                {
+                    var procCount = dte.Debugger.DebuggedProcesses.Count;
 
-			try
-			{
-				dte = (DTE)Marshal.GetActiveObject("VisualStudio.DTE.11.0");
-			}
-			catch
-			{
-				dte = (DTE)Marshal.GetActiveObject("VisualStudio.DTE.12.0");
-			}
+                    if (procCount > 0)
+                    {
+                        var processes = dte.Debugger.LocalProcesses;
 
-			while (repeats < 20)
-			{
-				try
-				{
-					int procCount = dte.Debugger.DebuggedProcesses.Count;
+                        foreach (Process proc in processes)
+                        {
+                            if (proc.Name.Contains(TestServerExe))
+                            {
+                                proc.Attach();
+                                return;
+                            }
+                        }
+                    }
 
-					if (procCount > 0)
-					{
-						var processes = dte.Debugger.LocalProcesses;
+                    return;
+                }
+                catch
+                {
+                    repeats++;
 
-						foreach (Process proc in processes)
-						{
-							if (proc.Name.Contains(TestServerExe))
-							{
-								proc.Attach();
-								return;
-							}
-						}
-					}
+                    Console.WriteLine(Resources.AttemptAttachToTestServer, repeats);
+                }
+            }
 
-					return;
-				}
-				catch
-				{
-					repeats++;
-
-					Console.WriteLine(Resources.AttemptAttachToTestServer, repeats);
-				}
-			}
-
-			throw new InvalidOperationException(Resources.CannotAttachToTestServer);
-		}
-	}
+            throw new InvalidOperationException(Resources.CannotAttachToTestServer);
+        }
+    }
 }

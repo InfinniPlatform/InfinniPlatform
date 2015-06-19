@@ -3,23 +3,23 @@
 namespace InfinniPlatform.Modules
 {
     /// <summary>
-    ///   Модуль установки сервисов конфигурации
+    ///     Модуль установки сервисов конфигурации
     /// </summary>
-	public interface IModuleInstaller
+    public interface IModuleInstaller
     {
         /// <summary>
-        ///  Установить модуль приложения
+        ///     Получить наименование модуля приложения
         /// </summary>
-        IModule InstallModule();
-
-		/// <summary>
-		///   Получить наименование модуля приложения
-		/// </summary>
-	    string ModuleName { get;  }
+        string ModuleName { get; }
 
         /// <summary>
-        ///  Является ли модуль системным (стартует перед остальными, не может ссылаться на другие системные модули)
+        ///     Является ли модуль системным (стартует перед остальными, не может ссылаться на другие системные модули)
         /// </summary>
         bool IsSystem { get; }
-	}
+
+        /// <summary>
+        ///     Установить модуль приложения
+        /// </summary>
+        IModule InstallModule();
+    }
 }

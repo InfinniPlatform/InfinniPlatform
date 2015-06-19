@@ -1,217 +1,225 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
-
 using DevExpress.Xpf.Core;
-
 using InfinniPlatform.UserInterface.ViewBuilders.Images;
 using InfinniPlatform.UserInterface.ViewBuilders.LayoutPanels;
 using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.LinkViews
 {
-	/// <summary>
-	/// Ссылка на представление.
-	/// </summary>
-	public sealed class LinkView
-	{
-		public LinkView(View appView, View parentView, Func<View> viewFactory)
-		{
-			_appView = appView;
-			_parentView = parentView;
-			_viewFactory = viewFactory;
-		}
+    /// <summary>
+    ///     Ссылка на представление.
+    /// </summary>
+    public sealed class LinkView
+    {
+        // OpenMode
 
+        private OpenMode _openMode = OpenMode.TabPage;
+        private readonly View _appView;
+        private readonly View _parentView;
+        private readonly Func<View> _viewFactory;
 
-		private readonly View _appView;
-		private readonly View _parentView;
-		private readonly Func<View> _viewFactory;
+        public LinkView(View appView, View parentView, Func<View> viewFactory)
+        {
+            _appView = appView;
+            _parentView = parentView;
+            _viewFactory = viewFactory;
+        }
 
+        /// <summary>
+        ///     Возвращает способ открытия представления.
+        /// </summary>
+        public OpenMode GetOpenMode()
+        {
+            return _openMode;
+        }
 
-		// OpenMode
+        /// <summary>
+        ///     Устанавливает способ открытия представления.
+        /// </summary>
+        public void SetOpenMode(OpenMode value)
+        {
+            _openMode = value;
+        }
 
-		private OpenMode _openMode = OpenMode.TabPage;
+        // View
 
-		/// <summary>
-		/// Возвращает способ открытия представления.
-		/// </summary>
-		public OpenMode GetOpenMode()
-		{
-			return _openMode;
-		}
+        /// <summary>
+        ///     Создает представление.
+        /// </summary>
+        public View CreateView()
+        {
+            var view = _viewFactory();
+            view.OnOpening += (c, a) => OpenView(view);
 
-		/// <summary>
-		/// Устанавливает способ открытия представления.
-		/// </summary>
-		public void SetOpenMode(OpenMode value)
-		{
-			_openMode = value;
-		}
+            return view;
+        }
 
+        private void OpenView(View view)
+        {
+            if (view != null)
+            {
+                ViewRegistry.OnOpeningView(view);
 
-		// View
+                switch (_openMode)
+                {
+                    case OpenMode.None:
+                        OpenViewInNone(view, _parentView);
+                        break;
+                    case OpenMode.TabPage:
+                        OpenViewInTabPage(view, _parentView);
+                        break;
+                    case OpenMode.AppTabPage:
+                        OpenViewInTabPage(view, _appView);
+                        break;
+                    default:
+                        OpenViewInDialog(view, _parentView);
+                        break;
+                }
+            }
+        }
 
-		/// <summary>
-		/// Создает представление.
-		/// </summary>
-		public View CreateView()
-		{
-			var view = _viewFactory();
-			view.OnOpening += (c, a) => OpenView(view);
+        private static bool CloseView(View view)
+        {
+            if (view != null)
+            {
+                return ViewRegistry.OnClosingView(view);
+            }
 
-			return view;
-		}
+            return true;
+        }
 
-		private void OpenView(View view)
-		{
-			if (view != null)
-			{
-				ViewRegistry.OnOpeningView(view);
+        private static void OpenViewInNone(View view, View parent)
+        {
+            var closingHandling = false;
+            view.OnClosing +=
+                (c, a) =>
+                    TryExecuteBlock(ref closingHandling, () => a.IsCancel = (a.IsCancel == true) || !CloseView(view));
+        }
 
-				switch (_openMode)
-				{
-					case OpenMode.None:
-						OpenViewInNone(view, _parentView);
-						break;
-					case OpenMode.TabPage:
-						OpenViewInTabPage(view, _parentView);
-						break;
-					case OpenMode.AppTabPage:
-						OpenViewInTabPage(view, _appView);
-						break;
-					default:
-						OpenViewInDialog(view, _parentView);
-						break;
-				}
-			}
-		}
+        private static void OpenViewInDialog(View view, View parent)
+        {
+            var container = new DXWindow
+            {
+                Width = 800,
+                Height = 500,
+                ShowInTaskbar = true,
+                Title = view.GetText() ?? string.Empty,
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                Content = view.GetControl()
+            };
 
-		private static bool CloseView(View view)
-		{
-			if (view != null)
-			{
-				return ViewRegistry.OnClosingView(view);
-			}
+            if (parent != null)
+            {
+                container.ShowIcon = false;
+                container.WindowState = WindowState.Normal;
+                container.WindowStyle = WindowStyle.ToolWindow;
 
-			return true;
-		}
+                // Закрытие диалога по нажатию на Escape
+                container.PreviewKeyDown += (s, e) =>
+                {
+                    if (e.Key == Key.Escape)
+                    {
+                        container.Close();
+                    }
+                };
+            }
+            else
+            {
+                container.ShowIcon = true;
+                container.WindowState = WindowState.Maximized;
+                container.WindowStyle = WindowStyle.SingleBorderWindow;
+                container.Icon = ImageRepository.GetImage(view.GetImage());
+            }
 
-		private static void OpenViewInNone(View view, View parent)
-		{
-			var closingHandling = false;
-			view.OnClosing += (c, a) => TryExecuteBlock(ref closingHandling, () => a.IsCancel = (a.IsCancel == true) || !CloseView(view));
-		}
+            var closingHandling = false;
+            var closeHandling = false;
+            view.OnClosing +=
+                (c, a) =>
+                    TryExecuteBlock(ref closingHandling, () => a.IsCancel = (a.IsCancel == true) || !CloseView(view));
+            view.OnClosed += (c, a) => TryExecuteBlock(ref closeHandling, container.Close);
+            container.Closing +=
+                (c, a) => TryExecuteBlock(ref closeHandling, () => a.Cancel = a.Cancel || !view.Close());
 
-		private static void OpenViewInDialog(View view, View parent)
-		{
-			var container = new DXWindow
-							{
-								Width = 800,
-								Height = 500,
-								ShowInTaskbar = true,
-								Title = view.GetText() ?? string.Empty,
-								WindowStartupLocation = WindowStartupLocation.CenterScreen,
-								Content = view.GetControl()
-							};
+            var gotFocusHandling = false;
+            view.OnGotFocus += (c, a) => TryExecuteBlock(ref gotFocusHandling, () => container.Focus());
+            container.GotFocus +=
+                (s, e) => TryExecuteBlock(ref gotFocusHandling, () => view.InvokeScript(view.OnGotFocus));
 
-			if (parent != null)
-			{
-				container.ShowIcon = false;
-				container.WindowState = WindowState.Normal;
-				container.WindowStyle = WindowStyle.ToolWindow;
+            var lostFocusHandling = false;
+            container.LostFocus +=
+                (s, e) => TryExecuteBlock(ref lostFocusHandling, () => view.InvokeScript(view.OnLostFocus));
 
-				// Закрытие диалога по нажатию на Escape
-				container.PreviewKeyDown += (s, e) =>
-											{
-												if (e.Key == Key.Escape)
-												{
-													container.Close();
-												}
-											};
-			}
-			else
-			{
-				container.ShowIcon = true;
-				container.WindowState = WindowState.Maximized;
-				container.WindowStyle = WindowStyle.SingleBorderWindow;
-				container.Icon = ImageRepository.GetImage(view.GetImage());
-			}
+            view.OnTextChanged += (c, a) => container.Title = a.Value;
 
-			var closingHandling = false;
-			var closeHandling = false;
-			view.OnClosing += (c, a) => TryExecuteBlock(ref closingHandling, () => a.IsCancel = (a.IsCancel == true) || !CloseView(view));
-			view.OnClosed += (c, a) => TryExecuteBlock(ref closeHandling, container.Close);
-			container.Closing += (c, a) => TryExecuteBlock(ref closeHandling, () => a.Cancel = a.Cancel || !view.Close());
+            container.ShowDialog();
+        }
 
-			var gotFocusHandling = false;
-			view.OnGotFocus += (c, a) => TryExecuteBlock(ref gotFocusHandling, () => container.Focus());
-			container.GotFocus += (s, e) => TryExecuteBlock(ref gotFocusHandling, () => view.InvokeScript(view.OnGotFocus));
+        private static void OpenViewInTabPage(View view, View parent)
+        {
+            if (parent != null)
+            {
+                var parentTabPanel = parent.GetLayoutPanel() as ITabPanel;
 
-			var lostFocusHandling = false;
-			container.LostFocus += (s, e) => TryExecuteBlock(ref lostFocusHandling, () => view.InvokeScript(view.OnLostFocus));
+                if (parentTabPanel != null)
+                {
+                    var container = parentTabPanel.CreatePage(view);
+                    container.SetCanClose(true);
+                    container.SetText(view.GetText());
+                    container.SetToolTip(view.GetToolTip());
+                    container.SetImage(view.GetImage());
+                    container.SetLayoutPanel(view);
 
-			view.OnTextChanged += (c, a) => container.Title = a.Value;
+                    parentTabPanel.AddPage(container);
+                    parentTabPanel.SetSelectedPage(container);
 
-			container.ShowDialog();
-		}
+                    var closingHandling = false;
+                    var closeHandling = false;
+                    view.OnClosing +=
+                        (c, a) =>
+                            TryExecuteBlock(ref closingHandling,
+                                () => a.IsCancel = (a.IsCancel == true) || !CloseView(view));
+                    view.OnClosed += (c, a) => TryExecuteBlock(ref closeHandling, () => container.Close());
+                    container.OnClosing +=
+                        (c, a) =>
+                            TryExecuteBlock(ref closeHandling, () => a.IsCancel = (a.IsCancel == true) || !view.Close());
 
-		private static void OpenViewInTabPage(View view, View parent)
-		{
-			if (parent != null)
-			{
-				var parentTabPanel = parent.GetLayoutPanel() as ITabPanel;
+                    var gotFocusHandling = false;
+                    view.OnGotFocus += (c, a) => TryExecuteBlock(ref gotFocusHandling, () => container.Focus());
+                    container.OnGotFocus +=
+                        (s, e) => TryExecuteBlock(ref gotFocusHandling, () => view.InvokeScript(view.OnGotFocus));
 
-				if (parentTabPanel != null)
-				{
-					var container = parentTabPanel.CreatePage(view);
-					container.SetCanClose(true);
-					container.SetText(view.GetText());
-					container.SetToolTip(view.GetToolTip());
-					container.SetImage(view.GetImage());
-					container.SetLayoutPanel(view);
+                    var lostFocusHandling = false;
+                    container.OnLostFocus +=
+                        (s, e) => TryExecuteBlock(ref lostFocusHandling, () => view.InvokeScript(view.OnLostFocus));
 
-					parentTabPanel.AddPage(container);
-					parentTabPanel.SetSelectedPage(container);
+                    view.OnTextChanged += (c, a) => container.SetText(a.Value as string);
 
-					var closingHandling = false;
-					var closeHandling = false;
-					view.OnClosing += (c, a) => TryExecuteBlock(ref closingHandling, () => a.IsCancel = (a.IsCancel == true) || !CloseView(view));
-					view.OnClosed += (c, a) => TryExecuteBlock(ref closeHandling, () => container.Close());
-					container.OnClosing += (c, a) => TryExecuteBlock(ref closeHandling, () => a.IsCancel = (a.IsCancel == true) || !view.Close());
+                    return;
+                }
+            }
 
-					var gotFocusHandling = false;
-					view.OnGotFocus += (c, a) => TryExecuteBlock(ref gotFocusHandling, () => container.Focus());
-					container.OnGotFocus += (s, e) => TryExecuteBlock(ref gotFocusHandling, () => view.InvokeScript(view.OnGotFocus));
+            OpenViewInDialog(view, parent);
+        }
 
-					var lostFocusHandling = false;
-					container.OnLostFocus += (s, e) => TryExecuteBlock(ref lostFocusHandling, () => view.InvokeScript(view.OnLostFocus));
+        private static void TryExecuteBlock(ref bool insideBlock, Action actionBlock)
+        {
+            if (!insideBlock)
+            {
+                // ReSharper disable RedundantAssignment
+                insideBlock = true;
+                // ReSharper restore RedundantAssignment
 
-					view.OnTextChanged += (c, a) => container.SetText(a.Value as string);
-
-					return;
-				}
-			}
-
-			OpenViewInDialog(view, parent);
-		}
-
-		private static void TryExecuteBlock(ref bool insideBlock, Action actionBlock)
-		{
-			if (!insideBlock)
-			{
-				// ReSharper disable RedundantAssignment
-				insideBlock = true;
-				// ReSharper restore RedundantAssignment
-
-				try
-				{
-					actionBlock();
-				}
-				finally
-				{
-					insideBlock = false;
-				}
-			}
-		}
-	}
+                try
+                {
+                    actionBlock();
+                }
+                finally
+                {
+                    insideBlock = false;
+                }
+            }
+        }
+    }
 }

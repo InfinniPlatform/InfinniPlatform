@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace InfinniPlatform.Api.Dynamic
+namespace InfinniPlatform.Sdk.Application.Dynamic
 {
 	/// <summary>
 	/// Описание свойства динамического объекта <see cref="DynamicWrapper"/>.

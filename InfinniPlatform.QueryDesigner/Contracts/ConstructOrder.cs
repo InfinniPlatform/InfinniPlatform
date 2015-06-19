@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace InfinniPlatform.QueryDesigner.Contracts
+﻿namespace InfinniPlatform.QueryDesigner.Contracts
 {
-	public enum ConstructOrder
-	{
-		ConstructFrom = 1,
-		ConstructJoin = 2,
-		ConstructWhere = 3,
-		ConstructSelect = 4,
-		ConstructFullQuery = 5
-	}
+    public enum ConstructOrder
+    {
+        ConstructFrom = 1,
+        ConstructJoin = 2,
+        ConstructWhere = 3,
+        ConstructSelect = 4,
+        ConstructFullQuery = 5
+    }
 }

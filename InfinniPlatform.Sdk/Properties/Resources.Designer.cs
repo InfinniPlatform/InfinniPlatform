@@ -340,6 +340,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to invoke custom user service: {0}.
+        /// </summary>
+        internal static string UnableToInvokeCustomService {
+            get {
+                return ResourceManager.GetString("UnableToInvokeCustomService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to remove session with exception: {0}.
         /// </summary>
         internal static string UnableToRemoveSession {

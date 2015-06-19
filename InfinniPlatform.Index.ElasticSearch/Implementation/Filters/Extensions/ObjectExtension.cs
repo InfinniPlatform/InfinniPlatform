@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using InfinniPlatform.Api.Dynamic;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.Filters.Extensions
 {

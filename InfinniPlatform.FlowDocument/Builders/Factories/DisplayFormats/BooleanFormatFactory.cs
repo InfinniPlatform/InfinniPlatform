@@ -2,30 +2,29 @@
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.DisplayFormats
 {
-	sealed class BooleanFormatFactory : IPrintElementFactory
-	{
-		public object Create(PrintElementBuildContext buildContext, dynamic elementMetadata)
-		{
-			return FormatFunc(elementMetadata.TrueText, elementMetadata.FalseText);
-		}
+    internal sealed class BooleanFormatFactory : IPrintElementFactory
+    {
+        public object Create(PrintElementBuildContext buildContext, dynamic elementMetadata)
+        {
+            return FormatFunc(elementMetadata.TrueText, elementMetadata.FalseText);
+        }
 
+        private static Func<object, string> FormatFunc(object trueText, object falseText)
+        {
+            var trueTextString = string.IsNullOrEmpty(trueText as string) ? true.ToString() : (trueText as string);
+            var falseTextString = string.IsNullOrEmpty(falseText as string) ? false.ToString() : (falseText as string);
 
-		private static Func<object, string> FormatFunc(object trueText, object falseText)
-		{
-			var trueTextString = string.IsNullOrEmpty(trueText as string) ? true.ToString() : (trueText as string);
-			var falseTextString = string.IsNullOrEmpty(falseText as string) ? false.ToString() : (falseText as string);
+            return value =>
+            {
+                bool valueBool;
 
-			return value =>
-				   {
-					   bool valueBool;
+                if (ConvertHelper.TryToBool(value, out valueBool))
+                {
+                    return valueBool ? trueTextString : falseTextString;
+                }
 
-					   if (ConvertHelper.TryToBool(value, out valueBool))
-					   {
-						   return valueBool ? trueTextString : falseTextString;
-					   }
-
-					   return null;
-				   };
-		}
-	}
+                return null;
+            };
+        }
+    }
 }

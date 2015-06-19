@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-
 using InfinniPlatform.FastReport.Templates.Data;
 using InfinniPlatform.FastReport.Templates.Reports;
 using InfinniPlatform.ReportDesigner.Services;
@@ -9,245 +8,229 @@ using InfinniPlatform.ReportDesigner.Views.Preview;
 
 namespace InfinniPlatform.ReportDesigner.Views.Designer
 {
-	/// <summary>
-	/// Представление редактора отчета.
-	/// </summary>
-	public sealed partial class ReportDesignerView : UserControl
-	{
-		public ReportDesignerView()
-		{
-			InitializeComponent();
+    /// <summary>
+    ///     Представление редактора отчета.
+    /// </summary>
+    public sealed partial class ReportDesignerView : UserControl
+    {
+        private ReportTemplate _editValue;
+        private bool _initializing;
+        private readonly PreviewReportView _previewDialog = new PreviewReportView();
+        private readonly ReportTemplateConverter _templateConverter = new ReportTemplateConverter();
+        private readonly ReportTemplateFileStorage _templateStorage = new ReportTemplateFileStorage();
 
-			ReportDataEdit.GetDataBandsFunc = ReportLayoutEdit.GetDataBands;
-			ReportDataEdit.GetPrintBandsFunc = ReportLayoutEdit.GetPrintBands;
-		}
+        public ReportDesignerView()
+        {
+            InitializeComponent();
 
+            ReportDataEdit.GetDataBandsFunc = ReportLayoutEdit.GetDataBands;
+            ReportDataEdit.GetPrintBandsFunc = ReportLayoutEdit.GetPrintBands;
+        }
 
-		private ReportTemplate _editValue;
+        /// <summary>
+        ///     Редактируемый отчет.
+        /// </summary>
+        public ReportTemplate EditValue
+        {
+            get { return GetReportTemplate(); }
+            set
+            {
+                if (!Equals(_editValue, value))
+                {
+                    SetReportTemplate(value);
+                }
+            }
+        }
 
-		/// <summary>
-		/// Редактируемый отчет.
-		/// </summary>
-		public ReportTemplate EditValue
-		{
-			get
-			{
-				return GetReportTemplate();
-			}
-			set
-			{
-				if (!Equals(_editValue, value))
-				{
-					SetReportTemplate(value);
-				}
-			}
-		}
+        /// <summary>
+        ///     Событие изменения отчета.
+        /// </summary>
+        public event EventHandler EditValueChanged;
 
+        private ReportTemplate GetReportTemplate()
+        {
+            if (ReportLayoutEdit.IsModified)
+            {
+                var template = _templateConverter.ConvertToTemplate(ReportLayoutEdit.Report);
+                template.DataSources = ReportDataEdit.DataSources;
+                template.Parameters = ReportDataEdit.Parameters;
+                template.Totals = ReportDataEdit.Totals;
 
-		/// <summary>
-		/// Событие изменения отчета.
-		/// </summary>
-		public event EventHandler EditValueChanged;
+                _editValue = template;
+            }
 
+            return _editValue;
+        }
 
+        private void SetReportTemplate(ReportTemplate template)
+        {
+            _editValue = template;
 
-		private readonly PreviewReportView _previewDialog = new PreviewReportView();
-		private readonly ReportTemplateConverter _templateConverter = new ReportTemplateConverter();
-		private readonly ReportTemplateFileStorage _templateStorage = new ReportTemplateFileStorage();
+            var report = _templateConverter.ConvertFromTemplate(template);
 
+            InitializeEditValue(() =>
+            {
+                ReportLayoutEdit.Report = report;
+                ReportDataEdit.Report = report;
+                ReportDataEdit.DataSources = template.DataSources;
+                ReportDataEdit.Parameters = template.Parameters;
+                ReportDataEdit.Totals = template.Totals;
+                ReportDataEdit.AllowEdit = true;
 
-		private ReportTemplate GetReportTemplate()
-		{
-			if (ReportLayoutEdit.IsModified)
-			{
-				var template = _templateConverter.ConvertToTemplate(ReportLayoutEdit.Report);
-				template.DataSources = ReportDataEdit.DataSources;
-				template.Parameters = ReportDataEdit.Parameters;
-				template.Totals = ReportDataEdit.Totals;
+                ReportLayoutEdit.IsModified = false;
+            });
+        }
 
-				_editValue = template;
-			}
+        private void OnReportModified(object sender, EventArgs e)
+        {
+            InitializeEditValue(() =>
+            {
+                var handler = EditValueChanged;
 
-			return _editValue;
-		}
+                if (handler != null)
+                {
+                    handler(sender, e);
+                }
+            });
+        }
 
-		private void SetReportTemplate(ReportTemplate template)
-		{
-			_editValue = template;
+        private void InitializeEditValue(Action action)
+        {
+            if (!_initializing)
+            {
+                _initializing = true;
 
-			var report = _templateConverter.ConvertFromTemplate(template);
+                try
+                {
+                    action();
+                }
+                finally
+                {
+                    _initializing = false;
+                }
+            }
+        }
 
-			InitializeEditValue(() =>
-								{
-									ReportLayoutEdit.Report = report;
-									ReportDataEdit.Report = report;
-									ReportDataEdit.DataSources = template.DataSources;
-									ReportDataEdit.Parameters = template.Parameters;
-									ReportDataEdit.Totals = template.Totals;
-									ReportDataEdit.AllowEdit = true;
+        // Report / Import
+        private void OnInvokeImportReport(object sender, EventArgs e)
+        {
+            if (ImportReportDialog.ShowDialog(this) == DialogResult.OK)
+            {
+                var fileName = ImportReportDialog.FileName;
 
-									ReportLayoutEdit.IsModified = false;
-								});
-		}
+                TryExecute(() =>
+                {
+                    EditValue = _templateStorage.Load(fileName);
 
-		private void OnReportModified(object sender, EventArgs e)
-		{
-			InitializeEditValue(() =>
-								{
-									var handler = EditValueChanged;
+                    ReportLayoutEdit.IsModified = true;
 
-									if (handler != null)
-									{
-										handler(sender, e);
-									}
-								});
-		}
+                    OnReportModified(sender, e);
+                });
+            }
+        }
 
+        // Report / Export
+        private void OnInvokeExportReport(object sender, EventArgs e)
+        {
+            if (ExportReportDialog.ShowDialog(this) == DialogResult.OK)
+            {
+                var fileName = ExportReportDialog.FileName;
 
-		private bool _initializing;
+                TryExecute(() => _templateStorage.Save(fileName, EditValue));
+            }
+        }
 
-		private void InitializeEditValue(Action action)
-		{
-			if (!_initializing)
-			{
-				_initializing = true;
+        // Report / Preview
+        private void OnInvokePreviewReport(object sender, EventArgs e)
+        {
+            TryExecute(() =>
+            {
+                if (ReportDataEdit.ValidateChildren())
+                {
+                    _previewDialog.ReportTemplate = EditValue;
+                    _previewDialog.ShowDialog(this);
+                }
+            });
+        }
 
-				try
-				{
-					action();
-				}
-				finally
-				{
-					_initializing = false;
-				}
-			}
-		}
+        // DATA SOURCES
 
+        private void OnInvokeCreateDataSource(object sender, EventArgs e)
+        {
+            ReportDataEdit.CreateDataSource();
+        }
 
-		// Report / Import
-		private void OnInvokeImportReport(object sender, EventArgs e)
-		{
-			if (ImportReportDialog.ShowDialog(this) == DialogResult.OK)
-			{
-				var fileName = ImportReportDialog.FileName;
+        private void OnDataSourceCreated(object sender, ValueEventArgs<DataSourceInfo> e)
+        {
+            ReportLayoutEdit.CreateDataSource(e.Value);
+        }
 
-				TryExecute(() =>
-						   {
-							   EditValue = _templateStorage.Load(fileName);
+        private void OnDataSourceChanged(object sender, ChangedEventArgs<DataSourceInfo> e)
+        {
+            ReportLayoutEdit.ChangeDataSource(e.OldValue, e.NewValue);
+        }
 
-							   ReportLayoutEdit.IsModified = true;
+        private void OnDataSourceDeleted(object sender, ValueEventArgs<DataSourceInfo> e)
+        {
+            ReportLayoutEdit.DeleteDataSource(e.Value);
+        }
 
-							   OnReportModified(sender, e);
-						   });
-			}
-		}
+        // PARAMETERS
 
-		// Report / Export
-		private void OnInvokeExportReport(object sender, EventArgs e)
-		{
-			if (ExportReportDialog.ShowDialog(this) == DialogResult.OK)
-			{
-				var fileName = ExportReportDialog.FileName;
+        private void OnInvokeCreateParameter(object sender, EventArgs e)
+        {
+            ReportDataEdit.CreateParameter();
+        }
 
-				TryExecute(() => _templateStorage.Save(fileName, EditValue));
-			}
-		}
+        private void OnParameterCreated(object sender, ValueEventArgs<ParameterInfo> e)
+        {
+            ReportLayoutEdit.CreateParameter(e.Value);
+        }
 
-		// Report / Preview
-		private void OnInvokePreviewReport(object sender, EventArgs e)
-		{
-			TryExecute(() =>
-					   {
-						   if (ReportDataEdit.ValidateChildren())
-						   {
-							   _previewDialog.ReportTemplate = EditValue;
-							   _previewDialog.ShowDialog(this);
-						   }
-					   });
-		}
+        private void OnParameterChanged(object sender, ChangedEventArgs<ParameterInfo> e)
+        {
+            ReportLayoutEdit.ChangeParameter(e.OldValue, e.NewValue);
+        }
 
+        private void OnParameterDeleted(object sender, ValueEventArgs<ParameterInfo> e)
+        {
+            ReportLayoutEdit.DeleteParameter(e.Value);
+        }
 
-		// DATA SOURCES
+        // TOTALS
 
-		private void OnInvokeCreateDataSource(object sender, EventArgs e)
-		{
-			ReportDataEdit.CreateDataSource();
-		}
+        private void OnInvokeCreateTotal(object sender, EventArgs e)
+        {
+            ReportDataEdit.CreateTotal();
+        }
 
-		private void OnDataSourceCreated(object sender, ValueEventArgs<DataSourceInfo> e)
-		{
-			ReportLayoutEdit.CreateDataSource(e.Value);
-		}
+        private void OnTotalCreated(object sender, ValueEventArgs<TotalInfo> e)
+        {
+            ReportLayoutEdit.CreateTotal(e.Value);
+        }
 
-		private void OnDataSourceChanged(object sender, ChangedEventArgs<DataSourceInfo> e)
-		{
-			ReportLayoutEdit.ChangeDataSource(e.OldValue, e.NewValue);
-		}
+        private void OnTotalChanged(object sender, ChangedEventArgs<TotalInfo> e)
+        {
+            ReportLayoutEdit.ChangeTotal(e.OldValue, e.NewValue);
+        }
 
-		private void OnDataSourceDeleted(object sender, ValueEventArgs<DataSourceInfo> e)
-		{
-			ReportLayoutEdit.DeleteDataSource(e.Value);
-		}
+        private void OnTotalDeleted(object sender, ValueEventArgs<TotalInfo> e)
+        {
+            ReportLayoutEdit.DeleteTotal(e.Value);
+        }
 
+        // HELPERS
 
-		// PARAMETERS
-
-		private void OnInvokeCreateParameter(object sender, EventArgs e)
-		{
-			ReportDataEdit.CreateParameter();
-		}
-
-		private void OnParameterCreated(object sender, ValueEventArgs<ParameterInfo> e)
-		{
-			ReportLayoutEdit.CreateParameter(e.Value);
-		}
-
-		private void OnParameterChanged(object sender, ChangedEventArgs<ParameterInfo> e)
-		{
-			ReportLayoutEdit.ChangeParameter(e.OldValue, e.NewValue);
-		}
-
-		private void OnParameterDeleted(object sender, ValueEventArgs<ParameterInfo> e)
-		{
-			ReportLayoutEdit.DeleteParameter(e.Value);
-		}
-
-
-		// TOTALS
-
-		private void OnInvokeCreateTotal(object sender, EventArgs e)
-		{
-			ReportDataEdit.CreateTotal();
-		}
-
-		private void OnTotalCreated(object sender, ValueEventArgs<TotalInfo> e)
-		{
-			ReportLayoutEdit.CreateTotal(e.Value);
-		}
-
-		private void OnTotalChanged(object sender, ChangedEventArgs<TotalInfo> e)
-		{
-			ReportLayoutEdit.ChangeTotal(e.OldValue, e.NewValue);
-		}
-
-		private void OnTotalDeleted(object sender, ValueEventArgs<TotalInfo> e)
-		{
-			ReportLayoutEdit.DeleteTotal(e.Value);
-		}
-
-
-		// HELPERS
-
-		private static void TryExecute(Action action)
-		{
-			try
-			{
-				action();
-			}
-			catch (Exception error)
-			{
-				error.Message.ShowError();
-			}
-		}
-	}
+        private static void TryExecute(Action action)
+        {
+            try
+            {
+                action();
+            }
+            catch (Exception error)
+            {
+                error.Message.ShowError();
+            }
+        }
+    }
 }

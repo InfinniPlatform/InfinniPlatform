@@ -1,37 +1,37 @@
 ﻿{
-  "id": "TabPanel",
-  "description": "Контейнер элементов представления в виде набора закладок для страниц",
-  "type": "object",
-  "extends": {
-    "$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
-  },
-  "properties": {
-    "HeaderLocation": {
-      "description": "Расположение закладок",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/TabHeaderLocation",
-      "default": "Top"
-    },
-    "HeaderOrientation": {
-      "description": "Ориентация закладок",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/TabHeaderOrientation",
-      "default": "Horizontal"
-    },
-    "DefaultPage": {
-      "description": "Наименование страницы по умолчанию",
-      "type": "string",
-      "default": null
-    },
-    "Pages": {
-      "description": "Список страниц",
-      "type": "array",
-      "items": {
-        "$ref": "http://demo.infinnity.ru:8081/display/MC/TabPage"
-      }
-    },
-    "OnSelectionChanged": {
-      "description": "Обработчик события изменения выделенной страницы",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
-    }
-  },
-  "additionalProperties": false
+	"id": "TabPanel",
+	"description": "Контейнер элементов представления в виде набора закладок для страниц",
+	"type": "object",
+	"extends": {
+		"$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
+	},
+	"properties": {
+		"HeaderLocation": {
+			"description": "Расположение закладок",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/TabHeaderLocation",
+			"default": "Top"
+		},
+		"HeaderOrientation": {
+			"description": "Ориентация закладок",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/TabHeaderOrientation",
+			"default": "Horizontal"
+		},
+		"DefaultPage": {
+			"description": "Наименование страницы по умолчанию",
+			"type": "string",
+			"default": null
+		},
+		"Pages": {
+			"description": "Список страниц",
+			"type": "array",
+			"items": {
+				"$ref": "http://demo.infinnity.ru:8081/display/MC/TabPage"
+			}
+		},
+		"OnSelectionChanged": {
+			"description": "Обработчик события изменения выделенной страницы",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+		}
+	},
+	"additionalProperties": false
 }

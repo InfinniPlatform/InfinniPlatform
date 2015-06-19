@@ -1,10 +1,10 @@
 ﻿{
-  "id": "PrintElementUnderline",
-  "description": "Однострочный элемент печатного представления, текстовое содержимое которого отображается с эффектом подчеркивания",
-  "type": "object",
-  "extends": {
-    "$ref": "http://demo.infinnity.ru:8081/display/MC/PrintElementSpan"
-  },
-  "properties": {},
-  "additionalProperties": false
+	"id": "PrintElementUnderline",
+	"description": "Однострочный элемент печатного представления, текстовое содержимое которого отображается с эффектом подчеркивания",
+	"type": "object",
+	"extends": {
+		"$ref": "http://demo.infinnity.ru:8081/display/MC/PrintElementSpan"
+	},
+	"properties": {},
+	"additionalProperties": false
 }

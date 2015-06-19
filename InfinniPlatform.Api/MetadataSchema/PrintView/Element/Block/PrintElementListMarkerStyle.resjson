@@ -1,16 +1,16 @@
 ﻿{
-  "id": "PrintElementListMarkerStyle",
-  "description": "Стиль маркера элементов списка",
-  "enum": [
-    "None",
-    "Disc",
-    "Circle",
-    "Square",
-    "Box",
-    "LowerRoman",
-    "UpperRoman",
-    "LowerLatin",
-    "UpperLatin",
-    "Decimal"
-  ]
+	"id": "PrintElementListMarkerStyle",
+	"description": "Стиль маркера элементов списка",
+	"enum": [
+		"None",
+		"Disc",
+		"Circle",
+		"Square",
+		"Box",
+		"LowerRoman",
+		"UpperRoman",
+		"LowerLatin",
+		"UpperLatin",
+		"Decimal"
+	]
 }

@@ -2,19 +2,19 @@
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 {
-	sealed class PrintElementLineBreakFactory : IPrintElementFactory
-	{
-		public object Create(PrintElementBuildContext buildContext, dynamic elementMetadata)
-		{
-			var element = new LineBreak();
+    internal sealed class PrintElementLineBreakFactory : IPrintElementFactory
+    {
+        public object Create(PrintElementBuildContext buildContext, dynamic elementMetadata)
+        {
+            var element = new LineBreak();
 
-			BuildHelper.ApplyTextProperties(element, buildContext.ElementStyle);
-			BuildHelper.ApplyTextProperties(element, elementMetadata);
+            BuildHelper.ApplyTextProperties(element, buildContext.ElementStyle);
+            BuildHelper.ApplyTextProperties(element, elementMetadata);
 
-			BuildHelper.ApplyInlineProperties(element, buildContext.ElementStyle);
-			BuildHelper.ApplyInlineProperties(element, elementMetadata);
+            BuildHelper.ApplyInlineProperties(element, buildContext.ElementStyle);
+            BuildHelper.ApplyInlineProperties(element, elementMetadata);
 
-			return element;
-		}
-	}
+            return element;
+        }
+    }
 }

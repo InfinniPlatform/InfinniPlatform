@@ -1,16 +1,16 @@
 ﻿{
-  "id": "ListBox",
-  "description": "Элемент представления для выбора одного или нескольких значений из списка",
-  "type": "object",
-  "extends": {
-    "$ref": "http://demo.infinnity.ru:8081/display/MC/BaseListElement"
-  },
-  "properties": {
-    "MultiSelect": {
-      "description": "Разрешен ли выбор нескольких значений",
-      "type": "boolean",
-      "default": false
-    }
-  },
-  "additionalProperties": false
+	"id": "ListBox",
+	"description": "Элемент представления для выбора одного или нескольких значений из списка",
+	"type": "object",
+	"extends": {
+		"$ref": "http://demo.infinnity.ru:8081/display/MC/BaseListElement"
+	},
+	"properties": {
+		"MultiSelect": {
+			"description": "Разрешен ли выбор нескольких значений",
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"additionalProperties": false
 }

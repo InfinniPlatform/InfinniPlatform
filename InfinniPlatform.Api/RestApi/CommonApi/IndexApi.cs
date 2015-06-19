@@ -1,6 +1,5 @@
-﻿using InfinniPlatform.Api.Dynamic;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.Api.RestApi.CommonApi
 {
@@ -15,35 +14,35 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
 
         public void RebuildIndex(string configuration, string metadata)
         {
-            var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "rebuildindex",null, new
+            var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "rebuildindex", null, new
             {
                 Configuration = configuration,
                 Metadata = metadata
-            },_version);
+            }, _version);
             if (!response.IsAllOk)
             {
                 throw new ArgumentException(response.Content);
             }
         }
 
-		public bool IndexExists(string configuration, string metadata)
-		{
-			var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "indexexists",null, new
-			{
-			    Configuration = configuration,
-			    Metadata = metadata
+        public bool IndexExists(string configuration, string metadata)
+        {
+            var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "indexexists", null, new
+            {
+                Configuration = configuration,
+                Metadata = metadata
             }, _version);
-			if (!response.IsAllOk)
-			{
-				throw new ArgumentException(response.Content);
-			}
-			dynamic result = response.Content.ToDynamic();
-			return result.IndexExists;
-		}
+            if (!response.IsAllOk)
+            {
+                throw new ArgumentException(response.Content);
+            }
+            dynamic result = response.Content.ToDynamic();
+            return result.IndexExists;
+        }
 
         public dynamic GetFromIndex(string id, string configuration, string metadata)
         {
-            var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "getfromindex",null, new
+            var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "getfromindex", null, new
             {
                 Id = id,
                 Configuration = configuration,
@@ -56,10 +55,9 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
             return response.Content.ToDynamic();
         }
 
-
-        public void InsertDocument(object item, string configuration,string metadata)
+        public void InsertDocument(object item, string configuration, string metadata)
         {
-            var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "insertindex",null, new
+            var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "insertindex", null, new
             {
                 Item = item,
                 Configuration = configuration,
@@ -73,7 +71,7 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
 
         public void InsertDocumentWithTimestamp(object item, DateTime timeStamp, string configuration, string metadata)
         {
-            var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "insertindexwithtimestamp",null, new
+            var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "insertindexwithtimestamp", null, new
             {
                 Item = item,
                 Configuration = configuration,

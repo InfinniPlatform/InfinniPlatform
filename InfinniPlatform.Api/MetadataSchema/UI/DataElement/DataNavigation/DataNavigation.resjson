@@ -1,46 +1,46 @@
 ﻿{
-  "id": "DataNavigation",
-  "description": "Элемент представления для панели навигации по данным",
-  "type": "object",
-  "extends": {
-    "$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
-  },
-  "properties": {
-    "PageNumber": {
-      "description": "Номер страницы",
-      "type": "integer",
-      "minimum": 0
-    },
-    "PageSize": {
-      "description": "Размер страницы",
-      "type": "integer",
-      "minimum": 1
-    },
-    "AvailablePageSizes": {
-      "description": "Список доступных размеров страниц",
-      "type": "array",
-      "items": {
-        "type": "integer",
-        "minimum": 1
-      }
-    },
-    "DataSource": {
-      "description": "Наименование источника данных",
-      "type": "string",
-      "required": true
-    },
-    "OnUpdateItems": {
-      "description": "Обработчик события запроса на обновление страницы",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
-    },
-    "OnSetPageNumber": {
-      "description": "Обработчик события запроса на переход к заданной странице",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
-    },
-    "OnSetPageSize": {
-      "description": "Обработчик события запроса на установку заданного размера страницы",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
-    }
-  },
-  "additionalProperties": false
+	"id": "DataNavigation",
+	"description": "Элемент представления для панели навигации по данным",
+	"type": "object",
+	"extends": {
+		"$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
+	},
+	"properties": {
+		"PageNumber": {
+			"description": "Номер страницы",
+			"type": "integer",
+			"minimum": 0
+		},
+		"PageSize": {
+			"description": "Размер страницы",
+			"type": "integer",
+			"minimum": 1
+		},
+		"AvailablePageSizes": {
+			"description": "Список доступных размеров страниц",
+			"type": "array",
+			"items": {
+				"type": "integer",
+				"minimum": 1
+			}
+		},
+		"DataSource": {
+			"description": "Наименование источника данных",
+			"type": "string",
+			"required": true
+		},
+		"OnUpdateItems": {
+			"description": "Обработчик события запроса на обновление страницы",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+		},
+		"OnSetPageNumber": {
+			"description": "Обработчик события запроса на переход к заданной странице",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+		},
+		"OnSetPageSize": {
+			"description": "Обработчик события запроса на установку заданного размера страницы",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+		}
+	},
+	"additionalProperties": false
 }

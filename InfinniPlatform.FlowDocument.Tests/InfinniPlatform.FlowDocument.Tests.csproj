@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -91,6 +91,10 @@
     <ProjectReference Include="..\InfinniPlatform.FlowDocument\InfinniPlatform.FlowDocument.csproj">
       <Project>{e47f0c5b-f775-44b4-9e2e-e4c044864125}</Project>
       <Name>InfinniPlatform.FlowDocument</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Sdk.Application\InfinniPlatform.Sdk.Application.csproj">
+      <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
+      <Name>InfinniPlatform.Sdk.Application</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Tests\InfinniPlatform.Tests.csproj">
       <Project>{a46f638c-c9c5-49be-bc8d-8144e8c8f87a}</Project>

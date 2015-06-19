@@ -4,24 +4,24 @@ using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.PrintViewDesigner
 {
-	sealed class PrintViewDesignerElementBuilder : IObjectBuilder
-	{
-		public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
-		{
-			var printViewDesigner = new PrintViewDesignerElement(parent);
-			printViewDesigner.ApplyElementMeatadata((object)metadata);
+    internal sealed class PrintViewDesignerElementBuilder : IObjectBuilder
+    {
+        public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
+        {
+            var printViewDesigner = new PrintViewDesignerElement(parent);
+            printViewDesigner.ApplyElementMeatadata((object) metadata);
 
-			// Привязка к источнику данных представления
+            // Привязка к источнику данных представления
 
-			IElementDataBinding valueBinding = context.Build(parent, metadata.Value);
+            IElementDataBinding valueBinding = context.Build(parent, metadata.Value);
 
-			if (valueBinding != null)
-			{
-				valueBinding.OnPropertyValueChanged += (c, a) => printViewDesigner.SetValue(a.Value);
-				printViewDesigner.OnValueChanged += (c, a) => valueBinding.SetPropertyValue(a.Value, force: true);
-			}
+            if (valueBinding != null)
+            {
+                valueBinding.OnPropertyValueChanged += (c, a) => printViewDesigner.SetValue(a.Value);
+                printViewDesigner.OnValueChanged += (c, a) => valueBinding.SetPropertyValue(a.Value, force: true);
+            }
 
-			return printViewDesigner;
-		}
-	}
+            return printViewDesigner;
+        }
+    }
 }

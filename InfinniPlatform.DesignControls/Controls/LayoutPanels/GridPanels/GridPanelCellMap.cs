@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace InfinniPlatform.DesignControls.Controls.LayoutPanels.GridPanels
+﻿namespace InfinniPlatform.DesignControls.Controls.LayoutPanels.GridPanels
 {
     public sealed class GridPanelCellMap
     {
-        private readonly int _outerRowIndex;
-        private readonly int _outerColumnIndex;
         private readonly dynamic _cell;
         private readonly int _columnSpan;
+        private readonly int _outerColumnIndex;
+        private readonly int _outerRowIndex;
 
         public GridPanelCellMap(int outerRowIndex, int outerColumnIndex, dynamic cell, int columnSpan)
         {
@@ -42,7 +36,6 @@ namespace InfinniPlatform.DesignControls.Controls.LayoutPanels.GridPanels
         }
 
         public int InnerRowIndex { get; set; }
-
         public int InnerColumnIndex { get; set; }
     }
 }

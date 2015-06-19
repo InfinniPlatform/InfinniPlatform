@@ -1,7 +1,7 @@
-﻿using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.MetadataDesigner.Views.Validation;
+﻿using InfinniPlatform.MetadataDesigner.Views.Validation;
 using System;
 using System.Windows.Forms;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.MetadataDesigner.Views
 {

@@ -1,9 +1,9 @@
 ﻿{
-  "id": "OpenMode",
-  "description": "Способ открытия представления",
-  "enum": [
-    "Application",
-    "Page",
-    "Dialog"
-  ]
+	"id": "OpenMode",
+	"description": "Способ открытия представления",
+	"enum": [
+		"Application",
+		"Page",
+		"Dialog"
+	]
 }

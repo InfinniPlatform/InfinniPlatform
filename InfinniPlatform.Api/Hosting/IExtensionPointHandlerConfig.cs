@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using InfinniPlatform.Api.ContextTypes;
 
 namespace InfinniPlatform.Api.Hosting
 {
-	public interface IExtensionPointHandlerConfig
-	{
-		/// <summary>
-		///   Инициализировать обработчик на основе конфигурации
-		/// </summary>
-		/// <param name="handler">Обработчик</param>
-		void BuildHandler(IExtensionPointHandler handler);
+    public interface IExtensionPointHandlerConfig
+    {
+        Dictionary<string, ContextTypeKind> WorkflowExtensionPoints { get; }
 
-		Dictionary<string, ContextTypeKind> WorkflowExtensionPoints { get; }
-	}
+        /// <summary>
+        ///     Инициализировать обработчик на основе конфигурации
+        /// </summary>
+        /// <param name="handler">Обработчик</param>
+        void BuildHandler(IExtensionPointHandler handler);
+    }
 }

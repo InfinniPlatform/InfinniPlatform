@@ -1,9 +1,7 @@
-﻿using InfinniPlatform.Api.Dynamic;
+﻿using System;
+using System.Collections.Generic;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-
-using System;
-using System.Collections.Generic;
 
 namespace InfinniPlatform.Api.Packages
 {
@@ -17,21 +15,15 @@ namespace InfinniPlatform.Api.Packages
         }
 
         public Action<dynamic> OnImportConfigStructure { get; set; }
-
         public Action<string, dynamic> OnImportAssembly { get; set; }
-
         public Action<string, dynamic> OnImportMenu { get; set; }
-
         public Action<string, dynamic> OnImportReport { get; set; }
-
         public Action<string, dynamic> OnImportDocument { get; set; }
-
         public Action<string, dynamic> OnImportRegister { get; set; }
-
         public Action<string, string, dynamic, string> OnImportDocumentMetadataType { get; set; }
 
         /// <summary>
-        ///   Загрузить конфигурацию из архива
+        ///     Загрузить конфигурацию из архива
         /// </summary>
         /// <returns>Объект конфигурации</returns>
         public dynamic ImportToConfigurationObject()
@@ -49,7 +41,7 @@ namespace InfinniPlatform.Api.Packages
 
             //UpdateApi.UpdateMetadataObject(config.Name, null, config, MetadataType.Configuration);
 
-            foreach (dynamic assembly in config.Assemblies)
+            foreach (var assembly in config.Assemblies)
             {
                 if (OnImportAssembly != null)
                 {
@@ -98,7 +90,6 @@ namespace InfinniPlatform.Api.Packages
             config.Documents = new List<dynamic>();
             foreach (var document in documents)
             {
-
                 dynamic documentFull = _configStructure.GetDocument(document.Name);
 
                 if (OnImportDocument != null)
@@ -114,18 +105,15 @@ namespace InfinniPlatform.Api.Packages
                 {
                     try
                     {
-                        string metadataContainer =
+                        var metadataContainer =
                             factoryContainer.BuildMetadataContainerInfo(documentMetadataType).GetMetadataContainerName();
 
                         IEnumerable<dynamic> items = documentFull[metadataContainer];
                         documentFull[metadataContainer] = new List<dynamic>();
                         if (items != null)
                         {
-
-                            foreach (dynamic metadataType in items)
+                            foreach (var metadataType in items)
                             {
-
-
                                 dynamic metadataTypeObject = _configStructure.GetDocumentMetadataType(document.Name,
                                     metadataType.Name,
                                     documentMetadataType);
@@ -145,7 +133,7 @@ namespace InfinniPlatform.Api.Packages
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(string.Format("can't import metadata type {0}", documentMetadataType));
+                        Console.WriteLine("can't import metadata type {0}", documentMetadataType);
                     }
                 }
             }

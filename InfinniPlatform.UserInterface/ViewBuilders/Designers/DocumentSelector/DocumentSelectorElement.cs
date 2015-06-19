@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Windows;
-
 using InfinniPlatform.UserInterface.ViewBuilders.DataElements;
 using InfinniPlatform.UserInterface.ViewBuilders.Elements;
 using InfinniPlatform.UserInterface.ViewBuilders.Scripts;
@@ -9,177 +8,169 @@ using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.DocumentSelector
 {
-	public sealed class DocumentSelectorElement : BaseElement<DocumentSelectorControl>
-	{
-		public DocumentSelectorElement(View view)
-			: base(view)
-		{
-			Control.Loaded += OnLoadedHandler;
-			Control.RefreshClick += OnRefreshHandler;
-			Control.EditValueChanged += OnEditValueChangedHandler;
-		}
+    public sealed class DocumentSelectorElement : BaseElement<DocumentSelectorControl>
+    {
+        // ConfigId
 
+        private string _configId;
+        // ItemsFunc
 
-		// ItemsFunc
+        private Func<string, string, IEnumerable> _documentsFunc;
+        // Value
 
-		private Func<string, string, IEnumerable> _documentsFunc;
+        private object _value;
+        private string _version;
 
-		/// <summary>
-		/// Возвращает функцию загрузки списка документов.
-		/// </summary>
-		public Func<string, string, IEnumerable> GetDocumentsFunc()
-		{
-			return _documentsFunc;
-		}
+        public DocumentSelectorElement(View view)
+            : base(view)
+        {
+            Control.Loaded += OnLoadedHandler;
+            Control.RefreshClick += OnRefreshHandler;
+            Control.EditValueChanged += OnEditValueChangedHandler;
+        }
 
-		/// <summary>
-		/// Устанавливает функцию загрузки списка документов.
-		/// </summary>
-		public void SetDocumentsFunc(Func<string, string, IEnumerable> value)
-		{
-			_documentsFunc = value;
-		}
-
-
-		// ConfigId
-
-		private string _configId;
-
-	    private string _version;
-
-		/// <summary>
-		/// Возвращает идентификатор конфигурации.
-		/// </summary>
-		public string GetConfigId()
-		{
-			return _configId;
-		}
+        // Events
 
         /// <summary>
-        ///  Возвращает версию конфигурации
+        ///     Возвращает или устанавливает обработчик события изменения значения.
         /// </summary>
-	    public string GetVersion()
-	    {
-	        return _version;
-	    }
+        public ScriptDelegate OnValueChanged { get; set; }
 
-		/// <summary>
-		/// Устанавливает идентификатор конфигурации.
-		/// </summary>
-		public void SetConfigId(string value)
-		{
-			if (!Equals(_configId, value))
-			{
-				_configId = value;
+        /// <summary>
+        ///     Возвращает функцию загрузки списка документов.
+        /// </summary>
+        public Func<string, string, IEnumerable> GetDocumentsFunc()
+        {
+            return _documentsFunc;
+        }
 
-				LoadItems(false);
-			}
-		}
+        /// <summary>
+        ///     Устанавливает функцию загрузки списка документов.
+        /// </summary>
+        public void SetDocumentsFunc(Func<string, string, IEnumerable> value)
+        {
+            _documentsFunc = value;
+        }
 
-	    public void SetVersion(string value)
-	    {
-	        if (!Equals(_version, value))
-	        {
-	            _version = value;
+        /// <summary>
+        ///     Возвращает идентификатор конфигурации.
+        /// </summary>
+        public string GetConfigId()
+        {
+            return _configId;
+        }
+
+        /// <summary>
+        ///     Возвращает версию конфигурации
+        /// </summary>
+        public string GetVersion()
+        {
+            return _version;
+        }
+
+        /// <summary>
+        ///     Устанавливает идентификатор конфигурации.
+        /// </summary>
+        public void SetConfigId(string value)
+        {
+            if (!Equals(_configId, value))
+            {
+                _configId = value;
 
                 LoadItems(false);
-	        }
-	    }
+            }
+        }
 
+        public void SetVersion(string value)
+        {
+            if (!Equals(_version, value))
+            {
+                _version = value;
 
-		// Value
+                LoadItems(false);
+            }
+        }
 
-		private object _value;
+        /// <summary>
+        ///     Возвращает значение.
+        /// </summary>
+        public object GetValue()
+        {
+            return _value;
+        }
 
-		/// <summary>
-		/// Возвращает значение.
-		/// </summary>
-		public object GetValue()
-		{
-			return _value;
-		}
+        /// <summary>
+        ///     Устанавливает значение.
+        /// </summary>
+        public void SetValue(object value)
+        {
+            _value = value;
 
-		/// <summary>
-		/// Устанавливает значение.
-		/// </summary>
-		public void SetValue(object value)
-		{
-			_value = value;
+            Control.InvokeControl(() => Control.EditValue = value);
+        }
 
-			Control.InvokeControl(() => Control.EditValue = value);
-		}
+        private void OnEditValueChangedHandler(object sender, ValueChangedRoutedEventArgs e)
+        {
+            _value = e.NewValue;
 
-		private void OnEditValueChangedHandler(object sender, ValueChangedRoutedEventArgs e)
-		{
-			_value = e.NewValue;
+            this.InvokeScript(OnValueChanged, args => args.Value = e.NewValue);
+        }
 
-			this.InvokeScript(OnValueChanged, args => args.Value = e.NewValue);
-		}
+        // Methods
 
+        public void Refresh()
+        {
+            LoadItems(true);
+        }
 
-		// Methods
+        private void OnRefreshHandler(object sender, RoutedEventArgs e)
+        {
+            LoadItems(true);
+        }
 
-		public void Refresh()
-		{
-			LoadItems(true);
-		}
+        private void OnLoadedHandler(object sender, RoutedEventArgs e)
+        {
+            LoadItems(false);
+        }
 
-		private void OnRefreshHandler(object sender, RoutedEventArgs e)
-		{
-			LoadItems(true);
-		}
+        private void LoadItems(bool refresh)
+        {
+            IEnumerable items = null;
 
-		private void OnLoadedHandler(object sender, RoutedEventArgs e)
-		{
-			LoadItems(false);
-		}
+            var configId = GetConfigId();
 
-		private void LoadItems(bool refresh)
-		{
-			IEnumerable items = null;
+            var version = GetVersion();
 
-			var configId = GetConfigId();
+            if (!string.IsNullOrWhiteSpace(configId))
+            {
+                var cacheKey = "Documents_" + configId + version;
 
-		    var version = GetVersion();
+                items = ControlCache.Get<IEnumerable>(cacheKey);
 
-			if (!string.IsNullOrWhiteSpace(configId))
-			{
-				var cacheKey = "Documents_" + configId + version;
+                if (refresh || items == null)
+                {
+                    var itemsFunc = GetDocumentsFunc();
 
-				items = ControlCache.Get<IEnumerable>(cacheKey);
+                    if (itemsFunc != null)
+                    {
+                        try
+                        {
+                            items = itemsFunc(configId, version);
 
-				if (refresh || items == null)
-				{
-					var itemsFunc = GetDocumentsFunc();
+                            ControlCache.Set(cacheKey, items);
+                        }
+                        catch
+                        {
+                        }
+                    }
+                }
+            }
+            else
+            {
+                Control.EditValue = null;
+            }
 
-					if (itemsFunc != null)
-					{
-						try
-						{
-							items = itemsFunc(configId,version);
-
-							ControlCache.Set(cacheKey, items);
-						}
-						catch
-						{
-						}
-					}
-				}
-			}
-			else
-			{
-				Control.EditValue = null;
-			}
-
-			Control.ItemsSource = items;
-		}
-
-
-		// Events
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события изменения значения.
-		/// </summary>
-		public ScriptDelegate OnValueChanged { get; set; }
-	}
+            Control.ItemsSource = items;
+        }
+    }
 }

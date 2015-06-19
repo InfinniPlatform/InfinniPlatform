@@ -1,171 +1,167 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-
-using InfinniPlatform.Api.Dynamic;
-
+using InfinniPlatform.Sdk.Application.Dynamic;
 using Microsoft.Win32;
-
 using AppResources = InfinniPlatform.PrintViewDesigner.Properties.Resources;
 
 namespace InfinniPlatform.PrintViewDesigner.Controls.PrintViewDesigner
 {
-	public sealed partial class PrintViewDesignerControl : UserControl
-	{
-		public PrintViewDesignerControl()
-		{
-			InitializeComponent();
-		}
+    public sealed partial class PrintViewDesignerControl : UserControl
+    {
+        // PrintView
 
+        public static readonly DependencyProperty PrintViewProperty = DependencyProperty.Register("PrintView",
+            typeof (object), typeof (PrintViewDesignerControl));
 
-		// PrintView
+        // PrintViewChanged
 
-		public static readonly DependencyProperty PrintViewProperty = DependencyProperty.Register("PrintView", typeof(object), typeof(PrintViewDesignerControl));
+        public static readonly RoutedEvent PrintViewChangedEvent = EventManager.RegisterRoutedEvent("PrintViewChanged",
+            RoutingStrategy.Bubble, typeof (RoutedEventHandler), typeof (PrintViewDesignerControl));
 
-		/// <summary>
-		/// Печатное представление.
-		/// </summary>
-		public object PrintView
-		{
-			get { return GetValue(PrintViewProperty); }
-			set { SetValue(PrintViewProperty, value); }
-		}
+        private static readonly string[] ImportProperties
+            =
+        {
+            "Caption",
+            "Description",
+            "ViewType",
+            "Visibility",
+            "Source",
+            "Font",
+            "TextCase",
+            "Style",
+            "Foreground",
+            "Background",
+            "PageSize",
+            "PagePadding",
+            "Styles",
+            "Blocks"
+        };
 
+        public PrintViewDesignerControl()
+        {
+            InitializeComponent();
+        }
 
-		// PrintViewChanged
+        /// <summary>
+        ///     Печатное представление.
+        /// </summary>
+        public object PrintView
+        {
+            get { return GetValue(PrintViewProperty); }
+            set { SetValue(PrintViewProperty, value); }
+        }
 
-		public static readonly RoutedEvent PrintViewChangedEvent = EventManager.RegisterRoutedEvent("PrintViewChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PrintViewDesignerControl));
+        /// <summary>
+        ///     Событие изменения печатного представления.
+        /// </summary>
+        public event RoutedEventHandler PrintViewChanged
+        {
+            add { AddHandler(PrintViewChangedEvent, value); }
+            remove { RemoveHandler(PrintViewChangedEvent, value); }
+        }
 
-		/// <summary>
-		/// Событие изменения печатного представления.
-		/// </summary>
-		public event RoutedEventHandler PrintViewChanged
-		{
-			add { AddHandler(PrintViewChangedEvent, value); }
-			remove { RemoveHandler(PrintViewChangedEvent, value); }
-		}
+        private void RaisePrintViewChangedEvent(bool refreshTree)
+        {
+            if (refreshTree)
+            {
+                Tree.RefreshElementTree();
+            }
 
-		private void RaisePrintViewChangedEvent(bool refreshTree)
-		{
-			if (refreshTree)
-			{
-				Tree.RefreshElementTree();
-			}
+            Tree.RefreshSelectedElement();
+            Viewer.RefreshPrintView();
 
-			Tree.RefreshSelectedElement();
-			Viewer.RefreshPrintView();
+            RaiseEvent(new RoutedEventArgs(PrintViewChangedEvent));
+        }
 
-			RaiseEvent(new RoutedEventArgs(PrintViewChangedEvent));
-		}
+        // Handlers
 
+        private void OnInspectElementMetadata(object sender, PropertyValueChangedEventArgs e)
+        {
+            if (e.NewValue != null)
+            {
+                Tree.SelectElementByMetadata(e.NewValue);
+            }
+        }
 
-		// Handlers
+        private void OnPrintViewChanged(object sender, RoutedEventArgs e)
+        {
+            RaisePrintViewChangedEvent(false);
+        }
 
-		private void OnInspectElementMetadata(object sender, PropertyValueChangedEventArgs e)
-		{
-			if (e.NewValue != null)
-			{
-				Tree.SelectElementByMetadata(e.NewValue);
-			}
-		}
+        private void OnElementMetadataChanged(object sender, PropertyValueChangedEventArgs e)
+        {
+            RaisePrintViewChangedEvent(false);
+        }
 
-		private void OnPrintViewChanged(object sender, RoutedEventArgs e)
-		{
-			RaisePrintViewChangedEvent(false);
-		}
+        private void OnExpandAllElements(object sender, RoutedEventArgs e)
+        {
+            Tree.ExpandAllElements();
+        }
 
-		private void OnElementMetadataChanged(object sender, PropertyValueChangedEventArgs e)
-		{
-			RaisePrintViewChangedEvent(false);
-		}
+        private void OnCollapseAllElements(object sender, RoutedEventArgs e)
+        {
+            Tree.CollapseAllElements();
+        }
 
-		private void OnExpandAllElements(object sender, RoutedEventArgs e)
-		{
-			Tree.ExpandAllElements();
-		}
+        private void OnImport(object sender, RoutedEventArgs e)
+        {
+            var printView = PrintView ?? new DynamicWrapper();
 
-		private void OnCollapseAllElements(object sender, RoutedEventArgs e)
-		{
-			Tree.CollapseAllElements();
-		}
+            var openFileDialog = new OpenFileDialog
+            {
+                Title = AppResources.Import,
+                Filter = "PrintView|*.ippv|JSON|*.json|Text|*.txt|All|*.*"
+            };
 
-		private void OnImport(object sender, RoutedEventArgs e)
-		{
-			var printView = PrintView ?? new DynamicWrapper();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    var sourcePrintView = Helpers.LoadObjectFromFile(openFileDialog.FileName);
 
-			var openFileDialog = new OpenFileDialog
-								 {
-									 Title = AppResources.Import,
-									 Filter = "PrintView|*.ippv|JSON|*.json|Text|*.txt|All|*.*"
-								 };
+                    if (sourcePrintView != null && Helpers.AcceptQuestionMessage(AppResources.RelpaceCurrentPrintView))
+                    {
+                        Helpers.CopyObject(sourcePrintView, printView, ImportProperties);
 
-			if (openFileDialog.ShowDialog() == true)
-			{
-				try
-				{
-					var sourcePrintView = Helpers.LoadObjectFromFile(openFileDialog.FileName);
+                        PrintView = printView;
 
-					if (sourcePrintView != null && Helpers.AcceptQuestionMessage(AppResources.RelpaceCurrentPrintView))
-					{
-						Helpers.CopyObject(sourcePrintView, printView, ImportProperties);
+                        RaisePrintViewChangedEvent(true);
+                    }
+                }
+                catch (Exception error)
+                {
+                    Helpers.ShowWarningMessage(error.Message);
+                }
+            }
+        }
 
-						PrintView = printView;
+        private void OnExport(object sender, RoutedEventArgs e)
+        {
+            var printView = PrintView ?? new DynamicWrapper();
 
-						RaisePrintViewChangedEvent(true);
-					}
-				}
-				catch (Exception error)
-				{
-					Helpers.ShowWarningMessage(error.Message);
-				}
-			}
-		}
+            var saveFileDialog = new SaveFileDialog
+            {
+                Title = AppResources.Export,
+                Filter = "PrintView|*.ippv|JSON|*.json|Text|*.txt|All|*.*"
+            };
 
-		private void OnExport(object sender, RoutedEventArgs e)
-		{
-			var printView = PrintView ?? new DynamicWrapper();
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    Helpers.SaveObjectToFile(saveFileDialog.FileName, printView);
+                }
+                catch (Exception error)
+                {
+                    Helpers.ShowWarningMessage(error.Message);
+                }
+            }
+        }
 
-			var saveFileDialog = new SaveFileDialog
-								 {
-									 Title = AppResources.Export,
-									 Filter = "PrintView|*.ippv|JSON|*.json|Text|*.txt|All|*.*"
-								 };
-
-			if (saveFileDialog.ShowDialog() == true)
-			{
-				try
-				{
-					Helpers.SaveObjectToFile(saveFileDialog.FileName, printView);
-				}
-				catch (Exception error)
-				{
-					Helpers.ShowWarningMessage(error.Message);
-				}
-			}
-		}
-
-		private void OnPreview(object sender, RoutedEventArgs e)
-		{
-			Viewer.Preview();
-		}
-
-
-		private static readonly string[] ImportProperties
-			= {
-				  "Caption",
-				  "Description",
-				  "ViewType",
-				  "Visibility",
-				  "Source",
-				  "Font",
-				  "TextCase",
-				  "Style",
-				  "Foreground",
-				  "Background",
-				  "PageSize",
-				  "PagePadding",
-				  "Styles",
-				  "Blocks"
-			  };
-	}
+        private void OnPreview(object sender, RoutedEventArgs e)
+        {
+            Viewer.Preview();
+        }
+    }
 }

@@ -1,11 +1,11 @@
-﻿using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.Registers;
+﻿using InfinniPlatform.Api.Registers;
 using InfinniPlatform.MetadataDesigner.Views.Status;
 using InfinniPlatform.MetadataDesigner.Views.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.MetadataDesigner.Views
 {

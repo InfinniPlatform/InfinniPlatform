@@ -3,7 +3,7 @@
 namespace InfinniPlatform.Api.Index
 {
     /// <summary>
-    /// Тип данных поля документа, используемый для хранения проиндексированного объекта
+    ///     Тип данных поля документа, используемый для хранения проиндексированного объекта
     /// </summary>
     public enum PropertyDataType
     {
@@ -17,13 +17,12 @@ namespace InfinniPlatform.Api.Index
     }
 
     /// <summary>
-    /// Определяет параметры маппинга для поля типа, хранящегося в индексе
+    ///     Определяет параметры маппинга для поля типа, хранящегося в индексе
     /// </summary>
     public sealed class PropertyMapping
     {
         public PropertyMapping()
         {
-            
         }
 
         public PropertyMapping(string name, IEnumerable<PropertyMapping> childProperties)
@@ -43,22 +42,21 @@ namespace InfinniPlatform.Api.Index
         }
 
         public string Name { get; set; }
-
         // Список параметров подлежит расширению,
         // возможно понадобиться дополнительно определять формат, правила сортировки, search_analyzer
-        
+
         /// <summary>
-        /// Возвращает тип свойства 
+        ///     Возвращает тип свойства
         /// </summary>
         public PropertyDataType DataType { get; set; }
 
         /// <summary>
-        /// True если необходимо добавить дополнительное поле сортировки
+        ///     True если необходимо добавить дополнительное поле сортировки
         /// </summary>
         public bool AddSortField { get; set; }
 
         /// <summary>
-        /// Возвращает вложенные свойства
+        ///     Возвращает вложенные свойства
         /// </summary>
         public IList<PropertyMapping> ChildProperties { get; set; }
     }

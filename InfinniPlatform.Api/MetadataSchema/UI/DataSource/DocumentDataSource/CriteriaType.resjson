@@ -1,22 +1,22 @@
 ﻿{
-  "id": "CriteriaType",
-  "description": "Критерии фильтрации",
-  "enum": [
-    "IsEquals",
-    "IsNotEquals",
-    "IsMoreThan",
-    "IsLessThan",
-    "IsMoreThanOrEquals",
-    "IsLessThanOrEquals",
-    "IsContains",
-    "IsNotContains",
-    "IsEmpty",
-    "IsNotEmpty",
-    "IsStartsWith",
-    "IsNotStartsWith",
-    "IsEndsWith",
-    "IsNotEndsWith",
-    "IsIn",
-    "IsNotIn"
-  ]
+	"id": "CriteriaType",
+	"description": "Критерии фильтрации",
+	"enum": [
+		"IsEquals",
+		"IsNotEquals",
+		"IsMoreThan",
+		"IsLessThan",
+		"IsMoreThanOrEquals",
+		"IsLessThanOrEquals",
+		"IsContains",
+		"IsNotContains",
+		"IsEmpty",
+		"IsNotEmpty",
+		"IsStartsWith",
+		"IsNotStartsWith",
+		"IsEndsWith",
+		"IsNotEndsWith",
+		"IsIn",
+		"IsNotIn"
+	]
 }

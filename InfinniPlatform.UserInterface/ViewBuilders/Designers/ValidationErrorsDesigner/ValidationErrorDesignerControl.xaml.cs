@@ -3,38 +3,29 @@ using System.Windows.Controls;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ValidationErrorsDesigner
 {
-	/// <summary>
-	/// Элемент управления для редактирования сервисов.
-	/// </summary>
-	sealed partial class ValidationErrorDesignerControl : UserControl
-	{
-		public ValidationErrorDesignerControl()
-		{
-			InitializeComponent();
+    /// <summary>
+    ///     Элемент управления для редактирования сервисов.
+    /// </summary>
+    sealed partial class ValidationErrorDesignerControl : UserControl
+    {
+        public ValidationErrorDesignerControl()
+        {
+            InitializeComponent();
 
-			Designer.OnValueChanged += OnValueChangedHandler;
-		}
+            Designer.OnValueChanged += OnValueChangedHandler;
+        }
 
-		private void OnValueChangedHandler(object sender, EventArgs e)
-		{
-			if (OnValueChanged != null)
-			{
-				OnValueChanged(sender, e);
-			}
-		}
+        public Func<string> ConfigId
+        {
+            get { return Designer.ConfigId; }
+            set { Designer.ConfigId = value; }
+        }
 
-
-		public Func<string> ConfigId
-		{
-			get { return Designer.ConfigId; }
-			set { Designer.ConfigId = value; }
-		}
-
-		public Func<string> DocumentId
-		{
-			get { return Designer.DocumentId; }
-			set { Designer.DocumentId = value; }
-		}
+        public Func<string> DocumentId
+        {
+            get { return Designer.DocumentId; }
+            set { Designer.DocumentId = value; }
+        }
 
         public Func<string> Version
         {
@@ -42,13 +33,20 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ValidationErrorsD
             set { Designer.Version = value; }
         }
 
-		public object Value
-		{
-			get { return Designer.Value; }
-			set { Designer.Value = value; }
-		}
+        public object Value
+        {
+            get { return Designer.Value; }
+            set { Designer.Value = value; }
+        }
 
+        private void OnValueChangedHandler(object sender, EventArgs e)
+        {
+            if (OnValueChanged != null)
+            {
+                OnValueChanged(sender, e);
+            }
+        }
 
-		public event EventHandler OnValueChanged;
-	}
+        public event EventHandler OnValueChanged;
+    }
 }

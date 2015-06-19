@@ -1,10 +1,10 @@
 ﻿{
-  "id": "PrintElementBarcodeQrErrorCorrection",
-  "description": "Уровень защиты от ошибок штрих-кода в формате QR",
-  "enum": [
-    "Low",
-    "Medium",
-    "Quartile",
-    "High"
-  ]
+	"id": "PrintElementBarcodeQrErrorCorrection",
+	"description": "Уровень защиты от ошибок штрих-кода в формате QR",
+	"enum": [
+		"Low",
+		"Medium",
+		"Quartile",
+		"High"
+	]
 }

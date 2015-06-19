@@ -43,10 +43,6 @@
       <Private>True</Private>
       <HintPath>..\packages\DevExpress.13.2.9\lib\net45\DevExpress.Xpf.Core.v13.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Xpf.Core.v13.2.Extensions, Version=13.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\DevExpress.13.2.9\lib\net45\DevExpress.Xpf.Core.v13.2.Extensions.dll</HintPath>
-    </Reference>
     <Reference Include="DevExpress.Xpf.Docking.v13.2, Version=13.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\DevExpress.13.2.9\lib\net45\DevExpress.Xpf.Docking.v13.2.dll</HintPath>
@@ -58,10 +54,6 @@
     <Reference Include="DevExpress.Xpf.Grid.v13.2.Core, Version=13.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\DevExpress.13.2.9\lib\net45\DevExpress.Xpf.Grid.v13.2.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Xpf.Grid.v13.2.Extensions, Version=13.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\DevExpress.13.2.9\lib\net45\DevExpress.Xpf.Grid.v13.2.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpf.Layout.v13.2.Core, Version=13.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -75,10 +67,6 @@
       <Private>True</Private>
       <HintPath>..\packages\DevExpress.13.2.9\lib\net45\DevExpress.Xpf.Mvvm.v13.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Xpf.Themes.MetropolisLight.v13.2, Version=13.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\DevExpress.13.2.9\lib\net45\DevExpress.Xpf.Themes.MetropolisLight.v13.2.dll</HintPath>
-    </Reference>
     <Reference Include="ICSharpCode.AvalonEdit">
       <HintPath>..\packages\AvalonEdit.4.4.2.9744\lib\Net40\ICSharpCode.AvalonEdit.dll</HintPath>
     </Reference>
@@ -87,9 +75,7 @@
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Runtime.Caching" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -683,14 +669,6 @@
       <Project>{7CA0F96C-7FF4-44B2-9D44-851984DF4532}</Project>
       <Name>InfinniPlatform.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.DesignControls\InfinniPlatform.DesignControls.csproj">
-      <Project>{9E7FD106-8434-41ED-8DB1-10761C25A25C}</Project>
-      <Name>InfinniPlatform.DesignControls</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.FastReport\InfinniPlatform.FastReport.csproj">
-      <Project>{774D0E71-1848-4074-B537-F182FEFED717}</Project>
-      <Name>InfinniPlatform.FastReport</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.MetadataDesigner\InfinniPlatform.MetadataDesigner.csproj">
       <Project>{b5108924-dda4-4857-8e15-1abb0d49c6f6}</Project>
       <Name>InfinniPlatform.MetadataDesigner</Name>
@@ -702,6 +680,10 @@
     <ProjectReference Include="..\InfinniPlatform.ReportDesigner\InfinniPlatform.ReportDesigner.csproj">
       <Project>{65734184-a04c-4509-bf68-6f07ca324104}</Project>
       <Name>InfinniPlatform.ReportDesigner</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Sdk.Application\InfinniPlatform.Sdk.Application.csproj">
+      <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
+      <Name>InfinniPlatform.Sdk.Application</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

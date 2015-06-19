@@ -1,8 +1,8 @@
 ﻿{
-  "id": "RadioGroupOrientation",
-  "description": "Ориентация списка элементов RadioGroup",
-  "enum": [
-    "Vertical",
-    "Horizontal"
-  ]
+	"id": "RadioGroupOrientation",
+	"description": "Ориентация списка элементов RadioGroup",
+	"enum": [
+		"Vertical",
+		"Horizontal"
+	]
 }

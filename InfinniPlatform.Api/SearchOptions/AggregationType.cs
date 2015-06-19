@@ -4,7 +4,7 @@
     {
         Count = 0,
         Sum,
-        Avg, 
+        Avg,
         Max,
         Min
     }

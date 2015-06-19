@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Owin;
+﻿using Microsoft.Owin;
 
 namespace InfinniPlatform.Owin.Middleware
 {
@@ -16,7 +11,6 @@ namespace InfinniPlatform.Owin.Middleware
     public sealed class PathStringProvider
     {
         public PathString PathString { get; set; }
-
         public Priority Priority { get; set; }
     }
 
@@ -24,11 +18,11 @@ namespace InfinniPlatform.Owin.Middleware
     {
         public static PathStringProvider Create(this PathString pathString, Priority priority)
         {
-            return new PathStringProvider()
+            return new PathStringProvider
             {
                 PathString = pathString,
                 Priority = priority
-            } ;
+            };
         }
     }
 }

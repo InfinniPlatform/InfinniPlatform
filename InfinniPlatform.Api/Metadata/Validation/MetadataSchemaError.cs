@@ -1,58 +1,57 @@
 ﻿using System;
-
 using InfinniPlatform.Api.Properties;
 
 namespace InfinniPlatform.Api.Metadata.Validation
 {
-	/// <summary>
-	/// Ошибка в схеме объекта метаданных.
-	/// </summary>
-	[Serializable]
-	public sealed class MetadataSchemaError
-	{
-		/// <summary>
-		/// Конструктор.
-		/// </summary>
-		/// <param name="message">Сообщение об ошибке.</param>
-		/// <param name="path">Путь к свойству.</param>
-		/// <param name="lineNumber">Номер строки.</param>
-		/// <param name="lineColumn">Номер столбца.</param>
-		public MetadataSchemaError(string message, string path, int lineNumber, int lineColumn)
-		{
-			if (string.IsNullOrEmpty(message))
-			{
-				message = path;
-			}
+    /// <summary>
+    ///     Ошибка в схеме объекта метаданных.
+    /// </summary>
+    [Serializable]
+    public sealed class MetadataSchemaError
+    {
+        /// <summary>
+        ///     Номер столбца.
+        /// </summary>
+        public readonly int LineColumn;
 
-			if (!string.IsNullOrEmpty(message) && !message.Contains(path))
-			{
-				message += string.Format(Resources.SchemaPathInfo, path);
-			}
+        /// <summary>
+        ///     Номер строки.
+        /// </summary>
+        public readonly int LineNumber;
 
-			Message = message;
-			Path = path;
-			LineNumber = lineNumber;
-			LineColumn = lineColumn;
-		}
+        /// <summary>
+        ///     Сообщение об ошибке.
+        /// </summary>
+        public readonly string Message;
 
-		/// <summary>
-		/// Сообщение об ошибке.
-		/// </summary>
-		public readonly string Message;
+        /// <summary>
+        ///     Путь к свойству.
+        /// </summary>
+        public readonly string Path;
 
-		/// <summary>
-		/// Путь к свойству.
-		/// </summary>
-		public readonly string Path;
+        /// <summary>
+        ///     Конструктор.
+        /// </summary>
+        /// <param name="message">Сообщение об ошибке.</param>
+        /// <param name="path">Путь к свойству.</param>
+        /// <param name="lineNumber">Номер строки.</param>
+        /// <param name="lineColumn">Номер столбца.</param>
+        public MetadataSchemaError(string message, string path, int lineNumber, int lineColumn)
+        {
+            if (string.IsNullOrEmpty(message))
+            {
+                message = path;
+            }
 
-		/// <summary>
-		/// Номер строки.
-		/// </summary>
-		public readonly int LineNumber;
+            if (!string.IsNullOrEmpty(message) && !message.Contains(path))
+            {
+                message += string.Format(Resources.SchemaPathInfo, path);
+            }
 
-		/// <summary>
-		/// Номер столбца.
-		/// </summary>
-		public readonly int LineColumn;
-	}
+            Message = message;
+            Path = path;
+            LineNumber = lineNumber;
+            LineColumn = lineColumn;
+        }
+    }
 }

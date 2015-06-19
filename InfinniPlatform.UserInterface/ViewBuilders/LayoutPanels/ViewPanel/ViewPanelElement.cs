@@ -1,133 +1,126 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-
 using InfinniPlatform.UserInterface.ViewBuilders.Elements;
 using InfinniPlatform.UserInterface.ViewBuilders.Scripts;
 using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.LayoutPanels.ViewPanel
 {
-	/// <summary>
-	/// Контейнер элементов представления в виде прямоугольной области, в которую помещается указанное представление.
-	/// </summary>
-	public sealed class ViewPanelElement : BaseElement<Grid>, ILayoutPanel
-	{
-		public ViewPanelElement(View parentView, Func<View> contentViewFactory)
-			: base(parentView)
-		{
-			_contentViewFactory = contentViewFactory;
+    /// <summary>
+    ///     Контейнер элементов представления в виде прямоугольной области, в которую помещается указанное представление.
+    /// </summary>
+    public sealed class ViewPanelElement : BaseElement<Grid>, ILayoutPanel
+    {
+        // ContentView
 
-			Control.Loaded += OnLoadedViewPanel;
-		}
+        private View _contentView;
+        private readonly Func<View> _contentViewFactory;
 
+        public ViewPanelElement(View parentView, Func<View> contentViewFactory)
+            : base(parentView)
+        {
+            _contentViewFactory = contentViewFactory;
 
-		private readonly Func<View> _contentViewFactory;
+            Control.Loaded += OnLoadedViewPanel;
+        }
 
-		private void OnLoadedViewPanel(object sender, RoutedEventArgs e)
-		{
-			var contentView = GetContentView();
+        // Events
 
-			if (contentView != null)
-			{
-				var viewControl = contentView.GetControl<FrameworkElement>();
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события о том, что представление открывается.
+        /// </summary>
+        public ScriptDelegate OnOpening { get; set; }
 
-				if (viewControl != null && viewControl.Parent == null)
-				{
-					Control.Children.Add(viewControl);
-				}
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события о том, что представление открыто.
+        /// </summary>
+        public ScriptDelegate OnOpened { get; set; }
 
-				contentView.Open();
-			}
-		}
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события о том, что представление закрывается.
+        /// </summary>
+        public ScriptDelegate OnClosing { get; set; }
 
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события о том, что представление закрыто.
+        /// </summary>
+        public ScriptDelegate OnClosed { get; set; }
 
-		// ContentView
+        private void OnLoadedViewPanel(object sender, RoutedEventArgs e)
+        {
+            var contentView = GetContentView();
 
-		private View _contentView;
+            if (contentView != null)
+            {
+                var viewControl = contentView.GetControl<FrameworkElement>();
 
-		public View GetContentView()
-		{
-			if (_contentView == null)
-			{
-				_contentView = _contentViewFactory();
-			}
+                if (viewControl != null && viewControl.Parent == null)
+                {
+                    Control.Children.Add(viewControl);
+                }
 
-			return _contentView;
-		}
+                contentView.Open();
+            }
+        }
 
+        public View GetContentView()
+        {
+            if (_contentView == null)
+            {
+                _contentView = _contentViewFactory();
+            }
 
-		// Open
+            return _contentView;
+        }
 
-		/// <summary>
-		/// Открывает представление.
-		/// </summary>
-		public void Open()
-		{
-			if (OnOpening != null)
-			{
-				this.InvokeScript(OnOpening);
-			}
+        // Open
 
-			if (OnOpened != null)
-			{
-				this.InvokeScript(OnOpened);
-			}
-		}
+        /// <summary>
+        ///     Открывает представление.
+        /// </summary>
+        public void Open()
+        {
+            if (OnOpening != null)
+            {
+                this.InvokeScript(OnOpening);
+            }
 
+            if (OnOpened != null)
+            {
+                this.InvokeScript(OnOpened);
+            }
+        }
 
-		// Close
+        // Close
 
-		/// <summary>
-		/// Закрывает представление.
-		/// </summary>
-		public bool Close(bool force = false)
-		{
-			if (OnClosing != null)
-			{
-				dynamic arguments = null;
+        /// <summary>
+        ///     Закрывает представление.
+        /// </summary>
+        public bool Close(bool force = false)
+        {
+            if (OnClosing != null)
+            {
+                dynamic arguments = null;
 
-				this.InvokeScript(OnClosing, a =>
-											 {
-												 a.Force = force;
-												 arguments = a;
-											 });
+                this.InvokeScript(OnClosing, a =>
+                {
+                    a.Force = force;
+                    arguments = a;
+                });
 
-				if (!force && arguments != null && arguments.IsCancel == true)
-				{
-					return false;
-				}
-			}
+                if (!force && arguments != null && arguments.IsCancel == true)
+                {
+                    return false;
+                }
+            }
 
-			if (OnClosed != null)
-			{
-				this.InvokeScript(OnClosed);
-			}
+            if (OnClosed != null)
+            {
+                this.InvokeScript(OnClosed);
+            }
 
-			return true;
-		}
-
-
-		// Events
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события о том, что представление открывается.
-		/// </summary>
-		public ScriptDelegate OnOpening { get; set; }
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события о том, что представление открыто.
-		/// </summary>
-		public ScriptDelegate OnOpened { get; set; }
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события о том, что представление закрывается.
-		/// </summary>
-		public ScriptDelegate OnClosing { get; set; }
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события о том, что представление закрыто.
-		/// </summary>
-		public ScriptDelegate OnClosed { get; set; }
-	}
+            return true;
+        }
+    }
 }

@@ -2,9 +2,9 @@
 	"id": "HorizontalTextAlignment",
 	"description": "Горизонтальное выравнивание текста внутри элемента",
 	"enum": [
-	  "Left",
-	  "Right",
-	  "Center",
-	  "Justify"
+		"Left",
+		"Right",
+		"Center",
+		"Justify"
 	]
 }

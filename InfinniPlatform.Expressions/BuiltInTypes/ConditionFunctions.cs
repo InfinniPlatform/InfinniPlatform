@@ -3,31 +3,31 @@ using System.Linq;
 
 namespace InfinniPlatform.Expressions.BuiltInTypes
 {
-	static class ConditionFunctions
-	{
-		public static object If(bool expression, object whenTrue, object whenFalse)
-		{
-			return expression ? whenTrue : whenFalse;
-		}
+    internal static class ConditionFunctions
+    {
+        public static object If(bool expression, object whenTrue, object whenFalse)
+        {
+            return expression ? whenTrue : whenFalse;
+        }
 
-		public static object Switch(object expression, IEnumerable keys, IEnumerable values, object defaultValue = null)
-		{
-			if (keys != null)
-			{
-				var i = 0;
+        public static object Switch(object expression, IEnumerable keys, IEnumerable values, object defaultValue = null)
+        {
+            if (keys != null)
+            {
+                var i = 0;
 
-				foreach (var key in keys)
-				{
-					if (Equals(expression, key))
-					{
-						return (values != null) ? values.Cast<object>().ElementAtOrDefault(i) : null;
-					}
+                foreach (var key in keys)
+                {
+                    if (Equals(expression, key))
+                    {
+                        return (values != null) ? values.Cast<object>().ElementAtOrDefault(i) : null;
+                    }
 
-					++i;
-				}
-			}
+                    ++i;
+                }
+            }
 
-			return defaultValue;
-		}
-	}
+            return defaultValue;
+        }
+    }
 }

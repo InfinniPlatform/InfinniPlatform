@@ -4,112 +4,105 @@ using System.Windows.Forms;
 
 namespace InfinniPlatform.ReportDesigner.Views.Wizard
 {
-	sealed class WizardRunner
-	{
-		public WizardRunner(Control target, Action<WizardPageBuilder> page)
-		{
-			var pageBuilder = new WizardPageBuilder(target);
+    internal sealed class WizardRunner
+    {
+        private readonly Stack<WizardPage> _historySteps;
+        private readonly WizardPage _rootPage;
 
-			if (page != null)
-			{
-				page(pageBuilder);
-			}
+        public WizardRunner(Control target, Action<WizardPageBuilder> page)
+        {
+            var pageBuilder = new WizardPageBuilder(target);
 
-			_rootPage = pageBuilder.Build();
-			_historySteps = new Stack<WizardPage>();
+            if (page != null)
+            {
+                page(pageBuilder);
+            }
 
-			CurrentPage = _rootPage;
-		}
+            _rootPage = pageBuilder.Build();
+            _historySteps = new Stack<WizardPage>();
 
+            CurrentPage = _rootPage;
+        }
 
-		private readonly WizardPage _rootPage;
-		private readonly Stack<WizardPage> _historySteps;
+        public WizardPage CurrentPage { get; private set; }
 
+        public bool CanNext
+        {
+            get { return CurrentPage.Pages.Count > 0; }
+        }
 
-		public WizardPage CurrentPage
-		{
-			get;
-			private set;
-		}
+        public bool CanBack
+        {
+            get { return _historySteps.Count > 0; }
+        }
 
-		public bool CanNext
-		{
-			get { return CurrentPage.Pages.Count > 0; }
-		}
+        public bool CanFinish
+        {
+            get { return CurrentPage.Pages.Count == 0; }
+        }
 
-		public bool CanBack
-		{
-			get { return _historySteps.Count > 0; }
-		}
+        public void Next()
+        {
+            if (CanNext && CurrentPage.OnNext())
+            {
+                foreach (var nextPage in CurrentPage.Pages)
+                {
+                    if (nextPage.Condition())
+                    {
+                        _historySteps.Push(CurrentPage);
 
-		public bool CanFinish
-		{
-			get { return CurrentPage.Pages.Count == 0; }
-		}
+                        CurrentPage = nextPage;
 
+                        break;
+                    }
+                }
+            }
+        }
 
-		public void Next()
-		{
-			if (CanNext && CurrentPage.OnNext())
-			{
-				foreach (var nextPage in CurrentPage.Pages)
-				{
-					if (nextPage.Condition())
-					{
-						_historySteps.Push(CurrentPage);
+        public void Back()
+        {
+            if (CanBack && CurrentPage.OnBack())
+            {
+                var prevPage = _historySteps.Pop();
 
-						CurrentPage = nextPage;
+                CurrentPage = prevPage;
+            }
+        }
 
-						break;
-					}
-				}
-			}
-		}
+        public bool Finish()
+        {
+            return CanFinish && CurrentPage.OnFinish();
+        }
 
-		public void Back()
-		{
-			if (CanBack && CurrentPage.OnBack())
-			{
-				var prevPage = _historySteps.Pop();
+        public bool Cancel()
+        {
+            var success = CurrentPage.OnCancel();
 
-				CurrentPage = prevPage;
-			}
-		}
+            foreach (var page in _historySteps)
+            {
+                success &= page.OnCancel();
+            }
 
-		public bool Finish()
-		{
-			return CanFinish && CurrentPage.OnFinish();
-		}
+            return success;
+        }
 
-		public bool Cancel()
-		{
-			var success = CurrentPage.OnCancel();
+        public void Reset()
+        {
+            CurrentPage.OnReset();
+        }
 
-			foreach (var page in _historySteps)
-			{
-				success &= page.OnCancel();
-			}
+        public void ResetAll()
+        {
+            Reset();
 
-			return success;
-		}
+            foreach (var page in _historySteps)
+            {
+                page.OnReset();
+            }
 
-		public void Reset()
-		{
-			CurrentPage.OnReset();
-		}
+            _historySteps.Clear();
 
-		public void ResetAll()
-		{
-			Reset();
-
-			foreach (var page in _historySteps)
-			{
-				page.OnReset();
-			}
-
-			_historySteps.Clear();
-
-			CurrentPage = _rootPage;
-		}
-	}
+            CurrentPage = _rootPage;
+        }
+    }
 }

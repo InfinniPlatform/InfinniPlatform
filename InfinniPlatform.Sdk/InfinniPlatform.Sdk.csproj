@@ -40,15 +40,12 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\BaseApi.cs" />
     <Compile Include="Api\InfinniAuthApi.cs" />
+    <Compile Include="Api\InfinniCustomServiceApi.cs" />
     <Compile Include="Api\InfinniSignInApi.cs" />
     <Compile Include="AttachedInstance.cs" />
     <Compile Include="FilterBuilder.cs" />

@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 using DevExpress.XtraEditors.Controls;
 
-using InfinniPlatform.Api.Dynamic;
+
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
@@ -16,7 +16,7 @@ using InfinniPlatform.MetadataDesigner.Views.JsonEditor;
 using InfinniPlatform.MetadataDesigner.Views.Status;
 using InfinniPlatform.MetadataDesigner.Views.Update;
 using InfinniPlatform.MetadataDesigner.Views.ViewModel;
-
+using InfinniPlatform.Sdk.Application.Dynamic;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.MetadataDesigner.Views

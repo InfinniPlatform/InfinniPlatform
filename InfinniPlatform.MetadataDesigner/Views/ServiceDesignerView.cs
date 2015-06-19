@@ -5,9 +5,10 @@ using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraEditors.Controls;
 using InfinniPlatform.Api.Deprecated;
-using InfinniPlatform.Api.Dynamic;
+
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.MetadataDesigner.Views.ViewModel;
+using InfinniPlatform.Sdk.Application.Dynamic;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.MetadataDesigner.Views

@@ -2,7 +2,7 @@
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
-namespace InfinniPlatform.Api.Dynamic
+namespace InfinniPlatform.Sdk.Application.Dynamic
 {
     /// <summary>
     /// Необходимость добавления данных расширений возникла вследствие того,

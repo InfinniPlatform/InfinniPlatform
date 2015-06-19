@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
+﻿using System.Linq;
 using InfinniPlatform.Api.RestApi.Auth;
+using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 {
     /// <summary>
-    ///   Получить пользователя системы
+    ///     Получить пользователя системы
     /// </summary>
     public sealed class ActionUnitGetUser
     {
@@ -29,18 +25,19 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
                 return;
             }
 
-            var userFound = aclApi.GetUsers(false).FirstOrDefault(r => r.UserName.ToLowerInvariant() == user.UserName.ToLowerInvariant());
+            var userFound =
+                aclApi.GetUsers(false)
+                    .FirstOrDefault(r => r.UserName.ToLowerInvariant() == user.UserName.ToLowerInvariant());
 
 
             if (userFound == null)
             {
                 target.Result = new DynamicWrapper();
                 target.Result.IsValid = false;
-                target.Result.ValidationMessage = "User with user name " + user.UserName + " not found.";               
+                target.Result.ValidationMessage = "User with user name " + user.UserName + " not found.";
                 return;
             }
             target.Result = userFound;
-
         }
     }
 }

@@ -1,18 +1,18 @@
 ﻿{
-  "id": "PrintElementSection",
-  "description": "Блочный элемент печатного представления для группировки множества блочных элементов",
-  "type": "object",
-  "extends": {
-    "$ref": "http://demo.infinnity.ru:8081/display/MC/PrintElementBlock"
-  },
-  "properties": {
-    "Blocks": {
-      "description": "Список блочных элементов печатного представления",
-      "type": "array",
-      "items": {
-        "$ref": "http://demo.infinnity.ru:8081/display/MC/PrintElementBlockContainer"
-      }
-    }
-  },
-  "additionalProperties": false
+	"id": "PrintElementSection",
+	"description": "Блочный элемент печатного представления для группировки множества блочных элементов",
+	"type": "object",
+	"extends": {
+		"$ref": "http://demo.infinnity.ru:8081/display/MC/PrintElementBlock"
+	},
+	"properties": {
+		"Blocks": {
+			"description": "Список блочных элементов печатного представления",
+			"type": "array",
+			"items": {
+				"$ref": "http://demo.infinnity.ru:8081/display/MC/PrintElementBlockContainer"
+			}
+		}
+	},
+	"additionalProperties": false
 }

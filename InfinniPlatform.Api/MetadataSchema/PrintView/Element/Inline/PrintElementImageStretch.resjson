@@ -1,9 +1,9 @@
 ﻿{
-  "id": "PrintElementImageStretch",
-  "description": "Растягивание изображения",
-  "enum": [
-    "None",
-    "Fill",
-    "Uniform"
-  ]
+	"id": "PrintElementImageStretch",
+	"description": "Растягивание изображения",
+	"enum": [
+		"None",
+		"Fill",
+		"Uniform"
+	]
 }

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq;
-
 using InfinniPlatform.Api.Validation;
 using InfinniPlatform.Json;
-
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Index.QueryLanguage.Implementation
@@ -11,8 +9,8 @@ namespace InfinniPlatform.Index.QueryLanguage.Implementation
     internal sealed class JsonFilterCriteria
     {
         private readonly WhereObject _criteria;
-        private readonly JToken _jsonToken;
         private readonly JsonParser _jsonParser;
+        private readonly JToken _jsonToken;
 
         public JsonFilterCriteria(WhereObject criteria, JToken jsonToken)
         {
@@ -26,10 +24,10 @@ namespace InfinniPlatform.Index.QueryLanguage.Implementation
             get { return _jsonToken; }
         }
 
-	    public string Property
-	    {
-		    get { return _criteria.Property; }
-	    }
+        public string Property
+        {
+            get { return _criteria.Property; }
+        }
 
         public void RemoveUnsatisfiedTokens(IValidationOperator clientCriteria)
         {
@@ -37,30 +35,30 @@ namespace InfinniPlatform.Index.QueryLanguage.Implementation
 
             var checkTokens = foundToken.ToList();
             foreach (var token in checkTokens)
-            {               
+            {
                 var propertyValue = token.GetPropertyValueObject();
 
-                if (propertyValue != null &&  !clientCriteria.Validate(propertyValue))  //!_criteria.Value.ToString().Equals(propertyValue))
+                if (propertyValue != null && !clientCriteria.Validate(propertyValue))
+                    //!_criteria.Value.ToString().Equals(propertyValue))
                 {
                     if (token.Parent != null && token.Parent.Parent != null && token.Parent.Parent is JArray)
                     {
-	                    token.Parent.Remove();
+                        token.Parent.Remove();
                     }
                     else if (token.Parent is JObject && token.Parent.Parent != null)
-                    {						
-	                    token.Parent.Parent.Remove();
+                    {
+                        token.Parent.Parent.Remove();
                     }
-					else if (token.Parent is JObject)
-					{
-						token.Remove();
-					}
-					else
-					{
-						throw new ArgumentException("parent for JToken not found.");
-					}
-                }                
+                    else if (token.Parent is JObject)
+                    {
+                        token.Remove();
+                    }
+                    else
+                    {
+                        throw new ArgumentException("parent for JToken not found.");
+                    }
+                }
             }
         }
     }
-
 }

@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Api.Dynamic;
+﻿
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Index.SearchOptions;
 using InfinniPlatform.Api.SearchOptions;
@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using InfinniPlatform.Sdk.Application.Dynamic;
 using IFilter = InfinniPlatform.Api.Index.SearchOptions.IFilter;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders

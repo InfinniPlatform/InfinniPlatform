@@ -9,59 +9,56 @@ namespace InfinniPlatform.Modules
     public sealed class AssemblyInfo
     {
         public bool IsExecutable { get; set; }
-
         public Assembly Assembly { get; set; }
     }
 
-	public static class ModuleExtension
-	{
+    public static class ModuleExtension
+    {
         public static IEnumerable<Assembly> LoadModulesAssemblies(string modules)
         {
             return LoadModules(modules).Select(a => a.Assembly).ToList();
         }
 
+        public static IEnumerable<AssemblyInfo> LoadModules(string modules)
+        {
+            var loc = AppDomain.CurrentDomain.BaseDirectory;
+            var loadedModules = modules.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).Select(m => m.Trim());
 
-		public static IEnumerable<AssemblyInfo> LoadModules(string modules)
-		{
-
-			var loc = AppDomain.CurrentDomain.BaseDirectory;
-			var loadedModules = modules.Split(new[] {','},StringSplitOptions.RemoveEmptyEntries).Select(m => m.Trim());
-
-			var result = new List<AssemblyInfo>();
-			foreach (string filename in loadedModules)
-			{
-				try
-				{
-				    var fileDll = loc + "\\" + filename + ".dll";
+            var result = new List<AssemblyInfo>();
+            foreach (var filename in loadedModules)
+            {
+                try
+                {
+                    var fileDll = loc + "\\" + filename + ".dll";
                     var fileExe = loc + "\\" + filename + ".exe";
-				    Assembly asm = null;
-				    AssemblyInfo asInfo;
-				    if (File.Exists(fileDll))
-				    {
-				        asm = Assembly.Load(File.ReadAllBytes(fileDll));
-				        asInfo = new AssemblyInfo()
-				            {
-				                Assembly = asm,
-				                IsExecutable = false
-				            };
-				    }
-				    else
-				    {
-				        asm = Assembly.Load(File.ReadAllBytes(fileExe));
-                        asInfo = new AssemblyInfo()
+                    Assembly asm = null;
+                    AssemblyInfo asInfo;
+                    if (File.Exists(fileDll))
+                    {
+                        asm = Assembly.Load(File.ReadAllBytes(fileDll));
+                        asInfo = new AssemblyInfo
+                        {
+                            Assembly = asm,
+                            IsExecutable = false
+                        };
+                    }
+                    else
+                    {
+                        asm = Assembly.Load(File.ReadAllBytes(fileExe));
+                        asInfo = new AssemblyInfo
                         {
                             Assembly = asm,
                             IsExecutable = true
                         };
-				    }
-				    result.Add(asInfo);
-				}
-				catch (BadImageFormatException e)
-				{
-					// Not a valid assembly, move on
-				}
-			}
-			return result;
-		}
-	}
+                    }
+                    result.Add(asInfo);
+                }
+                catch (BadImageFormatException e)
+                {
+                    // Not a valid assembly, move on
+                }
+            }
+            return result;
+        }
+    }
 }

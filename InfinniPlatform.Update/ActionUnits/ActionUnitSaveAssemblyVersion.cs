@@ -1,9 +1,8 @@
 ﻿using System;
 using System.IO;
 using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.SearchOptions;
+using InfinniPlatform.Sdk.Application.Contracts;
 using InfinniPlatform.Update.Properties;
 
 namespace InfinniPlatform.Update.ActionUnits

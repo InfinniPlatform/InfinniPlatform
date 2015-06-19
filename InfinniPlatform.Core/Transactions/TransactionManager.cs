@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.Factories;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Transactions;
 using InfinniPlatform.Factories;
-using InfinniPlatform.Index;
 
 namespace InfinniPlatform.Transactions
 {
     public sealed class TransactionManager : ITransactionManager
     {
-        private readonly IIndexFactory _indexFactory;
         private readonly IBlobStorageFactory _blobStorageFactory;
-        private readonly ConcurrentDictionary<string, ITransaction> _transactions = new ConcurrentDictionary<string, ITransaction>();
+        private readonly IIndexFactory _indexFactory;
 
+        private readonly ConcurrentDictionary<string, ITransaction> _transactions =
+            new ConcurrentDictionary<string, ITransaction>();
 
         public TransactionManager(IIndexFactory indexFactory, IBlobStorageFactory blobStorageFactory)
         {
@@ -25,7 +21,7 @@ namespace InfinniPlatform.Transactions
         }
 
         /// <summary>
-        ///   Зафиксировать транзакцию
+        ///     Зафиксировать транзакцию
         /// </summary>
         /// <param name="transactionMarker">Идентификатор транзакции</param>
         public void CommitTransaction(string transactionMarker)
@@ -34,7 +30,7 @@ namespace InfinniPlatform.Transactions
         }
 
         /// <summary>
-        ///  Удалить транзакцию
+        ///     Удалить транзакцию
         /// </summary>
         /// <param name="transactionMarker">Идентификатор транзакции</param>
         public void RemoveTransaction(string transactionMarker)
@@ -46,7 +42,7 @@ namespace InfinniPlatform.Transactions
         }
 
         /// <summary>
-        ///   Получить транзакцию с указанным идентификатором
+        ///     Получить транзакцию с указанным идентификатором
         /// </summary>
         /// <param name="transactionMarker">Идентификатор транзакции</param>
         /// <returns>Транзакция</returns>
@@ -57,35 +53,36 @@ namespace InfinniPlatform.Transactions
             if (_transactions.ContainsKey(transactionMarker))
             {
                 var containedInstances = _transactions[transactionMarker].GetTransactionItems();
-                var transactionSlave = new TransactionSlave(transactionMarker,_transactions[transactionMarker].MasterTransaction, containedInstances);
+                var transactionSlave = new TransactionSlave(transactionMarker,
+                    _transactions[transactionMarker].MasterTransaction, containedInstances);
                 result = transactionSlave;
             }
 
             else
             {
-                var transactionMaster = new TransactionMaster(_indexFactory, _blobStorageFactory, transactionMarker, new List<AttachedInstance>())
+                var transactionMaster = new TransactionMaster(_indexFactory, _blobStorageFactory, transactionMarker,
+                    new List<AttachedInstance>())
                 {
                     OnCommit = RemoveTransaction
                 };
 
                 result = transactionMaster;
-	            lock (_transactions)
-	            {
-		            _transactions.AddOrUpdate(transactionMarker, result, (key,oldValue) => result);
-	            }
+                lock (_transactions)
+                {
+                    _transactions.AddOrUpdate(transactionMarker, result, (key, oldValue) => result);
+                }
             }
 
             return result;
         }
-
 
         private void RemoveTransaction(ITransaction removedTransaction)
         {
             var key = removedTransaction.GetTransactionMarker();
             if (_transactions.ContainsKey(key))
             {
-	            ITransaction transaction;
-                _transactions.TryRemove(key,out transaction);
+                ITransaction transaction;
+                _transactions.TryRemove(key, out transaction);
             }
         }
     }

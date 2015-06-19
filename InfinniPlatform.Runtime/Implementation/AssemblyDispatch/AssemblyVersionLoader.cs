@@ -5,13 +5,13 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Api.Settings;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Metadata;
 using InfinniPlatform.Runtime.Properties;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.Runtime.Implementation.AssemblyDispatch
 {

@@ -1,39 +1,36 @@
-﻿using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.SearchOptions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using InfinniPlatform.Api.SearchOptions;
 
 namespace InfinniPlatform.Api.Index.SearchOptions
 {
-
     /// <summary>
-    ///  Модель данных для формирования поиска средствами
-    ///  Elastic Search либо любого другого поставщика данных
-    /// 
-    ///  Для обеспечения инкапсуляции доступ к членам класса
-    ///  осуществляется только через методы его публичного контракта
+    ///     Модель данных для формирования поиска средствами
+    ///     Elastic Search либо любого другого поставщика данных
+    ///     Для обеспечения инкапсуляции доступ к членам класса
+    ///     осуществляется только через методы его публичного контракта
     /// </summary>
     public sealed class SearchModel
     {
         private readonly IList<SortOption> _criteriaOrder = new List<SortOption>();
 
         /// <summary>
-        ///   Возвращать данные, начиная со страницы...
+        ///     Возвращать данные, начиная со страницы...
         /// </summary>
         public int FromPage { get; private set; }
 
         /// <summary>
-        ///   Размер одной страницы данных
+        ///     Размер одной страницы данных
         /// </summary>
         public int PageSize { get; private set; }
 
         /// <summary>
-        /// Возвращать результаты, начиная с...
+        ///     Возвращать результаты, начиная с...
         /// </summary>
         public int Skip { get; private set; }
 
         /// <summary>
-        ///   Список критериев для упорядочивания
+        ///     Список критериев для упорядочивания
         /// </summary>
         public IList<SortOption> SortOptions
         {
@@ -41,7 +38,7 @@ namespace InfinniPlatform.Api.Index.SearchOptions
         }
 
         /// <summary>
-        ///   Список критериев для поиска
+        ///     Список критериев для поиска
         /// </summary>
         public IFilter Filter { get; private set; }
 
@@ -75,7 +72,8 @@ namespace InfinniPlatform.Api.Index.SearchOptions
 
     public static class SearchModelExtensions
     {
-        public static SearchModel ExtractSearchModel(this IEnumerable<dynamic> filterObject, IFilterBuilder filterFactory)
+        public static SearchModel ExtractSearchModel(this IEnumerable<dynamic> filterObject,
+            IFilterBuilder filterFactory)
         {
             var searchModel = new SearchModel();
 

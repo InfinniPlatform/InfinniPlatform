@@ -1,43 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InfinniPlatform.Api.Transactions
 {
     /// <summary>
-    ///   Объект транзакции
+    ///     Объект транзакции
     /// </summary>
     public interface ITransaction
     {
         /// <summary>
-        ///   Зафиксировать транзакцию
+        ///     Главная транзакция
+        /// </summary>
+        ITransaction MasterTransaction { get; }
+
+        /// <summary>
+        ///     Зафиксировать транзакцию
         /// </summary>
         void CommitTransaction();
 
-
         /// <summary>
-        ///   Отсоединить документ от транзакции
+        ///     Отсоединить документ от транзакции
         /// </summary>
         /// <param name="instanceId">Идентификатор отсоединяемого документа</param>
         void Detach(string instanceId);
 
         /// <summary>
-        ///   Получить идентификатор транзакции
+        ///     Получить идентификатор транзакции
         /// </summary>
         /// <returns></returns>
         string GetTransactionMarker();
 
         /// <summary>
-        ///   Получить список документов транзакции
+        ///     Получить список документов транзакции
         /// </summary>
         /// <returns>Список документов транзакции</returns>
         List<AttachedInstance> GetTransactionItems();
 
         /// <summary>
-        ///   Присоединить документ к транзакции
+        ///     Присоединить документ к транзакции
         /// </summary>
         /// <param name="configId">Идентификатор конфигурации</param>
         /// <param name="documentId">Идентификатор типа документа</param>
@@ -47,13 +47,8 @@ namespace InfinniPlatform.Api.Transactions
         void Attach(string configId, string documentId, string version, IEnumerable<dynamic> documents, string routing);
 
         /// <summary>
-        ///   Главная транзакция
-        /// </summary>
-        ITransaction MasterTransaction { get; }
-
-        /// <summary>
-        ///   Присоединить файл к участнику транзакции, ссылающемуся на документ 
-        /// с указанным идентификатором
+        ///     Присоединить файл к участнику транзакции, ссылающемуся на документ
+        ///     с указанным идентификатором
         /// </summary>
         /// <param name="instanceId">Идентификатор документа</param>
         /// <param name="fieldName">Наименование поля бинарных данных в схеме документа</param>
@@ -61,8 +56,8 @@ namespace InfinniPlatform.Api.Transactions
         void AttachFile(string instanceId, string fieldName, Stream stream);
 
         /// <summary>
-        ///   Отсоединить файл от участника транзакции, ссылающегося на документ
-        /// с указанным идентификатором
+        ///     Отсоединить файл от участника транзакции, ссылающегося на документ
+        ///     с указанным идентификатором
         /// </summary>
         /// <param name="instanceId">Идентификатор документа</param>
         /// <param name="fieldName">Наименование поля бинарных данных в схеме документа</param>

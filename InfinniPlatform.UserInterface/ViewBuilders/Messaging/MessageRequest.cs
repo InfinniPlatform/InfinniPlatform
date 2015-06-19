@@ -3,63 +3,59 @@ using System.Threading.Tasks;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Messaging
 {
-	/// <summary>
-	/// Запрос на обработку сообщения.
-	/// </summary>
-	public sealed class MessageRequest
-	{
-		public MessageRequest(string exchangeName, string messageType, dynamic messageBody)
-		{
-			ExchangeName = exchangeName;
-			MessageType = messageType;
-			MessageBody = messageBody;
+    /// <summary>
+    ///     Запрос на обработку сообщения.
+    /// </summary>
+    public sealed class MessageRequest
+    {
+        private readonly TaskCompletionSource<bool> _requestCompletion;
 
-			_requestCompletion = new TaskCompletionSource<bool>();
-		}
+        /// <summary>
+        ///     Точка обмена.
+        /// </summary>
+        public readonly string ExchangeName;
 
+        /// <summary>
+        ///     Тело сообщения.
+        /// </summary>
+        public readonly object MessageBody;
 
-		private readonly TaskCompletionSource<bool> _requestCompletion;
+        /// <summary>
+        ///     Тип сообщения.
+        /// </summary>
+        public readonly string MessageType;
 
+        public MessageRequest(string exchangeName, string messageType, dynamic messageBody)
+        {
+            ExchangeName = exchangeName;
+            MessageType = messageType;
+            MessageBody = messageBody;
 
-		/// <summary>
-		/// Точка обмена.
-		/// </summary>
-		public readonly string ExchangeName;
+            _requestCompletion = new TaskCompletionSource<bool>();
+        }
 
-		/// <summary>
-		/// Тип сообщения.
-		/// </summary>
-		public readonly string MessageType;
+        /// <summary>
+        ///     Возвращает задачу обработки запроса.
+        /// </summary>
+        public Task RequestTask
+        {
+            get { return _requestCompletion.Task; }
+        }
 
-		/// <summary>
-		/// Тело сообщения.
-		/// </summary>
-		public readonly object MessageBody;
+        /// <summary>
+        ///     Устанавливает признак успешного завершения обработки запроса.
+        /// </summary>
+        public void OnSuccessComplete()
+        {
+            _requestCompletion.SetResult(true);
+        }
 
-
-		/// <summary>
-		/// Возвращает задачу обработки запроса.
-		/// </summary>
-		public Task RequestTask
-		{
-			get { return _requestCompletion.Task; }
-		}
-
-
-		/// <summary>
-		/// Устанавливает признак успешного завершения обработки запроса.
-		/// </summary>
-		public void OnSuccessComplete()
-		{
-			_requestCompletion.SetResult(true);
-		}
-
-		/// <summary>
-		/// Устанавливает признак неуспешного завершения обработки запроса.
-		/// </summary>
-		public void OnErrorComplete(Exception error)
-		{
-			_requestCompletion.SetException(error);
-		}
-	}
+        /// <summary>
+        ///     Устанавливает признак неуспешного завершения обработки запроса.
+        /// </summary>
+        public void OnErrorComplete(Exception error)
+        {
+            _requestCompletion.SetException(error);
+        }
+    }
 }

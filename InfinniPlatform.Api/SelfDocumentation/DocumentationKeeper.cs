@@ -9,16 +9,16 @@ using InfinniPlatform.Api.Settings;
 namespace InfinniPlatform.Api.SelfDocumentation
 {
     /// <summary>
-    /// Хранит структурированную документацию по 
-    /// REST запросам, позволяя делать выборки 
-    /// (например, документацию по определенной конфигурации)
+    ///     Хранит структурированную документацию по
+    ///     REST запросам, позволяя делать выборки
+    ///     (например, документацию по определенной конфигурации)
     /// </summary>
     public sealed class DocumentationKeeper
     {
         private readonly IDocumentationFormatter _documentationFormatter;
 
         /// <summary>
-        /// Словарь содержит информацию по REST запросам, сгруппированную по комментарию
+        ///     Словарь содержит информацию по REST запросам, сгруппированную по комментарию
         /// </summary>
         private readonly HelpMultiDictionary _innerHelpContainer;
 
@@ -29,7 +29,7 @@ namespace InfinniPlatform.Api.SelfDocumentation
         }
 
         /// <summary>
-        /// Сохраняет документацию по конфигурации в заданном файле
+        ///     Сохраняет документацию по конфигурации в заданном файле
         /// </summary>
         public void SaveHelp(string configuration)
         {
@@ -47,7 +47,7 @@ namespace InfinniPlatform.Api.SelfDocumentation
         }
 
         /// <summary>
-        /// Возвращает справочную информацию по всем конфигурациям
+        ///     Возвращает справочную информацию по всем конфигурациям
         /// </summary>
         public string GetHelp()
         {
@@ -63,11 +63,12 @@ namespace InfinniPlatform.Api.SelfDocumentation
                 }
             }
 
-            return _documentationFormatter.CompleteDocumentFormatting("Cправочная информация по всем конфигурациям", helpString.ToString());
+            return _documentationFormatter.CompleteDocumentFormatting("Cправочная информация по всем конфигурациям",
+                helpString.ToString());
         }
 
         /// <summary>
-        /// Возвращает справочную информацию для заданной конфигурации
+        ///     Возвращает справочную информацию для заданной конфигурации
         /// </summary>
         public string GetHelp(string configurationName)
         {
@@ -106,25 +107,13 @@ namespace InfinniPlatform.Api.SelfDocumentation
         }
 
         /// <summary>
-        /// Внутренний словарь, в котором одному ключу соответствует несколько значений.
-        /// Облегчает операции поиска/выборки запросов для построения документации
+        ///     Внутренний словарь, в котором одному ключу соответствует несколько значений.
+        ///     Облегчает операции поиска/выборки запросов для построения документации
         /// </summary>
         private class HelpMultiDictionary : IEnumerable<string>
         {
-            private readonly Dictionary<string, List<RestQueryInfo>> _data = 
+            private readonly Dictionary<string, List<RestQueryInfo>> _data =
                 new Dictionary<string, List<RestQueryInfo>>();
-
-            public void Add(string key, RestQueryInfo value)
-            {
-                if (_data.ContainsKey(key))
-                {
-                    _data[key].Add(value);
-                }
-                else
-                {
-                    _data.Add(key, new List<RestQueryInfo> { value });
-                }
-            }
 
             public IEnumerator<string> GetEnumerator()
             {
@@ -136,6 +125,18 @@ namespace InfinniPlatform.Api.SelfDocumentation
                 return GetEnumerator();
             }
 
+            public void Add(string key, RestQueryInfo value)
+            {
+                if (_data.ContainsKey(key))
+                {
+                    _data[key].Add(value);
+                }
+                else
+                {
+                    _data.Add(key, new List<RestQueryInfo> {value});
+                }
+            }
+
             public RestQueryInfo[] GetHelpInfo(string key)
             {
                 return _data.ContainsKey(key) ? _data[key].ToArray() : new RestQueryInfo[0];
@@ -143,9 +144,12 @@ namespace InfinniPlatform.Api.SelfDocumentation
 
             public RestQueryInfo[] GetHelpInfo(string key, string configurationName)
             {
-                return _data.ContainsKey(key) ? 
-                    _data[key].Where(d=>String.Equals(d.Configuration, configurationName, StringComparison.InvariantCultureIgnoreCase)).ToArray() : 
-                    new RestQueryInfo[0];
+                return _data.ContainsKey(key)
+                    ? _data[key].Where(
+                        d =>
+                            String.Equals(d.Configuration, configurationName,
+                                StringComparison.InvariantCultureIgnoreCase)).ToArray()
+                    : new RestQueryInfo[0];
             }
         }
     }

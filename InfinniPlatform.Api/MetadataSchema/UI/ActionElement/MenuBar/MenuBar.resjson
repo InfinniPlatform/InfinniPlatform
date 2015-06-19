@@ -1,16 +1,16 @@
 ﻿{
-  "id": "MenuBar",
-  "description": "Элемент представления в виде иерархического меню",
-  "type": "object",
-  "extends": {
-    "$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
-  },
-  "properties": {
-    "ConfigId": {
-      "description": "Идентификатор конфигурации",
-      "type": "string",
-      "required": true
-    }
-  },
-  "additionalProperties": false
+	"id": "MenuBar",
+	"description": "Элемент представления в виде иерархического меню",
+	"type": "object",
+	"extends": {
+		"$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
+	},
+	"properties": {
+		"ConfigId": {
+			"description": "Идентификатор конфигурации",
+			"type": "string",
+			"required": true
+		}
+	},
+	"additionalProperties": false
 }

@@ -1,27 +1,24 @@
-﻿using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.Properties;
-using InfinniPlatform.Api.Settings;
-using InfinniPlatform.Api.SystemExtensions;
-
-using Newtonsoft.Json.Linq;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
+using InfinniPlatform.Api.Properties;
+using InfinniPlatform.Api.Settings;
+using InfinniPlatform.Api.SystemExtensions;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.Api.Packages.ConfigStructure
 {
     public class ZipStructure : IConfigStructure
     {
-        private readonly string _archivePath;
-        private readonly bool _toWrite;
         private FileStream _fileStream;
         private ZipArchive _zipArchive;
+        private readonly string _archivePath;
         private readonly string _assemblyVersionPath;
-        private readonly string _folderToUnzip;
         private readonly bool _doNotReadArchiveFromFile;
+        private readonly string _folderToUnzip;
+        private readonly bool _toWrite;
 
         public ZipStructure(string archivePath)
         {
@@ -39,16 +36,15 @@ namespace InfinniPlatform.Api.Packages.ConfigStructure
             _zipArchive = zipArchive;
             _folderToUnzip = folderToUnzip;
             _doNotReadArchiveFromFile = true;
-			_assemblyVersionPath = AppSettings.GetValue("AssemblyVersionPath") ?? Directory.GetCurrentDirectory();
+            _assemblyVersionPath = AppSettings.GetValue("AssemblyVersionPath") ?? Directory.GetCurrentDirectory();
         }
 
         public ZipStructure(string archivePath, string folderToUnzip)
         {
             _archivePath = archivePath;
             _folderToUnzip = folderToUnzip;
-			_assemblyVersionPath = AppSettings.GetValue("AssemblyVersionPath") ?? Directory.GetCurrentDirectory();
+            _assemblyVersionPath = AppSettings.GetValue("AssemblyVersionPath") ?? Directory.GetCurrentDirectory();
         }
-
 
         public void Start()
         {
@@ -56,9 +52,8 @@ namespace InfinniPlatform.Api.Packages.ConfigStructure
             {
                 _fileStream = new FileStream(_archivePath, _toWrite ? FileMode.CreateNew : FileMode.Open);
                 _zipArchive = new ZipArchive(_fileStream, _toWrite ? ZipArchiveMode.Create : ZipArchiveMode.Read, true,
-                                             Encoding.UTF8);
+                    Encoding.UTF8);
             }
-
         }
 
         public void End()
@@ -68,7 +63,6 @@ namespace InfinniPlatform.Api.Packages.ConfigStructure
                 _zipArchive.Dispose();
                 _fileStream.Dispose();
             }
-
         }
 
         public void AddConfiguration(IEnumerable<string> configuration)
@@ -85,7 +79,7 @@ namespace InfinniPlatform.Api.Packages.ConfigStructure
         {
             var currentDocumentFolder = ConfigurationFixtureNames.GetDocumentFolderName(documentName);
 
-            string documentFileName = ConfigurationFixtureNames.GetDocumentFileName(currentDocumentFolder,documentName);
+            var documentFileName = ConfigurationFixtureNames.GetDocumentFileName(currentDocumentFolder, documentName);
 
             _zipArchive.AddFile(documentFileName, document);
         }
@@ -94,7 +88,7 @@ namespace InfinniPlatform.Api.Packages.ConfigStructure
         {
             var currentRegisterFolder = ConfigurationFixtureNames.GetRegisterFolderName(registerName);
 
-            string registerFileName = ConfigurationFixtureNames.GetRegisterFileName(currentRegisterFolder, registerName);
+            var registerFileName = ConfigurationFixtureNames.GetRegisterFileName(currentRegisterFolder, registerName);
 
             _zipArchive.AddFile(registerFileName, register);
         }
@@ -103,7 +97,7 @@ namespace InfinniPlatform.Api.Packages.ConfigStructure
         {
             var documentFolder = ConfigurationFixtureNames.GetDocumentFolderName(documentName);
 
-            return UnzipFile(ConfigurationFixtureNames.GetDocumentFileName(documentFolder,documentName));
+            return UnzipFile(ConfigurationFixtureNames.GetDocumentFileName(documentFolder, documentName));
         }
 
         public dynamic GetRegister(string registerName)
@@ -114,54 +108,55 @@ namespace InfinniPlatform.Api.Packages.ConfigStructure
         }
 
         public void AddReport(string reportName, IEnumerable<string> report)
-	    {
-
-		    var currentReportFolder = ConfigurationFixtureNames.GetReportFolderName(reportName);
-
-		    string reportFileName = ConfigurationFixtureNames.GetReportFileName(currentReportFolder, reportName);
-
-			_zipArchive.AddFile(reportFileName,report);
-	    }
-
-	    public void AddDocumentMetadataType(string document, string metadataName, string metadataType, IEnumerable<string> metadata)
         {
-            
+            var currentReportFolder = ConfigurationFixtureNames.GetReportFolderName(reportName);
 
-            var currentMetadataTypeFolder = ConfigurationFixtureNames.GetMetadataTypeFolder(document, metadataType, metadataName);
+            var reportFileName = ConfigurationFixtureNames.GetReportFileName(currentReportFolder, reportName);
 
-            string currentMetadatatypeFilename = ConfigurationFixtureNames.GetMetadataTypeFileName(currentMetadataTypeFolder,metadataName);
+            _zipArchive.AddFile(reportFileName, report);
+        }
+
+        public void AddDocumentMetadataType(string document, string metadataName, string metadataType,
+            IEnumerable<string> metadata)
+        {
+            var currentMetadataTypeFolder = ConfigurationFixtureNames.GetMetadataTypeFolder(document, metadataType,
+                metadataName);
+
+            var currentMetadatatypeFilename =
+                ConfigurationFixtureNames.GetMetadataTypeFileName(currentMetadataTypeFolder, metadataName);
 
             _zipArchive.AddFile(currentMetadatatypeFilename, metadata);
         }
 
         public dynamic GetDocumentMetadataType(string document, string metadataName, string metadataType)
         {
-            var currentMetadataTypeFolder = ConfigurationFixtureNames.GetMetadataTypeFolder(document, metadataType, metadataName);
+            var currentMetadataTypeFolder = ConfigurationFixtureNames.GetMetadataTypeFolder(document, metadataType,
+                metadataName);
 
-            return UnzipFile(ConfigurationFixtureNames.GetMetadataTypeFileName(currentMetadataTypeFolder,metadataName));
+            return UnzipFile(ConfigurationFixtureNames.GetMetadataTypeFileName(currentMetadataTypeFolder, metadataName));
         }
 
-	    public dynamic GetMenu(string menuName)
-	    {
-			var menuFolder = ConfigurationFixtureNames.GetMenuFolderName(menuName);
-
-			return UnzipFile(ConfigurationFixtureNames.GetMenuFileName(menuFolder, menuName));
-	    }
-
-	    public dynamic GetReport(string reportName)
-	    {
-		    var reportFolder = ConfigurationFixtureNames.GetReportFolderName(reportName);
-
-		    return UnzipFile(ConfigurationFixtureNames.GetDocumentFileName(reportFolder, reportName));
-	    }
-
-	    public void AddMenu(string menuName, IEnumerable<string> menu)
+        public dynamic GetMenu(string menuName)
         {
-			var currentFolderMenu = ConfigurationFixtureNames.GetMenuFolderName(menuName);
+            var menuFolder = ConfigurationFixtureNames.GetMenuFolderName(menuName);
 
-			string menuFileName = ConfigurationFixtureNames.GetMenuFileName(currentFolderMenu, menuName);
+            return UnzipFile(ConfigurationFixtureNames.GetMenuFileName(menuFolder, menuName));
+        }
 
-			_zipArchive.AddFile(menuFileName, menu);
+        public dynamic GetReport(string reportName)
+        {
+            var reportFolder = ConfigurationFixtureNames.GetReportFolderName(reportName);
+
+            return UnzipFile(ConfigurationFixtureNames.GetDocumentFileName(reportFolder, reportName));
+        }
+
+        public void AddMenu(string menuName, IEnumerable<string> menu)
+        {
+            var currentFolderMenu = ConfigurationFixtureNames.GetMenuFolderName(menuName);
+
+            var menuFileName = ConfigurationFixtureNames.GetMenuFileName(currentFolderMenu, menuName);
+
+            _zipArchive.AddFile(menuFileName, menu);
         }
 
         public void AddAssembly(string assemblyName, IEnumerable<string> assembly)
@@ -169,11 +164,10 @@ namespace InfinniPlatform.Api.Packages.ConfigStructure
             var currentAssemblyFolder = ConfigurationFixtureNames.GetAssemblyFolderName(assemblyName);
 
             var currentAssemblyFileName = ConfigurationFixtureNames.GetAssemblyFileName(currentAssemblyFolder,
-                                                                                        assemblyName);
+                assemblyName);
 
-            _zipArchive.AddFile(currentAssemblyFileName,assembly);
+            _zipArchive.AddFile(currentAssemblyFileName, assembly);
         }
-
 
         private dynamic UnzipFile(string entryName)
         {
@@ -183,7 +177,7 @@ namespace InfinniPlatform.Api.Packages.ConfigStructure
                 //формируем путь к JSON конфигурации
                 //\AssemblyVersions\here_version_name_1B655209-E262-4FDF-9C24-E41BCFA432D3\Document_Patient.json
                 var pathToJsonConfigFolder = Path.Combine(_assemblyVersionPath, _folderToUnzip,
-                                                          entryName);
+                    entryName);
                 //распаковываем в текущую директорию архив с конфигурацией документа в виде JSON
                 stream.SaveToFile(pathToJsonConfigFolder);
 
@@ -200,7 +194,5 @@ namespace InfinniPlatform.Api.Packages.ConfigStructure
             });
             return result;
         }
-
-
     }
 }

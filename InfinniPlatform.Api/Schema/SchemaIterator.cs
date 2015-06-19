@@ -6,28 +6,33 @@ namespace InfinniPlatform.Api.Schema
 {
     public sealed class SchemaIterator
     {
+        private readonly IList<LinkEntry> _entries = new List<LinkEntry>();
+        private readonly ISchemaProvider _schemaProvider;
+        private readonly List<dynamic> _typeInfoChain = new List<dynamic>();
+
         public SchemaIterator(ISchemaProvider schemaProvider)
         {
             _schemaProvider = schemaProvider;
         }
 
+        public Action<SchemaObject> OnPrimitiveProperty { get; set; }
+        public Action<SchemaObject> OnObjectProperty { get; set; }
+        public Action<SchemaObject> OnArrayProperty { get; set; }
+
         private dynamic GetDocumentSchema(string version, string configuration, string document)
         {
-            if (!string.IsNullOrEmpty(version) && !string.IsNullOrEmpty(configuration) && !string.IsNullOrEmpty(document))
+            if (!string.IsNullOrEmpty(version) && !string.IsNullOrEmpty(configuration) &&
+                !string.IsNullOrEmpty(document))
             {
                 return _schemaProvider.GetSchema(version, configuration, document);
             }
             return null;
         }
 
-        private IList<LinkEntry> _entries = new List<LinkEntry>();
-        private ISchemaProvider _schemaProvider;
-        private List<dynamic> _typeInfoChain = new List<dynamic>();
-
         public void ProcessSchema(string version, dynamic schema)
         {
             _entries.Clear();
-            ProcessSchema(null,version, schema);
+            ProcessSchema(null, version, schema);
         }
 
         private void ProcessSchema(SchemaObject parentInfo, string version, dynamic schema)
@@ -37,13 +42,12 @@ namespace InfinniPlatform.Api.Schema
                 return;
             }
 
-            foreach (dynamic startInfo in schema.Properties)
+            foreach (var startInfo in schema.Properties)
             {
                 //пока не сделано предзаполнение свойств-массивов
                 var propertyValue = startInfo.Value;
                 if (propertyValue.Type == "Object")
                 {
-
                     if (propertyValue.TypeInfo != null && propertyValue.TypeInfo.DocumentLink != null)
                     {
                         dynamic schemaInner = GetDocumentSchema(version, propertyValue.TypeInfo.DocumentLink.ConfigId,
@@ -53,7 +57,7 @@ namespace InfinniPlatform.Api.Schema
                             startInfo.Value, schemaInner);
 
                         if (_typeInfoChain.Any(t => t.ConfigId == propertyValue.TypeInfo.DocumentLink.ConfigId &&
-                                                   t.DocumentId == propertyValue.TypeInfo.DocumentLink.DocumentId))
+                                                    t.DocumentId == propertyValue.TypeInfo.DocumentLink.DocumentId))
                         {
                             continue;
                         }
@@ -85,7 +89,7 @@ namespace InfinniPlatform.Api.Schema
                         }
 
                         //---
-                        var linkEntry = new LinkEntry()
+                        var linkEntry = new LinkEntry
                         {
                             ConfigId = propertyValue.TypeInfo.DocumentLink.ConfigId,
                             DocumentId = propertyValue.TypeInfo.DocumentLink.DocumentId,
@@ -115,21 +119,19 @@ namespace InfinniPlatform.Api.Schema
                         {
                             schemaObject = GetDocumentSchema(version, propertyValue.Items.TypeInfo.DocumentLink.ConfigId,
                                 propertyValue.Items.TypeInfo.DocumentLink.DocumentId);
-
                         }
 
                         //обрабатываем сам массив
                         var arraySchemaObject = new SchemaObject(parentInfo, startInfo.Key, propertyValue.Caption,
                             startInfo.Value,
                             schemaObject);
-                        
+
                         OnArrayProperty(arraySchemaObject);
 
                         //если массив содержит ссылочные типы, то выполняем анализ типа элемента массива
                         if (schemaObject != null)
                         {
-
-                            var linkEntry = new LinkEntry()
+                            var linkEntry = new LinkEntry
                             {
                                 ConfigId = propertyValue.Items.TypeInfo.DocumentLink.ConfigId,
                                 DocumentId = propertyValue.Items.TypeInfo.DocumentLink.DocumentId,
@@ -141,7 +143,7 @@ namespace InfinniPlatform.Api.Schema
                             {
                                 _entries.Add(linkEntry);
                                 ProcessSchema(arraySchemaObject, version, schemaObject);
-                            }                                                       
+                            }
                         }
                     }
                 }
@@ -149,20 +151,11 @@ namespace InfinniPlatform.Api.Schema
                 {
                     if (OnPrimitiveProperty != null)
                     {
-
                         OnPrimitiveProperty(new SchemaObject(parentInfo, startInfo.Key, propertyValue.Caption,
                             startInfo.Value, null));
                     }
                 }
-
             }
         }
-
-
-        public Action<SchemaObject> OnPrimitiveProperty { get; set; }
-
-        public Action<SchemaObject> OnObjectProperty { get; set; }
-
-        public Action<SchemaObject> OnArrayProperty { get; set; }
     }
 }

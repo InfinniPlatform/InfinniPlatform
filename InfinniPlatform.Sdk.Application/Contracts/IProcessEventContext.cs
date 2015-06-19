@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.Context;
-using InfinniPlatform.Api.Events;
+﻿using System.Collections.Generic;
+using InfinniPlatform.Sdk.Application.Events;
 
-namespace InfinniPlatform.Api.ContextTypes
+namespace InfinniPlatform.Sdk.Application.Contracts
 {
     /// <summary>
     ///   Контекст обработчика применения событий

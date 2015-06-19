@@ -1,22 +1,20 @@
-﻿using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.Events;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Application.Events;
 
 namespace InfinniPlatform.Api.RestQuery.EventObjects
 {
     /// <summary>
-    /// Класс для выполнения преобразований объектов в список событий
+    ///     Класс для выполнения преобразований объектов в список событий
     /// </summary>
     public class EventList
     {
-        private readonly ObjectMetadataHandler _handler;
         private List<EventDefinition> _eventList;
+        private readonly ObjectMetadataHandler _handler;
 
         public EventList(dynamic root, string objectName)
         {
@@ -48,12 +46,12 @@ namespace InfinniPlatform.Api.RestQuery.EventObjects
         }
 
         /// <summary>
-        /// Исключает заданное событие из списка событий
+        ///     Исключает заданное событие из списка событий
         /// </summary>
         public EventList Exclude(string propertyExclusion)
         {
             var updatedEventList = new List<EventDefinition>();
-            
+
             updatedEventList.AddRange(
                 _eventList.Where(x => !(new Regex(propertyExclusion).IsMatch(x.Property))));
 
@@ -63,7 +61,7 @@ namespace InfinniPlatform.Api.RestQuery.EventObjects
         }
 
         /// <summary>
-        /// Получить представление объекта в виде списка событий
+        ///     Получить представление объекта в виде списка событий
         /// </summary>
         public IEnumerable<EventDefinition> GetEvents(bool isUpdateEvents = false)
         {
@@ -71,7 +69,7 @@ namespace InfinniPlatform.Api.RestQuery.EventObjects
         }
 
         /// <summary>
-        /// Получить представление объекта в виде сериализованного списка событий
+        ///     Получить представление объекта в виде сериализованного списка событий
         /// </summary>
         public IEnumerable<string> GetSerializedEvents(bool isUpdateEvents = false)
         {
@@ -101,7 +99,7 @@ namespace InfinniPlatform.Api.RestQuery.EventObjects
             {
                 result.Add(_handler.CreateContainerCollection(instanceName));
 
-                int index = 0;
+                var index = 0;
 
                 foreach (var item in targetInstance)
                 {
@@ -147,7 +145,7 @@ namespace InfinniPlatform.Api.RestQuery.EventObjects
 
             return result;
         }
-        
+
         private void HandleProperty(object propertyValue, List<EventDefinition> result, string itemName)
         {
             if (propertyValue is DynamicWrapper ||
@@ -163,12 +161,12 @@ namespace InfinniPlatform.Api.RestQuery.EventObjects
     }
 
     /// <summary>
-    ///   Расширение для преобразования объектов в список событий
+    ///     Расширение для преобразования объектов в список событий
     /// </summary>
     public static class EventListExtensions
     {
         /// <summary>
-        /// Возвращает <see cref="EventList"/> для объекта
+        ///     Возвращает <see cref="EventList" /> для объекта
         /// </summary>
         /// <param name="target">Объект, для которого необходимо составить список событий</param>
         /// <param name="rootName">Имя корневого узла</param>
@@ -179,7 +177,7 @@ namespace InfinniPlatform.Api.RestQuery.EventObjects
         }
 
         /// <summary>
-        ///   Возвращает <see cref="EventList"/> для элемента коллекции
+        ///     Возвращает <see cref="EventList" /> для элемента коллекции
         /// </summary>
         /// <param name="target">Объект, для которого необходимо составить список событий</param>
         /// <param name="collectionName">Наименование коллекции</param>

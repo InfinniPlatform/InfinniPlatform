@@ -1,9 +1,9 @@
 ﻿using System;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Index;
 using RestSharp;
 using System.Collections.Generic;
 using System.Linq;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion
 {

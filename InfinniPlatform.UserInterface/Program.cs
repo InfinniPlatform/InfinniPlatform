@@ -1,48 +1,50 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
-
+using System.Windows.Forms;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.Settings;
+using InfinniPlatform.Api.TestEnvironment;
 using InfinniPlatform.UserInterface.AppHost;
 
 namespace InfinniPlatform.UserInterface
 {
-	class Program
-	{
-		[STAThread]
-		static void Main()
-		{
+    internal class Program
+    {
+        [STAThread]
+        private static void Main()
+        {
 #if DEBUG
-			if (System.Diagnostics.Debugger.IsAttached)
-			{
-				var hostProcesses = System.Diagnostics.Process.GetProcessesByName("InfinniPlatform.RestfulApi");
+            if (Debugger.IsAttached)
+            {
+                var hostProcesses = Process.GetProcessesByName("InfinniPlatform.RestfulApi");
 
-				if (hostProcesses.Length == 0)
-				{
-					Api.TestEnvironment.TestApi.StartServer(p => p.SetHostingConfig(HostingConfig.Default));
-				}
-			}
+                if (hostProcesses.Length == 0)
+                {
+                    TestApi.StartServer(p => p.SetHostingConfig(HostingConfig.Default));
+                }
+            }
 #endif
-			try
-			{
-				new SignInApi().SignInInternal(AuthorizationStorageExtensions.AdminUser,
-				                               AppSettings.GetValue("AdminPassword", "Admin"), true);
-			}
-			catch 
-			{
-				//не удалось авторизоваться
-			}
+            try
+            {
+                new SignInApi().SignInInternal(AuthorizationStorageExtensions.AdminUser,
+                    AppSettings.GetValue("AdminPassword", "Admin"), true);
+            }
+            catch
+            {
+                //не удалось авторизоваться
+            }
 
-			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
-			Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
 
-			System.Windows.Forms.Application.EnableVisualStyles();
-			System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
 
-			var appViewMetadata = StaticMetadata.CreateAppView();
-			AppRunner.Run(appViewMetadata);
-		}
-	}
+            var appViewMetadata = StaticMetadata.CreateAppView();
+            AppRunner.Run(appViewMetadata);
+        }
+    }
 }

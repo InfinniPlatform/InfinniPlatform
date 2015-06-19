@@ -1,284 +1,269 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-
 using InfinniPlatform.UserInterface.ViewBuilders.Scripts;
 using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Data
 {
-	/// <summary>
-	/// Источник данных представления.
-	/// </summary>
-	public interface IDataSource : IViewChild
-	{
-		// Metadata
-
-		/// <summary>
-		/// Возвращает наименование источника данных.
-		/// </summary>
-		string GetName();
-
-		/// <summary>
-		/// Устанавливает наименование источника данных.
-		/// </summary>
-		void SetName(string value);
-
-
-		/// <summary>
-		/// Возвращает свойство элемента источника данных, которое хранит уникальный идентификатор элемента.
-		/// </summary>
-		string GetIdProperty();
-
-
-		/// <summary>
-		/// Возвращает значение, определяющее нужно ли заполнять создаваемые элементы источника данных значениями по умолчанию.
-		/// </summary>
-		bool GetFillCreatedItem();
-
-		/// <summary>
-		/// Устанавливает значение, определяющее, нужно ли заполнять создаваемые элементы источника данных значениями по умолчанию.
-		/// </summary>
-		void SetFillCreatedItem(bool value);
-
-
-		/// <summary>
-		/// Возвращает идентификатор конфигурации элементов источника данных.
-		/// </summary>
-		string GetConfigId();
-
-		/// <summary>
-		/// Устанавливает идентификатор конфигурации элементов источника данных.
-		/// </summary>
-		void SetConfigId(string value);
-
-
-		/// <summary>
-		/// Возвращает идентфикатор документа элементов источника данных.
-		/// </summary>
-		string GetDocumentId();
-
-		/// <summary>
-		/// Устанавливает идентфикатор документа элементов источника данных.
-		/// </summary>
-		void SetDocumentId(string value);
+    /// <summary>
+    ///     Источник данных представления.
+    /// </summary>
+    public interface IDataSource : IViewChild
+    {
+        // Events
 
         /// <summary>
-        ///  Возвращает идентификатор версии конфигурации
+        ///     Возвращает или устанавливает обработчик события изменения номер страницы.
+        /// </summary>
+        ScriptDelegate OnPageNumberChanged { get; set; }
+
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события изменения размера страницы.
+        /// </summary>
+        ScriptDelegate OnPageSizeChanged { get; set; }
+
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события изменения выделенного элемента.
+        /// </summary>
+        ScriptDelegate OnSelectedItemChanged { get; set; }
+
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события изменения фильтра по свойствам элементов.
+        /// </summary>
+        ScriptDelegate OnPropertyFiltersChanged { get; set; }
+
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события изменения фильтра полнотекстового поиска.
+        /// </summary>
+        ScriptDelegate OnTextFilterChanged { get; set; }
+
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события сохранения элемента в источнике.
+        /// </summary>
+        ScriptDelegate OnItemSaved { get; set; }
+
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события удаления элемента из источника.
+        /// </summary>
+        ScriptDelegate OnItemDeleted { get; set; }
+
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события обновления списка элементов.
+        /// </summary>
+        ScriptDelegate OnItemsUpdated { get; set; }
+
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события возникновения ошибки.
+        /// </summary>
+        ScriptDelegate OnError { get; set; }
+
+        // Metadata
+
+        /// <summary>
+        ///     Возвращает наименование источника данных.
+        /// </summary>
+        string GetName();
+
+        /// <summary>
+        ///     Устанавливает наименование источника данных.
+        /// </summary>
+        void SetName(string value);
+
+        /// <summary>
+        ///     Возвращает свойство элемента источника данных, которое хранит уникальный идентификатор элемента.
+        /// </summary>
+        string GetIdProperty();
+
+        /// <summary>
+        ///     Возвращает значение, определяющее нужно ли заполнять создаваемые элементы источника данных значениями по умолчанию.
+        /// </summary>
+        bool GetFillCreatedItem();
+
+        /// <summary>
+        ///     Устанавливает значение, определяющее, нужно ли заполнять создаваемые элементы источника данных значениями по
+        ///     умолчанию.
+        /// </summary>
+        void SetFillCreatedItem(bool value);
+
+        /// <summary>
+        ///     Возвращает идентификатор конфигурации элементов источника данных.
+        /// </summary>
+        string GetConfigId();
+
+        /// <summary>
+        ///     Устанавливает идентификатор конфигурации элементов источника данных.
+        /// </summary>
+        void SetConfigId(string value);
+
+        /// <summary>
+        ///     Возвращает идентфикатор документа элементов источника данных.
+        /// </summary>
+        string GetDocumentId();
+
+        /// <summary>
+        ///     Устанавливает идентфикатор документа элементов источника данных.
+        /// </summary>
+        void SetDocumentId(string value);
+
+        /// <summary>
+        ///     Возвращает идентификатор версии конфигурации
         /// </summary>
         /// <returns></returns>
-	    string GetVersion();
+        string GetVersion();
 
         /// <summary>
-        ///   Устанавливает идентификатор версии элемента источника данных
+        ///     Устанавливает идентификатор версии элемента источника данных
         /// </summary>
         /// <param name="version"></param>
-	    void SetVersion(string version);
+        void SetVersion(string version);
 
-		// State
+        // State
 
-		/// <summary>
-		/// Запрещает обновление списка элементов.
-		/// </summary>
-		void SuspendUpdate();
+        /// <summary>
+        ///     Запрещает обновление списка элементов.
+        /// </summary>
+        void SuspendUpdate();
 
-		/// <summary>
-		/// Разрешает обновление списка элементов.
-		/// </summary>
-		void ResumeUpdate();
+        /// <summary>
+        ///     Разрешает обновление списка элементов.
+        /// </summary>
+        void ResumeUpdate();
 
+        // Pages
 
-		// Pages
+        /// <summary>
+        ///     Возвращает номер страницы.
+        /// </summary>
+        int GetPageNumber();
 
-		/// <summary>
-		/// Возвращает номер страницы.
-		/// </summary>
-		int GetPageNumber();
+        /// <summary>
+        ///     Устанавливает номер страницы.
+        /// </summary>
+        void SetPageNumber(int value);
 
-		/// <summary>
-		/// Устанавливает номер страницы.
-		/// </summary>
-		void SetPageNumber(int value);
+        /// <summary>
+        ///     Возвращает размер страницы.
+        /// </summary>
+        int GetPageSize();
 
+        /// <summary>
+        ///     Устанавливает размер страницы.
+        /// </summary>
+        void SetPageSize(int value);
 
-		/// <summary>
-		/// Возвращает размер страницы.
-		/// </summary>
-		int GetPageSize();
+        // Modified
 
-		/// <summary>
-		/// Устанавливает размер страницы.
-		/// </summary>
-		void SetPageSize(int value);
+        /// <summary>
+        ///     Возвращает значение, определяющее, есть ли не сохраненные элементы в источнике данных.
+        /// </summary>
+        bool IsModified();
 
+        /// <summary>
+        ///     Возвращает значение, определяющее, есть ли не сохраненные изменения у элемента источника данных.
+        /// </summary>
+        bool IsModified(object item);
 
-		// Modified
+        /// <summary>
+        ///     Устанавливает признак изменения элемента источника данных.
+        /// </summary>
+        void SetModified(object item);
 
-		/// <summary>
-		/// Возвращает значение, определяющее, есть ли не сохраненные элементы в источнике данных.
-		/// </summary>
-		bool IsModified();
+        /// <summary>
+        ///     Сбрасывает признак изменения элемента источника данных.
+        /// </summary>
+        void ResetModified(object item);
 
-		/// <summary>
-		/// Возвращает значение, определяющее, есть ли не сохраненные изменения у элемента источника данных.
-		/// </summary>
-		bool IsModified(object item);
+        // Items
 
-		/// <summary>
-		/// Устанавливает признак изменения элемента источника данных.
-		/// </summary>
-		void SetModified(object item);
+        /// <summary>
+        ///     Сохраняет элемент в источник данных.
+        /// </summary>
+        void SaveItem(object item);
 
-		/// <summary>
-		/// Сбрасывает признак изменения элемента источника данных.
-		/// </summary>
-		void ResetModified(object item);
+        /// <summary>
+        ///     Удаляет элемент из источника данных.
+        /// </summary>
+        void DeleteItem(string itemId);
 
+        /// <summary>
+        ///     Возвращает список элементов источника данных.
+        /// </summary>
+        IEnumerable GetItems();
 
-		// Items
+        /// <summary>
+        ///     Обновляет список элементов источника данных.
+        /// </summary>
+        void UpdateItems();
 
-		/// <summary>
-		/// Сохраняет элемент в источник данных.
-		/// </summary>
-		void SaveItem(object item);
+        // SelectedItem
 
-		/// <summary>
-		/// Удаляет элемент из источника данных.
-		/// </summary>
-		void DeleteItem(string itemId);
+        /// <summary>
+        ///     Возвращает выделенный элемент.
+        /// </summary>
+        object GetSelectedItem();
 
-		/// <summary>
-		/// Возвращает список элементов источника данных.
-		/// </summary>
-		IEnumerable GetItems();
+        /// <summary>
+        ///     Устанавливает выделенный элемент.
+        /// </summary>
+        void SetSelectedItem(object value);
 
-		/// <summary>
-		/// Обновляет список элементов источника данных.
-		/// </summary>
-		void UpdateItems();
+        // Filters
 
+        /// <summary>
+        ///     Устанваливает режим работы источника данных для представлений с редактором элемента.
+        /// </summary>
+        void SetEditMode();
 
-		// SelectedItem
+        /// <summary>
+        ///     Устанваливает режим работы источника данных для представлений со списком элементов.
+        /// </summary>
+        void SetListMode();
 
-		/// <summary>
-		/// Возвращает выделенный элемент.
-		/// </summary>
-		object GetSelectedItem();
+        /// <summary>
+        ///     Возвращает фильтр по уникальному идентификатору элемента.
+        /// </summary>
+        string GetIdFilter();
 
-		/// <summary>
-		/// Устанавливает выделенный элемент.
-		/// </summary>
-		void SetSelectedItem(object value);
+        /// <summary>
+        ///     Устанавливает фильтр по уникальному идентификатору элемента.
+        /// </summary>
+        void SetIdFilter(string value);
 
+        /// <summary>
+        ///     Возвращает фильтр по свойствам элементов.
+        /// </summary>
+        IEnumerable GetPropertyFilters();
 
-		// Filters
+        /// <summary>
+        ///     Устанавливает фильтр по свойствам элементов.
+        /// </summary>
+        void SetPropertyFilters(IEnumerable value);
 
-		/// <summary>
-		/// Устанваливает режим работы источника данных для представлений с редактором элемента.
-		/// </summary>
-		void SetEditMode();
+        /// <summary>
+        ///     Возвращает фильтр полнотекстового поиска.
+        /// </summary>
+        string GetTextFiliter();
 
-		/// <summary>
-		/// Устанваливает режим работы источника данных для представлений со списком элементов.
-		/// </summary>
-		void SetListMode();
+        /// <summary>
+        ///     Устанавливает фильтр полнотекстового поиска.
+        /// </summary>
+        void SetTextFilter(string value);
 
+        // DataBindings
 
-		/// <summary>
-		/// Возвращает фильтр по уникальному идентификатору элемента.
-		/// </summary>
-		string GetIdFilter();
+        /// <summary>
+        ///     Возвращает список привязок источника данных.
+        /// </summary>
+        IEnumerable<ISourceDataBinding> GetDataBindings();
 
-		/// <summary>
-		/// Устанавливает фильтр по уникальному идентификатору элемента.
-		/// </summary>
-		void SetIdFilter(string value);
+        /// <summary>
+        ///     Добавляет привязку в список привязок источника данных.
+        /// </summary>
+        void AddDataBinding(ISourceDataBinding dataBinding);
 
-
-		/// <summary>
-		/// Возвращает фильтр по свойствам элементов.
-		/// </summary>
-		IEnumerable GetPropertyFilters();
-
-		/// <summary>
-		/// Устанавливает фильтр по свойствам элементов.
-		/// </summary>
-		void SetPropertyFilters(IEnumerable value);
-
-
-		/// <summary>
-		/// Возвращает фильтр полнотекстового поиска.
-		/// </summary>
-		string GetTextFiliter();
-
-		/// <summary>
-		/// Устанавливает фильтр полнотекстового поиска.
-		/// </summary>
-		void SetTextFilter(string value);
-
-
-		// DataBindings
-
-		/// <summary>
-		/// Возвращает список привязок источника данных.
-		/// </summary>
-		IEnumerable<ISourceDataBinding> GetDataBindings();
-
-		/// <summary>
-		/// Добавляет привязку в список привязок источника данных.
-		/// </summary>
-		void AddDataBinding(ISourceDataBinding dataBinding);
-
-		/// <summary>
-		/// Удаляет привязку из списка привязок источника данных.
-		/// </summary>
-		void RemoveDataBinding(ISourceDataBinding dataBinding);
-
-
-		// Events
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события изменения номер страницы.
-		/// </summary>
-		ScriptDelegate OnPageNumberChanged { get; set; }
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события изменения размера страницы.
-		/// </summary>
-		ScriptDelegate OnPageSizeChanged { get; set; }
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события изменения выделенного элемента.
-		/// </summary>
-		ScriptDelegate OnSelectedItemChanged { get; set; }
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события изменения фильтра по свойствам элементов.
-		/// </summary>
-		ScriptDelegate OnPropertyFiltersChanged { get; set; }
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события изменения фильтра полнотекстового поиска.
-		/// </summary>
-		ScriptDelegate OnTextFilterChanged { get; set; }
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события сохранения элемента в источнике.
-		/// </summary>
-		ScriptDelegate OnItemSaved { get; set; }
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события удаления элемента из источника.
-		/// </summary>
-		ScriptDelegate OnItemDeleted { get; set; }
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события обновления списка элементов.
-		/// </summary>
-		ScriptDelegate OnItemsUpdated { get; set; }
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события возникновения ошибки.
-		/// </summary>
-		ScriptDelegate OnError { get; set; }
-	}
+        /// <summary>
+        ///     Удаляет привязку из списка привязок источника данных.
+        /// </summary>
+        void RemoveDataBinding(ISourceDataBinding dataBinding);
+    }
 }

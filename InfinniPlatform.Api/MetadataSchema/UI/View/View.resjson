@@ -1,88 +1,88 @@
 ﻿{
-  "id": "View",
-  "description": "Визуальное представление",
-  "type": "object",
-  "extends": [
-    {
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/ObjectMetadata"
-    },
-    {
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
-    }
-  ],
-  "properties": {
-    "__ConfigId": {
-      "description": "Идентификатор конфигурации (служебное поле)",
-      "type": "string"
-    },
-    "__DocumentId": {
-      "description": "Идентификатор документа (служебное поле)",
-      "type": "string"
-    },
-    "MetadataType": {
-      "description": "Тип представления",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/ViewType"
-    },
-    "Image": {
-      "description": "Изображение заголовка представления",
-      "type": "string"
-    },
-    "Scripts": {
-      "description": "Список скриптов представления",
-      "type": "array",
-      "items": {
-        "$ref": "http://demo.infinnity.ru:8081/display/MC/Script"
-      }
-    },
-    "Parameters": {
-      "description": "Список источников данных представления",
-      "type": "array",
-      "items": {
-        "$ref": "http://demo.infinnity.ru:8081/display/MC/Parameter"
-      }
-    },
-    "DataSources": {
-      "description": "Список источников данных представления",
-      "type": "array",
-      "items": {
-        "$ref": "http://demo.infinnity.ru:8081/display/MC/DataSource"
-      }
-    },
-    "ChildViews": {
-      "description": "Список ссылок на дочерние представления",
-      "type": "array",
-      "items": {
-        "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkViewItem"
-      }
-    },
-    "ActionBar": {
-      "description": "Настройки панели действий представления",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/ActionBar"
-    },
-    "LayoutPanel": {
-      "description": "Контейнер элементов представления",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/LayoutPanel"
-    },
-    "OnTextChanged": {
-      "description": "Обработчик события о том, что текст изменен",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
-    },
-    "OnOpening": {
-      "description": "Обработчик события о том, что представление открывается",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
-    },
-    "OnOpened": {
-      "description": "Обработчик события о том, что представление открыто",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
-    },
-    "OnClosing": {
-      "description": "Обработчик события о том, что представление закрывается",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
-    },
-    "OnClosed": {
-      "description": "Обработчик события о том, что представление закрыто",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
-    }
-  },
-  "additionalProperties": false
+	"id": "View",
+	"description": "Визуальное представление",
+	"type": "object",
+	"extends": [
+		{
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/ObjectMetadata"
+		},
+		{
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
+		}
+	],
+	"properties": {
+		"__ConfigId": {
+			"description": "Идентификатор конфигурации (служебное поле)",
+			"type": "string"
+		},
+		"__DocumentId": {
+			"description": "Идентификатор документа (служебное поле)",
+			"type": "string"
+		},
+		"MetadataType": {
+			"description": "Тип представления",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/ViewType"
+		},
+		"Image": {
+			"description": "Изображение заголовка представления",
+			"type": "string"
+		},
+		"Scripts": {
+			"description": "Список скриптов представления",
+			"type": "array",
+			"items": {
+				"$ref": "http://demo.infinnity.ru:8081/display/MC/Script"
+			}
+		},
+		"Parameters": {
+			"description": "Список источников данных представления",
+			"type": "array",
+			"items": {
+				"$ref": "http://demo.infinnity.ru:8081/display/MC/Parameter"
+			}
+		},
+		"DataSources": {
+			"description": "Список источников данных представления",
+			"type": "array",
+			"items": {
+				"$ref": "http://demo.infinnity.ru:8081/display/MC/DataSource"
+			}
+		},
+		"ChildViews": {
+			"description": "Список ссылок на дочерние представления",
+			"type": "array",
+			"items": {
+				"$ref": "http://demo.infinnity.ru:8081/display/MC/LinkViewItem"
+			}
+		},
+		"ActionBar": {
+			"description": "Настройки панели действий представления",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/ActionBar"
+		},
+		"LayoutPanel": {
+			"description": "Контейнер элементов представления",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/LayoutPanel"
+		},
+		"OnTextChanged": {
+			"description": "Обработчик события о том, что текст изменен",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+		},
+		"OnOpening": {
+			"description": "Обработчик события о том, что представление открывается",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+		},
+		"OnOpened": {
+			"description": "Обработчик события о том, что представление открыто",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+		},
+		"OnClosing": {
+			"description": "Обработчик события о том, что представление закрывается",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+		},
+		"OnClosed": {
+			"description": "Обработчик события о том, что представление закрыто",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+		}
+	},
+	"additionalProperties": false
 }

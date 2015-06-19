@@ -2,30 +2,29 @@
 
 namespace InfinniPlatform.Api.Profiling.Implementation
 {
-	public sealed class WatchProfiler : IOperationProfiler
-	{
-		private readonly ISnapshotFormatter _snapshotFormatter;
-		private Stopwatch _currentWatch;
+    public sealed class WatchProfiler : IOperationProfiler
+    {
+        private Stopwatch _currentWatch;
+        private readonly ISnapshotFormatter _snapshotFormatter;
 
-		public WatchProfiler(ISnapshotFormatter snapshotFormatter)
-		{
-			_snapshotFormatter = snapshotFormatter;
-		}
+        public WatchProfiler(ISnapshotFormatter snapshotFormatter)
+        {
+            _snapshotFormatter = snapshotFormatter;
+        }
 
-		public void Reset()
-		{
+        public void Reset()
+        {
+            _currentWatch = Stopwatch.StartNew();
+        }
 
-			_currentWatch = Stopwatch.StartNew();			
-		}
+        public void TakeSnapshot()
+        {
+            _currentWatch.Stop();
 
-		public void TakeSnapshot()
-		{
-			_currentWatch.Stop();
-
-			if (_snapshotFormatter != null)
-			{
-				_snapshotFormatter.FormatSnapshot(new Snapshot {ElapsedMilliseconds = _currentWatch.ElapsedMilliseconds});
-			}
-		}
-	}
+            if (_snapshotFormatter != null)
+            {
+                _snapshotFormatter.FormatSnapshot(new Snapshot {ElapsedMilliseconds = _currentWatch.ElapsedMilliseconds});
+            }
+        }
+    }
 }

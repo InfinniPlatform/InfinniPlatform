@@ -1,41 +1,41 @@
 ﻿{
-  "id": "BaseTextElement",
-  "description": "Элемент представления для отображения или редактирования неформатированного текста",
-  "type": "object",
-  "extends": {
-    "$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
-  },
-  "properties": {
-    "HorizontalTextAlignment": {
-      "description": "Горизонтальное выравнивание текста внутри элемента",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/HorizontalTextAlignment",
-      "default": "Left"
-    },
-    "VerticalTextAlignment": {
-      "description": "Вертикальное выравнивание текста внутри элемента",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/VerticalTextAlignment",
-      "default": "Center"
-    },
-    "ReadOnly": {
-      "description": "Запрещено ли редактирование значения",
-      "type": "boolean",
-      "default": false
-    },
-    "DisplayFormat": {
-      "description": "Формат отображения значения",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/DisplayFormat"
-    },
-    "EditMask": {
-      "description": "Маска ввода значения",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/EditMask"
-    },
-    "Value": {
-      "description": "Привязка данных для значения",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/DataBinding"
-    },
-    "OnValueChanged": {
-      "description": "Обработчик события изменения значения",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
-    }
-  }
+	"id": "BaseTextElement",
+	"description": "Элемент представления для отображения или редактирования неформатированного текста",
+	"type": "object",
+	"extends": {
+		"$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
+	},
+	"properties": {
+		"HorizontalTextAlignment": {
+			"description": "Горизонтальное выравнивание текста внутри элемента",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/HorizontalTextAlignment",
+			"default": "Left"
+		},
+		"VerticalTextAlignment": {
+			"description": "Вертикальное выравнивание текста внутри элемента",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/VerticalTextAlignment",
+			"default": "Center"
+		},
+		"ReadOnly": {
+			"description": "Запрещено ли редактирование значения",
+			"type": "boolean",
+			"default": false
+		},
+		"DisplayFormat": {
+			"description": "Формат отображения значения",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/DisplayFormat"
+		},
+		"EditMask": {
+			"description": "Маска ввода значения",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/EditMask"
+		},
+		"Value": {
+			"description": "Привязка данных для значения",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/DataBinding"
+		},
+		"OnValueChanged": {
+			"description": "Обработчик события изменения значения",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+		}
+	}
 }

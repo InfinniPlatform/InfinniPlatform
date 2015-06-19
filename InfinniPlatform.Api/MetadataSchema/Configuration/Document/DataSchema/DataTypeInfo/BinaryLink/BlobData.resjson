@@ -1,50 +1,50 @@
 ﻿{
-  "id": "BlobData",
-  "description": "Данные BLOB",
-  "type": "object",
-  "properties": {
-    "Info": {
-      "description": "Информация о BLOB",
-      "type": "object",
-      "required": true,
-      "properties": {
-        "Id": {
-          "description": "Уникальный идентификатор BLOB",
-          "type": "string",
-          "required": true
-        },
-        "Name": {
-          "description": "Наименование BLOB",
-          "type": "string",
-          "required": false
-        },
-        "Type": {
-          "description": "Формат данных BLOB",
-          "type": "string",
-          "required": false
-        },
-        "Size": {
-          "description": "Размер в байтах BLOB",
-          "type": "integer",
-          "required": false
-        },
-        "Time": {
-          "description": "Дата и время создания BLOB",
-          "type": "string",
-          "format": "date-time",
-          "required": false
-        }
-      },
-      "additionalProperties": false
-    },
-    "Data": {
-      "description": "Данные BLOB",
-      "type": "string",
-      "media": {
-        "binaryEncoding": "base64"
-      },
-      "required": false
-    }
-  },
-  "additionalProperties": false
+	"id": "BlobData",
+	"description": "Данные BLOB",
+	"type": "object",
+	"properties": {
+		"Info": {
+			"description": "Информация о BLOB",
+			"type": "object",
+			"required": true,
+			"properties": {
+				"Id": {
+					"description": "Уникальный идентификатор BLOB",
+					"type": "string",
+					"required": true
+				},
+				"Name": {
+					"description": "Наименование BLOB",
+					"type": "string",
+					"required": false
+				},
+				"Type": {
+					"description": "Формат данных BLOB",
+					"type": "string",
+					"required": false
+				},
+				"Size": {
+					"description": "Размер в байтах BLOB",
+					"type": "integer",
+					"required": false
+				},
+				"Time": {
+					"description": "Дата и время создания BLOB",
+					"type": "string",
+					"format": "date-time",
+					"required": false
+				}
+			},
+			"additionalProperties": false
+		},
+		"Data": {
+			"description": "Данные BLOB",
+			"type": "string",
+			"media": {
+				"binaryEncoding": "base64"
+			},
+			"required": false
+		}
+	},
+	"additionalProperties": false
 }

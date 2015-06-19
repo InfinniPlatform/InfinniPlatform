@@ -1,6 +1,4 @@
-﻿using InfinniPlatform.Api.Context;
-
-namespace InfinniPlatform.Api.ContextTypes
+﻿namespace InfinniPlatform.Sdk.Application.Contracts
 {
     /// <summary>
     ///  Общий контекст выполнения всех точек расширения

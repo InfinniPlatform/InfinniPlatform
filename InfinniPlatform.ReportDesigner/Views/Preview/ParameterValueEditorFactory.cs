@@ -1,257 +1,252 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Forms;
-
 using InfinniPlatform.FastReport.Templates.Data;
 using InfinniPlatform.ReportDesigner.Views.Editors;
 
 namespace InfinniPlatform.ReportDesigner.Views.Preview
 {
-	sealed class ParameterValueEditorFactory
-	{
-		private static readonly EditorFactory EditorFactory = new EditorFactory();
+    internal sealed class ParameterValueEditorFactory
+    {
+        private static readonly EditorFactory EditorFactory = new EditorFactory();
 
+        public ParameterValueEditor CreateEditor(ParameterInfo parameterInfo)
+        {
+            ParameterValueEditor editor;
 
-		public ParameterValueEditor CreateEditor(ParameterInfo parameterInfo)
-		{
-			ParameterValueEditor editor;
+            // Если значения параметра должны выбираться из предопределенного списка
+            if (parameterInfo.AvailableValues != null)
+            {
+                editor = parameterInfo.AllowMultiplyValues
+                    ? EditorWithMultipleSelect(parameterInfo)
+                    : EditorWithSingleSelect(parameterInfo);
+            }
+            // Если значения параметра пользователь вводит самостоятельно
+            else
+            {
+                editor = parameterInfo.AllowMultiplyValues
+                    ? EditorWithManualMultipleSelect(parameterInfo)
+                    : EditorWithoutSelect(parameterInfo);
+            }
 
-			// Если значения параметра должны выбираться из предопределенного списка
-			if (parameterInfo.AvailableValues != null)
-			{
-				editor = parameterInfo.AllowMultiplyValues
-							 ? EditorWithMultipleSelect(parameterInfo)
-							 : EditorWithSingleSelect(parameterInfo);
-			}
-			// Если значения параметра пользователь вводит самостоятельно
-			else
-			{
-				editor = parameterInfo.AllowMultiplyValues
-							 ? EditorWithManualMultipleSelect(parameterInfo)
-							 : EditorWithoutSelect(parameterInfo);
-			}
+            editor.Name = parameterInfo.Name;
+            editor.Caption = string.IsNullOrWhiteSpace(parameterInfo.Caption)
+                ? parameterInfo.Name
+                : parameterInfo.Caption;
+            editor.AllowNullValue = parameterInfo.AllowNullValue;
 
-			editor.Name = parameterInfo.Name;
-			editor.Caption = string.IsNullOrWhiteSpace(parameterInfo.Caption) ? parameterInfo.Name : parameterInfo.Caption;
-			editor.AllowNullValue = parameterInfo.AllowNullValue;
+            return editor;
+        }
 
-			return editor;
-		}
+        private static ParameterValueEditor EditorWithSingleSelect(ParameterInfo parameterInfo)
+        {
+            // Выбор одного значения из предопределенного списка
 
+            var parameterValueControl = EditorFactory.CreateObjectEditor(parameterInfo.Type);
+            var selectValueDlg = new DialogView<SelectSingleValueView>();
 
-		private static ParameterValueEditor EditorWithSingleSelect(ParameterInfo parameterInfo)
-		{
-			// Выбор одного значения из предопределенного списка
+            var editor = new ParameterValueEditor(parameterValueControl)
+            {
+                ShowNullButton = false,
+                ShowSelectButton = true
+            };
 
-			var parameterValueControl = EditorFactory.CreateObjectEditor(parameterInfo.Type);
-			var selectValueDlg = new DialogView<SelectSingleValueView>();
+            editor.ChangingValue += (sender, args) =>
+            {
+                // Устанавливаем значение, только если оно есть в списке
 
-			var editor = new ParameterValueEditor(parameterValueControl)
-							 {
-								 ShowNullButton = false,
-								 ShowSelectButton = true
-							 };
+                object newValue = null;
+                string newLabel = null;
 
-			editor.ChangingValue += (sender, args) =>
-										{
-											// Устанавливаем значение, только если оно есть в списке
+                if (editor.AvailableValues.IsNullOrEmpty() == false)
+                {
+                    var selectedValue = parameterValueControl.CastObjectValue(ValueOrFirstItem(args.Value));
 
-											object newValue = null;
-											string newLabel = null;
+                    if (selectedValue != null)
+                    {
+                        foreach (var item in editor.AvailableValues)
+                        {
+                            if (Equals(item.Value, selectedValue))
+                            {
+                                newValue = item.Value;
+                                newLabel = item.Key;
+                                break;
+                            }
+                        }
+                    }
+                }
 
-											if (editor.AvailableValues.IsNullOrEmpty() == false)
-											{
-												var selectedValue = parameterValueControl.CastObjectValue(ValueOrFirstItem(args.Value));
+                args.Value = newValue;
+                args.Label = newLabel;
+            };
 
-												if (selectedValue != null)
-												{
-													foreach (var item in editor.AvailableValues)
-													{
-														if (Equals(item.Value, selectedValue))
-														{
-															newValue = item.Value;
-															newLabel = item.Key;
-															break;
-														}
-													}
-												}
-											}
+            editor.SelectValue += (sender, args) =>
+            {
+                // Показываем диалог, только если есть доступные значения
 
-											args.Value = newValue;
-											args.Label = newLabel;
-										};
+                args.Cancel = true;
 
-			editor.SelectValue += (sender, args) =>
-									  {
-										  // Показываем диалог, только если есть доступные значения
+                if (editor.AvailableValues.IsNullOrEmpty() == false)
+                {
+                    selectValueDlg.View.AvailableValues = editor.AvailableValues;
+                    selectValueDlg.View.SelectedValue = editor.Value;
 
-										  args.Cancel = true;
+                    if (selectValueDlg.ShowDialog() == DialogResult.OK)
+                    {
+                        args.Value = selectValueDlg.View.SelectedValue;
+                        args.Cancel = false;
+                    }
+                }
+            };
 
-										  if (editor.AvailableValues.IsNullOrEmpty() == false)
-										  {
-											  selectValueDlg.View.AvailableValues = editor.AvailableValues;
-											  selectValueDlg.View.SelectedValue = editor.Value;
+            return editor;
+        }
 
-											  if (selectValueDlg.ShowDialog() == DialogResult.OK)
-											  {
-												  args.Value = selectValueDlg.View.SelectedValue;
-												  args.Cancel = false;
-											  }
-										  }
-									  };
+        private static ParameterValueEditor EditorWithMultipleSelect(ParameterInfo parameterInfo)
+        {
+            // Выбор нескольких значений из предопределенного списка
 
-			return editor;
-		}
+            var parameterValueControl = EditorFactory.CreateArrayEditor(parameterInfo.Type);
+            var selectValueDlg = new DialogView<SelectMultipleValueView>();
 
-		private static ParameterValueEditor EditorWithMultipleSelect(ParameterInfo parameterInfo)
-		{
-			// Выбор нескольких значений из предопределенного списка
+            var editor = new ParameterValueEditor(parameterValueControl)
+            {
+                ShowNullButton = false,
+                ShowSelectButton = true
+            };
 
-			var parameterValueControl = EditorFactory.CreateArrayEditor(parameterInfo.Type);
-			var selectValueDlg = new DialogView<SelectMultipleValueView>();
+            editor.ChangingValue += (sender, args) =>
+            {
+                // Выбираем значения, только если они есть в списке
 
-			var editor = new ParameterValueEditor(parameterValueControl)
-							 {
-								 ShowNullButton = false,
-								 ShowSelectButton = true
-							 };
+                object newValue = null;
+                string newLabel = null;
 
-			editor.ChangingValue += (sender, args) =>
-										{
-											// Выбираем значения, только если они есть в списке
+                if (editor.AvailableValues.IsNullOrEmpty() == false)
+                {
+                    var selectedValues = parameterValueControl.CastArrayValue(args.Value as IEnumerable);
 
-											object newValue = null;
-											string newLabel = null;
+                    if (selectedValues != null)
+                    {
+                        var allowSelectedValues = new List<object>();
+                        var allowSelectedLabels = new List<string>();
 
-											if (editor.AvailableValues.IsNullOrEmpty() == false)
-											{
-												var selectedValues = parameterValueControl.CastArrayValue(args.Value as IEnumerable);
+                        foreach (var value in selectedValues)
+                        {
+                            foreach (var item in editor.AvailableValues)
+                            {
+                                if (Equals(item.Value, value))
+                                {
+                                    allowSelectedValues.Add(item.Value);
+                                    allowSelectedLabels.Add(item.Key);
+                                    break;
+                                }
+                            }
+                        }
 
-												if (selectedValues != null)
-												{
-													var allowSelectedValues = new List<object>();
-													var allowSelectedLabels = new List<string>();
+                        if (allowSelectedValues.Count > 0)
+                        {
+                            newValue = allowSelectedValues;
+                            newLabel = parameterValueControl.FormatArrayValue(allowSelectedLabels, false);
+                        }
+                    }
+                }
 
-													foreach (var value in selectedValues)
-													{
-														foreach (var item in editor.AvailableValues)
-														{
-															if (Equals(item.Value, value))
-															{
-																allowSelectedValues.Add(item.Value);
-																allowSelectedLabels.Add(item.Key);
-																break;
-															}
-														}
-													}
+                args.Value = newValue;
+                args.Label = newLabel;
+            };
 
-													if (allowSelectedValues.Count > 0)
-													{
-														newValue = allowSelectedValues;
-														newLabel = parameterValueControl.FormatArrayValue(allowSelectedLabels, false);
-													}
-												}
-											}
+            editor.SelectValue += (sender, args) =>
+            {
+                // Показываем диалог, только если есть доступные значения
 
-											args.Value = newValue;
-											args.Label = newLabel;
-										};
+                args.Cancel = true;
 
-			editor.SelectValue += (sender, args) =>
-									  {
-										  // Показываем диалог, только если есть доступные значения
+                if (editor.AvailableValues.IsNullOrEmpty() == false)
+                {
+                    selectValueDlg.View.AvailableValues = editor.AvailableValues;
+                    selectValueDlg.View.SelectedValues = editor.Value as IEnumerable;
 
-										  args.Cancel = true;
+                    if (selectValueDlg.ShowDialog() == DialogResult.OK)
+                    {
+                        args.Value = selectValueDlg.View.SelectedValues;
+                        args.Cancel = false;
+                    }
+                }
+            };
 
-										  if (editor.AvailableValues.IsNullOrEmpty() == false)
-										  {
-											  selectValueDlg.View.AvailableValues = editor.AvailableValues;
-											  selectValueDlg.View.SelectedValues = editor.Value as IEnumerable;
+            return editor;
+        }
 
-											  if (selectValueDlg.ShowDialog() == DialogResult.OK)
-											  {
-												  args.Value = selectValueDlg.View.SelectedValues;
-												  args.Cancel = false;
-											  }
-										  }
-									  };
+        private static ParameterValueEditor EditorWithManualMultipleSelect(ParameterInfo parameterInfo)
+        {
+            // Выбор нескольких значений из вручную сформированного списка
 
-			return editor;
-		}
+            var parameterValueControl = EditorFactory.CreateArrayEditor(parameterInfo.Type);
+            var parameterValueEditor = EditorFactory.CreateSimpleEditor(parameterInfo.Type);
+            var selectValueView = new SelectMultipleValueView(parameterValueEditor);
+            var selectValueDlg = new DialogView<SelectMultipleValueView>(selectValueView);
 
-		private static ParameterValueEditor EditorWithManualMultipleSelect(ParameterInfo parameterInfo)
-		{
-			// Выбор нескольких значений из вручную сформированного списка
+            var editor = new ParameterValueEditor(parameterValueControl)
+            {
+                ShowNullButton = false,
+                ShowSelectButton = true
+            };
 
-			var parameterValueControl = EditorFactory.CreateArrayEditor(parameterInfo.Type);
-			var parameterValueEditor = EditorFactory.CreateSimpleEditor(parameterInfo.Type);
-			var selectValueView = new SelectMultipleValueView(parameterValueEditor);
-			var selectValueDlg = new DialogView<SelectMultipleValueView>(selectValueView);
+            editor.ChangingValue += (sender, args) =>
+            {
+                args.Value = parameterValueControl.CastArrayValue(args.Value as IEnumerable);
+                args.Label = parameterValueControl.FormatArrayValue(args.Value as IEnumerable);
+            };
 
-			var editor = new ParameterValueEditor(parameterValueControl)
-							 {
-								 ShowNullButton = false,
-								 ShowSelectButton = true
-							 };
+            editor.SelectValue += (sender, args) =>
+            {
+                args.Cancel = true;
 
-			editor.ChangingValue += (sender, args) =>
-				                        {
-											args.Value = parameterValueControl.CastArrayValue(args.Value as IEnumerable);
-											args.Label = parameterValueControl.FormatArrayValue(args.Value as IEnumerable);
-										};
+                selectValueDlg.View.SelectedValues = editor.Value as IEnumerable;
 
-			editor.SelectValue += (sender, args) =>
-									  {
-										  args.Cancel = true;
+                if (selectValueDlg.ShowDialog() == DialogResult.OK)
+                {
+                    args.Value = selectValueDlg.View.SelectedValues;
+                    args.Cancel = false;
+                }
+            };
 
-										  selectValueDlg.View.SelectedValues = editor.Value as IEnumerable;
+            return editor;
+        }
 
-										  if (selectValueDlg.ShowDialog() == DialogResult.OK)
-										  {
-											  args.Value = selectValueDlg.View.SelectedValues;
-											  args.Cancel = false;
-										  }
-									  };
+        private static ParameterValueEditor EditorWithoutSelect(ParameterInfo parameterInfo)
+        {
+            // Ручной ввод одного значения
 
-			return editor;
-		}
+            var parameterValueControl = EditorFactory.CreateSimpleEditor(parameterInfo.Type);
 
-		private static ParameterValueEditor EditorWithoutSelect(ParameterInfo parameterInfo)
-		{
-			// Ручной ввод одного значения
+            var editor = new ParameterValueEditor(parameterValueControl)
+            {
+                ShowNullButton = parameterInfo.AllowNullValue,
+                ShowSelectButton = false
+            };
 
-			var parameterValueControl = EditorFactory.CreateSimpleEditor(parameterInfo.Type);
+            editor.ChangingValue += (sender, args) => { args.Value = ValueOrFirstItem(args.Value); };
 
-			var editor = new ParameterValueEditor(parameterValueControl)
-							 {
-								 ShowNullButton = parameterInfo.AllowNullValue,
-								 ShowSelectButton = false
-							 };
+            return editor;
+        }
 
-			editor.ChangingValue += (sender, args) =>
-										{
-											args.Value = ValueOrFirstItem(args.Value);
-										};
+        private static object ValueOrFirstItem(object value)
+        {
+            if (!(value is string))
+            {
+                var collection = value as IEnumerable;
 
-			return editor;
-		}
+                if (collection != null)
+                {
+                    var enumerator = collection.GetEnumerator();
 
+                    return enumerator.MoveNext() ? enumerator.Current : null;
+                }
+            }
 
-		private static object ValueOrFirstItem(object value)
-		{
-			if (!(value is string))
-			{
-				var collection = value as IEnumerable;
-
-				if (collection != null)
-				{
-					var enumerator = collection.GetEnumerator();
-
-					return enumerator.MoveNext() ? enumerator.Current : null;
-				}
-			}
-
-			return value;
-		}
-	}
+            return value;
+        }
+    }
 }

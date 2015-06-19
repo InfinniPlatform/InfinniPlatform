@@ -1,10 +1,10 @@
 ﻿{
-  "id": "PrintElementTextAlignment",
-  "description": "Горизонтальное выравнивание текста элемента печатного представления",
-  "enum": [
-    "Left",
-    "Center",
-    "Right",
-    "Justify"
-  ]
+	"id": "PrintElementTextAlignment",
+	"description": "Горизонтальное выравнивание текста элемента печатного представления",
+	"enum": [
+		"Left",
+		"Center",
+		"Right",
+		"Justify"
+	]
 }

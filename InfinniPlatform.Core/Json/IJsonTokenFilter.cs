@@ -2,8 +2,8 @@
 
 namespace InfinniPlatform.Json
 {
-	public interface IJsonTokenFilter
-	{
-		void FilterJsonToken(JToken jtoken);
-	}
+    public interface IJsonTokenFilter
+    {
+        void FilterJsonToken(JToken jtoken);
+    }
 }

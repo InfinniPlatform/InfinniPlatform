@@ -1,6 +1,5 @@
 ﻿using System.Collections;
-
-using InfinniPlatform.Api.Dynamic;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.Reporting.DataProviders
 {

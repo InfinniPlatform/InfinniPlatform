@@ -1,7 +1,7 @@
-﻿using InfinniPlatform.Api.Events;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using InfinniPlatform.Sdk.Application.Events;
 
-namespace InfinniPlatform.Api.ContextTypes
+namespace InfinniPlatform.Sdk.Application.Contracts
 {
     /// <summary>
     ///   Контекст обработчика бизнес-логики проведения документа

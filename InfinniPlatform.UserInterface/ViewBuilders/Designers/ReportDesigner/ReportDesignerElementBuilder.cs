@@ -4,24 +4,24 @@ using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ReportDesigner
 {
-	sealed class ReportDesignerElementBuilder : IObjectBuilder
-	{
-		public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
-		{
-			var editor = new ReportDesignerElement(parent);
-			editor.ApplyElementMeatadata((object)metadata);
+    internal sealed class ReportDesignerElementBuilder : IObjectBuilder
+    {
+        public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
+        {
+            var editor = new ReportDesignerElement(parent);
+            editor.ApplyElementMeatadata((object) metadata);
 
-			// Привязка к источнику данных
+            // Привязка к источнику данных
 
-			IElementDataBinding valueBinding = context.Build(parent, metadata.Value);
+            IElementDataBinding valueBinding = context.Build(parent, metadata.Value);
 
-			if (valueBinding != null)
-			{
-				valueBinding.OnPropertyValueChanged += (c, a) => editor.SetValue(a.Value);
-				editor.OnValueChanged += (c, a) => valueBinding.SetPropertyValue(a.Value, force: true);
-			}
+            if (valueBinding != null)
+            {
+                valueBinding.OnPropertyValueChanged += (c, a) => editor.SetValue(a.Value);
+                editor.OnValueChanged += (c, a) => valueBinding.SetPropertyValue(a.Value, force: true);
+            }
 
-			return editor;
-		}
-	}
+            return editor;
+        }
+    }
 }

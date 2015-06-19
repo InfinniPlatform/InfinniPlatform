@@ -1,34 +1,35 @@
-﻿using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.Linq;
-using InfinniPlatform.Api.RestApi.CommonApi;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using InfinniPlatform.Api.Linq;
 using InfinniPlatform.Api.Properties;
+using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.SearchOptions.Builders;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.Api.RestApi.DataApi
 {
     public class DocumentApi
     {
-        private readonly string _version;
         private readonly bool _secured;
+        private readonly string _version;
 
-	    public DocumentApi(string version, bool secured = true)
-	    {
-	        _version = version;
-	        _secured = secured;
-	    }
+        public DocumentApi(string version, bool secured = true)
+        {
+            _version = version;
+            _secured = secured;
+        }
 
         public IEnumerable<dynamic> GetDocumentByQuery(string queryText, bool denormalizeResult = false)
-		{
-			dynamic body = new DynamicWrapper();
-			body.QueryText = queryText;
-		    body.DenormalizeResult = denormalizeResult;
-			var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getbyquery", null, body,_version);
+        {
+            dynamic body = new DynamicWrapper();
+            body.QueryText = queryText;
+            body.DenormalizeResult = denormalizeResult;
+            var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getbyquery", null, body,
+                _version);
 
-			return response.ToDynamicList();
-		}
+            return response.ToDynamicList();
+        }
 
         public dynamic GetDocument(string id)
         {
@@ -36,7 +37,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             {
                 Id = id,
                 Secured = _secured
-            },_version);
+            }, _version);
 
             try
             {
@@ -46,48 +47,47 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             {
                 throw new ArgumentException(response.Content);
             }
-        } 
+        }
 
-		public IEnumerable<dynamic> GetDocument(string configuration,
-			string metadata,
-			dynamic filter,
-			int pageNumber,
-			int pageSize,
+        public IEnumerable<dynamic> GetDocument(string configuration,
+            string metadata,
+            dynamic filter,
+            int pageNumber,
+            int pageSize,
             IEnumerable<dynamic> ignoreResolve = null,
-			dynamic sorting = null)
-		{
-			var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getdocument", null, new
-			{
-			    Configuration = configuration,
-			    Metadata = metadata,
-			    Filter = filter,
-			    PageNumber = pageNumber,
-			    PageSize = pageSize,
-			    IgnoreResolve = ignoreResolve,
-			    Sorting = sorting,
-			    Secured = _secured
-			},_version);
+            dynamic sorting = null)
+        {
+            var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getdocument", null, new
+            {
+                Configuration = configuration,
+                Metadata = metadata,
+                Filter = filter,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                IgnoreResolve = ignoreResolve,
+                Sorting = sorting,
+                Secured = _secured
+            }, _version);
 
-			try
-			{
-				return response.ToDynamicList();
-			}
-			catch (Exception)
-			{
-				throw new ArgumentException(response.Content);
-			}
-		}
-
+            try
+            {
+                return response.ToDynamicList();
+            }
+            catch (Exception)
+            {
+                throw new ArgumentException(response.Content);
+            }
+        }
 
         public IEnumerable<dynamic> GetDocument(
-            string configuration, 
-            string metadata, 
-            Action<FilterBuilder> filter, 
-            int pageNumber, 
+            string configuration,
+            string metadata,
+            Action<FilterBuilder> filter,
+            int pageNumber,
             int pageSize,
             Action<SortingBuilder> sorting = null)
         {
-            return GetDocument(configuration, metadata, filter, pageNumber, pageSize,null, sorting);
+            return GetDocument(configuration, metadata, filter, pageNumber, pageSize, null, sorting);
         }
 
         public IEnumerable<dynamic> GetDocument(
@@ -114,19 +114,19 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             }
 
             return GetDocument(configuration, metadata, filterBuilder.GetFilter(), pageNumber, pageSize, ignoreResolve,
-                               sortingBuilder.GetSorting());              
-        } 
+                sortingBuilder.GetSorting());
+        }
 
         /// <summary>
-        /// Получение документов из разных конфигураций
+        ///     Получение документов из разных конфигураций
         /// </summary>
         public IEnumerable<dynamic> GetDocumentCrossConfig(
             Action<FilterBuilder> filter,
             int pageNumber,
-            int pageSize,            
+            int pageSize,
             IEnumerable<string> configurations,
             IEnumerable<string> documents,
-			Action<SortingBuilder> sorting = null)
+            Action<SortingBuilder> sorting = null)
         {
             var filterBuilder = new FilterBuilder();
 
@@ -141,17 +141,18 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             {
                 sorting.Invoke(sortingBuilder);
             }
-            
-            var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getdocumentcrossconfig", null, new
-            {
-                Configurations = configurations,
-                Documents = documents,
-                Filter = filter == null ? null : filterBuilder.GetFilter(),
-                PageNumber = pageNumber,
-                PageSize = pageSize,
-                Sorting = sorting == null ? null : sortingBuilder.GetSorting(),
-                Secured = _secured
-            },_version);
+
+            var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getdocumentcrossconfig", null,
+                new
+                {
+                    Configurations = configurations,
+                    Documents = documents,
+                    Filter = filter == null ? null : filterBuilder.GetFilter(),
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                    Sorting = sorting == null ? null : sortingBuilder.GetSorting(),
+                    Secured = _secured
+                }, _version);
 
             try
             {
@@ -163,14 +164,14 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             }
         }
 
-		public dynamic CreateDocument(string configuration, string metadata)
-		{
-			return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "createdocument", null, new
-			{
-			    Configuration = configuration,
-			    Metadata = metadata					                                                                                     
-			},_version).ToDynamic();
-		}
+        public dynamic CreateDocument(string configuration, string metadata)
+        {
+            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "createdocument", null, new
+            {
+                Configuration = configuration,
+                Metadata = metadata
+            }, _version).ToDynamic();
+        }
 
         public dynamic DeleteDocument(string configuration, string metadata, string documentId)
         {
@@ -180,11 +181,11 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                 Metadata = metadata,
                 Id = documentId,
                 Secured = _secured
-            },_version);
-
+            }, _version);
         }
 
-        public dynamic UpdateDocument(string configuration, string metadata, dynamic item, bool ignoreWarnings = false, bool allowNonSchemaProperties = false)
+        public dynamic UpdateDocument(string configuration, string metadata, dynamic item, bool ignoreWarnings = false,
+            bool allowNonSchemaProperties = false)
         {
             object transactionMarker = ObjectHelper.GetProperty(item, "TransactionMarker");
             if (transactionMarker != null && !string.IsNullOrEmpty(transactionMarker.ToString()))
@@ -201,19 +202,18 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                 Document = item.ChangesObject,
                 TransactionMarker = transactionMarker,
                 Secured = _secured
-            },_version).ToDynamic();
+            }, _version).ToDynamic();
         }
 
-
-        public dynamic SetDocument(string configuration, string metadata, dynamic item, bool ignoreWarnings = false, bool allowNonSchemaProperties = false)
+        public dynamic SetDocument(string configuration, string metadata, dynamic item, bool ignoreWarnings = false,
+            bool allowNonSchemaProperties = false)
         {
+            object transactionMarker = ObjectHelper.GetProperty(item, "TransactionMarker");
+            if (transactionMarker != null && !string.IsNullOrEmpty(transactionMarker.ToString()))
+            {
+                item.TransactionMarker = null;
+            }
 
-			object transactionMarker = ObjectHelper.GetProperty(item, "TransactionMarker");
-			if (transactionMarker != null && !string.IsNullOrEmpty(transactionMarker.ToString()))
-			{
-				item.TransactionMarker = null;
-			}
-            
 
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "setdocument", null, new
             {
@@ -224,25 +224,25 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                 Document = item,
                 TransactionMarker = transactionMarker,
                 Secured = _secured
-            },_version).ToDynamic();
+            }, _version).ToDynamic();
         }
 
-
-        public dynamic SetDocuments(string configuration, string metadata, IEnumerable<object> item, int batchSize = 200, bool allowNonSchemaProperties = false)
+        public dynamic SetDocuments(string configuration, string metadata, IEnumerable<object> item, int batchSize = 200,
+            bool allowNonSchemaProperties = false)
         {
-            var batches = LinqExtensions.Batch(item, batchSize);
+            var batches = item.Batch(batchSize);
 
             foreach (var batch in batches)
             {
-	            object transactionMarker = null;
-	            foreach (dynamic document in batch.ToArray())
-	            {
-					transactionMarker = ObjectHelper.GetProperty(document, "TransactionMarker");
-					if (transactionMarker != null && !string.IsNullOrEmpty(transactionMarker.ToString()))
-					{
-						document.TransactionMarker = null;
-					}
-	            }
+                object transactionMarker = null;
+                foreach (dynamic document in batch.ToArray())
+                {
+                    transactionMarker = ObjectHelper.GetProperty(document, "TransactionMarker");
+                    if (transactionMarker != null && !string.IsNullOrEmpty(transactionMarker.ToString()))
+                    {
+                        document.TransactionMarker = null;
+                    }
+                }
 
                 var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "setdocument", null, new
                 {
@@ -252,7 +252,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                     AllowNonSchemaProperties = allowNonSchemaProperties,
                     TransactionMarker = transactionMarker,
                     Secured = _secured
-                },_version);
+                }, _version);
 
                 if (!string.IsNullOrEmpty(response.Content))
                 {
@@ -272,6 +272,5 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             result.ValidationMessage = Resources.BatchCompletedSuccessfully;
             return result;
         }
-
     }
 }

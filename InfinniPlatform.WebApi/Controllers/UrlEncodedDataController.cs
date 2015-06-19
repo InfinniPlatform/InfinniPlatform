@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestQuery;
-using InfinniPlatform.Hosting;
+using InfinniPlatform.Sdk.Application.Dynamic;
 using InfinniPlatform.WebApi.ConfigRequestProviders;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.WebApi.Controllers
 {

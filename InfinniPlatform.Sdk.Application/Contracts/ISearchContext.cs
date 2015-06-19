@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace InfinniPlatform.Api.ContextTypes
+namespace InfinniPlatform.Sdk.Application.Contracts
 {
     /// <summary>
     ///   Контекст обработчика поиска документов

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.RestApi.CommonApi;
@@ -27,7 +25,7 @@ namespace InfinniPlatform.Api.Packages
 
             try
             {
-                string[] result = ((string) config.ToString()).Split("\n\r".ToCharArray(),
+                var result = ((string) config.ToString()).Split("\n\r".ToCharArray(),
                     StringSplitOptions.RemoveEmptyEntries);
 
                 _configStructure.AddConfiguration(result);
@@ -35,7 +33,7 @@ namespace InfinniPlatform.Api.Packages
                 var menuReader = new ManagerFactoryConfiguration(version, configurationId).BuildMenuMetadataReader();
                 var menuList = menuReader.GetItems();
 
-                foreach (dynamic menu in menuList)
+                foreach (var menu in menuList)
                 {
                     object fullMenu = menuReader.GetItem(menu.Name);
                     //текст для экспорта в файл
@@ -48,7 +46,7 @@ namespace InfinniPlatform.Api.Packages
                 var reportReader = new ManagerFactoryConfiguration(version, configurationId).BuildReportMetadataReader();
                 var reportList = reportReader.GetItems();
 
-                foreach (dynamic report in reportList)
+                foreach (var report in reportList)
                 {
                     object fullReport = reportReader.GetItem(report.Name);
 
@@ -61,7 +59,7 @@ namespace InfinniPlatform.Api.Packages
                     new ManagerFactoryConfiguration(version, configurationId).BuildDocumentMetadataReader();
                 var documents = documentReader.GetItems();
 
-                foreach (dynamic document in documents)
+                foreach (var document in documents)
                 {
                     object fullDocument = documentReader.GetItem(document.Name);
                     result = fullDocument.ToString().Split("\n\r".ToCharArray(),
@@ -69,7 +67,7 @@ namespace InfinniPlatform.Api.Packages
 
                     _configStructure.AddDocument(document.Name, result);
 
-                    foreach (string containedMetadataType in MetadataType.GetDocumentMetadataTypes())
+                    foreach (var containedMetadataType in MetadataType.GetDocumentMetadataTypes())
                     {
                         try
                         {
@@ -86,7 +84,7 @@ namespace InfinniPlatform.Api.Packages
                     new ManagerFactoryConfiguration(version, configurationId).BuildRegisterMetadataReader();
                 var registers = registerReader.GetItems();
 
-                foreach (dynamic register in registers)
+                foreach (var register in registers)
                 {
                     object fullRegister = registerReader.GetItem(register.Name);
                     result = fullRegister.ToString().Split("\n\r".ToCharArray(),
@@ -104,12 +102,13 @@ namespace InfinniPlatform.Api.Packages
 
         private void ProcessMetadataType(string version, string configId, string documentId, string metadataType)
         {
-            IDataReader metadataReader =
-                new ManagerFactoryDocument(version, configId, documentId).BuildManagerByType(metadataType).MetadataReader;
-            foreach (dynamic item in metadataReader.GetItems())
+            var metadataReader =
+                new ManagerFactoryDocument(version, configId, documentId).BuildManagerByType(metadataType)
+                    .MetadataReader;
+            foreach (var item in metadataReader.GetItems())
             {
                 dynamic fullItemMetadata = metadataReader.GetItem(item.Name);
-                string[] result = ((string) fullItemMetadata.ToString()).Split("\n\r".ToCharArray(),
+                var result = ((string) fullItemMetadata.ToString()).Split("\n\r".ToCharArray(),
                     StringSplitOptions.RemoveEmptyEntries);
 
                 _configStructure.AddDocumentMetadataType(documentId, item.Name, metadataType, result);
@@ -131,14 +130,14 @@ namespace InfinniPlatform.Api.Packages
 
             new UpdateApi(version).UpdateMetadataObject(config.Name, null, config, MetadataType.Configuration);
 
-            foreach (dynamic assembly in config.Assemblies)
+            foreach (var assembly in config.Assemblies)
             {
                 new UpdateApi(version).UpdateMetadataObject(config.Name, null, assembly, MetadataType.Assembly);
             }
 
             IEnumerable<dynamic> menuList = config.Menu;
             config.Menu = new List<dynamic>();
-            foreach (dynamic menu in menuList)
+            foreach (var menu in menuList)
             {
                 dynamic menuFull = _configStructure.GetMenu(menu.Name);
                 new UpdateApi(version).UpdateMetadataObject(config.Name, null, menuFull, MetadataType.Menu);
@@ -150,7 +149,7 @@ namespace InfinniPlatform.Api.Packages
             config.Reports = new List<dynamic>();
             if (reportList != null)
             {
-                foreach (dynamic report in reportList)
+                foreach (var report in reportList)
                 {
                     dynamic reportFull = _configStructure.GetReport(report.Name);
                     new UpdateApi(version).UpdateMetadataObject(config.Name, null, reportFull, MetadataType.Report);
@@ -161,31 +160,33 @@ namespace InfinniPlatform.Api.Packages
 
             IEnumerable<dynamic> documents = config.Documents;
             config.Documents = new List<dynamic>();
-            foreach (dynamic document in documents)
+            foreach (var document in documents)
             {
                 dynamic documentFull = _configStructure.GetDocument(document.Name);
-                new UpdateApi(version).UpdateMetadataObject(config.Name, document.Name, documentFull, MetadataType.Document);
+                new UpdateApi(version).UpdateMetadataObject(config.Name, document.Name, documentFull,
+                    MetadataType.Document);
 
                 config.Documents.Add(documentFull);
 
-                foreach (string documentMetadataType in MetadataType.GetDocumentMetadataTypes())
+                foreach (var documentMetadataType in MetadataType.GetDocumentMetadataTypes())
                 {
                     try
                     {
-                        string metadataContainer =
+                        var metadataContainer =
                             factoryContainer.BuildMetadataContainerInfo(documentMetadataType).GetMetadataContainerName();
-                        
+
                         IEnumerable<dynamic> items = documentFull[metadataContainer];
                         documentFull[metadataContainer] = new List<dynamic>();
                         if (items != null)
                         {
-                            foreach (dynamic metadataType in items)
+                            foreach (var metadataType in items)
                             {
                                 dynamic metadataTypeObject = _configStructure.GetDocumentMetadataType(document.Name,
                                     metadataType.Name,
                                     documentMetadataType);
 
-                                new UpdateApi(version).UpdateMetadataObject(config.Name, document.Name, metadataTypeObject,
+                                new UpdateApi(version).UpdateMetadataObject(config.Name, document.Name,
+                                    metadataTypeObject,
                                     documentMetadataType);
 
                                 documentFull[metadataContainer].Add(metadataTypeObject);
@@ -194,7 +195,8 @@ namespace InfinniPlatform.Api.Packages
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine("can't import metadata type {0}. Error message: {1}", documentMetadataType, e.Message);
+                        Console.WriteLine("can't import metadata type {0}. Error message: {1}", documentMetadataType,
+                            e.Message);
                     }
                 }
             }
@@ -203,10 +205,11 @@ namespace InfinniPlatform.Api.Packages
             config.Registers = new List<dynamic>();
             if (registers != null)
             {
-                foreach (dynamic register in registers)
+                foreach (var register in registers)
                 {
                     dynamic registerFull = _configStructure.GetRegister(register.Name);
-                    new UpdateApi(version).UpdateMetadataObject(config.Name, register.Name, registerFull, MetadataType.Register);
+                    new UpdateApi(version).UpdateMetadataObject(config.Name, register.Name, registerFull,
+                        MetadataType.Register);
 
                     config.Registers.Add(registerFull);
                 }

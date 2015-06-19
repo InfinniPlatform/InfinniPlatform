@@ -1,40 +1,40 @@
 ﻿{
-  "id": "ComboBox",
-  "description": "Элемент представления для выбора одного или нескольких значений",
-  "type": "object",
-  "extends": {
-    "$ref": "http://demo.infinnity.ru:8081/display/MC/BaseListElement"
-  },
-  "properties": {
-    "ShowPopup": {
-      "description": "Показывается ли кнопка раскрытия списка",
-      "type": "boolean",
-      "default": true
-    },
-    "ShowSelect": {
-      "description": "Показывается ли кнопка выбора значения",
-      "type": "boolean",
-      "default": false
-    },
-    "ShowClear": {
-      "description": "Показывается ли кнопка очистки значения",
-      "type": "boolean",
-      "default": false
-    },
-    "Autocomplete": {
-      "description": "Способ автозаполнения при вводе с клавиатуры",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/Autocomplete",
-      "default": "None"
-    },
-    "SelectView": {
-      "description": "Ссылка на представление для выбора значения",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkView"
-    },
-    "MultiSelect": {
-      "description": "Разрешен ли выбор нескольких значений",
-      "type": "boolean",
-      "default": false
-    }
-  },
-  "additionalProperties": false
+	"id": "ComboBox",
+	"description": "Элемент представления для выбора одного или нескольких значений",
+	"type": "object",
+	"extends": {
+		"$ref": "http://demo.infinnity.ru:8081/display/MC/BaseListElement"
+	},
+	"properties": {
+		"ShowPopup": {
+			"description": "Показывается ли кнопка раскрытия списка",
+			"type": "boolean",
+			"default": true
+		},
+		"ShowSelect": {
+			"description": "Показывается ли кнопка выбора значения",
+			"type": "boolean",
+			"default": false
+		},
+		"ShowClear": {
+			"description": "Показывается ли кнопка очистки значения",
+			"type": "boolean",
+			"default": false
+		},
+		"Autocomplete": {
+			"description": "Способ автозаполнения при вводе с клавиатуры",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/Autocomplete",
+			"default": "None"
+		},
+		"SelectView": {
+			"description": "Ссылка на представление для выбора значения",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/LinkView"
+		},
+		"MultiSelect": {
+			"description": "Разрешен ли выбор нескольких значений",
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"additionalProperties": false
 }

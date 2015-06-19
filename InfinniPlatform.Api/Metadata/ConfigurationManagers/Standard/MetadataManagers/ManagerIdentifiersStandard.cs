@@ -1,18 +1,14 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Api.SearchOptions;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers
 {
     public sealed class ManagerIdentifiersStandard : IManagerIdentifiers
     {
-
         /// <summary>
-        ///   Получить идентификатор элемента конфигурации
+        ///     Получить идентификатор элемента конфигурации
         /// </summary>
         /// <param name="version">Версия конфигурации</param>
         /// <param name="name">Наименование элемента</param>
@@ -21,8 +17,42 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
         {
             var configList = GetConfigList(version);
 
-            return configList.Where(c => c.Name.ToLowerInvariant() == name.ToLowerInvariant() && ((c.Version == null || version == null)  || c.Version.ToLowerInvariant() == version.ToLowerInvariant()))
-                .Select(c => c.Id).FirstOrDefault();
+            return
+                configList.Where(
+                    c =>
+                        c.Name.ToLowerInvariant() == name.ToLowerInvariant() &&
+                        ((c.Version == null || version == null) ||
+                         c.Version.ToLowerInvariant() == version.ToLowerInvariant()))
+                    .Select(c => c.Id).FirstOrDefault();
+        }
+
+        /// <summary>
+        ///     Получить идентификатор документа
+        /// </summary>
+        public string GetDocumentUid(string version, string configurationId, string documentId)
+        {
+            var config =
+                GetConfigList(version)
+                    .FirstOrDefault(
+                        c =>
+                            c.Name.ToLowerInvariant() == configurationId.ToLowerInvariant() &&
+                            ((c.Version == null || version == null) ||
+                             c.Version.ToLowerInvariant() == version.ToLowerInvariant()));
+            if (config != null)
+            {
+                IEnumerable<dynamic> documents = config.Documents;
+                if (config.Documents != null)
+                {
+                    foreach (var document in documents)
+                    {
+                        if (document.Name.ToLowerInvariant() == documentId.ToLowerInvariant())
+                        {
+                            return document.Id;
+                        }
+                    }
+                }
+            }
+            return null;
         }
 
         private static IEnumerable<dynamic> GetConfigList(string version)
@@ -31,32 +61,6 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
                 RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getregisteredconfiglist", null, null, version)
                     .ToDynamic().ConfigList);
             return configList;
-        }
-
-
-        /// <summary>
-        ///   Получить идентификатор документа
-        /// </summary>
-        public string GetDocumentUid(string version, string configurationId, string documentId)
-        {
-
-            var config = GetConfigList(version).FirstOrDefault(c => c.Name.ToLowerInvariant() == configurationId.ToLowerInvariant() && ((c.Version == null || version == null) || c.Version.ToLowerInvariant() == version.ToLowerInvariant()));
-			if (config != null)
-			{			
-                IEnumerable<dynamic> documents = config.Documents;
-			    if (config.Documents != null)
-			    {
-			        foreach (var document in documents)
-			        {
-			            if (document.Name.ToLowerInvariant() == documentId.ToLowerInvariant())
-			            {
-			                return document.Id;
-			            }
-			        }
-			    }
-
-			}
-	        return null;
         }
     }
 }

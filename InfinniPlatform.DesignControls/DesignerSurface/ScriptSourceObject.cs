@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.DesignControls.Layout;
-using InfinniPlatform.DesignControls.PropertyDesigner;
+﻿using InfinniPlatform.DesignControls.Layout;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.DesignControls.DesignerSurface
 {
@@ -47,6 +41,5 @@ namespace InfinniPlatform.DesignControls.DesignerSurface
             }
             return string.Empty;
         }
-
     }
 }

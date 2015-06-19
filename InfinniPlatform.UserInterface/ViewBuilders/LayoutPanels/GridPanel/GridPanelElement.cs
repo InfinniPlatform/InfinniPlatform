@@ -2,103 +2,98 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-
 using InfinniPlatform.UserInterface.Properties;
 using InfinniPlatform.UserInterface.ViewBuilders.Elements;
 using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.LayoutPanels.GridPanel
 {
-	/// <summary>
-	/// Контейнер элементов представления в виде сетки.
-	/// </summary>
-	public sealed class GridPanelElement : BaseElement<Grid>, ILayoutPanel
-	{
-		public GridPanelElement(View view)
-			: base(view)
-		{
-		}
+    /// <summary>
+    ///     Контейнер элементов представления в виде сетки.
+    /// </summary>
+    public sealed class GridPanelElement : BaseElement<Grid>, ILayoutPanel
+    {
+        // Columns
 
+        private int _columns;
+        // Rows
 
-		// Columns
+        private readonly List<GridPanelRowElement> _rows
+            = new List<GridPanelRowElement>();
 
-		private int _columns;
+        public GridPanelElement(View view)
+            : base(view)
+        {
+        }
 
-		/// <summary>
-		/// Возвращает количество колонок.
-		/// </summary>
-		public int GetColumns()
-		{
-			return _columns;
-		}
+        // Elements
 
-		/// <summary>
-		/// Устанавливает количество колонок.
-		/// </summary>
-		public void SetColumns(int value)
-		{
-			if (_columns > value)
-			{
-				throw new ArgumentException(Resources.GridPanelCannotDeleteColumns);
-			}
+        public override IEnumerable<IElement> GetChildElements()
+        {
+            var result = new List<IElement>();
 
-			if (_columns != value)
-			{
-				var count = value - _columns;
+            foreach (var row in _rows)
+            {
+                foreach (var cell in row.GetCells())
+                {
+                    result.AddRange(cell.GetItems());
+                }
+            }
 
-				for (var i = 0; i < count; ++i)
-				{
-					Control.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-				}
+            return result;
+        }
 
-				_columns = value;
-			}
-		}
+        /// <summary>
+        ///     Возвращает количество колонок.
+        /// </summary>
+        public int GetColumns()
+        {
+            return _columns;
+        }
 
+        /// <summary>
+        ///     Устанавливает количество колонок.
+        /// </summary>
+        public void SetColumns(int value)
+        {
+            if (_columns > value)
+            {
+                throw new ArgumentException(Resources.GridPanelCannotDeleteColumns);
+            }
 
-		// Rows
+            if (_columns != value)
+            {
+                var count = value - _columns;
 
-		private readonly List<GridPanelRowElement> _rows
-			= new List<GridPanelRowElement>();
+                for (var i = 0; i < count; ++i)
+                {
+                    Control.ColumnDefinitions.Add(new ColumnDefinition {Width = new GridLength(1, GridUnitType.Star)});
+                }
 
-		/// <summary>
-		/// Добавляет строку.
-		/// </summary>
-		public GridPanelRowElement AddRow()
-		{
-			var row = new GridPanelRowElement(Control, _rows.Count);
+                _columns = value;
+            }
+        }
 
-			_rows.Add(row);
+        /// <summary>
+        ///     Добавляет строку.
+        /// </summary>
+        public GridPanelRowElement AddRow()
+        {
+            var row = new GridPanelRowElement(Control, _rows.Count);
 
-			Control.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
+            _rows.Add(row);
 
-			return row;
-		}
+            Control.RowDefinitions.Add(new RowDefinition {Height = new GridLength(1, GridUnitType.Auto)});
 
-		/// <summary>
-		/// Возвращает список строк.
-		/// </summary>
-		public IEnumerable<GridPanelRowElement> GetRows()
-		{
-			return _rows.AsReadOnly();
-		}
+            return row;
+        }
 
-
-		// Elements
-
-		public override IEnumerable<IElement> GetChildElements()
-		{
-			var result = new List<IElement>();
-
-			foreach (var row in _rows)
-			{
-				foreach (var cell in row.GetCells())
-				{
-					result.AddRange(cell.GetItems());
-				}
-			}
-
-			return result;
-		}
-	}
+        /// <summary>
+        ///     Возвращает список строк.
+        /// </summary>
+        public IEnumerable<GridPanelRowElement> GetRows()
+        {
+            return _rows.AsReadOnly();
+        }
+    }
 }

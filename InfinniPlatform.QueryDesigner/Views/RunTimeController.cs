@@ -1,78 +1,70 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using InfinniPlatform.QueryDesigner.Contracts;
-using InfinniPlatform.QueryDesigner.Contracts.Implementation;
 
 namespace InfinniPlatform.QueryDesigner.Views
 {
-	public sealed class RunTimeController
-	{
-		private readonly List<Control> _controls = new List<Control>();
+    public sealed class RunTimeController
+    {
+        private readonly List<Control> _controls = new List<Control>();
+        private readonly List<IQueryBlockProvider> _queryParts = new List<IQueryBlockProvider>();
 
-		public RunTimeController(IEnumerable<Control> controls)
-		{
-			_controls.AddRange(controls);
-			_queryParts.AddRange(controls.OfType<IQueryBlockProvider>());
-		}
+        public RunTimeController(IEnumerable<Control> controls)
+        {
+            _controls.AddRange(controls);
+            _queryParts.AddRange(controls.OfType<IQueryBlockProvider>());
+        }
 
+        public void RegisterControl(Control control)
+        {
+            var provider = control as IQueryBlockProvider;
+            if (provider != null)
+            {
+                _queryParts.Add(provider);
+            }
+            _controls.Add(control);
+        }
 
-		private List<IQueryBlockProvider> _queryParts = new List<IQueryBlockProvider>(); 
+        public void UnregisterControl(Control control)
+        {
+            var provider = control as IQueryBlockProvider;
+            if (provider != null)
+            {
+                _queryParts.Remove(provider);
+            }
+            _controls.Remove(control);
+        }
 
-		public void RegisterControl(Control control)
-		{
-			var provider = control as IQueryBlockProvider;
-			if (provider != null)
-			{
-				_queryParts.Add(provider);
-			}
-			_controls.Add(control);
-		}
+        public IEnumerable<T> GetProviderList<T>(Control parent = null) where T : class
+        {
+            IEnumerable<Control> controlList;
+            if (parent == null)
+            {
+                controlList = _controls;
+            }
+            else
+            {
+                controlList = parent.Controls.Cast<Control>().ToList();
+            }
 
-		public void UnregisterControl(Control control)
-		{
-			var provider = control as IQueryBlockProvider;
-			if (provider != null)
-			{
-				_queryParts.Remove(provider);
-			}
-			_controls.Remove(control);
-		}
+            var result = new List<T>();
+            foreach (var control in controlList)
+            {
+                var provider = control as T;
+                if (provider != null)
+                {
+                    result.Add(provider);
+                }
 
-		public IEnumerable<T> GetProviderList<T>(Control parent = null ) where T : class
-		{
+                result.AddRange(GetProviderList<T>(control));
+            }
+            return result;
+        }
 
-			IEnumerable<Control> controlList;
-			if (parent == null)
-			{
-				controlList = _controls;
-			}
-			else
-			{
-				controlList = parent.Controls.Cast<Control>().ToList();
-			}
-
-			var result = new List<T>();
-			foreach (var control in controlList)
-			{
-				var provider = control as T;
-				if (provider != null)
-				{
-					result.Add(provider);
-				}
-
-				result.AddRange(GetProviderList<T>(control));
-			}
-			return result;
-		}
-
-		public IEnumerable<IQueryBlockProvider> GetQueryPartProviders()
-		{
-			return _queryParts;
-		}
-	}
+        public IEnumerable<IQueryBlockProvider> GetQueryPartProviders()
+        {
+            return _queryParts;
+        }
+    }
 }

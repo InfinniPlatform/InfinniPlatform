@@ -1,4 +1,6 @@
-﻿<data xsi:type="COMPOSITION" archetype_node_id="openEHR-EHR-COMPOSITION.examination_025.v1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.openehr.org/v1">
+﻿<data xsi:type="COMPOSITION" archetype_node_id="openEHR-EHR-COMPOSITION.examination_025.v1"
+      xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://schemas.openehr.org/v1">
   <name>
     <value>Форма 025</value>
   </name>

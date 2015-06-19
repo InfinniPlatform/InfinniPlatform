@@ -1,30 +1,26 @@
 ﻿using System;
 using InfinniPlatform.Api.Validation;
 
-
 namespace InfinniPlatform.Metadata.StateMachine.ValidationUnits.ValidationUnitBuilders
 {
-
     /// <summary>
-    ///   Билдер для создания предварительно указанных в Design-time и скомпилированных
-    ///   валидаторов. Поскольку без перекомпиляции исходников невозможно
-    ///   в "горячем режиме" произвести замену таких валидаторов (в отличие, например,
-    ///   от скриптовых валидаторов), то создавать такие валидаторы будем только один раз, 
-    ///   при первом вызове. 
-    ///   Валидатор является иммутабельным типом, не имеющим и не сохраняющим состояния.
-    ///   Добавление состояния в валидаторе недопустимо.
-    /// 
+    ///     Билдер для создания предварительно указанных в Design-time и скомпилированных
+    ///     валидаторов. Поскольку без перекомпиляции исходников невозможно
+    ///     в "горячем режиме" произвести замену таких валидаторов (в отличие, например,
+    ///     от скриптовых валидаторов), то создавать такие валидаторы будем только один раз,
+    ///     при первом вызове.
+    ///     Валидатор является иммутабельным типом, не имеющим и не сохраняющим состояния.
+    ///     Добавление состояния в валидаторе недопустимо.
     /// </summary>
     public sealed class ValidationOperatorBuilderEmbedded : IValidationUnitBuilder
     {
+        private IValidationOperator _validatorInstance;
         private readonly Type _validatorType;
 
         public ValidationOperatorBuilderEmbedded(Type validatorType)
         {
             _validatorType = validatorType;
         }
-
-        private IValidationOperator _validatorInstance;
 
         public IValidationOperator BuildValidationUnit()
         {
@@ -38,7 +34,7 @@ namespace InfinniPlatform.Metadata.StateMachine.ValidationUnits.ValidationUnitBu
             {
                 throw new ArgumentException("registered type is not IValidationOperator");
             }
-            _validatorInstance = (IValidationOperator)validatorInstance;
+            _validatorInstance = (IValidationOperator) validatorInstance;
             return _validatorInstance;
         }
     }

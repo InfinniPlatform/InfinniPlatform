@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Index;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.Versioning

@@ -47,10 +47,6 @@
       <Private>True</Private>
       <HintPath>..\packages\DevExpress.13.2.9\lib\net45\DevExpress.Xpf.Core.v13.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Xpf.Core.v13.2.Extensions, Version=13.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\DevExpress.13.2.9\lib\net45\DevExpress.Xpf.Core.v13.2.Extensions.dll</HintPath>
-    </Reference>
     <Reference Include="DevExpress.Xpf.Docking.v13.2, Version=13.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\DevExpress.13.2.9\lib\net45\DevExpress.Xpf.Docking.v13.2.dll</HintPath>
@@ -63,25 +59,9 @@
       <Private>True</Private>
       <HintPath>..\packages\DevExpress.13.2.9\lib\net45\DevExpress.Xpf.Grid.v13.2.Core.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Xpf.Grid.v13.2.Extensions, Version=13.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\DevExpress.13.2.9\lib\net45\DevExpress.Xpf.Grid.v13.2.Extensions.dll</HintPath>
-    </Reference>
     <Reference Include="DevExpress.Xpf.Layout.v13.2.Core, Version=13.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\DevExpress.13.2.9\lib\net45\DevExpress.Xpf.Layout.v13.2.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Xpf.LayoutControl.v13.2, Version=13.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\DevExpress.13.2.9\lib\net45\DevExpress.Xpf.LayoutControl.v13.2.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Xpf.Mvvm.v13.2, Version=13.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\DevExpress.13.2.9\lib\net45\DevExpress.Xpf.Mvvm.v13.2.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Xpf.Themes.MetropolisLight.v13.2, Version=13.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\DevExpress.13.2.9\lib\net45\DevExpress.Xpf.Themes.MetropolisLight.v13.2.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -90,8 +70,6 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="UIAutomationProvider" />
-    <Reference Include="UIAutomationTypes" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -458,6 +436,10 @@
     <ProjectReference Include="..\InfinniPlatform.FlowDocument\InfinniPlatform.FlowDocument.csproj">
       <Project>{e47f0c5b-f775-44b4-9e2e-e4c044864125}</Project>
       <Name>InfinniPlatform.FlowDocument</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Sdk.Application\InfinniPlatform.Sdk.Application.csproj">
+      <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
+      <Name>InfinniPlatform.Sdk.Application</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

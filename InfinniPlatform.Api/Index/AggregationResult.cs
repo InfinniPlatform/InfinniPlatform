@@ -1,10 +1,10 @@
-﻿using InfinniPlatform.Api.SearchOptions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using InfinniPlatform.Api.SearchOptions;
 
 namespace InfinniPlatform.Api.Index
 {
     /// <summary>
-    /// Результат выполнения агрегации по одному измерению
+    ///     Результат выполнения агрегации по одному измерению
     /// </summary>
     public class AggregationResult
     {
@@ -14,29 +14,29 @@ namespace InfinniPlatform.Api.Index
         {
             _backets = new List<AggregationResult>();
         }
-             
+
         /// <summary>
-        /// Gets an aggregation name
+        ///     Gets an aggregation name
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets measure type of aggregation
+        ///     Gets measure type of aggregation
         /// </summary>
         public AggregationType[] MeasureTypes { get; set; }
 
         /// <summary>
-        /// Measured aggregation values
+        ///     Measured aggregation values
         /// </summary>
         public double[] Values { get; set; }
 
         /// <summary>
-        /// Count of documents in the aggregation
+        ///     Count of documents in the aggregation
         /// </summary>
         public long? DocCount { get; set; }
 
         /// <summary>
-        /// Gets the inner aggregation result
+        ///     Gets the inner aggregation result
         /// </summary>
         public List<AggregationResult> Buckets
         {

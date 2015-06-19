@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using InfinniPlatform.UserInterface.ViewBuilders.Data;
 using InfinniPlatform.UserInterface.ViewBuilders.LinkViews;
 using InfinniPlatform.UserInterface.ViewBuilders.Scripts;
@@ -9,119 +8,119 @@ using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Actions
 {
-	static class ViewHelper
-	{
-		/// <summary>
-		/// Открыть представление или переключить фокус на открытое представление.
-		/// </summary>
-		/// <param name="viewKey">Уникальный ключ представления.</param>
-		/// <param name="linkViewFactory">Метод получения ссылки на представление.</param>
-		/// <param name="onInit">Обработчик инициализации открываемого представления.</param>
-		/// <param name="onAccept">Обработчик сохранения или подтверждения данных представления.</param>
-		public static void ShowView(object viewKey, Func<LinkView> linkViewFactory, Action<IDataSource> onInit = null, Action<IDataSource> onAccept = null)
-		{
-			View view;
+    internal static class ViewHelper
+    {
+        private static readonly Dictionary<object, View> OpenedViews = new Dictionary<object, View>();
 
-			// Если представление уже открыто
-			if (TryGetView(viewKey, out view))
-			{
-				view.Focus();
-			}
-			else
-			{
-				var linkView = linkViewFactory();
+        /// <summary>
+        ///     Открыть представление или переключить фокус на открытое представление.
+        /// </summary>
+        /// <param name="viewKey">Уникальный ключ представления.</param>
+        /// <param name="linkViewFactory">Метод получения ссылки на представление.</param>
+        /// <param name="onInit">Обработчик инициализации открываемого представления.</param>
+        /// <param name="onAccept">Обработчик сохранения или подтверждения данных представления.</param>
+        public static void ShowView(object viewKey, Func<LinkView> linkViewFactory, Action<IDataSource> onInit = null,
+            Action<IDataSource> onAccept = null)
+        {
+            View view;
 
-				if (linkView != null)
-				{
-					// Создание представления
-					view = linkView.CreateView();
+            // Если представление уже открыто
+            if (TryGetView(viewKey, out view))
+            {
+                view.Focus();
+            }
+            else
+            {
+                var linkView = linkViewFactory();
 
-					if (view != null)
-					{
-						// Выборка источника данных
-						var viewDataSources = view.GetDataSources();
-						var mainDataSource = (viewDataSources != null) ? viewDataSources.FirstOrDefault() : null;
+                if (linkView != null)
+                {
+                    // Создание представления
+                    view = linkView.CreateView();
 
-						// Инициализация представления
-						TryInvoke(onInit, mainDataSource);
+                    if (view != null)
+                    {
+                        // Выборка источника данных
+                        var viewDataSources = view.GetDataSources();
+                        var mainDataSource = (viewDataSources != null) ? viewDataSources.FirstOrDefault() : null;
 
-						var saved = false;
+                        // Инициализация представления
+                        TryInvoke(onInit, mainDataSource);
 
-						// Обработка события сохранения данных
-						ScriptDelegate onSaved = (c, a) =>
-												 {
-													 saved = true;
+                        var saved = false;
 
-													 TryInvoke(onAccept, mainDataSource);
-												 };
+                        // Обработка события сохранения данных
+                        ScriptDelegate onSaved = (c, a) =>
+                        {
+                            saved = true;
 
-						if (mainDataSource != null)
-						{
-							mainDataSource.OnItemSaved += onSaved;
-						}
+                            TryInvoke(onAccept, mainDataSource);
+                        };
 
-						ScriptDelegate onClosed = null;
+                        if (mainDataSource != null)
+                        {
+                            mainDataSource.OnItemSaved += onSaved;
+                        }
 
-						// Обработка события закрытия представления
-						onClosed
-							= (c, a) =>
-							  {
-								  if (mainDataSource != null)
-								  {
-									  mainDataSource.OnItemSaved -= onSaved;
-								  }
+                        ScriptDelegate onClosed = null;
 
-								  view.OnClosed -= onClosed;
-								  RemoveView(viewKey);
+                        // Обработка события закрытия представления
+                        onClosed
+                            = (c, a) =>
+                            {
+                                if (mainDataSource != null)
+                                {
+                                    mainDataSource.OnItemSaved -= onSaved;
+                                }
 
-								  // Если окно закрыли с подтверждением
-								  if (saved == false && view.GetDialogResult() == DialogResult.Accepted)
-								  {
-									  TryInvoke(onAccept, mainDataSource);
-								  }
-							  };
+                                view.OnClosed -= onClosed;
+                                RemoveView(viewKey);
 
-						view.OnClosed += onClosed;
-						AddView(viewKey, view);
+                                // Если окно закрыли с подтверждением
+                                if (saved == false && view.GetDialogResult() == DialogResult.Accepted)
+                                {
+                                    TryInvoke(onAccept, mainDataSource);
+                                }
+                            };
 
-						view.Open();
-					}
-				}
-			}
-		}
+                        view.OnClosed += onClosed;
+                        AddView(viewKey, view);
 
-		private static void TryInvoke(Action<IDataSource> action, IDataSource dataSource)
-		{
-			if (action != null)
-			{
-				action(dataSource);
-			}
-		}
+                        view.Open();
+                    }
+                }
+            }
+        }
 
+        private static void TryInvoke(Action<IDataSource> action, IDataSource dataSource)
+        {
+            if (action != null)
+            {
+                action(dataSource);
+            }
+        }
 
-		private static readonly Dictionary<object, View> OpenedViews = new Dictionary<object, View>();
+        private static bool TryGetView(object viewKey, out View view)
+        {
+            view = null;
 
-		private static bool TryGetView(object viewKey, out View view)
-		{
-			view = null;
+            return (viewKey != null) && OpenedViews.TryGetValue(viewKey, out view);
+        }
 
-			return (viewKey != null) && OpenedViews.TryGetValue(viewKey, out view);
-		}
+        private static void AddView(object viewKey, View view)
+        {
+            if (viewKey != null)
+            {
+                OpenedViews[viewKey] = view;
+            }
+        }
 
-		private static void AddView(object viewKey, View view)
-		{
-			if (viewKey != null)
-			{
-				OpenedViews[viewKey] = view;
-			}
-		}
-
-		private static void RemoveView(object viewKey)
-		{
-			if (viewKey != null)
-			{
-				OpenedViews.Remove(viewKey);
-			}
-		}
-	}
+        private static void RemoveView(object viewKey)
+        {
+            if (viewKey != null)
+            {
+                OpenedViews.Remove(viewKey);
+            }
+        }
+    }
 }

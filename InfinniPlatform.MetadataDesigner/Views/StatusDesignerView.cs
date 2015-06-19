@@ -1,7 +1,6 @@
-﻿using InfinniPlatform.Api.Dynamic;
-
-using System;
+﻿using System;
 using System.Windows.Forms;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.MetadataDesigner.Views
 {

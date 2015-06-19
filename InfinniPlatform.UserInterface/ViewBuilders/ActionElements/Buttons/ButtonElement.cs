@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-
 using InfinniPlatform.UserInterface.ViewBuilders.Actions;
 using InfinniPlatform.UserInterface.ViewBuilders.Elements;
 using InfinniPlatform.UserInterface.ViewBuilders.Images;
@@ -8,100 +7,94 @@ using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.ActionElements.Buttons
 {
-	/// <summary>
-	/// Элемент представления для кнопки.
-	/// </summary>
-	public sealed class ButtonElement : BaseElement<ButtonControl>
-	{
-		public ButtonElement(View view)
-			: base(view)
-		{
-			Control.Click += OnClickButton;
-		}
+    /// <summary>
+    ///     Элемент представления для кнопки.
+    /// </summary>
+    public sealed class ButtonElement : BaseElement<ButtonControl>
+    {
+        // Action
 
-		private void OnClickButton(object sender, RoutedEventArgs e)
-		{
-			this.InvokeScript(OnClick);
+        private BaseAction _action;
+        // Image
 
-			var action = GetAction();
+        private string _image;
 
-			if (action != null)
-			{
-				action.Execute();
-			}
-		}
+        public ButtonElement(View view)
+            : base(view)
+        {
+            Control.Click += OnClickButton;
+        }
 
+        // OnClick
 
-		// Text
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события нажатия на кнопку.
+        /// </summary>
+        public ScriptDelegate OnClick { get; set; }
 
-		public override void SetText(string value)
-		{
-			base.SetText(value);
+        private void OnClickButton(object sender, RoutedEventArgs e)
+        {
+            this.InvokeScript(OnClick);
 
-			Control.Text = value;
-		}
+            var action = GetAction();
 
+            if (action != null)
+            {
+                action.Execute();
+            }
+        }
 
-		// Image
+        // Text
 
-		private string _image;
+        public override void SetText(string value)
+        {
+            base.SetText(value);
 
-		/// <summary>
-		/// Возвращает изображение кнопки.
-		/// </summary>
-		public string GetImage()
-		{
-			return _image;
-		}
+            Control.Text = value;
+        }
 
-		/// <summary>
-		/// Устанавливает изображение кнопки.
-		/// </summary>
-		public void SetImage(string value)
-		{
-			_image = value;
+        /// <summary>
+        ///     Возвращает изображение кнопки.
+        /// </summary>
+        public string GetImage()
+        {
+            return _image;
+        }
 
-			Control.Image = ImageRepository.GetImage(value);
-		}
+        /// <summary>
+        ///     Устанавливает изображение кнопки.
+        /// </summary>
+        public void SetImage(string value)
+        {
+            _image = value;
 
+            Control.Image = ImageRepository.GetImage(value);
+        }
 
-		// Action
+        /// <summary>
+        ///     Возвращает действие при нажатии на кнопку.
+        /// </summary>
+        public BaseAction GetAction()
+        {
+            return _action;
+        }
 
-		private BaseAction _action;
+        /// <summary>
+        ///     Устанавливает действие при нажатии на кнопку.
+        /// </summary>
+        public void SetAction(BaseAction value)
+        {
+            _action = value;
+        }
 
-		/// <summary>
-		/// Возвращает действие при нажатии на кнопку.
-		/// </summary>
-		public BaseAction GetAction()
-		{
-			return _action;
-		}
+        // Click
 
-		/// <summary>
-		/// Устанавливает действие при нажатии на кнопку.
-		/// </summary>
-		public void SetAction(BaseAction value)
-		{
-			_action = value;
-		}
-
-
-		// OnClick
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события нажатия на кнопку.
-		/// </summary>
-		public ScriptDelegate OnClick { get; set; }
-
-
-		// Click
-
-		/// <summary>
-		/// Осуществляет программное нажатие на кнопку.
-		/// </summary>
-		public void Click()
-		{
-			Control.PerformClick();
-		}
-	}
+        /// <summary>
+        ///     Осуществляет программное нажатие на кнопку.
+        /// </summary>
+        public void Click()
+        {
+            Control.PerformClick();
+        }
+    }
 }

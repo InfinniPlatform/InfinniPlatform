@@ -1,7 +1,7 @@
 ﻿namespace InfinniPlatform.Api.Validation
 {
-	public interface IValidationUnitBuilder
-	{
-		IValidationOperator BuildValidationUnit();
-	}
+    public interface IValidationUnitBuilder
+    {
+        IValidationOperator BuildValidationUnit();
+    }
 }

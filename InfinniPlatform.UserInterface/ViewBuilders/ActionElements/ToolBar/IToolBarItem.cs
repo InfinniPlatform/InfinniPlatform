@@ -2,10 +2,10 @@
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.ActionElements.ToolBar
 {
-	/// <summary>
-	/// Элемент панели инструментов.
-	/// </summary>
-	public interface IToolBarItem : IElement
-	{
-	}
+    /// <summary>
+    ///     Элемент панели инструментов.
+    /// </summary>
+    public interface IToolBarItem : IElement
+    {
+    }
 }

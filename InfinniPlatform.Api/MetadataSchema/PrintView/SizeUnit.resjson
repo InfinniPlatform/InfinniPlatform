@@ -1,11 +1,11 @@
 ﻿{
-  "id": "SizeUnit",
-  "description": "Единицы измерения",
-  "enum": [
-    "Pt",
-    "Px",
-    "In",
-    "Cm",
-    "Mm"
-  ]
+	"id": "SizeUnit",
+	"description": "Единицы измерения",
+	"enum": [
+		"Pt",
+		"Px",
+		"In",
+		"Cm",
+		"Mm"
+	]
 }

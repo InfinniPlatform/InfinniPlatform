@@ -1,16 +1,16 @@
 ﻿{
-  "id": "DataGridGroup",
-  "description": "Группа таблицы",
-  "type": "object",
-  "properties": {
-    "Name": {
-      "description": "Наименование группы",
-      "type": "string"
-    },
-    "ValueProperty": {
-      "description": "Свойство элемента источника данных, которое используется для группировки",
-      "type": "string",
-      "required": true
-    }
-  }
+	"id": "DataGridGroup",
+	"description": "Группа таблицы",
+	"type": "object",
+	"properties": {
+		"Name": {
+			"description": "Наименование группы",
+			"type": "string"
+		},
+		"ValueProperty": {
+			"description": "Свойство элемента источника данных, которое используется для группировки",
+			"type": "string",
+			"required": true
+		}
+	}
 }

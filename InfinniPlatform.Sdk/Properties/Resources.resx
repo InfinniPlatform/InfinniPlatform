@@ -234,4 +234,7 @@
   <data name="CantGetAclListForSpecifiedType" xml:space="preserve">
     <value>Can't get acl list with selected aclType: {0}</value>
   </data>
+  <data name="UnableToInvokeCustomService" xml:space="preserve">
+    <value>Unable to invoke custom user service: {0}</value>
+  </data>
 </root>

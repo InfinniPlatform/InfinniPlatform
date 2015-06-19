@@ -2,31 +2,31 @@
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 {
-	sealed class PrintElementSpanFactory : IPrintElementFactory
-	{
-		public object Create(PrintElementBuildContext buildContext, dynamic elementMetadata)
-		{
-			var element = new Span();
+    internal sealed class PrintElementSpanFactory : IPrintElementFactory
+    {
+        public object Create(PrintElementBuildContext buildContext, dynamic elementMetadata)
+        {
+            var element = new Span();
 
-			BuildHelper.ApplyTextProperties(element, buildContext.ElementStyle);
-			BuildHelper.ApplyTextProperties(element, elementMetadata);
+            BuildHelper.ApplyTextProperties(element, buildContext.ElementStyle);
+            BuildHelper.ApplyTextProperties(element, elementMetadata);
 
-			BuildHelper.ApplyInlineProperties(element, buildContext.ElementStyle);
-			BuildHelper.ApplyInlineProperties(element, elementMetadata);
+            BuildHelper.ApplyInlineProperties(element, buildContext.ElementStyle);
+            BuildHelper.ApplyInlineProperties(element, elementMetadata);
 
-			// Генерация содержимого элемента
+            // Генерация содержимого элемента
 
-			var inlines = buildContext.ElementBuilder.BuildElements(buildContext, elementMetadata.Inlines);
+            var inlines = buildContext.ElementBuilder.BuildElements(buildContext, elementMetadata.Inlines);
 
-			if (inlines != null)
-			{
-				element.Inlines.AddRange(inlines);
-			}
+            if (inlines != null)
+            {
+                element.Inlines.AddRange(inlines);
+            }
 
-			BuildHelper.PostApplyTextProperties(element, buildContext.ElementStyle);
-			BuildHelper.PostApplyTextProperties(element, elementMetadata);
+            BuildHelper.PostApplyTextProperties(element, buildContext.ElementStyle);
+            BuildHelper.PostApplyTextProperties(element, elementMetadata);
 
-			return element;
-		}
-	}
+            return element;
+        }
+    }
 }

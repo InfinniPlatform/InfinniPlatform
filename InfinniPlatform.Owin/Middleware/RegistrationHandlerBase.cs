@@ -1,22 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Owin;
 
 namespace InfinniPlatform.Owin.Middleware
 {
     /// <summary>
-    ///Базовый обработчик роутинга
+    ///     Базовый обработчик роутинга
     /// </summary>
     public sealed class RegistrationHandlerBase : IHandlerRegistration
     {
+        private readonly Func<IOwinContext, IRequestHandlerResult> _handler;
         private readonly string _method;
         private readonly PathString _pathString;
-        private readonly Func<IOwinContext, IRequestHandlerResult> _handler;
 
-        public RegistrationHandlerBase(string method, PathString pathString, Func<IOwinContext, IRequestHandlerResult> handler)
+        public RegistrationHandlerBase(string method, PathString pathString,
+            Func<IOwinContext, IRequestHandlerResult> handler)
         {
             _method = method;
             _pathString = pathString;
@@ -47,7 +45,8 @@ namespace InfinniPlatform.Owin.Middleware
         {
             if (path.HasValue)
             {
-                return path.Value.Split(new[] { '?' }, StringSplitOptions.RemoveEmptyEntries).First().TrimEnd('/').ToLower();
+                return
+                    path.Value.Split(new[] {'?'}, StringSplitOptions.RemoveEmptyEntries).First().TrimEnd('/').ToLower();
             }
             return string.Empty;
         }

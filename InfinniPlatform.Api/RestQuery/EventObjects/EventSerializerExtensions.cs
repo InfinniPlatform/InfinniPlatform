@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.Events;
+﻿using System.Collections.Generic;
+using InfinniPlatform.Sdk.Application.Events;
 
 namespace InfinniPlatform.Api.RestQuery.EventObjects
 {
     public static class EventSerializerExtensions
     {
-        public static IEnumerable<EventDefinition> AddVersionDefinition(this IList<EventDefinition> eventDefinitions, string version)
+        public static IEnumerable<EventDefinition> AddVersionDefinition(this IList<EventDefinition> eventDefinitions,
+            string version)
         {
-            eventDefinitions.Add(new EventDefinition()
+            eventDefinitions.Add(new EventDefinition
             {
                 Property = "Version",
                 Action = EventType.CreateProperty,
@@ -19,6 +16,6 @@ namespace InfinniPlatform.Api.RestQuery.EventObjects
             });
 
             return eventDefinitions;
-        } 
+        }
     }
 }

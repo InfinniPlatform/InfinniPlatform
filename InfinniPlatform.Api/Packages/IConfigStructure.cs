@@ -33,39 +33,27 @@ namespace InfinniPlatform.Api.Packages
      */
 
     /// <summary>
-    ///   Структура файлов и папок конфигурации
+    ///     Структура файлов и папок конфигурации
     /// </summary>
     public interface IConfigStructure
     {
         void AddConfiguration(IEnumerable<string> configuration);
-
         void AddDocument(string documentName, IEnumerable<string> document);
-
         void AddRegister(string registerName, IEnumerable<string> register);
-
         void AddMenu(string menuName, IEnumerable<string> menu);
-
         void AddAssembly(string assemblyName, IEnumerable<string> assembly);
+        void AddReport(string reportName, IEnumerable<string> report);
 
-	    void AddReport(string reportName, IEnumerable<string> report);
-        
-        void AddDocumentMetadataType(string document, string metadataName, string metadataType, IEnumerable<string> metadata);
-
+        void AddDocumentMetadataType(string document, string metadataName, string metadataType,
+            IEnumerable<string> metadata);
 
         void Start();
-
         void End();
-
         dynamic GetConfiguration();
-
         dynamic GetDocument(string documentName);
-
         dynamic GetRegister(string registerName);
-
         dynamic GetDocumentMetadataType(string document, string metadataName, string metadataType);
-
-	    dynamic GetMenu(string menuName);
-
-	    dynamic GetReport(string reportName);
+        dynamic GetMenu(string menuName);
+        dynamic GetReport(string reportName);
     }
 }

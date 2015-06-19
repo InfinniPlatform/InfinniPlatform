@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
+﻿using System.Linq;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 {
@@ -18,7 +14,8 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 
             var role = target.Item.Document ?? target.Item;
 
-            var roleFound = aclApi.GetRoles().FirstOrDefault(r => r.Name.ToLowerInvariant() == role.RoleName.ToLowerInvariant());
+            var roleFound =
+                aclApi.GetRoles().FirstOrDefault(r => r.Name.ToLowerInvariant() == role.RoleName.ToLowerInvariant());
 
             if (roleFound == null)
             {
@@ -31,7 +28,7 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 
             var api = target.Context.GetComponent<DocumentApi>(target.Version);
             dynamic extendedRole = api.GetDocument(AuthorizationStorageExtensions.AdministrationConfigId, "role",
-                f => f.AddCriteria(cr => cr.Property("Name").IsEquals(roleFound.Name)),0,1).FirstOrDefault();
+                f => f.AddCriteria(cr => cr.Property("Name").IsEquals(roleFound.Name)), 0, 1).FirstOrDefault();
 
             if (extendedRole != null)
             {

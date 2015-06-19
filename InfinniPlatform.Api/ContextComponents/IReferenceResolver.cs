@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace InfinniPlatform.Api.ContextComponents
 {
-	public interface IReferenceResolver
-	{
-		void ResolveReferences(string version, string configId, string documentId, dynamic documents, IEnumerable<dynamic> ignoreResolve);
-	}
+    public interface IReferenceResolver
+    {
+        void ResolveReferences(string version, string configId, string documentId, dynamic documents,
+            IEnumerable<dynamic> ignoreResolve);
+    }
 }

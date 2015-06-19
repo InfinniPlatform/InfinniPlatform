@@ -1,14 +1,14 @@
-﻿using InfinniPlatform.Api.Dynamic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Index.SearchOptions;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticSearchModels;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeSelectors;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions;
+using InfinniPlatform.Sdk.Application.Dynamic;
 using Nest;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 {

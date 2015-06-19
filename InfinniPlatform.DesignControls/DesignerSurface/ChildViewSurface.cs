@@ -1,48 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using InfinniPlatform.Api.Dynamic;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraGrid.Views.Base;
 using InfinniPlatform.DesignControls.Controls.ChildViews;
-using InfinniPlatform.DesignControls.Layout;
 using InfinniPlatform.DesignControls.ObjectInspector;
 using InfinniPlatform.DesignControls.PropertyDesigner;
 
 namespace InfinniPlatform.DesignControls.DesignerSurface
 {
-	public partial class ChildViewSurface : UserControl
-	{
-		public ChildViewSurface()
+    public partial class ChildViewSurface : UserControl
+    {
+        private readonly List<ChildViewObject> _childViews = new List<ChildViewObject>();
+
+        public ChildViewSurface()
         {
             InitializeComponent();
 
             gridBinding.DataSource = ChildViews;
         }
 
-		private readonly List<ChildViewObject> _childViews = new List<ChildViewObject>();
+        public List<ChildViewObject> ChildViews
+        {
+            get { return _childViews; }
+        }
 
-		public List<ChildViewObject> ChildViews
-	    {
-		    get { return _childViews; }
-	    }
+        public ObjectInspectorTree ObjectInspector { get; set; }
 
-
-	    private void repositoryItemButtonEditSource_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        private void repositoryItemButtonEditSource_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
             var childVIew = ChildViews.ElementAt(GridViewChildViews.FocusedRowHandle).ChildView as IPropertiesProvider;
             if (childVIew != null)
             {
                 var form = new PropertiesForm();
 
-	            var validationRules = childVIew.GetValidationRules();
-				form.SetValidationRules(validationRules);
-				var propertyEditors = childVIew.GetPropertyEditors();
-				form.SetPropertyEditors(propertyEditors);
+                var validationRules = childVIew.GetValidationRules();
+                form.SetValidationRules(validationRules);
+                var propertyEditors = childVIew.GetPropertyEditors();
+                form.SetPropertyEditors(propertyEditors);
                 var simpleProperties = childVIew.GetSimpleProperties();
                 form.SetSimpleProperties(simpleProperties);
                 var collectionProperties = childVIew.GetCollections();
@@ -50,14 +46,14 @@ namespace InfinniPlatform.DesignControls.DesignerSurface
 
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-	                childVIew.ApplySimpleProperties();
-	                childVIew.ApplyCollections();
-	                GridViewChildViews.HideEditor();
-	                GridViewChildViews.RefreshData();
+                    childVIew.ApplySimpleProperties();
+                    childVIew.ApplyCollections();
+                    GridViewChildViews.HideEditor();
+                    GridViewChildViews.RefreshData();
                 }
                 else
                 {
-	                form.RevertChanges();
+                    form.RevertChanges();
                 }
             }
         }
@@ -67,11 +63,10 @@ namespace InfinniPlatform.DesignControls.DesignerSurface
             var childViewObject = new ChildViewObject();
             ChildViews.Add(childViewObject);
 
-	        var childView = new ChildView();
+            var childView = new ChildView();
             childViewObject.ChildView = childView;
-	        childView.ObjectInspector = ObjectInspector;
+            childView.ObjectInspector = ObjectInspector;
             GridViewChildViews.RefreshData();
-            
         }
 
         private void DeleteChildViewButtonClick(object sender, EventArgs e)
@@ -101,20 +96,18 @@ namespace InfinniPlatform.DesignControls.DesignerSurface
             }
         }
 
-
         public void SetLayout(dynamic value)
         {
-            
         }
 
-	    public void ProcessJson(dynamic childViews)
+        public void ProcessJson(dynamic childViews)
         {
             ChildViews.Clear();
-            foreach (dynamic source in childViews)
+            foreach (var source in childViews)
             {
                 var viewObject = new ChildViewObject();
                 var childView = new ChildView();
-	            childView.ObjectInspector = ObjectInspector;
+                childView.ObjectInspector = ObjectInspector;
                 childView.LoadProperties(source);
                 viewObject.ChildView = childView;
                 ChildViews.Add(viewObject);
@@ -127,7 +120,7 @@ namespace InfinniPlatform.DesignControls.DesignerSurface
             return "ChildViews";
         }
 
-        private void GridViewCustomColumnDisplayText(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventArgs e)
+        private void GridViewCustomColumnDisplayText(object sender, CustomColumnDisplayTextEventArgs e)
         {
             var value = (ChildViewObject) GridViewChildViews.GetRow(e.RowHandle);
 
@@ -144,7 +137,7 @@ namespace InfinniPlatform.DesignControls.DesignerSurface
         public dynamic GetLayout()
         {
             dynamic instanceLayout = new List<dynamic>();
-            foreach (ChildViewObject childViewObject in ChildViews)
+            foreach (var childViewObject in ChildViews)
             {
                 dynamic layout = childViewObject.GetLayout();
                 instanceLayout.Add(layout);
@@ -152,12 +145,10 @@ namespace InfinniPlatform.DesignControls.DesignerSurface
             return instanceLayout;
         }
 
-		public ObjectInspectorTree ObjectInspector { get; set; }
-
-		public void Clear()
-		{
-			_childViews.Clear();
-			GridControlChildView.RefreshDataSource();
-		}
-	}
+        public void Clear()
+        {
+            _childViews.Clear();
+            GridControlChildView.RefreshDataSource();
+        }
+    }
 }
