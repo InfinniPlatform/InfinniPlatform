@@ -55,7 +55,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             _indexStateProvider.CreateIndexType(IndexName,IndexName, deleteExistingVersion: false, mappingUpdates: new IndexTypeMapping(initialMapping));
             
             // Пробуем добавить в индекс объект с корректной схемой данных
-			var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser);
+			var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser, null);
 
             var expando = new DynamicWrapper();
             var hobby = new DynamicWrapper();
@@ -104,7 +104,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 
             _indexStateProvider.CreateIndexType(IndexName,IndexName, deleteExistingVersion: false,mappingUpdates: new IndexTypeMapping(initialMapping));
 
-			var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser);
+			var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser, null);
 
             IDictionary<string, object> expando = new ExpandoObject();
             IDictionary<string, object> hobby = new ExpandoObject();
@@ -181,7 +181,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             _indexStateProvider.CreateIndexType(IndexName,IndexName, deleteExistingVersion: false,mappingUpdates: new IndexTypeMapping(initialMapping));
 
             // Пробуем добавить в индекс объект с корректной схемой данных
-			var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser);
+			var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser, null);
 
             IDictionary<string, object> expando = new ExpandoObject();
             IDictionary<string, object> hobby = new ExpandoObject();
@@ -271,7 +271,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 
             _indexStateProvider.CreateIndexType(IndexName, IndexName, deleteExistingVersion: false, mappingUpdates: new IndexTypeMapping(initialMapping));
 
-			var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser);
+			var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser, null);
 
             foreach (var school in SchoolsFactory.CreateSchools())
             {
@@ -335,7 +335,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 
             _indexStateProvider.CreateIndexType(IndexName, IndexName, deleteExistingVersion: false, mappingUpdates: new IndexTypeMapping(initialMapping));
 
-			var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser);
+			var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser, null);
 
             var school = SchoolsFactory.CreateSchools().FirstOrDefault();
             
@@ -384,7 +384,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 
             _indexStateProvider.CreateIndexType(IndexName, IndexName, deleteExistingVersion: false, mappingUpdates: new IndexTypeMapping(initialMapping));
 
-            var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser);
+            var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser, null);
 
             foreach (var school in SchoolsFactory.CreateSchools())
             {
@@ -559,7 +559,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             versionBuilder.CreateVersion(false, new IndexTypeMapping(initialMapping));
             
             // Пробуем добавить в индекс объект с корректной схемой данных
-			var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser);
+			var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser, null);
 
             IDictionary<string, object> expando = new ExpandoObject();
             IDictionary<string, object> hobby = new ExpandoObject();

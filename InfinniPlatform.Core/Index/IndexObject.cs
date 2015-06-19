@@ -13,5 +13,9 @@ namespace InfinniPlatform.Index
         
         public dynamic Values { get; set; }
 
+        /// <summary>
+        ///  Информация о версии конфигурации,с которой сохранен документ
+        /// </summary>
+        public string Version { get; set; }
     }
 }

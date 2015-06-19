@@ -37,8 +37,8 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
             _indexProvider.RecreateIndex("TestIndex", "TestIndex");
 			_indexProvider.RecreateIndex("Document","Document");
 
-            _elasticSearchProvider = elasticFactory.BuildCrudOperationProvider("TestIndex", "TestIndex", AuthorizationStorageExtensions.AnonimousUser);
-			_elasticSearchProviderMain = elasticFactory.BuildCrudOperationProvider("Document", "Document", AuthorizationStorageExtensions.AnonimousUser);
+            _elasticSearchProvider = elasticFactory.BuildCrudOperationProvider("TestIndex", "TestIndex", AuthorizationStorageExtensions.AnonimousUser, null);
+			_elasticSearchProviderMain = elasticFactory.BuildCrudOperationProvider("Document", "Document", AuthorizationStorageExtensions.AnonimousUser, null);
 
 		}
 

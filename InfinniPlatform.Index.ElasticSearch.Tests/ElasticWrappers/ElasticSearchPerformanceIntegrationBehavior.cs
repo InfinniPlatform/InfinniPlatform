@@ -53,7 +53,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 		{
 			var indexProvider = new ElasticFactory(new RoutingFactoryBase()).BuildIndexStateProvider();
             indexProvider.RecreateIndex("testindex", "testindex");
-			var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider("testindex", "testindex", AuthorizationStorageExtensions.AnonimousUser);
+			var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider("testindex", "testindex", AuthorizationStorageExtensions.AnonimousUser, null);
 
 			dynamic expandoObject = new ExpandoObject();
 
@@ -77,7 +77,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 		{
 			var indexProvider = new ElasticFactory(new RoutingFactoryBase()).BuildIndexStateProvider();
             indexProvider.RecreateIndex("testindex", "testindex");
-			var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider("testindex", "testindex", null);
+			var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider("testindex", "testindex", null, null);
 
 			dynamic expandoObject = new ExpandoObject();
 			expandoObject.Id = 1;
@@ -102,7 +102,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 			var indexProvider = new ElasticFactory(new RoutingFactoryBase()).BuildIndexStateProvider();
             indexProvider.RecreateIndex("testindex", "testindex");
 			var queryWrapper = new IndexQueryExecutor("testindex", "testindex", AuthorizationStorageExtensions.AnonimousUser);
-			var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider("testindex", "testindex", AuthorizationStorageExtensions.AnonimousUser);
+			var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider("testindex", "testindex", AuthorizationStorageExtensions.AnonimousUser, null);
             
 			for (int i = 0; i < recordCount; i++)
 			{

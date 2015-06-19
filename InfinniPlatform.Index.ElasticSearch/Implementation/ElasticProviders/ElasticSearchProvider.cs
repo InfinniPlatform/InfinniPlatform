@@ -19,7 +19,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 	    private readonly string _indexName;
 	    private readonly string _typeName;
 		private readonly string _routing;
-		private readonly ElasticConnection _elasticConnection;
+	    private readonly string _version;
+	    private readonly ElasticConnection _elasticConnection;
 		
 	    private IEnumerable<IndexToTypeAccordance> _derivedTypeNames;
 
@@ -29,7 +30,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 	    /// <param name="indexName">Наименование индекса</param>
 	    /// <param name="typeName">Тип объекта для получения данных из индекса</param>
 	    /// <param name="routing">Роутинг для получения данных</param>
-	    public ElasticSearchProvider(string indexName, string typeName, string routing)
+	    /// <param name="version">Версия документа</param>
+	    public ElasticSearchProvider(string indexName, string typeName, string routing, string version = null)
 		{
             if (string.IsNullOrEmpty(indexName))
             {
@@ -49,9 +51,10 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             _indexName = indexName.ToLowerInvariant();
             _typeName = typeName.ToLowerInvariant();
 		    _routing = routing;
+	        _version = version;
 
 
-		    _elasticConnection = new ElasticConnection();
+	        _elasticConnection = new ElasticConnection();
 
 
             //все версии типа в индексе
@@ -135,7 +138,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 	        {
                 Id = jInstance["Id"].ToString().ToLowerInvariant(),
 	            TimeStamp = DateTime.Now,
-	            Values = jInstance
+	            Values = jInstance,
+                Version = _version
 	        };
 
 	        BaseResponse response;

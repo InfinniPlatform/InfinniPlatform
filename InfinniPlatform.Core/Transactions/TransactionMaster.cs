@@ -47,13 +47,13 @@ namespace InfinniPlatform.Transactions
                 foreach (var item in _itemsList.Where(i => !i.Detached).ToList())
                 {
 
-                    IVersionProvider versionProvider = _indexFactory.BuildVersionProvider(item.ConfigId, item.DocumentId, item.Routing);
+                    IVersionProvider versionProvider = _indexFactory.BuildVersionProvider(item.ConfigId, item.DocumentId, item.Routing, item.Version);
 
                     versionProvider.SetDocuments(item.Documents);
 
                     foreach (var fileDescription in item.Files)
                     {
-                        binaryManager.SaveBinary(item.Documents, item.ConfigId, item.DocumentId,
+                        binaryManager.SaveBinary(item.Documents, item.ConfigId, item.Version, item.DocumentId,
                             fileDescription.FieldName, fileDescription.Bytes);
                     }
                 }
@@ -78,7 +78,7 @@ namespace InfinniPlatform.Transactions
         /// <param name="instanceId">Идентификатор отсоединяемого документа</param>
         public void Detach(string instanceId)
         {
-            var itemDetached = _itemsList.FirstOrDefault(i => i.Documents.Any(a => a.IdId.Equals(instanceId)));
+            var itemDetached = _itemsList.FirstOrDefault(i => i.Documents.Any(a => a.Id.Equals(instanceId)));
             if (itemDetached != null)
             {
                 itemDetached.Detached = true;
@@ -116,7 +116,11 @@ namespace InfinniPlatform.Transactions
         /// <param name="fieldName">Наименование поля бинарных данных в схеме документа</param>
         public void DetachFile(string instanceId, string fieldName)
         {
-            
+            var attachedInstance = _itemsList.FirstOrDefault(i => i.ContainsInstance(instanceId));
+            if (attachedInstance != null)
+            {
+                attachedInstance.RemoveFile(fieldName);
+            }
         }
 
         /// <summary>

@@ -33,7 +33,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         {
             _indexStateProvider = new ElasticFactory(new RoutingFactoryBase()).BuildIndexStateProvider();
             _indexStateProvider.CreateIndexType(IndexName, IndexName);
-			_elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser);
+			_elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser, null);
 
             foreach (var school in SchoolsFactory.CreateSchoolsForFacetsTesting())
             {
@@ -143,7 +143,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             if (indexStateProvider.GetIndexStatus(aggrindex, aggrindex) == IndexStatus.NotExists)
             {
                 indexStateProvider.CreateIndexType(aggrindex, aggrindex, false);
-				var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider(aggrindex, aggrindex, AuthorizationStorageExtensions.AnonimousUser);
+				var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider(aggrindex, aggrindex, AuthorizationStorageExtensions.AnonimousUser, null);
 
                 foreach (var school in SchoolsFactory.CreateRandomSchools(300000))
                 {

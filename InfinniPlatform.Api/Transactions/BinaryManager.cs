@@ -27,11 +27,12 @@ namespace InfinniPlatform.Api.Transactions
         ///   Сохранить бинарные данные и установить ссылку в документе
         /// </summary>
         /// <param name="documents">Документы, содержащие ссылку</param>
+        /// <param name="version">Версия приложения</param>
         /// <param name="documentType">Тип документа</param>
         /// <param name="fieldName">Наименование поля ссылки в документе</param>
         /// <param name="bytes">Массив байт сохраняемых данных</param>
         /// <param name="application">Приложение</param>
-        public void SaveBinary(IEnumerable<dynamic> documents, string application, string documentType, string fieldName, byte[] bytes)
+        public void SaveBinary(IEnumerable<dynamic> documents, string application, string version, string documentType, string fieldName, byte[] bytes)
         {
             var contentId = Guid.NewGuid();
             _blobStorage.SaveBlob(contentId, fieldName, bytes);
@@ -50,7 +51,7 @@ namespace InfinniPlatform.Api.Transactions
 
                 ObjectHelper.SetProperty(containingDocument, fieldName, infoBlobProperty);
 
-                new DocumentApi(containingDocument.Version).SetDocument(application, documentType, containingDocument);
+                new DocumentApi(version).SetDocument(application, documentType, containingDocument);
             }
         }
 

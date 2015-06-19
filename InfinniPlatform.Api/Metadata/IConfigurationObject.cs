@@ -5,34 +5,15 @@ namespace InfinniPlatform.Api.Metadata
 {
 	public interface IConfigurationObject
 	{
-		/// <summary>
-		///   Предоставить провайдер версий документа для работы в прикладных скриптах
-		/// </summary>
-		/// <param name="metadata">метаданные объекта</param>
-		/// <param name="configVersion">Версия конфигурации</param>
-		/// <param name="routing"></param>
-		/// <returns>Провайдер версий документа</returns>
-		IVersionProvider GetDocumentProviderForType(string metadata, string configVersion, string routing);
-
-		/// <summary>
-		///   Предоставить провайдер версий документа для работы в прикладных скриптах.
-		///   Создает провайдер, возвращающий всегда все версии всех найденных документов
-		/// </summary>
-		/// <param name="metadata">метаданные объекта</param>
-		/// <param name="routing"></param>
-		/// <returns>Провайдер версий документа</returns>
-		IVersionProvider GetDocumentProviderForType(string metadata, string routing);
-
-
-		/// <summary>
-		///   Предоставить провайдер версий документа для работы в прикладных скриптах
-		///   Создает провайдер, возвращающий версии документов всех существующих в индексе типов
-		/// </summary>
-		/// <param name="metadata">метаданные объекта</param>
-		/// <param name="configVersion">Версия конфигурации</param>
-		/// <param name="routing"></param>
-		/// <returns>Провайдер версий документа</returns>
-		IVersionProvider GetDocumentProvider(string metadata, string configVersion, string routing);
+	    /// <summary>
+	    ///   Предоставить провайдер версий документа для работы в прикладных скриптах
+	    ///   Создает провайдер, возвращающий версии документов всех существующих в индексе типов
+	    /// </summary>
+	    /// <param name="metadata">метаданные объекта</param>
+	    /// <param name="version"></param>
+	    /// <param name="routing"></param>
+	    /// <returns>Провайдер версий документа</returns>
+	    IVersionProvider GetDocumentProvider(string metadata, string version, string routing);
 
 		/// <summary>
 		///   Предоставить провайдер версий документа для работы в прикладных скриптах.

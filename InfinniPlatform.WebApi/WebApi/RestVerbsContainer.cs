@@ -56,8 +56,8 @@ namespace InfinniPlatform.WebApi.WebApi
         internal bool HasRoute(string version, string metadataConfigurationId)
         {
             return string.IsNullOrEmpty(_version) ?
-                ControllerName.Contains(FormatBaseTemplateName(null, metadataConfigurationId)) :
-                ControllerName.Contains(FormatBaseTemplateName(version, metadataConfigurationId));
+                ControllerName.StartsWith(FormatBaseTemplateName(null, metadataConfigurationId)) :
+                ControllerName.StartsWith(FormatBaseTemplateName(version, metadataConfigurationId));
         }
 
 	    public IRestVerbsContainer AddVerb(IQueryHandler queryHandler)

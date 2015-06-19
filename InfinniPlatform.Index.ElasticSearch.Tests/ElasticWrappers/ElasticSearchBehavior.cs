@@ -62,7 +62,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             var indexProvider = new ElasticFactory(new RoutingFactoryBase()).BuildIndexStateProvider();
             indexProvider.RecreateIndex("testperson","testperson");
 
-			var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider("testperson", "testperson", AuthorizationStorageExtensions.AnonimousUser);
+			var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider("testperson", "testperson", AuthorizationStorageExtensions.AnonimousUser, null);
 
             dynamic person1 = new DynamicWrapper();
             person1.Id = "11111";

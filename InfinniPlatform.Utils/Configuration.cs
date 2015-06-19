@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -6,10 +7,10 @@ namespace InfinniPlatform.Utils
 {
 	class Configuration
 	{
-		public Configuration(string path)
+		public Configuration(string pathString)
 		{
-			Path = path;
-		    var pathConfig = path.Split(new [] {"."}, StringSplitOptions.RemoveEmptyEntries);
+			PathString = pathString;
+            var pathConfig = Path.GetFileName(pathString).Split(new[] { "." }, StringSplitOptions.RemoveEmptyEntries);
 		    if (pathConfig.Count() == 3)
 		    {
 		        Name = pathConfig[0];
@@ -17,11 +18,11 @@ namespace InfinniPlatform.Utils
 		    }
 		    else
 		    {
-		        throw new ArgumentException(string.Format("Not an configuration folder: {0}",path));
+		        throw new ArgumentException(string.Format("Not an configuration folder: {0}",pathString));
 		    }
 		}
 
-		public string Path { get; set; }
+		public string PathString { get; set; }
 
 		public string Name { get; set; }
 

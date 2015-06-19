@@ -28,7 +28,7 @@ namespace InfinniPlatform.Utils
 				var exchangeDirector = CreateExchangeDirector(AdjustConfigName(configuration.Name),configuration.Version);
 
 				if (uploadMetadata)
-					exchangeDirector.UpdateConfigurationMetadataFromDirectory(configuration.Path);
+					exchangeDirector.UpdateConfigurationMetadataFromDirectory(configuration.PathString);
 
 				exchangeDirector.UpdateConfigurationAppliedAssemblies();
 
@@ -48,7 +48,7 @@ namespace InfinniPlatform.Utils
 				Console.WriteLine("Downloading configuration '{0}' started", configuration.Name);
 
 				var exchangeDirector = CreateExchangeDirector(configuration.Name, configuration.Version);
-                exchangeDirector.ExportJsonConfigToDirectory(configuration.Path, configuration.Version);
+                exchangeDirector.ExportJsonConfigToDirectory(configuration.PathString, configuration.Version);
 
 				Console.WriteLine("Downloading configuration '{0}' done", configuration.Name);
 			});

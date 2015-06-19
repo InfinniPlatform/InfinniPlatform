@@ -15,13 +15,14 @@ namespace InfinniPlatform.Api.Index
         /// <param name="searchAbilityType">Тип поиска по индексу</param>
         IVersionBuilder BuildVersionBuilder(string indexName, string typeName, SearchAbilityType searchAbilityType);
 
-	    /// <summary>
-	    ///   Создать провайдер данных
-	    /// </summary>
-	    /// <param name="indexName">Наименование индекса</param>
-	    /// <param name="typeName">Наименование типа</param>
-	    /// <param name="routing"></param>
-	    IVersionProvider BuildVersionProvider(string indexName, string typeName, string routing);
+        /// <summary>
+        ///   Создать провайдер данных
+        /// </summary>
+        /// <param name="indexName">Наименование индекса</param>
+        /// <param name="typeName">Наименование типа</param>
+        /// <param name="routing"></param>
+        /// <param name="version"></param>
+        IVersionProvider BuildVersionProvider(string indexName, string typeName, string routing, string version);
 
         /// <summary>
         ///   Создать провайдер данных для доступа к нескольким индексам
@@ -32,14 +33,15 @@ namespace InfinniPlatform.Api.Index
         /// <param name="typeNames">Имена типов, по которым будет производиться поиск</param>
         IDocumentProvider BuildMultiIndexDocumentProvider(string routing, IEnumerable<string> indexNames = null, IEnumerable<string> typeNames = null);
 
-	    /// <summary>
-	    ///   Создать провайдер для поиска данных
-	    /// </summary>
-	    /// <param name="indexName">Наименование индекса для поиска</param>
-	    /// <param name="typeName">Наименование типа для выполнения операций с данными. Если не указан, осуществляется выборка всех существующих в индексе типов</param>
-	    /// <param name="routing"></param>
-	    /// <returns>Провайдер для поиска данных</returns>
-	    ICrudOperationProvider BuildCrudOperationProvider(string indexName, string typeName, string routing);
+        /// <summary>
+        ///   Создать провайдер для поиска данных
+        /// </summary>
+        /// <param name="indexName">Наименование индекса для поиска</param>
+        /// <param name="typeName">Наименование типа для выполнения операций с данными. Если не указан, осуществляется выборка всех существующих в индексе типов</param>
+        /// <param name="routing"></param>
+        /// <param name="version"></param>
+        /// <returns>Провайдер для поиска данных</returns>
+        ICrudOperationProvider BuildCrudOperationProvider(string indexName, string typeName, string routing, string version);
         
         /// <summary>
         ///   Создать провайдер операций для работы с индексами

@@ -36,51 +36,19 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 	    }
 
 
-		/// <summary>
-		///   Предоставить провайдер версий документа для работы в прикладных скриптах
-		/// </summary>
-		/// <param name="metadata">метаданные объекта</param>
-		/// <param name="configVersion"></param>
-		/// <param name="routing">Роутинг для получения провайдера документов</param>
-		/// <returns>Провайдер версий документа</returns>
-		public IVersionProvider GetDocumentProviderForType(string metadata, string configVersion, string routing)
+	    /// <summary>
+	    ///   Предоставить провайдер версий документа для работы в прикладных скриптах
+	    ///   Создает провайдер, возвращающий версии документов всех существующих в индексе типов для указанной версии конфигурации
+	    /// </summary>
+	    /// <param name="metadata">метаданные объекта</param>
+	    /// <param name="version"></param>
+	    /// <param name="routing">Роутинг для выполнения запросов</param>
+	    /// <returns>Провайдер версий документа</returns>
+	    public IVersionProvider GetDocumentProvider(string metadata, string version, string routing)
 	    {
             if (_indexStateProvider.GetIndexStatus(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata)) != IndexStatus.NotExists)
             {
-				return _indexFactory.BuildVersionProvider(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata), routing);
-            }
-            return null;
-	    }
-
-		/// <summary>
-		///   Предоставить провайдер версий документа для работы в прикладных скриптах.
-		///   Создает провайдер, возвращающий всегда все версии всех найденных документов
-		/// </summary>
-		/// <param name="metadata">метаданные объекта</param>
-		/// <param name="routing">Роутинг выполнения запросов</param>
-		/// <returns>Провайдер версий документа</returns>
-		public IVersionProvider GetDocumentProviderForType(string metadata, string routing)
-	    {
-            if (_indexStateProvider.GetIndexStatus(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata)) != IndexStatus.NotExists)
-            {
-				return _indexFactory.BuildVersionProvider(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata), routing);
-            }
-            return null;
-	    }
-
-		/// <summary>
-		///   Предоставить провайдер версий документа для работы в прикладных скриптах
-		///   Создает провайдер, возвращающий версии документов всех существующих в индексе типов для указанной версии конфигурации
-		/// </summary>
-		/// <param name="metadata">метаданные объекта</param>
-		/// <param name="configVersion">Версия конфигурации</param>
-		/// <param name="routing">Роутинг для выполнения запросов</param>
-		/// <returns>Провайдер версий документа</returns>
-		public IVersionProvider GetDocumentProvider(string metadata, string configVersion, string routing)
-	    {
-            if (_indexStateProvider.GetIndexStatus(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata)) != IndexStatus.NotExists)
-            {
-				return _indexFactory.BuildVersionProvider(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata), routing);
+				return _indexFactory.BuildVersionProvider(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata), routing, version);
             }
             return null;
 	    }
@@ -96,7 +64,7 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 		{
             if (_indexStateProvider.GetIndexStatus(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata)) != IndexStatus.NotExists)
 		    {
-				return _indexFactory.BuildVersionProvider(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata), routing);
+				return _indexFactory.BuildVersionProvider(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata), routing, null);
 		    }
 		    return null;
 		}

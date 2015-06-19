@@ -50,7 +50,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             _indexStateProvider = new ElasticFactory(new RoutingFactoryBase()).BuildIndexStateProvider();
             
             _indexStateProvider.CreateIndexType(IndexName,IndexName, true);
-			_elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser);
+			_elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser, null);
 
             foreach (var school in SchoolsFactory.CreateSchools())
             {

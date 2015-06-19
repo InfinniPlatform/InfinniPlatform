@@ -32,18 +32,19 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
             return new VersionBuilder(new IndexStateProvider(), indexName, typeName,searchAbilityType);
         }
 
-		/// <summary>
-		///   Создать провайдер данных
-		/// </summary>
-		/// <param name="indexName">Наименование индекса</param>
-		/// <param name="typeName">Наименование типа</param>
-		/// <param name="routing">Роутинг для получения данных</param>
-		public IVersionProvider BuildVersionProvider(string indexName, string typeName, string routing)
+	    /// <summary>
+	    ///   Создать провайдер данных
+	    /// </summary>
+	    /// <param name="indexName">Наименование индекса</param>
+	    /// <param name="typeName">Наименование типа</param>
+	    /// <param name="routing">Роутинг для получения данных</param>
+	    /// <param name="version">Версия данных</param>
+	    public IVersionProvider BuildVersionProvider(string indexName, string typeName, string routing, string version = null)
 		{
 
 			var expectedRouting = _indexRoutingFactory.GetRouting(routing, indexName, typeName);
 	        return new VersionProvider(
-	            new ElasticSearchProvider(indexName, typeName, expectedRouting), 
+	            new ElasticSearchProvider(indexName, typeName, expectedRouting,version), 
                 new DocumentProvider(new IndexQueryExecutor(indexName, typeName, expectedRouting)));
 	    }
 
@@ -62,20 +63,21 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
         
 		private readonly List<ElasticSearchProviderInfo> _providersInfo = new List<ElasticSearchProviderInfo>();
 
-		/// <summary>
-		///   Создать провайдер для поиска данных
-		/// </summary>
-		/// <param name="indexName">Наименование индекса для поиска</param>
-		/// <param name="typeName">Наименование типа для выполнения операций с данными. Если не указан, осуществляется выборка всех существующих в индексе типов</param>
-		/// <param name="routing">Роутинг для выполнения запросов</param>
-		/// <returns>Провайдер для поиска данных</returns>
-		public ICrudOperationProvider BuildCrudOperationProvider(string indexName, string typeName, string routing)
+	    /// <summary>
+	    ///   Создать провайдер для поиска данных
+	    /// </summary>
+	    /// <param name="indexName">Наименование индекса для поиска</param>
+	    /// <param name="typeName">Наименование типа для выполнения операций с данными. Если не указан, осуществляется выборка всех существующих в индексе типов</param>
+	    /// <param name="routing">Роутинг для выполнения запросов</param>
+	    /// <param name="version">Версия конфигурации, для которой создается провайдер данных</param>
+	    /// <returns>Провайдер для поиска данных</returns>
+	    public ICrudOperationProvider BuildCrudOperationProvider(string indexName, string typeName, string routing, string version = null)
 		{
 			var expectedRouting = _indexRoutingFactory.GetRouting(routing, indexName, typeName);
 	 	    var providerInfo = _providersInfo.FindInfo(indexName, typeName);
 	 	    if (providerInfo == null)
 	 	    {
-		 	    var provider =  new ElasticSearchProvider(indexName, typeName, expectedRouting);
+		 	    var provider =  new ElasticSearchProvider(indexName, typeName, expectedRouting, version);
 				_providersInfo.Add(new ElasticSearchProviderInfo(indexName,typeName,provider));
 		 	    return provider;
 	 	    }

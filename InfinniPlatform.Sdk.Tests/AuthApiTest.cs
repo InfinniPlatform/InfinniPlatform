@@ -27,7 +27,6 @@ namespace InfinniPlatform.Sdk.Tests
             _signInApi = new InfinniSignInApi(InfinniSessionServer, InfinniSessionPort, InfinniSessionVersion);
             _signInApi.SignInInternal("Admin", "Admin", false);
             _api.CookieContainer = _signInApi.CookieContainer;
-
         }
 
 

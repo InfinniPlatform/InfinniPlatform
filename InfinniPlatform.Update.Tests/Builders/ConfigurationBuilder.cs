@@ -120,7 +120,7 @@ namespace InfinniPlatform.Update.Tests.Builders
 			item.Version = "version1";
 			item.ContentId = contentId;
 
-			var provider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider("update", "package", AuthorizationStorageExtensions.AnonimousUser);
+			var provider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider("update", "package", AuthorizationStorageExtensions.AnonimousUser, null);
 			provider.Set(item);
 			provider.Refresh();
 

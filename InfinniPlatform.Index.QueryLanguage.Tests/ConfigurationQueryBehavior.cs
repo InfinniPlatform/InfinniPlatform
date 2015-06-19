@@ -47,12 +47,12 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 			_indexProvider.RecreateIndex(_indexName,_indexName);
 			_indexProvider.RecreateIndex(_indexJoin, _indexJoin);
 
-			_elasticSearchProviderMain = _elasticFactory.BuildCrudOperationProvider(_indexName,_indexName, AuthorizationStorageExtensions.AnonimousUser);
+			_elasticSearchProviderMain = _elasticFactory.BuildCrudOperationProvider(_indexName,_indexName, AuthorizationStorageExtensions.AnonimousUser, null);
 			_elasticSearchProviderMain.Set(expando,IndexItemStrategy.Insert);
 			_elasticSearchProviderMain.Refresh();
 
 
-			_elasticSearchProviderDoc = _elasticFactory.BuildCrudOperationProvider(_indexJoin,_indexJoin, AuthorizationStorageExtensions.AnonimousUser);
+			_elasticSearchProviderDoc = _elasticFactory.BuildCrudOperationProvider(_indexJoin,_indexJoin, AuthorizationStorageExtensions.AnonimousUser, null);
 			_elasticSearchProviderDoc.Set(CreateDoc1(), IndexItemStrategy.Insert);
 			_elasticSearchProviderDoc.Set(CreateDoc2(), IndexItemStrategy.Insert);
 			_elasticSearchProviderDoc.Refresh();
