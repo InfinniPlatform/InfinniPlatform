@@ -182,7 +182,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
         /// </summary>
         private static dynamic ProcessInnerObjectProperties(dynamic propertyTypeInfo, dynamic documentProperty)
         {
-            dynamic result = documentProperty;
+            dynamic result = documentProperty.Value;
 
             if (propertyTypeInfo == null)
             {
@@ -243,7 +243,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
             if (propertyTypeInfo == null)
             {
-                return documentProperty;
+                return documentProperty.Value;
             }
 
             if (propertyTypeInfo.DocumentLink != null)
@@ -278,7 +278,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                         RemoveLinkExtraProperties(documentValue);
                     }
 
-                    handledItems = documentProperty;
+                    handledItems = documentProperty.Value;
                 }
             }
             else if (propertyTypeInfo.BinaryLink != null)
