@@ -1,7 +1,5 @@
-﻿using System;
-using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.Index.SearchOptions;
-using Newtonsoft.Json.Linq;
+﻿using InfinniPlatform.Api.Index.SearchOptions;
+using System;
 
 namespace InfinniPlatform.Api.Index
 {
@@ -18,6 +16,13 @@ namespace InfinniPlatform.Api.Index
         /// <param name="searchModel">Модель поиска</param>
         /// <returns>Модель результат поиска объектов</returns>
 		SearchViewModel Query(SearchModel searchModel);
+
+        /// <summary>
+        ///   Определить количество объектов в индексе по указанной модели поиска
+        /// </summary>
+        /// <param name="searchModel">Модель поиска</param>
+        /// <returns>Количество объектов, удовлетворяющих условиям поиска</returns>
+        long CalculateCountQuery(SearchModel searchModel);
 
         /// <summary>
         ///   Выполнить запрос с получением объектов индекса без дополнительной обработки

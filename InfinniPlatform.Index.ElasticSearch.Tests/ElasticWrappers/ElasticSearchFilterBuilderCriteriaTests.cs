@@ -43,6 +43,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         private ICrudOperationProvider _elasticSearchProvider;
         private IIndexStateProvider _indexStateProvider;
         private readonly IFilterBuilder _filterFactory = FilterBuilderFactory.GetInstance();
+        private readonly IFilterBuilder _queryFactory = QueryBuilderFactory.GetInstance();
 
         [SetUp]
         public void InitializeElasticSearch()
@@ -93,6 +94,19 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             var result = executor.Query(searchModel);
 
             Assert.AreEqual(2, result.HitsCount);
+        }
+
+        [Test]
+        public void CountOfDocumentsTest()
+        {
+            var executor = new ElasticFactory(new RoutingFactoryBase()).BuildIndexQueryExecutor(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser);
+
+            var searchModel = new SearchModel();
+            searchModel.AddFilter(_queryFactory.Get("Principal.LastName", "Monakhov", CriteriaType.IsNotEquals));
+            
+            var count = executor.CalculateCountQuery(searchModel);
+
+            Assert.AreEqual(2, count);
         }
 
         [Test]

@@ -97,6 +97,26 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         }
 
         /// <summary>
+        ///   Определить количество объектов в индексе по указанной модели поиска
+        /// </summary>
+        /// <param name="searchModel">Модель поиска</param>
+        /// <returns>Количество объектов, удовлетворяющих условиям поиска</returns>
+        public long CalculateCountQuery(SearchModel searchModel)
+        {
+            Func<CountDescriptor<dynamic>, CountDescriptor<dynamic>> desc =
+                descriptor => new ElasticCountQueryBuilder(descriptor)
+                    .BuildCountQueryDescriptor(searchModel)
+                    .BuildSearchForType(_indexNames, 
+                        (_typeNames == null || !_typeNames.Any()) ? null : _typeNames.SelectMany(d => d.TypeNames), 
+                        _routing, searchInAllIndeces, searchInAllTypes);
+
+
+            var documentsResponse = _elasticConnection.Client.Count(desc);
+            
+            return documentsResponse != null ? documentsResponse.Count : 0;
+        }
+
+        /// <summary>
         ///   Выполнить запрос с получением объектов индекса без дополнительной обработки
         /// </summary>
         /// <param name="searchModel">Модель поиска</param>

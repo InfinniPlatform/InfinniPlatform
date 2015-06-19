@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Index.SearchOptions;
@@ -45,6 +46,20 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             }
 
             return _indexQueryExecutor.Query(searchModel).Items.ToList();
+        }
+
+        /// <summary>
+        ///   Получить общее количество объектов по заданному фильтру
+        /// </summary>
+        /// <param name="filterObject">Фильтр объектов</param>
+        /// <returns>Количество объектов</returns>
+        public int GetNumberOfDocuments(IEnumerable<object> filterObject)
+        {
+            var queryFactory = QueryBuilderFactory.GetInstance();
+            var searchModel = filterObject.ExtractSearchModel(queryFactory);
+
+            // вряд ли документов в одном индексе будет больше чем 2 147 483 647, конвертируем в int
+            return Convert.ToInt32(_indexQueryExecutor.CalculateCountQuery(searchModel));
         }
     }
 }

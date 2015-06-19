@@ -14,5 +14,12 @@ namespace InfinniPlatform.Api.Index
 	    /// <param name="skipSize">Количество записей с начала, которые необходимо пропустить</param>
 	    /// <returns>Список актуальных версий</returns>
 	    dynamic GetDocument(IEnumerable<object> filterObject, int pageNumber, int pageSize, IEnumerable<object> sortingDescription = null, int skipSize = 0);
+
+        /// <summary>
+        ///   Получить общее количество объектов по заданному фильтру
+        /// </summary>
+        /// <param name="filterObject">Фильтр объектов</param>
+        /// <returns>Количество объектов</returns>
+        int GetNumberOfDocuments(IEnumerable<object> filterObject);
     }
 }

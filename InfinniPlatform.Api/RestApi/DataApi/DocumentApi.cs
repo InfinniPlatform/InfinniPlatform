@@ -27,6 +27,44 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 			return response.ToDynamicList();
 		}
 
+        /// <summary>
+        /// Получение количества документов
+        /// </summary>
+        public int GetNumberOfDocuments(string configuration, string metadata, dynamic filter)
+        {
+            var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getnumberofdocuments", null, new
+            {
+                Configuration = configuration,
+                Metadata = metadata,
+                Filter = filter,
+                Secured = _secured
+            });
+
+            try
+            {
+                return Convert.ToInt32(response.ToDynamic()[0].NumberOfDocuments);
+            }
+            catch (Exception)
+            {
+                throw new ArgumentException(response.Content);
+            }
+        }
+
+        /// <summary>
+        /// Получение количества документов
+        /// </summary>
+        public int GetNumberOfDocuments(string configuration, string metadata, Action<FilterBuilder> filter)
+        {
+            var filterBuilder = new FilterBuilder();
+
+            if (filter != null)
+            {
+                filter.Invoke(filterBuilder);
+            }
+            
+            return GetNumberOfDocuments(configuration, metadata, filterBuilder.GetFilter());     
+        }
+
 		public IEnumerable<dynamic> GetDocument(string configuration,
 			string metadata,
 			dynamic filter,

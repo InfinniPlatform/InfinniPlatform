@@ -2,7 +2,6 @@
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestQuery;
-using InfinniPlatform.Hosting;
 using InfinniPlatform.Hosting.Implementation.ExtensionPointHandling;
 using InfinniPlatform.Hosting.Implementation.Modules;
 using InfinniPlatform.Metadata;
@@ -26,6 +25,7 @@ namespace InfinniPlatform.RestfulApi.Installers
             actionUnits.RegisterActionUnitDistributedStorage("insertindex", "ActionUnitInsertIndex");
             actionUnits.RegisterActionUnitDistributedStorage("insertindexwithtimestamp", "ActionUnitIndexWithTimeStamp");
             actionUnits.RegisterActionUnitDistributedStorage("getdocument", "ActionUnitGetDocument");
+            actionUnits.RegisterActionUnitDistributedStorage("getnumberofdocuments", "ActionUnitGetNumberOfDocuments");
             actionUnits.RegisterActionUnitDistributedStorage("getconfigmetadata", "ActionUnitGetConfigMetadata");
             actionUnits.RegisterActionUnitDistributedStorage("getconfigmetadatalist", "ActionUnitGetConfigMetadataList");
             actionUnits.RegisterActionUnitDistributedStorage("getdocumentcrossconfig", "ActionUnitGetDocumentCrossConfig");
@@ -303,6 +303,16 @@ namespace InfinniPlatform.RestfulApi.Installers
                         .OnCredentials(() => actionUnits.GetAction("setcredentials"))
                         )));
 
+            metadataConfiguration.RegisterWorkflow("configuration", "getnumberofdocuments",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("getnumberofdocuments"))
+                        .WithSimpleAuthorization(() => actionUnits.GetAction("documentauth"))
+                        .WithComplexAuthorization(() => actionUnits.GetAction("complexauth"))
+                        .OnSuccess(() => actionUnits.GetAction("filterauthdocument"))
+                        .OnCredentials(() => actionUnits.GetAction("setcredentials"))
+                        )));
+
             metadataConfiguration.RegisterWorkflow("configuration", "setdocument",
                 f => f.FlowWithoutState(wc => wc
                     .Move(ws => ws
@@ -389,8 +399,9 @@ namespace InfinniPlatform.RestfulApi.Installers
             servicesConfiguration.AddRegistration("configuration", "ApplyJson", reg => reg
                     .RegisterHandlerInstance("status", insance => insance.RegisterExtensionPoint("GetResult", "status"))
                     .RegisterHandlerInstance("getdocument", insance => insance
-                                                                .RegisterExtensionPoint("Move", "getdocument")
-                                                                )
+                                                                .RegisterExtensionPoint("Move", "getdocument"))
+                    .RegisterHandlerInstance("getnumberofdocuments", insance => insance
+                                                                .RegisterExtensionPoint("Move", "getnumberofdocuments"))
 
                     .RegisterHandlerInstance("getconfigmetadata", insance => insance
                                                                 .RegisterExtensionPoint("Move", "getconfigmetadata"))

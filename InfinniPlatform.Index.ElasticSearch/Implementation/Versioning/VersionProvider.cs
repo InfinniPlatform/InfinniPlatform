@@ -32,7 +32,17 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.Versioning
             return _documentProvider.GetDocument(filterObject, pageNumber, pageSize, sortingDescription, skipSize);
 		}
 
-		/// <summary>
+	    /// <summary>
+	    ///   Получить общее количество объектов по заданному фильтру
+	    /// </summary>
+	    /// <param name="filterObject">Фильтр объектов</param>
+	    /// <returns>Количество объектов</returns>
+	    public int GetNumberOfDocuments(IEnumerable<object> filterObject)
+	    {
+	        return _documentProvider.GetNumberOfDocuments(filterObject);
+	    }
+
+	    /// <summary>
 		///   Получить версию по уникальному идентификатору
 		/// </summary>
 		/// <param name="id">Уникальный идентификатор версии</param>
