@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
+﻿using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Transactions;
+using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.RestfulApi.Session
 {
     /// <summary>
-    ///   Отсоединить файл от сессии
+    ///     Отсоединить файл от сессии
     /// </summary>
     public sealed class ActionUnitDetachFile
     {
@@ -19,8 +14,8 @@ namespace InfinniPlatform.RestfulApi.Session
         {
             ITransaction transaction =
                 target.Context.GetComponent<ITransactionComponent>(target.Version)
-                    .GetTransactionManager()
-                    .GetTransaction(target.Item.SessionId);
+                      .GetTransactionManager()
+                      .GetTransaction(target.Item.SessionId);
 
             transaction.DetachFile(target.Item.InstanceId, target.Item.FieldName);
 

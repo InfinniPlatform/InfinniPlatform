@@ -1,14 +1,12 @@
 ﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
-using InfinniPlatform.Api.Factories;
 using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Runtime;
+using InfinniPlatform.Sdk.Application.Contracts;
 
 namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
 {
     /// <summary>
-    ///   Обработчик ошибки сохранения документа (при стандартном сохранении документа)
+    ///     Обработчик ошибки сохранения документа (при стандартном сохранении документа)
     /// </summary>
     public sealed class ActionUnitFailSetDocument
     {
@@ -23,7 +21,10 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
             {
                 //ищем метаданные бизнес-процесса по умолчанию документа 
 
-                defaultBusinessProcess = target.Context.GetComponent<IMetadataComponent>(target.Version).GetMetadata(target.Version, target.Item.Configuration, target.Item.Metadata, MetadataType.Process, "Default");
+                defaultBusinessProcess =
+                    target.Context.GetComponent<IMetadataComponent>(target.Version)
+                          .GetMetadata(target.Version, target.Item.Configuration, target.Item.Metadata,
+                                       MetadataType.Process, "Default");
             }
             else
             {
@@ -38,9 +39,10 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                 scriptArguments.Item.Configuration = target.Item.Configuration;
                 scriptArguments.Item.Metadata = target.Item.Metadata;
 
-                target.Context.GetComponent<IScriptRunnerComponent>(target.Version).GetScriptRunner(target.Version, target.Item.Configuration).InvokeScript(defaultBusinessProcess.Transitions[0].FailPoint.ScenarioId, scriptArguments);
+                target.Context.GetComponent<IScriptRunnerComponent>(target.Version)
+                      .GetScriptRunner(target.Version, target.Item.Configuration)
+                      .InvokeScript(defaultBusinessProcess.Transitions[0].FailPoint.ScenarioId, scriptArguments);
             }
-
         }
     }
 }

@@ -1,50 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using InfinniPlatform.Api.Context;
 using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Factories;
-using InfinniPlatform.Index;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
-using InfinniPlatform.Metadata;
 using InfinniPlatform.MigrationsAndVerifications.Helpers;
+using InfinniPlatform.Sdk.Application.Contracts;
 using InfinniPlatform.SystemConfig.RoutingFactory;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 {
     /// <summary>
-    /// Миграция позволяет обновить маппинг в хранилище документов после изменения схемы данных документов конфигурации
+    ///     Миграция позволяет обновить маппинг в хранилище документов после изменения схемы данных документов конфигурации
     /// </summary>
     public sealed class UpdateStoreMigration : IConfigurationMigration
     {
         private readonly IIndexFactory _indexFactory;
 
-        public UpdateStoreMigration()
-        {
-            _updatedContainers = new List<string>();
-			_indexFactory = new ElasticFactory(new RoutingFactoryBase());
-        }
-
         /// <summary>
-        /// Необходимо хранить имена контейнеров, для которых уже была создана новая версия, чтобы не сделать это несколько раз
+        ///     Необходимо хранить имена контейнеров, для которых уже была создана новая версия, чтобы не сделать это несколько раз
         /// </summary>
         private readonly IList<string> _updatedContainers;
 
         /// <summary>
-        /// Конфигурация, к которой применяется миграция
+        ///     Конфигурация, к которой применяется миграция
         /// </summary>
         private string _activeConfiguration;
 
-	    private IGlobalContext _context;
+        private IGlobalContext _context;
         private string _version;
+
+        public UpdateStoreMigration()
+        {
+            _updatedContainers = new List<string>();
+            _indexFactory = new ElasticFactory(new RoutingFactoryBase());
+        }
 
 
         /// <summary>
-        /// Текстовое описание миграции
+        ///     Текстовое описание миграции
         /// </summary>
         public string Description
         {
@@ -52,9 +48,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        /// Идентификатор конфигурации, к которой применима миграция.
-        /// В том случае, если идентификатор не указан (null or empty string), 
-        /// миграция применима ко всем конфигурациям
+        ///     Идентификатор конфигурации, к которой применима миграция.
+        ///     В том случае, если идентификатор не указан (null or empty string),
+        ///     миграция применима ко всем конфигурациям
         /// </summary>
         public string ConfigurationId
         {
@@ -62,9 +58,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        /// Версия конфигурации, к которой применима миграция.
-        /// В том случае, если версия не указана (null or empty string), 
-        /// миграция применима к любой версии конфигурации
+        ///     Версия конфигурации, к которой применима миграция.
+        ///     В том случае, если версия не указана (null or empty string),
+        ///     миграция применима к любой версии конфигурации
         /// </summary>
         public string ConfigVersion
         {
@@ -72,7 +68,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        /// Признак того, что миграцию можно откатить
+        ///     Признак того, что миграцию можно откатить
         /// </summary>
         public bool IsUndoable
         {
@@ -80,7 +76,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        /// Выполнить миграцию
+        ///     Выполнить миграцию
         /// </summary>
         /// <param name="message">Информативное сообщение с результатом выполнения действия</param>
         /// <param name="parameters"></param>
@@ -90,34 +86,38 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 
             _updatedContainers.Clear();
 
-			var configObject =
-				_context.GetComponent<IConfigurationMediatorComponent>(_version)
-					   .ConfigurationBuilder.GetConfigurationObject(_version, _activeConfiguration);
+            var configObject =
+                _context.GetComponent<IConfigurationMediatorComponent>(_version)
+                        .ConfigurationBuilder.GetConfigurationObject(_version, _activeConfiguration);
 
-			IMetadataConfiguration metadataConfiguration = null;
-			if (configObject != null)
-			{
-				metadataConfiguration = configObject.MetadataConfiguration;
-			}
+            IMetadataConfiguration metadataConfiguration = null;
+            if (configObject != null)
+            {
+                metadataConfiguration = configObject.MetadataConfiguration;
+            }
 
             if (metadataConfiguration != null)
             {
-                var containers = metadataConfiguration.Containers;
-                foreach (var containerId in containers)
+                IEnumerable<string> containers = metadataConfiguration.Containers;
+                foreach (string containerId in containers)
                 {
-                    var versionBuilder = _indexFactory.BuildVersionBuilder(
+                    IVersionBuilder versionBuilder = _indexFactory.BuildVersionBuilder(
                         metadataConfiguration.ConfigurationId,
                         metadataConfiguration.GetMetadataIndexType(containerId),
                         metadataConfiguration.GetSearchAbilityType(containerId));
 
-                    var schema = metadataConfiguration.GetSchemaVersion(containerId);
+                    dynamic schema = metadataConfiguration.GetSchemaVersion(containerId);
 
                     var props = new List<PropertyMapping>();
 
                     if (schema != null)
                     {
                         // convert document schema to index mapping
-                        props = DocumentSchemaHelper.ExtractProperties(_version, schema.Properties, _context.GetComponent<IConfigurationMediatorComponent>(_version).ConfigurationBuilder);
+                        props = DocumentSchemaHelper.ExtractProperties(_version, schema.Properties,
+                                                                       _context
+                                                                           .GetComponent
+                                                                           <IConfigurationMediatorComponent>(_version)
+                                                                           .ConfigurationBuilder);
                     }
 
                     if (!versionBuilder.VersionExists(props.Count > 0 ? new IndexTypeMapping(props) : null) &&
@@ -132,7 +132,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 
                         // Необходимо создать новые версии для контейнеров документов, имеющих inline ссылки на измененный документ
                         UpdateContainersWithInlineLinks(metadataConfiguration.ConfigurationId, containerId,
-                            resultMessage);
+                                                        resultMessage);
                     }
                 }
 
@@ -144,7 +144,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        /// Отменить миграцию
+        ///     Отменить миграцию
         /// </summary>
         /// <param name="message">Информативное сообщение с результатом выполнения действия</param>
         /// <param name="parameters">Параметры миграции</param>
@@ -157,30 +157,39 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        /// Устанавливает активную конфигурацию для миграции
+        ///     Возвращает параметры миграции
+        /// </summary>
+        public IEnumerable<MigrationParameter> Parameters
+        {
+            get { return new MigrationParameter[0]; }
+        }
+
+        /// <summary>
+        ///     Устанавливает активную конфигурацию для миграции
         /// </summary>
         public void AssignActiveConfiguration(string version, string configurationId, IGlobalContext context)
         {
             _version = version;
             _activeConfiguration = configurationId;
-	        _context = context;
+            _context = context;
         }
 
         /// <summary>
-        /// Метод обновляет маппинг контейнеров, документы в которых имеют inline ссылки на документы
-        /// с изменившейся структурой 
+        ///     Метод обновляет маппинг контейнеров, документы в которых имеют inline ссылки на документы
+        ///     с изменившейся структурой
         /// </summary>
         private void UpdateContainersWithInlineLinks(string configId, string documentId,
-            StringBuilder messagesIntegrator)
+                                                     StringBuilder messagesIntegrator)
         {
-	        var configList =
-                _context.GetComponent<IConfigurationMediatorComponent>(_version).ConfigurationBuilder.GetConfigurationList();
+            var configList =
+                _context.GetComponent<IConfigurationMediatorComponent>(_version)
+                        .ConfigurationBuilder.GetConfigurationList();
             foreach (var metadataConfiguration in configList)
             {
                 var containers = metadataConfiguration.Containers;
                 foreach (var containerId in containers)
                 {
-                    var versionBuilder = _indexFactory.BuildVersionBuilder(
+                    IVersionBuilder versionBuilder = _indexFactory.BuildVersionBuilder(
                         metadataConfiguration.ConfigurationId,
                         metadataConfiguration.GetMetadataIndexType(containerId),
                         metadataConfiguration.GetSearchAbilityType(containerId));
@@ -194,7 +203,14 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                         if (DocumentSchemaHelper.CheckObjectForSpecifiedInline(schema, configId, documentId))
                         {
                             // convert document schema to index mapping
-                            List<PropertyMapping> props = DocumentSchemaHelper.ExtractProperties(_version, schema.Properties, _context.GetComponent<IConfigurationMediatorComponent>(_version).ConfigurationBuilder);
+                            List<PropertyMapping> props = DocumentSchemaHelper.ExtractProperties(_version,
+                                                                                                 schema.Properties,
+                                                                                                 _context
+                                                                                                     .GetComponent
+                                                                                                     <
+                                                                                                     IConfigurationMediatorComponent
+                                                                                                     >(_version)
+                                                                                                     .ConfigurationBuilder);
 
                             if (!_updatedContainers.Contains(metadataConfiguration.ConfigurationId + "_" + containerId))
                             {
@@ -211,14 +227,6 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Возвращает параметры миграции
-        /// </summary>
-        public IEnumerable<MigrationParameter> Parameters
-        {
-            get { return new MigrationParameter[0]; }
         }
     }
 }

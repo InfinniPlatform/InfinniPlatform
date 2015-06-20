@@ -1,22 +1,22 @@
 ﻿using System.Text;
-using InfinniPlatform.Api.Context;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataReaders;
 using InfinniPlatform.Metadata;
+using InfinniPlatform.Sdk.Application.Contracts;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Verifications
 {
     public sealed class ConfigurationStructureVerification : IConfigurationVerification
     {
         /// <summary>
-        /// Конфигурация, к которой применяется правило проверки
+        ///     Конфигурация, к которой применяется правило проверки
         /// </summary>
         private string _activeConfiguration;
 
         private IMetadataConfigurationProvider _metadataConfigurationProvider;
 
         /// <summary>
-        /// Текстовое описание правила проверки
+        ///     Текстовое описание правила проверки
         /// </summary>
         public string Description
         {
@@ -24,9 +24,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
         }
 
         /// <summary>
-        /// Идентификатор конфигурации, к которой применима проверка.
-        /// В том случае, если идентификатор не указан (null or empty string), 
-        /// проверка применима ко всем конфигурациям
+        ///     Идентификатор конфигурации, к которой применима проверка.
+        ///     В том случае, если идентификатор не указан (null or empty string),
+        ///     проверка применима ко всем конфигурациям
         /// </summary>
         public string ConfigurationId
         {
@@ -34,9 +34,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
         }
 
         /// <summary>
-        /// Версия конфигурации, к которой применимо правило проверки.
-        /// В том случае, если версия не указана (null or empty string), 
-        /// правило применимо к любой версии конфигурации
+        ///     Версия конфигурации, к которой применимо правило проверки.
+        ///     В том случае, если версия не указана (null or empty string),
+        ///     правило применимо к любой версии конфигурации
         /// </summary>
         public string ConfigVersion
         {
@@ -44,18 +44,18 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
         }
 
         /// <summary>
-        /// Выполнить проверку
+        ///     Выполнить проверку
         /// </summary>
         /// <param name="message">Информативное сообщение с результатом выполнения действия</param>
         /// <returns>Результат выполнения проверки</returns>
         public bool Check(out string message)
         {
-            var result = true;
+            bool result = true;
             var resultMessage = new StringBuilder();
 
             var configReader = new MetadataReaderConfiguration(null);
 
-            var configMetadata = configReader.GetItem(_activeConfiguration);
+            dynamic configMetadata = configReader.GetItem(_activeConfiguration);
 
             if (configMetadata.Documents == null)
             {
@@ -110,7 +110,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
         }
 
         /// <summary>
-        /// Устанавливает активную конфигурацию для правила проверки
+        ///     Устанавливает активную конфигурацию для правила проверки
         /// </summary>
         public void AssignActiveConfiguration(string version, string configurationId, IGlobalContext context)
         {

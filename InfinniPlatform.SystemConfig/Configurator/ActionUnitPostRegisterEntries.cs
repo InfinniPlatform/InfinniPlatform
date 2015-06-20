@@ -1,18 +1,18 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Registers;
 using InfinniPlatform.Api.RestApi.DataApi;
-using System;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
+using InfinniPlatform.Sdk.Application.Contracts;
 
 namespace InfinniPlatform.SystemConfig.Configurator
 {
     /// <summary>
-    /// Точка расширения для проведения данных документа в регистр
+    ///     Точка расширения для проведения данных документа в регистр
     /// </summary>
     public sealed class ActionUnitPostRegisterEntries
     {
@@ -38,7 +38,10 @@ namespace InfinniPlatform.SystemConfig.Configurator
                 throw new ArgumentException("Register entries should be specified via 'RegisterEntries' property");
             }
 
-            var registerMetadata = target.Context.GetComponent<IMetadataComponent>(target.Version).GetMetadataList(version, configuration, register,MetadataType.Register).FirstOrDefault() ;
+            var registerMetadata =
+                target.Context.GetComponent<IMetadataComponent>(target.Version)
+                      .GetMetadataList(version, configuration, register, MetadataType.Register)
+                      .FirstOrDefault();
 
             var dimensionNames = new List<string>();
 
@@ -50,7 +53,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
                 }
             }
 
-            foreach (var registerEntry in registerEntries)
+            foreach (dynamic registerEntry in registerEntries)
             {
                 // Id генерируется по следующему алгоритму:
                 // формируется уникальный ключ записи по всем полям-измерениям и по полю даты,
@@ -63,22 +66,23 @@ namespace InfinniPlatform.SystemConfig.Configurator
 
                 string uniqueKey = registerEntry[RegisterConstants.DocumentDateProperty].ToString();
 
-                foreach (var dimensionName in dimensionNames)
+                foreach (string dimensionName in dimensionNames)
                 {
                     if (registerEntry[dimensionName] != null)
                     {
-                    uniqueKey += registerEntry[dimensionName].ToString();
+                        uniqueKey += registerEntry[dimensionName].ToString();
+                    }
                 }
-                }
-                
-                using (var md5 = MD5.Create())
+
+                using (MD5 md5 = MD5.Create())
                 {
                     byte[] hash = md5.ComputeHash(Encoding.Default.GetBytes(uniqueKey));
                     registerEntry.Id = new Guid(hash).ToString();
                 }
             }
 
-            target.Context.GetComponent<DocumentApi>(target.Version).SetDocuments(configuration, RegisterConstants.RegisterNamePrefix + register, registerEntries);
+            target.Context.GetComponent<DocumentApi>(target.Version)
+                  .SetDocuments(configuration, RegisterConstants.RegisterNamePrefix + register, registerEntries);
         }
     }
 }

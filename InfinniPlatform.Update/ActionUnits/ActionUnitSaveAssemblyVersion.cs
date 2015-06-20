@@ -3,6 +3,7 @@ using System.IO;
 using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Application.Dynamic;
 using InfinniPlatform.Update.Properties;
 
 namespace InfinniPlatform.Update.ActionUnits

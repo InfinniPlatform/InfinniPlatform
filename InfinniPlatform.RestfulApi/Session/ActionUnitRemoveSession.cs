@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
+﻿using InfinniPlatform.Api.ContextComponents;
+using InfinniPlatform.Sdk.Application.Contracts;
 
 namespace InfinniPlatform.RestfulApi.Session
 {
     /// <summary>
-    ///   Удалить клиентскую сессию 
+    ///     Удалить клиентскую сессию
     /// </summary>
     public sealed class ActionUnitRemoveSession
     {
@@ -18,8 +13,8 @@ namespace InfinniPlatform.RestfulApi.Session
             if (!string.IsNullOrEmpty(target.Item.SessionId))
             {
                 target.Context.GetComponent<ITransactionComponent>(target.Version)
-                    .GetTransactionManager()
-                    .RemoveTransaction(target.Item.SessionId);
+                      .GetTransactionManager()
+                      .RemoveTransaction(target.Item.SessionId);
             }
         }
     }

@@ -1,17 +1,15 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Registers;
-using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.SystemConfig.Configurator
 {
     /// <summary>
-    /// Точка расширения для создания "заготовки" записи регистра
+    ///     Точка расширения для создания "заготовки" записи регистра
     /// </summary>
     public sealed class ActionUnitCreateRegisterEntry
     {
@@ -21,7 +19,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
             string registerId = target.Item.RegisterId;
             string documentId = target.Item.DocumentId;
             var sourceDocument = target.Item.SourceDocument;
-            
+
             if (string.IsNullOrEmpty(configuration))
             {
                 throw new ArgumentException("ConfigurationId name should be specified via 'configuration' property");
@@ -49,7 +47,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
             registerEntry[RegisterConstants.EntryTypeProperty] = RegisterEntryType.Other;
 
             var documentDate = new DateTime();
-            
+
             if (target.Item.DocumentDate != null)
             {
                 documentDate = target.Item.DocumentDate;
@@ -57,8 +55,12 @@ namespace InfinniPlatform.SystemConfig.Configurator
             else
             {
                 // Дата документа явно не задана, используем дату из содержимого переданного документа
-                var defaultProcess = target.Context.GetComponent<IMetadataComponent>(target.Version).GetMetadata(target.Version, configuration, documentId, MetadataType.Process, "Default");
-                var customProcess = target.Context.GetComponent<IMetadataComponent>(target.Version).GetMetadata(target.Version, configuration, documentId, MetadataType.Process, "Custom");
+                var defaultProcess =
+                    target.Context.GetComponent<IMetadataComponent>(target.Version)
+                          .GetMetadata(target.Version, configuration, documentId, MetadataType.Process, "Default");
+                var customProcess =
+                    target.Context.GetComponent<IMetadataComponent>(target.Version)
+                          .GetMetadata(target.Version, configuration, documentId, MetadataType.Process, "Custom");
 
                 if (defaultProcess != null &&
                     defaultProcess.Transitions != null &&
@@ -78,7 +80,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
                          customProcess.Transitions[0].RegisterPoint != null)
                 {
                     var dateFieldName = customProcess.Transitions[0].RegisterPoint.DocumentDateProperty;
-                    
+
                     if (!string.IsNullOrEmpty(dateFieldName))
                     {
                         documentDate = sourceDocument[dateFieldName];
@@ -86,8 +88,11 @@ namespace InfinniPlatform.SystemConfig.Configurator
                 }
             }
 
-            var registerMetadata = target.Context.GetComponent<IMetadataComponent>(target.Version).GetMetadataList(target.Version, configuration, registerId, MetadataType.Register).FirstOrDefault();
-            
+            var registerMetadata =
+                target.Context.GetComponent<IMetadataComponent>(target.Version)
+                      .GetMetadataList(target.Version, configuration, registerId, MetadataType.Register)
+                      .FirstOrDefault();
+
             // Признак того, что необходимо создать запись для регистра сведений
             if (target.Item.IsInfoRegister == true && registerMetadata != null)
             {

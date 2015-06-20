@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
+﻿using System.Linq;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Factories;
-using InfinniPlatform.Metadata;
-using InfinniPlatform.WebApi.ConfigRequestProviders;
+using InfinniPlatform.Sdk.Application.Contracts;
 
 namespace InfinniPlatform.RestfulApi.ActionUnits
 {
@@ -37,7 +29,6 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
             if (target.Configuration.ToLowerInvariant() != "systemconfig" && document != null)
             {
-
                 var eventsDocument =
                     target.Events.Where(e => e.Property.ToLowerInvariant().StartsWith("document.")).ToList();
                 foreach (var eventDefinition in eventsDocument)
@@ -48,8 +39,8 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                 aggregateProvider.ApplyChanges(ref document, eventsDocument);
                 target.Events =
                     target.Events.Except(eventsDocument)
-                        .Where(e => e.Property.ToLowerInvariant() != "document")
-                        .ToList();
+                          .Where(e => e.Property.ToLowerInvariant() != "document")
+                          .ToList();
 
                 item.Id = document.Id;
                 item.Document = document;
@@ -58,6 +49,5 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             //устанавливаем результат обработки точки расширения
             target.Item = item;
         }
-
     }
 }

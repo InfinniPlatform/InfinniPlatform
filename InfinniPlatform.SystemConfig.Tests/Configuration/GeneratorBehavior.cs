@@ -1,107 +1,106 @@
 ﻿using System;
-
 using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
+using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
 using InfinniPlatform.Api.Packages;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
 using InfinniPlatform.Api.TestEnvironment;
+using InfinniPlatform.Sdk.Application.Dynamic;
 using NUnit.Framework;
 
 namespace InfinniPlatform.SystemConfig.Tests.Configuration
 {
-	[TestFixture]
-	[Category(TestCategories.AcceptanceTest)]
-	public sealed class GeneratorBehavior
-	{
-		private IDisposable _server;
+    [TestFixture]
+    [Category(TestCategories.AcceptanceTest)]
+    public sealed class GeneratorBehavior
+    {
+        private IDisposable _server;
 
-		[TestFixtureSetUp]
-		public void FixtureSetup()
-		{
-			_server = TestApi.StartServer(c => c.SetHostingConfig(TestSettings.DefaultHostingConfig));
+        [TestFixtureSetUp]
+        public void FixtureSetup()
+        {
+            _server = TestApi.StartServer(c => c.SetHostingConfig(TestSettings.DefaultHostingConfig));
 
-			TestApi.InitClientRouting(TestSettings.DefaultHostingConfig);
-		}
+            TestApi.InitClientRouting(TestSettings.DefaultHostingConfig);
+        }
 
-		[TestFixtureTearDown]
-		public void TearDownFixture()
-		{
-			_server.Dispose();
-		}
-		
-		[Test]
-		public void ShouldGenerateGeneratorView()
-		{
+        [TestFixtureTearDown]
+        public void TearDownFixture()
+        {
+            _server.Dispose();
+        }
 
-			string configurationId = "Integration";
+        [Test]
+        public void ShouldGenerateGeneratorView()
+        {
+            string configurationId = "Integration";
 
-			var manager = ManagerFactoryConfiguration.BuildConfigurationManager(null);
+            MetadataManagerConfiguration manager = ManagerFactoryConfiguration.BuildConfigurationManager(null);
 
-			var item = manager.CreateItem(configurationId);
-			manager.DeleteItem(item);
+            dynamic item = manager.CreateItem(configurationId);
+            manager.DeleteItem(item);
 
-			dynamic assembly = new DynamicWrapper();
-			assembly.Name = "InfinniPlatform.SystemConfig.Tests";
+            dynamic assembly = new DynamicWrapper();
+            assembly.Name = "InfinniPlatform.SystemConfig.Tests";
 
-			item.Assemblies.Add(assembly);
+            item.Assemblies.Add(assembly);
 
             manager.MergeItem(item);
 
-			//создаем метаданные справочника для тестирования
-			var builder = new RestQueryBuilder(null,"SystemConfig", "metadata", "creategenerator", null);
+            //создаем метаданные справочника для тестирования
+            var builder = new RestQueryBuilder(null, "SystemConfig", "metadata", "creategenerator", null);
 
-			var eventObject = new
-			{
-				GeneratorName = "TestView",
-				ActionUnit = "ActionUnitGeneratorTest",
-				Configuration = configurationId,
-				Metadata = "Common",
-				MetadataType = MetadataType.View,
-				ContextTypeKind = ContextTypeKind.ApplyMove
-			};
+            var eventObject = new
+                {
+                    GeneratorName = "TestView",
+                    ActionUnit = "ActionUnitGeneratorTest",
+                    Configuration = configurationId,
+                    Metadata = "Common",
+                    MetadataType = MetadataType.View,
+                    ContextTypeKind = ContextTypeKind.ApplyMove
+                };
 
-			builder.QueryPostJson(null, eventObject);
+            builder.QueryPostJson(null, eventObject);
 
-			var package = new PackageBuilder().BuildPackage(configurationId, null,
-														  "InfinniPlatform.SystemConfig.Tests.dll");
+            dynamic package = new PackageBuilder().BuildPackage(configurationId, null,
+                                                                "InfinniPlatform.SystemConfig.Tests.dll");
 
-			new UpdateApi(null).InstallPackages(new[] { package });
+            new UpdateApi(null).InstallPackages(new[] {package});
 
-			RestQueryApi.QueryPostNotify(null, configurationId);
+            RestQueryApi.QueryPostNotify(null, configurationId);
 
             new UpdateApi(null).UpdateStore(configurationId);
 
-			//генерируем метаданные напрямую
-			builder = new RestQueryBuilder(null,"SystemConfig", "metadata", "generatemetadata", null);
+            //генерируем метаданные напрямую
+            builder = new RestQueryBuilder(null, "SystemConfig", "metadata", "generatemetadata", null);
 
-			var body = new
-						   {
-							   Metadata = "common",
-							   GeneratorName = "TestView",
-							   Configuration = configurationId
-						   };
+            var body = new
+                {
+                    Metadata = "common",
+                    GeneratorName = "TestView",
+                    Configuration = configurationId
+                };
 
-			dynamic result = builder.QueryPostJson(null, body).ToDynamic();
-			Assert.AreEqual(result.TestValue, "Test");
+            dynamic result = builder.QueryPostJson(null, body).ToDynamic();
+            Assert.AreEqual(result.TestValue, "Test");
 
-			//получаем сгенерированное представление через менеджер метаданных
+            //получаем сгенерированное представление через менеджер метаданных
 
-			var bodyMetadata = new
-				{
-					Configuration = configurationId,
-					MetadataObject = "common",
-					MetadataType = MetadataType.View,
-					MetadataName = "TestView"
-				};
+            var bodyMetadata = new
+                {
+                    Configuration = configurationId,
+                    MetadataObject = "common",
+                    MetadataType = MetadataType.View,
+                    MetadataName = "TestView"
+                };
 
-			builder = new RestQueryBuilder(null,"SystemConfig", "metadata", "getmanagedmetadata", null);
-			result = builder.QueryPostJson(null, bodyMetadata).ToDynamic();
+            builder = new RestQueryBuilder(null, "SystemConfig", "metadata", "getmanagedmetadata", null);
+            result = builder.QueryPostJson(null, bodyMetadata).ToDynamic();
 
-			Assert.IsNotNull(result);
-			Assert.AreEqual(result.TestValue, "Test");
-		}
-	}
+            Assert.IsNotNull(result);
+            Assert.AreEqual(result.TestValue, "Test");
+        }
+    }
 }

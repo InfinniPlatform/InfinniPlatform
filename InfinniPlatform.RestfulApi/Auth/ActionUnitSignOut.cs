@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.RestApi.Auth;
+﻿using InfinniPlatform.Api.RestApi.Auth;
+using InfinniPlatform.Sdk.Application.Contracts;
 
 namespace InfinniPlatform.RestfulApi.Auth
 {
-	public sealed class ActionUnitSignOut
-	{
-		public void Action(IApplyContext target)
-		{
+    public sealed class ActionUnitSignOut
+    {
+        public void Action(IApplyContext target)
+        {
             target.Context.GetComponent<SignInApi>(target.Version).SignOutInternal();
-		}
-		
-	}
+        }
+    }
 }

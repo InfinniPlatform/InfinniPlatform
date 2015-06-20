@@ -1,12 +1,12 @@
-﻿using InfinniPlatform.Api.ContextTypes;
+﻿using System;
 using InfinniPlatform.Api.Registers;
 using InfinniPlatform.Api.RestApi.DataApi;
-using System;
+using InfinniPlatform.Sdk.Application.Contracts;
 
 namespace InfinniPlatform.SystemConfig.Configurator
 {
     /// <summary>
-    /// Точка расширения для удаления записи регистра по идентификатору документа-регистратора
+    ///     Точка расширения для удаления записи регистра по идентификатору документа-регистратора
     /// </summary>
     public sealed class ActionUnitDeleteRegisterEntry
     {
@@ -15,7 +15,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
             string configuration = target.Item.Configuration;
             string registerId = target.Item.Register;
             string registar = target.Item.Registar;
-            
+
             if (string.IsNullOrEmpty(configuration))
             {
                 throw new ArgumentException("ConfigurationId name should be specified via 'configuration' property");
@@ -40,7 +40,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
                 f => f.AddCriteria(
                     c => c.Property(RegisterConstants.RegistrarProperty).IsEquals(registar)), 0, 10000);
 
-            var earliestDocumentDate = DateTime.MaxValue;
+            DateTime earliestDocumentDate = DateTime.MaxValue;
 
             foreach (var registerEntry in registerEntries)
             {
@@ -58,7 +58,8 @@ namespace InfinniPlatform.SystemConfig.Configurator
                 configuration,
                 registerId,
                 f => f.AddCriteria(
-                    c => c.Property(RegisterConstants.DocumentDateProperty).IsMoreThanOrEquals(earliestDocumentDate)), 0, 10000);
+                    c => c.Property(RegisterConstants.DocumentDateProperty).IsMoreThanOrEquals(earliestDocumentDate)), 0,
+                10000);
 
             foreach (var registerEntry in notActualRegisterEntries)
             {

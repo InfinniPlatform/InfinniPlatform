@@ -1,15 +1,14 @@
-﻿using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Registers;
-using InfinniPlatform.Api.RestApi.DataApi;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using InfinniPlatform.Api.Registers;
+using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Sdk.Application.Contracts;
 
 namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
 {
     /// <summary>
-    /// Точка расширения для выполнения перепроведения документов до указанной даты
+    ///     Точка расширения для выполнения перепроведения документов до указанной даты
     /// </summary>
     public sealed class ActionUnitRecarryingRegisterEntries
     {
@@ -21,7 +20,7 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
             string configurationId = target.Item.Configuration.ToString();
             string registerId = target.Item.Register.ToString();
 
-            var deteleExistingRegisterEntries = true;
+            bool deteleExistingRegisterEntries = true;
             if (target.Item.DeteleExistingRegisterEntries != null &&
                 target.Item.DeteleExistingRegisterEntries == false)
             {
@@ -33,7 +32,7 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
             // список идентификаторов уже перепроведенных документов
             var recarriedDocuments = new List<string>();
 
-            var pageNumber = 0;
+            int pageNumber = 0;
 
             while (true)
             {
@@ -42,8 +41,8 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
                     configurationId,
                     RegisterConstants.RegisterNamePrefix + registerId,
                     f =>
-                        f.AddCriteria(
-                            c => c.Property(RegisterConstants.DocumentDateProperty).IsLessThanOrEquals(endDate)),
+                    f.AddCriteria(
+                        c => c.Property(RegisterConstants.DocumentDateProperty).IsLessThanOrEquals(endDate)),
                     pageNumber++, 1000).ToArray();
 
                 if (registerEntries.Length == 0)
@@ -61,14 +60,18 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
                     // Получаем документ-регистратор
                     string registrarId = registerEntry.Registrar;
                     string registrarType = registerEntry.RegistrarType;
-                    var documentRegistrar = target.Context.GetComponent<DocumentApi>(target.Version).GetDocument(configurationId, registrarType,
-                        f => f.AddCriteria(c => c.Property("Id").IsEquals(registrarId)), 0, 1).FirstOrDefault();
+                    var documentRegistrar =
+                        target.Context.GetComponent<DocumentApi>(target.Version)
+                              .GetDocument(configurationId, registrarType,
+                                           f => f.AddCriteria(c => c.Property("Id").IsEquals(registrarId)), 0, 1)
+                              .FirstOrDefault();
 
                     if (deteleExistingRegisterEntries)
                     {
                         // Удаляем запись из регистра
                         new DocumentApi(target.Version).DeleteDocument(configurationId,
-                            RegisterConstants.RegisterNamePrefix + registerId, registerEntry.Id);
+                                                                       RegisterConstants.RegisterNamePrefix + registerId,
+                                                                       registerEntry.Id);
                     }
 
                     if (documentRegistrar != null && !recarriedDocuments.Contains(registrarId))
@@ -81,7 +84,8 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
                 foreach (var document in documentsToRecarry)
                 {
                     // Перепроводка документа
-                    target.Context.GetComponent<DocumentApi>(target.Version).SetDocument(configurationId, document.Item1, document.Item2);
+                    target.Context.GetComponent<DocumentApi>(target.Version)
+                          .SetDocument(configurationId, document.Item1, document.Item2);
                 }
             }
 
@@ -90,13 +94,14 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
                 configurationId,
                 RegisterConstants.RegisterTotalNamePrefix + registerId,
                 f =>
-                    f.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty).IsLessThanOrEquals(endDate)),
+                f.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty).IsLessThanOrEquals(endDate)),
                 0, 10000);
 
             foreach (var registerEntry in registerTotalEntries)
             {
                 new DocumentApi(target.Version).DeleteDocument(configurationId,
-                    RegisterConstants.RegisterTotalNamePrefix + registerId, registerEntry.Id);
+                                                               RegisterConstants.RegisterTotalNamePrefix + registerId,
+                                                               registerEntry.Id);
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using InfinniPlatform.Api.Hosting;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Commands
 {

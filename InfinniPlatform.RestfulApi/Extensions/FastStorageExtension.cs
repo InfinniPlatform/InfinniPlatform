@@ -25,7 +25,7 @@ namespace InfinniPlatform.RestfulApi.Extensions
 
         internal static void CreateBlobStorage()
         {
-            var manager = GetBlobStorageFactory().CreateBlobStorageManager();
+            IBlobStorageManager manager = GetBlobStorageFactory().CreateBlobStorageManager();
 
             try
             {
@@ -40,7 +40,7 @@ namespace InfinniPlatform.RestfulApi.Extensions
 
         internal static void CreateEventStorage()
         {
-            var manager = GetEventStorageFactory().CreateEventStorageManager();
+            IEventStorageManager manager = GetEventStorageFactory().CreateEventStorageManager();
 
             try
             {

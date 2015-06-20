@@ -1,24 +1,26 @@
-﻿using InfinniPlatform.Api.Dynamic;
+﻿using System.Collections.Generic;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Metadata;
-using System.Collections.Generic;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Helpers
 {
     public static class DocumentSchemaHelper
     {
         /// <summary>
-        /// Метод преобразует схему данных документа в схему, применимую к контейнеру документов
+        ///     Метод преобразует схему данных документа в схему, применимую к контейнеру документов
         /// </summary>
-        public static IEnumerable<PropertyMapping> ExtractProperties(string version, dynamic schemaProperties, IConfigurationObjectBuilder configurationObjectBuilder)
+        public static IEnumerable<PropertyMapping> ExtractProperties(string version, dynamic schemaProperties,
+                                                                     IConfigurationObjectBuilder
+                                                                         configurationObjectBuilder)
         {
             var properties = new List<PropertyMapping>();
 
             if (schemaProperties != null)
             {
-                foreach (var propertyModel in schemaProperties)
+                foreach (dynamic propertyModel in schemaProperties)
                 {
-                    var sortable = false;
+                    bool sortable = false;
 
                     if (propertyModel.Value.Sortable != null)
                     {
@@ -60,35 +62,42 @@ namespace InfinniPlatform.MigrationsAndVerifications.Helpers
                         {
                             // inline ссылка на документ: необходимо получить схему документа, на который сделана ссылка,
                             // чтобы получить сортировочные поля 
-                            var builder =
-                                configurationObjectBuilder.GetConfigurationObject(version, propertyModel.Value.TypeInfo.DocumentLink.ConfigId);
+                            dynamic builder =
+                                configurationObjectBuilder.GetConfigurationObject(version,
+                                                                                  propertyModel.Value.TypeInfo
+                                                                                               .DocumentLink.ConfigId);
                             //.Configurations.FirstOrDefault(
                             //c => c.ConfigurationId == propertyModel.Value.TypeInfo.DocumentLink.ConfigId);
-                            var inlineMetadataConfiguration = builder.MetadataConfiguration;
+                            dynamic inlineMetadataConfiguration = builder.MetadataConfiguration;
 
                             if (inlineMetadataConfiguration != null)
                             {
-                                var inlineDocumentSchema =
+                                dynamic inlineDocumentSchema =
                                     inlineMetadataConfiguration.GetSchemaVersion(
                                         propertyModel.Value.TypeInfo.DocumentLink.DocumentId);
 
                                 if (inlineDocumentSchema != null)
                                 {
                                     properties.Add(new PropertyMapping(propertyModel.Key,
-                                        ExtractProperties(version, inlineDocumentSchema.Properties, configurationObjectBuilder)));
+                                                                       ExtractProperties(version,
+                                                                                         inlineDocumentSchema.Properties,
+                                                                                         configurationObjectBuilder)));
                                 }
                             }
                         }
                         else
                         {
                             properties.Add(new PropertyMapping(propertyModel.Key,
-                                ExtractProperties(version, propertyModel.Value.Properties, configurationObjectBuilder)));
+                                                               ExtractProperties(version, propertyModel.Value.Properties,
+                                                                                 configurationObjectBuilder)));
                         }
                     }
                     else if (propertyModel.Value.Type.ToString() == "Array")
                     {
                         properties.Add(new PropertyMapping(propertyModel.Key,
-                            ExtractProperties(version, propertyModel.Value.Items.Properties, configurationObjectBuilder)));
+                                                           ExtractProperties(version,
+                                                                             propertyModel.Value.Items.Properties,
+                                                                             configurationObjectBuilder)));
                     }
                 }
             }
@@ -97,13 +106,13 @@ namespace InfinniPlatform.MigrationsAndVerifications.Helpers
         }
 
         /// <summary>
-        /// Проверяет наличие inline ссылки на определенный документ в схеме
+        ///     Проверяет наличие inline ссылки на определенный документ в схеме
         /// </summary>
         public static bool CheckObjectForSpecifiedInline(dynamic schema, string configId, string documentId)
         {
             if (schema.Properties is DynamicWrapper)
             {
-                foreach (var propertyModel in schema.Properties)
+                foreach (dynamic propertyModel in schema.Properties)
                 {
                     dynamic linkInfoToCheck = null;
 

@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
+﻿using InfinniPlatform.Api.ContextComponents;
+using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.RestfulApi.Auth
 {
     /// <summary>
-    ///   Модуль для получения утверждений относительно пользователя
+    ///     Модуль для получения утверждений относительно пользователя
     /// </summary>
     public sealed class ActionUnitGetClaim
     {
@@ -20,7 +15,7 @@ namespace InfinniPlatform.RestfulApi.Auth
             target.Result.ClaimType = target.Item.ClaimType;
             target.Result.UserName = target.Item.UserName;
             target.Result.ClaimValue = target.Context.GetComponent<ISecurityComponent>(target.Version)
-                .GetClaim(target.Item.ClaimType, target.Item.UserName);
+                                             .GetClaim(target.Item.ClaimType, target.Item.UserName);
         }
     }
 }

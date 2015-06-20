@@ -1,35 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Transactions;
+using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.RestfulApi.Session
 {
     /// <summary>
-    ///   Получить клиентскую сессию с указанным идентификатором
+    ///     Получить клиентскую сессию с указанным идентификатором
     /// </summary>
     public sealed class ActionUnitGetSession
     {
         public void Action(IApplyContext target)
         {
             ITransaction transaction =
-            target.Context.GetComponent<ITransactionComponent>(target.Version)
-                .GetTransactionManager()
-                .GetTransaction(target.Item.SessionId);
+                target.Context.GetComponent<ITransactionComponent>(target.Version)
+                      .GetTransactionManager()
+                      .GetTransaction(target.Item.SessionId);
 
             target.Result = new DynamicWrapper();
             target.Result.Items = transaction.GetTransactionItems().Where(g => !g.Detached).Select(tr => new
-            {
-                Application = tr.ConfigId,
-                DocumentType = tr.DocumentId,
-                Document = tr.Documents.FirstOrDefault(),
-                Version = tr.Version
-            });
+                {
+                    Application = tr.ConfigId,
+                    DocumentType = tr.DocumentId,
+                    Document = tr.Documents.FirstOrDefault(),
+                    tr.Version
+                });
         }
     }
 }

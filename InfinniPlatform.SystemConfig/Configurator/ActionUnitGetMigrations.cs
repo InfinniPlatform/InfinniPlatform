@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Metadata;
+using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.SystemConfig.Configurator
 {
@@ -15,24 +16,25 @@ namespace InfinniPlatform.SystemConfig.Configurator
 
         public void Action(IApplyContext target)
         {
-            var assembly = Assembly.Load(
+            Assembly assembly = Assembly.Load(
                 new AssemblyName
-                {
-                    CodeBase = AssemblyName
-                });
+                    {
+                        CodeBase = AssemblyName
+                    });
 
-            var selectedTypes = assembly.GetTypes().Where(t => typeof (IConfigurationMigration).IsAssignableFrom(t));
+            IEnumerable<Type> selectedTypes =
+                assembly.GetTypes().Where(t => typeof (IConfigurationMigration).IsAssignableFrom(t));
 
-            var result = (from type in selectedTypes
-                let migration = (IConfigurationMigration) Activator.CreateInstance(type)
-                select new
-                {
-                    type.Name, 
-                    migration.Description, 
-                    migration.IsUndoable, 
-                    migration.ConfigurationId, 
-                    migration.ConfigVersion
-                }.ToDynamic()).Cast<dynamic>().ToList();
+            List<dynamic> result = (from type in selectedTypes
+                                    let migration = (IConfigurationMigration) Activator.CreateInstance(type)
+                                    select new
+                                        {
+                                            type.Name,
+                                            migration.Description,
+                                            migration.IsUndoable,
+                                            migration.ConfigurationId,
+                                            migration.ConfigVersion
+                                        }.ToDynamic()).Cast<dynamic>().ToList();
 
             target.Result = result;
         }

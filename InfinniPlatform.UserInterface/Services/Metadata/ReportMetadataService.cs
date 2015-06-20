@@ -2,6 +2,7 @@
 using System.Threading;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {

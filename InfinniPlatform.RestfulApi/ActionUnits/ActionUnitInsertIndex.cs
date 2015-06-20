@@ -1,6 +1,6 @@
 ﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.RestfulApi.Extensions;
+using InfinniPlatform.Sdk.Application.Contracts;
 
 namespace InfinniPlatform.RestfulApi.ActionUnits
 {
@@ -8,10 +8,11 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
     {
         public void Action(IApplyResultContext target)
         {
-            IndexedStorageExtension.SetDocument(target.Item.Item, target.Item.Configuration,target.Item.Metadata ?? string.Empty);
+            IndexedStorageExtension.SetDocument(target.Item.Item, target.Item.Configuration,
+                                                target.Item.Metadata ?? string.Empty);
 
             target.Context.GetComponent<ILogComponent>(target.Version).GetLog().Info(
-                "insert \"{0}\" document to configuration \"{1}\", type \"{2}\" ", 
+                "insert \"{0}\" document to configuration \"{1}\", type \"{2}\" ",
                 target.Item.ToString(),
                 target.Item.Configuration, target.Item.Metadata);
         }

@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
+using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.TestEnvironment;
-
+using InfinniPlatform.Sdk.Application.Dynamic;
 using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
@@ -39,26 +38,28 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         public void ShouldResolveReferencesLessThan150ms(bool resolve, bool inline)
         {
             //Given
-            
-            
-            var managerConfiguration = ManagerFactoryConfiguration.BuildConfigurationManager(null);
+
+
+            MetadataManagerConfiguration managerConfiguration =
+                ManagerFactoryConfiguration.BuildConfigurationManager(null);
             string configurationId = "testconfigreferences";
-            var config = managerConfiguration.CreateItem(configurationId);
+            dynamic config = managerConfiguration.CreateItem(configurationId);
             managerConfiguration.DeleteItem(config);
             managerConfiguration.MergeItem(config);
 
-            var managerDocument = new ManagerFactoryConfiguration(null, configurationId).BuildDocumentManager();
-	        string patientDoc = "patient";
-			string addressDoc = "address";
-			string regionDoc = "region";
+            MetadataManagerDocument managerDocument =
+                new ManagerFactoryConfiguration(null, configurationId).BuildDocumentManager();
+            string patientDoc = "patient";
+            string addressDoc = "address";
+            string regionDoc = "region";
 
-            new IndexApi().RebuildIndex(configurationId,patientDoc);
+            new IndexApi().RebuildIndex(configurationId, patientDoc);
 
-	        dynamic metadataPatient = managerDocument.CreateItem(patientDoc);	        
-	        dynamic metadataAddress = managerDocument.CreateItem(addressDoc);	        
-	        dynamic metadataRegion = managerDocument.CreateItem(regionDoc);
+            dynamic metadataPatient = managerDocument.CreateItem(patientDoc);
+            dynamic metadataAddress = managerDocument.CreateItem(addressDoc);
+            dynamic metadataRegion = managerDocument.CreateItem(regionDoc);
 
-			//patient document schema
+            //patient document schema
             metadataPatient.Schema = new DynamicWrapper();
             metadataPatient.Schema.Type = patientDoc;
             metadataPatient.Schema.Caption = patientDoc;
@@ -77,15 +78,15 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             metadataPatient.Schema.Properties.Address.TypeInfo.DocumentLink.Resolve = resolve;
             metadataPatient.Schema.Properties.Address.Caption = "Patient address";
 
-			//address document schema
+            //address document schema
             metadataAddress.Schema = new DynamicWrapper();
             metadataAddress.Schema.Type = addressDoc;
             metadataAddress.Schema.Caption = addressDoc;
-			metadataAddress.Schema.Properties = new DynamicWrapper();
+            metadataAddress.Schema.Properties = new DynamicWrapper();
 
-			metadataAddress.Schema.Properties.City = new DynamicWrapper();
-			metadataAddress.Schema.Properties.City.Type = "String";
-			metadataAddress.Schema.Properties.City.Caption = "Address city";
+            metadataAddress.Schema.Properties.City = new DynamicWrapper();
+            metadataAddress.Schema.Properties.City.Type = "String";
+            metadataAddress.Schema.Properties.City.Caption = "Address city";
 
             metadataAddress.Schema.Properties.Region = new DynamicWrapper();
             metadataAddress.Schema.Properties.Region.Type = "Object";
@@ -94,7 +95,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             metadataAddress.Schema.Properties.Region.TypeInfo.DocumentLink.ConfigId = configurationId;
             metadataAddress.Schema.Properties.Region.TypeInfo.DocumentLink.DocumentId = regionDoc;
             metadataAddress.Schema.Properties.Region.TypeInfo.DocumentLink.Inline = inline;
-			metadataAddress.Schema.Properties.Region.TypeInfo.DocumentLink.Resolve = resolve;
+            metadataAddress.Schema.Properties.Region.TypeInfo.DocumentLink.Resolve = resolve;
 
             metadataAddress.Schema.Properties.PreviousRegions = new DynamicWrapper();
             metadataAddress.Schema.Properties.PreviousRegions.Type = "Array";
@@ -105,7 +106,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             metadataAddress.Schema.Properties.PreviousRegions.Items.TypeInfo.DocumentLink.DocumentId = regionDoc;
             metadataAddress.Schema.Properties.PreviousRegions.Items.TypeInfo.DocumentLink.Inline = inline;
 
-			//документ-регион
+            //документ-регион
             metadataRegion.Schema = new DynamicWrapper();
             metadataRegion.Schema.Type = regionDoc;
             metadataRegion.Schema.Caption = regionDoc;
@@ -126,22 +127,22 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             new UpdateApi(null).UpdateStore(configurationId);
 
-	        string firstItemId = null;
+            string firstItemId = null;
 
             for (int i = 0; i < 100; i++)
-            {			
-                var parentUid = Guid.NewGuid().ToString();
+            {
+                string parentUid = Guid.NewGuid().ToString();
 
-                var childUid = Guid.NewGuid().ToString();
+                string childUid = Guid.NewGuid().ToString();
 
-	            if (i == 0)
-	            {
-		            firstItemId = childUid;
-	            }
+                if (i == 0)
+                {
+                    firstItemId = childUid;
+                }
 
-	            var linkInChildObjectId = Guid.NewGuid().ToString();
+                string linkInChildObjectId = Guid.NewGuid().ToString();
 
-                var linkInChildArrayId = Guid.NewGuid().ToString();
+                string linkInChildArrayId = Guid.NewGuid().ToString();
 
                 //главный документ
                 dynamic itemDoc1 = new DynamicWrapper();
@@ -177,10 +178,10 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                 dynamic itemDoc4 = new List<dynamic>();
                 itemDoc4.Add(
                     new
-                    {
-                        Id = linkInChildArrayId,
-                        RegionName = "УРАЛЬСКИЙ РЕГИОН"
-                    }.ToDynamic());
+                        {
+                            Id = linkInChildArrayId,
+                            RegionName = "УРАЛЬСКИЙ РЕГИОН"
+                        }.ToDynamic());
 
                 if (inline)
                 {
@@ -194,7 +195,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                     itemDoc2.PreviousRegions = new List<dynamic>();
                     itemDoc2.PreviousRegions.Add(refRegion);
                 }
-                
+
                 new DocumentApi(null).SetDocument(configurationId, patientDoc, itemDoc1);
                 new DocumentApi(null).SetDocument(configurationId, addressDoc, itemDoc2);
 
@@ -207,32 +208,35 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             //Then
             dynamic document = new DocumentApi(null).GetDocument(configurationId, patientDoc,
-                null, 0, 20)
-                .FirstOrDefault();
+                                                                 null, 0, 20)
+                                                    .FirstOrDefault();
 
             //повторно для исключения времени динамической инициализации CallSite
-            var watch = Stopwatch.StartNew();
+            Stopwatch watch = Stopwatch.StartNew();
             document = new DocumentApi(null).GetDocument(configurationId, patientDoc,
-                                                 null, 0,50)
-                                    .FirstOrDefault();
+                                                         null, 0, 50)
+                                            .FirstOrDefault();
 
             watch.Stop();
             Console.WriteLine(watch.ElapsedMilliseconds);
 
-	        if (!inline)
-	        {
-		        document = new DocumentApi(null).GetDocument(configurationId, patientDoc,
-		                                                 f =>
-		                                                 f.AddCriteria(
-															 c => c.Property("Address.Region.RegionName").IsEquals("УРАЛЬСКИЙ РЕГИОН")), 0, 10).FirstOrDefault();
-				Assert.IsNotNull(document);
-	        }
+            if (!inline)
+            {
+                document = new DocumentApi(null).GetDocument(configurationId, patientDoc,
+                                                             f =>
+                                                             f.AddCriteria(
+                                                                 c =>
+                                                                 c.Property("Address.Region.RegionName")
+                                                                  .IsEquals("УРАЛЬСКИЙ РЕГИОН")), 0, 10)
+                                                .FirstOrDefault();
+                Assert.IsNotNull(document);
+            }
 
-	        if (resolve)
+            if (resolve)
             {
                 Assert.IsNotNull(document);
                 Assert.IsNotNull(document.Address.City);
-                Assert.IsNotNull(document.Address.PreviousRegions); 
+                Assert.IsNotNull(document.Address.PreviousRegions);
             }
             else
             {
@@ -251,6 +255,5 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             Console.WriteLine(watch.Elapsed);
             Assert.True(watch.ElapsedMilliseconds < 150);
         }
-
     }
 }
