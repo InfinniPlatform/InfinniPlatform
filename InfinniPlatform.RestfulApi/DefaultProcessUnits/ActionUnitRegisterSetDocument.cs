@@ -1,14 +1,12 @@
 ﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
-using InfinniPlatform.Api.Factories;
 using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Runtime;
+using InfinniPlatform.Sdk.Application.Contracts;
 
 namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
 {
     /// <summary>
-    ///   Обработчик занесения данных документа в регистр после успешного сохранения документа (при стандартном сохранении документа)
+    ///     Обработчик занесения данных документа в регистр после успешного сохранения документа (при стандартном сохранении документа)
     /// </summary>
     public sealed class ActionUnitRegisterSetDocument
     {
@@ -22,13 +20,15 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                 target.Item.Configuration.ToLowerInvariant() != "restfulapi")
             {
                 //ищем метаданные бизнес-процесса по умолчанию документа 
-                defaultBusinessProcess = target.Context.GetComponent<IMetadataComponent>(target.Version).GetMetadata(target.Version, target.Item.Configuration, target.Item.Metadata, MetadataType.Process, "Default");
-			}
+                defaultBusinessProcess =
+                    target.Context.GetComponent<IMetadataComponent>(target.Version)
+                          .GetMetadata(target.Version, target.Item.Configuration, target.Item.Metadata,
+                                       MetadataType.Process, "Default");
+            }
             else
             {
                 return;
             }
-
 
 
             if (defaultBusinessProcess != null && defaultBusinessProcess.Transitions[0].RegisterPoint != null)
@@ -40,8 +40,10 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                 scriptArguments.Item.Metadata = target.Item.Metadata;
                 scriptArguments.Context = target.Context;
 
-                target.Context.GetComponent<IScriptRunnerComponent>(target.Version).GetScriptRunner(target.Version, target.Item.Configuration).InvokeScript(
-                    defaultBusinessProcess.Transitions[0].RegisterPoint.ScenarioId, scriptArguments);
+                target.Context.GetComponent<IScriptRunnerComponent>(target.Version)
+                      .GetScriptRunner(target.Version, target.Item.Configuration)
+                      .InvokeScript(
+                          defaultBusinessProcess.Transitions[0].RegisterPoint.ScenarioId, scriptArguments);
             }
         }
     }

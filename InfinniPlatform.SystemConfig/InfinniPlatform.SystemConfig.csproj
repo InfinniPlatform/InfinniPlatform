@@ -11,6 +11,8 @@
     <AssemblyName>InfinniPlatform.SystemConfig</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -160,6 +162,10 @@
       <Project>{CDF6744F-CDDE-4A4F-90EA-64286D86695D}</Project>
       <Name>InfinniPlatform.Reporting</Name>
     </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Sdk.Application\InfinniPlatform.Sdk.Application.csproj">
+      <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
+      <Name>InfinniPlatform.Sdk.Application</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.WebApi\InfinniPlatform.WebApi.csproj">
       <Project>{86AB4502-9B73-43B5-8A20-F01AADE0EDA4}</Project>
       <Name>InfinniPlatform.WebApi</Name>
@@ -180,6 +186,7 @@
       <LastGenOutput>AssemblyInfo.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

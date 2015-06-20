@@ -1,36 +1,34 @@
 ﻿using System;
-using System.Linq;
 using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Sdk.Application.Contracts;
 
 namespace InfinniPlatform.SystemConfig.Configurator
 {
-	/// <summary>
-	///   Поиск объекта метаданных по наименованию, если оно предоставлено в качестве идентификатора
-	///   Возвращается первый найденный элемент
-	/// </summary>
-	public sealed class ActionUnitFilterMetadata
-	{
-		public void Action(IProcessEventContext target)
-		{
-			if (target.Id == null)
-			{
-				return;
-			}
+    /// <summary>
+    ///     Поиск объекта метаданных по наименованию, если оно предоставлено в качестве идентификатора
+    ///     Возвращается первый найденный элемент
+    /// </summary>
+    public sealed class ActionUnitFilterMetadata
+    {
+        public void Action(IProcessEventContext target)
+        {
+            if (target.Id == null)
+            {
+                return;
+            }
 
-			Guid guid;
+            Guid guid;
 
-			if (!Guid.TryParse(target.Id, out guid))
-			{
-               
-				var eventNameMetadata = target.Id;
+            if (!Guid.TryParse(target.Id, out guid))
+            {
+                var eventNameMetadata = target.Id;
 
-			    var managerIdentifiers = target.Context.GetComponent<ISystemComponent>(target.Version).ManagerIdentifiers;
+                var managerIdentifiers =
+                    target.Context.GetComponent<ISystemComponent>(target.Version).ManagerIdentifiers;
 
                 target.Id = managerIdentifiers.GetConfigurationUid(target.Version, eventNameMetadata);
-			}
+            }
 
             dynamic document;
 
@@ -44,7 +42,6 @@ namespace InfinniPlatform.SystemConfig.Configurator
                     target.Item = document;
                 }
             }
-
-		}
-	}
+        }
+    }
 }

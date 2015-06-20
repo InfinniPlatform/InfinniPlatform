@@ -1,31 +1,31 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Metadata;
+using InfinniPlatform.Sdk.Application.Contracts;
 
 namespace InfinniPlatform.SystemConfig.Configurator
 {
-	public sealed class ActionUnitRunVerification
-	{
+    public sealed class ActionUnitRunVerification
+    {
         // Пока имя сборки с классами миграций прописано жестко.
         // Возможно, необходимо вынести это в настройки
         private const string AssemblyName = "InfinniPlatform.MigrationsAndVerifications.dll";
 
         public void Action(IApplyContext target)
-		{
-		    string verificationName = target.Item.VerificationName.ToString();
+        {
+            string verificationName = target.Item.VerificationName.ToString();
             string configurationName = target.Item.ConfigurationName.ToString();
-            
-            var assembly = Assembly.Load(
-                new AssemblyName
-                {
-                    CodeBase = AssemblyName
-                });
 
-            var verificationClass = assembly.GetTypes().Where(
-                t => typeof(IConfigurationVerification).IsAssignableFrom(t))
-                .FirstOrDefault(t => t.Name == verificationName);
+            Assembly assembly = Assembly.Load(
+                new AssemblyName
+                    {
+                        CodeBase = AssemblyName
+                    });
+
+            Type verificationClass = assembly.GetTypes().Where(
+                t => typeof (IConfigurationVerification).IsAssignableFrom(t))
+                                             .FirstOrDefault(t => t.Name == verificationName);
 
             if (verificationClass == null)
             {
@@ -33,7 +33,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
             }
             else
             {
-                var migration = (IConfigurationVerification)Activator.CreateInstance(verificationClass);
+                var migration = (IConfigurationVerification) Activator.CreateInstance(verificationClass);
 
                 migration.AssignActiveConfiguration(target.Version, configurationName, target.Context);
 
@@ -43,6 +43,6 @@ namespace InfinniPlatform.SystemConfig.Configurator
 
                 target.Result = message;
             }
-		}
-	}
+        }
+    }
 }

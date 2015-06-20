@@ -9,13 +9,14 @@ using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Settings;
 using InfinniPlatform.Metadata;
+using InfinniPlatform.Sdk.Application.Contracts;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Verifications
 {
     public sealed class ScenariosVerification : IConfigurationVerification
     {
         /// <summary>
-        /// Конфигурация, к которой применяется правило проверки
+        ///     Конфигурация, к которой применяется правило проверки
         /// </summary>
         private string _activeConfiguration;
 
@@ -23,7 +24,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
         private string _version;
 
         /// <summary>
-        /// Текстовое описание правила проверки
+        ///     Текстовое описание правила проверки
         /// </summary>
         public string Description
         {
@@ -31,9 +32,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
         }
 
         /// <summary>
-        /// Идентификатор конфигурации, к которой применима проверка.
-        /// В том случае, если идентификатор не указан (null or empty string), 
-        /// проверка применима ко всем конфигурациям
+        ///     Идентификатор конфигурации, к которой применима проверка.
+        ///     В том случае, если идентификатор не указан (null or empty string),
+        ///     проверка применима ко всем конфигурациям
         /// </summary>
         public string ConfigurationId
         {
@@ -41,9 +42,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
         }
 
         /// <summary>
-        /// Версия конфигурации, к которой применимо правило проверки.
-        /// В том случае, если версия не указана (null or empty string), 
-        /// правило применимо к любой версии конфигурации
+        ///     Версия конфигурации, к которой применимо правило проверки.
+        ///     В том случае, если версия не указана (null or empty string),
+        ///     правило применимо к любой версии конфигурации
         /// </summary>
         public string ConfigVersion
         {
@@ -51,23 +52,23 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
         }
 
         /// <summary>
-        /// Выполнить проверку
+        ///     Выполнить проверку
         /// </summary>
         /// <param name="message">Информативное сообщение с результатом выполнения действия</param>
         /// <returns>Результат выполнения проверки</returns>
         public bool Check(out string message)
         {
-            var result = true;
+            bool result = true;
             var resultMessage = new StringBuilder();
-            
+
             // Получаем информацию обо всех сценариях из сборок, подцепленных к конфигурации
 
-            var assemblyMetadataReader =
+            IDataReader assemblyMetadataReader =
                 new ManagerFactoryConfiguration(_version, _activeConfiguration).BuildAssemblyMetadataReader();
-            
+
             var scripts = new List<string>();
 
-            foreach (var appliedAssembly in assemblyMetadataReader.GetItems())
+            foreach (dynamic appliedAssembly in assemblyMetadataReader.GetItems())
             {
                 Assembly sourceAssembly = LoadAppliedAssembly(appliedAssembly.Name.ToString());
 
@@ -76,14 +77,14 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
                     scripts.AddRange(BuildScriptNames(sourceAssembly));
                 }
             }
-            
+
             // Считываем имена всех сценариев, хранящихся в метаднных конфигурации и
             // проверяем, что сценарии имеются в списке scripts, сформированном ранее
 
-            var documentMetadataReader =
+            IDataReader documentMetadataReader =
                 new ManagerFactoryConfiguration(_version, _activeConfiguration).BuildDocumentMetadataReader();
 
-            foreach (var document in documentMetadataReader.GetItems())
+            foreach (dynamic document in documentMetadataReader.GetItems())
             {
                 if (document.Name.ToString() == "Common")
                 {
@@ -91,24 +92,27 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
                     continue;
                 }
 
-                var scenariosReader =  new ManagerFactoryDocument(_version, _activeConfiguration, document.Name.ToString())
-                    .BuildScenarioManager().MetadataReader;
+                IDataReader scenariosReader =
+                    new ManagerFactoryDocument(_version, _activeConfiguration, document.Name.ToString())
+                        .BuildScenarioManager().MetadataReader;
 
-                foreach (var scenario in scenariosReader.GetItems())
+                foreach (dynamic scenario in scenariosReader.GetItems())
                 {
-                    var match = scripts.FirstOrDefault(
+                    string match = scripts.FirstOrDefault(
                         s => string.Compare(s, scenario.Name.ToString(), StringComparison.OrdinalIgnoreCase) == 0);
 
                     if (match == null)
                     {
                         result = false;
                         resultMessage.AppendLine();
-                        resultMessage.AppendFormat("Scenario {0} was not found in configuration assemblies.", scenario.Name.ToString());
+                        resultMessage.AppendFormat("Scenario {0} was not found in configuration assemblies.",
+                                                   scenario.Name.ToString());
                     }
                     else
                     {
                         resultMessage.AppendLine();
-                        resultMessage.AppendFormat("Scenario {0} was found in configuration assemblies.", scenario.Name.ToString());
+                        resultMessage.AppendFormat("Scenario {0} was found in configuration assemblies.",
+                                                   scenario.Name.ToString());
                     }
                 }
             }
@@ -125,23 +129,22 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
         }
 
         /// <summary>
-        /// Устанавливает активную конфигурацию для правила проверки
+        ///     Устанавливает активную конфигурацию для правила проверки
         /// </summary>
         public void AssignActiveConfiguration(string version, string configurationId, IGlobalContext context)
         {
             _activeConfiguration = configurationId;
             _version = version;
-
         }
 
         private static Assembly LoadAppliedAssembly(string assemblyName)
         {
-            var relativePath = AppSettings.GetValue("AppliedAssemblies");
-            var pathToAssemblies = relativePath != null
-                ? Path.GetFullPath(relativePath)
-                : Directory.GetCurrentDirectory();
+            string relativePath = AppSettings.GetValue("AppliedAssemblies");
+            string pathToAssemblies = relativePath != null
+                                          ? Path.GetFullPath(relativePath)
+                                          : Directory.GetCurrentDirectory();
 
-            var assemblyFileName = Path.Combine(pathToAssemblies, assemblyName);
+            string assemblyFileName = Path.Combine(pathToAssemblies, assemblyName);
             if (File.Exists(assemblyFileName + ".dll"))
             {
                 return Assembly.LoadFile(assemblyFileName + ".dll");
@@ -154,15 +157,15 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
 
             return null;
         }
-        
+
         private static IEnumerable<string> BuildScriptNames(Assembly assembly)
         {
             var result = new List<string>();
 
             var scriptInfoProvider = new ScriptInfoProvider(assembly);
-            var infoList = scriptInfoProvider.GetScriptMethodsInfo();
+            IEnumerable<dynamic> infoList = scriptInfoProvider.GetScriptMethodsInfo();
 
-            result.AddRange(infoList.Select(o => (string)o.TypeName.ToString()));
+            result.AddRange(infoList.Select(o => (string) o.TypeName.ToString()));
 
             return result;
         }

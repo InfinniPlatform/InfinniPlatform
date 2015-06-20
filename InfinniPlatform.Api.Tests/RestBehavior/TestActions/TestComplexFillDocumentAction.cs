@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.ContextTypes;
+﻿using InfinniPlatform.Sdk.Application.Contracts;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
 {
-	public sealed class TestComplexFillDocumentAction
-	{
-		public void Action(IApplyContext target)
-		{
-			target.Item.PrefiledField = "TestValue";
-		}
-	}
+    public sealed class TestComplexFillDocumentAction
+    {
+        public void Action(IApplyContext target)
+        {
+            target.Item.PrefiledField = "TestValue";
+        }
+    }
 }

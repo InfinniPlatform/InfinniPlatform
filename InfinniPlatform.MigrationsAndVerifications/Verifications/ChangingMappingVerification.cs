@@ -1,46 +1,42 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using InfinniPlatform.Api.Context;
 using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Factories;
-using InfinniPlatform.Index;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
-using InfinniPlatform.Metadata;
 using InfinniPlatform.MigrationsAndVerifications.Helpers;
+using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Application.Dynamic;
 using InfinniPlatform.SystemConfig.RoutingFactory;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Verifications
 {
     /// <summary>
-    /// Верификация позволяет найти документы, маппинг которых был изменен
+    ///     Верификация позволяет найти документы, маппинг которых был изменен
     /// </summary>
     public sealed class ChangingMappingVerification : IConfigurationVerification
     {
         private readonly IIndexFactory _indexFactory;
+
+        /// <summary>
+        ///     Конфигурация, к которой применяется правило проверки
+        /// </summary>
+        private string _activeConfiguration;
+
+        private IGlobalContext _context;
+        private string _version;
 
         public ChangingMappingVerification()
         {
             _indexFactory = new ElasticFactory(new RoutingFactoryBase());
         }
 
+
         /// <summary>
-        /// Конфигурация, к которой применяется правило проверки
-        /// </summary>
-        private string _activeConfiguration;
-
-        private string _version;
-
-	    private IGlobalContext _context;
-
-
-	    /// <summary>
-        /// Текстовое описание правила проверки
+        ///     Текстовое описание правила проверки
         /// </summary>
         public string Description
         {
@@ -48,9 +44,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
         }
 
         /// <summary>
-        /// Идентификатор конфигурации, к которой применима проверка.
-        /// В том случае, если идентификатор не указан (null or empty string), 
-        /// проверка применима ко всем конфигурациям
+        ///     Идентификатор конфигурации, к которой применима проверка.
+        ///     В том случае, если идентификатор не указан (null or empty string),
+        ///     проверка применима ко всем конфигурациям
         /// </summary>
         public string ConfigurationId
         {
@@ -58,9 +54,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
         }
 
         /// <summary>
-        /// Версия конфигурации, к которой применимо правило проверки.
-        /// В том случае, если версия не указана (null or empty string), 
-        /// правило применимо к любой версии конфигурации
+        ///     Версия конфигурации, к которой применимо правило проверки.
+        ///     В том случае, если версия не указана (null or empty string),
+        ///     правило применимо к любой версии конфигурации
         /// </summary>
         public string ConfigVersion
         {
@@ -68,28 +64,28 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
         }
 
         /// <summary>
-        /// Выполнить проверку
+        ///     Выполнить проверку
         /// </summary>
         /// <param name="message">Информативное сообщение с результатом выполнения действия</param>
         /// <returns>Результат выполнения проверки</returns>
         public bool Check(out string message)
         {
-            var result = true;
+            bool result = true;
             var resultMessage = new StringBuilder();
 
-	        var metadataConfiguration =
-		        _context.GetComponent<IConfigurationMediatorComponent>(_version)
-		                .ConfigurationBuilder.GetConfigurationObject(_version, _activeConfiguration)
-		                .MetadataConfiguration;
-				//_metadataConfigurationProvider.Configurations.FirstOrDefault(
-				//	c => c.ConfigurationId == _activeConfiguration);
+            var metadataConfiguration =
+                _context.GetComponent<IConfigurationMediatorComponent>(_version)
+                        .ConfigurationBuilder.GetConfigurationObject(_version, _activeConfiguration)
+                        .MetadataConfiguration;
+            //_metadataConfigurationProvider.Configurations.FirstOrDefault(
+            //	c => c.ConfigurationId == _activeConfiguration);
 
             if (metadataConfiguration != null)
             {
                 var containers = metadataConfiguration.Containers;
                 foreach (var containerId in containers)
                 {
-                    var versionBuilder = _indexFactory.BuildVersionBuilder(
+                    IVersionBuilder versionBuilder = _indexFactory.BuildVersionBuilder(
                         metadataConfiguration.ConfigurationId,
                         metadataConfiguration.GetMetadataIndexType(containerId),
                         metadataConfiguration.GetSearchAbilityType(containerId));
@@ -101,7 +97,11 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
                     if (schema != null)
                     {
                         // convert document schema to index mapping
-						props = DocumentSchemaHelper.ExtractProperties(_version, schema.Properties, _context.GetComponent<IConfigurationMediatorComponent>(_version).ConfigurationBuilder);
+                        props = DocumentSchemaHelper.ExtractProperties(_version, schema.Properties,
+                                                                       _context
+                                                                           .GetComponent
+                                                                           <IConfigurationMediatorComponent>(_version)
+                                                                           .ConfigurationBuilder);
                     }
 
                     if (!versionBuilder.VersionExists(props.Count > 0 ? new IndexTypeMapping(props) : null))
@@ -129,8 +129,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
                                 containerId);
                         }
 
-                        foreach (var process in
-                            new ManagerFactoryDocument(_version, _activeConfiguration, containerId).BuildProcessMetadataReader()
+                        foreach (dynamic process in
+                            new ManagerFactoryDocument(_version, _activeConfiguration, containerId)
+                                .BuildProcessMetadataReader()
                                 .GetItems())
                         {
                             if (process.Transitions != null)
@@ -163,11 +164,11 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
         }
 
         /// <summary>
-        /// Устанавливает активную конфигурацию для правила проверки
+        ///     Устанавливает активную конфигурацию для правила проверки
         /// </summary>
         public void AssignActiveConfiguration(string version, string configurationId, IGlobalContext context)
         {
-	        _context = context;
+            _context = context;
             _activeConfiguration = configurationId;
             _version = version;
         }

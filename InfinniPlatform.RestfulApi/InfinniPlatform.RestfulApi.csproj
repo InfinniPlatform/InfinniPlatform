@@ -11,6 +11,8 @@
     <AssemblyName>InfinniPlatform.RestfulApi</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -145,6 +147,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.Sdk.Application\InfinniPlatform.Sdk.Application.csproj">
+      <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
+      <Name>InfinniPlatform.Sdk.Application</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.SystemConfig\InfinniPlatform.SystemConfig.csproj">
       <Project>{6EFC2069-AFEB-453D-AD2C-3E170486A4F1}</Project>
       <Name>InfinniPlatform.SystemConfig</Name>
@@ -206,6 +212,7 @@
       <LastGenOutput>AssemblyInfo.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

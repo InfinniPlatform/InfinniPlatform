@@ -1,32 +1,30 @@
-﻿using InfinniPlatform.Api.Context;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Metadata;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using InfinniPlatform.Sdk.Application.Contracts;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 {
     /// <summary>
-    /// Миграция позволяет удалить тестовые данные из индексов 
+    ///     Миграция позволяет удалить тестовые данные из индексов
     /// </summary>
     public sealed class ClearTestDataMigration : IConfigurationMigration
     {
+        private readonly List<MigrationParameter> _parameters = new List<MigrationParameter>();
+
         /// <summary>
-        /// Конфигурация, к которой применяется миграция
+        ///     Конфигурация, к которой применяется миграция
         /// </summary>
         private string _activeConfiguration;
 
+        private string _version;
         private List<string> configurationContainers;
 
-        readonly List<MigrationParameter> _parameters = new List<MigrationParameter>();
-        private string _version;
-
         /// <summary>
-        /// Текстовое описание миграции
+        ///     Текстовое описание миграции
         /// </summary>
         public string Description
         {
@@ -34,9 +32,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        /// Идентификатор конфигурации, к которой применима миграция.
-        /// В том случае, если идентификатор не указан (null or empty string), 
-        /// миграция применима ко всем конфигурациям
+        ///     Идентификатор конфигурации, к которой применима миграция.
+        ///     В том случае, если идентификатор не указан (null or empty string),
+        ///     миграция применима ко всем конфигурациям
         /// </summary>
         public string ConfigurationId
         {
@@ -44,9 +42,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        /// Версия конфигурации, к которой применима миграция.
-        /// В том случае, если версия не указана (null or empty string), 
-        /// миграция применима к любой версии конфигурации
+        ///     Версия конфигурации, к которой применима миграция.
+        ///     В том случае, если версия не указана (null or empty string),
+        ///     миграция применима к любой версии конфигурации
         /// </summary>
         public string ConfigVersion
         {
@@ -54,7 +52,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        /// Признак того, что миграцию можно откатить
+        ///     Признак того, что миграцию можно откатить
         /// </summary>
         public bool IsUndoable
         {
@@ -62,7 +60,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        /// Выполнить миграцию
+        ///     Выполнить миграцию
         /// </summary>
         /// <param name="message">Информативное сообщение с результатом выполнения действия</param>
         /// <param name="parameters"></param>
@@ -71,16 +69,16 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
             var api = new DocumentApi(_version);
 
             var resultMessage = new StringBuilder();
-            
-            var containers = configurationContainers.ToArray();
+
+            string[] containers = configurationContainers.ToArray();
 
             for (int i = 0; i < containers.Length; i++)
             {
                 if (parameters[i].ToString() == "True")
                 {
-                    var docs = api.GetDocument(_activeConfiguration, containers[i], null, 0, 10000);
+                    IEnumerable<dynamic> docs = api.GetDocument(_activeConfiguration, containers[i], null, 0, 10000);
 
-                    foreach (var doc in docs)
+                    foreach (dynamic doc in docs)
                     {
                         api.DeleteDocument(_activeConfiguration, containers[i], doc.Id);
                     }
@@ -89,12 +87,12 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 
             resultMessage.AppendLine();
             resultMessage.AppendFormat("Migration completed.");
-            
+
             message = resultMessage.ToString();
         }
 
         /// <summary>
-        /// Отменить миграцию
+        ///     Отменить миграцию
         /// </summary>
         /// <param name="message">Информативное сообщение с результатом выполнения действия</param>
         /// <param name="parameters">Параметры миграции</param>
@@ -107,39 +105,39 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        /// Устанавливает активную конфигурацию для миграции
+        ///     Возвращает параметры миграции
+        /// </summary>
+        public IEnumerable<MigrationParameter> Parameters
+        {
+            get { return _parameters; }
+        }
+
+        /// <summary>
+        ///     Устанавливает активную конфигурацию для миграции
         /// </summary>
         public void AssignActiveConfiguration(string version, string configurationId, IGlobalContext context)
         {
             _version = version;
             _activeConfiguration = configurationId;
 
-	        var configObject =
-		        context.GetComponent<IConfigurationMediatorComponent>(_version)
-		               .ConfigurationBuilder.GetConfigurationObject(_version, _activeConfiguration);
+            var configObject =
+                context.GetComponent<IConfigurationMediatorComponent>(_version)
+                       .ConfigurationBuilder.GetConfigurationObject(_version, _activeConfiguration);
 
-	        IMetadataConfiguration metadataConfiguration = null;
-	        if (configObject != null)
-	        {
-		        metadataConfiguration = configObject.MetadataConfiguration;
-	        }
+            IMetadataConfiguration metadataConfiguration = null;
+            if (configObject != null)
+            {
+                metadataConfiguration = configObject.MetadataConfiguration;
+            }
 
-	        if (metadataConfiguration != null)
+            if (metadataConfiguration != null)
             {
                 configurationContainers = new List<string>(metadataConfiguration.Containers);
-                foreach (var containerId in configurationContainers)
+                foreach (string containerId in configurationContainers)
                 {
                     _parameters.Add(new MigrationParameter {Caption = containerId, InitialValue = true});
                 }
             }
-        }
-        
-        /// <summary>
-        /// Возвращает параметры миграции
-        /// </summary>
-        public IEnumerable<MigrationParameter> Parameters
-        {
-            get { return _parameters; }
         }
     }
 }

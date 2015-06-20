@@ -1,21 +1,19 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
+﻿using System.Collections.Generic;
+using System.Linq;
+using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Registers;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.SearchOptions;
-
-using InfinniPlatform.SystemConfig.Properties;
-
-using System.Collections.Generic;
-using System.Linq;
 using InfinniPlatform.Api.SearchOptions.Builders;
+using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.SystemConfig.Properties;
 
 namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
 {
     /// <summary>
-    /// Получение значений ресурсов в указанном диапазоне дат для регистра
+    ///     Получение значений ресурсов в указанном диапазоне дат для регистра
     /// </summary>
     public sealed class ActionUnitGetRegisterValuesBetweenDates
     {
@@ -26,9 +24,12 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
             string configurationId = target.Item.Configuration.ToString();
             string registerId = target.Item.Register.ToString();
             var specifiedDimensions = target.Item.Dimensions;
-            
-            var registerObject = target.Context.GetComponent<IMetadataComponent>(target.Version).GetMetadataList(target.Version, configurationId, registerId,MetadataType.Register).FirstOrDefault();
-			 
+
+            var registerObject =
+                target.Context.GetComponent<IMetadataComponent>(target.Version)
+                      .GetMetadataList(target.Version, configurationId, registerId, MetadataType.Register)
+                      .FirstOrDefault();
+
             if (registerObject == null)
             {
                 target.Result.IsValid = false;
@@ -36,14 +37,15 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
                 return;
             }
 
-            IEnumerable<dynamic> dimensions = specifiedDimensions == null ?
-                AggregationUtils.BuildDimensionsFromRegisterMetadata(registerObject) :
-                AggregationUtils.BuildDimensionsFromProperties(specifiedDimensions.ToArray());
+            IEnumerable<dynamic> dimensions = specifiedDimensions == null
+                                                  ? AggregationUtils.BuildDimensionsFromRegisterMetadata(registerObject)
+                                                  : AggregationUtils.BuildDimensionsFromProperties(
+                                                      specifiedDimensions.ToArray());
 
             var valueProperties = target.Item.ValueProperties ??
-                AggregationUtils.BuildValuePropertyFromRegisterMetadata(registerObject);
+                                  AggregationUtils.BuildValuePropertyFromRegisterMetadata(registerObject);
 
-            var valuePropertiesCount = 0;
+            int valuePropertiesCount = 0;
             var values = new List<string>();
 
             foreach (var valueProperty in valueProperties)
@@ -60,16 +62,18 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
                 resultFilter.AddRange(filter);
             }
 
-            resultFilter.AddRange(FilterBuilder.DateRangeCondition(RegisterConstants.DocumentDateProperty, startDate, stopDate));
+            resultFilter.AddRange(FilterBuilder.DateRangeCondition(RegisterConstants.DocumentDateProperty, startDate,
+                                                                   stopDate));
 
             IEnumerable<AggregationType> aggregationTypes;
 
             if (target.Item.ValueAggregationTypes != null)
             {
                 aggregationTypes = new List<AggregationType>();
-                foreach (var aggregationType in DynamicWrapperExtensions.ToEnumerable(target.Item.ValueAggregationTypes))
+                foreach (var aggregationType in DynamicWrapperExtensions.ToEnumerable(target.Item.ValueAggregationTypes)
+                    )
                 {
-                    (aggregationTypes as List<AggregationType>).Add((AggregationType)aggregationType);
+                    (aggregationTypes as List<AggregationType>).Add((AggregationType) aggregationType);
                 }
             }
             else
@@ -78,7 +82,7 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
                 aggregationTypes = AggregationUtils.BuildAggregationType(AggregationType.Sum, valuePropertiesCount);
             }
 
-            var aggregationResult = RestQueryApi.QueryAggregationRaw(
+            IEnumerable<dynamic> aggregationResult = RestQueryApi.QueryAggregationRaw(
                 "SystemConfig",
                 "metadata",
                 "aggregate",
@@ -90,12 +94,12 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
                 values,
                 0,
                 10000)
-                .ToDynamicList();
+                                                                 .ToDynamicList();
 
             // Выполняем обработку результата агрегации, чтобы представить полученные данные в табличном виде
             target.Result = AggregationUtils.ProcessBuckets(
                 dimensions.Select(d => (string) d.FieldName).ToArray(),
-                values.ToArray(), 
+                values.ToArray(),
                 aggregationResult);
         }
     }

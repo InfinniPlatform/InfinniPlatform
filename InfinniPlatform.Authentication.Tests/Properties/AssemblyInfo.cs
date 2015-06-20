@@ -1,19 +1,9 @@
-﻿
-
-
-
-
-
-
-
-
-
+﻿// 1
+// 0
+// 0
 // 1
-// 0
-// 0
-// 0
-// f3e7ab94-f814-4116-9dfe-cdbdb57cef73
-// 44E868ED15D9349A9EE3B1500EBC922C
+// c480104c-2224-4fd9-a54f-7db8e2f481fd
+// 4C91D55152D82CB54CAFF1B3D2ABC85A
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -26,9 +16,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
-[assembly: Guid("f3e7ab94-f814-4116-9dfe-cdbdb57cef73")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
-
+[assembly: Guid("c480104c-2224-4fd9-a54f-7db8e2f481fd")]
+[assembly: AssemblyVersion("1.0.0.1")]
+[assembly: AssemblyFileVersion("1.0.0.1")]
 
 [assembly: AssemblyDescription("InfinniPlatform.Authentication.Tests")]

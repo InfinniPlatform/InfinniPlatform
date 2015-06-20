@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.ContextComponents;
+﻿using InfinniPlatform.ContextComponents;
+using InfinniPlatform.Sdk.Application.Contracts;
 
 namespace InfinniPlatform.RestfulApi.Auth
 {
     /// <summary>
-    ///   Модуль вызова обновления данных о ролях пользователей в кэше
+    ///     Модуль вызова обновления данных о ролях пользователей в кэше
     /// </summary>
     public sealed class ActionUnitUpdateUserRoles
     {

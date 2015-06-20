@@ -1,34 +1,34 @@
-﻿using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.ContextComponents;
+﻿using InfinniPlatform.ContextComponents;
+using InfinniPlatform.Sdk.Application.Contracts;
 
 namespace InfinniPlatform.SystemConfig.Configurator
 {
-	/// <summary>
-	///   Обновление кэша метаданных при изменении объектов в хранилище
-	/// </summary>
-	public sealed class ActionUnitRefreshMetadataCache
-	{
-		public void Action(IApplyContext target)
-		{
-		    if (target.Item.IsElementDeleted != null &&
-		        target.Item.IsElementDeleted == true)
-		    {
-				target.Context.GetComponent<MetadataComponent>(target.Version).DeleteMetadata(
+    /// <summary>
+    ///     Обновление кэша метаданных при изменении объектов в хранилище
+    /// </summary>
+    public sealed class ActionUnitRefreshMetadataCache
+    {
+        public void Action(IApplyContext target)
+        {
+            if (target.Item.IsElementDeleted != null &&
+                target.Item.IsElementDeleted == true)
+            {
+                target.Context.GetComponent<MetadataComponent>(target.Version).DeleteMetadata(
                     target.Version,
-		            target.Item.ConfigId,
-		            target.Item.DocumentId,
-		            target.Item.MetadataType,
-		            target.Item.MetadataName);
-		    }
-		    else
-		    {
-				target.Context.GetComponent<MetadataComponent>(target.Version).UpdateMetadata(
+                    target.Item.ConfigId,
+                    target.Item.DocumentId,
+                    target.Item.MetadataType,
+                    target.Item.MetadataName);
+            }
+            else
+            {
+                target.Context.GetComponent<MetadataComponent>(target.Version).UpdateMetadata(
                     target.Version,
-		            target.Item.ConfigId,
-		            target.Item.DocumentId,
-		            target.Item.MetadataType,
-		            target.Item.MetadataName);
-		    }
-		}
-	}
+                    target.Item.ConfigId,
+                    target.Item.DocumentId,
+                    target.Item.MetadataType,
+                    target.Item.MetadataName);
+            }
+        }
+    }
 }

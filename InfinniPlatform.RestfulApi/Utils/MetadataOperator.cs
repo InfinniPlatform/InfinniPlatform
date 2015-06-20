@@ -1,83 +1,84 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.Validation;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.RestfulApi.Utils
 {
-	public sealed class MetadataOperator
-	{
+    public sealed class MetadataOperator
+    {
+        private readonly DocumentLinkMap _linkMap;
         private readonly IMetadataComponent _metadataComponent;
-		private readonly DocumentLinkMap _linkMap;
-	    private List<dynamic> _typeInfoChain;
+        private readonly List<dynamic> _typeInfoChain;
 
-	    public MetadataOperator(IMetadataComponent metadataComponent, DocumentLinkMap linkMap, IEnumerable<dynamic> typeInfoChain = null)
-		{
+        public MetadataOperator(IMetadataComponent metadataComponent, DocumentLinkMap linkMap,
+                                IEnumerable<dynamic> typeInfoChain = null)
+        {
             _metadataComponent = metadataComponent;
-			_linkMap = linkMap;
-	        if (typeInfoChain != null)
-	        {
-	            _typeInfoChain = typeInfoChain.ToList();
-	        }
-	        else
-	        {
-	            _typeInfoChain = new List<dynamic>();
-	        }
-		}
+            _linkMap = linkMap;
+            if (typeInfoChain != null)
+            {
+                _typeInfoChain = typeInfoChain.ToList();
+            }
+            else
+            {
+                _typeInfoChain = new List<dynamic>();
+            }
+        }
 
-	    public IEnumerable<dynamic> TypeInfoChain
-	    {
-	        get { return _typeInfoChain; }
-	    }
-
-
-	    public void ProcessMetadata(string version, dynamic document, dynamic typeInfo)
-		{
-			if (document == null)
-			{
-				throw new ArgumentException("document should not be null");
-			}
-
-		
-			if (typeInfo == null ||  string.IsNullOrEmpty(typeInfo.ConfigId) || string.IsNullOrEmpty(typeInfo.DocumentId) )
-			{
-				return;				
-			}
+        public IEnumerable<dynamic> TypeInfoChain
+        {
+            get { return _typeInfoChain; }
+        }
 
 
-		    IEnumerable<dynamic> metadataList = _metadataComponent.GetMetadataList(version, typeInfo.ConfigId, typeInfo.DocumentId, MetadataType.Schema);
+        public void ProcessMetadata(string version, dynamic document, dynamic typeInfo)
+        {
+            if (document == null)
+            {
+                throw new ArgumentException("document should not be null");
+            }
 
-		    var schema = metadataList.FirstOrDefault();
 
-			//обрабатываем связанные документы
-			if (schema != null && schema.Properties != null)
-			{
-				dynamic properties = schema.Properties;
+            if (typeInfo == null || string.IsNullOrEmpty(typeInfo.ConfigId) || string.IsNullOrEmpty(typeInfo.DocumentId))
+            {
+                return;
+            }
 
-			    foreach (var property in properties)
-			    {
-			        if (property.Value.Type != null &&
-			            property.Value.Type.ToLowerInvariant() == "object" &&
-			            property.Value.TypeInfo != null &&
-			            property.Value.TypeInfo.DocumentLink != null)
-			        {
-			            var documentLink = document[property.Key];
 
-			            if (property.Value.TypeInfo.DocumentLink.Resolve == true && documentLink != null)
-			            {
-			                dynamic property1 = property;
-			                Action<object> setValueAction = value => document[property1.Key] = value;
+            IEnumerable<dynamic> metadataList = _metadataComponent.GetMetadataList(version, typeInfo.ConfigId,
+                                                                                   typeInfo.DocumentId,
+                                                                                   MetadataType.Schema);
 
-			                _linkMap.RegisterLink(
-			                    property.Value.TypeInfo.DocumentLink.ConfigId,
-			                    property.Value.TypeInfo.DocumentLink.DocumentId,
-			                    documentLink != null ? documentLink.Id : null,
-			                    setValueAction);
-			            }
+            dynamic schema = metadataList.FirstOrDefault();
+
+            //обрабатываем связанные документы
+            if (schema != null && schema.Properties != null)
+            {
+                dynamic properties = schema.Properties;
+
+                foreach (dynamic property in properties)
+                {
+                    if (property.Value.Type != null &&
+                        property.Value.Type.ToLowerInvariant() == "object" &&
+                        property.Value.TypeInfo != null &&
+                        property.Value.TypeInfo.DocumentLink != null)
+                    {
+                        dynamic documentLink = document[property.Key];
+
+                        if (property.Value.TypeInfo.DocumentLink.Resolve == true && documentLink != null)
+                        {
+                            dynamic property1 = property;
+                            Action<object> setValueAction = value => document[property1.Key] = value;
+
+                            _linkMap.RegisterLink(
+                                property.Value.TypeInfo.DocumentLink.ConfigId,
+                                property.Value.TypeInfo.DocumentLink.DocumentId,
+                                documentLink != null ? documentLink.Id : null,
+                                setValueAction);
+                        }
 
                         if (TypeInfoChain.Any(t => t.ConfigId == property.Value.TypeInfo.DocumentLink.ConfigId &&
                                                    t.DocumentId == property.Value.TypeInfo.DocumentLink.DocumentId))
@@ -87,65 +88,69 @@ namespace InfinniPlatform.RestfulApi.Utils
 
                         _typeInfoChain.Add(property.Value.TypeInfo.DocumentLink);
 
-			            if (property.Value.TypeInfo.DocumentLink.Inline == true && documentLink != null)
-			            {
-			                ProcessMetadata(version, documentLink, property.Value.TypeInfo.DocumentLink);
-			            }
-			        }
+                        if (property.Value.TypeInfo.DocumentLink.Inline == true && documentLink != null)
+                        {
+                            ProcessMetadata(version, documentLink, property.Value.TypeInfo.DocumentLink);
+                        }
+                    }
 
-			        if (property.Value.Type != null &&
-			            property.Value.Type.ToLowerInvariant() == "array" &&
-			            property.Value.Items != null &&
-			            property.Value.Items.TypeInfo != null &&
-			            property.Value.Items.TypeInfo.DocumentLink != null)
-			        {
-			            var documentLinks = document[property.Key];
+                    if (property.Value.Type != null &&
+                        property.Value.Type.ToLowerInvariant() == "array" &&
+                        property.Value.Items != null &&
+                        property.Value.Items.TypeInfo != null &&
+                        property.Value.Items.TypeInfo.DocumentLink != null)
+                    {
+                        dynamic documentLinks = document[property.Key];
 
-			            if (documentLinks != null)
-			            {
-			                if (property.Value.Items.TypeInfo.DocumentLink.Resolve == true)
-			                {
-			                    foreach (var documentLink in documentLinks)
-			                    {
-				                    dynamic link = documentLink;
+                        if (documentLinks != null)
+                        {
+                            if (property.Value.Items.TypeInfo.DocumentLink.Resolve == true)
+                            {
+                                foreach (dynamic documentLink in documentLinks)
+                                {
+                                    dynamic link = documentLink;
 
                                     //выполняется при разрешении ссылок на документ.
                                     //в случае успешного разрешения необходимо удалить объекты с разрешенной ссылкой из списка
-			                        Action<object> setValueAction = value =>
-			                        {
-			                            dynamic arrayToAddResolvedDocument = document[property.Key];
-										dynamic propValue = value;
+                                    Action<object> setValueAction = value =>
+                                        {
+                                            dynamic arrayToAddResolvedDocument = document[property.Key];
+                                            dynamic propValue = value;
 
-										propValue.DisplayName = link.DisplayName;
+                                            propValue.DisplayName = link.DisplayName;
 
-			                            var removeValue = ((IList<dynamic>) arrayToAddResolvedDocument).FirstOrDefault(r => r.Id == propValue.Id);
-			                            if (removeValue != null)
-			                            {
-			                                ObjectHelper.RemoveItem(arrayToAddResolvedDocument,removeValue);
-			                            }
+                                            dynamic removeValue =
+                                                ((IList<dynamic>) arrayToAddResolvedDocument).FirstOrDefault(
+                                                    r => r.Id == propValue.Id);
+                                            if (removeValue != null)
+                                            {
+                                                ObjectHelper.RemoveItem(arrayToAddResolvedDocument, removeValue);
+                                            }
 
-			                            arrayToAddResolvedDocument.Add(value);
-			                        };
+                                            arrayToAddResolvedDocument.Add(value);
+                                        };
 
-			                        _linkMap.RegisterLink(
+                                    _linkMap.RegisterLink(
                                         property.Value.Items.TypeInfo.DocumentLink.ConfigId,
                                         property.Value.Items.TypeInfo.DocumentLink.DocumentId,
                                         documentLink != null ? documentLink.Id : null,
                                         setValueAction);
-			                    }
+                                }
 
-			                    //document[property.Key] = null;
-			                }
+                                //document[property.Key] = null;
+                            }
 
-			                if (property.Value.Items.TypeInfo.DocumentLink.Inline == true)
-			                {
-			                    foreach (var documentLink in documentLinks)
-			                    {
-                                    if (TypeInfoChain.Any(t => t.ConfigId == property.Value.Items.TypeInfo.DocumentLink.ConfigId &&
-                                                               t.DocumentId == property.Value.Items.TypeInfo.DocumentLink.DocumentId))
+                            if (property.Value.Items.TypeInfo.DocumentLink.Inline == true)
+                            {
+                                foreach (dynamic documentLink in documentLinks)
+                                {
+                                    if (
+                                        TypeInfoChain.Any(
+                                            t => t.ConfigId == property.Value.Items.TypeInfo.DocumentLink.ConfigId &&
+                                                 t.DocumentId == property.Value.Items.TypeInfo.DocumentLink.DocumentId))
                                     {
                                         continue;
-			                    }
+                                    }
 
                                     _typeInfoChain.Add(property.Value.Items.TypeInfo.DocumentLink);
 
@@ -154,32 +159,33 @@ namespace InfinniPlatform.RestfulApi.Utils
 
                                     foreach (dynamic innerProperty in property.Value.Items.Properties)
                                     {
-                                        if (innerProperty.Value.TypeInfo != null && innerProperty.Value.TypeInfo.DocumentLink != null)
+                                        if (innerProperty.Value.TypeInfo != null &&
+                                            innerProperty.Value.TypeInfo.DocumentLink != null)
                                         {
                                             Action<object> setValueAction = (value) =>
                                                 {
-													dynamic propValue = value;
-													propValue.DisplayName = documentLink.DisplayName;
+                                                    dynamic propValue = value;
+                                                    propValue.DisplayName = documentLink.DisplayName;
 
                                                     documentLink[innerProperty.Key] = value;
                                                 };
 
 
-                                             _linkMap.RegisterLink(
+                                            _linkMap.RegisterLink(
                                                 innerProperty.Value.TypeInfo.DocumentLink.ConfigId,
                                                 innerProperty.Value.TypeInfo.DocumentLink.DocumentId,
-                                                documentLink != null && documentLink[innerProperty.Key] != null ? documentLink.GetProperty(innerProperty.Key).Id : null,
+                                                documentLink != null && documentLink[innerProperty.Key] != null
+                                                    ? documentLink.GetProperty(innerProperty.Key).Id
+                                                    : null,
                                                 setValueAction);
                                         }
                                     }
-			                    }    
-                            
-
-			                }
-			            }
-			        }
-			    }
-			}
-		}
-	}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

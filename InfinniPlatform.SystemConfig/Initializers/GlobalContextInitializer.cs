@@ -1,9 +1,7 @@
-﻿using System.Diagnostics;
-using InfinniPlatform.Api.Context;
-using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard;
+﻿using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
 using InfinniPlatform.Hosting;
+using InfinniPlatform.Sdk.Application.Contracts;
 
 namespace InfinniPlatform.SystemConfig.Initializers
 {
@@ -18,9 +16,9 @@ namespace InfinniPlatform.SystemConfig.Initializers
 
         public void OnStart(HostingContextBuilder contextBuilder)
         {
-			var systemComponent = _globalContext.GetComponent<ISystemComponent>(null);
+            var systemComponent = _globalContext.GetComponent<ISystemComponent>(null);
 
-			systemComponent.ManagerIdentifiers = new ManagerIdentifiersStandard();
+            systemComponent.ManagerIdentifiers = new ManagerIdentifiersStandard();
         }
     }
 }

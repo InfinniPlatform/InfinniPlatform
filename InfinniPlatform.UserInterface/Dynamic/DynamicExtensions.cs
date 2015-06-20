@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using InfinniPlatform.Sdk.Application.Dynamic;
+using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.UserInterface.Dynamic
 {

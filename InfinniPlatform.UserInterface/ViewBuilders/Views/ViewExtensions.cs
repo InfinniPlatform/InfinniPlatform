@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using InfinniPlatform.Sdk.Application.Dynamic;
 using InfinniPlatform.UserInterface.Properties;
 using InfinniPlatform.UserInterface.ViewBuilders.Messaging;
 using InfinniPlatform.UserInterface.ViewBuilders.Scripts;

@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.Security;
-using InfinniPlatform.ContextComponents;
+﻿using InfinniPlatform.ContextComponents;
+using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Application.Dynamic;
 using InfinniPlatform.SystemConfig.UserStorage;
 
 namespace InfinniPlatform.RestfulApi.Auth
 {
     /// <summary>
-    ///   Модуль добавления роли
+    ///     Модуль добавления роли
     /// </summary>
     public sealed class ActionUnitAddRole
     {
@@ -20,18 +14,18 @@ namespace InfinniPlatform.RestfulApi.Auth
         {
             var storage = new ApplicationUserStorePersistentStorage();
 
-	        dynamic roleParams = target.Item;
-			if (target.Item.Document != null)
-			{
-				roleParams = target.Item.Document;
-			}
+            dynamic roleParams = target.Item;
+            if (target.Item.Document != null)
+            {
+                roleParams = target.Item.Document;
+            }
 
-			storage.AddRole(roleParams.Name, roleParams.Caption, roleParams.Description);
+            storage.AddRole(roleParams.Name, roleParams.Caption, roleParams.Description);
             target.Context.GetComponent<CachedSecurityComponent>(target.Version).UpdateAcl();
             target.Context.GetComponent<CachedSecurityComponent>(target.Version).UpdateRoles();
-	        target.Result = new DynamicWrapper();
-	        target.Result.IsValid = true;
-	        target.Result.ValidationMessage = "Role added.";
+            target.Result = new DynamicWrapper();
+            target.Result.IsValid = true;
+            target.Result.ValidationMessage = "Role added.";
         }
     }
 }

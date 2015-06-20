@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
+﻿using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.Transactions;
+using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.RestfulApi.Session
 {
     /// <summary>
-    ///   Присоединить файл к сессии
+    ///     Присоединить файл к сессии
     /// </summary>
     public sealed class ActionUnitAttachFile
     {
@@ -20,8 +15,8 @@ namespace InfinniPlatform.RestfulApi.Session
         {
             ITransaction transaction =
                 target.Context.GetComponent<ITransactionComponent>(target.Version)
-                    .GetTransactionManager()
-                    .GetTransaction(target.LinkedData.SessionId);
+                      .GetTransactionManager()
+                      .GetTransaction(target.LinkedData.SessionId);
 
             transaction.AttachFile(target.LinkedData.InstanceId, target.LinkedData.FieldName, target.FileContent);
 

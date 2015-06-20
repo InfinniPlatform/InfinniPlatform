@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
+﻿using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Transactions;
+using InfinniPlatform.Sdk.Application.Contracts;
 
 namespace InfinniPlatform.RestfulApi.Session
 {
     /// <summary>
-    ///   Отсоединить документ от сессии
+    ///     Отсоединить документ от сессии
     /// </summary>
     public sealed class ActionUnitDetachDocumentSession
     {
@@ -24,7 +19,6 @@ namespace InfinniPlatform.RestfulApi.Session
 
                 transaction.Detach(target.Item.AttachmentId);
             }
-        
         }
     }
 }

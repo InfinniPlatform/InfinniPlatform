@@ -1,19 +1,9 @@
-﻿
-
-
-
-
-
-
-
-
-
+﻿// 1
+// 0
+// 0
 // 1
-// 0
-// 0
-// 0
-// aad936ec-d112-4ceb-ab13-c30ce91924b0
-// 136841C695574B9BEB24102B243CD59C
+// b380bfb0-6bd2-4af6-be72-7173a663b2aa
+// AE46FD0E139E5D8FFBD8C63E0CE7231E
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -26,9 +16,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
-[assembly: Guid("aad936ec-d112-4ceb-ab13-c30ce91924b0")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
-
+[assembly: Guid("b380bfb0-6bd2-4af6-be72-7173a663b2aa")]
+[assembly: AssemblyVersion("1.0.0.1")]
+[assembly: AssemblyFileVersion("1.0.0.1")]
 
 [assembly: AssemblyDescription("InfinniPlatform.OceanInformatics.Tests")]

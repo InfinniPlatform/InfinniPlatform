@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
+using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.TestEnvironment;
+using InfinniPlatform.Sdk.Application.Dynamic;
 using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
@@ -17,14 +15,12 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
     [Category(TestCategories.AcceptanceTest)]
     public class SchemaChangeDocumentBehavior
     {
-		private IDisposable _server;
+        private IDisposable _server;
 
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-			_server = TestApi.StartServer(c => c.SetHostingConfig(TestSettings.DefaultHostingConfig));
-
-
+            _server = TestApi.StartServer(c => c.SetHostingConfig(TestSettings.DefaultHostingConfig));
         }
 
         [TestFixtureTearDown]
@@ -34,30 +30,27 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         }
 
         [Test]
-		[Repeat(2)]
-		[Ignore("Only manual run")]
+        [Repeat(2)]
+        [Ignore("Only manual run")]
         public void ShouldSelectAccordingDataSchemaForDocument()
         {
-			
-
-            var configId = "TestConfigChangeSchema";
+            string configId = "TestConfigChangeSchema";
 
             string documentId = "TestDocument12";
 
-			new IndexApi().RebuildIndex(configId, documentId);
+            new IndexApi().RebuildIndex(configId, documentId);
 
-            var managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager(null);
+            MetadataManagerConfiguration managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager(null);
 
             dynamic config = managerConfig.CreateItem(configId);
 
             managerConfig.MergeItem(config);
 
-            var managerDocument = new ManagerFactoryConfiguration(null, configId).BuildDocumentManager();
+            MetadataManagerDocument managerDocument =
+                new ManagerFactoryConfiguration(null, configId).BuildDocumentManager();
 
-            
-            
 
-            var documentMetadata1 = managerDocument.CreateItem(documentId);
+            dynamic documentMetadata1 = managerDocument.CreateItem(documentId);
 
             documentMetadata1.Schema = new DynamicWrapper();
             documentMetadata1.Schema.Name = documentId;
@@ -86,7 +79,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             //сохраняем документ с первой схемой
             dynamic documentFirstSchema = new DynamicWrapper();
-	        documentFirstSchema.Id = Guid.NewGuid().ToString();
+            documentFirstSchema.Id = Guid.NewGuid().ToString();
             documentFirstSchema.Name = "TestPatient1";
             documentFirstSchema.Address = new DynamicWrapper();
             documentFirstSchema.Address.Id = Guid.NewGuid().ToString();
@@ -95,7 +88,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             new DocumentApi(null).SetDocument(configId, documentId, documentFirstSchema);
 
             //Изменяем схему
-            
+
             documentMetadata1 = managerDocument.CreateItem(documentId);
 
             documentMetadata1.Schema = new DynamicWrapper();
@@ -119,22 +112,21 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             RestQueryApi.QueryPostNotify(null, configId);
 
             new UpdateApi(null).UpdateStore(configId);
-			
+
             //Сохраняем новый документ
 
 
             dynamic documentSecondSchema = new DynamicWrapper();
-			documentSecondSchema.Id = Guid.NewGuid().ToString();
+            documentSecondSchema.Id = Guid.NewGuid().ToString();
             documentSecondSchema.Name = "TestPatient1";
             documentSecondSchema.Address = "Челябинск";
 
             new DocumentApi(null).SetDocument(configId, documentId, documentSecondSchema);
 
             //получаем оба документа
-            var documents =  new DocumentApi(null).GetDocument(configId, documentId, null, 0, 10);
+            IEnumerable<dynamic> documents = new DocumentApi(null).GetDocument(configId, documentId, null, 0, 10);
 
-            Assert.AreEqual(documents.Count(),2);
+            Assert.AreEqual(documents.Count(), 2);
         }
-
     }
 }

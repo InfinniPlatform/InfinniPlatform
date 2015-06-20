@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using InfinniPlatform.Api.RestApi.Auth;
 
 namespace InfinniPlatform.Api.Tests.Extensions
@@ -15,8 +11,8 @@ namespace InfinniPlatform.Api.Tests.Extensions
 
             var aclApi = new AuthApi(null);
 
-            var userRoles = aclApi.GetUserRoles();
-            foreach (var userRole in userRoles)
+            IEnumerable<dynamic> userRoles = aclApi.GetUserRoles();
+            foreach (dynamic userRole in userRoles)
             {
                 if (userRole.RoleName != AuthorizationStorageExtensions.AdminRole &&
                     userRole.RoleName != AuthorizationStorageExtensions.Default)
@@ -25,8 +21,8 @@ namespace InfinniPlatform.Api.Tests.Extensions
                 }
             }
 
-            var users = aclApi.GetUsers();
-            foreach (var user in users)
+            IEnumerable<dynamic> users = aclApi.GetUsers();
+            foreach (dynamic user in users)
             {
                 if (user.UserName != AuthorizationStorageExtensions.AdminUser &&
                     user.UserName != AuthorizationStorageExtensions.AnonimousUser &&
@@ -36,8 +32,8 @@ namespace InfinniPlatform.Api.Tests.Extensions
                 }
             }
 
-            var roles = aclApi.GetRoles();
-            foreach (var role in roles)
+            IEnumerable<dynamic> roles = aclApi.GetRoles();
+            foreach (dynamic role in roles)
             {
                 if (role.Name != AuthorizationStorageExtensions.AdminRole &&
                     role.Name != AuthorizationStorageExtensions.Default)
@@ -46,8 +42,8 @@ namespace InfinniPlatform.Api.Tests.Extensions
                 }
             }
 
-            var acl = aclApi.GetAcl();
-            foreach (var a in acl)
+            IEnumerable<dynamic> acl = aclApi.GetAcl();
+            foreach (dynamic a in acl)
             {
                 if (a.UserName != AuthorizationStorageExtensions.AdminRole &&
                     a.UserName != AuthorizationStorageExtensions.AdminUser &&
@@ -58,8 +54,6 @@ namespace InfinniPlatform.Api.Tests.Extensions
             }
 
             new SignInApi(null).SignOutInternal();
-
         }
-
     }
 }

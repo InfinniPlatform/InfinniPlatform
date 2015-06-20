@@ -1,15 +1,13 @@
 ﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
-using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.Factories;
 using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Runtime;
+using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Application.Dynamic;
 
 namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
 {
     /// <summary>
-    ///   Обработчик успешного удалении документа (при стандартном сохранении документа)
+    ///     Обработчик успешного удалении документа (при стандартном сохранении документа)
     /// </summary>
     public sealed class ActionUnitSuccessDeleteDocument
     {
@@ -23,13 +21,15 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                 target.Item.Configuration.ToLowerInvariant() != "restfulapi")
             {
                 //ищем метаданные бизнес-процесса по умолчанию документа 
-                defaultBusinessProcess = target.Context.GetComponent<IMetadataComponent>(target.Version).GetMetadata(target.Version, target.Item.Configuration, target.Item.Metadata, MetadataType.Process, "Default");
+                defaultBusinessProcess =
+                    target.Context.GetComponent<IMetadataComponent>(target.Version)
+                          .GetMetadata(target.Version, target.Item.Configuration, target.Item.Metadata,
+                                       MetadataType.Process, "Default");
             }
             else
             {
                 return;
             }
-
 
 
             if (defaultBusinessProcess != null && defaultBusinessProcess.Transitions[0].DeletePoint != null)
@@ -42,9 +42,10 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                 scriptArguments.Item.Metadata = target.Item.Metadata;
                 scriptArguments.Item.Document = target.Result;
 
-                target.Context.GetComponent<IScriptRunnerComponent>(target.Version).GetScriptRunner(target.Version, target.Item.Configuration).InvokeScript(defaultBusinessProcess.Transitions[0].DeletePoint.ScenarioId, scriptArguments);
+                target.Context.GetComponent<IScriptRunnerComponent>(target.Version)
+                      .GetScriptRunner(target.Version, target.Item.Configuration)
+                      .InvokeScript(defaultBusinessProcess.Transitions[0].DeletePoint.ScenarioId, scriptArguments);
             }
-
         }
     }
 }
