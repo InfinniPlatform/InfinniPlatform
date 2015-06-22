@@ -252,6 +252,10 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 						{
 							ws.WithValidationWarning(() => ScriptConfiguration.GetValidator(transition.ValidationPointWarning.ScenarioId));
 						}
+                        if (transition.DeletingDocumentValidationPoint != null)
+                        {
+                            ws.WithValidationError(() => ScriptConfiguration.GetValidator(transition.DeletingDocumentValidationPoint.ScenarioId));
+                        }
 						//TODO: Необходимо переработать механизм подключения валидаций для бизнес-процессов без состояния
 						//if (transition.ValidationRuleError != null)
 						//{
@@ -325,6 +329,10 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 								{
 									ws.WithValidationWarning(() => ScriptConfiguration.GetValidator(transition1.ValidationPointWarning.ScenarioId));
 								}
+                                if (transition1.DeletingDocumentValidationPoint != null)
+                                {
+                                    ws.WithValidationError(() => ScriptConfiguration.GetValidator(transition1.DeletingDocumentValidationPoint.ScenarioId));
+                                }
 								//TODO: Необходимо переработать механизм подключения валидаций для кастомных бизнес-процессов
 								//if (transition1.ValidationRuleError != null)
 								//{

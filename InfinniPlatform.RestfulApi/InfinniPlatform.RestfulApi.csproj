@@ -98,6 +98,7 @@
     <Compile Include="Credentials\ActionUnitSetAnonimousCredentials.cs" />
     <Compile Include="DefaultProcessUnits\ActionUnitSetCredentials.cs" />
     <Compile Include="DefaultProcessUnits\ActionUnitComplexAuth.cs" />
+    <Compile Include="DefaultProcessUnits\ValidationUnitDeleteDocumentError.cs" />
     <Compile Include="Extensions\FastStorageExtension.cs" />
     <Compile Include="Extensions\IndexedStorageExtension.cs" />
     <Compile Include="Installers\RestfulApiInstaller.cs" />

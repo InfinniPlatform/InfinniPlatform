@@ -44,7 +44,17 @@ namespace InfinniPlatform.Metadata.StateMachine.Statuses
 			return this;
 		}
 
-		public IStateTransitionConfig WithValidationWarning(Func<IValidationOperator> stateMoveValidator)
+	    public IStateTransitionConfig WithDeletingDocumentValidationError(Func<IValidationOperator> stateMoveValidator)
+	    {
+            if (stateMoveValidator == null)
+            {
+                throw new ArgumentException(Resources.StateValidatorShouldNotBeEmpty);
+            }
+            _stateMoveValidatorError = stateMoveValidator;
+            return this;
+	    }
+
+	    public IStateTransitionConfig WithValidationWarning(Func<IValidationOperator> stateMoveValidator)
 		{
 			if (stateMoveValidator == null)
 			{

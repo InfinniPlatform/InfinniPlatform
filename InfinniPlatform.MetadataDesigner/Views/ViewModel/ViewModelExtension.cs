@@ -696,6 +696,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
                 instance.DeletePoint = transition.DeletePoint != null ? transition.DeletePoint.ScenarioId : null;
 				instance.ValidationRuleWarning = transition.ValidationRuleWarning;
 				instance.ValidationRuleError = transition.ValidationRuleError;
+                instance.DeletingDocumentValidationRuleError = transition.DeletingDocumentValidationRuleError;
 				result.Add(instance);
 			}
 			return result.ToDataTable();

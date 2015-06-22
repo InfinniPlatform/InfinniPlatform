@@ -83,6 +83,7 @@ namespace InfinniPlatform.RestfulApi.Installers
 
             actionUnits.RegisterValidationUnitDistributedStorage("setdocumentvalidationwarning", "ValidationUnitSetDocumentWarning");
             actionUnits.RegisterValidationUnitDistributedStorage("setdocumentvalidationerror", "ValidationUnitSetDocumentError");
+            actionUnits.RegisterValidationUnitDistributedStorage("deletedocumentvalidationerror", "ValidationUnitDeleteDocumentError");
 
             actionUnits.RegisterActionUnitDistributedStorage("setanonimouscredentials", "ActionUnitSetAnonimousCredentials");
             actionUnits.RegisterActionUnitDistributedStorage("setcredentials", "ActionUnitSetCredentials");
@@ -338,6 +339,7 @@ namespace InfinniPlatform.RestfulApi.Installers
             metadataConfiguration.RegisterWorkflow("configuration", "deletedocument",
                 f => f.FlowWithoutState(wc => wc
                     .Move(ws => ws
+                        .WithValidationError(() => actionUnits.GetValidator("deletedocumentvalidationerror"))
                         .WithAction(() => actionUnits.GetAction("deletedocument"))
                         .OnDelete(() => actionUnits.GetAction("successdeletedocument"))
                         .WithSimpleAuthorization(() => actionUnits.GetAction("documentauth"))

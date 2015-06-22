@@ -83,6 +83,9 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 			SimpleValidationErrorEditor.Properties.Items.Clear();
 			SimpleValidationErrorEditor.Properties.Items.AddRange(ValidationErrors.BuildImageComboBoxItemsString().ToList());
 
+            DeletingDocumentValidationErrorEditor.Properties.Items.Clear();
+            DeletingDocumentValidationErrorEditor.Properties.Items.AddRange(ValidationHandlers.BuildImageComboBoxItems().ToList());
+
 			SuccessSaveEditor.Properties.Items.Clear();
 			SuccessSaveEditor.Properties.Items.AddRange(ActionHandlers.BuildImageComboBoxItems().ToList());
 
@@ -281,6 +284,13 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 
 				}
 
+                if (_process.Transitions[0].DeletingDocumentValidationPoint != null)
+                {
+                    DeletingDocumentValidationErrorEditor.EditValue = DeletingDocumentValidationErrorEditor.Properties.Items.Cast<ImageComboBoxItem>().FirstOrDefault(
+                        i => _process.Transitions[0].DeletingDocumentValidationPoint.ScenarioId == ((dynamic)i.Value).HandlerId);
+
+                }
+
 				if (_process.Transitions[0].CredentialsPoint != null && _process.Transitions[0].CredentialsType == AuthorizationStorageExtensions.CustomCredentials)
 				{
 					DefaultProcessCredentialsAction.EditValue = DefaultProcessCredentialsAction.Properties.Items.Cast<ImageComboBoxItem>().FirstOrDefault(
@@ -290,6 +300,8 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 				DefaultProcessCredentialsType.EditValue = _process.Transitions[0].CredentialsType;
 
 				SimpleValidationErrorEditor.EditValue = _process.Transitions[0].ValidationRuleError;
+
+                DeletingDocumentValidationErrorEditor.EditValue = _process.Transitions[0].DeletingDocumentValidationRuleError;
 
 				SimpleValidationWarningEditor.EditValue = _process.Transitions[0].ValidationRuleWarning;
 
@@ -367,7 +379,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 
 			ProcessBuilder.DeleteTransition("DefaultTransition");
 			ProcessBuilder.AddTransition("DefaultTransition", null, ValidationPointError, ValidationPointWarning,
-				ComplexPrefillPoint, SuccessPoint, null, FailPoint, DeletePoint, ValidationRuleWarning, ValidationRuleError,
+				ComplexPrefillPoint, SuccessPoint, null, FailPoint, DeletePoint, ValidationRuleWarning, ValidationRuleError,DeletingDocumentValidationRuleError,
 				prefillSchema != null ? prefillSchema.ToString() : null, CredentialsType, CredentialsPoint);
 			return _process.Transitions[0];
 		}
@@ -514,6 +526,19 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 				return null;
 			}
 		}
+
+        public dynamic DeletingDocumentValidationRuleError
+        {
+            get
+            {
+                if (DeletingDocumentValidationErrorEditor.EditValue != null)
+                {
+                    return ViewModelExtension.BuildValidationPointFromString(
+                                                   ((HandlerDescription)DeletingDocumentValidationErrorEditor.EditValue).HandlerId);
+                }
+                return null;
+            }
+        }
 
 		private void EditorDeleteButtonClick(object sender, ButtonPressedEventArgs e)
 		{
