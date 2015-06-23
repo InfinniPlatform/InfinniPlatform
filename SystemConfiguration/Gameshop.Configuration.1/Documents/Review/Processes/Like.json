@@ -1,0 +1,22 @@
+{
+  "Id": "ae38038d-a2eb-4765-8423-18034c619653",
+  "Secured": true,
+  "Name": "Like",
+  "Caption": "Like",
+  "Type": 2,
+  "Transitions": [
+    {
+      "Id": "5da82994-e297-4e8a-ad65-85298dd4a3b2",
+      "Name": "Like",
+      "ActionPoint": {
+        "TypeName": "Action",
+        "ScenarioId": "0dc6526d-35ef-454a-b191-d0420dac5b70"
+      }
+    }
+  ],
+  "SettingsType": "Custom",
+  "ParentId": "d9a54b22-5d8b-4a1b-a1a6-6ce0ad5b1f3c",
+  "Version": "1",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "processmetadata"
+}

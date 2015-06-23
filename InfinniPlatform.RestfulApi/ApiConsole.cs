@@ -57,7 +57,6 @@ namespace InfinniPlatform.RestfulApi
 
         public void Run(TestServerParameters parameters)
         {
-            Debugger.Launch();
             FastStorageExtension.CreateBlobStorage();
             FastStorageExtension.CreateEventStorage();
 

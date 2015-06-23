@@ -5,11 +5,35 @@
   "Caption": "Обзор игры",
   "Description": "",
   "Versioning": 2,
-  "Version" : "1",
+  "Version": "1",
   "MetadataIndex": "Review",
-  "Services": [],
-  "Processes": [],
-  "Scenarios": [],
+  "Services": [
+    {
+      "Id": "6bd4e21d-fe4c-474f-80a5-628404c02fcd",
+      "Name": "Like",
+      "Caption": "Поставить лайк",
+      "Version": "1"
+    }
+  ],
+  "Processes": [
+    {
+      "Id": "ae38038d-a2eb-4765-8423-18034c619653",
+      "Name": "Like",
+      "Caption": "Like",
+      "Version": "1"
+    },
+    {}
+  ],
+  "Scenarios": [
+    {
+      "Id": "0dc6526d-35ef-454a-b191-d0420dac5b70",
+      "Name": "ActionUnitLike",
+      "Caption": "ActionUnitLike",
+      "Description": "",
+      "Version": "1"
+    },
+    {}
+  ],
   "Generators": [],
   "Views": [],
   "PrintViews": [],
@@ -108,6 +132,10 @@
           },
           "Properties": {}
         }
+      },
+      "Like": {
+        "Caption": "Количество пользователей, поставивших лайк",
+        "Type": "Integer"
       }
     }
   }
