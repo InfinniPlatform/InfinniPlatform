@@ -6,7 +6,7 @@ using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.Security;
 using InfinniPlatform.Api.Settings;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.SystemConfig.UserStorage

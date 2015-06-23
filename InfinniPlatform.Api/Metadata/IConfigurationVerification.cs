@@ -1,5 +1,5 @@
 ﻿using InfinniPlatform.Api.Context;
-using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.Api.Metadata
 {

@@ -39,6 +39,7 @@
   <ItemGroup>
     <Compile Include="Implementation\Handlers\AggregateExtensions.cs" />
     <Compile Include="Implementation\Handlers\ApplyChangesHandler.cs" />
+    <Compile Include="Implementation\Handlers\CustomServiceHandler.cs" />
     <Compile Include="Implementation\Handlers\SearchDocumentAggregationHandler.cs" />
     <Compile Include="Implementation\Handlers\SearchHandler.cs">
       <SubType>Code</SubType>
@@ -106,9 +107,9 @@
       <Project>{2B2F3FA6-F434-4FCF-A4C7-323FFC602F0C}</Project>
       <Name>InfinniPlatform.Index.ElasticSearch</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Sdk.Application\InfinniPlatform.Sdk.Application.csproj">
+    <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
-      <Name>InfinniPlatform.Sdk.Application</Name>
+      <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

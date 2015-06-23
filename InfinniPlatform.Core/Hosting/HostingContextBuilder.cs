@@ -1,5 +1,6 @@
 ﻿using System;
 using InfinniPlatform.Api.Hosting;
+using InfinniPlatform.Sdk.Api;
 
 namespace InfinniPlatform.Hosting
 {

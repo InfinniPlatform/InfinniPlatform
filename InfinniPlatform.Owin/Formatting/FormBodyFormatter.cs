@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 using Microsoft.Owin;
 using Microsoft.Owin.Helpers;
 

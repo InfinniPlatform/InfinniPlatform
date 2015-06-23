@@ -2,7 +2,7 @@
 using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.Transactions;
-using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.RestfulApi.Binary
 {

@@ -5,8 +5,8 @@ using System.Text;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestQuery;
-using InfinniPlatform.Sdk.Application.Contracts;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 {

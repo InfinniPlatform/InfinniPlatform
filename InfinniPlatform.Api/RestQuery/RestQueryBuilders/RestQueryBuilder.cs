@@ -7,7 +7,7 @@ using InfinniPlatform.Api.RestQuery.EventObjects;
 using InfinniPlatform.Api.RestQuery.EventObjects.EventSerializers;
 using InfinniPlatform.Api.RestQuery.RestQueryExecutors;
 using InfinniPlatform.Api.SearchOptions;
-using InfinniPlatform.Sdk.Application.Events;
+using InfinniPlatform.Sdk.Events;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 

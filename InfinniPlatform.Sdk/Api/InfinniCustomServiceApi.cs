@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using InfinniPlatform.Sdk;
+using InfinniPlatform.Sdk.Properties;
 using InfinniPlatform.Sdk.Properties;
 
 namespace InfinniPlatform.Sdk.Api
@@ -22,11 +19,11 @@ namespace InfinniPlatform.Sdk.Api
         ///   Выполнить вызов пользовательского сервиса
         /// </summary>
         /// <returns>Клиентская сессия</returns>
-        public dynamic ExecuteAction(string application, string documentType, string service)
+        public dynamic ExecuteAction(string application, string documentType, string service, dynamic body)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrl(Version, application, documentType,service));
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrl(Version, application, documentType,service), body);
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToInvokeCustomService, response.GetErrorContent()));
         }

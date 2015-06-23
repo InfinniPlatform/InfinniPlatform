@@ -2,6 +2,7 @@
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Profiling;
 using InfinniPlatform.Api.Profiling.Implementation;
+using InfinniPlatform.Sdk.Api;
 
 namespace InfinniPlatform.ContextComponents
 {

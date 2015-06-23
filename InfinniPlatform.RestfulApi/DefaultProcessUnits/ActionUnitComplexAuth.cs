@@ -1,7 +1,7 @@
 ﻿using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
 using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
 {

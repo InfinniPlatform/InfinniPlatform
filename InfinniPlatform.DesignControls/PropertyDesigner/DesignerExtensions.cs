@@ -4,7 +4,7 @@ using System.Linq;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.Repository;
 using InfinniPlatform.DesignControls.Properties;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.DesignControls.PropertyDesigner
 {

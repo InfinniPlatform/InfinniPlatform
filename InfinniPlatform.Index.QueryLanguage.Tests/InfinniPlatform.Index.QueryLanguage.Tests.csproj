@@ -75,9 +75,9 @@
       <Project>{25ccb048-c239-4a2d-8090-39ae34514884}</Project>
       <Name>InfinniPlatform.Index.QueryLanguage</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Sdk.Application\InfinniPlatform.Sdk.Application.csproj">
+    <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
-      <Name>InfinniPlatform.Sdk.Application</Name>
+      <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.SystemConfig\InfinniPlatform.SystemConfig.csproj">
       <Project>{6EFC2069-AFEB-453D-AD2C-3E170486A4F1}</Project>

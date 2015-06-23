@@ -3,7 +3,7 @@ using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Update.Properties;
 
 namespace InfinniPlatform.Update.ActionUnits

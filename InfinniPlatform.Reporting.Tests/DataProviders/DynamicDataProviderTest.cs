@@ -2,7 +2,7 @@
 using System.Linq;
 
 using InfinniPlatform.Reporting.DataProviders;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 using Newtonsoft.Json.Linq;
 
 using NUnit.Framework;

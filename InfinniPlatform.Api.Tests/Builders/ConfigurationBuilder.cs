@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using InfinniPlatform.Api.Deprecated;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Api.Tests.Builders
 {

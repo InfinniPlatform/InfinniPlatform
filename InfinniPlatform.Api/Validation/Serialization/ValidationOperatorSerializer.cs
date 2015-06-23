@@ -2,7 +2,7 @@
 using InfinniPlatform.Api.Validation.BooleanValidators;
 using InfinniPlatform.Api.Validation.CollectionValidators;
 using InfinniPlatform.Api.Validation.ObjectValidators;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Api.Validation.Serialization
 {

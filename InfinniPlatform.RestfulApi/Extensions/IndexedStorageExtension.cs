@@ -5,7 +5,7 @@ using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Index;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.SystemConfig.RoutingFactory;
 
 namespace InfinniPlatform.RestfulApi.Extensions

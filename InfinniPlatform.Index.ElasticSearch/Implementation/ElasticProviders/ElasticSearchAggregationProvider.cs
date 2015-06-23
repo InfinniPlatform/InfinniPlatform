@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 using IFilter = InfinniPlatform.Api.Index.SearchOptions.IFilter;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders

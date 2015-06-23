@@ -11,63 +11,22 @@ using InfinniPlatform.Api.Transactions;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Metadata;
-using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.Factories
 {
+    /// <summary>
+    ///  Реализация контекста компонентов платформы
+    /// </summary>
     public class GlobalContext : IGlobalContext, IComponentContainer
     {
-        private static readonly ISystemComponent SystemComponent = new SystemComponent();
+        
         private readonly IList<ContextRegistration> _components = new List<ContextRegistration>();
+        private readonly IPlatformComponentsPack _platformComponentsPack;
 
         public GlobalContext(IDependencyContainerComponent dependencyContainerComponent)
         {
-            var eventStorage =
-                dependencyContainerComponent.ResolveDependency<IEventStorageFactory>().CreateEventStorage();
-            var blobStorage = dependencyContainerComponent.ResolveDependency<IBlobStorageFactory>().CreateBlobStorage();
-            var printViewBuilder =
-                dependencyContainerComponent.ResolveDependency<IPrintViewBuilderFactory>().CreatePrintViewBuilder();
-            var logger = dependencyContainerComponent.ResolveDependency<ILogFactory>().CreateLog();
-            var metadataConfigurationProvider =
-                dependencyContainerComponent.ResolveDependency<IMetadataConfigurationProvider>();
-
-            _components.Add(new ContextRegistration(typeof (IBlobStorageComponent),
-                version => new BlobStorageComponent(blobStorage)));
-            _components.Add(new ContextRegistration(typeof (IEventStorageComponent),
-                version => new EventStorageComponent(eventStorage)));
-            _components.Add(new ContextRegistration(typeof (IIndexComponent),
-                version => new IndexComponent(dependencyContainerComponent.ResolveDependency<IIndexFactory>())));
-            _components.Add(new ContextRegistration(typeof (ILogComponent), version => new LogComponent(logger)));
-            _components.Add(new ContextRegistration(typeof (IMetadataComponent),
-                version => new MetadataComponent(metadataConfigurationProvider)));
-            _components.Add(new ContextRegistration(typeof (ICrossConfigSearchComponent),
-                version =>
-                    new CrossConfigSearchComponent(
-                        dependencyContainerComponent.ResolveDependency<ICrossConfigSearcher>())));
-            _components.Add(new ContextRegistration(typeof (IPrintViewComponent),
-                version => new PrintViewComponent(printViewBuilder)));
-            _components.Add(new ContextRegistration(typeof (IProfilerComponent),
-                version => new ProfilerComponent(logger)));
-            _components.Add(new ContextRegistration(typeof (IRegistryComponent),
-                version => new RegistryComponent(version)));
-            _components.Add(new ContextRegistration(typeof (IScriptRunnerComponent),
-                version => new ScriptRunnerComponent(metadataConfigurationProvider)));
-            _components.Add(new ContextRegistration(typeof (ISecurityComponent),
-                version => new CachedSecurityComponent()));
-            _components.Add(new ContextRegistration(typeof (ITransactionComponent),
-                version =>
-                    new TransactionComponent(dependencyContainerComponent.ResolveDependency<ITransactionManager>())));
-            _components.Add(new ContextRegistration(typeof (IWebClientNotificationComponent),
-                version =>
-                    new WebClientNotificationComponent(
-                        dependencyContainerComponent.ResolveDependency<IWebClientNotificationServiceFactory>())));
-            _components.Add(new ContextRegistration(typeof (IConfigurationMediatorComponent),
-                version => new ConfigurationMediatorComponent(
-                    dependencyContainerComponent.ResolveDependency<IConfigurationObjectBuilder>())));
-
-            _components.Add(new ContextRegistration(typeof (IDependencyContainerComponent),
-                version => dependencyContainerComponent));
-            _components.Add(new ContextRegistration(typeof (ISystemComponent), version => SystemComponent));
+            _platformComponentsPack = new PlatformComponentsPack(dependencyContainerComponent);
 
             _components.Add(new ContextRegistration(typeof (DocumentApi), version => new DocumentApi(version)));
             _components.Add(new ContextRegistration(typeof (DocumentApiUnsecured),
@@ -87,13 +46,13 @@ namespace InfinniPlatform.Factories
                     ),
                     new CachedSecurityComponent(),
                     dependencyContainerComponent.ResolveDependency<IIndexFactory>())));
-            _components.Add(new ContextRegistration(typeof (IMetadataConfigurationProvider),
-                version => metadataConfigurationProvider));
         }
 
         public T GetComponent<T>(string version) where T : class
         {
+            //ищем среди зарегистрированных компонентов платформы, если не находим, обращаемся к контексту компонентов ядра платформы
             return
+                _platformComponentsPack.GetComponent<T>(version) ??
                 _components.Where(c => c.IsTypeOf(typeof (T))).Select(c => c.GetInstance(version)).FirstOrDefault() as T;
         }
     }

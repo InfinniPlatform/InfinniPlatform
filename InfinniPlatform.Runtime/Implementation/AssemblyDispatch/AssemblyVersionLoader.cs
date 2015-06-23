@@ -11,7 +11,7 @@ using InfinniPlatform.Api.Settings;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Metadata;
 using InfinniPlatform.Runtime.Properties;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Runtime.Implementation.AssemblyDispatch
 {

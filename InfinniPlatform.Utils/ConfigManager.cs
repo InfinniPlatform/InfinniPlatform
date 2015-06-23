@@ -5,6 +5,7 @@ using System.Linq;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.MetadataDesigner.Views.Exchange;
 using InfinniPlatform.MetadataDesigner.Views.Update;
+using InfinniPlatform.Sdk.Api;
 
 namespace InfinniPlatform.Utils
 {

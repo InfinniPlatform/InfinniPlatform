@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 using InfinniPlatform.Api.Deprecated;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.Metadata

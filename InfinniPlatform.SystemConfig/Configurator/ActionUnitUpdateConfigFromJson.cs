@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using InfinniPlatform.Api.Packages;
 using InfinniPlatform.Api.Packages.ConfigStructure;
-using InfinniPlatform.Sdk.Application.Contracts;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.SystemConfig.Configurator
 {

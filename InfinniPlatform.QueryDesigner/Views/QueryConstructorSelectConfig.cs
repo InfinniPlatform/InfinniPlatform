@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using InfinniPlatform.Api.Schema;
 using InfinniPlatform.QueryDesigner.Contracts;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.QueryDesigner.Views
 {

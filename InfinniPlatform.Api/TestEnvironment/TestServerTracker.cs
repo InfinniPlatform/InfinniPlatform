@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using InfinniPlatform.Api.Hosting;
+using InfinniPlatform.Sdk.Api;
 
 namespace InfinniPlatform.Api.TestEnvironment
 {

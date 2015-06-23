@@ -21,7 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 {
@@ -513,7 +513,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
         public static IEnumerable<string> BuildMigrations(string version, string configurationId)
         {
-            var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getmigrations", null, version);
+            var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getmigrations", null, null,version);
             
             return result.ToDynamicList()
                 .Where(m => (m.ConfigurationId == configurationId || string.IsNullOrEmpty(m.ConfigurationId)))

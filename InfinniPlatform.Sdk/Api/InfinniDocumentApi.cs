@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using InfinniPlatform.Sdk.Properties;
 using Newtonsoft.Json.Linq;
 

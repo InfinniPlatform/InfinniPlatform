@@ -9,7 +9,7 @@ using InfinniPlatform.Api.Profiling;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Api.Settings;
 using InfinniPlatform.ContextComponents;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.RestfulApi.Utils
 {

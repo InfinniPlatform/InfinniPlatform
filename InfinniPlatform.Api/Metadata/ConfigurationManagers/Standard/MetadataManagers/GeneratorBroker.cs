@@ -4,7 +4,7 @@ using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.Validation;
 using InfinniPlatform.Api.Validation.ValidationBuilders;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers
 {

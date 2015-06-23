@@ -1,8 +1,8 @@
 ﻿using System;
 using InfinniPlatform.Api.Security;
 using InfinniPlatform.ContextComponents;
-using InfinniPlatform.Sdk.Application.Contracts;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.SystemConfig.UserStorage;
 
 namespace InfinniPlatform.RestfulApi.Auth

@@ -8,8 +8,8 @@ using InfinniPlatform.Api.RestQuery.EventObjects.EventSerializers;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.Factories;
 using InfinniPlatform.Hosting;
-using InfinniPlatform.Sdk.Application.Contracts;
-using InfinniPlatform.Sdk.Application.Events;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Events;
 
 namespace InfinniPlatform.Metadata.Implementation.Handlers
 {
@@ -33,9 +33,8 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
         /// </summary>
         /// <param name="id">Идентификатор объекта, к которому следует применить изменения</param>
         /// <param name="changesObject">Объект JSON, содержащий события изменения объекта</param>
-        /// <param name="replace">Заменить объект в хранилище</param>
         /// <returns>Результат обработки JSON объекта</returns>
-        public dynamic ApplyJsonObject(string id, dynamic changesObject, bool replace = false)
+        public dynamic ApplyJsonObject(string id, dynamic changesObject)
         {
             IEnumerable<EventDefinition> events = null;
             if (changesObject != null)
@@ -46,7 +45,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
             {
                 events = new List<EventDefinition>();
             }
-            return ApplyEventsWithMetadata(id, events, replace);
+            return ApplyEventsWithMetadata(id, events);
         }
 
         /// <summary>
@@ -55,9 +54,8 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
         /// </summary>
         /// <param name="id">Идентификатор изменяемого объекта</param>
         /// <param name="events">Список событий на изменение объекта</param>
-        /// <param name="replace">Заменить объект в хранилище после применения изменений</param>
         /// <returns>Результат обработки изменений</returns>
-        public dynamic ApplyEventsWithMetadata(string id, IEnumerable<EventDefinition> events, bool replace = false)
+        public dynamic ApplyEventsWithMetadata(string id, IEnumerable<EventDefinition> events)
         {
             var documentId = ConfigRequestProvider.GetMetadataIdentifier();
 

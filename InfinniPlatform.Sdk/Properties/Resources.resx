@@ -237,4 +237,13 @@
   <data name="UnableToInvokeCustomService" xml:space="preserve">
     <value>Unable to invoke custom user service: {0}</value>
   </data>
+  <data name="PropertyPathCannotBeNullOrEmpty" xml:space="preserve">
+    <value>Property path cannot be null or empty.</value>
+  </data>
+  <data name="TargetObjectCannotBeNull" xml:space="preserve">
+    <value>Target object cannot be null.</value>
+  </data>
+  <data name="CollectionCanNotBeModified" xml:space="preserve">
+    <value>Collection can not be modified</value>
+  </data>
 </root>

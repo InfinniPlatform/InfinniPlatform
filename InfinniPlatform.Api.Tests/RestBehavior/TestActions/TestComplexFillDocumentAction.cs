@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Sdk.Application.Contracts;
+﻿using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
 {

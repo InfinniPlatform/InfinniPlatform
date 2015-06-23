@@ -67,6 +67,10 @@
       <Project>{DEADC17E-4C51-48D7-9AEA-F8DAE3090C74}</Project>
       <Name>InfinniPlatform.Owin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
+      <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
+      <Name>InfinniPlatform.Sdk</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.SignalR\InfinniPlatform.SignalR.csproj">
       <Project>{c78bfc13-e956-4229-a2ff-7d95ac9ca74f}</Project>
       <Name>InfinniPlatform.SignalR</Name>

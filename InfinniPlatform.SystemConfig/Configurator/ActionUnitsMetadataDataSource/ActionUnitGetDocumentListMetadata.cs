@@ -3,8 +3,8 @@ using System.Linq;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataReaders;
 using InfinniPlatform.Api.Metadata.MetadataContainers;
 using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Sdk.Application.Contracts;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.SystemConfig.Configurator.ActionUnitsMetadataDataSource
 {

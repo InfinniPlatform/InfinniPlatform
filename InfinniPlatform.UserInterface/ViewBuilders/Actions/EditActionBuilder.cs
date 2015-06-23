@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Sdk.Application.Dynamic;
+﻿using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.UserInterface.ViewBuilders.Data;
 using InfinniPlatform.UserInterface.ViewBuilders.Views;
 

@@ -6,7 +6,8 @@ using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Api.SearchOptions.Builders;
 using InfinniPlatform.Api.TestEnvironment;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.Dynamic;
 using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
@@ -23,7 +24,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             var hostingConfig = new HostingConfig
                 {
-                    ServerName = "10.0.0.12"
+                    ServerName = "localhost"
                 };
 
             _server = TestApi.StartServer(c => c.SetHostingConfig(hostingConfig));

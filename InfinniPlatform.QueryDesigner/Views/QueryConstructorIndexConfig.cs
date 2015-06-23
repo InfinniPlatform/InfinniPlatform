@@ -7,6 +7,7 @@ using DevExpress.XtraEditors.Controls;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.TestEnvironment;
 using InfinniPlatform.QueryDesigner.Contracts;
+using InfinniPlatform.Sdk.Api;
 
 namespace InfinniPlatform.QueryDesigner.Views
 {

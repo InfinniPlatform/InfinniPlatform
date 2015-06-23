@@ -12,6 +12,7 @@ using InfinniPlatform.Authentication.Modules;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Owin.Hosting;
 using InfinniPlatform.Owin.Modules;
+using InfinniPlatform.Sdk.Api;
 using InfinniPlatform.Security;
 
 using Microsoft.Owin;

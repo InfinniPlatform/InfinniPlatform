@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using DevExpress.Xpf.Grid;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.UserInterface.ViewBuilders.Data;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.DataElements.TreeView

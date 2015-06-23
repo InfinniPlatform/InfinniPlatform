@@ -1,5 +1,5 @@
 ﻿using System;
-using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.SystemConfig.Configurator.ActionUnitsPrefillItems
 {

@@ -9,7 +9,7 @@ using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.TestEnvironment;
 using InfinniPlatform.Api.Validation.Serialization;
 using InfinniPlatform.Api.Validation.ValidationBuilders;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.DataSources

@@ -4,7 +4,7 @@ using System.Linq;
 
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 {

@@ -12,7 +12,7 @@ using InfinniPlatform.DesignControls.Controls.Alignment;
 using InfinniPlatform.DesignControls.DesignerSurface;
 using InfinniPlatform.DesignControls.Layout;
 using InfinniPlatform.DesignControls.PropertyDesigner;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.DesignControls.ObjectInspector
 {

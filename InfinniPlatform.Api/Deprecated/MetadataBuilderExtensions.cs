@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using InfinniPlatform.Api.Context;
 using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Api.Deprecated
 {

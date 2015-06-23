@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.SystemConfig.Installers;
 
 namespace InfinniPlatform.SystemConfig.Configurator.ActionUnitsPrefillItems

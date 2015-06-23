@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
-using InfinniPlatform.Sdk.Application.Dynamic;
-using InfinniPlatform.Sdk.Application.Extensions;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Extensions;
 
 namespace InfinniPlatform.Expressions.CompiledExpressions
 {

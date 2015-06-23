@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.DisplayFormats
 {

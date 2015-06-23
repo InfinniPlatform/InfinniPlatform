@@ -1,6 +1,6 @@
 ﻿using System;
 using InfinniPlatform.Api.SelfDocumentation;
-using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.SystemConfig.HelpSystem
 {

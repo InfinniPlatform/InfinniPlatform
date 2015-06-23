@@ -24,7 +24,7 @@ using InfinniPlatform.Metadata.Implementation.MetadataConfiguration;
 using InfinniPlatform.Modules;
 using InfinniPlatform.Runtime.Factories;
 using InfinniPlatform.Runtime.Implementation.ChangeListeners;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.SystemConfig.RoutingFactory;
 using InfinniPlatform.Update.Installers;
 using Newtonsoft.Json.Linq;

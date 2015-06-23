@@ -8,7 +8,7 @@ using InfinniPlatform.Api.Packages;
 using InfinniPlatform.Api.Packages.ConfigStructure;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.TestEnvironment;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.Packages

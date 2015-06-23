@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestQuery;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 using RestSharp;
 
 namespace InfinniPlatform.Api.RestApi.Auth

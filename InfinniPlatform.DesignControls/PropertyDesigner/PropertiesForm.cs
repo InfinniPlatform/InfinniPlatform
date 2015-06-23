@@ -13,7 +13,7 @@ using DevExpress.XtraVerticalGrid.ViewInfo;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.Validation;
 using InfinniPlatform.DesignControls.PropertyEditors;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.DesignControls.PropertyDesigner
 {

@@ -8,7 +8,7 @@ using InfinniPlatform.Api.Deprecated;
 
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.MetadataDesigner.Views.ViewModel;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.MetadataDesigner.Views

@@ -1,5 +1,5 @@
 ﻿using InfinniPlatform.Api.Extensions;
-using InfinniPlatform.Sdk.Application.Extensions;
+using InfinniPlatform.Sdk.Extensions;
 
 namespace InfinniPlatform.Api.Validation.ObjectValidators
 {

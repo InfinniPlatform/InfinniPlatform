@@ -4,7 +4,7 @@ using System.Linq;
 using InfinniPlatform.Api.Registers;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Index;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
 {

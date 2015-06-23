@@ -6,7 +6,7 @@ using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.BlobStorage;
 using InfinniPlatform.Cassandra.Client;
 using InfinniPlatform.Index.ElasticSearch.Factories;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.SystemConfig.RoutingFactory;
 
 namespace InfinniPlatform.WebApi.Tests.Builders

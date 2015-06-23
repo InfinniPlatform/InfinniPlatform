@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using DevExpress.Xpf.Bars;
 using InfinniPlatform.PrintViewDesigner.Controls.PrintViewTreeBuilders;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.PrintViewDesigner.Controls.PrintElementToolbox
 {

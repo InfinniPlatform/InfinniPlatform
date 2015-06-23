@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Sdk.Application.Contracts;
+﻿using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.WebApi.WebApi;
 
 namespace InfinniPlatform.SystemConfig.Configurator

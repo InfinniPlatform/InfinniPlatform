@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Sdk.Application.Events;
+﻿using InfinniPlatform.Sdk.Events;
 
 namespace InfinniPlatform.Api.RestQuery.EventObjects
 {

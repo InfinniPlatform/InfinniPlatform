@@ -1,7 +1,7 @@
 ﻿using System;
 using InfinniPlatform.Metadata.StateMachine.ActionUnits.ActionOperatorBuilders;
 using InfinniPlatform.Metadata.StateMachine.Statuses;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 using NUnit.Framework;
 
 namespace InfinniPlatform.Metadata.Tests

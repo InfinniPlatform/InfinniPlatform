@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using DevExpress.Xpf.Core;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.PrintViewDesigner.Controls.PropertyGridExtensions
 {

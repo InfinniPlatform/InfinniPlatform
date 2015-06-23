@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using InfinniPlatform.Api.Registers;
 using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
 {

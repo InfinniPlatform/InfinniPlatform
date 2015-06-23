@@ -3,7 +3,8 @@ using System.IO;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.TestEnvironment;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Utils
 {

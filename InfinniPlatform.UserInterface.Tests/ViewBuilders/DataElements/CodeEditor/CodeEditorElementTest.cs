@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.UserInterface.ViewBuilders.DataElements.CodeEditor;
 using InfinniPlatform.UserInterface.ViewBuilders.Views;
 using NUnit.Framework;

@@ -1,6 +1,6 @@
 ﻿using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Registers;
-using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
 {

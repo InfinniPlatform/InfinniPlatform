@@ -1,7 +1,7 @@
 ﻿using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.RestfulApi.Extensions;
-using InfinniPlatform.Sdk.Application.Contracts;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.RestfulApi.ActionUnits
 {

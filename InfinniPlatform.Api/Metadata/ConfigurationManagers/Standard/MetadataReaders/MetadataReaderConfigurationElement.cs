@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.SchemaReaders;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataReaders
 {

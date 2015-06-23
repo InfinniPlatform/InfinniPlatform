@@ -1,7 +1,7 @@
 ﻿using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Validation;
 using InfinniPlatform.RestfulApi.Utils;
-using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.RestfulApi.Auth
 {

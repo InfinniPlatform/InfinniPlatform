@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using InfinniPlatform.Sdk.Application.Events;
+using InfinniPlatform.Sdk.Events;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Json.EventBuilders

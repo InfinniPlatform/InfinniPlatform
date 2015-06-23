@@ -1,6 +1,6 @@
 ﻿using System.Windows.Documents;
 using InfinniPlatform.FlowDocument.Builders.Factories;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 using NUnit.Framework;
 using FrameworkFlowDocument = System.Windows.Documents.FlowDocument;
 

@@ -1,5 +1,5 @@
 ﻿using InfinniPlatform.ContextComponents;
-using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.SystemConfig.Configurator
 {

@@ -1,5 +1,7 @@
 ﻿using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Threading;
+using InfinniPlatform.Sdk.Api;
+
 
 namespace InfinniPlatform.Api.TestEnvironment
 {

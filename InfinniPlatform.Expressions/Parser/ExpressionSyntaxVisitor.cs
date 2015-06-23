@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using InfinniPlatform.Expressions.CompiledExpressions;
 using InfinniPlatform.Expressions.Properties;
-using InfinniPlatform.Sdk.Application.Extensions;
+using InfinniPlatform.Sdk.Extensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;

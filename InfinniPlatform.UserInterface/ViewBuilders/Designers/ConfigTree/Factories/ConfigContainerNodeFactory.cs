@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Metadata;
+using InfinniPlatform.Sdk.Api;
 using InfinniPlatform.UserInterface.Properties;
 using InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Commands;
 

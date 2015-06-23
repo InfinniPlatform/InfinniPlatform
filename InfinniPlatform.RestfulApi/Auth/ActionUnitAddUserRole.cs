@@ -1,6 +1,6 @@
 ﻿using System;
 using InfinniPlatform.ContextComponents;
-using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.SystemConfig.UserStorage;
 
 namespace InfinniPlatform.RestfulApi.Auth

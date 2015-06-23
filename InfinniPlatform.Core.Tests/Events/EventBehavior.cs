@@ -4,7 +4,7 @@ using System.Linq;
 using InfinniPlatform.Api.RestQuery.EventObjects;
 using InfinniPlatform.Json;
 using InfinniPlatform.Json.EventBuilders;
-using InfinniPlatform.Sdk.Application.Events;
+using InfinniPlatform.Sdk.Events;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;

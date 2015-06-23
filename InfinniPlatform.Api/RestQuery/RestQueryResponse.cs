@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using InfinniPlatform.Api.Properties;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Api.RestQuery
 {

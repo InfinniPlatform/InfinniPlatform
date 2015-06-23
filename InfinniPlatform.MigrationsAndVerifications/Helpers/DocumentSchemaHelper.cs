@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Helpers
 {

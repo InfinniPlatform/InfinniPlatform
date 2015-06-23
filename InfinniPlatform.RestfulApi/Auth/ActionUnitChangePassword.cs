@@ -1,8 +1,8 @@
 ﻿using InfinniPlatform.Api.Security;
 using InfinniPlatform.Api.Validation;
 using InfinniPlatform.ContextComponents;
-using InfinniPlatform.Sdk.Application.Contracts;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Security;
 using InfinniPlatform.SystemConfig.UserStorage;
 

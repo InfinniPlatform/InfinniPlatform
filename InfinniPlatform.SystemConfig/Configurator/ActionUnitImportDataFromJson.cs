@@ -3,8 +3,8 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Sdk.Application.Contracts;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.SystemConfig.Configurator
 {

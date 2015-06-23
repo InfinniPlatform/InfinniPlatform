@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 using Microsoft.Win32;
 using AppResources = InfinniPlatform.PrintViewDesigner.Properties.Resources;
 

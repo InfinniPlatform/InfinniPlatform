@@ -3,7 +3,7 @@ using InfinniPlatform.Api.Index;
 using RestSharp;
 using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion
 {

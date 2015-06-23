@@ -127,9 +127,9 @@
       <Project>{0ca27ad5-540a-4cc6-a9f4-18634716d096}</Project>
       <Name>InfinniPlatform.Expressions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Sdk.Application\InfinniPlatform.Sdk.Application.csproj">
+    <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469d-7d54-4c76-97e2-ef40f15645f5}</Project>
-      <Name>InfinniPlatform.Sdk.Application</Name>
+      <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

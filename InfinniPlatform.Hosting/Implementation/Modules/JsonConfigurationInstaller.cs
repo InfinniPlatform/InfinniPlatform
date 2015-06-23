@@ -9,7 +9,7 @@ using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.SchemaReaders;
 using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Hosting.Implementation.ExtensionPointHandling;
 using InfinniPlatform.Logging;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Hosting.Implementation.Modules
 {

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Properties;
 using Newtonsoft.Json.Linq;
 
@@ -42,7 +40,7 @@ namespace InfinniPlatform.Sdk.Api
             if (!string.IsNullOrEmpty(response.Content))
             {
                 //гребаный JsonObjectSerializer вставляет служебный символ в начало строки
-                return ProcessRequestResult(response, () => JObject.Parse(response.Content.Remove(0, 1)),
+                return ProcessRequestResult(response, () => response.Content.Remove(0, 1).ToDynamic(),
                     () => Resources.ResultIsNotOfObjectType, () => exceptionMessage);
             }
             return null;

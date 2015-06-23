@@ -8,8 +8,8 @@ using InfinniPlatform.Api.Profiling;
 using InfinniPlatform.Api.RestQuery.EventObjects;
 using InfinniPlatform.Api.RestQuery.EventObjects.EventSerializers;
 using InfinniPlatform.Api.SearchOptions;
-using InfinniPlatform.Sdk.Application.Dynamic;
-using InfinniPlatform.Sdk.Application.Events;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Events;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders

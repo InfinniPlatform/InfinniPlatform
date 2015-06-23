@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.Validation.Serialization;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Api.Validation
 {

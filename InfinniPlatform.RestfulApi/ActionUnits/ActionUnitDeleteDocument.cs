@@ -5,8 +5,8 @@ using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.ContextComponents;
-using InfinniPlatform.Sdk.Application.Contracts;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.RestfulApi.ActionUnits
 {

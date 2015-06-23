@@ -5,7 +5,7 @@ using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.Validation;
 using InfinniPlatform.Logging;
-using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
 {

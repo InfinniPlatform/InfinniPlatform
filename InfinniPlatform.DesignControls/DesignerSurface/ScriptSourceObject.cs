@@ -1,5 +1,5 @@
 ﻿using InfinniPlatform.DesignControls.Layout;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.DesignControls.DesignerSurface
 {

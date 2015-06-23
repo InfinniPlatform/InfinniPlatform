@@ -1,5 +1,5 @@
 ﻿using InfinniPlatform.Api.Schema;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.Schema

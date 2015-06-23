@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Sdk.Application.Dynamic;
+﻿using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders
 {

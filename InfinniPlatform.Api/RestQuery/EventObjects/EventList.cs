@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using InfinniPlatform.Sdk.Application.Dynamic;
-using InfinniPlatform.Sdk.Application.Events;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Events;
 
 namespace InfinniPlatform.Api.RestQuery.EventObjects
 {

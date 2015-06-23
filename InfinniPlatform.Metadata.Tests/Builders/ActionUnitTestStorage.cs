@@ -1,5 +1,5 @@
 ﻿using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.Metadata.Tests.Builders
 {

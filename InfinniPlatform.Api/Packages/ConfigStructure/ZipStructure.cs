@@ -6,7 +6,7 @@ using System.Text;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.Settings;
 using InfinniPlatform.Api.SystemExtensions;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Api.Packages.ConfigStructure
 {

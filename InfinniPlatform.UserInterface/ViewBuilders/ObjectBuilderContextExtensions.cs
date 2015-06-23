@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using InfinniPlatform.Sdk.Application.Extensions;
+using InfinniPlatform.Sdk.Extensions;
 using InfinniPlatform.UserInterface.ViewBuilders.Data;
 using InfinniPlatform.UserInterface.ViewBuilders.Views;
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using InfinniPlatform.Api.Factories;
 using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Api.Transactions
 {

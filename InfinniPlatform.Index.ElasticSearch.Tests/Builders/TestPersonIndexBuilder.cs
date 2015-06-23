@@ -4,7 +4,7 @@ using System.Linq;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Index.ElasticSearch.Factories;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.SystemConfig.RoutingFactory;
 
 namespace InfinniPlatform.Index.ElasticSearch.Tests.Builders

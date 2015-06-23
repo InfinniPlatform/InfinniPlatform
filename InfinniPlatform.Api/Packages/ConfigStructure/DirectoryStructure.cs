@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Api.Packages.ConfigStructure
 {

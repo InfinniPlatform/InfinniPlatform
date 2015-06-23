@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Sdk.Application.Dynamic;
+﻿using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Controls;
 using InfinniPlatform.UserInterface.ViewBuilders.Elements;
 using InfinniPlatform.UserInterface.ViewBuilders.LayoutPanels.ViewPanel;

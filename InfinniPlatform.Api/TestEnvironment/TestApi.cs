@@ -5,7 +5,8 @@ using InfinniPlatform.Api.Context;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestQuery;
-using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.Api.TestEnvironment
 {

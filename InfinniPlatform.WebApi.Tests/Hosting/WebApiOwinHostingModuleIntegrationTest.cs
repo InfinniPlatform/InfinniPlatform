@@ -7,6 +7,7 @@ using InfinniPlatform.Hosting;
 using InfinniPlatform.Hosting.Implementation.ServiceRegistration;
 using InfinniPlatform.Hosting.Implementation.ServiceTemplates;
 using InfinniPlatform.Owin.Hosting;
+using InfinniPlatform.Sdk.Api;
 using NUnit.Framework;
 
 namespace InfinniPlatform.WebApi.Tests.Hosting

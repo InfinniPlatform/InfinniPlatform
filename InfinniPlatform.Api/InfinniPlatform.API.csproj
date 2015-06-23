@@ -149,7 +149,6 @@
     <Compile Include="Index\IIndexQueryExecutor.cs" />
     <Compile Include="Index\IIndexStateProvider.cs" />
     <Compile Include="Factories\IScriptProcessor.cs" />
-    <Compile Include="Hosting\HostingConfig.cs" />
     <Compile Include="Index\IIndexTypeMapping.cs" />
     <Compile Include="Index\IndexItemStrategy.cs" />
     <Compile Include="Index\IndexStatus.cs" />
@@ -707,9 +706,9 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Sdk.Application\InfinniPlatform.Sdk.Application.csproj">
+    <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469d-7d54-4c76-97e2-ef40f15645f5}</Project>
-      <Name>InfinniPlatform.Sdk.Application</Name>
+      <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

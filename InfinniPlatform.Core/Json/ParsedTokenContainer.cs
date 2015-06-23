@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using InfinniPlatform.Api.RestQuery.EventObjects;
-using InfinniPlatform.Sdk.Application.Events;
+using InfinniPlatform.Sdk.Events;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Json

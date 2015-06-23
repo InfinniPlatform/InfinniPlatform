@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Linq;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Data.DataSources
 {

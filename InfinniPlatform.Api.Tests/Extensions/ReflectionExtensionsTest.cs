@@ -1,5 +1,5 @@
 ﻿using System;
-using InfinniPlatform.Sdk.Application.Extensions;
+using InfinniPlatform.Sdk.Extensions;
 using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.Extensions

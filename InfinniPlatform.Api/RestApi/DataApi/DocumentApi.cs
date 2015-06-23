@@ -5,11 +5,11 @@ using InfinniPlatform.Api.Linq;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.SearchOptions.Builders;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Api.RestApi.DataApi
 {
-    public class DocumentApi
+    public class DocumentApi 
     {
         private readonly bool _secured;
         private readonly string _version;

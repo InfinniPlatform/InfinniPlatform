@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using InfinniPlatform.Api.Properties;
-using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.Api.ContextTypes
 {

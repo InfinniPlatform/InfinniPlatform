@@ -9,7 +9,7 @@ using InfinniPlatform.Api.ModelRepository.MetadataObjectModel;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.TestEnvironment;
 using InfinniPlatform.OceanInformatics.DataModelLoader;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 using NUnit.Framework;
 
 namespace InfinniPlatform.ModelRepository.Tests

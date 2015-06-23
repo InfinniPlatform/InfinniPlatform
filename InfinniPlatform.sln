@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}"
 	ProjectSection(SolutionItems) = preProject
 		Files\Log.config = Files\Log.config
@@ -170,6 +172,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{2F5C5276-823F-4C7D-B95A-3EFD75C7B0C5}"
 	ProjectSection(SolutionItems) = preProject
 		Files\Client\App.config = Files\Client\App.config
+		Files\VersionInfo.cs = Files\VersionInfo.cs
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{89D37C8B-9A73-45AB-A4C0-E91DC1A6D5CA}"
@@ -222,11 +225,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.SystemConfi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Utils", "InfinniPlatform.Utils\InfinniPlatform.Utils.csproj", "{66201AEC-C0C9-49DC-AB78-B8B8235A6607}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Sdk", "InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj", "{103879A1-30AE-4527-A0FF-F79BC3A01904}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Sdk.Tests", "InfinniPlatform.Sdk.Tests\InfinniPlatform.Sdk.Tests.csproj", "{4C6F499C-E183-4FC7-9F14-C94B2DA3F443}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Sdk.Application", "InfinniPlatform.Sdk.Application\InfinniPlatform.Sdk.Application.csproj", "{2322469D-7D54-4C76-97E2-EF40F15645F5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Sdk", "InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj", "{2322469D-7D54-4C76-97E2-EF40F15645F5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C1BD72E7-BC2D-47E8-AA26-822DA02E9DE0}"
 	ProjectSection(SolutionItems) = preProject
@@ -541,10 +542,6 @@ Global
 		{66201AEC-C0C9-49DC-AB78-B8B8235A6607}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66201AEC-C0C9-49DC-AB78-B8B8235A6607}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66201AEC-C0C9-49DC-AB78-B8B8235A6607}.Release|Any CPU.Build.0 = Release|Any CPU
-		{103879A1-30AE-4527-A0FF-F79BC3A01904}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{103879A1-30AE-4527-A0FF-F79BC3A01904}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{103879A1-30AE-4527-A0FF-F79BC3A01904}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{103879A1-30AE-4527-A0FF-F79BC3A01904}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4C6F499C-E183-4FC7-9F14-C94B2DA3F443}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4C6F499C-E183-4FC7-9F14-C94B2DA3F443}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C6F499C-E183-4FC7-9F14-C94B2DA3F443}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -568,7 +565,6 @@ Global
 		{7CA0F96C-7FF4-44B2-9D44-851984DF4532} = {D2A3ECA9-064A-44A1-95EE-37AB350D303C}
 		{EBC684B7-B72A-475F-BBC1-B6293B607B9B} = {D2A3ECA9-064A-44A1-95EE-37AB350D303C}
 		{E9AAAC4A-A3DA-4695-8074-BFDE4EE03995} = {D2A3ECA9-064A-44A1-95EE-37AB350D303C}
-		{103879A1-30AE-4527-A0FF-F79BC3A01904} = {D2A3ECA9-064A-44A1-95EE-37AB350D303C}
 		{2322469D-7D54-4C76-97E2-EF40F15645F5} = {D2A3ECA9-064A-44A1-95EE-37AB350D303C}
 		{2CF4F212-EB37-413C-B00D-8B84D6976CE9} = {DCACA8BC-6EEA-4B79-A8A8-356A51C13D2D}
 		{6A39EA44-58CA-4536-8AD1-58DA2C081E46} = {DCACA8BC-6EEA-4B79-A8A8-356A51C13D2D}

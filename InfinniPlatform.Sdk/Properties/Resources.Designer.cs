@@ -79,6 +79,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Collection can not be modified.
+        /// </summary>
+        internal static string CollectionCanNotBeModified {
+            get {
+                return ResourceManager.GetString("CollectionCanNotBeModified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Document to detach should not be null..
         /// </summary>
         internal static string DocumentToDetachShouldntBeEmpty {
@@ -93,6 +102,15 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string InternalServerError {
             get {
                 return ResourceManager.GetString("InternalServerError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Property path cannot be null or empty..
+        /// </summary>
+        internal static string PropertyPathCannotBeNullOrEmpty {
+            get {
+                return ResourceManager.GetString("PropertyPathCannotBeNullOrEmpty", resourceCulture);
             }
         }
         
@@ -147,6 +165,15 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string SessionNotInitialized {
             get {
                 return ResourceManager.GetString("SessionNotInitialized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target object cannot be null..
+        /// </summary>
+        internal static string TargetObjectCannotBeNull {
+            get {
+                return ResourceManager.GetString("TargetObjectCannotBeNull", resourceCulture);
             }
         }
         

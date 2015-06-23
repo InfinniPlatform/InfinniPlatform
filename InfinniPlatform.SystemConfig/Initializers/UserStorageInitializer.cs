@@ -1,7 +1,7 @@
 ﻿using InfinniPlatform.Api.Security;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Runtime;
-using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Security;
 using InfinniPlatform.SystemConfig.UserStorage;
 

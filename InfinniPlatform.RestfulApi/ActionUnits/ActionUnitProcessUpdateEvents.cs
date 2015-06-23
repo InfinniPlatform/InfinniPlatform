@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Factories;
-using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.RestfulApi.ActionUnits
 {

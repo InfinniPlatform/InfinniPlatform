@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{103879A1-30AE-4527-A0FF-F79BC3A01904}</ProjectGuid>
+    <ProjectGuid>{2322469D-7D54-4C76-97E2-EF40F15645F5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>InfinniPlatform.Sdk</RootNamespace>
@@ -41,18 +41,43 @@
       <HintPath>..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\BaseApi.cs" />
+    <Compile Include="Api\HostingConfig.cs" />
     <Compile Include="Api\InfinniAuthApi.cs" />
     <Compile Include="Api\InfinniCustomServiceApi.cs" />
     <Compile Include="Api\InfinniSignInApi.cs" />
     <Compile Include="AttachedInstance.cs" />
+    <Compile Include="Contracts\IApplyContext.cs" />
+    <Compile Include="Contracts\IApplyResultContext.cs" />
+    <Compile Include="Contracts\ICommonContext.cs" />
+    <Compile Include="Contracts\IGlobalContext.cs" />
+    <Compile Include="Contracts\IPlatformComponentsPack.cs" />
+    <Compile Include="Contracts\IProcessEventContext.cs" />
+    <Compile Include="Contracts\ISearchContext.cs" />
+    <Compile Include="Contracts\IUploadContext.cs" />
+    <Compile Include="Contracts\IUrlEncodedDataContext.cs" />
+    <Compile Include="Dynamic\DynamicWrapper.cs" />
+    <Compile Include="Dynamic\DynamicWrapperExtensions.cs" />
+    <Compile Include="Dynamic\DynamicWrapperJsonConverter.cs" />
+    <Compile Include="Dynamic\DynamicWrapperMetaObject.cs" />
+    <Compile Include="Dynamic\DynamicWrapperPropertyDescriptor.cs" />
+    <Compile Include="Dynamic\ObjectHelper.cs" />
+    <Compile Include="Events\EventDefinition.cs" />
+    <Compile Include="Events\EventType.cs" />
+    <Compile Include="Extensions\ReflectionCache.cs" />
+    <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="FilterBuilder.cs" />
     <Compile Include="Api\InfinniDocumentApi.cs" />
     <Compile Include="Api\InfinniFileApi.cs" />
+    <Compile Include="Global\CustomServiceGlobalContext.cs" />
+    <Compile Include="Global\ICustomServiceGlobalContext.cs" />
+    <Compile Include="Global\ScriptContext.cs" />
+    <Compile Include="Global\ScriptContextApp.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

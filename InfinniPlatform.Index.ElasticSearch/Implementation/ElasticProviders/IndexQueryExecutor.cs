@@ -7,7 +7,7 @@ using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Schema
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticSearchModels;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeSelectors;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 using Nest;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders

@@ -9,7 +9,7 @@ using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.Worklow;
 using InfinniPlatform.Logging;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 {

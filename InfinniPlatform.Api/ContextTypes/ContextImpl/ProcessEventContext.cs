@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using InfinniPlatform.Api.Context;
-using InfinniPlatform.Sdk.Application.Contracts;
-using InfinniPlatform.Sdk.Application.Events;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Events;
 
 namespace InfinniPlatform.Api.ContextTypes.ContextImpl
 {

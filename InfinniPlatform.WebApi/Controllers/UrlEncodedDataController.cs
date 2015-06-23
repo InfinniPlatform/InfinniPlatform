@@ -5,7 +5,7 @@ using System.Web.Http;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestQuery;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.WebApi.ConfigRequestProviders;
 
 namespace InfinniPlatform.WebApi.Controllers

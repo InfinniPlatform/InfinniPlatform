@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ using InfinniPlatform.Hosting.Implementation;
 using InfinniPlatform.Modules;
 using InfinniPlatform.RestfulApi.Extensions;
 using InfinniPlatform.RestfulApi.Properties;
+using InfinniPlatform.Sdk.Api;
 using InfinniPlatform.SystemConfig.Initializers;
 
 namespace InfinniPlatform.RestfulApi
@@ -27,6 +29,8 @@ namespace InfinniPlatform.RestfulApi
             string modules = string.Join(",",
                                          "InfinniPlatform.SystemConfig,InfinniPlatform.Metadata,InfinniPlatform.Update,InfinniPlatform.RestfulApi",
                                          configurationList);
+           
+
             var factory = new OwinHostingServiceFactory(ModuleExtension.LoadModulesAssemblies(modules), null,
                                                         hostingConfig);
 
@@ -53,6 +57,7 @@ namespace InfinniPlatform.RestfulApi
 
         public void Run(TestServerParameters parameters)
         {
+            Debugger.Launch();
             FastStorageExtension.CreateBlobStorage();
             FastStorageExtension.CreateEventStorage();
 

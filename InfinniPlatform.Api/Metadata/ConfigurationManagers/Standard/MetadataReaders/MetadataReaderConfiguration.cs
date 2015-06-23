@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataReaders
 {

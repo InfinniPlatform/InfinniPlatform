@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 using System.Text;
 using InfinniPlatform.Sdk.Properties;
 using RestSharp;

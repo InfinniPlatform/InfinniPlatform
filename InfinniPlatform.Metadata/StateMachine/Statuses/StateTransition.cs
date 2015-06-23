@@ -6,7 +6,7 @@ using System.Runtime.ExceptionServices;
 using InfinniPlatform.Api.Actions;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.Validation;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Metadata.StateMachine.Statuses
 {

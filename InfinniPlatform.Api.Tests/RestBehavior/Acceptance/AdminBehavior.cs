@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.TestEnvironment;
+using InfinniPlatform.Sdk.Api;
 using InfinniPlatform.SystemConfig.UserStorage;
 using NUnit.Framework;
 

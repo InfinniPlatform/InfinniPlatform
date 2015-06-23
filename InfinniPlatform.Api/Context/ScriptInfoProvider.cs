@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Api.Context
 {

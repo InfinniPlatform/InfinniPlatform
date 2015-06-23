@@ -8,7 +8,7 @@ using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Metadata.Properties;
-using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.Metadata.Implementation.Handlers
 {

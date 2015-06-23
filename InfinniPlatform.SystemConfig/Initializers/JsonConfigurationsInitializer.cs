@@ -9,7 +9,7 @@ using InfinniPlatform.Hosting;
 using InfinniPlatform.Hosting.Implementation.Modules;
 using InfinniPlatform.Metadata;
 using InfinniPlatform.Runtime;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.SystemConfig.RoutingFactory;
 using InfinniPlatform.WebApi.Factories;
 using Newtonsoft.Json.Linq;

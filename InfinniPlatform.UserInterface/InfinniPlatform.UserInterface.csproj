@@ -45,6 +45,10 @@
       <Private>True</Private>
       <HintPath>..\packages\DevExpress.13.2.9\lib\net45\DevExpress.Xpf.Core.v13.2.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.Xpf.Core.v13.2.Extensions, Version=13.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DevExpress.13.2.9\lib\net45\DevExpress.Xpf.Core.v13.2.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="DevExpress.Xpf.Docking.v13.2, Version=13.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\DevExpress.13.2.9\lib\net45\DevExpress.Xpf.Docking.v13.2.dll</HintPath>
@@ -56,6 +60,10 @@
     <Reference Include="DevExpress.Xpf.Grid.v13.2.Core, Version=13.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\DevExpress.13.2.9\lib\net45\DevExpress.Xpf.Grid.v13.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Grid.v13.2.Extensions, Version=13.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DevExpress.13.2.9\lib\net45\DevExpress.Xpf.Grid.v13.2.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpf.Layout.v13.2.Core, Version=13.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -69,6 +77,10 @@
       <Private>True</Private>
       <HintPath>..\packages\DevExpress.13.2.9\lib\net45\DevExpress.Xpf.Mvvm.v13.2.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.MetropolisLight.v13.2, Version=13.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DevExpress.13.2.9\lib\net45\DevExpress.Xpf.Themes.MetropolisLight.v13.2.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.AvalonEdit">
       <HintPath>..\packages\AvalonEdit.4.4.2.9744\lib\Net40\ICSharpCode.AvalonEdit.dll</HintPath>
     </Reference>
@@ -77,7 +89,9 @@
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -683,9 +697,9 @@
       <Project>{65734184-a04c-4509-bf68-6f07ca324104}</Project>
       <Name>InfinniPlatform.ReportDesigner</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Sdk.Application\InfinniPlatform.Sdk.Application.csproj">
+    <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
-      <Name>InfinniPlatform.Sdk.Application</Name>
+      <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

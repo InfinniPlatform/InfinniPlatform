@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Sdk.Application.Events;
+using InfinniPlatform.Sdk.Events;
 
 namespace InfinniPlatform.Api.RestQuery.EventObjects.EventSerializers
 {

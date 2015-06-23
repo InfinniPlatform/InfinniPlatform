@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using InfinniPlatform.PrintViewDesigner.Common;
 using InfinniPlatform.PrintViewDesigner.Properties;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.PrintViewDesigner.Controls.PrintViewTreeBuilders
 {

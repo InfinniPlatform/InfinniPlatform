@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using InfinniPlatform.Api.RestApi.Auth;
-using InfinniPlatform.Sdk.Application.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 {

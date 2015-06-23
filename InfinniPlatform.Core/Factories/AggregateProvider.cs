@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using InfinniPlatform.Json.EventBuilders;
-using InfinniPlatform.Sdk.Application.Dynamic;
-using InfinniPlatform.Sdk.Application.Events;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Events;
 
 namespace InfinniPlatform.Factories
 {

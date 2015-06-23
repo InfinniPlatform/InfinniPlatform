@@ -6,7 +6,7 @@ using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Metadata;
 using InfinniPlatform.Runtime;
-using InfinniPlatform.Sdk.Application.Contracts;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.SystemConfig.Initializers
 {

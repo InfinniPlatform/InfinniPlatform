@@ -47,7 +47,15 @@
       instance-scope="single-instance"/>
     <component
       type = "InfinniPlatform.Factories.GlobalContext, InfinniPlatform.Core"
-      service="InfinniPlatform.Api.Context.IGlobalContext, InfinniPlatform.Api"
+      service="InfinniPlatform.Sdk.Contracts.IGlobalContext, InfinniPlatform.Sdk"
+      instance-scope="per-dependency"/>
+    <component
+      type = "InfinniPlatform.ContextComponents.PlatformComponentsPack, InfinniPlatform.Core"
+      service="InfinniPlatform.Sdk.Contracts.IPlatformComponentsPack, InfinniPlatform.Sdk"
+      instance-scope="per-dependency"/>
+    <component
+      type = "InfinniPlatform.Sdk.Global.CustomServiceGlobalContext, InfinniPlatform.Sdk"
+      service="InfinniPlatform.Sdk.Global.ICustomServiceGlobalContext, InfinniPlatform.Sdk"
       instance-scope="per-dependency"/>
     <component
       type = "InfinniPlatform.Runtime.Factories.ScriptFactoryBuilder, InfinniPlatform.Runtime"
