@@ -117,7 +117,7 @@ namespace InfinniPlatform.Sdk.Tests
 
             Assert.True(docs.Any());
 
-            dynamic deleteResult = JsonConvert.DeserializeObject<ExpandoObject>(_api.DeleteDocument("gameshop", "catalogue", result).Content.ToString());
+            dynamic deleteResult = _api.DeleteDocument("gameshop", "catalogue", result);
 
             Assert.AreEqual(deleteResult.IsValid, true);
             Assert.AreEqual(deleteResult.ValidationMessage, string.Format("Document with identifier \"{0}\" deleted successfully", result));

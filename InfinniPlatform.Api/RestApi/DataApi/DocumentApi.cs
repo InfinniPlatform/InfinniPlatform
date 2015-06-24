@@ -181,7 +181,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                 Metadata = metadata,
                 Id = documentId,
                 Secured = _secured
-            }, _version);
+            }, _version).ToDynamic();
         }
 
         public dynamic UpdateDocument(string configuration, string metadata, dynamic item, bool ignoreWarnings = false,
