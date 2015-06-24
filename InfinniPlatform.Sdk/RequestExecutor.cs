@@ -1,6 +1,9 @@
-﻿using System.IO;
+﻿using System.Collections;
+using System.IO;
 using System.Net;
+using InfinniPlatform.Sdk.Dynamic;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 using RestSharp.Extensions;
 
@@ -54,10 +57,8 @@ namespace InfinniPlatform.Sdk
             {
                 RequestFormat = DataFormat.Json
             };
-            if (body != null)
-            {
-                restRequest.AddBody(body);
-            }
+
+            AddBody(body, restRequest);
 
             IRestResponse restResponse = restClient.Post(restRequest);
 
@@ -83,14 +84,31 @@ namespace InfinniPlatform.Sdk
                 RequestFormat = DataFormat.Json
             };
 
-            if (body != null)
-            {
-                restRequest.AddBody(body);
-            }
+            AddBody(body, restRequest);
 
             IRestResponse restResponse = restClient.Put(restRequest);
 
             return restResponse.ToQueryResponse();
+        }
+
+        private static void AddBody(object body, RestRequest restRequest)
+        {
+            if (body != null)
+            {
+                dynamic bodyObject = body;
+                if (!(body is JToken) && !(body is DynamicWrapper))
+                {
+                    if (body is IEnumerable)
+                    {
+                        bodyObject = JArray.FromObject(body);
+                    }
+                    else
+                    {
+                        bodyObject = JObject.FromObject(body);
+                    }
+                }
+                restRequest.AddParameter("application/json", bodyObject, ParameterType.RequestBody);
+            }
         }
 
         public RestQueryResponse QueryDelete(string url, dynamic body = null)
@@ -104,10 +122,7 @@ namespace InfinniPlatform.Sdk
                 RequestFormat = DataFormat.Json
             };
 
-            if (body != null)
-            {
-                restRequest.AddBody(body);
-            }
+            AddBody(body, restRequest);
 
             IRestResponse restResponse = restClient.Delete(restRequest);
 

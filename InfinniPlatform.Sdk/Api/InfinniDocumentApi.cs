@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using InfinniPlatform.Sdk.Properties;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Sdk.Api
@@ -50,7 +51,7 @@ namespace InfinniPlatform.Sdk.Api
 
             changesObject.Document.Id = instanceId;
 
-            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlDefaultSessionById(session, Version), changesObject.ToString());
+            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlDefaultSessionById(session, Version), changesObject);
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToAttachDocumentToSession, response.GetErrorContent())); 
         }
@@ -229,8 +230,7 @@ namespace InfinniPlatform.Sdk.Api
             var routeBuilder = new RouteBuilder(Server, Port);
 
             var response = restQueryExecutor.QueryPut(
-                routeBuilder.BuildRestRoutingUrlDefaultById(Version, applicationId, documentType, documentId),
-                JObject.FromObject(document).ToString());
+                routeBuilder.BuildRestRoutingUrlDefaultById(Version, applicationId, documentType, documentId), document);
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToSetDocument, response.GetErrorContent()));
         }
@@ -250,7 +250,7 @@ namespace InfinniPlatform.Sdk.Api
 
             var response = restQueryExecutor.QueryPut(
                 routeBuilder.BuildRestRoutingUrlDefault(Version, applicationId, documentType),
-                JArray.FromObject(documents).ToString());
+                documents);
 
             return ProcessAsObjectResult(response,
                 string.Format(Resources.UnableToSetDocument, response.GetErrorContent()));
@@ -279,7 +279,7 @@ namespace InfinniPlatform.Sdk.Api
 
             var response = restQueryExecutor.QueryPost(
                 routeBuilder.BuildRestRoutingUrlDefaultById(Version, applicationId, documentType, instanceId),
-                JObject.FromObject(parameters).ToString());
+                parameters);
 
             if (!response.IsAllOk)
             {
