@@ -20,6 +20,31 @@
       "type": "boolean",
       "default": false
     },
+    "HeaderTextStyle": {
+      "description": "Стиль текста заголовка",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/TextStyle",
+      "default": "Title"
+    },
+    "HeaderForeground": {
+      "description": "Цвет текста заголовка",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/ColorStyle",
+      "default": "Black"
+    },
+    "HeaderBackground": {
+      "description": "Цвет фона заголовка",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/ColorStyle",
+      "default": "Transparent"
+    },
+    "ContentBackground": {
+      "description": "Цвет фона панели",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/ColorStyle",
+      "default": "Transparent"
+    },
+    "ContentTexture": {
+      "description": "Текстура панели",
+      "type": "string",
+      "default": null
+    },
     "ItemTemplate": {
       "description": "Шаблон отображения дочерних элементов панели",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/VisualElement"
