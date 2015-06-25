@@ -11,6 +11,11 @@
       "description": "Текст заголовка элемента",
       "type": "string"
     },
+    "Focusable": {
+      "description": "Возможен ли установить фокус ввода на элемент",
+      "type": "boolean",
+      "default": true
+    },
     "Enabled": {
       "description": "Возможен ли доступ к элементу",
       "type": "boolean",
@@ -41,6 +46,34 @@
     },
     "OnLostFocus": {
       "description": "Обработчик события о том, что элемент потерял фокус ввода",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+    },
+    "OnMouseDoubleClick": {
+      "description": "Обработчик события о том, что по элементу сделали двойной клик мыши",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+    },
+    "OnMouseDown": {
+      "description": "Обработчик события о том, что на элементе нажали кнопку мыши",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+    },
+    "OnMouseUp": {
+      "description": "Обработчик события о том, что на элементе отпустили кнопку мыши",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+    },
+    "OnMouseWheel": {
+      "description": "Обработчик события о том, что на элементе прокрутили колесо мыши",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+    },
+    "OnMouseEnter": {
+      "description": "Обработчик события о том, что указатель мыши вошел в границы элемента",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+    },
+    "OnMouseLeave": {
+      "description": "Обработчик события о том, что указатель мыши покинул границы элемента",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+    },
+    "OnMouseMove": {
+      "description": "Обработчик события о том, что указатель мыши двигался внутри элемента",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
     },
     "OnPropertyChanged": {
