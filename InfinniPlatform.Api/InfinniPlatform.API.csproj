@@ -713,6 +713,12 @@
   <ItemGroup>
     <EmbeddedResource Include="MetadataSchema\UI\DataBinding\BindingConverter.resjson" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MetadataSchema\UI\Style\ColorStyle.resjson" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MetadataSchema\UI\Style\TextStyle.resjson" />
+  </ItemGroup>
   <PropertyGroup>
     <PreBuildEvent>rem $(ProjectDir)\..\InfinniPlatform.Deploy\GenerateNuGetPackageRevision.exe  "$(ProjectDir)\..\InfinniPlatform.Deploy\InfinniPlatform.nuspec"</PreBuildEvent>
   </PropertyGroup>
