@@ -50,13 +50,13 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 				aclApi.AddUserToRole(user.UserName,AuthorizationStorageExtensions.AdminRole);
 			}
 
-            target.Item.Document.Password = null;
-
 			target.Context.GetComponent<DocumentApi>()
 			      .SetDocument(AuthorizationStorageExtensions.AdministrationConfigId, "User",
 			                   target.Item.Document);
 		   
 			RestQueryApi.QueryPostJsonRaw("AdministrationCustomization", "Common", "OnAddUserEvent", null, target.Item.Document);
+
+            target.Item.Document.Password = null;
 
 		}
 	}
