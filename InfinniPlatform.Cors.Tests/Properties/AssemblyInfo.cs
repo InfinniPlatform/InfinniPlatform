@@ -12,7 +12,7 @@
 // 0
 // 0
 // 0
-// b95e20e8-b2bd-42b8-b904-f2d76a75e75e
+// e89b473b-aea7-4081-8d6c-17042fb72d9e
 // EC2DB0D5207785C054E0A482E7AAB144
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
-[assembly: Guid("b95e20e8-b2bd-42b8-b904-f2d76a75e75e")]
+[assembly: Guid("e89b473b-aea7-4081-8d6c-17042fb72d9e")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 

@@ -15,7 +15,7 @@ namespace InfinniPlatform.Sdk.Tests
     public sealed class FileApiTest
     {
         private const string InfinniSessionPort = "9900";
-        private const string InfinniSessionServer = "localhost";
+        private const string InfinniSessionServer = "10.0.0.45";
         private const string InfinniSessionVersion = "1";
         private InfinniFileApi _fileApi;
         private InfinniDocumentApi _documentApi;

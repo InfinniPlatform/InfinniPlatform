@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Owin.Middleware;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.WebApi.Middleware.RouteFormatters;
 using Microsoft.Owin;
 using Newtonsoft.Json.Linq;
@@ -28,7 +29,8 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 
             dynamic body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
 
-            return new ValueRequestHandlerResult(RestQueryApi.QueryPostJsonRaw(routeDictionary["application"], routeDictionary["documentType"], routeDictionary["service"], null, body, routeDictionary["version"]));
+            return new ValueRequestHandlerResult(
+                RestQueryApi.QueryPostJsonRaw(routeDictionary["application"], routeDictionary["documentType"], routeDictionary["service"], null, body, routeDictionary["version"]).ToDynamic());
         }
     }
 }

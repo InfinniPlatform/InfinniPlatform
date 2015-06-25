@@ -15,7 +15,7 @@ namespace InfinniPlatform.Sdk.Tests
     public class DocumentApiTest
     {
         private const string InfinniSessionPort = "9900";
-        private const string InfinniSessionServer = "10.0.0.45";
+        private const string InfinniSessionServer = "localhost";
         private const string InfinniSessionVersion = "1";
         private InfinniDocumentApi _api;
 
@@ -156,7 +156,7 @@ namespace InfinniPlatform.Sdk.Tests
         [Test]
         public void ShouldUseSession()
         {
-            var session = _api.CreateSession().SessionId.ToString();
+            var session = _api.CreateSession().SessionId;
 
             Assert.IsNotNull(session);
 
@@ -181,11 +181,11 @@ namespace InfinniPlatform.Sdk.Tests
                 Price = -1
             };
 
-            dynamic attachResult = JsonConvert.DeserializeObject<ExpandoObject>(_api.Attach(session, "gameshop", "catalogue",documentObject.Id, documentObject).ToString());
+            dynamic attachResult = _api.Attach(session, "gameshop", "catalogue",documentObject.Id, documentObject);
 
             Assert.AreEqual(attachResult.IsValid, true);
 
-            dynamic sessionItems = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetSession(session).Content.ToString()).Items;
+            dynamic sessionItems = _api.GetSession(session).Items;
 
             Assert.AreEqual(sessionItems.Count, 1);
 
@@ -194,12 +194,12 @@ namespace InfinniPlatform.Sdk.Tests
 
             _api.Detach(session, failObject.Id);
 
-            sessionItems = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetSession(session).Content.ToString()).Items;
+            sessionItems = _api.GetSession(session).Items;
             Assert.AreEqual(sessionItems.Count, 2);
 
             _api.SaveSession(session);
 
-            sessionItems = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetSession(session).Content.ToString()).Items;
+            sessionItems = _api.GetSession(session).Items;
             Assert.AreEqual(sessionItems.Count, 0);
 
             var savedObject1 = _api.GetDocumentById("gameshop", "catalogue", documentObject.Id);
@@ -227,7 +227,7 @@ namespace InfinniPlatform.Sdk.Tests
 
             _api.RemoveSession(session);
 
-            var sessionItems = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetSession(session).Content.ToString()).Items;
+            var sessionItems = _api.GetSession(session).Items;
 
             Assert.AreEqual(sessionItems.Count, 0);
         }

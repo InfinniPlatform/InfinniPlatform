@@ -116,7 +116,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getsession", null, new
             {
                 SessionId = sessionId
-            }, _version);
+            }, _version).ToDynamic();
         }
     }
 }

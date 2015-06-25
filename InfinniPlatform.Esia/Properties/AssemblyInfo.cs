@@ -12,7 +12,7 @@
 // 0
 // 0
 // 0
-// 50cf2dbc-3aac-4608-ba74-7cf0196e75ad
+// afb39094-525e-4ab9-87ff-13b462763ffe
 // 150A5B30586AEBAE020DB8D3A14B2D2A
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
-[assembly: Guid("50cf2dbc-3aac-4608-ba74-7cf0196e75ad")]
+[assembly: Guid("afb39094-525e-4ab9-87ff-13b462763ffe")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: InternalsVisibleTo("InfinniPlatform.Esia.Tests")]

@@ -52,6 +52,14 @@ namespace InfinniPlatform.Sdk.Tests
             Assert.AreEqual(userObject.IsValid, false);
             Assert.True(((string) userObject.ValidationMessage).Contains("not found"));
         }
+        
+        [Test]
+        public void ShouldGetAcl()
+        {
+            dynamic aclItems =  _api.GetAclList(AclType.User, null, 0, 1000, null);
+
+            Assert.True(aclItems.Count > 0);
+        }
 
         [Test]
         public void ShouldGrantAcl()
@@ -109,10 +117,10 @@ namespace InfinniPlatform.Sdk.Tests
         {
             string roleName = "TestRole" + Guid.NewGuid();
 
-            dynamic accessResult = JsonConvert.DeserializeObject<ExpandoObject>(_api.AddRole(roleName).ToString());
+            dynamic accessResult = _api.AddRole(roleName);
             Assert.AreEqual(accessResult.IsValid, true);
 
-            accessResult = JsonConvert.DeserializeObject<ExpandoObject>(_api.DeleteRole(roleName).ToString());
+            accessResult = _api.DeleteRole(roleName);
             Assert.AreEqual(accessResult.IsValid, true);
         }
 
