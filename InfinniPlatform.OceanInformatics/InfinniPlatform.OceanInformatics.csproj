@@ -48,6 +48,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\EhrReaders.dll</HintPath>
     </Reference>
+    <Reference Include="EiffelSoftware.Runtime, Version=6.2.7.1629, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\EiffelSoftware.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="OceanInformatics.AdlParser, Version=1.4.0.1287, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\OceanInformatics.AdlParser.dll</HintPath>
+    </Reference>
     <Reference Include="OpenEhr.V1.Its.Xml, Version=1.0.1.4, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\OpenEhr.V1.Its.Xml.dll</HintPath>
