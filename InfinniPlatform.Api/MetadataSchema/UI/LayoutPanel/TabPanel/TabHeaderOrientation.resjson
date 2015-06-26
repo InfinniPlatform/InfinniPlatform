@@ -1,6 +1,6 @@
 ﻿{
   "id": "TabHeaderOrientation",
-  "description": "Ориентация закладок",
+  "description": "Ориентация закладок в TabPanel",
   "enum": [
     "Horizontal",
     "Vertical"
