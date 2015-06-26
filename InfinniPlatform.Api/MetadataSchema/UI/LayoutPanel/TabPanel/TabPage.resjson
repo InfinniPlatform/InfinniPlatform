@@ -1,31 +1,47 @@
 ﻿{
   "id": "TabPage",
-  "description": "Страница панели закладок",
+  "description": "Страница панели закладок TabPanel",
   "type": "object",
   "extends": {
     "$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
   },
   "properties": {
-    "Image": {
+    "Icon": {
       "description": "Изображение заголовка страницы",
-      "type": "string",
-      "default": null
+      "type": "string"
     },
     "CanClose": {
       "description": "Разрешено ли закрытие страницы",
       "type": "boolean",
       "default": false
     },
-    "LayoutPanel": {
-      "description": "Контейнер элементов страницы",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/LayoutPanel"
+    "Background": {
+      "description": "Цвет фона страницы",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/ColorStyle",
+      "default": "Transparent"
+    },
+    "Texture": {
+      "description": "Текстура страницы",
+      "type": "object",
+      "default": null
+    },
+    "ItemTemplate": {
+      "description": "Шаблон отображения дочерних элементов страницы",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/VisualElement"
+    },
+    "Items": {
+      "description": "Список дочерних элементов страницы",
+      "type": "array",
+      "items": {
+        "$ref": "http://demo.infinnity.ru:8081/display/MC/VisualElement"
+      }
     },
     "OnClosing": {
       "description": "Обработчик события о том, что страница закрывается",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
     },
     "OnClosed": {
-      "description": "Обработчик события о том, что страница закрыта",
+      "description": "Обработчик события о том, что страница была закрыта",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
     }
   },
