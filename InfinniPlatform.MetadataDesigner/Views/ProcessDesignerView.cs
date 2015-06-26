@@ -208,6 +208,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 						_selectedTemplate.EditMode = EditMode;
 						_selectedTemplate.ConfigId = ConfigId();
 						_selectedTemplate.DocumentId = DocumentId();
+					    _selectedTemplate.Version = Version();
 						_selectedTemplate.ProcessBuilder = this;
 						ReloadExistingHandlers();
 						_selectedTemplate.OnInitTemplate();

@@ -11,6 +11,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Data.DataSources
             dataSource.SetName(metadata.Name);
             dataSource.SetConfigId(metadata.ConfigId);
             dataSource.SetDocumentId(metadata.DocumentId);
+            dataSource.SetVersion(context.AppView.GetContext().Version);
             dataSource.SetFillCreatedItem(Convert.ToBoolean(metadata.FillCreatedItem));
 
             // До загрузки представления источник данных не активен
