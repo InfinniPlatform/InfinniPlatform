@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
@@ -11,28 +12,28 @@ using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 {
-    [TestFixture]
-    [Category(TestCategories.AcceptanceTest)]
-    public sealed class ContentUploadBehavior
-    {
-        private IDisposable _server;
-        private string _configurationId = "testconfigacontentupload";
-        private string _documentId = "testcontentdocument";
+	[TestFixture]
+	[Category(TestCategories.AcceptanceTest)]
+	public sealed class ContentUploadBehavior
+	{
+		private IDisposable _server;
+		private string _configurationId = "testconfigacontentupload";
+		private string _documentId = "testcontentdocument";
 
-        [TestFixtureSetUp]
-        public void FixtureSetup()
-        {
-            _server = TestApi.StartServer(c => c
-                                                   .SetHostingConfig(HostingConfig.Default));
+		[TestFixtureSetUp]
+		public void FixtureSetup()
+		{
+			_server = TestApi.StartServer(c => c
+				.SetHostingConfig(HostingConfig.Default));
 
             TestApi.InitClientRouting(HostingConfig.Default);
-        }
+		}
 
-        [TestFixtureTearDown]
-        public void FixtureTearDown()
-        {
-            _server.Dispose();
-        }
+		[TestFixtureTearDown]
+		public void FixtureTearDown()
+		{
+			_server.Dispose();
+		}
 
         private void CreateTestConfig()
         {
@@ -60,32 +61,38 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             new UpdateApi(null).UpdateStore(_configurationId);
         }
 
-        [Test]
-        public void ShouldUploadContent()
-        {
-            CreateTestConfig();
+		[Test]
+		public void ShouldUploadContent()
+		{
+			CreateTestConfig();
 
-            dynamic testDocument = new DynamicWrapper();
-            testDocument.Id = Guid.NewGuid().ToString();
-            testDocument.ContentField = new DynamicWrapper();
-            testDocument.ContentField.Info = new DynamicWrapper();
-            testDocument.ContentField.Info.Name = "images.jpg";
-            testDocument.ContentField.Info.Type = "image/jpeg";
-            testDocument.ContentField.Info.Size = 11723;
-
+			dynamic testDocument = new DynamicWrapper();
+			testDocument.Id = Guid.NewGuid().ToString();
+			testDocument.ContentField = new DynamicWrapper();
+			testDocument.ContentField.Info = new DynamicWrapper();
+			testDocument.ContentField.Info.Name = "images.jpg";
+			testDocument.ContentField.Info.Type = "image/jpeg";
+			testDocument.ContentField.Info.Size = 11723;
+			
 
             dynamic result = new DocumentApi(null).SetDocument(_configurationId, _documentId, testDocument);
 
             Assert.AreNotEqual(result.IsValid, false);
 
             dynamic uploadResult = new UploadApi(null).UploadBinaryContent(testDocument.Id, "ContentField",
-                                                                           @"TestData\Configurations\Authorization.zip");
+			                                    @"TestData\Configurations\Authorization.zip");
 
             Assert.AreNotEqual(uploadResult.IsValid, false);
 
             dynamic resultBlob = new UploadApi(null).DownloadBinaryContent(testDocument.Id, "ContentField");
 
+			Assert.IsNotNull(resultBlob);
+
+            dynamic storedDocument = new DocumentApi(null).GetDocument(_configurationId, _documentId, cr => cr.AddCriteria(f => f.Property("Id").IsEquals(testDocument.Id)), 0, 1).FirstOrDefault();
+
+            resultBlob = new UploadApi(null).DownloadBinaryContent(storedDocument.ContentField.Info.ContentId);
+
             Assert.IsNotNull(resultBlob);
-        }
-    }
+		}
+	}
 }

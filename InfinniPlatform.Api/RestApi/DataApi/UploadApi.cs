@@ -3,11 +3,11 @@ using InfinniPlatform.Api.RestApi.CommonApi;
 
 namespace InfinniPlatform.Api.RestApi.DataApi
 {
-    /// <summary>
+	/// <summary>
     ///     API для выгрузки двоичного контента
-    /// </summary>
-    public sealed class UploadApi
-    {
+	/// </summary>
+	public sealed class UploadApi
+	{
         private readonly string _version;
 
         public UploadApi(string version)
@@ -15,13 +15,13 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             _version = version;
         }
 
-        /// <summary>
+		/// <summary>
         ///     Выгрузить на сервер бинарный контент
-        /// </summary>
+		/// </summary>
         /// <param name="instanceId">Идентификатор экземпляра</param>
-        /// <param name="fieldName">Поле, содержащее ссылку на бинарный контент</param>
-        /// <param name="filePath">Путь к загружаемому файлу</param>
-        /// <returns>Результат загрузки файла</returns>
+		/// <param name="fieldName">Поле, содержащее ссылку на бинарный контент</param>
+		/// <param name="filePath">Путь к загружаемому файлу</param>
+		/// <returns>Результат загрузки файла</returns>
         public dynamic UploadBinaryContent(string instanceId, string fieldName, string filePath)
         {
             var linkedData = new
@@ -45,32 +45,45 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         /// <returns>Результат загрузки файла</returns>
         public dynamic UploadBinaryContent(string instanceId, string fieldName,
             string fileName, Stream stream)
-        {
-            var linkedData = new
-            {
+		{			
+			var linkedData = new
+			{
                 InstanceId = instanceId,
-                FieldName = fieldName,
+				FieldName = fieldName,
                 FileName = fileName
-            };
+			};
 
             return
                 RestQueryApi.QueryPostFile("RestfulApi", "configuration", "uploadbinarycontent", linkedData, stream,
                     _version).ToDynamic();
-        }
+		}
+
+		/// <summary>
+        ///     Загрузить бинарный контент для указанного поля указанного документа
+		/// </summary>
+        /// <param name="instanceId">Идентификатор документа</param>
+		/// <param name="fieldName">Поле бинарного контента</param>
+		/// <returns>Данные бинарного контента</returns>
+        public dynamic DownloadBinaryContent(string instanceId, string fieldName)
+		{
+			return RestQueryApi.QueryGetUrlEncodedData("RestfulApi", "configuration", "downloadbinarycontent", new
+				                                                                                                    {
+                InstanceId = instanceId,
+																														FieldName = fieldName
+            }, _version);
+		}
 
         /// <summary>
-        ///     Загрузить бинарный контент для указанного поля указанного документа
+        ///   Загрузить бинарный контент для указанного идентификатора ссылки на бинарный контент
         /// </summary>
-        /// <param name="instanceId">Идентификатор документа</param>
-        /// <param name="fieldName">Поле бинарного контента</param>
+        /// <param name="contentId">Идентификатор ссылки на бинарный контент</param>
         /// <returns>Данные бинарного контента</returns>
-        public dynamic DownloadBinaryContent(string instanceId, string fieldName)
+	    public dynamic DownloadBinaryContent(string contentId)
         {
             return RestQueryApi.QueryGetUrlEncodedData("RestfulApi", "configuration", "downloadbinarycontent", new
             {
-                InstanceId = instanceId,
-                FieldName = fieldName
-            }, _version);
+                ContentId = contentId
+            });
         }
-    }
+	}
 }

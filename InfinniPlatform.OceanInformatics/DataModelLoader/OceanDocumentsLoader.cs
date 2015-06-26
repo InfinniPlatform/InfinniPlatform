@@ -21,7 +21,7 @@ namespace InfinniPlatform.OceanInformatics.DataModelLoader
         private readonly IDictionary<string, ARCHETYPE> _loadedArchetypes;
         private readonly IDictionary<string, TEMPLATE> _loadedTemplates;
 
-        internal OceanDocumentsLoader()
+        public OceanDocumentsLoader()
         {
             _loadedArchetypes = new Dictionary<string, ARCHETYPE>();
             _loadedTemplates = new Dictionary<string, TEMPLATE>();
@@ -94,11 +94,9 @@ namespace InfinniPlatform.OceanInformatics.DataModelLoader
          * 
         */
 
-
-        internal static bool BuildOperationalTemplateFromOptFile(
-            Stream optContent,
-            out string errorMessage,
-            out OPERATIONAL_TEMPLATE operationalTemplate)
+        internal bool BuildOperationalTemplateFromOptFile(Stream optContent,
+                                                          out string errorMessage,
+                                                          out OPERATIONAL_TEMPLATE operationalTemplate)
         {
             errorMessage = string.Empty;
             try
@@ -114,12 +112,11 @@ namespace InfinniPlatform.OceanInformatics.DataModelLoader
             }
         }
 
-        internal bool BuildOperationalTemplateFromOetFile(
-            string oetFilePath,
-            string templatesFolder,
-            string archetypesFolder,
-            out string errorMessage,
-            out OPERATIONAL_TEMPLATE operationalTemplate)
+        internal bool BuildOperationalTemplateFromOetFile(string oetFilePath,
+                                                          string templatesFolder,
+                                                          string archetypesFolder,
+                                                          out string errorMessage,
+                                                          out OPERATIONAL_TEMPLATE operationalTemplate)
         {
             var archetypes = _loadedArchetypes.Values.ToList();
             var templates = _loadedTemplates.Values.ToList();
@@ -175,11 +172,11 @@ namespace InfinniPlatform.OceanInformatics.DataModelLoader
 
             try
             {
-                operationalTemplate = templateBuilder.BuildOperationalTemplate(
-                    mainTemplate,
-                    archetypes.ToArray(),
-                    templates.ToArray(),
-                    new OperationalTemplateSettings(CultureInfo.CurrentCulture, new List<CultureInfo>(), false, true, true));
+                operationalTemplate = templateBuilder.BuildOperationalTemplate(mainTemplate,
+                                                                               archetypes.ToArray(),
+                                                                               templates.ToArray(),
+                                                                               "ru-Ru",
+                                                                               false);
                 return true;
             }
             catch (Exception e)
@@ -195,7 +192,7 @@ namespace InfinniPlatform.OceanInformatics.DataModelLoader
             errorMessage = string.Empty;
             try
             {
-                archetype = ArchetypeModelBuilder.BuildFromAdlFile(adlFilePath, new CloneConstraintVisitor());
+                archetype = ArchetypeModelBuilder.Build(adlFilePath);
                 return true;
             }
             catch (Exception e)
