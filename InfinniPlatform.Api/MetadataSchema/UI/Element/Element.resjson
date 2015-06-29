@@ -36,6 +36,22 @@
       "$ref": "http://demo.infinnity.ru:8081/display/MC/ElementHorizontalAlignment",
       "default": "Stretch"
     },
+    "TextStyle": {
+      "description": "Стиль текста элемента",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/TextStyle"
+    },
+    "Foreground": {
+      "description": "Цвет текста элемента",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/ColorStyle"
+    },
+    "Background": {
+      "description": "Цвет фона элемента",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/ColorStyle"
+    },
+    "Texture": {
+      "description": "Текстура элемента",
+      "type": "object"
+    },
     "OnLoaded": {
       "description": "Обработчик события о том, что элемент был загружен",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"

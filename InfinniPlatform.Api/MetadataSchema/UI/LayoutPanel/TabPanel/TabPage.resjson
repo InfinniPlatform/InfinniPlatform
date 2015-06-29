@@ -15,16 +15,6 @@
       "type": "boolean",
       "default": false
     },
-    "Background": {
-      "description": "Цвет фона страницы",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/ColorStyle",
-      "default": "Transparent"
-    },
-    "Texture": {
-      "description": "Текстура страницы",
-      "type": "object",
-      "default": null
-    },
     "ItemTemplate": {
       "description": "Шаблон отображения дочерних элементов страницы",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/VisualElement"
