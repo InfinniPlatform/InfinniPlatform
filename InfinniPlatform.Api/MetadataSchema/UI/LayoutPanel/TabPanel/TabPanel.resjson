@@ -16,20 +16,23 @@
       "$ref": "http://demo.infinnity.ru:8081/display/MC/TabHeaderOrientation",
       "default": "Horizontal"
     },
-    "DefaultPage": {
-      "description": "Наименование страницы по умолчанию",
-      "type": "string",
-      "default": null
+    "HeaderTemplate": {
+      "description": "Шаблон отображения закладок дочерних элементов панели",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/VisualElement"
     },
-    "Pages": {
-      "description": "Список страниц",
+    "ItemTemplate": {
+      "description": "Шаблон отображения дочерних элементов панели",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/VisualElement"
+    },
+    "Items": {
+      "description": "Список дочерних элементов панели",
       "type": "array",
       "items": {
         "$ref": "http://demo.infinnity.ru:8081/display/MC/TabPage"
       }
     },
-    "OnSelectionChanged": {
-      "description": "Обработчик события изменения выделенной страницы",
+    "OnSelectedItemChanged": {
+      "description": "Обработчик события о том, что элемент был выделен",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
     }
   },

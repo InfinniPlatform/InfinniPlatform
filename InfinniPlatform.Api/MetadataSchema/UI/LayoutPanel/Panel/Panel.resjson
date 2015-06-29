@@ -6,10 +6,6 @@
     "$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
   },
   "properties": {
-    "Icon": {
-      "description": "Изображение заголовка панели",
-      "type": "string"
-    },
     "Collapsible": {
       "description": "Разрешено ли сворачивание панели",
       "type": "boolean",
@@ -19,16 +15,6 @@
       "description": "Свернута ли панель",
       "type": "boolean",
       "default": false
-    },
-    "Background": {
-      "description": "Цвет фона панели",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/ColorStyle",
-      "default": "Transparent"
-    },
-    "Texture": {
-      "description": "Текстура панели",
-      "type": "object",
-      "default": null
     },
     "HeaderTemplate": {
       "description": "Шаблон отображения заголовка панели",
