@@ -1,8 +1,7 @@
-﻿using System.Linq;
-using InfinniPlatform.Api.ContextTypes;
+﻿using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.RestApi.AuthApi;
 using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Api.RestApi.DataApi;
+using System.Linq;
 
 namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 {
@@ -34,25 +33,30 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 		    {
 		        aclApi.AddUser(user.UserName, user.Password);
 		    }
+		    else
+		    {
+		        // Если пароль не задан, то происходит редактирование существующего пользователя
+		        if (userFound.Roles != null)
+		        {
+		            foreach (var role in userFound.Roles)
+		            {
+                        aclApi.RemoveUserRole(user.UserName, role.DisplayName);
+		            }
+		        }
+		    }
 
 		    if (user.UserRoles != null)
 		    {
-
 		        foreach (var userRole in user.UserRoles)
 		        {
 		            aclApi.AddUserToRole(user.UserName, userRole.DisplayName);
 		        }
 		    }
-
-
+            
 		    if (target.Item.Document.IsAdmin == true)
 			{				
 				aclApi.AddUserToRole(user.UserName,AuthorizationStorageExtensions.AdminRole);
 			}
-
-			target.Context.GetComponent<DocumentApi>()
-			      .SetDocument(AuthorizationStorageExtensions.AdministrationConfigId, "User",
-			                   target.Item.Document);
 		   
 			RestQueryApi.QueryPostJsonRaw("AdministrationCustomization", "Common", "OnAddUserEvent", null, target.Item.Document);
 

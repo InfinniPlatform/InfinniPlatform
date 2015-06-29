@@ -5,42 +5,38 @@
     "StackPanel": {
       "Items": [
         {
-          "ScrollPanel": {
-            "LayoutPanel": {
-              "GridPanel": {
-                "Rows": [
+          "GridPanel": {
+            "Rows": [
+              {
+                "Cells": [
                   {
-                    "Cells": [
+                    "ColumnSpan": 3,
+                    "Items": [
                       {
-                        "ColumnSpan": 3,
-                        "Items": [
-                          {
-                            "Label": {
-                              "Text": "Наименование роли"
+                        "Label": {
+                          "Text": "Наименование роли"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "ColumnSpan": 3,
+                    "Items": [
+                      {
+                        "TextBox": {
+                          "Value": {
+                            "PropertyBinding": {
+                              "DataSource": "MainDataSource",
+                              "Property": "Name"
                             }
                           }
-                        ]
-                      },
-                      {
-                        "ColumnSpan": 3,
-                        "Items": [
-                          {
-                            "TextBox": {
-                              "Value": {
-                                "PropertyBinding": {
-                                  "DataSource": "MainDataSource",
-                                  "Property": "Name"
-                                }
-                              }
-                            }
-                          }
-                        ]
+                        }
                       }
                     ]
                   }
                 ]
               }
-            }
+            ]
           }
         },
         {

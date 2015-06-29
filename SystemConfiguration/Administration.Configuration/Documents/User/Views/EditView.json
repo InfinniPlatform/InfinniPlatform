@@ -144,7 +144,7 @@
                                         "Items": {
                                           "PropertyBinding": {
                                             "DataSource": "MainDataSource",
-                                            "Property": "UserRoles"
+                                            "Property": "$.UserRoles"
                                           }
                                         }
                                       }
@@ -162,7 +162,7 @@
                                               "Value": {
                                                 "PropertyBinding": {
                                                   "DataSource": "MainDataSource",
-                                                  "Property": "$.DisplayName"
+                                                  "Property": "UserRoles.$.DisplayName"
                                                 }
                                               }
                                             }
@@ -391,7 +391,7 @@
               },
               {
                 "Name": "SetRole",
-                "Body": "debugger;  var item = context.DataSources['MainDataSource'].getSelectedItem(); \r\n var savedRole = {}; \r\n savedRole.Id = guid(); \r\n savedRole.DisplayName = item.SelectedRole.DisplayName; \r\n _.each(context.DataSources['RolesDataSource'].getDataItems(), function(dataItem) { \r\n\tif(dataItem.Id == item.SelectedRole.Id) { \r\n\t\t savedRole.RoleName = dataItem.RoleName;  \r\n\t}   \r\n  });\r\n context.DataSources['MainDataSource'].setSelectedItem(savedRole);"
+                "Body": "var item = context.DataSources['MainDataSource'].getSelectedItem(); \r\n var savedRole = {}; \r\n savedRole.Id = guid(); \r\n savedRole.DisplayName = item.SelectedRole.DisplayName; \r\n _.each(context.DataSources['RolesDataSource'].getDataItems(), function(dataItem) { \r\n\tif(dataItem.Id == item.SelectedRole.Id) { \r\n\t\t savedRole.RoleName = dataItem.RoleName;  \r\n\t}   \r\n  });\r\n context.DataSources['MainDataSource'].setSelectedItem(savedRole);"
               }
             ]
           }

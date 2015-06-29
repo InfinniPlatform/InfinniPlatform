@@ -80,6 +80,56 @@
               ]
             }
           }
+        },
+        {
+          "ToolBar": {
+            "Items": [
+              {
+                "ToolBarButton": {
+                  "Text": "Добавить",
+                  "Action": {
+                    "AddAction": {
+                      "View": {
+                        "AutoView": {
+                          "ConfigId": "Administration",
+                          "DocumentId": "Role",
+                          "MetadataName": "EditView",
+                          "OpenMode": "Dialog"
+                        }
+                      },
+                      "DataSource": "MainDataSource"
+                    }
+                  }
+                }
+              },
+              {
+                "ToolBarButton": {
+                  "Text": "Редактировать",
+                  "Action": {
+                    "EditAction": {
+                      "View": {
+                        "AutoView": {
+                          "ConfigId": "Administration",
+                          "DocumentId": "Role",
+                          "MetadataName": "EditView",
+                          "OpenMode": "Dialog"
+                        }
+                      },
+                      "DataSource": "MainDataSource"
+                    }
+                  }
+                }
+              },
+              {
+                "ToolBarButton": {
+                  "Text": "Удалить",
+                  "OnClick": {
+                    "Name": "DeleteUser"
+                  }
+                }
+              }
+            ]
+          }
         }
       ]
     }
