@@ -45,6 +45,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
             target.IsValid = true;
             target.Configuration = ConfigRequestProvider.GetConfiguration();
             target.Metadata = ConfigRequestProvider.GetMetadataIdentifier();
+            target.UserName = ConfigRequestProvider.GetUserName();
 
             metadataConfig.MoveWorkflow(idType, metadataConfig.GetExtensionPointValue(ConfigRequestProvider, "Join"), target);
 
