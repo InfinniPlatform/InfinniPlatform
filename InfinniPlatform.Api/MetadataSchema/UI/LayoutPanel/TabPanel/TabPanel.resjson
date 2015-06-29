@@ -31,7 +31,7 @@
         "$ref": "http://demo.infinnity.ru:8081/display/MC/TabPage"
       }
     },
-    "SelectedItemChanged": {
+    "OnSelectedItemChanged": {
       "description": "Обработчик события о том, что элемент был выделен",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
     }
