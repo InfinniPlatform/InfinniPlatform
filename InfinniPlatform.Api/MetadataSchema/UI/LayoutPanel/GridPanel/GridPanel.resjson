@@ -6,16 +6,15 @@
     "$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
   },
   "properties": {
-    "Columns": {
-      "description": "Количество колонок",
-      "type": "integer",
-      "default": 12
+    "ItemTemplate": {
+      "description": "Шаблон отображения дочерних элементов панели",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/GridCell"
     },
-    "Rows": {
-      "description": "Список строк",
+    "Items": {
+      "description": "Список дочерних элементов панели",
       "type": "array",
       "items": {
-        "$ref": "http://demo.infinnity.ru:8081/display/MC/GridPanelRow"
+        "$ref": "http://demo.infinnity.ru:8081/display/MC/GridCell"
       }
     }
   },

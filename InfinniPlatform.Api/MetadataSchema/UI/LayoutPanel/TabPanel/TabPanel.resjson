@@ -22,7 +22,7 @@
     },
     "ItemTemplate": {
       "description": "Шаблон отображения дочерних элементов панели",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/VisualElement"
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/TabPage"
     },
     "Items": {
       "description": "Список дочерних элементов панели",

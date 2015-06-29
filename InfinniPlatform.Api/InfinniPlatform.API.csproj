@@ -601,8 +601,7 @@
     <EmbeddedResource Include="MetadataSchema\UI\Element\VerticalTextAlignment.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\LayoutPanel\ExtensionPanel\ExtensionPanel.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\LayoutPanel\GridPanel\GridPanel.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\LayoutPanel\GridPanel\GridPanelCell.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\LayoutPanel\GridPanel\GridPanelRow.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\LayoutPanel\GridPanel\GridCell.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\LayoutPanel\LayoutPanel.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\LayoutPanel\Panel\Panel.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\LayoutPanel\ScrollPanel\ScrollPanel.resjson" />
