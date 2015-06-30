@@ -85,10 +85,67 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 	    /// <param name="itemsToIndex">Динамические объекты для индексации</param>
 	    public void SetItems(IEnumerable<dynamic> itemsToIndex)
 	    {
-	        foreach (var item in itemsToIndex)
+            var actualTypeName = ActualTypeName;
+            if (string.IsNullOrEmpty(actualTypeName))
+            {
+                throw new ArgumentException("actual index type not found.");
+            }
+
+	        var objectsToIndex = itemsToIndex.Select(item => PrepareObjectToIndex(item)).Cast<IndexObject>().ToList();
+
+            var objectIds = objectsToIndex.Select(o => o.Id).ToArray();
+            
+            //сохраняем элементы для rollback в случае ошибки
+            var existingItems = GetItems(objectIds).ToArray();
+
+	        if (existingItems.Any())
 	        {
-	            Set(item);
+	            // Удаляем предыдующие версии документов.
+	            // Документы могут находиться в любом из типов
+	            _elasticConnection.Client.DeleteByQuery<dynamic>(
+	                d =>
+	                    d.Index(_indexName)
+	                        .AllTypes()
+	                        .Routing(_routing)
+	                        .Query(queryDescriptor => queryDescriptor.Ids(objectIds)));
 	        }
+
+	        // Добавляем документы в актуальный тип
+            var response = (BaseResponse)_elasticConnection.Client.Bulk(
+	            bd => bd.IndexMany(objectsToIndex, (s1, s2) => s1.Index(_indexName).Type(actualTypeName).Routing(_routing)));
+
+            if (response.IsValid)
+            {
+                return;
+            }
+
+            var rollbackMessage = new StringBuilder();
+
+            //восстанавливаем предыдущие удаленные записи обратно
+	        foreach (var existingItem in existingItems)
+	        {
+	            try
+	            {
+	                Set(existingItem);
+	            }
+	            catch (Exception e)
+	            {
+	                rollbackMessage.AppendLine(string.Format("Rollback operation on element: {0} failed. Error: {1} ",
+	                    e.Message, existingItem.ToString()));
+	            }
+	        }
+
+
+	        // Возвращаем сообщение эластика
+	        if (response.ConnectionStatus.OriginalException != null &&
+	            !string.IsNullOrEmpty(response.ConnectionStatus.OriginalException.Message))
+	        {
+	            throw new ArgumentException(response.ConnectionStatus.OriginalException.Message);
+	        }
+
+	        // Если и эластик не вернул внятного сообщения, выводим достаточно общее сообщение
+	        // (ничего более конкретного сказать не можем)
+	        throw new ArgumentException("Incorrect request for index data");
 	    }
 
 	    /// <summary>
@@ -116,6 +173,87 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
                 throw new ArgumentException("actual index type not found.");
             }
 
+            IndexObject objectToIndex = PrepareObjectToIndex(item);
+
+	        BaseResponse response;
+
+			dynamic existingItem = null;
+	        if (indexItemStrategy == IndexItemStrategy.Insert)
+	        {
+	            objectToIndex.Id = Guid.NewGuid().ToString().ToLowerInvariant();
+	            response =
+	                (BaseResponse)
+	                    _elasticConnection.Client.Index(objectToIndex, d => d.Index(_indexName).Type(actualTypeName).Routing(_routing));
+	        }
+	        else 
+	        {
+                //сохраняем элемент для rollback в случае ошибки
+                existingItem = GetItem(objectToIndex.Id);
+
+                // Удаляем предыдующую версию этого документа.
+                // Документ с данным идентификатором может находиться в любом из типов
+                _elasticConnection.Client.DeleteByQuery<dynamic>(
+                    d => d.Index(_indexName).AllTypes().Routing(_routing).Query(queryDescriptor => queryDescriptor.Ids(new[]{objectToIndex.Id})));
+
+	            // Добавляем документ в актуальный тип
+	            response = (BaseResponse)_elasticConnection.Client.Index(objectToIndex, d => d.Index(_indexName).Type(actualTypeName).Routing(_routing));
+	        }
+
+	        if (response.IsValid)
+	        {
+	            return;
+	        }
+
+	        var rollbackMessage = "";
+	        //восстанавливаем предыдущие удаленные записи обратно
+	        if (existingItem != null)
+	        {
+	            try
+	            {
+	                Set(existingItem);
+	            }
+	            catch (Exception e)
+	            {
+	                rollbackMessage = string.Format("Rollback operation on element: {0} failed. Error: {1} ", e.Message,
+	                    existingItem.ToString());
+	            }
+	        }
+
+	        // Пытаемся выяснить причину, почему проиндексировать объект не удалось.
+	        // Возможно, маппинг для типа индекса не соответствует типам данных полей 
+	        // индексируемого объекта item
+
+	        var currentMapping = _elasticConnection.GetIndexTypeMapping(_indexName, _typeName);
+
+	        var propertiesMismatchMessage = new StringBuilder();
+
+	        if (rollbackMessage != null)
+	        {
+	            propertiesMismatchMessage.Append(rollbackMessage);
+	        }
+
+	        TryToFindPropertiesMismatch(item, currentMapping, propertiesMismatchMessage);
+
+	        // Обнаружено несоответствие маппинга индексируемого объекта
+	        if (!string.IsNullOrEmpty(propertiesMismatchMessage.ToString()))
+	        {
+	            throw new ArgumentException(propertiesMismatchMessage.ToString());
+	        }
+
+	        // Несоответствие маппинга не выявлено, возвращаем сообщение эластика
+	        if (response.ConnectionStatus.OriginalException != null &&
+	            !string.IsNullOrEmpty(response.ConnectionStatus.OriginalException.Message))
+	        {
+	            throw new ArgumentException(response.ConnectionStatus.OriginalException.Message);
+	        }
+
+	        // Если и эластик не вернул внятного сообщения, выводим достаточно общее сообщение
+	        // (ничего более конкретного сказать не можем)
+	        throw new ArgumentException("Incorrect request for index data");
+	    }
+
+	    private static IndexObject PrepareObjectToIndex(dynamic item)
+	    {
 	        dynamic jInstance = ((object) item).ToDynamic();
 
 	        if (jInstance.Id == null)
@@ -131,97 +269,14 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
 	        jInstance["Id"] = jInstance["Id"].ToString().ToLowerInvariant();
 
-            var objectToIndex = new IndexObject
+	        var objectToIndex = new IndexObject
 	        {
-                Id = jInstance["Id"].ToString().ToLowerInvariant(),
+	            Id = jInstance["Id"].ToString().ToLowerInvariant(),
 	            TimeStamp = DateTime.Now,
 	            Values = jInstance
 	        };
-
-	        BaseResponse response;
-
-			dynamic existingItem = null;
-	        if (indexItemStrategy == IndexItemStrategy.Insert)
-	        {
-	            objectToIndex.Id = Guid.NewGuid().ToString().ToLowerInvariant();
-	            response =
-	                (BaseResponse)
-	                    _elasticConnection.Client.Index(objectToIndex, d => d.Index(_indexName).Type(actualTypeName).Routing(_routing));
-	        }
-	        else 
-	        {
-	            // Удаляем предыдующую версию этого документа.
-                // Документ с данным идентификатором может находиться в любом из типов
-
-                // Удалить одним запросом _elasticConnection.Client.DeleteByQuery<dynamic>(q => q.Index(_indexName).Id(objectToIndex.Id));
-                // неполучается из-за бага в NEST - операция DeleteByQuery требует индекс по умолчанию https://github.com/elasticsearch/elasticsearch-net/issues/646,
-                // Поэтому удаляем по-отдельности из каждого типа. 
-
-
-                foreach (var indexType in _derivedTypeNames.SelectMany(d => d.TypeNames))
-                {
-					//сохраняем элемент для rollback в случае ошибки
-	                existingItem = GetItem(objectToIndex.Id);
-
-                    _elasticConnection.Client.Delete<dynamic>(
-                        d => d.Index(_indexName).Type(indexType).Routing(_routing).Id(objectToIndex.Id));
-                }
-
-	            // Добавляем документ в актуальный тип
-	            response = (BaseResponse)_elasticConnection.Client.Index(objectToIndex, d => d.Index(_indexName).Type(actualTypeName).Routing(_routing));
-	        }
-
-	        if (!response.IsValid)
-	        {
-
-		        string rollbackMessage = "";
-				//восстанавливаем предыдущие удаленные записи обратно
-				if (existingItem != null)
-				{
-					try
-					{
-						Set(existingItem);
-					}
-					catch (Exception e)
-					{
-						rollbackMessage = string.Format("Rollback operation on element: {0} failed. Error: {1} ", e.Message,
-						                                existingItem.ToString());
-					}
-				}
-
-				// Пытаемся выяснить причину, почему проиндексировать объект не удалось.
-                // Возможно, маппинг для типа индекса не соответствует типам данных полей 
-                // индексируемого объекта item
-
-			    var currentMapping = _elasticConnection.GetIndexTypeMapping(_indexName, _typeName);
-
-			    var propertiesMismatchMessage = new StringBuilder();
-
-		        if (rollbackMessage != null)
-		        {
-			        propertiesMismatchMessage.Append(rollbackMessage);
-		        }
-
-		        TryToFindPropertiesMismatch(item, currentMapping, propertiesMismatchMessage);
-
-                // Обнаружено несоответствие маппинга индексируемого объекта
-			    if (!string.IsNullOrEmpty(propertiesMismatchMessage.ToString()))
-			    {
-                    throw new ArgumentException(propertiesMismatchMessage.ToString());
-			    }
-
-                // Несоответствие маппинга не выявлено, возвращаем сообщение эластика
-			    if (response.ConnectionStatus.OriginalException != null &&
-			        !string.IsNullOrEmpty(response.ConnectionStatus.OriginalException.Message))
-			    {
-			        throw new ArgumentException(response.ConnectionStatus.OriginalException.Message);
-			    }
-
-                // Если и эластик не вернул внятного сообщения, выводим достаточно общее сообщение
-                // (ничего более конкретного сказать не можем)
-			    throw new ArgumentException("Incorrect request for index data");
-			}
-		}
+	        return objectToIndex;
+	    }
 
 	    public string ActualTypeName
 		{
