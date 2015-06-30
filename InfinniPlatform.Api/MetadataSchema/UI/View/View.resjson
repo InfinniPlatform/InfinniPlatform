@@ -38,9 +38,16 @@
         "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkViewItem"
       }
     },
-    "LayoutPanel": {
-      "description": "Контейнер элементов представления",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/LayoutPanel"
+    "ItemTemplate": {
+      "description": "Шаблон отображения дочерних элементов представления",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/VisualElement"
+    },
+    "Items": {
+      "description": "Список дочерних элементов представления",
+      "type": "array",
+      "items": {
+        "$ref": "http://demo.infinnity.ru:8081/display/MC/VisualElement"
+      }
     },
     "OnOpening": {
       "description": "Обработчик события о том, что представление открывается",
