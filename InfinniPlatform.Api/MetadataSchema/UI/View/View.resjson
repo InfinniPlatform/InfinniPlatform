@@ -3,7 +3,7 @@
   "description": "Визуальное представление",
   "type": "object",
   "extends": {
-    "$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
+    "$ref": "http://demo.infinnity.ru:8081/display/MC/Container"
   },
   "properties": {
     "Icon": {
@@ -36,17 +36,6 @@
       "type": "array",
       "items": {
         "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkViewItem"
-      }
-    },
-    "ItemTemplate": {
-      "description": "Шаблон отображения дочерних элементов представления",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/VisualElement"
-    },
-    "Items": {
-      "description": "Список дочерних элементов представления",
-      "type": "array",
-      "items": {
-        "$ref": "http://demo.infinnity.ru:8081/display/MC/VisualElement"
       }
     },
     "OnOpening": {

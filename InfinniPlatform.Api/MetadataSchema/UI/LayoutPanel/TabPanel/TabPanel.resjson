@@ -3,7 +3,7 @@
   "description": "Контейнер в виде набора закладок",
   "type": "object",
   "extends": {
-    "$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
+    "$ref": "http://demo.infinnity.ru:8081/display/MC/Container"
   },
   "properties": {
     "HeaderLocation": {
@@ -19,17 +19,6 @@
     "HeaderTemplate": {
       "description": "Шаблон отображения закладок дочерних элементов панели",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/VisualElement"
-    },
-    "ItemTemplate": {
-      "description": "Шаблон отображения дочерних элементов панели",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/TabPage"
-    },
-    "Items": {
-      "description": "Список дочерних элементов панели",
-      "type": "array",
-      "items": {
-        "$ref": "http://demo.infinnity.ru:8081/display/MC/TabPage"
-      }
     },
     "OnSelectedItemChanged": {
       "description": "Обработчик события о том, что элемент был выделен",

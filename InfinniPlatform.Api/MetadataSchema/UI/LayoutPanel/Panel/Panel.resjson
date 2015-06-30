@@ -3,7 +3,7 @@
   "description": "Контейнер в виде прямоугольной области",
   "type": "object",
   "extends": {
-    "$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
+    "$ref": "http://demo.infinnity.ru:8081/display/MC/Container"
   },
   "properties": {
     "Collapsible": {
@@ -23,17 +23,6 @@
     "Header": {
       "description": "Заголовок панели",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/VisualElement"
-    },
-    "ItemTemplate": {
-      "description": "Шаблон отображения дочерних элементов панели",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/VisualElement"
-    },
-    "Items": {
-      "description": "Список дочерних элементов панели",
-      "type": "array",
-      "items": {
-        "$ref": "http://demo.infinnity.ru:8081/display/MC/VisualElement"
-      }
     },
     "OnExpanding": {
       "description": "Обработчик события о том, что панель разворачивается",

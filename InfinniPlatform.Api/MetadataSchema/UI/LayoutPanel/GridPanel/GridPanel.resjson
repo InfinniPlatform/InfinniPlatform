@@ -3,20 +3,8 @@
   "description": "Контейнер в виде сетки из столбцов и строк",
   "type": "object",
   "extends": {
-    "$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
+    "$ref": "http://demo.infinnity.ru:8081/display/MC/Container"
   },
-  "properties": {
-    "ItemTemplate": {
-      "description": "Шаблон отображения дочерних элементов панели",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/GridCell"
-    },
-    "Items": {
-      "description": "Список дочерних элементов панели",
-      "type": "array",
-      "items": {
-        "$ref": "http://demo.infinnity.ru:8081/display/MC/GridCell"
-      }
-    }
-  },
+  "properties": {},
   "additionalProperties": false
 }

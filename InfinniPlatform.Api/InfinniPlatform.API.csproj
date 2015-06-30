@@ -718,6 +718,9 @@
   <ItemGroup>
     <EmbeddedResource Include="MetadataSchema\UI\Style\TextStyle.resjson" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MetadataSchema\UI\Container\Container.resjson" />
+  </ItemGroup>
   <PropertyGroup>
     <PreBuildEvent>rem $(ProjectDir)\..\InfinniPlatform.Deploy\GenerateNuGetPackageRevision.exe  "$(ProjectDir)\..\InfinniPlatform.Deploy\InfinniPlatform.nuspec"</PreBuildEvent>
   </PropertyGroup>

@@ -3,7 +3,7 @@
   "description": "Страница панели закладок TabPanel",
   "type": "object",
   "extends": {
-    "$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
+    "$ref": "http://demo.infinnity.ru:8081/display/MC/Container"
   },
   "properties": {
     "Icon": {
@@ -14,17 +14,6 @@
       "description": "Разрешено ли закрытие страницы",
       "type": "boolean",
       "default": false
-    },
-    "ItemTemplate": {
-      "description": "Шаблон отображения дочерних элементов страницы",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/VisualElement"
-    },
-    "Items": {
-      "description": "Список дочерних элементов страницы",
-      "type": "array",
-      "items": {
-        "$ref": "http://demo.infinnity.ru:8081/display/MC/VisualElement"
-      }
     },
     "OnClosing": {
       "description": "Обработчик события о том, что страница закрывается",

@@ -2,16 +2,14 @@
   "id": "GridCell",
   "description": "Ячейка панели GridPanel",
   "type": "object",
+  "extends": {
+    "$ref": "http://demo.infinnity.ru:8081/display/MC/Container"
+  },
   "properties": {
     "ColumnSpan": {
       "description": "Размер ячейки в колонках",
       "type": "integer",
       "default": 1
-    },
-    "Item": {
-      "description": "Дочерний элемент ячейки",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/VisualElement",
-      "required": false
     }
   },
   "additionalProperties": false
