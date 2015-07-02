@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using InfinniPlatform.Api.Dynamic;
 using Newtonsoft.Json;
 using RestSharp;
 
@@ -35,29 +36,21 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryExecutors
 
 		public RestQueryResponse QueryPost(string url, object body)
 		{
-			var restClient = new RestClient(url);
+            // TODO: Необходимо переделать реализацию и использовать шину сообщений, пока сделано простое увеличение таймаута до 300 минут 
+		    var restClient = new RestClient(url)
+		    {
+		        CookieContainer = _cookieContainer, 
+                Timeout = 1000*60*300
+		    };
 
+		    var restRequest = new RestRequest
+            {
+                RequestFormat = DataFormat.Json
+            };
 
-			restClient.CookieContainer = _cookieContainer;
-
-
-			// TODO: HOT FIX
-			// Изменение времени ожидания ответа сделано для того, чтобы можно было загрузить
-			// объемные справочники из реестра Росминздрава. Дело в том, что в конфигурации
-			// ExternalClassifiersLoader может быть запущен импорт очень больших справочников,
-			// например, справочник лекарственных средств 1.2.643.5.1.13.2.1.1.587 имеет 22 тысячи записей,
-			// которые загружаются страницами по 500 через медленный SOAP. Загрузка справочника 
-			// занимает порядка 20 минут.
-			// 
-			// Необходимо переделать реализацию и использовать шину сообщений,
-			// пока сделано простое увеличение таймаута до 200 минут 
-			restClient.Timeout = 1000 * 60 * 300;
-
-			IRestResponse restResponse = restClient.Post(
-				new RestRequest
-					{
-						RequestFormat = DataFormat.Json
-					}.AddBody(body));
+            restRequest.AddParameter("application/json", body.ToDynamic(), ParameterType.RequestBody);
+            
+            IRestResponse restResponse = restClient.Post(restRequest);
 
 			return restResponse.ToQueryResponse();
 		}
