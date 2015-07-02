@@ -7,11 +7,11 @@ using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
-using InfinniPlatform.SystemConfig.RoutingFactory;
 using NUnit.Framework;
 using System;
 using System.Diagnostics;
 using System.Dynamic;
+using InfinniPlatform.SystemConfig.Multitenancy;
 
 namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 {
@@ -22,7 +22,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 		[Test]
 		public void ShouldConnect100Times()
 		{
-			var indexProvider = new ElasticFactory(new RoutingFactoryBase()).BuildIndexStateProvider();
+			var indexProvider = new ElasticFactory(new MultitenancyProvider()).BuildIndexStateProvider();
 			indexProvider.RecreateIndex("someindex","someindex");
 			indexProvider.RecreateIndex("testindex","testindex");
 
@@ -51,9 +51,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 		//[TestCase(100000)]
 		public void ShouldWriteToEmptyIndex(int recordCount)
 		{
-			var indexProvider = new ElasticFactory(new RoutingFactoryBase()).BuildIndexStateProvider();
+			var indexProvider = new ElasticFactory(new MultitenancyProvider()).BuildIndexStateProvider();
             indexProvider.RecreateIndex("testindex", "testindex");
-			var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider("testindex", "testindex", AuthorizationStorageExtensions.AnonimousUser);
+			var elasticSearchProvider = new ElasticFactory(new MultitenancyProvider()).BuildCrudOperationProvider("testindex", "testindex", AuthorizationStorageExtensions.AnonimousUser);
 
 			dynamic expandoObject = new ExpandoObject();
 
@@ -75,9 +75,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 		[TestCase(10)]
 		public void ShouldUpdateExistingItems(int recordCount)
 		{
-			var indexProvider = new ElasticFactory(new RoutingFactoryBase()).BuildIndexStateProvider();
+			var indexProvider = new ElasticFactory(new MultitenancyProvider()).BuildIndexStateProvider();
             indexProvider.RecreateIndex("testindex", "testindex");
-			var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider("testindex", "testindex", null);
+			var elasticSearchProvider = new ElasticFactory(new MultitenancyProvider()).BuildCrudOperationProvider("testindex", "testindex", null);
 
 			dynamic expandoObject = new ExpandoObject();
 			expandoObject.Id = 1;
@@ -99,10 +99,10 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 		[TestCase(1)]		
 		public void ShouldSearchExistingItems(int recordCount)
 		{
-			var indexProvider = new ElasticFactory(new RoutingFactoryBase()).BuildIndexStateProvider();
+			var indexProvider = new ElasticFactory(new MultitenancyProvider()).BuildIndexStateProvider();
             indexProvider.RecreateIndex("testindex", "testindex");
 			var queryWrapper = new IndexQueryExecutor("testindex", "testindex", AuthorizationStorageExtensions.AnonimousUser);
-			var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider("testindex", "testindex", AuthorizationStorageExtensions.AnonimousUser);
+			var elasticSearchProvider = new ElasticFactory(new MultitenancyProvider()).BuildCrudOperationProvider("testindex", "testindex", AuthorizationStorageExtensions.AnonimousUser);
             
 			for (int i = 0; i < recordCount; i++)
 			{

@@ -6,7 +6,7 @@ using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Events;
 using InfinniPlatform.Compression;
 using InfinniPlatform.Index.ElasticSearch.Factories;
-using InfinniPlatform.SystemConfig.RoutingFactory;
+using InfinniPlatform.SystemConfig.Multitenancy;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -27,7 +27,7 @@ namespace InfinniPlatform.Update.Tests.Builders
 
 		public static void RebuildIntegrationIndexes()
 		{
-            var elasticFactory = new ElasticFactory(new RoutingFactoryBase());
+            var elasticFactory = new ElasticFactory(new MultitenancyProvider());
             var indexProvider = elasticFactory.BuildIndexStateProvider();
 			indexProvider.CreateIndexType("integration", "organization");
             indexProvider.CreateIndexType("integration", "patient");
@@ -35,7 +35,7 @@ namespace InfinniPlatform.Update.Tests.Builders
 
 	    public static void RebuildConfigurationIndexes()
         {
-            var indexProvider = new ElasticFactory(new RoutingFactoryBase()).BuildIndexStateProvider();
+            var indexProvider = new ElasticFactory(new MultitenancyProvider()).BuildIndexStateProvider();
             indexProvider.RecreateIndex("update", "package");
         }
 

@@ -11,7 +11,7 @@ using InfinniPlatform.Hosting;
 using InfinniPlatform.Hosting.Implementation.Modules;
 using InfinniPlatform.Metadata;
 using InfinniPlatform.Runtime;
-using InfinniPlatform.SystemConfig.RoutingFactory;
+using InfinniPlatform.SystemConfig.Multitenancy;
 using InfinniPlatform.WebApi.Factories;
 
 using Newtonsoft.Json.Linq;
@@ -69,19 +69,19 @@ namespace InfinniPlatform.SystemConfig.Initializers
 		private JsonConfigurationInstaller CreateJsonConfigurationInstaller()
 		{
 
-			IEnumerable<dynamic> configs = _indexFactory.BuildVersionProvider("systemconfig", "metadata",RoutingExtensions.SystemRouting).GetDocument(null,0,100000);
+			IEnumerable<dynamic> configs = _indexFactory.BuildVersionProvider("systemconfig", "metadata",MultitenancyExtensions.SystemTenant).GetDocument(null,0,100000);
 			Dictionary<string, string> configDictionary = configs.ToDictionary(c => (string)c.Id, c => (string)c.Name);
 
-			IEnumerable<dynamic> documents = _indexFactory.BuildVersionProvider("systemconfig", "documentmetadata", RoutingExtensions.SystemRouting).GetDocument(null, 0, 1000000);
+			IEnumerable<dynamic> documents = _indexFactory.BuildVersionProvider("systemconfig", "documentmetadata", MultitenancyExtensions.SystemTenant).GetDocument(null, 0, 1000000);
 			Dictionary<string, dynamic> documentDictionary = documents.ToDictionary(c => (string) c.Id, c => c);
 
-			IEnumerable<dynamic> registers = _indexFactory.BuildVersionProvider("systemconfig", "registermetadata", RoutingExtensions.SystemRouting).GetDocument(null, 0, 1000000);
+			IEnumerable<dynamic> registers = _indexFactory.BuildVersionProvider("systemconfig", "registermetadata", MultitenancyExtensions.SystemTenant).GetDocument(null, 0, 1000000);
 			foreach (dynamic register in registers)
 			{
 				register.ConfigId = register.ParentId;
 			}
 
-			IEnumerable<dynamic> menu = _indexFactory.BuildVersionProvider("systemconfig", "menumetadata", RoutingExtensions.SystemRouting).GetDocument(null, 0, 1000000);
+			IEnumerable<dynamic> menu = _indexFactory.BuildVersionProvider("systemconfig", "menumetadata", MultitenancyExtensions.SystemTenant).GetDocument(null, 0, 1000000);
 			foreach (dynamic menuItem in menu)
 			{
 				menuItem.ConfigId = menuItem.ParentId;
@@ -235,7 +235,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
 
 		private IEnumerable<dynamic> GetDocumentMetadata(string metadataType, Dictionary<string,dynamic> documentDictionary, Dictionary<string, string> configDictionary  )
 		{
-			var items = _indexFactory.BuildVersionProvider("systemconfig", metadataType, RoutingExtensions.SystemRouting).GetDocument(null,0,1000000);
+			var items = _indexFactory.BuildVersionProvider("systemconfig", metadataType, MultitenancyExtensions.SystemTenant).GetDocument(null,0,1000000);
 			foreach (dynamic item in items)
 			{
 				if (item.ParentId != null &&  documentDictionary.ContainsKey(item.ParentId))

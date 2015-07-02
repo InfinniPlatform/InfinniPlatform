@@ -13,7 +13,7 @@ using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.Metadata;
 using InfinniPlatform.MigrationsAndVerifications.Helpers;
-using InfinniPlatform.SystemConfig.RoutingFactory;
+using InfinniPlatform.SystemConfig.Multitenancy;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Verifications
 {
@@ -26,7 +26,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
 
         public ChangingMappingVerification()
         {
-            _indexFactory = new ElasticFactory(new RoutingFactoryBase());
+            _indexFactory = new ElasticFactory(new MultitenancyProvider());
         }
 
         /// <summary>

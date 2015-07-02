@@ -58,7 +58,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
                 dimensions.ToArray(), 
                 aggregationTypes.ToArray(),
                 aggregationFields.ToArray(), 
-                filterObject.ExtractSearchModel(_filterFactory).Filter); 
+                filterObject.ExtractSearchModel(_filterFactory)); 
             
             //выполняем постобработку результатов
             metadataConfig.MoveWorkflow(idType, metadataConfig.GetExtensionPointValue(ConfigRequestProvider, "TransformResult"), target);

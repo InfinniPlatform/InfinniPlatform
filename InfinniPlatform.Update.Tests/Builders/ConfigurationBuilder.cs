@@ -5,7 +5,6 @@ using System.Linq;
 using InfinniPlatform.Api.Index.SearchOptions;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.AuthApi;
-using InfinniPlatform.SystemConfig.RoutingFactory;
 using Newtonsoft.Json.Linq;
 
 using InfinniPlatform.Api.Dynamic;
@@ -25,6 +24,7 @@ using InfinniPlatform.Runtime.Factories;
 using InfinniPlatform.Runtime.Implementation.ChangeListeners;
 using InfinniPlatform.Update.Installers;
 using InfinniPlatform.Api.SearchOptions;
+using InfinniPlatform.SystemConfig.Multitenancy;
 
 namespace InfinniPlatform.Update.Tests.Builders
 {
@@ -34,14 +34,14 @@ namespace InfinniPlatform.Update.Tests.Builders
 
 		private static void RebuildIndex(string indexName)
 		{
-			var elasticFactory = new ElasticFactory(new RoutingFactoryBase());
+			var elasticFactory = new ElasticFactory(new MultitenancyProvider());
 			var indexProvider = elasticFactory.BuildIndexStateProvider();
 			indexProvider.CreateIndexType(indexName, string.Empty, deleteExistingVersion: true);
 		}
 
 		public static void RefreshData()
 		{
-			new ElasticFactory(new RoutingFactoryBase()).BuildIndexStateProvider().Refresh();
+			new ElasticFactory(new MultitenancyProvider()).BuildIndexStateProvider().Refresh();
 		}
 
 
@@ -78,7 +78,7 @@ namespace InfinniPlatform.Update.Tests.Builders
 			return
 				new ScriptConfiguration(
 					new ScriptFactoryBuilder(
-						new ConfigurationObjectBuilder(new ElasticFactory(new RoutingFactoryBase()), blobStorageFactory,
+						new ConfigurationObjectBuilder(new ElasticFactory(new MultitenancyProvider()), blobStorageFactory,
 													   metadataConfigurationProvider), new ChangeListener()));
 		}
 
@@ -102,7 +102,7 @@ namespace InfinniPlatform.Update.Tests.Builders
 
 		public static dynamic GetPackages()
 		{
-			var factory = new ElasticFactory(new RoutingFactoryBase());
+			var factory = new ElasticFactory(new MultitenancyProvider());
 			factory.BuildIndexStateProvider().Refresh();
 
 
@@ -113,7 +113,7 @@ namespace InfinniPlatform.Update.Tests.Builders
 
 		public static void InitScriptStorage()
 		{
-			var indexUpdater = new ElasticFactory(new RoutingFactoryBase()).BuildIndexStateProvider();
+			var indexUpdater = new ElasticFactory(new MultitenancyProvider()).BuildIndexStateProvider();
 			indexUpdater.RecreateIndex("update", "package");
 
 			var itemId = Guid.NewGuid();
@@ -125,7 +125,7 @@ namespace InfinniPlatform.Update.Tests.Builders
 			item.Version = "version1";
 			item.ContentId = contentId;
 
-			var provider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider("update", "package", AuthorizationStorageExtensions.AnonimousUser);
+			var provider = new ElasticFactory(new MultitenancyProvider()).BuildCrudOperationProvider("update", "package", AuthorizationStorageExtensions.AnonimousUser);
 			provider.Set(item);
 			provider.Refresh();
 

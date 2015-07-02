@@ -1,6 +1,9 @@
 ﻿using Nest;
+
 using System.Collections.Generic;
 using System.Linq;
+
+using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeSelectors
 {
@@ -12,7 +15,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeSelectors
 	    /// <param name="searchDescriptor">Дескриптор поиска</param>
 	    /// <param name="indexNames">Имена индексов, по которым производить поиск</param>
 	    /// <param name="typeName">Наименование типа данных для выборки из индекса</param>
-	    /// <param name="routing">Роутинг запроса</param>
 	    /// <param name="searchInAllIndeces">Искать по всем инлдексам</param>
 	    /// <param name="searchInAllTypes">Искать по всем типам</param>
 	    /// <returns>Настроенный дескриптор</returns>
@@ -20,7 +22,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeSelectors
             this SearchDescriptor<dynamic> searchDescriptor,
             IEnumerable<string> indexNames,
             IEnumerable<string> typeName,
- 			string routing,
             bool searchInAllIndeces,
             bool searchInAllTypes)
         {
@@ -50,9 +51,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeSelectors
             {
                 searchDescriptor = searchDescriptor.Types(typeName);
             }
-	        searchDescriptor.Routing(routing);
 
-            return searchDescriptor;
+	        return searchDescriptor;
         }
 
         /// <summary>
@@ -61,7 +61,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeSelectors
         /// <param name="countDescriptor">Дескриптор поиска</param>
         /// <param name="indexNames">Имена индексов, по которым производить поиск</param>
         /// <param name="typeName">Наименование типа данных для выборки из индекса</param>
-        /// <param name="routing">Роутинг запроса</param>
         /// <param name="searchInAllIndeces">Искать по всем инлдексам</param>
         /// <param name="searchInAllTypes">Искать по всем типам</param>
         /// <returns>Настроенный дескриптор</returns>
@@ -69,7 +68,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeSelectors
             this CountDescriptor<dynamic> countDescriptor,
             IEnumerable<string> indexNames,
             IEnumerable<string> typeName,
-            string routing,
             bool searchInAllIndeces,
             bool searchInAllTypes)
         {
@@ -99,8 +97,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeSelectors
             {
                 countDescriptor = countDescriptor.Types(typeName);
             }
-            countDescriptor.Routing(routing);
-
+            
             return countDescriptor;
         }
     }

@@ -150,7 +150,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions
                 .Type(schemaTypeVersion)
                 .SearchAnalyzer("string_lowercase")
                 .IndexAnalyzer(searchAbility.ToString().ToLowerInvariant())
-				.RoutingField(r => r.Required())
 				);
 
             var mapping = _connection.Client.GetMapping<dynamic>(d => d.Index(indexName).Type(schemaTypeVersion));

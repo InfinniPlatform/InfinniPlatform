@@ -4,9 +4,9 @@ using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Index.ElasticSearch.Tests.Builders;
-using InfinniPlatform.SystemConfig.RoutingFactory;
 using NUnit.Framework;
 using System.Linq;
+using InfinniPlatform.SystemConfig.Multitenancy;
 
 namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 {
@@ -25,7 +25,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 		[Test]
 		public void ShouldExecuteSearchByExecutor()
 		{
-			var executor = new ElasticFactory(new RoutingFactoryBase()).BuildIndexQueryExecutor("testperson", "testperson", AuthorizationStorageExtensions.AnonimousUser);
+			var executor = new ElasticFactory(new MultitenancyProvider()).BuildIndexQueryExecutor("testperson", "testperson", AuthorizationStorageExtensions.AnonimousUser);
 			var searchModel = new SearchModel();
 
 		    var filter = _filterFactory.Get("Patronimic", "СТЕПАНОВИч", CriteriaType.IsEquals)
@@ -47,7 +47,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 		[Test]
 		public void ShouldExecuteSearchWithFacetSearchstring()
 		{
-			var executor = new ElasticFactory(new RoutingFactoryBase()).BuildIndexQueryExecutor("testperson", "testperson", AuthorizationStorageExtensions.AnonimousUser);
+			var executor = new ElasticFactory(new MultitenancyProvider()).BuildIndexQueryExecutor("testperson", "testperson", AuthorizationStorageExtensions.AnonimousUser);
 			var searchModel = new SearchModel();
 			searchModel.AddSort("LastName", SortOrder.Descending);
 			searchModel.SetPageSize(3);
@@ -61,7 +61,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 		[Test]
 		public void ShouldExecuteSearchWithFacetFilter()
 		{
-			var executor = new ElasticFactory(new RoutingFactoryBase()).BuildIndexQueryExecutor("testperson", "testperson", AuthorizationStorageExtensions.AnonimousUser);
+			var executor = new ElasticFactory(new MultitenancyProvider()).BuildIndexQueryExecutor("testperson", "testperson", AuthorizationStorageExtensions.AnonimousUser);
 			var searchModel = new SearchModel();
 		    searchModel.AddFilter(_filterFactory.Get("Patronimic", "СТЕПАНОВИч", CriteriaType.IsEquals));
 		    searchModel.AddFilter(_filterFactory.Get("NestedObj.Code", "12345", CriteriaType.IsEquals));
@@ -76,7 +76,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 		[Test]
 		public void ShouldExecuteSearchWithoutFilters()
 		{
-			var executor = new ElasticFactory(new RoutingFactoryBase()).BuildIndexQueryExecutor("testperson", "testperson", AuthorizationStorageExtensions.AnonimousUser);
+			var executor = new ElasticFactory(new MultitenancyProvider()).BuildIndexQueryExecutor("testperson", "testperson", AuthorizationStorageExtensions.AnonimousUser);
 			var searchModel = new SearchModel();
 
 			var result = executor.Query(searchModel);

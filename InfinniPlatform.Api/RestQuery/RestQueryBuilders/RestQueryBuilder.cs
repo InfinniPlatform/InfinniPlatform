@@ -115,7 +115,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
             var body = new Dictionary<string, object>()
             {
                 {"id", id},
-                {"changesObject", jsonObject},
+                {"changesObject", JsonConvert.SerializeObject(jsonObject, Formatting.Indented)},
                 {"replace", replaceObject}
             };
 

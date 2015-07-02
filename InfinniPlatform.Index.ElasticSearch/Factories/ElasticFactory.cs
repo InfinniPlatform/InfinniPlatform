@@ -1,5 +1,4 @@
-﻿using InfinniPlatform.Api.Factories;
-using InfinniPlatform.Api.Index;
+﻿using InfinniPlatform.Api.Index;
 using InfinniPlatform.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Versioning;
@@ -13,11 +12,11 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 	/// </summary>
     public sealed class ElasticFactory : IIndexFactory
     {
-		private readonly IIndexRoutingFactory _indexRoutingFactory;
+		private readonly IMultitenancyProvider _multitenancyProvider;
 
-		public ElasticFactory(IIndexRoutingFactory indexRoutingFactory)
+		public ElasticFactory(IMultitenancyProvider multitenancyProvider)
 		{
-			_indexRoutingFactory = indexRoutingFactory;
+			_multitenancyProvider = multitenancyProvider;
 		}
 
 
@@ -37,27 +36,27 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 		/// </summary>
 		/// <param name="indexName">Наименование индекса</param>
 		/// <param name="typeName">Наименование типа</param>
-		/// <param name="routing">Роутинг для получения данных</param>
-		public IVersionProvider BuildVersionProvider(string indexName, string typeName, string routing)
+        /// <param name="tenantId">Идентификатор организации-клиента для получения данных</param>
+		public IVersionProvider BuildVersionProvider(string indexName, string typeName, string tenantId)
 		{
 
-			var expectedRouting = _indexRoutingFactory.GetRouting(routing, indexName, typeName);
+			var expectedtenantId = _multitenancyProvider.GetTenantId(tenantId, indexName, typeName);
 	        return new VersionProvider(
-	            new ElasticSearchProvider(indexName, typeName, expectedRouting), 
-                new DocumentProvider(new IndexQueryExecutor(indexName, typeName, expectedRouting)));
+	            new ElasticSearchProvider(indexName, typeName, expectedtenantId), 
+                new DocumentProvider(new IndexQueryExecutor(indexName, typeName, expectedtenantId)));
 	    }
 
 	    /// <summary>
 	    ///   Создать провайдер данных для доступа к нескольким индексам
 	    /// </summary>
-	    /// <param name="routing">Роутинг для выполнения запросов</param>
+        /// <param name="tenantId">Идентификатор организации-клиента для выполнения запросов</param>
 	    /// <param name="indexNames">Наименование индексов. Если имена не указаны,
 	    ///     для поиска будут использованы все имеющиеся индексы</param>
 	    /// <param name="typeNames">Наименования типов</param>
-	    public IDocumentProvider BuildMultiIndexDocumentProvider(string routing, IEnumerable<string> indexNames = null, IEnumerable<string> typeNames = null)
+	    public IDocumentProvider BuildMultiIndexDocumentProvider(string tenantId, IEnumerable<string> indexNames = null, IEnumerable<string> typeNames = null)
         {
             // Создаём универсальный провайдер для выполнения поисковых запросов ко всем документам конфигурации
-            return new DocumentProvider(new IndexQueryExecutor(indexNames, typeNames,routing));
+            return new DocumentProvider(new IndexQueryExecutor(indexNames, typeNames,tenantId));
         }
         
 		private readonly List<ElasticSearchProviderInfo> _providersInfo = new List<ElasticSearchProviderInfo>();
@@ -67,15 +66,15 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 		/// </summary>
 		/// <param name="indexName">Наименование индекса для поиска</param>
 		/// <param name="typeName">Наименование типа для выполнения операций с данными. Если не указан, осуществляется выборка всех существующих в индексе типов</param>
-		/// <param name="routing">Роутинг для выполнения запросов</param>
+        /// <param name="tenantId">Идентификатор организации-клиента для выполнения запросов</param>
 		/// <returns>Провайдер для поиска данных</returns>
-		public ICrudOperationProvider BuildCrudOperationProvider(string indexName, string typeName, string routing)
+		public ICrudOperationProvider BuildCrudOperationProvider(string indexName, string typeName, string tenantId)
 		{
-			var expectedRouting = _indexRoutingFactory.GetRouting(routing, indexName, typeName);
+			var expectedtenantId = _multitenancyProvider.GetTenantId(tenantId, indexName, typeName);
 	 	    var providerInfo = _providersInfo.FindInfo(indexName, typeName);
 	 	    if (providerInfo == null)
 	 	    {
-		 	    var provider =  new ElasticSearchProvider(indexName, typeName, expectedRouting);
+		 	    var provider =  new ElasticSearchProvider(indexName, typeName, expectedtenantId);
 				_providersInfo.Add(new ElasticSearchProviderInfo(indexName,typeName,provider));
 		 	    return provider;
 	 	    }
@@ -96,12 +95,12 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 		/// </summary>
 		/// <param name="indexName">Наимемнование индекса, для которого выполняется запрос. Если не указан, осуществляется выборка из всех существующих индексов</param>
 		/// <param name="typeName">Наименование типа для выполнения операций с данными. Если не указан, осуществляется выборка из всех существующих в индексе типов</param>
-		/// <param name="routing">Роутинг выполнения запросов</param>
+        /// <param name="tenantId">Идентификатор организации-клиента выполнения запросов</param>
 		/// <returns></returns>
-		public IIndexQueryExecutor BuildIndexQueryExecutor(string indexName, string typeName, string routing)
+		public IIndexQueryExecutor BuildIndexQueryExecutor(string indexName, string typeName, string tenantId)
 	    {
-			var expectedRouting = _indexRoutingFactory.GetRouting(routing, indexName, typeName);
-            return new IndexQueryExecutor(indexName, typeName, expectedRouting);
+			var expectedtenantId = _multitenancyProvider.GetTenantId(tenantId, indexName, typeName);
+            return new IndexQueryExecutor(indexName, typeName, expectedtenantId);
 	    }
 
 		/// <summary>
@@ -109,11 +108,11 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 		/// </summary>
 		/// <param name="indexName">Наимемнование индекса, для которого выполняется запрос</param>
 		/// <param name="typeName">Наименование типа для выполнения операций с данными. Если не указан, осуществляется выборка всех существующих в индексе типов</param>
-		/// <param name="routing">Роутинг выполнения запросов</param>
-		public IAggregationProvider BuildAggregationProvider(string indexName, string typeName, string routing)
+        /// <param name="tenantId">Идентификатор организации-клиента выполнения запросов</param>
+		public IAggregationProvider BuildAggregationProvider(string indexName, string typeName, string tenantId)
         {
-			var expectedRouting = _indexRoutingFactory.GetRouting(routing, indexName, typeName);
-            return new ElasticSearchAggregationProvider(indexName, typeName, expectedRouting);
+            var expectedTenantId = _multitenancyProvider.GetTenantId(tenantId, indexName, typeName);
+            return new ElasticSearchAggregationProvider(indexName, typeName, expectedTenantId);
         }
     }
 }

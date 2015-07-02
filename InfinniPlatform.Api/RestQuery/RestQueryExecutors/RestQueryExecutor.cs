@@ -48,7 +48,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryExecutors
                 RequestFormat = DataFormat.Json
             };
 
-            restRequest.AddParameter("application/json", body.ToDynamic(), ParameterType.RequestBody);
+            restRequest.AddBody(body);
             
             IRestResponse restResponse = restClient.Post(restRequest);
 

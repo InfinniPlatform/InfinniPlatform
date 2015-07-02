@@ -6,13 +6,13 @@ using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters.NestFilters;
 using InfinniPlatform.Index.QueryLanguage.Implementation;
-using InfinniPlatform.SystemConfig.RoutingFactory;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using InfinniPlatform.SystemConfig.Multitenancy;
 
 namespace InfinniPlatform.Index.QueryLanguage.Tests
 {
@@ -31,7 +31,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 		[TestFixtureSetUp]
 		public void TestFixtureSetup()
 		{
-			var elasticFactory = new ElasticFactory(new RoutingFactoryBase());
+			var elasticFactory = new ElasticFactory(new MultitenancyProvider());
 
 			_indexProvider = elasticFactory.BuildIndexStateProvider();
             _indexProvider.RecreateIndex("TestIndex", "TestIndex");
@@ -266,7 +266,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 						                 }
 				                 };
 
-			var referenceBuilder = new ReferenceBuilder(new ElasticFactory(new RoutingFactoryBase()),AuthorizationStorageExtensions.AnonimousUser);
+			var referenceBuilder = new ReferenceBuilder(new ElasticFactory(new MultitenancyProvider()),AuthorizationStorageExtensions.AnonimousUser);
 			referenceBuilder.FillReference(_selectingJson, references.ToArray(),new List<WhereObject>(),  new NestFilterBuilder());
 
             Assert.AreEqual("{\r\n  \"ConfigurationName\": \"DrugsVidal\",\r\n  \"ObjectMetadata\": [\r\n    {\r\n      \"MetadataId\": \"REF_VIDAL\",\r\n      \"SomeObject\": {\r\n        \"SomeProperty\": \"SomeValue\"\r\n      }\r\n    },\r\n    {\r\n      \"MetadataId\": \"REF_CLPHPOINTER\",\r\n      \"SomeObject\": {\r\n        \"SomeProperty\": \"AnotherValue\"\r\n      }\r\n    }\r\n  ],\r\n  \"FirstLevelObject\": {},\r\n  \"ReferenceId\": \"testid\",\r\n  \"NestedReferenceField\": {\r\n    \"NestedReferenceId\": \"testid\"\r\n  },\r\n  \"CollectionAliasField\": [\r\n    {\r\n      \"ReferenceId\": \"testid\"\r\n    }\r\n  ],\r\n  \"Reference\": {\r\n    \"Id\": \"testid\",\r\n    \"Property1\": {\r\n      \"Value\": \"TestValue1\"\r\n    },\r\n    \"SimpleProperty\": 1,\r\n    \"__ConfigId\": \"testindex\",\r\n    \"__DocumentId\": \"testindex\"\r\n  }\r\n}", _selectingJson.ToString());
@@ -290,7 +290,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 						                 }
 				                 };
 
-			var referenceBuilder = new ReferenceBuilder(new ElasticFactory(new RoutingFactoryBase()),AuthorizationStorageExtensions.AnonimousUser);
+			var referenceBuilder = new ReferenceBuilder(new ElasticFactory(new MultitenancyProvider()),AuthorizationStorageExtensions.AnonimousUser);
 			referenceBuilder.FillReference(_selectingJson, references.ToArray(), new List<WhereObject>(), new NestFilterBuilder());
 
             Assert.AreEqual("{\r\n  \"ConfigurationName\": \"DrugsVidal\",\r\n  \"ObjectMetadata\": [\r\n    {\r\n      \"MetadataId\": \"REF_VIDAL\",\r\n      \"SomeObject\": {\r\n        \"SomeProperty\": \"SomeValue\"\r\n      }\r\n    },\r\n    {\r\n      \"MetadataId\": \"REF_CLPHPOINTER\",\r\n      \"SomeObject\": {\r\n        \"SomeProperty\": \"AnotherValue\"\r\n      }\r\n    }\r\n  ],\r\n  \"FirstLevelObject\": {},\r\n  \"ReferenceId\": \"testid\",\r\n  \"NestedReferenceField\": {\r\n    \"NestedReferenceId\": \"testid\",\r\n    \"Reference\": {\r\n      \"Id\": \"testid\",\r\n      \"Property1\": {\r\n        \"Value\": \"TestValue1\"\r\n      },\r\n      \"SimpleProperty\": 1,\r\n      \"__ConfigId\": \"testindex\",\r\n      \"__DocumentId\": \"testindex\"\r\n    }\r\n  },\r\n  \"CollectionAliasField\": [\r\n    {\r\n      \"ReferenceId\": \"testid\"\r\n    }\r\n  ]\r\n}", _selectingJson.ToString());
@@ -314,7 +314,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 						                 }
 				                 };
 
-			var referenceBuilder = new ReferenceBuilder(new ElasticFactory(new RoutingFactoryBase()),AuthorizationStorageExtensions.AnonimousUser);
+			var referenceBuilder = new ReferenceBuilder(new ElasticFactory(new MultitenancyProvider()),AuthorizationStorageExtensions.AnonimousUser);
 			referenceBuilder.FillReference(_selectingJson, references.ToArray(), new List<WhereObject>(), new NestFilterBuilder());
 
             Assert.AreEqual("{\r\n  \"ConfigurationName\": \"DrugsVidal\",\r\n  \"ObjectMetadata\": [\r\n    {\r\n      \"MetadataId\": \"REF_VIDAL\",\r\n      \"SomeObject\": {\r\n        \"SomeProperty\": \"SomeValue\"\r\n      }\r\n    },\r\n    {\r\n      \"MetadataId\": \"REF_CLPHPOINTER\",\r\n      \"SomeObject\": {\r\n        \"SomeProperty\": \"AnotherValue\"\r\n      }\r\n    }\r\n  ],\r\n  \"FirstLevelObject\": {},\r\n  \"ReferenceId\": \"testid\",\r\n  \"NestedReferenceField\": {\r\n    \"NestedReferenceId\": \"testid\"\r\n  },\r\n  \"CollectionAliasField\": [\r\n    {\r\n      \"ReferenceId\": \"testid\",\r\n      \"Reference\": {\r\n        \"Id\": \"testid\",\r\n        \"Property1\": {\r\n          \"Value\": \"TestValue1\"\r\n        },\r\n        \"SimpleProperty\": 1,\r\n        \"__ConfigId\": \"testindex\",\r\n        \"__DocumentId\": \"testindex\"\r\n      }\r\n    }\r\n  ]\r\n}", _selectingJson.ToString());
@@ -492,7 +492,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 				}
 			});
 
-			var result = new JsonQueryExecutor(new ElasticFactory(new RoutingFactoryBase()), _filterFactory, AuthorizationStorageExtensions.AnonimousUser).ExecuteQuery(jsonQuery);
+			var result = new JsonQueryExecutor(new ElasticFactory(new MultitenancyProvider()), _filterFactory, AuthorizationStorageExtensions.AnonimousUser).ExecuteQuery(jsonQuery);
 			var compareResult = new[]
 		        {
 					new
@@ -556,7 +556,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
                 }
 			});
 
-			var result = new JsonQueryExecutor(new ElasticFactory(new RoutingFactoryBase()), _filterFactory,AuthorizationStorageExtensions.AnonimousUser).ExecuteQuery(jsonQuery);
+			var result = new JsonQueryExecutor(new ElasticFactory(new MultitenancyProvider()), _filterFactory,AuthorizationStorageExtensions.AnonimousUser).ExecuteQuery(jsonQuery);
 
 			var compareResult = new[]
 		        {
@@ -611,7 +611,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 				}
 			});
 
-			var result = new JsonQueryExecutor(new ElasticFactory(new RoutingFactoryBase()), _filterFactory,AuthorizationStorageExtensions.AnonimousUser).ExecuteQuery(jsonQuery);
+			var result = new JsonQueryExecutor(new ElasticFactory(new MultitenancyProvider()), _filterFactory,AuthorizationStorageExtensions.AnonimousUser).ExecuteQuery(jsonQuery);
 
 			var compareResult = new[]
 		        {

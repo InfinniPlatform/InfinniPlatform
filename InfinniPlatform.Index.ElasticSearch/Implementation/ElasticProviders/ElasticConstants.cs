@@ -27,6 +27,11 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 	    public const string VersionField = "Version";
 
         /// <summary>
+        ///   Наименование поля для хранения организации-клиента
+        /// </summary>
+        public const string TenantIdField = "TenantId";
+
+        /// <summary>
         ///   Наименование поля идентификатора документа: Id
         /// </summary>
         public const string IndexObjectIdentifierField = "Id";

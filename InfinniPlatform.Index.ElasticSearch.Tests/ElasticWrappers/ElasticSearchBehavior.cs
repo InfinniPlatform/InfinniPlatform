@@ -4,10 +4,10 @@ using InfinniPlatform.Api.Index.SearchOptions;
 using InfinniPlatform.Api.RestApi.AuthApi;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Tests.Builders;
-using InfinniPlatform.SystemConfig.RoutingFactory;
 using NUnit.Framework;
 using System;
 using System.Dynamic;
+using InfinniPlatform.SystemConfig.Multitenancy;
 using Nest;
 
 namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
@@ -59,10 +59,10 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void ShouldReindexWithoutDataLostTest()
         {
-            var indexProvider = new ElasticFactory(new RoutingFactoryBase()).BuildIndexStateProvider();
+            var indexProvider = new ElasticFactory(new MultitenancyProvider()).BuildIndexStateProvider();
             indexProvider.RecreateIndex("testperson","testperson");
 
-			var elasticSearchProvider = new ElasticFactory(new RoutingFactoryBase()).BuildCrudOperationProvider("testperson", "testperson", AuthorizationStorageExtensions.AnonimousUser);
+			var elasticSearchProvider = new ElasticFactory(new MultitenancyProvider()).BuildCrudOperationProvider("testperson", "testperson", AuthorizationStorageExtensions.AnonimousUser);
 
             dynamic person1 = new DynamicWrapper();
             person1.Id = "11111";
@@ -80,7 +80,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             elasticSearchProvider.Set(person2);
 
 
-			var queryExecutor = new ElasticFactory(new RoutingFactoryBase()).BuildIndexQueryExecutor("testperson", "testperson", AuthorizationStorageExtensions.AnonimousUser);
+			var queryExecutor = new ElasticFactory(new MultitenancyProvider()).BuildIndexQueryExecutor("testperson", "testperson", AuthorizationStorageExtensions.AnonimousUser);
             indexProvider.Refresh();
             
             Assert.AreEqual(2, queryExecutor.Query(new SearchModel()).HitsCount);

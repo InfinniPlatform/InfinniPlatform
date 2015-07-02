@@ -1,5 +1,4 @@
-﻿using InfinniPlatform.Api.Factories;
-using InfinniPlatform.Api.Index;
+﻿using InfinniPlatform.Api.Index;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
@@ -12,7 +11,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
     public sealed class IndexStateProvider : IIndexStateProvider
     {
         private readonly ElasticConnection _connection;
-       
 
         public IndexStateProvider()
         {
@@ -79,7 +77,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         {
             var index = new MultipleTypeIndex();
 
-            var schemaVersionName = index.CreateIndexType(indexName, typeName, deleteExistingVersion, SearchAbilityType.KeywordBasedSearch);
+            var schemaVersionName = index.CreateIndexType(indexName, typeName, deleteExistingVersion);
 
             if (indexTypeMapping != null)
             {
@@ -87,8 +85,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
                     _connection.Client, 
                     indexName, 
                     schemaVersionName, 
-                    indexTypeMapping.Properties,
-                    SearchAbilityType.KeywordBasedSearch);
+                    indexTypeMapping.Properties);
             }
         }
 

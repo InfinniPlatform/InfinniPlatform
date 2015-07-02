@@ -73,6 +73,8 @@ namespace InfinniPlatform.Hosting
 						arguments.Add(parameterInfo.GetArgumentValue(parameterInfo.DefaultValue));
 						continue;
 					}
+
+                    throw new ArgumentException(string.Format("parameter \"{0}\" not found!", parameterInfo.Name));
 				}
 
 				arguments.Add(parameterInfo.GetArgumentValue(param.Value));

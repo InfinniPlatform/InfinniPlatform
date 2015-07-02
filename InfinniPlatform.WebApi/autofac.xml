@@ -14,8 +14,8 @@
       service="InfinniPlatform.Api.Index.IIndexFactory, InfinniPlatform.Api"
       instance-scope="single-instance"/>
     <component
-      type = "InfinniPlatform.SystemConfig.RoutingFactory.RoutingFactoryBase, InfinniPlatform.SystemConfig"
-      service="InfinniPlatform.Factories.IIndexRoutingFactory, InfinniPlatform.Core"
+      type = "InfinniPlatform.SystemConfig.Multitenancy.MultitenancyProvider, InfinniPlatform.SystemConfig"
+      service="InfinniPlatform.Factories.IMultitenancyProvider, InfinniPlatform.Core"
       instance-scope="single-instance"/>
     <component
       type = "InfinniPlatform.Logging.Log4NetLogFactory, InfinniPlatform.Core"
