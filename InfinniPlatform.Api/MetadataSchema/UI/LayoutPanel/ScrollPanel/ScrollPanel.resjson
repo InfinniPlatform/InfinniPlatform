@@ -3,20 +3,16 @@
   "description": "Контейнер в виде прокручиваемой области",
   "type": "object",
   "extends": {
-    "$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
+    "$ref": "http://demo.infinnity.ru:8081/display/MC/Container"
   },
   "properties": {
-    "VerticalScroll": {
-      "description": "Видимость полосы прокрутки по вертикали",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/ScrollVisibility"
-    },
     "HorizontalScroll": {
       "description": "Видимость полосы прокрутки по горизонтали",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/ScrollVisibility"
     },
-    "LayoutPanel": {
-      "description": "Контейнер элементов",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/LayoutPanel"
+    "VerticalScroll": {
+      "description": "Видимость полосы прокрутки по вертикали",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/ScrollVisibility"
     }
   },
   "additionalProperties": false
