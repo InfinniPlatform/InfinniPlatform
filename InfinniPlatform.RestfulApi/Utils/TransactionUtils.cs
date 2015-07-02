@@ -30,7 +30,7 @@ namespace InfinniPlatform.RestfulApi.Utils
 			var attachedInstance = new AttachedInstance();
 			attachedInstance.Version = target.Version;
 			attachedInstance.Instance = target.Item;
-			attachedInstance.Routing = target.Context.GetComponent<ISecurityComponent>()
+			attachedInstance.TenantId = target.Context.GetComponent<ISecurityComponent>()
 			                                 .GetClaim(AuthorizationStorageExtensions.OrganizationClaim, target.UserName);
 			
 			return attachedInstance;

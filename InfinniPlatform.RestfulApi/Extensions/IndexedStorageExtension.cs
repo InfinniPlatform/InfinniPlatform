@@ -71,14 +71,15 @@ namespace InfinniPlatform.RestfulApi.Extensions
             {
                 Id = Guid.NewGuid().ToString().ToLowerInvariant(),
                 TimeStamp = DateTime.Now,
-                Values = jInstance
+                Values = jInstance,
+                TenantId = userClaim
             };
             var indexObject = indexObject1;
             indexObject.TimeStamp = timeStamp;
 
 			var elasticProvider = (ElasticSearchProvider)new ElasticFactory(new MultitenancyProvider()).BuildCrudOperationProvider(indexName, typeName, AuthorizationStorageExtensions.AnonimousUser);
 	        var typeNameActual = elasticProvider.ActualTypeName;
-			elasticConnection.Client.Index(indexObject, d=>d.Index(indexName).Type(typeNameActual).Routing(userClaim));
+			elasticConnection.Client.Index(indexObject, d=>d.Index(indexName).Type(typeNameActual));
             elasticConnection.Client.Refresh(f=>f.Force());
         }
     }

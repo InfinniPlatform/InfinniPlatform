@@ -14,12 +14,12 @@ namespace InfinniPlatform.Api.Factories
 	    /// <param name="filterObject">Фильтр</param>
 	    /// <param name="pageNumber">Номер страницы</param>
 	    /// <param name="pageSize">Размер страницы</param>
-	    /// <param name="routing"></param>
+	    /// <param name="tenantId"></param>
 	    /// <param name="sorting">Сортировка</param>
 	    /// <param name="configs">Наименования конфигураций, по которым будет производиться поиск</param>
 	    /// <param name="documents">Типы документов, по которым будет производиться поиск</param>
 	    /// <returns>Найденные документы</returns>
-	    dynamic GetDocuments(IEnumerable<object> filterObject, int pageNumber, int pageSize, string routing, IEnumerable<object> sorting, IEnumerable<string> configs = null, IEnumerable<string> documents = null);
+        dynamic GetDocuments(IEnumerable<object> filterObject, int pageNumber, int pageSize, string tenantId, IEnumerable<object> sorting, IEnumerable<string> configs = null, IEnumerable<string> documents = null);
 
 	}
 }

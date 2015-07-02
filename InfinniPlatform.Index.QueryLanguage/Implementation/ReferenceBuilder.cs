@@ -15,12 +15,12 @@ namespace InfinniPlatform.Index.QueryLanguage.Implementation
 	public sealed class ReferenceBuilder
 	{
 		private readonly IIndexFactory _indexFactory;
-		private readonly string _routing;
+		private readonly string _tenantId;
 
-		public ReferenceBuilder(IIndexFactory indexFactory, string routing)
+		public ReferenceBuilder(IIndexFactory indexFactory, string tenantId)
 		{
 			_indexFactory = indexFactory;
-			_routing = routing;
+			_tenantId = tenantId;
 		}
 
 
@@ -56,7 +56,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Implementation
 
 			foreach (var reference in referencedObjects)
 			{
-				executors.Add(reference.Path, _indexFactory.BuildIndexQueryExecutor(reference.Index.ToLowerInvariant(), reference.Type, _routing));
+				executors.Add(reference.Path, _indexFactory.BuildIndexQueryExecutor(reference.Index.ToLowerInvariant(), reference.Type, _tenantId));
 			}
 
 

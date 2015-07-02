@@ -136,7 +136,31 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
                 }
             }
 
+            // Пытаемся выяснить причину, почему проиндексировать объект не удалось.
+            // Возможно, маппинг для типа индекса не соответствует типам данных полей 
+            // индексируемого объекта item
 
+            var currentMapping = _elasticConnection.GetIndexTypeMapping(_indexName, _typeName);
+
+            var propertiesMismatchMessage = new StringBuilder();
+
+            if (!string.IsNullOrEmpty(rollbackMessage.ToString()))
+            {
+                propertiesMismatchMessage.Append(rollbackMessage);
+            }
+
+            foreach (var item in itemsToIndex)
+            {
+                TryToFindPropertiesMismatch(item, currentMapping, propertiesMismatchMessage);
+            }
+
+            // Обнаружено несоответствие маппинга индексируемого объекта
+            if (!string.IsNullOrEmpty(propertiesMismatchMessage.ToString()))
+            {
+                throw new ArgumentException(propertiesMismatchMessage.ToString());
+            }
+
+            // Несоответствие маппинга не выявлено, возвращаем сообщение эластика
             // Возвращаем сообщение эластика
             if (response.ConnectionStatus.OriginalException != null &&
                 !string.IsNullOrEmpty(response.ConnectionStatus.OriginalException.Message))

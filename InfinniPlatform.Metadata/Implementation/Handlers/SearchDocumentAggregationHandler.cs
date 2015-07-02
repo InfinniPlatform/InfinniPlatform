@@ -49,7 +49,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
 
             metadataConfig.MoveWorkflow(idType, metadataConfig.GetExtensionPointValue(ConfigRequestProvider, "Join"), target);
 
-			//в качестве routing используется клэйм организации пользователя
+            //в качестве tenantId используется клэйм организации пользователя
 			var executor = target.Context.GetComponent<IIndexComponent>().IndexFactory.BuildAggregationProvider(aggregationConfiguration, aggregationMetadata, 
 				target.Context.GetComponent<ISecurityComponent>().GetClaim(AuthorizationStorageExtensions.OrganizationClaim, target.UserName) ?? AuthorizationStorageExtensions.AnonimousUser);
             

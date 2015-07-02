@@ -15,16 +15,16 @@ namespace InfinniPlatform.Index.QueryLanguage.Implementation
 		private readonly ReferenceBuilder _referenceBuilder;
 		private readonly ProjectionBuilder _projectionBuilder;
         private readonly IFilterBuilder _filterFactory;
-		private readonly string _routing;
+		private readonly string _tenantId;
 
 		private readonly Regex _elasticFilterRegex = new Regex(@"^[a-zA-Z\.]+$");
 
-        public JsonQueryExecutor(IIndexFactory indexFactory, IFilterBuilder filterFactory, string routing)
+        public JsonQueryExecutor(IIndexFactory indexFactory, IFilterBuilder filterFactory, string tenantId)
 		{
 			_indexFactory = indexFactory;
 		    _filterFactory = filterFactory;
-	        _routing = routing;
-	        _referenceBuilder = new ReferenceBuilder(_indexFactory,routing);
+	        _tenantId = tenantId;
+	        _referenceBuilder = new ReferenceBuilder(_indexFactory,tenantId);
 			_projectionBuilder = new ProjectionBuilder();			
 		}
 
@@ -40,7 +40,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Implementation
 			//Получаем индекс для поиска основного объекта
 			var from = queryTree.GetFrom();
 
-			var queryExecutor = _indexFactory.BuildIndexQueryExecutor(@from.Index.ToLowerInvariant(),@from.Type.ToLowerInvariant(), _routing);
+			var queryExecutor = _indexFactory.BuildIndexQueryExecutor(@from.Index.ToLowerInvariant(),@from.Type.ToLowerInvariant(), _tenantId);
 
 			//модель поиска для выборки из индекса основного объекта
 			var searchBuilder = new SearchModelBuilder(_filterFactory);

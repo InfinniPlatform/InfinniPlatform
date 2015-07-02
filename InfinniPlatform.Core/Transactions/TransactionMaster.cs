@@ -1,7 +1,5 @@
 ﻿using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Transactions;
-using InfinniPlatform.Factories;
-using InfinniPlatform.Index;
 using System;
 using System.Collections.Generic;
 
@@ -27,7 +25,7 @@ namespace InfinniPlatform.Transactions
                 foreach (var item in _itemsList)
                 {
 	                
-                    IVersionProvider versionProvider = _indexFactory.BuildVersionProvider(item.ConfigId, item.DocumentId, item.Routing);
+                    IVersionProvider versionProvider = _indexFactory.BuildVersionProvider(item.ConfigId, item.DocumentId, item.TenantId);
 
 	                if (item.Instance.Document != null)
 	                {

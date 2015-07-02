@@ -10,18 +10,18 @@ namespace InfinniPlatform.Api.Metadata
 		/// </summary>
 		/// <param name="metadata">метаданные объекта</param>
 		/// <param name="configVersion">Версия конфигурации</param>
-		/// <param name="routing"></param>
+        /// <param name="tenantId"></param>
 		/// <returns>Провайдер версий документа</returns>
-		IVersionProvider GetDocumentProviderForType(string metadata, string configVersion, string routing);
+        IVersionProvider GetDocumentProviderForType(string metadata, string configVersion, string tenantId);
 
 		/// <summary>
 		///   Предоставить провайдер версий документа для работы в прикладных скриптах.
 		///   Создает провайдер, возвращающий всегда все версии всех найденных документов
 		/// </summary>
 		/// <param name="metadata">метаданные объекта</param>
-		/// <param name="routing"></param>
+        /// <param name="tenantId"></param>
 		/// <returns>Провайдер версий документа</returns>
-		IVersionProvider GetDocumentProviderForType(string metadata, string routing);
+        IVersionProvider GetDocumentProviderForType(string metadata, string tenantId);
 
 
 		/// <summary>
@@ -30,18 +30,18 @@ namespace InfinniPlatform.Api.Metadata
 		/// </summary>
 		/// <param name="metadata">метаданные объекта</param>
 		/// <param name="configVersion">Версия конфигурации</param>
-		/// <param name="routing"></param>
+        /// <param name="tenantId"></param>
 		/// <returns>Провайдер версий документа</returns>
-		IVersionProvider GetDocumentProvider(string metadata, string configVersion, string routing);
+        IVersionProvider GetDocumentProvider(string metadata, string configVersion, string tenantId);
 
 		/// <summary>
 		///   Предоставить провайдер версий документа для работы в прикладных скриптах.
 		///   Создает провайдер, возвращающий всегда все версии всех найденных документов всех существующих в индексе типов
 		/// </summary>
 		/// <param name="metadata">метаданные объекта</param>
-		/// <param name="routing"></param>
+        /// <param name="tenantId"></param>
 		/// <returns>Провайдер версий документа</returns>
-		IVersionProvider GetDocumentProvider(string metadata, string routing);
+        IVersionProvider GetDocumentProvider(string metadata, string tenantId);
 
 		/// <summary>
 		///   Получить хранилище бинарных данных

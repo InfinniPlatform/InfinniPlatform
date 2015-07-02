@@ -4,6 +4,7 @@ using InfinniPlatform.Api.Index.SearchOptions;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticSearchModels;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters.NestFilters;
+using InfinniPlatform.Index.ElasticSearch.Implementation.Filters.NestQueries;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeSelectors;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions;
 using Nest;
@@ -104,7 +105,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         /// <returns>Количество объектов, удовлетворяющих условиям поиска</returns>
         public long CalculateCountQuery(SearchModel searchModel)
         {
-            searchModel.AddFilter(new NestFilter(Filter<dynamic>.Query(q => q.Term(ElasticConstants.TenantIdField, _tenantId))));
+            searchModel.AddFilter(new NestQuery(Query<dynamic>.Term(ElasticConstants.TenantIdField, _tenantId)));
 
             Func<CountDescriptor<dynamic>, CountDescriptor<dynamic>> desc =
                 descriptor => new ElasticCountQueryBuilder(descriptor)

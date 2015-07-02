@@ -1,13 +1,7 @@
-﻿using System;
-using InfinniPlatform.Api.Factories;
+﻿using InfinniPlatform.Api.Factories;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.RestQuery;
-using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
-using InfinniPlatform.BlobStorage;
 using InfinniPlatform.Factories;
-using InfinniPlatform.Hosting;
-using InfinniPlatform.Index;
 
 
 namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
@@ -41,13 +35,13 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 		/// </summary>
 		/// <param name="metadata">метаданные объекта</param>
 		/// <param name="configVersion"></param>
-		/// <param name="routing">Роутинг для получения провайдера документов</param>
+		/// <param name="tenantId">Идентификатор организации-клиента для получения провайдера документов</param>
 		/// <returns>Провайдер версий документа</returns>
-		public IVersionProvider GetDocumentProviderForType(string metadata, string configVersion, string routing)
+		public IVersionProvider GetDocumentProviderForType(string metadata, string configVersion, string tenantId)
 	    {
             if (_indexStateProvider.GetIndexStatus(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata)) != IndexStatus.NotExists)
             {
-				return _indexFactory.BuildVersionProvider(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata), routing);
+				return _indexFactory.BuildVersionProvider(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata), tenantId);
             }
             return null;
 	    }
@@ -57,13 +51,13 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 		///   Создает провайдер, возвращающий всегда все версии всех найденных документов
 		/// </summary>
 		/// <param name="metadata">метаданные объекта</param>
-		/// <param name="routing">Роутинг выполнения запросов</param>
+        /// <param name="tenantId">Идентификатор организации-клиента выполнения запросов</param>
 		/// <returns>Провайдер версий документа</returns>
-		public IVersionProvider GetDocumentProviderForType(string metadata, string routing)
+		public IVersionProvider GetDocumentProviderForType(string metadata, string tenantId)
 	    {
             if (_indexStateProvider.GetIndexStatus(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata)) != IndexStatus.NotExists)
             {
-				return _indexFactory.BuildVersionProvider(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata), routing);
+				return _indexFactory.BuildVersionProvider(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata), tenantId);
             }
             return null;
 	    }
@@ -74,13 +68,13 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 		/// </summary>
 		/// <param name="metadata">метаданные объекта</param>
 		/// <param name="configVersion">Версия конфигурации</param>
-		/// <param name="routing">Роутинг для выполнения запросов</param>
+        /// <param name="tenantId">Идентификатор организации-клиента для выполнения запросов</param>
 		/// <returns>Провайдер версий документа</returns>
-		public IVersionProvider GetDocumentProvider(string metadata, string configVersion, string routing)
+		public IVersionProvider GetDocumentProvider(string metadata, string configVersion, string tenantId)
 	    {
             if (_indexStateProvider.GetIndexStatus(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata)) != IndexStatus.NotExists)
             {
-				return _indexFactory.BuildVersionProvider(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata), routing);
+				return _indexFactory.BuildVersionProvider(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata), tenantId);
             }
             return null;
 	    }
@@ -90,13 +84,13 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 		///   Создает провайдер, возвращающий всегда все версии всех найденных документов
 		/// </summary>
 		/// <param name="metadata">метаданные объекта</param>
-		/// <param name="routing">Роутинг выполнения запросов</param>
+        /// <param name="tenantId">Идентификатор организации-клиента выполнения запросов</param>
 		/// <returns></returns>
-		public IVersionProvider GetDocumentProvider(string metadata, string routing)
+		public IVersionProvider GetDocumentProvider(string metadata, string tenantId)
 		{
             if (_indexStateProvider.GetIndexStatus(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata)) != IndexStatus.NotExists)
 		    {
-				return _indexFactory.BuildVersionProvider(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata), routing);
+				return _indexFactory.BuildVersionProvider(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata), tenantId);
 		    }
 		    return null;
 		}

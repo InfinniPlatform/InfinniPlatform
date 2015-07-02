@@ -16,6 +16,6 @@
 
 		public string Version { get; set; }
 
-		public string Routing { get; set; }
+		public string TenantId { get; set; }
 	}
 }

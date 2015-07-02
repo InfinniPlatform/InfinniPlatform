@@ -20,26 +20,26 @@ namespace InfinniPlatform.Api.Index
 	    /// </summary>
 	    /// <param name="indexName">Наименование индекса</param>
 	    /// <param name="typeName">Наименование типа</param>
-	    /// <param name="routing"></param>
-	    IVersionProvider BuildVersionProvider(string indexName, string typeName, string routing);
+	    /// <param name="tenantId"></param>
+	    IVersionProvider BuildVersionProvider(string indexName, string typeName, string tenantId);
 
         /// <summary>
         ///   Создать провайдер данных для доступа к нескольким индексам
         /// </summary>
-        /// <param name="routing"></param>
+        /// <param name="tenantId"></param>
         /// <param name="indexNames">Наименование индексов. Если имена не указаны,
         ///     для поиска будут использованы все имеющиеся индексы</param>
         /// <param name="typeNames">Имена типов, по которым будет производиться поиск</param>
-        IDocumentProvider BuildMultiIndexDocumentProvider(string routing, IEnumerable<string> indexNames = null, IEnumerable<string> typeNames = null);
+        IDocumentProvider BuildMultiIndexDocumentProvider(string tenantId, IEnumerable<string> indexNames = null, IEnumerable<string> typeNames = null);
 
 	    /// <summary>
 	    ///   Создать провайдер для поиска данных
 	    /// </summary>
 	    /// <param name="indexName">Наименование индекса для поиска</param>
 	    /// <param name="typeName">Наименование типа для выполнения операций с данными. Если не указан, осуществляется выборка всех существующих в индексе типов</param>
-	    /// <param name="routing"></param>
+	    /// <param name="tenantId"></param>
 	    /// <returns>Провайдер для поиска данных</returns>
-	    ICrudOperationProvider BuildCrudOperationProvider(string indexName, string typeName, string routing);
+	    ICrudOperationProvider BuildCrudOperationProvider(string indexName, string typeName, string tenantId);
         
         /// <summary>
         ///   Создать провайдер операций для работы с индексами
@@ -52,16 +52,16 @@ namespace InfinniPlatform.Api.Index
 	    /// </summary>
 	    /// <param name="indexName">Наимемнование индекса, для которого выполняется запрос. Если не указан, осуществляется выборка из всех существующих индексов</param>
 	    /// <param name="typeName">Наименование типа для выполнения операций с данными. Если не указан, осуществляется выборка из всех существующих в индексе типов</param>
-	    /// <param name="routing"></param>
+	    /// <param name="tenantId"></param>
 	    /// <returns></returns>
-	    IIndexQueryExecutor BuildIndexQueryExecutor(string indexName, string typeName, string routing);
+	    IIndexQueryExecutor BuildIndexQueryExecutor(string indexName, string typeName, string tenantId);
 
 	    /// <summary>
 	    ///   Создать исполнитель агрегационных запросов к индексу
 	    /// </summary>
 	    /// <param name="indexName">Наимемнование индекса, для которого выполняется запрос</param>
 	    /// <param name="typeName">Наименование типа для выполнения операций с данными. Если не указан, осуществляется выборка всех существующих в индексе типов</param>
-	    /// <param name="routing"></param>
-	    IAggregationProvider BuildAggregationProvider(string indexName, string typeName, string routing);
+	    /// <param name="tenantId"></param>
+	    IAggregationProvider BuildAggregationProvider(string indexName, string typeName, string tenantId);
     }
 }
