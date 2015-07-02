@@ -3,7 +3,7 @@
   "description": "Контейнер для встраивания внешнего компонента",
   "type": "object",
   "extends": {
-    "$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
+    "$ref": "http://demo.infinnity.ru:8081/display/MC/Container"
   },
   "properties": {
     "ExtensionName": {
