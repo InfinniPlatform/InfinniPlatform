@@ -6,6 +6,15 @@
     "$ref": "http://demo.infinnity.ru:8081/display/MC/ListEditorBase"
   },
   "properties": {
+    "LabelText": {
+      "description": "Текст метки",
+      "type": "string"
+    },
+    "LabelFloating": {
+      "description": "Является ли метка плавающей",
+      "type": "boolean",
+      "default": false
+    },
     "Autocomplete": {
       "description": "Разрешено ли автозавершение ввода",
       "type": "boolean",
@@ -13,15 +22,6 @@
     },
     "SelectInDialog": {
       "description": "Разрешен ли выбор значеня в диалоге",
-      "type": "boolean",
-      "default": false
-    },
-    "LabelText": {
-      "description": "Текст метки",
-      "type": "string"
-    },
-    "LabelFloating": {
-      "description": "Является ли метка плавающей",
       "type": "boolean",
       "default": false
     }

@@ -36,7 +36,7 @@
       "description": "Правила форматирования элемента коллекции для отображения",
       "type": "string"
     },
-    "GroupSort": {
+    "GroupItemSort": {
       "description": "Направление операции сортировки групп",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/SortDirection",
       "default": "None"
