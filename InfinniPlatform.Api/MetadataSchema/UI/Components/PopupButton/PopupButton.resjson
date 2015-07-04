@@ -1,6 +1,6 @@
 ﻿{
   "id": "PopupButton",
-  "description": "Кнопка со всплывающим окном",
+  "description": "Кнопка со всплывающим контейнером",
   "type": "object",
   "extends": [
     {

@@ -565,7 +565,7 @@
     <EmbeddedResource Include="MetadataSchema\PrintView\DisplayFormat\DisplayFormat.resjson" />
     <EmbeddedResource Include="MetadataSchema\PrintView\DisplayFormat\NumberFormat.resjson" />
     <EmbeddedResource Include="MetadataSchema\PrintView\DisplayFormat\ObjectFormat.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\Components\TextEditorBase\EditMask\BaseEditMask.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\TextEditorBase\EditMask\EditMaskBase.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\Components\TextEditorBase\EditMask\DateTimeEditMask.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\Components\TextEditorBase\EditMask\EditMask.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\Components\TextEditorBase\EditMask\NumberEditMask.resjson" />

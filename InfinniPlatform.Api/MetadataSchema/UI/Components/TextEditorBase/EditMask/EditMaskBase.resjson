@@ -1,5 +1,5 @@
 ﻿{
-  "id": "BaseEditMask",
+  "id": "EditMaskBase",
   "description": "Базовый тип маски ввода данных",
   "type": "object",
   "properties": {

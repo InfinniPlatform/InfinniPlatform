@@ -1,6 +1,6 @@
 ﻿{
   "id": "DatePicker",
-  "description": "Элемент представления для отображения и редактирования даты",
+  "description": "Редактор даты и времени",
   "type": "object",
   "extends": {
     "$ref": "http://demo.infinnity.ru:8081/display/MC/TextEditorBase"
