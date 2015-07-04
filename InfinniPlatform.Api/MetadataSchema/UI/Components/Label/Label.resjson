@@ -1,0 +1,44 @@
+﻿{
+  "id": "Label",
+  "description": "Текстовая метка",
+  "type": "object",
+  "extends": [
+    {
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
+    },
+    {
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/EditorBase"
+    }
+  ],
+  "properties": {
+    "HorizontalTextAlignment": {
+      "description": "Горизонтальное выравнивание текста внутри элемента",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/HorizontalTextAlignment",
+      "default": "Left"
+    },
+    "VerticalTextAlignment": {
+      "description": "Вертикальное выравнивание текста внутри элемента",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/VerticalTextAlignment",
+      "default": "Center"
+    },
+    "DisplayFormat": {
+      "description": "Формат отображения значения",
+      "type": "string"
+    },
+    "TextTrimming": {
+      "description": "Усекается ли текст при переполнении",
+      "type": "boolean",
+      "default": true
+    },
+    "TextWrapping": {
+      "description": "Переносится ли текст при переполнении",
+      "type": "boolean",
+      "default": true
+    },
+    "LineCount": {
+      "description": "Максимально видимое количество строк",
+      "type": "integer"
+    }
+  },
+  "additionalProperties": false
+}

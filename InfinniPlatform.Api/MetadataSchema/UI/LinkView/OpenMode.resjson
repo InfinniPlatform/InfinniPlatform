@@ -3,7 +3,8 @@
   "description": "Способ открытия представления",
   "enum": [
     "Application",
-    "Page",
-    "Dialog"
+    "Container",
+    "Dialog",
+    "Page"
   ]
 }

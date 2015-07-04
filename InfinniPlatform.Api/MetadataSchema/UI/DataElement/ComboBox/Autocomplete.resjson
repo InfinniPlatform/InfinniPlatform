@@ -1,9 +1,0 @@
-﻿{
-  "id": "Autocomplete",
-  "description": "Способ автозаполнения при вводе с клавиатуры",
-  "enum": [
-    "None",
-    "Client",
-    "Server"
-  ]
-}

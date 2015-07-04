@@ -1,0 +1,24 @@
+﻿{
+  "id": "DocumentViewer",
+  "description": "Элемент для отображения печатного представления",
+  "type": "object",
+  "extends": {
+    "$ref": "http://demo.infinnity.ru:8081/display/MC/Element"
+  },
+  "properties": {
+    "PrintViewId": {
+      "description": "Идентификатор печатного представления",
+      "type": "string"
+    },
+    "PrintViewType": {
+      "description": "Тип печатного представления",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/PrintViewType",
+      "default": "ObjectView"
+    },
+    "Source": {
+      "description": "Привязка данных для источника",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/DataBinding"
+    }
+  },
+  "additionalProperties": false
+}

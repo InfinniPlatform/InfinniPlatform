@@ -3,7 +3,7 @@
   "description": "Действие сохранения текущего элемента источника данных",
   "type": "object",
   "extends": {
-    "$ref": "http://demo.infinnity.ru:8081/display/MC/Command"
+    "$ref": "http://demo.infinnity.ru:8081/display/MC/ActionBase"
   },
   "properties": {
     "CanClose": {

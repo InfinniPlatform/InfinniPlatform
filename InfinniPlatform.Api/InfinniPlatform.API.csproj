@@ -472,7 +472,6 @@
     <None Include="InfinniPlatform.Api.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="MetadataSchema\UI\Components\" />
     <Folder Include="Metadata\ConfigurationManagers\File\MetadataManagers\" />
   </ItemGroup>
   <ItemGroup>
@@ -513,24 +512,14 @@
     <EmbeddedResource Include="MetadataSchema\Configuration\Document\ValidationOperator\ObjectValidator\IsUri.resjson" />
     <EmbeddedResource Include="MetadataSchema\Configuration\Document\ValidationOperator\ObjectValidator\ObjectValidator.resjson" />
     <EmbeddedResource Include="MetadataSchema\ObjectMetadata.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\ActionElement\ActionBar\ActionBar.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\ActionElement\ActionBar\ActionBarButton.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\ActionElement\ActionBar\ActionBarItem.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\ActionElement\ActionBar\ActionBarPopupButton.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\ActionElement\ActionElement.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\ActionElement\Button\Button.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\ActionElement\MenuBar\MenuBar.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\ActionElement\PopupButton\PopupButton.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\ActionElement\ToolBar\ToolBar.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\ActionElement\ToolBar\ToolBarButton.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\ActionElement\ToolBar\ToolBarItem.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\ActionElement\ToolBar\ToolBarPopupButton.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\ActionElement\ToolBar\ToolBarSeparator.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\Action\Action.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\Button\Button.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\MenuBar\MenuBar.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\PopupButton\PopupButton.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\ToolBar\ToolBar.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\Action\AddAction.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\Action\AddItemAction.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\Action\CancelAction.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\Action\Command.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Action\Action.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\Action\ServerAction.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\Action\DeleteAction.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\Action\DeleteItemAction.resjson" />
@@ -542,38 +531,26 @@
     <EmbeddedResource Include="MetadataSchema\UI\Action\SaveAction.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\Action\AcceptAction.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\Action\SelectAction.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\Action\StateAction.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\Action\UpdateAction.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\DataBinding\DataBinding.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\BaseListElement.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\BaseTextElement.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\CheckBox\CheckBox.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\ComboBox\Autocomplete.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\ComboBox\ComboBox.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\DataElement.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\DataGrid\DataGrid.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\DataGrid\DataGridColumn.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\DataNavigation\DataNavigation.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\DatePicker\DatePicker.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\DatePicker\DatePickerMode.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\DocumentViewer\DocumentViewer.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\FilterPanel\FilterPanel.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\FilterPanel\FilterPanelProperty.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\ImageBox\ImageBox.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\Label\Label.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\LinkLabel\LinkLabel.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\ListBox\ListBox.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\NumericBox\NumericBox.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\PropertyGrid\PropertyCategory.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\PropertyGrid\PropertyEditor.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\PropertyGrid\PropertyGrid.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\RadioGroup\RadioGroup.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\RadioGroup\RadioGroupOrientation.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\SearchPanel\SearchPanel.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\TextBox\TextBox.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\ToggleButton\ToggleButton.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\TreeView\TreeView.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\UploadFileBox\UploadFileBox.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\CheckBox\CheckBox.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\ComboBox\ComboBox.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\DataGrid\DataGrid.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\DataGrid\DataGridColumn.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\DataNavigation\DataNavigation.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\DatePicker\DatePicker.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\DatePicker\DatePickerMode.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\DocumentViewer\DocumentViewer.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\ImageBox\ImageBox.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\Label\Label.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\ListBox\ListBox.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\NumericBox\NumericBox.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\RadioGroup\RadioGroup.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\RadioGroup\RadioGroupOrientation.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\TextBox\TextBox.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\ToggleButton\ToggleButton.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\TreeView\TreeView.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\FileBox\FileBox.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\DataSource\BaseDataSource.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\DataSource\DataSource.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\DataSource\Criteria.resjson" />
@@ -582,27 +559,26 @@
     <EmbeddedResource Include="MetadataSchema\UI\DataSource\MetadataDataSource\MetadataDataSource.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\DataSource\MetadataDataSource\MetadataType.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\DataSource\ObjectDataSource\ObjectDataSource.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DisplayFormat\BaseFormat.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DisplayFormat\BooleanFormat.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DisplayFormat\DateTimeFormat.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DisplayFormat\DisplayFormat.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DisplayFormat\NumberFormat.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\DisplayFormat\ObjectFormat.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\EditMask\BaseEditMask.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\EditMask\DateTimeEditMask.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\EditMask\EditMask.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\EditMask\NumberEditMask.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\EditMask\RegexEditMask.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\EditMask\TemplateEditMask.resjson" />
+    <EmbeddedResource Include="MetadataSchema\PrintView\DisplayFormat\BaseFormat.resjson" />
+    <EmbeddedResource Include="MetadataSchema\PrintView\DisplayFormat\BooleanFormat.resjson" />
+    <EmbeddedResource Include="MetadataSchema\PrintView\DisplayFormat\DateTimeFormat.resjson" />
+    <EmbeddedResource Include="MetadataSchema\PrintView\DisplayFormat\DisplayFormat.resjson" />
+    <EmbeddedResource Include="MetadataSchema\PrintView\DisplayFormat\NumberFormat.resjson" />
+    <EmbeddedResource Include="MetadataSchema\PrintView\DisplayFormat\ObjectFormat.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\TextEditorBase\EditMask\BaseEditMask.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\TextEditorBase\EditMask\DateTimeEditMask.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\TextEditorBase\EditMask\EditMask.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\TextEditorBase\EditMask\NumberEditMask.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\TextEditorBase\EditMask\RegexEditMask.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\TextEditorBase\EditMask\TemplateEditMask.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\Element\Element.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\Element\ElementHorizontalAlignment.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\Element\ElementVerticalAlignment.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\Element\HorizontalTextAlignment.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\Element\VerticalTextAlignment.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\TextEditorBase\HorizontalTextAlignment.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Components\TextEditorBase\VerticalTextAlignment.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\LayoutPanel\ExtensionPanel\ExtensionPanel.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\LayoutPanel\GridPanel\GridPanel.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\LayoutPanel\GridPanel\GridCell.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\LayoutPanel\LayoutPanel.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\LayoutPanel\Panel\Panel.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\LayoutPanel\ScrollPanel\ScrollPanel.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\LayoutPanel\ScrollPanel\ScrollVisibility.resjson" />
@@ -621,10 +597,6 @@
     <EmbeddedResource Include="MetadataSchema\UI\LinkView\LinkView.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\LinkView\OpenMode.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\View\ViewType.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\MessageBus\BaseMessage.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\MessageBus\DataSourceFilterMessage.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\MessageBus\DataSourceMessage.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\MessageBus\ErrorMessage.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\Script\LinkScript.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\Script\Script.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\View\DialogResult.resjson" />
@@ -633,7 +605,7 @@
     <EmbeddedResource Include="MetadataSchema\UI\View\View.resjson" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="MetadataSchema\UI\Common\VisualElement.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\VisualElement\VisualElement.resjson" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MetadataSchema\PrintView\Border\PrintElementBorder.resjson" />
@@ -696,9 +668,6 @@
     <EmbeddedResource Include="MetadataSchema\PrintView\Text\PrintElementTextCase.resjson" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="MetadataSchema\UI\DataElement\DataGrid\DataGridGroup.resjson" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="MetadataSchema\PrintView\Element\Inline\PrintElementBarcodeQrErrorCorrection.resjson" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -720,6 +689,24 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MetadataSchema\UI\Container\Container.resjson" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MetadataSchema\UI\Components\EditorBase\EditorBase.resjson" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MetadataSchema\UI\Components\TextEditorBase\TextEditorBase.resjson" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MetadataSchema\UI\Components\ListEditorBase\ListEditorBase.resjson" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MetadataSchema\UI\Components\ListEditorBase\SortDirection.resjson" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MetadataSchema\UI\Components\MenuBar\MenuBarItem.resjson" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MetadataSchema\UI\Action\ActionBase.resjson" />
   </ItemGroup>
   <PropertyGroup>
     <PreBuildEvent>rem $(ProjectDir)\..\InfinniPlatform.Deploy\GenerateNuGetPackageRevision.exe  "$(ProjectDir)\..\InfinniPlatform.Deploy\InfinniPlatform.nuspec"</PreBuildEvent>
