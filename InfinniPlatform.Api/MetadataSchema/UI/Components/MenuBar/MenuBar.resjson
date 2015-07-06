@@ -8,8 +8,7 @@
   "properties": {
     "ConfigId": {
       "description": "Идентификатор конфигурации для загрузки меню",
-      "type": "string",
-      "required": true
+      "type": "string"
     }
   },
   "additionalProperties": false
