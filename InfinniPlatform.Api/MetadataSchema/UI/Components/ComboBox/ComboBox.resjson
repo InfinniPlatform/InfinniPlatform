@@ -21,7 +21,7 @@
       "default": false
     },
     "SelectInDialog": {
-      "description": "Разрешен ли выбор значеня в диалоге",
+      "description": "Разрешен ли выбор значения в диалоге",
       "type": "boolean",
       "default": false
     }
