@@ -102,6 +102,14 @@
       "description": "Обработчик события о том, что указатель мыши двигался внутри элемента",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
     },
+    "OnKeyDown": {
+      "description": "Обработчик события о том, что на элементе нажали клавишу клавиатуры",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+    },
+    "OnKeyUp": {
+      "description": "Обработчик события о том, что на элементе отпустили клавишу клавиатуры",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
+    },
     "OnPropertyChanged": {
       "description": "Обработчик события о том, что одно из свойств изменилось",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"
