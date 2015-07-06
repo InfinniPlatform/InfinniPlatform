@@ -30,64 +30,79 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         private const string TestConfig2DocumentId = "TestDoc2";
         private const string TestConfig3DocumentId = "TestDoc3";
 
-        private const string SolutionId = "TestSolution";
+        private const string SolutionId1 = "TestSolution1";
+        private const string SolutionId2 = "TestSolution2";
+        private const string SolutionId3 = "TestSolution3";
         private const string Version = "1.0.0";
 
 
-        [TestFixtureSetUp]
-        public void FixtureSetup()
+        [SetUp]
+        public void TestSetup()
         {
             _server = TestApi.StartServer(c => c.SetHostingConfig(TestSettings.DefaultHostingConfig));
 
             TestApi.InitClientRouting(TestSettings.DefaultHostingConfig);
+
+            DeleteConfigVersion();
+
+            _server.Dispose();
+
+            _server = TestApi.StartServer(c => c.SetHostingConfig(TestSettings.DefaultHostingConfig));
         }
 
-        [TestFixtureTearDown]
+        [TearDown]
         public void FixtureTearDown()
         {
             _server.Dispose();
         }
 
+        /// <summary>
+        /// При обновлении решения должны обновляться все связанные с ним версии конфигураций
+        /// Обновляем приложение с тремя конфигурациями и проверяем сохранение документов, 
+        /// связанных с каждой из указанных в решении конфигураций 
+        /// </summary>
         [Test]
         public void ShouldUploadEntireSolution()
         {
-            ////Given
-            //var packages = UpdateTestSolutionThreeTimes(SolutionId, Version,new [] {"1","2","3"});
+            //Given
+            
 
-            //new SolutionUpdateApi(SolutionId, Version).InstallPackages(packages);
+            new IndexApi().RebuildIndex(TestConfig1, TestConfig1DocumentId);
+            new IndexApi().RebuildIndex(TestConfig2, TestConfig2DocumentId);
+            new IndexApi().RebuildIndex(TestConfig3, TestConfig3DocumentId);
 
-            //dynamic testDoc = new
-            //{
-            //    Name = "TestDocument"
-            //};
+            CreateTestSolutionWithThreeConfigs(new[]{"1.01","1.1","1.2"});
 
-            //var apiV1 = new DocumentApi("1");
-            //var apiV2 = new DocumentApi("2");
-            //var apiV3 = new DocumentApi("3");
+            dynamic testDoc = new
+            {
+                Name = "TestDocument"
+            };
 
-            ////When
-            //apiV1.SetDocument(TestConfig1, TestConfig1DocumentId, testDoc);
-            //apiV2.SetDocument(TestConfig2, TestConfig2DocumentId, testDoc);
-            //apiV3.SetDocument(TestConfig3, TestConfig3DocumentId, testDoc);
+            var api = new DocumentApi();
 
-            ////Then
-            ////проверяем, что были созданы документы разных версий ActionUnit
-            //dynamic checkDoc1 = apiV1.GetDocument(TestConfig1, TestConfig1DocumentId,
-            //                                      f =>
-            //                                      f.AddCriteria(cr => cr.Property("Name").IsEquals("Name_TestAction")),
-            //                                      0, 1).FirstOrDefault();
-            //dynamic checkDoc2 = apiV2.GetDocument(TestConfig2, TestConfig2DocumentId,
-            //                                      f =>
-            //                                      f.AddCriteria(cr => cr.Property("Name").IsEquals("Name_TestAction_v1")),
-            //                                      0, 1).FirstOrDefault();
-            //dynamic checkDoc3 = apiV3.GetDocument(TestConfig3, TestConfig3DocumentId,
-            //                                      f =>
-            //                                      f.AddCriteria(cr => cr.Property("Name").IsEquals("Name_TestAction_v2")),
-            //                                      0, 1).FirstOrDefault();
+            //When
+            api.SetDocument(TestConfig1, TestConfig1DocumentId, testDoc);
+            api.SetDocument(TestConfig2, TestConfig2DocumentId, testDoc);
+            api.SetDocument(TestConfig3, TestConfig3DocumentId, testDoc);
 
-            //Assert.IsNotNull(checkDoc1);
-            //Assert.IsNotNull(checkDoc2);
-            //Assert.IsNotNull(checkDoc3);
+            //Then
+            //проверяем, что были созданы документы разных версий ActionUnit
+            dynamic checkDoc1 = api.GetDocument(TestConfig1, TestConfig1DocumentId,
+                                                  f =>
+                                                  f.AddCriteria(cr => cr.Property("Name").IsEquals("Name_TestAction")),
+                                                  0, 1).FirstOrDefault();
+            dynamic checkDoc2 = api.GetDocument(TestConfig2, TestConfig2DocumentId,
+                                                  f =>
+                                                  f.AddCriteria(cr => cr.Property("Name").IsEquals("Name_TestAction_v1")),
+                                                  0, 1).FirstOrDefault();
+            dynamic checkDoc3 = api.GetDocument(TestConfig3, TestConfig3DocumentId,
+                                                  f =>
+                                                  f.AddCriteria(cr => cr.Property("Name").IsEquals("Name_TestAction_v2")),
+                                                  0, 1).FirstOrDefault();
+
+            Assert.IsNotNull(checkDoc1);
+            Assert.IsNotNull(checkDoc2);
+            Assert.IsNotNull(checkDoc3);
         }
 
         /// <summary>
@@ -100,6 +115,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         public void ShouldGetMinorVersionByMain()
         {
             //Given
+
             dynamic testDoc = new
             {
                 Name = "TestDocument"
@@ -110,7 +126,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             new IndexApi().RebuildIndex(TestConfig1, TestConfig1DocumentId);
 
             //When
-            UpdateTestSolutionThreeTimes(SolutionId, Version, new[] { "1.01", "2.02","3.04" },
+            CreateAndUpdateTestSolutionThreeTimes(Version, new[] { "1.01", "2.02","3.04" },
                 () => api.SetDocument(TestConfig1, TestConfig1DocumentId, testDoc),
                 () => api.SetDocument(TestConfig1, TestConfig1DocumentId, testDoc),
                 () => api.SetDocument(TestConfig1, TestConfig1DocumentId, testDoc),
@@ -147,10 +163,9 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         public void ShouldGetLastVersionOfConfiguration()
         {
             //Given
-            var packages = CreateTestSolutionForSomeVersionsOfOneConfig(SolutionId, Version, new[] { "1.01", "1.02", "1.05" });
 
-            new SolutionUpdateApi(SolutionId, Version).InstallPackages(packages);
-
+            CreateTestSolutionForSomeVersionsOfOneConfig(Version, new[] { "1.01", "1.02", "1.05" });
+            
             new IndexApi().RebuildIndex(TestConfig1, TestConfig1DocumentId);
 
             dynamic testDoc = new
@@ -233,12 +248,56 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             return config;
         }
 
-        private IEnumerable<dynamic> CreateTestSolutionForSomeVersionsOfOneConfig(string solutionId, string version, string[] referencedConfigVersions)
+        private void CreateTestSolutionWithThreeConfigs(string[] referencedConfigVersions)
+        {
+            MetadataManagerSolution managerSolution = ManagerFactorySolution.BuildSolutionManager(Version);
+            var refConfigs = new List<dynamic>();
+            var packages = new List<dynamic>();
+            dynamic solution = managerSolution.CreateItem(SolutionId1);
+            solution.ReferencedConfigurations = refConfigs;
+
+            var refConfig1 = CreateTestConfig(TestConfig1, TestConfig1DocumentId, referencedConfigVersions[0], "TestAction");
+            var packageConfig1 = new PackageBuilder().BuildPackage(TestConfig1, referencedConfigVersions[0], GetType().Assembly.Location);
+
+            refConfigs.Add(refConfig1);
+            packages.Add(packageConfig1);
+
+            var refConfig2 = CreateTestConfig(TestConfig2, TestConfig2DocumentId, referencedConfigVersions[1], "TestAction_v1");
+            var packageConfig2 = new PackageBuilder().BuildPackage(TestConfig2, referencedConfigVersions[1], GetType().Assembly.Location);
+
+            refConfigs.Add(refConfig2);
+            packages.Add(packageConfig2);
+
+            var refConfig3 = CreateTestConfig(TestConfig3, TestConfig3DocumentId, referencedConfigVersions[2], "TestAction_v2");
+            var packageConfig3 = new PackageBuilder().BuildPackage(TestConfig3, referencedConfigVersions[2], GetType().Assembly.Location);
+
+            refConfigs.Add(refConfig3);
+            packages.Add(packageConfig3);
+
+            managerSolution.DeleteItem(solution);
+            managerSolution.InsertItem(solution);
+
+            new SolutionUpdateApi(SolutionId1, Version).InstallPackages(packages);
+
+        }
+
+        private void DeleteConfigVersion()
+        {
+            var reader = ManagerFactoryConfiguration.BuildConfigurationMetadataReader(null,true);
+            foreach (var item in reader.GetItems())
+            {
+                MetadataManagerConfiguration manager = ManagerFactoryConfiguration.BuildConfigurationManager(item.Version);
+                manager.DeleteItem(item);
+            }
+
+        }
+
+        private void CreateTestSolutionForSomeVersionsOfOneConfig(string version, string[] referencedConfigVersions)
         {
             MetadataManagerSolution managerSolution = ManagerFactorySolution.BuildSolutionManager(version);
 
 
-            dynamic solution = managerSolution.CreateItem(solutionId);
+            dynamic solution = managerSolution.CreateItem(SolutionId3);
 
             var refConfig1 = CreateTestConfig(TestConfig1, TestConfig1DocumentId, referencedConfigVersions[0], "TestAction");
             var packageConfig1 = new PackageBuilder().BuildPackage(TestConfig1, referencedConfigVersions[0], GetType().Assembly.Location);
@@ -261,16 +320,16 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             managerSolution.DeleteItem(solution);
             managerSolution.InsertItem(solution);
 
-            return packages;
+            new SolutionUpdateApi(SolutionId3, Version).InstallPackages(packages);
         }
 
 
-        private void UpdateTestSolutionThreeTimes(string solutionId, string version, string[] referencedConfigVersions, Action onCreateFirstVersionOfSolution, 
+        private void CreateAndUpdateTestSolutionThreeTimes(string version, string[] referencedConfigVersions, Action onCreateFirstVersionOfSolution, 
             Action onCreateSecondVersionOfSolution, Action onCreateThirdVersionOfSolution, Action assertResults)
         {
             MetadataManagerSolution managerSolution = ManagerFactorySolution.BuildSolutionManager(version);
             var refConfigs = new List<dynamic>();
-            dynamic solution = managerSolution.CreateItem(solutionId);
+            dynamic solution = managerSolution.CreateItem(SolutionId2);
             solution.ReferencedConfigurations = refConfigs;
 
 
@@ -283,7 +342,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             managerSolution.DeleteItem(solution);
             managerSolution.InsertItem(solution);
 
-            new SolutionUpdateApi(SolutionId, Version).InstallPackages(packages);
+            new SolutionUpdateApi(SolutionId2, Version).InstallPackages(packages);
 
             onCreateFirstVersionOfSolution();
 
@@ -300,7 +359,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             managerSolution.DeleteItem(solution);
             managerSolution.InsertItem(solution);
 
-            new SolutionUpdateApi(SolutionId, Version).InstallPackages(packages);
+            new SolutionUpdateApi(SolutionId2, Version).InstallPackages(packages);
 
             onCreateSecondVersionOfSolution();
 
@@ -318,7 +377,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             managerSolution.DeleteItem(solution);
             managerSolution.InsertItem(solution);
 
-            new SolutionUpdateApi(SolutionId, Version).InstallPackages(packages);
+            new SolutionUpdateApi(SolutionId2, Version).InstallPackages(packages);
 
             onCreateThirdVersionOfSolution();
 
