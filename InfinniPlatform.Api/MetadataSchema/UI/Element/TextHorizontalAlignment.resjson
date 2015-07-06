@@ -1,6 +1,6 @@
 ﻿{
   "id": "TextHorizontalAlignment",
-  "description": "Горизонтальное выравнивание текста внутри элемента",
+  "description": "Горизонтальное выравнивание текста в элементе",
   "enum": [
     "Left",
     "Right",

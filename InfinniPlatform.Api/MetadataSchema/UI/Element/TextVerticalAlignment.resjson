@@ -1,6 +1,6 @@
 ﻿{
   "id": "TextVerticalAlignment",
-  "description": "Вертикальное выравнивание текста внутри элемента",
+  "description": "Вертикальное выравнивание текста в элементе",
   "enum": [
     "Top",
     "Center",
