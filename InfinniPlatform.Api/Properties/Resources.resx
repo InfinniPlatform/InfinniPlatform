@@ -396,4 +396,7 @@
   <data name="UnsatisfiedVersionNumber" xml:space="preserve">
     <value>UnsatifiedAppVersion</value>
   </data>
+  <data name="BinaryContentMaxSizeIsExceed" xml:space="preserve">
+    <value>Binary content max size {0} is exceed.</value>
+  </data>
 </root>
