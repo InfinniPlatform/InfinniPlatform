@@ -3,7 +3,7 @@
   "description": "Действие добавления элемента в коллекцию источника данных",
   "type": "object",
   "extends": {
-    "$ref": "http://demo.infinnity.ru:8081/display/MC/Command"
+    "$ref": "http://demo.infinnity.ru:8081/display/MC/ActionBase"
   },
   "properties": {
     "View": {

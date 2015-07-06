@@ -12,6 +12,11 @@
       "$ref": "http://demo.infinnity.ru:8081/display/MC/OpenMode",
       "default": "Application"
     },
+    "Container": {
+      "description": "Имя контейнера для открытия представления",
+      "type": "string",
+      "default": "MainContainer"
+    },
     "Parameters": {
       "description": "Правила передачи параметров в открываемое представление",
       "type": "array",
