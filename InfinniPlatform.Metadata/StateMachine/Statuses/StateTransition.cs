@@ -332,7 +332,7 @@ namespace InfinniPlatform.Metadata.StateMachine.Statuses
 		private static void FillValidationMessage(string message, dynamic target)
 		{
 			target.ValidationMessage = new DynamicWrapper();
-			target.IsInternalServerError = true;
+			// MC-3582 fix  target.IsInternalServerError = true;
 			target.ValidationMessage.ValidationErrors = new DynamicWrapper();
 			target.ValidationMessage.ValidationErrors.Message = message;
 			target.ValidationMessage.ValidationErrors.IsValid = false;

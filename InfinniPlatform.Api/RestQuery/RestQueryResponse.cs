@@ -25,7 +25,7 @@ namespace InfinniPlatform.Api.RestQuery
 		/// </summary>
 		public bool IsServerError
 		{
-			get { return HttpStatusCode == HttpStatusCode.InternalServerError || Content.ToLowerInvariant().Contains("internalservererror"); }
+			get { return HttpStatusCode == HttpStatusCode.InternalServerError; }
 		}
 
 	    public bool IsServiceNotRegistered
