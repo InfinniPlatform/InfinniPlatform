@@ -36,6 +36,16 @@
       "$ref": "http://demo.infinnity.ru:8081/display/MC/ElementHorizontalAlignment",
       "default": "Stretch"
     },
+    "TextHorizontalAlignment": {
+      "description": "Горизонтальное выравнивание текста внутри элемента",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/TextHorizontalAlignment",
+      "default": "Left"
+    },
+    "TextVerticalAlignment": {
+      "description": "Вертикальное выравнивание текста внутри элемента",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/TextVerticalAlignment",
+      "default": "Center"
+    },
     "TextStyle": {
       "description": "Стиль текста элемента",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/TextStyle"

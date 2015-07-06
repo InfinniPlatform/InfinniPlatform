@@ -574,8 +574,8 @@
     <EmbeddedResource Include="MetadataSchema\UI\Element\Element.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\Element\ElementHorizontalAlignment.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\Element\ElementVerticalAlignment.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\Components\TextEditorBase\HorizontalTextAlignment.resjson" />
-    <EmbeddedResource Include="MetadataSchema\UI\Components\TextEditorBase\VerticalTextAlignment.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Element\TextHorizontalAlignment.resjson" />
+    <EmbeddedResource Include="MetadataSchema\UI\Element\TextVerticalAlignment.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\LayoutPanel\ExtensionPanel\ExtensionPanel.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\LayoutPanel\GridPanel\GridPanel.resjson" />
     <EmbeddedResource Include="MetadataSchema\UI\LayoutPanel\GridPanel\GridCell.resjson" />
