@@ -71,7 +71,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             new IndexApi().RebuildIndex(TestConfig2, TestConfig2DocumentId);
             new IndexApi().RebuildIndex(TestConfig3, TestConfig3DocumentId);
 
-            CreateTestSolutionWithThreeConfigs(new[]{"1.01","1.1","1.2"});
+            CreateTestSolutionWithThreeConfigs(new[]{"1.0.1.1","1.1.0.1","1.2.0.1"});
 
             dynamic testDoc = new
             {
@@ -126,7 +126,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             new IndexApi().RebuildIndex(TestConfig1, TestConfig1DocumentId);
 
             //When
-            CreateAndUpdateTestSolutionThreeTimes(Version, new[] { "1.01", "2.02","3.04" },
+            CreateAndUpdateTestSolutionThreeTimes(Version, new[] { "1.0.1", "2.0.2","3.0.4" },
                 () => api.SetDocument(TestConfig1, TestConfig1DocumentId, testDoc),
                 () => api.SetDocument(TestConfig1, TestConfig1DocumentId, testDoc),
                 () => api.SetDocument(TestConfig1, TestConfig1DocumentId, testDoc),
@@ -164,7 +164,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             //Given
 
-            CreateTestSolutionForSomeVersionsOfOneConfig(Version, new[] { "1.01", "1.02", "1.05" });
+            CreateTestSolutionForSomeVersionsOfOneConfig(Version, new[] { "1.0.1", "1.0.2", "1.0.5" });
             
             new IndexApi().RebuildIndex(TestConfig1, TestConfig1DocumentId);
 

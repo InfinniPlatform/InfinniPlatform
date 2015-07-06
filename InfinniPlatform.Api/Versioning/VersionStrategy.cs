@@ -46,15 +46,7 @@ namespace InfinniPlatform.Api.Versioning
                     configurationVersions.Where(
                         r => r.Item1.ToLowerInvariant() == metadataConfigurationId.ToLowerInvariant())
                                          .Select(r => r.Item2)
-                                         .OrderByDescending(r =>
-                                             {
-                                                 double result;
-                                                 if (double.TryParse(r, NumberStyles.Any, CultureInfo.InvariantCulture, out result))
-                                                 {
-                                                     return result;
-                                                 }
-                                                 return -1;
-                                             }).FirstOrDefault();
+                                         .OrderByDescending(r => r != null ? new Version(r) : new Version("0.0.0.0")).FirstOrDefault();
             }
             return userConfigVersion.Version;
         }
