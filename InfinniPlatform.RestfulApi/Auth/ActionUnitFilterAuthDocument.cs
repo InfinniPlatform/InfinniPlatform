@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.RestfulApi.Utils;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -22,7 +22,7 @@ namespace InfinniPlatform.RestfulApi.Auth
                 foreach (dynamic document in result)
                 {
                     dynamic validationResult =
-                        new AuthUtils(target.Context.GetComponent<ISecurityComponent>(target.Version), target.UserName,
+                        new AuthUtils(target.Context.GetComponent<ISecurityComponent>(), target.UserName,
                                       null).CheckDocumentAccess(target.Item.Configuration, target.Item.Metadata,
                                                                 "getdocument", document.Id);
 

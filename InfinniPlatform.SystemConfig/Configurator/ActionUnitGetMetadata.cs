@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Index.SearchOptions;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Index.QueryLanguage.Implementation;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Index;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.SystemConfig.Configurator
@@ -25,13 +26,15 @@ namespace InfinniPlatform.SystemConfig.Configurator
         public void Action(IApplyResultContext target)
         {
             _jsonQueryExecutor =
-                new JsonQueryExecutor(target.Context.GetComponent<IIndexComponent>(target.Version).IndexFactory,
+                new JsonQueryExecutor(target.Context.GetComponent<IIndexComponent>().IndexFactory,
                                       FilterFactory,
-                                      target.Context.GetComponent<ISecurityComponent>(target.Version)
+                                      target.Context.GetComponent<ISecurityComponent>()
                                             .GetClaim(AuthorizationStorageExtensions.OrganizationClaim, target.UserName));
 
+            var version = target.Item.Version ?? target.Context.GetVersion(target.Item.ConfigId, target.UserName);
+
             var fullprofiler =
-                target.Context.GetComponent<IProfilerComponent>(target.Version)
+                target.Context.GetComponent<IProfilerComponent>()
                       .GetOperationProfiler("get metadata", string.Empty);
             fullprofiler.Reset();
 
@@ -70,8 +73,8 @@ namespace InfinniPlatform.SystemConfig.Configurator
             {
                 dynamic filterConfig = new DynamicWrapper();
                 dynamic id =
-                    target.Context.GetComponent<ISystemComponent>(target.Version)
-                          .ManagerIdentifiers.GetConfigurationUid(target.Version, target.Item.ConfigId);
+                    target.Context.GetComponent<ISystemComponent>()
+                          .ManagerIdentifiers.GetConfigurationUid(version, target.Item.ConfigId);
                 filterConfig.Property = "Id";
                 filterConfig.Value = id;
                 filterConfig.CriteriaType = CriteriaType.IsEquals;
@@ -83,7 +86,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
             {
                 dynamic filterConfigVersion = new DynamicWrapper();
                 filterConfigVersion.Property = "Version";
-                filterConfigVersion.Value = target.Version;
+                filterConfigVersion.Value = version;
                 filterConfigVersion.CriteriaType = CriteriaType.IsEquals;
 
                 target.Item.Where.Add(filterConfigVersion);
@@ -93,7 +96,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
             if (target.Item.ConfigId != null && target.Item.DocumentId != null)
             {
                 var configIdProvider =
-                    target.Context.GetComponent<IProfilerComponent>(target.Version)
+                    target.Context.GetComponent<IProfilerComponent>()
                           .GetOperationProfiler("get config id",
                                                 string.Format("ConfigId: {0}, DocumentId {1}", target.Item.ConfigId,
                                                               target.Item.DocumentId));
@@ -101,8 +104,8 @@ namespace InfinniPlatform.SystemConfig.Configurator
 
                 dynamic filterConfig = new DynamicWrapper();
                 dynamic id =
-                    target.Context.GetComponent<ISystemComponent>(target.Version)
-                          .ManagerIdentifiers.GetConfigurationUid(target.Version, target.Item.ConfigId);
+                    target.Context.GetComponent<ISystemComponent>()
+                          .ManagerIdentifiers.GetConfigurationUid(version, target.Item.ConfigId);
                 filterConfig.Property = "ParentId";
                 filterConfig.Value = id;
                 filterConfig.CriteriaType = CriteriaType.IsEquals;
@@ -111,7 +114,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
 
 
                 var documentIdProvider =
-                    target.Context.GetComponent<IProfilerComponent>(target.Version)
+                    target.Context.GetComponent<IProfilerComponent>()
                           .GetOperationProfiler("get document id",
                                                 string.Format("ConfigId: {0}, DocumentId {1}", target.Item.ConfigId,
                                                               target.Item.DocumentId));
@@ -119,8 +122,8 @@ namespace InfinniPlatform.SystemConfig.Configurator
 
                 dynamic filterDocument = new DynamicWrapper();
                 id =
-                    target.Context.GetComponent<ISystemComponent>(target.Version)
-                          .ManagerIdentifiers.GetDocumentUid(target.Version, target.Item.ConfigId,
+                    target.Context.GetComponent<ISystemComponent>()
+                          .ManagerIdentifiers.GetDocumentUid(version, target.Item.ConfigId,
                                                              target.Item.DocumentId);
                 filterDocument.Property = "Id";
                 filterDocument.Value = id;
@@ -183,7 +186,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
             target.Result.Query = jquery;
 
             var profiler =
-                target.Context.GetComponent<IProfilerComponent>(target.Version)
+                target.Context.GetComponent<IProfilerComponent>()
                       .GetOperationProfiler("Run json query", jquery.ToString());
             profiler.Reset();
 

@@ -10,6 +10,7 @@ using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.TestEnvironment;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Hosting;
 using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
@@ -175,7 +176,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             CreateDocumentSchema();
 
-            dynamic document = new DocumentApi(null).CreateDocument(_configurationId, _documentIdPatient);
+            dynamic document = new DocumentApi().CreateDocument(_configurationId, _documentIdPatient);
 
 
             document.Id = Guid.NewGuid().ToString();
@@ -184,19 +185,19 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             //при обработке документа в OnSuccess возникнет исключение
             try
             {
-                new DocumentApi(null).SetDocument(_configurationId, _documentIdPatient, document);
+                new DocumentApi().SetDocument(_configurationId, _documentIdPatient, document);
             }
             catch
             {
             }
 
-            IEnumerable<dynamic> addresses = new DocumentApi(null).GetDocument(_configurationId, _documentIdAddress,
+            IEnumerable<dynamic> addresses = new DocumentApi().GetDocument(_configurationId, _documentIdAddress,
                                                                                null, 0, 1);
 
             Assert.AreEqual(0, addresses.Count());
 
 
-            IEnumerable<dynamic> documents = new DocumentApi(null).GetDocument(_configurationId, _documentIdPatient,
+            IEnumerable<dynamic> documents = new DocumentApi().GetDocument(_configurationId, _documentIdPatient,
                                                                                null, 0, 1);
 
             Assert.AreEqual(0, documents.Count());

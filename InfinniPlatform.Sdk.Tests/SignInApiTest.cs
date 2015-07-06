@@ -15,13 +15,13 @@ namespace InfinniPlatform.Sdk.Tests
     {
         private const string InfinniSessionPort = "9900";
         private const string InfinniSessionServer = "localhost";
-        private const string InfinniSessionVersion = "1";
+
         private InfinniSignInApi _signInApi;
 
         [TestFixtureSetUp]
         public void SetupApi()
         {
-            _signInApi = new InfinniSignInApi(InfinniSessionServer, InfinniSessionPort, InfinniSessionVersion);
+            _signInApi = new InfinniSignInApi(InfinniSessionServer, InfinniSessionPort);
         }
 
         [Test]

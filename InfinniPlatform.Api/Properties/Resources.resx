@@ -456,4 +456,10 @@
   <data name="CantGetSpecificConfigurationWithoutVersion" xml:space="preserve">
     <value>Can't get specific configuration without specification of configuration version</value>
   </data>
+  <data name="SolutionNotFound" xml:space="preserve">
+    <value>Solution with name "{0}" and version "{1}".</value>
+  </data>
+  <data name="SolutionAssembliesSuccessfullyUploaded" xml:space="preserve">
+    <value>Solution assemblies successfully updated.</value>
+  </data>
 </root>

@@ -33,6 +33,6 @@
         ///     Получить идентификатор работающей версии сервисов
         /// </summary>
         /// <returns></returns>
-        string GetVersion();
+        //string GetVersion();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Api.SearchOptions.Builders
 {

@@ -3,6 +3,7 @@ using InfinniPlatform.Hosting.Implementation.ServiceTemplates;
 using InfinniPlatform.Metadata;
 using InfinniPlatform.Metadata.Implementation.HostServerConfiguration;
 using InfinniPlatform.Metadata.Implementation.MetadataConfiguration;
+using InfinniPlatform.Sdk.ContextComponents;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Tests.TestData
 {

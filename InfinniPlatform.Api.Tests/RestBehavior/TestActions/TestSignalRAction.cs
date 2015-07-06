@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Api.ContextComponents;
+﻿using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -11,7 +11,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
             dynamic testObject = new DynamicWrapper();
             testObject.TestProperty = "Hello world";
 
-            target.Context.GetComponent<IWebClientNotificationComponent>(target.Version)
+            target.Context.GetComponent<IWebClientNotificationComponent>()
                   .Notify("routingKey", testObject.ToString());
         }
     }

@@ -15,7 +15,7 @@ using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
 
 using InfinniPlatform.MetadataDesigner.Views.Exchange;
 using InfinniPlatform.MetadataDesigner.Views.Status;
-
+using InfinniPlatform.Sdk.Environment.Hosting;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -437,7 +437,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 			string result = string.Empty;
 			process.StartOperation(() =>
 			{
-				result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getmanagedmetadata", null, dynamicBody, version).Content;
+				result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getmanagedmetadata", null, dynamicBody).Content;
 			});
 			process.EndOperation();
 			return result;
@@ -445,20 +445,20 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
 		public static IEnumerable<string> BuildValidationRuleWarningDescriptions(string version, string configId, string documentId)
 		{
-			IEnumerable<dynamic> warnings = new MetadataApi(version).GetMetadataList(configuration: configId, metadata: documentId, metadataType: MetadataType.ValidationWarning);
+			IEnumerable<dynamic> warnings = new MetadataApi().GetMetadataList(configuration: configId, metadata: documentId, metadataType: MetadataType.ValidationWarning);
 			return warnings.Select(w => w.Name).Cast<string>().ToList();
 		}
 
 		public static IEnumerable<string> BuildValidationRuleErrorDescriptions(string version, string configId, string documentId)
 		{
-			IEnumerable<dynamic> objects = new MetadataApi(version).GetMetadataList(configuration: configId, metadata: documentId, metadataType: MetadataType.ValidationError); ;
+			IEnumerable<dynamic> objects = new MetadataApi().GetMetadataList(configuration: configId, metadata: documentId, metadataType: MetadataType.ValidationError); ;
 			return objects.Select(w => w.Name).Cast<string>().ToList();
 		}
 
 
 		public static IEnumerable<HandlerDescription> BuildValidationHandlerDescriptions(string version, string configId, string documentId)
 		{
-			IEnumerable<dynamic> scenarios = new MetadataApi(version).GetMetadataList(configuration: configId, metadata: documentId, metadataType: MetadataType.Scenario);
+			IEnumerable<dynamic> scenarios = new MetadataApi().GetMetadataList(configuration: configId, metadata: documentId, metadataType: MetadataType.Scenario);
 
 			var result = new List<HandlerDescription>();
 
@@ -485,7 +485,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
 		public static IEnumerable<HandlerDescription> BuildActionHandlerDescriptions(string version, string configId, string documentId)
 		{
-			IEnumerable<dynamic> scenarios = new MetadataApi(version).GetMetadataList(configuration: configId, metadata: documentId, metadataType: MetadataType.Scenario);
+			IEnumerable<dynamic> scenarios = new MetadataApi().GetMetadataList(configuration: configId, metadata: documentId, metadataType: MetadataType.Scenario);
 
 			var result = new List<HandlerDescription>();
 			//var scenarioManager = new ManagerFactoryDocument(configId, documentId).BuildScenarioMetadataReader();
@@ -513,7 +513,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
         public static IEnumerable<string> BuildMigrations(string version, string configurationId)
         {
-            var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getmigrations", null, null,version);
+            var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getmigrations", null, null);
             
             return result.ToDynamicList()
                 .Where(m => (m.ConfigurationId == configurationId || string.IsNullOrEmpty(m.ConfigurationId)))
@@ -529,7 +529,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
                 ConfigurationName = configurationId
             };
 
-            var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getmigrationdetails", null, body, version);
+            var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getmigrationdetails", null, body);
             
             return result.ToDynamic();
         }
@@ -545,7 +545,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
                 Parameters = parameters
 			};
 
-			var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "runmigration", null, body, version);
+			var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "runmigration", null, body);
             return result.Content;
         }
 
@@ -560,7 +560,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
                 Parameters = parameters                
 			};
 
-			var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "revertmigration", null, body, version);
+			var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "revertmigration", null, body);
 
             return result.Content;
         }
@@ -592,7 +592,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 				ConfigurationName = configId
 			};
 
-			var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "runverification", null, body, version);
+			var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "runverification", null, body);
 
             return result.Content;
         }
@@ -772,7 +772,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 	            Id = registerName
 	        };
 
-            new DocumentApi(version).SetDocument(configId, configId + RegisterConstants.RegistersCommonInfo, registerInfoDocument);
+            new DocumentApi().SetDocument(configId, configId + RegisterConstants.RegistersCommonInfo, registerInfoDocument);
 
             new UpdateApi(version).ForceReload(configId);
 

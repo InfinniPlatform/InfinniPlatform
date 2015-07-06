@@ -19,12 +19,12 @@ namespace InfinniPlatform.SystemConfig.Configurator
 
             target.Result = new DynamicWrapper();
             target.Result.InstallLog = new List<string>();
-            string folderName = (string) target.Version + "_" + Guid.NewGuid().ToString();
+            string folderName = (string) target.LinkedData.Version + "_" + Guid.NewGuid().ToString();
             var configExporter = new ConfigExporter(new ZipStructure(zipArchive, folderName));
-            dynamic config = configExporter.ImportHeaderFromStructure((string) target.Version);
+            dynamic config = configExporter.ImportHeaderFromStructure((string) target.LinkedData.Version);
             target.Result.InstallLog.Add(string.Format("Configuration \"{0}\"(version: \"{1}\") sucessfully installed",
                                                        config.Name,
-                                                       string.IsNullOrEmpty(target.Version) ? "0" : target.Version));
+                                                       string.IsNullOrEmpty(target.LinkedData.Version) ? "0" : target.LinkedData.Version));
             target.Result.ConfigurationId = config.Name;
         }
     }

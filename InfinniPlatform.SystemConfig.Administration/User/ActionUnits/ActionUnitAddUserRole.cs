@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -15,14 +15,14 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
         {
             dynamic item = target.Item.Document ?? target.Item;
 
-            var api = target.Context.GetComponent<ISecurityComponent>(target.Version);
+            var api = target.Context.GetComponent<ISecurityComponent>();
 
             dynamic user = api.Users.FirstOrDefault(u => u.UserName == item.UserName);
 
             if (user != null)
             {
                 //добавляем роль в конфигурации Authorization
-                var authApi = target.Context.GetComponent<AuthApi>(target.Version);
+                var authApi = target.Context.GetComponent<AuthApi>();
 
                 authApi.AddUserToRole(item.UserName, item.RoleName);
 
@@ -33,7 +33,7 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
                 user.UserRoles = user.UserRoles ?? new List<dynamic>();
                 user.UserRoles.Add(documentRole);
 
-                target.Context.GetComponent<DocumentApi>(target.Version).SetDocument("Administration", "User", user);
+                target.Context.GetComponent<DocumentApi>().SetDocument("Administration", "User", user);
 
                 target.Result = new DynamicWrapper();
                 target.Result.IsValid = true;

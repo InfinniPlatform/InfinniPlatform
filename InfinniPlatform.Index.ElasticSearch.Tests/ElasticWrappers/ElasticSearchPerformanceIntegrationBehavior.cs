@@ -10,6 +10,7 @@ using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
+using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.SystemConfig.RoutingFactory;
 using NUnit.Framework;
 

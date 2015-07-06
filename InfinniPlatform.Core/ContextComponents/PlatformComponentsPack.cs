@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.Factories;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Transactions;
+using InfinniPlatform.Api.Versioning;
 using InfinniPlatform.Factories;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Metadata;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Metadata;
+using InfinniPlatform.Sdk.Environment.Transactions;
 
 namespace InfinniPlatform.ContextComponents
 {
@@ -33,54 +37,55 @@ namespace InfinniPlatform.ContextComponents
             var logger = dependencyContainerComponent.ResolveDependency<ILogFactory>().CreateLog();
             var metadataConfigurationProvider =
                 dependencyContainerComponent.ResolveDependency<IMetadataConfigurationProvider>();
+            var versionStrategy = dependencyContainerComponent.ResolveDependency<IVersionStrategy>();
+
+            _components.Add(new ContextRegistration(typeof(IVersionStrategy), () => versionStrategy));
 
             _components.Add(new ContextRegistration(typeof(IBlobStorageComponent),
-                version => new BlobStorageComponent(blobStorage)));
+                () => new BlobStorageComponent(blobStorage)));
             _components.Add(new ContextRegistration(typeof(IEventStorageComponent),
-                version => new EventStorageComponent(eventStorage)));
+                () => new EventStorageComponent(eventStorage)));
             _components.Add(new ContextRegistration(typeof(IIndexComponent),
-                version => new IndexComponent(dependencyContainerComponent.ResolveDependency<IIndexFactory>())));
-            _components.Add(new ContextRegistration(typeof(ILogComponent), version => new LogComponent(logger)));
+                () => new IndexComponent(dependencyContainerComponent.ResolveDependency<IIndexFactory>())));
+            _components.Add(new ContextRegistration(typeof(ILogComponent), () => new LogComponent(logger)));
             _components.Add(new ContextRegistration(typeof(IMetadataComponent),
-                version => new MetadataComponent(metadataConfigurationProvider)));
+                () => new MetadataComponent(metadataConfigurationProvider)));
             _components.Add(new ContextRegistration(typeof(ICrossConfigSearchComponent),
-                version =>
-                    new CrossConfigSearchComponent(
-                        dependencyContainerComponent.ResolveDependency<ICrossConfigSearcher>())));
+                () => new CrossConfigSearchComponent(dependencyContainerComponent.ResolveDependency<ICrossConfigSearcher>())));
             _components.Add(new ContextRegistration(typeof(IPrintViewComponent),
-                version => new PrintViewComponent(printViewBuilder)));
+                () => new PrintViewComponent(printViewBuilder)));
             _components.Add(new ContextRegistration(typeof(IProfilerComponent),
-                version => new ProfilerComponent(logger)));
+                () => new ProfilerComponent(logger)));
             _components.Add(new ContextRegistration(typeof(IRegistryComponent),
-                version => new RegistryComponent(version)));
+                () => new RegistryComponent()));
             _components.Add(new ContextRegistration(typeof(IScriptRunnerComponent),
-                version => new ScriptRunnerComponent(metadataConfigurationProvider)));
+                () => new ScriptRunnerComponent(metadataConfigurationProvider)));
             _components.Add(new ContextRegistration(typeof(ISecurityComponent),
-                version => new CachedSecurityComponent()));
+                () => new CachedSecurityComponent()));
             _components.Add(new ContextRegistration(typeof(ITransactionComponent),
-                version =>
+                () =>
                     new TransactionComponent(dependencyContainerComponent.ResolveDependency<ITransactionManager>())));
             _components.Add(new ContextRegistration(typeof(IWebClientNotificationComponent),
-                version =>
+                () =>
                     new WebClientNotificationComponent(
                         dependencyContainerComponent.ResolveDependency<IWebClientNotificationServiceFactory>())));
             _components.Add(new ContextRegistration(typeof(IConfigurationMediatorComponent),
-                version => new ConfigurationMediatorComponent(
+                () => new ConfigurationMediatorComponent(
                     dependencyContainerComponent.ResolveDependency<IConfigurationObjectBuilder>())));
 
             _components.Add(new ContextRegistration(typeof(IDependencyContainerComponent),
-                version => dependencyContainerComponent));
-            _components.Add(new ContextRegistration(typeof(ISystemComponent), version => SystemComponent));
+                () => dependencyContainerComponent));
+            _components.Add(new ContextRegistration(typeof(ISystemComponent), () => SystemComponent));
             
             _components.Add(new ContextRegistration(typeof(IMetadataConfigurationProvider),
-                version => metadataConfigurationProvider));
+                () => metadataConfigurationProvider));
 
         }
 
-        public T GetComponent<T>(string version) where T : class
+        public T GetComponent<T>() where T : class
         {
             return
-                _components.Where(c => c.IsTypeOf(typeof(T))).Select(c => c.GetInstance(version)).FirstOrDefault() as T;
+                _components.Where(c => c.IsTypeOf(typeof(T))).Select(c => c.GetInstance()).FirstOrDefault() as T;
         }
     }
 }

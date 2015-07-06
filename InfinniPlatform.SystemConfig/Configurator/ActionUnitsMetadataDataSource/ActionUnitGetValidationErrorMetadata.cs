@@ -16,8 +16,7 @@ namespace InfinniPlatform.SystemConfig.Configurator.ActionUnitsMetadataDataSourc
             bodyQuery.MetadataName = target.Item.MetadataName;
 
             target.Result =
-                RestQueryApi.QueryPostJsonRaw("systemconfig", "metadata", "getdocumentelementmetadata", null, bodyQuery,
-                                              target.Version).ToDynamic();
+                RestQueryApi.QueryPostJsonRaw("systemconfig", "metadata", "getdocumentelementmetadata", null, bodyQuery).ToDynamic();
         }
     }
 }

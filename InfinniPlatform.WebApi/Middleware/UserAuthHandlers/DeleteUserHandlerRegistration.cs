@@ -26,7 +26,7 @@ namespace InfinniPlatform.WebApi.Middleware.UserAuthHandlers
         {
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            return new ValueRequestHandlerResult(new UsersApi(routeDictionary["version"]).RemoveUser(RouteFormatter.GetRouteDictionary(context)["userName"]));
+            return new ValueRequestHandlerResult(new UsersApi().RemoveUser(RouteFormatter.GetRouteDictionary(context)["userName"]));
         }
     }
 }

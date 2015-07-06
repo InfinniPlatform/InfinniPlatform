@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.MigrationsAndVerifications.Helpers;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.SystemConfig.RoutingFactory;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Verifications
@@ -74,7 +75,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
             var resultMessage = new StringBuilder();
 
             var metadataConfiguration =
-                _context.GetComponent<IConfigurationMediatorComponent>(_version)
+                _context.GetComponent<IConfigurationMediatorComponent>()
                         .ConfigurationBuilder.GetConfigurationObject(_version, _activeConfiguration)
                         .MetadataConfiguration;
             //_metadataConfigurationProvider.Configurations.FirstOrDefault(
@@ -100,7 +101,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
                         props = DocumentSchemaHelper.ExtractProperties(_version, schema.Properties,
                                                                        _context
                                                                            .GetComponent
-                                                                           <IConfigurationMediatorComponent>(_version)
+                                                                           <IConfigurationMediatorComponent>()
                                                                            .ConfigurationBuilder);
                     }
 

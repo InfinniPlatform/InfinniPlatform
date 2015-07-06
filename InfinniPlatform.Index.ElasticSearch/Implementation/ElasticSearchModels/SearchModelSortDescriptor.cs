@@ -2,6 +2,7 @@
 using System.Linq;
 using InfinniPlatform.Api.Index.SearchOptions;
 using InfinniPlatform.Index.ElasticSearch.Implementation.SortBuilders;
+using InfinniPlatform.Sdk.Environment.Index;
 using Nest;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticSearchModels

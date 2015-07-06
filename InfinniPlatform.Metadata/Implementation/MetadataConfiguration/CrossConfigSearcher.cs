@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
-using InfinniPlatform.Api.Factories;
 using InfinniPlatform.Api.Index;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 {

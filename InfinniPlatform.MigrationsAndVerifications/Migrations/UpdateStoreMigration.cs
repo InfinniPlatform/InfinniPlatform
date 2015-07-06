@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.MigrationsAndVerifications.Helpers;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Metadata;
 using InfinniPlatform.SystemConfig.RoutingFactory;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Migrations
@@ -87,7 +90,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
             _updatedContainers.Clear();
 
             var configObject =
-                _context.GetComponent<IConfigurationMediatorComponent>(_version)
+                _context.GetComponent<IConfigurationMediatorComponent>()
                         .ConfigurationBuilder.GetConfigurationObject(_version, _activeConfiguration);
 
             IMetadataConfiguration metadataConfiguration = null;
@@ -116,7 +119,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                         props = DocumentSchemaHelper.ExtractProperties(_version, schema.Properties,
                                                                        _context
                                                                            .GetComponent
-                                                                           <IConfigurationMediatorComponent>(_version)
+                                                                           <IConfigurationMediatorComponent>()
                                                                            .ConfigurationBuilder);
                     }
 
@@ -182,7 +185,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                                                      StringBuilder messagesIntegrator)
         {
             var configList =
-                _context.GetComponent<IConfigurationMediatorComponent>(_version)
+                _context.GetComponent<IConfigurationMediatorComponent>()
                         .ConfigurationBuilder.GetConfigurationList();
             foreach (var metadataConfiguration in configList)
             {
@@ -209,7 +212,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                                                                                                      .GetComponent
                                                                                                      <
                                                                                                      IConfigurationMediatorComponent
-                                                                                                     >(_version)
+                                                                                                     >()
                                                                                                      .ConfigurationBuilder);
 
                             if (!_updatedContainers.Contains(metadataConfiguration.ConfigurationId + "_" + containerId))

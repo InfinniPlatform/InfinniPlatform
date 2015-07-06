@@ -33,7 +33,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 
             if (body.Application != null && body.UserName != null && body.Application.ToString() != string.Empty && body.UserName.ToString() != string.Empty)
             {
-                return new ValueRequestHandlerResult(new AuthApi(routeDictionary["version"]).GrantAccess(
+                return new ValueRequestHandlerResult(new AuthApi().GrantAccess(
                     body.UserName.ToString(),
                     body.Application.ToString(),
                     body.DocumentType != null ? body.DocumentType.ToString() : null,

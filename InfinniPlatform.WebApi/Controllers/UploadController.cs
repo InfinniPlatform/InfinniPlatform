@@ -31,10 +31,16 @@ namespace InfinniPlatform.WebApi.Controllers
             _resultHandlerFactory = resultHandlerFactory;
         }
 
+        private string GetUserName()
+        {
+            return (User != null && !string.IsNullOrEmpty(User.Identity.Name)) ? User.Identity.Name : AuthorizationStorageExtensions.UnknownUser;
+        }
+
         private IRestVerbsContainer GetMetadata()
         {
-            var metadata = Request.GetRouteData().Values.ContainsKey("metadata") ? _apiControllerFactory.GetTemplate((string)Request.GetRouteData().Values["version"], (string)Request.GetRouteData().Values["configuration"],
-                (string)Request.GetRouteData().Values["metadata"]) : null;
+            var metadata = Request.GetRouteData().Values.ContainsKey("metadata") ? 
+                _apiControllerFactory.GetTemplate((string)Request.GetRouteData().Values["configuration"],
+                (string)Request.GetRouteData().Values["metadata"], GetUserName()) : null;
             if (metadata == null)
             {
                 throw new ArgumentException(string.Format("Не найдены метаданные для {0}. Используйте метод InstallServices для регистрации обработчиков.", Request.GetRouteData().Values["metadata"]));
@@ -81,7 +87,7 @@ namespace InfinniPlatform.WebApi.Controllers
                 prop.SetValue(invokationInfo.Target, new ConfigRequestProvider()
                 {
                     RequestData = Request.GetRouteData(),
-					UserName = (User != null && !string.IsNullOrEmpty(User.Identity.Name)) ? User.Identity.Name : AuthorizationStorageExtensions.UnknownUser
+					UserName = GetUserName()
                 });
             }
         }

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.ContextComponents;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.RestfulApi.Auth
@@ -16,7 +16,7 @@ namespace InfinniPlatform.RestfulApi.Auth
         {
             if (target.Item.FromCache)
             {
-                target.Result = target.Context.GetComponent<ISecurityComponent>(target.Version).Acl;
+                target.Result = target.Context.GetComponent<ISecurityComponent>().Acl;
             }
 
             else if (new IndexApi().IndexExists(AuthorizationStorageExtensions.AuthorizationConfigId,
@@ -26,8 +26,8 @@ namespace InfinniPlatform.RestfulApi.Auth
                 target.Item.Metadata = AuthorizationStorageExtensions.AclStore;
 
                 var documentProvider =
-                    target.Context.GetComponent<InprocessDocumentComponent>(target.Version)
-                          .GetDocumentProvider(target.Version, target.Item.Configuration, target.Item.Metadata,
+                    target.Context.GetComponent<InprocessDocumentComponent>()
+                          .GetDocumentProvider(target.Context.GetVersion(target.Item.Configuration,target.UserName), target.Item.Configuration, target.Item.Metadata,
                                                target.UserName);
 
                 if (documentProvider != null)

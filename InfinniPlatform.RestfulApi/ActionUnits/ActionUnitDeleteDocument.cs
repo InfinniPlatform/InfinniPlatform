@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.ContextComponents;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.RestfulApi.ActionUnits
 {
@@ -19,8 +20,8 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
             //получаем провайдер версий документов
             dynamic documentProvider =
-                target.Context.GetComponent<InprocessDocumentComponent>(target.Version)
-                      .GetDocumentProvider(target.Version, target.Item.Configuration, target.Item.Metadata,
+                target.Context.GetComponent<InprocessDocumentComponent>()
+                      .GetDocumentProvider(target.Context.GetVersion(target.Item.Configuration,target.UserName), target.Item.Configuration, target.Item.Metadata,
                                            target.UserName);
             if (documentProvider == null)
             {
@@ -46,7 +47,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
             documentProvider.DeleteDocument(target.Item.Id);
 
-            target.Context.GetComponent<ILogComponent>(target.Version)
+            target.Context.GetComponent<ILogComponent>()
                   .GetLog()
                   .Info(Resources.LogDocumentDeleted, indexName);
 

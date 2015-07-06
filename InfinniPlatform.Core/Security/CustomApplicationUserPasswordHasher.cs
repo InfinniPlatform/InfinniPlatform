@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.Security;
+﻿using InfinniPlatform.Api.Security;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.Security
@@ -29,7 +29,7 @@ namespace InfinniPlatform.Security
             var success = StringHasher.VerifyValue(hashedPassword, providedPassword);
             if (!success)
             {
-                success = _globalContext.GetComponent<IPasswordVerifierComponent>(null)
+                success = _globalContext.GetComponent<IPasswordVerifierComponent>()
                     .VerifyPassword(hashedPassword, providedPassword);
             }
             return success;

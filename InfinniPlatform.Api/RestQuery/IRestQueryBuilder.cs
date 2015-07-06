@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using InfinniPlatform.Api.SearchOptions;
+using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Api.RestQuery
 {
@@ -15,11 +16,9 @@ namespace InfinniPlatform.Api.RestQuery
         /// </summary>
         /// <param name="id">Идентификатор объекта, который необходимо изменить</param>
         /// <param name="changesObject">Объект, из которого будет сформирован список изменений</param>
-        /// <param name="replaceObject">Заменить существующий объект в хранилище</param>
         /// <param name="cookieContainer"></param>
         /// <returns>Ответ на вызов сервиса</returns>
-        RestQueryResponse QueryPost(string id, object changesObject, bool replaceObject,
-            CookieContainer cookieContainer = null);
+        RestQueryResponse QueryPost(string id, object changesObject, CookieContainer cookieContainer = null);
 
         /// <summary>
         ///     Сформировать и выполнить запрос на поиск данных
@@ -73,18 +72,16 @@ namespace InfinniPlatform.Api.RestQuery
         ///     Сформировать и выполнить запрос на системную нотификацию
         /// </summary>
         /// <returns>Ответ на вызов сервиса</returns>
-        RestQueryResponse QueryNotify(string metadataConfigurationId, CookieContainer cookieContainer = null);
+        RestQueryResponse QueryNotify(string version, string metadataConfigurationId, CookieContainer cookieContainer = null);
 
         /// <summary>
         ///     Сформировать и выполнить запрос на применение изменений, представленных в виде JSON-объекта
         /// </summary>
         /// <param name="id">Идентификатор объекта, к которому будут применены изменения</param>
         /// <param name="jsonObject">Объект, который будет представлен в виде событий</param>
-        /// <param name="replaceObject">Выполнить замену существующего в хранилище объекта</param>
         /// <param name="cookieContainer"></param>
         /// <returns>Ответ сервиса</returns>
-        RestQueryResponse QueryPostJson(string id, object jsonObject, bool replaceObject = false,
-            CookieContainer cookieContainer = null);
+        RestQueryResponse QueryPostJson(string id, object jsonObject, CookieContainer cookieContainer = null);
 
         /// <summary>
         ///     Выполнить POST-запрос на сервер для UrlEncodedData

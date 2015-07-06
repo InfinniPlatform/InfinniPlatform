@@ -2,6 +2,7 @@
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataReaders;
 using InfinniPlatform.Metadata;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Verifications
@@ -14,6 +15,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
         private string _activeConfiguration;
 
         private IMetadataConfigurationProvider _metadataConfigurationProvider;
+        private string _version;
 
         /// <summary>
         ///     Текстовое описание правила проверки
@@ -53,7 +55,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
             bool result = true;
             var resultMessage = new StringBuilder();
 
-            var configReader = new MetadataReaderConfiguration(null);
+            var configReader = new MetadataReaderConfiguration(_version);
 
             dynamic configMetadata = configReader.GetItem(_activeConfiguration);
 
@@ -114,6 +116,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
         /// </summary>
         public void AssignActiveConfiguration(string version, string configurationId, IGlobalContext context)
         {
+            _version = version;
             _activeConfiguration = configurationId;
         }
     }

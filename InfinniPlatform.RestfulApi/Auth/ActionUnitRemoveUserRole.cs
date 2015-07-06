@@ -22,7 +22,7 @@ namespace InfinniPlatform.RestfulApi.Auth
             }
 
             storage.RemoveUserFromRole(user, target.Item.RoleName);
-            target.Context.GetComponent<CachedSecurityComponent>(target.Version).UpdateAcl();
+            target.Context.GetComponent<CachedSecurityComponent>().UpdateAcl();
             target.Result = new DynamicWrapper();
             target.Result.IsValid = true;
             target.Result.ValidationMessage = "Role deleted.";

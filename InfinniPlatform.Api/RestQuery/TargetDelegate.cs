@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using InfinniPlatform.Sdk.Environment.Hosting;
 
 namespace InfinniPlatform.Api.RestQuery
 {

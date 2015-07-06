@@ -8,19 +8,19 @@ namespace InfinniPlatform.Api.LocalRouting
     /// </summary>
     public interface IRequestLocal
     {
-        string InvokeRestOperationPost(string version, string configuration, string metadata, string action,
+        string InvokeRestOperationPost(string configuration, string metadata, string action,
             IDictionary<string, object> requestBody, string userName);
 
-        string InvokeRestOperationUpload(string version, string configuration, string metadata, string action,
+        string InvokeRestOperationUpload(string configuration, string metadata, string action,
             object requestBody, string filePath, string userName);
 
-        string InvokeRestOperationGet(string version, string configuration, string metadata, string action,
+        string InvokeRestOperationGet(string configuration, string metadata, string action,
             IDictionary<string, object> requestBody, string userName);
 
-        string InvokeRestOperationUpload(string version, string configuration, string metadata, string action,
+        string InvokeRestOperationUpload(string configuration, string metadata, string action,
             object requestBody, Stream file, string userName);
 
-        string InvokeRestOperationDownload(string version, string configuration, string metadata, string action,
+        string InvokeRestOperationDownload(string configuration, string metadata, string action,
             object requestBody, string userName);
     }
 }

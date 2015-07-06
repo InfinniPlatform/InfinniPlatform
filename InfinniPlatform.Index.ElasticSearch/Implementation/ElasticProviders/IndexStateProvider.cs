@@ -1,6 +1,6 @@
-﻿using InfinniPlatform.Api.Factories;
-using InfinniPlatform.Api.Index;
+﻿using InfinniPlatform.Api.Index;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions;
+using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 {

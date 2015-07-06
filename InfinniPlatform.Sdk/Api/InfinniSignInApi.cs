@@ -10,8 +10,8 @@ namespace InfinniPlatform.Sdk.Api
     public sealed class InfinniSignInApi : BaseApi
     {
 
-        public InfinniSignInApi(string server, string port, string version)
-            : base(server, port, version)
+        public InfinniSignInApi(string server, string port)
+            : base(server, port)
         {
         }
 
@@ -33,7 +33,7 @@ namespace InfinniPlatform.Sdk.Api
                 Remember = remember
             };
 
-            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlSignIn(Version),requestBody);
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlSignIn(),requestBody);
 
             var cookieContainer = ProcessAsObjectResult(response,
                             string.Format(Resources.UnableToSignInUser, response.GetErrorContent()));   
@@ -61,7 +61,7 @@ namespace InfinniPlatform.Sdk.Api
                 NewPassword = newPassword
             };
 
-            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingChangePassword(Version), requestBody);
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingChangePassword(), requestBody);
 
             return ProcessAsObjectResult(response,
                             string.Format(Resources.UnableToChangePasswordUser, response.GetErrorContent()));   
@@ -76,7 +76,7 @@ namespace InfinniPlatform.Sdk.Api
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlSignOut(Version));
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlSignOut());
 
             return ProcessAsObjectResult(response,
                             string.Format(Resources.UnableToSignOutUser, response.GetErrorContent())); 

@@ -30,14 +30,14 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 
         public void DeleteUser(ApplicationUser user)
         {
-            new DocumentApiUnsecured(null).DeleteDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
+            new DocumentApiUnsecured().DeleteDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
                                                           AuthorizationStorageExtensions.UserStore, user.Id);
         }
 
         public ApplicationUser FindUserById(string userId)
         {
             dynamic user =
-                new DocumentApiUnsecured(null).GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
+                new DocumentApiUnsecured().GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
                                                            AuthorizationStorageExtensions.UserStore,
                                                            f => f.AddCriteria(cr => cr.Property("Id").IsEquals(userId)),
                                                            0, 1).FirstOrDefault();
@@ -51,7 +51,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
         public ApplicationUser FindUserByName(string userName)
         {
             dynamic user =
-                new DocumentApiUnsecured(null).GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
+                new DocumentApiUnsecured().GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
                                                            AuthorizationStorageExtensions.UserStore,
                                                            f =>
                                                            f.AddCriteria(
@@ -67,7 +67,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
         public ApplicationUser FindUserByLogin(ApplicationUserLogin userLogin)
         {
             dynamic user =
-                new DocumentApiUnsecured(null).GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
+                new DocumentApiUnsecured().GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
                                                            AuthorizationStorageExtensions.UserStore,
                                                            f =>
                                                            f.AddCriteria(
@@ -91,7 +91,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             }
 
             dynamic role =
-                new DocumentApiUnsecured(null).GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
+                new DocumentApiUnsecured().GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
                                                            AuthorizationStorageExtensions.RoleStore,
                                                            f =>
                                                            f.AddCriteria(cr => cr.Property("Name").IsEquals(roleName)),
@@ -121,7 +121,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
                 userRoleInstance.UserName = user.UserName;
                 userRoleInstance.RoleName = role.Name;
 
-                new DocumentApiUnsecured(null).SetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
+                new DocumentApiUnsecured().SetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
                                                            AuthorizationStorageExtensions.UserRoleStore,
                                                            userRoleInstance, false, true);
             }
@@ -135,7 +135,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             }
 
             dynamic role =
-                new DocumentApiUnsecured(null).GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
+                new DocumentApiUnsecured().GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
                                                            AuthorizationStorageExtensions.RoleStore,
                                                            f =>
                                                            f.AddCriteria(cr => cr.Property("Name").IsEquals(roleName)),
@@ -149,7 +149,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
                 UpdateUser(user);
 
                 dynamic userRole =
-                    new DocumentApiUnsecured(null).GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
+                    new DocumentApiUnsecured().GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
                                                                AuthorizationStorageExtensions.UserRoleStore,
                                                                f =>
                                                                f.AddCriteria(
@@ -161,7 +161,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 
                 if (userRole != null)
                 {
-                    new DocumentApiUnsecured(null).DeleteDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
+                    new DocumentApiUnsecured().DeleteDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
                                                                   AuthorizationStorageExtensions.UserRoleStore,
                                                                   userRole.Id);
                 }
@@ -229,7 +229,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             user.SecurityStamp = Guid.NewGuid().ToString();
             var instance = DynamicWrapperExtensions.ToDynamic(user);
 
-            new DocumentApiUnsecured(null).SetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
+            new DocumentApiUnsecured().SetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
                                                        AuthorizationStorageExtensions.UserStore, instance, false, true);
         }
 
@@ -241,7 +241,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             instance.Description = description;
 
             dynamic role =
-                new DocumentApiUnsecured(null).GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
+                new DocumentApiUnsecured().GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
                                                            AuthorizationStorageExtensions.RoleStore,
                                                            f =>
                                                            f.AddCriteria(cr => cr.Property("Name").IsEquals(roleName)),
@@ -251,21 +251,21 @@ namespace InfinniPlatform.SystemConfig.UserStorage
                 instance.Id = role.Id;
             }
 
-            new DocumentApiUnsecured(null).SetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
+            new DocumentApiUnsecured().SetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
                                                        AuthorizationStorageExtensions.RoleStore, instance, false, true);
         }
 
         public void RemoveRole(string roleName)
         {
             dynamic role =
-                new DocumentApiUnsecured(null).GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
+                new DocumentApiUnsecured().GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
                                                            AuthorizationStorageExtensions.RoleStore,
                                                            f =>
                                                            f.AddCriteria(cr => cr.Property("Name").IsEquals(roleName)),
                                                            0, 1).FirstOrDefault();
 
             dynamic roleLinks =
-                new DocumentApiUnsecured(null).GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
+                new DocumentApiUnsecured().GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
                                                            AuthorizationStorageExtensions.UserStore,
                                                            f =>
                                                            f.AddCriteria(
@@ -283,7 +283,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
                     string.Format("Role with name \"{0}\" has user linked and should not be deleted", roleName));
             }
 
-            new DocumentApiUnsecured(null).DeleteDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
+            new DocumentApiUnsecured().DeleteDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
                                                           AuthorizationStorageExtensions.RoleStore, role.Id);
         }
 
@@ -291,7 +291,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
         public dynamic FindClaimType(string claimType)
         {
             dynamic claim =
-                new DocumentApiUnsecured(null).GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
+                new DocumentApiUnsecured().GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
                                                            AuthorizationStorageExtensions.ClaimStore,
                                                            f =>
                                                            f.AddCriteria(cr => cr.Property("Name").IsEquals(claimType)),
@@ -314,7 +314,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
                 claim = new DynamicWrapper();
                 claim.Name = claimType;
 
-                new DocumentApiUnsecured(null).SetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
+                new DocumentApiUnsecured().SetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
                                                            AuthorizationStorageExtensions.ClaimStore, claim, false, true);
             }
         }
@@ -326,7 +326,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             if (claim != null)
             {
                 dynamic claimLinks =
-                    new DocumentApiUnsecured(null).GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
+                    new DocumentApiUnsecured().GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
                                                                AuthorizationStorageExtensions.UserStore,
                                                                f =>
                                                                f.AddCriteria(
@@ -341,7 +341,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
                         string.Format("Can't delete user claim \"{0}\": existing users have link to claim type.",
                                       claimType));
                 }
-                new DocumentApiUnsecured(null).DeleteDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
+                new DocumentApiUnsecured().DeleteDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
                                                               AuthorizationStorageExtensions.ClaimStore, claim.Id);
             }
         }
@@ -349,7 +349,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 
         public void RemoveAcl(string aclId)
         {
-            new DocumentApiUnsecured(null).DeleteDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
+            new DocumentApiUnsecured().DeleteDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
                                                           AuthorizationStorageExtensions.AclStore, aclId);
         }
     }
@@ -359,7 +359,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
         public static void CheckStorage()
         {
             var adminApi = new AdminApi();
-            var aclApi = new AuthApi(null);
+            var aclApi = new AuthApi();
 
             //добавляем роль анонимного пользователя. Данная роль имеет право на чтение каталога пользователей и ролей
             //в нее не должен входить ни один пользователь системы.

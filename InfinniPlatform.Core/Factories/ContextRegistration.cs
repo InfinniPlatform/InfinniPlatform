@@ -4,10 +4,10 @@ namespace InfinniPlatform.Factories
 {
     internal sealed class ContextRegistration
     {
-        private readonly Func<string, object> _instanceConstructor;
+        private readonly Func<object> _instanceConstructor;
         private readonly Type _typeRegistration;
 
-        public ContextRegistration(Type typeRegistration, Func<string, object> instanceConstructor)
+        public ContextRegistration(Type typeRegistration, Func<object> instanceConstructor)
         {
             _typeRegistration = typeRegistration;
             _instanceConstructor = instanceConstructor;
@@ -18,9 +18,9 @@ namespace InfinniPlatform.Factories
             return _typeRegistration.IsAssignableFrom(type);
         }
 
-        public object GetInstance(string version)
+        public object GetInstance()
         {
-            return _instanceConstructor(version);
+            return _instanceConstructor();
         }
     }
 }

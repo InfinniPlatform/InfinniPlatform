@@ -8,9 +8,16 @@
         /// <summary>
         ///     Получить компонент, реализующий тип Т из глоабльного контекста
         /// </summary>
-        /// <param name="version">Версия конфигурации</param>
         /// <typeparam name="T">Тип ожидаемого контракта</typeparam>
         /// <returns>Экземпляр контракта</returns>
-        T GetComponent<T>(string version) where T : class;
+        T GetComponent<T>() where T : class;
+
+        /// <summary>
+        ///  Получить идентификатор актуальной версии указанной конфигурации 
+        /// </summary>
+        /// <param name="configuration">Идентификатор конфигурации</param>
+        /// <param name="userName">Логин пользователя для получения контекста</param>
+        /// <returns>Идентификатор версии</returns>
+        string GetVersion(string configuration, string userName);
     }
 }

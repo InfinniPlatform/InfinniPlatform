@@ -1,6 +1,6 @@
 ﻿using System;
-using InfinniPlatform.Api.Actions;
 using InfinniPlatform.Metadata.Properties;
+using InfinniPlatform.Sdk.Environment.Actions;
 
 namespace InfinniPlatform.Metadata.StateMachine.ActionUnits.ActionOperatorBuilders
 {

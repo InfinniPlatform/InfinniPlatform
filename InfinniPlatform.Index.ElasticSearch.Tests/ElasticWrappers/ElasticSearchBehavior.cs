@@ -7,6 +7,7 @@ using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Tests.Builders;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.SystemConfig.RoutingFactory;
 using NUnit.Framework;
 using Nest;

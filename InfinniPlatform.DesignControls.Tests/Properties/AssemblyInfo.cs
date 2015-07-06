@@ -1,9 +1,9 @@
 ﻿// 1
 // 0
 // 0
-// 0
+// 1
 // ccda38ba-fdb8-40f0-9fab-ae1011f74913
-// E9956374A6E3934B9E005305B4560939
+// 389A35A4A79362A525516B8A4768A05C
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -17,7 +17,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: Guid("ccda38ba-fdb8-40f0-9fab-ae1011f74913")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.0.1")]
+[assembly: AssemblyFileVersion("1.0.0.1")]
 
 [assembly: AssemblyDescription("InfinniPlatform.DesignControls.Tests")]

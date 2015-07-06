@@ -1,6 +1,7 @@
 ﻿using System;
-using InfinniPlatform.Api.ContextComponents;
+using System.Linq;
 using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.SystemConfig.Configurator
@@ -24,17 +25,26 @@ namespace InfinniPlatform.SystemConfig.Configurator
             {
                 var eventNameMetadata = target.Id;
 
-                var managerIdentifiers =
-                    target.Context.GetComponent<ISystemComponent>(target.Version).ManagerIdentifiers;
+                var version = target.Events.Where(e => e.Property == "Version").Select(e => e.Value).FirstOrDefault() as string;
 
-                target.Id = managerIdentifiers.GetConfigurationUid(target.Version, eventNameMetadata);
+                var managerIdentifiers =
+                    target.Context.GetComponent<ISystemComponent>().ManagerIdentifiers;
+
+                if (target.Metadata != null && target.Metadata.ToLowerInvariant() == "solutionmetadata")
+                {
+                    target.Id = managerIdentifiers.GetSolutionUid(version, eventNameMetadata);
+                }
+                else
+                {
+                    target.Id = managerIdentifiers.GetConfigurationUid(version, eventNameMetadata);
+                }
             }
 
             dynamic document;
 
             if (!string.IsNullOrEmpty(target.Id))
             {
-                var documentApi = target.Context.GetComponent<DocumentApi>(target.Version);
+                var documentApi = target.Context.GetComponent<DocumentApi>();
 
                 document = documentApi.GetDocument(target.Id);
                 if (document != null)

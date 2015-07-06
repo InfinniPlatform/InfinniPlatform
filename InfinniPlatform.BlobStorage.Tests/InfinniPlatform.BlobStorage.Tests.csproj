@@ -64,6 +64,10 @@
       <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
       <Name>InfinniPlatform.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
+      <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
+      <Name>InfinniPlatform.Sdk</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Tests\InfinniPlatform.Tests.csproj">
       <Project>{a46f638c-c9c5-49be-bc8d-8144e8c8f87a}</Project>
       <Name>InfinniPlatform.Tests</Name>

@@ -12,7 +12,7 @@ namespace InfinniPlatform.Sdk.Tests.TestData
     {
         public void Action(IApplyContext target)
         {
-            ScriptContextApp scriptContext = target.Context.GetComponent<ScriptContextApp>(target.Version);
+            ScriptContextApp scriptContext = target.Context.GetComponent<ScriptContextApp>();
 
             var documentApi = scriptContext.GetDocumentApi();
 

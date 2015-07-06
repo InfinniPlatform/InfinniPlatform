@@ -46,7 +46,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
                     throw new ArgumentException(Resources.NotAllRequestParamsAreSpecified);
                 }
 
-                return new ValueRequestHandlerResult(new UploadApi(routeDictionary["version"]).DownloadBinaryContent(
+                return new ValueRequestHandlerResult(new UploadApi().DownloadBinaryContent(
                     formData.InstanceId.ToString(), formData.FieldName.ToString()));
             }
 

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 {
@@ -66,7 +68,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         /// <param name="parameters"></param>
         public void Up(out string message, object[] parameters)
         {
-            var api = new DocumentApi(_version);
+            var api = new DocumentApi();
 
             var resultMessage = new StringBuilder();
 
@@ -121,7 +123,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
             _activeConfiguration = configurationId;
 
             var configObject =
-                context.GetComponent<IConfigurationMediatorComponent>(_version)
+                context.GetComponent<IConfigurationMediatorComponent>()
                        .ConfigurationBuilder.GetConfigurationObject(_version, _activeConfiguration);
 
             IMetadataConfiguration metadataConfiguration = null;

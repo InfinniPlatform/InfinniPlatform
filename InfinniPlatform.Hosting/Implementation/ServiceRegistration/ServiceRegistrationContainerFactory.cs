@@ -1,5 +1,7 @@
 ﻿using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Factories;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Hosting;
 
 namespace InfinniPlatform.Hosting.Implementation.ServiceRegistration
 {

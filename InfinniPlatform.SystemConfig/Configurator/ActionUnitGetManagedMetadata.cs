@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.Validation;
 using InfinniPlatform.Api.Validation.ValidationBuilders;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Validations;
 using InfinniPlatform.SystemConfig.Properties;
 
 namespace InfinniPlatform.SystemConfig.Configurator
@@ -53,8 +55,8 @@ namespace InfinniPlatform.SystemConfig.Configurator
                 dynamic itemMetadata = null;
 
                 itemMetadata =
-                    target.Context.GetComponent<IMetadataComponent>(target.Version)
-                          .GetMetadataItem(target.Version, target.Item.Configuration, target.Item.MetadataObject,
+                    target.Context.GetComponent<IMetadataComponent>()
+                          .GetMetadataItem(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration, target.Item.MetadataObject,
                                            MetadataType.View, predicate);
 
                 //если нашли существующие метаданные - возвращаем их
@@ -69,15 +71,15 @@ namespace InfinniPlatform.SystemConfig.Configurator
                     var generatorDocument = target.Item.MetadataObject;
 
                     dynamic generatorMetadataItem =
-                        target.Context.GetComponent<IMetadataComponent>(target.Version)
-                              .GetMetadataItem(target.Version, target.Item.Configuration, target.Item.MetadataObject,
+                        target.Context.GetComponent<IMetadataComponent>()
+                              .GetMetadataItem(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration, target.Item.MetadataObject,
                                                MetadataType.Generator, predicate);
                     if (generatorMetadataItem == null)
                     {
                         generatorDocument = "Common";
                         generatorMetadataItem =
-                            target.Context.GetComponent<IMetadataComponent>(target.Version)
-                                  .GetMetadataItem(target.Version, target.Item.Configuration, generatorDocument,
+                            target.Context.GetComponent<IMetadataComponent>()
+                                  .GetMetadataItem(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration, generatorDocument,
                                                    MetadataType.Generator, predicate);
                     }
 
@@ -104,8 +106,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
                             };
 
                         target.Result =
-                            RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "generatemetadata", null, body,
-                                                          target.Version).ToDynamic();
+                            RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "generatemetadata", null, body).ToDynamic();
                         target.Result.Parameters = CreateParametersArray(target.Item.Parameters);
                         target.ValidationMessage = string.Format("Metadata generated for \"{0}\" successfully",
                                                                  generatorMetadataItem.Name);

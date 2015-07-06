@@ -1,5 +1,6 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.Index;
+﻿using InfinniPlatform.Api.Index;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.ContextComponents
 {

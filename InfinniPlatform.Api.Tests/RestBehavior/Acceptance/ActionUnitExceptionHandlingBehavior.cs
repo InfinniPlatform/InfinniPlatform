@@ -9,6 +9,7 @@ using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.TestEnvironment;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Hosting;
 using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
@@ -110,7 +111,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             try
             {
-                dynamic result = new DocumentApi(null).SetDocument(ConfigurationId, "testdoc1", document);
+                dynamic result = new DocumentApi().SetDocument(ConfigurationId, "testdoc1", document);
             }
             catch (Exception e)
             {

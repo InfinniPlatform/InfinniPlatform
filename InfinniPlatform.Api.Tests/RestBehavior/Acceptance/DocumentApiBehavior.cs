@@ -102,7 +102,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         [Test]
         public void ShouldDeleteDocument()
         {
-            new DocumentApi(null).SetDocument(ConfigurationId, DocumentId,
+            new DocumentApi().SetDocument(ConfigurationId, DocumentId,
                                               new
                                                   {
                                                       Id = Guid.NewGuid().ToString(),
@@ -110,7 +110,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                                                   });
 
             IEnumerable<dynamic> items =
-                new DocumentApi(null).GetDocument(ConfigurationId, DocumentId,
+                new DocumentApi().GetDocument(ConfigurationId, DocumentId,
                                                   filter =>
                                                   filter.AddCriteria(
                                                       cr => cr.IsEquals("delete").Property("TestProperty")), 0, 1)
@@ -118,10 +118,10 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             dynamic itemId = items.First().Id;
 
-            new DocumentApi(null).DeleteDocument(ConfigurationId, DocumentId, itemId);
+            new DocumentApi().DeleteDocument(ConfigurationId, DocumentId, itemId);
 
             items =
-                new DocumentApi(null).GetDocument(ConfigurationId, DocumentId,
+                new DocumentApi().GetDocument(ConfigurationId, DocumentId,
                                                   f => f.AddCriteria(c => c.Property("Id").IsEquals(itemId)), 0, 2)
                                      .ToEnumerable();
             Assert.AreEqual(0, items.Count());
@@ -160,10 +160,10 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                         }
                 };
 
-            new DocumentApi(null).SetDocuments(ConfigurationId, DocumentId, documents, 2);
+            new DocumentApi().SetDocuments(ConfigurationId, DocumentId, documents, 2);
 
             IEnumerable<dynamic> items =
-                new DocumentApi(null).GetDocument(ConfigurationId, DocumentId,
+                new DocumentApi().GetDocument(ConfigurationId, DocumentId,
                                                   f => f.AddCriteria(c => c.Property("TestProperty").IsEquals("111")), 0,
                                                   10).ToEnumerable();
             Assert.AreEqual(items.Count(), 2);
@@ -202,10 +202,10 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                         }
                 };
 
-            new DocumentApi(null).SetDocuments(ConfigurationId, DocumentId, documents, 2);
+            new DocumentApi().SetDocuments(ConfigurationId, DocumentId, documents, 2);
 
             IEnumerable<dynamic> items =
-                new DocumentApi(null).GetDocument(ConfigurationId, DocumentId,
+                new DocumentApi().GetDocument(ConfigurationId, DocumentId,
                                                   f => f.AddCriteria(c => c.Property("TestProperty").IsEquals("123")), 0,
                                                   10).ToEnumerable();
             Assert.Greater(items.Count(), 0);
@@ -235,10 +235,10 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                         }
                 };
 
-            new DocumentApi(null).SetDocuments(ConfigurationId, DocumentId, documents, 2);
+            new DocumentApi().SetDocuments(ConfigurationId, DocumentId, documents, 2);
 
             IEnumerable<dynamic> items =
-                new DocumentApi(null).GetDocument(ConfigurationId, DocumentId, null, 0, 10).ToEnumerable();
+                new DocumentApi().GetDocument(ConfigurationId, DocumentId, null, 0, 10).ToEnumerable();
             Assert.Greater(items.Count(), 0);
 
             dynamic firstDoc = items.First();
@@ -250,7 +250,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         [Test]
         public void ShouldGetDocumentCrossConfig()
         {
-            new DocumentApi(null).SetDocument(ConfigurationId, DocumentId,
+            new DocumentApi().SetDocument(ConfigurationId, DocumentId,
                                               new
                                                   {
                                                       Id = Guid.NewGuid().ToString(),
@@ -258,37 +258,37 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                                                   });
 
             var items =
-                new DocumentApi(null).GetDocumentCrossConfig(
+                new DocumentApi().GetDocumentCrossConfig(
                     filter => filter.AddCriteria(cr => cr.IsEquals("crossget").Property("TestProperty")), 0, 10,
                     new[] {ConfigurationId}, new[] {DocumentId}).ToEnumerable();
             Assert.AreEqual(items.Count(), 1);
 
             items =
-                new DocumentApi(null).GetDocumentCrossConfig(
+                new DocumentApi().GetDocumentCrossConfig(
                     filter => filter.AddCriteria(cr => cr.IsEquals("crossget").Property("TestProperty")), 0, 10,
                     new[] {ConfigurationId}, new[] {DocumentId}).ToEnumerable();
             Assert.AreEqual(items.Count(), 1);
 
             items =
-                new DocumentApi(null).GetDocumentCrossConfig(
+                new DocumentApi().GetDocumentCrossConfig(
                     filter => filter.AddCriteria(cr => cr.IsEquals("crossget").Property("TestProperty")), 0, 10,
                     new[] {"sdf"}, new[] {DocumentId, "ds"}).ToEnumerable();
             Assert.AreEqual(items.Count(), 0);
 
             items =
-                new DocumentApi(null).GetDocumentCrossConfig(
+                new DocumentApi().GetDocumentCrossConfig(
                     filter => filter.AddCriteria(cr => cr.IsEquals("crossget").Property("TestProperty")), 0, 10,
                     new[] {ConfigurationId, "update"}, new[] {DocumentId}).ToEnumerable();
             Assert.AreEqual(items.Count(), 1);
 
             items =
-                new DocumentApi(null).GetDocumentCrossConfig(
+                new DocumentApi().GetDocumentCrossConfig(
                     filter => filter.AddCriteria(cr => cr.IsEquals("crossget").Property("TestProperty")), 0, 10,
                     new[] {ConfigurationId}, new[] {"ds"}).ToEnumerable();
             Assert.AreEqual(items.Count(), 0);
 
             items =
-                new DocumentApi(null).GetDocumentCrossConfig(
+                new DocumentApi().GetDocumentCrossConfig(
                     filter => filter.AddCriteria(cr => cr.IsEquals("crossget").Property("TestProperty")), 0, 10,
                     new[] {ConfigurationId, "systemconfig"}, new[] {"sdf", DocumentId, "ds"}).ToEnumerable();
             Assert.AreEqual(items.Count(), 1);
@@ -297,7 +297,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         [Test]
         public void ShouldGetDocuments()
         {
-            new DocumentApi(null).SetDocument(ConfigurationId, DocumentId,
+            new DocumentApi().SetDocument(ConfigurationId, DocumentId,
                                               new
                                                   {
                                                       Id = Guid.NewGuid().ToString(),
@@ -305,7 +305,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                                                   });
 
             IEnumerable<dynamic> items =
-                new DocumentApi(null).GetDocument(ConfigurationId, DocumentId,
+                new DocumentApi().GetDocument(ConfigurationId, DocumentId,
                                                   filter =>
                                                   filter.AddCriteria(cr => cr.IsEquals("get").Property("TestProperty")),
                                                   0, 10).ToEnumerable();
@@ -315,7 +315,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         [Test]
         public void ShouldReturnCorrectMessageAfterSetDocumentWithIncorrectSchema()
         {
-            new DocumentApi(null).SetDocument(ConfigurationId, DocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, DocumentId, new
                 {
                     Id = Guid.NewGuid().ToString(),
                     StringProperty = "StringValue1",
@@ -331,7 +331,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                         }
                 }, false, true);
 
-            new DocumentApi(null).SetDocument(ConfigurationId, DocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, DocumentId, new
                 {
                     Id = Guid.NewGuid().ToString(),
                     StringProperty = "StringValue2",
@@ -351,7 +351,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             try
             {
-                new DocumentApi(null).SetDocument(ConfigurationId, DocumentId, new
+                new DocumentApi().SetDocument(ConfigurationId, DocumentId, new
                     {
                         Id = Guid.NewGuid().ToString(),
                         StringProperty = 1,
@@ -382,7 +382,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         [Test]
         public void ShouldReturnCorrectMessageAfterSetDocumentsWithIncorrectSchema()
         {
-            new DocumentApi(null).SetDocuments(ConfigurationId, DocumentId, new[]
+            new DocumentApi().SetDocuments(ConfigurationId, DocumentId, new[]
                 {
                     new
                         {
@@ -401,7 +401,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                         }
                 }, 200, true);
 
-            new DocumentApi(null).SetDocuments(ConfigurationId, DocumentId, new[]
+            new DocumentApi().SetDocuments(ConfigurationId, DocumentId, new[]
                 {
                     new
                         {
@@ -424,7 +424,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             try
             {
-                new DocumentApi(null).SetDocuments(ConfigurationId, DocumentId, new[]
+                new DocumentApi().SetDocuments(ConfigurationId, DocumentId, new[]
                     {
                         new
                             {
@@ -487,10 +487,10 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                         }
                 };
 
-            new DocumentApi(null).SetDocuments(ConfigurationId, DocumentId, documents, 2);
+            new DocumentApi().SetDocuments(ConfigurationId, DocumentId, documents, 2);
 
             IEnumerable<dynamic> items =
-                new DocumentApi(null).GetDocument(ConfigurationId, DocumentId,
+                new DocumentApi().GetDocument(ConfigurationId, DocumentId,
                                                   filter =>
                                                   filter.AddCriteria(cr => cr.IsEquals(1).Property("TestProperty")), 0,
                                                   10).ToEnumerable();

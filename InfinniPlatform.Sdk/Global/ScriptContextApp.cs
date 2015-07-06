@@ -13,42 +13,39 @@ namespace InfinniPlatform.Sdk.Global
     /// </summary>
     public sealed class ScriptContextApp
     {
-        private readonly string _version;
-
         private readonly string _server;
 
         private readonly string _port;
 
-        public ScriptContextApp(string version)
+        public ScriptContextApp()
         {
-            _version = version;
             _server = HostingConfig.Default.ServerName;
             _port = HostingConfig.Default.ServerPort.ToString();
         }
 
         public InfinniAuthApi GetAuthApi()
         {
-            return new InfinniAuthApi(_server, _port, _version);
+            return new InfinniAuthApi(_server, _port);
         }
 
         public InfinniCustomServiceApi GetCustomServiceApi()
         {
-            return new InfinniCustomServiceApi(_server, _port, _version);
+            return new InfinniCustomServiceApi(_server, _port);
         }
 
         public InfinniDocumentApi GetDocumentApi()
         {
-            return new InfinniDocumentApi(_server, _port, _version);
+            return new InfinniDocumentApi(_server, _port);
         }
 
         public InfinniFileApi GetFileApi()
         {
-            return new InfinniFileApi(_server, _port, _version);
+            return new InfinniFileApi(_server, _port);
         }
 
         public InfinniSignInApi GetSignInApi()
         {
-            return new InfinniSignInApi(_server, _port, _version);
+            return new InfinniSignInApi(_server, _port);
         }
     }
 }

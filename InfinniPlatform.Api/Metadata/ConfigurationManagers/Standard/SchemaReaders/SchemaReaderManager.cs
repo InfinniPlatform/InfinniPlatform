@@ -14,7 +14,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.SchemaRead
         /// <returns>Схема документа</returns>
         public dynamic GetSchema(string version, string configId, string documentId)
         {
-            return new MetadataApi(version).GetDocumentSchema(configId, documentId);
+            return new MetadataApi().GetDocumentSchema(configId, documentId);
         }
     }
 }

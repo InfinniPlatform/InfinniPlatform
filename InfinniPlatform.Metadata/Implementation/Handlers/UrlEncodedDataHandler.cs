@@ -2,6 +2,7 @@
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Hosting;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -22,7 +23,6 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
         {
             var config = ConfigRequestProvider.GetConfiguration();
             var metadata = ConfigRequestProvider.GetMetadataIdentifier();
-            var version = ConfigRequestProvider.GetVersion();
 
             var target = new UrlEncodedDataContext
             {
@@ -31,13 +31,11 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
                 Configuration = config,
                 Metadata = metadata,
                 Context = _globalContext,
-                Version = version
             };
 
             var metadataConfig =
-                _globalContext.GetComponent<IMetadataConfigurationProvider>(ConfigRequestProvider.GetVersion())
-                    .GetMetadataConfiguration(ConfigRequestProvider.GetVersion(),
-                        ConfigRequestProvider.GetConfiguration());
+                _globalContext.GetComponent<IMetadataConfigurationProvider>()
+                    .GetMetadataConfiguration(_globalContext.GetVersion(ConfigRequestProvider.GetConfiguration(),ConfigRequestProvider.GetUserName()), ConfigRequestProvider.GetConfiguration());
 
             metadataConfig.MoveWorkflow(metadata,
                 metadataConfig.GetExtensionPointValue(ConfigRequestProvider, "ProcessUrlEncodedData"), target);

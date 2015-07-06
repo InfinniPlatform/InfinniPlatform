@@ -7,7 +7,7 @@ namespace InfinniPlatform.QueryDesigner.Contracts.Implementation
     {
         public IEnumerable<dynamic> ExecuteQuery(string version, string queryText, bool denormalizeResult = false)
         {
-            return new DocumentApi(version).GetDocumentByQuery(queryText, denormalizeResult);
+            return new DocumentApi().GetDocumentByQuery(queryText, denormalizeResult);
         }
     }
 }

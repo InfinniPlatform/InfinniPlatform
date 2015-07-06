@@ -9,6 +9,7 @@ using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.TestEnvironment;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Hosting;
 using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
@@ -40,7 +41,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             dynamic document = new DynamicWrapper();
             document.Name = "test";
 
-            new DocumentApi(null).SetDocument(_configId, _documentId, document);
+            new DocumentApi().SetDocument(_configId, _documentId, document);
         }
 
         private void CreateTestConfig()

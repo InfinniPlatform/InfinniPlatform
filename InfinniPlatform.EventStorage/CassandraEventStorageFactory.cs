@@ -1,7 +1,8 @@
 ﻿using System;
-using InfinniPlatform.Api.Factories;
 using InfinniPlatform.Cassandra;
 using InfinniPlatform.Factories;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Binary;
 
 namespace InfinniPlatform.EventStorage
 {

@@ -101,15 +101,15 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             testDoc2Instance.Id = uid2;
             testDoc2Instance.Street = "Lenina";
 
-            new DocumentApi(null).SetDocument("testconfig", "testdoc1", testDoc1Instance);
-            new DocumentApi(null).SetDocument("testconfig", "testdoc2", testDoc2Instance);
+            new DocumentApi().SetDocument("testconfig", "testdoc1", testDoc1Instance);
+            new DocumentApi().SetDocument("testconfig", "testdoc2", testDoc2Instance);
 
 
-            dynamic storedDoc1 = new DocumentApi(null).GetDocument("testconfig", "testdoc1",
+            dynamic storedDoc1 = new DocumentApi().GetDocument("testconfig", "testdoc1",
                                                                    filter =>
                                                                    filter.AddCriteria(
                                                                        c => c.Property("Id").IsEquals(uid1)), 0, 1);
-            dynamic storedDoc2 = new DocumentApi(null).GetDocument("testconfig", "testdoc2",
+            dynamic storedDoc2 = new DocumentApi().GetDocument("testconfig", "testdoc2",
                                                                    filter =>
                                                                    filter.AddCriteria(
                                                                        c => c.Property("Id").IsEquals(uid2)), 0, 1);
@@ -117,13 +117,13 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             Assert.IsNotNull(storedDoc1);
             Assert.IsNotNull(storedDoc2);
 
-            new DocumentApi(null).DeleteDocument("testconfig", "testdoc1", uid1);
+            new DocumentApi().DeleteDocument("testconfig", "testdoc1", uid1);
 
-            storedDoc1 = new DocumentApi(null).GetDocument("testconfig", "testdoc1",
+            storedDoc1 = new DocumentApi().GetDocument("testconfig", "testdoc1",
                                                            filter =>
                                                            filter.AddCriteria(c => c.Property("Id").IsEquals(uid1)), 0,
                                                            1);
-            storedDoc2 = new DocumentApi(null).GetDocument("testconfig", "testdoc2",
+            storedDoc2 = new DocumentApi().GetDocument("testconfig", "testdoc2",
                                                            filter =>
                                                            filter.AddCriteria(c => c.Property("Id").IsEquals(uid2)), 0,
                                                            1);

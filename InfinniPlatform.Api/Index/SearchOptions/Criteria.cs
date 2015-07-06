@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using InfinniPlatform.Api.SearchOptions;
+using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Api.Index.SearchOptions
 {

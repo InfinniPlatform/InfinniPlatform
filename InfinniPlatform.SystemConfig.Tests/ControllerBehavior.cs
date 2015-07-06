@@ -30,7 +30,7 @@ namespace InfinniPlatform.SystemConfig.Tests
         [Test]
         public void ShouldGetConfigurationHelp()
         {
-            var builder = new RestQueryBuilder(null, "SystemConfig", "metadata", "helpconfiguration", null);
+            var builder = new RestQueryBuilder("SystemConfig", "metadata", "helpconfiguration", null);
 
             RestQueryResponse help = builder.QueryHelp("dmd");
 
@@ -53,7 +53,7 @@ namespace InfinniPlatform.SystemConfig.Tests
         [Test]
         public void ShouldGetRegisteredConfigList()
         {
-            var builder = new RestQueryBuilder(null, "SystemConfig", "metadata", "getregisteredconfiglist", null);
+            var builder = new RestQueryBuilder( "SystemConfig", "metadata", "getregisteredconfiglist", null);
             RestQueryResponse result = builder.QueryPostJson(null, null);
 
             Assert.True(result.IsAllOk);
@@ -65,7 +65,7 @@ namespace InfinniPlatform.SystemConfig.Tests
         [Test]
         public void ShouldGetServiceTypes()
         {
-            var builder = new RestQueryBuilder(null, "SystemConfig", "metadata", "getservicemetadata", null);
+            var builder = new RestQueryBuilder( "SystemConfig", "metadata", "getservicemetadata", null);
 
             RestQueryResponse response = builder.QueryGet(null, 0, 1000);
 
@@ -78,7 +78,7 @@ namespace InfinniPlatform.SystemConfig.Tests
         [Test]
         public void ShouldGetStandardExtensionPoints()
         {
-            var builder = new RestQueryBuilder(null, "SystemConfig", "metadata", "getstandardextensionpoints", null);
+            var builder = new RestQueryBuilder("SystemConfig", "metadata", "getstandardextensionpoints", null);
 
             RestQueryResponse response = builder.QueryGet(null, 0, 1000);
 

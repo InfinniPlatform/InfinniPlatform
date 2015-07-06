@@ -25,7 +25,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
         {
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            return new ValueRequestHandlerResult(new DocumentApi(routeDictionary["version"]).DeleteDocument(routeDictionary["application"], routeDictionary["documentType"], routeDictionary["instanceId"]));
+            return new ValueRequestHandlerResult(new DocumentApi().DeleteDocument(routeDictionary["application"], routeDictionary["documentType"], routeDictionary["instanceId"]));
 
         }
     }

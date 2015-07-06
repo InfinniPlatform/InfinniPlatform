@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
-using InfinniPlatform.Api.Factories;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Metadata;
 using InfinniPlatform.Runtime;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.SystemConfig.Initializers
 {

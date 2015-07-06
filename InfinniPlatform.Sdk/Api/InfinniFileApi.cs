@@ -8,8 +8,8 @@ namespace InfinniPlatform.Sdk.Api
     /// </summary>
     public sealed class InfinniFileApi : BaseApi
     {
-        public InfinniFileApi(string server, string port, string version)
-            : base(server, port, version)
+        public InfinniFileApi(string server, string port)
+            : base(server, port)
         {
         }
 
@@ -30,7 +30,7 @@ namespace InfinniPlatform.Sdk.Api
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
 
-            var response = restQueryExecutor.QueryPostFile(RouteBuilder.BuildRestRoutingUploadFile(Version,application), instanceId, fieldName, fileName, fileStream);
+            var response = restQueryExecutor.QueryPostFile(RouteBuilder.BuildRestRoutingUploadFile(application), instanceId, fieldName, fileName, fileStream);
 
             return ProcessAsObjectResult(response,string.Format(Resources.UnableToUploadFileOnServer, response.GetErrorContent()));   
         }
@@ -56,7 +56,7 @@ namespace InfinniPlatform.Sdk.Api
             };
 
             var response = restQueryExecutor.QueryGetUrlEncodedData(
-                    RouteBuilder.BuildRestRoutingDownloadFile(Version, application), linkedData);
+                    RouteBuilder.BuildRestRoutingDownloadFile(application), linkedData);
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToDownloadFileFromServer, response.GetErrorContent())); 
         }

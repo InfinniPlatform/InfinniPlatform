@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Metadata;
+using InfinniPlatform.Sdk.ContextComponents;
 
 namespace InfinniPlatform.Api.Schema
 {

@@ -31,7 +31,7 @@ namespace InfinniPlatform.RestfulApi.Auth
             }
 
             dynamic existingAcl =
-                target.Context.GetComponent<DocumentApi>(target.Version)
+                target.Context.GetComponent<DocumentApi>()
                       .GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
                                    AuthorizationStorageExtensions.AclStore,
                                    f => f.AddCriteria(cr => cr.Property("UserName").IsEquals(instance.UserName))
@@ -47,11 +47,11 @@ namespace InfinniPlatform.RestfulApi.Auth
                 instance.Id = existingAcl.Id;
             }
 
-            target.Context.GetComponent<DocumentApi>(target.Version)
+            target.Context.GetComponent<DocumentApi>()
                   .SetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
                                AuthorizationStorageExtensions.AclStore, instance);
 
-            target.Context.GetComponent<CachedSecurityComponent>(target.Version).UpdateAcl();
+            target.Context.GetComponent<CachedSecurityComponent>().UpdateAcl();
 
             target.Result = new DynamicWrapper();
             target.Result.IsValid = true;

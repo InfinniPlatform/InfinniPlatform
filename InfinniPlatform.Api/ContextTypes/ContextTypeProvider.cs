@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Environment.Hosting;
 
 namespace InfinniPlatform.Api.ContextTypes
 {

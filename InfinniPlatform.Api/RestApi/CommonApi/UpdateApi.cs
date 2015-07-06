@@ -37,7 +37,7 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
                 MetadataObject = metadataObject
             };
 
-            RestQueryApi.QueryPostJsonRaw("Update", "Package", "installjsonmetadata", null, request, _version);
+            RestQueryApi.QueryPostJsonRaw("Update", "Package", "installjsonmetadata", null, request);
         }
 
         /// <summary>
@@ -46,7 +46,12 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
         /// <param name="filePath">Путь к файлу JSON конфигурации</param>
         public dynamic UpdateConfigFromJson(string filePath)
         {
-            var builder = new RestQueryBuilder(_version, "SystemConfig", "update", "updateconfigfromjson", null);
+            var builder = new RestQueryBuilder("SystemConfig", "update", "updateconfigfromjson", null);
+
+            var linkedData = new
+                {
+                    Version = _version
+                };
 
             var response = builder.QueryPostFile(null, filePath, null);
 
@@ -97,10 +102,10 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
             // Создаем индексы под системные конфигурации в случае необходимости
             RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "runmigration", null,
                 new
-                {
-                    MigrationName = "UpdateStoreMigration",
-                    ConfigurationName = configurationId
-                }, _version);
+                    {
+                        MigrationName = "UpdateStoreMigration",
+                        ConfigurationName = configurationId
+                    });
         }
 
         /// <summary>
@@ -110,7 +115,7 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
         private void InstallPackage(dynamic updatePackage)
         {
             //выполняем обновление метаданных с помощью пакета обновления
-            var response = RestQueryApi.QueryPostJsonRaw("Update", "Package", "Install", null, updatePackage, _version);
+            var response = RestQueryApi.QueryPostJsonRaw("Update", "Package", "Install", null, updatePackage);
 
 
             if (!response.IsAllOk)
@@ -119,7 +124,7 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
                 Console.WriteLine("Response content: " + response.Content);
                 throw new ArgumentException(string.Format("Error install package {0} :{1} ",
                     updatePackage.PackageHeader.Value, response.Content));
-            }
+            }            
         }
     }
 }

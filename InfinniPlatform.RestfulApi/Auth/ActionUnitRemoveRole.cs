@@ -14,8 +14,8 @@ namespace InfinniPlatform.RestfulApi.Auth
         {
             var storage = new ApplicationUserStorePersistentStorage();
             storage.RemoveRole(target.Item.RoleName);
-            target.Context.GetComponent<CachedSecurityComponent>(target.Version).UpdateAcl();
-            target.Context.GetComponent<CachedSecurityComponent>(target.Version).UpdateRoles();
+            target.Context.GetComponent<CachedSecurityComponent>().UpdateAcl();
+            target.Context.GetComponent<CachedSecurityComponent>().UpdateRoles();
             target.Result = new DynamicWrapper();
             target.Result.IsValid = true;
             target.Result.ValidationMessage = "Role removed.";

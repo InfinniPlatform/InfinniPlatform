@@ -36,7 +36,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 
             try
             {
-                return new ValueRequestHandlerResult(new SignInApi(routeDictionary["version"]).ChangePassword(body.UserName.ToString(), body.OldPassword.ToString(),
+                return new ValueRequestHandlerResult(new SignInApi().ChangePassword(body.UserName.ToString(), body.OldPassword.ToString(),
                      body.NewPassword.ToString()));
             }
             catch (Exception e)

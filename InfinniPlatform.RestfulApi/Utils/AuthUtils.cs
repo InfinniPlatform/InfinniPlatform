@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.Validation;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Validations;
 
 namespace InfinniPlatform.RestfulApi.Utils
 {

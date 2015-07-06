@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
-using InfinniPlatform.Api.Actions;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.Validation;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Actions;
+using InfinniPlatform.Sdk.Environment.Validations;
 
 namespace InfinniPlatform.Metadata.StateMachine.Statuses
 {

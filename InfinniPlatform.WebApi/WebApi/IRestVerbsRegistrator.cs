@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Hosting;
+using InfinniPlatform.Sdk.Environment.Hosting;
 
 namespace InfinniPlatform.WebApi.WebApi
 {

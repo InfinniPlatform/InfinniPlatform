@@ -13,6 +13,7 @@ using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.TestEnvironment;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Hosting;
 using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
@@ -338,14 +339,14 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                 {
                     Id = InfoRegisterId
                 };
-            new DocumentApi(null).SetDocument(ConfigurationId, ConfigurationId + RegisterConstants.RegistersCommonInfo,
+            new DocumentApi().SetDocument(ConfigurationId, ConfigurationId + RegisterConstants.RegistersCommonInfo,
                                               registerInfoDocument);
 
             registerInfoDocument = new
                 {
                     Id = AvailableBedsRegisterId
                 };
-            new DocumentApi(null).SetDocument(ConfigurationId, ConfigurationId + RegisterConstants.RegistersCommonInfo,
+            new DocumentApi().SetDocument(ConfigurationId, ConfigurationId + RegisterConstants.RegistersCommonInfo,
                                               registerInfoDocument);
         }
 
@@ -454,7 +455,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         private static void AddTestDocuments()
         {
             // Добавляем новые койки
-            dynamic result = new DocumentApi(null).SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
+            dynamic result = new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
                 {
                     Id = Guid.NewGuid(),
                     Room = "Палата 33",
@@ -464,35 +465,35 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             // Console.WriteLine(result.ToString());
 
-            new DocumentApi(null).SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
                 {
                     Id = Guid.NewGuid(),
                     Room = "Палата 33",
                     Bed = "Койка 2",
                     Date = new DateTime(2014, 01, 01)
                 });
-            new DocumentApi(null).SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
                 {
                     Id = Guid.NewGuid(),
                     Room = "Палата 33",
                     Bed = "Койка 3",
                     Date = new DateTime(2014, 01, 01)
                 });
-            new DocumentApi(null).SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
                 {
                     Id = Guid.NewGuid(),
                     Room = "Палата 54",
                     Bed = "Койка 1",
                     Date = new DateTime(2014, 01, 01)
                 });
-            new DocumentApi(null).SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
                 {
                     Id = Guid.NewGuid(),
                     Room = "Палата 54",
                     Bed = "Койка 2",
                     Date = new DateTime(2014, 01, 01)
                 });
-            new DocumentApi(null).SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
                 {
                     Id = Guid.NewGuid(),
                     Room = "Палата 54",
@@ -501,7 +502,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                 });
 
             // Новые пациенты
-            result = new DocumentApi(null).SetDocument(ConfigurationId, PatientMovementDocumentId, new
+            result = new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
                 {
                     Id = Guid.NewGuid(),
                     PatientName = "Иванов",
@@ -512,7 +513,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             // Console.WriteLine(result.ToString());
 
-            new DocumentApi(null).SetDocument(ConfigurationId, PatientMovementDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
                 {
                     Id = Guid.NewGuid(),
                     PatientName = "Петров",
@@ -521,7 +522,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                     Date = new DateTime(2014, 08, 10)
                 });
 
-            new DocumentApi(null).SetDocument(ConfigurationId, PatientMovementDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
                 {
                     Id = Guid.NewGuid(),
                     PatientName = "Сидоров",
@@ -531,7 +532,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                 });
 
             // Переводы пациентов в другие палаты
-            new DocumentApi(null).SetDocument(ConfigurationId, PatientMovementDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
                 {
                     Id = Guid.NewGuid(),
                     PatientName = "Иванов",
@@ -542,7 +543,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                     Date = new DateTime(2014, 08, 11)
                 });
 
-            new DocumentApi(null).SetDocument(ConfigurationId, PatientMovementDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
                 {
                     Id = Guid.NewGuid(),
                     PatientName = "Петров",
@@ -553,7 +554,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                     Date = new DateTime(2014, 08, 11)
                 });
 
-            new DocumentApi(null).SetDocument(ConfigurationId, PatientMovementDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
                 {
                     Id = TestGuid,
                     PatientName = "Сидоров",
@@ -565,7 +566,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                 });
 
             // Выписка пациентов
-            new DocumentApi(null).SetDocument(ConfigurationId, PatientMovementDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
                 {
                     Id = Guid.NewGuid(),
                     PatientName = "Иванов",
@@ -574,7 +575,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                     Date = new DateTime(2014, 08, 12)
                 });
 
-            new DocumentApi(null).SetDocument(ConfigurationId, PatientMovementDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
                 {
                     Id = Guid.NewGuid(),
                     PatientName = "Петорв",
@@ -583,7 +584,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                     Date = new DateTime(2014, 09, 12)
                 });
 
-            new DocumentApi(null).SetDocument(ConfigurationId, PatientMovementDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
                 {
                     Id = Guid.NewGuid(),
                     PatientName = "Сидоров",
@@ -597,7 +598,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         public void ShouldAddOnlyOneRegisterEntryToInfoRegisterPerPeriod()
         {
             // Период для регистра сведений - 1 месяц, следовательно за каждый месяц будем иметь одну запись в регистре
-            new DocumentApi(null).SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
                 {
                     Info = true,
                     Id = Guid.NewGuid(),
@@ -606,7 +607,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                     Date = new DateTime(2114, 01, 01, 12, 1, 1)
                 });
 
-            new DocumentApi(null).SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
                 {
                     Info = true,
                     Id = Guid.NewGuid(),
@@ -615,7 +616,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                     Date = new DateTime(2114, 01, 15, 1, 2, 3)
                 });
 
-            new DocumentApi(null).SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
                 {
                     Info = true,
                     Id = Guid.NewGuid(),
@@ -624,7 +625,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                     Date = new DateTime(2114, 02, 01, 7, 6, 5)
                 });
 
-            new DocumentApi(null).SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
                 {
                     Info = true,
                     Id = Guid.NewGuid(),
@@ -633,7 +634,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                     Date = new DateTime(2114, 02, 02, 4, 4, 4)
                 });
 
-            new DocumentApi(null).SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
                 {
                     Info = true,
                     Id = Guid.NewGuid(),
@@ -642,7 +643,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                     Date = new DateTime(2114, 02, 04, 3, 2, 1)
                 });
 
-            new DocumentApi(null).SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
                 {
                     Info = true,
                     Id = Guid.NewGuid(),
@@ -651,7 +652,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                     Date = new DateTime(2114, 03, 01, 3, 2, 1)
                 });
 
-            IEnumerable<dynamic> docs = new DocumentApi(null).GetDocument(
+            IEnumerable<dynamic> docs = new DocumentApi().GetDocument(
                 ConfigurationId,
                 RegisterConstants.RegisterNamePrefix + InfoRegisterId,
                 f =>
@@ -674,7 +675,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             _sw.Restart();
 
             // Получение информации по занятности коек на 1 февраля 2014
-            IEnumerable<dynamic> aggregationInfo = new RegisterApi(null).GetValuesByDate(ConfigurationId,
+            IEnumerable<dynamic> aggregationInfo = new RegisterApi().GetValuesByDate(ConfigurationId,
                                                                                          AvailableBedsRegisterId,
                                                                                          new DateTime(2014, 2, 1),
                                                                                          new[] {"Room", "Bed"});
@@ -720,7 +721,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             _sw.Restart();
 
             // Получение информации по наличию свободных коек по палатам на 12 августа 2014
-            aggregationInfo = new RegisterApi(null).GetValuesByDate(ConfigurationId, AvailableBedsRegisterId,
+            aggregationInfo = new RegisterApi().GetValuesByDate(ConfigurationId, AvailableBedsRegisterId,
                                                                     new DateTime(2014, 08, 12), new[] {"Room"});
 
             _sw.Stop();
@@ -733,7 +734,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             _sw.Restart();
 
             // Получение информации по наличию свободных коек с различными номерами на 12 августа 2014
-            aggregationInfo = new RegisterApi(null).GetValuesByDate(ConfigurationId, AvailableBedsRegisterId,
+            aggregationInfo = new RegisterApi().GetValuesByDate(ConfigurationId, AvailableBedsRegisterId,
                                                                     new DateTime(2014, 08, 12), new[] {"Bed"},
                                                                     new[] {"Value"});
 
@@ -748,7 +749,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             _sw.Restart();
 
             // Получение информации по изменению занятности коек между 12 августа и 14 августа 2014 года
-            aggregationInfo = new RegisterApi(null).GetValuesBetweenDates(ConfigurationId, AvailableBedsRegisterId,
+            aggregationInfo = new RegisterApi().GetValuesBetweenDates(ConfigurationId, AvailableBedsRegisterId,
                                                                           new DateTime(2014, 08, 12),
                                                                           new DateTime(2014, 08, 14));
 
@@ -759,7 +760,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             Assert.AreEqual(1, aggregationInfo.First(a => a.Room.Contains("33") && a.Bed.Contains("1")).Value);
 
             // Получение информации по типу регистратора
-            aggregationInfo = new RegisterApi(null).GetValuesBуRegistrarType(ConfigurationId, AvailableBedsRegisterId,
+            aggregationInfo = new RegisterApi().GetValuesBуRegistrarType(ConfigurationId, AvailableBedsRegisterId,
                                                                              BedsRegistrationDocumentId);
 
             _sw.Stop();
@@ -800,7 +801,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             }
 
             // Получение информации по регистратору
-            aggregationInfo = new RegisterApi(null).GetValuesBуRegistrar(ConfigurationId, AvailableBedsRegisterId,
+            aggregationInfo = new RegisterApi().GetValuesBуRegistrar(ConfigurationId, AvailableBedsRegisterId,
                                                                          TestGuid.ToString());
 
             _sw.Stop();
@@ -811,7 +812,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             Assert.AreEqual(-1, aggregationInfo.First(a => a.Room.Contains("33") && a.Bed.Contains("3")).Value);
 
             // Получение информации по занятности коек на 18 августа 2014 года
-            aggregationInfo = new RegisterApi(null).GetValuesByDate(ConfigurationId, AvailableBedsRegisterId,
+            aggregationInfo = new RegisterApi().GetValuesByDate(ConfigurationId, AvailableBedsRegisterId,
                                                                     new DateTime(2014, 8, 18));
 
             // Все койки в палате 54 должны освободиться
@@ -850,7 +851,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             }
 
             // Получение информации по занятности коек на 1 октября 2014 года
-            aggregationInfo = new RegisterApi(null).GetValuesByDate(ConfigurationId, AvailableBedsRegisterId,
+            aggregationInfo = new RegisterApi().GetValuesByDate(ConfigurationId, AvailableBedsRegisterId,
                                                                     new DateTime(2014, 10, 1));
 
             // Все койки должны освободиться
@@ -889,13 +890,13 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             // Получение агрегации с группировкой по месяцам
 
-            aggregationInfo = new RegisterApi(null).GetValuesByPeriods(ConfigurationId, AvailableBedsRegisterId,
+            aggregationInfo = new RegisterApi().GetValuesByPeriods(ConfigurationId, AvailableBedsRegisterId,
                                                                        DateTime.MinValue, DateTime.MaxValue,
                                                                        RegisterPeriod.Month);
             Assert.IsTrue(aggregationInfo.Any());
 
             // Тот же запрос с установленной временной зоной
-            aggregationInfo = new RegisterApi(null).GetValuesByPeriods(ConfigurationId, AvailableBedsRegisterId,
+            aggregationInfo = new RegisterApi().GetValuesByPeriods(ConfigurationId, AvailableBedsRegisterId,
                                                                        DateTime.MinValue, DateTime.MaxValue,
                                                                        RegisterPeriod.Month, null, null, "+05:00");
             Assert.IsTrue(aggregationInfo.Any());
@@ -906,21 +907,21 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Добавляем новые койки
 
-            new DocumentApi(null).SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
                 {
                     Id = Guid.NewGuid(),
                     Room = "Палата 6",
                     Bed = "Койка 1",
                     Date = new DateTime(2014, 01, 01)
                 });
-            new DocumentApi(null).SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
                 {
                     Id = Guid.NewGuid(),
                     Room = "Палата 6",
                     Bed = "Койка 2",
                     Date = new DateTime(2014, 01, 01)
                 });
-            new DocumentApi(null).SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
                 {
                     Id = Guid.NewGuid(),
                     Room = "Палата 6",
@@ -929,7 +930,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                 });
 
             // Получение информации по занятности коек на 1 февраля 2014
-            IEnumerable<dynamic> aggregationInfo = new RegisterApi(null).GetValuesByDate(ConfigurationId,
+            IEnumerable<dynamic> aggregationInfo = new RegisterApi().GetValuesByDate(ConfigurationId,
                                                                                          AvailableBedsRegisterId,
                                                                                          new DateTime(2014, 2, 1),
                                                                                          new[] {"Room", "Bed"});
@@ -956,7 +957,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             // Добавляем документ (схема данных не изменилась)
 
-            new DocumentApi(null).SetDocument(ConfigurationId, PatientMovementDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
                 {
                     Id = Guid.NewGuid(),
                     PatientName = "Иванов",
@@ -966,7 +967,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                 });
 
             // Получение информации по наличию свободных коек по палатам на 12 августа 2014
-            aggregationInfo = new RegisterApi(null).GetValuesByDate(ConfigurationId, AvailableBedsRegisterId,
+            aggregationInfo = new RegisterApi().GetValuesByDate(ConfigurationId, AvailableBedsRegisterId,
                                                                     new DateTime(2014, 08, 12), new[] {"Room"});
 
             // Занята только первая койка палаты номер 6
@@ -1123,7 +1124,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
 
             // Добавляем документ (схема данных изменилась)
-            new DocumentApi(null).SetDocument(ConfigurationId, PatientMovementDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
                 {
                     Id = Guid.NewGuid(),
                     PatientName = "Петров",
@@ -1133,7 +1134,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                 });
 
 
-            aggregationInfo = new RegisterApi(null).GetValuesByDate(ConfigurationId, AvailableBedsRegisterId,
+            aggregationInfo = new RegisterApi().GetValuesByDate(ConfigurationId, AvailableBedsRegisterId,
                                                                     new DateTime(2014, 09, 11), new[] {"Room"});
 
             // Заняты 2 койки палаты номер 6 (одна занята после проводки документа со старой схемой и одна после проводки документа с новой схемой)
@@ -1260,7 +1261,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             new UpdateApi(null).UpdateStore(ConfigurationId);
 
             // Добавляем документ (схема данных изменилась)
-            new DocumentApi(null).SetDocument(ConfigurationId, PatientMovementDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
                 {
                     Id = Guid.NewGuid(),
                     PatientName = "Петров",
@@ -1269,7 +1270,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                     Date = new DateTime(2014, 08, 10)
                 });
 
-            aggregationInfo = new RegisterApi(null).GetValuesByDate(ConfigurationId, AvailableBedsRegisterId,
+            aggregationInfo = new RegisterApi().GetValuesByDate(ConfigurationId, AvailableBedsRegisterId,
                                                                     new DateTime(2014, 09, 11), new[] {"Room"});
 
             Assert.AreEqual(0, aggregationInfo.First(a => a.Room.Contains("6")).Value);
@@ -1287,7 +1288,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                                                   ConfigurationName = ConfigurationId
                                               });
 
-            new DocumentApi(null).SetDocument(ConfigurationId, PatientMovementDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
                 {
                     Id = Guid.NewGuid(),
                     PatientName = "Иванов",
@@ -1296,7 +1297,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                     Date = DateTime.Now.AddYears(2)
                 }, false, true);
 
-            new DocumentApi(null).SetDocument(ConfigurationId, PatientMovementDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
                 {
                     Id = Guid.NewGuid(),
                     PatientName = "Петров",
@@ -1305,7 +1306,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                     Date = DateTime.Now.AddYears(2)
                 }, false, true);
 
-            new DocumentApi(null).SetDocument(ConfigurationId, PatientMovementDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
                 {
                     Id = Guid.NewGuid(),
                     PatientName = "Сидоров",
@@ -1315,7 +1316,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                 }, false, true);
 
             // В данном случае расчет будет произведен с учетом данных из таблицы итогов
-            IEnumerable<dynamic> aggregationInfo = new RegisterApi(null).GetValuesByDate(ConfigurationId,
+            IEnumerable<dynamic> aggregationInfo = new RegisterApi().GetValuesByDate(ConfigurationId,
                                                                                          AvailableBedsRegisterId,
                                                                                          DateTime.Now.AddYears(3));
 
@@ -1352,7 +1353,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                 }
             }
 
-            IEnumerable<dynamic> docs = new RegisterApi(null).GetRegisterTotals(ConfigurationId, AvailableBedsRegisterId,
+            IEnumerable<dynamic> docs = new RegisterApi().GetRegisterTotals(ConfigurationId, AvailableBedsRegisterId,
                                                                                 DateTime.Now);
 
             // Три палаты по три койки в каждой
@@ -1364,7 +1365,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             string testingDocumentGuid = Guid.NewGuid().ToString();
 
-            new DocumentApi(null).SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
+            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
                 {
                     Info = true,
                     Id = testingDocumentGuid,
@@ -1373,7 +1374,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                     Date = new DateTime(2214, 01, 01)
                 });
 
-            IEnumerable<dynamic> docs = new RegisterApi(null).GetRegisterEntries(
+            IEnumerable<dynamic> docs = new RegisterApi().GetRegisterEntries(
                 ConfigurationId,
                 InfoRegisterId,
                 f =>
@@ -1385,9 +1386,9 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             Assert.AreEqual(1, docs.Count());
 
             // Удаляем документ
-            new DocumentApi(null).DeleteDocument(ConfigurationId, BedsRegistrationDocumentId, testingDocumentGuid);
+            new DocumentApi().DeleteDocument(ConfigurationId, BedsRegistrationDocumentId, testingDocumentGuid);
 
-            docs = new RegisterApi(null).GetRegisterEntries(
+            docs = new RegisterApi().GetRegisterEntries(
                 ConfigurationId,
                 InfoRegisterId,
                 f =>

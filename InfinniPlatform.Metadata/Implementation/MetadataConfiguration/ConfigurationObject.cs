@@ -1,7 +1,10 @@
-﻿using InfinniPlatform.Api.Factories;
-using InfinniPlatform.Api.Index;
+﻿using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Factories;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Binary;
+using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 {

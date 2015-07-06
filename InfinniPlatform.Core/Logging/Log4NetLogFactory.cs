@@ -2,19 +2,20 @@
 using System.IO;
 using System.Web.Hosting;
 using InfinniPlatform.Api.Settings;
+using InfinniPlatform.Sdk.Environment;
 using log4net;
 using log4net.Config;
-using ILog = InfinniPlatform.Api.Profiling.ILog;
+using ILog = InfinniPlatform.Sdk.Environment.Log.ILog;
 
 namespace InfinniPlatform.Logging
 {
     /// <summary>
-    ///     Фабрика для создания <see cref="Api.Profiling.ILog" /> на базе log4net.
+    ///     Фабрика для создания <see cref="ILog" /> на базе log4net.
     /// </summary>
     public sealed class Log4NetLogFactory : ILogFactory
     {
         /// <summary>
-        ///     Создает <see cref="Api.Profiling.ILog" />.
+        ///     Создает <see cref="ILog" />.
         /// </summary>
         public ILog CreateLog()
         {

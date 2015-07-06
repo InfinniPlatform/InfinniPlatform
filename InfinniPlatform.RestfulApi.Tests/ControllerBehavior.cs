@@ -31,10 +31,10 @@ namespace InfinniPlatform.RestfulApi.Tests
         public void ShouldRebuildIndex()
         {
             var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "rebuildindex", null, new
-            {
-                Configuration = "integration",
-                Metadata = "document"
-            });
+                {
+                    Configuration = "integration",
+                    Metadata = "document"
+                });
 
             Assert.AreEqual(true, response.IsAllOk);
         }
@@ -43,10 +43,10 @@ namespace InfinniPlatform.RestfulApi.Tests
         public void ShouldGetIndexStatus()
         {
             var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "indexexists", null, new
-            {
-                Configuration = "integration",
-                Metadata = "document"
-            });
+                {
+                    Configuration = "integration",
+                    Metadata = "document"
+                });
 
             Assert.AreEqual(true, response.IsAllOk);
         }
@@ -55,11 +55,11 @@ namespace InfinniPlatform.RestfulApi.Tests
         public void ShouldGetFromIndex()
         {
             var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "getfromindex", null, new
-            {
-                Configuration = "integration",
-                Metadata = "document",
-                Id = Guid.NewGuid().ToString()
-            });
+                {
+                    Configuration = "integration",
+                    Metadata = "document",
+                    Id = Guid.NewGuid().ToString()
+                });
 
             Assert.AreEqual(true, response.IsAllOk);
         }
@@ -68,19 +68,19 @@ namespace InfinniPlatform.RestfulApi.Tests
         public void ShouldInsertIndex()
         {
             var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "insertindex", null, new
-            {
-                Configuration = "integration",
-                Metadata = "document",
-                Item = new
                 {
-                    Id = Guid.NewGuid().ToString(),
-                    TestProperty = "1",
-                    TestInnerObject = new
-                    {
-                        TestPropertyInner = "2"
-                    }
-                }
-            });
+                    Configuration = "integration",
+                    Metadata = "document",
+                    Item = new
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            TestProperty = "1",
+                            TestInnerObject = new
+                                {
+                                    TestPropertyInner = "2"
+                                }
+                        }
+                });
 
             Assert.AreEqual(true, response.IsAllOk);
         }
@@ -89,20 +89,20 @@ namespace InfinniPlatform.RestfulApi.Tests
         public void ShouldInsertIndexWithTimestamp()
         {
             var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "insertindexwithtimestamp", null, new
-            {
-                Configuration = "integration",
-                Metadata = "document",
-                TimeStamp = DateTime.Now,
-                Item = new
                 {
-                    Id = Guid.NewGuid().ToString(),
-                    TestProperty = "1",
-                    TestInnerObject = new
-                    {
-                        TestPropertyInner = "2"
-                    }
-                }
-            });
+                    Configuration = "integration",
+                    Metadata = "document",
+                    TimeStamp = DateTime.Now,
+                    Item = new
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            TestProperty = "1",
+                            TestInnerObject = new
+                                {
+                                    TestPropertyInner = "2"
+                                }
+                        }
+                });
 
             Assert.AreEqual(true, response.IsAllOk);
         }
@@ -111,13 +111,13 @@ namespace InfinniPlatform.RestfulApi.Tests
         public void ShouldGetDocument()
         {
             var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getdocument", null, new
-            {
-                Configuration = "update",
-                Metadata = "package",
-                Filter = new object[] {},
-                PageNumber = 0,
-                PageSize = 1
-            });
+                {
+                    Configuration = "update",
+                    Metadata = "package",
+                    Filter = new object[] {},
+                    PageNumber = 0,
+                    PageSize = 1
+                });
 
             Assert.AreEqual(true, response.IsAllOk);
 
@@ -129,15 +129,15 @@ namespace InfinniPlatform.RestfulApi.Tests
         public void ShouldSetDocument()
         {
             var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "setdocument", null, new
-            {
-                Configuration = "update",
-                Metadata = "package",
-                Item = new
                 {
-                    Id = Guid.NewGuid().ToString(),
-                    TestProperty = 1
-                }
-            });
+                    Configuration = "update",
+                    Metadata = "package",
+                    Item = new
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            TestProperty = 1
+                        }
+                });
 
             Assert.AreEqual(true, response.IsAllOk);
         }
@@ -152,23 +152,23 @@ namespace InfinniPlatform.RestfulApi.Tests
         public void ShouldSetDocuments()
         {
             var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "setdocument", null, new
-            {
-                Configuration = "update",
-                Metadata = "package",
-                Documents = new object[]
                 {
-                    new
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        TestProperty = 1
-                    },
-                    new
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        TestProeprty = 2
-                    }
-                }
-            });
+                    Configuration = "update",
+                    Metadata = "package",
+                    Documents = new object[]
+                        {
+                            new
+                                {
+                                    Id = Guid.NewGuid().ToString(),
+                                    TestProperty = 1
+                                },
+                            new
+                                {
+                                    Id = Guid.NewGuid().ToString(),
+                                    TestProeprty = 2
+                                }
+                        }
+                });
 
 
             Assert.AreEqual(true, response.IsAllOk);

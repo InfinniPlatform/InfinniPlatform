@@ -1,9 +1,11 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.Properties;
+﻿using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.Transactions;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Transactions;
 
 namespace InfinniPlatform.RestfulApi.Session
 {
@@ -14,7 +16,7 @@ namespace InfinniPlatform.RestfulApi.Session
     {
         public void Action(IApplyContext target)
         {
-            var manager = target.Context.GetComponent<ITransactionComponent>(target.Version).GetTransactionManager();
+            var manager = target.Context.GetComponent<ITransactionComponent>().GetTransactionManager();
 
             if (!string.IsNullOrEmpty(target.Item.SessionId) &&
                 target.Item.AttachedInfo.Document != null &&
@@ -27,9 +29,9 @@ namespace InfinniPlatform.RestfulApi.Session
                 transaction.Attach(
                     target.Item.AttachedInfo.Application,
                     target.Item.AttachedInfo.DocumentType,
-                    target.Version,
+                    target.Context.GetVersion(target.Item.AttachedInfo.Application, target.UserName),
                     new[] {target.Item.AttachedInfo.Document},
-                    target.Context.GetComponent<ISecurityComponent>(target.Version)
+                    target.Context.GetComponent<ISecurityComponent>()
                           .GetClaim(AuthorizationStorageExtensions.OrganizationClaim, target.UserName) ??
                     AuthorizationStorageExtensions.AnonimousUser);
 

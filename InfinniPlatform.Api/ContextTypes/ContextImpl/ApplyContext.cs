@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using InfinniPlatform.Api.Context;
+using InfinniPlatform.Api.Versioning;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Events;
 
@@ -76,11 +77,6 @@ namespace InfinniPlatform.Api.ContextTypes.ContextImpl
         public dynamic ValidationMessage { get; set; }
 
         /// <summary>
-        ///     Версия исполняемой точки расширения
-        /// </summary>
-        public string Version { get; set; }
-
-        /// <summary>
         ///     Конфигурация текущего запроса
         /// </summary>
         public string Configuration { get; set; }
@@ -95,6 +91,8 @@ namespace InfinniPlatform.Api.ContextTypes.ContextImpl
         /// </summary>
         public string UserName { get; set; }
 
+
+
         /// <summary>
         ///     Действие, выполняемое клиентом
         /// </summary>
@@ -108,12 +106,11 @@ namespace InfinniPlatform.Api.ContextTypes.ContextImpl
             Action = context.Action;
             Result = context.Result;
             UserName = context.UserName;
-            //Version = context.Version;
             Id = context.Id;
             Type = context.Type;
             Item = context.Item;
             TransactionMarker = context.TransactionMarker;
-            Version = context.Version;
+           
         }
     }
 }

@@ -64,6 +64,10 @@
       <Project>{b95d4f0b-a6cb-473c-ba9a-28285dbca50e}</Project>
       <Name>InfinniPlatform.EventStorage</Name>
     </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
+      <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
+      <Name>InfinniPlatform.Sdk</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Tests\InfinniPlatform.Tests.csproj">
       <Project>{a46f638c-c9c5-49be-bc8d-8144e8c8f87a}</Project>
       <Name>InfinniPlatform.Tests</Name>

@@ -1,10 +1,14 @@
-﻿using InfinniPlatform.Api.Actions;
-using InfinniPlatform.Api.Hosting;
+﻿using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Hosting.Implementation.ExtensionPointHandling;
 using InfinniPlatform.Hosting.Implementation.Modules;
 using InfinniPlatform.Metadata;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Hosting;
+using InfinniPlatform.Sdk.Environment.Metadata;
+using InfinniPlatform.Sdk.Environment.Scripts;
 
 namespace InfinniPlatform.SystemConfig.Installers
 {
@@ -67,6 +71,7 @@ namespace InfinniPlatform.SystemConfig.Installers
 
             //получение метаданных конфигураций
             actionUnits.RegisterActionUnitDistributedStorage("getregisteredconfiglist", "ActionUnitGetConfigList");
+            actionUnits.RegisterActionUnitDistributedStorage("getsolutionlist", "ActionUnitGetSolutionList");
             actionUnits.RegisterActionUnitDistributedStorage("getconfigurationmetadata",
                                                              "ActionUnitGetConfigurationMetadata");
             actionUnits.RegisterActionUnitDistributedStorage("GetDocumentElementListMetadata",
@@ -75,9 +80,7 @@ namespace InfinniPlatform.SystemConfig.Installers
                                                              "ActionUnitGetDocumentElementMetadata");
             actionUnits.RegisterActionUnitDistributedStorage("GetDocumentListMetadata",
                                                              "ActionUnitGetDocumentListMetadata");
-            //actionUnits.RegisterActionUnitDistributedStorage("GetDocumentMetadata", "ActionUnitGetDocumentMetadata");
             actionUnits.RegisterActionUnitDistributedStorage("GetMenuListMetadata", "ActionUnitGetMenuListMetadata");
-            //actionUnits.RegisterActionUnitDistributedStorage("GetMenuMetadata", "ActionUnitGetMenuMetadata");
             actionUnits.RegisterActionUnitDistributedStorage("GetValidationErrorMetadata",
                                                              "ActionUnitGetValidationErrorMetadata");
             actionUnits.RegisterActionUnitDistributedStorage("GetValidationWarningMetadata",
@@ -164,6 +167,8 @@ namespace InfinniPlatform.SystemConfig.Installers
                                                                                                          actionUnits
                                                                                                              .GetAction(
                                                                                                                  "getregisteredconfiglist")))));
+            metadataConfiguration.RegisterWorkflow("metadata", "getsolutionlist",
+                                                   f => f.FlowWithoutState(wc => wc.Move(ws => ws.WithAction(() => actionUnits.GetAction("getsolutionlist")))));
 
             metadataConfiguration.RegisterWorkflow("metadata", "getconfigurationmetadata",
                                                    f => f.FlowWithoutState(wc => wc
@@ -632,7 +637,42 @@ namespace InfinniPlatform.SystemConfig.Installers
                 metadataConfiguration.SetMetadataIndexType(metadataTypeMetadata, metadataTypeMetadata);
             }
 
+            //настройка бизнес-процессов для работы с метаданными решений
+            metadataConfiguration.RegisterWorkflow("solutionmetadata", "changemetadata",
+                                                   f => f.FlowWithoutState(wc => wc
+                                                                                     .Move(ws => ws
+                                                                                                     .WithAction(
+                                                                                                         () =>
+                                                                                                         actionUnits
+                                                                                                             .GetAction
+                                                                                                             ("changemetadata")))));
+            metadataConfiguration.RegisterWorkflow("solutionmetadata", "filtermetadata",
+                                                   f => f.FlowWithoutState(wc => wc
+                                                                                     .Move(ws => ws
+                                                                                                     .WithAction(
+                                                                                                         () =>
+                                                                                                         actionUnits
+                                                                                                             .GetAction
+                                                                                                             ("filtermetadata")))));
+            metadataConfiguration.RegisterWorkflow("solutionmetadata", "deletemetadata",
+                                                   f => f.FlowWithoutState(wc => wc
+                                                                                     .Move(ws => ws
+                                                                                                     .WithAction(
+                                                                                                         () =>
+                                                                                                         actionUnits
+                                                                                                             .GetAction
+                                                                                                             ("deletemetadata")))));
+            metadataConfiguration.RegisterWorkflow("solutionmetadata", "getitemid",
+                                                   f => f.FlowWithoutState(wc => wc
+                                                                                     .Move(ws => ws
+                                                                                                     .WithAction(
+                                                                                                         () =>
+                                                                                                         actionUnits
+                                                                                                             .GetAction
+                                                                                                             ("getitemid")))));
+
             metadataConfiguration.SetMetadataIndexType("metadata", "metadata");
+            metadataConfiguration.SetMetadataIndexType("solutionmetadata", "solutionmetadata");
         }
 
         protected override void RegisterServices(IServiceRegistrationContainer servicesConfiguration)
@@ -862,6 +902,13 @@ namespace InfinniPlatform.SystemConfig.Installers
                                                                                                   "GetResult",
                                                                                                   "getregisteredconfiglist"))
                                                                                       .RegisterHandlerInstance(
+                                                                                          "getsolutionlist",
+                                                                                          instance =>
+                                                                                          instance
+                                                                                              .RegisterExtensionPoint(
+                                                                                                  "GetResult",
+                                                                                                  "getsolutionlist"))
+                                                                                      .RegisterHandlerInstance(
                                                                                           "getconfigurationmetadata",
                                                                                           instance =>
                                                                                           instance
@@ -896,14 +943,14 @@ namespace InfinniPlatform.SystemConfig.Installers
                                                                                               .RegisterExtensionPoint(
                                                                                                   "GetResult",
                                                                                                   "GetDocumentMetadata"))
-                                                                                      //.RegisterHandlerInstance("GetMenuListMetadata",
-                                                                                      //	instance => instance.RegisterExtensionPoint("GetResult", "GetMenuListMetadata"))
-                                                                                      //.RegisterHandlerInstance("GetMenuMetadata",
-                                                                                      //	instance => instance.RegisterExtensionPoint("GetResult", "GetMenuMetadata"))
-                                                                                      //.RegisterHandlerInstance("GetValidationWarningMetadata",
-                                                                                      //	instance => instance.RegisterExtensionPoint("GetResult", "GetValidationWarningMetadata"))
-                                                                                      //.RegisterHandlerInstance("GetValidationErrorMetadata",
-                                                                                      //	instance => instance.RegisterExtensionPoint("GetResult", "GetValidationErrorMetadata"))
+                //.RegisterHandlerInstance("GetMenuListMetadata",
+                //	instance => instance.RegisterExtensionPoint("GetResult", "GetMenuListMetadata"))
+                //.RegisterHandlerInstance("GetMenuMetadata",
+                //	instance => instance.RegisterExtensionPoint("GetResult", "GetMenuMetadata"))
+                //.RegisterHandlerInstance("GetValidationWarningMetadata",
+                //	instance => instance.RegisterExtensionPoint("GetResult", "GetValidationWarningMetadata"))
+                //.RegisterHandlerInstance("GetValidationErrorMetadata",
+                //	instance => instance.RegisterExtensionPoint("GetResult", "GetValidationErrorMetadata"))
                                                                                       .RegisterHandlerInstance(
                                                                                           "GetRegisterValuesByDate",
                                                                                           instance =>
@@ -1056,16 +1103,26 @@ namespace InfinniPlatform.SystemConfig.Installers
                                                                                                             .BadRequest));
             }
 
-            servicesConfiguration.AddRegistration("prefill", "ApplyJson", reg => reg
-                                                                                     .RegisterHandlerInstance(
-                                                                                         "GetFillItems",
-                                                                                         instance => instance
-                                                                                                         .RegisterExtensionPoint
-                                                                                                         ("GetResult",
-                                                                                                          "GetFillItems"))
-                                                                                     .SetResultHandler(
-                                                                                         HttpResultHandlerType
-                                                                                             .BadRequest));
+            servicesConfiguration.AddRegistration("solutionmetadata", "ApplyEvents", reg => reg.RegisterHandlerInstance
+                                                                                      ("changemetadata", instance => instance
+                                                                                          .RegisterExtensionPoint("FilterEvents", "filtermetadata")
+                                                                                           .RegisterExtensionPoint("Move", "changemetadata"))
+                                                                                      .SetResultHandler(HttpResultHandlerType.BadRequest));
+
+
+            servicesConfiguration.AddRegistration("solutionmetadata", "ApplyJson", reg => reg
+                .RegisterHandlerInstance("deletemetadata", instance => instance
+                    .RegisterExtensionPoint("FilterEvents", "filtermetadata")
+                    .RegisterExtensionPoint("Move", "deletemetadata"))
+                .RegisterHandlerInstance("getmetadata", instance => instance
+                    .RegisterExtensionPoint("GetResult", "getmetadata"))
+                .RegisterHandlerInstance("getitemid", instance => instance
+                    .RegisterExtensionPoint("GetResult", "getitemid"))
+                .SetResultHandler(HttpResultHandlerType.BadRequest));
+
+            servicesConfiguration.AddRegistration("prefill", "ApplyJson", reg => reg.RegisterHandlerInstance("GetFillItems", instance =>
+                                                                                                instance.RegisterExtensionPoint("GetResult", "GetFillItems"))
+                                                                                                 .SetResultHandler(HttpResultHandlerType.BadRequest));
         }
     }
 }

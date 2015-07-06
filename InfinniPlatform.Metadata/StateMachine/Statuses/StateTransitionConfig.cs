@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.Actions;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.Validation;
-using InfinniPlatform.Api.Worklow;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Actions;
+using InfinniPlatform.Sdk.Environment.Validations;
+using InfinniPlatform.Sdk.Environment.Worklow;
 
 namespace InfinniPlatform.Metadata.StateMachine.Statuses
 {

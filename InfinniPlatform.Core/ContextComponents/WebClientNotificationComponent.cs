@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Factories;
+﻿using InfinniPlatform.Factories;
+using InfinniPlatform.Sdk.ContextComponents;
 
 namespace InfinniPlatform.ContextComponents
 {

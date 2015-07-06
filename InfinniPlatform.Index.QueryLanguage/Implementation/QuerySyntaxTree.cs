@@ -4,6 +4,7 @@ using System.Linq;
 using InfinniPlatform.Api.Index.SearchOptions;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Index;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Index.QueryLanguage.Implementation

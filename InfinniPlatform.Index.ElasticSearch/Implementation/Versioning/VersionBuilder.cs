@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using InfinniPlatform.Api.Factories;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
+using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.Versioning
 {

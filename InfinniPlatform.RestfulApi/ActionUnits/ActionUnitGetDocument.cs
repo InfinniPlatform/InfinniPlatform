@@ -1,7 +1,7 @@
 ﻿using System;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.RestfulApi.Utils;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.RestfulApi.ActionUnits
@@ -11,12 +11,12 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
         public void Action(IApplyContext target)
         {
             var executor =
-                new DocumentExecutor(target.Context.GetComponent<IConfigurationMediatorComponent>(target.Version),
-                                     target.Context.GetComponent<IMetadataComponent>(target.Version),
-                                     target.Context.GetComponent<InprocessDocumentComponent>(target.Version),
-                                     target.Context.GetComponent<IProfilerComponent>(target.Version));
+                new DocumentExecutor(target.Context.GetComponent<IConfigurationMediatorComponent>(),
+                                     target.Context.GetComponent<IMetadataComponent>(),
+                                     target.Context.GetComponent<InprocessDocumentComponent>(),
+                                     target.Context.GetComponent<IProfilerComponent>());
 
-            target.Result = executor.GetCompleteDocuments(target.Version, target.Item.Configuration,
+            target.Result = executor.GetCompleteDocuments(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration,
                                                           target.Item.Metadata, target.UserName,
                                                           Convert.ToInt32(target.Item.PageNumber),
                                                           Convert.ToInt32(target.Item.PageSize),

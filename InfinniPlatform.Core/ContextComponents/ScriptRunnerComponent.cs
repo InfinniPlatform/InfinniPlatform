@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.Factories;
+using InfinniPlatform.Api.Versioning;
 using InfinniPlatform.Metadata;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Scripts;
 
 namespace InfinniPlatform.ContextComponents
 {
@@ -27,6 +29,7 @@ namespace InfinniPlatform.ContextComponents
         /// <returns>Исполнитель скриптов</returns>
         public IScriptProcessor GetScriptRunner(string version, string configurationId)
         {
+            
             var scriptProcessorVersioned =
                 _scriptProcessors.FirstOrDefault(sc => sc.ConfigurationId == configurationId && sc.Version == version);
 

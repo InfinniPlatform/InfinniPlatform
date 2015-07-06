@@ -19,7 +19,6 @@
         /// <param name="version">Версия конфигурации</param>
         /// <param name="metadataConfigurationId">Идентификатор конфигурации</param>
         /// <param name="versionCacheList">Обновляемый кэш версий конфигураций</param>
-        void UpdateInvokationCache(string version, string metadataConfigurationId,
-            MethodInvokationCacheList versionCacheList);
+        void UpdateInvokationCache(string version, string metadataConfigurationId,MethodInvokationCacheList versionCacheList);
     }
 }

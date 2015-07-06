@@ -75,7 +75,7 @@ namespace InfinniPlatform.Metadata.Tests.HandlersBehavior
                     TestField = 2
                 };
             result =
-                RestQueryApi.QueryPostRaw("Handlers", "patienttest", "checkevents", result.Id, bodyReplace, null, true)
+                RestQueryApi.QueryPostRaw("Handlers", "patienttest", "checkevents", result.Id, bodyReplace)
                             .ToDynamic();
             Assert.IsNotNull(result);
             Assert.IsNull(result.TestItems);
@@ -129,7 +129,7 @@ namespace InfinniPlatform.Metadata.Tests.HandlersBehavior
                     TestField = 2
                 };
             result =
-                RestQueryApi.QueryPostJsonRaw("Handlers", "patienttest", "checkjson", result.Id, bodyReplace, null, true)
+                RestQueryApi.QueryPostJsonRaw("Handlers", "patienttest", "checkjson", result.Id, bodyReplace)
                             .ToDynamic();
             Assert.IsNotNull(result);
             Assert.IsNull(result.TestItems);

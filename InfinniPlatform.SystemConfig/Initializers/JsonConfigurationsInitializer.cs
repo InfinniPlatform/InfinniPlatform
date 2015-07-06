@@ -9,7 +9,11 @@ using InfinniPlatform.Hosting;
 using InfinniPlatform.Hosting.Implementation.Modules;
 using InfinniPlatform.Metadata;
 using InfinniPlatform.Runtime;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Metadata;
 using InfinniPlatform.SystemConfig.RoutingFactory;
 using InfinniPlatform.WebApi.Factories;
 using Newtonsoft.Json.Linq;
@@ -54,7 +58,6 @@ namespace InfinniPlatform.SystemConfig.Initializers
 
             installer.InstallConfiguration(metadataConfig);
             metadataConfig.ScriptConfiguration.InitActionUnitStorage(version);
-
             InfinniPlatformHostServer.Instance.InstallServices(version, metadataConfig.ServiceRegistrationContainer);
 
             if (configurationId.ToLowerInvariant() == "authorization")

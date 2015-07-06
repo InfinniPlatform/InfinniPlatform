@@ -5,12 +5,16 @@ using System.Reflection;
 using System.Web.Http;
 using Autofac;
 using Autofac.Configuration;
-using InfinniPlatform.Api.Actions;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Factories;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Metadata;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Hosting;
+using InfinniPlatform.Sdk.Environment.Metadata;
+using InfinniPlatform.Sdk.Environment.Scripts;
 using InfinniPlatform.WebApi.WebApi;
 
 namespace InfinniPlatform.WebApi.Factories
@@ -86,16 +90,16 @@ namespace InfinniPlatform.WebApi.Factories
 		/// </summary>
 		private static readonly Action<HttpRouteCollection> RouteConfig = routes =>
 		{
-            routes.MapHttpRoute("DefaultApi", "api/{version}/{controller}/{action}");
-            routes.MapHttpRoute("Default", "api/{version}/{controller}/{id}", new { id = RouteParameter.Optional });
-            routes.MapHttpRoute("DefaultWithAction", "api/{version}/{controller}/{action}/{id}", new { id = RouteParameter.Optional });
-            routes.MapHttpRoute("RestControllerConfiguration", "{version}/{controller}/{service}", new
+            routes.MapHttpRoute("DefaultApi", "api/{controller}/{action}");
+            routes.MapHttpRoute("Default", "api/{controller}/{id}", new { id = RouteParameter.Optional });
+            routes.MapHttpRoute("DefaultWithAction", "api/{controller}/{action}/{id}", new { id = RouteParameter.Optional });
+            routes.MapHttpRoute("RestControllerConfiguration", "{controller}/{service}", new
 			{
 				service = RouteParameter.Optional,
 				id = RouteParameter.Optional
 			});
 
-            routes.MapHttpRoute("RestControllerDefault", "{version}/{configuration}/{controller}/{metadata}/{service}/{id}", new { id = RouteParameter.Optional });
+            routes.MapHttpRoute("RestControllerDefault", "{configuration}/{controller}/{metadata}/{service}/{id}", new { id = RouteParameter.Optional });
 
 		};
 
@@ -110,12 +114,24 @@ namespace InfinniPlatform.WebApi.Factories
 		/// </summary>		
 		public InfinniPlatformHostServer InstallServices(string version, IServiceRegistrationContainer serviceRegistrationContainer)
 		{
-			foreach (var serviceType in serviceRegistrationContainer.Registrations)
+            foreach (var serviceType in serviceRegistrationContainer.Registrations)
 			{
 				_hostServer.CreateTemplate(version, serviceRegistrationContainer.MetadataConfigurationId, serviceType.MetadataName).AddVerb(serviceType.QueryHandler);
 			}
 			return this;
 		}
+
+        public InfinniPlatformHostServer RegisterVersion(string metadataConfigurationId, string version)
+        {
+            _hostServer.ApiControllerFactory.RegisterVersion(metadataConfigurationId, version);
+            return this;
+        }
+
+        public InfinniPlatformHostServer UnregisterVersion(string metadataConfigurationId, string version)
+        {
+            _hostServer.ApiControllerFactory.UnregisterVersion(metadataConfigurationId, version);
+            return this;
+        }
 
 		/// <summary>
 		///   Удаление установленных сервисов (обычно используется для переустановки модуля в режиме runtime)
@@ -218,6 +234,9 @@ namespace InfinniPlatform.WebApi.Factories
 		{
 			var metadataConfigurationProvider = _hostServer.Container().Resolve<IMetadataConfigurationProvider>();
 			var actionConfig = _hostServer.Container().Resolve<IScriptConfiguration>();
+
+            Instance.RegisterVersion(configurationId, version);
+
 			return metadataConfigurationProvider.AddConfiguration(version, configurationId, actionConfig, isEmbeddedConfiguration);
 		}
 

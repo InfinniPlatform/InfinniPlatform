@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.Actions;
-using InfinniPlatform.Api.Factories;
 using InfinniPlatform.Api.Validation;
 using InfinniPlatform.Factories;
 using InfinniPlatform.Metadata.StateMachine;
 using InfinniPlatform.Metadata.StateMachine.ActionUnits;
 using InfinniPlatform.Metadata.StateMachine.ValidationUnits;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Actions;
+using InfinniPlatform.Sdk.Environment.Scripts;
+using InfinniPlatform.Sdk.Environment.Validations;
 
 namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 {

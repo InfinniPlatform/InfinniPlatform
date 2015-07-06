@@ -7,6 +7,7 @@ using InfinniPlatform.Compression;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Json;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Events;
 using InfinniPlatform.SystemConfig.RoutingFactory;
 using Newtonsoft.Json;

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.Schema;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -18,20 +18,21 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
             string documentId = target.Item.Metadata;
 
-            dynamic schema = target.Context.GetComponent<IMetadataComponent>(target.Version)
-                                   .GetMetadataList(target.Version, configId, documentId, MetadataType.Schema)
+            var version = target.Context.GetVersion(configId, target.UserName);
+
+            dynamic schema = target.Context.GetComponent<IMetadataComponent>()
+                                   .GetMetadataList(version, configId, documentId, MetadataType.Schema)
                                    .FirstOrDefault();
 
             //если для документа указана схема, то предзаполняем документ
             if (schema != null)
             {
-                dynamic prefiledInstance = CreatePrefiledInstance(target.Version,
+                dynamic prefiledInstance = CreatePrefiledInstance(version,
                                                                   new SchemaProvider(
-                                                                      target.Context.GetComponent<IMetadataComponent>(
-                                                                          target.Version)), schema);
+                                                                      target.Context.GetComponent<IMetadataComponent>()), schema);
 
-                dynamic metadataProcess = target.Context.GetComponent<IMetadataComponent>(target.Version)
-                                                .GetMetadata(target.Version, configId, documentId, MetadataType.Process,
+                dynamic metadataProcess = target.Context.GetComponent<IMetadataComponent>()
+                                                .GetMetadata(version, configId, documentId, MetadataType.Process,
                                                              "Default");
 
                 if (metadataProcess != null && metadataProcess.Transitions != null &&
@@ -45,11 +46,10 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
                         var schemaIterator =
                             new SchemaIterator(
-                                new SchemaProvider(target.Context.GetComponent<IMetadataComponent>(target.Version)));
+                                new SchemaProvider(target.Context.GetComponent<IMetadataComponent>()));
 
                         IEnumerable<string> prefillItems =
-                            RestQueryApi.QueryPostJsonRaw("systemconfig", "prefill", "getfillitems", null, null,
-                                                          target.Version)
+                            RestQueryApi.QueryPostJsonRaw("systemconfig", "prefill", "getfillitems", null, null)
                                         .ToDynamicList()
                                         .Cast<string>();
 
@@ -64,7 +64,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                                                                         prefillItems);
                             };
 
-                        schemaIterator.ProcessSchema(target.Version, schemaPrefill);
+                        schemaIterator.ProcessSchema(version, schemaPrefill);
                     }
 
 
@@ -73,8 +73,8 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                     {
                         var scriptArguments = target;
                         scriptArguments.Item = prefiledInstance;
-                        target.Context.GetComponent<IScriptRunnerComponent>(target.Version)
-                              .GetScriptRunner(target.Version, configId)
+                        target.Context.GetComponent<IScriptRunnerComponent>()
+                              .GetScriptRunner(version, configId)
                               .InvokeScript(metadataProcess.Transitions[0].ActionPoint.ScenarioId, scriptArguments);
                     }
                 }
@@ -165,8 +165,8 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
                 if (prefillItems.Any(f => f.Contains(prefiledField.Value.DefaultValue.ToString())))
                 {
-                    target.Context.GetComponent<IScriptRunnerComponent>(target.Version)
-                          .GetScriptRunner(target.Version, "systemconfig")
+                    target.Context.GetComponent<IScriptRunnerComponent>()
+                          .GetScriptRunner(target.Context.GetVersion("systemconfig",target.UserName), "systemconfig")
                           .InvokeScript(
                               prefiledField.Value.DefaultValue.ToString(),
                               scriptArguments);

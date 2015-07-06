@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.CommonApi;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 {
@@ -121,7 +123,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
             _parameters.Add(new MigrationParameter {Caption = "Path to folder"});
 
             var configObject =
-                context.GetComponent<IConfigurationMediatorComponent>(_version)
+                context.GetComponent<IConfigurationMediatorComponent>()
                        .ConfigurationBuilder.GetConfigurationObject(_version, "classifierstorage");
 
             if (configObject != null)

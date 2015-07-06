@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.RestfulApi.Utils;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -25,12 +25,12 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                 {
                     var executor =
                         new DocumentExecutor(
-                            target.Context.GetComponent<IConfigurationMediatorComponent>(target.Version),
-                            target.Context.GetComponent<IMetadataComponent>(target.Version),
-                            target.Context.GetComponent<InprocessDocumentComponent>(target.Version),
-                            target.Context.GetComponent<IProfilerComponent>(target.Version));
+                            target.Context.GetComponent<IConfigurationMediatorComponent>(),
+                            target.Context.GetComponent<IMetadataComponent>(),
+                            target.Context.GetComponent<InprocessDocumentComponent>(),
+                            target.Context.GetComponent<IProfilerComponent>());
 
-                    resultDocuments.AddRange(executor.GetCompleteDocuments(target.Version, config, document,
+                    resultDocuments.AddRange(executor.GetCompleteDocuments(target.Context.GetVersion(config, target.UserName), config, document,
                                                                            target.UserName,
                                                                            Convert.ToInt32(target.Item.PageNumber),
                                                                            Convert.ToInt32(target.Item.PageSize),
@@ -40,7 +40,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
             target.Result = resultDocuments;
 
-            target.Context.GetComponent<ILogComponent>(target.Version)
+            target.Context.GetComponent<ILogComponent>()
                   .GetLog()
                   .Info("Cross configuration document search completed");
         }

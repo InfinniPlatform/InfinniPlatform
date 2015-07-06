@@ -12,7 +12,7 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
     {
         public void Action(IApplyContext target)
         {
-            var aclApi = target.Context.GetComponent<AuthApi>(target.Version);
+            var aclApi = target.Context.GetComponent<AuthApi>();
 
             dynamic user = null;
 

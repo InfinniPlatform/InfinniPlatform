@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.RestApi.CommonApi;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.ContextComponents
@@ -11,13 +11,6 @@ namespace InfinniPlatform.ContextComponents
     /// </summary>
     public sealed class RegistryComponent : IRegistryComponent
     {
-        private readonly string _version;
-
-        public RegistryComponent(string version)
-        {
-            _version = version;
-        }
-
         /// <summary>
         ///     Создаёт и инициализирует новую запись регистра накоплений
         /// </summary>
@@ -44,8 +37,7 @@ namespace InfinniPlatform.ContextComponents
                 body.DocumentDate = documentDate.Value;
             }
 
-            var resp = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "createregisterentry", null, body,
-                _version);
+            var resp = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "createregisterentry", null, body);
 
             return resp.IsAllOk ? resp.ToDynamic() : null;
         }
@@ -76,8 +68,7 @@ namespace InfinniPlatform.ContextComponents
                 body.DocumentDate = documentDate.Value;
             }
 
-            var resp = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "createregisterentry", null, body,
-                _version);
+            var resp = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "createregisterentry", null, body);
 
             return resp.IsAllOk ? resp.ToDynamic() : null;
         }
@@ -97,7 +88,7 @@ namespace InfinniPlatform.ContextComponents
                 RegisterEntries = registerEntries
             };
 
-            RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "postregisterentries", null, body, _version);
+            RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "postregisterentries", null, body);
         }
 
         /// <summary>
@@ -115,7 +106,7 @@ namespace InfinniPlatform.ContextComponents
                 Registar = registar
             };
 
-            RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "deleteregisterentry", null, body, _version);
+            RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "deleteregisterentry", null, body);
         }
     }
 }

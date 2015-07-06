@@ -44,7 +44,7 @@ namespace InfinniPlatform.Utils
 
                 try
                 {
-                    RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "ImportDataFromJson", null, item, null);
+                    RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "ImportDataFromJson", null, item);
 
                     Console.WriteLine("Data from file {0} imported", folderFullFile);
                 }

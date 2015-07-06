@@ -7,6 +7,9 @@ using InfinniPlatform.Api.Validation;
 using InfinniPlatform.Api.Validation.BooleanValidators;
 using InfinniPlatform.Api.Validation.ObjectValidators;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Validations;
 
 namespace InfinniPlatform.Api.Index.SearchOptions
 {

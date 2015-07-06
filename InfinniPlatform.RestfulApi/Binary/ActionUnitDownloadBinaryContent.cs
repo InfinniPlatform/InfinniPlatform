@@ -1,6 +1,6 @@
 ﻿using System;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 using System.Linq;
@@ -18,11 +18,11 @@ namespace InfinniPlatform.RestfulApi.Binary
 		{
 		    if (target.FormData.ContentId != null)
 		    {
-		        target.Result = LoadBlobData(target.Context.GetComponent<IBlobStorageComponent>(target.Version), target.FormData.ContentId);
+		        target.Result = LoadBlobData(target.Context.GetComponent<IBlobStorageComponent>(), target.FormData.ContentId);
 		    }
 		    else
 		    {
-                target.Result = FillContentByDocumentId(target.Context.GetComponent<IBlobStorageComponent>(target.Version), target.FormData);
+                target.Result = FillContentByDocumentId(target.Context.GetComponent<IBlobStorageComponent>(), target.FormData);
 		    }
 		}
 
@@ -36,7 +36,7 @@ namespace InfinniPlatform.RestfulApi.Binary
 	    private dynamic FillContentByDocumentId(IBlobStorageComponent blobStorageComponent, dynamic formData)
 	    {
             Action<FilterBuilder> builder = f => f.AddCriteria(cr => cr.Property("Id").IsEquals(formData.DocumentId));
-            IEnumerable<dynamic> documents = new DocumentApi(null).GetDocument(formData.Configuration, formData.Metadata, builder, 0, 1);
+            IEnumerable<dynamic> documents = new DocumentApi().GetDocument(formData.Configuration, formData.Metadata, builder, 0, 1);
             dynamic document = documents.FirstOrDefault();
 
 			if (document != null)

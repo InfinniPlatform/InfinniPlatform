@@ -10,6 +10,10 @@ using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Hosting.Implementation.ExtensionPointHandling;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Hosting;
+using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.Hosting.Implementation.Modules
 {

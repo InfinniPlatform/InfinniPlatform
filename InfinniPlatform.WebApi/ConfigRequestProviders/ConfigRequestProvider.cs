@@ -9,7 +9,6 @@ namespace InfinniPlatform.WebApi.ConfigRequestProviders
 	/// </summary>
     public class ConfigRequestProvider : IConfigRequestProvider
     {
-
 		/// <summary>
 		///  Получить идентификатор метаданных конфигурации из роутинга
 		/// </summary>
@@ -51,15 +50,15 @@ namespace InfinniPlatform.WebApi.ConfigRequestProviders
 		}
 
 
-	    /// <summary>
-	    ///  Получить идентификатор работающей версии сервисов
-	    /// </summary>
-	    /// <returns></returns>
-	    public string GetVersion()
-	    {
-	        var version = GetDataFromRoute("version");
-	        return version == "0" ? null : version;
-	    }
+        ///// <summary>
+        /////  Получить идентификатор работающей версии сервисов
+        ///// </summary>
+        ///// <returns></returns>
+        //public string GetVersion()
+        //{
+        //    var version = GetDataFromRoute("version");
+        //    return version == "0" ? null : version;
+        //}
 
 	    public IHttpRouteData RequestData { get; set; }
 

@@ -11,6 +11,7 @@ using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
 using InfinniPlatform.Api.TestEnvironment;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Hosting;
 using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
@@ -63,7 +64,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                     MetadataName = TestViewName
                 };
 
-            builder = new RestQueryBuilder(null, "SystemConfig", "metadata", "getmanagedmetadata", null);
+            builder = new RestQueryBuilder("SystemConfig", "metadata", "getmanagedmetadata", null);
 
             builder.QueryPostJson(null, bodyMetadata).ToDynamic();
 
@@ -111,7 +112,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                     Parameters = parameters
                 };
 
-            builder = new RestQueryBuilder(null, "SystemConfig", "metadata", "getmanagedmetadata", null);
+            builder = new RestQueryBuilder( "SystemConfig", "metadata", "getmanagedmetadata", null);
 
             builder.QueryPostJson(null, bodyMetadata).ToDynamic();
 
@@ -179,7 +180,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             //добавляем генератор в документе Common
             //----------------------------------------------------
 
-            var builder = new RestQueryBuilder(null, "SystemConfig", "metadata", "creategenerator", null);
+            var builder = new RestQueryBuilder("SystemConfig", "metadata", "creategenerator", null);
 
             var eventObject = new
                 {
@@ -194,7 +195,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             builder.QueryPostJson(null, eventObject);
             //----------------------------------------------------
             //добавляем генератор в документе _documentId
-            builder = new RestQueryBuilder(null, "SystemConfig", "metadata", "creategenerator", null);
+            builder = new RestQueryBuilder("SystemConfig", "metadata", "creategenerator", null);
 
             eventObject = new
                 {
@@ -219,7 +220,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             RestQueryApi.QueryPostNotify(null, ConfigurationId);
 
             //генерируем метаданные напрямую
-            builder = new RestQueryBuilder(null, "SystemConfig", "metadata", "generatemetadata", null);
+            builder = new RestQueryBuilder("SystemConfig", "metadata", "generatemetadata", null);
 
 
             var body = new

@@ -15,10 +15,10 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
         public void RebuildIndex(string configuration, string metadata)
         {
             var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "rebuildindex", null, new
-            {
-                Configuration = configuration,
-                Metadata = metadata
-            }, _version);
+                {
+                    Configuration = configuration,
+                    Metadata = metadata
+                });
             if (!response.IsAllOk)
             {
                 throw new ArgumentException(response.Content);
@@ -28,10 +28,10 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
         public bool IndexExists(string configuration, string metadata)
         {
             var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "indexexists", null, new
-            {
-                Configuration = configuration,
-                Metadata = metadata
-            }, _version);
+                {
+                    Configuration = configuration,
+                    Metadata = metadata
+                });
             if (!response.IsAllOk)
             {
                 throw new ArgumentException(response.Content);
@@ -43,11 +43,11 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
         public dynamic GetFromIndex(string id, string configuration, string metadata)
         {
             var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "getfromindex", null, new
-            {
-                Id = id,
-                Configuration = configuration,
-                Metadata = metadata
-            }, _version);
+                {
+                    Id = id,
+                    Configuration = configuration,
+                    Metadata = metadata
+                });
             if (!response.IsAllOk)
             {
                 throw new ArgumentException(response.Content);
@@ -58,11 +58,11 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
         public void InsertDocument(object item, string configuration, string metadata)
         {
             var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "insertindex", null, new
-            {
-                Item = item,
-                Configuration = configuration,
-                Metadata = metadata
-            }, _version);
+                {
+                    Item = item,
+                    Configuration = configuration,
+                    Metadata = metadata
+                });
             if (!response.IsAllOk)
             {
                 throw new ArgumentException(response.Content);
@@ -72,12 +72,12 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
         public void InsertDocumentWithTimestamp(object item, DateTime timeStamp, string configuration, string metadata)
         {
             var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "insertindexwithtimestamp", null, new
-            {
-                Item = item,
-                Configuration = configuration,
-                Metadata = metadata,
-                TimeStamp = timeStamp
-            }, _version);
+                {
+                    Item = item,
+                    Configuration = configuration,
+                    Metadata = metadata,
+                    TimeStamp = timeStamp
+                });
             if (!response.IsAllOk)
             {
                 throw new ArgumentException(response.Content);

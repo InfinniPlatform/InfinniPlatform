@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Registers;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Api.SearchOptions.Builders;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.SystemConfig.Properties;
 
 namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
@@ -26,8 +27,8 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
             var specifiedDimensions = target.Item.Dimensions;
 
             var registerObject =
-                target.Context.GetComponent<IMetadataComponent>(target.Version)
-                      .GetMetadataList(target.Version, configurationId, registerId, MetadataType.Register)
+                target.Context.GetComponent<IMetadataComponent>()
+                      .GetMetadataList(target.Context.GetVersion(configurationId, target.UserName), configurationId, registerId, MetadataType.Register)
                       .FirstOrDefault();
 
             if (registerObject == null)
@@ -45,7 +46,7 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
                                                       Configuration = configurationId,
                                                       Register = registerId,
                                                       Date = aggregationDate
-                                                  }, target.Version).ToDynamic();
+                                                  }).ToDynamic();
 
             var filetrBuilder = new FilterBuilder();
             filetrBuilder.AddCriteria(
@@ -55,7 +56,7 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
 
             if (closestDate != null)
             {
-                aggregatedTotals = new DocumentApi(target.Version).GetDocument(
+                aggregatedTotals = new DocumentApi().GetDocument(
                     configurationId,
                     RegisterConstants.RegisterTotalNamePrefix + registerId,
                     f => f.AddCriteria(

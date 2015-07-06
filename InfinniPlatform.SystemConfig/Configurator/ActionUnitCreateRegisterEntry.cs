@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Registers;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -56,11 +56,11 @@ namespace InfinniPlatform.SystemConfig.Configurator
             {
                 // Дата документа явно не задана, используем дату из содержимого переданного документа
                 var defaultProcess =
-                    target.Context.GetComponent<IMetadataComponent>(target.Version)
-                          .GetMetadata(target.Version, configuration, documentId, MetadataType.Process, "Default");
+                    target.Context.GetComponent<IMetadataComponent>()
+                          .GetMetadata(target.Context.GetVersion(configuration, target.UserName), configuration, documentId, MetadataType.Process, "Default");
                 var customProcess =
-                    target.Context.GetComponent<IMetadataComponent>(target.Version)
-                          .GetMetadata(target.Version, configuration, documentId, MetadataType.Process, "Custom");
+                    target.Context.GetComponent<IMetadataComponent>()
+                          .GetMetadata(target.Context.GetVersion(configuration, target.UserName), configuration, documentId, MetadataType.Process, "Custom");
 
                 if (defaultProcess != null &&
                     defaultProcess.Transitions != null &&
@@ -89,8 +89,8 @@ namespace InfinniPlatform.SystemConfig.Configurator
             }
 
             var registerMetadata =
-                target.Context.GetComponent<IMetadataComponent>(target.Version)
-                      .GetMetadataList(target.Version, configuration, registerId, MetadataType.Register)
+                target.Context.GetComponent<IMetadataComponent>()
+                      .GetMetadataList(target.Context.GetVersion(configuration, target.UserName), configuration, registerId, MetadataType.Register)
                       .FirstOrDefault();
 
             // Признак того, что необходимо создать запись для регистра сведений

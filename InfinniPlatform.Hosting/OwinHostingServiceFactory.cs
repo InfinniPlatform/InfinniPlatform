@@ -12,6 +12,8 @@ using InfinniPlatform.Logging;
 using InfinniPlatform.Owin.Hosting;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Hosting;
 using InfinniPlatform.SignalR;
 using InfinniPlatform.SystemInfo;
 using InfinniPlatform.WebApi;

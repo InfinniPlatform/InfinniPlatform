@@ -81,6 +81,7 @@
     <Compile Include="Auth\ActionUnitChangePassword.cs" />
     <Compile Include="Auth\ActionUnitGetClaim.cs" />
     <Compile Include="Auth\ActionUnitGetUser.cs" />
+    <Compile Include="Auth\ActionUnitGetVersions.cs" />
     <Compile Include="Auth\ActionUnitRemoveClaim.cs" />
     <Compile Include="Auth\ActionUnitSetDefaultAcl.cs" />
     <Compile Include="Auth\ActionUnitDocumentAuth.cs" />

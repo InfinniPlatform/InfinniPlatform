@@ -11,12 +11,12 @@ namespace InfinniPlatform.SystemConfig.Administration.RolePermissions.ActionUnit
         {
             var parameters = target.Item.Document;
 
-            var api = target.Context.GetComponent<DocumentApi>(target.Version);
+            var api = target.Context.GetComponent<DocumentApi>();
 
             var sectionFull = api.GetDocument("Administration", "Section",
                 f => f.AddCriteria(cr => cr.Property("Id").IsEquals(parameters.Id)), 0, 1).FirstOrDefault();
 
-            var aclApi = target.Context.GetComponent<AuthApi>(target.Version);
+            var aclApi = target.Context.GetComponent<AuthApi>();
 
             //для роли Default устанавливаем запрет для всех пользователей
             if (sectionFull != null)

@@ -1,8 +1,8 @@
 ﻿using InfinniPlatform.Api.Context;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.Auth;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -21,7 +21,7 @@ namespace InfinniPlatform.Api.Security
         {
             //Не предполагается версионности конфигурации авторизации.
             //Для любой прикладной конфигурации предполагается использование одной актуальной конфигурации авторизации
-            var processMetadata = _globalContext.GetComponent<IMetadataComponent>(null)
+            var processMetadata = _globalContext.GetComponent<IMetadataComponent>()
                 .GetMetadata(null, AuthorizationStorageExtensions.AuthorizationConfigId, "Common", MetadataType.Process,
                     "VerifyPassword");
 
@@ -33,7 +33,7 @@ namespace InfinniPlatform.Api.Security
                 scriptArguments.Item.HashedPassword = hashedPassword;
                 scriptArguments.Item.ProvidedPassword = providedPassword;
                 scriptArguments.Context = _globalContext;
-                _globalContext.GetComponent<IScriptRunnerComponent>(null)
+                _globalContext.GetComponent<IScriptRunnerComponent>()
                     .GetScriptRunner(null, AuthorizationStorageExtensions.AuthorizationConfigId)
                     .InvokeScript(processMetadata.Transitions[0].ActionPoint.ScenarioId, scriptArguments);
 

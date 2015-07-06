@@ -62,7 +62,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         {
             var resultMessage = new StringBuilder();
 
-            var configReader = new MetadataReaderConfiguration(null);
+            var configReader = new MetadataReaderConfiguration(_version);
 
             dynamic configMetadata = configReader.GetItem(_activeConfiguration);
 

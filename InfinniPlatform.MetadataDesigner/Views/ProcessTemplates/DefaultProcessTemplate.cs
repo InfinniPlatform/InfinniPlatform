@@ -42,13 +42,13 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 
 		private void ReloadSchema()
 		{
-			_schemaPrefill = new MetadataApi(Version).GetDocumentSchema(ConfigId, DocumentId);
+			_schemaPrefill = new MetadataApi().GetDocumentSchema(ConfigId, DocumentId);
 			FillPropertiesBySchema();
 		}
 
 		private IEnumerable<string> LoadPropertiesNames()
 		{
-            var schema = new MetadataApi(Version).GetDocumentSchema(ConfigId, DocumentId);
+            var schema = new MetadataApi().GetDocumentSchema(ConfigId, DocumentId);
 
 			var properiesNames = new List<string>();
 

@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.File.MetadataReaders;
 using InfinniPlatform.Api.Packages;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.File
 {
@@ -36,6 +38,11 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.File
             var config = GetJsonFileConfig(version, configurationId);
             IEnumerable<dynamic> documents = config.Documents;
             return documents.Where(d => d.Name == documentId).Select(d => d.Id).FirstOrDefault();
+        }
+
+        public string GetSolutionUid(string version, string name)
+        {
+            throw new NotImplementedException();
         }
 
         public void ReadConfigurations()

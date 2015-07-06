@@ -119,18 +119,18 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
                 dynamic metadataContainer = GetMetadataContainer(element.Name);
 
                 RestQueryApi.QueryPostRaw("SystemConfig", RootMetadataIndex, "changemetadata", _parentUid,
-                    configurationBody, _version);
+                    configurationBody);
 
                 if (metadataContainer.Index > -1)
                 {
                     if (metadataContainer.Id != null)
                     {
                         RestQueryApi.QueryPostJsonRaw("SystemConfig", MetadataIndex, "deletemetadata",
-                            metadataContainer.Id, null, _version);
+                            metadataContainer.Id, null);
 
                         if (_metadataCacheRefresher != null)
                         {
-                            _metadataCacheRefresher.RefreshMetadataAfterDeleting(element.Name);
+                            _metadataCacheRefresher.RefreshMetadataAfterDeleting(element.Name,_version);
                         }
                     }
                 }
@@ -189,16 +189,15 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 
             //обновляем заголовочную часть в метаданных родительского объекта (ссылку на метаданные конкретного типа)
             //заменяем объект заголовочной части
-            RestQueryApi.QueryPostRaw("SystemConfig", RootMetadataIndex, "changemetadata", _parentUid, body, _version);
+            RestQueryApi.QueryPostRaw("SystemConfig", RootMetadataIndex, "changemetadata", _parentUid, body);
 
             //обновляем полные метаданные конкретного типа
             //заменяем полные метаданные в индексе
-            RestQueryApi.QueryPostRaw("SystemConfig", MetadataIndex, "changemetadata", objectToCreate.Id, objectToCreate,
-                _version, true);
+            RestQueryApi.QueryPostRaw("SystemConfig", MetadataIndex, "changemetadata", objectToCreate.Id, objectToCreate);
 
             if (_metadataCacheRefresher != null)
             {
-                _metadataCacheRefresher.RefreshMetadataAfterChanging(updatingMetadata.Name);
+                _metadataCacheRefresher.RefreshMetadataAfterChanging(updatingMetadata.Name, _version);
             }
         }
 

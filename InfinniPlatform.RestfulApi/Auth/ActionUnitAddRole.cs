@@ -21,8 +21,8 @@ namespace InfinniPlatform.RestfulApi.Auth
             }
 
             storage.AddRole(roleParams.Name, roleParams.Caption, roleParams.Description);
-            target.Context.GetComponent<CachedSecurityComponent>(target.Version).UpdateAcl();
-            target.Context.GetComponent<CachedSecurityComponent>(target.Version).UpdateRoles();
+            target.Context.GetComponent<CachedSecurityComponent>().UpdateAcl();
+            target.Context.GetComponent<CachedSecurityComponent>().UpdateRoles();
             target.Result = new DynamicWrapper();
             target.Result.IsValid = true;
             target.Result.ValidationMessage = "Role added.";

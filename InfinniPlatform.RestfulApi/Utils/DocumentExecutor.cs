@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Index.SearchOptions;
 using InfinniPlatform.Api.Metadata;
@@ -9,7 +8,12 @@ using InfinniPlatform.Api.Profiling;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Api.Settings;
 using InfinniPlatform.ContextComponents;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Metadata;
+using InfinniPlatform.Sdk.Environment.Profiling;
 
 namespace InfinniPlatform.RestfulApi.Utils
 {

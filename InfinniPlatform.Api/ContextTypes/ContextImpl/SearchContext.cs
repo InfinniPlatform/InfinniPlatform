@@ -47,11 +47,6 @@ namespace InfinniPlatform.Api.ContextTypes.ContextImpl
         public bool IsInternalServerError { get; set; }
 
         /// <summary>
-        ///     Версия исполняемой точки расширения
-        /// </summary>
-        public string Version { get; set; }
-
-        /// <summary>
         ///     Конфигурация текущего запроса
         /// </summary>
         public string Configuration { get; set; }

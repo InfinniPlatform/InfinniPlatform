@@ -22,9 +22,8 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
         public override IEnumerable<dynamic> GetItems()
         {
             dynamic result =
-                QueryMetadata.QueryConfiguration(Version,
-                    QueryMetadata.GetDocumentMetadataShortListIql(ConfigurationId, _documentId,
-                        _metadataContainerInfo.GetMetadataContainerName())).FirstOrDefault();
+                QueryMetadata.QueryConfiguration(QueryMetadata.GetDocumentMetadataShortListIql(Version, ConfigurationId, _documentId,
+                                                                                               _metadataContainerInfo.GetMetadataContainerName())).FirstOrDefault();
 
             if (result != null)
             {
@@ -43,9 +42,8 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
         public override dynamic GetItem(string metadataName)
         {
             var result =
-                QueryMetadata.QueryConfiguration(Version,
-                    QueryMetadata.GetDocumentMetadataByNameIql(ConfigurationId, _documentId, metadataName,
-                        _metadataContainerInfo.GetMetadataContainerName(), _metadataContainerInfo.GetMetadataTypeName()))
+                QueryMetadata.QueryConfiguration(QueryMetadata.GetDocumentMetadataByNameIql(Version, ConfigurationId, _documentId, metadataName,
+                                                                                            _metadataContainerInfo.GetMetadataContainerName(), _metadataContainerInfo.GetMetadataTypeName()))
                     .FirstOrDefault();
 
             //если наши метаданные элемента документа

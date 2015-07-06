@@ -6,6 +6,7 @@ using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManage
 using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
 using InfinniPlatform.Api.TestEnvironment;
+using InfinniPlatform.Sdk.Environment.Hosting;
 using NUnit.Framework;
 
 namespace InfinniPlatform.SystemConfig.Tests
@@ -46,7 +47,7 @@ namespace InfinniPlatform.SystemConfig.Tests
         {
             GenerateTestConfig();
             //создаем метаданные справочника для тестирования
-            var builder = new RestQueryBuilder(null, "SystemConfig", "metadata", "creategenerator", null);
+            var builder = new RestQueryBuilder("SystemConfig", "metadata", "creategenerator", null);
 
             var eventObject = new
                 {
@@ -85,7 +86,7 @@ namespace InfinniPlatform.SystemConfig.Tests
             GenerateTestConfig();
 
             //создаем метаданные справочника для тестирования
-            var builder = new RestQueryBuilder(null, "SystemConfig", "metadata", "generateservicewithoutstate", null);
+            var builder = new RestQueryBuilder("SystemConfig", "metadata", "generateservicewithoutstate", null);
 
             var eventObject = new
                 {

@@ -1,9 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.Actions;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Factories;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Hosting;
+using InfinniPlatform.Sdk.Environment.Metadata;
+using InfinniPlatform.Sdk.Environment.Scripts;
 
 namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 {
@@ -30,6 +35,27 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
         {
             get { return _configurations; }
         }
+
+        /// <summary>
+        /// Список версий конфигураций
+        /// </summary>
+        public IEnumerable<Tuple<string, string>> ConfigurationVersions
+        {
+            get
+            {
+                var result = new List<Tuple<string, string>>();
+                foreach (var metadataConfiguration in _configurations)
+                {
+                    if (result.Any(c => c.Item1 == metadataConfiguration.ConfigurationId && c.Item2 == metadataConfiguration.Version))
+                    {
+                        continue;
+                    }       
+                    result.Add(new Tuple<string, string>(metadataConfiguration.ConfigurationId, metadataConfiguration.Version));
+                }
+
+                return result;
+            }
+        } 
 
         /// <summary>
         ///     Удалить указанную конфигурацию метаданных из списка загруженных конфигурации

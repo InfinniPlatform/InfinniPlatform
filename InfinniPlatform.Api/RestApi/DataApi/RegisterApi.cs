@@ -4,18 +4,12 @@ using InfinniPlatform.Api.Registers;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Api.SearchOptions.Builders;
+using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Api.RestApi.DataApi
 {
     public sealed class RegisterApi
     {
-        private readonly string _version;
-
-        public RegisterApi(string version)
-        {
-            _version = version;
-        }
-
         /// <summary>
         ///     Получение результата агрегации по регистру на определенную дату
         /// </summary>
@@ -51,15 +45,15 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
             var response =
                 RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetRegisterValuesByDate", null, new
-                {
-                    Configuration = configuration,
-                    Register = register,
-                    Date = endDate,
-                    Dimensions = dimensions,
-                    ValueProperties = valueProperties,
-                    ValueAggregationTypes = valueAggregationTypes,
-                    Filter = filter == null ? null : filterBuilder.GetFilter()
-                }, _version);
+                    {
+                        Configuration = configuration,
+                        Register = register,
+                        Date = endDate,
+                        Dimensions = dimensions,
+                        ValueProperties = valueProperties,
+                        ValueAggregationTypes = valueAggregationTypes,
+                        Filter = filter == null ? null : filterBuilder.GetFilter()
+                    });
 
             return response.ToDynamicList();
         }
@@ -101,16 +95,16 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
             var response =
                 RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetRegisterValuesBetweenDates", null, new
-                {
-                    Configuration = configuration,
-                    Register = register,
-                    FromDate = startDate,
-                    ToDate = endDate,
-                    Dimensions = dimensions,
-                    ValueProperties = valueProperties,
-                    ValueAggregationTypes = valueAggregationTypes,
-                    Filter = filter == null ? null : filterBuilder.GetFilter()
-                }, _version);
+                    {
+                        Configuration = configuration,
+                        Register = register,
+                        FromDate = startDate,
+                        ToDate = endDate,
+                        Dimensions = dimensions,
+                        ValueProperties = valueProperties,
+                        ValueAggregationTypes = valueAggregationTypes,
+                        Filter = filter == null ? null : filterBuilder.GetFilter()
+                    });
 
             return response.ToDynamicList();
         }
@@ -154,17 +148,17 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
             var response =
                 RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetRegisterValuesByPeriods", null, new
-                {
-                    Configuration = configuration,
-                    Register = register,
-                    FromDate = startDate,
-                    ToDate = endDate,
-                    Interval = interval,
-                    Dimensions = dimensions,
-                    ValueProperty = valueProperties,
-                    TimeZone = timezone,
-                    Filter = filter == null ? null : filterBuilder.GetFilter()
-                }, _version);
+                    {
+                        Configuration = configuration,
+                        Register = register,
+                        FromDate = startDate,
+                        ToDate = endDate,
+                        Interval = interval,
+                        Dimensions = dimensions,
+                        ValueProperty = valueProperties,
+                        TimeZone = timezone,
+                        Filter = filter == null ? null : filterBuilder.GetFilter()
+                    });
 
 
             IEnumerable<dynamic> result;
@@ -205,13 +199,13 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         {
             var response =
                 RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetRegisterValuesByRegistrar", null, new
-                {
-                    Configuration = configuration,
-                    Register = register,
-                    Registrar = registrar,
-                    Dimensions = dimensions,
-                    ValueProperties = valueProperties
-                }, _version);
+                    {
+                        Configuration = configuration,
+                        Register = register,
+                        Registrar = registrar,
+                        Dimensions = dimensions,
+                        ValueProperties = valueProperties
+                    });
 
             return response.ToDynamicList();
         }
@@ -240,13 +234,13 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         {
             var response =
                 RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetRegisterValuesByRegistrarType", null, new
-                {
-                    Configuration = configuration,
-                    Register = register,
-                    RegistrarType = registrarType,
-                    Dimensions = dimensions,
-                    ValueProperties = valueProperties
-                }, _version);
+                    {
+                        Configuration = configuration,
+                        Register = register,
+                        RegistrarType = registrarType,
+                        Dimensions = dimensions,
+                        ValueProperties = valueProperties
+                    });
 
             return response.ToDynamicList();
         }
@@ -275,13 +269,13 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             }
 
             var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getdocument", null, new
-            {
-                Configuration = configuration,
-                Metadata = RegisterConstants.RegisterNamePrefix + register,
-                Filter = filter == null ? null : filterBuilder.GetFilter(),
-                PageNumber = pageNumber,
-                PageSize = pageSize
-            }, _version);
+                {
+                    Configuration = configuration,
+                    Metadata = RegisterConstants.RegisterNamePrefix + register,
+                    Filter = filter == null ? null : filterBuilder.GetFilter(),
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                });
 
             return response.ToDynamicList();
         }
@@ -301,15 +295,15 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             var closestDate =
                 RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetClosestDateTimeOfTotalCalculation", null,
                     new
-                    {
-                        Configuration = configuration,
-                        Register = register,
-                        Date = totalsDate
-                    }, _version).ToDynamic();
+                        {
+                            Configuration = configuration,
+                            Register = register,
+                            Date = totalsDate
+                        }).ToDynamic();
 
             if (closestDate != null)
             {
-                return new DocumentApi(_version).GetDocument(
+                return new DocumentApi().GetDocument(
                     configuration,
                     RegisterConstants.RegisterTotalNamePrefix + register,
                     f => f.AddCriteria(

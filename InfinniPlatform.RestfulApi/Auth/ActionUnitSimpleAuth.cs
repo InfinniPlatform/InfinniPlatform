@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.RestfulApi.Utils;
+﻿using InfinniPlatform.RestfulApi.Utils;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -12,7 +12,7 @@ namespace InfinniPlatform.RestfulApi.Auth
     {
         public void Action(IApplyContext target)
         {
-            new AuthUtils(target.Context.GetComponent<ISecurityComponent>(target.Version), target.UserName, null)
+            new AuthUtils(target.Context.GetComponent<ISecurityComponent>(), target.UserName, null)
                 .CheckDocumentAccess(target.Item.Configuration, target.Item.Metadata, target.Item.Action,
                                      target.Item.RecordId);
 

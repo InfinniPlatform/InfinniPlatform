@@ -1,17 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.Factories;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.Security;
 using InfinniPlatform.Api.Transactions;
+using InfinniPlatform.Api.Versioning;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Metadata;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.Factories
 {
@@ -28,32 +31,38 @@ namespace InfinniPlatform.Factories
         {
             _platformComponentsPack = new PlatformComponentsPack(dependencyContainerComponent);
 
-            _components.Add(new ContextRegistration(typeof (DocumentApi), version => new DocumentApi(version)));
+            _components.Add(new ContextRegistration(typeof (DocumentApi), () => new DocumentApi()));
             _components.Add(new ContextRegistration(typeof (DocumentApiUnsecured),
-                version => new DocumentApiUnsecured(version)));
-            _components.Add(new ContextRegistration(typeof (PrintViewApi), version => new PrintViewApi(version)));
-            _components.Add(new ContextRegistration(typeof (RegisterApi), version => new RegisterApi(version)));
-            _components.Add(new ContextRegistration(typeof (ReportApi), version => new ReportApi(version)));
-            _components.Add(new ContextRegistration(typeof (UploadApi), version => new UploadApi(version)));
-            _components.Add(new ContextRegistration(typeof (MetadataApi), version => new MetadataApi(version)));
-            _components.Add(new ContextRegistration(typeof (AuthApi), version => new AuthApi(version)));
-            _components.Add(new ContextRegistration(typeof (SignInApi), version => new SignInApi(version)));
+                () => new DocumentApiUnsecured()));
+            _components.Add(new ContextRegistration(typeof (PrintViewApi), () => new PrintViewApi()));
+            _components.Add(new ContextRegistration(typeof (RegisterApi), () => new RegisterApi()));
+            _components.Add(new ContextRegistration(typeof (ReportApi), () => new ReportApi()));
+            _components.Add(new ContextRegistration(typeof (UploadApi), () => new UploadApi()));
+            _components.Add(new ContextRegistration(typeof (MetadataApi), () => new MetadataApi()));
+            _components.Add(new ContextRegistration(typeof (AuthApi), () => new AuthApi()));
+            _components.Add(new ContextRegistration(typeof (SignInApi), () => new SignInApi()));
             _components.Add(new ContextRegistration(typeof (PasswordVerifierComponent),
-                version => new PasswordVerifierComponent(this)));
+                () => new PasswordVerifierComponent(this)));
             _components.Add(new ContextRegistration(typeof (InprocessDocumentComponent),
-                version => new InprocessDocumentComponent(new ConfigurationMediatorComponent(
+                () => new InprocessDocumentComponent(new ConfigurationMediatorComponent(
                     dependencyContainerComponent.ResolveDependency<IConfigurationObjectBuilder>()
                     ),
                     new CachedSecurityComponent(),
                     dependencyContainerComponent.ResolveDependency<IIndexFactory>())));
         }
 
-        public T GetComponent<T>(string version) where T : class
+        public T GetComponent<T>() where T : class
         {
             //ищем среди зарегистрированных компонентов платформы, если не находим, обращаемся к контексту компонентов ядра платформы
             return
-                _platformComponentsPack.GetComponent<T>(version) ??
-                _components.Where(c => c.IsTypeOf(typeof (T))).Select(c => c.GetInstance(version)).FirstOrDefault() as T;
+                _platformComponentsPack.GetComponent<T>() ??
+                _components.Where(c => c.IsTypeOf(typeof (T))).Select(c => c.GetInstance()).FirstOrDefault() as T;
+        }
+
+        public string GetVersion(string configuration, string userName)
+        {
+            var configVersions = GetComponent<IMetadataConfigurationProvider>().ConfigurationVersions;
+            return GetComponent<IVersionStrategy>().GetActualVersion(configuration, configVersions, userName);
         }
     }
 }

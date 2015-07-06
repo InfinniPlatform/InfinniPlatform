@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using InfinniPlatform.Api.Profiling;
 using InfinniPlatform.Owin.Properties;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Log;
 using Microsoft.Owin;
 
 namespace InfinniPlatform.Owin.Middleware

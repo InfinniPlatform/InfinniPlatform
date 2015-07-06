@@ -84,7 +84,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 
                 item["Overwrite"] = true;
 
-                RestQueryApi.QueryPostJsonRaw("ClassifierLoader", "classifiers", "Publish", null, item, _version);
+                RestQueryApi.QueryPostJsonRaw("ClassifierLoader", "classifiers", "Publish", null, item);
 
                 resultMessage.AppendLine();
                 resultMessage.AppendFormat("Classifier {0} imported", parameters[0]);

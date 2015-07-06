@@ -8,6 +8,8 @@ using InfinniPlatform.Hosting.Implementation.ExtensionPointHandling;
 using InfinniPlatform.Hosting.Implementation.ServiceRegistration;
 using InfinniPlatform.Hosting.Implementation.ServiceTemplates;
 using InfinniPlatform.Metadata.Implementation.HostServerConfiguration;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Hosting;
 using InfinniPlatform.WebApi.Tests.Builders;
 using NUnit.Framework;
 using Newtonsoft.Json;

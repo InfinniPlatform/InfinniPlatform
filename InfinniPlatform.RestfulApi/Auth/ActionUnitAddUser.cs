@@ -28,7 +28,7 @@ namespace InfinniPlatform.RestfulApi.Auth
                             new CustomApplicationUserPasswordHasher(target.Context).HashPassword(userParams.Password)
                     });
                 //добавляем доступ на чтение пользователей
-                var securityComponent = target.Context.GetComponent<CachedSecurityComponent>(target.Version);
+                var securityComponent = target.Context.GetComponent<CachedSecurityComponent>();
 
                 securityComponent.UpdateUsers();
                 target.Result = new DynamicWrapper();

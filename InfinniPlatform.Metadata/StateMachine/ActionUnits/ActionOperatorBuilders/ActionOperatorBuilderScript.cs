@@ -1,5 +1,6 @@
-﻿using InfinniPlatform.Api.Actions;
-using InfinniPlatform.Api.Factories;
+﻿using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Actions;
+using InfinniPlatform.Sdk.Environment.Scripts;
 
 namespace InfinniPlatform.Metadata.StateMachine.ActionUnits.ActionOperatorBuilders
 {

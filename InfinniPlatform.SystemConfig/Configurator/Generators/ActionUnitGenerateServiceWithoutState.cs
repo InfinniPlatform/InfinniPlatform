@@ -5,6 +5,7 @@ using InfinniPlatform.Api.Deprecated;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
 using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Environment.Hosting;
 using InfinniPlatform.SystemConfig.Properties;
 
 namespace InfinniPlatform.SystemConfig.Configurator.Generators
@@ -25,7 +26,7 @@ namespace InfinniPlatform.SystemConfig.Configurator.Generators
             }
 
 
-            var metadataFactory = new ManagerFactoryDocument(target.Version, target.Item.Configuration,
+            var metadataFactory = new ManagerFactoryDocument(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration,
                                                              target.Item.Metadata);
 
             MetadataManagerElement scenarioManager = metadataFactory.BuildScenarioManager();

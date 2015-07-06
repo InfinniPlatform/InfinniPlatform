@@ -15,16 +15,16 @@ namespace InfinniPlatform.Sdk.Tests
     public sealed class FileApiTest
     {
         private const string InfinniSessionPort = "9900";
-        private const string InfinniSessionServer = "10.0.0.45";
-        private const string InfinniSessionVersion = "1";
+        private const string InfinniSessionServer = "localhost";
+
         private InfinniFileApi _fileApi;
         private InfinniDocumentApi _documentApi;
 
         [TestFixtureSetUp]
         public void SetupApi()
         {
-            _fileApi = new InfinniFileApi(InfinniSessionServer, InfinniSessionPort, InfinniSessionVersion);
-            _documentApi = new InfinniDocumentApi(InfinniSessionServer, InfinniSessionPort, InfinniSessionVersion);
+            _fileApi = new InfinniFileApi(InfinniSessionServer, InfinniSessionPort);
+            _documentApi = new InfinniDocumentApi(InfinniSessionServer, InfinniSessionPort);
         }
 
         [Test]

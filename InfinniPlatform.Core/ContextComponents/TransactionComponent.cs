@@ -1,5 +1,7 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.Transactions;
+﻿using InfinniPlatform.Api.Transactions;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Transactions;
 
 namespace InfinniPlatform.ContextComponents
 {

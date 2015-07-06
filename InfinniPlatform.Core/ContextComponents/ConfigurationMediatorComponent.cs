@@ -1,5 +1,7 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.Metadata;
+﻿using InfinniPlatform.Api.Metadata;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.ContextComponents
 {

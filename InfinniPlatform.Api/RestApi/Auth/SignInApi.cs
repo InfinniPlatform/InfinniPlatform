@@ -14,13 +14,6 @@ namespace InfinniPlatform.Api.RestApi.Auth
     /// </summary>
     public sealed class SignInApi
     {
-        private readonly string _version;
-
-        public SignInApi(string version = null)
-        {
-            _version = version;
-        }
-
         public static CookieContainer CookieContainer { get; private set; }
 
         /// <summary>
@@ -124,11 +117,11 @@ namespace InfinniPlatform.Api.RestApi.Auth
         public dynamic ChangePassword(string userName, string oldPassword, string newPassword)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "changepassword", null, new
-            {
-                UserName = userName,
-                OldPassword = oldPassword,
-                NewPassword = newPassword
-            }, _version).ToDynamic();
+                {
+                    UserName = userName,
+                    OldPassword = oldPassword,
+                    NewPassword = newPassword
+                }).ToDynamic();
         }
     }
 }

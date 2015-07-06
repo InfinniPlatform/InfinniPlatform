@@ -22,20 +22,17 @@ namespace InfinniPlatform.Sdk
         /// <summary>
         ///   Сформировать роутинг запроса для запросов на загрузку файла на сервер
         /// </summary>
-        /// <param name="version">Версия приложения</param>
         /// <param name="application">Приложение</param>
         /// <returns>Роутинг для запросов на загрузку файлов</returns>
-        public string BuildRestRoutingUploadFile(string version, string application)
+        public string BuildRestRoutingUploadFile(string application)
         {
             return GetCompleteUrl(GetFileUploadPath()
-                .ReplaceFormat("version", version)
                 .ReplaceFormat("application", application));
         }
 
-        public string BuildRestRoutingDownloadFile(string version, string application)
+        public string BuildRestRoutingDownloadFile(string application)
         {
             return GetCompleteUrl(GetFileDownloadPath()
-                .ReplaceFormat("version", version)
                 .ReplaceFormat("application", application));
         }
 
@@ -53,15 +50,13 @@ namespace InfinniPlatform.Sdk
         /// <summary>
         ///   Сформировать роутинг запроса для кастомных запросов к платформе
         /// </summary>
-        /// <param name="version">Версия приложения</param>
         /// <param name="application">Приложение</param>
         /// <param name="documentType">Тип документа</param>
         /// <param name="service">Действие</param>
         /// <returns>Роутинг для кастомных запросов к платформе</returns>
-        public string BuildRestRoutingUrl(string version, string application, string documentType, string service)
+        public string BuildRestRoutingUrl(string application, string documentType, string service)
         {
             return GetCompleteUrl(GetRestTemplate()
-                                        .ReplaceFormat("version", version)
                                         .ReplaceFormat("application", application)
                                         .ReplaceFormat("documentType", documentType)
                                         .ReplaceFormat("service", service));
@@ -70,14 +65,12 @@ namespace InfinniPlatform.Sdk
         /// <summary>
         ///   Сформировать роутинг запроса для стандартного запроса документа указанного типа
         /// </summary>
-        /// <param name="version">Версия приложения</param>
         /// <param name="application">Приложение</param>
         /// <param name="documentType">Тип документа</param>
         /// <returns>Роутинг для стандартного запроса документа указанного типа</returns>
-        public string BuildRestRoutingUrlDefault(string version, string application, string documentType)
+        public string BuildRestRoutingUrlDefault(string application, string documentType)
         {
             return GetCompleteUrl(GetRestTemplateStandard()
-                                        .ReplaceFormat("version", version)
                                         .ReplaceFormat("application", application)
                                         .ReplaceFormat("documentType", documentType));
         }
@@ -85,15 +78,13 @@ namespace InfinniPlatform.Sdk
         /// <summary>
         ///   Сформировать роутинг запроса для стандартного запроса документа указанного типа с указанным идентификатором
         /// </summary>
-        /// <param name="version">Версия приложения</param>
         /// <param name="application">Приложение</param>
         /// <param name="documentType">Тип документа</param>
         /// <param name="instanceId">Идентификатор документа</param>
         /// <returns>Роутинг для стандартного запроса документа указанного типа</returns>
-        public string BuildRestRoutingUrlDefaultById(string version, string application, string documentType, string instanceId)
+        public string BuildRestRoutingUrlDefaultById(string application, string documentType, string instanceId)
         {
             return GetCompleteUrl(GetRestTemplateStandardSpecifiedInstanceId()
-                                        .ReplaceFormat("version", version)
                                         .ReplaceFormat("application", application)
                                         .ReplaceFormat("documentType", documentType)
                                         .ReplaceFormat("instanceId", instanceId)
@@ -104,11 +95,10 @@ namespace InfinniPlatform.Sdk
         /// <summary>
         ///  Сформировать роутинг запроса для создания новой клиентской сессии
         /// </summary>
-        /// <param name="version">Версия платформы</param>
         /// <returns>Роутинг для запроса на создание клиентской сессии</returns>
-        public string BuildRestRoutingUrlDefaultSession(string version)
+        public string BuildRestRoutingUrlDefaultSession()
         {
-            return GetCompleteUrl(GetRestTemplateVersionBase().ReplaceFormat("version", version));
+            return GetCompleteUrl(GetRestTemplateVersionBase());
         }
 
 
@@ -116,12 +106,10 @@ namespace InfinniPlatform.Sdk
         ///  Сформировать роутинг запроса для получения документов клиентской сессии
         /// </summary>
         /// <param name="sessionId">Идентификатор сессии</param>
-        /// <param name="version">Версия приложения</param>
         /// <returns>Роутинг для запроса на создание клиентской сессии</returns>
-        public string BuildRestRoutingUrlDefaultSessionById(string sessionId, string version)
+        public string BuildRestRoutingUrlDefaultSessionById(string sessionId)
         {
             return GetCompleteUrl(GetRestTemplateSessionById()
-                .ReplaceFormat("version", version)
                 .ReplaceFormat("sessionId", sessionId)
                 );
         }
@@ -131,12 +119,10 @@ namespace InfinniPlatform.Sdk
         ///  Сформировать роутинг запроса для присоединения документов к клиентской сессии
         /// </summary>
         /// <param name="sessionId">Идентификатор сессии</param>
-        /// <param name="version">Версия приложения</param>
         /// <returns>Роутинг для запроса на присоединение документа к клиентской сессии</returns>
-        public string BuildRestRoutingUrlAttachDocument(string sessionId, string version)
+        public string BuildRestRoutingUrlAttachDocument(string sessionId)
         {
             return GetCompleteUrl(GetRestTemplateSessionById()
-                .ReplaceFormat("version", version)
                 .ReplaceFormat("sessionId", sessionId)
                 );
         }
@@ -145,13 +131,11 @@ namespace InfinniPlatform.Sdk
         ///  Сформировать роутинг запроса для отсоединения документов от клиентской сессии
         /// </summary>
         /// <param name="sessionId">Идентификатор сессии</param>
-        /// <param name="version">Версия приложения</param>
         /// <param name="attachmentId">Идентификатор присоединенного документа</param>
         /// <returns>Роутинг для запроса на отсоединение документа к клиентской сессии</returns>
-        public string BuildRestRoutingUrlDetachDocument(string sessionId, string version, string attachmentId)
+        public string BuildRestRoutingUrlDetachDocument(string sessionId, string attachmentId)
         {
             return GetCompleteUrl(GetRestTemplateSessionDocument()
-                .ReplaceFormat("version", version)
                 .ReplaceFormat("sessionId", sessionId)
                 .ReplaceFormat("attachmentId", attachmentId)
                 );
@@ -160,43 +144,38 @@ namespace InfinniPlatform.Sdk
         /// <summary>
         /// Сформировать роутинг для входа пользователя в систему
         /// </summary>
-        /// <param name="version">Версия приложения</param>
         /// <returns>Роутинг для запроса на вход пользователя в систему</returns>
-        public string BuildRestRoutingUrlSignIn(string version)
+        public string BuildRestRoutingUrlSignIn()
         {
-            return GetCompleteUrl(GetRestTemplateSignIn().ReplaceFormat("version", version));
+            return GetCompleteUrl(GetRestTemplateSignIn());
         }
 
         /// <summary>
         ///  Сформировать роутинг для выхода пользователя из системы
         /// </summary>
-        /// <param name="version">Версия приложения</param>
         /// <returns>Роутинг для запроса на выход пользователя из системы</returns>
-        public string BuildRestRoutingUrlSignOut(string version)
+        public string BuildRestRoutingUrlSignOut()
         {
-            return GetCompleteUrl(GetRestTemplateSignOut().ReplaceFormat("version", version));
+            return GetCompleteUrl(GetRestTemplateSignOut());
         }
 
         /// <summary>
         ///  Сформировать роутинг для смены пароля пользователя
         /// </summary>
-        /// <param name="version">Версия приложения</param>
         /// <returns>Роутинг для запроса смены пароля пользователя</returns>
-        public string BuildRestRoutingChangePassword(string version)
+        public string BuildRestRoutingChangePassword()
         {
-            return GetCompleteUrl(GetRestTemplateChangePassword().ReplaceFormat("version", version));
+            return GetCompleteUrl(GetRestTemplateChangePassword());
         }
 
 
         /// <summary>
         ///   Сформировать роутинг для предоставления прав пользователю
         /// </summary>
-        /// <param name="version">Версия приложения</param>
         /// <returns>Роутинг запроса</returns>
-        public string BuildRestRoutingUrlGrantAccess(string version)
+        public string BuildRestRoutingUrlGrantAccess()
         {
             return GetCompleteUrl(GetRestTemplate()
-                .ReplaceFormat("version", version)
                 .ReplaceFormat("application", "Administration")
                 .ReplaceFormat("documentType", "User")
                 .ReplaceFormat("service", "GrantAccess"));
@@ -205,12 +184,10 @@ namespace InfinniPlatform.Sdk
         /// <summary>
         ///   Сформировать роутинг для установки запрета прав
         /// </summary>
-        /// <param name="version">Версия приложения</param>
         /// <returns>Роутинг запроса</returns>
-        public string BuildRestRoutingUrlDenyAccess(string version)
+        public string BuildRestRoutingUrlDenyAccess()
         {
             return GetCompleteUrl(GetRestTemplate()
-                .ReplaceFormat("version", version)
                 .ReplaceFormat("application", "Administration")
                 .ReplaceFormat("documentType", "User")
                 .ReplaceFormat("service", "DenyAccess"));
@@ -219,12 +196,10 @@ namespace InfinniPlatform.Sdk
         /// <summary>
         ///  Сформировать роутинг для добавления пользователя
         /// </summary>
-        /// <param name="version">Версия приложения</param>
         /// <returns>Строка роутинга запросоа для добавления нового пользователя</returns>
-        public string BuildRestRoutingUrlAddUser(string version)
+        public string BuildRestRoutingUrlAddUser()
         {
             return GetCompleteUrl(GetRestTemplateStandard()
-                .ReplaceFormat("version", version)
                 .ReplaceFormat("application", "Administration")
                 .ReplaceFormat("documentType", "User"));
         }
@@ -232,13 +207,11 @@ namespace InfinniPlatform.Sdk
         /// <summary>
         ///   Сформировать роутинг для обращения к указанному пользователю
         /// </summary>
-        /// <param name="version">Версия приложения</param>
         /// <param name="userName">Логин пользователя</param>
         /// <returns>Строка роутинга запроса для получения существующего пользователя</returns>
-        public string BuildRestRoutingToSpecifiedUserRoles(string version, string userName)
+        public string BuildRestRoutingToSpecifiedUserRoles(string userName)
         {
             return GetCompleteUrl(GetRestTemplateStandardSpecifiedUserName()
-                .ReplaceFormat("version", version)
                 .ReplaceFormat("application", "Administration")
                 .ReplaceFormat("documentType", "User")
                 .ReplaceFormat("userName", userName)
@@ -248,14 +221,12 @@ namespace InfinniPlatform.Sdk
         /// <summary>
         ///   Сформировать роутинг для обращения к указанному пользователю
         /// </summary>
-        /// <param name="version">Версия приложения</param>
         /// <param name="userName">Логин пользователя</param>
         /// <param name="roleName">Роль пользователя</param>
         /// <returns>Строка роутинга запроса для получения существующего пользователя</returns>
-        public string BuildRestRoutingToSpecifiedUserRole(string version, string userName, string roleName)
+        public string BuildRestRoutingToSpecifiedUserRole(string userName, string roleName)
         {
             return GetCompleteUrl(GetRestTemplateStandardSpecifiedUserRole()
-                .ReplaceFormat("version", version)
                 .ReplaceFormat("application", "Administration")
                 .ReplaceFormat("documentType", "User")
                 .ReplaceFormat("userName", userName)
@@ -266,14 +237,12 @@ namespace InfinniPlatform.Sdk
         /// <summary>
         ///  Сформировать роутинг для обращения (GET,PUT, DELETE)  к указанному утверждению (Claim)
         /// </summary>
-        /// <param name="version">Версия приложения</param>
         /// <param name="userName">Логин пользователя</param>
         /// <param name="claimType">Тип утверждения</param>
         /// <returns>Роутинг запроса</returns>
-        public string BuildRestRoutingToSpecifiedUserClaim(string version, string userName, string claimType)
+        public string BuildRestRoutingToSpecifiedUserClaim(string userName, string claimType)
         {
             return GetCompleteUrl(GetRestTemplateStandardSpecifiedUserClaim()
-                .ReplaceFormat("version", version)
                 .ReplaceFormat("application", "Administration")
                 .ReplaceFormat("documentType", "User")
                 .ReplaceFormat("userName", userName)
@@ -283,13 +252,11 @@ namespace InfinniPlatform.Sdk
         /// <summary>
         ///   Сформировать роутинг для обращения к указанному пользователю
         /// </summary>
-        /// <param name="version">Версия приложения</param>
         /// <param name="userName">Логин пользователя</param>
         /// <returns>Строка роутинга запроса для получения существующего пользователя</returns>
-        public string BuildRestRoutingToSpecifiedUser(string version, string userName)
+        public string BuildRestRoutingToSpecifiedUser(string userName)
         {
             return GetCompleteUrl(GetRestTemplateStandardSpecifiedUserName()
-                .ReplaceFormat("version", version)
                 .ReplaceFormat("application", "Administration")
                 .ReplaceFormat("documentType", "User")
                 .ReplaceFormat("userName", userName)
@@ -299,13 +266,11 @@ namespace InfinniPlatform.Sdk
         /// <summary>
         ///   Сформировать роутинг для удаления роли
         /// </summary>
-        /// <param name="version">Версия приложения</param>
         /// <param name="roleName">Ключ удаляемой роли</param>
         /// <returns>Роутинг запроса</returns>
-        public string BuildRestRoutingToSpecifiedRole(string version, string roleName)
+        public string BuildRestRoutingToSpecifiedRole(string roleName)
         {
             return GetCompleteUrl(GetRestTemplateStandardSpecifiedRoleName()
-                .ReplaceFormat("version", version)
                 .ReplaceFormat("application", "Administration")
                 .ReplaceFormat("documentType", "Role")
                 .ReplaceFormat("roleName", roleName)
@@ -318,7 +283,7 @@ namespace InfinniPlatform.Sdk
         /// <returns>Базовая часть шаблона строки роутинга</returns>
         private string GetBaseApplicationPath()
         {
-            return "{version}/{application}";
+            return "{application}";
         }
 
         /// <summary>
@@ -336,7 +301,7 @@ namespace InfinniPlatform.Sdk
         /// <returns>Шаблон роутинга</returns>
         private string GetRestTemplateVersionBase()
         {
-            return "{version}";
+            return "";
         }
 
 
@@ -346,7 +311,7 @@ namespace InfinniPlatform.Sdk
         /// <returns>Шаблон роутинга</returns>
         private string GetRestTemplateSessionById()
         {
-            return "{version}/{sessionId}";
+            return "{sessionId}";
         }
 
         /// <summary>
@@ -355,7 +320,7 @@ namespace InfinniPlatform.Sdk
         /// <returns>Шаблон роутинга</returns>
         private string GetRestTemplateSessionDocument()
         {
-            return "{version}/{sessionId}/{attachmentId}";
+            return "{sessionId}/{attachmentId}";
         }
 
         /// <summary>

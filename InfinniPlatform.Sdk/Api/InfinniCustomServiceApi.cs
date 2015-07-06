@@ -10,8 +10,8 @@ namespace InfinniPlatform.Sdk.Api
     /// </summary>
     public sealed class InfinniCustomServiceApi : BaseApi
     {
-        public InfinniCustomServiceApi(string server, string port, string version)
-            : base(server, port, version)
+        public InfinniCustomServiceApi(string server, string port)
+            : base(server, port)
         {
         }
 
@@ -23,7 +23,7 @@ namespace InfinniPlatform.Sdk.Api
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrl(Version, application, documentType,service), body);
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrl(application, documentType,service), body);
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToInvokeCustomService, response.GetErrorContent()));
         }

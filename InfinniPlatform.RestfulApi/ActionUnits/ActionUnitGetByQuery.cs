@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Index.SearchOptions;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Index.QueryLanguage.Implementation;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Index;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.RestfulApi.ActionUnits
@@ -20,9 +21,9 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
 
             _jsonQueryExecutor =
-                new JsonQueryExecutor(target.Context.GetComponent<IIndexComponent>(target.Version).IndexFactory,
+                new JsonQueryExecutor(target.Context.GetComponent<IIndexComponent>().IndexFactory,
                                       filterFactory,
-                                      target.Context.GetComponent<ISecurityComponent>(target.Version)
+                                      target.Context.GetComponent<ISecurityComponent>()
                                             .GetClaim(AuthorizationStorageExtensions.OrganizationClaim, target.UserName) ??
                                       AuthorizationStorageExtensions.AnonimousUser);
 

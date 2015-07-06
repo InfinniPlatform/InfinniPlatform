@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Metadata.Properties;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Metadata.Implementation.Handlers
 {
@@ -50,15 +51,15 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
 
             var idType = ConfigRequestProvider.GetMetadataIdentifier();
             var config =
-                _globalContext.GetComponent<IConfigurationMediatorComponent>(ConfigRequestProvider.GetVersion())
-                    .ConfigurationBuilder.GetConfigurationObject(ConfigRequestProvider.GetVersion(),
+                _globalContext.GetComponent<IConfigurationMediatorComponent>()
+                    .ConfigurationBuilder.GetConfigurationObject(_globalContext.GetVersion(ConfigRequestProvider.GetConfiguration(),ConfigRequestProvider.GetUserName()),
                         ConfigRequestProvider.GetConfiguration())
                     .MetadataConfiguration;
 
             //устанавливаем контекст прикладной конфигурации. В ходе рефакторинга необходимо обдумать, как вынести это на более высокий уровень абстракции
             var appliedConfig =
-                _globalContext.GetComponent<IConfigurationMediatorComponent>(ConfigRequestProvider.GetVersion())
-                    .GetConfiguration(ConfigRequestProvider.GetVersion(), ConfigRequestProvider.GetConfiguration());
+                _globalContext.GetComponent<IConfigurationMediatorComponent>()
+                    .GetConfiguration(_globalContext.GetVersion(ConfigRequestProvider.GetConfiguration(),ConfigRequestProvider.GetUserName()), ConfigRequestProvider.GetConfiguration());
 
 
             if (string.IsNullOrEmpty(idType))
@@ -75,8 +76,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
                 Context = _globalContext,
                 Configuration = ConfigRequestProvider.GetConfiguration(),
                 Metadata = ConfigRequestProvider.GetMetadataIdentifier(),
-                Action = ConfigRequestProvider.GetServiceName(),
-                Version = ConfigRequestProvider.GetVersion(),
+                Action = ConfigRequestProvider.GetServiceName(),                
                 PageNumber = pageNumber,
                 PageSize = pageSize
             };
@@ -89,13 +89,13 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
                 string configVersion = null;
                 if (searchType != SearchType.All)
                 {
-                    configVersion = ConfigRequestProvider.GetVersion() ?? appliedConfig.GetConfigurationVersion();
+                    configVersion = _globalContext.GetVersion(ConfigRequestProvider.GetConfiguration(),ConfigRequestProvider.GetUserName()) ?? appliedConfig.GetConfigurationVersion();
                 }
 
 
                 var documentProvider = appliedConfig
                     .GetDocumentProvider(ConfigRequestProvider.GetMetadataIdentifier(), configVersion,
-                        target.Context.GetComponent<ISecurityComponent>(ConfigRequestProvider.GetVersion())
+                        target.Context.GetComponent<ISecurityComponent>()
                             .GetClaim(AuthorizationStorageExtensions.OrganizationClaim, target.UserName) ??
                         AuthorizationStorageExtensions.AnonimousUser);
 

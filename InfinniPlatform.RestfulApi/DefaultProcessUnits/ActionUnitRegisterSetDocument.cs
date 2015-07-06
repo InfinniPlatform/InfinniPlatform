@@ -1,6 +1,6 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes.ContextImpl;
+﻿using InfinniPlatform.Api.ContextTypes.ContextImpl;
 using InfinniPlatform.Api.Metadata;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
@@ -21,8 +21,8 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
             {
                 //ищем метаданные бизнес-процесса по умолчанию документа 
                 defaultBusinessProcess =
-                    target.Context.GetComponent<IMetadataComponent>(target.Version)
-                          .GetMetadata(target.Version, target.Item.Configuration, target.Item.Metadata,
+                    target.Context.GetComponent<IMetadataComponent>()
+                          .GetMetadata(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration, target.Item.Metadata,
                                        MetadataType.Process, "Default");
             }
             else
@@ -40,8 +40,8 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                 scriptArguments.Item.Metadata = target.Item.Metadata;
                 scriptArguments.Context = target.Context;
 
-                target.Context.GetComponent<IScriptRunnerComponent>(target.Version)
-                      .GetScriptRunner(target.Version, target.Item.Configuration)
+                target.Context.GetComponent<IScriptRunnerComponent>()
+                      .GetScriptRunner(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration)
                       .InvokeScript(
                           defaultBusinessProcess.Transitions[0].RegisterPoint.ScenarioId, scriptArguments);
             }

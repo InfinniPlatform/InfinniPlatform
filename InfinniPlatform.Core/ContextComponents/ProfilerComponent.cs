@@ -1,8 +1,11 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.Hosting;
+﻿using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Profiling;
 using InfinniPlatform.Api.Profiling.Implementation;
 using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Log;
+using InfinniPlatform.Sdk.Environment.Profiling;
 
 namespace InfinniPlatform.ContextComponents
 {

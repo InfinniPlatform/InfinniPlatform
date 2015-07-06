@@ -1,4 +1,6 @@
-﻿namespace InfinniPlatform.Api.PrintView
+﻿using InfinniPlatform.Sdk.Environment;
+
+namespace InfinniPlatform.Api.PrintView
 {
     /// <summary>
     ///     Построитель печатного представления.

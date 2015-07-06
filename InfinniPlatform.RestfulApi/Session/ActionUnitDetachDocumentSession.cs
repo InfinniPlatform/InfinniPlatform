@@ -1,6 +1,8 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.Transactions;
+﻿using InfinniPlatform.Api.Transactions;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Transactions;
 
 namespace InfinniPlatform.RestfulApi.Session
 {
@@ -11,7 +13,7 @@ namespace InfinniPlatform.RestfulApi.Session
     {
         public void Action(IApplyContext target)
         {
-            var manager = target.Context.GetComponent<ITransactionComponent>(target.Version).GetTransactionManager();
+            var manager = target.Context.GetComponent<ITransactionComponent>().GetTransactionManager();
 
             if (!string.IsNullOrEmpty(target.Item.SessionId) && target.Item.AttachmentId != null)
             {

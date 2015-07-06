@@ -14,15 +14,15 @@ namespace InfinniPlatform.Sdk.Tests
     {
         private const string InfinniSessionPort = "9900";
         private const string InfinniSessionServer = "localhost";
-        private const string InfinniSessionVersion = "1";
+
         private InfinniCustomServiceApi _customServiceApi;
         private InfinniDocumentApi _documentApi;
 
         [TestFixtureSetUp]
         public void SetupApi()
         {
-            _customServiceApi = new InfinniCustomServiceApi(InfinniSessionServer, InfinniSessionPort, InfinniSessionVersion);
-            _documentApi = new InfinniDocumentApi(InfinniSessionServer, InfinniSessionPort, InfinniSessionVersion);
+            _customServiceApi = new InfinniCustomServiceApi(InfinniSessionServer, InfinniSessionPort);
+            _documentApi = new InfinniDocumentApi(InfinniSessionServer, InfinniSessionPort);
         }
 
         [Test]

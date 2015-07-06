@@ -2,6 +2,8 @@
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Metadata.Implementation.Handlers;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Hosting;
 
 namespace InfinniPlatform.Metadata.Implementation.HostServerConfiguration
 {

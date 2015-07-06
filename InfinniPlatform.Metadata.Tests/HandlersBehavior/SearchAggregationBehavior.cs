@@ -4,6 +4,7 @@ using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Api.TestEnvironment;
 using InfinniPlatform.Index;
+using InfinniPlatform.Sdk.Environment.Index;
 using NUnit.Framework;
 
 namespace InfinniPlatform.Metadata.Tests.HandlersBehavior

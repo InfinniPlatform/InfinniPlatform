@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Validation;
 using InfinniPlatform.RestfulApi.Utils;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Validations;
 
 namespace InfinniPlatform.RestfulApi.ActionUnits
 {
@@ -20,12 +22,12 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             }
 
 
-            var authUtils = new AuthUtils(target.Context.GetComponent<ISecurityComponent>(target.Version),
+            var authUtils = new AuthUtils(target.Context.GetComponent<ISecurityComponent>(),
                                           target.UserName, null);
 
 
-            target.Result = target.Context.GetComponent<IMetadataComponent>(target.Version)
-                                  .GetMetadataList(target.Version, paramsDoc.Configuration, paramsDoc.Metadata,
+            target.Result = target.Context.GetComponent<IMetadataComponent>()
+                                  .GetMetadataList(target.Context.GetVersion(paramsDoc.Configuration, target.UserName), paramsDoc.Configuration, paramsDoc.Metadata,
                                                    paramsDoc.MetadataType);
 
 

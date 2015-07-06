@@ -1,9 +1,11 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.Metadata;
+﻿using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.Validation;
 using InfinniPlatform.RestfulApi.Utils;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Validations;
 
 namespace InfinniPlatform.RestfulApi.ActionUnits
 {
@@ -21,12 +23,12 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             }
 
 
-            var authUtils = new AuthUtils(target.Context.GetComponent<ISecurityComponent>(target.Version),
+            var authUtils = new AuthUtils(target.Context.GetComponent<ISecurityComponent>(),
                                           target.UserName, null);
 
             //если указано конкретное наименование искомых метаданных
-            target.Result = target.Context.GetComponent<IMetadataComponent>(target.Version)
-                                  .GetMetadata(target.Version, paramsDoc.Configuration, paramsDoc.Metadata,
+            target.Result = target.Context.GetComponent<IMetadataComponent>()
+                                  .GetMetadata(target.Context.GetVersion(paramsDoc.Configuration, target.UserName), paramsDoc.Configuration, paramsDoc.Metadata,
                                                paramsDoc.MetadataType, paramsDoc.MetadataName);
 
             if (target.Result != null)
@@ -44,17 +46,19 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
             if (target.Result != null)
             {
-                var service = target.Context.GetComponent<IMetadataComponent>(target.Version)
-                                    .GetMetadata(target.Version, paramsDoc.Configuration, "Common", MetadataType.Service,
+                var version = target.Context.GetVersion(paramsDoc.Configuration, target.UserName);
+
+                var service = target.Context.GetComponent<IMetadataComponent>()
+                                    .GetMetadata(version, paramsDoc.Configuration, "Common", MetadataType.Service,
                                                  "FilterMetadata");
 
                 if (service != null)
                 {
-                    target.Result.Version = target.Version;
+                    target.Result.Version = version;
 
                     dynamic filterMetadata =
                         RestQueryApi.QueryPostJsonRaw(paramsDoc.Configuration, "Common", "FilterMetadata", null,
-                                                      target.Result, target.Version).ToDynamic();
+                                                      target.Result).ToDynamic();
 
                     if (filterMetadata != null)
                     {

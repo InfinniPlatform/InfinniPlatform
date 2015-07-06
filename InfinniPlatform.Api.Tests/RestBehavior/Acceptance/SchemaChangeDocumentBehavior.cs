@@ -85,7 +85,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             documentFirstSchema.Address.Id = Guid.NewGuid().ToString();
             documentFirstSchema.Address.DisplayName = "Челябинск";
 
-            new DocumentApi(null).SetDocument(configId, documentId, documentFirstSchema);
+            new DocumentApi().SetDocument(configId, documentId, documentFirstSchema);
 
             //Изменяем схему
 
@@ -121,10 +121,10 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             documentSecondSchema.Name = "TestPatient1";
             documentSecondSchema.Address = "Челябинск";
 
-            new DocumentApi(null).SetDocument(configId, documentId, documentSecondSchema);
+            new DocumentApi().SetDocument(configId, documentId, documentSecondSchema);
 
             //получаем оба документа
-            IEnumerable<dynamic> documents = new DocumentApi(null).GetDocument(configId, documentId, null, 0, 10);
+            IEnumerable<dynamic> documents = new DocumentApi().GetDocument(configId, documentId, null, 0, 10);
 
             Assert.AreEqual(documents.Count(), 2);
         }

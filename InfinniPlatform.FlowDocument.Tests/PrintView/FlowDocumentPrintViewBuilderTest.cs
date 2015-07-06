@@ -6,6 +6,7 @@ using InfinniPlatform.Api.PrintView;
 using InfinniPlatform.FlowDocument.PrintView;
 using InfinniPlatform.FlowDocument.Tests.Properties;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment;
 using NUnit.Framework;
 
 namespace InfinniPlatform.FlowDocument.Tests.PrintView

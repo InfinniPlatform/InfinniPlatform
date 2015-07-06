@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.RestfulApi.Extensions;
+﻿using InfinniPlatform.RestfulApi.Extensions;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.RestfulApi.ActionUnits
@@ -12,13 +12,13 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                                                                 target.Item.Metadata ?? string.Empty);
             if (target.Result != null)
             {
-                target.Context.GetComponent<ILogComponent>(target.Version).GetLog().Info(
+                target.Context.GetComponent<ILogComponent>().GetLog().Info(
                     "find \"{0}\" document from index \"{1}\", type \"{2}\" ", target.Result.ToString(),
                     target.Item.Configuration, target.Item.Metadata);
             }
             else
             {
-                target.Context.GetComponent<ILogComponent>(target.Version)
+                target.Context.GetComponent<ILogComponent>()
                       .GetLog()
                       .Error("no documents found from type \"{0}\"", target.Item.Metadata);
             }

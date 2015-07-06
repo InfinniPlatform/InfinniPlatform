@@ -12,8 +12,8 @@ namespace InfinniPlatform.Sdk.Api
     /// </summary>
     public class InfinniDocumentApi : BaseApi
     {
-        public InfinniDocumentApi(string server, string port, string version)
-            : base(server, port, version)
+        public InfinniDocumentApi(string server, string port)
+            : base(server, port)
         {
         }
 
@@ -25,7 +25,7 @@ namespace InfinniPlatform.Sdk.Api
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlDefaultSession(Version));
+            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlDefaultSession());
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToCreateNewSession, response.GetErrorContent())); 
         }
@@ -51,7 +51,7 @@ namespace InfinniPlatform.Sdk.Api
 
             changesObject.Document.Id = instanceId;
 
-            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlDefaultSessionById(session, Version), changesObject);
+            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlDefaultSessionById(session), changesObject);
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToAttachDocumentToSession, response.GetErrorContent())); 
         }
@@ -68,7 +68,7 @@ namespace InfinniPlatform.Sdk.Api
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryPostFile(RouteBuilder.BuildRestRoutingUrlDefaultSession(Version), instanceId, fieldName, fileName, fileStream, session);
+            var response = restQueryExecutor.QueryPostFile(RouteBuilder.BuildRestRoutingUrlDefaultSession(), instanceId, fieldName, fileName, fileStream, session);
 
             ProcessAsObjectResult(response, string.Format(Resources.UnableToAttachFileToSession, response.GetErrorContent()));            
         }
@@ -90,7 +90,7 @@ namespace InfinniPlatform.Sdk.Api
                 SessionId = session
             };
 
-            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingUrlDefaultSession(Version), body);
+            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingUrlDefaultSession(), body);
 
             ProcessAsObjectResult(response, string.Format(Resources.UnableToDetachFileFromSession, response.GetErrorContent())); 
         }
@@ -109,7 +109,7 @@ namespace InfinniPlatform.Sdk.Api
                 throw new ArgumentException(Resources.DocumentToDetachShouldntBeEmpty);
             }
 
-            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingUrlDetachDocument(session, Version, instanceId));
+            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingUrlDetachDocument(session, instanceId));
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToDetachDocument, response.GetErrorContent())); 
         }
@@ -123,7 +123,7 @@ namespace InfinniPlatform.Sdk.Api
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingUrlDefaultSessionById(sessionId, Version));
+            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingUrlDefaultSessionById(sessionId));
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToRemoveSession, response.GetErrorContent())); 
         }
@@ -137,7 +137,7 @@ namespace InfinniPlatform.Sdk.Api
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryGetById(RouteBuilder.BuildRestRoutingUrlDefaultSessionById(sessionId, Version));
+            var response = restQueryExecutor.QueryGetById(RouteBuilder.BuildRestRoutingUrlDefaultSessionById(sessionId));
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetSession, response.GetErrorContent()));
         }
@@ -151,7 +151,7 @@ namespace InfinniPlatform.Sdk.Api
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlDefaultSessionById(sessionId, Version));
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlDefaultSessionById(sessionId));
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToCommitException, response.GetErrorContent()));
         }
@@ -168,7 +168,7 @@ namespace InfinniPlatform.Sdk.Api
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryGetById(RouteBuilder.BuildRestRoutingUrlDefaultById(Version, applicationId, documentType, instanceId));
+            var response = restQueryExecutor.QueryGetById(RouteBuilder.BuildRestRoutingUrlDefaultById(applicationId, documentType, instanceId));
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetDocument, response.GetErrorContent()));
         }
@@ -208,7 +208,7 @@ namespace InfinniPlatform.Sdk.Api
                 sorting.Invoke(sortingBuilder);
             }
 
-            var response = restQueryExecutor.QueryGet(routeBuilder.BuildRestRoutingUrlDefault(Version, applicationId, documentType),
+            var response = restQueryExecutor.QueryGet(routeBuilder.BuildRestRoutingUrlDefault(applicationId, documentType),
                 RequestExecutorExtensions.CreateQueryString(filterBuilder.GetFilter(), pageNumber, pageSize, sortingBuilder.GetSorting()));
 
             return ProcessAsArrayResult(response,
@@ -230,7 +230,7 @@ namespace InfinniPlatform.Sdk.Api
             var routeBuilder = new RouteBuilder(Server, Port);
 
             var response = restQueryExecutor.QueryPut(
-                routeBuilder.BuildRestRoutingUrlDefaultById(Version, applicationId, documentType, documentId), document);
+                routeBuilder.BuildRestRoutingUrlDefaultById(applicationId, documentType, documentId), document);
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToSetDocument, response.GetErrorContent()));
         }
@@ -249,7 +249,7 @@ namespace InfinniPlatform.Sdk.Api
             var routeBuilder = new RouteBuilder(Server, Port);
 
             var response = restQueryExecutor.QueryPut(
-                routeBuilder.BuildRestRoutingUrlDefault(Version, applicationId, documentType),
+                routeBuilder.BuildRestRoutingUrlDefault(applicationId, documentType),
                 documents);
 
             return ProcessAsObjectResult(response,
@@ -278,7 +278,7 @@ namespace InfinniPlatform.Sdk.Api
             };
 
             var response = restQueryExecutor.QueryPost(
-                routeBuilder.BuildRestRoutingUrlDefaultById(Version, applicationId, documentType, instanceId),
+                routeBuilder.BuildRestRoutingUrlDefaultById(applicationId, documentType, instanceId),
                 parameters);
 
             if (!response.IsAllOk)
@@ -301,7 +301,7 @@ namespace InfinniPlatform.Sdk.Api
             var routeBuilder = new RouteBuilder(Server, Port);
 
             var response = restQueryExecutor.QueryDelete(
-                routeBuilder.BuildRestRoutingUrlDefaultById(Version, applicationId, documentType, instanceId));
+                routeBuilder.BuildRestRoutingUrlDefaultById(applicationId, documentType, instanceId));
 
             return ProcessAsObjectResult(response,
                             string.Format(Resources.UnableToDeleteDocument, response.GetErrorContent()));

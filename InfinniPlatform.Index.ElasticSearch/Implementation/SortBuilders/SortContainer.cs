@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using InfinniPlatform.Api.Index.SearchOptions;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters.Extensions;
+using InfinniPlatform.Sdk.Environment.Index;
 using Nest;
+using SortOrder = InfinniPlatform.Sdk.Environment.Index.SortOrder;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.SortBuilders
 {
@@ -14,11 +16,11 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.SortBuilders
                 var sortOption = sortCriterion.Order;
                 var criterion = sortCriterion;
 
-                if (sortOption == Api.SearchOptions.SortOrder.Ascending)
+                if (sortOption == SortOrder.Ascending)
                 {
                     searchDescriptor.Sort(s => s.OnField(criterion.Field.AsElasticField() + ".sort").Ascending().IgnoreUnmappedFields().NestedMin());
                 }
-                else if (sortOption == Api.SearchOptions.SortOrder.Descending)
+                else if (sortOption == SortOrder.Descending)
                 {
                     searchDescriptor.Sort(s => s.OnField(criterion.Field.AsElasticField() + ".sort").Descending().IgnoreUnmappedFields().NestedMin());
                 }

@@ -1,6 +1,6 @@
 ﻿using System;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Properties;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -15,7 +15,7 @@ namespace InfinniPlatform.RestfulApi.Session
         {
             string transactionMarker = Guid.NewGuid().ToString();
 
-            target.Context.GetComponent<ITransactionComponent>(target.Version)
+            target.Context.GetComponent<ITransactionComponent>()
                   .GetTransactionManager()
                   .GetTransaction(transactionMarker);
 

@@ -81,7 +81,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                 item["ImportSource"] = "Federal";
                 item["Overwrite"] = true;
 
-                RestQueryApi.QueryPostJsonRaw("ClassifierLoader", "classifiers", "Publish", null, item, _version);
+                RestQueryApi.QueryPostJsonRaw("ClassifierLoader", "classifiers", "Publish", null, item);
 
 
                 resultMessage.AppendLine();
@@ -119,7 +119,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
             try
             {
                 RestQueryResponse oidsresponse = RestQueryApi.QueryGetRaw("ClassifierLoader", "classifiers", "Search",
-                                                                          null, 0, 600, _version);
+                                                                          null, 0, 600);
 
                 // Необходимо получить идентификаторы всех доступных справочников
 

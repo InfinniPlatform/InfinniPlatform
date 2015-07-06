@@ -23,8 +23,8 @@ namespace InfinniPlatform.Sdk.Tests
         [TestFixtureSetUp]
         public void SetupApi()
         {
-            _api = new InfinniAuthApi(InfinniSessionServer, InfinniSessionPort, InfinniSessionVersion);
-            _signInApi = new InfinniSignInApi(InfinniSessionServer, InfinniSessionPort, InfinniSessionVersion);
+            _api = new InfinniAuthApi(InfinniSessionServer, InfinniSessionPort);
+            _signInApi = new InfinniSignInApi(InfinniSessionServer, InfinniSessionPort);
             _signInApi.SignInInternal("Admin", "Admin", false);
             _api.CookieContainer = _signInApi.CookieContainer;
         }

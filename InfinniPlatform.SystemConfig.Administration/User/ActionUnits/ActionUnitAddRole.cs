@@ -13,7 +13,7 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
     {
         public void Action(IApplyContext target)
         {
-            var aclApi = target.Context.GetComponent<AuthApi>(target.Version);
+            var aclApi = target.Context.GetComponent<AuthApi>();
 
             var role = target.Item.Document ?? target.Item;
 
@@ -38,7 +38,7 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 
             aclApi.AddRole(role.Name, role.Name, role.Name);
 
-            target.Context.GetComponent<DocumentApi>(target.Version)
+            target.Context.GetComponent<DocumentApi>()
                 .SetDocument(AuthorizationStorageExtensions.AdministrationConfigId, "Role",
                     role);
 

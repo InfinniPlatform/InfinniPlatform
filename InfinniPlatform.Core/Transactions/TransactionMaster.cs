@@ -6,6 +6,9 @@ using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.Transactions;
 using InfinniPlatform.Factories;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Transactions;
 
 namespace InfinniPlatform.Transactions
 {

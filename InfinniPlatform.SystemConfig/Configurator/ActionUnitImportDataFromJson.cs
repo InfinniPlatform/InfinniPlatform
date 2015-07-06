@@ -15,7 +15,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
     {
         public void Action(IApplyContext target)
         {
-            var documentProvider = target.Context.GetComponent<DocumentApi>(target.Version);
+            var documentProvider = target.Context.GetComponent<DocumentApi>();
 
             string configuration = target.Item.Configuration;
             string metadata = target.Item.Metadata;

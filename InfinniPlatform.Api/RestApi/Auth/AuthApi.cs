@@ -8,13 +8,6 @@ namespace InfinniPlatform.Api.RestApi.Auth
     /// </summary>
     public sealed class AuthApi
     {
-        private readonly string _version;
-
-        public AuthApi(string version = null)
-        {
-            _version = version;
-        }
-
         /// <summary>
         ///     Предоставить доступ пользователю
         /// </summary>
@@ -46,14 +39,14 @@ namespace InfinniPlatform.Api.RestApi.Auth
             string recordId)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "applyaccess", null, new
-            {
-                Configuration = configuration,
-                Metadata = metadata,
-                Action = action,
-                RecordId = recordId,
-                UserName = accessObject,
-                Result = true
-            }, _version).ToDynamic();
+                {
+                    Configuration = configuration,
+                    Metadata = metadata,
+                    Action = action,
+                    RecordId = recordId,
+                    UserName = accessObject,
+                    Result = true
+                }).ToDynamic();
         }
 
         /// <summary>
@@ -88,14 +81,14 @@ namespace InfinniPlatform.Api.RestApi.Auth
             string recordId)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "applyaccess", null, new
-            {
-                Configuration = configuration,
-                Metadata = metadata,
-                Action = action,
-                RecordId = recordId,
-                UserName = accessObject,
-                Result = false
-            }, _version).ToDynamic();
+                {
+                    Configuration = configuration,
+                    Metadata = metadata,
+                    Action = action,
+                    RecordId = recordId,
+                    UserName = accessObject,
+                    Result = false
+                }).ToDynamic();
         }
 
         /// <summary>
@@ -123,14 +116,14 @@ namespace InfinniPlatform.Api.RestApi.Auth
             string recordId = null)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "applyaccess", null, new
-            {
-                Configuration = configuration,
-                Metadata = metadata,
-                Action = action,
-                RecordId = recordId,
-                UserName = AuthorizationStorageExtensions.Default,
-                Result = false
-            }, _version).ToDynamic();
+                {
+                    Configuration = configuration,
+                    Metadata = metadata,
+                    Action = action,
+                    RecordId = recordId,
+                    UserName = AuthorizationStorageExtensions.Default,
+                    Result = false
+                }).ToDynamic();
         }
 
         /// <summary>
@@ -142,11 +135,11 @@ namespace InfinniPlatform.Api.RestApi.Auth
         public dynamic AddClaim(string userName, string claimType, string claimValue)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "addclaim", null, new
-            {
-                UserName = userName,
-                ClaimType = claimType,
-                ClaimValue = claimValue
-            }, _version).ToDynamic();
+                {
+                    UserName = userName,
+                    ClaimType = claimType,
+                    ClaimValue = claimValue
+                }).ToDynamic();
         }
 
         /// <summary>
@@ -158,10 +151,10 @@ namespace InfinniPlatform.Api.RestApi.Auth
         public dynamic RemoveClaim(string userName, string claimType)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "removeclaim", null, new
-            {
-                UserName = userName,
-                ClaimType = claimType
-            }, _version).ToDynamic();
+                {
+                    UserName = userName,
+                    ClaimType = claimType
+                }).ToDynamic();
         }
 
         /// <summary>
@@ -174,11 +167,11 @@ namespace InfinniPlatform.Api.RestApi.Auth
         public dynamic GetClaim(string userName, string claimType, bool fromCache = true)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "getclaim", null, new
-            {
-                UserName = userName,
-                ClaimType = claimType,
-                FromCache = fromCache
-            }, _version).ToDynamic();
+                {
+                    UserName = userName,
+                    ClaimType = claimType,
+                    FromCache = fromCache
+                }).ToDynamic();
         }
 
         /// <summary>
@@ -189,10 +182,10 @@ namespace InfinniPlatform.Api.RestApi.Auth
         public dynamic AddUserToRole(string userName, string roleName)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "adduserrole", null, new
-            {
-                UserName = userName,
-                RoleName = roleName
-            }, _version).ToDynamic();
+                {
+                    UserName = userName,
+                    RoleName = roleName
+                }).ToDynamic();
         }
 
         /// <summary>
@@ -203,10 +196,10 @@ namespace InfinniPlatform.Api.RestApi.Auth
         public dynamic RemoveUserRole(string userName, string roleName)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "removeuserrole", null, new
-            {
-                UserName = userName,
-                RoleName = roleName
-            }, _version).ToDynamic();
+                {
+                    UserName = userName,
+                    RoleName = roleName
+                }).ToDynamic();
         }
 
         /// <summary>
@@ -216,9 +209,9 @@ namespace InfinniPlatform.Api.RestApi.Auth
         public dynamic RemoveAcl(string id)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "removeacl", null, new
-            {
-                AclId = id
-            }, _version).ToDynamic();
+                {
+                    AclId = id
+                }).ToDynamic();
         }
 
         /// <summary>
@@ -229,10 +222,23 @@ namespace InfinniPlatform.Api.RestApi.Auth
         public IEnumerable<dynamic> GetRoles(bool fromCache = true)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "getroles", null, new
-            {
-                FromCache = fromCache
-            }, _version).ToDynamicList();
+                {
+                    FromCache = fromCache
+                }).ToDynamicList();
         }
+
+        /// <summary>
+        ///   Получить список версий конфигураций. установленных пользователям
+        /// </summary>
+        /// <param name="fromCache">Получить информацию из кэша</param>
+        /// <returns>Список версий</returns>
+        public IEnumerable<dynamic> GetVersions(bool fromCache = true)
+        {
+            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "getversions", null, new
+                {
+                    FromCache = fromCache
+                }).ToDynamicList();
+        } 
 
         /// <summary>
         ///     Получить список связанных с пользователями ролей
@@ -242,9 +248,9 @@ namespace InfinniPlatform.Api.RestApi.Auth
         public IEnumerable<dynamic> GetUserRoles(bool fromCache = true)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "getuserroles", null, new
-            {
-                FromCache = fromCache
-            }, _version).ToDynamicList();
+                {
+                    FromCache = fromCache
+                }).ToDynamicList();
         }
 
         /// <summary>
@@ -255,9 +261,9 @@ namespace InfinniPlatform.Api.RestApi.Auth
         public IEnumerable<dynamic> GetAcl(bool fromCache = true)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "getacl", null, new
-            {
-                FromCache = fromCache
-            }, _version).ToDynamicList();
+                {
+                    FromCache = fromCache
+                }).ToDynamicList();
         }
 
         /// <summary>
@@ -268,9 +274,9 @@ namespace InfinniPlatform.Api.RestApi.Auth
         public IEnumerable<dynamic> GetUsers(bool fromCache = true)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "getusers", null, new
-            {
-                FromCache = fromCache
-            }, _version).ToDynamicList();
+                {
+                    FromCache = fromCache
+                }).ToDynamicList();
         }
 
         /// <summary>
@@ -282,10 +288,10 @@ namespace InfinniPlatform.Api.RestApi.Auth
         public dynamic GetUser(string userName, bool fromCache = true)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "getuser", null, new
-            {
-                UserName = userName,
-                FromCache = fromCache
-            }, _version).ToDynamic();
+                {
+                    UserName = userName,
+                    FromCache = fromCache
+                }).ToDynamic();
         }
 
         /// <summary>
@@ -296,10 +302,10 @@ namespace InfinniPlatform.Api.RestApi.Auth
         public dynamic AddUser(string userName, string password)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "Authorization", "adduser", null, new
-            {
-                UserName = userName,
-                Password = password
-            }, _version).ToDynamic();
+                {
+                    UserName = userName,
+                    Password = password
+                }).ToDynamic();
         }
 
         /// <summary>
@@ -309,9 +315,9 @@ namespace InfinniPlatform.Api.RestApi.Auth
         public dynamic RemoveUser(string userName)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "Authorization", "removeuser", null, new
-            {
-                UserName = userName
-            }, _version).ToDynamic();
+                {
+                    UserName = userName
+                }).ToDynamic();
         }
 
         /// <summary>
@@ -323,11 +329,11 @@ namespace InfinniPlatform.Api.RestApi.Auth
         public dynamic AddRole(string roleName, string roleCaption, string roleDescription)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "Authorization", "addrole", null, new
-            {
-                Name = roleName,
-                Caption = roleCaption,
-                Description = roleDescription
-            }, _version).ToDynamic();
+                {
+                    Name = roleName,
+                    Caption = roleCaption,
+                    Description = roleDescription
+                }).ToDynamic();
         }
 
         /// <summary>
@@ -337,9 +343,9 @@ namespace InfinniPlatform.Api.RestApi.Auth
         public dynamic RemoveRole(string roleName)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "Authorization", "removerole", null, new
-            {
-                RoleName = roleName
-            }, _version).ToDynamic();
+                {
+                    RoleName = roleName
+                }).ToDynamic();
         }
 
         /// <summary>
@@ -348,7 +354,7 @@ namespace InfinniPlatform.Api.RestApi.Auth
         /// <returns>Список ролей пользователей</returns>
         public void InvalidateRoles()
         {
-            RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "updateroles", null, null, _version);
+            RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "updateroles", null, null);
         }
 
         /// <summary>
@@ -357,7 +363,7 @@ namespace InfinniPlatform.Api.RestApi.Auth
         /// <returns></returns>
         public void InvalidateAcl()
         {
-            RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "updateacl", null, null, _version);
+            RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "updateacl", null, null);
         }
 
         /// <summary>
@@ -365,7 +371,7 @@ namespace InfinniPlatform.Api.RestApi.Auth
         /// </summary>
         public void InvalidateUserClaims()
         {
-            RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "updateuserclaims", null, null, _version);
+            RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "updateuserclaims", null, null);
         }
     }
 }

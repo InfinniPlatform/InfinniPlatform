@@ -14,6 +14,7 @@ using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Versioning;
 using InfinniPlatform.Index.ElasticSearch.Tests.Builders;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.SystemConfig.RoutingFactory;
 using NUnit.Framework;
 

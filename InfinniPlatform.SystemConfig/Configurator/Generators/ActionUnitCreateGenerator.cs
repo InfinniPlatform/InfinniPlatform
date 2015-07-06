@@ -5,6 +5,7 @@ using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Environment.Hosting;
 using InfinniPlatform.SystemConfig.Properties;
 
 namespace InfinniPlatform.SystemConfig.Configurator.Generators
@@ -49,7 +50,7 @@ namespace InfinniPlatform.SystemConfig.Configurator.Generators
                     target.Item.ActionUnit,
                     ContextTypeKind = ContextTypeKind.ApplyMove,
                     target.Item.Metadata,
-                }, target.Version);
+                });
             //создаем генератор
             dynamic generator = MetadataBuilderExtensions.BuildGenerator(target.Item.GeneratorName,
                                                                          target.Item.GeneratorName,
@@ -57,7 +58,7 @@ namespace InfinniPlatform.SystemConfig.Configurator.Generators
                                                                          target.Item.MetadataType);
 
             MetadataManagerElement manager =
-                new ManagerFactoryDocument(target.Version, target.Item.Configuration, target.Item.Metadata)
+                new ManagerFactoryDocument(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration, target.Item.Metadata)
                     .BuildGeneratorManager();
 
             //создаем новый генератор в конфигурации

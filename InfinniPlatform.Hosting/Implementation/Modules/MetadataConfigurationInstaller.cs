@@ -1,9 +1,13 @@
 ﻿using System.Text.RegularExpressions;
-using InfinniPlatform.Api.Actions;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Metadata;
 using InfinniPlatform.Modules;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Hosting;
+using InfinniPlatform.Sdk.Environment.Metadata;
+using InfinniPlatform.Sdk.Environment.Scripts;
 
 namespace InfinniPlatform.Hosting.Implementation.Modules
 {

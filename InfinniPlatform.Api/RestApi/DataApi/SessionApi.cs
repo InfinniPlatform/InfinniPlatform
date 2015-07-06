@@ -8,13 +8,6 @@ namespace InfinniPlatform.Api.RestApi.DataApi
     /// </summary>
     public sealed class SessionApi
     {
-        private readonly string _version;
-
-        public SessionApi(string version)
-        {
-            _version = version;
-        }
-
         /// <summary>
         ///     Создать клиентскую сессию на сервере
         /// </summary>
@@ -22,7 +15,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         public dynamic CreateSession()
         {
             return
-                RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "createsession", null, null, _version)
+                RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "createsession", null, null)
                     .ToDynamic();
         }
 
@@ -33,9 +26,9 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         public dynamic SaveSession(string sessionId)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "savesession", null, new
-            {
-                SessionId = sessionId
-            }, _version).ToDynamic();
+                {
+                    SessionId = sessionId
+                }).ToDynamic();
         }
 
         /// <summary>
@@ -45,9 +38,9 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         public dynamic RemoveSession(string sessionId)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "removesession", null, new
-            {
-                SessionId = sessionId
-            }, _version).ToDynamic();
+                {
+                    SessionId = sessionId
+                }).ToDynamic();
         }
 
         /// <summary>
@@ -60,10 +53,10 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "attachdocumentsession", null,
                 new
-                {
-                    SessionId = sessionId,
-                    AttachedInfo = attachedDocument
-                }, _version).ToDynamic();
+                    {
+                        SessionId = sessionId,
+                        AttachedInfo = attachedDocument
+                    }).ToDynamic();
         }
 
         /// <summary>
@@ -75,7 +68,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         public dynamic AttachFile(dynamic linkedData, Stream file)
         {
             return
-                RestQueryApi.QueryPostFile("RestfulApi", "configuration", "attachfile", linkedData, file, _version)
+                RestQueryApi.QueryPostFile("RestfulApi", "configuration", "attachfile", linkedData, file)
                     .ToDynamic();
         }
 
@@ -87,7 +80,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         public dynamic DetachFile(dynamic linkedData)
         {
             return
-                RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "detachfile", null, linkedData, _version)
+                RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "detachfile", null, linkedData)
                     .ToDynamic();
         }
 
@@ -101,10 +94,10 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "detachdocumentsession", null,
                 new
-                {
-                    SessionId = sessionId,
-                    AttachmentId = attachmentId
-                }, _version).ToDynamic();
+                    {
+                        SessionId = sessionId,
+                        AttachmentId = attachmentId
+                    }).ToDynamic();
         }
 
         /// <summary>
@@ -114,9 +107,9 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         public dynamic GetSession(string sessionId)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getsession", null, new
-            {
-                SessionId = sessionId
-            }, _version).ToDynamic();
+                {
+                    SessionId = sessionId
+                }).ToDynamic();
         }
     }
 }

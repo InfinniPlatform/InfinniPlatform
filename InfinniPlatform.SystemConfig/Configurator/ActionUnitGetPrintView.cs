@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.PrintView;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment;
 
 namespace InfinniPlatform.SystemConfig.Configurator
 {
@@ -28,8 +29,8 @@ namespace InfinniPlatform.SystemConfig.Configurator
                 (f) => f.Name == parameters.PrintViewId && f.ViewType == parameters.PrintViewType;
 
             dynamic printViewMetadata =
-                target.Context.GetComponent<IMetadataComponent>(target.Version)
-                      .GetMetadataItem(target.Version, parameters.ConfigId, parameters.DocumentId,
+                target.Context.GetComponent<IMetadataComponent>()
+                      .GetMetadataItem(target.Context.GetVersion(parameters.ConfigId,target.UserName), parameters.ConfigId, parameters.DocumentId,
                                        MetadataType.PrintView, printViewSelector);
 
             int pageNumber = parameters.PageNumber != null ? (int) parameters.PageNumber : 0;
@@ -38,7 +39,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
             string documentId = parameters.DocumentId;
             string updateAction = parameters.ActionId;
 
-            IEnumerable<dynamic> printViewSource = new DocumentApi(target.Version).GetDocument(configId, documentId,
+            IEnumerable<dynamic> printViewSource = new DocumentApi().GetDocument(configId, documentId,
                                                                                                parameters.Query,
                                                                                                pageNumber, pageSize);
 
@@ -49,7 +50,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
             if (!string.IsNullOrEmpty(updateAction))
             {
                 printViewSource =
-                    RestQueryApi.QueryPostJsonRaw(configId, documentId, updateAction, null, context, target.Version)
+                    RestQueryApi.QueryPostJsonRaw(configId, documentId, updateAction, null, context)
                                 .ToDynamicList();
             }
 
@@ -57,7 +58,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
             var data = new byte[0];
             if (printViewMetadata != null)
             {
-                data = target.Context.GetComponent<IPrintViewComponent>(target.Version)
+                data = target.Context.GetComponent<IPrintViewComponent>()
                              .BuildPrintView(printViewMetadata, printViewSource,
                                              PrintViewFileFormat.Pdf);
             }

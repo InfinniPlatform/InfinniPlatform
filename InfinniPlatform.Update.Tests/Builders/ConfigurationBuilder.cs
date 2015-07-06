@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using InfinniPlatform.Api.Factories;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Index.SearchOptions;
@@ -24,7 +23,13 @@ using InfinniPlatform.Metadata.Implementation.MetadataConfiguration;
 using InfinniPlatform.Modules;
 using InfinniPlatform.Runtime.Factories;
 using InfinniPlatform.Runtime.Implementation.ChangeListeners;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Binary;
+using InfinniPlatform.Sdk.Environment.Hosting;
+using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Metadata;
 using InfinniPlatform.SystemConfig.RoutingFactory;
 using InfinniPlatform.Update.Installers;
 using Newtonsoft.Json.Linq;
@@ -50,7 +55,7 @@ namespace InfinniPlatform.Update.Tests.Builders
 
         public static ApplyChangesHandler BuildQueryContextUpdate(this ApplyChangesHandler query)
         {
-            var documentContentConfigRequestProvider = new LocalDataProvider("update", "package", "install", null, null);
+            var documentContentConfigRequestProvider = new LocalDataProvider("update", "package", "install", null);
             query.ConfigRequestProvider = documentContentConfigRequestProvider;
             return query;
         }

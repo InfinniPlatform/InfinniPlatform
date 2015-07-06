@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Registers;
 using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.SystemConfig.Configurator
@@ -21,7 +21,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
             string configuration = target.Item.Configuration;
             string register = target.Item.Register;
             dynamic registerEntries = target.Item.RegisterEntries;
-            string version = target.Version;
+            string version = target.Context.GetVersion(configuration, target.UserName);
 
             if (string.IsNullOrEmpty(configuration))
             {
@@ -39,7 +39,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
             }
 
             var registerMetadata =
-                target.Context.GetComponent<IMetadataComponent>(target.Version)
+                target.Context.GetComponent<IMetadataComponent>()
                       .GetMetadataList(version, configuration, register, MetadataType.Register)
                       .FirstOrDefault();
 
@@ -81,7 +81,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
                 }
             }
 
-            target.Context.GetComponent<DocumentApi>(target.Version)
+            target.Context.GetComponent<DocumentApi>()
                   .SetDocuments(configuration, RegisterConstants.RegisterNamePrefix + register, registerEntries);
         }
     }

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.Auth;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.RestfulApi.Auth
@@ -19,15 +19,15 @@ namespace InfinniPlatform.RestfulApi.Auth
             aclApi.GrantAccess(userName, AuthorizationStorageExtensions.AdministrationConfigId);
 
             //ищем конфигурацию авторизации и добавляем права на меню авторизации
-            var metadataComponent = target.Context.GetComponent<IMetadataComponent>(target.Version);
+            var metadataComponent = target.Context.GetComponent<IMetadataComponent>();
 
-            var menuAuth = metadataComponent.GetMetadata(target.Version,
+            var menuAuth = metadataComponent.GetMetadata(null,
                                                          AuthorizationStorageExtensions.AuthorizationConfigId, "Common",
                                                          MetadataType.Menu, "MainMenu");
-            var menuAdmin = metadataComponent.GetMetadata(target.Version,
+            var menuAdmin = metadataComponent.GetMetadata(null,
                                                           AuthorizationStorageExtensions.AdministrationConfigId,
                                                           "Common", MetadataType.Menu, "MainMenu");
-            IEnumerable<dynamic> configs = metadataComponent.GetConfigMetadata(target.Version);
+            IEnumerable<dynamic> configs = metadataComponent.GetConfigMetadata(null);
 
             dynamic configAuth =
                 configs.FirstOrDefault(c => c.Name == AuthorizationStorageExtensions.AuthorizationConfigId);

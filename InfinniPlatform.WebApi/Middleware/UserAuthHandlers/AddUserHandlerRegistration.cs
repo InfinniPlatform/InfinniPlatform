@@ -34,7 +34,7 @@ namespace InfinniPlatform.WebApi.Middleware.UserAuthHandlers
 
             if (body.UserName != null && body.Password != null)
             {
-                return new ValueRequestHandlerResult(new UsersApi(routeDictionary["version"]).AddUser(body.UserName.ToString(), body.Password.ToString()));
+                return new ValueRequestHandlerResult(new UsersApi().AddUser(body.UserName.ToString(), body.Password.ToString()));
             }
 
             return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);

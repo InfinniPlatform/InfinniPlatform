@@ -11,7 +11,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
     {
         public void Action(IApplyContext target)
         {
-            var result = target.Context.GetComponent<DocumentApi>(target.Version)
+            var result = target.Context.GetComponent<DocumentApi>()
                                .SetDocument(target.Configuration, target.Metadata, target.Item);
 
             target.Result = new DynamicWrapper();

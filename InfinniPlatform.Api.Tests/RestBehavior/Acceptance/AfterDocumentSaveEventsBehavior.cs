@@ -10,6 +10,7 @@ using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.TestEnvironment;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Hosting;
 using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
@@ -152,9 +153,9 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             processManager.MergeItem(defaultProcess);
 
-            new DocumentApi(null).SetDocument(_configurationId, "testdoc1", document);
+            new DocumentApi().SetDocument(_configurationId, "testdoc1", document);
 
-            IEnumerable<dynamic> documents = new DocumentApi(null).GetDocument(_configurationId, "testdoc1",
+            IEnumerable<dynamic> documents = new DocumentApi().GetDocument(_configurationId, "testdoc1",
                                                                                f =>
                                                                                f.AddCriteria(
                                                                                    cr =>
@@ -176,9 +177,9 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             CreateTestConfig(true, false);
 
-            new DocumentApi(null).SetDocument(_configurationId, "testdoc1", document, false);
+            new DocumentApi().SetDocument(_configurationId, "testdoc1", document, false);
 
-            IEnumerable<dynamic> documents = new DocumentApi(null).GetDocument(_configurationId, "testdoc1",
+            IEnumerable<dynamic> documents = new DocumentApi().GetDocument(_configurationId, "testdoc1",
                                                                                f =>
                                                                                f.AddCriteria(
                                                                                    cr =>
@@ -200,9 +201,9 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             CreateTestConfig(true, true);
 
-            new DocumentApi(null).SetDocument(_configurationId, "testdoc1", document, false);
+            new DocumentApi().SetDocument(_configurationId, "testdoc1", document, false);
 
-            IEnumerable<dynamic> documents = new DocumentApi(null).GetDocument(_configurationId, "testdoc1",
+            IEnumerable<dynamic> documents = new DocumentApi().GetDocument(_configurationId, "testdoc1",
                                                                                f =>
                                                                                f.AddCriteria(
                                                                                    cr =>

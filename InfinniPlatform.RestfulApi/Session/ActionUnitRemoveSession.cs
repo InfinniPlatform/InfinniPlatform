@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Api.ContextComponents;
+﻿using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.RestfulApi.Session
@@ -12,7 +12,7 @@ namespace InfinniPlatform.RestfulApi.Session
         {
             if (!string.IsNullOrEmpty(target.Item.SessionId))
             {
-                target.Context.GetComponent<ITransactionComponent>(target.Version)
+                target.Context.GetComponent<ITransactionComponent>()
                       .GetTransactionManager()
                       .RemoveTransaction(target.Item.SessionId);
             }

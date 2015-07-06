@@ -7,13 +7,6 @@ namespace InfinniPlatform.Api.RestApi.Auth
     /// </summary>
     public sealed class UsersApi
     {
-        private readonly string _version;
-
-        public UsersApi(string version = null)
-        {
-            _version = version;
-        }
-
         /// <summary>
         ///     Добавить пользователя во внутреннее хранилище
         /// </summary>
@@ -22,10 +15,10 @@ namespace InfinniPlatform.Api.RestApi.Auth
         public dynamic AddUser(string userName, string password)
         {
             return RestQueryApi.QueryPostJsonRaw("Administration", "User", "adduser", null, new
-            {
-                UserName = userName,
-                Password = password
-            }, _version).ToDynamic();
+                {
+                    UserName = userName,
+                    Password = password
+                }).ToDynamic();
         }
 
         /// <summary>
@@ -35,9 +28,9 @@ namespace InfinniPlatform.Api.RestApi.Auth
         public dynamic RemoveUser(string userName)
         {
             return RestQueryApi.QueryPostJsonRaw("Administration", "User", "DeleteUser", null, new
-            {
-                UserName = userName
-            }, _version).ToDynamic();
+                {
+                    UserName = userName
+                }).ToDynamic();
         }
 
         /// <summary>
@@ -49,11 +42,11 @@ namespace InfinniPlatform.Api.RestApi.Auth
         public dynamic AddRole(string roleName, string roleCaption, string roleDescription)
         {
             return RestQueryApi.QueryPostJsonRaw("Administration", "Role", "addrole", null, new
-            {
-                Name = roleName,
-                Caption = roleCaption,
-                Description = roleDescription
-            }, _version).ToDynamic();
+                {
+                    Name = roleName,
+                    Caption = roleCaption,
+                    Description = roleDescription
+                }).ToDynamic();
         }
 
         /// <summary>
@@ -63,9 +56,9 @@ namespace InfinniPlatform.Api.RestApi.Auth
         public dynamic DeleteRole(string roleName)
         {
             return RestQueryApi.QueryPostJsonRaw("Administration", "Role", "deleterole", null, new
-            {
-                RoleName = roleName
-            }, _version).ToDynamic();
+                {
+                    RoleName = roleName
+                }).ToDynamic();
         }
 
         /// <summary>
@@ -76,9 +69,9 @@ namespace InfinniPlatform.Api.RestApi.Auth
         public dynamic GetUser(string userName)
         {
             return RestQueryApi.QueryPostJsonRaw("Administration", "User", "getuser", null, new
-            {
-                UserName = userName
-            }, _version).ToDynamic();
+                {
+                    UserName = userName
+                }).ToDynamic();
         }
 
         /// <summary>
@@ -90,10 +83,10 @@ namespace InfinniPlatform.Api.RestApi.Auth
         public dynamic AddUserRole(string userName, string roleName)
         {
             return RestQueryApi.QueryPostJsonRaw("Administration", "User", "adduserrole", null, new
-            {
-                UserName = userName,
-                RoleName = roleName
-            }, _version).ToDynamic();
+                {
+                    UserName = userName,
+                    RoleName = roleName
+                }).ToDynamic();
         }
 
         /// <summary>
@@ -105,10 +98,10 @@ namespace InfinniPlatform.Api.RestApi.Auth
         public dynamic DeleteUserRole(string userName, string roleName)
         {
             return RestQueryApi.QueryPostJsonRaw("Administration", "User", "deleteuserrole", null, new
-            {
-                UserName = userName,
-                RoleName = roleName
-            }, _version).ToDynamic();
+                {
+                    UserName = userName,
+                    RoleName = roleName
+                }).ToDynamic();
         }
     }
 }

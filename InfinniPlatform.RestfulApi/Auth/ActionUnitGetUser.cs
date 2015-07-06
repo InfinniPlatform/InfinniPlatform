@@ -1,8 +1,8 @@
 ﻿using System.Linq;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.RestfulApi.Auth
@@ -18,12 +18,12 @@ namespace InfinniPlatform.RestfulApi.Auth
             if (target.Item.FromCache)
             {
                 user = target.Context
-                             .GetComponent<ISecurityComponent>(target.Version)
+                             .GetComponent<ISecurityComponent>()
                              .Users.Cast<dynamic>().FirstOrDefault(u => u.UserName == target.Item.UserName);
             }
             else
             {
-                user = target.Context.GetComponent<DocumentApi>(target.Version)
+                user = target.Context.GetComponent<DocumentApi>()
                              .GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
                                           AuthorizationStorageExtensions.UserStore,
                                           f =>

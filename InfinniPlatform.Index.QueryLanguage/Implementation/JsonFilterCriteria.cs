@@ -2,6 +2,8 @@
 using System.Linq;
 using InfinniPlatform.Api.Validation;
 using InfinniPlatform.Json;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Validations;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Index.QueryLanguage.Implementation

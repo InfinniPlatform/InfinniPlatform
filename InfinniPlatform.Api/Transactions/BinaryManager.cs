@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using InfinniPlatform.Api.Factories;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Binary;
 
 namespace InfinniPlatform.Api.Transactions
 {
@@ -47,7 +48,7 @@ namespace InfinniPlatform.Api.Transactions
 
                 ObjectHelper.SetProperty(containingDocument, fieldName, infoBlobProperty);
 
-                new DocumentApi(version).SetDocument(application, documentType, containingDocument);
+                new DocumentApi().SetDocument(application, documentType, containingDocument);
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using InfinniPlatform.Api.ContextTypes;
+using InfinniPlatform.Sdk.Environment.Hosting;
 
 namespace InfinniPlatform.Metadata
 {

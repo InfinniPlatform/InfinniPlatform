@@ -1,6 +1,8 @@
 ﻿using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Metadata.Implementation.HostServerConfiguration;
 using InfinniPlatform.Modules;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Hosting;
 
 namespace InfinniPlatform.Metadata.Implementation.Modules
 {

@@ -12,7 +12,7 @@ namespace InfinniPlatform.SystemConfig.Administration.Common
         {
             var providedPassword = target.Item.ProvidedPassword;
 
-            var api = target.Context.GetComponent<DocumentApi>(target.Version);
+            var api = target.Context.GetComponent<DocumentApi>();
             IEnumerable<dynamic> users = api.GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
                 "UserStore", null, 0, 1000);
 

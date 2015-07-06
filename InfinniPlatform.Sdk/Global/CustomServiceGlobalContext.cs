@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.Sdk.Global
@@ -16,17 +17,23 @@ namespace InfinniPlatform.Sdk.Global
             _platformComponentsPack = platformComponentsPack;
         }
 
-        public T GetComponent<T>(string version) where T : class
+        public T GetComponent<T>() where T : class
         {
             if (typeof (T) == typeof (ScriptContext))
             {
-                return new ScriptContext(version) as T;
+                return new ScriptContext() as T;
             }
             if (typeof (T) == typeof (ScriptContextApp))
             {
-                return new ScriptContextApp(version) as T;
+                return new ScriptContextApp() as T;
             }
-            return _platformComponentsPack.GetComponent<T>(version);
+            return _platformComponentsPack.GetComponent<T>();
+        }
+
+        public string GetVersion(string configuration, string userName)
+        {
+            var configVersions = GetComponent<IMetadataConfigurationProvider>().ConfigurationVersions;
+            return GetComponent<IVersionStrategy>().GetActualVersion(configuration, configVersions, userName);
         }
     }
 }

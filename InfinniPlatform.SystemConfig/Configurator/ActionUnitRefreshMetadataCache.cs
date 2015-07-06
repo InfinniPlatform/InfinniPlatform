@@ -13,8 +13,8 @@ namespace InfinniPlatform.SystemConfig.Configurator
             if (target.Item.IsElementDeleted != null &&
                 target.Item.IsElementDeleted == true)
             {
-                target.Context.GetComponent<MetadataComponent>(target.Version).DeleteMetadata(
-                    target.Version,
+                target.Context.GetComponent<MetadataComponent>().DeleteMetadata(
+                    target.Item.Version,
                     target.Item.ConfigId,
                     target.Item.DocumentId,
                     target.Item.MetadataType,
@@ -22,8 +22,8 @@ namespace InfinniPlatform.SystemConfig.Configurator
             }
             else
             {
-                target.Context.GetComponent<MetadataComponent>(target.Version).UpdateMetadata(
-                    target.Version,
+                target.Context.GetComponent<MetadataComponent>().UpdateMetadata(
+                    target.Item.Version,
                     target.Item.ConfigId,
                     target.Item.DocumentId,
                     target.Item.MetadataType,

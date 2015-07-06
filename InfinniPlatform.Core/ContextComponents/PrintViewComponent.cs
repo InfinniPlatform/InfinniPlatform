@@ -1,5 +1,6 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.PrintView;
+﻿using InfinniPlatform.Api.PrintView;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Environment;
 
 namespace InfinniPlatform.ContextComponents
 {

@@ -14,14 +14,12 @@ namespace InfinniPlatform.Sdk.Api
     {
         private readonly string _server;
         private readonly string _port;
-        private readonly string _version;
         private readonly RouteBuilder _routeBuilder;
 
-        public BaseApi(string server, string port, string version)
+        public BaseApi(string server, string port)
         {
             _server = server;
             _port = port;
-            _version = version;
             _routeBuilder = new RouteBuilder(server, port);
         }
 
@@ -82,13 +80,6 @@ namespace InfinniPlatform.Sdk.Api
             throw new ApplicationException(getRequestExceptionMessage());
         }
 
-        /// <summary>
-        ///  Версия приложения
-        /// </summary>
-        public string Version
-        {
-            get { return _version; }
-        }
 
         /// <summary>
         ///   Конструктор роутинга запросов API

@@ -1,4 +1,7 @@
-﻿namespace InfinniPlatform.Api.Validation.BooleanValidators
+﻿using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Validations;
+
+namespace InfinniPlatform.Api.Validation.BooleanValidators
 {
     /// <summary>
     ///     Объект не должен удовлетворять заданному условию.

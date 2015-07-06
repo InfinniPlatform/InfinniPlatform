@@ -20,8 +20,8 @@ namespace InfinniPlatform.RestfulApi.Auth
                 target.Item.Metadata = AuthorizationStorageExtensions.UserRoleStore;
 
 
-                var documentProvider = target.Context.GetComponent<InprocessDocumentComponent>(target.Version)
-                                             .GetDocumentProvider(target.Version, target.Item.Configuration,
+                var documentProvider = target.Context.GetComponent<InprocessDocumentComponent>()
+                                             .GetDocumentProvider(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration,
                                                                   target.Item.Metadata, target.UserName);
 
                 if (documentProvider != null)

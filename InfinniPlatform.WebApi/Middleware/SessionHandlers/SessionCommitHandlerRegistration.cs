@@ -25,7 +25,7 @@ namespace InfinniPlatform.WebApi.Middleware.SessionHandlers
         {
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            return new ValueRequestHandlerResult(new SessionApi(routeDictionary["version"]).SaveSession(routeDictionary["sessionId"]));
+            return new ValueRequestHandlerResult(new SessionApi().SaveSession(routeDictionary["sessionId"]));
         }
     }
 }

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.SearchOptions.Builders;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.RestfulApi.Utils
@@ -66,7 +66,7 @@ namespace InfinniPlatform.RestfulApi.Utils
                     f => f.AddCriteria(c => c.Property("Id").IsIdIn(values.Select(i => i.InstanceId).ToList()));
 
                 IEnumerable<dynamic> resolvedLinks =
-                    new DocumentApiUnsecured(version).GetDocument(groupsLink.Key.ConfigId, groupsLink.Key.DocumentId,
+                    new DocumentApiUnsecured().GetDocument(groupsLink.Key.ConfigId, groupsLink.Key.DocumentId,
                                                                   builder, 0, 100000, typeInfoChainUpdated).ToList();
 
                 foreach (dynamic resolvedLink in resolvedLinks)

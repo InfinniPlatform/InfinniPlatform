@@ -8,7 +8,7 @@ namespace InfinniPlatform.RestfulApi.Auth
         public void Action(IApplyContext target)
         {
             //возвращаем список Cookie, полученных в ходе регистрации
-            target.Result = target.Context.GetComponent<SignInApi>(target.Version)
+            target.Result = target.Context.GetComponent<SignInApi>()
                                   .SignInInternal(target.Item.UserName, target.Item.Password, target.Item.Remember);
         }
     }

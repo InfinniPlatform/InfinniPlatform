@@ -5,6 +5,7 @@ using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Index;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataReaders
@@ -14,12 +15,10 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
         /// <summary>
         ///     Выполнить IQL запрос к метаданным конфигурации
         /// </summary>
-        /// <param name="version">Версия конфигурации</param>
         /// <param name="iqlQuery">IQL запрос</param>
         /// <param name="doNotCheckVersion">Не проверять версию метаданных</param>
         /// <returns>Выборка из конфигурации</returns>
-        public static IEnumerable<dynamic> QueryConfiguration(string version, string iqlQuery,
-            bool doNotCheckVersion = false)
+        public static IEnumerable<dynamic> QueryConfiguration(string iqlQuery, bool doNotCheckVersion = false)
         {
             dynamic jsonQuery;
             try
@@ -34,7 +33,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
             jsonQuery.DoNotCheckVersion = doNotCheckVersion;
 
             RestQueryResponse response = RestQueryApi.QueryPostJsonRaw("systemconfig", "metadata", "getmetadata", null,
-                jsonQuery, version);
+                jsonQuery);
 
             return response.GetResults().ToList();
         }
@@ -56,10 +55,11 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
         ///     Получить список заголовков конфигураций
         /// </summary>
         /// <returns></returns>
-        public static string GetConfigurationShortListIql()
+        public static string GetConfigurationShortListIql(string version)
         {
             return JObject.FromObject(new
             {
+                Version = version,
                 From = new
                 {
                     Index = "systemconfig",
@@ -77,10 +77,37 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
             }).ToString();
         }
 
-        public static string GetConfigurationMetadataShortListIql(string configurationId, string metadataContainer)
+        /// <summary>
+        ///   Получить список метаданных решений
+        /// </summary>
+        /// <returns></returns>
+        public static string GetSolutionListIql(string version)
         {
             return JObject.FromObject(new
             {
+                Version = version,
+                From = new
+                {
+                    Index = "systemconfig",
+                    Type = "solutionmetadata"
+                },
+                Select = new[]
+                {
+                    "Id",
+                    "Name",
+                    "Caption",
+                    "Description",
+                    "Version",
+                    "ReferencedConfigurations"
+                }
+            }).ToString();
+        }
+
+        public static string GetConfigurationMetadataShortListIql(string version, string configurationId, string metadataContainer)
+        {
+            return JObject.FromObject(new
+            {
+                Version = version,
                 ConfigId = configurationId,
                 From = new
                 {
@@ -101,11 +128,12 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
             }).ToString();
         }
 
-        public static string GetDocumentMetadataShortListIql(string configurationId, string documentId,
+        public static string GetDocumentMetadataShortListIql(string version, string configurationId, string documentId,
             string metadataContainer)
         {
             return JObject.FromObject(new
             {
+                Version = version,
                 ConfigId = configurationId,
                 DocumentId = documentId,
                 From = new
@@ -127,11 +155,12 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
             }).ToString();
         }
 
-        public static string GetDocumentMetadataByNameIql(string configurationId, string documentId, string metadataName,
+        public static string GetDocumentMetadataByNameIql(string version, string configurationId, string documentId, string metadataName,
             string metadataContainer, string metadataType)
         {
             return JObject.FromObject(new
             {
+                Version = version,
                 ConfigId = configurationId,
                 DocumentId = documentId,
                 From = new

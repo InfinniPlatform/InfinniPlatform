@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using InfinniPlatform.Api.Worklow;
+using InfinniPlatform.Sdk.Environment.Worklow;
 
 namespace InfinniPlatform.Metadata.StateMachine.Statuses
 {

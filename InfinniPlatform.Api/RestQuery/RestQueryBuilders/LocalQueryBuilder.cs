@@ -9,6 +9,9 @@ using InfinniPlatform.Api.RestQuery.EventObjects;
 using InfinniPlatform.Api.RestQuery.EventObjects.EventSerializers;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Profiling;
 using InfinniPlatform.Sdk.Events;
 using Newtonsoft.Json.Linq;
 
@@ -21,21 +24,18 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
         private readonly string _metadata;
         private readonly Func<string, string, string, dynamic, IOperationProfiler> _operationProfiler;
         private readonly string _userName;
-        private readonly string _version;
 
-        public LocalQueryBuilder(string configuration, string metadata, string action, string userName, string version,
+        public LocalQueryBuilder(string configuration, string metadata, string action, string userName,
             Func<string, string, string, dynamic, IOperationProfiler> operationProfiler)
         {
             _configuration = configuration;
             _metadata = metadata;
             _action = action;
             _userName = userName;
-            _version = version;
             _operationProfiler = operationProfiler;
         }
 
-        public RestQueryResponse QueryPost(string id, object changesObject, bool replaceObject,
-            CookieContainer cookieContainer = null)
+        public RestQueryResponse QueryPost(string id, object changesObject, CookieContainer cookieContainer = null)
         {
             IEnumerable<EventDefinition> events = new List<EventDefinition>();
 
@@ -52,7 +52,6 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
             {
                 {"id", id},
                 {"events", events},
-                {"replace", replaceObject}
             };
 
 
@@ -60,8 +59,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
             ExecuteProfiledOperation(
                 () =>
                 {
-                    result = RequestLocal.InvokeRestOperationPost(_version, _configuration, _metadata, _action, body,
-                        _userName);
+                    result = RequestLocal.InvokeRestOperationPost(_configuration, _metadata, _action, body, _userName);
                 }, body);
 
             return new RestQueryResponse
@@ -87,8 +85,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
             ExecuteProfiledOperation(
                 () =>
                 {
-                    result = RequestLocal.InvokeRestOperationGet(_version, _configuration, _metadata, _action,
-                        searchBody, _userName);
+                    result = RequestLocal.InvokeRestOperationGet(_configuration, _metadata, _action, searchBody, _userName);
                 }, searchBody);
 
 
@@ -106,8 +103,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
             ExecuteProfiledOperation(
                 () =>
                 {
-                    result = RequestLocal.InvokeRestOperationUpload(_version, _configuration, _metadata, _action,
-                        linkedData, filePath, _userName);
+                    result = RequestLocal.InvokeRestOperationUpload(_configuration, _metadata, _action, linkedData, filePath, _userName);
                 }, null);
 
             return new RestQueryResponse
@@ -123,8 +119,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
             ExecuteProfiledOperation(
                 () =>
                 {
-                    result = RequestLocal.InvokeRestOperationUpload(_version, _configuration, _metadata, _action,
-                        linkedData, file, _userName);
+                    result = RequestLocal.InvokeRestOperationUpload(_configuration, _metadata, _action, linkedData, file, _userName);
                 }, null);
 
             return new RestQueryResponse
@@ -155,8 +150,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
             ExecuteProfiledOperation(
                 () =>
                 {
-                    result = RequestLocal.InvokeRestOperationGet(_version, _configuration, _metadata, _action,
-                        searchBody, _userName);
+                    result = RequestLocal.InvokeRestOperationGet(_configuration, _metadata, _action, searchBody, _userName);
                 }, searchBody);
 
             return new RestQueryResponse
@@ -166,10 +160,11 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
             };
         }
 
-        public RestQueryResponse QueryNotify(string metadataConfigurationId, CookieContainer cookieContainer = null)
+        public RestQueryResponse QueryNotify(string version, string metadataConfigurationId, CookieContainer cookieContainer = null)
         {
             var body = new Dictionary<string, object>
             {
+                {"version",version},
                 {"metadataConfigurationId", metadataConfigurationId}
             };
 
@@ -177,8 +172,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
             ExecuteProfiledOperation(
                 () =>
                 {
-                    result = RequestLocal.InvokeRestOperationPost(_version, _configuration, _metadata, _action, body,
-                        _userName);
+                    result = RequestLocal.InvokeRestOperationPost(_configuration, _metadata, _action, body,_userName);
                 }, body);
 
 
@@ -189,22 +183,19 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
             };
         }
 
-        public RestQueryResponse QueryPostJson(string id, object jsonObject, bool replaceObject = false,
-            CookieContainer cookieContainer = null)
+        public RestQueryResponse QueryPostJson(string id, object jsonObject, CookieContainer cookieContainer = null)
         {
             var body = new Dictionary<string, object>
             {
                 {"id", id},
                 {"changesObject", jsonObject},
-                {"replace", replaceObject}
             };
 
             string result = null;
             ExecuteProfiledOperation(
                 () =>
                 {
-                    result = RequestLocal.InvokeRestOperationPost(_version, _configuration, _metadata, _action, body,
-                        _userName);
+                    result = RequestLocal.InvokeRestOperationPost(_configuration, _metadata, _action, body,_userName);
                 }, body);
             return new RestQueryResponse
             {
@@ -232,7 +223,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
             ExecuteProfiledOperation(
                 () =>
                 {
-                    result = RequestLocal.InvokeRestOperationDownload(_version, _configuration, _metadata, _action, body,
+                    result = RequestLocal.InvokeRestOperationDownload(_configuration, _metadata, _action, body,
                         _userName);
                 }, body);
 

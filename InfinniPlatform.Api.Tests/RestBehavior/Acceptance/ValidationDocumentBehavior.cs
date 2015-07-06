@@ -11,6 +11,7 @@ using InfinniPlatform.Api.TestEnvironment;
 using InfinniPlatform.Api.Validation.Serialization;
 using InfinniPlatform.Api.Validation.ValidationBuilders;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Hosting;
 using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
@@ -56,7 +57,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             if (resultValidation)
             {
-                dynamic result = new DocumentApi(null).SetDocument("testconfigvalidator", "testdoc1", document,
+                dynamic result = new DocumentApi().SetDocument("testconfigvalidator", "testdoc1", document,
                                                                    ignoreWarnings);
                 Assert.IsTrue(result.IsValid);
             }
@@ -64,7 +65,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             {
                 try
                 {
-                    new DocumentApi(null).SetDocument("testconfigvalidator", "testdoc1", document, ignoreWarnings);
+                    new DocumentApi().SetDocument("testconfigvalidator", "testdoc1", document, ignoreWarnings);
                 }
                 catch (ArgumentException e)
                 {
@@ -220,7 +221,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             try
             {
-                new DocumentApi(null).SetDocument("testconfigvalidator", "testdoc1", document, false);
+                new DocumentApi().SetDocument("testconfigvalidator", "testdoc1", document, false);
             }
             catch (Exception e)
             {
@@ -241,7 +242,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             try
             {
-                new DocumentApi(null).SetDocument("testconfigvalidator", "testdoc1", document, false);
+                new DocumentApi().SetDocument("testconfigvalidator", "testdoc1", document, false);
             }
             catch (Exception e)
             {

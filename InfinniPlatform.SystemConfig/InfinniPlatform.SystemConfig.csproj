@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Configurator\ActionUnitGetPrintView.cs" />
     <Compile Include="Configurator\ActionUnitClearControllersCache.cs" />
+    <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetSolutionList.cs" />
     <Compile Include="Initializers\UserStorageInitializer.cs" />
     <Compile Include="Configurator\ActionUnitDeleteConfig.cs" />
     <Compile Include="Configurator\ActionUnitDeleteMetadata.cs" />

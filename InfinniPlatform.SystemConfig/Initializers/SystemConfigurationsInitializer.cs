@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Packages;
@@ -8,6 +9,10 @@ using InfinniPlatform.Hosting;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Metadata;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Metadata;
 using InfinniPlatform.SystemConfig.RoutingFactory;
 
 namespace InfinniPlatform.SystemConfig.Initializers
@@ -29,6 +34,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
 
         public void OnStart(HostingContextBuilder contextBuilder)
         {
+            
             Logger.Log.Info("Start install system config");
 
             var packageBuilder = new PackageBuilder();

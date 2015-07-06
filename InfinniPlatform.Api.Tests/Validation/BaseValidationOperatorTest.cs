@@ -1,4 +1,6 @@
 ﻿using InfinniPlatform.Api.Validation;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Validations;
 using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.Validation

@@ -10,6 +10,7 @@ using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Index.QueryLanguage.Implementation;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.SystemConfig.RoutingFactory;
 using NUnit.Framework;
 using Newtonsoft.Json;

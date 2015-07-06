@@ -146,7 +146,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.DataSources
 
 
             //проверка получения списка заголовков всех конфигураций
-            dynamic bodyQuery = DynamicWrapperExtensions.ToDynamic(QueryMetadata.GetConfigurationShortListIql());
+            dynamic bodyQuery = DynamicWrapperExtensions.ToDynamic(QueryMetadata.GetConfigurationShortListIql(null));
 
             dynamic response = RestQueryApi.QueryPostJsonRaw("systemconfig", "metadata", "getmetadata", null, bodyQuery);
 
@@ -179,7 +179,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.DataSources
             //проверяем получение списка заголовков метаданных всех документов
             bodyQuery =
                 DynamicWrapperExtensions.ToDynamic(
-                    QueryMetadata.GetConfigurationMetadataShortListIql(metadataSourceDocument.ConfigId,
+                    QueryMetadata.GetConfigurationMetadataShortListIql(null, metadataSourceDocument.ConfigId,
                                                                        new MetadataContainerDocument()
                                                                            .GetMetadataContainerName()));
 
@@ -240,7 +240,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.DataSources
             bodyQuery =
                 DynamicWrapperExtensions.ToDynamic(
                     (string)
-                    QueryMetadata.GetConfigurationMetadataShortListIql(metadataSourceDocumentMenuList.ConfigId,
+                    QueryMetadata.GetConfigurationMetadataShortListIql(null, metadataSourceDocumentMenuList.ConfigId,
                                                                        metadataSourceDocumentMenuList.MetadataType));
 
             response = RestQueryApi.QueryPostJsonRaw("systemconfig", "metadata", "getmetadata", null, bodyQuery);

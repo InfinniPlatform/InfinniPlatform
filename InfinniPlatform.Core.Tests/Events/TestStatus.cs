@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Api.Actions;
+﻿using InfinniPlatform.Sdk.Environment.Actions;
 
 namespace InfinniPlatform.Core.Tests.Events
 {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Schema;
+using InfinniPlatform.Sdk.ContextComponents;
 
 namespace InfinniPlatform.Api.Index.SearchOptions
 {

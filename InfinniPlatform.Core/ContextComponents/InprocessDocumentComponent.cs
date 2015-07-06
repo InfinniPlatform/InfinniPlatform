@@ -1,6 +1,8 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.Index;
+﻿using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.RestApi.Auth;
+using InfinniPlatform.Api.Versioning;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.ContextComponents
 {
@@ -19,6 +21,7 @@ namespace InfinniPlatform.ContextComponents
             _configurationMediatorComponent = configurationMediatorComponent;
             _securityComponent = securityComponent;
             _indexFactory = indexFactory;
+
         }
 
         public IAllIndexesOperationProvider GetAllIndexesOperationProvider(string userName)

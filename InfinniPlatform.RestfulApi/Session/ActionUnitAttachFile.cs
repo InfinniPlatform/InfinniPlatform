@@ -1,8 +1,10 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.Properties;
+﻿using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.Transactions;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Transactions;
 
 namespace InfinniPlatform.RestfulApi.Session
 {
@@ -14,7 +16,7 @@ namespace InfinniPlatform.RestfulApi.Session
         public void Action(IUploadContext target)
         {
             ITransaction transaction =
-                target.Context.GetComponent<ITransactionComponent>(target.Version)
+                target.Context.GetComponent<ITransactionComponent>()
                       .GetTransactionManager()
                       .GetTransaction(target.LinkedData.SessionId);
 

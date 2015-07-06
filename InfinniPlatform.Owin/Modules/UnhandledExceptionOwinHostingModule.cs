@@ -2,6 +2,8 @@
 using InfinniPlatform.Api.Profiling;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Owin.Middleware;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Log;
 using Owin;
 
 namespace InfinniPlatform.Owin.Modules

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.IO;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.SearchOptions;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Update.Properties;
 
 namespace InfinniPlatform.Update.ActionUnits
@@ -13,12 +14,12 @@ namespace InfinniPlatform.Update.ActionUnits
 		public void Action(IApplyContext target)
 		{
 			// получаем конструктор метаданных конфигураций
-			var configBuilder = target.Context.GetComponent<IConfigurationMediatorComponent>(target.Version).ConfigurationBuilder;
+			var configBuilder = target.Context.GetComponent<IConfigurationMediatorComponent>().ConfigurationBuilder;
 
 			// получаем конфигурацию обновления
 			var config = configBuilder.GetConfigurationObject(null, "update");
 
-			string version = target.Version;
+			string version = target.Context.GetVersion(target.Item.ConfigurationName, target.UserName);
 
 			var documentProvider = config.GetDocumentProvider("package","system");
 
@@ -28,7 +29,7 @@ namespace InfinniPlatform.Update.ActionUnits
 
 			if (contentEvent != null)
 			{
-				var blobStorage = target.Context.GetComponent<IBlobStorageComponent>(target.Version).GetBlobStorage();
+				var blobStorage = target.Context.GetComponent<IBlobStorageComponent>().GetBlobStorage();
 
 				byte[] contentData = Convert.FromBase64String(contentEvent);
 				var contentName = target.Item.ModuleId;

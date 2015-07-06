@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestQuery;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 {
@@ -106,7 +108,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                                                                                "UpdateStoreMigration",
                                                                                    ConfigurationName =
                                                                                _activeConfiguration
-                                                                               }, _version);
+                                                                               });
 
                 string[] updateStoreMigrationLines = responce.Content
                                                              .Replace("\\r", "\r")
@@ -154,7 +156,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 
             _activeConfiguration = configurationId;
             var configObject =
-                context.GetComponent<IConfigurationMediatorComponent>(_version)
+                context.GetComponent<IConfigurationMediatorComponent>()
                        .ConfigurationBuilder.GetConfigurationObject(_version, _activeConfiguration);
 
             if (configObject != null)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using InfinniPlatform.Api.Index;
+using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.Versioning
 {

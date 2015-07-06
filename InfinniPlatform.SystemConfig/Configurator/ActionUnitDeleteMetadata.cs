@@ -12,7 +12,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
     {
         public void Action(IApplyContext target)
         {
-            target.Context.GetComponent<DocumentApi>(target.Version)
+            target.Context.GetComponent<DocumentApi>()
                   .DeleteDocument("systemconfig", target.Metadata, target.Item.Id);
 
             target.Result = new DynamicWrapper();

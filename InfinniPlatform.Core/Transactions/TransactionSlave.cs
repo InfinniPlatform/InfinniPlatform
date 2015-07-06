@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.Transactions;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Transactions;
 
 namespace InfinniPlatform.Transactions
 {

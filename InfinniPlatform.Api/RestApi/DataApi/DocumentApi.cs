@@ -12,11 +12,9 @@ namespace InfinniPlatform.Api.RestApi.DataApi
     public class DocumentApi 
     {
         private readonly bool _secured;
-        private readonly string _version;
 
-        public DocumentApi(string version, bool secured = true)
+        public DocumentApi(bool secured = true)
         {
-            _version = version;
             _secured = secured;
         }
 
@@ -25,8 +23,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             dynamic body = new DynamicWrapper();
             body.QueryText = queryText;
             body.DenormalizeResult = denormalizeResult;
-            var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getbyquery", null, body,
-                _version);
+            var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getbyquery", null, body);
 
             return response.ToDynamicList();
         }
@@ -34,10 +31,10 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         public dynamic GetDocument(string id)
         {
             var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getdocumentbyid", null, new
-            {
-                Id = id,
-                Secured = _secured
-            }, _version);
+                {
+                    Id = id,
+                    Secured = _secured
+                });
 
             try
             {
@@ -58,16 +55,16 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             dynamic sorting = null)
         {
             var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getdocument", null, new
-            {
-                Configuration = configuration,
-                Metadata = metadata,
-                Filter = filter,
-                PageNumber = pageNumber,
-                PageSize = pageSize,
-                IgnoreResolve = ignoreResolve,
-                Sorting = sorting,
-                Secured = _secured
-            }, _version);
+                {
+                    Configuration = configuration,
+                    Metadata = metadata,
+                    Filter = filter,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                    IgnoreResolve = ignoreResolve,
+                    Sorting = sorting,
+                    Secured = _secured
+                });
 
             try
             {
@@ -144,15 +141,15 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
             var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getdocumentcrossconfig", null,
                 new
-                {
-                    Configurations = configurations,
-                    Documents = documents,
-                    Filter = filter == null ? null : filterBuilder.GetFilter(),
-                    PageNumber = pageNumber,
-                    PageSize = pageSize,
-                    Sorting = sorting == null ? null : sortingBuilder.GetSorting(),
-                    Secured = _secured
-                }, _version);
+                    {
+                        Configurations = configurations,
+                        Documents = documents,
+                        Filter = filter == null ? null : filterBuilder.GetFilter(),
+                        PageNumber = pageNumber,
+                        PageSize = pageSize,
+                        Sorting = sorting == null ? null : sortingBuilder.GetSorting(),
+                        Secured = _secured
+                    });
 
             try
             {
@@ -167,21 +164,21 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         public dynamic CreateDocument(string configuration, string metadata)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "createdocument", null, new
-            {
-                Configuration = configuration,
-                Metadata = metadata
-            }, _version).ToDynamic();
+                {
+                    Configuration = configuration,
+                    Metadata = metadata
+                }).ToDynamic();
         }
 
         public dynamic DeleteDocument(string configuration, string metadata, string documentId)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "deletedocument", null, new
-            {
-                Configuration = configuration,
-                Metadata = metadata,
-                Id = documentId,
-                Secured = _secured
-            }, _version).ToDynamic();
+                {
+                    Configuration = configuration,
+                    Metadata = metadata,
+                    Id = documentId,
+                    Secured = _secured
+                }).ToDynamic();
         }
 
         public dynamic UpdateDocument(string configuration, string metadata, dynamic item, bool ignoreWarnings = false,
@@ -194,15 +191,15 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             }
 
             return RestQueryApi.QueryPostRaw("RestfulApi", "configuration", "updatedocument", item.Id, new
-            {
-                Configuration = configuration,
-                Metadata = metadata,
-                IgnoreWarnings = ignoreWarnings,
-                AllowNonSchemaProperties = allowNonSchemaProperties,
-                Document = item.ChangesObject,
-                TransactionMarker = transactionMarker,
-                Secured = _secured
-            }, _version).ToDynamic();
+                {
+                    Configuration = configuration,
+                    Metadata = metadata,
+                    IgnoreWarnings = ignoreWarnings,
+                    AllowNonSchemaProperties = allowNonSchemaProperties,
+                    Document = item.ChangesObject,
+                    TransactionMarker = transactionMarker,
+                    Secured = _secured
+                }).ToDynamic();
         }
 
         public dynamic SetDocument(string configuration, string metadata, dynamic item, bool ignoreWarnings = false,
@@ -216,15 +213,15 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
 
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "setdocument", null, new
-            {
-                Configuration = configuration,
-                Metadata = metadata,
-                IgnoreWarnings = ignoreWarnings,
-                AllowNonSchemaProperties = allowNonSchemaProperties,
-                Document = item,
-                TransactionMarker = transactionMarker,
-                Secured = _secured
-            }, _version).ToDynamic();
+                {
+                    Configuration = configuration,
+                    Metadata = metadata,
+                    IgnoreWarnings = ignoreWarnings,
+                    AllowNonSchemaProperties = allowNonSchemaProperties,
+                    Document = item,
+                    TransactionMarker = transactionMarker,
+                    Secured = _secured
+                }).ToDynamic();
         }
 
         public dynamic SetDocuments(string configuration, string metadata, IEnumerable<object> item, int batchSize = 200,
@@ -245,14 +242,14 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                 }
 
                 var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "setdocument", null, new
-                {
-                    Configuration = configuration,
-                    Metadata = metadata,
-                    Documents = batch,
-                    AllowNonSchemaProperties = allowNonSchemaProperties,
-                    TransactionMarker = transactionMarker,
-                    Secured = _secured
-                }, _version);
+                    {
+                        Configuration = configuration,
+                        Metadata = metadata,
+                        Documents = batch,
+                        AllowNonSchemaProperties = allowNonSchemaProperties,
+                        TransactionMarker = transactionMarker,
+                        Secured = _secured
+                    });
 
                 if (!string.IsNullOrEmpty(response.Content))
                 {

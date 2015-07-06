@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.Actions;
 using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.Auth;
-using InfinniPlatform.Api.Worklow;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Hosting;
+using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Metadata;
+using InfinniPlatform.Sdk.Environment.Scripts;
+using InfinniPlatform.Sdk.Environment.Worklow;
 
 namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 {

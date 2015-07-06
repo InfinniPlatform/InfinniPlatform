@@ -1,9 +1,9 @@
 ﻿// 1
 // 0
 // 0
-// 0
+// 3
 // 658d3ab8-cc9e-4a7f-b376-f2c32577407d
-// 648A69136E8C97693268B59948A11FFB
+// F083CF806C1766F946B5A710745F0BE7
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -17,7 +17,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: Guid("658d3ab8-cc9e-4a7f-b376-f2c32577407d")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.0.3")]
+[assembly: AssemblyFileVersion("1.0.0.3")]
 [assembly: InternalsVisibleTo("InfinniPlatform.QueryDesigner.Tests")]
 [assembly: AssemblyDescription("InfinniPlatform.QueryDesigner")]

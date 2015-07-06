@@ -5,6 +5,9 @@ using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.Validation;
 using InfinniPlatform.Api.Validation.ValidationBuilders;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Hosting;
+using InfinniPlatform.Sdk.Environment.Validations;
 
 namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers
 {
@@ -49,7 +52,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
                     ContextTypeKind = ContextTypeKind.ApplyMove
                 };
 
-                RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "creategenerator", null, eventObject, _version);
+                RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "creategenerator", null, eventObject);
             }
             else
             {
@@ -66,7 +69,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
                 GeneratorName = generatorName
             };
 
-            RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "deletegenerator", null, body, _version);
+            RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "deletegenerator", null, body);
         }
     }
 }

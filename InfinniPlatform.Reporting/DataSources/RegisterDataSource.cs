@@ -36,7 +36,7 @@ namespace InfinniPlatform.Reporting.DataSources
 				}
 			}
 
-            IEnumerable<dynamic> result = new DocumentApi(null).GetDocumentByQuery(requestBody);
+            IEnumerable<dynamic> result = new DocumentApi().GetDocumentByQuery(requestBody);
 
 		    return JArray.FromObject(result.Select(r => r.Result));
 		}

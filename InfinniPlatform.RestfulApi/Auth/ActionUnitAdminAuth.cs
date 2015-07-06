@@ -1,7 +1,9 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.Validation;
+﻿using InfinniPlatform.Api.Validation;
 using InfinniPlatform.RestfulApi.Utils;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Validations;
 
 namespace InfinniPlatform.RestfulApi.Auth
 {
@@ -13,7 +15,7 @@ namespace InfinniPlatform.RestfulApi.Auth
         public void Action(IApplyContext target)
         {
             ValidationResult authResult =
-                new AuthUtils(target.Context.GetComponent<ISecurityComponent>(target.Version), target.UserName, null)
+                new AuthUtils(target.Context.GetComponent<ISecurityComponent>(), target.UserName, null)
                     .CheckDocumentAccess(target.Item.Configuration, target.Item.Metadata, "applyaccess",
                                          target.Item.RecordId);
 

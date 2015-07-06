@@ -9,6 +9,7 @@
         public const string RoleStore = "RoleStore";
         public const string ClaimStore = "ClaimStore";
         public const string AclStore = "AclStore";
+        public const string VersionStore = "VersionStore";
         public const string AdminRole = "System administrator";
         public const string AdminUser = "Admin";
         public const string Default = "Default";

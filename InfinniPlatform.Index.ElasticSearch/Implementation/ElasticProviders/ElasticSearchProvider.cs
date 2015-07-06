@@ -1,13 +1,14 @@
 ﻿using InfinniPlatform.Api.Index;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeSelectors;
+using InfinniPlatform.Sdk.Environment.Index;
 using Nest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using InfinniPlatform.Sdk.Dynamic;
-using PropertyMapping = InfinniPlatform.Api.Index.PropertyMapping;
+using PropertyMapping = InfinniPlatform.Sdk.Environment.Index.PropertyMapping;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 {

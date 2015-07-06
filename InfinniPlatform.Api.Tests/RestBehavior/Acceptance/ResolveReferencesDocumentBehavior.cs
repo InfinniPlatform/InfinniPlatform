@@ -196,24 +196,24 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                     itemDoc2.PreviousRegions.Add(refRegion);
                 }
 
-                new DocumentApi(null).SetDocument(configurationId, patientDoc, itemDoc1);
-                new DocumentApi(null).SetDocument(configurationId, addressDoc, itemDoc2);
+                new DocumentApi().SetDocument(configurationId, patientDoc, itemDoc1);
+                new DocumentApi().SetDocument(configurationId, addressDoc, itemDoc2);
 
                 if (!inline)
                 {
-                    new DocumentApi(null).SetDocument(configurationId, regionDoc, itemDoc3);
-                    new DocumentApi(null).SetDocument(configurationId, regionDoc, itemDoc4[0]);
+                    new DocumentApi().SetDocument(configurationId, regionDoc, itemDoc3);
+                    new DocumentApi().SetDocument(configurationId, regionDoc, itemDoc4[0]);
                 }
             }
 
             //Then
-            dynamic document = new DocumentApi(null).GetDocument(configurationId, patientDoc,
+            dynamic document = new DocumentApi().GetDocument(configurationId, patientDoc,
                                                                  null, 0, 20)
                                                     .FirstOrDefault();
 
             //повторно для исключения времени динамической инициализации CallSite
             Stopwatch watch = Stopwatch.StartNew();
-            document = new DocumentApi(null).GetDocument(configurationId, patientDoc,
+            document = new DocumentApi().GetDocument(configurationId, patientDoc,
                                                          null, 0, 50)
                                             .FirstOrDefault();
 
@@ -222,7 +222,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             if (!inline)
             {
-                document = new DocumentApi(null).GetDocument(configurationId, patientDoc,
+                document = new DocumentApi().GetDocument(configurationId, patientDoc,
                                                              f =>
                                                              f.AddCriteria(
                                                                  c =>

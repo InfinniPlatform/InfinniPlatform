@@ -59,7 +59,7 @@ namespace InfinniPlatform.Api.Schema.Prefill
 
                         for (var i = 0; i < docInThread; i++)
                         {
-                            dynamic instance = new DocumentApi(null).CreateDocument(_configId, _documentId);
+                            dynamic instance = new DocumentApi().CreateDocument(_configId, _documentId);
                             if (instance.IsValid == false)
                             {
                                 throw new ArgumentException(string.Format("try create invalid instance. Error: {0}",
@@ -70,7 +70,7 @@ namespace InfinniPlatform.Api.Schema.Prefill
                             items.Add(instance);
                         }
 
-                        new DocumentApi(null).SetDocuments(_configId, _documentId, items);
+                        new DocumentApi().SetDocuments(_configId, _documentId, items);
                     }
                     finally
                     {

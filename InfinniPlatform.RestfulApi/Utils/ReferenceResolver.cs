@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using InfinniPlatform.Api.ContextComponents;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.RestfulApi.Utils

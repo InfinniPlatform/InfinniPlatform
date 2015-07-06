@@ -1,8 +1,8 @@
 ﻿using System;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestQuery;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.SystemConfig.Properties;
@@ -23,8 +23,8 @@ namespace InfinniPlatform.SystemConfig.Configurator.Generators
 
             //получаем метаданные генератора по указанному наименованию
             dynamic generatorMetadata =
-                target.Context.GetComponent<IMetadataComponent>(target.Version)
-                      .GetMetadataItem(target.Version, target.Item.Configuration, target.Item.Metadata,
+                target.Context.GetComponent<IMetadataComponent>()
+                      .GetMetadataItem(target.Context.GetVersion(target.Item.Configuration,target.UserName), target.Item.Configuration, target.Item.Metadata,
                                        MetadataType.Generator, generatorSelector);
                 //generatorReader.GetItem(target.Item.GeneratorName);
 
@@ -34,7 +34,7 @@ namespace InfinniPlatform.SystemConfig.Configurator.Generators
                 RestQueryResponse response = RestQueryApi.QueryPostJsonRaw(target.Item.Configuration,
                                                                            target.Item.Metadata,
                                                                            generatorMetadata.Service,
-                                                                           null, target.Item.Parameters, target.Version);
+                                                                           null, target.Item.Parameters);
                 target.Result = response.Content.ToDynamic();
                 target.ValidationMessage = "Metadata successfully generated.";
             }

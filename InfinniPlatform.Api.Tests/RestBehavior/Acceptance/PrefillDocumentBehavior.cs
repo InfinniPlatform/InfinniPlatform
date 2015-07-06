@@ -9,6 +9,7 @@ using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.TestEnvironment;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Hosting;
 using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
@@ -203,7 +204,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
 
             //вызываем предзаполнение
-            dynamic item = new DocumentApi(null).CreateDocument(configId, documentId);
+            dynamic item = new DocumentApi().CreateDocument(configId, documentId);
 
             Assert.IsNotNull(item);
             Assert.AreEqual(item.Name, "ИВАНОВ");

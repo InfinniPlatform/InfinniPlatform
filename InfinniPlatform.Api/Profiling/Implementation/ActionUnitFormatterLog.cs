@@ -1,4 +1,7 @@
-﻿namespace InfinniPlatform.Api.Profiling.Implementation
+﻿using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Log;
+
+namespace InfinniPlatform.Api.Profiling.Implementation
 {
     internal sealed class ActionUnitFormatterLog : ISnapshotFormatter
     {

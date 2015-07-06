@@ -1,7 +1,7 @@
 ﻿using System.IO;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.Transactions;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.RestfulApi.Binary
@@ -30,7 +30,7 @@ namespace InfinniPlatform.RestfulApi.Binary
         public void Action(IUploadContext target)
         {
             dynamic documentWithBinaryField =
-                target.Context.GetComponent<DocumentApi>(target.Version).GetDocument(target.LinkedData.InstanceId);
+                target.Context.GetComponent<DocumentApi>().GetDocument(target.LinkedData.InstanceId);
 
             if (documentWithBinaryField == null)
             {
@@ -42,10 +42,10 @@ namespace InfinniPlatform.RestfulApi.Binary
 
             fileContent = ReadAllBytes(target.FileContent);
 
-            new BinaryManager(target.Context.GetComponent<IBlobStorageComponent>(target.Version).GetBlobStorage())
+            new BinaryManager(target.Context.GetComponent<IBlobStorageComponent>().GetBlobStorage())
                 .SaveBinary(new[] {documentWithBinaryField},
                             documentWithBinaryField.__ConfigId,
-                            target.Version,
+                            target.Context.GetVersion(documentWithBinaryField.__ConfigId,target.UserName),
                             documentWithBinaryField.__DocumentId,
                             target.LinkedData.FieldName, fileContent);
         }

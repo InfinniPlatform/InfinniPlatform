@@ -1,6 +1,8 @@
 ﻿using System;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.Validation;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Validations;
 
 namespace InfinniPlatform.DesignControls.Controls.Properties
 {

@@ -26,13 +26,12 @@ namespace InfinniPlatform.WebApi.Middleware.SessionHandlers
 
         protected override IRequestHandlerResult ExecuteHandler(IOwinContext context)
         {
-            var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
             dynamic body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
 
             if (body.InstanceId != null && body.FieldName != null && body.SessionId != null)
             {
-                return new ValueRequestHandlerResult(new SessionApi(routeDictionary["version"]).DetachFile(body));
+                return new ValueRequestHandlerResult(new SessionApi().DetachFile(body));
             }
             return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
         }

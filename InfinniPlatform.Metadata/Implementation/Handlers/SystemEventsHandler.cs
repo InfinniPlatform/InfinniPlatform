@@ -1,6 +1,7 @@
 ﻿using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Runtime;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.Metadata.Implementation.Handlers
 {
@@ -11,7 +12,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
     {
         private readonly IChangeListener _changeListener;
 
-        public SystemEventsHandler(IChangeListener changeListener)
+        public SystemEventsHandler( IChangeListener changeListener)
         {
             _changeListener = changeListener;
         }
@@ -21,11 +22,11 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
         /// <summary>
         ///     Уведомить слушателей об изменениях
         /// </summary>
-        public void Notify(string metadataConfigurationId)
+        public void Notify(string version, string metadataConfigurationId)
         {
             if (_changeListener != null)
             {
-                _changeListener.Invoke(ConfigRequestProvider.GetVersion(), metadataConfigurationId);
+                _changeListener.Invoke(version, metadataConfigurationId);
             }
         }
     }

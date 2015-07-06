@@ -12,7 +12,7 @@ namespace InfinniPlatform.WebApi.Middleware.SessionHandlers
 {
     public sealed class GetSessionByIdHandlerRegistration : HandlerRegistration
     {
-        public GetSessionByIdHandlerRegistration() : base(new RouteFormatterSession(), new RequestPathConstructor(), Owin.Middleware.Priority.Standard, "GET")
+        public GetSessionByIdHandlerRegistration() : base(new RouteFormatterSession(), new RequestPathConstructor(), Priority.Standard, "GET")
         {
         }
 
@@ -25,7 +25,7 @@ namespace InfinniPlatform.WebApi.Middleware.SessionHandlers
         {
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            return new ValueRequestHandlerResult(new SessionApi(routeDictionary["version"]).GetSession(routeDictionary["sessionId"]));
+            return new ValueRequestHandlerResult(new SessionApi().GetSession(routeDictionary["sessionId"]));
         }
     }
 }

@@ -19,7 +19,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
             if (!string.IsNullOrEmpty(target.Id))
             {
-                document = target.Context.GetComponent<DocumentApi>(target.Version).GetDocument(target.Id);
+                document = target.Context.GetComponent<DocumentApi>().GetDocument(target.Id);
                 if (document != null)
                 {
                     item = document;

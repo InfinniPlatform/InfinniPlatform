@@ -2,7 +2,7 @@
 {
     public sealed class DocumentApiUnsecured : DocumentApi
     {
-        public DocumentApiUnsecured(string version) : base(version, false)
+        public DocumentApiUnsecured() : base(false)
         {
         }
     }

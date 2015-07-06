@@ -6,6 +6,7 @@ using InfinniPlatform.Index.ElasticSearch.Properties;
 
 using System;
 using System.Linq;
+using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions
 {

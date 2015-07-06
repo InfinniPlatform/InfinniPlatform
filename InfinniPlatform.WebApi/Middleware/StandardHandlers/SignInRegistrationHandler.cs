@@ -34,7 +34,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
                 return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
             }
 
-            return new ValueRequestHandlerResult(new SignInApi(routeDictionary["version"]).SignInInternal(body.UserName.ToString(), body.Password.ToString(), Convert.ToBoolean(body.Remember)));
+            return new ValueRequestHandlerResult(new SignInApi().SignInInternal(body.UserName.ToString(), body.Password.ToString(), Convert.ToBoolean(body.Remember)));
         }
     }
 }

@@ -69,7 +69,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
             if (new IndexApi().IndexExists(_activeConfiguration,
                                            _activeConfiguration + RegisterConstants.RegistersCommonInfo))
             {
-                IEnumerable<dynamic> registersInfo = new DocumentApi(_version).GetDocument(_activeConfiguration,
+                IEnumerable<dynamic> registersInfo = new DocumentApi().GetDocument(_activeConfiguration,
                                                                                            _activeConfiguration +
                                                                                            RegisterConstants
                                                                                                .RegistersCommonInfo,
@@ -102,7 +102,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                     {
                         item.Id = Guid.NewGuid().ToString();
                         item[RegisterConstants.DocumentDateProperty] = calculationDate;
-                        new DocumentApi(_version).SetDocument(_activeConfiguration,
+                        new DocumentApi().SetDocument(_activeConfiguration,
                                                               RegisterConstants.RegisterTotalNamePrefix + registerId,
                                                               item);
                     }

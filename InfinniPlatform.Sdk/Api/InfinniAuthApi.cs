@@ -11,7 +11,7 @@ namespace InfinniPlatform.Sdk.Api
     /// </summary>
     public sealed class InfinniAuthApi : BaseApi
     {
-        public InfinniAuthApi(string server, string port, string version) : base(server, port, version)
+        public InfinniAuthApi(string server, string port) : base(server, port)
         {
         }
 
@@ -25,7 +25,7 @@ namespace InfinniPlatform.Sdk.Api
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlAddUser(Version), new
+            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlAddUser(), new
             {
                 UserName = userName,
                 Password = password
@@ -44,7 +44,7 @@ namespace InfinniPlatform.Sdk.Api
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingToSpecifiedUser(Version,userName));
+            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingToSpecifiedUser(userName));
 
             return ProcessAsObjectResult(response, 
                 string.Format(Resources.UnableToDeleteUser, response.GetErrorContent()));
@@ -59,7 +59,7 @@ namespace InfinniPlatform.Sdk.Api
 
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingToSpecifiedUser(Version,userName));
+            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingToSpecifiedUser(userName));
 
             return ProcessAsObjectResult(response, 
                 string.Format(Resources.UnableToGetUser, response.GetErrorContent()));        
@@ -87,7 +87,7 @@ namespace InfinniPlatform.Sdk.Api
                 InstanceId = instanceId
             };
 
-            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlGrantAccess(Version), body);
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlGrantAccess(), body);
 
             return ProcessAsObjectResult(response,
                 string.Format((string)Resources.UnableToGrantAccessToUser, response.GetErrorContent()));
@@ -116,7 +116,7 @@ namespace InfinniPlatform.Sdk.Api
                 InstanceId = instanceId
             };
 
-            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlDenyAccess(Version), body);
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlDenyAccess(), body);
 
             return ProcessAsObjectResult(response,
                 string.Format((string)Resources.UnableToGrantAccessToUser, response.GetErrorContent()));
@@ -139,7 +139,7 @@ namespace InfinniPlatform.Sdk.Api
                 ClaimValue = claimValue
             };
 
-            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingToSpecifiedUserClaim(Version, userName, claimType), body);
+            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingToSpecifiedUserClaim(userName, claimType), body);
 
             return ProcessAsObjectResult(response,
                 string.Format(Resources.UnableToAddUserClaim, response.GetErrorContent()));
@@ -155,7 +155,7 @@ namespace InfinniPlatform.Sdk.Api
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingToSpecifiedUserClaim(Version, userName, claimType));
+            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingToSpecifiedUserClaim(userName, claimType));
 
             return ProcessAsObjectResult(response,
                 string.Format(Resources.UnableToGetUserClaim, response.GetErrorContent()));
@@ -171,7 +171,7 @@ namespace InfinniPlatform.Sdk.Api
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingToSpecifiedUserClaim(Version,userName,claimType));
+            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingToSpecifiedUserClaim(userName,claimType));
 
             return ProcessAsObjectResult(response,
                 string.Format(Resources.UnableToRemoveUserClaim, response.GetErrorContent()));
@@ -186,7 +186,7 @@ namespace InfinniPlatform.Sdk.Api
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingToSpecifiedRole(Version, roleName));
+            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingToSpecifiedRole(roleName));
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToAddRole,response.GetErrorContent()));
         }
@@ -200,7 +200,7 @@ namespace InfinniPlatform.Sdk.Api
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingToSpecifiedRole(Version, roleName));
+            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingToSpecifiedRole(roleName));
 
             return ProcessAsObjectResult(response,
                 string.Format(Resources.UnableToDeleteRole, response.GetErrorContent()));
@@ -216,7 +216,7 @@ namespace InfinniPlatform.Sdk.Api
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingToSpecifiedUserRole(Version, userName, roleName));
+            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingToSpecifiedUserRole(userName, roleName));
 
             return ProcessAsObjectResult(response,
                 string.Format(Resources.UnableToAddUserRole, response.GetErrorContent()));
@@ -232,7 +232,7 @@ namespace InfinniPlatform.Sdk.Api
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingToSpecifiedUserRole(Version, userName, roleName));
+            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingToSpecifiedUserRole(userName, roleName));
 
             return ProcessAsObjectResult(response,
                 string.Format(Resources.UnableToDeleteUserRole, response.GetErrorContent()));
@@ -254,7 +254,7 @@ namespace InfinniPlatform.Sdk.Api
             int pageSize,
             Action<SortingBuilder> sorting = null)
         {
-            var docApi = new InfinniDocumentApi(Server, Port, Version);
+            var docApi = new InfinniDocumentApi(Server, Port);
 
             docApi.CookieContainer = CookieContainer;
 

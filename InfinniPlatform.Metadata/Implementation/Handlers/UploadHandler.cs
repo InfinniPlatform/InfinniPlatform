@@ -3,6 +3,7 @@ using InfinniPlatform.Api.ContextTypes.ContextImpl;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Hosting;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -23,7 +24,6 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
         {
             var config = ConfigRequestProvider.GetConfiguration();
             var metadata = ConfigRequestProvider.GetMetadataIdentifier();
-            var version = ConfigRequestProvider.GetVersion();
 
             var target = new UploadContext
             {
@@ -33,12 +33,11 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
                 Metadata = metadata,
                 FileContent = uploadStream,
                 Context = _globalContext,
-                Version = version
             };
 
             var metadataConfig =
-                _globalContext.GetComponent<IMetadataConfigurationProvider>(ConfigRequestProvider.GetVersion())
-                    .GetMetadataConfiguration(version, ConfigRequestProvider.GetConfiguration());
+                _globalContext.GetComponent<IMetadataConfigurationProvider>()
+                    .GetMetadataConfiguration(_globalContext.GetVersion(ConfigRequestProvider.GetConfiguration(),ConfigRequestProvider.GetUserName()), ConfigRequestProvider.GetConfiguration());
 
             metadataConfig.MoveWorkflow(metadata, metadataConfig.GetExtensionPointValue(ConfigRequestProvider, "Upload"),
                 target);

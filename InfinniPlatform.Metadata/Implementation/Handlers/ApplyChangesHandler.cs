@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.RestQuery.EventObjects.EventSerializers;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.Factories;
 using InfinniPlatform.Hosting;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Events;
 
@@ -60,8 +60,8 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
             var documentId = ConfigRequestProvider.GetMetadataIdentifier();
 
             var appliedConfig =
-                _globalContext.GetComponent<IMetadataConfigurationProvider>(ConfigRequestProvider.GetVersion())
-                    .GetMetadataConfiguration(ConfigRequestProvider.GetVersion(),
+                _globalContext.GetComponent<IMetadataConfigurationProvider>()
+                    .GetMetadataConfiguration(_globalContext.GetVersion(ConfigRequestProvider.GetConfiguration(), ConfigRequestProvider.GetUserName()),
                         ConfigRequestProvider.GetConfiguration());
 
             if (string.IsNullOrEmpty(documentId))
@@ -79,11 +79,11 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
             target.UserName = ConfigRequestProvider.GetUserName();
             target.Events = events.ToList();
             target.Item = new AggregateProvider().CreateAggregate();
-            target.Version = ConfigRequestProvider.GetVersion();
+
 
             //Сохранение агрегата в кассандре
             var eventStorage =
-                _globalContext.GetComponent<IEventStorageComponent>(ConfigRequestProvider.GetVersion())
+                _globalContext.GetComponent<IEventStorageComponent>()
                     .GetEventStorage();
 
             if (eventStorage != null)
@@ -94,7 +94,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
 
 
             var profiler =
-                target.Context.GetComponent<IProfilerComponent>(ConfigRequestProvider.GetVersion())
+                target.Context.GetComponent<IProfilerComponent>()
                     .GetOperationProfiler("FilterEventsPoint",
                         string.Format("Config: {0}, Metadata {1}, ActionPoint {2}", target.Configuration,
                             target.Metadata, appliedConfig.GetExtensionPointValue(ConfigRequestProvider, "FilterEvents")));
@@ -131,25 +131,18 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
                 Metadata = ConfigRequestProvider.GetMetadataIdentifier(),
                 Action = ConfigRequestProvider.GetServiceName(),
                 UserName = ConfigRequestProvider.GetUserName(),
-                TransactionMarker = target.Item.TransactionMarker ?? Guid.NewGuid().ToString(),
-                Version = ConfigRequestProvider.GetVersion()
+                TransactionMarker = target.Item.TransactionMarker ?? Guid.NewGuid().ToString()                
             };
 
             //получаем менеджер для управления распределенной транзакцией
             var transaction =
-                _globalContext.GetComponent<TransactionComponent>(ConfigRequestProvider.GetVersion())
+                _globalContext.GetComponent<TransactionComponent>()
                     .GetTransactionManager()
                     .GetTransaction(targetMove.TransactionMarker);
 
 
-            //если не заполнена версия документа, то формируем ее
-            if (string.IsNullOrEmpty(target.Item.Version))
-            {
-                target.Item.Version = ConfigRequestProvider.GetVersion();
-            }
-
             profiler =
-                target.Context.GetComponent<ProfilerComponent>(ConfigRequestProvider.GetVersion())
+                target.Context.GetComponent<ProfilerComponent>()
                     .GetOperationProfiler("MovePoint",
                         string.Format("Config: {0}, Metadata {1}, ActionPoint {2}", target.Configuration,
                             target.Metadata, appliedConfig.GetExtensionPointValue(ConfigRequestProvider, "Move")));
@@ -170,11 +163,11 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
                 Configuration = ConfigRequestProvider.GetConfiguration(),
                 Metadata = ConfigRequestProvider.GetMetadataIdentifier(),
                 Action = ConfigRequestProvider.GetServiceName(),
-                Version = ConfigRequestProvider.GetVersion()
+                UserName = ConfigRequestProvider.GetUserName()
             };
 
             profiler =
-                target.Context.GetComponent<IProfilerComponent>(ConfigRequestProvider.GetVersion())
+                target.Context.GetComponent<IProfilerComponent>()
                     .GetOperationProfiler("GetResultEventsPoint",
                         string.Format("Config: {0}, Metadata {1}, ActionPoint {2}", target.Configuration,
                             target.Metadata, appliedConfig.GetExtensionPointValue(ConfigRequestProvider, "GetResult")));

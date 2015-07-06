@@ -8,13 +8,6 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 	/// </summary>
 	public sealed class UploadApi
 	{
-        private readonly string _version;
-
-        public UploadApi(string version)
-        {
-            _version = version;
-        }
-
 		/// <summary>
         ///     Выгрузить на сервер бинарный контент
 		/// </summary>
@@ -31,8 +24,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             };
 
             return
-                RestQueryApi.QueryPostFile("RestfulApi", "configuration", "uploadbinarycontent", linkedData, filePath,
-                    _version).ToDynamic();
+                RestQueryApi.QueryPostFile("RestfulApi", "configuration", "uploadbinarycontent", linkedData, filePath).ToDynamic();
         }
 
         /// <summary>
@@ -54,8 +46,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 			};
 
             return
-                RestQueryApi.QueryPostFile("RestfulApi", "configuration", "uploadbinarycontent", linkedData, stream,
-                    _version).ToDynamic();
+                RestQueryApi.QueryPostFile("RestfulApi", "configuration", "uploadbinarycontent", linkedData, stream).ToDynamic();
 		}
 
 		/// <summary>
@@ -67,10 +58,10 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         public dynamic DownloadBinaryContent(string instanceId, string fieldName)
 		{
 			return RestQueryApi.QueryGetUrlEncodedData("RestfulApi", "configuration", "downloadbinarycontent", new
-				                                                                                                    {
-                InstanceId = instanceId,
-																														FieldName = fieldName
-            }, _version);
+			    {
+			        InstanceId = instanceId,
+			        FieldName = fieldName
+			    });
 		}
 
         /// <summary>
@@ -81,9 +72,9 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 	    public dynamic DownloadBinaryContent(string contentId)
         {
             return RestQueryApi.QueryGetUrlEncodedData("RestfulApi", "configuration", "downloadbinarycontent", new
-            {
-                ContentId = contentId
-            });
+                {
+                    ContentId = contentId
+                });
         }
 	}
 }

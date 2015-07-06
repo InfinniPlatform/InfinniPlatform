@@ -22,6 +22,11 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
             _version = version;
         }
 
+        public IDataReader MetadataReader
+        {
+            get { return _metadataReader; }
+        }
+
         /// <summary>
         ///     Сформировать предзаполненный объект метаданных
         /// </summary>
@@ -67,8 +72,10 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
                     }
                 }
 
-                RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "deletemetadata", configHeader.Name, null,
-                    _version);
+                RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "deletemetadata", configHeader.Name, new
+                    {
+                        Version = _version
+                    });
             }
         }
 
@@ -99,7 +106,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
         private dynamic InsertConfiguration(dynamic objectToCreate)
         {
             //изменяемая конфигурация - либо сохраненная конфигурация, либо вновь создаваемая
-            var updatingConfiguration = MetadataExtensions.GetStoredMetadata(_metadataReader, objectToCreate) ??
+            var updatingConfiguration = MetadataExtensions.GetStoredMetadata(MetadataReader, objectToCreate) ??
                                         objectToCreate;
 
             objectToCreate = ((object) objectToCreate).ToDynamic();

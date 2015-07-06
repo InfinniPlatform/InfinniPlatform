@@ -12,7 +12,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
         {
             //получаем список всех прикладных конфигураций в системе
             IEnumerable<dynamic> versionList =
-                new DocumentApi(target.Version).GetDocument("update", "package", null, 0, 10000).ToEnumerable();
+                new DocumentApi().GetDocument("update", "package", null, 0, 10000).ToEnumerable();
 
             target.SearchResult = versionList.Select(v => CreateVersionInfo(v)).ToList();
         }

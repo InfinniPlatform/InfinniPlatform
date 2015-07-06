@@ -1,5 +1,4 @@
-﻿using InfinniPlatform.Api.Actions;
-using InfinniPlatform.Api.Hosting;
+﻿using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Hosting;
@@ -8,6 +7,11 @@ using InfinniPlatform.Hosting.Implementation.Modules;
 using InfinniPlatform.Index;
 using InfinniPlatform.Metadata;
 using InfinniPlatform.Metadata.StateMachine.ActionUnits.ActionOperatorBuilders;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Hosting;
+using InfinniPlatform.Sdk.Environment.Metadata;
+using InfinniPlatform.Sdk.Environment.Scripts;
 using InfinniPlatform.Update.ActionUnits;
 
 namespace InfinniPlatform.Update.Installers

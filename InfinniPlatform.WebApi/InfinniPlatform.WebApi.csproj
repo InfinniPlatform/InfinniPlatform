@@ -147,9 +147,7 @@
     <Compile Include="WebApi\ApiControllerFactoryBuilder.cs" />
     <Compile Include="WebApi\AutofacWebApiDependencyResolver.cs" />
     <Compile Include="WebApi\AutofacWebApiDependencyScope.cs" />
-    <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\StandardApiController.cs" />
-    <Compile Include="Controllers\StandardStreamedApiController.cs" />
     <Compile Include="WebApi\HttpControllerSelector.cs" />
     <Compile Include="WebApi\IRestVerbsRegistrator.cs" />
     <Compile Include="WebApi\RestVerbsContainer.cs" />

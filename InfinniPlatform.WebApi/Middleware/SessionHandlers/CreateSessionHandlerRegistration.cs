@@ -12,7 +12,7 @@ namespace InfinniPlatform.WebApi.Middleware.SessionHandlers
 {
     public sealed class CreateSessionHandlerRegistration : HandlerRegistration
     {
-        public CreateSessionHandlerRegistration() : base(new RouteFormatterSession(), new RequestPathConstructor(), Owin.Middleware.Priority.Standard, "PUT")
+        public CreateSessionHandlerRegistration() : base(new RouteFormatterSession(), new RequestPathConstructor(), Priority.Standard, "PUT")
         {
         }
 
@@ -25,7 +25,7 @@ namespace InfinniPlatform.WebApi.Middleware.SessionHandlers
         {
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            return new ValueRequestHandlerResult(new SessionApi(routeDictionary["version"]).CreateSession());
+            return new ValueRequestHandlerResult(new SessionApi().CreateSession());
         }
     }
 }

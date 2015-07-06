@@ -51,37 +51,35 @@ namespace InfinniPlatform.Api.LocalRouting
             }
         }
 
-        public static string InvokeRestOperationPost(string version, string configuration, string metadata,
+        public static string InvokeRestOperationPost(string configuration, string metadata,
             string action, IDictionary<string, object> requestBody, string userName)
         {
-            return Instance.InvokeRestOperationPost(version, configuration, metadata, action, requestBody, userName);
+            return Instance.InvokeRestOperationPost(configuration, metadata, action, requestBody, userName);
         }
 
-        public static string InvokeRestOperationGet(string version, string configuration, string metadata, string action,
+        public static string InvokeRestOperationGet(string configuration, string metadata, string action,
             IDictionary<string, object> requestBody, string userName)
         {
-            return Instance.InvokeRestOperationGet(version, configuration, metadata, action, requestBody, userName);
+            return Instance.InvokeRestOperationGet(configuration, metadata, action, requestBody, userName);
         }
 
-        public static string InvokeRestOperationUpload(string version, string configuration, string metadata,
+        public static string InvokeRestOperationUpload(string configuration, string metadata,
             string action, object requestBody, string filePath, string userName)
         {
-            return Instance.InvokeRestOperationUpload(version, configuration, metadata, action, requestBody, filePath,
-                userName);
+            return Instance.InvokeRestOperationUpload(configuration, metadata, action, requestBody, filePath,userName);
         }
 
-        public static string InvokeRestOperationUpload(string version, string configuration, string metadata,
+        public static string InvokeRestOperationUpload(string configuration, string metadata,
             string action, object requestBody, Stream file, string userName)
         {
-            return Instance.InvokeRestOperationUpload(version, configuration, metadata, action, requestBody, file,
-                userName);
+            return Instance.InvokeRestOperationUpload(configuration, metadata, action, requestBody, file,userName);
         }
 
-        public static string InvokeRestOperationDownload(string version, string configuration, string metadata,
+        public static string InvokeRestOperationDownload(string configuration, string metadata,
             string action,
             object requestBody, string userName)
         {
-            return Instance.InvokeRestOperationDownload(version, configuration, metadata, action, requestBody, userName);
+            return Instance.InvokeRestOperationDownload(configuration, metadata, action, requestBody, userName);
         }
     }
 }

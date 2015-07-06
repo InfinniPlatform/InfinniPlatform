@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Api.ContextComponents;
+﻿using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -14,7 +14,7 @@ namespace InfinniPlatform.RestfulApi.Auth
             target.Result = new DynamicWrapper();
             target.Result.ClaimType = target.Item.ClaimType;
             target.Result.UserName = target.Item.UserName;
-            target.Result.ClaimValue = target.Context.GetComponent<ISecurityComponent>(target.Version)
+            target.Result.ClaimValue = target.Context.GetComponent<ISecurityComponent>()
                                              .GetClaim(target.Item.ClaimType, target.Item.UserName);
         }
     }

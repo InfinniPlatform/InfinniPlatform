@@ -1,6 +1,6 @@
 ﻿using System;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.Update.ActionUnits
@@ -9,7 +9,7 @@ namespace InfinniPlatform.Update.ActionUnits
 	{
 		public void Action(ISearchContext target)
 		{
-			var blobStorage = target.Context.GetComponent<IBlobStorageComponent>(target.Version).GetBlobStorage();
+			var blobStorage = target.Context.GetComponent<IBlobStorageComponent>().GetBlobStorage();
 
 			foreach (var result in target.SearchResult)
 			{

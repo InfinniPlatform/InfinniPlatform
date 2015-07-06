@@ -1,10 +1,14 @@
-﻿using InfinniPlatform.Api.Actions;
-using InfinniPlatform.Api.Hosting;
+﻿using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Hosting.Implementation.ExtensionPointHandling;
 using InfinniPlatform.Hosting.Implementation.Modules;
 using InfinniPlatform.Metadata;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Hosting;
+using InfinniPlatform.Sdk.Environment.Metadata;
+using InfinniPlatform.Sdk.Environment.Scripts;
 
 namespace InfinniPlatform.RestfulApi.Installers
 {

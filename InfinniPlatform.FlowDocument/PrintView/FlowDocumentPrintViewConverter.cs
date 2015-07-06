@@ -4,6 +4,7 @@ using System.IO;
 using InfinniPlatform.Api.PrintView;
 using InfinniPlatform.FlowDocument.Converters;
 using InfinniPlatform.FlowDocument.Properties;
+using InfinniPlatform.Sdk.Environment;
 using FrameworkFlowDocument = System.Windows.Documents.FlowDocument;
 
 namespace InfinniPlatform.FlowDocument.PrintView

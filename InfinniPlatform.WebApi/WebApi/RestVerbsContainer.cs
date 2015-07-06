@@ -8,6 +8,7 @@ using Autofac;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Hosting;
+using InfinniPlatform.Sdk.Environment.Hosting;
 using InfinniPlatform.WebApi.Properties;
 
 namespace InfinniPlatform.WebApi.WebApi

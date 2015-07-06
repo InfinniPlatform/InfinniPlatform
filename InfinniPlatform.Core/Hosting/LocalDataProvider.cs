@@ -11,15 +11,13 @@ namespace InfinniPlatform.Hosting
         private readonly string _configName;
         private readonly string _metadata;
         private readonly string _userName;
-        private readonly string _version;
 
-        public LocalDataProvider(string configName, string metadata, string action, string userName, string version)
+        public LocalDataProvider(string configName, string metadata, string action, string userName)
         {
             _configName = configName;
             _metadata = metadata;
             _action = action;
             _userName = userName;
-            _version = version != "0" ? version : null;
         }
 
         /// <summary>
@@ -58,13 +56,6 @@ namespace InfinniPlatform.Hosting
             return _userName;
         }
 
-        /// <summary>
-        ///     Получить идентификатор работающей версии сервисов
-        /// </summary>
-        /// <returns></returns>
-        public string GetVersion()
-        {
-            return _version;
-        }
+
     }
 }

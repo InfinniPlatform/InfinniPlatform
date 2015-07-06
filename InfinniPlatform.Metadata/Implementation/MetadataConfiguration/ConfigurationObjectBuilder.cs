@@ -1,8 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Factories;
 using InfinniPlatform.Logging;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 {
@@ -33,8 +38,7 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
         /// <returns>Объект конфигурации метаданных</returns>
         public IConfigurationObject GetConfigurationObject(string version, string metadataIdentifier)
         {
-            var metadataConfiguration = _metadataConfigurationProvider.GetMetadataConfiguration(version,
-                metadataIdentifier);
+            var metadataConfiguration = _metadataConfigurationProvider.GetMetadataConfiguration(version, metadataIdentifier);
             if (metadataConfiguration == null)
             {
                 Logger.Log.Error(string.Format("Metadata configuration not registered: \"{0}\"",
@@ -51,6 +55,11 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
         public IEnumerable<IMetadataConfiguration> GetConfigurationList()
         {
             return _metadataConfigurationProvider.Configurations;
+        }
+
+        public IEnumerable<Tuple<string, string>> GetConfigurationVersions()
+        {
+            return _metadataConfigurationProvider.ConfigurationVersions;
         }
     }
 }

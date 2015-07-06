@@ -12,7 +12,7 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
     {
         public void Action(IApplyContext target)
         {
-            var aclApi = target.Context.GetComponent<AuthApi>(target.Version);
+            var aclApi = target.Context.GetComponent<AuthApi>();
 
             dynamic user = null;
 
@@ -57,12 +57,11 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 
             user.Password = null;
 
-            target.Context.GetComponent<DocumentApi>(target.Version)
+            target.Context.GetComponent<DocumentApi>()
                 .SetDocument(AuthorizationStorageExtensions.AdministrationConfigId, "User",
                     user);
 
-            RestQueryApi.QueryPostJsonRaw("AdministrationCustomization", "Common", "OnAddUserEvent", null, user,
-                target.Version);
+            RestQueryApi.QueryPostJsonRaw("AdministrationCustomization", "Common", "OnAddUserEvent", null, user);
 
             target.Result = new DynamicWrapper();
             target.Result.IsValid = true;

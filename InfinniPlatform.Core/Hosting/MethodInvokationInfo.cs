@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.RestQuery;
+using InfinniPlatform.Sdk.Environment.Hosting;
 
 namespace InfinniPlatform.Hosting
 {

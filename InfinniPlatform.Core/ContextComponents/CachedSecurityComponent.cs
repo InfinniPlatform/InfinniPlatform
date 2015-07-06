@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.RestApi.Auth;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.ContextComponents
@@ -16,6 +16,12 @@ namespace InfinniPlatform.ContextComponents
         private static IEnumerable<dynamic> _acl;
         private static IEnumerable<dynamic> _users;
         private static IEnumerable<dynamic> _roles;
+        private static IEnumerable<dynamic> _versions; 
+
+        public IEnumerable<dynamic> Versions
+        {
+            get { return _versions; }
+        }
 
         public void UpdateUserRoles()
         {
@@ -47,6 +53,11 @@ namespace InfinniPlatform.ContextComponents
             InternalUpdateRoles();
         }
 
+        public void UpdateVersions()
+        {
+            InternalUpdateVersions();
+        }
+
         public IEnumerable<dynamic> Acl
         {
             get { return _acl; }
@@ -56,6 +67,8 @@ namespace InfinniPlatform.ContextComponents
         {
             get { return _users; }
         }
+
+        
 
         public void UpdateClaim(string userName, string claimType, string claimValue)
         {
@@ -113,22 +126,27 @@ namespace InfinniPlatform.ContextComponents
 
         private static void InternalUpdateUserRoles()
         {
-            _userRoles = new AuthApi(null).GetUserRoles(false);
+            _userRoles = new AuthApi().GetUserRoles(false);
         }
 
         private static void InternalUpdateUsers()
         {
-            _users = new AuthApi(null).GetUsers(false);
+            _users = new AuthApi().GetUsers(false);
         }
 
         private static void InternalUpdateAcl()
         {
-            _acl = new AuthApi(null).GetAcl(false);
+            _acl = new AuthApi().GetAcl(false);
         }
 
         private static void InternalUpdateRoles()
         {
-            _roles = new AuthApi(null).GetRoles(false);
+            _roles = new AuthApi().GetRoles(false);
+        }
+
+        private static void InternalUpdateVersions()
+        {
+            _versions = new AuthApi().GetVersions(false);
         }
 
         /// <summary>

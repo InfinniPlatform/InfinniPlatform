@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.Registers;
+﻿using InfinniPlatform.Api.Registers;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
@@ -13,7 +13,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
                 // Койка освободилась - income
 
                 var entry =
-                    target.Context.GetComponent<IRegistryComponent>(target.Version)
+                    target.Context.GetComponent<IRegistryComponent>()
                           .CreateAccumulationRegisterEntry(target.Item.Configuration, "availablebeds",
                                                            target.Item.Metadata,
                                                            target.Item, target.Item.Date);
@@ -23,7 +23,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
                 entry.Bed = target.Item.Bed;
                 entry.Value = 1; // Изменение количества на единицу
 
-                target.Context.GetComponent<IRegistryComponent>(target.Version)
+                target.Context.GetComponent<IRegistryComponent>()
                       .PostRegisterEntries(target.Item.Configuration, "availablebeds", new[] {entry});
             }
             else
@@ -31,7 +31,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
                 // Добавляем данные в регистр сведений
 
                 var infoEntry =
-                    target.Context.GetComponent<IRegistryComponent>(target.Version)
+                    target.Context.GetComponent<IRegistryComponent>()
                           .CreateInfoRegisterEntry(target.Item.Configuration, "inforegister",
                                                    target.Item.Metadata, target.Item, target.Item.Date);
 
@@ -40,7 +40,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
                 infoEntry.Bed = target.Item.Bed;
                 infoEntry.Value = 1; // Изменение количества на единицу
 
-                target.Context.GetComponent<IRegistryComponent>(target.Version)
+                target.Context.GetComponent<IRegistryComponent>()
                       .PostRegisterEntries(target.Item.Configuration, "inforegister", new[] {infoEntry});
             }
         }

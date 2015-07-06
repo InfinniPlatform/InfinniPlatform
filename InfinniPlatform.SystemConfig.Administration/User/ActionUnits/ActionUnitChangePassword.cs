@@ -8,7 +8,7 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
     {
         public void Action(IApplyContext target)
         {
-            target.Context.GetComponent<SignInApi>(target.Version)
+            target.Context.GetComponent<SignInApi>()
                 .ChangePassword(target.Item.Document.UserName, target.Item.Document.OldPassword,
                     target.Item.Document.NewPassword);
             target.Result = new DynamicWrapper();

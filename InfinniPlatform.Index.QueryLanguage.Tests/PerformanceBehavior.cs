@@ -7,6 +7,7 @@ using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Index.QueryLanguage.Implementation;
+using InfinniPlatform.Sdk.Environment.Index;
 using Moq;
 using NUnit.Framework;
 using Newtonsoft.Json.Linq;

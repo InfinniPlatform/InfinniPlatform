@@ -133,7 +133,6 @@
     <Compile Include="MessageQueue\Integration\IntegrationBusMessage.cs" />
     <Compile Include="MessageQueue\Integration\IntegrationBusSubscription.cs" />
     <Compile Include="Metadata\ExtensionPointType.cs" />
-    <Compile Include="Metadata\IMetadataConfigurationProvider.cs" />
     <Compile Include="Metadata\IMetadataIndexNameProvider.cs" />
     <Compile Include="Metadata\IObjectMetadataHandler.cs" />
     <Compile Include="Metadata\IStateTransitionApprover.cs" />

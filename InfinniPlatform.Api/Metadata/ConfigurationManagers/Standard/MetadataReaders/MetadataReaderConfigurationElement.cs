@@ -13,7 +13,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
         public MetadataReaderConfigurationElement(string version, string configurationId,
             IMetadataContainerInfo metadataContainerInfo)
             : base(version, configurationId, metadataContainerInfo.GetMetadataTypeName())
-        {
+        {            
             _metadataContainerInfo = metadataContainerInfo;
         }
 
@@ -24,9 +24,8 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
         public override IEnumerable<dynamic> GetItems()
         {
             dynamic result =
-                QueryMetadata.QueryConfiguration(Version,
-                    QueryMetadata.GetConfigurationMetadataShortListIql(ConfigurationId,
-                        _metadataContainerInfo.GetMetadataContainerName())).FirstOrDefault();
+                QueryMetadata.QueryConfiguration(QueryMetadata.GetConfigurationMetadataShortListIql(Version, ConfigurationId,
+                                                                                                    _metadataContainerInfo.GetMetadataContainerName())).FirstOrDefault();
             if (result != null)
             {
                 var searchResult = result[_metadataContainerInfo.GetMetadataContainerName()];
@@ -47,9 +46,8 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
         public override dynamic GetItem(string metadataName)
         {
             var result =
-                QueryMetadata.QueryConfiguration(Version,
-                    QueryMetadata.GetConfigurationMetadataByNameIql(ConfigurationId, metadataName,
-                        _metadataContainerInfo.GetMetadataContainerName(), _metadataContainerInfo.GetMetadataTypeName()))
+                QueryMetadata.QueryConfiguration(QueryMetadata.GetConfigurationMetadataByNameIql(ConfigurationId, metadataName,
+                                                                                                 _metadataContainerInfo.GetMetadataContainerName(), _metadataContainerInfo.GetMetadataTypeName()))
                     .FirstOrDefault();
 
 

@@ -78,7 +78,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                 {
                     item["PathToZip"] = parameters[3].ToString();
 
-                    RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "ExportDataToJson", null, item, _version);
+                    RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "ExportDataToJson", null, item);
                 }
                 else if (operationType == "Import")
                 {
@@ -86,7 +86,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                         File.ReadAllBytes(Path.Combine(parameters[3].ToString(),
                                                        string.Format("{0}_{1}.zip", configuration, metadata))));
 
-                    RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "ImportDataFromJson", null, item, _version);
+                    RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "ImportDataFromJson", null, item);
                 }
                 else
                 {

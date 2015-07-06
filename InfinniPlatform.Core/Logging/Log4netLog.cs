@@ -1,5 +1,7 @@
 ﻿using System;
 using InfinniPlatform.Api.Profiling;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Log;
 using ILog4NetLog = log4net.ILog;
 
 namespace InfinniPlatform.Logging

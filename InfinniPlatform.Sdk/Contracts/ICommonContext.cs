@@ -28,7 +28,7 @@
         /// <summary>
         ///   Версия исполняемой точки расширения
         /// </summary>
-        string Version { get; set; }
+        //string Version { get; set; }
 
 		/// <summary>
 		///   Конфигурация текущего запроса
@@ -49,5 +49,6 @@
 		///   Авторизованный пользователь системы
 		/// </summary>
 		string UserName { get; set; }
+
     }
 }

@@ -7,11 +7,11 @@ using System.Web.Http;
 using System.Web.Http.Dispatcher;
 
 using Autofac;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Logging;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.WebApi.Controllers;
 using InfinniPlatform.WebApi.Logging;
 

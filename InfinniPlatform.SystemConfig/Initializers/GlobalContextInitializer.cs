@@ -1,6 +1,6 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
+﻿using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
 using InfinniPlatform.Hosting;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.SystemConfig.Initializers
@@ -16,7 +16,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
 
         public void OnStart(HostingContextBuilder contextBuilder)
         {
-            var systemComponent = _globalContext.GetComponent<ISystemComponent>(null);
+            var systemComponent = _globalContext.GetComponent<ISystemComponent>();
 
             systemComponent.ManagerIdentifiers = new ManagerIdentifiersStandard();
         }

@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using InfinniPlatform.Api.Index;
-using InfinniPlatform.Api.Worklow;
 using InfinniPlatform.Metadata.StateMachine.Statuses;
+using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Worklow;
 
 namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.ContextComponents;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -16,9 +16,11 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
         public void Action(IApplyContext target)
         {
+            var version = target.Context.GetVersion(target.Item.Configuration, target.UserName);
+
             dynamic documentProvider =
-                target.Context.GetComponent<InprocessDocumentComponent>(target.Version)
-                      .GetDocumentProvider(target.Version, target.Item.Configuration, target.Item.Metadata,
+                target.Context.GetComponent<InprocessDocumentComponent>()
+                      .GetDocumentProvider(version, target.Item.Configuration, target.Item.Metadata,
                                            target.UserName);
 
             dynamic instanceId = null;
@@ -26,9 +28,9 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             {
                 ApplyTransactionMarker(target);
 
-                _metadataComponent = target.Context.GetComponent<IMetadataComponent>(target.Version);
+                _metadataComponent = target.Context.GetComponent<IMetadataComponent>();
 
-                IEnumerable<dynamic> result = _metadataComponent.GetMetadataList(target.Version,
+                IEnumerable<dynamic> result = _metadataComponent.GetMetadataList(version,
                                                                                  target.Item.Configuration,
                                                                                  target.Item.Metadata,
                                                                                  MetadataType.Schema);
@@ -40,10 +42,10 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
                 if (target.Item.Document != null)
                 {
-                    target.Item.Document = AdjustDocumentContent(target.Version, target.Item.Document, documentSchema,
+                    target.Item.Document = AdjustDocumentContent(version, target.Item.Document, documentSchema,
                                                                  allowNonSchemaProperties);
 
-                    target.Context.GetComponent<ILogComponent>(target.Version).GetLog().Info(
+                    target.Context.GetComponent<ILogComponent>().GetLog().Info(
                         "document \"{0}\" save completed to \"{1}\", type {2}",
                         target.Item.Configuration,
                         target.Item.Document.ToString(),
@@ -57,10 +59,10 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
                     foreach (var document in target.Item.Documents)
                     {
-                        adjustedDocs.Add(AdjustDocumentContent(target.Version, document, documentSchema,
+                        adjustedDocs.Add(AdjustDocumentContent(version, document, documentSchema,
                                                                allowNonSchemaProperties));
 
-                        target.Context.GetComponent<ILogComponent>(target.Version).GetLog().Info(
+                        target.Context.GetComponent<ILogComponent>().GetLog().Info(
                             "document \"{0}\" save completed to \"{1}\", type {2}",
                             target.Item.Configuration,
                             document.ToString(),
@@ -69,7 +71,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
                     target.Item.Documents = adjustedDocs.ToArray();
 
-                    target.Context.GetComponent<ILogComponent>(target.Version)
+                    target.Context.GetComponent<ILogComponent>()
                           .GetLog()
                           .Info("documents save completed to \"{0}\", type {1}", target.Item.Configuration,
                                 target.Item.Metadata);
@@ -86,7 +88,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
                 return;
             }
-            target.Context.GetComponent<ILogComponent>(target.Version)
+            target.Context.GetComponent<ILogComponent>()
                   .GetLog()
                   .Error("document \"{0}\" type \"{1}\" not exists", target.Item.Configuration, target.Item.Metadata);
             // throw new ArgumentException(string.Format("document \"{0}\" type \"{1}\" not exists", target.Item.Configuration, target.Item.Metadata));
@@ -316,13 +318,13 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
                 if (docs != null)
                 {
-                    target.Context.GetComponent<ITransactionComponent>(target.Version).GetTransactionManager()
+                    target.Context.GetComponent<ITransactionComponent>().GetTransactionManager()
                           .GetTransaction(target.TransactionMarker)
                           .Attach(target.Item.Configuration,
                                   target.Item.Metadata,
-                                  target.Version,
+                                  target.Context.GetVersion(target.Item.Configuration,target.UserName),
                                   docs,
-                                  target.Context.GetComponent<ISecurityComponent>(target.Version)
+                                  target.Context.GetComponent<ISecurityComponent>()
                                         .GetClaim(AuthorizationStorageExtensions.OrganizationClaim, target.UserName) ??
                                   AuthorizationStorageExtensions.AnonimousUser);
                 }

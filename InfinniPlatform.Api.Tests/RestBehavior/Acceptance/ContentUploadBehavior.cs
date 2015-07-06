@@ -75,22 +75,22 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			testDocument.ContentField.Info.Size = 11723;
 			
 
-            dynamic result = new DocumentApi(null).SetDocument(_configurationId, _documentId, testDocument);
+            dynamic result = new DocumentApi().SetDocument(_configurationId, _documentId, testDocument);
 
             Assert.AreNotEqual(result.IsValid, false);
 
-            dynamic uploadResult = new UploadApi(null).UploadBinaryContent(testDocument.Id, "ContentField",
+            dynamic uploadResult = new UploadApi().UploadBinaryContent(testDocument.Id, "ContentField",
 			                                    @"TestData\Configurations\Authorization.zip");
 
             Assert.AreNotEqual(uploadResult.IsValid, false);
 
-            dynamic resultBlob = new UploadApi(null).DownloadBinaryContent(testDocument.Id, "ContentField");
+            dynamic resultBlob = new UploadApi().DownloadBinaryContent(testDocument.Id, "ContentField");
 
 			Assert.IsNotNull(resultBlob);
 
-            dynamic storedDocument = new DocumentApi(null).GetDocument(_configurationId, _documentId, cr => cr.AddCriteria(f => f.Property("Id").IsEquals(testDocument.Id)), 0, 1).FirstOrDefault();
+            dynamic storedDocument = new DocumentApi().GetDocument(_configurationId, _documentId, cr => cr.AddCriteria(f => f.Property("Id").IsEquals(testDocument.Id)), 0, 1).FirstOrDefault();
 
-            resultBlob = new UploadApi(null).DownloadBinaryContent(storedDocument.ContentField.Info.ContentId);
+            resultBlob = new UploadApi().DownloadBinaryContent(storedDocument.ContentField.Info.ContentId);
 
             Assert.IsNotNull(resultBlob);
 		}
