@@ -6,7 +6,7 @@
     "Mode": {
       "description": "Направление потока данных в привязке",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/BindingMode",
-      "default": "ToWay"
+      "default": "TwoWay"
     },
     "Source": {
       "description": "Наименование источника данных привязки",
