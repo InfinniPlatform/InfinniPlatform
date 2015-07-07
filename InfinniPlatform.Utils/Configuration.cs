@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -8,17 +9,18 @@ namespace InfinniPlatform.Utils
     {
         public Configuration(string pathString)
         {
+            Debugger.Launch();
             PathString = pathString;
-            var pathConfig = Path.GetFileName(pathString).Split(new[] {"."}, StringSplitOptions.RemoveEmptyEntries);
-            if (pathConfig.Count() == 3)
+            var pathConfig = Path.GetFileName(pathString).Split(new[] {"_"}, StringSplitOptions.RemoveEmptyEntries);
+            if (pathConfig.Count() == 2)
             {
-                Name = pathConfig[0];
-                Version = pathConfig[2];
+                Name = pathConfig[0].Split(new[] {"."}, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
+                Version = pathConfig[1];
             }
             else
             {
                 throw new ArgumentException(string.Format("Not an configuration folder: {0}", pathString));
-            }
+            }                
         }
 
         public string PathString { get; set; }

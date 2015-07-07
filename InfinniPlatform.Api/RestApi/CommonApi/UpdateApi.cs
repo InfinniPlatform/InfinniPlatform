@@ -34,7 +34,8 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
                 ConfigurationId = configurationId,
                 DocumentId = documentId,
                 MetadataType = metadataType,
-                MetadataObject = metadataObject
+                MetadataObject = metadataObject,
+                Version = _version
             };
 
             RestQueryApi.QueryPostJsonRaw("Update", "Package", "installjsonmetadata", null, request);
@@ -53,7 +54,7 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
                     Version = _version
                 };
 
-            var response = builder.QueryPostFile(null, filePath, null);
+            var response = builder.QueryPostFile(linkedData, filePath, null);
 
             if (!response.IsAllOk)
             {

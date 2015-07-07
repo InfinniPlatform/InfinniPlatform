@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Metadata;
+using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.MigrationsAndVerifications.Helpers;

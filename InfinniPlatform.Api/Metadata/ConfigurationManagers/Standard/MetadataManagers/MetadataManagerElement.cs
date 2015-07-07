@@ -130,7 +130,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 
                         if (_metadataCacheRefresher != null)
                         {
-                            _metadataCacheRefresher.RefreshMetadataAfterDeleting(element.Name,_version);
+                            _metadataCacheRefresher.RefreshMetadataAfterDeleting(_version, element.Name);
                         }
                     }
                 }
@@ -197,7 +197,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 
             if (_metadataCacheRefresher != null)
             {
-                _metadataCacheRefresher.RefreshMetadataAfterChanging(updatingMetadata.Name, _version);
+                _metadataCacheRefresher.RefreshMetadataAfterChanging(_version, updatingMetadata.Name);
             }
         }
 

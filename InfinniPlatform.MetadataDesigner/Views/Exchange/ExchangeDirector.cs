@@ -52,15 +52,12 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
 	    private string GetVersionFromPath(string path)
 	    {
 	        var dir = Path.GetFileName(path);
-	        if (!string.IsNullOrEmpty(dir))
-	        {
-	            var pathConfig = dir.Split(new[] {"."}, StringSplitOptions.RemoveEmptyEntries);
-	            if (pathConfig.Count() == 3 && pathConfig[1].ToLowerInvariant() == "configuration")
-	            {
-	                return pathConfig[2];
-	            }
-	        }
-	        return null;
+            var pathConfig = dir.Split(new[] { "_" }, StringSplitOptions.RemoveEmptyEntries);
+            if (pathConfig.Count() == 2)
+            {
+                return pathConfig[1];
+            }
+            return null; 
 	    }
 
 	    public void UpdateConfigurationMetadataFromZip(string fileName)
