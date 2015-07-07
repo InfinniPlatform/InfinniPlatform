@@ -3,6 +3,7 @@
   "Name": "Authorization",
   "Caption": "Authorization",
   "Description": "",
+  "Version": "1.0.0.0",
   "Menu": [
     {
       "Id": "1a7a4c6a-956c-4727-9a6f-88bb5af22aaf",
@@ -46,6 +47,12 @@
       "Id": "2f5e3ba4-248b-4d5f-b3f7-23618d93aebf",
       "Name": "UserRole",
       "Caption": "UserRole",
+      "Description": ""
+    },
+    {
+      "Id": "8f2e7f0c-a4bb-4ef0-9a83-abf70c309510",
+      "Name": "VersionStore",
+      "Caption": "VersionStore",
       "Description": ""
     }
   ],

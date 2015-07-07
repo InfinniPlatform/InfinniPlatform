@@ -1,5 +1,6 @@
 {
   "Id": "0c23fc63-c756-4822-adb1-0a1deb00524f",
+  "Secured": true,
   "Name": "Common",
   "Caption": "Common options",
   "Description": "Common options",
@@ -41,5 +42,6 @@
   "DocumentStatuses": [],
   "ParentId": "980b279b-26a5-4a5d-9e78-bef695322a6f",
   "__ConfigId": "systemconfig",
-  "__DocumentId": "documentmetadata"
+  "__DocumentId": "documentmetadata",
+  "Version": "1.0.0.0"
 }

@@ -1,5 +1,6 @@
 {
   "Id": "526b3ef8-4714-4501-8258-28172fc19f81",
+  "Secured": true,
   "Scripts": [
     {
       "Name": "SetRoleDataSource",
@@ -153,5 +154,6 @@
         }
       ]
     }
-  }
+  },
+  "Version": "1.0.0.0"
 }

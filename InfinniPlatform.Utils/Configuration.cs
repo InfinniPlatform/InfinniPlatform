@@ -9,7 +9,6 @@ namespace InfinniPlatform.Utils
     {
         public Configuration(string pathString)
         {
-            Debugger.Launch();
             PathString = pathString;
             var pathConfig = Path.GetFileName(pathString).Split(new[] {"_"}, StringSplitOptions.RemoveEmptyEntries);
             if (pathConfig.Count() == 2)

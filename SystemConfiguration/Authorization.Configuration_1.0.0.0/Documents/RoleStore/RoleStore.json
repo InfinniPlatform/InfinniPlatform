@@ -1,5 +1,6 @@
 {
   "Id": "483b57aa-182c-4d3e-8a6d-0b22c3892332",
+  "Secured": true,
   "Name": "RoleStore",
   "Caption": "RoleStore",
   "Description": "Хранилище ролей пользователей",
@@ -46,5 +47,6 @@
   },
   "ParentId": "980b279b-26a5-4a5d-9e78-bef695322a6f",
   "__ConfigId": "systemconfig",
-  "__DocumentId": "documentmetadata"
+  "__DocumentId": "documentmetadata",
+  "Version": "1.0.0.0"
 }

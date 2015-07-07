@@ -1,5 +1,6 @@
 {
   "Id": "4d256357-5793-4465-a9c2-02f7d5aef0c4",
+  "Secured": true,
   "Name": "Authorization_Registers",
   "Caption": "Registers common options",
   "Description": "Storage for register's common information (e.g. actual date)",
@@ -16,5 +17,6 @@
   "SearchAbility": 0,
   "ParentId": "980b279b-26a5-4a5d-9e78-bef695322a6f",
   "__ConfigId": "systemconfig",
-  "__DocumentId": "documentmetadata"
+  "__DocumentId": "documentmetadata",
+  "Version": "1.0.0.0"
 }

@@ -36,7 +36,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 					process.StartOperation(() =>
 					{
 					    configurationPath = Path.Combine(configurationPath,
-					        string.Format("{0}.Configuration.{1}", Value.Name, Value.Version));
+					        string.Format("{0}.Configuration_{1}", Value.Name, Value.Version));
 					    exportConfig.ExportJsonConfigToDirectory(configurationPath, Value.Version);
 					});
 					process.EndOperation();

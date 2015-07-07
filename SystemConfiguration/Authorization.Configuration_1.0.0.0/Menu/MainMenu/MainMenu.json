@@ -1,5 +1,6 @@
 {
   "Id": "1a7a4c6a-956c-4727-9a6f-88bb5af22aaf",
+  "Secured": true,
   "Name": "MainMenu",
   "Caption": "Авторизация",
   "Description": "",
@@ -52,5 +53,6 @@
   ],
   "ParentId": "Authorization",
   "__ConfigId": "systemconfig",
-  "__DocumentId": "menumetadata"
+  "__DocumentId": "menumetadata",
+  "Version": "1.0.0.0"
 }

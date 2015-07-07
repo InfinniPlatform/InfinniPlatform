@@ -1,5 +1,6 @@
 {
   "Id": "a06bb617-e77f-4168-8fb0-607db8853d23",
+  "Secured": true,
   "Name": "UserStore",
   "Caption": "UserStore",
   "Description": "Хранилище пользователей системы",
@@ -52,5 +53,6 @@
   },
   "ParentId": "980b279b-26a5-4a5d-9e78-bef695322a6f",
   "__ConfigId": "systemconfig",
-  "__DocumentId": "documentmetadata"
+  "__DocumentId": "documentmetadata",
+  "Version": "1.0.0.0"
 }

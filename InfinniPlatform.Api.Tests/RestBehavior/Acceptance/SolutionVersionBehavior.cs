@@ -8,6 +8,7 @@ using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
 using InfinniPlatform.Api.Packages;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.TestEnvironment;
@@ -71,7 +72,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             new IndexApi().RebuildIndex(TestConfig2, TestConfig2DocumentId);
             new IndexApi().RebuildIndex(TestConfig3, TestConfig3DocumentId);
 
-            CreateTestSolutionWithThreeConfigs(new[]{"1.0.1.1","1.1.0.1","1.2.0.1"});
+            CreateTestSolutionWithThreeConfigs(new[]{"1.1.1.1","1.1.1.2","1.1.1.3"});
 
             dynamic testDoc = new
             {
@@ -103,6 +104,56 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             Assert.IsNotNull(checkDoc1);
             Assert.IsNotNull(checkDoc2);
             Assert.IsNotNull(checkDoc3);
+        }
+
+        /// <summary>
+        ///  При существовании трех разных версий конфигурации должен использовать 
+        ///  ту мажорную версию, в которую первый раз залогинился
+        /// </summary>
+        [Test]
+        public void ShouldSelectAccordingMinorVersion()
+        {
+            //Given
+            dynamic testDoc = new
+            {
+                Name = "TestDocument"
+            };
+
+            var api = new DocumentApi();
+
+            new IndexApi().RebuildIndex(TestConfig1, TestConfig1DocumentId);
+
+            new SignInApi().SignInInternal("Admin", "Admin", false);
+
+            //When
+            CreateAndUpdateTestSolutionThreeTimes(Version, new[] {"1.0.1", "2.0.2", "3.0.4"},
+                                                  () => api.SetDocument(TestConfig1, TestConfig1DocumentId, testDoc),
+                                                  () => api.SetDocument(TestConfig1, TestConfig1DocumentId, testDoc),
+                                                  () => api.SetDocument(TestConfig1, TestConfig1DocumentId, testDoc),
+                                                  () =>
+                                                      {
+                                                          //Then
+                                                          //проверяем, что была выбрана соответствующая минорная версия конфигурации при сохранении документов
+                                                          //при создании документов должна была быть использована конфигурация с версей 1.0.1, как первая
+                                                          //в которую залогинился пользователь
+                                                          dynamic checkDoc1 = api.GetDocument(TestConfig1, TestConfig1DocumentId,
+                                                                                    f =>
+                                                                                    f.AddCriteria(cr => cr.Property("Name").IsEquals("Name_TestAction")),
+                                                                                    0, 3).ToList();
+
+                                                          dynamic checkDoc2 = api.GetDocument(TestConfig1, TestConfig1DocumentId,
+                                                                                                f =>
+                                                                                                f.AddCriteria(cr => cr.Property("Name").IsEquals("Name_TestAction_v1")),
+                                                                                                0, 1).FirstOrDefault();
+                                                          dynamic checkDoc3 = api.GetDocument(TestConfig1, TestConfig1DocumentId,
+                                                                                                f =>
+                                                                                                f.AddCriteria(cr => cr.Property("Name").IsEquals("Name_TestAction_v2")),
+                                                                                                0, 1).FirstOrDefault();
+                                                          
+                                                          Assert.AreEqual(checkDoc1.Count,3);
+                                                          Assert.IsNull(checkDoc2);
+                                                          Assert.IsNull(checkDoc3);
+                                                      });            
         }
 
         /// <summary>
@@ -286,8 +337,12 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             var reader = ManagerFactoryConfiguration.BuildConfigurationMetadataReader(null,true);
             foreach (var item in reader.GetItems())
             {
-                MetadataManagerConfiguration manager = ManagerFactoryConfiguration.BuildConfigurationManager(item.Version);
-                manager.DeleteItem(item);
+                if (((string) item.Name).Contains("TestConfig"))
+                {
+                    MetadataManagerConfiguration manager =
+                        ManagerFactoryConfiguration.BuildConfigurationManager(item.Version);
+                    manager.DeleteItem(item);
+                }
             }
 
         }

@@ -1,5 +1,6 @@
 {
   "Id": "a9b9a3d1-822c-43bf-9dd4-74397fa36bd9",
+  "Secured": true,
   "Name": "AclStore",
   "Caption": "AclStore",
   "Description": "",
@@ -55,5 +56,6 @@
   },
   "ParentId": "980b279b-26a5-4a5d-9e78-bef695322a6f",
   "__ConfigId": "systemconfig",
-  "__DocumentId": "documentmetadata"
+  "__DocumentId": "documentmetadata",
+  "Version": "1.0.0.0"
 }

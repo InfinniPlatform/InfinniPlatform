@@ -1,5 +1,6 @@
 {
   "Id": "010b7bdb-aaca-47e9-9a66-fc12e80bbdfd",
+  "Secured": true,
   "Scripts": [
     {
       "Name": "SetUserRole",
@@ -140,5 +141,6 @@
         "UpdateAction": "AddUserRole"
       }
     }
-  ]
+  ],
+  "Version": "1.0.0.0"
 }

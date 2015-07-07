@@ -1,5 +1,6 @@
 {
   "Id": "cc985825-d554-4590-9ed1-4130f601fcbb",
+  "Secured": true,
   "LayoutPanel": {
     "GridPanel": {
       "Rows": [
@@ -27,5 +28,6 @@
   "Name": "HomePage",
   "ParentId": "0c23fc63-c756-4822-adb1-0a1deb00524f",
   "__ConfigId": "systemconfig",
-  "__DocumentId": "viewmetadata"
+  "__DocumentId": "viewmetadata",
+  "Version": "1.0.0.0"
 }

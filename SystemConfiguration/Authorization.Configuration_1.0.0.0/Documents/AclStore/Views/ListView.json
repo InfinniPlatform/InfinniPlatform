@@ -1,5 +1,6 @@
 {
   "Id": "676dc4a4-a3d5-41d8-9382-658328d3d9f3",
+  "Secured": true,
   "__DocumentId": "viewmetadata",
   "__ConfigId": "systemconfig",
   "ParentId": "a9b9a3d1-822c-43bf-9dd4-74397fa36bd9",
@@ -165,5 +166,6 @@
         }
       ]
     }
-  }
+  },
+  "Version": "1.0.0.0"
 }
