@@ -3,8 +3,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
-
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeSelectors
 {
     public static class IndexTypeSelectorBase 

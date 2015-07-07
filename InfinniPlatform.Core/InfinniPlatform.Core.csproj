@@ -94,6 +94,7 @@
     <Compile Include="Index\DimensionType.cs" />
     <Compile Include="Index\ICalculatedFieldFactory.cs" />
     <Compile Include="Index\IndexObject.cs" />
+    <Compile Include="Index\IndexObjectStatus.cs" />
     <Compile Include="Json\BackboneBuilder.cs" />
     <Compile Include="Json\EventBuilders\ChangeCollectionItemIndexBuilder.cs" />
     <Compile Include="Json\JsonCollectionLastItemTokenProvider.cs" />

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using InfinniPlatform.Api.Context;
+﻿using InfinniPlatform.Api.Context;
 using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.SearchOptions;
+using System;
+using System.Collections.Generic;
 
 namespace InfinniPlatform.Api.Metadata
 {
@@ -900,22 +898,7 @@ namespace InfinniPlatform.Api.Metadata
 		    document.ValidationWarnings = new List<dynamic>();
 		    document.ValidationErrors = new List<dynamic>();
             document.DocumentStatuses = new List<dynamic>();
-
             
-            /* TODO добавлять новые статусы таким образом не очень хорошая идея.
-             * необходимо продумать на каком этапе создавать минимально 
-             * необходимый набор статусов и нужно ли вообще это делать
-             * 
-             * 
-            document.DocumentStatuses.Add(new DynamicWrapper());
-            document.DocumentStatuses[0].Id = Guid.NewGuid().ToString();
-            document.DocumentStatuses[0].Name = "Invalid";
-            document.DocumentStatuses[0].Caption = "Invalid";
-            document.DocumentStatuses.Add(new DynamicWrapper());
-            document.DocumentStatuses[1].Id = Guid.NewGuid().ToString();
-            document.DocumentStatuses[1].Name = "Deleted";
-            document.DocumentStatuses[1].Caption = "Deleted";*/
-
 		    return document;
 		}
 

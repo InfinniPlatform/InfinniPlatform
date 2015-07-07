@@ -15,5 +15,6 @@ namespace InfinniPlatform.Index
         
         public dynamic Values { get; set; }
 
+        public string Status { get; set; }
     }
 }

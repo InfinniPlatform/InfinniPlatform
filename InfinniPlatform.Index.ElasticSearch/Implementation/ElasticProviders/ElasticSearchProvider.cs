@@ -2,7 +2,9 @@
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeSelectors;
+
 using Nest;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,9 +52,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             _typeName = typeName.ToLowerInvariant();
             _tenantId = tenantId;
 
-
             _elasticConnection = new ElasticConnection();
-
 
             //все версии типа в индексе
             RefreshMapping();
@@ -102,13 +102,14 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             if (existingItems.Any())
             {
                 // Удаляем предыдующие версии документов.
-                // Документы могут находиться в любом из типов
+                // Документы могут находиться в любом из типов.
                 _elasticConnection.Client.DeleteByQuery<dynamic>(
                     d =>
                         d.Index(_indexName)
                             .AllTypes()
                             .Query(queryDescriptor => queryDescriptor.Ids(objectIds) &&
-                                                      queryDescriptor.Term(ElasticConstants.TenantIdField, _tenantId)));
+                                                      queryDescriptor.Term(ElasticConstants.TenantIdField, _tenantId) &&
+                                                      queryDescriptor.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid)));
             }
 
             // Добавляем документы в актуальный тип
@@ -220,7 +221,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
                 _elasticConnection.Client.DeleteByQuery<dynamic>(
                     d => d.Index(_indexName).AllTypes().Query(
                         queryDescriptor => queryDescriptor.Ids(new[] {objectToIndex.Id}) &&
-                                           queryDescriptor.Term(ElasticConstants.TenantIdField, _tenantId)));
+                                           queryDescriptor.Term(ElasticConstants.TenantIdField, _tenantId) &&
+                                           queryDescriptor.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid)));
 
                 // Добавляем документ в актуальный тип
                 response =
@@ -234,6 +236,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             }
 
             var rollbackMessage = "";
+
             //восстанавливаем предыдущие удаленные записи обратно
             if (existingItem != null)
             {
@@ -303,7 +306,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
                 Id = jInstance["Id"].ToString().ToLowerInvariant(),
                 TimeStamp = DateTime.Now,
                 Values = jInstance,
-                TenantId = tenantId
+                TenantId = tenantId,
+                Status = IndexObjectStatus.Valid
             };
             return objectToIndex;
         }
@@ -331,16 +335,20 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
                             m =>
                                 m.Term(ElasticConstants.IndexObjectPath + ElasticConstants.IndexObjectIdentifierField,
                                     key.ToLowerInvariant())
-                                && m.Term(ElasticConstants.TenantIdField, _tenantId))
+                                && m.Term(ElasticConstants.TenantIdField, _tenantId) 
+                                && m.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid))
                     );
 
-                dynamic indexObject = response.Documents.FirstOrDefault();
-
+                var indexObject = response.Documents.FirstOrDefault();
+                
                 if (indexObject != null)
                 {
-                    var itemToUpdate = DynamicWrapperExtensions.ToDynamic(indexObject.Values);
-                    itemToUpdate.Status = "Deleted";
-                    Set(itemToUpdate, IndexItemStrategy.Update);
+                    IndexObject objectToDelete = PrepareObjectToIndex(DynamicWrapperExtensions.ToDynamic(indexObject.Values), _tenantId);
+
+                    objectToDelete.Status = IndexObjectStatus.Deleted;
+
+                    _elasticConnection.Client.Index(objectToDelete, d => d.Index(_indexName).Type(type));
+
                     break;
                 }
             }
@@ -363,18 +371,14 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
                 q => q
                     .Index(_indexName)
                     .Types(_derivedTypeNames.SelectMany(d => d.TypeNames))
-                    .Query(f => f.Term(
-                        ElasticConstants.IndexObjectPath + ElasticConstants.IndexObjectIdentifierField,
-                        key.ToLowerInvariant())
-                                && f.Term(ElasticConstants.TenantIdField, _tenantId)
+                    .Query(
+                        f =>   f.Term(ElasticConstants.IndexObjectPath + ElasticConstants.IndexObjectIdentifierField, key.ToLowerInvariant())
+                            && f.Term(ElasticConstants.TenantIdField, _tenantId)
+                            && f.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid)
                     )
                 );
 
-            dynamic indexObject =
-                response.Documents.FirstOrDefault(
-                    d => d.Values.Status == null ||
-                         (d.Values.Status.ToString() != "Deleted" &&
-                          d.Values.Status.ToString() != "Invalid"));
+            dynamic indexObject = response.Documents.FirstOrDefault();
 
             if (indexObject != null)
             {
@@ -405,13 +409,15 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
                     var searchResponse = _elasticConnection.Client.Search<dynamic>(
                         q => q
-                            .BuildSearchForType(new[] {_indexName}, _derivedTypeNames.SelectMany(d => d.TypeNames), false, false)
+                            .BuildSearchForType(new[] {_indexName}, _derivedTypeNames.SelectMany(d => d.TypeNames),
+                                false, false)
                             .Size(batchSize)
-                            .Filter(m => m.Terms(ElasticConstants.IndexObjectPath + ElasticConstants.IndexObjectIdentifierField, itemsToIndex.Select(batchItem => batchItem.ToLowerInvariant()))
-                                      && m.Term(ElasticConstants.TenantIdField, _tenantId)));
+                            .Filter(
+                                m => m.Terms(ElasticConstants.IndexObjectPath + ElasticConstants.IndexObjectIdentifierField, itemsToIndex.Select(batchItem => batchItem.ToLowerInvariant()))
+                                  && m.Term(ElasticConstants.TenantIdField, _tenantId)
+                                  && m.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid)));
 
-                    indexObjects.AddRange(
-                        searchResponse.Documents.Where(d => d.Values.Status != "Deleted" && d.Values.Status != "Invalid"));
+                    indexObjects.AddRange(searchResponse.Documents);
                     i++;
                 }
             }
@@ -429,7 +435,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             return _elasticConnection.Client
                 .Search<dynamic>(q => q
                     .BuildSearchForType(new[] {_indexName}, _derivedTypeNames.SelectMany(d => d.TypeNames), false, false)
-                    .Query(qr => qr.Term(ElasticConstants.TenantIdField, _tenantId))).Hits.Count();
+                    .Query(qr => qr.Term(ElasticConstants.TenantIdField, _tenantId) &&
+                                 qr.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid))).Hits.Count();
         }
 
         /// <summary>

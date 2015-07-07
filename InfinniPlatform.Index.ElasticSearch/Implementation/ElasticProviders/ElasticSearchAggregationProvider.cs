@@ -199,7 +199,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
                 filters = new SearchModel();
             }
             
-            filters.AddFilter(new NestFilter(Filter<dynamic>.Query(q => q.Term(ElasticConstants.TenantIdField, _tenantId))));
+            filters.AddFilter(new NestFilter(Filter<dynamic>.Query(q => 
+                q.Term(ElasticConstants.TenantIdField, _tenantId) &&
+                q.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid))));
             
             _filters = filters.Filter;
             var hasFilter = _filters is IFilter<FilterContainer>;

@@ -106,6 +106,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         public long CalculateCountQuery(SearchModel searchModel)
         {
             searchModel.AddFilter(new NestQuery(Query<dynamic>.Term(ElasticConstants.TenantIdField, _tenantId)));
+            searchModel.AddFilter(new NestQuery(Query<dynamic>.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid)));
 
             Func<CountDescriptor<dynamic>, CountDescriptor<dynamic>> desc =
                 descriptor => new ElasticCountQueryBuilder(descriptor)
@@ -129,6 +130,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         public SearchViewModel QueryOverObject(SearchModel searchModel, Func<dynamic, string, string, object> convert)
         {
             searchModel.AddFilter(new NestFilter(Filter<dynamic>.Query(q => q.Term(ElasticConstants.TenantIdField, _tenantId))));
+            searchModel.AddFilter(new NestFilter(Filter<dynamic>.Query(q => q.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid))));
 
             Func<SearchDescriptor<dynamic>, SearchDescriptor<dynamic>> desc =
                 descriptor => new ElasticSearchQueryBuilder(descriptor)
