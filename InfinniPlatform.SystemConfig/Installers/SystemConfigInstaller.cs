@@ -32,6 +32,8 @@ namespace InfinniPlatform.SystemConfig.Installers
             actionUnits.RegisterActionUnitDistributedStorage("clearcontrollerscache", "ActionUnitClearControllersCache");
             //-------------------
 
+            actionUnits.RegisterActionUnitDistributedStorage("getirrelevantversions","ActionUnitGetIrrelevantVersions");
+
             //help configuration
             actionUnits.RegisterActionUnitDistributedStorage("helpconfiguration", "ActionUnitHelpConfiguration");
             actionUnits.RegisterActionUnitDistributedStorage("generatehelpconfiguration",
@@ -306,7 +308,8 @@ namespace InfinniPlatform.SystemConfig.Installers
                                                                                                              .GetAction(
                                                                                                                  "RecarryingRegisterEntries")))));
             //-----------------------------------------------
-
+            metadataConfiguration.RegisterWorkflow("metadata", "getirrelevantversions",
+                                       f => f.FlowWithoutState(wc => wc.Move(ws => ws.WithAction(() => actionUnits.GetAction("getirrelevantversions")))));
 
             metadataConfiguration.RegisterWorkflow("update", "updateconfigfromjson",
                                                    f => f.FlowWithoutState(wc => wc
@@ -317,14 +320,7 @@ namespace InfinniPlatform.SystemConfig.Installers
                                                                                                              .GetAction(
                                                                                                                  "updateconfigfromjson")))));
 
-            metadataConfiguration.RegisterWorkflow("update", "getversionlist",
-                                                   f => f.FlowWithoutState(wc => wc
-                                                                                     .Move(ws => ws
-                                                                                                     .WithAction(
-                                                                                                         () =>
-                                                                                                         actionUnits
-                                                                                                             .GetAction(
-                                                                                                                 "getversionlist")))));
+
             metadataConfiguration.RegisterWorkflow("update", "getinstalledconfigurations",
                                                    f => f.FlowWithoutState(wc => wc
                                                                                      .Move(ws => ws
@@ -677,15 +673,12 @@ namespace InfinniPlatform.SystemConfig.Installers
 
         protected override void RegisterServices(IServiceRegistrationContainer servicesConfiguration)
         {
-            servicesConfiguration.AddRegistration("update", "Upload", reg => reg
-                                                                                 .RegisterHandlerInstance(
-                                                                                     "updateconfigfromjson",
-                                                                                     instance =>
-                                                                                     instance.RegisterExtensionPoint(
-                                                                                         "Upload",
-                                                                                         "updateconfigfromjson"))
-                                                                                 .SetResultHandler(
-                                                                                     HttpResultHandlerType.BadRequest));
+            servicesConfiguration.AddRegistration("update", "Upload", reg => reg.RegisterHandlerInstance("updateconfigfromjson",
+                instance =>instance.RegisterExtensionPoint("Upload","updateconfigfromjson")).SetResultHandler(HttpResultHandlerType.BadRequest));
+
+            servicesConfiguration.AddRegistration("metadata", "ApplyJson", reg => reg.RegisterHandlerInstance("getirrelevantversions",
+                instance => instance.RegisterExtensionPoint("Move", "getirrelevantversions")).SetResultHandler(HttpResultHandlerType.BadRequest));
+
             servicesConfiguration.AddRegistration("reporting", "UrlEncodedData",
                                                   reg => reg.RegisterHandlerInstance("GetReport", instance => instance
                                                                                                                   .RegisterExtensionPoint

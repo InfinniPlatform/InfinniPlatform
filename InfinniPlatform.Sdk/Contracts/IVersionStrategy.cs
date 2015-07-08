@@ -16,5 +16,11 @@ namespace InfinniPlatform.Sdk.Contracts
         /// <param name="userName">Логин пользователя</param>
         /// <returns>Актуальная минорная версия конфигурации</returns>
         string GetActualVersion(string metadataConfigurationId, IEnumerable<Tuple<string, string>> configurationVersions, string userName);
+
+        /// <summary>
+        ///   Получить список неактуальных версий
+        /// </summary>
+        /// <returns>Список соответствия актуальных и неактуальных версий конфигураций</returns>
+        IEnumerable<object> GetIrrelevantVersionList(IEnumerable<Tuple<string, string>> configurationVersions, string userName);
     }
 }

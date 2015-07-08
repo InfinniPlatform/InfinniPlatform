@@ -120,5 +120,54 @@ namespace InfinniPlatform.Api.Versioning
             return null;
         }
 
+        /// <summary>
+        ///   Получить список неактуальных версий
+        /// </summary>
+        /// <returns>Список соответствия актуальных и неактуальных версий конфигураций</returns>
+        public IEnumerable<dynamic> GetIrrelevantVersionList(IEnumerable<Tuple<string, string>> configurationVersions, string userName)
+        {
+            //получаем список версий зарегистрировавшегося пользователя
+            dynamic userConfigVersionList = ConfigVersions.Cast<dynamic>().Where(v => v.UserName == userName);
+
+            //получили список всех поднятых на сервере конфигураций
+            var actualConfigVersions = configurationVersions.Select(r =>
+                                                                        {
+                                                                            var versionObject = r.Item2 != null ? new Version(r.Item2) : new Version("0.0.0.0");
+                                                                            var majorVersion = versionObject.Major > 0
+                                                                                                   ? versionObject.Major
+                                                                                                   : 0;
+                                                                            var majorVersionRevision = versionObject.MajorRevision > 0
+                                                                                                   ? versionObject.MajorRevision
+                                                                                                   : 0;
+                                                                            return new
+                                                                            {
+                                                                                ConfigId = r.Item1,
+                                                                                Version = r.Item2 != null ?
+                                                                                    new Version(majorVersion, majorVersionRevision, 0, 0) : new Version("0.0.0.0")
+                                                                            };
+                                                                         })
+                                                           .OrderByDescending(r => r.Version)
+                                                           .ToList();
+
+            var result = new List<dynamic>();
+            foreach (var userConfig in userConfigVersionList)
+            {
+                var userVersion = new Version(userConfig.Version);
+                var actualVersion = actualConfigVersions.Where(a => a.ConfigId == userConfig.ConfigurationId).Select(a => a.Version).FirstOrDefault();
+
+                if (actualVersion != null && (actualVersion.Major > userVersion.Major || actualVersion.MajorRevision > userVersion.MajorRevision) )
+                {
+                    result.Add(new
+                        {
+                            userConfig.ConfigurationId,
+                            userConfig.Version,
+                            ActualVersion = actualVersion.ToString()
+                        });
+                }                
+            }
+            return result;
+
+        }  
+
     }
 }

@@ -46,6 +46,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configurator\ActionUnitGetIrrelevantVersions.cs" />
     <Compile Include="Configurator\ActionUnitGetPrintView.cs" />
     <Compile Include="Configurator\ActionUnitClearControllersCache.cs" />
     <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetSolutionList.cs" />

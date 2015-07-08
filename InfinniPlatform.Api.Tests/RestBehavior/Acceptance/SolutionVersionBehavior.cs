@@ -150,9 +150,21 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                                                                                                 f.AddCriteria(cr => cr.Property("Name").IsEquals("Name_TestAction_v2")),
                                                                                                 0, 1).FirstOrDefault();
                                                           
+                                                          
+
                                                           Assert.AreEqual(checkDoc1.Count,3);
                                                           Assert.IsNull(checkDoc2);
                                                           Assert.IsNull(checkDoc3);
+
+                                                          var irrelevantVersions =
+                                                              RestQueryApi.QueryPostJsonRaw("systemconfig", "metadata",
+                                                                                            "getirrelevantversions",
+                                                                                            null, null).ToDynamicList();
+
+                                                          Assert.AreEqual(1, irrelevantVersions.Count());
+                                                          Assert.AreEqual(irrelevantVersions.First().ConfigurationId, TestConfig1);
+                                                          Assert.AreEqual(irrelevantVersions.First().Version, "1.0.1");
+                                                          Assert.AreEqual(irrelevantVersions.First().ActualVersion, "3.0.0.0");
                                                       });            
         }
 
