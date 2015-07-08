@@ -260,8 +260,8 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 			{
 				try
 				{
-					var fileDll = baseDirectory + "\\" + filename + ".dll";
-					var fileExe = baseDirectory + "\\" + filename + ".exe";
+					var fileDll = Path.Combine(baseDirectory, filename + ".dll");
+					var fileExe = Path.Combine(baseDirectory, filename + ".exe");
 
 					if (File.Exists(fileDll))
 					{

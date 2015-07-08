@@ -20,7 +20,7 @@ namespace InfinniPlatform.Api.Schema.Prefill
 
 		private void ReadSettings()
 		{
-			var pathToSettings = Directory.GetCurrentDirectory() + @"\TestData\TestDatabases\Settings";
+			var pathToSettings = Path.Combine(Directory.GetCurrentDirectory(), "TestData", "TestDatabases", "Settings");
 			if (!Directory.Exists(pathToSettings))
 			{
 				_settings = new DynamicWrapper();
@@ -28,7 +28,7 @@ namespace InfinniPlatform.Api.Schema.Prefill
 
 			var fileName = string.Format("TestDatabase_{0}.json", _configId);
 
-			var pathToFile = pathToSettings + "\\" + fileName;
+			var pathToFile = Path.Combine(pathToSettings, fileName);
 			if (File.Exists(pathToFile))
 			{
 				_settings = (File.ReadAllText(pathToFile)).ToDynamic();

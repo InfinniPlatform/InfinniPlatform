@@ -47,8 +47,8 @@ namespace InfinniPlatform.Conventions
 		public void CodeProjectShouldHaveResources(string project)
 		{
 			// When
-			var result = File.Exists(Path.Combine(project, @"Properties\Resources.resx"))
-						 && File.Exists(Path.Combine(project, @"Properties\Resources.Designer.cs"));
+			var result = File.Exists(Path.Combine(project, @"Properties" + Path.DirectorySeparatorChar + "Resources.resx"))
+						 && File.Exists(Path.Combine(project, @"Properties" + Path.DirectorySeparatorChar + "Resources.Designer.cs"));
 
 			// Then
 			Assert.IsTrue(result, @"Проект ""{0}"" должен иметь файл ресурсов ""Properties\Resources"".", project);

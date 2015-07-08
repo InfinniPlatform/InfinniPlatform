@@ -32,8 +32,8 @@ namespace InfinniPlatform.Modules
 			{
 				try
 				{
-				    var fileDll = loc + "\\" + filename + ".dll";
-                    var fileExe = loc + "\\" + filename + ".exe";
+				    var fileDll = Path.Combine(loc, filename + ".dll");
+                    var fileExe = Path.Combine(loc, filename + ".exe");
 				    Assembly asm = null;
 				    AssemblyInfo asInfo;
 				    if (File.Exists(fileDll))

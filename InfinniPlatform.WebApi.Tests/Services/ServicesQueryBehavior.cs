@@ -113,8 +113,8 @@ namespace InfinniPlatform.WebApi.Tests.Services
 			var restClient = new RestClient(string.Format("{0}://{1}:{2}/DrugsVidal/Upload/REF_TEST/{3}/", TestSettings.DefaultHostingConfig.ServerScheme, TestSettings.DefaultHostingConfig.ServerName, TestSettings.DefaultHostingConfig.ServerPort, handlerName));
 
 			var restResponse = restClient.Post(new RestRequest("?linkedData={argument}") { RequestFormat = DataFormat.Json }
-				.AddUrlSegment("argument", "123")				
-				.AddFile("uploadFile", File.ReadAllBytes(@"TestData\CheckUpload.txt"), "fileUploaded", "multipart/form-data"));
+				.AddUrlSegment("argument", "123")
+				.AddFile("uploadFile", File.ReadAllBytes(@"TestData" + Path.DirectorySeparatorChar + "CheckUpload.txt"), "fileUploaded", "multipart/form-data"));
 
 			Assert.AreEqual(expectedResult, restResponse.Content.Contains("STREAM_123"));
 		}
@@ -141,7 +141,7 @@ namespace InfinniPlatform.WebApi.Tests.Services
 
 			var restResponse = restClient.Post(new RestRequest("?linkedData={argument}") { RequestFormat = DataFormat.Json }
 				.AddUrlSegment("argument", argumentsString)
-				.AddFile("uploadFile", File.ReadAllBytes(@"TestData\CheckUpload.txt"), "fileUploaded", "multipart/form-data"));
+				.AddFile("uploadFile", File.ReadAllBytes(@"TestData" + Path.DirectorySeparatorChar + "CheckUpload.txt"), "fileUploaded", "multipart/form-data"));
 
 			Assert.AreEqual(expectedResult, restResponse.Content.Contains("\"STREAM_[\\r\\n  {\\r\\n    \\\"Test1\\\": \\\"value1\\\",\\r\\n    \\\"Test2\\\": \\\"value2\\\"\\r\\n  },\\r\\n  {\\r\\n    \\\"Test1\\\": \\\"value1\\\",\\r\\n    \\\"Test2\\\": \\\"value2\\\"\\r\\n  }\\r\\n]\""));
 		}

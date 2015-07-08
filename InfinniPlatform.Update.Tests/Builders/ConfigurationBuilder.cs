@@ -91,7 +91,7 @@ namespace InfinniPlatform.Update.Tests.Builders
 		{
 			var result = new List<dynamic>();
 			var jsonEnumerable = new GZipDataCompressor().ReadAsJsonEnumerable(Path.Combine(Directory.GetCurrentDirectory(),
-																			  @"TestData\TestArchive.zip"));
+																			  @"TestData" + Path.DirectorySeparatorChar + "TestArchive.zip"));
 
 			foreach (var json in jsonEnumerable)
 			{
@@ -130,7 +130,7 @@ namespace InfinniPlatform.Update.Tests.Builders
 			provider.Refresh();
 
 
-			var assemblyData = File.ReadAllBytes(Path.Combine(Directory.GetCurrentDirectory(), @"TestData\TestAssemblies", ConfigurationModule));
+			var assemblyData = File.ReadAllBytes(Path.Combine(Directory.GetCurrentDirectory(), "TestData", "TestAssemblies", ConfigurationModule));
 			var cassandraFactory = new CassandraDatabaseFactory();
 			var blobStorageFactory = new CassandraBlobStorageFactory(cassandraFactory);
 			var blobStorage = blobStorageFactory.CreateBlobStorage();

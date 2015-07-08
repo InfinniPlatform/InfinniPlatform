@@ -212,7 +212,7 @@ namespace InfinniPlatform.RestfulApi.Tests
 		{
             
 
-			var queryText = File.ReadAllText(@"TestData\Query\Query.txt");
+			var queryText = File.ReadAllText(Path.Combine("TestData", "Query", "Query.txt"));
 
 			dynamic bodyQuery = new DynamicWrapper();
 			bodyQuery.QueryText = queryText;
