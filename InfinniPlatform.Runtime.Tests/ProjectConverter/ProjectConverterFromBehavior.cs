@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using System.Reflection;
 using InfinniPlatform.Runtime.Implementation.ProjectConverter;
 using NUnit.Framework;
@@ -39,10 +40,10 @@ namespace InfinniPlatform.Runtime.Tests.ProjectConverter
         {
             var module = _project.Modules.ToList();
 
-            Assert.NotNull(module.Find(m => m.Include == @"ActionUnits\ActionUnitDeleteDocument.cs"));
-            Assert.NotNull(module.Find(m => (m.Include == @"..\Files\VersionInfo.cs" &&
-                                             m.Link == @"Properties\VersionInfo.cs")));
-            Assert.NotNull(module.Find(m => (m.Include == @"Properties\Resources.Designer.cs" &&
+			Assert.NotNull(module.Find(m => m.Include == Path.Combine("ActionUnits", "ActionUnitDeleteDocument.cs")));
+			Assert.NotNull(module.Find(m => (m.Include == Path.Combine("..", "Files", "VersionInfo.cs") &&
+                                             m.Link == Path.Combine("Properties", "VersionInfo.cs"))));
+            Assert.NotNull(module.Find(m => (m.Include == Path.Combine("Properties", "Resources.Designer.cs") &&
                                                       m.AutoGen == "True" &&
                                                       m.DesignTime == "True" &&
                                                       m.DependentUpon == "Resources.resx")));

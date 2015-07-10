@@ -16,7 +16,10 @@ namespace InfinniPlatform.Conventions
 		private const string SolutionName = "InfinniPlatform";
 
 		private static readonly string SolutionDir
-			= Path.GetFullPath(@"..\");
+			= Path.GetFullPath(".." + Path.DirectorySeparatorChar);
+
+		private static readonly string PackagesDir
+			= ".." + Path.DirectorySeparatorChar + "packages" + Path.DirectorySeparatorChar;
 
 		private static readonly string[] SolutionProjects
 			= Directory.GetDirectories(SolutionDir, string.Format("{0}.*", SolutionName))
@@ -85,7 +88,7 @@ namespace InfinniPlatform.Conventions
 		public void ProjectShouldHaveCommonOutputPath(string project)
 		{
 			// Given
-			const string outputPath = @"..\Assemblies\";
+			var outputPath = ".." + Path.DirectorySeparatorChar + "Assemblies" + Path.DirectorySeparatorChar;
 
 			// When
 			var result = LoadProject(project)
@@ -111,7 +114,7 @@ namespace InfinniPlatform.Conventions
 				.All(i => i == null
 						  || string.IsNullOrWhiteSpace(i.Value)
 						  || i.Value.StartsWith(@"C:\Program Files")
-						  || i.Value.StartsWith(@"..\packages\"));
+						  || i.Value.StartsWith(PackagesDir));
 
 			// Then
 			Assert.IsTrue(result, @"Проект ""{0}"" может ссылаться только на ""C:\Program Files"" или ""..\packages\""", project);
@@ -129,8 +132,8 @@ namespace InfinniPlatform.Conventions
 				.Select(i => i.Attribute("Include"))
 				.All(i => i != null
 						  && string.IsNullOrWhiteSpace(i.Value) == false
-						  && i.Value.StartsWith(@"..\")
-						  && Path.GetFullPath(i.Value.Insert(3, SolutionName + @"\"))
+						  && i.Value.StartsWith(".." + Path.DirectorySeparatorChar)
+						  && Path.GetFullPath(i.Value.Insert(3, SolutionName + Path.DirectorySeparatorChar))
 								 .StartsWith(SolutionDir));
 
 			// Then
@@ -150,13 +153,13 @@ namespace InfinniPlatform.Conventions
 				.Elements(ProjectNamespace + "HintPath")
 				.Where(i => i != null
 							&& string.IsNullOrWhiteSpace(i.Value) == false
-							&& i.Value.StartsWith(@"..\packages\"))
+							&& i.Value.StartsWith(PackagesDir))
 				.Select(i => i.Value)
 				.ToArray();
 
 			var packageConfig = LoadPackageConfig(project)
 				.Elements("package")
-				.Select(i => string.Format(@"..\packages\{0}.{1}\", i.Attribute("id").Value, i.Attribute("version").Value))
+				.Select(i => string.Format(PackagesDir + "{0}.{1}" + Path.DirectorySeparatorChar, i.Attribute("id").Value, i.Attribute("version").Value))
 				.ToArray();
 
 			// When
@@ -180,14 +183,14 @@ namespace InfinniPlatform.Conventions
 				.Elements(ProjectNamespace + "HintPath")
 				.Where(i => i != null
 							&& string.IsNullOrWhiteSpace(i.Value) == false
-							&& i.Value.StartsWith(@"..\packages\"))
+							&& i.Value.StartsWith(PackagesDir))
 				.Select(i => i.Value)
 				.ToArray();
 
 			var packageConfig = LoadPackageConfig(project)
 				.Elements("package")
 				.Where(i => i.Attribute("id").Value.Contains("OwinSelfHost") == false)
-				.Select(i => string.Format(@"..\packages\{0}.{1}\", i.Attribute("id").Value, i.Attribute("version").Value))
+				.Select(i => string.Format(PackagesDir + "{0}.{1}" + Path.DirectorySeparatorChar, i.Attribute("id").Value, i.Attribute("version").Value))
 				.ToArray();
 
 			// When
@@ -276,7 +279,8 @@ namespace InfinniPlatform.Conventions
 		{
 			// Given
 			var result = new List<string>();
-			var codeFiles = Directory.GetFiles(SolutionDir, "*.cs", SearchOption.AllDirectories).Where(f => !f.Contains(@"\obj\"));
+			var objPath = Path.DirectorySeparatorChar + "obj" + Path.DirectorySeparatorChar;
+			var codeFiles = Directory.GetFiles(SolutionDir, "*.cs", SearchOption.AllDirectories).Where(f => !f.Contains(objPath));
 
 			// When
 
@@ -305,7 +309,7 @@ namespace InfinniPlatform.Conventions
 		public void TestProjectShouldReferenceOnCommonAppConfig(string project)
 		{
 			// Given
-			const string appConfig = @"..\Files\Tests\App.config";
+			var appConfig = Path.Combine("..", "Files", "Tests", "App.config");
 
 			// When
 			var result = LoadProject(project)
@@ -326,9 +330,9 @@ namespace InfinniPlatform.Conventions
 		{
 			if (project.EndsWith("InfinniPlatform.UserInterface")
 				|| project.EndsWith("InfinniPlatform.QueryDesigner")
-                || project.EndsWith("InfinniPlatform.RestfulApi")
-                || project.EndsWith("InfinniPlatform.SystemConfig")
-                || project.EndsWith("InfinniPlatform.Update")
+				|| project.EndsWith("InfinniPlatform.RestfulApi")
+				|| project.EndsWith("InfinniPlatform.SystemConfig")
+				|| project.EndsWith("InfinniPlatform.Update")
 				|| project.EndsWith("InfinniPlatform.ReportDesigner")
 				|| project.EndsWith("InfinniPlatform.PrintViewDesigner")
 				|| project.EndsWith("InfinniPlatform.Utils")
@@ -338,7 +342,7 @@ namespace InfinniPlatform.Conventions
 			}
 
 			// Given
-			const string appConfig = @"..\Files\Platform\App.config";
+			var appConfig = Path.Combine("..", "Files", "Platform", "App.config");
 
 			// When
 			var result = LoadProject(project)

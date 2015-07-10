@@ -9,6 +9,7 @@ using NUnit.Framework;
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace InfinniPlatform.Api.Tests.Packages
@@ -38,17 +39,20 @@ namespace InfinniPlatform.Api.Tests.Packages
 		[Test]
 		public void ShouldExportAndImportConfiguration()
 		{
+			var testZip = Path.Combine("TestData", "TestZip.zip");
+			var testUnzip = Path.Combine("TestData", "UnzipTest");
+
             DeleteTestConfiguration();
 
 			CreateTestConfiguration();
 
-			var exporter = new ConfigExporter(new ZipStructure(@"TestData\TestZip.zip"));
+			var exporter = new ConfigExporter(new ZipStructure(testZip));
 
 			exporter.ExportHeaderToStructure(_configurationId);
 
 			DeleteTestConfiguration();
 
-			exporter = new ConfigExporter(new ZipStructure(@"TestData\TestZip.zip", @"TestData\UnzipTest"));
+			exporter = new ConfigExporter(new ZipStructure(testZip, testUnzip));
 
 			dynamic config = exporter.ImportHeaderFromStructure("testversionimport");
 
@@ -100,15 +104,17 @@ namespace InfinniPlatform.Api.Tests.Packages
 		[Test]
 		public void ShouldExportAndImportConfigurationToDirectory()
 		{
+			var pathExport = Path.Combine("TestData", "TestExportToDirectory");
+
             DeleteTestConfiguration();
 
 			CreateTestConfiguration();
 
-			var exporter = new ConfigExporter(new DirectoryStructure(@"TestData\TestExportToDirectory"));
+			var exporter = new ConfigExporter(new DirectoryStructure(pathExport));
 
 			exporter.ExportHeaderToStructure(_configurationId);
 
-			exporter = new ConfigExporter(new DirectoryStructure(@"TestData\TestExportToDirectory"));
+			exporter = new ConfigExporter(new DirectoryStructure(pathExport));
 
 			exporter.ImportHeaderFromStructure("testversionimport");
 

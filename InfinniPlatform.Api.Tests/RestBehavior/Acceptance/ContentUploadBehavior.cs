@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,8 +56,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
 			Assert.AreNotEqual(result.IsValid,false);
 
-			dynamic uploadResult = new UploadApi().UploadBinaryContent(_configurationId, _documentId, testDocument.Id, "ContentField",
-			                                    @"TestData\Configurations\Authorization.zip");
+			var path = Path.Combine("TestData", "Configurations", "Authorization.zip");
+			dynamic uploadResult = new UploadApi().UploadBinaryContent(_configurationId, _documentId, testDocument.Id, "ContentField", path);
 
 			Assert.AreNotEqual(uploadResult.IsValid,false);
 

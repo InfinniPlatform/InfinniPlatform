@@ -7,10 +7,10 @@ using NUnit.Framework;
 
 namespace InfinniPlatform.SystemConfig.Tests.Utils
 {
-    [TestFixture]
+	[TestFixture]
 	[Category(TestCategories.IntegrationTest)]
-    public sealed class JsonFileConfigBehavior
-    {
+	public sealed class JsonFileConfigBehavior
+	{
 		private IDisposable _server;
 
 		[TestFixtureSetUp]
@@ -19,28 +19,29 @@ namespace InfinniPlatform.SystemConfig.Tests.Utils
 			_server = TestApi.StartServer(c => c.SetHostingConfig(TestSettings.DefaultHostingConfig));
 		}
 
-        [TestFixtureTearDown]
-        public void TearDownFixture()
-        {
-            _server.Dispose();
-        }
+		[TestFixtureTearDown]
+		public void TearDownFixture()
+		{
+			_server.Dispose();
+		}
 
-        [Test]
-        public void ShouldConstructJsonConfiguration()
-        {
-            var jsonFileConfigManager = new JsonFileConfigManager(Path.GetFullPath(@"TestData\Configurations"));
+		[Test]
+		public void ShouldConstructJsonConfiguration()
+		{
+			var configPath = Path.Combine("TestData", "Configurations");
+			var jsonFileConfigManager = new JsonFileConfigManager(Path.GetFullPath(configPath));
 
-            jsonFileConfigManager.ReadConfigurations();
+			jsonFileConfigManager.ReadConfigurations();
 
-            var configList = jsonFileConfigManager.GetConfigurationList();
+			var configList = jsonFileConfigManager.GetConfigurationList();
 
-            
-            Assert.True(configList.Select(c => c.ToLowerInvariant()).Contains("classifierstorage"));
-            Assert.True(configList.Select(c => c.ToLowerInvariant()).Contains("classifierloader"));
-            dynamic config = jsonFileConfigManager.GetJsonFileConfig("classifierstorage");
-            Assert.IsNotNull(config);
-            Assert.True(config.Documents.Count > 0);
 
-        }
-    }
+			Assert.True(configList.Select(c => c.ToLowerInvariant()).Contains("classifierstorage"));
+			Assert.True(configList.Select(c => c.ToLowerInvariant()).Contains("classifierloader"));
+			dynamic config = jsonFileConfigManager.GetJsonFileConfig("classifierstorage");
+			Assert.IsNotNull(config);
+			Assert.True(config.Documents.Count > 0);
+
+		}
+	}
 }
