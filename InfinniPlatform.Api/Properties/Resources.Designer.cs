@@ -439,6 +439,15 @@ namespace InfinniPlatform.Api.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Does not allowed to set relevant version to user {0}..
+        /// </summary>
+        public static string DoesNotAllowedToSetVersion {
+            get {
+                return ResourceManager.GetString("DoesNotAllowedToSetVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Access to configuration object by identifier denied.
         /// </summary>
         public static string ErrorAccessDeniedByIdentifier {

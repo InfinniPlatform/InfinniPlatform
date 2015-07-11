@@ -78,15 +78,22 @@ namespace InfinniPlatform.Api.Versioning
             {
                 var userVersion = new Version(userConfigVersion.Version);
                 var actualMinorVersion =
-                    actualConfigVersions.Where(
-                        v => v.Major == userVersion.Major && v.MajorRevision == userVersion.MajorRevision)
+                    actualConfigVersions
+                       .Where(
+                        v => v.Major == userVersion.Major && v.MajorRevision == userVersion.MajorRevision )
+                                       .OrderByDescending(v => v).FirstOrDefault() ??
+                    actualConfigVersions
+                       .Where(
+                        v => v.Major == userVersion.Major && v.MajorRevision == -1)
                                        .OrderByDescending(v => v).FirstOrDefault();
-                
+
+
                 if (actualMinorVersion != null)
                 {
                     //если сохраненная минорная версия не является актуальной, обновляем минорную версию
                     if (userVersion.Minor < actualMinorVersion.Minor ||
-                        userVersion.MinorRevision < actualMinorVersion.MinorRevision)
+                        userVersion.MinorRevision < actualMinorVersion.MinorRevision || userVersion.Minor == -1 || userVersion.MinorRevision == -1 ||
+                        actualMinorVersion.Minor == -1 || actualMinorVersion.MinorRevision == -1)
                     {
                         userConfigVersion.Version = actualMinorVersion.ToString();
                         versionProvider.SetDocument(userConfigVersion);
@@ -167,7 +174,28 @@ namespace InfinniPlatform.Api.Versioning
             }
             return result;
 
-        }  
+        }
 
+        public void SetRelevantVersion(string version, string configurationId, string userName)
+        {
+            dynamic userConfigVersion = ConfigVersions.Cast<dynamic>().FirstOrDefault(v => v.ConfigurationId.ToLowerInvariant() == configurationId.ToLowerInvariant() &&
+                                  v.UserName == userName);
+
+            var versionProvider = _indexFactory.BuildVersionProvider(AuthorizationStorageExtensions.AuthorizationConfigId,
+                                       AuthorizationStorageExtensions.VersionStore, "system", null);
+
+            if (userConfigVersion == null)
+            {
+                userConfigVersion = new
+                    {
+                        ConfigurationId = configurationId,
+                        UserName = userName,                        
+                    };
+            }
+
+            userConfigVersion.Version = version;
+
+            versionProvider.SetDocument(userConfigVersion);
+        }
     }
 }

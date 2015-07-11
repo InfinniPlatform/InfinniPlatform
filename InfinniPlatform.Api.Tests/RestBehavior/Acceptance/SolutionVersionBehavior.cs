@@ -127,7 +127,10 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             //When
             CreateAndUpdateTestSolutionThreeTimes(Version, new[] {"1.0.1", "2.0.2", "3.0.4"},
-                                                  () => api.SetDocument(TestConfig1, TestConfig1DocumentId, testDoc),
+                                                  () =>
+                                                      {
+                                                          api.SetDocument(TestConfig1, TestConfig1DocumentId, testDoc);
+                                                      },
                                                   () => api.SetDocument(TestConfig1, TestConfig1DocumentId, testDoc),
                                                   () => api.SetDocument(TestConfig1, TestConfig1DocumentId, testDoc),
                                                   () =>
@@ -165,6 +168,32 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                                                           Assert.AreEqual(irrelevantVersions.First().ConfigurationId, TestConfig1);
                                                           Assert.AreEqual(irrelevantVersions.First().Version, "1.0.1");
                                                           Assert.AreEqual(irrelevantVersions.First().ActualVersion, "3.0.0.0");
+
+                                                          RestQueryApi.QueryPostJsonRaw("systemconfig", "metadata",
+                                                                                        "setrelevantversion", null, new
+                                                                                            {
+                                                                                                ConfigurationId =
+                                                                                                                        TestConfig1,
+                                                                                                Version = "3.0.0.0",
+                                                                                                UserName = "Admin"
+                                                                                            });
+
+                                                          irrelevantVersions = RestQueryApi.QueryPostJsonRaw("systemconfig", "metadata",
+                                                                                          "getirrelevantversions",
+                                                                                          null, null).ToDynamicList();
+
+                                                          Assert.AreEqual(0, irrelevantVersions.Count());
+
+                                                          //сохраняем еще один документ 
+                                                          api.SetDocument(TestConfig1, TestConfig1DocumentId, testDoc);
+
+                                                          //убеждаемся, что была использована конфигурация версии 3.0.0.0
+                                                          checkDoc3 = api.GetDocument(TestConfig1, TestConfig1DocumentId,
+                                                              f =>
+                                                              f.AddCriteria(cr => cr.Property("Name").IsEquals("Name_TestAction_v2")),
+                                                              0, 1).FirstOrDefault();
+
+                                                          Assert.IsNotNull(checkDoc3);
                                                       });            
         }
 
@@ -357,6 +386,16 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                 }
             }
 
+            new SignInApi().SignInInternal("Admin", "Admin", false);
+            var docApi = new DocumentApi();
+            var items = docApi.GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
+                                                      AuthorizationStorageExtensions.VersionStore, null, 0, 1000);
+            foreach (var item in items)
+            {
+                docApi.DeleteDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
+                                      AuthorizationStorageExtensions.VersionStore, item.Id);
+            }
+            new SignInApi().SignOutInternal();
         }
 
         private void CreateTestSolutionForSomeVersionsOfOneConfig(string version, string[] referencedConfigVersions)

@@ -33,6 +33,7 @@ namespace InfinniPlatform.SystemConfig.Installers
             //-------------------
 
             actionUnits.RegisterActionUnitDistributedStorage("getirrelevantversions","ActionUnitGetIrrelevantVersions");
+            actionUnits.RegisterActionUnitDistributedStorage("setrelevantversion","ActionUnitSetRelevantVersion");
 
             //help configuration
             actionUnits.RegisterActionUnitDistributedStorage("helpconfiguration", "ActionUnitHelpConfiguration");
@@ -310,6 +311,8 @@ namespace InfinniPlatform.SystemConfig.Installers
             //-----------------------------------------------
             metadataConfiguration.RegisterWorkflow("metadata", "getirrelevantversions",
                                        f => f.FlowWithoutState(wc => wc.Move(ws => ws.WithAction(() => actionUnits.GetAction("getirrelevantversions")))));
+            metadataConfiguration.RegisterWorkflow("metadata", "setrelevantversion",
+                           f => f.FlowWithoutState(wc => wc.Move(ws => ws.WithAction(() => actionUnits.GetAction("setrelevantversion")))));
 
             metadataConfiguration.RegisterWorkflow("update", "updateconfigfromjson",
                                                    f => f.FlowWithoutState(wc => wc
@@ -678,6 +681,9 @@ namespace InfinniPlatform.SystemConfig.Installers
 
             servicesConfiguration.AddRegistration("metadata", "ApplyJson", reg => reg.RegisterHandlerInstance("getirrelevantversions",
                 instance => instance.RegisterExtensionPoint("Move", "getirrelevantversions")).SetResultHandler(HttpResultHandlerType.BadRequest));
+            
+            servicesConfiguration.AddRegistration("metadata", "ApplyJson", reg => reg.RegisterHandlerInstance("setrelevantversion",
+                instance => instance.RegisterExtensionPoint("Move", "setrelevantversion")).SetResultHandler(HttpResultHandlerType.BadRequest));
 
             servicesConfiguration.AddRegistration("reporting", "UrlEncodedData",
                                                   reg => reg.RegisterHandlerInstance("GetReport", instance => instance
