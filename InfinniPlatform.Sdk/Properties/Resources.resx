@@ -246,4 +246,13 @@
   <data name="CollectionCanNotBeModified" xml:space="preserve">
     <value>Collection can not be modified</value>
   </data>
+  <data name="FailToGetIrrelevantVersions" xml:space="preserve">
+    <value>Fail to get user irrelevant versions with exception: {0}</value>
+  </data>
+  <data name="FailToGetApplicationActualVersions" xml:space="preserve">
+    <value>Fail to get user applications actual versions with exception "{0}"</value>
+  </data>
+  <data name="FailToSetUserRelevantVersions" xml:space="preserve">
+    <value>Fail to set user application relevant versions with exception "{0}"</value>
+  </data>
 </root>

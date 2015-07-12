@@ -49,5 +49,7 @@ namespace InfinniPlatform.WebApi.Middleware
         {
             return new PathString(GetSpecifiedUserPath() + "/Claims/_claimType_");
         }
+
+
     }
 }

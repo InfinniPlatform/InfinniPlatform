@@ -190,7 +190,9 @@ namespace InfinniPlatform.Api.Versioning
                     {
                         ConfigurationId = configurationId,
                         UserName = userName,                        
-                    };
+                    }.ToDynamic();
+
+                _configVersions.Add(userConfigVersion);
             }
 
             userConfigVersion.Version = version;

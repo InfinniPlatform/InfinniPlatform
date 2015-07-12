@@ -278,6 +278,19 @@ namespace InfinniPlatform.Sdk
         }
 
         /// <summary>
+        ///   Сформировать роутинг для работы с версиями конфигураций
+        /// </summary>
+        /// <returns>Роутинг запроса</returns>
+        public string BuildRestRoutingUrlVersion(string userName)
+        {
+            return GetCompleteUrl(GetRestTemplateStandardSpecifiedUserName()
+                .ReplaceFormat("application", "Administration")
+                .ReplaceFormat("documentType", "Version")
+                .ReplaceFormat("userName", userName)
+                );
+        }
+
+        /// <summary>
         ///   Шаблон базового роутинга для обращения к конкретному приложению
         /// </summary>
         /// <returns>Базовая часть шаблона строки роутинга</returns>

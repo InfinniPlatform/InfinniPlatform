@@ -1,0 +1,56 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using InfinniPlatform.Sdk.Api;
+using NUnit.Framework;
+
+namespace InfinniPlatform.Sdk.Tests
+{
+    //[Ignore("Тесты SDK не выполняют запуск сервера InfinniPlatform. Необходимо существование уже запущенного сервера на localhost : 9900")]
+    [TestFixture]
+    public sealed class VersionApiTest
+    {
+        private const string InfinniSessionPort = "9900";
+        private const string InfinniSessionServer = "localhost";
+
+        private InfinniVersionApi _versionApi;
+        private InfinniSignInApi _signInApi;
+
+        [TestFixtureSetUp]
+        public void SetupApi()
+        {
+            _versionApi = new InfinniVersionApi(InfinniSessionServer, InfinniSessionPort);
+            _signInApi = new InfinniSignInApi(InfinniSessionServer, InfinniSessionPort);
+        }
+
+        [Test]
+        public void ShouldGetIrrelevantVersions()
+        {
+            _signInApi.SignInInternal("Admin", "Admin", false);
+
+            dynamic result = _versionApi.GetIrrelevantVersions("Admin");
+
+            Assert.AreEqual(result.Count, 0);
+        }
+
+        [Test]
+        public void ShouldSetRelevantVersions()
+        {
+            _signInApi.SignInInternal("Admin", "Admin", false);
+
+            var version =
+                new
+                    {
+                        ConfigurationId = "TestConfig",
+                        Version = "4.1"
+                    };
+                
+
+            dynamic result = _versionApi.SetRelevantVersion("Admin",version);
+
+            Assert.AreEqual(true,result.IsValid);
+        }
+    }
+}

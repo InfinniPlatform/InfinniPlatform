@@ -465,4 +465,7 @@
   <data name="DoesNotAllowedToSetVersion" xml:space="preserve">
     <value>Does not allowed to set relevant version to user {0}.</value>
   </data>
+  <data name="FailToGetIrrelevantVersions" xml:space="preserve">
+    <value>Fail to get irrelevant versions for user: "{0}"</value>
+  </data>
 </root>

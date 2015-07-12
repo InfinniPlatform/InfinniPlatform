@@ -547,6 +547,15 @@ namespace InfinniPlatform.Api.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fail to get irrelevant versions for user: &quot;{0}&quot;.
+        /// </summary>
+        public static string FailToGetIrrelevantVersions {
+            get {
+                return ResourceManager.GetString("FailToGetIrrelevantVersions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fail to remove.
         /// </summary>
         public static string FailToRemoveParent {

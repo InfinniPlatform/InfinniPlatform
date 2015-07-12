@@ -51,6 +51,7 @@
     <Compile Include="Api\InfinniAuthApi.cs" />
     <Compile Include="Api\InfinniCustomServiceApi.cs" />
     <Compile Include="Api\InfinniSignInApi.cs" />
+    <Compile Include="Api\InfinniVersionApi.cs" />
     <Compile Include="AttachedInstance.cs" />
     <Compile Include="Environment\Actions\IActionOperator.cs" />
     <Compile Include="Environment\Actions\IActionOperatorBuilder.cs" />
@@ -181,6 +182,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

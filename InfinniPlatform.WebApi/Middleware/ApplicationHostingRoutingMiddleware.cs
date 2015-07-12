@@ -3,6 +3,7 @@ using InfinniPlatform.WebApi.Middleware.RoleAuthHandlers;
 using InfinniPlatform.WebApi.Middleware.SessionHandlers;
 using InfinniPlatform.WebApi.Middleware.StandardHandlers;
 using InfinniPlatform.WebApi.Middleware.UserAuthHandlers;
+using InfinniPlatform.WebApi.Middleware.VersionHandlers;
 using Microsoft.Owin;
 
 namespace InfinniPlatform.WebApi.Middleware
@@ -47,6 +48,8 @@ namespace InfinniPlatform.WebApi.Middleware
             RegisterHandler(new GetUserClaimHandlerRegistration());
             RegisterHandler(new GetUserHandlerRegistration());
             RegisterHandler(new RemoveUserClaimHandlerRegistration());
+            RegisterHandler(new GetIrrelevantVersionHandlerRegistration());
+            RegisterHandler(new SetRelevantVersionHandlerRegistration());
         }
     }
 }

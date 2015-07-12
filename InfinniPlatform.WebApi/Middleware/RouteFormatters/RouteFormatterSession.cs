@@ -18,14 +18,12 @@ namespace InfinniPlatform.WebApi.Middleware.RouteFormatters
 
             int versionNumber = -1;
 
-            var versionApp = routeValues.Any() ? int.TryParse(routeValues[0], out versionNumber) ? routeValues[0] : Resources.UnsatisfiedVersionNumber : Resources.UnknownRouteSection;
-            var sessionId = routeValues.Count() > 1 ? routeValues[1] : Resources.UnknownRouteSection;
-            var attachmentId = routeValues.Count() > 2 ? routeValues[2] : Resources.UnknownRouteSection;
+            var sessionId = routeValues.Count() > 0 ? routeValues[0] : Resources.UnknownRouteSection;
+            var attachmentId = routeValues.Count() > 1 ? routeValues[1] : Resources.UnknownRouteSection;
 
             return new Dictionary<string, string>()
             {
-                {"version",versionApp },
-                {"sessionId",sessionId},
+               {"sessionId",sessionId},
                 {"attachmentId",attachmentId}
             };
         }
@@ -36,7 +34,6 @@ namespace InfinniPlatform.WebApi.Middleware.RouteFormatters
 
             return new PathString(path.HasValue
                 ? path.Value
-                    .ReplaceFormat("_version_", routeDictionary["version"])
                     .ReplaceFormat("_sessionId_", routeDictionary["sessionId"])
                     .ReplaceFormat("_attachmentId_", routeDictionary["attachmentId"])
                     : string.Empty);

@@ -131,6 +131,8 @@
     <Compile Include="Middleware\UserAuthHandlers\GetUserClaimHandlerRegistration.cs" />
     <Compile Include="Middleware\UserAuthHandlers\GetUserHandlerRegistration.cs" />
     <Compile Include="Middleware\UserAuthHandlers\RemoveUserClaimHandlerRegistration.cs" />
+    <Compile Include="Middleware\VersionHandlers\SetRelevantVersionHandlerRegistration.cs" />
+    <Compile Include="Middleware\VersionHandlers\GetIrrelevantVersionHandlerRegistration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
