@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.RestApi.AuthApi;
@@ -34,7 +35,7 @@ namespace InfinniPlatform.RestfulApi.Auth
             storage.AddUserClaim(user, target.Item.ClaimType,target.Item.ClaimValue);
 
             //обновляем пользователей системы
-            target.Context.GetComponent<SecurityComponent>().UpdateUsers();
+			target.Context.GetComponent<ISecurityComponent>().UpdateUsers();
             target.Result = new DynamicWrapper();
             target.Result.ValidationMessage = "Claim added successfully";
             target.Result.IsValid = true;

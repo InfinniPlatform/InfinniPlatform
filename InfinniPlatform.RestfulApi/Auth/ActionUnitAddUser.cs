@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.RestApi.AuthApi;
@@ -33,7 +34,7 @@ namespace InfinniPlatform.RestfulApi.Auth
 										   PasswordHash = new CustomApplicationUserPasswordHasher(target.Context).HashPassword(userParams.Password)
 					                   });
 				//добавляем доступ на чтение пользователей
-				target.Context.GetComponent<SecurityComponent>().UpdateAcl();
+				target.Context.GetComponent<ISecurityComponent>().UpdateAcl();
 				target.Result = new DynamicWrapper();
 				target.Result.ValidationMessage = "User created successfully";
 				target.Result.IsValid = true;

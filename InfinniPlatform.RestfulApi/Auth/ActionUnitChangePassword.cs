@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Security;
@@ -49,7 +50,7 @@ namespace InfinniPlatform.RestfulApi.Auth
 				user.PasswordHash = new CustomApplicationUserPasswordHasher(target.Context).HashPassword(target.Item.NewPassword);
 				storage.UpdateUser(user);
 				//добавляем доступ на чтение пользователей
-				target.Context.GetComponent<SecurityComponent>().UpdateAcl();
+				target.Context.GetComponent<ISecurityComponent>().UpdateAcl();
 				target.Result = new DynamicWrapper();
 			}
 			else

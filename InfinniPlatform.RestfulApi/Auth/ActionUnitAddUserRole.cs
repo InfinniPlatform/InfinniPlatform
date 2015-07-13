@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.SystemConfig.UserStorage;
@@ -31,8 +32,8 @@ namespace InfinniPlatform.RestfulApi.Auth
             }
 
 			storage.AddUserToRole(user, userRoleParams.RoleName);
-			target.Context.GetComponent<SecurityComponent>().UpdateRoles();
-			target.Context.GetComponent<SecurityComponent>().UpdateAcl();
+			target.Context.GetComponent<ISecurityComponent>().UpdateRoles();
+			target.Context.GetComponent<ISecurityComponent>().UpdateAcl();
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Properties;
@@ -50,7 +51,7 @@ namespace InfinniPlatform.RestfulApi.Auth
 			new DocumentApi().SetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
 			                              AuthorizationStorageExtensions.AclStore, instance);
 
-			target.Context.GetComponent<SecurityComponent>().UpdateAcl();
+			target.Context.GetComponent<ISecurityComponent>().UpdateAcl();
 		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using InfinniPlatform.Api.ContextTypes;
+﻿using InfinniPlatform.Api.ContextComponents;
+using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.ContextComponents;
 
 namespace InfinniPlatform.SystemConfig.Configurator
@@ -13,7 +14,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
 		    if (target.Item.IsElementDeleted != null &&
 		        target.Item.IsElementDeleted == true)
 		    {
-				target.Context.GetComponent<MetadataComponent>().DeleteMetadata(
+				target.Context.GetComponent<IMetadataComponent>().DeleteMetadata(
 		            target.Item.ConfigId,
 		            target.Item.DocumentId,
 		            target.Item.MetadataType,
@@ -21,7 +22,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
 		    }
 		    else
 		    {
-				target.Context.GetComponent<MetadataComponent>().UpdateMetadata(
+				target.Context.GetComponent<IMetadataComponent>().UpdateMetadata(
 		            target.Item.ConfigId,
 		            target.Item.DocumentId,
 		            target.Item.MetadataType,

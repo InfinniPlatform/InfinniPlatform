@@ -31,7 +31,7 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
 				throw new ArgumentException(response.Content);
 			}
 			dynamic result = response.Content.ToDynamic();
-			return result.IndexExists;
+			return result.IndexExists == true;
 		}
 
         public static dynamic GetFromIndex(string id, string configuration, string metadata)

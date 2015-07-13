@@ -165,7 +165,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
 
             //получаем менеджер для управления распределенной транзакцией
 	        var transaction =
-	            _globalContext.GetComponent<TransactionComponent>()
+	            _globalContext.GetComponent<ITransactionComponent>()
 	                .GetTransactionManager()
 	                .GetTransaction(targetMove.TransactionMarker);
 	        
@@ -176,7 +176,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
 				item.Version = appliedConfig.GetConfigurationVersion();
             }
 
-			profiler = target.Context.GetComponent<ProfilerComponent>().GetOperationProfiler("MovePoint",
+			profiler = target.Context.GetComponent<IProfilerComponent>().GetOperationProfiler("MovePoint",
 			   string.Format("Config: {0}, Metadata {1}, ActionPoint {2}", target.Configuration, target.Metadata, appliedConfig.MetadataConfiguration.GetExtensionPointValue(ConfigRequestProvider, "Move")));
 			profiler.Reset();
             appliedConfig.MetadataConfiguration.MoveWorkflow(idType, appliedConfig.MetadataConfiguration.GetExtensionPointValue(ConfigRequestProvider, "Move"), targetMove, item.Status);

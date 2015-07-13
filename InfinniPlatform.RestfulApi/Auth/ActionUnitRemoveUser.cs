@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Security;
@@ -24,8 +25,8 @@ namespace InfinniPlatform.RestfulApi.Auth
 			{
 				storage.DeleteUser(user);
 				//добавляем доступ на чтение пользователей
-				target.Context.GetComponent<SecurityComponent>().UpdateAcl();
-				target.Context.GetComponent<SecurityComponent>().UpdateRoles();
+				target.Context.GetComponent<ISecurityComponent>().UpdateAcl();
+				target.Context.GetComponent<ISecurityComponent>().UpdateRoles();
 				target.Result = new DynamicWrapper();
 				target.Result.IsValid = true;
 				target.Result.ValidationMessage = "User deleted";

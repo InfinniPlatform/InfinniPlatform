@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.ContextComponents;
@@ -19,8 +20,8 @@ namespace InfinniPlatform.RestfulApi.Auth
 		{
 			var storage = new ApplicationUserStorePersistentStorage();
 			storage.RemoveRole(target.Item.RoleName);
-			target.Context.GetComponent<SecurityComponent>().UpdateAcl();
-			target.Context.GetComponent<SecurityComponent>().UpdateRoles();
+			target.Context.GetComponent<ISecurityComponent>().UpdateAcl();
+			target.Context.GetComponent<ISecurityComponent>().UpdateRoles();
 			target.Result = new DynamicWrapper();
 			target.Result.IsValid = true;
 			target.Result.ValidationMessage = "Role removed.";

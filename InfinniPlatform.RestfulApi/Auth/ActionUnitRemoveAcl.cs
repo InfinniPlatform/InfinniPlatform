@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.SystemConfig.UserStorage;
@@ -18,7 +19,7 @@ namespace InfinniPlatform.RestfulApi.Auth
 		{
 			var storage = new ApplicationUserStorePersistentStorage();
 			storage.RemoveAcl(target.Item.AclId);
-			target.Context.GetComponent<SecurityComponent>().UpdateAcl();
+			target.Context.GetComponent<ISecurityComponent>().UpdateAcl();
 		}
 	}
 }
