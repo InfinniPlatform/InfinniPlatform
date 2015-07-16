@@ -189,16 +189,15 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 				                                                                                     }).ToDynamic();
 		}
 
-        public void DeleteDocument(string configuration, string metadata, string documentId)
+        public dynamic DeleteDocument(string configuration, string metadata, string documentId)
         {
-            RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "deletedocument", null, new
+            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "deletedocument", null, new
             {
                 Configuration = configuration,
                 Metadata = metadata,
                 Id = documentId,
 				Secured = _secured
-            });
-
+            }).ToDynamic();
         }
 
         public dynamic SetDocument(string configuration, string metadata, dynamic item, bool ignoreWarnings = false, bool allowNonSchemaProperties = false)
