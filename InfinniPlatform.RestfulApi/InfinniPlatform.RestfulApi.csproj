@@ -57,6 +57,7 @@
     <Compile Include="ActionUnits\ActionUnitDeleteDocument.cs" />
     <Compile Include="ActionUnits\ActionUnitGetByQuery.cs" />
     <Compile Include="ActionUnits\ActionUnitGetConfigMetadata.cs" />
+    <Compile Include="ActionUnits\ActionUnitGetIndexStorageInfo.cs" />
     <Compile Include="ActionUnits\ActionUnitGetNumberOfDocuments.cs" />
     <Compile Include="ActionUnits\ActionUnitGetDocument.cs" />
     <Compile Include="ActionUnits\ActionUnitGetFromIndex.cs" />

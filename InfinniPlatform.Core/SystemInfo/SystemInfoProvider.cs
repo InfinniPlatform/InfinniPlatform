@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using InfinniPlatform.Api.RestApi.CommonApi;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace InfinniPlatform.SystemInfo
@@ -17,7 +18,8 @@ namespace InfinniPlatform.SystemInfo
 
 			return new
 				   {
-					   SystemVersion = GetSystemVersion()
+					   SystemVersion = GetSystemVersion(),
+                       ElasticSearch = GetElasticSearchStatus()
 				   };
 		}
 
@@ -27,5 +29,11 @@ namespace InfinniPlatform.SystemInfo
 			var versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
 			return versionInfo.FileVersion;
 		}
+
+        private static string GetElasticSearchStatus()
+        {
+            var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getindexstorageinfo", null, null);
+            return response.ToDynamic().ToString();
+        }
 	}
 }

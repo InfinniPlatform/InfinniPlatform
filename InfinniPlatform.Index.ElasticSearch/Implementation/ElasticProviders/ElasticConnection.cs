@@ -1,4 +1,5 @@
-﻿using InfinniPlatform.Api.Settings;
+﻿using Elasticsearch.Net.ConnectionPool;
+using InfinniPlatform.Api.Settings;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.Index.ElasticSearch.Properties;
 using Nest;
@@ -15,38 +16,35 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 	/// </summary>
 	public sealed class ElasticConnection
 	{
-		private readonly string _hostIp;
-		private readonly int _port;
-
 		private readonly ConnectionSettings _elasticSettings;
 
 		private readonly ElasticClient _client;
 
-		private const string UriPatternForConnection = "http://{0}:{1}";
+        private readonly Uri _firstNodeUrl;
 
 		/// <summary>
 		///   constructor base
 		/// </summary>
 		public ElasticConnection()
 		{
-			_hostIp = AppSettings.GetValue("ElasticSearchServerName", "localhost");
-			_port = AppSettings.GetValue("ElasticSearchServerPort", 9200);
+            var urls = AppSettings.GetValues<string>("ElasticSearchNodes");
 
-			_elasticSettings = new ConnectionSettings(
-				new Uri(string.Format(UriPatternForConnection, _hostIp, _port)));
+		    var nodeUrls = urls.Select(url => new Uri(url.Trim())).ToList();
+
+		    _firstNodeUrl = nodeUrls.First();
+
+		    _elasticSettings = new ConnectionSettings(new SniffingConnectionPool(nodeUrls));
             
 		    _elasticSettings.SetDefaultPropertyNameInferrer(i => i);
             _elasticSettings.SetJsonSerializerSettingsModifier(
                 m => m.ContractResolver = new ElasticContractResolver(_elasticSettings));
 
 			_client = new ElasticClient(_elasticSettings);
-			
 		}
-
-
+        
 		public void ConnectIndex()
 		{
-            if (!_client.Connection.HeadSync(new Uri(string.Format(UriPatternForConnection, _hostIp, _port))).Success)
+            if (!_client.Connection.HeadSync(_firstNodeUrl).Success)
 			{
 				throw new Exception(Resources.CantConnectElasticSearch);
 			}
@@ -97,7 +95,16 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
             var actualType = schemaTypes.GetActualTypeName(typeName);
 
-            return ElasticMappingExtension.GetIndexTypeMapping(_hostIp, _port, indexName, actualType);
+            return ElasticMappingExtension.GetIndexTypeMapping(_firstNodeUrl.Host, _firstNodeUrl.Port, indexName, actualType);
+        }
+
+        /// <summary>
+        /// Получение статуса кластера
+        /// </summary>
+        public string GetStatus()
+        {
+            var health = _client.ClusterHealth();
+            return string.Format("Cluster name: {0}. Status: {1}, Number of nodes: {2}", health.ClusterName, health.Status, health.NumberOfNodes);
         }
 
 		/// <summary>
@@ -109,7 +116,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 		private IEnumerable<IndexToTypeAccordance> GetTypeVersions(IEnumerable<string> typeNames, IEnumerable<string> searchingIndeces)
 		{
 			//собираем маппинги по всем индексам и типам
-            var mappings = ElasticMappingExtension.FillIndexMappings(_hostIp, _port, typeNames, searchingIndeces);
+            var mappings = ElasticMappingExtension.FillIndexMappings(_firstNodeUrl.Host, _firstNodeUrl.Port, typeNames, searchingIndeces);
 			typeNames = typeNames.Select(t => t.ToLowerInvariant()).ToList();
 			searchingIndeces = searchingIndeces.Select(s => s.ToLowerInvariant()).ToList();
 			return

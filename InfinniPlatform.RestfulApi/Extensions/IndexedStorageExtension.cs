@@ -59,6 +59,11 @@ namespace InfinniPlatform.RestfulApi.Extensions
             elasticProvider.Refresh();
         }
 
+        public static string GetStatus()
+        {
+            return new ElasticConnection().GetStatus();
+        }
+
         public static void IndexWithTimestamp(object item, string indexName, string typeName, DateTime timeStamp, string userClaim)
         {
             var elasticConnection = new ElasticConnection();

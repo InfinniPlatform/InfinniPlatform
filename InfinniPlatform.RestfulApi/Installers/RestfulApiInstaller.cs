@@ -22,6 +22,7 @@ namespace InfinniPlatform.RestfulApi.Installers
             actionUnits.RegisterActionUnitDistributedStorage("indexexists", "ActionUnitIndexExists");
             actionUnits.RegisterActionUnitDistributedStorage("rebuildindex", "ActionUnitRebuildIndex");
             actionUnits.RegisterActionUnitDistributedStorage("getfromindex", "ActionUnitGetFromIndex");
+            actionUnits.RegisterActionUnitDistributedStorage("getindexstorageinfo", "ActionUnitGetIndexStorageInfo");
             actionUnits.RegisterActionUnitDistributedStorage("insertindex", "ActionUnitInsertIndex");
             actionUnits.RegisterActionUnitDistributedStorage("insertindexwithtimestamp", "ActionUnitIndexWithTimeStamp");
             actionUnits.RegisterActionUnitDistributedStorage("getdocument", "ActionUnitGetDocument");
@@ -350,6 +351,10 @@ namespace InfinniPlatform.RestfulApi.Installers
                 f => f.FlowWithoutState(wc => wc
                     .Move(ws => ws
                         .WithAction(() => actionUnits.GetAction("status")))));
+            metadataConfiguration.RegisterWorkflow("configuration", "getindexstorageinfo",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("getindexstorageinfo")))));
 
         }
 
@@ -400,6 +405,7 @@ namespace InfinniPlatform.RestfulApi.Installers
 
             servicesConfiguration.AddRegistration("configuration", "ApplyJson", reg => reg
                     .RegisterHandlerInstance("status", insance => insance.RegisterExtensionPoint("GetResult", "status"))
+                    .RegisterHandlerInstance("getindexstorageinfo", insance => insance.RegisterExtensionPoint("GetResult", "getindexstorageinfo"))
                     .RegisterHandlerInstance("getdocument", insance => insance
                                                                 .RegisterExtensionPoint("Move", "getdocument"))
                     .RegisterHandlerInstance("getnumberofdocuments", insance => insance

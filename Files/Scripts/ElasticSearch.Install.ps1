@@ -1,5 +1,5 @@
 ﻿$clusterName = 'InfinniPlatform_'
-$elasticPath = 'C:\Program Files\elasticsearch'
+$elasticPath = 'C:\elasticsearch'
 
 $scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
 
@@ -14,7 +14,7 @@ try {
         
     if (-not (test-path $elasticBinPath))
     {			
-        write-host "	ElasticSearch bin path doesn't exist: $elasticBinPath. Download and extract elasticsearch from http://www.elasticsearch.org/downloads/1-1-1/"  -foregroundcolor red -background black	
+        write-host "	ElasticSearch bin path doesn't exist: $elasticBinPath. Download and extract elasticsearch from http://www.elasticsearch.org/downloads/1-5-1/"  -foregroundcolor red -background black	
         return		
     }
                 
@@ -38,15 +38,20 @@ try {
     #-----------------------------------
     #Add custom analyzers
     #------------------------------------
-    Add-Content -Path $configPath -Value "index:`r`n    analysis:`r`n        analyzer:"
+    Add-Content -Path $configPath -Value "index:`r`n    analysis:`r`n        filter:"
+	Add-Content -Path $configPath -Value "            lengthfilter:`r`n                type: length`r`n                min: 0`r`n                max: 4000"
+	Add-Content -Path $configPath -Value "        analyzer:"
     Add-Content -Path $configPath -Value "#стандартный анализатор, использующийся для поиска по умолчанию"
-    Add-Content -Path $configPath -Value "            string_lowercase:`r`n                filter: lowercase`r`n                tokenizer: keyword"
+    Add-Content -Path $configPath -Value "            string_lowercase:`r`n                filter: [ lowercase, lengthfilter]`r`n                tokenizer: keyword"
     Add-Content -Path $configPath -Value "#стандартный анализатор, использующийся для индексирования по умолчанию"
-    Add-Content -Path $configPath -Value "            keywordbasedsearch:`r`n                filter: lowercase`r`n                tokenizer: keyword"
+    Add-Content -Path $configPath -Value "            keywordbasedsearch:`r`n                filter: [ lowercase, lengthfilter]`r`n                tokenizer: keyword"
     Add-Content -Path $configPath -Value "#полнотекстовый анализатор, использующийся для индексирования"
-    Add-Content -Path $configPath -Value "            fulltextsearch:`r`n                filter: lowercase`r`n                tokenizer: standard"
+    Add-Content -Path $configPath -Value "            fulltextsearch:`r`n                filter: [ lowercase, lengthfilter]`r`n                tokenizer: standard"
     Add-Content -Path $configPath -Value "#Анализатор с разбиением на слова, использующийся для полнотекстового поиска"
-    Add-Content -Path $configPath -Value "            fulltextquery:`r`n                filter: lowercase`r`n                tokenizer: whitespace"
+    Add-Content -Path $configPath -Value "            fulltextquery:`r`n                filter: [ lowercase, lengthfilter]`r`n                tokenizer: whitespace"
+	Add-Content -Path $configPath -Value "#Анализаторы по умолчанию"
+    Add-Content -Path $configPath -Value "            default:`r`n                filter: [ lowercase, lengthfilter]`r`n                tokenizer: whitespace"
+	Add-Content -Path $configPath -Value "            default_index:`r`n                filter: [ lowercase, lengthfilter]`r`n                tokenizer: whitespace"
         
     #------------------------------------
     #Install ElasticSearch as a service
@@ -92,16 +97,6 @@ try {
         Write-Host "	ElasticSearch service response status: " $esResponse.StatusCode   -foregroundcolor gray
         Write-Host "	ElasticSearch service response full text: " $reader.ReadToEnd()   -foregroundcolor gray
         Write-Host
-
-	#------------------------------------
-    #Install ElasticSearch viewer
-    #------------------------------------		
-    Write-Host "5. Install ElasticSearch viewer" -foregroundcolor green 
-    cd $elasticBinPath 
-    
-    .\plugin.bat install mobz/elasticsearch-head
-    Write-Host "	ElasticSearch viewer installed." -foregroundcolor gray
-    
          
     #------------------------------------
     #Ending notes.
