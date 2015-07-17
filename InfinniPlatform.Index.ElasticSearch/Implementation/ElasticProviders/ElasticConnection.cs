@@ -104,7 +104,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         public string GetStatus()
         {
             var health = _client.ClusterHealth();
-            return string.Format("Cluster name: {0}. Status: {1}, Number of nodes: {2}", health.ClusterName, health.Status, health.NumberOfNodes);
+            return string.Format("cluster name - {0}, status - {1}, number of nodes: {2}, configured nodes: {3}", health.ClusterName, health.Status, health.NumberOfNodes, AppSettings.GetValue("ElasticSearchNodes"));
         }
 
 		/// <summary>

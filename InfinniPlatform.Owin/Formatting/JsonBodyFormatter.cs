@@ -28,7 +28,7 @@ namespace InfinniPlatform.Owin.Formatting
 		{
 			if (value != null)
 			{
-				var data = JsonObjectSerializer.Default.Serialize(value);
+				var data = new JsonObjectSerializer(null, true).Serialize(value);
 				response.ContentLength = data.LongLength;
 				response.ContentType = ContentType;
 				await response.WriteAsync(data);

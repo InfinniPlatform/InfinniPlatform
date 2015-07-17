@@ -134,16 +134,42 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
         public static string GetActualTypeName(this IEnumerable<IndexToTypeAccordance> accordances, string typeName)
         {
             typeName = typeName.ToLowerInvariant();
-            if (accordances == null || !accordances.Any())
+            
+            var indexToTypeAccordances = accordances as IndexToTypeAccordance[] ?? accordances.ToArray();
+
+            if (accordances == null || !indexToTypeAccordances.Any())
             {
                 return String.Empty;
             }
-            var actualIndexAccordance = accordances.Where(a => a.TypeNames.Any(t => t.Contains(typeName))).OrderByDescending(a => a.IndexName).FirstOrDefault();
+            
+            var actualIndexAccordance = indexToTypeAccordances.Where(a => a.TypeNames.Any(t => t.Contains(typeName))).OrderByDescending(a => a.IndexName).FirstOrDefault();
+            
             if (actualIndexAccordance != null)
             {
-                return actualIndexAccordance.TypeNames.OrderByDescending(s => s).FirstOrDefault();
+                return GetActualType(actualIndexAccordance.TypeNames);
             }
+            
             throw new ArgumentException(string.Format("no type \"{0}\"exists in actual index ",typeName));
+        }
+
+        private static string GetActualType(IEnumerable<string> types)
+        {
+            string resultType = null;
+
+            var maxTypeNumber = -1;
+
+            foreach (var indexType in types)
+            {
+                var indexTypeNumber = int.Parse(indexType.Split('_').Last());
+
+                if (indexTypeNumber > maxTypeNumber)
+                {
+                    resultType = indexType;
+                    maxTypeNumber = indexTypeNumber;
+                }
+            }
+
+            return resultType;
         }
 
     } 
