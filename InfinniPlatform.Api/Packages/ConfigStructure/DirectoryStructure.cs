@@ -4,7 +4,7 @@ using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Api.Packages.ConfigStructure
 {
-    public sealed class DirectoryStructure : IConfigStructure
+    public sealed class DirectoryStructure : IExportStructure
     {
         private readonly string _folderToStructure;
 
@@ -23,6 +23,17 @@ namespace InfinniPlatform.Api.Packages.ConfigStructure
 
             File.WriteAllLines(Path.Combine(_folderToStructure, ConfigurationFixtureNames.GetConfigurationFileName()),
                 configuration);
+        }
+
+        public void AddSolution(IEnumerable<string> solution)
+        {
+            if (!Directory.Exists(_folderToStructure))
+            {
+                Directory.CreateDirectory(_folderToStructure);
+            }
+
+            File.WriteAllLines(Path.Combine(_folderToStructure, ConfigurationFixtureNames.GetSolutionFileName()),
+                solution);           
         }
 
         public void AddDocument(string documentName, IEnumerable<string> document)
@@ -115,6 +126,7 @@ namespace InfinniPlatform.Api.Packages.ConfigStructure
             File.WriteAllLines(Path.Combine(_folderToStructure, currentReportFileName), report);
         }
 
+
         public void AddDocumentMetadataType(string document, string metadataName, string metadataType,
             IEnumerable<string> metadata)
         {
@@ -149,6 +161,13 @@ namespace InfinniPlatform.Api.Packages.ConfigStructure
         {
             return
                 File.ReadAllText(Path.Combine(_folderToStructure, ConfigurationFixtureNames.GetConfigurationFileName()))
+                    .ToDynamic();
+        }
+
+        public dynamic GetSolution()
+        {
+            return
+                File.ReadAllText(Path.Combine(_folderToStructure, ConfigurationFixtureNames.GetSolutionFileName()))
                     .ToDynamic();
         }
 

@@ -37,6 +37,12 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
             new UpdateApi(VersionName).UpdateConfigFromJson(fileName);
 		}
 
+        public void UpdateSolutionMetadataFromZip(string fileName)
+        {
+            new UpdateApi(VersionName).UpdateSolutionFromJson(fileName);
+        }
+
+
 	    public void UpdateConfigurationMetadataFromDirectory(string pathToConfigDirectory)
 	    {
 	        new ConfigExporter(new DirectoryStructure(pathToConfigDirectory)).ImportHeaderFromStructure(VersionName);
@@ -76,5 +82,6 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
                 MessageBox.Show(string.Format("Error during assemblies update: {0}", e.Message));
             }
         }
+
 	}
 }

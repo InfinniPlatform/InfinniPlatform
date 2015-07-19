@@ -82,6 +82,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Exchange\ExchangeDirectorSolution.cs" />
     <Compile Include="Views\RegisterDesignerView.cs">
       <SubType>UserControl</SubType>
     </Compile>

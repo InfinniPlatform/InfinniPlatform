@@ -7,11 +7,11 @@ namespace InfinniPlatform.Api.Packages
 {
     public sealed class ConfigurationIterator
     {
-        private readonly IConfigStructure _configStructure;
+        private readonly IExportStructure _exportStructure;
 
-        public ConfigurationIterator(IConfigStructure configStructure)
+        public ConfigurationIterator(IExportStructure exportStructure)
         {
-            _configStructure = configStructure;
+            _exportStructure = exportStructure;
         }
 
         public Action<dynamic> OnImportConfigStructure { get; set; }
@@ -28,11 +28,11 @@ namespace InfinniPlatform.Api.Packages
         /// <returns>Объект конфигурации</returns>
         public dynamic ImportToConfigurationObject()
         {
-            _configStructure.Start();
+            _exportStructure.Start();
 
             var factoryContainer = new MetadataContainerInfoFactory();
 
-            dynamic config = _configStructure.GetConfiguration();
+            dynamic config = _exportStructure.GetConfiguration();
 
             if (OnImportConfigStructure != null)
             {
@@ -57,7 +57,7 @@ namespace InfinniPlatform.Api.Packages
             config.Menu = new List<dynamic>();
             foreach (var menu in menuList)
             {
-                dynamic menuFull = _configStructure.GetMenu(menu.Name);
+                dynamic menuFull = _exportStructure.GetMenu(menu.Name);
                 // UpdateApi.UpdateMetadataObject(config.Name, null, menuFull, MetadataType.Menu);
                 if (OnImportMenu != null)
                 {
@@ -73,7 +73,7 @@ namespace InfinniPlatform.Api.Packages
             {
                 foreach (var report in reportList)
                 {
-                    dynamic reportFull = _configStructure.GetReport(report.Name);
+                    dynamic reportFull = _exportStructure.GetReport(report.Name);
                     //   UpdateApi.UpdateMetadataObject(config.Name, null, reportFull, MetadataType.Report);
 
                     if (OnImportReport != null)
@@ -90,7 +90,7 @@ namespace InfinniPlatform.Api.Packages
             config.Documents = new List<dynamic>();
             foreach (var document in documents)
             {
-                dynamic documentFull = _configStructure.GetDocument(document.Name);
+                dynamic documentFull = _exportStructure.GetDocument(document.Name);
 
                 if (OnImportDocument != null)
                 {
@@ -114,7 +114,7 @@ namespace InfinniPlatform.Api.Packages
                         {
                             foreach (var metadataType in items)
                             {
-                                dynamic metadataTypeObject = _configStructure.GetDocumentMetadataType(document.Name,
+                                dynamic metadataTypeObject = _exportStructure.GetDocumentMetadataType(document.Name,
                                     metadataType.Name,
                                     documentMetadataType);
 
@@ -144,7 +144,7 @@ namespace InfinniPlatform.Api.Packages
             {
                 foreach (var register in registers)
                 {
-                    dynamic registerFull = _configStructure.GetRegister(register.Name);
+                    dynamic registerFull = _exportStructure.GetRegister(register.Name);
 
                     if (OnImportRegister != null)
                     {

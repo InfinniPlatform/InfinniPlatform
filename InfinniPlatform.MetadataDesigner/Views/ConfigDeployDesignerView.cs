@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows.Forms;
 
 using InfinniPlatform.Api.Hosting;
+using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Settings;
 using InfinniPlatform.MetadataDesigner.Views.Exchange;
 using InfinniPlatform.MetadataDesigner.Views.Status;
@@ -20,6 +21,77 @@ namespace InfinniPlatform.MetadataDesigner.Views
 		{
 			InitializeComponent();
 		}
+
+        private string GetSolutionName()
+        {
+            return TextEditSolutionName.Text;
+        }
+
+        private string GetSolutionVersion()
+        {
+            return TextEditSolutionVersion.Text;
+        }
+
+        private void ButtonImportSolutionClick(object sender, EventArgs e)
+        {
+            var dialog = new FolderBrowserDialog();
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                var exchangeDirector = new ExchangeDirectorSolution(new ExchangeLocalHost(), GetSolutionName());
+
+                var process = new StatusProcess();
+                process.StartOperation(
+                    () =>
+                        {
+                            exchangeDirector.UpdateSolutionMetadataFromDirectory(dialog.SelectedPath);
+                        });
+                process.EndOperation();
+
+                MessageBox.Show(@"Импорт конфигурации завершен");
+            }
+        }
+
+        private void ButtonExportSolutionClick(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(GetSolutionName()) && !string.IsNullOrEmpty(GetSolutionVersion()))
+            {
+                var exportSolution = new ExchangeDirectorSolution(new ExchangeLocalHost(), GetSolutionName());
+
+                var dialog = new FolderBrowserDialog();
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    var solutionPath = dialog.SelectedPath;
+                    var process = new StatusProcess();
+                    process.StartOperation(() =>
+                        {
+                            solutionPath = Path.Combine(solutionPath, GetSolutionName());
+                            exportSolution.ExportJsonSolutionToDirectory(solutionPath, GetSolutionVersion());
+
+                            var manager = ManagerFactorySolution.BuildSolutionReader(GetSolutionVersion());
+
+                            dynamic solution = manager.GetItem(GetSolutionName());
+
+                            foreach (var config in solution.ReferencedConfigurations)
+                            {
+                                var exportConfig = new ExchangeDirector(new ExchangeLocalHost(), config.Name);
+                                var configurationPath = Path.Combine(solutionPath,
+                                    string.Format("{0}.Configuration_{1}", config.Name, config.Version));
+                                exportConfig.ExportJsonConfigToDirectory(configurationPath, Value.Version);
+                            }
+
+                        });
+                    process.EndOperation();
+
+                    MessageBox.Show(string.Format("Export solution into folder \"{0}\" completed.", solutionPath));
+                }
+            }
+            else
+            {
+                MessageBox.Show(string.Format("Solution name and version should not be empty."));
+            }
+        }
 
 		private void ButtonExportConfigClick(object sender, EventArgs e)
 		{

@@ -6,11 +6,17 @@ namespace InfinniPlatform.Api.Packages.ConfigStructure
     public static class ConfigurationFixtureNames
     {
         public const string ConfigurationName = "Configuration";
+        public const string SolutionName = "Solution";
         public const string ExportFileExtension = ".json";
 
         public static string GetConfigurationFileName()
         {
             return ConfigurationName + ExportFileExtension;
+        }
+
+        public static string GetSolutionFileName()
+        {
+            return SolutionName + ExportFileExtension;
         }
 
         public static string GetExtendedFileName(string metadata)

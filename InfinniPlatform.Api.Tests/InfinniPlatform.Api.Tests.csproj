@@ -60,6 +60,7 @@
     <Compile Include="Extensions\ReflectionExtensionsTest.cs" />
     <Compile Include="Packages\ConfigExporterBehavior.cs" />
     <Compile Include="Help\SelfDocumentationBehavior.cs" />
+    <Compile Include="Packages\SolutionExporterBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\AdminBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\AfterDocumentSaveEventsBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\ActionUnitExceptionHandlingBehavior.cs" />

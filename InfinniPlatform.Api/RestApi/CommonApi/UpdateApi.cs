@@ -67,6 +67,32 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
         }
 
         /// <summary>
+        ///   Обновить метаданные решения в JSON
+        /// </summary>
+        /// <param name="filePath">Путь к файлу решения</param>
+        /// <returns></returns>
+        public dynamic UpdateSolutionFromJson(string filePath)
+        {
+            var builder = new RestQueryBuilder("SystemConfig", "update", "updatesolutionfromjson", null);
+
+            var linkedData = new
+            {
+                Version = _version
+            };
+
+            var response = builder.QueryPostFile(linkedData, filePath, null);
+
+            if (!response.IsAllOk)
+            {
+                Console.WriteLine("===========package install error===============================");
+                Console.WriteLine("Response content: " + response.Content);
+                throw new ArgumentException(string.Format("Error update solution: \"{0}\"  ", filePath));
+            }
+            var result = response.Content.ToDynamic();
+            return result;
+        }
+
+        /// <summary>
         ///     Принудительно вызвать обновление конфигурации
         /// </summary>
         public void ForceReload(string configurationId)

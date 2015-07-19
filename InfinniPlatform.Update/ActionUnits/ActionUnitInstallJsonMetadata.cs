@@ -17,6 +17,13 @@ namespace InfinniPlatform.Update.ActionUnits
 		{
 		    target.Item.MetadataObject.Version = target.Item.Version;
 
+            if (target.Item.MetadataType == MetadataType.Solution)
+            {
+                ManagerFactorySolution.BuildSolutionManager(target.Item.Version).MergeItem(target.Item.MetadataObject);
+                return;
+            }
+
+
 			if (string.IsNullOrEmpty(target.Item.ConfigurationId))
 			{
 				var emptyNameMessage = Resources.EmptyNameMessage;

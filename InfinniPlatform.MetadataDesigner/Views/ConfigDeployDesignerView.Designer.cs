@@ -30,6 +30,11 @@
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigDeployDesignerView));
             this.panelControl7 = new DevExpress.XtraEditors.PanelControl();
+            this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
+            this.TextEditSolutionVersion = new DevExpress.XtraEditors.TextEdit();
+            this.TextEditSolutionName = new DevExpress.XtraEditors.TextEdit();
+            this.ButtonExportSolution = new DevExpress.XtraEditors.SimpleButton();
             this.ButtonUpdateConfigurationAppliedAssemblies = new DevExpress.XtraEditors.SimpleButton();
             this.toggleDirectory = new DevExpress.XtraEditors.ToggleSwitch();
             this.ImportButton = new DevExpress.XtraEditors.SimpleButton();
@@ -38,8 +43,11 @@
             this.TextEditServerName = new DevExpress.XtraEditors.TextEdit();
             this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
             this.ButtonExportConfig = new DevExpress.XtraEditors.SimpleButton();
+            this.ButtonImportSolution = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl7)).BeginInit();
             this.panelControl7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TextEditSolutionVersion.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TextEditSolutionName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.toggleDirectory.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TextEditServerPort.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TextEditServerName.Properties)).BeginInit();
@@ -47,6 +55,12 @@
             // 
             // panelControl7
             // 
+            this.panelControl7.Controls.Add(this.ButtonImportSolution);
+            this.panelControl7.Controls.Add(this.labelControl3);
+            this.panelControl7.Controls.Add(this.labelControl1);
+            this.panelControl7.Controls.Add(this.TextEditSolutionVersion);
+            this.panelControl7.Controls.Add(this.TextEditSolutionName);
+            this.panelControl7.Controls.Add(this.ButtonExportSolution);
             this.panelControl7.Controls.Add(this.ButtonUpdateConfigurationAppliedAssemblies);
             this.panelControl7.Controls.Add(this.toggleDirectory);
             this.panelControl7.Controls.Add(this.ImportButton);
@@ -62,6 +76,48 @@
             this.panelControl7.Name = "panelControl7";
             this.panelControl7.Size = new System.Drawing.Size(731, 439);
             this.panelControl7.TabIndex = 14;
+            // 
+            // labelControl3
+            // 
+            this.labelControl3.Location = new System.Drawing.Point(391, 267);
+            this.labelControl3.Name = "labelControl3";
+            this.labelControl3.Size = new System.Drawing.Size(76, 13);
+            this.labelControl3.TabIndex = 19;
+            this.labelControl3.Text = "Solution version";
+            // 
+            // labelControl1
+            // 
+            this.labelControl1.Location = new System.Drawing.Point(400, 215);
+            this.labelControl1.Name = "labelControl1";
+            this.labelControl1.Size = new System.Drawing.Size(67, 13);
+            this.labelControl1.TabIndex = 18;
+            this.labelControl1.Text = "Solution name";
+            // 
+            // TextEditSolutionVersion
+            // 
+            this.TextEditSolutionVersion.Location = new System.Drawing.Point(476, 264);
+            this.TextEditSolutionVersion.Name = "TextEditSolutionVersion";
+            this.TextEditSolutionVersion.Size = new System.Drawing.Size(177, 20);
+            this.TextEditSolutionVersion.TabIndex = 17;
+            // 
+            // TextEditSolutionName
+            // 
+            this.TextEditSolutionName.Location = new System.Drawing.Point(476, 212);
+            this.TextEditSolutionName.Name = "TextEditSolutionName";
+            this.TextEditSolutionName.Size = new System.Drawing.Size(177, 20);
+            this.TextEditSolutionName.TabIndex = 16;
+            // 
+            // ButtonExportSolution
+            // 
+            this.ButtonExportSolution.Image = ((System.Drawing.Image)(resources.GetObject("ButtonExportSolution.Image")));
+            this.ButtonExportSolution.Location = new System.Drawing.Point(19, 209);
+            this.ButtonExportSolution.LookAndFeel.SkinName = "Office 2013";
+            this.ButtonExportSolution.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.ButtonExportSolution.Name = "ButtonExportSolution";
+            this.ButtonExportSolution.Size = new System.Drawing.Size(250, 23);
+            this.ButtonExportSolution.TabIndex = 15;
+            this.ButtonExportSolution.Text = "Export solution";
+            this.ButtonExportSolution.Click += new System.EventHandler(this.ButtonExportSolutionClick);
             // 
             // ButtonUpdateConfigurationAppliedAssemblies
             // 
@@ -138,6 +194,18 @@
             this.ButtonExportConfig.Text = "Export configuration file";
             this.ButtonExportConfig.Click += new System.EventHandler(this.ButtonExportConfigClick);
             // 
+            // ButtonImportSolution
+            // 
+            this.ButtonImportSolution.Image = ((System.Drawing.Image)(resources.GetObject("ButtonImportSolution.Image")));
+            this.ButtonImportSolution.Location = new System.Drawing.Point(20, 261);
+            this.ButtonImportSolution.LookAndFeel.SkinName = "Office 2013";
+            this.ButtonImportSolution.LookAndFeel.UseDefaultLookAndFeel = false;
+            this.ButtonImportSolution.Name = "ButtonImportSolution";
+            this.ButtonImportSolution.Size = new System.Drawing.Size(250, 23);
+            this.ButtonImportSolution.TabIndex = 20;
+            this.ButtonImportSolution.Text = "Import solution";
+            this.ButtonImportSolution.Click += new System.EventHandler(this.ButtonImportSolutionClick);
+            // 
             // ConfigDeployDesignerView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -148,6 +216,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.panelControl7)).EndInit();
             this.panelControl7.ResumeLayout(false);
             this.panelControl7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TextEditSolutionVersion.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TextEditSolutionName.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.toggleDirectory.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.TextEditServerPort.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.TextEditServerName.Properties)).EndInit();
@@ -166,6 +236,12 @@
 		public DevExpress.XtraEditors.SimpleButton ImportButton;
         private DevExpress.XtraEditors.ToggleSwitch toggleDirectory;
         public DevExpress.XtraEditors.SimpleButton ButtonUpdateConfigurationAppliedAssemblies;
+        public DevExpress.XtraEditors.TextEdit TextEditSolutionName;
+        public DevExpress.XtraEditors.SimpleButton ButtonExportSolution;
+        private DevExpress.XtraEditors.LabelControl labelControl3;
+        private DevExpress.XtraEditors.LabelControl labelControl1;
+        public DevExpress.XtraEditors.TextEdit TextEditSolutionVersion;
+        public DevExpress.XtraEditors.SimpleButton ButtonImportSolution;
 
 	}
 }

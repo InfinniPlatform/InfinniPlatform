@@ -8,6 +8,8 @@ namespace InfinniPlatform.Api.Metadata
     /// </summary>
     public static class MetadataType
     {
+        public const string Solution = "Solution";
+
         public const string Configuration = "Configuration";
         // Наименования типов элементов метаданных
 

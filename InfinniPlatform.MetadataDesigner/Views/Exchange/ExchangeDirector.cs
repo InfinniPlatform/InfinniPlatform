@@ -15,7 +15,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
 
         private readonly string _configurationArchiveName;
 
-		public ExchangeDirector(IUpdatePrepareConfig updatePrepareConfig, string configurationId)
+	    public ExchangeDirector(IUpdatePrepareConfig updatePrepareConfig, string configurationId)
 		{
 			_updatePrepareConfig = updatePrepareConfig;
 			_configurationId = configurationId;
@@ -77,5 +77,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
                 configUpdater.UpdateConfigurationAppliedAssemblies(_configurationId);
             }
         }
+
+
 	}
 }

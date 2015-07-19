@@ -170,8 +170,9 @@
     <Compile Include="Packages\ConfigStructure\DirectoryStructure.cs" />
     <Compile Include="Packages\ConfigStructure\ZipStructure.cs" />
     <Compile Include="Packages\ConfigurationIterator.cs" />
-    <Compile Include="Packages\IConfigStructure.cs" />
+    <Compile Include="Packages\IExportStructure.cs" />
     <Compile Include="Packages\PackageBuilder.cs" />
+    <Compile Include="Packages\SolutionExporter.cs" />
     <Compile Include="Packages\ZipLoader.cs" />
     <Compile Include="PrintView\IPrintViewBuilder.cs" />
     <Compile Include="Profiling\Implementation\ActionUnitFormatterLog.cs" />

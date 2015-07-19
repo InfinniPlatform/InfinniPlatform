@@ -10,7 +10,7 @@ using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Api.Packages.ConfigStructure
 {
-    public class ZipStructure : IConfigStructure
+    public class ZipStructure : IExportStructure
     {
         private FileStream _fileStream;
         private ZipArchive _zipArchive;
@@ -65,6 +65,11 @@ namespace InfinniPlatform.Api.Packages.ConfigStructure
             }
         }
 
+        public void AddSolution(IEnumerable<string> solution)
+        {
+            _zipArchive.AddFile(ConfigurationFixtureNames.GetSolutionFileName(), solution);
+        }
+
         public void AddConfiguration(IEnumerable<string> configuration)
         {
             _zipArchive.AddFile(ConfigurationFixtureNames.GetConfigurationFileName(), configuration);
@@ -73,6 +78,11 @@ namespace InfinniPlatform.Api.Packages.ConfigStructure
         public dynamic GetConfiguration()
         {
             return UnzipFile(ConfigurationFixtureNames.GetConfigurationFileName());
+        }
+
+        public dynamic GetSolution()
+        {
+            return UnzipFile(ConfigurationFixtureNames.GetSolutionFileName()); 
         }
 
         public void AddDocument(string documentName, IEnumerable<string> document)
@@ -115,6 +125,7 @@ namespace InfinniPlatform.Api.Packages.ConfigStructure
 
             _zipArchive.AddFile(reportFileName, report);
         }
+
 
         public void AddDocumentMetadataType(string document, string metadataName, string metadataType,
             IEnumerable<string> metadata)
