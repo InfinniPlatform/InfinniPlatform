@@ -147,11 +147,14 @@ namespace InfinniPlatform.Runtime.Implementation.AssemblyDispatch
 						throw new ArgumentException(string.Format("Cannot write file in location: {0}.", assemblyLocation));
 					}
 
+                    // Fix for MC-3637
+				    assemblyResult.Add(Assembly.Load(new AssemblyName {CodeBase = assemblyLocation}));
+                    
                     // Желательно загрузить еще pdb file, чтобы в случае возникновения исключения получить информацию о строке,
                     // в которой это исключение произошло
-				    assemblyResult.Add(configurationVersion.Pdb == null
-                        ? Assembly.Load(File.ReadAllBytes(assemblyLocation))
-                        : Assembly.Load(File.ReadAllBytes(assemblyLocation), File.ReadAllBytes(pdbLocation)));
+                    //assemblyResult.Add(configurationVersion.Pdb == null
+                    //    ? Assembly.Load(File.ReadAllBytes(assemblyLocation))
+                    //    : Assembly.Load(File.ReadAllBytes(assemblyLocation), File.ReadAllBytes(pdbLocation)));
 
 				    MethodInvokationCache cacheExisting = invokationCacheResult.GetCache(configurationVersion.Version, false);
 
