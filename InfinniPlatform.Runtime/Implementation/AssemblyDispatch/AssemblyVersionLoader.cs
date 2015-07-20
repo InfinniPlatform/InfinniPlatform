@@ -133,42 +133,48 @@ namespace InfinniPlatform.Runtime.Implementation.AssemblyDispatch
 					var assemblyLocation = Path.Combine(directory, configurationVersion.ModuleId);
 					var pdbLocation = Path.Combine(directory, Path.GetFileNameWithoutExtension(configurationVersion.ModuleId) + ".pdb");
 
+				    var isSaved = true;
+
 					try
 					{
 						File.WriteAllBytes(assemblyLocation, configurationVersion.Assembly);
+                    }
+                    catch (Exception)
+                    {
+                        isSaved = false;
+                    }
 
-						if (configurationVersion.Pdb != null)
-						{
-							File.WriteAllBytes(pdbLocation, configurationVersion.Pdb);
-						}
-					}
-					catch (Exception)
-					{
-						throw new ArgumentException(string.Format("Cannot write file in location: {0}.", assemblyLocation));
-					}
+                    try
+                    {
+                        if (configurationVersion.Pdb != null)
+                        {
+                            File.WriteAllBytes(pdbLocation, configurationVersion.Pdb);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        isSaved = false;
+                    }
 
                     // Fix for MC-3637
-				    assemblyResult.Add(Assembly.Load(new AssemblyName {CodeBase = assemblyLocation}));
-                    
-                    // Желательно загрузить еще pdb file, чтобы в случае возникновения исключения получить информацию о строке,
-                    // в которой это исключение произошло
-                    //assemblyResult.Add(configurationVersion.Pdb == null
-                    //    ? Assembly.Load(File.ReadAllBytes(assemblyLocation))
-                    //    : Assembly.Load(File.ReadAllBytes(assemblyLocation), File.ReadAllBytes(pdbLocation)));
+				    if (isSaved)
+				    {
+				        assemblyResult.Add(Assembly.Load(new AssemblyName {CodeBase = assemblyLocation}));
+                        
+				        MethodInvokationCache cacheExisting = invokationCacheResult.GetCache(configurationVersion.Version, false);
 
-				    MethodInvokationCache cacheExisting = invokationCacheResult.GetCache(configurationVersion.Version, false);
-
-					if (cacheExisting == null)
-					{
-						invokationCacheResult.AddCache(configurationVersion.Version,
-													   new MethodInvokationCache(configurationVersion.Version,
-																				 configurationVersion.TimeStamp,
-																				 assemblyResult));
-					}
-					else
-					{
-						cacheExisting.AddVersionAssembly(assemblyResult);
-					}
+				        if (cacheExisting == null)
+				        {
+				            invokationCacheResult.AddCache(configurationVersion.Version,
+				                new MethodInvokationCache(configurationVersion.Version,
+				                    configurationVersion.TimeStamp,
+				                    assemblyResult));
+				        }
+				        else
+				        {
+				            cacheExisting.AddVersionAssembly(assemblyResult);
+				        }
+				    }
 				}
 			}
 
