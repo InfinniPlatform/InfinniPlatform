@@ -7,12 +7,14 @@ using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.MetadataDesigner.Views.Exchange;
 using InfinniPlatform.MetadataDesigner.Views.Update;
 using InfinniPlatform.Sdk.Api;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Utils
 {
     public class ConfigManager
     {
-        public void Upload(string config, bool uploadMetadata)
+        public void Upload(string solutionDir, bool uploadMetadata)
         {
             Console.WriteLine("ServiceHost should be executed for this operation.");
             Console.WriteLine("All metadata will be DESTROYED!!! Are you sure?");
@@ -22,59 +24,61 @@ namespace InfinniPlatform.Utils
                 return;
             }
 
-            ProcessConfigurations(config, configuration =>
+            ProcessSolution(solutionDir, solution =>
             {
-                Console.WriteLine("Uploading configuration '{0}' started", configuration.Name);
+                Console.WriteLine("Uploading solution '{0}' started", solution.Name);
 
-                var exchangeDirector = CreateExchangeDirector(AdjustConfigName(configuration.Name),
-                    configuration.Version);
+                ExchangeDirectorSolution exchangeDirector = CreateExchangeDirector(solution.Name.ToString(), solution.Version.ToString());
 
+                dynamic solutionData = null;
                 if (uploadMetadata)
-                    exchangeDirector.UpdateConfigurationMetadataFromDirectory(configuration.PathString);
+                {
+                    solutionData = exchangeDirector.UpdateSolutionMetadataFromDirectory(solutionDir);
+                }
 
-                exchangeDirector.UpdateConfigurationAppliedAssemblies();
+                if (solutionData != null)
+                {
+                    exchangeDirector.UpdateConfigurationAppliedAssemblies(solutionData);
+                }
+                else
+                {
+                    Console.WriteLine(string.Format("Fail to upload solution {0}", solution.Name));
+                }
 
-                Console.WriteLine("Uploading configuration '{0}' done", configuration.Name);
+                Console.WriteLine("Uploading solution '{0}' done", solution.Name);
             });
         }
 
-        private static string AdjustConfigName(string name)
+        public void Download(string solutionDir, string solution, string version)
         {
-            return name.Split('.').Last();
+            Debugger.Launch();
+
+            Console.WriteLine("Downloading solution '{0}' started", solution);
+
+            var exchangeDirector = CreateExchangeDirector(solution,version);
+            exchangeDirector.ExportJsonSolutionToDirectory(solutionDir, version);
+
+            Console.WriteLine("Downloading solution '{0}' done", solution);
+
         }
 
-        public void Download(string config)
+        private static void ProcessSolution(string solutionDir, Action<dynamic> action)
         {
-            ProcessConfigurations(config, configuration =>
+
+            var solutionFile = Directory.GetFiles(solutionDir)
+                     .FirstOrDefault(file => file.ToLowerInvariant().Contains("solution.json"));
+
+            if (solutionFile != null)
             {
-                Console.WriteLine("Downloading configuration '{0}' started", configuration.Name);
-
-                var exchangeDirector = CreateExchangeDirector(configuration.Name, configuration.Version);
-                exchangeDirector.ExportJsonConfigToDirectory(configuration.PathString, configuration.Version);
-
-                Console.WriteLine("Downloading configuration '{0}' done", configuration.Name);
-            });
-        }
-
-        private static void ProcessConfigurations(string config, Action<Configuration> action)
-        {
-            var neededConfigs = config == null ? new string[0] : config.ToLower().Split(',');
-            var configurations = Directory
-                .GetDirectories(ConfigurationManager.AppSettings["ConfigurationsDir"])
-                .Where(dir => dir.Contains(".Configuration"))
-                .Select(dir => new Configuration(dir))
-                .Where(c => !neededConfigs.Any() || neededConfigs.Contains(c.Name.ToLower()));
-
-            foreach (var configuration in configurations)
-            {
-                action(configuration);
+                var jsonSolution = JObject.Parse(File.ReadAllText(solutionFile));
+                action(jsonSolution);
             }
         }
 
-        private static ExchangeDirector CreateExchangeDirector(string configName, string version)
+        private static ExchangeDirectorSolution CreateExchangeDirector(string configName, string version)
         {
             var remoteHost = new ExchangeRemoteHost(new HostingConfig(), version);
-            return new ExchangeDirector(remoteHost, configName);
+            return new ExchangeDirectorSolution(remoteHost, configName);
         }
     }
 }

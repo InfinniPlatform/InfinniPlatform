@@ -18,7 +18,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.File
             _fileName = Path.GetFileName(fileName);
             _archiveConfig = archiveConfig;
             ConfigObject =
-                new ConfigurationIterator(new ZipStructure(_archiveConfig, _folderName)).ImportToConfigurationObject();
+                new ConfigurationIterator(new ZipStructure(_archiveConfig, _folderName, null)).ImportToConfigurationObject();
         }
 
         /// <summary>

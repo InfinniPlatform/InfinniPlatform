@@ -3,6 +3,7 @@
   "Name": "SystemConfiguration",
   "Caption": "Системные конфигурации",
   "Description": "Системные конфигурации",
+  "Version": "1.0.0.0",
   "ReferencedConfigurations": [
    {
     "Name": "Administration",

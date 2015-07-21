@@ -14,7 +14,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
     {
         private readonly IUpdatePrepareConfig _updatePrepareConfig;
 		private readonly string _solutionId;
-        private readonly string _version;
+
         private string _solutionArchiveName;
 
         public ExchangeDirectorSolution(IUpdatePrepareConfig updatePrepareConfig, string solutionId)
@@ -30,17 +30,30 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
             if (_updatePrepareConfig.PrepareRoutingOperation())
             {
                 new SolutionExporter(new DirectoryStructure(exportDir), 
-                    config => new DirectoryStructure(exportDir + string.Format(@"\{0}.Configuration_{1}", config.Name, config.Version))).ExportSolutionToStructure(_solutionId, _version);
+                    config => new DirectoryStructure(exportDir + string.Format(@"\{0}.Configuration_{1}", config.Name, config.Version))).ExportSolutionToStructure(_solutionId, version);
             }
         }
 
-        public void UpdateSolutionMetadataFromDirectory(string importDir)
+        public dynamic UpdateSolutionMetadataFromDirectory(string importDir)
         {
             if (_updatePrepareConfig.PrepareRoutingOperation())
             {
                 var configUpdater = new ConfigUpdater(GetVersionFromPath(importDir));
                 ZipLoader.CreateZipArchiveFromDirectory(importDir, _solutionArchiveName);
-                configUpdater.UpdateSolutionMetadataFromZip(_solutionArchiveName);
+                return configUpdater.UpdateSolutionMetadataFromZip(_solutionArchiveName);
+            }
+            return null;
+        }
+
+        public void UpdateConfigurationAppliedAssemblies(dynamic solution)
+        {
+            foreach (var configuration in solution.Result.Solution.ReferencedConfigurations)
+            {
+                if (_updatePrepareConfig.PrepareRoutingOperation())
+                {
+                    var configUpdater = new ConfigUpdater(configuration.Version);
+                    configUpdater.UpdateConfigurationAppliedAssemblies(configuration.Name);
+                }                
             }
         }
 

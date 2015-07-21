@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace InfinniPlatform.Utils
 {
@@ -12,11 +13,18 @@ namespace InfinniPlatform.Utils
             switch (command)
             {
                 case "upload":
-                    new ConfigManager().Upload(arguments.Length > 0 ? arguments[0] : null, arguments.Length > 1);
+                    new ConfigManager().Upload(arguments.Length > 0 ? arguments[0] : string.Empty, arguments.Length > 0);
                     break;
                 case "download":
-                    new ConfigManager().Download(arguments.Length > 0 ? arguments[0] : null);
-                    break;
+                    if (arguments.Length > 2)
+                    {
+                        new ConfigManager().Download(arguments[0], arguments[1], arguments[2]);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Solution export directory, solution name, solution version should specified.");
+                    }
+                    break;                    
                 case "importdata":
                     new DataManager().Import(arguments.Length > 0 ? arguments[0] : null);
                     break;

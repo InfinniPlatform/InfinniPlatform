@@ -62,7 +62,7 @@ namespace InfinniPlatform.Api.Packages
             {
                 var configExporter = new ConfigExporter(_exportStructureConfig(referencedConfig));
 
-                configExporter.ImportHeaderFromStructure(referencedConfig.Version);
+                configExporter.ImportHeaderFromStructure( referencedConfig.Version);
             }
 
             _exportStructureSolution.End();

@@ -120,7 +120,7 @@ namespace InfinniPlatform.Api.Packages
         /// </summary>
         /// <param name="version">Наименование версии конфигурации</param>
         /// <returns>Объект конфигурации</returns>
-        public dynamic ImportHeaderFromStructure(string version)
+        public dynamic ImportHeaderFromStructure( string version)
         {
             _exportStructure.Start();
 

@@ -60,6 +60,7 @@ namespace InfinniPlatform.Api.Tests.Packages
             File.Exists(Path.Combine(exportDir, @"\Administration.Configuration_1.0.0.0\Configuration.json"));
             File.Exists(Path.Combine(exportDir, @"\Authorization.Configuration_1.0.0.0\Configuration.json"));
             File.Exists(Path.Combine(exportDir, @"\AdministrationCustomization.Configuration_1.0.0.0\Configuration.json"));
+
         }
 
 

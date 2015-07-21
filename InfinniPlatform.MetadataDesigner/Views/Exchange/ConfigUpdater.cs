@@ -37,9 +37,9 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
             new UpdateApi(VersionName).UpdateConfigFromJson(fileName);
 		}
 
-        public void UpdateSolutionMetadataFromZip(string fileName)
+        public dynamic UpdateSolutionMetadataFromZip(string fileName)
         {
-            new UpdateApi(VersionName).UpdateSolutionFromJson(fileName);
+            return new UpdateApi(VersionName).UpdateSolutionFromJson(fileName);
         }
 
 
