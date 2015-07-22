@@ -1,19 +1,17 @@
-﻿using InfinniPlatform.Api.Metadata;
+﻿using System.Collections.Generic;
+using System.Linq;
+using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.ModelRepository.MetadataObjectModel;
 using InfinniPlatform.Extensions;
-
 using OpenEhr.V1.Its.Xml.AM;
-
-using System.Collections.Generic;
-using System.Linq;
 
 namespace InfinniPlatform.OceanInformatics.DataModelLoader
 {
     internal sealed class ObjectModelExtractor
     {
-        private readonly PropertyModelExtractor _modelPropertyExtractor;
-        private readonly bool _isArchetypesExtraction;
-        private readonly string _configId;
+        readonly string _configId;
+        readonly bool _isArchetypesExtraction;
+        readonly PropertyModelExtractor _modelPropertyExtractor;
 
         internal ObjectModelExtractor(bool isArchetypesExtraction, string configId)
         {
@@ -30,17 +28,19 @@ namespace InfinniPlatform.OceanInformatics.DataModelLoader
             {
                 Type = DataType.Object.ToString(),
                 Description = ontologies.GetDescription(propertyGroup.node_id),
-                Caption = ontologies.GetText(propertyGroup.node_id),
+                Caption = ontologies.GetText(propertyGroup.node_id)
             };
-            
+
             var cArchetypeRoot = propertyGroup as C_ARCHETYPE_ROOT;
 
             modelPropertyGroup.TypeInfo.Add("NodeId",
-                cArchetypeRoot != null ? cArchetypeRoot.archetype_id.value : propertyGroup.node_id);
+                                            cArchetypeRoot != null
+                                                ? cArchetypeRoot.archetype_id.value
+                                                : propertyGroup.node_id);
 
-            if (propertyGroup.attributes!=null)
+            if (propertyGroup.attributes != null)
             {
-                foreach (var obj in propertyGroup.attributes.SelectMany(attribute => attribute.children))
+                foreach (var obj in propertyGroup.attributes.Where(attribute => attribute.children != null).SelectMany(attribute => attribute.children))
                 {
                     if (obj.rm_type_name == "ELEMENT")
                     {
@@ -132,20 +132,21 @@ namespace InfinniPlatform.OceanInformatics.DataModelLoader
                         }
 
                         var complexObject = obj as C_COMPLEX_OBJECT;
-                        if (complexObject != null)
+                        if (complexObject == null)
+                            continue;
+
+                        var archetypeRoot = obj as C_ARCHETYPE_ROOT;
+                        if (archetypeRoot != null)
                         {
-                            var archetypeRoot = obj as C_ARCHETYPE_ROOT;
-                            if (archetypeRoot != null)
-                            {
-                                modelPropertyGroup.Properties.Add(Extract(complexObject,
-                                                                          new OntologiesProvider(archetypeRoot.term_definitions)));
-                            }
-                            else
-                            {
-                                var extractedData = Extract(complexObject, ontologies);
-                                if (!modelPropertyGroup.Properties.ContainsKey(extractedData.Key))
-                                    modelPropertyGroup.Properties.Add(extractedData);
-                            }
+                            var extractedData = Extract(complexObject, new OntologiesProvider(archetypeRoot.term_definitions));
+                            if (!modelPropertyGroup.Properties.ContainsKey(extractedData.Key))
+                                modelPropertyGroup.Properties.Add(extractedData);
+                        }
+                        else
+                        {
+                            var extractedData = Extract(complexObject, ontologies);
+                            if (!modelPropertyGroup.Properties.ContainsKey(extractedData.Key))
+                                modelPropertyGroup.Properties.Add(extractedData);
                         }
                     }
                 }
