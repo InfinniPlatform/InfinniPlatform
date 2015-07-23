@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.ContextComponents;
+﻿using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.RestApi.AuthApi;
-using InfinniPlatform.Api.Security;
-using InfinniPlatform.ContextComponents;
-using InfinniPlatform.Security;
 using InfinniPlatform.SystemConfig.UserStorage;
+using System;
 
 namespace InfinniPlatform.RestfulApi.Auth
 {
@@ -32,7 +24,15 @@ namespace InfinniPlatform.RestfulApi.Auth
                 storage.AddClaimType(target.Item.ClaimType);
             }
 
-            storage.AddUserClaim(user, target.Item.ClaimType,target.Item.ClaimValue);
+            var overwrite = true;
+
+            if (target.Item.Overwrite != null &&
+                target.Item.Overwrite == false)
+            {
+                overwrite = false;
+            }
+
+            storage.AddUserClaim(user, target.Item.ClaimType, target.Item.ClaimValue, overwrite);
 
             //обновляем пользователей системы
 			target.Context.GetComponent<ISecurityComponent>().UpdateUsers();

@@ -147,32 +147,34 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 			}
 		}
 
-		public void AddUserClaim(ApplicationUser user, string claimType, string claimValue)
-		{
-			var claims = user.Claims.ToList();
+	    public void AddUserClaim(ApplicationUser user, string claimType, string claimValue, bool overwrite = true)
+	    {
+	        var claims = overwrite
+	            ? user.Claims.ToList().Where(c => c.Type.DisplayName != claimType).ToList()
+	            : user.Claims.ToList();
 
-			ApplicationClaimType claim = FindClaimType(claimType);
-			if (claim != null)
-			{
-				var userClaim = new ApplicationUserClaim();
-				userClaim.Type = new ForeignKey()
-									 {
-										 DisplayName = claim.Name,
-										 Id = claim.Id
-									 };
-				userClaim.Value = claimValue;
+	        ApplicationClaimType claim = FindClaimType(claimType);
+	        if (claim != null)
+	        {
+	            var userClaim = new ApplicationUserClaim();
+	            userClaim.Type = new ForeignKey()
+	            {
+	                DisplayName = claim.Name,
+	                Id = claim.Id
+	            };
+	            userClaim.Value = claimValue;
 
-				claims.Add(userClaim);
-				user.Claims = claims;
-				UpdateUser(user);
-			}
-			else
-			{
-				throw new ArgumentException(string.Format("User claim not found: {0}", claimType));
-			}
-		}
+	            claims.Add(userClaim);
+	            user.Claims = claims;
+	            UpdateUser(user);
+	        }
+	        else
+	        {
+	            throw new ArgumentException(string.Format("User claim not found: {0}", claimType));
+	        }
+	    }
 
-		public void RemoveUserClaim(ApplicationUser user, string claimType, string claimValue)
+	    public void RemoveUserClaim(ApplicationUser user, string claimType, string claimValue)
 		{
 			var claims = user.Claims.ToList().Where(c => c.Type.DisplayName != claimType).ToList();
 			user.Claims = claims;

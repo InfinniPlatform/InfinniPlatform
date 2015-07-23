@@ -216,7 +216,7 @@ namespace InfinniPlatform.Security
 			UpdateInfo(user, userEntry);
 		}
 
-		public void AddUserClaim(ApplicationUser user, string claimType, string claimValue)
+		public void AddUserClaim(ApplicationUser user, string claimType, string claimValue, bool overwrite = true)
 		{
 			if (user == null)
 			{
