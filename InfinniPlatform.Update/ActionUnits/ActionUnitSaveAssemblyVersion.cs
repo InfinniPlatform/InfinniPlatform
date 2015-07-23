@@ -19,7 +19,7 @@ namespace InfinniPlatform.Update.ActionUnits
 			// получаем конфигурацию обновления
 			var config = configBuilder.GetConfigurationObject(null, "update");
 
-			string version = target.Context.GetVersion(target.Item.ConfigurationName, target.UserName);
+			string version = target.Item.Version;
 
 			var documentProvider = config.GetDocumentProvider("package","system");
 
