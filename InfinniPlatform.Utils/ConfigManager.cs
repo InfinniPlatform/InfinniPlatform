@@ -51,8 +51,6 @@ namespace InfinniPlatform.Utils
 
         public void Download(string solutionDir, string solution, string version)
         {
-            Debugger.Launch();
-
             Console.WriteLine("Downloading solution '{0}' started", solution);
 
             var exchangeDirector = CreateExchangeDirector(solution,version);

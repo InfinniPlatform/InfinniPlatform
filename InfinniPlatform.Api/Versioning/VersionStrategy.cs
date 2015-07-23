@@ -74,28 +74,22 @@ namespace InfinniPlatform.Api.Versioning
                                                            .OrderByDescending(r => r)
                                                            .ToList();
 
-            if (userConfigVersion != null)
+            if (userConfigVersion != null && userConfigVersion.Version != null)
             {
                 var userVersion = new Version(userConfigVersion.Version);
-                var actualMinorVersion =
+                var actualBuildVersion =
                     actualConfigVersions
-                       .Where(
-                        v => v.Major == userVersion.Major && v.MajorRevision == userVersion.MajorRevision )
-                                       .OrderByDescending(v => v).FirstOrDefault() ??
+                       .Where(v => v.Major == userVersion.Major && v.Minor == userVersion.Minor ).OrderByDescending(v => v).FirstOrDefault() ??
                     actualConfigVersions
-                       .Where(
-                        v => v.Major == userVersion.Major && v.MajorRevision == -1)
-                                       .OrderByDescending(v => v).FirstOrDefault();
+                       .Where(v => v.Major == userVersion.Major).OrderByDescending(v => v).FirstOrDefault();
 
 
-                if (actualMinorVersion != null)
+                if (actualBuildVersion != null)
                 {
                     //если сохраненная минорная версия не является актуальной, обновляем минорную версию
-                    if (userVersion.Minor < actualMinorVersion.Minor ||
-                        userVersion.MinorRevision < actualMinorVersion.MinorRevision || userVersion.Minor == -1 || userVersion.MinorRevision == -1 ||
-                        actualMinorVersion.Minor == -1 || actualMinorVersion.MinorRevision == -1)
+                    if(userVersion.CompareTo(actualBuildVersion) < 0)
                     {
-                        userConfigVersion.Version = actualMinorVersion.ToString();
+                        userConfigVersion.Version = actualBuildVersion.ToString();
                         versionProvider.SetDocument(userConfigVersion);
                     }
                     return userConfigVersion.Version;
@@ -143,14 +137,14 @@ namespace InfinniPlatform.Api.Versioning
                                                                             var majorVersion = versionObject.Major > 0
                                                                                                    ? versionObject.Major
                                                                                                    : 0;
-                                                                            var majorVersionRevision = versionObject.MajorRevision > 0
-                                                                                                   ? versionObject.MajorRevision
+                                                                            var minor = versionObject.Minor > 0
+                                                                                                   ? versionObject.Minor
                                                                                                    : 0;
                                                                             return new
                                                                             {
                                                                                 ConfigId = r.Item1,
                                                                                 Version = r.Item2 != null ?
-                                                                                    new Version(majorVersion, majorVersionRevision, 0, 0) : new Version("0.0.0.0")
+                                                                                    new Version(majorVersion, minor, 0, 0) : new Version("0.0.0.0")
                                                                             };
                                                                          })
                                                            .OrderByDescending(r => r.Version)
@@ -162,7 +156,7 @@ namespace InfinniPlatform.Api.Versioning
                 var userVersion = new Version(userConfig.Version);
                 var actualVersion = actualConfigVersions.Where(a => a.ConfigId == userConfig.ConfigurationId).Select(a => a.Version).FirstOrDefault();
 
-                if (actualVersion != null && (actualVersion.Major > userVersion.Major || actualVersion.MajorRevision > userVersion.MajorRevision) )
+                if (actualVersion != null && (actualVersion.Major > userVersion.Major || actualVersion.Minor > userVersion.Minor) )
                 {
                     result.Add(new
                         {
@@ -178,6 +172,11 @@ namespace InfinniPlatform.Api.Versioning
 
         public void SetRelevantVersion(string version, string configurationId, string userName)
         {
+            if (configurationId == null)
+            {
+                return;
+            }
+
             dynamic userConfigVersion = ConfigVersions.Cast<dynamic>().FirstOrDefault(v => v.ConfigurationId.ToLowerInvariant() == configurationId.ToLowerInvariant() &&
                                   v.UserName == userName);
 

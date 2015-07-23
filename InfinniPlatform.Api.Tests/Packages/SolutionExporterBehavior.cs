@@ -38,7 +38,7 @@ namespace InfinniPlatform.Api.Tests.Packages
         {
             var importDir = @"..\SystemConfiguration_1.0.0.0";
             var solutionExporter = new SolutionExporter(new DirectoryStructure(importDir),
-                config => new DirectoryStructure(importDir + string.Format(@"\{0}.Configuration_{1}", config.Name, config.Version)));
+                config => new DirectoryStructure(importDir + string.Format(@"\{0}_{1}", config.Name, config.Version)));
 
             solutionExporter.ImportHeaderFromStructure("1.0.0.0");
 

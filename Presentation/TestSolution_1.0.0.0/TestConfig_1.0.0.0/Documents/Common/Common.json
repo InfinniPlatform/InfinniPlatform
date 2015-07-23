@@ -1,0 +1,40 @@
+{
+  "Id": "cc673103-2d8c-4dcd-b27c-d208b2ac33b5",
+  "Secured": true,
+  "Name": "Common",
+  "Caption": "Common options",
+  "Description": "Common options",
+  "Versioning": 2,
+  "Version": "1.0.0.0",
+  "MetadataIndex": "Common",
+  "Services": [
+    {
+      "Id": "3d7065a8-0c62-452e-b95a-fdbb7dfed79b",
+      "Name": "HelloWorld",
+      "Caption": "HelloWorld"
+    }
+  ],
+  "Processes": [
+    {
+      "Id": "83f053ef-f9ee-4173-a8f6-9375086c0e7f",
+      "Name": "HelloWorld",
+      "Caption": "HelloWorld"
+    }
+  ],
+  "Scenarios": [
+    {
+      "Id": "bbfa771d-ef2d-41c0-ae7f-57757bde9b70",
+      "Name": "ActionUnitHelloWorld",
+      "Caption": "ActionUnitHelloWorld",
+      "Description": ""
+    }
+  ],
+  "Generators": [],
+  "Views": [],
+  "PrintViews": [],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "ParentId": "6c80e623-2e66-4ff1-bf54-0b899a19abf3",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "documentmetadata"
+}

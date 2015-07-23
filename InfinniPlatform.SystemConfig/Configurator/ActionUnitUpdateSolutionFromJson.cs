@@ -24,6 +24,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
             var solutionExporter = new SolutionExporter(new ZipStructure(zipArchive, folderName, null),
                 config => new ZipStructure(zipArchive, folderName, string.Format(@"{0}_{1}", config.Name, config.Version)));
             dynamic solution = solutionExporter.ImportHeaderFromStructure((string) target.LinkedData.Version);
+
             target.Result.Solution = solution;
             target.Result.InstallLog.Add(string.Format("Solution \"{0}\"(version: \"{1}\") sucessfully installed",
                                                        solution.Name,

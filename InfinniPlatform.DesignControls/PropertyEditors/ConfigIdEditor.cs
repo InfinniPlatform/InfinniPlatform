@@ -82,7 +82,7 @@ namespace InfinniPlatform.DesignControls.PropertyEditors
 
         private IEnumerable<dynamic> GetConfigList()
         {
-            return new MetadataApi().GetMetadataList();
+            return new MetadataApi().GetMetadataList(null);
         }
 
         public sealed class ConfigIdValue

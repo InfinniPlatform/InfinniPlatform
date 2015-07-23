@@ -1,0 +1,14 @@
+{
+  "Id": "bbfa771d-ef2d-41c0-ae7f-57757bde9b72",
+  "Secured": true,
+  "Name": "ActionUnitHelloWorld1",
+  "Caption": "ActionUnitHelloWorld1",
+  "Description": "",
+  "ScenarioId": "ActionUnitHelloWorld1",
+  "ContextType": 2,
+  "ScriptUnitType": 1,
+  "ParentId": "cc673103-2d8c-4dcd-b27c-d208b2ac33b2",
+  "Version": "2.0.0.0",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "scenariometadata"
+}

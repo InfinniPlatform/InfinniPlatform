@@ -77,7 +77,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
                             {
                                 var exportConfig = new ExchangeDirector(new ExchangeLocalHost(), config.Name);
                                 var configurationPath = Path.Combine(solutionPath,
-                                    string.Format("{0}.Configuration_{1}", config.Name, config.Version));
+                                    string.Format("{0}_{1}", config.Name, config.Version));
                                 exportConfig.ExportJsonConfigToDirectory(configurationPath, Value.Version);
                             }
 
@@ -120,7 +120,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 			{
 				var dialog = new SaveFileDialog
 							 {
-                                 FileName = string.Format("{0}.Configuration.{1}.zip", Value.Name, Value.Version),
+                                 FileName = string.Format("{0}_{1}.zip", Value.Name, Value.Version),
 								 AddExtension = true,
 								 DefaultExt = "zip",
 								 Filter = @"Archive files (*.zip)|",

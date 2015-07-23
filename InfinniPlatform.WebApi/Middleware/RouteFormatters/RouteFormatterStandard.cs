@@ -28,7 +28,7 @@ namespace InfinniPlatform.WebApi.Middleware.RouteFormatters
                 {"application",application},
                 {"documentType",documentType},                
                 {"service",service},
-                {"instanceId",instanceId}
+                {"instanceId",instanceId},
             };
         }
 
@@ -41,7 +41,8 @@ namespace InfinniPlatform.WebApi.Middleware.RouteFormatters
                     .ReplaceFormat("_application_", routeDictionary["application"])
                     .ReplaceFormat("_documentType_", routeDictionary["documentType"])
                     .ReplaceFormat("_service_", routeDictionary["service"])
-                    .ReplaceFormat("_instanceId_", routeDictionary["instanceId"] ) : string.Empty);
+                    .ReplaceFormat("_instanceId_", routeDictionary["instanceId"]) : string.Empty); 
+
         }
     }
 }

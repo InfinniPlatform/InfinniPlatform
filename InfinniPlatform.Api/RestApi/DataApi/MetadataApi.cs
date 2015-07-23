@@ -6,7 +6,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 {
     public sealed class MetadataApi
     {
-        public dynamic GetMetadataList(string configuration = null, string metadata = null, string metadataType = null,
+        public dynamic GetMetadataList(string version, string configuration = null, string metadata = null, string metadataType = null,
             string metadataId = null)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getconfigmetadatalist", null, new
@@ -14,17 +14,19 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                     Configuration = configuration,
                     Metadata = metadata,
                     MetadataType = metadataType,
-                    MetadataName = metadataId
+                    MetadataName = metadataId,
+                    Version = version
                 }).ToDynamicList();
         }
 
-        public dynamic GetDocumentSchema(string configuration, string metadata)
+        public dynamic GetDocumentSchema(string version, string configuration, string metadata)
         {
             return RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getconfigmetadatalist", null, new
                 {
                     Configuration = configuration,
                     Metadata = metadata,
-                    MetadataType = MetadataType.Schema
+                    MetadataType = MetadataType.Schema,
+                    Version = version
                 }).ToDynamicList().FirstOrDefault();
         }
     }

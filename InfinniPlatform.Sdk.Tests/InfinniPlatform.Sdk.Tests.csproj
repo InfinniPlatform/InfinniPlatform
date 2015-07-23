@@ -50,7 +50,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SignInApiTest.cs" />
     <Compile Include="AuthApiTest.cs" />
+    <Compile Include="TestData\ActionUnitHelloWorld.cs" />
+    <Compile Include="TestData\ActionUnitHelloWorld2.cs" />
     <Compile Include="TestData\ActionUnitLike.cs" />
+    <Compile Include="TestData\ActionUnitHelloWorld1.cs" />
     <Compile Include="VersionApiTest.cs" />
   </ItemGroup>
   <ItemGroup>

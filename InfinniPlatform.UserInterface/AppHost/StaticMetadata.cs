@@ -25,7 +25,7 @@ namespace InfinniPlatform.UserInterface.AppHost
         /// <returns></returns>
         public static string CreateVersion()
         {
-            return Guid.NewGuid().ToString();
+            return "1.0.0.0"; //Guid.NewGuid().ToString();
         }
     }
 }

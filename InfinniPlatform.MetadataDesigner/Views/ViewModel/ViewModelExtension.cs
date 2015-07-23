@@ -445,20 +445,20 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
 		public static IEnumerable<string> BuildValidationRuleWarningDescriptions(string version, string configId, string documentId)
 		{
-			IEnumerable<dynamic> warnings = new MetadataApi().GetMetadataList(configuration: configId, metadata: documentId, metadataType: MetadataType.ValidationWarning);
+			IEnumerable<dynamic> warnings = new MetadataApi().GetMetadataList(version: version, configuration: configId, metadata: documentId, metadataType: MetadataType.ValidationWarning);
 			return warnings.Select(w => w.Name).Cast<string>().ToList();
 		}
 
 		public static IEnumerable<string> BuildValidationRuleErrorDescriptions(string version, string configId, string documentId)
 		{
-			IEnumerable<dynamic> objects = new MetadataApi().GetMetadataList(configuration: configId, metadata: documentId, metadataType: MetadataType.ValidationError); ;
+			IEnumerable<dynamic> objects = new MetadataApi().GetMetadataList(version: version, configuration: configId, metadata: documentId, metadataType: MetadataType.ValidationError); ;
 			return objects.Select(w => w.Name).Cast<string>().ToList();
 		}
 
 
 		public static IEnumerable<HandlerDescription> BuildValidationHandlerDescriptions(string version, string configId, string documentId)
 		{
-			IEnumerable<dynamic> scenarios = new MetadataApi().GetMetadataList(configuration: configId, metadata: documentId, metadataType: MetadataType.Scenario);
+			IEnumerable<dynamic> scenarios = new MetadataApi().GetMetadataList(version:version, configuration: configId, metadata: documentId, metadataType: MetadataType.Scenario);
 
 			var result = new List<HandlerDescription>();
 
@@ -485,7 +485,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
 		public static IEnumerable<HandlerDescription> BuildActionHandlerDescriptions(string version, string configId, string documentId)
 		{
-			IEnumerable<dynamic> scenarios = new MetadataApi().GetMetadataList(configuration: configId, metadata: documentId, metadataType: MetadataType.Scenario);
+			IEnumerable<dynamic> scenarios = new MetadataApi().GetMetadataList(version: version, configuration: configId, metadata: documentId, metadataType: MetadataType.Scenario);
 
 			var result = new List<HandlerDescription>();
 			//var scenarioManager = new ManagerFactoryDocument(configId, documentId).BuildScenarioMetadataReader();

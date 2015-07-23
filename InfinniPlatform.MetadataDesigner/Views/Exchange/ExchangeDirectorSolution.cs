@@ -30,7 +30,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
             if (_updatePrepareConfig.PrepareRoutingOperation())
             {
                 new SolutionExporter(new DirectoryStructure(exportDir), 
-                    config => new DirectoryStructure(exportDir + string.Format(@"\{0}.Configuration_{1}", config.Name, config.Version))).ExportSolutionToStructure(_solutionId, version);
+                    config => new DirectoryStructure(exportDir + string.Format(@"\{0}_{1}", config.Name, config.Version))).ExportSolutionToStructure(_solutionId, version);
             }
         }
 

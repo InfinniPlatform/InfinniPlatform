@@ -28,7 +28,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
             //если указано конкретное наименование искомых метаданных
             target.Result = target.Context.GetComponent<IMetadataComponent>()
-                                  .GetMetadata(target.Context.GetVersion(paramsDoc.Configuration, target.UserName), paramsDoc.Configuration, paramsDoc.Metadata,
+                                  .GetMetadata(target.Item.Version, paramsDoc.Configuration, paramsDoc.Metadata,
                                                paramsDoc.MetadataType, paramsDoc.MetadataName);
 
             if (target.Result != null)
