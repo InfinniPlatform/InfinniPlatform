@@ -255,4 +255,10 @@
   <data name="FailToSetUserRelevantVersions" xml:space="preserve">
     <value>Fail to set user application relevant versions with exception "{0}"</value>
   </data>
+  <data name="UnableToInsertSolutionMetadata" xml:space="preserve">
+    <value>Unable to insert solution metadata with exception: {0}</value>
+  </data>
+  <data name="UnableToDeleteSolutionMetadata" xml:space="preserve">
+    <value>Unable to delete solution metadata with exception: {0}</value>
+  </data>
 </root>

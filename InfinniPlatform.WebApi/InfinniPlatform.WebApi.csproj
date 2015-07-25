@@ -86,6 +86,11 @@
     <Compile Include="Logging\LogExtensions.cs" />
     <Compile Include="Middleware\HandlerRegistration.cs" />
     <Compile Include="Middleware\IRouteFormatter.cs" />
+    <Compile Include="Middleware\Metadata\DeleteSolutionHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\GetSolutionHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\InsertSolutionHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\SolutionHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\UpdateSolutionHandlerRegistration.cs" />
     <Compile Include="Middleware\MultipartFormData\BinaryStreamStack.cs" />
     <Compile Include="Middleware\MultipartFormData\FilePart.cs" />
     <Compile Include="Middleware\MultipartFormData\MultipartFormDataParser.cs" />
@@ -99,6 +104,7 @@
     <Compile Include="Middleware\RoleAuthHandlers\DeleteRoleHandlerRegistration.cs" />
     <Compile Include="Middleware\RouteFormatters\RouteFormatterAuthRole.cs" />
     <Compile Include="Middleware\RouteFormatters\RouteFormatterAuthUser.cs" />
+    <Compile Include="Middleware\RouteFormatters\RouteFormatterMetadata.cs" />
     <Compile Include="Middleware\RouteFormatters\RouteFormatterSession.cs" />
     <Compile Include="Middleware\RouteFormatters\RouteFormatterStandard.cs" />
     <Compile Include="Middleware\SessionHandlers\AttachDocumentHandlerRegistration.cs" />

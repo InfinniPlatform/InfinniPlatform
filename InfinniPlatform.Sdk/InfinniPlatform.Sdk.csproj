@@ -50,6 +50,7 @@
     <Compile Include="Api\HostingConfig.cs" />
     <Compile Include="Api\InfinniAuthApi.cs" />
     <Compile Include="Api\InfinniCustomServiceApi.cs" />
+    <Compile Include="Api\InfinniMetadataApi.cs" />
     <Compile Include="Api\InfinniSignInApi.cs" />
     <Compile Include="Api\InfinniVersionApi.cs" />
     <Compile Include="AttachedInstance.cs" />
@@ -166,6 +167,8 @@
     <Compile Include="Global\ICustomServiceGlobalContext.cs" />
     <Compile Include="Global\ScriptContext.cs" />
     <Compile Include="Global\ScriptContextApp.cs" />
+    <Compile Include="Metadata\ConfigurationHeader.cs" />
+    <Compile Include="Metadata\SolutionMetadata.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

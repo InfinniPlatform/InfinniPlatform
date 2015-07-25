@@ -47,6 +47,7 @@
     <Compile Include="CustomServiceApiTest.cs" />
     <Compile Include="DocumentApiTest.cs" />
     <Compile Include="FileApiTest.cs" />
+    <Compile Include="MetadataApiTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SignInApiTest.cs" />
     <Compile Include="AuthApiTest.cs" />

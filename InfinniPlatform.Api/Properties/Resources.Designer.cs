@@ -943,7 +943,7 @@ namespace InfinniPlatform.Api.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Solution with name &quot;{0}&quot; and version &quot;{1}&quot;..
+        ///   Looks up a localized string similar to Solution with name &quot;{0}&quot; and version &quot;{1} not found&quot;..
         /// </summary>
         public static string SolutionNotFound {
             get {

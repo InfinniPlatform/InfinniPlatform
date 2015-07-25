@@ -304,6 +304,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to delete solution metadata with exception: {0}.
+        /// </summary>
+        internal static string UnableToDeleteSolutionMetadata {
+            get {
+                return ResourceManager.GetString("UnableToDeleteSolutionMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to delete user with exception: {0}.
         /// </summary>
         internal static string UnableToDeleteUser {
@@ -390,6 +399,15 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string UnableToGrantAccessToUser {
             get {
                 return ResourceManager.GetString("UnableToGrantAccessToUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to insert solution metadata with exception: {0}.
+        /// </summary>
+        internal static string UnableToInsertSolutionMetadata {
+            get {
+                return ResourceManager.GetString("UnableToInsertSolutionMetadata", resourceCulture);
             }
         }
         

@@ -5,7 +5,8 @@ namespace InfinniPlatform.Owin.Middleware
     public enum Priority
     {
         Standard = 0,
-        Higher = 1
+        Higher = 1,
+        Concrete = 2
     }
 
     public sealed class PathStringProvider

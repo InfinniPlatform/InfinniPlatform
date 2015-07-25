@@ -457,7 +457,7 @@
     <value>Can't get specific configuration without specification of configuration version</value>
   </data>
   <data name="SolutionNotFound" xml:space="preserve">
-    <value>Solution with name "{0}" and version "{1}".</value>
+    <value>Solution with name "{0}" and version "{1} not found".</value>
   </data>
   <data name="SolutionAssembliesSuccessfullyUploaded" xml:space="preserve">
     <value>Solution assemblies successfully updated.</value>

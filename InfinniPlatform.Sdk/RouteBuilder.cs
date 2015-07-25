@@ -63,6 +63,33 @@ namespace InfinniPlatform.Sdk
         }
 
         /// <summary>
+        ///   Сформировать роутинг запроса для работы с метаданными решений
+        /// </summary>
+        /// <returns></returns>
+        public string BuildRestRoutingUrlMetadataSolution()
+        {
+            return GetCompleteUrl(GetRestTemplateStandard()
+                                      .ReplaceFormat("application", "metadata")
+                                      .ReplaceFormat("documentType", "solution"));
+        }
+
+        /// <summary>
+        ///  Сформировать роутинг запроса для работы с метаданными по идентификатору 
+        /// </summary>
+        /// <param name="version">Версия приложения</param>
+        /// <param name="id">Идентификатор приложения</param>
+        /// <returns></returns>
+        public string BuildRestRoutingUrlMetadataSolutionById(string version, string id)
+        {
+            return GetCompleteUrl(GetRestTemplateStandardSpecifiedVersionAndInstanceId()
+                                      .ReplaceFormat("application", "metadata")
+                                      .ReplaceFormat("documentType", "solution")
+                                      .ReplaceFormat("version", version)
+                                      .ReplaceFormat("instanceId",id)
+                                      );            
+        }
+
+        /// <summary>
         ///   Сформировать роутинг запроса для стандартного запроса документа указанного типа
         /// </summary>
         /// <param name="application">Приложение</param>
@@ -361,6 +388,15 @@ namespace InfinniPlatform.Sdk
         private string GetRestTemplateStandardSpecifiedInstanceId()
         {
             return GetRestTemplateStandard() + "/{instanceId}";
+        }
+
+        /// <summary>
+        ///Получить шаблон стандартного запроса с действием по умолчанию для указанного идентификатора сущности
+        /// </summary>
+        /// <returns>Шаблон роутинга запроса</returns>
+        private string GetRestTemplateStandardSpecifiedVersionAndInstanceId()
+        {
+            return GetRestTemplateStandard() + "/{version}/{instanceId}";
         }
 
         /// <summary>

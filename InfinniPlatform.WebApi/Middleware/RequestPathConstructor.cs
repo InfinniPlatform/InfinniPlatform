@@ -18,6 +18,11 @@ namespace InfinniPlatform.WebApi.Middleware
         {
             return new PathString("/_application_");
         }
+        
+        public PathString GetMetadataBasePath()
+        {
+            return new PathString();
+        }
 
         public PathString GetUserPath()
         {

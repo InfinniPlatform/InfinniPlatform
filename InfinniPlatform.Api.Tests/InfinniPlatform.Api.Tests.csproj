@@ -66,7 +66,6 @@
     <Compile Include="RestBehavior\Acceptance\ActionUnitExceptionHandlingBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\AuthorizationBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\ContentUploadBehavior.cs" />
-    <Compile Include="RestBehavior\Acceptance\CreateTestSolutionBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\SaaSBehaivor.cs" />
     <Compile Include="RestBehavior\Acceptance\SolutionVersionBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\SortingBehavior.cs" />
