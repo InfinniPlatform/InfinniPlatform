@@ -285,4 +285,13 @@
   <data name="UnableToGetMenuMetadata" xml:space="preserve">
     <value>Unable to get menu metadata with exception {0}</value>
   </data>
+  <data name="UnableToInsertAssemblyMetadata" xml:space="preserve">
+    <value>Unable to insert assembly metadata with exception {0}</value>
+  </data>
+  <data name="UnableToUpdateAssemblyMetadata" xml:space="preserve">
+    <value>Unable to update assembly metadata with exception {0}</value>
+  </data>
+  <data name="UnableToDeleteAssemblyMetadata" xml:space="preserve">
+    <value>Unable to delete assembly metadata with exception {0}</value>
+  </data>
 </root>

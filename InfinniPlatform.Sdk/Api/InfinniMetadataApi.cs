@@ -130,7 +130,7 @@ namespace InfinniPlatform.Sdk.Api
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlMetadataMenu(version, configuration), menuMetadata);
+            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlMetadataElement(version, configuration, "Menu"), menuMetadata);
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToInsertMenuMetadata, response.GetErrorContent()));
         }
@@ -143,7 +143,7 @@ namespace InfinniPlatform.Sdk.Api
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlMetadataMenu(version, configuration), menuMetadata);
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlMetadataElement(version, configuration, "Menu"), menuMetadata);
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateMenuMetadata, response.GetErrorContent()));
         }
@@ -156,7 +156,7 @@ namespace InfinniPlatform.Sdk.Api
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingUrlMetadataMenuById(version,configuration, name));
+            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingUrlMetadataElementById(version, configuration, "Menu", name ));
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToDeleteMenuMetadata, response.GetErrorContent()));
         }
@@ -165,13 +165,68 @@ namespace InfinniPlatform.Sdk.Api
         ///   Получить метаданные меню по указанному идентификатору
         /// </summary>
         /// <param name="version">Версия конфигурации</param>
-        /// <param name="name">Наименование конфигурации</param>
-        /// <returns>Метаданные конфигурации</returns>
+        /// <param name="name">Наименование меню</param>
+        /// <returns>Метаданные меню</returns>
         public dynamic GetMenu(string version, string configuration, string name)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlMetadataMenuById(version, configuration, name));
+            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlMetadataElementById(version, configuration, "Menu", name));
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetMenuMetadata, response.GetErrorContent()));
+        }
+
+
+        /// <summary>
+        ///   Добавить метаданные указанной сборки
+        /// </summary>
+        /// <returns>Результат добавления метаданных указанной сборки</returns>
+        public dynamic InsertAssembly(AssemblyMetadata assemblyMetadata, string version, string configuration)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlMetadataElement(version, configuration, "Assembly"), assemblyMetadata);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToInsertAssemblyMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Обновить метаданные указанной сборки
+        /// </summary>
+        /// <returns>Результат обновления метаданных сборок</returns>
+        public dynamic UpdateAssembly(AssemblyMetadata assemblyMetadata, string version, string configuration)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlMetadataElement(version, configuration, "Assembly"), assemblyMetadata);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateAssemblyMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Удалить метаданные указанной сборки
+        /// </summary>
+        /// <returns>Результат удаления метаданных сборки</returns>
+        public dynamic DeleteAssembly(string version, string configuration, string name)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingUrlMetadataElementById(version, configuration, "Assembly", name));
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToDeleteAssemblyMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Получить метаданные сборки по указанному идентификатору
+        /// </summary>
+        /// <param name="version">Версия конфигурации</param>
+        /// <param name="name">Наименование сборки</param>
+        /// <returns>Метаданные сборки</returns>
+        public dynamic GetAssembly(string version, string configuration, string name)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlMetadataElementById(version, configuration, "Assembly", name));
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetMenuMetadata, response.GetErrorContent()));
         }

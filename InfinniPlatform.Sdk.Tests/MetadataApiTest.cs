@@ -107,5 +107,42 @@ namespace InfinniPlatform.Sdk.Tests
             _metadataApi.DeleteConfig(config.Version, config.Name);
 
         }
+
+        [Test()]
+        public void ShouldInsertUpdateDeleteAssembly()
+        {
+            var config = new ConfigurationMetadata();
+            config.Id = Guid.NewGuid().ToString();
+            config.Name = "TestConfigVersion_" + Guid.NewGuid().ToString();
+            config.Version = "2.0.0.0";
+            _metadataApi.InsertConfig(config);
+
+            var assemblyMetadata = new AssemblyMetadata();
+            assemblyMetadata.Id = Guid.NewGuid().ToString();
+            assemblyMetadata.Name = "Assembly1";
+
+            _metadataApi.InsertAssembly(assemblyMetadata, config.Version, config.Name);
+
+            var assemblyRead = _metadataApi.GetAssembly(config.Version, config.Name, assemblyMetadata.Name);
+
+            Assert.IsNotNull(assemblyRead);
+
+            assemblyMetadata.Name = "Assembly1_v1";
+
+            _metadataApi.UpdateAssembly(assemblyMetadata, config.Version, config.Name);
+
+            assemblyRead = _metadataApi.GetAssembly(config.Version, config.Name, assemblyMetadata.Name);
+
+            Assert.AreEqual(assemblyRead.Name, assemblyMetadata.Name);
+
+            _metadataApi.DeleteAssembly(config.Version, config.Name, assemblyMetadata.Name);
+
+            assemblyRead = _metadataApi.GetAssembly(config.Version, config.Name, assemblyMetadata.Name);
+
+            Assert.IsNull(assemblyRead);
+
+            _metadataApi.DeleteConfig(config.Version, config.Name);
+
+        }
     }
 }

@@ -167,6 +167,7 @@
     <Compile Include="Global\ICustomServiceGlobalContext.cs" />
     <Compile Include="Global\ScriptContext.cs" />
     <Compile Include="Global\ScriptContextApp.cs" />
+    <Compile Include="Metadata\AssemblyMetadata.cs" />
     <Compile Include="Metadata\ConfigurationMetadata.cs" />
     <Compile Include="Metadata\MenuMetadata.cs" />
     <Compile Include="Metadata\SolutionMetadata.cs" />

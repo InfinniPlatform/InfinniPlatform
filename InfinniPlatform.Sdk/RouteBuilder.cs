@@ -120,13 +120,13 @@ namespace InfinniPlatform.Sdk
         ///   Сформировать роутинг запроса для работы с метаданными меню
         /// </summary>
         /// <returns></returns>
-        public string BuildRestRoutingUrlMetadataMenu(string version, string configuration)
+        public string BuildRestRoutingUrlMetadataElement(string version, string configuration, string metadataType)
         {
             return GetCompleteUrl(GetRestTemplateConfigMetadataElement()
                                       .ReplaceFormat("application", "metadata")
                                       .ReplaceFormat("version", version)
                                       .ReplaceFormat("configuration", configuration)
-                                      .ReplaceFormat("metadataType", "menu")                                      
+                                      .ReplaceFormat("metadataType", metadataType)                                      
                                       );        
         }
 
@@ -137,16 +137,17 @@ namespace InfinniPlatform.Sdk
         /// <param name="configuration">Конфигурация</param>
         /// <param name="id">Идентификатор приложения</param>
         /// <returns></returns>
-        public string BuildRestRoutingUrlMetadataMenuById(string version, string configuration, string id)
+        public string BuildRestRoutingUrlMetadataElementById(string version, string configuration, string metadataType, string id)
         {
             return GetCompleteUrl(GetRestTemplateConfigMetadataElementSpecifiedVersionAndInstanceId()
                                       .ReplaceFormat("application", "metadata")
                                       .ReplaceFormat("version", version)
                                       .ReplaceFormat("configuration", configuration)                                      
-                                      .ReplaceFormat("metadataType", "menu")
+                                      .ReplaceFormat("metadataType", metadataType)
                                       .ReplaceFormat("instanceId", id)
                                       );
         }
+
 
         /// <summary>
         ///   Сформировать роутинг запроса для стандартного запроса документа указанного типа

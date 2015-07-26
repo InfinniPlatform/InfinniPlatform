@@ -286,6 +286,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to delete assembly metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToDeleteAssemblyMetadata {
+            get {
+                return ResourceManager.GetString("UnableToDeleteAssemblyMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to delete config metadata with exception {0}.
         /// </summary>
         internal static string UnableToDeleteConfigMetadata {
@@ -439,6 +448,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to insert assembly metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToInsertAssemblyMetadata {
+            get {
+                return ResourceManager.GetString("UnableToInsertAssemblyMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to insert config metadata with exception {0}.
         /// </summary>
         internal static string UnableToInsertConfigMetadata {
@@ -525,6 +543,15 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string UnableToSignUser {
             get {
                 return ResourceManager.GetString("UnableToSignUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to update assembly metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToUpdateAssemblyMetadata {
+            get {
+                return ResourceManager.GetString("UnableToUpdateAssemblyMetadata", resourceCulture);
             }
         }
         
