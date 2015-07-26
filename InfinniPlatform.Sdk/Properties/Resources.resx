@@ -261,4 +261,16 @@
   <data name="UnableToDeleteSolutionMetadata" xml:space="preserve">
     <value>Unable to delete solution metadata with exception: {0}</value>
   </data>
+  <data name="UnableToInsertConfigMetadata" xml:space="preserve">
+    <value>Unable to insert config metadata with exception {0}</value>
+  </data>
+  <data name="UnableToUpdateConfigMetadata" xml:space="preserve">
+    <value>Unable to update config metadata with exception {0}</value>
+  </data>
+  <data name="UnableToDeleteConfigMetadata" xml:space="preserve">
+    <value>Unable to delete config metadata with exception {0}</value>
+  </data>
+  <data name="UnableToGetConfigMetadata" xml:space="preserve">
+    <value>Unable to get config metadata with exception {0}</value>
+  </data>
 </root>

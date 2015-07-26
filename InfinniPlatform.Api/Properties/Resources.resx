@@ -468,4 +468,7 @@
   <data name="FailToGetIrrelevantVersions" xml:space="preserve">
     <value>Fail to get irrelevant versions for user: "{0}"</value>
   </data>
+  <data name="ApplicationNotFound" xml:space="preserve">
+    <value>Application with name {0} and version {1} not found. </value>
+  </data>
 </root>

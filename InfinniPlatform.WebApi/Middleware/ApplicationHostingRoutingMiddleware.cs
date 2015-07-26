@@ -1,5 +1,7 @@
 ﻿using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.WebApi.Middleware.Metadata;
+using InfinniPlatform.WebApi.Middleware.Metadata.Configuration;
+using InfinniPlatform.WebApi.Middleware.Metadata.Solution;
 using InfinniPlatform.WebApi.Middleware.RoleAuthHandlers;
 using InfinniPlatform.WebApi.Middleware.SessionHandlers;
 using InfinniPlatform.WebApi.Middleware.StandardHandlers;
@@ -56,6 +58,11 @@ namespace InfinniPlatform.WebApi.Middleware
             RegisterHandler(new UpdateSolutionHandlerRegistration());
             RegisterHandler(new DeleteSolutionHandlerRegistration());
             RegisterHandler(new GetSolutionHandlerRegistration());
+
+            RegisterHandler(new InsertConfigHandlerRegistration());
+            RegisterHandler(new UpdateConfigHandlerRegistration());
+            RegisterHandler(new DeleteConfigHandlerRegistration());
+            RegisterHandler(new GetConfigHandlerRegistration());
         }
     }
 }

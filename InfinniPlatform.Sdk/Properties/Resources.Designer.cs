@@ -286,6 +286,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to delete config metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToDeleteConfigMetadata {
+            get {
+                return ResourceManager.GetString("UnableToDeleteConfigMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to delete document with exception: {0}.
         /// </summary>
         internal static string UnableToDeleteDocument {
@@ -358,6 +367,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to get config metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToGetConfigMetadata {
+            get {
+                return ResourceManager.GetString("UnableToGetConfigMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to get document with exception: {0}.
         /// </summary>
         internal static string UnableToGetDocument {
@@ -399,6 +417,15 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string UnableToGrantAccessToUser {
             get {
                 return ResourceManager.GetString("UnableToGrantAccessToUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to insert config metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToInsertConfigMetadata {
+            get {
+                return ResourceManager.GetString("UnableToInsertConfigMetadata", resourceCulture);
             }
         }
         
@@ -471,6 +498,15 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string UnableToSignUser {
             get {
                 return ResourceManager.GetString("UnableToSignUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to update config metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToUpdateConfigMetadata {
+            get {
+                return ResourceManager.GetString("UnableToUpdateConfigMetadata", resourceCulture);
             }
         }
         
