@@ -194,12 +194,13 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
             }).ToString();
         }
 
-        public static string GetConfigurationMetadataByNameIql(string configurationId, string metadataName,
+        public static string GetConfigurationMetadataByNameIql(string version, string configurationId, string metadataName,
             string metadataContainer, string metadataType)
         {
             return JObject.FromObject(new
             {
                 ConfigId = configurationId,
+                Version = version,
                 From = new
                 {
                     Index = "systemconfig",

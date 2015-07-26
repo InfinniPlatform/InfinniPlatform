@@ -70,5 +70,42 @@ namespace InfinniPlatform.Sdk.Tests
             configRead = _metadataApi.GetConfig(config.Version, config.Name);
             Assert.IsNull(configRead);
         }
+
+        [Test()]
+        public void ShouldInsertUpdateDeleteMenu()
+        {
+            var config = new ConfigurationMetadata();
+            config.Id = Guid.NewGuid().ToString();
+            config.Name = "TestConfigVersion_" + Guid.NewGuid().ToString();
+            config.Version = "2.0.0.0";
+            _metadataApi.InsertConfig(config);
+
+            var menu = new MenuMetadata();
+            menu.Id = Guid.NewGuid().ToString();
+            menu.Name = "MainMenu";
+
+            _metadataApi.InsertMenu(menu, config.Version, config.Name);
+
+            var menuRead = _metadataApi.GetMenu(config.Version, config.Name, menu.Name);
+
+            Assert.IsNotNull(menuRead);
+
+            menu.Name = "MainMenu_v1";
+
+            _metadataApi.UpdateMenu(menu, config.Version, config.Name);
+
+            menuRead = _metadataApi.GetMenu(config.Version, config.Name, menu.Name);
+
+            Assert.AreEqual(menuRead.Name, menu.Name);
+
+            _metadataApi.DeleteMenu(config.Version, config.Name, menu.Name);
+
+            menuRead = _metadataApi.GetMenu(config.Version, config.Name, menu.Name);
+
+            Assert.IsNull(menuRead);
+
+            _metadataApi.DeleteConfig(config.Version, config.Name);
+
+        }
     }
 }

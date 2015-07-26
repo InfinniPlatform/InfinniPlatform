@@ -273,4 +273,16 @@
   <data name="UnableToGetConfigMetadata" xml:space="preserve">
     <value>Unable to get config metadata with exception {0}</value>
   </data>
+  <data name="UnableToInsertMenuMetadata" xml:space="preserve">
+    <value>Unable to insert menu metadata with exception {0}</value>
+  </data>
+  <data name="UnableToUpdateMenuMetadata" xml:space="preserve">
+    <value>Unable to update menu metadata with exception {0}</value>
+  </data>
+  <data name="UnableToDeleteMenuMetadata" xml:space="preserve">
+    <value>Unable to delete menu metadata with exception {0}</value>
+  </data>
+  <data name="UnableToGetMenuMetadata" xml:space="preserve">
+    <value>Unable to get menu metadata with exception {0}</value>
+  </data>
 </root>

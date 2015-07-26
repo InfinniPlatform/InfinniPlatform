@@ -122,5 +122,59 @@ namespace InfinniPlatform.Sdk.Api
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetConfigMetadata, response.GetErrorContent()));
         }
 
+        /// <summary>
+        ///   Добавить метаданные указанного меню
+        /// </summary>
+        /// <returns>Результат добавления метаданных указанного меню</returns>
+        public dynamic InsertMenu(MenuMetadata menuMetadata, string version, string configuration)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlMetadataMenu(version, configuration), menuMetadata);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToInsertMenuMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Обновить метаданные указанного меню
+        /// </summary>
+        /// <returns>Результат обновления метаданных меню</returns>
+        public dynamic UpdateMenu(MenuMetadata menuMetadata, string version, string configuration)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlMetadataMenu(version, configuration), menuMetadata);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateMenuMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Удалить метаданные указанного меню
+        /// </summary>
+        /// <returns>Результат удаления метаданных меню</returns>
+        public dynamic DeleteMenu(string version, string configuration, string name)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingUrlMetadataMenuById(version,configuration, name));
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToDeleteMenuMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Получить метаданные меню по указанному идентификатору
+        /// </summary>
+        /// <param name="version">Версия конфигурации</param>
+        /// <param name="name">Наименование конфигурации</param>
+        /// <returns>Метаданные конфигурации</returns>
+        public dynamic GetMenu(string version, string configuration, string name)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlMetadataMenuById(version, configuration, name));
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetMenuMetadata, response.GetErrorContent()));
+        }
+
     }
 }

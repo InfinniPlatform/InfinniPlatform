@@ -25,17 +25,17 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories
             _configId = configId;
             _version = version;
 
-            _managers.Add(MetadataType.Document, BuildDocumentManager());
-            _managers.Add(MetadataType.Assembly, BuildAssemblyManager());
-            _managers.Add(MetadataType.Register, BuildRegisterManager());
-            _managers.Add(MetadataType.Report, BuildReportManager());
-            _managers.Add(MetadataType.Menu, BuildMenuManager());
+            _managers.Add(MetadataType.Document.ToLowerInvariant(), BuildDocumentManager());
+            _managers.Add(MetadataType.Assembly.ToLowerInvariant(), BuildAssemblyManager());
+            _managers.Add(MetadataType.Register.ToLowerInvariant(), BuildRegisterManager());
+            _managers.Add(MetadataType.Report.ToLowerInvariant(), BuildReportManager());
+            _managers.Add(MetadataType.Menu.ToLowerInvariant(), BuildMenuManager());
 
-            _readers.Add(MetadataType.Document, BuildDocumentMetadataReader());
-            _readers.Add(MetadataType.Assembly, BuildAssemblyMetadataReader());
-            _readers.Add(MetadataType.Register, BuildRegisterMetadataReader());
-            _readers.Add(MetadataType.Report, BuildReportMetadataReader());
-            _readers.Add(MetadataType.Menu, BuildMenuMetadataReader());
+            _readers.Add(MetadataType.Document.ToLowerInvariant(), BuildDocumentMetadataReader());
+            _readers.Add(MetadataType.Assembly.ToLowerInvariant(), BuildAssemblyMetadataReader());
+            _readers.Add(MetadataType.Register.ToLowerInvariant(), BuildRegisterMetadataReader());
+            _readers.Add(MetadataType.Report.ToLowerInvariant(), BuildReportMetadataReader());
+            _readers.Add(MetadataType.Menu.ToLowerInvariant(), BuildMenuMetadataReader());
         }
 
         public IDataReader BuildMenuMetadataReader()
@@ -130,16 +130,16 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories
 
         public IDataManager BuildManagerByType(string configMetadataType)
         {
-            if (_managers.ContainsKey(configMetadataType))
+            if (_managers.ContainsKey(configMetadataType.ToLowerInvariant()))
             {
-                return _managers[configMetadataType];
+                return _managers[configMetadataType.ToLowerInvariant()];
             }
             return null;
         }
 
         public IDataReader BuildMetadataReaderByType(string configMetadataType)
         {
-            return _readers[configMetadataType];
+            return _readers[configMetadataType.ToLowerInvariant()];
         }
     }
 }

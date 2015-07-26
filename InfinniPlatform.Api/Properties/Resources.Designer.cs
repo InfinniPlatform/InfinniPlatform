@@ -727,6 +727,15 @@ namespace InfinniPlatform.Api.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Metadata element with identifier {0} and version {1} not found..
+        /// </summary>
+        public static string MetadataElementNotFound {
+            get {
+                return ResourceManager.GetString("MetadataElementNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Metadata id should not be empty..
         /// </summary>
         public static string MetadataIdShouldNotBeEmpty {

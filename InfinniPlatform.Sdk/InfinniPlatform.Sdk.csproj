@@ -168,6 +168,7 @@
     <Compile Include="Global\ScriptContext.cs" />
     <Compile Include="Global\ScriptContextApp.cs" />
     <Compile Include="Metadata\ConfigurationMetadata.cs" />
+    <Compile Include="Metadata\MenuMetadata.cs" />
     <Compile Include="Metadata\SolutionMetadata.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

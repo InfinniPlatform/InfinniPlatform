@@ -46,7 +46,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
         public override dynamic GetItem(string metadataName)
         {
             var result =
-                QueryMetadata.QueryConfiguration(QueryMetadata.GetConfigurationMetadataByNameIql(ConfigurationId, metadataName,
+                QueryMetadata.QueryConfiguration(QueryMetadata.GetConfigurationMetadataByNameIql(Version, ConfigurationId, metadataName,
                                                                                                  _metadataContainerInfo.GetMetadataContainerName(), _metadataContainerInfo.GetMetadataTypeName()))
                     .FirstOrDefault();
 

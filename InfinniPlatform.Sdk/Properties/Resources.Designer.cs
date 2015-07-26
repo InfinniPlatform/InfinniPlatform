@@ -304,6 +304,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to delete menu metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToDeleteMenuMetadata {
+            get {
+                return ResourceManager.GetString("UnableToDeleteMenuMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to delete role with exception: {0}.
         /// </summary>
         internal static string UnableToDeleteRole {
@@ -385,6 +394,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to get menu metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToGetMenuMetadata {
+            get {
+                return ResourceManager.GetString("UnableToGetMenuMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to get session with exception: {0}.
         /// </summary>
         internal static string UnableToGetSession {
@@ -426,6 +444,15 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string UnableToInsertConfigMetadata {
             get {
                 return ResourceManager.GetString("UnableToInsertConfigMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to insert menu metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToInsertMenuMetadata {
+            get {
+                return ResourceManager.GetString("UnableToInsertMenuMetadata", resourceCulture);
             }
         }
         
@@ -516,6 +543,15 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string UnableToUpdateDocument {
             get {
                 return ResourceManager.GetString("UnableToUpdateDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to update menu metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToUpdateMenuMetadata {
+            get {
+                return ResourceManager.GetString("UnableToUpdateMenuMetadata", resourceCulture);
             }
         }
         

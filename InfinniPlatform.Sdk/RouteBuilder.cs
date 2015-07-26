@@ -104,14 +104,46 @@ namespace InfinniPlatform.Sdk
         ///  Сформировать роутинг запроса для работы с метаданными по идентификатору 
         /// </summary>
         /// <param name="version">Версия приложения</param>
-        /// <param name="id">Идентификатор приложения</param>
+        /// <param name="name">Наименование приложения</param>
         /// <returns></returns>
-        public string BuildRestRoutingUrlMetadataConfigById(string version, string id)
+        public string BuildRestRoutingUrlMetadataConfigById(string version, string name)
         {
             return GetCompleteUrl(GetRestTemplateStandardSpecifiedVersionAndInstanceId()
                                       .ReplaceFormat("application", "metadata")
                                       .ReplaceFormat("documentType", "configuration")
                                       .ReplaceFormat("version", version)
+                                      .ReplaceFormat("instanceId", name)
+                                      );
+        }
+
+        /// <summary>
+        ///   Сформировать роутинг запроса для работы с метаданными меню
+        /// </summary>
+        /// <returns></returns>
+        public string BuildRestRoutingUrlMetadataMenu(string version, string configuration)
+        {
+            return GetCompleteUrl(GetRestTemplateConfigMetadataElement()
+                                      .ReplaceFormat("application", "metadata")
+                                      .ReplaceFormat("version", version)
+                                      .ReplaceFormat("configuration", configuration)
+                                      .ReplaceFormat("metadataType", "menu")                                      
+                                      );        
+        }
+
+        /// <summary>
+        ///  Сформировать роутинг запроса для работы с метаданными по идентификатору 
+        /// </summary>
+        /// <param name="version">Версия приложения</param>
+        /// <param name="configuration">Конфигурация</param>
+        /// <param name="id">Идентификатор приложения</param>
+        /// <returns></returns>
+        public string BuildRestRoutingUrlMetadataMenuById(string version, string configuration, string id)
+        {
+            return GetCompleteUrl(GetRestTemplateConfigMetadataElementSpecifiedVersionAndInstanceId()
+                                      .ReplaceFormat("application", "metadata")
+                                      .ReplaceFormat("version", version)
+                                      .ReplaceFormat("configuration", configuration)                                      
+                                      .ReplaceFormat("metadataType", "menu")
                                       .ReplaceFormat("instanceId", id)
                                       );
         }
@@ -424,6 +456,24 @@ namespace InfinniPlatform.Sdk
         private string GetRestTemplateStandardSpecifiedVersionAndInstanceId()
         {
             return GetRestTemplateStandard() + "/{version}/{instanceId}";
+        }
+
+        /// <summary>
+        ///Получить шаблон роутинга для доступа к метаданным элементов конфигурации указанного типа
+        /// </summary>
+        /// <returns>Шаблон роутинга запроса</returns>
+        private string GetRestTemplateConfigMetadataElement()
+        {
+            return GetBaseApplicationPath() + "/{version}/{configuration}/{metadataType}";
+        }
+
+        /// <summary>
+        ///Получить шаблон роутинга для доступа к метаданным элементов конфигурации с указанием версии и идентификатора
+        /// </summary>
+        /// <returns>Шаблон роутинга запроса</returns>
+        private string GetRestTemplateConfigMetadataElementSpecifiedVersionAndInstanceId()
+        {
+            return GetBaseApplicationPath() + "/{version}/{configuration}/{metadataType}/{instanceId}";
         }
 
         /// <summary>

@@ -471,4 +471,7 @@
   <data name="ApplicationNotFound" xml:space="preserve">
     <value>Application with name {0} and version {1} not found. </value>
   </data>
+  <data name="MetadataElementNotFound" xml:space="preserve">
+    <value>Metadata element with identifier {0} and version {1} not found.</value>
+  </data>
 </root>
