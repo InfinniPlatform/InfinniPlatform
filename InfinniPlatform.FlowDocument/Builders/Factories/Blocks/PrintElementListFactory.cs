@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Windows;
 using System.Windows.Documents;
+using InfinniPlatform.FlowDocument.Model;
+using InfinniPlatform.FlowDocument.Model.Blocks;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 {

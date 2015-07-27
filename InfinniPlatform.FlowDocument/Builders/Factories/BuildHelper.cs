@@ -3,9 +3,7 @@ using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Media;
-
+using InfinniPlatform.FlowDocument.Model;
 using FrameworkFlowDocument = System.Windows.Documents.FlowDocument;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories

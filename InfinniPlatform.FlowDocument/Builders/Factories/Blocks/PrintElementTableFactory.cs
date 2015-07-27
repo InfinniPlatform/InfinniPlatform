@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
+using InfinniPlatform.FlowDocument.Model;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 {
