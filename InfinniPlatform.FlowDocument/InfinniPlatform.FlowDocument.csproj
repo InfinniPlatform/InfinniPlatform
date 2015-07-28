@@ -42,6 +42,13 @@
     <Compile Include="Builders\Factories\Blocks\PrintElementSectionFactory.cs" />
     <Compile Include="Builders\Factories\Blocks\PrintElementPageBreakFactory.cs" />
     <Compile Include="Builders\Factories\Blocks\PrintElementLineFactory.cs" />
+    <Compile Include="Model\Block.cs" />
+    <Compile Include="Model\Blocks\List.cs" />
+    <Compile Include="Model\Blocks\ListItem.cs" />
+    <Compile Include="Model\Blocks\Paragraph.cs" />
+    <Compile Include="Model\Brush.cs" />
+    <Compile Include="Model\FontStretches.cs" />
+    <Compile Include="Model\FontStyles.cs" />
     <Compile Include="Model\BrushConverter.cs" />
     <Compile Include="Builders\Factories\BuildHelper.cs" />
     <Compile Include="Builders\ConvertHelper.cs" />
@@ -67,6 +74,12 @@
     <Compile Include="Converters\FlowDocumentXmlConverter.cs" />
     <Compile Include="Converters\FlowDocumentXpsConverter.cs" />
     <Compile Include="Converters\IFlowDocumentConverter.cs" />
+    <Compile Include="Model\FontVariants.cs" />
+    <Compile Include="Model\FontWeights.cs" />
+    <Compile Include="Model\TextAlignment.cs" />
+    <Compile Include="Model\TextDecorations.cs" />
+    <Compile Include="Model\TextElement.cs" />
+    <Compile Include="Model\TextMarkerStyle.cs" />
     <Compile Include="Model\Thickness.cs" />
     <Compile Include="Model\Views\ViewDocument.cs" />
     <Compile Include="PrintElementMetadataMap.cs" />
@@ -119,7 +132,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Model\Blocks\" />
     <Folder Include="Model\Inlines\" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
