@@ -30,6 +30,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FastReport, Version=2013.4.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FastReport.Net.2013.4.6\lib\net40\FastReport.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FastReport.Bars, Version=2013.4.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FastReport.Net.2013.4.6\lib\net40\FastReport.Bars.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FastReport.Editor, Version=2013.4.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FastReport.Net.2013.4.6\lib\net40\FastReport.Editor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -43,7 +55,7 @@
     <Compile Include="Builders\Factories\Blocks\PrintElementSectionFactory.cs" />
     <Compile Include="Builders\Factories\Blocks\PrintElementPageBreakFactory.cs" />
     <Compile Include="Builders\Factories\Blocks\PrintElementLineFactory.cs" />
-    <Compile Include="Model\Block.cs" />
+    <Compile Include="Model\Blocks\Block.cs" />
     <Compile Include="Model\Blocks\List.cs" />
     <Compile Include="Model\Blocks\ListItem.cs" />
     <Compile Include="Model\Blocks\Paragraph.cs" />
@@ -80,17 +92,25 @@
     <Compile Include="Model\FontVariants.cs" />
     <Compile Include="Model\FontWeights.cs" />
     <Compile Include="Model\GridLength.cs" />
-    <Compile Include="Model\Inline.cs" />
-    <Compile Include="Model\Run.cs" />
-    <Compile Include="Model\Span.cs" />
-    <Compile Include="Model\TableCell.cs" />
-    <Compile Include="Model\TableColumn.cs" />
-    <Compile Include="Model\TableRow.cs" />
+    <Compile Include="Model\Inlines\Inline.cs" />
+    <Compile Include="Model\Inlines\Bold.cs" />
+    <Compile Include="Model\Inlines\Hyperlink.cs" />
+    <Compile Include="Model\Inlines\Image.cs" />
+    <Compile Include="Model\Inlines\Italic.cs" />
+    <Compile Include="Model\Inlines\LineBreak.cs" />
+    <Compile Include="Model\Inlines\Rotation.cs" />
+    <Compile Include="Model\Inlines\Run.cs" />
+    <Compile Include="Model\Inlines\Span.cs" />
+    <Compile Include="Model\Inlines\Underline.cs" />
+    <Compile Include="Model\Blocks\TableCell.cs" />
+    <Compile Include="Model\Blocks\TableColumn.cs" />
+    <Compile Include="Model\Blocks\TableRow.cs" />
     <Compile Include="Model\TextAlignment.cs" />
     <Compile Include="Model\TextDecorations.cs" />
     <Compile Include="Model\TextElement.cs" />
     <Compile Include="Model\TextMarkerStyle.cs" />
     <Compile Include="Model\Thickness.cs" />
+    <Compile Include="Model\Views\FlowDocument.cs" />
     <Compile Include="Model\Views\ViewDocument.cs" />
     <Compile Include="PrintElementMetadataMap.cs" />
     <Compile Include="PrintView\FlowDocumentPrintViewDesignerFactory.cs" />
@@ -141,9 +161,7 @@
       <LastGenOutput>AssemblyInfo.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\Inlines\" />
-  </ItemGroup>
+  <ItemGroup />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

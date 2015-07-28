@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows;
+//using System.Windows;
 using InfinniPlatform.FlowDocument.Model;
-using FrameworkFlowDocument = System.Windows.Documents.FlowDocument;
+//using FrameworkFlowDocument = System.Windows.Documents.FlowDocument;
+using FrameworkFlowDocument = InfinniPlatform.FlowDocument.Model.Views.FlowDocument;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Views
 {

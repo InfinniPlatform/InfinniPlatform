@@ -5,6 +5,7 @@ using System.Text;
 //using System.Windows;
 using InfinniPlatform.FlowDocument.Model;
 using InfinniPlatform.FlowDocument.Model.Blocks;
+using InfinniPlatform.FlowDocument.Model.Inlines;
 using InfinniPlatform.FlowDocument.Model.Views;
 
 //using FrameworkFlowDocument = System.Windows.Documents.FlowDocument;

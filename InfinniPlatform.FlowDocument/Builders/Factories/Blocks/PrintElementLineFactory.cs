@@ -15,7 +15,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 							  FontSize = 0.1,
 							  Margin = BuildHelper.DefaultMargin,
 							  Padding = BuildHelper.DefaultPadding,
-							  BorderBrush = Brushes.Black,
+							  BorderBrush = Brush.Black,
 							  BorderThickness = new Thickness(0, 0, 0, 1)
 						  };
 

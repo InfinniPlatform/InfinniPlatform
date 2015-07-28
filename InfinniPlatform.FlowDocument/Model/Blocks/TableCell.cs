@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace InfinniPlatform.FlowDocument.Model
+namespace InfinniPlatform.FlowDocument.Model.Blocks
 {
     public class TableCell : TextElement
     {

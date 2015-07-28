@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.FlowDocument.Model
+﻿namespace InfinniPlatform.FlowDocument.Model.Blocks
 {
     public class TableColumn
     {

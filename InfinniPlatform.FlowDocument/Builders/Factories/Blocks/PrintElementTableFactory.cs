@@ -17,7 +17,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 			var element = new Table
 						  {
 							  CellSpacing = 0,
-							  BorderBrush = Brushes.Black,
+							  BorderBrush = Brush.Black,
 							  BorderThickness = new Thickness(1, 1, 0, 0),
 							  Margin = BuildHelper.DefaultMargin,
 							  Padding = BuildHelper.DefaultPadding,
@@ -286,7 +286,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 							{
 								ColumnSpan = 1,
 								RowSpan = 1,
-								BorderBrush = Brushes.Black,
+								BorderBrush = Brush.Black,
 								BorderThickness = new Thickness(0, 0, 1, 1),
 								Padding = BuildHelper.DefaultPadding
 							};

@@ -10,5 +10,7 @@
             _unitValue = (type == GridUnitType.Auto) ? 0.0 : value;
             _unitType = type;
         }
+        public GridUnitType GridUnitType { get { return _unitType; } }
+        public double Value { get { return _unitValue; } }
     }
 }
