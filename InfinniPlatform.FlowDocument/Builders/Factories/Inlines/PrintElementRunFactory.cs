@@ -1,5 +1,4 @@
-﻿//using System.Windows.Documents;
-using InfinniPlatform.FlowDocument.Model.Inlines;
+﻿using InfinniPlatform.FlowDocument.Model.Inlines;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 {

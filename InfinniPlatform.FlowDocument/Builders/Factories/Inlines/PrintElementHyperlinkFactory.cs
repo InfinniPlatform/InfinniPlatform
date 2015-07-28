@@ -1,6 +1,5 @@
 ﻿using System;
 using InfinniPlatform.FlowDocument.Model.Inlines;
-//using System.Windows.Documents;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 {

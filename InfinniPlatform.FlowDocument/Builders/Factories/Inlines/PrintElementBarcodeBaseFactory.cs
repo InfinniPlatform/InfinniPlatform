@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-
 using FastReport;
 using FastReport.Barcode;
 using FastReport.Utils;

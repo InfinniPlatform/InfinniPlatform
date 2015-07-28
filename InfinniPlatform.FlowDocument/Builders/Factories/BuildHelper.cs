@@ -6,9 +6,9 @@ using System.Text;
 using InfinniPlatform.FlowDocument.Model;
 using InfinniPlatform.FlowDocument.Model.Blocks;
 using InfinniPlatform.FlowDocument.Model.Inlines;
-using InfinniPlatform.FlowDocument.Model.Views;
 
 //using FrameworkFlowDocument = System.Windows.Documents.FlowDocument;
+using FrameworkFlowDocument = InfinniPlatform.FlowDocument.Model.Views.ViewDocument;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories
 {
@@ -245,9 +245,9 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
 
 		private static bool ForEachRunElements(object element, Func<Run, bool> action)
 		{
-			if (element is ViewDocument)
+            if (element is FrameworkFlowDocument)
 			{
-                foreach (var item in ((ViewDocument)element).Blocks.ToArray())
+                foreach (var item in ((FrameworkFlowDocument)element).Blocks.ToArray())
 				{
 					if (!ForEachRunElements(item, action))
 					{

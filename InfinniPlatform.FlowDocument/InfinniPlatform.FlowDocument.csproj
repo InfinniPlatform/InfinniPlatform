@@ -110,7 +110,6 @@
     <Compile Include="Model\TextElement.cs" />
     <Compile Include="Model\TextMarkerStyle.cs" />
     <Compile Include="Model\Thickness.cs" />
-    <Compile Include="Model\Views\FlowDocument.cs" />
     <Compile Include="Model\Views\ViewDocument.cs" />
     <Compile Include="PrintElementMetadataMap.cs" />
     <Compile Include="PrintView\FlowDocumentPrintViewDesignerFactory.cs" />
