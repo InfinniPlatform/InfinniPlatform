@@ -2,10 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Media;
+//using System.Windows;
+//using System.Windows.Documents;
+//using System.Windows.Media;
 using InfinniPlatform.FlowDocument.Model;
+using InfinniPlatform.FlowDocument.Model.Blocks;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 {
@@ -20,7 +21,6 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 							  BorderThickness = new Thickness(1, 1, 0, 0),
 							  Margin = BuildHelper.DefaultMargin,
 							  Padding = BuildHelper.DefaultPadding,
-							  RowGroups = { new TableRowGroup() }
 						  };
 
 			BuildHelper.ApplyTextProperties(element, buildContext.ElementStyle);
@@ -40,7 +40,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 			if (!ConvertHelper.TryToBool(elementMetadata.ShowHeader, out showHeader) || showHeader)
 			{
 				var tableRow = CreateHeaderTableRow(buildContext, element, elementMetadata.Columns);
-				element.RowGroups[0].Rows.Add(tableRow);
+				element.Rows.Add(tableRow);
 			}
 
 			// Генерация явно объявленных строк таблицы
@@ -58,7 +58,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 					foreach (var rowSource in (IEnumerable)tableSource)
 					{
 						var tableRow = CreateDynamicTableRow(buildContext, element, elementMetadata.Columns, rowSource);
-						element.RowGroups[0].Rows.Add(tableRow);
+						element.Rows.Add(tableRow);
 					}
 				}
 			}
@@ -69,7 +69,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 				if (HasCellTemplate(elementMetadata.Columns))
 				{
 					var tableRow = CreateDynamicTableRow(buildContext, element, elementMetadata.Columns, null);
-					element.RowGroups[0].Rows.Add(tableRow);
+					element.Rows.Add(tableRow);
 				}
 			}
 
@@ -201,7 +201,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 
 					buildContext.MapElement(tableRow, rowMetadata);
 
-					table.RowGroups[0].Rows.Add(tableRow);
+					table.Rows.Add(tableRow);
 
 					++rowIndex;
 				}

@@ -36,6 +36,7 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\GridUnitType.cs" />
     <Compile Include="Builders\Factories\Blocks\PrintElementTableFactory.cs" />
     <Compile Include="Builders\Factories\Blocks\PrintElementListFactory.cs" />
     <Compile Include="Builders\Factories\Blocks\PrintElementParagraphFactory.cs" />
@@ -46,6 +47,8 @@
     <Compile Include="Model\Blocks\List.cs" />
     <Compile Include="Model\Blocks\ListItem.cs" />
     <Compile Include="Model\Blocks\Paragraph.cs" />
+    <Compile Include="Model\Blocks\Section.cs" />
+    <Compile Include="Model\Blocks\Table.cs" />
     <Compile Include="Model\Brush.cs" />
     <Compile Include="Model\FontStretches.cs" />
     <Compile Include="Model\FontStyles.cs" />
@@ -76,6 +79,13 @@
     <Compile Include="Converters\IFlowDocumentConverter.cs" />
     <Compile Include="Model\FontVariants.cs" />
     <Compile Include="Model\FontWeights.cs" />
+    <Compile Include="Model\GridLength.cs" />
+    <Compile Include="Model\Inline.cs" />
+    <Compile Include="Model\Run.cs" />
+    <Compile Include="Model\Span.cs" />
+    <Compile Include="Model\TableCell.cs" />
+    <Compile Include="Model\TableColumn.cs" />
+    <Compile Include="Model\TableRow.cs" />
     <Compile Include="Model\TextAlignment.cs" />
     <Compile Include="Model\TextDecorations.cs" />
     <Compile Include="Model\TextElement.cs" />

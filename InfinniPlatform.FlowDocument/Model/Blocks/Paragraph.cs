@@ -2,6 +2,6 @@
 {
     public class Paragraph: Block
     {
-        
+        public double TextIndent { get; set; }
     }
 }

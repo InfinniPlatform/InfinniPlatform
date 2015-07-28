@@ -2,9 +2,12 @@
 using System.Collections;
 using System.Linq;
 using System.Text;
-using System.Windows;
+//using System.Windows;
 using InfinniPlatform.FlowDocument.Model;
-using FrameworkFlowDocument = System.Windows.Documents.FlowDocument;
+using InfinniPlatform.FlowDocument.Model.Blocks;
+using InfinniPlatform.FlowDocument.Model.Views;
+
+//using FrameworkFlowDocument = System.Windows.Documents.FlowDocument;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories
 {
@@ -241,9 +244,9 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
 
 		private static bool ForEachRunElements(object element, Func<Run, bool> action)
 		{
-			if (element is FrameworkFlowDocument)
+			if (element is ViewDocument)
 			{
-				foreach (var item in ((FrameworkFlowDocument)element).Blocks.ToArray())
+                foreach (var item in ((ViewDocument)element).Blocks.ToArray())
 				{
 					if (!ForEachRunElements(item, action))
 					{
@@ -253,7 +256,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
 			}
 			else if (element is Table)
 			{
-				foreach (var item in ((Table)element).RowGroups.SelectMany(i => i.Rows).SelectMany(i => i.Cells).SelectMany(i => i.Blocks).ToArray())
+				foreach (var item in ((Table)element).SelectMany(i => i.Rows).SelectMany(i => i.Cells).SelectMany(i => i.Blocks).ToArray())
 				{
 					if (!ForEachRunElements(item, action))
 					{

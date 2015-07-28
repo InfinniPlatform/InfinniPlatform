@@ -3,5 +3,7 @@
     public class List: Block
     {
         public TextMarkerStyle MarkerStyle { get; set; }
+        public int StartIndex { get; set; }
+        public double MarkerOffset { get; set; }
     }
 }
