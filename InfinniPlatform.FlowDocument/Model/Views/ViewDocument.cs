@@ -3,7 +3,7 @@ using InfinniPlatform.FlowDocument.Model.Blocks;
 
 namespace InfinniPlatform.FlowDocument.Model.Views
 {
-    class ViewDocument
+    public class ViewDocument
     {
         public ViewDocument()
         {

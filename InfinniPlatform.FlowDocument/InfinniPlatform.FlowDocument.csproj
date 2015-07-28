@@ -85,9 +85,7 @@
     <Compile Include="Builders\Factories\Inlines\PrintElementBoldFactory.cs" />
     <Compile Include="Builders\Factories\Views\PrintViewFactory.cs" />
     <Compile Include="Converters\FlowDocumentPdfConverter.cs" />
-    <Compile Include="Converters\FlowDocumentRtfConverter.cs" />
-    <Compile Include="Converters\FlowDocumentXmlConverter.cs" />
-    <Compile Include="Converters\FlowDocumentXpsConverter.cs" />
+    <Compile Include="Converters\FlowDocumentHtmlConverter.cs" />
     <Compile Include="Converters\IFlowDocumentConverter.cs" />
     <Compile Include="Model\FontVariants.cs" />
     <Compile Include="Model\FontWeights.cs" />

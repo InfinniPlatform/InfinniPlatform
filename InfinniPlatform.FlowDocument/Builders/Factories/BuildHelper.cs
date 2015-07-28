@@ -257,7 +257,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
 			}
 			else if (element is Table)
 			{
-				foreach (var item in ((Table)element).SelectMany(i => i.Rows).SelectMany(i => i.Cells).SelectMany(i => i.Blocks).ToArray())
+				foreach (var item in ((Table)element).Rows.SelectMany(i => i.Cells).SelectMany(i => i.Blocks).ToArray())
 				{
 					if (!ForEachRunElements(item, action))
 					{

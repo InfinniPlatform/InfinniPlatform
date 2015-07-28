@@ -4,7 +4,7 @@
     {
         public Brush ConvertFromString(string valueString)
         {
-            
+            return new Brush(valueString);
         }
     }
 }
