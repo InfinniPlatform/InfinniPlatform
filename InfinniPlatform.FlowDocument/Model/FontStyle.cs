@@ -1,6 +1,6 @@
 ﻿namespace InfinniPlatform.FlowDocument.Model
 {
-    public enum FontStyles
+    public enum FontStyle
     {
         Normal,
         Italic,

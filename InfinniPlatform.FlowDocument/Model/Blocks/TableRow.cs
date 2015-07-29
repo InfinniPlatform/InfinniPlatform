@@ -2,7 +2,7 @@
 
 namespace InfinniPlatform.FlowDocument.Model.Blocks
 {
-    public class TableRow : TextElement
+    public class TableRow : PrintElement
     {
         public List<TableCell> Cells;
 

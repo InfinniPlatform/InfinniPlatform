@@ -8,6 +8,6 @@ namespace InfinniPlatform.FlowDocument.Converters
 	/// </summary>
 	interface IFlowDocumentConverter
 	{
-		void Convert(ViewDocument document, Stream documentStream);
+		void Convert(PrintViewDocument document, Stream documentStream);
 	}
 }

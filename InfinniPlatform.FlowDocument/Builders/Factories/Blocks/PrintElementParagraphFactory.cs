@@ -6,7 +6,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 	{
 		public object Create(PrintElementBuildContext buildContext, dynamic elementMetadata)
 		{
-			var element = new Paragraph
+			var element = new PrintElementParagraph
 						  {
 							  Margin = BuildHelper.DefaultMargin,
 							  Padding = BuildHelper.DefaultPadding
@@ -36,7 +36,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 			return element;
 		}
 
-		private static void ApplyIndent(Paragraph element, dynamic elementMetadata)
+		private static void ApplyIndent(PrintElementParagraph element, dynamic elementMetadata)
 		{
 			double indentSize;
 
@@ -46,7 +46,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 			}
 		}
 
-		private static PrintElementBuildContext CreateContentContext(Paragraph element, PrintElementBuildContext buildContext)
+		private static PrintElementBuildContext CreateContentContext(PrintElementParagraph element, PrintElementBuildContext buildContext)
 		{
 			var contentWidth = BuildHelper.CalcContentWidth(buildContext.ElementWidth, element.Margin, element.Padding, element.BorderThickness);
 			return buildContext.Create(contentWidth);

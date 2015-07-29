@@ -27,7 +27,7 @@ namespace InfinniPlatform.FlowDocument.PrintView
 			return DocumentConverters.ContainsKey(printViewFileFormat);
 		}
 
-		public void Convert(ViewDocument printView, Stream printViewStream, PrintViewFileFormat printViewFileFormat)
+		public void Convert(PrintViewDocument printView, Stream printViewStream, PrintViewFileFormat printViewFileFormat)
 		{
 			IFlowDocumentConverter documentConverter;
 

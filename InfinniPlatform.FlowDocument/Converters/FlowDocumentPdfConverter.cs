@@ -6,7 +6,7 @@ namespace InfinniPlatform.FlowDocument.Converters
 {
     sealed class FlowDocumentPdfConverter : IFlowDocumentConverter
     {
-        public void Convert(ViewDocument document, Stream documentStream)
+        public void Convert(PrintViewDocument document, Stream documentStream)
         {
             //using (var xpsDocumentStream = new MemoryStream())
             //{

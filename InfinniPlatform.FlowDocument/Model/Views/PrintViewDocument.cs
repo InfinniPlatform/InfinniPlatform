@@ -3,16 +3,15 @@ using InfinniPlatform.FlowDocument.Model.Blocks;
 
 namespace InfinniPlatform.FlowDocument.Model.Views
 {
-    public class ViewDocument
+    public class PrintViewDocument : PrintElement
     {
-        public ViewDocument()
+        public PrintViewDocument()
         {
-            Blocks = new List<Block>();
+            Blocks = new List<PrintElementBlock>();
         }
-        public FontFamily FontFamily { get; set; }
         public double ColumnWidth { get; set; }
 
-        public List<Block> Blocks;
+        public List<PrintElementBlock> Blocks;
 
         public double PageWidth { get; set; }
         public double PageHeight { get; set; }

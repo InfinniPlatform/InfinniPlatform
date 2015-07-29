@@ -49,7 +49,7 @@ namespace InfinniPlatform.FlowDocument.PrintView
 		private static readonly PrintElementBuilder ElementBuilder;
 
 
-        public ViewDocument Create(object printView, object printViewSource, PrintElementMetadataMap elementMetadataMap = null)
+        public PrintViewDocument Create(object printView, object printViewSource, PrintElementMetadataMap elementMetadataMap = null)
 		{
 			var buildContext = new PrintElementBuildContext
 							   {
@@ -59,7 +59,7 @@ namespace InfinniPlatform.FlowDocument.PrintView
 								   ElementMetadataMap = elementMetadataMap
 							   };
 
-            var document = ElementBuilder.BuildElement(buildContext, printView, "PrintView") as ViewDocument;
+            var document = ElementBuilder.BuildElement(buildContext, printView, "PrintView") as PrintViewDocument;
 
 			return document;
 		}

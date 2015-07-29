@@ -2,13 +2,11 @@
 using System.Collections;
 using System.Linq;
 using System.Text;
-//using System.Windows;
+
 using InfinniPlatform.FlowDocument.Model;
 using InfinniPlatform.FlowDocument.Model.Blocks;
 using InfinniPlatform.FlowDocument.Model.Inlines;
-
-//using FrameworkFlowDocument = System.Windows.Documents.FlowDocument;
-using FrameworkFlowDocument = InfinniPlatform.FlowDocument.Model.Views.ViewDocument;
+using InfinniPlatform.FlowDocument.Model.Views;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories
 {
@@ -88,13 +86,13 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
 				switch (fontStyleString)
 				{
 					case "normal":
-						element.FontStyle = FontStyles.Normal;
+						element.FontStyle = FontStyle.Normal;
 						break;
 					case "italic":
-						element.FontStyle = FontStyles.Italic;
+						element.FontStyle = FontStyle.Italic;
 						break;
 					case "oblique":
-						element.FontStyle = FontStyles.Oblique;
+						element.FontStyle = FontStyle.Oblique;
 						break;
 				}
 			}
@@ -109,31 +107,31 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
 				switch (fontStretchString)
 				{
 					case "ultracondensed":
-						element.FontStretch = FontStretches.UltraCondensed;
+						element.FontStretch = FontStretch.UltraCondensed;
 						break;
 					case "extracondensed":
-						element.FontStretch = FontStretches.ExtraCondensed;
+						element.FontStretch = FontStretch.ExtraCondensed;
 						break;
 					case "condensed":
-						element.FontStretch = FontStretches.Condensed;
+						element.FontStretch = FontStretch.Condensed;
 						break;
 					case "semicondensed":
-						element.FontStretch = FontStretches.SemiCondensed;
+						element.FontStretch = FontStretch.SemiCondensed;
 						break;
 					case "normal":
-						element.FontStretch = FontStretches.Normal;
+						element.FontStretch = FontStretch.Normal;
 						break;
 					case "semiexpanded":
-						element.FontStretch = FontStretches.SemiExpanded;
+						element.FontStretch = FontStretch.SemiExpanded;
 						break;
 					case "expanded":
-						element.FontStretch = FontStretches.Expanded;
+						element.FontStretch = FontStretch.Expanded;
 						break;
 					case "extraexpanded":
-						element.FontStretch = FontStretches.ExtraExpanded;
+						element.FontStretch = FontStretch.ExtraExpanded;
 						break;
 					case "ultraexpanded":
-						element.FontStretch = FontStretches.UltraExpanded;
+						element.FontStretch = FontStretch.UltraExpanded;
 						break;
 				}
 			}
@@ -148,31 +146,31 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
 				switch (fontWeightString)
 				{
 					case "ultralight":
-						element.FontWeight = FontWeights.UltraLight;
+						element.FontWeight = FontWeight.UltraLight;
 						break;
 					case "extralight":
-						element.FontWeight = FontWeights.ExtraLight;
+						element.FontWeight = FontWeight.ExtraLight;
 						break;
 					case "light":
-						element.FontWeight = FontWeights.Light;
+						element.FontWeight = FontWeight.Light;
 						break;
 					case "normal":
-						element.FontWeight = FontWeights.Normal;
+						element.FontWeight = FontWeight.Normal;
 						break;
 					case "medium":
-						element.FontWeight = FontWeights.Medium;
+						element.FontWeight = FontWeight.Medium;
 						break;
 					case "semibold":
-						element.FontWeight = FontWeights.SemiBold;
+						element.FontWeight = FontWeight.SemiBold;
 						break;
 					case "bold":
-						element.FontWeight = FontWeights.Bold;
+						element.FontWeight = FontWeight.Bold;
 						break;
 					case "extrabold":
-						element.FontWeight = FontWeights.ExtraBold;
+						element.FontWeight = FontWeight.ExtraBold;
 						break;
 					case "ultrabold":
-						element.FontWeight = FontWeights.UltraBold;
+						element.FontWeight = FontWeight.UltraBold;
 						break;
 				}
 			}
@@ -245,9 +243,9 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
 
 		private static bool ForEachRunElements(object element, Func<Run, bool> action)
 		{
-            if (element is FrameworkFlowDocument)
+            if (element is PrintViewDocument)
 			{
-                foreach (var item in ((FrameworkFlowDocument)element).Blocks.ToArray())
+                foreach (var item in ((PrintViewDocument)element).Blocks.ToArray())
 				{
 					if (!ForEachRunElements(item, action))
 					{
@@ -255,9 +253,9 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
 					}
 				}
 			}
-			else if (element is Table)
+			else if (element is PrintElementTable)
 			{
-				foreach (var item in ((Table)element).Rows.SelectMany(i => i.Cells).SelectMany(i => i.Blocks).ToArray())
+				foreach (var item in ((PrintElementTable)element).Rows.SelectMany(i => i.Cells).SelectMany(i => i.Blocks).ToArray())
 				{
 					if (!ForEachRunElements(item, action))
 					{
@@ -285,9 +283,9 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
 					}
 				}
 			}
-			else if (element is Section)
+			else if (element is PrintElementSection)
 			{
-				foreach (var item in ((Section)element).Blocks.ToArray())
+				foreach (var item in ((PrintElementSection)element).Blocks.ToArray())
 				{
 					if (!ForEachRunElements(item, action))
 					{
@@ -295,9 +293,9 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
 					}
 				}
 			}
-			else if (element is Paragraph)
+			else if (element is PrintElementParagraph)
 			{
-				foreach (var item in ((Paragraph)element).Inlines.ToArray())
+				foreach (var item in ((PrintElementParagraph)element).Inlines.ToArray())
 				{
 					if (!ForEachRunElements(item, action))
 					{

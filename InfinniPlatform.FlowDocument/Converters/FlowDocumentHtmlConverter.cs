@@ -6,7 +6,7 @@ namespace InfinniPlatform.FlowDocument.Converters
 {
     sealed class FlowDocumentHtmlConverter : IFlowDocumentConverter
     {
-        public void Convert(ViewDocument document, Stream documentStream)
+        public void Convert(PrintViewDocument document, Stream documentStream)
         {
             // TODO
         }

@@ -8,7 +8,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 	{
 		public object Create(PrintElementBuildContext buildContext, dynamic elementMetadata)
 		{
-			var element = new List
+			var element = new PrintElementList
 						  {
 							  Margin = BuildHelper.DefaultMargin,
 							  Padding = BuildHelper.DefaultPadding,
@@ -56,7 +56,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 
 						var dynamicItem = buildContext.ElementBuilder.BuildElement(itemContext, listItemTemplate);
 
-						if (dynamicItem is Block)
+						if (dynamicItem is PrintElementBlock)
 						{
 							var listItem = new ListItem();
 							listItem.Blocks.Add(dynamicItem);
@@ -72,7 +72,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 
 					var dynamicItem = buildContext.ElementBuilder.BuildElement(itemContext, listItemTemplate);
 
-					if (dynamicItem is Block)
+					if (dynamicItem is PrintElementBlock)
 					{
 						var listItem = new ListItem();
 						listItem.Blocks.Add(dynamicItem);
@@ -87,7 +87,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 			return element;
 		}
 
-		private static void ApplyStartIndex(List element, dynamic startIndex)
+		private static void ApplyStartIndex(PrintElementList element, dynamic startIndex)
 		{
 			int startIndexInt;
 
@@ -97,7 +97,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 			}
 		}
 
-		private static void ApplyMarkerStyle(List element, dynamic markerStyle)
+		private static void ApplyMarkerStyle(PrintElementList element, dynamic markerStyle)
 		{
 			string markerStyleString;
 
@@ -139,7 +139,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 			}
 		}
 
-		private static void MarkerOffsetStyle(List element, dynamic markerOffsetSize, dynamic markerOffsetSizeUnit)
+		private static void MarkerOffsetStyle(PrintElementList element, dynamic markerOffsetSize, dynamic markerOffsetSizeUnit)
 		{
 			double markerOffset;
 
@@ -149,7 +149,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 			}
 		}
 
-		private static PrintElementBuildContext CreateItemContext(List element, PrintElementBuildContext buildContext)
+		private static PrintElementBuildContext CreateItemContext(PrintElementList element, PrintElementBuildContext buildContext)
 		{
 			var contentWidth = BuildHelper.CalcContentWidth(buildContext.ElementWidth, element.Margin, element.Padding, element.BorderThickness, new Thickness(element.MarkerOffset));
 			return buildContext.Create(contentWidth);

@@ -1,6 +1,6 @@
 ﻿namespace InfinniPlatform.FlowDocument.Model
 {
-    public enum FontStretches
+    public enum FontStretch
     {
         UltraCondensed,
         ExtraCondensed,

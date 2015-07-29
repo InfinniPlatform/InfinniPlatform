@@ -2,13 +2,14 @@
 
 namespace InfinniPlatform.FlowDocument.Model.Blocks
 {
-    public class ListItem : PrintElement
+    public class PrintElementSection : PrintElementBlock
     {
 
-        public ListItem()
+        public PrintElementSection()
         {
             Blocks = new List<PrintElementBlock>();
         }
         public List<PrintElementBlock> Blocks { get; set; }
+
     }
 }

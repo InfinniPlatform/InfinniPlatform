@@ -6,7 +6,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 	{
 		public object Create(PrintElementBuildContext buildContext, dynamic elementMetadata)
 		{
-			var element = new Section
+			var element = new PrintElementSection
 						  {
 							  Margin = BuildHelper.DefaultMargin,
 							  Padding = BuildHelper.DefaultPadding
@@ -34,7 +34,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 			return element;
 		}
 
-		private static PrintElementBuildContext CreateContentContext(Section element, PrintElementBuildContext buildContext)
+		private static PrintElementBuildContext CreateContentContext(PrintElementSection element, PrintElementBuildContext buildContext)
 		{
 			var contentWidth = BuildHelper.CalcContentWidth(buildContext.ElementWidth, element.Margin, element.Padding, element.BorderThickness);
 			return buildContext.Create(contentWidth);

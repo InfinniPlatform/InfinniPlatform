@@ -55,15 +55,15 @@
     <Compile Include="Builders\Factories\Blocks\PrintElementSectionFactory.cs" />
     <Compile Include="Builders\Factories\Blocks\PrintElementPageBreakFactory.cs" />
     <Compile Include="Builders\Factories\Blocks\PrintElementLineFactory.cs" />
-    <Compile Include="Model\Blocks\Block.cs" />
-    <Compile Include="Model\Blocks\List.cs" />
+    <Compile Include="Model\Blocks\PrintElementBlock.cs" />
+    <Compile Include="Model\Blocks\PrintElementList.cs" />
     <Compile Include="Model\Blocks\ListItem.cs" />
-    <Compile Include="Model\Blocks\Paragraph.cs" />
-    <Compile Include="Model\Blocks\Section.cs" />
-    <Compile Include="Model\Blocks\Table.cs" />
+    <Compile Include="Model\Blocks\PrintElementParagraph.cs" />
+    <Compile Include="Model\Blocks\PrintElementSection.cs" />
+    <Compile Include="Model\Blocks\PrintElementTable.cs" />
     <Compile Include="Model\Brush.cs" />
-    <Compile Include="Model\FontStretches.cs" />
-    <Compile Include="Model\FontStyles.cs" />
+    <Compile Include="Model\FontStretch.cs" />
+    <Compile Include="Model\FontStyle.cs" />
     <Compile Include="Model\BrushConverter.cs" />
     <Compile Include="Builders\Factories\BuildHelper.cs" />
     <Compile Include="Builders\ConvertHelper.cs" />
@@ -88,7 +88,7 @@
     <Compile Include="Converters\FlowDocumentHtmlConverter.cs" />
     <Compile Include="Converters\IFlowDocumentConverter.cs" />
     <Compile Include="Model\FontVariants.cs" />
-    <Compile Include="Model\FontWeights.cs" />
+    <Compile Include="Model\FontWeight.cs" />
     <Compile Include="Model\GridLength.cs" />
     <Compile Include="Model\Inlines\Inline.cs" />
     <Compile Include="Model\Inlines\Bold.cs" />
@@ -103,12 +103,13 @@
     <Compile Include="Model\Blocks\TableCell.cs" />
     <Compile Include="Model\Blocks\TableColumn.cs" />
     <Compile Include="Model\Blocks\TableRow.cs" />
+    <Compile Include="Model\Stretch.cs" />
     <Compile Include="Model\TextAlignment.cs" />
     <Compile Include="Model\TextDecorations.cs" />
-    <Compile Include="Model\TextElement.cs" />
+    <Compile Include="Model\PrintElement.cs" />
     <Compile Include="Model\TextMarkerStyle.cs" />
     <Compile Include="Model\Thickness.cs" />
-    <Compile Include="Model\Views\ViewDocument.cs" />
+    <Compile Include="Model\Views\PrintViewDocument.cs" />
     <Compile Include="PrintElementMetadataMap.cs" />
     <Compile Include="PrintView\FlowDocumentPrintViewDesignerFactory.cs" />
     <Compile Include="PrintView\FlowDocumentPrintViewConverter.cs" />
@@ -138,6 +139,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Model\Model.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

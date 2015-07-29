@@ -1,13 +1,10 @@
 ﻿using System.Drawing;
-using System.Globalization;
+using System.Drawing.Imaging;
 using System.IO;
-using Image = InfinniPlatform.FlowDocument.Model.Inlines.Image;
 
-//using System.Windows;
-//using System.Windows.Controls;
-//using System.Windows.Documents;
-//using System.Windows.Media;
-//using System.Windows.Media.Imaging;
+using InfinniPlatform.FlowDocument.Model;
+
+using Image = InfinniPlatform.FlowDocument.Model.Inlines.Image;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 {
@@ -28,34 +25,28 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 
         private static Image CreateImage(PrintElementBuildContext buildContext, dynamic elementMetadata)
         {
-            var imageData = GetImageDataStream(buildContext, elementMetadata.Data);
-            if (imageData != null)
+            var imageStream = GetImageDataStream(buildContext, elementMetadata.Data);
+            if (imageStream != null)
             {
-                imageData = ApplyImageData(imageData, buildContext, elementMetadata);
+                return ApplyImageData(imageStream, elementMetadata);
             }
             return null;
         }
 
-        private static Stream ApplyImageData(Stream imageStream, PrintElementBuildContext buildContext, dynamic elementMetadata)
+        private static Image ApplyImageData(Stream imageStream, dynamic elementMetadata)
         {
-
+            Image image = null;
             try
             {
-                // var b = new Bitmap(element);
-                // b.Rotate();
-                // b.Resize();
-                // b.Stretch();
-                // b.Save();
-
-
                 imageStream = ApplyRotation(imageStream, elementMetadata.Rotation);
-                ApplySize(imageStream, elementMetadata.Size);
-                ApplyStretch(imageStream, elementMetadata.Stretch);
+                image = new Image(imageStream);
+                ApplySize(image, elementMetadata.Size);
+                ApplyStretch(image, elementMetadata.Stretch);
             }
             catch
             {
             }
-            return imageStream;
+            return image;
         }
 
         private static Stream GetImageDataStream(PrintElementBuildContext buildContext, dynamic imageData)
@@ -98,30 +89,21 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 
         private static Stream GetImageDataStreamStub(string imageText)
         {
-            var formattedText = new FormattedText(imageText, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, Brushes.Black)
-                                {
-                                    MaxTextWidth = 180,
-                                    MaxTextHeight = 180,
-                                    Trimming = TextTrimming.None,
-                                    TextAlignment = TextAlignment.Center
-                                };
+            var result = new MemoryStream();
 
-            var drawingVisual = new DrawingVisual();
-            var drawingContext = drawingVisual.RenderOpen();
-            drawingContext.DrawRectangle(Brushes.WhiteSmoke, new Pen(Brushes.LightGray, 1), new Rect(0, 0, 200, 200));
-            drawingContext.DrawText(formattedText, new Point(10, 10));
-            drawingContext.Close();
+            using (var image = new Bitmap(200, 200))
+            {
+                using (var graphics = Graphics.FromImage(image))
+                {
+                    graphics.Clear(Color.WhiteSmoke);
+                    graphics.DrawRectangle(Pens.LightGray, 0, 0, 200, 200);
+                    graphics.DrawString(imageText, new Font("Arial", 12), Brushes.Black, 10, 10);
+                }
 
-            var renderTargetBitmap = new RenderTargetBitmap(200, 200, 96, 96, PixelFormats.Default);
-            renderTargetBitmap.Render(drawingVisual);
+                image.Save(result, ImageFormat.Png);
+            }
 
-            var bitmapEncoder = new PngBitmapEncoder();
-            bitmapEncoder.Frames.Add(BitmapFrame.Create(renderTargetBitmap));
-
-            var bitmapImageStream = new MemoryStream();
-            bitmapEncoder.Save(bitmapImageStream);
-
-            return bitmapImageStream;
+            return result;
         }
 
         private static Stream ApplyRotation(Stream bitmap, dynamic rotation)

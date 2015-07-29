@@ -14,6 +14,6 @@ namespace InfinniPlatform.FlowDocument.PrintView
 		/// <param name="printViewSource">Данные печатного представления.</param>
 		/// <param name="elementMetadataMap">Соответствие между элементами печатного представления и метаданными.</param>
 		/// <returns>Документ печатного представления.</returns>
-		ViewDocument Create(object printView, object printViewSource, PrintElementMetadataMap elementMetadataMap = null);
+		PrintViewDocument Create(object printView, object printViewSource, PrintElementMetadataMap elementMetadataMap = null);
 	}
 }

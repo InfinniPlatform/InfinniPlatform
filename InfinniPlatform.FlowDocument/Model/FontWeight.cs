@@ -1,6 +1,6 @@
 ﻿namespace InfinniPlatform.FlowDocument.Model
 {
-    public enum FontWeights
+    public enum FontWeight
     {
         UltraLight,
         ExtraLight,

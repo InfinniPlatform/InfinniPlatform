@@ -2,11 +2,11 @@
 
 namespace InfinniPlatform.FlowDocument.Model.Blocks
 {
-    public class TableCell : TextElement
+    public class TableCell : PrintElement
     {
         public TableCell()
         {
-            Blocks = new List<Block>();
+            Blocks = new List<PrintElementBlock>();
         }
 
         public int ColumnSpan { get; set; }
@@ -19,6 +19,7 @@ namespace InfinniPlatform.FlowDocument.Model.Blocks
 
         public Thickness Padding { get; set; }
 
-        public List<Block> Blocks { get; private set; }
+        public List<PrintElementBlock> Blocks { get; private set; }
+        public TextAlignment TextAlignment { get; set; }
     }
 }

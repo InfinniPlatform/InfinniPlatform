@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using InfinniPlatform.FlowDocument.Model;
-using FrameworkFlowDocument = InfinniPlatform.FlowDocument.Model.Views.ViewDocument;
+using InfinniPlatform.FlowDocument.Model.Views;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Views
 {
@@ -9,7 +9,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Views
 	{
 		public object Create(PrintElementBuildContext buildContext, dynamic elementMetadata)
 		{
-			var element = new FrameworkFlowDocument
+			var element = new PrintViewDocument
 						  {
 							  FontFamily = BuildHelper.DefautlFontFamily
 						  };
@@ -66,7 +66,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Views
 			}
 		}
 
-		private static void ApplyPageSize(FrameworkFlowDocument element, dynamic pageSize)
+		private static void ApplyPageSize(PrintViewDocument element, dynamic pageSize)
 		{
 			// По умолчанию размер страницы A4
 			const double pageWidthA4 = 21.0 * SizeUnits.Cm;
@@ -92,7 +92,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Views
 			element.PageHeight = pageHeight;
 		}
 
-		private static void ApplyPagePadding(FrameworkFlowDocument element, dynamic pagePadding)
+		private static void ApplyPagePadding(PrintViewDocument element, dynamic pagePadding)
 		{
 			// По умолчанию отступ на странице 1см
 			const double pagePadding1Cm = 1.0 * SizeUnits.Cm;
@@ -107,7 +107,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Views
 			element.PagePadding = pagePaddingThickness;
 		}
 
-		private static double CalcContentWidth(FrameworkFlowDocument element)
+		private static double CalcContentWidth(PrintViewDocument element)
 		{
 			return Math.Max(element.PageWidth
 							- element.PagePadding.Left

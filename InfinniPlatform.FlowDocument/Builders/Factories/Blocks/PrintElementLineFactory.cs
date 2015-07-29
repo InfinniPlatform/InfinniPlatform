@@ -7,7 +7,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 	{
 		public object Create(PrintElementBuildContext buildContext, dynamic elementMetadata)
 		{
-			var element = new Paragraph
+			var element = new PrintElementParagraph
 						  {
 							  FontSize = 0.1,
 							  Margin = BuildHelper.DefaultMargin,

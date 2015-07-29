@@ -2,7 +2,7 @@
 
 namespace InfinniPlatform.FlowDocument.Model.Inlines
 {
-    public abstract class Inline : TextElement
+    public abstract class Inline : PrintElement
     {
     }
 }

@@ -11,7 +11,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 	{
 		public object Create(PrintElementBuildContext buildContext, dynamic elementMetadata)
 		{
-			var element = new Table
+			var element = new PrintElementTable
 						  {
 							  CellSpacing = 0,
 							  BorderBrush = Brush.Black,
@@ -76,7 +76,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 			return element;
 		}
 
-		private static void CreateTableColumns(PrintElementBuildContext buildContext, Table table, dynamic columns)
+		private static void CreateTableColumns(PrintElementBuildContext buildContext, PrintElementTable table, dynamic columns)
 		{
 			if (columns != null)
 			{
@@ -135,7 +135,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 			}
 		}
 
-		private static TableRow CreateHeaderTableRow(PrintElementBuildContext buildContext, Table table, dynamic columns)
+		private static TableRow CreateHeaderTableRow(PrintElementBuildContext buildContext, PrintElementTable table, dynamic columns)
 		{
 			var tableRow = new TableRow();
 
@@ -156,7 +156,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 			return tableRow;
 		}
 
-		private static void CreateStaticTableRows(PrintElementBuildContext buildContext, Table table, dynamic rows)
+		private static void CreateStaticTableRows(PrintElementBuildContext buildContext, PrintElementTable table, dynamic rows)
 		{
 			if (rows != null)
 			{
@@ -253,7 +253,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 			return false;
 		}
 
-		private static TableRow CreateDynamicTableRow(PrintElementBuildContext buildContext, Table table, dynamic columns, object rowSource)
+		private static TableRow CreateDynamicTableRow(PrintElementBuildContext buildContext, PrintElementTable table, dynamic columns, object rowSource)
 		{
 			var tableRow = new TableRow();
 
@@ -277,7 +277,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 			return tableRow;
 		}
 
-		private static TableCell CreateTableCell(PrintElementBuildContext buildContext, Table table, int columnIndex, dynamic cellMetadata, bool applySpan)
+		private static TableCell CreateTableCell(PrintElementBuildContext buildContext, PrintElementTable table, int columnIndex, dynamic cellMetadata, bool applySpan)
 		{
 			var tableCell = new TableCell
 							{
@@ -323,7 +323,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 				var cellContext = buildContext.Create(cellWidth);
 				var cellContent = buildContext.ElementBuilder.BuildElement(cellContext, cellMetadata.Block);
 
-				if (cellContent is Block)
+				if (cellContent is PrintElementBlock)
 				{
 					tableCell.Blocks.Add(cellContent);
 				}

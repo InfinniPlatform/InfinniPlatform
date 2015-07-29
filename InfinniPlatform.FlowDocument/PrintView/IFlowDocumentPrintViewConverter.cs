@@ -16,6 +16,6 @@ namespace InfinniPlatform.FlowDocument.PrintView
 		/// <param name="printView">Документ печатного представления.</param>
 		/// <param name="printViewStream">Поток файла печатного представления.</param>
 		/// <param name="printViewFileFormat">Формат файла печатного представления.</param>
-		void Convert(ViewDocument printView, Stream printViewStream, PrintViewFileFormat printViewFileFormat);
+		void Convert(PrintViewDocument printView, Stream printViewStream, PrintViewFileFormat printViewFileFormat);
 	}
 }
