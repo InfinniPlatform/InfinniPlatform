@@ -42,7 +42,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 
 			if (BuildHelper.TryToSizeInPixels(elementMetadata.IndentSize, elementMetadata.IndentSizeUnit, out indentSize))
 			{
-				element.TextIndent = indentSize;
+				element.IndentSize = indentSize;
 			}
 		}
 

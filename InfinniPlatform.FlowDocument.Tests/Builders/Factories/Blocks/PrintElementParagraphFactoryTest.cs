@@ -1,11 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Media;
-
 using InfinniPlatform.Api.Dynamic;
-
+using InfinniPlatform.FlowDocument.Model.Blocks;
+using InfinniPlatform.FlowDocument.Model.Inlines;
 using NUnit.Framework;
 
 namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
@@ -31,16 +28,16 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
 			elementMetadata.Inlines = new[] { inline1, inline2 };
 
 			// When
-			Paragraph element = BuildTestHelper.BuildParagraph(elementMetadata);
+			PrintElementParagraph element = BuildTestHelper.BuildParagraph(elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
 			Assert.IsNotNull(element.Inlines);
 			Assert.AreEqual(2, element.Inlines.Count);
-			Assert.IsInstanceOf<Run>(element.Inlines.FirstInline);
-			Assert.IsInstanceOf<Run>(element.Inlines.LastInline);
-			Assert.AreEqual("Inline1", ((Run)element.Inlines.FirstInline).Text);
-			Assert.AreEqual("Inline2", ((Run)element.Inlines.LastInline).Text);
+			Assert.IsInstanceOf<PrintElementRun>(element.Inlines.First());
+            Assert.IsInstanceOf<PrintElementRun>(element.Inlines.Last());
+            Assert.AreEqual("Inline1", ((PrintElementRun)element.Inlines.First()).Text);
+            Assert.AreEqual("Inline2", ((PrintElementRun)element.Inlines.Last()).Text);
 		}
 
 		[Test]
@@ -52,11 +49,11 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
 			elementMetadata.IndentSizeUnit = "Px";
 
 			// When
-			Paragraph element = BuildTestHelper.BuildParagraph(elementMetadata);
+			PrintElementParagraph element = BuildTestHelper.BuildParagraph(elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
-			Assert.AreEqual(10, element.TextIndent);
+			Assert.AreEqual(10, element.IndentSize);
 		}
 
 
@@ -78,7 +75,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
 			elementMetadata.Font = font;
 
 			// When
-			Paragraph element = BuildTestHelper.BuildParagraph((object)elementMetadata);
+			PrintElementParagraph element = BuildTestHelper.BuildParagraph((object)elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);

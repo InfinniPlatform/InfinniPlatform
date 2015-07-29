@@ -3,8 +3,7 @@ using System.Drawing.Imaging;
 using System.IO;
 
 using InfinniPlatform.FlowDocument.Model;
-
-using Image = InfinniPlatform.FlowDocument.Model.Inlines.Image;
+using InfinniPlatform.FlowDocument.Model.Inlines;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 {
@@ -23,7 +22,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
             return element;
         }
 
-        private static Image CreateImage(PrintElementBuildContext buildContext, dynamic elementMetadata)
+        private static PrintElementImage CreateImage(PrintElementBuildContext buildContext, dynamic elementMetadata)
         {
             var imageStream = GetImageDataStream(buildContext, elementMetadata.Data);
             if (imageStream != null)
@@ -33,13 +32,13 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
             return null;
         }
 
-        private static Image ApplyImageData(Stream imageStream, dynamic elementMetadata)
+        private static PrintElementImage ApplyImageData(Stream imageStream, dynamic elementMetadata)
         {
-            Image image = null;
+            PrintElementImage image = null;
             try
             {
                 imageStream = ApplyRotation(imageStream, elementMetadata.Rotation);
-                image = new Image(imageStream);
+                image = new PrintElementImage(imageStream);
                 ApplySize(image, elementMetadata.Size);
                 ApplyStretch(image, elementMetadata.Stretch);
             }
@@ -145,25 +144,33 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
                 return image;
             }
         }
-        private static void ApplySize(Image image, dynamic size)
+        private static void ApplySize(PrintElementImage image, dynamic size)
         {
             if (size != null)
             {
-                double width, height;
+                PrintElementSize imageSize = null;
+                
+                double width;
 
                 if (BuildHelper.TryToSizeInPixels(size.Width, size.SizeUnit, out width))
                 {
-                    image.Width = width;
+                    imageSize = imageSize ?? new PrintElementSize();
+                    imageSize.Width = width;
                 }
+
+                double height;
 
                 if (BuildHelper.TryToSizeInPixels(size.Height, size.SizeUnit, out height))
                 {
-                    image.Height = height;
+                    imageSize = imageSize ?? new PrintElementSize();
+                    imageSize.Height = height;
                 }
+
+                image.Size = imageSize;
             }
         }
 
-        private static void ApplyStretch(Image image, dynamic stretch)
+        private static void ApplyStretch(PrintElementImage image, dynamic stretch)
         {
             string stretchString;
 
@@ -172,13 +179,13 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
                 switch (stretchString)
                 {
                     case "none":
-                        image.Stretch = Stretch.None;
+                        image.Stretch = PrintElementStretch.None;
                         break;
                     case "fill":
-                        image.Stretch = Stretch.Fill;
+                        image.Stretch = PrintElementStretch.Fill;
                         break;
                     case "uniform":
-                        image.Stretch = Stretch.Uniform;
+                        image.Stretch = PrintElementStretch.Uniform;
                         break;
                 }
             }

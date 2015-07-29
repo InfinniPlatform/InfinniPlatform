@@ -7,7 +7,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 	{
 		public object Create(PrintElementBuildContext buildContext, dynamic elementMetadata)
 		{
-			var element = new Hyperlink();
+			var element = new PrintElementHyperlink();
 
 			BuildHelper.ApplyTextProperties(element, buildContext.ElementStyle);
 			BuildHelper.ApplyTextProperties(element, elementMetadata);
@@ -32,7 +32,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 			return element;
 		}
 
-		private static void ApplyReference(Hyperlink element, PrintElementBuildContext buildContext, dynamic elementMetadata)
+		private static void ApplyReference(PrintElementHyperlink element, PrintElementBuildContext buildContext, dynamic elementMetadata)
 		{
 			string referenceSting = BuildHelper.FormatValue(buildContext, elementMetadata.Reference, elementMetadata.SourceFormat);
 
@@ -42,7 +42,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 
 				if (Uri.TryCreate(referenceSting, UriKind.RelativeOrAbsolute, out referenceUri))
 				{
-					element.NavigateUri = referenceUri;
+					element.Reference = referenceUri;
 				}
 			}
 		}

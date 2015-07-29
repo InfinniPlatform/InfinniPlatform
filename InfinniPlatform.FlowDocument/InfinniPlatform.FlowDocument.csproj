@@ -48,30 +48,29 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\GridUnitType.cs" />
     <Compile Include="Builders\Factories\Blocks\PrintElementTableFactory.cs" />
     <Compile Include="Builders\Factories\Blocks\PrintElementListFactory.cs" />
     <Compile Include="Builders\Factories\Blocks\PrintElementParagraphFactory.cs" />
     <Compile Include="Builders\Factories\Blocks\PrintElementSectionFactory.cs" />
     <Compile Include="Builders\Factories\Blocks\PrintElementPageBreakFactory.cs" />
     <Compile Include="Builders\Factories\Blocks\PrintElementLineFactory.cs" />
-    <Compile Include="Model\Blocks\PrintElementBlock.cs" />
+    <Compile Include="Model\Blocks\PrintElementLine.cs" />
+    <Compile Include="Model\Blocks\PrintElementPageBreak.cs" />
+    <Compile Include="Model\PrintElementBlock.cs" />
     <Compile Include="Model\Blocks\PrintElementList.cs" />
-    <Compile Include="Model\Blocks\ListItem.cs" />
     <Compile Include="Model\Blocks\PrintElementParagraph.cs" />
     <Compile Include="Model\Blocks\PrintElementSection.cs" />
     <Compile Include="Model\Blocks\PrintElementTable.cs" />
-    <Compile Include="Model\Brush.cs" />
-    <Compile Include="Model\FontStretch.cs" />
-    <Compile Include="Model\FontStyle.cs" />
-    <Compile Include="Model\BrushConverter.cs" />
+    <Compile Include="Model\PrintElementColors.cs" />
+    <Compile Include="Model\Font\PrintElementFont.cs" />
+    <Compile Include="Model\Font\PrintElementFontStretch.cs" />
+    <Compile Include="Model\Font\PrintElementFontStyle.cs" />
     <Compile Include="Builders\Factories\BuildHelper.cs" />
     <Compile Include="Builders\ConvertHelper.cs" />
     <Compile Include="Builders\Factories\DisplayFormats\ObjectFormatFactory.cs" />
     <Compile Include="Builders\Factories\DisplayFormats\NumberFormatFactory.cs" />
     <Compile Include="Builders\Factories\DisplayFormats\DateTimeFormatFactory.cs" />
     <Compile Include="Builders\Factories\DisplayFormats\BooleanFormatFactory.cs" />
-    <Compile Include="Model\FontFamily.cs" />
     <Compile Include="Builders\Factories\Inlines\PrintElementBarcodeBaseFactory.cs" />
     <Compile Include="Builders\Factories\Inlines\PrintElementBarcodeQrFactory.cs" />
     <Compile Include="Builders\Factories\Inlines\PrintElementBarcodeEan13Factory.cs" />
@@ -87,29 +86,31 @@
     <Compile Include="Converters\FlowDocumentPdfConverter.cs" />
     <Compile Include="Converters\FlowDocumentHtmlConverter.cs" />
     <Compile Include="Converters\IFlowDocumentConverter.cs" />
-    <Compile Include="Model\FontVariants.cs" />
-    <Compile Include="Model\FontWeight.cs" />
-    <Compile Include="Model\GridLength.cs" />
-    <Compile Include="Model\Inlines\Inline.cs" />
-    <Compile Include="Model\Inlines\Bold.cs" />
-    <Compile Include="Model\Inlines\Hyperlink.cs" />
-    <Compile Include="Model\Inlines\Image.cs" />
-    <Compile Include="Model\Inlines\Italic.cs" />
-    <Compile Include="Model\Inlines\LineBreak.cs" />
-    <Compile Include="Model\Inlines\Rotation.cs" />
-    <Compile Include="Model\Inlines\Run.cs" />
-    <Compile Include="Model\Inlines\Span.cs" />
-    <Compile Include="Model\Inlines\Underline.cs" />
-    <Compile Include="Model\Blocks\TableCell.cs" />
-    <Compile Include="Model\Blocks\TableColumn.cs" />
-    <Compile Include="Model\Blocks\TableRow.cs" />
-    <Compile Include="Model\Stretch.cs" />
-    <Compile Include="Model\TextAlignment.cs" />
-    <Compile Include="Model\TextDecorations.cs" />
+    <Compile Include="Model\Font\PrintElementFontVariant.cs" />
+    <Compile Include="Model\Font\PrintElementFontWeight.cs" />
+    <Compile Include="Model\PrintElementInline.cs" />
+    <Compile Include="Model\Inlines\PrintElementBold.cs" />
+    <Compile Include="Model\Inlines\PrintElementHyperlink.cs" />
+    <Compile Include="Model\Inlines\PrintElementImage.cs" />
+    <Compile Include="Model\Inlines\PrintElementItalic.cs" />
+    <Compile Include="Model\Inlines\PrintElementLineBreak.cs" />
+    <Compile Include="Model\Inlines\PrintElementRun.cs" />
+    <Compile Include="Model\Inlines\PrintElementSpan.cs" />
+    <Compile Include="Model\Inlines\PrintElementUnderline.cs" />
+    <Compile Include="Model\Blocks\PrintElementTableCell.cs" />
+    <Compile Include="Model\Blocks\PrintElementTableColumn.cs" />
+    <Compile Include="Model\Blocks\PrintElementTableRow.cs" />
+    <Compile Include="Model\PrintElementSizeUnit.cs" />
+    <Compile Include="Model\PrintElementBorder.cs" />
+    <Compile Include="Model\PrintElementSize.cs" />
+    <Compile Include="Model\PrintElementStretch.cs" />
+    <Compile Include="Model\PrintElementTextAlignment.cs" />
+    <Compile Include="Model\PrintElementTextDecoration.cs" />
     <Compile Include="Model\PrintElement.cs" />
-    <Compile Include="Model\TextMarkerStyle.cs" />
-    <Compile Include="Model\Thickness.cs" />
+    <Compile Include="Model\Blocks\PrintElementListMarkerStyle.cs" />
+    <Compile Include="Model\PrintElementThickness.cs" />
     <Compile Include="Model\Views\PrintViewDocument.cs" />
+    <Compile Include="Model\Views\PrintViewStyle.cs" />
     <Compile Include="PrintElementMetadataMap.cs" />
     <Compile Include="PrintView\FlowDocumentPrintViewDesignerFactory.cs" />
     <Compile Include="PrintView\FlowDocumentPrintViewConverter.cs" />
@@ -139,7 +140,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Model\Model.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

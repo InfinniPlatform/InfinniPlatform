@@ -4,8 +4,7 @@ using System.IO;
 using FastReport;
 using FastReport.Barcode;
 using FastReport.Utils;
-
-using Image = InfinniPlatform.FlowDocument.Model.Inlines.Image;
+using InfinniPlatform.FlowDocument.Model.Inlines;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 {
@@ -13,7 +12,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
     {
         public object Create(PrintElementBuildContext buildContext, dynamic elementMetadata)
         {
-            Image element = CreateBarcodeImage(buildContext, elementMetadata);
+            PrintElementImage element = CreateBarcodeImage(buildContext, elementMetadata);
 
             BuildHelper.ApplyTextProperties(element, buildContext.ElementStyle);
             BuildHelper.ApplyTextProperties(element, elementMetadata);
@@ -24,7 +23,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
             return element;
         }
 
-        private Image CreateBarcodeImage(PrintElementBuildContext buildContext, dynamic elementMetadata)
+        private PrintElementImage CreateBarcodeImage(PrintElementBuildContext buildContext, dynamic elementMetadata)
         {
             var imageStream = CreateBarcodeImageStream(buildContext, elementMetadata);
 
@@ -32,7 +31,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
             {
                 imageStream = ApplyRotation(imageStream, elementMetadata.Rotation);
 
-                return new Image(imageStream);
+                return new PrintElementImage(imageStream);
             }
             catch
             {

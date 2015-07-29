@@ -1,6 +1,4 @@
-﻿using System.Windows.Documents;
-
-using InfinniPlatform.Api.Dynamic;
+﻿using InfinniPlatform.Api.Dynamic;
 
 using NUnit.Framework;
 

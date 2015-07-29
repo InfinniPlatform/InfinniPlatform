@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using InfinniPlatform.FlowDocument.Model.Blocks;
 
 namespace InfinniPlatform.FlowDocument.Model.Views
 {
@@ -7,16 +6,13 @@ namespace InfinniPlatform.FlowDocument.Model.Views
     {
         public PrintViewDocument()
         {
+            Styles = new List<PrintViewStyle>();
             Blocks = new List<PrintElementBlock>();
         }
-        public double ColumnWidth { get; set; }
 
-        public List<PrintElementBlock> Blocks;
-
-        public double PageWidth { get; set; }
-        public double PageHeight { get; set; }
-        public Thickness PagePadding { get; set; }
-
-        
+        public PrintElementSize PageSize { get; set; }
+        public PrintElementThickness PagePadding { get; set; }
+        public List<PrintViewStyle> Styles { get; private set; }
+        public List<PrintElementBlock> Blocks { get; private set; }
     }
 }

@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
-using InfinniPlatform.FlowDocument.Model.Inlines;
 
 namespace InfinniPlatform.FlowDocument.Model.Blocks
 {
-    public class PrintElementParagraph : PrintElementBlock
+    public sealed class PrintElementParagraph : PrintElementBlock
     {
         public PrintElementParagraph()
         {
-            Inlines = new List<Inline>();
+            Inlines = new List<PrintElementInline>();
         }
-        public double TextIndent { get; set; }
-        public List<Inline> Inlines { get; set; }
-        public TextDecorations TextDecorations { get; set; }
+
+        public double? IndentSize { get; set; }
+        public PrintElementSizeUnit? IndentSizeUnit { get; set; }
+        public List<PrintElementInline> Inlines { get; private set; }
     }
 }

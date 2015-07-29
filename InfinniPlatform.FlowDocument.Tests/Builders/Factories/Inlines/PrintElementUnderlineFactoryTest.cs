@@ -1,7 +1,6 @@
-﻿using System.Windows.Documents;
-
+﻿using System.Linq;
 using InfinniPlatform.Api.Dynamic;
-
+using InfinniPlatform.FlowDocument.Model.Inlines;
 using NUnit.Framework;
 
 namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
@@ -27,16 +26,16 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Inlines = new[] { inline1, inline2 };
 
 			// When
-			Underline element = BuildTestHelper.BuildUnderline(elementMetadata);
+			PrintElementUnderline element = BuildTestHelper.BuildUnderline(elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
 			Assert.IsNotNull(element.Inlines);
 			Assert.AreEqual(2, element.Inlines.Count);
-			Assert.IsInstanceOf<Run>(element.Inlines.FirstInline);
-			Assert.IsInstanceOf<Run>(element.Inlines.LastInline);
-			Assert.AreEqual("Inline1", ((Run)element.Inlines.FirstInline).Text);
-			Assert.AreEqual("Inline2", ((Run)element.Inlines.LastInline).Text);
+			Assert.IsInstanceOf<PrintElementRun>(element.Inlines.First());
+            Assert.IsInstanceOf<PrintElementRun>(element.Inlines.Last());
+            Assert.AreEqual("Inline1", ((PrintElementRun)element.Inlines.First()).Text);
+            Assert.AreEqual("Inline2", ((PrintElementRun)element.Inlines.Last()).Text);
 		}
 	}
 }

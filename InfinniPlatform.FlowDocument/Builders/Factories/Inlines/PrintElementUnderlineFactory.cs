@@ -6,7 +6,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 	{
 		public object Create(PrintElementBuildContext buildContext, dynamic elementMetadata)
 		{
-			var element = new Underline();
+			var element = new PrintElementUnderline();
 
 			BuildHelper.ApplyTextProperties(element, buildContext.ElementStyle);
 			BuildHelper.ApplyTextProperties(element, elementMetadata);
