@@ -15,12 +15,14 @@ namespace InfinniPlatform.Sdk.Api
         private readonly string _server;
         private readonly string _port;
         private readonly RouteBuilder _routeBuilder;
+        private readonly string _route;
 
-        public BaseApi(string server, string port)
+        public BaseApi(string server, string port, string route)
         {
             _server = server;
             _port = port;
-            _routeBuilder = new RouteBuilder(server, port);
+            _route = route;
+            _routeBuilder = new RouteBuilder(server, port, route);
         }
 
         /// <summary>
@@ -103,6 +105,11 @@ namespace InfinniPlatform.Sdk.Api
         protected string Port
         {
             get { return _port; }
+        }
+
+        protected string Route
+        {
+            get { return _route; }
         }
     }
 }

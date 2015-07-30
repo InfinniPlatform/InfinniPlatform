@@ -10,8 +10,8 @@ namespace InfinniPlatform.Sdk.Api
     public sealed class InfinniSignInApi : BaseApi
     {
 
-        public InfinniSignInApi(string server, string port)
-            : base(server, port)
+        public InfinniSignInApi(string server, string port, string route)
+            : base(server, port, route)
         {
         }
 

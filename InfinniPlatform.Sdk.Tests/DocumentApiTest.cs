@@ -16,13 +16,14 @@ namespace InfinniPlatform.Sdk.Tests
     {
         private const string InfinniSessionPort = "9900";
         private const string InfinniSessionServer = "localhost";
+        private const string Route = "1";
 
         private InfinniDocumentApi _api;
 
         [TestFixtureSetUp]
         public void SetupApi()
         {
-            _api = new InfinniDocumentApi(InfinniSessionServer, InfinniSessionPort);
+            _api = new InfinniDocumentApi(InfinniSessionServer, InfinniSessionPort,Route);
         }
 
         [Test]

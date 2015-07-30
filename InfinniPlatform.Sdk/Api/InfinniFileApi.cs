@@ -8,8 +8,8 @@ namespace InfinniPlatform.Sdk.Api
     /// </summary>
     public sealed class InfinniFileApi : BaseApi
     {
-        public InfinniFileApi(string server, string port)
-            : base(server, port)
+        public InfinniFileApi(string server, string port, string route)
+            : base(server, port, route)
         {
         }
 

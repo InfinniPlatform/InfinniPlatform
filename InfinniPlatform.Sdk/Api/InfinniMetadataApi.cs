@@ -10,7 +10,7 @@ namespace InfinniPlatform.Sdk.Api
 {
     public class InfinniMetadataApi : BaseApi
     {
-        public InfinniMetadataApi(string server, string port) : base(server, port)
+        public InfinniMetadataApi(string server, string port, string route) : base(server, port, route)
         {
         }
 

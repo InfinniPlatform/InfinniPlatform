@@ -8,15 +8,17 @@ namespace InfinniPlatform.Sdk
     {
         private readonly string _serverName;
         private readonly string _serverPort;
+        private readonly string _route;
 
 
         //Шаблон строки формирования адреса сервера
-        private const string AppServerAddressFormat = "http://{0}:{1}/{2}";
+        private const string AppServerAddressFormat = "http://{0}:{1}/{2}/{3}";
 
-        public RouteBuilder(string serverName, string serverPort)
+        public RouteBuilder(string serverName, string serverPort, string route)
         {
             _serverName = serverName;
             _serverPort = serverPort;
+            _route = route;
         }
 
         /// <summary>
@@ -542,6 +544,7 @@ namespace InfinniPlatform.Sdk
             return string.Format(AppServerAddressFormat,
                                  _serverName,
                                  _serverPort,
+                                 _route,
                                  relativePath);
         }
 

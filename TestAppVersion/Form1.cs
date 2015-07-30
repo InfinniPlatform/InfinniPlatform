@@ -22,12 +22,12 @@ namespace TestAppVersion
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var signInApi = new InfinniSignInApi("localhost", "9900");
+            var signInApi = new InfinniSignInApi("localhost", "9900","1");
             signInApi.SignInInternal("Admin", "Admin", false);
 
             memoEdit1.Text = "Зарегистрировались под Admin";
 
-            var customServiceApi = new InfinniCustomServiceApi("localhost", "9900");
+            var customServiceApi = new InfinniCustomServiceApi("localhost", "9900", "1");
             customServiceApi.CookieContainer = signInApi.CookieContainer;
             var result = customServiceApi.ExecuteAction("TestConfig", "common", "Helloworld", new { });
 
@@ -36,12 +36,12 @@ namespace TestAppVersion
 
         private void button2_Click(object sender, EventArgs e)
         {
-            var signInApi = new InfinniSignInApi("localhost", "9900");
+            var signInApi = new InfinniSignInApi("localhost", "9900", "1");
             signInApi.SignInInternal("Admin", "Admin", false);
 
             memoEdit1.Text = "Зарегистрировались под Admin";
 
-            var customServiceApi = new InfinniCustomServiceApi("localhost", "9900");
+            var customServiceApi = new InfinniCustomServiceApi("localhost", "9900","1");
             customServiceApi.CookieContainer = signInApi.CookieContainer;
             var result = customServiceApi.ExecuteAction("systemconfig", "metadata", "getirrelevantversions", new
                 {
@@ -64,7 +64,7 @@ namespace TestAppVersion
                 return;
             }
 
-            var signInApi = new InfinniSignInApi("localhost", "9900");
+            var signInApi = new InfinniSignInApi("localhost", "9900", "1");
             signInApi.SignInInternal("Admin", "Admin", false);
 
             memoEdit1.Text = "Зарегистрировались под Admin";
@@ -76,7 +76,7 @@ namespace TestAppVersion
                     Version = textBox1.Text
                 };
 
-            var versionApi = new InfinniVersionApi("localhost", "9900");
+            var versionApi = new InfinniVersionApi("localhost", "9900","1");
             dynamic result = versionApi.SetRelevantVersion("Admin", version);
 
             memoEdit1.Text = memoEdit1.Text + Environment.NewLine + result.ToString();

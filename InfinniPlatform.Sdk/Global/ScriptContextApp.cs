@@ -17,35 +17,39 @@ namespace InfinniPlatform.Sdk.Global
 
         private readonly string _port;
 
+        private readonly string _route;
+
         public ScriptContextApp()
         {
             _server = HostingConfig.Default.ServerName;
             _port = HostingConfig.Default.ServerPort.ToString();
+            _route = "1"; //добавить в конфиг идентификатор роутинга масштабирования
+
         }
 
         public InfinniAuthApi GetAuthApi()
         {
-            return new InfinniAuthApi(_server, _port);
+            return new InfinniAuthApi(_server, _port, _route);
         }
 
         public InfinniCustomServiceApi GetCustomServiceApi()
         {
-            return new InfinniCustomServiceApi(_server, _port);
+            return new InfinniCustomServiceApi(_server, _port, _route);
         }
 
         public InfinniDocumentApi GetDocumentApi()
         {
-            return new InfinniDocumentApi(_server, _port);
+            return new InfinniDocumentApi(_server, _port, _route);
         }
 
         public InfinniFileApi GetFileApi()
         {
-            return new InfinniFileApi(_server, _port);
+            return new InfinniFileApi(_server, _port, _route);
         }
 
         public InfinniSignInApi GetSignInApi()
         {
-            return new InfinniSignInApi(_server, _port);
+            return new InfinniSignInApi(_server, _port, _route);
         }
     }
 }

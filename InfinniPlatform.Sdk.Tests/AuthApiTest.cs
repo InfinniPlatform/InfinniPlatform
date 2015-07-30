@@ -16,15 +16,16 @@ namespace InfinniPlatform.Sdk.Tests
     {
         private const string InfinniSessionPort = "9900";
         private const string InfinniSessionServer = "localhost";
-        private const string InfinniSessionVersion = "1";
+        private const string Route = "1";
+
         private InfinniAuthApi _api;
         private InfinniSignInApi _signInApi;
 
         [TestFixtureSetUp]
         public void SetupApi()
         {
-            _api = new InfinniAuthApi(InfinniSessionServer, InfinniSessionPort);
-            _signInApi = new InfinniSignInApi(InfinniSessionServer, InfinniSessionPort);
+            _api = new InfinniAuthApi(InfinniSessionServer, InfinniSessionPort,Route);
+            _signInApi = new InfinniSignInApi(InfinniSessionServer, InfinniSessionPort,Route);
             _signInApi.SignInInternal("Admin", "Admin", false);
             _api.CookieContainer = _signInApi.CookieContainer;
         }

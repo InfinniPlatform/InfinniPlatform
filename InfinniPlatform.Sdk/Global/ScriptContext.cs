@@ -10,29 +10,29 @@ namespace InfinniPlatform.Sdk.Global
     public sealed class ScriptContext
     {
 
-        public InfinniAuthApi GetAuthApi(string server, string port)
+        public InfinniAuthApi GetAuthApi(string server, string port, string route)
         {
-            return new InfinniAuthApi(server, port);
+            return new InfinniAuthApi(server, port, route);
         }
 
-        public InfinniCustomServiceApi GetCustomServiceApi(string server, string port)
+        public InfinniCustomServiceApi GetCustomServiceApi(string server, string port, string route)
         {
-            return new InfinniCustomServiceApi(server, port);
+            return new InfinniCustomServiceApi(server, port, route);
         }
 
-        public InfinniDocumentApi GetDocumentApi(string server, string port)
+        public InfinniDocumentApi GetDocumentApi(string server, string port, string route)
         {
-            return new InfinniDocumentApi(server,port);
+            return new InfinniDocumentApi(server,port,route);
         }
 
-        public InfinniFileApi GetFileApi(string server, string port)
+        public InfinniFileApi GetFileApi(string server, string port, string route)
         {
-            return new InfinniFileApi(server,port);
+            return new InfinniFileApi(server,port,route);
         }
 
-        public InfinniSignInApi GetSignInApi(string server, string port)
+        public InfinniSignInApi GetSignInApi(string server, string port, string route)
         {
-            return new InfinniSignInApi(server, port);
+            return new InfinniSignInApi(server, port, route);
         }
     }
 }

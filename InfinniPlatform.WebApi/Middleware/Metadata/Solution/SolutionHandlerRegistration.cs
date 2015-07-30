@@ -17,11 +17,11 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.Solution
             {
                 return new PathStringProvider
                     {
-                        PathString = new PathString("/metadata/solution"),
+                        PathString = new PathString(PathConstructor.GetBaseApplicationPath() + "/metadata/solution"),
                         Priority = Priority
                     };
             }
-            return RouteFormatter.FormatRoutePath(context, new PathString("/metadata/solution/_version_/_instanceId_")).Create(Priority);
+            return RouteFormatter.FormatRoutePath(context, new PathString(PathConstructor.GetBaseApplicationPath() + "/metadata/solution/_version_/_instanceId_")).Create(Priority);
         }
     }
 }

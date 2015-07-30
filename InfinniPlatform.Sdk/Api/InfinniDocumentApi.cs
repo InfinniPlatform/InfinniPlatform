@@ -12,8 +12,8 @@ namespace InfinniPlatform.Sdk.Api
     /// </summary>
     public class InfinniDocumentApi : BaseApi
     {
-        public InfinniDocumentApi(string server, string port)
-            : base(server, port)
+        public InfinniDocumentApi(string server, string port, string route)
+            : base(server, port, route)
         {
         }
 
@@ -194,7 +194,7 @@ namespace InfinniPlatform.Sdk.Api
 
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var routeBuilder = new RouteBuilder(Server, Port);
+            var routeBuilder = new RouteBuilder(Server, Port, Route);
 
             var filterBuilder = new FilterBuilder();
             if (filter != null)
@@ -227,7 +227,7 @@ namespace InfinniPlatform.Sdk.Api
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var routeBuilder = new RouteBuilder(Server, Port);
+            var routeBuilder = new RouteBuilder(Server, Port, Route);
 
             var response = restQueryExecutor.QueryPut(
                 routeBuilder.BuildRestRoutingUrlDefaultById(applicationId, documentType, documentId), document);
@@ -246,7 +246,7 @@ namespace InfinniPlatform.Sdk.Api
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var routeBuilder = new RouteBuilder(Server, Port);
+            var routeBuilder = new RouteBuilder(Server, Port, Route);
 
             var response = restQueryExecutor.QueryPut(
                 routeBuilder.BuildRestRoutingUrlDefault(applicationId, documentType),
@@ -269,7 +269,7 @@ namespace InfinniPlatform.Sdk.Api
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var routeBuilder = new RouteBuilder(Server, Port);
+            var routeBuilder = new RouteBuilder(Server, Port, Route);
 
             var parameters = new
             {
@@ -298,7 +298,7 @@ namespace InfinniPlatform.Sdk.Api
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var routeBuilder = new RouteBuilder(Server, Port);
+            var routeBuilder = new RouteBuilder(Server, Port, Route);
 
             var response = restQueryExecutor.QueryDelete(
                 routeBuilder.BuildRestRoutingUrlDefaultById(applicationId, documentType, instanceId));

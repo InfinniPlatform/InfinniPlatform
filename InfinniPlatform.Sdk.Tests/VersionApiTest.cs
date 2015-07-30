@@ -14,6 +14,7 @@ namespace InfinniPlatform.Sdk.Tests
     {
         private const string InfinniSessionPort = "9900";
         private const string InfinniSessionServer = "localhost";
+        private const string Route = "1";
 
         private InfinniVersionApi _versionApi;
         private InfinniSignInApi _signInApi;
@@ -21,8 +22,8 @@ namespace InfinniPlatform.Sdk.Tests
         [TestFixtureSetUp]
         public void SetupApi()
         {
-            _versionApi = new InfinniVersionApi(InfinniSessionServer, InfinniSessionPort);
-            _signInApi = new InfinniSignInApi(InfinniSessionServer, InfinniSessionPort);
+            _versionApi = new InfinniVersionApi(InfinniSessionServer, InfinniSessionPort,Route);
+            _signInApi = new InfinniSignInApi(InfinniSessionServer, InfinniSessionPort,Route);
         }
 
         [Test]

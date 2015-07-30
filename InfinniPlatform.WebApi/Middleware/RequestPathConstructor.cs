@@ -11,12 +11,12 @@ namespace InfinniPlatform.WebApi.Middleware
     {
         public PathString GetVersionPath()
         {
-            return new PathString("");
+            return new PathString("/_version_");
         }
 
         public PathString GetBaseApplicationPath()
         {
-            return new PathString("/_application_");
+            return GetVersionPath() + new PathString("/_application_");
         }
         
         public PathString GetMetadataBasePath()

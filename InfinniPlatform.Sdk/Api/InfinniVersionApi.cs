@@ -15,7 +15,7 @@ namespace InfinniPlatform.Sdk.Api
     /// </summary>
     public sealed class InfinniVersionApi : BaseApi
     {
-        public InfinniVersionApi(string server, string port) : base(server, port)
+        public InfinniVersionApi(string server, string port, string route) : base(server, port, route)
         {
         }
 

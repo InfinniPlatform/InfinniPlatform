@@ -14,13 +14,14 @@ namespace InfinniPlatform.Sdk.Tests
     {
         private const string InfinniSessionPort = "9900";
         private const string InfinniSessionServer = "localhost";
+        private const string Route = "1";
 
         private InfinniMetadataApi _metadataApi;
 
         [TestFixtureSetUp]
         public void SetupApi()
         {
-            _metadataApi = new InfinniMetadataApi(InfinniSessionServer, InfinniSessionPort);
+            _metadataApi = new InfinniMetadataApi(InfinniSessionServer, InfinniSessionPort,Route);
         }
 
         [Test]

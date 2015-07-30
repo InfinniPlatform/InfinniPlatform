@@ -20,17 +20,20 @@ namespace InfinniPlatform.WebApi.Middleware.RouteFormatters
             var routeValues = context.Request.Path.HasValue
                 ? context.Request.Path.Value.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries) : new string[] { };
 
+            int versionInt = 0;
 
-            var application = routeValues.Count() > 0 ? routeValues[0] : Resources.UnknownRouteSection;
-            var version = routeValues.Count() > 1 ? routeValues[1] : Resources.UnknownRouteSection;
-            var configuration = routeValues.Count() > 2 ? routeValues[2] : Resources.UnknownRouteSection;            
-            var metadataType = routeValues.Count() > 3 ? routeValues[3] : Resources.UnknownRouteSection;
-            var instanceId = routeValues.Count() > 4 ? routeValues[4] : Resources.UnknownRouteSection;
+            var version = routeValues.Count() > 0 ? Int32.TryParse(routeValues[0], out versionInt) ? routeValues[0] : Resources.UnknownRouteSection : Resources.UnknownRouteSection;
+            var application = routeValues.Count() > 1 ? routeValues[1] : Resources.UnknownRouteSection;
+            var versionMetadata = routeValues.Count() > 2 ? routeValues[2] : Resources.UnknownRouteSection;
+            var configuration = routeValues.Count() > 3 ? routeValues[3] : Resources.UnknownRouteSection;            
+            var metadataType = routeValues.Count() > 4 ? routeValues[4] : Resources.UnknownRouteSection;
+            var instanceId = routeValues.Count() > 5 ? routeValues[5] : Resources.UnknownRouteSection;
             
             return new Dictionary<string, string>()
             {
                 {"application",application},
                 {"version", version},
+                {"versionMetadata", versionMetadata},
                 {"configuration",configuration},                
                 {"metadataType",metadataType},                 
                 {"instanceId", instanceId}
@@ -47,6 +50,7 @@ namespace InfinniPlatform.WebApi.Middleware.RouteFormatters
                     .ReplaceFormat("_metadataType_", routeDictionary["metadataType"])
                     .ReplaceFormat("_configuration_", routeDictionary["configuration"])
                     .ReplaceFormat("_version_", routeDictionary["version"])
+                    .ReplaceFormat("_versionMetadata_", routeDictionary["versionMetadata"])
                     .ReplaceFormat("_instanceId_", routeDictionary["instanceId"])
                     : string.Empty);
         }
