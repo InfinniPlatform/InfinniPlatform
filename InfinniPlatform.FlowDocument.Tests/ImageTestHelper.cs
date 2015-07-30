@@ -4,11 +4,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Windows.Media.Imaging;
-
+using InfinniPlatform.FlowDocument.Model.Inlines;
 using NUnit.Framework;
-
-using Image = System.Windows.Controls.Image;
 
 namespace InfinniPlatform.FlowDocument.Tests
 {
@@ -29,7 +26,7 @@ namespace InfinniPlatform.FlowDocument.Tests
 			return null;
 		}
 
-		public static void AssertImagesAreEqual(Bitmap expected, Image image)
+		public static void AssertImagesAreEqual(Bitmap expected, PrintElementImage image)
 		{
 			CollectionAssert.AreEqual(BitmapToPixels(expected), ImageToPixels(image));
 		}
@@ -49,21 +46,31 @@ namespace InfinniPlatform.FlowDocument.Tests
 			return pixels;
 		}
 
-		private static IEnumerable<byte> ImageToPixels(Image image)
+        private static IEnumerable<byte> ImageToPixels(PrintElementImage image)
 		{
-			var bitmap = image.Source as BitmapSource;
+            //var bitmap = image.Source as BitmapSource;
 
-			if (bitmap != null)
-			{
-				var stride = bitmap.PixelWidth * 4;
-				var size = bitmap.PixelHeight * stride;
-				var pixels = new byte[size];
-				bitmap.CopyPixels(pixels, stride, 0);
+            //if (bitmap != null)
+            //{
+            //    var stride = bitmap.PixelWidth * 4;
+            //    var size = bitmap.PixelHeight * stride;
+            //    var pixels = new byte[size];
+            //    bitmap.CopyPixels(pixels, stride, 0);
 
-				return pixels;
-			}
+            //    return pixels;
+            //}
 
-			return null;
+            //return null;
+
+            var stream = image.Source;
+
+            if (stream == null) return null;
+
+            using (var ms = new MemoryStream())
+            {
+                stream.CopyTo(ms);
+                return ms.ToArray();
+            }
 		}
 	}
 }

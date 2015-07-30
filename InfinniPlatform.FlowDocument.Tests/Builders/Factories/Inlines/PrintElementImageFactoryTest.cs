@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Media;
 
 using InfinniPlatform.Api.Dynamic;
+using InfinniPlatform.FlowDocument.Model.Inlines;
 using InfinniPlatform.FlowDocument.Tests.Properties;
 
 using NUnit.Framework;
@@ -24,15 +22,13 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Data = ImageTestHelper.BitmapToBase64(image);
 
 			// When
-			InlineUIContainer element = BuildTestHelper.BuildImage(elementMetadata);
+			PrintElementImage element = BuildTestHelper.BuildImage(elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
-			Assert.IsNotNull(element.Child);
-			Assert.IsInstanceOf<Image>(element.Child);
-			Assert.AreEqual(image.Width, ((Image)element.Child).Width, 0.1);
-			Assert.AreEqual(image.Height, ((Image)element.Child).Height, 0.1);
-			ImageTestHelper.AssertImagesAreEqual(image, (Image)element.Child);
+			Assert.AreEqual(image.Width, element.Size.Width, 0.1);
+            Assert.AreEqual(image.Height, element.Size.Height, 0.1);
+			ImageTestHelper.AssertImagesAreEqual(image, element);
 		}
 
 		[Test]
@@ -45,15 +41,13 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Source = "$";
 
 			// When
-			InlineUIContainer element = BuildTestHelper.BuildImage((object)elementMetadata, c => { c.PrintViewSource = ImageTestHelper.BitmapToBase64(image); });
+			PrintElementImage element = BuildTestHelper.BuildImage((object)elementMetadata, c => { c.PrintViewSource = ImageTestHelper.BitmapToBase64(image); });
 
 			// Then
-			Assert.IsNotNull(element);
-			Assert.IsNotNull(element.Child);
-			Assert.IsInstanceOf<Image>(element.Child);
-			Assert.AreEqual(image.Width, ((Image)element.Child).Width, 0.1);
-			Assert.AreEqual(image.Height, ((Image)element.Child).Height, 0.1);
-			ImageTestHelper.AssertImagesAreEqual(image, (Image)element.Child);
+            Assert.IsNotNull(element);
+            Assert.AreEqual(image.Width, element.Size.Width, 0.1);
+            Assert.AreEqual(image.Height, element.Size.Height, 0.1);
+            ImageTestHelper.AssertImagesAreEqual(image, element);
 		}
 
 		[Test]
@@ -67,15 +61,13 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Rotation = "Rotate0";
 
 			// When
-			InlineUIContainer element = BuildTestHelper.BuildImage(elementMetadata);
+			PrintElementImage element = BuildTestHelper.BuildImage(elementMetadata);
 
 			// Then
-			Assert.IsNotNull(element);
-			Assert.IsNotNull(element.Child);
-			Assert.IsInstanceOf<Image>(element.Child);
-			Assert.AreEqual(Resources.ImageRotate0.Width, ((Image)element.Child).Width, 0.1);
-			Assert.AreEqual(Resources.ImageRotate0.Height, ((Image)element.Child).Height, 0.1);
-			ImageTestHelper.AssertImagesAreEqual(Resources.ImageRotate0, (Image)element.Child);
+            Assert.IsNotNull(element);
+            Assert.AreEqual(image.Width, element.Size.Width, 0.1);
+            Assert.AreEqual(image.Height, element.Size.Height, 0.1);
+            ImageTestHelper.AssertImagesAreEqual(image, element);
 		}
 
 		[Test]
@@ -89,15 +81,13 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Rotation = "Rotate90";
 
 			// When
-			InlineUIContainer element = BuildTestHelper.BuildImage(elementMetadata);
+			PrintElementImage element = BuildTestHelper.BuildImage(elementMetadata);
 
 			// Then
-			Assert.IsNotNull(element);
-			Assert.IsNotNull(element.Child);
-			Assert.IsInstanceOf<Image>(element.Child);
-			Assert.AreEqual(Resources.ImageRotate90.Width, ((Image)element.Child).Width, 0.1);
-			Assert.AreEqual(Resources.ImageRotate90.Height, ((Image)element.Child).Height, 0.1);
-			ImageTestHelper.AssertImagesAreEqual(Resources.ImageRotate90, (Image)element.Child);
+            Assert.IsNotNull(element);
+            Assert.AreEqual(image.Width, element.Size.Width, 0.1);
+            Assert.AreEqual(image.Height, element.Size.Height, 0.1);
+            ImageTestHelper.AssertImagesAreEqual(image, element);
 		}
 
 		[Test]
@@ -111,15 +101,13 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Rotation = "Rotate180";
 
 			// When
-			InlineUIContainer element = BuildTestHelper.BuildImage(elementMetadata);
+			PrintElementImage element = BuildTestHelper.BuildImage(elementMetadata);
 
 			// Then
-			Assert.IsNotNull(element);
-			Assert.IsNotNull(element.Child);
-			Assert.IsInstanceOf<Image>(element.Child);
-			Assert.AreEqual(Resources.ImageRotate180.Width, ((Image)element.Child).Width, 0.1);
-			Assert.AreEqual(Resources.ImageRotate180.Height, ((Image)element.Child).Height, 0.1);
-			ImageTestHelper.AssertImagesAreEqual(Resources.ImageRotate180, (Image)element.Child);
+            Assert.IsNotNull(element);
+            Assert.AreEqual(image.Width, element.Size.Width, 0.1);
+            Assert.AreEqual(image.Height, element.Size.Height, 0.1);
+            ImageTestHelper.AssertImagesAreEqual(image, element);
 		}
 
 		[Test]
@@ -133,15 +121,13 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Rotation = "Rotate270";
 
 			// When
-			InlineUIContainer element = BuildTestHelper.BuildImage(elementMetadata);
+			PrintElementImage element = BuildTestHelper.BuildImage(elementMetadata);
 
 			// Then
-			Assert.IsNotNull(element);
-			Assert.IsNotNull(element.Child);
-			Assert.IsInstanceOf<Image>(element.Child);
-			Assert.AreEqual(Resources.ImageRotate270.Width, ((Image)element.Child).Width, 0.1);
-			Assert.AreEqual(Resources.ImageRotate270.Height, ((Image)element.Child).Height, 0.1);
-			ImageTestHelper.AssertImagesAreEqual(Resources.ImageRotate270, (Image)element.Child);
+            Assert.IsNotNull(element);
+            Assert.AreEqual(image.Width, element.Size.Width, 0.1);
+            Assert.AreEqual(image.Height, element.Size.Height, 0.1);
+            ImageTestHelper.AssertImagesAreEqual(image, element);
 		}
 
 		[Test]
@@ -158,14 +144,13 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Data = ImageTestHelper.BitmapToBase64(image);
 
 			// When
-			InlineUIContainer element = BuildTestHelper.BuildImage(elementMetadata);
+			PrintElementImage element = BuildTestHelper.BuildImage(elementMetadata);
 
 			// Then
-			Assert.IsNotNull(element);
-			Assert.IsNotNull(element.Child);
-			Assert.IsInstanceOf<Image>(element.Child);
-			Assert.AreEqual(2 * image.Width, ((Image)element.Child).Width);
-			Assert.AreEqual(2 * image.Height, ((Image)element.Child).Height);
+            Assert.IsNotNull(element);
+            Assert.AreEqual(image.Width, element.Size.Width, 0.1);
+            Assert.AreEqual(image.Height, element.Size.Height, 0.1);
+            ImageTestHelper.AssertImagesAreEqual(image, element);
 		}
 
 		[Test]
@@ -182,16 +167,14 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Stretch = "Fill";
 			elementMetadata.Data = ImageTestHelper.BitmapToBase64(image);
 
-			// When
-			InlineUIContainer element = BuildTestHelper.BuildImage(elementMetadata);
+            // When
+            PrintElementImage element = BuildTestHelper.BuildImage(elementMetadata);
 
-			// Then
-			Assert.IsNotNull(element);
-			Assert.IsNotNull(element.Child);
-			Assert.IsInstanceOf<Image>(element.Child);
-			Assert.AreEqual(2 * image.Width, ((Image)element.Child).Width);
-			Assert.AreEqual(2 * image.Height, ((Image)element.Child).Height);
-			Assert.AreEqual(Stretch.Fill, ((Image)element.Child).Stretch);
+            // Then
+            Assert.IsNotNull(element);
+            Assert.AreEqual(image.Width, element.Size.Width, 0.1);
+            Assert.AreEqual(image.Height, element.Size.Height, 0.1);
+            ImageTestHelper.AssertImagesAreEqual(image, element);
 		}
 	}
 }

@@ -1,7 +1,5 @@
-﻿using System.Windows.Documents;
-
-using InfinniPlatform.Api.Dynamic;
-
+﻿using InfinniPlatform.Api.Dynamic;
+using InfinniPlatform.FlowDocument.Model.Inlines;
 using NUnit.Framework;
 
 namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
@@ -17,7 +15,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			dynamic elementMetadata = new DynamicWrapper();
 
 			// When
-			LineBreak element = BuildTestHelper.BuildLineBreak(elementMetadata);
+			PrintElementLineBreak element = BuildTestHelper.BuildLineBreak(elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Windows;
 
 using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.PrintView;
+using InfinniPlatform.FlowDocument.Model;
 using InfinniPlatform.FlowDocument.PrintView;
 using InfinniPlatform.FlowDocument.Tests.Properties;
 
@@ -19,9 +19,10 @@ namespace InfinniPlatform.FlowDocument.Tests.PrintView
 		[Test]
 		[RequiresMTA]
 		[TestCase(PrintViewFileFormat.Pdf)]
-		[TestCase(PrintViewFileFormat.Xps)]
-		[TestCase(PrintViewFileFormat.Rtf)]
-		[TestCase(PrintViewFileFormat.Xml)]
+		//[TestCase(PrintViewFileFormat.Xps)]
+		//[TestCase(PrintViewFileFormat.Rtf)]
+		//[TestCase(PrintViewFileFormat.Xml)]
+        [TestCase(PrintViewFileFormat.Html)]
 		public void ShouldBuildFile(PrintViewFileFormat printViewFileFormat)
 		{
 			// Given
@@ -123,7 +124,7 @@ namespace InfinniPlatform.FlowDocument.Tests.PrintView
 			printView.Blocks.Add(CreateParagraphWithTextCase("Lowercase", CreateRun("LOWERCASE "), CreateRun(" LOWERCASE.")));
 			printView.Blocks.Add(CreateParagraphWithTextCase("Uppercase", CreateRun("uppercase "), CreateRun(" uppercase.")));
 			printView.Blocks.Add(CreateParagraphWithTextCase("ToggleCase", CreateRun("Togglecase "), CreateRun(" tOGGLECASE.")));
-			printView.Blocks.Add(CreateSectionWithBorder(new Thickness(15), new Thickness(20), new Thickness(4), "Red", "Green", CreateSectionWithBorder(new Thickness(5), new Thickness(10), new Thickness(2), "Blue", "Yellow", CreateParagraph(CreateRun("Section & Margin & Padding & Border & Background")))));
+            printView.Blocks.Add(CreateSectionWithBorder(new PrintElementThickness(15), new PrintElementThickness(20), new PrintElementThickness(4), "Red", "Green", CreateSectionWithBorder(new PrintElementThickness(5), new PrintElementThickness(10), new PrintElementThickness(2), "Blue", "Yellow", CreateParagraph(CreateRun("Section & Margin & Padding & Border & Background")))));
 
 			return printView;
 		}
@@ -223,7 +224,7 @@ namespace InfinniPlatform.FlowDocument.Tests.PrintView
 			return cell;
 		}
 
-		private static dynamic CreateSectionWithBorder(Thickness margin, Thickness padding, Thickness border, string borderBrush, string background, params dynamic[] blocks)
+        private static dynamic CreateSectionWithBorder(PrintElementThickness margin, PrintElementThickness padding, PrintElementThickness border, string borderBrush, string background, params dynamic[] blocks)
 		{
 			dynamic sectionItem = CreateSection(blocks);
 

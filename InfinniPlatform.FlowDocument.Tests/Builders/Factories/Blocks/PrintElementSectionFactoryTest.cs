@@ -1,6 +1,7 @@
-﻿using System.Windows.Documents;
+﻿using System.Linq;
 
 using InfinniPlatform.Api.Dynamic;
+using InfinniPlatform.FlowDocument.Model.Blocks;
 
 using NUnit.Framework;
 
@@ -25,14 +26,14 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
 			elementMetadata.Blocks = new[] { block1, block2 };
 
 			// When
-			Section element = BuildTestHelper.BuildSection(elementMetadata);
+			PrintElementSection element = BuildTestHelper.BuildSection(elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
 			Assert.IsNotNull(element.Blocks);
 			Assert.AreEqual(2, element.Blocks.Count);
-			Assert.IsInstanceOf<Paragraph>(element.Blocks.FirstBlock);
-			Assert.IsInstanceOf<Paragraph>(element.Blocks.LastBlock);
+			Assert.IsInstanceOf<PrintElementParagraph>(element.Blocks.First());
+            Assert.IsInstanceOf<PrintElementParagraph>(element.Blocks.Last());
 		}
 	}
 }

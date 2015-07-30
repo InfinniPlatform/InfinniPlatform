@@ -48,152 +48,131 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
         {
             if (font != null)
             {
-                ApplyFontFamily(element, font.Family);
-                ApplyFontSize(element, font.Size, font.SizeUnit);
-                ApplyFontStyle(element, font.Style);
-                ApplyFontStretch(element, font.Stretch);
-                ApplyFontWeight(element, font.Weight);
-                ApplyFontVariant(element, font.Variant);
-            }
-        }
+                var fontValue = new PrintElementFont();
 
-        private static void ApplyFontFamily(dynamic element, dynamic fontFamily)
-        {
-            string fontFamilyString;
+                string fontFamilyString;
 
-            if (ConvertHelper.TryToNormString(fontFamily, out fontFamilyString))
-            {
-                element.FontFamily = fontFamilyString;
-            }
-        }
-
-        private static void ApplyFontSize(dynamic element, dynamic fontSize, dynamic fontSizeUnit)
-        {
-            double fontSizeInPixels;
-
-            if (TryToSizeInPixels(fontSize, fontSizeUnit, out fontSizeInPixels))
-            {
-                element.FontSize = fontSizeInPixels;
-            }
-        }
-
-        private static void ApplyFontStyle(dynamic element, dynamic fontStyle)
-        {
-            string fontStyleString;
-
-            if (ConvertHelper.TryToNormString(fontStyle, out fontStyleString))
-            {
-                switch (fontStyleString)
+                if (ConvertHelper.TryToString(font.Family, out fontFamilyString))
                 {
-                    case "normal":
-                        element.FontStyle = PrintElementFontStyle.Normal;
-                        break;
-                    case "italic":
-                        element.FontStyle = PrintElementFontStyle.Italic;
-                        break;
-                    case "oblique":
-                        element.FontStyle = PrintElementFontStyle.Oblique;
-                        break;
+                    fontValue.Family = fontFamilyString;
                 }
-            }
-        }
 
-        private static void ApplyFontStretch(dynamic element, dynamic fontStretch)
-        {
-            string fontStretchString;
+                double fontSizeInPixels;
 
-            if (ConvertHelper.TryToNormString(fontStretch, out fontStretchString))
-            {
-                switch (fontStretchString)
+                if (TryToSizeInPixels(font.Size, font.SizeUnit, out fontSizeInPixels))
                 {
-                    case "ultracondensed":
-                        element.FontStretch = PrintElementFontStretch.UltraCondensed;
-                        break;
-                    case "extracondensed":
-                        element.FontStretch = PrintElementFontStretch.ExtraCondensed;
-                        break;
-                    case "condensed":
-                        element.FontStretch = PrintElementFontStretch.Condensed;
-                        break;
-                    case "semicondensed":
-                        element.FontStretch = PrintElementFontStretch.SemiCondensed;
-                        break;
-                    case "normal":
-                        element.FontStretch = PrintElementFontStretch.Normal;
-                        break;
-                    case "semiexpanded":
-                        element.FontStretch = PrintElementFontStretch.SemiExpanded;
-                        break;
-                    case "expanded":
-                        element.FontStretch = PrintElementFontStretch.Expanded;
-                        break;
-                    case "extraexpanded":
-                        element.FontStretch = PrintElementFontStretch.ExtraExpanded;
-                        break;
-                    case "ultraexpanded":
-                        element.FontStretch = PrintElementFontStretch.UltraExpanded;
-                        break;
+                    fontValue.Size = fontSizeInPixels;
                 }
-            }
-        }
 
-        private static void ApplyFontWeight(dynamic element, dynamic fontWeight)
-        {
-            string fontWeightString;
+                string fontStyleString;
 
-            if (ConvertHelper.TryToNormString(fontWeight, out fontWeightString))
-            {
-                switch (fontWeightString)
+                if (ConvertHelper.TryToNormString(font.Style, out fontStyleString))
                 {
-                    case "ultralight":
-                        element.FontWeight = PrintElementFontWeight.UltraLight;
-                        break;
-                    case "extralight":
-                        element.FontWeight = PrintElementFontWeight.ExtraLight;
-                        break;
-                    case "light":
-                        element.FontWeight = PrintElementFontWeight.Light;
-                        break;
-                    case "normal":
-                        element.FontWeight = PrintElementFontWeight.Normal;
-                        break;
-                    case "medium":
-                        element.FontWeight = PrintElementFontWeight.Medium;
-                        break;
-                    case "semibold":
-                        element.FontWeight = PrintElementFontWeight.SemiBold;
-                        break;
-                    case "bold":
-                        element.FontWeight = PrintElementFontWeight.Bold;
-                        break;
-                    case "extrabold":
-                        element.FontWeight = PrintElementFontWeight.ExtraBold;
-                        break;
-                    case "ultrabold":
-                        element.FontWeight = PrintElementFontWeight.UltraBold;
-                        break;
+                    switch (fontStyleString)
+                    {
+                        case "normal":
+                            fontValue.Style = PrintElementFontStyle.Normal;
+                            break;
+                        case "italic":
+                            fontValue.Style = PrintElementFontStyle.Italic;
+                            break;
+                        case "oblique":
+                            fontValue.Style = PrintElementFontStyle.Oblique;
+                            break;
+                    }
                 }
-            }
-        }
 
-        private static void ApplyFontVariant(dynamic element, dynamic fontVariant)
-        {
-            string fontVariantString;
+                string fontStretchString;
 
-            if (ConvertHelper.TryToNormString(fontVariant, out fontVariantString))
-            {
-                switch (fontVariantString)
+                if (ConvertHelper.TryToNormString(font.Stretch, out fontStretchString))
                 {
-                    case "normal":
-                        element.Typography.Variants = PrintElementFontVariant.Normal;
-                        break;
-                    case "subscript":
-                        element.Typography.Variants = PrintElementFontVariant.Subscript;
-                        break;
-                    case "superscript":
-                        element.Typography.Variants = PrintElementFontVariant.Superscript;
-                        break;
+                    switch (fontStretchString)
+                    {
+                        case "ultracondensed":
+                            fontValue.Stretch = PrintElementFontStretch.UltraCondensed;
+                            break;
+                        case "extracondensed":
+                            fontValue.Stretch = PrintElementFontStretch.ExtraCondensed;
+                            break;
+                        case "condensed":
+                            fontValue.Stretch = PrintElementFontStretch.Condensed;
+                            break;
+                        case "semicondensed":
+                            fontValue.Stretch = PrintElementFontStretch.SemiCondensed;
+                            break;
+                        case "normal":
+                            fontValue.Stretch = PrintElementFontStretch.Normal;
+                            break;
+                        case "semiexpanded":
+                            fontValue.Stretch = PrintElementFontStretch.SemiExpanded;
+                            break;
+                        case "expanded":
+                            fontValue.Stretch = PrintElementFontStretch.Expanded;
+                            break;
+                        case "extraexpanded":
+                            fontValue.Stretch = PrintElementFontStretch.ExtraExpanded;
+                            break;
+                        case "ultraexpanded":
+                            fontValue.Stretch = PrintElementFontStretch.UltraExpanded;
+                            break;
+                    }
                 }
+
+                string fontWeightString;
+
+                if (ConvertHelper.TryToNormString(font.Weight, out fontWeightString))
+                {
+                    switch (fontWeightString)
+                    {
+                        case "ultralight":
+                            fontValue.Weight = PrintElementFontWeight.UltraLight;
+                            break;
+                        case "extralight":
+                            fontValue.Weight = PrintElementFontWeight.ExtraLight;
+                            break;
+                        case "light":
+                            fontValue.Weight = PrintElementFontWeight.Light;
+                            break;
+                        case "normal":
+                            fontValue.Weight = PrintElementFontWeight.Normal;
+                            break;
+                        case "medium":
+                            fontValue.Weight = PrintElementFontWeight.Medium;
+                            break;
+                        case "semibold":
+                            fontValue.Weight = PrintElementFontWeight.SemiBold;
+                            break;
+                        case "bold":
+                            fontValue.Weight = PrintElementFontWeight.Bold;
+                            break;
+                        case "extrabold":
+                            fontValue.Weight = PrintElementFontWeight.ExtraBold;
+                            break;
+                        case "ultrabold":
+                            fontValue.Weight = PrintElementFontWeight.UltraBold;
+                            break;
+                    }
+                }
+
+                string fontVariantString;
+
+                if (ConvertHelper.TryToNormString(font.Variant, out fontVariantString))
+                {
+                    switch (fontVariantString)
+                    {
+                        case "normal":
+                            fontValue.Variant = PrintElementFontVariant.Normal;
+                            break;
+                        case "subscript":
+                            fontValue.Variant = PrintElementFontVariant.Subscript;
+                            break;
+                        case "superscript":
+                            fontValue.Variant = PrintElementFontVariant.Superscript;
+                            break;
+                    }
+                }
+
+                element.Font = fontValue;
             }
         }
 
@@ -374,6 +353,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
         /// </summary>
         public static void ApplyBlockProperties(dynamic element, dynamic metadata)
         {
+
             if (metadata != null)
             {
                 ApplyBorder(element, metadata.Border);
@@ -398,7 +378,8 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
 
                 if (ConvertHelper.TryToNormString(border.Color, out borderBrush))
                 {
-                    element.BorderBrush = borderBrush;
+                    //element.BorderBrush = borderBrush;
+                    element.Border.Color = borderBrush;
                 }
             }
         }
