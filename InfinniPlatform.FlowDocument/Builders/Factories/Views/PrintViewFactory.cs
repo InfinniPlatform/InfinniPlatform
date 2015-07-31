@@ -37,7 +37,10 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Views
 
             if (blocks != null)
             {
-                element.Blocks.AddRange(blocks);
+                foreach (var block in blocks)
+                {
+                    element.Blocks.Add(block);
+                }
             }
 
             BuildHelper.PostApplyTextProperties(element, buildContext.ElementStyle);

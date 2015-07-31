@@ -25,7 +25,10 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 
 			if (blocks != null)
 			{
-				element.Blocks.AddRange(blocks);
+			    foreach (var block in blocks)
+			    {
+			        element.Blocks.Add(block);
+			    }
 			}
 
 			BuildHelper.PostApplyTextProperties(element, buildContext.ElementStyle);
@@ -36,7 +39,9 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 
 		private static PrintElementBuildContext CreateContentContext(PrintElementSection element, PrintElementBuildContext buildContext)
 		{
-			var contentWidth = BuildHelper.CalcContentWidth(buildContext.ElementWidth, element.Margin, element.Padding, element.BorderThickness);
+		    var contentWidth = (element.Border != null)
+		        ? BuildHelper.CalcContentWidth(buildContext.ElementWidth, element.Margin, element.Padding, element.Border.Thickness)
+		        : BuildHelper.CalcContentWidth(buildContext.ElementWidth, element.Margin, element.Padding);
 			return buildContext.Create(contentWidth);
 		}
 	}

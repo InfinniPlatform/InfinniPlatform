@@ -1,30 +1,52 @@
 ﻿namespace InfinniPlatform.FlowDocument.Model
 {
-    public sealed class PrintElementThickness
+    public struct PrintElementThickness
     {
-        public PrintElementThickness()
-        {
-        }
-
         public PrintElementThickness(double all)
         {
-            Left = all;
-            Top = all;
-            Right = all;
-            Bottom = all;
+            _left = all;
+            _top = all;
+            _right = all;
+            _bottom = all;
         }
 
         public PrintElementThickness(double left, double top, double right, double bottom)
         {
-            Left = left;
-            Top = top;
-            Right = right;
-            Bottom = bottom;
+            _left = left;
+            _top = top;
+            _right = right;
+            _bottom = bottom;
         }
 
-        public double? Left { get; set; }
-        public double? Top { get; set; }
-        public double? Right { get; set; }
-        public double? Bottom { get; set; }
+
+        private double _left;
+        private double _top;
+        private double _right;
+        private double _bottom;
+
+
+        public double Left
+        {
+            get { return _left; }
+            set { _left = value; }
+        }
+
+        public double Top
+        {
+            get { return _top; }
+            set { _top = value; }
+        }
+
+        public double Right
+        {
+            get { return _right; }
+            set { _right = value; }
+        }
+
+        public double Bottom
+        {
+            get { return _bottom; }
+            set { _bottom = value; }
+        }
     }
 }

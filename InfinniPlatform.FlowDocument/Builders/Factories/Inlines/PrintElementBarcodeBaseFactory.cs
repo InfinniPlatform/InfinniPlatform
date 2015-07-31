@@ -4,6 +4,7 @@ using System.IO;
 using FastReport;
 using FastReport.Barcode;
 using FastReport.Utils;
+using InfinniPlatform.FlowDocument.Model;
 using InfinniPlatform.FlowDocument.Model.Inlines;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
@@ -25,13 +26,13 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 
         private PrintElementImage CreateBarcodeImage(PrintElementBuildContext buildContext, dynamic elementMetadata)
         {
-            var imageStream = CreateBarcodeImageStream(buildContext, elementMetadata);
+            var imageSize = new PrintElementSize();
+            var imageStream = CreateBarcodeImageStream(buildContext, elementMetadata, imageSize);
 
             try
             {
-                imageStream = ApplyRotation(imageStream, elementMetadata.Rotation);
-
-                return new PrintElementImage(imageStream);
+                imageStream = ApplyRotation(imageStream, elementMetadata.Rotation, imageSize);
+                return new PrintElementImage(imageStream) { Size = imageSize };
             }
             catch
             {
@@ -40,7 +41,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
             return null;
         }
 
-        private static Stream ApplyRotation(Stream bitmap, dynamic rotation)
+        private static Stream ApplyRotation(Stream bitmap, dynamic rotation, PrintElementSize imageSize)
         {
             string rotationString;
 
@@ -49,24 +50,27 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
                 switch (rotationString)
                 {
                     case "rotate90":
-                        return RotateImage(bitmap, RotateFlipType.Rotate90FlipNone);
+                        return RotateImage(bitmap, RotateFlipType.Rotate90FlipNone, imageSize);
                     case "rotate180":
-                        return RotateImage(bitmap, RotateFlipType.Rotate180FlipNone);
+                        return RotateImage(bitmap, RotateFlipType.Rotate180FlipNone, imageSize);
                     case "rotate270":
-                        return RotateImage(bitmap, RotateFlipType.Rotate270FlipNone);
+                        return RotateImage(bitmap, RotateFlipType.Rotate270FlipNone, imageSize);
                 }
             }
 
             return bitmap;
         }
 
-        private static Stream RotateImage(Stream image, RotateFlipType rotation)
+        private static Stream RotateImage(Stream image, RotateFlipType rotation, PrintElementSize imageSize)
         {
             try
             {
                 using (var bitmap = new Bitmap(image))
                 {
                     bitmap.RotateFlip(rotation);
+
+                    imageSize.Width = bitmap.Width;
+                    imageSize.Height = bitmap.Height;
 
                     var result = new MemoryStream();
                     bitmap.Save(result, bitmap.RawFormat);
@@ -80,7 +84,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
             }
         }
 
-        private Stream CreateBarcodeImageStream(PrintElementBuildContext buildContext, dynamic elementMetadata)
+        private Stream CreateBarcodeImageStream(PrintElementBuildContext buildContext, dynamic elementMetadata, PrintElementSize imageSize)
         {
             string textSting = BuildHelper.FormatValue(buildContext, elementMetadata.Text, elementMetadata.SourceFormat);
 
@@ -120,6 +124,9 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
                         {
                             graphics.Clear(Color.White);
                             barcode.Draw(new FRPaintEventArgs(graphics, 1, 1, graphicCache));
+
+                            imageSize.Width = codeBmp.Width;
+                            imageSize.Height = codeBmp.Height;
 
                             var codeStream = new MemoryStream();
                             codeBmp.Save(codeStream, ImageFormat.Bmp);

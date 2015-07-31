@@ -69,7 +69,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
 			Assert.IsNotNull(element.Items);
             Assert.AreEqual(2, element.Items.Count);
 			Assert.AreEqual("Item1", ((PrintElementRun)((PrintElementParagraph)element.Items[0].Blocks[0]).Inlines[0]).Text);
-            Assert.AreEqual("Item2", ((PrintElementRun)((PrintElementParagraph)element.Items[1].Blocks[1]).Inlines[0]).Text);
+            Assert.AreEqual("Item2", ((PrintElementRun)((PrintElementParagraph)element.Items[1].Blocks[0]).Inlines[0]).Text);
 		}
 
 		[Test]

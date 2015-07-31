@@ -1,6 +1,7 @@
 ﻿using System;
 
 using InfinniPlatform.Api.Dynamic;
+using InfinniPlatform.FlowDocument.Model;
 using InfinniPlatform.FlowDocument.Model.Inlines;
 using InfinniPlatform.FlowDocument.Tests.Properties;
 
@@ -26,8 +27,8 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 
 			// Then
 			Assert.IsNotNull(element);
-			Assert.AreEqual(image.Width, element.Size.Width, 0.1);
-            Assert.AreEqual(image.Height, element.Size.Height, 0.1);
+            Assert.IsInstanceOf<PrintElementImage>(element);
+            Assert.IsNull(element.Size);
 			ImageTestHelper.AssertImagesAreEqual(image, element);
 		}
 
@@ -45,8 +46,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 
 			// Then
             Assert.IsNotNull(element);
-            Assert.AreEqual(image.Width, element.Size.Width, 0.1);
-            Assert.AreEqual(image.Height, element.Size.Height, 0.1);
+            Assert.IsNull(element.Size);
             ImageTestHelper.AssertImagesAreEqual(image, element);
 		}
 
@@ -65,8 +65,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 
 			// Then
             Assert.IsNotNull(element);
-            Assert.AreEqual(image.Width, element.Size.Width, 0.1);
-            Assert.AreEqual(image.Height, element.Size.Height, 0.1);
+            Assert.IsNull(element.Size);
             ImageTestHelper.AssertImagesAreEqual(image, element);
 		}
 
@@ -85,8 +84,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 
 			// Then
             Assert.IsNotNull(element);
-            Assert.AreEqual(image.Width, element.Size.Width, 0.1);
-            Assert.AreEqual(image.Height, element.Size.Height, 0.1);
+            Assert.IsNull(element.Size);
             ImageTestHelper.AssertImagesAreEqual(image, element);
 		}
 
@@ -105,8 +103,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 
 			// Then
             Assert.IsNotNull(element);
-            Assert.AreEqual(image.Width, element.Size.Width, 0.1);
-            Assert.AreEqual(image.Height, element.Size.Height, 0.1);
+            Assert.IsNull(element.Size);
             ImageTestHelper.AssertImagesAreEqual(image, element);
 		}
 
@@ -125,8 +122,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 
 			// Then
             Assert.IsNotNull(element);
-            Assert.AreEqual(image.Width, element.Size.Width, 0.1);
-            Assert.AreEqual(image.Height, element.Size.Height, 0.1);
+            Assert.IsNull(element.Size);
             ImageTestHelper.AssertImagesAreEqual(image, element);
 		}
 
@@ -148,9 +144,8 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 
 			// Then
             Assert.IsNotNull(element);
-            Assert.AreEqual(image.Width, element.Size.Width, 0.1);
-            Assert.AreEqual(image.Height, element.Size.Height, 0.1);
-            ImageTestHelper.AssertImagesAreEqual(image, element);
+            Assert.AreEqual(2 * image.Width, element.Size.Width, 0.1);
+            Assert.AreEqual(2 * image.Height, element.Size.Height, 0.1);
 		}
 
 		[Test]
@@ -172,9 +167,9 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 
             // Then
             Assert.IsNotNull(element);
-            Assert.AreEqual(image.Width, element.Size.Width, 0.1);
-            Assert.AreEqual(image.Height, element.Size.Height, 0.1);
-            ImageTestHelper.AssertImagesAreEqual(image, element);
+            Assert.AreEqual(2 * image.Width, element.Size.Width, 0.1);
+            Assert.AreEqual(2 * image.Height, element.Size.Height, 0.1);
+            Assert.AreEqual(PrintElementStretch.Fill, element.Stretch);
 		}
 	}
 }

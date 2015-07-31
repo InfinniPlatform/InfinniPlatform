@@ -1,5 +1,6 @@
 ﻿using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.FlowDocument.Model;
+using InfinniPlatform.FlowDocument.Model.Blocks;
 using NUnit.Framework;
 
 namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
@@ -19,9 +20,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
 
 			// Then
 			Assert.IsNotNull(element);
-			Assert.IsNotNull(element.Border.Color);
-			Assert.IsNotNull(element.BorderThickness);
-			Assert.IsTrue(element.BorderThickness.Top > 0 || element.BorderThickness.Bottom > 0);
+            Assert.IsInstanceOf<PrintElementLine>(element);
 		}
 	}
 }

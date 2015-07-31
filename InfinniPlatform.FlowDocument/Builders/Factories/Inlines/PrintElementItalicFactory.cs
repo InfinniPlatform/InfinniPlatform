@@ -20,7 +20,10 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 
 			if (inlines != null)
 			{
-				element.Inlines.AddRange(inlines);
+                foreach (var inline in inlines)
+                {
+                    element.Inlines.Add(inline);
+                }
 			}
 
 			BuildHelper.PostApplyTextProperties(element, buildContext.ElementStyle);

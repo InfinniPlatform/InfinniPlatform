@@ -180,7 +180,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
         {
             string foregroundBrush;
 
-            if (ConvertHelper.TryToNormString(foreground, out foregroundBrush))
+            if (ConvertHelper.TryToString(foreground, out foregroundBrush))
             {
                 element.Foreground = foregroundBrush;
             }
@@ -190,7 +190,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
         {
             string backgroundBrush;
 
-            if (ConvertHelper.TryToNormString(background, out backgroundBrush))
+            if (ConvertHelper.TryToString(background, out backgroundBrush))
             {
                 element.Background = backgroundBrush;
             }
@@ -353,7 +353,6 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
         /// </summary>
         public static void ApplyBlockProperties(dynamic element, dynamic metadata)
         {
-
             if (metadata != null)
             {
                 ApplyBorder(element, metadata.Border);
@@ -371,15 +370,14 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
 
                 if (TryToThickness(border.Thickness, out borderThickness))
                 {
-                    element.BorderThickness = borderThickness;
+                    element.Border.Thickness = borderThickness;
                 }
 
-                string borderBrush;
+                string borderColor;
 
-                if (ConvertHelper.TryToNormString(border.Color, out borderBrush))
+                if (ConvertHelper.TryToNormString(border.Color, out borderColor))
                 {
-                    //element.BorderBrush = borderBrush;
-                    element.Border.Color = borderBrush;
+                    element.Border.Color = borderColor;
                 }
             }
         }
@@ -451,16 +449,16 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
                 switch (textDecorationString)
                 {
                     case "normal":
-                        element.TextDecorations = null;
+                        element.TextDecoration = null;
                         break;
                     case "overline":
-                        element.TextDecorations = PrintElementTextDecoration.OverLine;
+                        element.TextDecoration = PrintElementTextDecoration.OverLine;
                         break;
                     case "strikethrough":
-                        element.TextDecorations = PrintElementTextDecoration.Strikethrough;
+                        element.TextDecoration = PrintElementTextDecoration.Strikethrough;
                         break;
                     case "underline":
-                        element.TextDecorations = PrintElementTextDecoration.Underline;
+                        element.TextDecoration = PrintElementTextDecoration.Underline;
                         break;
                 }
             }
@@ -542,6 +540,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
             }
 
             result = default(PrintElementThickness);
+
             return false;
         }
 

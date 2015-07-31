@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 
 using InfinniPlatform.FlowDocument.Model;
 using InfinniPlatform.FlowDocument.Model.Blocks;
@@ -152,7 +153,9 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 
         private static PrintElementBuildContext CreateItemContext(PrintElementList element, PrintElementBuildContext buildContext)
         {
-            var contentWidth = BuildHelper.CalcContentWidth(buildContext.ElementWidth, element.Margin, element.Padding, element.BorderThickness, new PrintElementThickness(element.MarkerOffsetSize.Value));
+            var contentWidth = (element.Border != null)
+                ? BuildHelper.CalcContentWidth(buildContext.ElementWidth, element.Margin, element.Padding, element.Border.Thickness, new PrintElementThickness(element.MarkerOffsetSize))
+                : BuildHelper.CalcContentWidth(buildContext.ElementWidth, element.Margin, element.Padding, new PrintElementThickness(element.MarkerOffsetSize));
             return buildContext.Create(contentWidth);
         }
     }

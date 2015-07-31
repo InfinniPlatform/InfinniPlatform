@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 
@@ -34,18 +35,18 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 
         private static PrintElementImage ApplyImageData(Stream imageStream, dynamic elementMetadata)
         {
-            PrintElementImage image = null;
             try
             {
                 imageStream = ApplyRotation(imageStream, elementMetadata.Rotation);
-                image = new PrintElementImage(imageStream);
+                var image = new PrintElementImage(imageStream);
                 ApplySize(image, elementMetadata.Size);
                 ApplyStretch(image, elementMetadata.Stretch);
+                return image;
             }
             catch
             {
             }
-            return image;
+            return null;
         }
 
         private static Stream GetImageDataStream(PrintElementBuildContext buildContext, dynamic imageData)
@@ -149,7 +150,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
             if (size != null)
             {
                 PrintElementSize imageSize = null;
-                
+
                 double width;
 
                 if (BuildHelper.TryToSizeInPixels(size.Width, size.SizeUnit, out width))

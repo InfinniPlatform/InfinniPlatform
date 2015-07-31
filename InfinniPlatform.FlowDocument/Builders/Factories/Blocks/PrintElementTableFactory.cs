@@ -83,7 +83,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
         {
             if (columns != null)
             {
-                var autoWidthAvailable = BuildHelper.CalcContentWidth(buildContext.ElementWidth, table.Margin, table.Padding, table.BorderThickness);
+                var autoWidthAvailable = BuildHelper.CalcContentWidth(buildContext.ElementWidth, table.Margin, table.Padding, table.Border.Thickness);
                 var autoWidthColumns = 0;
 
                 // Генерация столбцов
