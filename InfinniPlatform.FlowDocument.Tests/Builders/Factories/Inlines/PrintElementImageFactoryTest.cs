@@ -55,9 +55,10 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 		public void ShouldApplyRotation0()
 		{
 			// Given
-			var image = Resources.ImageRotate0;
-			dynamic elementMetadata = new DynamicWrapper();
-			elementMetadata.Data = ImageTestHelper.BitmapToBase64(image);
+            var original = Resources.ImageRotate0;
+            var expected = Resources.ImageRotate0;
+            dynamic elementMetadata = new DynamicWrapper();
+			elementMetadata.Data = ImageTestHelper.BitmapToBase64(original);
 			elementMetadata.Rotation = "Rotate0";
 
 			// When
@@ -66,7 +67,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			// Then
             Assert.IsNotNull(element);
             Assert.IsNull(element.Size);
-            ImageTestHelper.AssertImagesAreEqual(image, element);
+            ImageTestHelper.AssertImagesAreEqual(expected, element);
 		}
 
 		[Test]
@@ -74,9 +75,10 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 		public void ShouldApplyRotation90()
 		{
 			// Given
-			var image = Resources.ImageRotate0;
-			dynamic elementMetadata = new DynamicWrapper();
-			elementMetadata.Data = ImageTestHelper.BitmapToBase64(image);
+            var original = Resources.ImageRotate0;
+            var expected = Resources.ImageRotate90;
+            dynamic elementMetadata = new DynamicWrapper();
+			elementMetadata.Data = ImageTestHelper.BitmapToBase64(original);
 			elementMetadata.Rotation = "Rotate90";
 
 			// When
@@ -85,7 +87,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			// Then
             Assert.IsNotNull(element);
             Assert.IsNull(element.Size);
-            ImageTestHelper.AssertImagesAreEqual(image, element);
+            ImageTestHelper.AssertImagesAreEqual(expected, element);
 		}
 
 		[Test]
@@ -93,9 +95,10 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 		public void ShouldApplyRotation180()
 		{
 			// Given
-			var image = Resources.ImageRotate0;
+		    var original = Resources.ImageRotate0;
+			var expected = Resources.ImageRotate180;
 			dynamic elementMetadata = new DynamicWrapper();
-			elementMetadata.Data = ImageTestHelper.BitmapToBase64(image);
+            elementMetadata.Data = ImageTestHelper.BitmapToBase64(original);
 			elementMetadata.Rotation = "Rotate180";
 
 			// When
@@ -104,7 +107,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			// Then
             Assert.IsNotNull(element);
             Assert.IsNull(element.Size);
-            ImageTestHelper.AssertImagesAreEqual(image, element);
+            ImageTestHelper.AssertImagesAreEqual(expected, element);
 		}
 
 		[Test]
@@ -112,9 +115,10 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 		public void ShouldApplyRotation270()
 		{
 			// Given
-			var image = Resources.ImageRotate0;
-			dynamic elementMetadata = new DynamicWrapper();
-			elementMetadata.Data = ImageTestHelper.BitmapToBase64(image);
+            var original = Resources.ImageRotate0;
+            var expected = Resources.ImageRotate270;
+            dynamic elementMetadata = new DynamicWrapper();
+			elementMetadata.Data = ImageTestHelper.BitmapToBase64(original);
 			elementMetadata.Rotation = "Rotate270";
 
 			// When
@@ -123,7 +127,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			// Then
             Assert.IsNotNull(element);
             Assert.IsNull(element.Size);
-            ImageTestHelper.AssertImagesAreEqual(image, element);
+            ImageTestHelper.AssertImagesAreEqual(expected, element);
 		}
 
 		[Test]

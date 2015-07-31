@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 
@@ -101,6 +100,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
                 }
 
                 image.Save(result, ImageFormat.Png);
+                result.Seek(0, SeekOrigin.Begin);
             }
 
             return result;
@@ -135,7 +135,8 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
                     bitmap.RotateFlip(rotation);
 
                     var result = new MemoryStream();
-                    bitmap.Save(result, bitmap.RawFormat);
+                    bitmap.Save(result, ImageFormat.Png);
+                    result.Seek(0, SeekOrigin.Begin);
 
                     return result;
                 }

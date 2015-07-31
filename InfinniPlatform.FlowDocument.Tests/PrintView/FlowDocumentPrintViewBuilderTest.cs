@@ -17,11 +17,9 @@ namespace InfinniPlatform.FlowDocument.Tests.PrintView
 	public sealed class FlowDocumentPrintViewBuilderTest
 	{
 		[Test]
-		[RequiresMTA]
+        [Ignore]
+        [RequiresMTA]
 		[TestCase(PrintViewFileFormat.Pdf)]
-		//[TestCase(PrintViewFileFormat.Xps)]
-		//[TestCase(PrintViewFileFormat.Rtf)]
-		//[TestCase(PrintViewFileFormat.Xml)]
         [TestCase(PrintViewFileFormat.Html)]
 		public void ShouldBuildFile(PrintViewFileFormat printViewFileFormat)
 		{

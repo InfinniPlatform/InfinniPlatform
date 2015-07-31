@@ -69,8 +69,6 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			// When
 			PrintElementImage element = BuildTestHelper.BuildBarcodeQr(elementMetadata);
 
-            element.WriteToDisk();
-
             // Then
             Assert.IsNotNull(element);
             Assert.AreEqual(expectedImage.Width, element.Size.Width, 0.1);
@@ -155,7 +153,6 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			// When
 			PrintElementImage element = BuildTestHelper.BuildBarcodeQr(elementMetadata);
 
-			// Then
             // Then
             Assert.IsNotNull(element);
             Assert.AreEqual(expectedImage.Width, element.Size.Width, 0.1);

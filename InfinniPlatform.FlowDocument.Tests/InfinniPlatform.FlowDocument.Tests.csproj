@@ -100,23 +100,23 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\BarcodeEan13Rotate0.bmp" />
-    <Content Include="Images\BarcodeEan13Rotate180.bmp" />
-    <Content Include="Images\BarcodeEan13Rotate270.bmp" />
-    <Content Include="Images\BarcodeEan13Rotate90.bmp" />
-    <Content Include="Images\BarcodeQrErrorCorrectionHigh.bmp" />
-    <Content Include="Images\BarcodeQrErrorCorrectionLow.bmp" />
-    <Content Include="Images\BarcodeQrErrorCorrectionMedium.bmp" />
-    <Content Include="Images\BarcodeQrErrorCorrectionQuartile.bmp" />
-    <Content Include="Images\BarcodeQrRotate0.bmp" />
-    <Content Include="Images\BarcodeQrRotate180.bmp" />
-    <Content Include="Images\BarcodeQrRotate270.bmp" />
-    <Content Include="Images\BarcodeQrRotate90.bmp" />
+    <Content Include="Images\BarcodeEan13Rotate0.png" />
+    <Content Include="Images\BarcodeEan13Rotate180.png" />
+    <Content Include="Images\BarcodeEan13Rotate270.png" />
+    <Content Include="Images\BarcodeEan13Rotate90.png" />
+    <Content Include="Images\BarcodeQrErrorCorrectionHigh.png" />
+    <Content Include="Images\BarcodeQrErrorCorrectionLow.png" />
+    <Content Include="Images\BarcodeQrErrorCorrectionMedium.png" />
+    <Content Include="Images\BarcodeQrErrorCorrectionQuartile.png" />
+    <Content Include="Images\BarcodeQrRotate0.png" />
+    <Content Include="Images\BarcodeQrRotate180.png" />
+    <Content Include="Images\BarcodeQrRotate270.png" />
+    <Content Include="Images\BarcodeQrRotate90.png" />
     <Content Include="Images\Image.jpg" />
-    <Content Include="Images\ImageRotate0.bmp" />
-    <Content Include="Images\ImageRotate180.bmp" />
-    <Content Include="Images\ImageRotate270.bmp" />
-    <Content Include="Images\ImageRotate90.bmp" />
+    <Content Include="Images\ImageRotate0.png" />
+    <Content Include="Images\ImageRotate180.png" />
+    <Content Include="Images\ImageRotate270.png" />
+    <Content Include="Images\ImageRotate90.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

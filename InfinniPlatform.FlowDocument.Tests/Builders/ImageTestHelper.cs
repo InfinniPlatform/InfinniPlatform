@@ -28,48 +28,17 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders
 
         public static void AssertImagesAreEqual(Bitmap expected, PrintElementImage image)
         {
-            CollectionAssert.AreEqual(BitmapToPixels(expected), ImageToPixels(image));
-        }
+            var actual = new Bitmap(image.Source);
 
-        private static IEnumerable<byte> BitmapToPixels(Bitmap bitmap)
-        {
-            var bitmapRect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
-            var bitmapData = bitmap.LockBits(bitmapRect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            Assert.AreEqual(expected.Width, actual.Width);
+            Assert.AreEqual(expected.Height, actual.Height);
 
-            var stride = bitmapData.Stride;
-            var size = bitmap.Height * stride;
-            var pixels = new byte[size];
-            Marshal.Copy(bitmapData.Scan0, pixels, 0, size);
-
-            bitmap.UnlockBits(bitmapData);
-
-            return pixels;
-        }
-
-        private static IEnumerable<byte> ImageToPixels(PrintElementImage image)
-        {
-            //var bitmap = image.Source as BitmapSource;
-
-            //if (bitmap != null)
-            //{
-            //    var stride = bitmap.PixelWidth * 4;
-            //    var size = bitmap.PixelHeight * stride;
-            //    var pixels = new byte[size];
-            //    bitmap.CopyPixels(pixels, stride, 0);
-
-            //    return pixels;
-            //}
-
-            //return null;
-
-            var stream = image.Source;
-
-            if (stream == null) return null;
-
-            using (var ms = new MemoryStream())
+            for (var x = 0; x < expected.Width; x++)
             {
-                stream.CopyTo(ms);
-                return ms.ToArray();
+                for (var y = 0; y < expected.Height; y++)
+                {
+                    Assert.AreEqual(expected.GetPixel(x, y), actual.GetPixel(x, y), "X={0}, Y={1}", x, y);
+                }
             }
         }
     }

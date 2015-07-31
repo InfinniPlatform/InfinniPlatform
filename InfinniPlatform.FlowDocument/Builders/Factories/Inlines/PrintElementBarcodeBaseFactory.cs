@@ -73,7 +73,8 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
                     imageSize.Height = bitmap.Height;
 
                     var result = new MemoryStream();
-                    bitmap.Save(result, bitmap.RawFormat);
+                    bitmap.Save(result, ImageFormat.Png);
+                    result.Seek(0, SeekOrigin.Begin);
 
                     return result;
                 }
@@ -129,7 +130,8 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
                             imageSize.Height = codeBmp.Height;
 
                             var codeStream = new MemoryStream();
-                            codeBmp.Save(codeStream, ImageFormat.Bmp);
+                            codeBmp.Save(codeStream, ImageFormat.Png);
+                            codeStream.Seek(0, SeekOrigin.Begin);
 
                             return codeStream;
                         }
