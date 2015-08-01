@@ -313,6 +313,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to delete document metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToDeleteDocumentMetadata {
+            get {
+                return ResourceManager.GetString("UnableToDeleteDocumentMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to delete menu metadata with exception {0}.
         /// </summary>
         internal static string UnableToDeleteMenuMetadata {
@@ -412,6 +421,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to get document metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToGetDocumentMetadata {
+            get {
+                return ResourceManager.GetString("UnableToGetDocumentMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to get menu metadata with exception {0}.
         /// </summary>
         internal static string UnableToGetMenuMetadata {
@@ -480,6 +498,15 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string UnableToInsertConfigMetadata {
             get {
                 return ResourceManager.GetString("UnableToInsertConfigMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to insert document metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToInsertDocumentMetadata {
+            get {
+                return ResourceManager.GetString("UnableToInsertDocumentMetadata", resourceCulture);
             }
         }
         
@@ -597,6 +624,15 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string UnableToUpdateDocument {
             get {
                 return ResourceManager.GetString("UnableToUpdateDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to update document metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToUpdateDocumentMetadata {
+            get {
+                return ResourceManager.GetString("UnableToUpdateDocumentMetadata", resourceCulture);
             }
         }
         

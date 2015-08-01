@@ -306,4 +306,16 @@
 	<data name="UnableToGetRegisterMetadata" xml:space="preserve">
     <value>Unable to get register metadata with exception {0}</value>
   </data>
+	<data name="UnableToInsertDocumentMetadata" xml:space="preserve">
+    <value>Unable to insert document metadata with exception {0}</value>
+  </data>
+	<data name="UnableToUpdateDocumentMetadata" xml:space="preserve">
+    <value>Unable to update document metadata with exception {0}</value>
+  </data>
+	<data name="UnableToDeleteDocumentMetadata" xml:space="preserve">
+    <value>Unable to delete document metadata with exception {0}</value>
+  </data>
+	<data name="UnableToGetDocumentMetadata" xml:space="preserve">
+    <value>Unable to get document metadata with exception {0}</value>
+  </data>
 </root>

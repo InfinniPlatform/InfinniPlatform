@@ -285,5 +285,60 @@ namespace InfinniPlatform.Sdk.Api
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetRegisterMetadata, response.GetErrorContent()));
         }
 
+
+        /// <summary>
+        ///   Добавить метаданные указанного документа
+        /// </summary>
+        /// <returns>Результат добавления метаданных указанного документа</returns>
+        public dynamic InsertDocument(DocumentMetadata documentMetadata, string version, string configuration)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlMetadataElement(version, configuration, "Document"), documentMetadata);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToInsertDocumentMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Обновить метаданные указанного документа
+        /// </summary>
+        /// <returns>Результат обновления метаданных документа</returns>
+        public dynamic UpdateDocument(DocumentMetadata documentMetadata, string version, string configuration)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlMetadataElement(version, configuration, "Document"), documentMetadata);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateDocumentMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Удалить метаданные указанного документа
+        /// </summary>
+        /// <returns>Результат удаления метаданных документа</returns>
+        public dynamic DeleteDocument(string version, string configuration, string name)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingUrlMetadataElementById(version, configuration, "Document", name));
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToDeleteDocumentMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Получить метаданные документа по указанному идентификатору
+        /// </summary>
+        /// <param name="version">Версия конфигурации</param>
+        /// <param name="name">Наименование документа</param>
+        /// <returns>Метаданные документа</returns>
+        public dynamic GetDocument(string version, string configuration, string name)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlMetadataElementById(version, configuration, "Document", name));
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetDocumentMetadata, response.GetErrorContent()));
+        }
+
     }
 }

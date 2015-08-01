@@ -182,5 +182,42 @@ namespace InfinniPlatform.Sdk.Tests
             _metadataApi.DeleteConfig(config.Version, config.Name);
 
         }
+
+        [Test()]
+        public void ShouldInsertUpdateDeleteDocument()
+        {
+            var config = new ConfigurationMetadata();
+            config.Id = Guid.NewGuid().ToString();
+            config.Name = "TestConfigVersion_" + Guid.NewGuid().ToString();
+            config.Version = "2.0.0.0";
+            _metadataApi.InsertConfig(config);
+
+            var documentMetadata = new DocumentMetadata();
+            documentMetadata.Id = Guid.NewGuid().ToString();
+            documentMetadata.Name = "Document1";
+
+            _metadataApi.InsertDocument(documentMetadata, config.Version, config.Name);
+
+            var documentRead = _metadataApi.GetDocument(config.Version, config.Name, documentMetadata.Name);
+
+            Assert.IsNotNull(documentRead);
+
+            documentMetadata.Name = "Document1_v1";
+
+            _metadataApi.UpdateDocument(documentMetadata, config.Version, config.Name);
+
+            documentRead = _metadataApi.GetDocument(config.Version, config.Name, documentMetadata.Name);
+
+            Assert.AreEqual(documentRead.Name, documentMetadata.Name);
+
+            _metadataApi.DeleteDocument(config.Version, config.Name, documentMetadata.Name);
+
+            documentRead = _metadataApi.GetAssembly(config.Version, config.Name, documentMetadata.Name);
+
+            Assert.IsNull(documentRead);
+
+            _metadataApi.DeleteConfig(config.Version, config.Name);
+
+        }
     }
 }
