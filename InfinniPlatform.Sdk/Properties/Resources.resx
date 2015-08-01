@@ -330,4 +330,16 @@
 	<data name="UnableToGetScenarioMetadata" xml:space="preserve">
     <value>Unable to get scenario metadata with exception {0}</value>
   </data>
+	<data name="UnableToInsertProcessMetadata" xml:space="preserve">
+    <value>Unable to insert process metadata with exception {0}</value>
+  </data>
+	<data name="UnableToUpdateProcessMetadata" xml:space="preserve">
+    <value>Unable to update process metadata with exception {0}</value>
+  </data>
+	<data name="UnableToDeleteProcessMetadata" xml:space="preserve">
+    <value>Unable to delete process metadata with exception {0}</value>
+  </data>
+	<data name="UnableToGetProcessMetadata" xml:space="preserve">
+    <value>Unable to get process metadata with exception {0}</value>
+  </data>
 </root>

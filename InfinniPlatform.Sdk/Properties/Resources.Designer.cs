@@ -331,6 +331,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to delete process metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToDeleteProcessMetadata {
+            get {
+                return ResourceManager.GetString("UnableToDeleteProcessMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to delete register metadata with exception {0}.
         /// </summary>
         internal static string UnableToDeleteRegisterMetadata {
@@ -448,6 +457,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to get process metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToGetProcessMetadata {
+            get {
+                return ResourceManager.GetString("UnableToGetProcessMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to get register metadata with exception {0}.
         /// </summary>
         internal static string UnableToGetRegisterMetadata {
@@ -534,6 +552,15 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string UnableToInsertMenuMetadata {
             get {
                 return ResourceManager.GetString("UnableToInsertMenuMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to insert process metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToInsertProcessMetadata {
+            get {
+                return ResourceManager.GetString("UnableToInsertProcessMetadata", resourceCulture);
             }
         }
         
@@ -669,6 +696,15 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string UnableToUpdateMenuMetadata {
             get {
                 return ResourceManager.GetString("UnableToUpdateMenuMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to update process metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToUpdateProcessMetadata {
+            get {
+                return ResourceManager.GetString("UnableToUpdateProcessMetadata", resourceCulture);
             }
         }
         

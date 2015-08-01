@@ -344,11 +344,11 @@ namespace InfinniPlatform.Sdk.Api
         ///   Добавить метаданные указанного сценария
         /// </summary>
         /// <returns>Результат добавления метаданных указанного сценария</returns>
-        public dynamic InsertScenario(ScenarioMetadata documentMetadata, string version, string configuration, string document)
+        public dynamic InsertScenario(ScenarioMetadata scenarioMetadata, string version, string configuration, string document)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElement(version, configuration, document, "Scenario"), documentMetadata);
+            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElement(version, configuration, document, "Scenario"), scenarioMetadata);
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToInsertScenarioMetadata, response.GetErrorContent()));
         }
@@ -357,11 +357,11 @@ namespace InfinniPlatform.Sdk.Api
         ///   Обновить метаданные указанного сценария
         /// </summary>
         /// <returns>Результат обновления метаданных сценария</returns>
-        public dynamic UpdateScenario(ScenarioMetadata documentMetadata, string version, string configuration, string document)
+        public dynamic UpdateScenario(ScenarioMetadata scenarioMetadata, string version, string configuration, string document)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElement(version, configuration, document, "Scenario"), documentMetadata);
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElement(version, configuration, document, "Scenario"), scenarioMetadata);
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateScenarioMetadata, response.GetErrorContent()));
         }
@@ -389,6 +389,57 @@ namespace InfinniPlatform.Sdk.Api
             var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElementById(version, configuration, document, "Scenario", scenario));
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetScenarioMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Добавить метаданные указанного бизнес-процесса
+        /// </summary>
+        /// <returns>Результат добавления метаданных указанного бизнес-процесса</returns>
+        public dynamic InsertProcess(ProcessMetadata processMetadata, string version, string configuration, string document)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElement(version, configuration, document, "Process"), processMetadata);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToInsertProcessMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Обновить метаданные указанного бизнес-процесса
+        /// </summary>
+        /// <returns>Результат обновления метаданных бизнес-процесса</returns>
+        public dynamic UpdateProcess(ProcessMetadata processMetadata, string version, string configuration, string document)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElement(version, configuration, document, "Process"), processMetadata);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateProcessMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Удалить метаданные указанного бизнес-процесса
+        /// </summary>
+        /// <returns>Результат удаления метаданных бизнес-процесса</returns>
+        public dynamic DeleteProcess(string version, string configuration, string document, string process)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElementById(version, configuration, document, "Process", process));
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToDeleteProcessMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Получить метаданные бизнес-процесса
+        /// </summary>
+        public dynamic GetProcess(string version, string configuration, string document, string process)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElementById(version, configuration, document, "Process", process));
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetProcessMetadata, response.GetErrorContent()));
         }
 
     }

@@ -265,5 +265,51 @@ namespace InfinniPlatform.Sdk.Tests
             _metadataApi.DeleteConfig(config.Version, config.Name);
 
         }
+
+        [Test]
+        public void ShouldInsertUpdateDeleteDocumentProcess()
+        {
+            var config = new ConfigurationMetadata();
+            config.Id = Guid.NewGuid().ToString();
+            config.Name = "TestConfigVersion_" + Guid.NewGuid().ToString();
+            config.Version = "2.0.0.0";
+            _metadataApi.InsertConfig(config);
+
+            var documentMetadata = new DocumentMetadata();
+            documentMetadata.Id = Guid.NewGuid().ToString();
+            documentMetadata.Name = "Document1";
+
+            _metadataApi.InsertDocument(documentMetadata, config.Version, config.Name);
+
+            var processMetadata = new ProcessMetadata();
+            processMetadata.Id = Guid.NewGuid().ToString();
+            processMetadata.Name = "Process1";
+            processMetadata.SettingsType = "Default";
+            processMetadata.Type = 1;
+
+            _metadataApi.InsertProcess(processMetadata, config.Version, config.Name, documentMetadata.Name);
+
+            dynamic processMetadataRead = _metadataApi.GetProcess(config.Version, config.Name, documentMetadata.Name, processMetadata.Name);
+
+            Assert.IsNotNull(processMetadataRead);
+            Assert.AreEqual(processMetadataRead.Id, processMetadata.Id);
+
+            processMetadata.Name = "Process1_v1";
+
+            _metadataApi.UpdateProcess(processMetadata, config.Version, config.Name, documentMetadata.Name);
+
+            var processRead = _metadataApi.GetProcess(config.Version, config.Name, documentMetadata.Name, processMetadata.Name);
+
+            Assert.AreEqual(processRead.Name, processMetadata.Name);
+
+            _metadataApi.DeleteProcess(config.Version, config.Name, documentMetadata.Name, processMetadata.Name);
+
+            processRead = _metadataApi.GetProcess(config.Version, config.Name, documentMetadata.Name, processMetadata.Name);
+
+            Assert.IsNull(processRead);
+
+            _metadataApi.DeleteConfig(config.Version, config.Name);
+
+        }
     }
 }

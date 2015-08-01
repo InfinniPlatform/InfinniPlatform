@@ -167,6 +167,7 @@
     <Compile Include="Global\ScriptContext.cs" />
     <Compile Include="Global\ScriptContextApp.cs" />
     <Compile Include="Metadata\DocumentMetadata.cs" />
+    <Compile Include="Metadata\ProcessMetadata.cs" />
     <Compile Include="Metadata\RegisterMetadata.cs" />
     <Compile Include="Metadata\AssemblyMetadata.cs" />
     <Compile Include="Metadata\ConfigurationMetadata.cs" />
