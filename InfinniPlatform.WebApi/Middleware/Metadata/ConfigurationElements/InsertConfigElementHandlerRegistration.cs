@@ -1,13 +1,12 @@
 ﻿using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
+using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.WebApi.Middleware.Metadata.Configuration;
 using Microsoft.Owin;
 using Newtonsoft.Json.Linq;
-using InfinniPlatform.Api.Properties;
 
-namespace InfinniPlatform.WebApi.Middleware.Metadata.Menu
+namespace InfinniPlatform.WebApi.Middleware.Metadata.ConfigurationElements
 {
     public class InsertConfigElementHandlerRegistration : ConfigElementHandlerRegistration
     {

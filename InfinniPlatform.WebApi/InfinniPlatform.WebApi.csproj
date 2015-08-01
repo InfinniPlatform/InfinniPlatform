@@ -90,11 +90,11 @@
     <Compile Include="Middleware\Metadata\Configuration\InsertConfigHandlerRegistration.cs" />
     <Compile Include="Middleware\Metadata\Configuration\ConfigHandlerRegistration.cs" />
     <Compile Include="Middleware\Metadata\Configuration\UpdateConfigHandlerRegistration.cs" />
-    <Compile Include="Middleware\Metadata\Menu\ConfigElementHandlerRegistration.cs" />
-    <Compile Include="Middleware\Metadata\Menu\DeleteConfigElementHandlerRegistration.cs" />
-    <Compile Include="Middleware\Metadata\Menu\GetConfigElementHandlerRegistration.cs" />
-    <Compile Include="Middleware\Metadata\Menu\InsertConfigElementHandlerRegistration.cs" />
-    <Compile Include="Middleware\Metadata\Menu\UpdateConfigElementHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\ConfigurationElements\ConfigElementHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\ConfigurationElements\DeleteConfigElementHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\ConfigurationElements\GetConfigElementHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\ConfigurationElements\InsertConfigElementHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\ConfigurationElements\UpdateConfigElementHandlerRegistration.cs" />
     <Compile Include="Middleware\Metadata\Solution\DeleteSolutionHandlerRegistration.cs" />
     <Compile Include="Middleware\Metadata\Solution\GetSolutionHandlerRegistration.cs" />
     <Compile Include="Middleware\Metadata\Solution\InsertSolutionHandlerRegistration.cs" />

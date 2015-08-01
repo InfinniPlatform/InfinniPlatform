@@ -294,4 +294,16 @@
   <data name="UnableToDeleteAssemblyMetadata" xml:space="preserve">
     <value>Unable to delete assembly metadata with exception {0}</value>
   </data>
+	<data name="UnableToInsertRegisterMetadata" xml:space="preserve">
+    <value>Unable to insert register metadata with exception {0}</value>
+  </data>
+	<data name="UnableToUpdateRegisterMetadata" xml:space="preserve">
+    <value>Unable to update register metadata with exception {0}</value>
+  </data>
+	<data name="UnableToDeleteRegisterMetadata" xml:space="preserve">
+    <value>Unable to delete register metadata with exception {0}</value>
+  </data>
+	<data name="UnableToGetRegisterMetadata" xml:space="preserve">
+    <value>Unable to get register metadata with exception {0}</value>
+  </data>
 </root>

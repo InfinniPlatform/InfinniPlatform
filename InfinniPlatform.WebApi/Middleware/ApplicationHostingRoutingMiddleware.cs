@@ -1,7 +1,7 @@
 ﻿using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.WebApi.Middleware.Metadata;
 using InfinniPlatform.WebApi.Middleware.Metadata.Configuration;
-using InfinniPlatform.WebApi.Middleware.Metadata.Menu;
+using InfinniPlatform.WebApi.Middleware.Metadata.ConfigurationElements;
 using InfinniPlatform.WebApi.Middleware.Metadata.Solution;
 using InfinniPlatform.WebApi.Middleware.RoleAuthHandlers;
 using InfinniPlatform.WebApi.Middleware.SessionHandlers;

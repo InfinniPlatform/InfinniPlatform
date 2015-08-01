@@ -2,7 +2,7 @@
 using InfinniPlatform.WebApi.Middleware.RouteFormatters;
 using Microsoft.Owin;
 
-namespace InfinniPlatform.WebApi.Middleware.Metadata.Menu
+namespace InfinniPlatform.WebApi.Middleware.Metadata.ConfigurationElements
 {
     public abstract class ConfigElementHandlerRegistration : HandlerRegistration
     {

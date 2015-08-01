@@ -1,12 +1,10 @@
 ﻿using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
-using InfinniPlatform.Owin.Middleware;
-using InfinniPlatform.WebApi.Middleware.Metadata.Configuration;
-using Microsoft.Owin;
 using InfinniPlatform.Api.Properties;
+using InfinniPlatform.Owin.Middleware;
+using Microsoft.Owin;
 
-namespace InfinniPlatform.WebApi.Middleware.Metadata.Menu
+namespace InfinniPlatform.WebApi.Middleware.Metadata.ConfigurationElements
 {
     public class DeleteConfigElementHandlerRegistration : ConfigElementHandlerRegistration
     {

@@ -145,5 +145,42 @@ namespace InfinniPlatform.Sdk.Tests
             _metadataApi.DeleteConfig(config.Version, config.Name);
 
         }
+
+        [Test()]
+        public void ShouldInsertUpdateDeleteRegister()
+        {
+            var config = new ConfigurationMetadata();
+            config.Id = Guid.NewGuid().ToString();
+            config.Name = "TestConfigVersion_" + Guid.NewGuid().ToString();
+            config.Version = "2.0.0.0";
+            _metadataApi.InsertConfig(config);
+
+            var registerMetadata = new RegisterMetadata();
+            registerMetadata.Id = Guid.NewGuid().ToString();
+            registerMetadata.Name = "Register1";
+
+            _metadataApi.InsertRegister(registerMetadata, config.Version, config.Name);
+
+            var registerRead = _metadataApi.GetRegister(config.Version, config.Name, registerMetadata.Name);
+
+            Assert.IsNotNull(registerRead);
+
+            registerMetadata.Name = "Register1_v1";
+
+            _metadataApi.UpdateRegister(registerMetadata, config.Version, config.Name);
+
+            registerRead = _metadataApi.GetRegister(config.Version, config.Name, registerMetadata.Name);
+
+            Assert.AreEqual(registerRead.Name, registerMetadata.Name);
+
+            _metadataApi.DeleteRegister(config.Version, config.Name, registerMetadata.Name);
+
+            registerRead = _metadataApi.GetRegister(config.Version, config.Name, registerMetadata.Name);
+
+            Assert.IsNull(registerRead);
+
+            _metadataApi.DeleteConfig(config.Version, config.Name);
+
+        }
     }
 }

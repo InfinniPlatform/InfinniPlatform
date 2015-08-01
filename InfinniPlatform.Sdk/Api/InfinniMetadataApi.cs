@@ -231,5 +231,59 @@ namespace InfinniPlatform.Sdk.Api
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetMenuMetadata, response.GetErrorContent()));
         }
 
+        /// <summary>
+        ///   Добавить метаданные указанного регистра
+        /// </summary>
+        /// <returns>Результат добавления метаданных указанного регистра</returns>
+        public dynamic InsertRegister(RegisterMetadata registerMetadata, string version, string configuration)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlMetadataElement(version, configuration, "Register"), registerMetadata);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToInsertRegisterMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Обновить метаданные указанного регистра
+        /// </summary>
+        /// <returns>Результат обновления метаданных регистра</returns>
+        public dynamic UpdateRegister(RegisterMetadata registerMetadata, string version, string configuration)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlMetadataElement(version, configuration, "Register"), registerMetadata);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateRegisterMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Удалить метаданные указанного регистра
+        /// </summary>
+        /// <returns>Результат удаления метаданных регистра</returns>
+        public dynamic DeleteRegister(string version, string configuration, string name)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingUrlMetadataElementById(version, configuration, "Register", name));
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToDeleteRegisterMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Получить метаданные регистра по указанному идентификатору
+        /// </summary>
+        /// <param name="version">Версия конфигурации</param>
+        /// <param name="name">Наименование регистра</param>
+        /// <returns>Метаданные регистра</returns>
+        public dynamic GetRegister(string version, string configuration, string name)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlMetadataElementById(version, configuration, "Register", name));
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetRegisterMetadata, response.GetErrorContent()));
+        }
+
     }
 }
