@@ -318,4 +318,16 @@
 	<data name="UnableToGetDocumentMetadata" xml:space="preserve">
     <value>Unable to get document metadata with exception {0}</value>
   </data>
+	<data name="UnableToInsertScenarioMetadata" xml:space="preserve">
+    <value>Unable to insert scenario metadata with exception {0}</value>
+  </data>
+	<data name="UnableToUpdateScenarioMetadata" xml:space="preserve">
+    <value>Unable to update scenario metadata with exception {0}</value>
+  </data>
+	<data name="UnableToDeleteScenarioMetadata" xml:space="preserve">
+    <value>Unable to delete scenario metadata by id with exception {0}</value>
+  </data>
+	<data name="UnableToGetScenarioMetadata" xml:space="preserve">
+    <value>Unable to get scenario metadata with exception {0}</value>
+  </data>
 </root>

@@ -326,7 +326,7 @@ namespace InfinniPlatform.Sdk.Api
         }
 
         /// <summary>
-        ///   Получить метаданные документа по указанному идентификатору
+        ///   Получить метаданные документа
         /// </summary>
         /// <param name="version">Версия конфигурации</param>
         /// <param name="name">Наименование документа</param>
@@ -338,6 +338,57 @@ namespace InfinniPlatform.Sdk.Api
             var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlMetadataElementById(version, configuration, "Document", name));
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetDocumentMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Добавить метаданные указанного сценария
+        /// </summary>
+        /// <returns>Результат добавления метаданных указанного сценария</returns>
+        public dynamic InsertScenario(ScenarioMetadata documentMetadata, string version, string configuration, string document)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElement(version, configuration, document, "Scenario"), documentMetadata);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToInsertScenarioMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Обновить метаданные указанного сценария
+        /// </summary>
+        /// <returns>Результат обновления метаданных сценария</returns>
+        public dynamic UpdateScenario(ScenarioMetadata documentMetadata, string version, string configuration, string document)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElement(version, configuration, document, "Scenario"), documentMetadata);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateScenarioMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Удалить метаданные указанного сценария
+        /// </summary>
+        /// <returns>Результат удаления метаданных сценария</returns>
+        public dynamic DeleteScenario(string version, string configuration, string document, string scenario)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElementById(version, configuration, document, "Scenario", scenario));
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToDeleteScenarioMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Получить метаданные сценария
+        /// </summary>
+        public dynamic GetScenario(string version, string configuration, string document, string scenario)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElementById(version, configuration, document, "Scenario", scenario));
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetScenarioMetadata, response.GetErrorContent()));
         }
 
     }

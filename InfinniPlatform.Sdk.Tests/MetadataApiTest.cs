@@ -219,5 +219,51 @@ namespace InfinniPlatform.Sdk.Tests
             _metadataApi.DeleteConfig(config.Version, config.Name);
 
         }
+
+
+        [Test]
+        public void ShouldInsertUpdateDeleteDocumentScenario()
+        {
+            var config = new ConfigurationMetadata();
+            config.Id = Guid.NewGuid().ToString();
+            config.Name = "TestConfigVersion_" + Guid.NewGuid().ToString();
+            config.Version = "2.0.0.0";
+            _metadataApi.InsertConfig(config);
+
+            var documentMetadata = new DocumentMetadata();
+            documentMetadata.Id = Guid.NewGuid().ToString();
+            documentMetadata.Name = "Scenario1";
+
+            _metadataApi.InsertDocument(documentMetadata, config.Version, config.Name);
+
+            var scenarioMetadata = new ScenarioMetadata();
+            scenarioMetadata.Id = Guid.NewGuid().ToString();
+            scenarioMetadata.Name = Guid.NewGuid().ToString();
+            scenarioMetadata.ScenarioId = "ActionUnitThatNotExistsAndOnlyForTestName";
+
+            _metadataApi.InsertScenario(scenarioMetadata, config.Version, config.Name, documentMetadata.Name);
+
+            dynamic scenarioMetadataRead = _metadataApi.GetScenario(config.Version, config.Name, documentMetadata.Name, scenarioMetadata.Name);
+
+            Assert.IsNotNull(scenarioMetadataRead);
+            Assert.AreEqual(scenarioMetadataRead.Id, scenarioMetadata.Id);
+
+            scenarioMetadata.Name = "Scenario1_v1";
+
+            _metadataApi.UpdateScenario(scenarioMetadata, config.Version, config.Name, documentMetadata.Name);
+
+            var scenarioRead = _metadataApi.GetScenario(config.Version, config.Name, documentMetadata.Name, scenarioMetadata.Name);
+
+            Assert.AreEqual(scenarioRead.Name, scenarioMetadata.Name);
+
+            _metadataApi.DeleteScenario(config.Version, config.Name, documentMetadata.Name, scenarioMetadata.Name);
+
+            scenarioRead = _metadataApi.GetScenario(config.Version, config.Name, documentMetadata.Name, scenarioMetadata.Name);
+
+            Assert.IsNull(scenarioRead);
+
+            _metadataApi.DeleteConfig(config.Version, config.Name);
+
+        }
     }
 }

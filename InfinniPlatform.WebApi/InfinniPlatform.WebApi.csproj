@@ -95,6 +95,11 @@
     <Compile Include="Middleware\Metadata\ConfigurationElements\GetConfigElementHandlerRegistration.cs" />
     <Compile Include="Middleware\Metadata\ConfigurationElements\InsertConfigElementHandlerRegistration.cs" />
     <Compile Include="Middleware\Metadata\ConfigurationElements\UpdateConfigElementHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\DocumentElements\DeleteConfigElementHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\DocumentElements\GetDocumentElementHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\DocumentElements\InsertDocumentElementHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\DocumentElements\DocumentElementHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\DocumentElements\UpdateConfigElementHandlerRegistration.cs" />
     <Compile Include="Middleware\Metadata\Solution\DeleteSolutionHandlerRegistration.cs" />
     <Compile Include="Middleware\Metadata\Solution\GetSolutionHandlerRegistration.cs" />
     <Compile Include="Middleware\Metadata\Solution\InsertSolutionHandlerRegistration.cs" />
@@ -111,6 +116,7 @@
     <Compile Include="Middleware\RequestPathConstructor.cs" />
     <Compile Include="Middleware\RoleAuthHandlers\AddRoleHandlerRegistration.cs" />
     <Compile Include="Middleware\RoleAuthHandlers\DeleteRoleHandlerRegistration.cs" />
+    <Compile Include="Middleware\RouteFormatters\RouteFormatterMetadataDocumentElement.cs" />
     <Compile Include="Middleware\RouteFormatters\RouteFormatterMetadataConfigElement.cs" />
     <Compile Include="Middleware\RouteFormatters\RouteFormatterAuthRole.cs" />
     <Compile Include="Middleware\RouteFormatters\RouteFormatterAuthUser.cs" />

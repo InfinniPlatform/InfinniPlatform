@@ -2,6 +2,7 @@
 using InfinniPlatform.WebApi.Middleware.Metadata;
 using InfinniPlatform.WebApi.Middleware.Metadata.Configuration;
 using InfinniPlatform.WebApi.Middleware.Metadata.ConfigurationElements;
+using InfinniPlatform.WebApi.Middleware.Metadata.DocumentElements;
 using InfinniPlatform.WebApi.Middleware.Metadata.Solution;
 using InfinniPlatform.WebApi.Middleware.RoleAuthHandlers;
 using InfinniPlatform.WebApi.Middleware.SessionHandlers;
@@ -69,6 +70,11 @@ namespace InfinniPlatform.WebApi.Middleware
             RegisterHandler(new UpdateConfigElementHandlerRegistration());
             RegisterHandler(new GetConfigElementHandlerRegistration());
             RegisterHandler(new DeleteConfigElementHandlerRegistration());
+
+            RegisterHandler(new InsertDocumentElementHandlerRegistration());
+            RegisterHandler(new UpdateDocumentElementHandlerRegistration());
+            RegisterHandler(new GetDocumentElementHandlerRegistration());
+            RegisterHandler(new DeleteDocumentElementHandlerRegistration());
 
         }
     }

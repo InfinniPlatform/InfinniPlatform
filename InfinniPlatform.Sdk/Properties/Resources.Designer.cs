@@ -349,6 +349,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to delete scenario metadata by id with exception {0}.
+        /// </summary>
+        internal static string UnableToDeleteScenarioMetadata {
+            get {
+                return ResourceManager.GetString("UnableToDeleteScenarioMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to delete solution metadata with exception: {0}.
         /// </summary>
         internal static string UnableToDeleteSolutionMetadata {
@@ -448,6 +457,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to get scenario metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToGetScenarioMetadata {
+            get {
+                return ResourceManager.GetString("UnableToGetScenarioMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to get session with exception: {0}.
         /// </summary>
         internal static string UnableToGetSession {
@@ -525,6 +543,15 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string UnableToInsertRegisterMetadata {
             get {
                 return ResourceManager.GetString("UnableToInsertRegisterMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to insert scenario metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToInsertScenarioMetadata {
+            get {
+                return ResourceManager.GetString("UnableToInsertScenarioMetadata", resourceCulture);
             }
         }
         
@@ -651,6 +678,15 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string UnableToUpdateRegisterMetadata {
             get {
                 return ResourceManager.GetString("UnableToUpdateRegisterMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to update scenario metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToUpdateScenarioMetadata {
+            get {
+                return ResourceManager.GetString("UnableToUpdateScenarioMetadata", resourceCulture);
             }
         }
         
