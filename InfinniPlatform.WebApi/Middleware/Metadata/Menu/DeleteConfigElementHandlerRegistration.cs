@@ -20,7 +20,7 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.Menu
         {
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            var managerConfigElement = new ManagerFactoryConfiguration(routeDictionary["version"],
+            var managerConfigElement = new ManagerFactoryConfiguration(routeDictionary["versionMetadata"],
                                                                        routeDictionary["configuration"]);
 
             IDataManager manager = managerConfigElement.BuildManagerByType(routeDictionary["metadataType"]);
@@ -33,7 +33,7 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.Menu
                 return new EmptyRequestHandlerResult();
             }
 
-            return new ErrorRequestHandlerResult(string.Format(Resources.MetadataElementNotFound, routeDictionary["instanceId"], routeDictionary["version"]));
+            return new ErrorRequestHandlerResult(string.Format(Resources.MetadataElementNotFound, routeDictionary["instanceId"], routeDictionary["versionMetadata"]));
         }
     }
 }

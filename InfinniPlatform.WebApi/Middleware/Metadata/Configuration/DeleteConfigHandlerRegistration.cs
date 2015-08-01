@@ -16,9 +16,9 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.Configuration
         {
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
            
-            MetadataManagerConfiguration manager = ManagerFactoryConfiguration.BuildConfigurationManager(routeDictionary["version"]);
+            MetadataManagerConfiguration manager = ManagerFactoryConfiguration.BuildConfigurationManager(routeDictionary["versionMetadata"]);
 
-            dynamic config = ManagerFactoryConfiguration.BuildConfigurationMetadataReader(routeDictionary["version"]).GetItem(routeDictionary["instanceId"]);
+            dynamic config = ManagerFactoryConfiguration.BuildConfigurationMetadataReader(routeDictionary["versionMetadata"]).GetItem(routeDictionary["instanceId"]);
 
             if (config != null)
             {
@@ -26,7 +26,7 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.Configuration
                 return new EmptyRequestHandlerResult();
             }
 
-            return new ErrorRequestHandlerResult(string.Format(Resources.ApplicationNotFound, routeDictionary["instanceId"], routeDictionary["version"]));
+            return new ErrorRequestHandlerResult(string.Format(Resources.ApplicationNotFound, routeDictionary["instanceId"], routeDictionary["versionMetadata"]));
         }
     }
 }

@@ -27,7 +27,7 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.Menu
                 return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
             }
 
-            var managerConfigElement = new ManagerFactoryConfiguration(routeDictionary["version"], routeDictionary["configuration"]);
+            var managerConfigElement = new ManagerFactoryConfiguration(routeDictionary["versionMetadata"], routeDictionary["configuration"]);
 
             IDataManager manager = managerConfigElement.BuildManagerByType(routeDictionary["metadataType"]);
 

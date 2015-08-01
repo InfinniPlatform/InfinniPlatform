@@ -17,7 +17,7 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.Menu
         {
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            var managerConfigElement = new ManagerFactoryConfiguration(routeDictionary["version"],
+            var managerConfigElement = new ManagerFactoryConfiguration(routeDictionary["versionMetadata"],
                                                                        routeDictionary["configuration"]);
 
 

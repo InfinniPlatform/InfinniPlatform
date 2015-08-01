@@ -16,9 +16,9 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.Solution
         {
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            MetadataManagerSolution managerSolution = ManagerFactorySolution.BuildSolutionManager(routeDictionary["version"]);
+            MetadataManagerSolution managerSolution = ManagerFactorySolution.BuildSolutionManager(routeDictionary["versionMetadata"]);
 
-            dynamic solution = ManagerFactorySolution.BuildSolutionReader(routeDictionary["version"]).GetItem(routeDictionary["instanceId"]);
+            dynamic solution = ManagerFactorySolution.BuildSolutionReader(routeDictionary["versionMetadata"]).GetItem(routeDictionary["instanceId"]);
 
             if (solution != null)
             {
@@ -26,7 +26,7 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.Solution
                 return new EmptyRequestHandlerResult();
             }
 
-            return new ErrorRequestHandlerResult(string.Format(Resources.SolutionNotFound, routeDictionary["instanceId"], routeDictionary["version"]));
+            return new ErrorRequestHandlerResult(string.Format(Resources.SolutionNotFound, routeDictionary["instanceId"], routeDictionary["versionMetadata"]));
         }
     }
 }
