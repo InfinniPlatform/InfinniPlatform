@@ -331,7 +331,7 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to delete process metadata with exception {0}.
+        ///   Looks up a localized string similar to Unable to delete service metadata with exception {0}.
         /// </summary>
         internal static string UnableToDeleteProcessMetadata {
             get {
@@ -363,6 +363,15 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string UnableToDeleteScenarioMetadata {
             get {
                 return ResourceManager.GetString("UnableToDeleteScenarioMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to delete service metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToDeleteServiceMetadata {
+            get {
+                return ResourceManager.GetString("UnableToDeleteServiceMetadata", resourceCulture);
             }
         }
         
@@ -457,7 +466,7 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to get process metadata with exception {0}.
+        ///   Looks up a localized string similar to Unable to get service metadata with exception {0}.
         /// </summary>
         internal static string UnableToGetProcessMetadata {
             get {
@@ -480,6 +489,15 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string UnableToGetScenarioMetadata {
             get {
                 return ResourceManager.GetString("UnableToGetScenarioMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to get service metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToGetServiceMetadata {
+            get {
+                return ResourceManager.GetString("UnableToGetServiceMetadata", resourceCulture);
             }
         }
         
@@ -556,7 +574,7 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to insert process metadata with exception {0}.
+        ///   Looks up a localized string similar to Unable to insert service metadata with exception {0}.
         /// </summary>
         internal static string UnableToInsertProcessMetadata {
             get {
@@ -579,6 +597,15 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string UnableToInsertScenarioMetadata {
             get {
                 return ResourceManager.GetString("UnableToInsertScenarioMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to insert service metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToInsertServiceMetadata {
+            get {
+                return ResourceManager.GetString("UnableToInsertServiceMetadata", resourceCulture);
             }
         }
         
@@ -700,7 +727,7 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to update process metadata with exception {0}.
+        ///   Looks up a localized string similar to Unable to update service metadata with exception {0}.
         /// </summary>
         internal static string UnableToUpdateProcessMetadata {
             get {
@@ -723,6 +750,15 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string UnableToUpdateScenarioMetadata {
             get {
                 return ResourceManager.GetString("UnableToUpdateScenarioMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to update service metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToUpdateServiceMetadata {
+            get {
+                return ResourceManager.GetString("UnableToUpdateServiceMetadata", resourceCulture);
             }
         }
         

@@ -442,5 +442,56 @@ namespace InfinniPlatform.Sdk.Api
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetProcessMetadata, response.GetErrorContent()));
         }
 
+        /// <summary>
+        ///   Добавить метаданные указанного сервиса
+        /// </summary>
+        /// <returns>Результат добавления метаданных указанного сервиса</returns>
+        public dynamic InsertService(ServiceMetadata serviceMetadata, string version, string configuration, string document)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElement(version, configuration, document, "Service"), serviceMetadata);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToInsertServiceMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Обновить метаданные указанного сервиса
+        /// </summary>
+        /// <returns>Результат обновления метаданных сервиса</returns>
+        public dynamic UpdateService(ServiceMetadata serviceMetadata, string version, string configuration, string document)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElement(version, configuration, document, "Service"), serviceMetadata);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateServiceMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Удалить метаданные указанного сервиса
+        /// </summary>
+        /// <returns>Результат удаления метаданных сервиса</returns>
+        public dynamic DeleteService(string version, string configuration, string document, string service)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElementById(version, configuration, document, "Service", service));
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToDeleteServiceMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Получить метаданные бизнес-процесса
+        /// </summary>
+        public dynamic GetService(string version, string configuration, string document, string service)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElementById(version, configuration, document, "Service", service));
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetServiceMetadata, response.GetErrorContent()));
+        }
+
     }
 }

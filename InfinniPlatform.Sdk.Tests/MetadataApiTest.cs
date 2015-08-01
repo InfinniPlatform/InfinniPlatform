@@ -311,5 +311,49 @@ namespace InfinniPlatform.Sdk.Tests
             _metadataApi.DeleteConfig(config.Version, config.Name);
 
         }
+
+        [Test]
+        public void ShouldInsertUpdateDeleteDocumentService()
+        {
+            var config = new ConfigurationMetadata();
+            config.Id = Guid.NewGuid().ToString();
+            config.Name = "TestConfigVersion_" + Guid.NewGuid().ToString();
+            config.Version = "2.0.0.0";
+            _metadataApi.InsertConfig(config);
+
+            var documentMetadata = new DocumentMetadata();
+            documentMetadata.Id = Guid.NewGuid().ToString();
+            documentMetadata.Name = "Document1";
+
+            _metadataApi.InsertDocument(documentMetadata, config.Version, config.Name);
+
+            var serviceMetadata = new ServiceMetadata();
+            serviceMetadata.Id = Guid.NewGuid().ToString();
+            serviceMetadata.Name = "Service1";
+
+            _metadataApi.InsertService(serviceMetadata, config.Version, config.Name, documentMetadata.Name);
+
+            dynamic serviceMetadataRead = _metadataApi.GetService(config.Version, config.Name, documentMetadata.Name, serviceMetadata.Name);
+
+            Assert.IsNotNull(serviceMetadataRead);
+            Assert.AreEqual(serviceMetadataRead.Id, serviceMetadata.Id);
+
+            serviceMetadata.Name = "Service1_v1";
+
+            _metadataApi.UpdateService(serviceMetadata, config.Version, config.Name, documentMetadata.Name);
+
+            var serviceRead = _metadataApi.GetService(config.Version, config.Name, documentMetadata.Name, serviceMetadata.Name);
+
+            Assert.AreEqual(serviceRead.Name, serviceMetadata.Name);
+
+            _metadataApi.DeleteService(config.Version, config.Name, documentMetadata.Name, serviceMetadata.Name);
+
+            serviceRead = _metadataApi.GetService(config.Version, config.Name, documentMetadata.Name, serviceMetadata.Name);
+
+            Assert.IsNull(serviceRead);
+
+            _metadataApi.DeleteConfig(config.Version, config.Name);
+
+        }
     }
 }

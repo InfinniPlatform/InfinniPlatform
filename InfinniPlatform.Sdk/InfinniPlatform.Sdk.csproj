@@ -173,6 +173,7 @@
     <Compile Include="Metadata\ConfigurationMetadata.cs" />
     <Compile Include="Metadata\MenuMetadata.cs" />
     <Compile Include="Metadata\ScenarioMetadata.cs" />
+    <Compile Include="Metadata\ServiceMetadata.cs" />
     <Compile Include="Metadata\SolutionMetadata.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

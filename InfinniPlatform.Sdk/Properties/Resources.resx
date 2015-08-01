@@ -331,15 +331,27 @@
     <value>Unable to get scenario metadata with exception {0}</value>
   </data>
 	<data name="UnableToInsertProcessMetadata" xml:space="preserve">
-    <value>Unable to insert process metadata with exception {0}</value>
+    <value>Unable to insert service metadata with exception {0}</value>
   </data>
 	<data name="UnableToUpdateProcessMetadata" xml:space="preserve">
-    <value>Unable to update process metadata with exception {0}</value>
+    <value>Unable to update service metadata with exception {0}</value>
   </data>
 	<data name="UnableToDeleteProcessMetadata" xml:space="preserve">
-    <value>Unable to delete process metadata with exception {0}</value>
+    <value>Unable to delete service metadata with exception {0}</value>
   </data>
 	<data name="UnableToGetProcessMetadata" xml:space="preserve">
-    <value>Unable to get process metadata with exception {0}</value>
+    <value>Unable to get service metadata with exception {0}</value>
+  </data>
+	<data name="UnableToInsertServiceMetadata" xml:space="preserve">
+    <value>Unable to insert service metadata with exception {0}</value>
+  </data>
+	<data name="UnableToUpdateServiceMetadata" xml:space="preserve">
+    <value>Unable to update service metadata with exception {0}</value>
+  </data>
+	<data name="UnableToDeleteServiceMetadata" xml:space="preserve">
+    <value>Unable to delete service metadata with exception {0}</value>
+  </data>
+	<data name="UnableToGetServiceMetadata" xml:space="preserve">
+    <value>Unable to get service metadata with exception {0}</value>
   </data>
 </root>
