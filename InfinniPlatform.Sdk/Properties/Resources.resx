@@ -354,4 +354,16 @@
 	<data name="UnableToGetServiceMetadata" xml:space="preserve">
     <value>Unable to get service metadata with exception {0}</value>
   </data>
+	<data name="UnableToInsertViewMetadata" xml:space="preserve">
+    <value>Unable to insert view metadata with exception {0}</value>
+  </data>
+	<data name="UnableToUpdateViewMetadata" xml:space="preserve">
+    <value>Unable to update view metadata with exception {0}</value>
+  </data>
+	<data name="UnableToDeleteViewMetadaa" xml:space="preserve">
+    <value>Unable to delete view metadata with exception {0}</value>
+  </data>
+	<data name="UnableToGetViewMetadata" xml:space="preserve">
+    <value>Unable to get view metadata with exception {0}</value>
+  </data>
 </root>

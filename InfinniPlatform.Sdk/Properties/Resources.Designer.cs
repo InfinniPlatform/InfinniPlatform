@@ -403,6 +403,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to delete view metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToDeleteViewMetadaa {
+            get {
+                return ResourceManager.GetString("UnableToDeleteViewMetadaa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to detach document from session with exception: {0}.
         /// </summary>
         internal static string UnableToDetachDocument {
@@ -529,6 +538,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to get view metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToGetViewMetadata {
+            get {
+                return ResourceManager.GetString("UnableToGetViewMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to grant access to user with exception: {0}.
         /// </summary>
         internal static string UnableToGrantAccessToUser {
@@ -615,6 +633,15 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string UnableToInsertSolutionMetadata {
             get {
                 return ResourceManager.GetString("UnableToInsertSolutionMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to insert view metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToInsertViewMetadata {
+            get {
+                return ResourceManager.GetString("UnableToInsertViewMetadata", resourceCulture);
             }
         }
         
@@ -759,6 +786,15 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string UnableToUpdateServiceMetadata {
             get {
                 return ResourceManager.GetString("UnableToUpdateServiceMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to update view metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToUpdateViewMetadata {
+            get {
+                return ResourceManager.GetString("UnableToUpdateViewMetadata", resourceCulture);
             }
         }
         

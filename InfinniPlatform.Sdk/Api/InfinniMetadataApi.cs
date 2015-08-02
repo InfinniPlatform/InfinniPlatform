@@ -482,7 +482,7 @@ namespace InfinniPlatform.Sdk.Api
         }
 
         /// <summary>
-        ///   Получить метаданные бизнес-процесса
+        ///   Получить метаданные сервиса
         /// </summary>
         public dynamic GetService(string version, string configuration, string document, string service)
         {
@@ -491,6 +491,58 @@ namespace InfinniPlatform.Sdk.Api
             var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElementById(version, configuration, document, "Service", service));
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetServiceMetadata, response.GetErrorContent()));
+        }
+
+
+        /// <summary>
+        ///   Добавить метаданные указанного представления
+        /// </summary>
+        /// <returns>Результат добавления метаданных указанного представления</returns>
+        public dynamic InsertView(ViewMetadata viewMetadata, string version, string configuration, string document)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElement(version, configuration, document, "View"), viewMetadata);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToInsertViewMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Обновить метаданные указанного представления
+        /// </summary>
+        /// <returns>Результат обновления метаданных представления</returns>
+        public dynamic UpdateView(ViewMetadata viewMetadata, string version, string configuration, string document)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElement(version, configuration, document, "View"), viewMetadata);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateViewMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Удалить метаданные указанного представления
+        /// </summary>
+        /// <returns>Результат удаления метаданных представления</returns>
+        public dynamic DeleteView(string version, string configuration, string document, string view)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElementById(version, configuration, document, "View", view));
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToDeleteViewMetadaa, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Получить метаданные представления
+        /// </summary>
+        public dynamic GetView(string version, string configuration, string document, string view)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElementById(version, configuration, document, "View", view));
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetViewMetadata, response.GetErrorContent()));
         }
 
     }

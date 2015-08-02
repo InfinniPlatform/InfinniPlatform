@@ -355,5 +355,49 @@ namespace InfinniPlatform.Sdk.Tests
             _metadataApi.DeleteConfig(config.Version, config.Name);
 
         }
+
+        [Test]
+        public void ShouldInsertUpdateDeleteDocumentView()
+        {
+            var config = new ConfigurationMetadata();
+            config.Id = Guid.NewGuid().ToString();
+            config.Name = "TestConfigVersion_" + Guid.NewGuid().ToString();
+            config.Version = "2.0.0.0";
+            _metadataApi.InsertConfig(config);
+
+            var documentMetadata = new DocumentMetadata();
+            documentMetadata.Id = Guid.NewGuid().ToString();
+            documentMetadata.Name = "Document1";
+
+            _metadataApi.InsertDocument(documentMetadata, config.Version, config.Name);
+
+            var viewMetadata = new ViewMetadata();
+            viewMetadata.Id = Guid.NewGuid().ToString();
+            viewMetadata.Name = "View1";
+
+            _metadataApi.InsertView(viewMetadata, config.Version, config.Name, documentMetadata.Name);
+
+            dynamic viewMetadataRead = _metadataApi.GetView(config.Version, config.Name, documentMetadata.Name, viewMetadata.Name);
+
+            Assert.IsNotNull(viewMetadataRead);
+            Assert.AreEqual(viewMetadataRead.Id, viewMetadata.Id);
+
+            viewMetadata.Name = "View1_v1";
+
+            _metadataApi.UpdateView(viewMetadata, config.Version, config.Name, documentMetadata.Name);
+
+            var viewMetadataREad = _metadataApi.GetView(config.Version, config.Name, documentMetadata.Name, viewMetadata.Name);
+
+            Assert.AreEqual(viewMetadataREad.Name, viewMetadata.Name);
+
+            _metadataApi.DeleteView(config.Version, config.Name, documentMetadata.Name, viewMetadata.Name);
+
+            viewMetadataREad = _metadataApi.GetView(config.Version, config.Name, documentMetadata.Name, viewMetadata.Name);
+
+            Assert.IsNull(viewMetadataREad);
+
+            _metadataApi.DeleteConfig(config.Version, config.Name);
+
+        }
     }
 }
