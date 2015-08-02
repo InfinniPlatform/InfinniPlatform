@@ -51,15 +51,15 @@ namespace InfinniPlatform.Api.Tests.Packages
             Assert.IsNotNull(config2);
             Assert.IsNotNull(config3);
 
-            var exportDir = Directory.GetCurrentDirectory() +  @"\Export\SystemConfiguration_1.0.0.0";
+            var exportDir = Directory.GetCurrentDirectory() +  @"\Export\SystemConfiguration_1.5.0.0";
             solutionExporter = new SolutionExporter(new DirectoryStructure(exportDir),
                 config => new DirectoryStructure(exportDir + string.Format(@"\{0}.Configuration_{1}", config.Name, config.Version)));
 
-            solutionExporter.ExportSolutionToStructure("SystemConfiguration", "1.0.0.0");
+            solutionExporter.ExportSolutionToStructure("SystemConfiguration", "1.0.0.0","1.5.0.0");
 
-            File.Exists(Path.Combine(exportDir, @"\Administration.Configuration_1.0.0.0\Configuration.json"));
-            File.Exists(Path.Combine(exportDir, @"\Authorization.Configuration_1.0.0.0\Configuration.json"));
-            File.Exists(Path.Combine(exportDir, @"\AdministrationCustomization.Configuration_1.0.0.0\Configuration.json"));
+            File.Exists(Path.Combine(exportDir, @"\Administration.Configuration_1.5.0.0\Configuration.json"));
+            File.Exists(Path.Combine(exportDir, @"\Authorization.Configuration_1.5.0.0\Configuration.json"));
+            File.Exists(Path.Combine(exportDir, @"\AdministrationCustomization.Configuration_1.5.0.0\Configuration.json"));
 
         }
 

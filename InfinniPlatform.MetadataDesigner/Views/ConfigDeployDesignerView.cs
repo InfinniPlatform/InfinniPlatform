@@ -27,6 +27,11 @@ namespace InfinniPlatform.MetadataDesigner.Views
             return TextEditSolutionName.Text;
         }
 
+	    private string GetNewSolutionVersion()
+	    {
+	        return TextEditSolutionVersionNew.Text;
+	    }
+
         private string GetSolutionVersion()
         {
             return TextEditSolutionVersion.Text;
@@ -54,7 +59,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 
         private void ButtonExportSolutionClick(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(GetSolutionName()) && !string.IsNullOrEmpty(GetSolutionVersion()))
+            if (!string.IsNullOrEmpty(GetSolutionName()) && !string.IsNullOrEmpty(GetSolutionVersion()) && !string.IsNullOrEmpty(GetNewSolutionVersion()))
             {
                 var exportSolution = new ExchangeDirectorSolution(new ExchangeLocalHost(), GetSolutionName());
 
@@ -67,7 +72,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
                     process.StartOperation(() =>
                         {
                             solutionPath = Path.Combine(solutionPath, GetSolutionName());
-                            exportSolution.ExportJsonSolutionToDirectory(solutionPath, GetSolutionVersion());
+                            exportSolution.ExportJsonSolutionToDirectory(solutionPath, GetSolutionVersion(), GetNewSolutionVersion());
 
                             var manager = ManagerFactorySolution.BuildSolutionReader(GetSolutionVersion());
 
@@ -78,7 +83,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
                                 var exportConfig = new ExchangeDirector(new ExchangeLocalHost(), config.Name);
                                 var configurationPath = Path.Combine(solutionPath,
                                     string.Format("{0}_{1}", config.Name, config.Version));
-                                exportConfig.ExportJsonConfigToDirectory(configurationPath, Value.Version);
+                                exportConfig.ExportJsonConfigToDirectory(configurationPath, Value.Version,GetNewSolutionVersion());
                             }
 
                         });
@@ -109,7 +114,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 					{
 					    configurationPath = Path.Combine(configurationPath,
 					        string.Format("{0}.Configuration_{1}", Value.Name, Value.Version));
-					    exportConfig.ExportJsonConfigToDirectory(configurationPath, Value.Version);
+					    exportConfig.ExportJsonConfigToDirectory(configurationPath, Value.Version,GetNewSolutionVersion());
 					});
 					process.EndOperation();
 
@@ -130,7 +135,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 				if (dialog.ShowDialog() == DialogResult.OK)
 				{
 					var process = new StatusProcess();
-					process.StartOperation(() => exportConfig.ExportJsonConfigToZip(dialog.FileName, Value.Version));
+					process.StartOperation(() => exportConfig.ExportJsonConfigToZip(dialog.FileName, Value.Version,GetNewSolutionVersion()));
 					process.EndOperation();
 
 					MessageBox.Show(@"Экспорт конфигурации завершен");

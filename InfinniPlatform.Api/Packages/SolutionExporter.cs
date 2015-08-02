@@ -21,18 +21,32 @@ namespace InfinniPlatform.Api.Packages
             _exportStructureConfig = exportStructureConfig;
         }
 
-        public void ExportSolutionToStructure(string solutionId, string version)
+        /// <summary>
+        ///  Экспортировать решение
+        /// </summary>
+        /// <param name="solutionId">Идентификатор решения</param>
+        /// <param name="version">Текущая версия решения</param>
+        /// <param name="newVersion">Новая версия решения</param>
+        public void ExportSolutionToStructure(string solutionId, string version, string newVersion)
         {
             var manager = ManagerFactorySolution.BuildSolutionReader(version);
 
             dynamic solution = manager.GetItem(solutionId);
 
+            solution.Version = newVersion;
+
             _exportStructureSolution.Start();
 
             try
             {
+                foreach (var referencedConfiguration in solution.ReferencedConfigurations)
+                {
+                    referencedConfiguration.Version = newVersion;
+                }
+
                 var result = ((string)solution.ToString()).Split("\n\r".ToCharArray(),
                     StringSplitOptions.RemoveEmptyEntries);
+
 
                 _exportStructureSolution.AddSolution(result);
 
@@ -40,7 +54,7 @@ namespace InfinniPlatform.Api.Packages
                 {
                     var configExporter = new ConfigExporter(_exportStructureConfig(referencedConfig));
 
-                    configExporter.ExportHeaderToStructure(referencedConfig.Version, referencedConfig.Name);
+                    configExporter.ExportHeaderToStructure(version, newVersion, referencedConfig.Name);
                 }
 
             }

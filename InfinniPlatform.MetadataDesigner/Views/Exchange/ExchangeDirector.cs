@@ -23,19 +23,19 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
 		    _configurationArchiveName = string.Format("exportconfig_{0}.zip", _configurationId);
 		}
 
-		public void ExportJsonConfigToZip(string fileName, string version)
+		public void ExportJsonConfigToZip(string fileName, string version, string newVersion)
 		{
 			if (_updatePrepareConfig.PrepareRoutingOperation())
 			{
-				new ConfigExporter(new ZipStructure(fileName)).ExportHeaderToStructure(version, _configurationId);
+				new ConfigExporter(new ZipStructure(fileName)).ExportHeaderToStructure(version, _configurationId, newVersion);
 			}
 		}
 
-		public void ExportJsonConfigToDirectory(string exportDir, string version)
+		public void ExportJsonConfigToDirectory(string exportDir, string version, string newVersion)
 		{
 			if (_updatePrepareConfig.PrepareRoutingOperation())
 			{
-				new ConfigExporter(new DirectoryStructure(exportDir)).ExportHeaderToStructure(version, _configurationId);
+				new ConfigExporter(new DirectoryStructure(exportDir)).ExportHeaderToStructure(version, _configurationId, newVersion);
 			}
 		}
 

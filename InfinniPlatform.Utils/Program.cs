@@ -16,9 +16,9 @@ namespace InfinniPlatform.Utils
                     new ConfigManager().Upload(arguments.Length > 0 ? arguments[0] : string.Empty, arguments.Length > 0);
                     break;
                 case "download":
-                    if (arguments.Length > 2)
+                    if (arguments.Length > 3)
                     {
-                        new ConfigManager().Download(arguments[0], arguments[1], arguments[2]);
+                        new ConfigManager().Download(arguments[0], arguments[1], arguments[2], arguments[3]);
                     }
                     else
                     {

@@ -49,12 +49,12 @@ namespace InfinniPlatform.Utils
             });
         }
 
-        public void Download(string solutionDir, string solution, string version)
+        public void Download(string solutionDir, string solution, string version, string newVersion)
         {
             Console.WriteLine("Downloading solution '{0}' started", solution);
 
             var exchangeDirector = CreateExchangeDirector(solution,version);
-            exchangeDirector.ExportJsonSolutionToDirectory(solutionDir, version);
+            exchangeDirector.ExportJsonSolutionToDirectory(solutionDir, version, newVersion);
 
             Console.WriteLine("Downloading solution '{0}' done", solution);
 

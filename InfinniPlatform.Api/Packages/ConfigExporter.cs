@@ -15,7 +15,13 @@ namespace InfinniPlatform.Api.Packages
             _exportStructure = exportStructure;
         }
 
-        public void ExportHeaderToStructure(string version, string configurationId)
+        /// <summary>
+        ///   Экспортировать конфигурацию
+        /// </summary>
+        /// <param name="version">Текущая версия конфигурации</param>
+        /// <param name="newVersion">Новая версия конфигурации после экспорта</param>
+        /// <param name="configurationId">Наименование экспортируемой конфигурации</param>
+        public void ExportHeaderToStructure(string version, string newVersion, string configurationId)
         {
             var managerConfig = ManagerFactoryConfiguration.BuildConfigurationMetadataReader(version);
 
@@ -25,6 +31,8 @@ namespace InfinniPlatform.Api.Packages
 
             try
             {
+                config.Version = newVersion;
+
                 var result = ((string) config.ToString()).Split("\n\r".ToCharArray(),
                     StringSplitOptions.RemoveEmptyEntries);
 
@@ -39,6 +47,7 @@ namespace InfinniPlatform.Api.Packages
                     //текст для экспорта в файл
                     result = fullMenu.ToString().Split("\n\r".ToCharArray(),
                         StringSplitOptions.RemoveEmptyEntries);
+                    menu.Version = newVersion;
 
                     _exportStructure.AddMenu(menu.Name, result);
                 }
@@ -48,7 +57,8 @@ namespace InfinniPlatform.Api.Packages
 
                 foreach (var report in reportList)
                 {
-                    object fullReport = reportReader.GetItem(report.Name);
+                    dynamic fullReport = reportReader.GetItem(report.Name);
+                    fullReport.Version = newVersion;
 
                     result = fullReport.ToString().Split("\n\r".ToCharArray(),
                         StringSplitOptions.RemoveEmptyEntries);
@@ -61,7 +71,9 @@ namespace InfinniPlatform.Api.Packages
 
                 foreach (var document in documents)
                 {
-                    object fullDocument = documentReader.GetItem(document.Name);
+                    dynamic fullDocument = documentReader.GetItem(document.Name);
+                    fullDocument.Version = newVersion;
+
                     result = fullDocument.ToString().Split("\n\r".ToCharArray(),
                         StringSplitOptions.RemoveEmptyEntries);
 
@@ -71,7 +83,7 @@ namespace InfinniPlatform.Api.Packages
                     {
                         try
                         {
-                            ProcessMetadataType(version, configurationId, document.Name, containedMetadataType);
+                            ProcessMetadataType(version, newVersion, configurationId, document.Name, containedMetadataType);
                         }
                         catch (Exception e)
                         {
@@ -86,7 +98,8 @@ namespace InfinniPlatform.Api.Packages
 
                 foreach (var register in registers)
                 {
-                    object fullRegister = registerReader.GetItem(register.Name);
+                    dynamic fullRegister = registerReader.GetItem(register.Name);
+                    register.Version = newVersion;
                     result = fullRegister.ToString().Split("\n\r".ToCharArray(),
                         StringSplitOptions.RemoveEmptyEntries);
 
@@ -100,7 +113,7 @@ namespace InfinniPlatform.Api.Packages
             }
         }
 
-        private void ProcessMetadataType(string version, string configId, string documentId, string metadataType)
+        private void ProcessMetadataType(string version, string newVersion, string configId, string documentId, string metadataType)
         {
             var metadataReader =
                 new ManagerFactoryDocument(version, configId, documentId).BuildManagerByType(metadataType)
@@ -108,6 +121,7 @@ namespace InfinniPlatform.Api.Packages
             foreach (var item in metadataReader.GetItems())
             {
                 dynamic fullItemMetadata = metadataReader.GetItem(item.Name);
+                fullItemMetadata.Version = newVersion;
                 var result = ((string) fullItemMetadata.ToString()).Split("\n\r".ToCharArray(),
                     StringSplitOptions.RemoveEmptyEntries);
 

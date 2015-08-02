@@ -25,12 +25,12 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
             _solutionArchiveName = string.Format("exportsolution_{0}.zip", _solutionId);
 		}
 
-        public void ExportJsonSolutionToDirectory(string exportDir, string version)
+        public void ExportJsonSolutionToDirectory(string exportDir, string version, string newVersion)
         {
             if (_updatePrepareConfig.PrepareRoutingOperation())
             {
                 new SolutionExporter(new DirectoryStructure(exportDir), 
-                    config => new DirectoryStructure(exportDir + string.Format(@"\{0}_{1}", config.Name, config.Version))).ExportSolutionToStructure(_solutionId, version);
+                    config => new DirectoryStructure(exportDir + string.Format(@"\{0}_{1}", config.Name, newVersion))).ExportSolutionToStructure(_solutionId, version, newVersion);
             }
         }
 
