@@ -366,4 +366,16 @@
 	<data name="UnableToGetViewMetadata" xml:space="preserve">
     <value>Unable to get view metadata with exception {0}</value>
   </data>
+	<data name="UnableToInsertPrintViewMetadata" xml:space="preserve">
+    <value>Unable to insert print view metadata with exception {0}</value>
+  </data>
+	<data name="UnableToUpdatePrintViewMetaata" xml:space="preserve">
+    <value>Unable to update printview metadata with exception {0}</value>
+  </data>
+	<data name="UnableToDeletePrintViewMetadata" xml:space="preserve">
+    <value>Unable to delete print view metadata with exception {0}</value>
+  </data>
+	<data name="UnableToGetPrintViewMetadata" xml:space="preserve">
+    <value>Unable to get print view metadata with exception {0}</value>
+  </data>
 </root>

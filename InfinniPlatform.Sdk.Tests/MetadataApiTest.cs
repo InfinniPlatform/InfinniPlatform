@@ -399,5 +399,49 @@ namespace InfinniPlatform.Sdk.Tests
             _metadataApi.DeleteConfig(config.Version, config.Name);
 
         }
+
+        [Test]
+        public void ShouldInsertUpdateDeleteDocumentPrintView()
+        {
+            var config = new ConfigurationMetadata();
+            config.Id = Guid.NewGuid().ToString();
+            config.Name = "TestConfigVersion_" + Guid.NewGuid().ToString();
+            config.Version = "2.0.0.0";
+            _metadataApi.InsertConfig(config);
+
+            var documentMetadata = new DocumentMetadata();
+            documentMetadata.Id = Guid.NewGuid().ToString();
+            documentMetadata.Name = "Document1";
+
+            _metadataApi.InsertDocument(documentMetadata, config.Version, config.Name);
+
+            var printViewMetadata = new PrintViewMetadata();
+            printViewMetadata.Id = Guid.NewGuid().ToString();
+            printViewMetadata.Name = "PrintView1";
+
+            _metadataApi.InsertPrintView(printViewMetadata, config.Version, config.Name, documentMetadata.Name);
+
+            dynamic viewMetadataRead = _metadataApi.GetPrintView(config.Version, config.Name, documentMetadata.Name, printViewMetadata.Name);
+
+            Assert.IsNotNull(viewMetadataRead);
+            Assert.AreEqual(viewMetadataRead.Id, printViewMetadata.Id);
+
+            printViewMetadata.Name = "View1_v1";
+
+            _metadataApi.UpdatePrintView(printViewMetadata, config.Version, config.Name, documentMetadata.Name);
+
+            var viewMetadataREad = _metadataApi.GetPrintView(config.Version, config.Name, documentMetadata.Name, printViewMetadata.Name);
+
+            Assert.AreEqual(viewMetadataREad.Name, printViewMetadata.Name);
+
+            _metadataApi.DeletePrintView(config.Version, config.Name, documentMetadata.Name, printViewMetadata.Name);
+
+            viewMetadataREad = _metadataApi.GetPrintView(config.Version, config.Name, documentMetadata.Name, printViewMetadata.Name);
+
+            Assert.IsNull(viewMetadataREad);
+
+            _metadataApi.DeleteConfig(config.Version, config.Name);
+
+        }
     }
 }

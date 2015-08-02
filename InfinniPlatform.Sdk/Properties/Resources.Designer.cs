@@ -331,6 +331,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to delete print view metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToDeletePrintViewMetadata {
+            get {
+                return ResourceManager.GetString("UnableToDeletePrintViewMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to delete service metadata with exception {0}.
         /// </summary>
         internal static string UnableToDeleteProcessMetadata {
@@ -475,6 +484,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to get print view metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToGetPrintViewMetadata {
+            get {
+                return ResourceManager.GetString("UnableToGetPrintViewMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to get service metadata with exception {0}.
         /// </summary>
         internal static string UnableToGetProcessMetadata {
@@ -588,6 +606,15 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string UnableToInsertMenuMetadata {
             get {
                 return ResourceManager.GetString("UnableToInsertMenuMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to insert print view metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToInsertPrintViewMetadata {
+            get {
+                return ResourceManager.GetString("UnableToInsertPrintViewMetadata", resourceCulture);
             }
         }
         
@@ -750,6 +777,15 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string UnableToUpdateMenuMetadata {
             get {
                 return ResourceManager.GetString("UnableToUpdateMenuMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to update printview metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToUpdatePrintViewMetaata {
+            get {
+                return ResourceManager.GetString("UnableToUpdatePrintViewMetaata", resourceCulture);
             }
         }
         

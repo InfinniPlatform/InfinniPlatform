@@ -545,5 +545,56 @@ namespace InfinniPlatform.Sdk.Api
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetViewMetadata, response.GetErrorContent()));
         }
 
+        /// <summary>
+        ///   Добавить метаданные указанного представления печатной формы
+        /// </summary>
+        /// <returns>Результат добавления метаданных указанного представления печатной формы</returns>
+        public dynamic InsertPrintView(PrintViewMetadata printViewMetadata, string version, string configuration, string document)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElement(version, configuration, document, "PrintView"), printViewMetadata);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToInsertPrintViewMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Обновить метаданные указанного представления печатной формы
+        /// </summary>
+        /// <returns>Результат обновления метаданных представления печатной формы</returns>
+        public dynamic UpdatePrintView(PrintViewMetadata printViewMetadata, string version, string configuration, string document)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElement(version, configuration, document, "PrintView"), printViewMetadata);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdatePrintViewMetaata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Удалить метаданные указанного представления печатной формы
+        /// </summary>
+        /// <returns>Результат удаления метаданных представления печатной формы</returns>
+        public dynamic DeletePrintView(string version, string configuration, string document, string printView)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElementById(version, configuration, document, "PrintView", printView));
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToDeletePrintViewMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Получить метаданные представления печатной формы
+        /// </summary>
+        public dynamic GetPrintView(string version, string configuration, string document, string printView)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElementById(version, configuration, document, "PrintView", printView));
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetPrintViewMetadata, response.GetErrorContent()));
+        }
+
     }
 }
