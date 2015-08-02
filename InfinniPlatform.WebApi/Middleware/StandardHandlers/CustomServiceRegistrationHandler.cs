@@ -14,7 +14,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 {
     public sealed class CustomServiceRegistrationHandler : HandlerRegistration
     {
-        public CustomServiceRegistrationHandler() : base(new RouteFormatterStandard(), new RequestPathConstructor(), Priority.Standard, "POST")
+        public CustomServiceRegistrationHandler() : base(new RouteFormatterCustomService(), new RequestPathConstructor(), Priority.Standard, "POST")
         {
         }
 
@@ -28,9 +28,14 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
             dynamic body = null;
-            if (context.Request.Body.Length != 0)
+
+            try
             {
                 body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
+            }
+            catch (Exception e)
+            {
+                body = null;
             }
 
             return new ValueRequestHandlerResult(

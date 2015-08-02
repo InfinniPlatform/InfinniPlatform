@@ -20,7 +20,7 @@ namespace InfinniPlatform.WebApi.Middleware.VersionHandlers
 
         protected override PathStringProvider GetPath(IOwinContext context)
         {
-            return RouteFormatter.FormatRoutePath(context, new PathString(PathConstructor.GetBaseApplicationPath() + "/_documentType_/_userName_")).Create(Priority);
+            return RouteFormatter.FormatRoutePath(context, new PathString(PathConstructor.GetBaseApplicationPath() + "/Version/_userName_")).Create(Priority);
         }
 
         protected override IRequestHandlerResult ExecuteHandler(IOwinContext context)

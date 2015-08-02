@@ -122,6 +122,7 @@
     <Compile Include="Middleware\RouteFormatters\RouteFormatterAuthUser.cs" />
     <Compile Include="Middleware\RouteFormatters\RouteFormatterMetadata.cs" />
     <Compile Include="Middleware\RouteFormatters\RouteFormatterSession.cs" />
+    <Compile Include="Middleware\RouteFormatters\RouteFormatterCustomService.cs" />
     <Compile Include="Middleware\RouteFormatters\RouteFormatterStandard.cs" />
     <Compile Include="Middleware\SessionHandlers\AttachDocumentHandlerRegistration.cs" />
     <Compile Include="Middleware\SessionHandlers\CreateSessionHandlerRegistration.cs" />

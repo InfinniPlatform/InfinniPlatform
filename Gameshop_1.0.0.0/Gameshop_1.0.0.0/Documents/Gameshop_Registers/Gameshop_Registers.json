@@ -5,7 +5,7 @@
   "Caption": "Registers common options",
   "Description": "Storage for register's common information (e.g. actual date)",
   "Versioning": 4,
-  "Version": "1",
+  "Version": "1.0.0.0",
   "MetadataIndex": "Gameshop_Registers",
   "Services": [],
   "Processes": [],

@@ -26,27 +26,25 @@ namespace InfinniPlatform.Sdk
         /// </summary>
         /// <param name="application">Приложение</param>
         /// <returns>Роутинг для запросов на загрузку файлов</returns>
-        public string BuildRestRoutingUploadFile(string application)
+        public string BuildRestRoutingUploadFile()
         {
-            return GetCompleteUrl(GetFileUploadPath()
-                .ReplaceFormat("application", application));
+            return GetCompleteUrl(GetFileUploadPath());
         }
 
-        public string BuildRestRoutingDownloadFile(string application)
+        public string BuildRestRoutingDownloadFile()
         {
-            return GetCompleteUrl(GetFileDownloadPath()
-                .ReplaceFormat("application", application));
+            return GetCompleteUrl(GetFileDownloadPath());
         }
 
 
         private string GetFileUploadPath()
         {
-            return GetBaseApplicationPath() + "/files/upload";
+            return "/files/upload";
         }
 
         private string GetFileDownloadPath()
         {
-            return GetBaseApplicationPath() + "/files/download";
+            return "/files/download";
         }
 
         /// <summary>

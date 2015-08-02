@@ -44,7 +44,9 @@ namespace InfinniPlatform.Sdk.Tests
                 _fileApi.UploadFile("Gameshop", "UserProfile", profileId, "Avatar", "avatar.gif", fileStream);
             }
 
-            var result = _fileApi.DownloadFile("Gameshop", "UserProfile", profileId, "Avatar");
+            var documentSaved = _documentApi.GetDocumentById("Gameshop", "UserProfile",profileId);
+
+            var result = _fileApi.DownloadFile(documentSaved.Avatar.Info.ContentId);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(((string)result.Content.ToString()).Length, 9928);
@@ -69,10 +71,11 @@ namespace InfinniPlatform.Sdk.Tests
                 _documentApi.AttachFile(sessionId, instanceId, "Avatar", "avatar.gif", fileStream);
             }
 
-
             _documentApi.SaveSession(sessionId);
 
-            var result = _fileApi.DownloadFile("Gameshop", "UserProfile", instanceId, "Avatar");
+            var contentId = _documentApi.GetDocumentById("Gameshop", "UserProfile", instanceId).Avatar.Info.ContentId;
+
+            var result = _fileApi.DownloadFile(contentId);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(((string)result.Content.ToString()).Length, 9928);
@@ -102,10 +105,10 @@ namespace InfinniPlatform.Sdk.Tests
 
             _documentApi.SaveSession(sessionId);
 
-            dynamic result = JsonConvert.DeserializeObject<ExpandoObject>(_fileApi.DownloadFile("Gameshop", "UserProfile", instanceId, "Avatar").ToString());
+            var contentId = _documentApi.GetDocumentById("Gameshop", "UserProfile", instanceId).Avatar;
 
-            Assert.IsNotNull(result);          
-            Assert.True(((string)result.Content).Contains("Content not found."));
+            Assert.AreEqual(null, contentId);
+
         }
     }
 }

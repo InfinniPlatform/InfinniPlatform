@@ -213,11 +213,8 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
         {
             string result = null;
 
-            var body = new Dictionary<string, object>
-            {
-                {"InstanceId", linkedData.InstanceId},
-                {"FieldName", linkedData.FieldName}
-            };
+            object body = DynamicWrapperExtensions.ToDynamic(linkedData);
+            
 
 
             ExecuteProfiledOperation(

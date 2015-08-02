@@ -12,6 +12,11 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
         {
             dynamic defaultBusinessProcess = null;
 
+            if (target.Item.Configuration == null)
+            {
+                return;
+            }
+
             //TODO Игнорировать системные конфигурации при валидации. Пока непонятно, как переделать
             if (target.Item.Configuration.ToLowerInvariant() != "systemconfig" &&
                 target.Item.Configuration.ToLowerInvariant() != "update" &&

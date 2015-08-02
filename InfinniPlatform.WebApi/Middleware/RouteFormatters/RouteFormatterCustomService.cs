@@ -10,7 +10,7 @@ using InfinniPlatform.Owin.Middleware;
 
 namespace InfinniPlatform.WebApi.Middleware.RouteFormatters
 {
-    public sealed class RouteFormatterStandard : IRouteFormatter
+    public sealed class RouteFormatterCustomService : IRouteFormatter
     {
         public Dictionary<string, string> GetRouteDictionary(IOwinContext context)
         {
@@ -25,13 +25,15 @@ namespace InfinniPlatform.WebApi.Middleware.RouteFormatters
             var version = routeValues.Count() > 0 ? Int32.TryParse(routeValues[0], out versionInt) ? routeValues[0] : Resources.UnknownRouteSection : Resources.UnknownRouteSection;
             var application = routeValues.Count() > 1 ? routeValues[1] : Resources.UnknownRouteSection;
             var documentType = routeValues.Count() > 2 ? routeValues[2] : Resources.UnknownRouteSection;
-            var instanceId = routeValues.Count() > 3 ? Guid.TryParse(routeValues[3],out instanceGuid) ? routeValues[3] : Resources.UnknownRouteSection : Resources.UnknownRouteSection;
+            var service = routeValues.Count() > 3 ? routeValues[3] : Resources.UnknownRouteSection;
+            var instanceId = routeValues.Count() > 4 ? Guid.TryParse(routeValues[4],out instanceGuid) ? routeValues[4] : Resources.UnknownRouteSection : Resources.UnknownRouteSection;
 
             return new Dictionary<string, string>()
             {
                 {"version",version},
                 {"application",application},
                 {"documentType",documentType},                
+                {"service",service},
                 {"instanceId",instanceId},
             };
         }
@@ -45,6 +47,7 @@ namespace InfinniPlatform.WebApi.Middleware.RouteFormatters
                     .ReplaceFormat("_version_",routeDictionary["version"])
                     .ReplaceFormat("_application_", routeDictionary["application"])
                     .ReplaceFormat("_documentType_", routeDictionary["documentType"])
+                    .ReplaceFormat("_service_", routeDictionary["service"])
                     .ReplaceFormat("_instanceId_", routeDictionary["instanceId"]) : string.Empty); 
 
         }

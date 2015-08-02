@@ -15,9 +15,9 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.ConfigurationElements
         {
             if (Method == "POST" || Method == "PUT")
             {
-                return RouteFormatter.FormatRoutePath(context, new PathString(PathConstructor.GetBaseApplicationPath() + "/_versionMetadata_/_configuration_/_metadataType_")).Create(Priority);
+                return RouteFormatter.FormatRoutePath(context, new PathString(PathConstructor.GetVersionPath() + "/metadata/_versionMetadata_/_configuration_/_metadataType_")).Create(Priority);
             }
-            return RouteFormatter.FormatRoutePath(context, new PathString(PathConstructor.GetBaseApplicationPath() + "/_versionMetadata_/_configuration_/_metadataType_/_instanceId_/")).Create(Priority);
+            return RouteFormatter.FormatRoutePath(context, new PathString(PathConstructor.GetVersionPath() + "/metadata/_versionMetadata_/_configuration_/_metadataType_/_instanceId_/")).Create(Priority);
         }
     }
 }

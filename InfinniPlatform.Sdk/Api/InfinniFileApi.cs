@@ -30,7 +30,7 @@ namespace InfinniPlatform.Sdk.Api
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
 
-            var response = restQueryExecutor.QueryPostFile(RouteBuilder.BuildRestRoutingUploadFile(application), instanceId, fieldName, fileName, fileStream);
+            var response = restQueryExecutor.QueryPostFile(RouteBuilder.BuildRestRoutingUploadFile(), instanceId, fieldName, fileName, fileStream);
 
             return ProcessAsObjectResult(response,string.Format(Resources.UnableToUploadFileOnServer, response.GetErrorContent()));   
         }
@@ -38,25 +38,19 @@ namespace InfinniPlatform.Sdk.Api
         /// <summary>
         ///   Загрузить файл с сервера
         /// </summary>
-        /// <param name="application">Идентификатор приложения</param>
-        /// <param name="documentType">Идентификатор документа</param>
         /// <param name="instanceId">Идентификатор экземпляра документа</param>
-        /// <param name="fieldName">Наименование поля ссылки</param>
         /// <returns>Выгруженный контент</returns>
-        public dynamic DownloadFile(string application, string documentType, string instanceId, string fieldName)
+        public dynamic DownloadFile(string instanceId)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
             var linkedData = new
             {
-                Application = application,
-                DocumentType = documentType,
-                InstanceId = instanceId,
-                FieldName = fieldName
+                ContentId = instanceId,
             };
 
             var response = restQueryExecutor.QueryGetUrlEncodedData(
-                    RouteBuilder.BuildRestRoutingDownloadFile(application), linkedData);
+                    RouteBuilder.BuildRestRoutingDownloadFile(), linkedData);
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToDownloadFileFromServer, response.GetErrorContent())); 
         }

@@ -23,7 +23,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 
         protected override PathStringProvider GetPath(IOwinContext context)
         {
-            return RouteFormatter.FormatRoutePath(context, new PathString(PathConstructor.GetBaseApplicationPath() + "/files/download")).Create(Priority.Higher);
+            return RouteFormatter.FormatRoutePath(context, new PathString(PathConstructor.GetVersionPath() + "/files/download")).Create(Priority.Concrete);
         }
 
         protected override IRequestHandlerResult ExecuteHandler(IOwinContext context)
@@ -40,14 +40,13 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
             {
                 dynamic formData = JObject.Parse(HttpUtility.UrlDecode(nameValueCollection.Get("Form")));
 
-                if (formData.InstanceId == null ||
-                    formData.FieldName == null)
+                if (formData.ContentId == null)
                 {
                     throw new ArgumentException(Resources.NotAllRequestParamsAreSpecified);
                 }
 
                 return new ValueRequestHandlerResult(new UploadApi().DownloadBinaryContent(
-                    formData.InstanceId.ToString(), formData.FieldName.ToString()));
+                    formData.ContentId.ToString()));
             }
 
             return new ErrorRequestHandlerResult(Resources.IncorrectDownloadRequest);

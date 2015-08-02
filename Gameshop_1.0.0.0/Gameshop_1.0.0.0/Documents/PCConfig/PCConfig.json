@@ -1,12 +1,12 @@
 {
-  "Id": "c5cc3a4f-f7b1-4434-88cf-f3ce8498172d",
+  "Id": "fe981144-0591-4ffe-b5bc-1745dbc8b69b",
   "Secured": true,
-  "Name": "UserProfile",
-  "Caption": "Профиль пользователя",
+  "Name": "PCConfig",
+  "Caption": "Конфигурация компьютера",
   "Description": "",
   "Versioning": 2,
-  "Version": "1",
-  "MetadataIndex": "UserProfile",
+  "Version": "1.0.0.0",
+  "MetadataIndex": "PCConfig",
   "Services": [],
   "Processes": [],
   "Scenarios": [],
@@ -23,17 +23,17 @@
     "Type": "Object",
     "Caption": "Schema",
     "Properties": {
-      "LastName": {
-        "Caption": "Фамилия",
+      "Processor": {
+        "Caption": "Процессор",
         "Type": "String"
       },
-      "FirstName": {
-        "Caption": "Имя",
+      "Memory": {
+        "Caption": "Оперативная память",
         "Type": "String"
       },
-      "Birth": {
-        "Caption": "Дата рождения",
-        "Type": "DateTime"
+      "Videocard": {
+        "Caption": "Видеокарта",
+        "Type": "String"
       }
     }
   }

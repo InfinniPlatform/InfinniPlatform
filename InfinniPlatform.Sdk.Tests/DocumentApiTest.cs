@@ -140,7 +140,7 @@ namespace InfinniPlatform.Sdk.Tests
 
             var result = _api.SetDocument("gameshop", "catalogue", Guid.NewGuid().ToString(), documentObject).Id.ToString();
 
-            dynamic persistentDocument = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetDocumentById("gameshop", "catalogue", result).ToString());
+            dynamic persistentDocument = _api.GetDocumentById("gameshop", "catalogue", result);
 
             Assert.IsNotNull(persistentDocument);
             Assert.AreEqual(persistentDocument.Name, "Bioshock:Infinite");
@@ -402,7 +402,7 @@ namespace InfinniPlatform.Sdk.Tests
             string reviewId = _api.SetDocument("gameshop", "review", Guid.NewGuid().ToString(), review).Id.ToString();
 
             //When
-            dynamic item = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetDocumentById("gameshop", "review", reviewId).ToString());
+            dynamic item = _api.GetDocumentById("gameshop", "review", reviewId);
 
             //Then
             Assert.IsNotNull(item);
@@ -600,7 +600,7 @@ namespace InfinniPlatform.Sdk.Tests
 
             string lotteryId = _api.SetDocument("gameshop", "lottery", Guid.NewGuid().ToString(), lottery).Id.ToString();
             //When
-            dynamic item = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetDocumentById("gameshop", "lottery", lotteryId).ToString());
+            dynamic item = _api.GetDocumentById("gameshop", "lottery", lotteryId);
             //Then
             Assert.IsNotNull(item);
             Assert.AreEqual(item.Users.Count, 2);

@@ -23,7 +23,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 
         protected override PathStringProvider GetPath(IOwinContext context)
         {
-            return RouteFormatter.FormatRoutePath(context, new PathString(PathConstructor.GetBaseApplicationPath() + "/files/upload")).Create(Priority.Higher);
+            return RouteFormatter.FormatRoutePath(context, new PathString(PathConstructor.GetVersionPath() + "/files/upload")).Create(Priority.Concrete);
         }
 
         protected override IRequestHandlerResult ExecuteHandler(IOwinContext context)
