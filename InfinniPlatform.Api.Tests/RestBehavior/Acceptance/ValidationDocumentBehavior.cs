@@ -81,14 +81,14 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             string documentId = "testdoc1";
 
             MetadataManagerConfiguration managerConfiguration =
-                ManagerFactoryConfiguration.BuildConfigurationManager(null);
+                ManagerFactoryConfiguration.BuildConfigurationManager("1.0.0.0");
 
             dynamic config = managerConfiguration.CreateItem(configurationId);
             managerConfiguration.DeleteItem(config);
             managerConfiguration.MergeItem(config);
 
             MetadataManagerDocument managerDocument =
-                new ManagerFactoryConfiguration(null, configurationId).BuildDocumentManager();
+                new ManagerFactoryConfiguration("1.0.0.0", configurationId).BuildDocumentManager();
             dynamic documentMetadata1 = managerDocument.CreateItem(documentId);
             managerDocument.MergeItem(documentMetadata1);
 
@@ -127,20 +127,20 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             if (addWarnings)
             {
                 MetadataManagerElement managerWarning =
-                    new ManagerFactoryDocument(null, configurationId, documentId).BuildValidationWarningsManager();
+                    new ManagerFactoryDocument("1.0.0.0", configurationId, documentId).BuildValidationWarningsManager();
                 managerWarning.MergeItem(validationWarning);
             }
 
             if (addErrors)
             {
                 MetadataManagerElement managerError =
-                    new ManagerFactoryDocument(null, configurationId, documentId).BuildValidationErrorsManager();
+                    new ManagerFactoryDocument("1.0.0.0", configurationId, documentId).BuildValidationErrorsManager();
                 managerError.MergeItem(validationError);
             }
 
             //добавляем бизнес-процесс по умолчанию
             MetadataManagerElement processManager =
-                new ManagerFactoryDocument(null, configurationId, documentId).BuildProcessManager();
+                new ManagerFactoryDocument("1.0.0.0", configurationId, documentId).BuildProcessManager();
             dynamic defaultProcess = processManager.CreateItem("Default");
 
             dynamic instance = new DynamicWrapper();
@@ -174,15 +174,15 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             processManager.MergeItem(defaultProcess);
 
-            RestQueryApi.QueryPostNotify(null, configurationId);
+            RestQueryApi.QueryPostNotify("1.0.0.0", configurationId);
 
-            new UpdateApi(null).UpdateStore(configurationId);
+            new UpdateApi("1.0.0.0").UpdateStore(configurationId);
 
             if (addComplexErrors)
             {
                 //указываем ссылку на тестовый сценарий комплексного предзаполнения
                 MetadataManagerElement scenarioManager =
-                    new ManagerFactoryDocument(null, configurationId, documentId).BuildScenarioManager();
+                    new ManagerFactoryDocument("1.0.0.0", configurationId, documentId).BuildScenarioManager();
                 string scenarioId = "TestComplexValidator";
                 dynamic scenarioItem = scenarioManager.CreateItem(scenarioId);
                 scenarioItem.ScenarioId = scenarioId;
@@ -195,17 +195,17 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                 //добавляем ссылку на сборку, в которой находится прикладной модуль
 
                 MetadataManagerElement assemblyManager =
-                    new ManagerFactoryConfiguration(null, configurationId).BuildAssemblyManager();
+                    new ManagerFactoryConfiguration("1.0.0.0", configurationId).BuildAssemblyManager();
                 dynamic assemblyItem = assemblyManager.CreateItem("InfinniPlatform.Api.Tests");
                 assemblyManager.MergeItem(assemblyItem);
 
                 dynamic package = new PackageBuilder().BuildPackage(configurationId, "test_version",
                                                                     GetType().Assembly.Location);
-                new UpdateApi(null).InstallPackages(new[] {package});
+                new UpdateApi("1.0.0.0").InstallPackages(new[] { package });
             }
-            RestQueryApi.QueryPostNotify(null, configurationId);
+            RestQueryApi.QueryPostNotify("1.0.0.0", configurationId);
 
-            new UpdateApi(null).UpdateStore(configurationId);
+            new UpdateApi("1.0.0.0").UpdateStore(configurationId);
         }
 
         [Test]
