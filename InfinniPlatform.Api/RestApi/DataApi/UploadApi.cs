@@ -49,21 +49,6 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                 RestQueryApi.QueryPostFile("RestfulApi", "configuration", "uploadbinarycontent", linkedData, stream).ToDynamic();
 		}
 
-		/// <summary>
-        ///     Загрузить бинарный контент для указанного поля указанного документа
-		/// </summary>
-        /// <param name="instanceId">Идентификатор документа</param>
-		/// <param name="fieldName">Поле бинарного контента</param>
-		/// <returns>Данные бинарного контента</returns>
-        public dynamic DownloadBinaryContent(string instanceId, string fieldName)
-		{
-			return RestQueryApi.QueryGetUrlEncodedData("RestfulApi", "configuration", "downloadbinarycontent", new
-			    {
-			        InstanceId = instanceId,
-			        FieldName = fieldName
-			    });
-		}
-
         /// <summary>
         ///   Загрузить бинарный контент для указанного идентификатора ссылки на бинарный контент
         /// </summary>

@@ -23,9 +23,9 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
     {
         private IDisposable _server;
 
-        private const string TestConfig1 = "TestConfig1";
-        private const string TestConfig2 = "TestConfig2";
-        private const string TestConfig3 = "TestConfig3";
+        private const string TestConfig1 = "TestConfigVersion1";
+        private const string TestConfig2 = "TestConfigVersion2";
+        private const string TestConfig3 = "TestConfigVersion3";
 
         private const string TestConfig1DocumentId = "TestDoc1";
         private const string TestConfig2DocumentId = "TestDoc2";
@@ -34,7 +34,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         private const string SolutionId1 = "TestSolution1";
         private const string SolutionId2 = "TestSolution2";
         private const string SolutionId3 = "TestSolution3";
-        private const string Version = "1.0.0";
+        private const string Version = "1.0.0.0";
 
 
         [SetUp]
@@ -126,7 +126,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             new SignInApi().SignInInternal("Admin", "Admin", false);
 
             //When
-            CreateAndUpdateTestSolutionThreeTimes(Version, new[] {"1.0.1", "2.0.2", "3.0.4"},
+            CreateAndUpdateTestSolutionThreeTimes(Version, new[] {"1.0.1.0", "2.0.2.0", "3.0.4.0"},
                                                   () =>
                                                       {
                                                           api.SetDocument(TestConfig1, TestConfig1DocumentId, testDoc);
@@ -166,7 +166,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
                                                           Assert.AreEqual(1, irrelevantVersions.Count());
                                                           Assert.AreEqual(irrelevantVersions.First().ConfigurationId, TestConfig1);
-                                                          Assert.AreEqual(irrelevantVersions.First().Version, "1.0.1");
+                                                          Assert.AreEqual(irrelevantVersions.First().Version, "1.0.1.0");
                                                           Assert.AreEqual(irrelevantVersions.First().ActualVersion, "3.0.0.0");
 
                                                           RestQueryApi.QueryPostJsonRaw("systemconfig", "metadata",
@@ -218,7 +218,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             new IndexApi().RebuildIndex(TestConfig1, TestConfig1DocumentId);
 
             //When
-            CreateAndUpdateTestSolutionThreeTimes(Version, new[] { "1.0.1", "2.0.2","3.0.4" },
+            CreateAndUpdateTestSolutionThreeTimes(Version, new[] { "1.0.1.0", "2.0.2.0","3.0.4.0" },
                 () => api.SetDocument(TestConfig1, TestConfig1DocumentId, testDoc),
                 () => api.SetDocument(TestConfig1, TestConfig1DocumentId, testDoc),
                 () => api.SetDocument(TestConfig1, TestConfig1DocumentId, testDoc),
@@ -256,7 +256,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             //Given
 
-            CreateTestSolutionForSomeVersionsOfOneConfig(Version, new[] { "1.0.1", "1.0.2", "1.0.5" });
+            CreateTestSolutionForSomeVersionsOfOneConfig(Version, new[] { "1.0.1.0", "1.0.2.0", "1.0.5.0" });
             
             new IndexApi().RebuildIndex(TestConfig1, TestConfig1DocumentId);
 

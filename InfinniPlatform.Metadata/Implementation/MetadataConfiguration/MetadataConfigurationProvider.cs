@@ -80,10 +80,12 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
         public IMetadataConfiguration GetMetadataConfiguration(string version, string metadataConfigurationId)
         {
             //в случае системной конфигурации версия не имеет значения, т.к. для всех системных конфигурациц Version = null (одновременно запускается только одна версия платформы)
-            return
+            return 
                 Configurations.FirstOrDefault(
                     c => c.ConfigurationId.ToLowerInvariant() == metadataConfigurationId.ToLowerInvariant() &&
-                         (c.Version == version || c.Version == null));
+                         c.Version == version) ?? Configurations.FirstOrDefault(
+                    c => c.ConfigurationId.ToLowerInvariant() == metadataConfigurationId.ToLowerInvariant() &&
+                         c.Version == null);
         }
 
         /// <summary>

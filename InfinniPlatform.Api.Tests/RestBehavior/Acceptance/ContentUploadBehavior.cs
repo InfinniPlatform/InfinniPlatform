@@ -84,13 +84,9 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             Assert.AreNotEqual(uploadResult.IsValid, false);
 
-            dynamic resultBlob = new UploadApi().DownloadBinaryContent(testDocument.Id, "ContentField");
-
-			Assert.IsNotNull(resultBlob);
-
             dynamic storedDocument = new DocumentApi().GetDocument(_configurationId, _documentId, cr => cr.AddCriteria(f => f.Property("Id").IsEquals(testDocument.Id)), 0, 1).FirstOrDefault();
 
-            resultBlob = new UploadApi().DownloadBinaryContent(storedDocument.ContentField.Info.ContentId);
+            var resultBlob = new UploadApi().DownloadBinaryContent(storedDocument.ContentField.Info.ContentId);
 
             Assert.IsNotNull(resultBlob);
 		}
