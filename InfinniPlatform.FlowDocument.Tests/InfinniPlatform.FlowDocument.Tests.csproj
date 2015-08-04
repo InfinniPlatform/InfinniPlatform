@@ -63,6 +63,8 @@
     <Compile Include="Builders\Factories\Inlines\PrintElementUnderlineFactoryTest.cs" />
     <Compile Include="Builders\Factories\Views\PrintViewFactoryTest.cs" />
     <Compile Include="Builders\ImageTestHelper.cs" />
+    <Compile Include="Converters\Html\HtmlBuilderTestHelper.cs" />
+    <Compile Include="Converters\Html\PrintElementParagraphHtmlBuilderTest.cs" />
     <Compile Include="ImageTestHelper.cs" />
     <Compile Include="PrintView\FlowDocumentPrintViewBuilderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
