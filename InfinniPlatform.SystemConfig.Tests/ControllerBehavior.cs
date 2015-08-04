@@ -63,19 +63,6 @@ namespace InfinniPlatform.SystemConfig.Tests
 
 
         [Test]
-        public void ShouldGetServiceTypes()
-        {
-            var builder = new RestQueryBuilder( "SystemConfig", "metadata", "getservicemetadata", null);
-
-            RestQueryResponse response = builder.QueryGet(null, 0, 1000);
-
-            Assert.AreEqual(true, response.IsAllOk);
-            Assert.True(
-                response.Content.Contains(
-                    "[{\"Name\":\"applyevents\",\"WorkflowExtensionPoints\":[{\"Name\":\"FilterEvents\",\"ContextType\":4,\"Caption\":\"Document filter events context\"},{\"Name\":\"Move\",\"ContextType\":2,\"Caption\":\"Document move context\"},{\"Name\":\"GetResult\",\"ContextType\":8,\"Caption\":\"Document move result context\"}]},{\"Name\":\"applyjson\",\"WorkflowExtensionPoints\":[{\"Name\":\"FilterEvents\",\"ContextType\":4,\"Caption\":\"Document filter events context\"},{\"Name\":\"Move\",\"ContextType\":2,\"Caption\":\"Document move context\"},{\"Name\":\"GetResult\",\"ContextType\":8,\"Caption\":\"Document move result context\"}]},{\"Name\":\"notify\",\"WorkflowExtensionPoints\":[]},{\"Name\":\"search\",\"WorkflowExtensionPoints\":[{\"Name\":\"ValidateFilter\",\"ContextType\":16,\"Caption\":\"Document search context\"},{\"Name\":\"SearchModel\",\"ContextType\":16,\"Caption\":\"Document search context\"}]},{\"Name\":\"upload\",\"WorkflowExtensionPoints\":[{\"Name\":\"Upload\",\"ContextType\":32,\"Caption\":\"File upload context\"}]},{\"Name\":\"urlencodeddata\",\"WorkflowExtensionPoints\":[{\"Name\":\"ProcessUrlEncodedData\",\"ContextType\":64,\"Caption\":\"Unknown context type\"}]},{\"Name\":\"aggregation\",\"WorkflowExtensionPoints\":[{\"Name\":\"Join\",\"ContextType\":16,\"Caption\":\"Document search context\"},{\"Name\":\"TransformResult\",\"ContextType\":16,\"Caption\":\"Document search context\"}]}]"));
-        }
-
-        [Test]
         public void ShouldGetStandardExtensionPoints()
         {
             var builder = new RestQueryBuilder("SystemConfig", "metadata", "getstandardextensionpoints", null);

@@ -79,7 +79,6 @@
     <Compile Include="RestBehavior\Acceptance\SignalRNotificationBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\TransactionBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\ValidationDocumentBehavior.cs" />
-    <Compile Include="RestBehavior\ConfiguratorApiBehavior\GeneratorBrokerBehavior.cs" />
     <Compile Include="RestBehavior\ConfiguratorApiBehavior\MetadataCacheRefresherBehavior.cs" />
     <Compile Include="Dynamic\DynamicWrapperBehavior.cs" />
     <Compile Include="Events\EventListBuilderBehavior.cs" />

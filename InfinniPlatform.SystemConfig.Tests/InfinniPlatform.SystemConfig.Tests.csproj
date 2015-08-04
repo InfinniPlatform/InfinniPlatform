@@ -44,7 +44,6 @@
     <Compile Include="Builders\FullAggregateBuilder.cs" />
     <Compile Include="Configuration\GeneratorBehavior.cs" />
     <Compile Include="ControllerBehavior.cs" />
-    <Compile Include="RealConfigControllerBehavior.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -162,7 +162,10 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                                                           var irrelevantVersions =
                                                               RestQueryApi.QueryPostJsonRaw("systemconfig", "metadata",
                                                                                             "getirrelevantversions",
-                                                                                            null, null).ToDynamicList();
+                                                                                            null, new
+                                                                                            {
+                                                                                                UserName = "Admin"
+                                                                                            }).ToDynamicList();
 
                                                           Assert.AreEqual(1, irrelevantVersions.Count());
                                                           Assert.AreEqual(irrelevantVersions.First().ConfigurationId, TestConfig1);

@@ -36,19 +36,19 @@ namespace InfinniPlatform.Sdk.Tests
         {
             var user =  "NewUser_" + Guid.NewGuid();
 
-            dynamic result = JsonConvert.DeserializeObject<ExpandoObject>(_api.AddUser(user, user).ToString());
+            dynamic result = _api.AddUser(user, user);
 
             Assert.AreEqual(true, result.IsValid);
 
-            dynamic userObject = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetUser(user).ToString());
+            dynamic userObject = _api.GetUser(user);
 
             Assert.IsNotNull(userObject);
 
-            result = JsonConvert.DeserializeObject<ExpandoObject>(_api.DeleteUser(user).ToString());
+            result = _api.DeleteUser(user);
 
             Assert.AreEqual(true, result.IsValid);
 
-            userObject = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetUser(user).ToString());
+            userObject = _api.GetUser(user);
 
             Assert.AreEqual(userObject.IsValid, false);
             Assert.True(((string) userObject.ValidationMessage).Contains("not found"));
@@ -69,7 +69,7 @@ namespace InfinniPlatform.Sdk.Tests
 
             _api.AddUser(user, user);
 
-            dynamic accessResult = JsonConvert.DeserializeObject<ExpandoObject>(_api.GrantAccess(user, "Gameshop", "UserProfile", "GetDocument").ToString());
+            dynamic accessResult = _api.GrantAccess(user, "Gameshop", "UserProfile", "GetDocument");
 
             Assert.AreEqual(accessResult.IsValid,true);
         }
@@ -81,7 +81,7 @@ namespace InfinniPlatform.Sdk.Tests
 
             _api.AddUser(user, user);
 
-            dynamic accessResult = JsonConvert.DeserializeObject<ExpandoObject>(_api.DenyAccess(user, "Gameshop", "UserProfile", "GetDocument").ToString());
+            dynamic accessResult = _api.DenyAccess(user, "Gameshop", "UserProfile", "GetDocument");
 
             Assert.AreEqual(accessResult.IsValid,true);
         }
@@ -96,21 +96,22 @@ namespace InfinniPlatform.Sdk.Tests
             _api.AddUser(user, user);
 
             dynamic accessResult =
-                JsonConvert.DeserializeObject<ExpandoObject>(_api.AddUserClaim(user,claimType,
-                    "TestOrganization").ToString());
+                _api.AddUserClaim(user,claimType,
+                    "TestOrganization");
 
             Assert.AreEqual(accessResult.IsValid,true);
 
-            dynamic userClaim = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetUserClaim(user,claimType).ToString());
+            dynamic userClaim = _api.GetUserClaim(user,claimType);
 
             Assert.AreEqual(userClaim.ClaimValue, "TestOrganization");
 
-            accessResult =  JsonConvert.DeserializeObject<ExpandoObject>(_api.DeleteUserClaim(user, "OrganizationId").ToString());
+            accessResult =  _api.DeleteUserClaim(user, "OrganizationId");
             Assert.AreEqual(accessResult.IsValid, true);
 
-            userClaim = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetUserClaim(user, claimType).ToString());
+            userClaim = _api.GetUserClaim(user, claimType);
 
-            Assert.False(((IDictionary<string,object>) userClaim).ContainsKey("ClaimValue"));
+            Assert.IsNull(userClaim.ClaimValue);
+            
         }
 
         [Test]
@@ -137,10 +138,10 @@ namespace InfinniPlatform.Sdk.Tests
 
             _api.AddRole(roleName);
 
-            dynamic accessResult = JsonConvert.DeserializeObject<ExpandoObject>(_api.AddUserRole(user, roleName).ToString());
+            dynamic accessResult = _api.AddUserRole(user, roleName);
             Assert.AreEqual(accessResult.IsValid, true);
 
-            accessResult = JsonConvert.DeserializeObject<ExpandoObject>(_api.DeleteUserRole(user, roleName).ToString());
+            accessResult = _api.DeleteUserRole(user, roleName);
             Assert.AreEqual(accessResult.IsValid, true);
         }
 

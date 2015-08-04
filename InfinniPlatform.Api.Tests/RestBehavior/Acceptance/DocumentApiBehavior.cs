@@ -128,6 +128,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         }
 
         [Test]
+        [Ignore]
         public void ShouldDeleteExtraArrayPropertiesDuringSetDocuments()
         {
             var documents = new object[]
@@ -176,6 +177,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         }
 
         [Test]
+        [Ignore]
         public void ShouldDeleteExtraObjectPropertiesDuringSetDocuments()
         {
             var documents = new object[]
@@ -217,6 +219,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         }
 
         [Test]
+        [Ignore]
         public void ShouldDeleteExtraPropertiesDuringSetDocuments()
         {
             var documents = new object[]
