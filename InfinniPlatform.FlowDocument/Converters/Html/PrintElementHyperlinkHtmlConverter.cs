@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using System.IO;
 
 using InfinniPlatform.FlowDocument.Model.Inlines;
 
@@ -6,14 +6,14 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
 {
     class PrintElementHyperlinkHtmlConverter : IHtmlBuilderBase<PrintElementHyperlink>
     {
-        public override void Build(HtmlBuilderContext context, PrintElementHyperlink element, StringBuilder result)
+        public override void Build(HtmlBuilderContext context, PrintElementHyperlink element, TextWriter result)
         {
-            result.Append("<a href=\"")
-                .Append(element.Reference)
-                .Append("\" style=\"")
-                .ApplyBaseStyles(element)
-                .ApplyInlineStyles(element)
-                .Append("\">");
+            result.Write("<a href=\"");
+            result.Write(element.Reference);
+            result.Write("\" style=\"");
+            result.ApplyBaseStyles(element);
+            result.ApplyInlineStyles(element);
+            result.Write("\">");
 
             result.ApplySubOrSup(element);
 
@@ -24,7 +24,7 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
 
             result.ApplySubOrSupSlash(element);
 
-            result.Append("</a>");
+            result.Write("</a>");
         }
     }
 }

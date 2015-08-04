@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using System.IO;
 
 using InfinniPlatform.FlowDocument.Model.Blocks;
 
@@ -6,34 +6,36 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
 {
     class PrintElementListHtmlConverter : IHtmlBuilderBase<PrintElementList>
     {
-        public override void Build(HtmlBuilderContext context, PrintElementList element, StringBuilder result)
+        public override void Build(HtmlBuilderContext context, PrintElementList element, TextWriter result)
         {
-            result.Append("<ul style=\"")
-                .ApplyBaseStyles(element)
-                .ApplyBlockStyles(element)
-                .ApplyListStyles(element)
-                .Append("\">");
+            result.Write("<ul style=\"");
+
+            result.ApplyBaseStyles(element);
+            result.ApplyBlockStyles(element);
+            result.ApplyListStyles(element);
+
+            result.Write("\">");
 
             result.ApplySubOrSup(element);
 
             foreach (var item in element.Items)
             {
-                result.Append("<li style=\"");
+                result.Write("<li style=\"");
 
-                result.Append("padding-left:");
-                result.Append(element.MarkerOffsetSize);
-                result.Append("px;");
+                result.Write("padding-left:");
+                result.Write(element.MarkerOffsetSize);
+                result.Write("px;");
 
-                result.Append("\">");
+                result.Write("\">");
 
                 context.Build(item, result);
 
-                result.Append("</li>");
+                result.Write("</li>");
             }
 
             result.ApplySubOrSupSlash(element);
 
-            result.Append("</ul>");
+            result.Write("</ul>");
         }
     }
 }

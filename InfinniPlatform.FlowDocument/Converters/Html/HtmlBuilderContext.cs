@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
 
 using InfinniPlatform.FlowDocument.Model;
 
@@ -20,7 +20,7 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
             return this;
         }
 
-        public void Build(PrintElement element, StringBuilder result)
+        public void Build(PrintElement element, TextWriter result)
         {
             if (element != null)
             {

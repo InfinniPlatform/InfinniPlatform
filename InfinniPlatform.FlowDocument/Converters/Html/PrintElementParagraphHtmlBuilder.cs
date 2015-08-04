@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using System.IO;
 
 using InfinniPlatform.FlowDocument.Model.Blocks;
 
@@ -6,13 +6,15 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
 {
     public class PrintElementParagraphHtmlBuilder : IHtmlBuilderBase<PrintElementParagraph>
     {
-        public override void Build(HtmlBuilderContext context, PrintElementParagraph element, StringBuilder result)
+        public override void Build(HtmlBuilderContext context, PrintElementParagraph element, TextWriter result)
         {
-            result.Append("<p style=\"")
-                .ApplyBaseStyles(element)
-                .ApplyBlockStyles(element)
-                .ApplyParagraphStyles(element)
-                .Append("\">");
+            result.Write("<p style=\"");
+
+            result.ApplyBaseStyles(element);
+            result.ApplyBlockStyles(element);
+            result.ApplyParagraphStyles(element);
+
+            result.Write("\">");
 
             result.ApplySubOrSup(element);
 
@@ -23,7 +25,7 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
 
             result.ApplySubOrSupSlash(element);
 
-            result.Append("</p>");
+            result.Write("</p>");
         }
     }
 }

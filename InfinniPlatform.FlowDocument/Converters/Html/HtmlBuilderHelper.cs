@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 
 using InfinniPlatform.FlowDocument.Model;
 using InfinniPlatform.FlowDocument.Model.Blocks;
@@ -140,171 +139,161 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
 
             return "";
         }
-        public static StringBuilder ApplyBaseStyles(this StringBuilder result, PrintElement element)
+        public static void ApplyBaseStyles(this TextWriter result, PrintElement element)
         {
             if (element.Font != null)
             {
-                result.Append("font-family:");
-                result.Append(element.Font.Family);
-                result.Append(";");
+                result.Write("font-family:");
+                result.Write(element.Font.Family);
+                result.Write(";");
 
                 if (element.Font.Size != null)
                 {
-                    result.Append("font-size:");
-                    result.Append(element.Font.Size);
-                    result.Append("px;");
+                    result.Write("font-size:");
+                    result.Write(element.Font.Size);
+                    result.Write("px;");
                 }
 
                 if (element.Font.Style != null)
                 {
-                    result.Append("font-style:");
-                    result.Append(GetFontStyle(element.Font.Style.Value));
-                    result.Append(";");
+                    result.Write("font-style:");
+                    result.Write(GetFontStyle(element.Font.Style.Value));
+                    result.Write(";");
                 }
 
                 if (element.Font.Stretch != null)
                 {
-                    result.Append("font-stretch:");
-                    result.Append(GetFontStretch(element.Font.Stretch.Value));
-                    result.Append(";");
+                    result.Write("font-stretch:");
+                    result.Write(GetFontStretch(element.Font.Stretch.Value));
+                    result.Write(";");
                 }
 
                 if (element.Font.Weight != null)
                 {
-                    result.Append("font-weight:");
-                    result.Append(GetFontWeight(element.Font.Weight.Value));
-                    result.Append(";");
+                    result.Write("font-weight:");
+                    result.Write(GetFontWeight(element.Font.Weight.Value));
+                    result.Write(";");
                 }
             }
 
             if (!string.IsNullOrWhiteSpace(element.Background))
             {
-                result.Append("background-color:");
-                result.Append(element.Background);
-                result.Append(";");
+                result.Write("background-color:");
+                result.Write(element.Background);
+                result.Write(";");
             }
 
             if (!string.IsNullOrWhiteSpace(element.Foreground))
             {
-                result.Append("color:");
-                result.Append(element.Foreground);
-                result.Append(";");
+                result.Write("color:");
+                result.Write(element.Foreground);
+                result.Write(";");
             }
-
-            return result;
         }
 
-        public static StringBuilder ApplyBlockStyles(this StringBuilder result, PrintElementBlock element)
+        public static void ApplyBlockStyles(this TextWriter result, PrintElementBlock element)
         {
             if (element.Border != null)
             {
-                result.Append("border-top-width:");
-                result.Append(element.Border.Thickness.Top);
-                result.Append("px;");
-
-                result.Append("border-right-width:");
-                result.Append(element.Border.Thickness.Right);
-                result.Append("px;");
-
-                result.Append("border-bottom-width:");
-                result.Append(element.Border.Thickness.Bottom);
-                result.Append("px;");
-
-                result.Append("border-left-width:");
-                result.Append(element.Border.Thickness.Left);
-                result.Append("px;");
+                result.Write("border-top-width:");
+                result.Write(element.Border.Thickness.Top);
+                result.Write("px;");
+                       
+                result.Write("border-right-width:");
+                result.Write(element.Border.Thickness.Right);
+                result.Write("px;");
+                       
+                result.Write("border-bottom-width:");
+                result.Write(element.Border.Thickness.Bottom);
+                result.Write("px;");
+                       
+                result.Write("border-left-width:");
+                result.Write(element.Border.Thickness.Left);
+                result.Write("px;");
 
                 if (!string.IsNullOrWhiteSpace(element.Border.Color))
                 {
-                    result.Append("border-style:solid;");
-
-                    result.Append("border-color:");
-                    result.Append(element.Border.Color);
-                    result.Append(";");
+                    result.Write("border-style:solid;");
+                           
+                    result.Write("border-color:");
+                    result.Write(element.Border.Color);
+                    result.Write(";");
                 }
 
             }
 
-            result.Append("margin-top:");
-            result.Append(element.Margin.Top);
-            result.Append("px;");
-
-            result.Append("margin-right:");
-            result.Append(element.Margin.Right);
-            result.Append("px;");
-
-            result.Append("margin-bottom:");
-            result.Append(element.Margin.Bottom);
-            result.Append("px;");
-
-            result.Append("margin-left:");
-            result.Append(element.Margin.Left);
-            result.Append("px;");
-
-            result.Append("padding-top:");
-            result.Append(element.Padding.Top);
-            result.Append("px;");
-
-            result.Append("padding-right:");
-            result.Append(element.Padding.Right);
-            result.Append("px;");
-
-            result.Append("padding-bottom:");
-            result.Append(element.Padding.Bottom);
-            result.Append("px;");
-
-            result.Append("padding-left:");
-            result.Append(element.Padding.Left);
-            result.Append("px;");
+            result.Write("margin-top:");
+            result.Write(element.Margin.Top);
+            result.Write("px;");
+                   
+            result.Write("margin-right:");
+            result.Write(element.Margin.Right);
+            result.Write("px;");
+                   
+            result.Write("margin-bottom:");
+            result.Write(element.Margin.Bottom);
+            result.Write("px;");
+                   
+            result.Write("margin-left:");
+            result.Write(element.Margin.Left);
+            result.Write("px;");
+                   
+            result.Write("padding-top:");
+            result.Write(element.Padding.Top);
+            result.Write("px;");
+                   
+            result.Write("padding-right:");
+            result.Write(element.Padding.Right);
+            result.Write("px;");
+                   
+            result.Write("padding-bottom:");
+            result.Write(element.Padding.Bottom);
+            result.Write("px;");
+                   
+            result.Write("padding-left:");
+            result.Write(element.Padding.Left);
+            result.Write("px;");
 
             if (element.TextAlignment != null)
             {
-                result.Append("text-align:");
-                result.Append(GetTextAligment(element.TextAlignment.Value));
-                result.Append(";");
+                result.Write("text-align:");
+                result.Write(GetTextAligment(element.TextAlignment.Value));
+                result.Write(";");
             }
-
-            return result;
         }
-        public static StringBuilder ApplyInlineStyles(this StringBuilder result, PrintElementInline element)
+        public static void ApplyInlineStyles(this TextWriter result, PrintElementInline element)
         {
             if (element.TextDecoration != null)
             {
-                result.Append("text-decoration:");
-                result.Append(GetTextDecoration(element.TextDecoration.Value));
-                result.Append(";");
+                result.Write("text-decoration:");
+                result.Write(GetTextDecoration(element.TextDecoration.Value));
+                result.Write(";");
             }
-
-            return result;
         }
 
-        public static StringBuilder ApplyParagraphStyles(this StringBuilder result, PrintElementParagraph element)
+        public static void ApplyParagraphStyles(this TextWriter result, PrintElementParagraph element)
         {
             if (element.IndentSize != null)
             {
-                result.Append("text-indent:");
-                result.Append(element.IndentSize);
-                result.Append("px;");
+                result.Write("text-indent:");
+                result.Write(element.IndentSize);
+                result.Write("px;");
             }
-
-            return result;
         }
 
-        public static StringBuilder ApplyListStyles(this StringBuilder result, PrintElementList element)
+        public static void ApplyListStyles(this TextWriter result, PrintElementList element)
         {
             //startindex todo
 
             if (element.MarkerStyle != null)
             {
-                result.Append("list-style-type:");
-                result.Append(GetMarkerStyle(element.MarkerStyle.Value));
-                result.Append(";");
+                result.Write("list-style-type:");
+                result.Write(GetMarkerStyle(element.MarkerStyle.Value));
+                result.Write(";");
             }
-
-            return result;
         }
 
-        public static StringBuilder ApplySubOrSup(this StringBuilder result, PrintElement element)
+        public static void ApplySubOrSup(this TextWriter result, PrintElement element)
         {
             if (element.Font != null)
             {
@@ -313,19 +302,17 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
                     switch (element.Font.Variant)
                     {
                         case PrintElementFontVariant.Subscript:
-                            result.Append("<sub>");
+                            result.Write("<sub>");
                             break;
                         case PrintElementFontVariant.Superscript:
-                            result.Append("<sup>");
+                            result.Write("<sup>");
                             break;
                     }
                 }
             }
-
-            return result;
         }
 
-        public static StringBuilder ApplySubOrSupSlash(this StringBuilder result, PrintElement element)
+        public static void ApplySubOrSupSlash(this TextWriter result, PrintElement element)
         {
             if (element.Font != null)
             {
@@ -334,198 +321,190 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
                     switch (element.Font.Variant)
                     {
                         case PrintElementFontVariant.Subscript:
-                            result.Append("</sub>");
+                            result.Write("</sub>");
                             break;
                         case PrintElementFontVariant.Superscript:
-                            result.Append("</sup>");
+                            result.Write("</sup>");
                             break;
                     }
                 }
             }
-
-            return result;
         }
 
-        public static StringBuilder ApplyRowStyles(this StringBuilder result, PrintElementTableRow element)
+        public static void ApplyRowStyles(this TextWriter result, PrintElementTableRow element)
         {
             if (element.Font != null)
             {
-                result.Append("font-family:");
-                result.Append(element.Font.Family);
-                result.Append(";");
+                result.Write("font-family:");
+                result.Write(element.Font.Family);
+                result.Write(";");
 
                 if (element.Font.Size != null)
                 {
-                    result.Append("font-size:");
-                    result.Append(element.Font.Size);
-                    result.Append("px;");
+                    result.Write("font-size:");
+                    result.Write(element.Font.Size);
+                    result.Write("px;");
                 }
 
                 if (element.Font.Style != null)
                 {
-                    result.Append("font-style:");
-                    result.Append(GetFontStyle(element.Font.Style.Value));
-                    result.Append(";");
+                    result.Write("font-style:");
+                    result.Write(GetFontStyle(element.Font.Style.Value));
+                    result.Write(";");
                 }
 
                 if (element.Font.Stretch != null)
                 {
-                    result.Append("font-stretch:");
-                    result.Append(GetFontStretch(element.Font.Stretch.Value));
-                    result.Append(";");
+                    result.Write("font-stretch:");
+                    result.Write(GetFontStretch(element.Font.Stretch.Value));
+                    result.Write(";");
                 }
 
                 if (element.Font.Weight != null)
                 {
-                    result.Append("font-weight:");
-                    result.Append(GetFontWeight(element.Font.Weight.Value));
-                    result.Append(";");
+                    result.Write("font-weight:");
+                    result.Write(GetFontWeight(element.Font.Weight.Value));
+                    result.Write(";");
                 }
             }
 
             if (!string.IsNullOrWhiteSpace(element.Background))
             {
-                result.Append("background-color:");
-                result.Append(element.Background);
-                result.Append(";");
+                result.Write("background-color:");
+                result.Write(element.Background);
+                result.Write(";");
             }
 
             if (!string.IsNullOrWhiteSpace(element.Foreground))
             {
-                result.Append("color:");
-                result.Append(element.Foreground);
-                result.Append(";");
+                result.Write("color:");
+                result.Write(element.Foreground);
+                result.Write(";");
             }
-
-            return result;
         }
 
-        public static StringBuilder ApplyCellStyles(this StringBuilder result, PrintElementTableCell element)
+        public static void ApplyCellStyles(this TextWriter result, PrintElementTableCell element)
         {
             if (element.Font != null)
             {
-                result.Append("font-family:");
-                result.Append(element.Font.Family);
-                result.Append(";");
+                result.Write("font-family:");
+                result.Write(element.Font.Family);
+                result.Write(";");
 
                 if (element.Font.Size != null)
                 {
-                    result.Append("font-size:");
-                    result.Append(element.Font.Size);
-                    result.Append("px;");
+                    result.Write("font-size:");
+                    result.Write(element.Font.Size);
+                    result.Write("px;");
                 }
 
                 if (element.Font.Style != null)
                 {
-                    result.Append("font-style:");
-                    result.Append(GetFontStyle(element.Font.Style.Value));
-                    result.Append(";");
+                    result.Write("font-style:");
+                    result.Write(GetFontStyle(element.Font.Style.Value));
+                    result.Write(";");
                 }
 
                 if (element.Font.Stretch != null)
                 {
-                    result.Append("font-stretch:");
-                    result.Append(GetFontStretch(element.Font.Stretch.Value));
-                    result.Append(";");
+                    result.Write("font-stretch:");
+                    result.Write(GetFontStretch(element.Font.Stretch.Value));
+                    result.Write(";");
                 }
 
                 if (element.Font.Weight != null)
                 {
-                    result.Append("font-weight:");
-                    result.Append(GetFontWeight(element.Font.Weight.Value));
-                    result.Append(";");
+                    result.Write("font-weight:");
+                    result.Write(GetFontWeight(element.Font.Weight.Value));
+                    result.Write(";");
                 }
             }
 
             if (!string.IsNullOrWhiteSpace(element.Background))
             {
-                result.Append("background-color:");
-                result.Append(element.Background);
-                result.Append(";");
+                result.Write("background-color:");
+                result.Write(element.Background);
+                result.Write(";");
             }
 
             if (!string.IsNullOrWhiteSpace(element.Foreground))
             {
-                result.Append("color:");
-                result.Append(element.Foreground);
-                result.Append(";");
+                result.Write("color:");
+                result.Write(element.Foreground);
+                result.Write(";");
             }
 
             if (element.Border != null)
             {
-                result.Append("border-top-width:");
-                result.Append(element.Border.Thickness.Top);
-                result.Append("px;");
-
-                result.Append("border-right-width:");
-                result.Append(element.Border.Thickness.Right);
-                result.Append("px;");
-
-                result.Append("border-bottom-width:");
-                result.Append(element.Border.Thickness.Bottom);
-                result.Append("px;");
-
-                result.Append("border-left-width:");
-                result.Append(element.Border.Thickness.Left);
-                result.Append("px;");
+                result.Write("border-top-width:");
+                result.Write(element.Border.Thickness.Top);
+                result.Write("px;");
+                       
+                result.Write("border-right-width:");
+                result.Write(element.Border.Thickness.Right);
+                result.Write("px;");
+                       
+                result.Write("border-bottom-width:");
+                result.Write(element.Border.Thickness.Bottom);
+                result.Write("px;");
+                       
+                result.Write("border-left-width:");
+                result.Write(element.Border.Thickness.Left);
+                result.Write("px;");
 
                 if (!string.IsNullOrWhiteSpace(element.Border.Color))
                 {
-                    result.Append("border-style:solid;");
-
-                    result.Append("border-color:");
-                    result.Append(element.Border.Color);
-                    result.Append(";");
+                    result.Write("border-style:solid;");
+                           
+                    result.Write("border-color:");
+                    result.Write(element.Border.Color);
+                    result.Write(";");
                 }
 
             }
 
-            result.Append("padding-top:");
-            result.Append(element.Padding.Top);
-            result.Append("px;");
-
-            result.Append("padding-right:");
-            result.Append(element.Padding.Right);
-            result.Append("px;");
-
-            result.Append("padding-bottom:");
-            result.Append(element.Padding.Bottom);
-            result.Append("px;");
-
-            result.Append("padding-left:");
-            result.Append(element.Padding.Left);
-            result.Append("px;");
+            result.Write("padding-top:");
+            result.Write(element.Padding.Top);
+            result.Write("px;");
+                   
+            result.Write("padding-right:");
+            result.Write(element.Padding.Right);
+            result.Write("px;");
+                   
+            result.Write("padding-bottom:");
+            result.Write(element.Padding.Bottom);
+            result.Write("px;");
+                   
+            result.Write("padding-left:");
+            result.Write(element.Padding.Left);
+            result.Write("px;");
 
             if (element.TextAlignment != null)
             {
-                result.Append("text-align:");
-                result.Append(GetTextAligment(element.TextAlignment.Value));
-                result.Append(";");
+                result.Write("text-align:");
+                result.Write(GetTextAligment(element.TextAlignment.Value));
+                result.Write(";");
             }
-
-            return result;
         }
 
-        public static StringBuilder ApplyCellProperties(this StringBuilder result, PrintElementTableCell element)
+        public static void ApplyCellProperties(this TextWriter result, PrintElementTableCell element)
         {
             if (element.ColumnSpan != null)
             {
-                result.Append("colspan=\"");
-                result.Append(element.ColumnSpan);
-                result.Append("\" ");
+                result.Write("colspan=\"");
+                result.Write(element.ColumnSpan);
+                result.Write("\" ");
             }
 
             if (element.RowSpan != null)
             {
-                result.Append("rowspan=\"");
-                result.Append(element.RowSpan);
-                result.Append("\" ");
+                result.Write("rowspan=\"");
+                result.Write(element.RowSpan);
+                result.Write("\" ");
             }
-
-            return result;
         }
 
-        public static StringBuilder StreamToBase64(this StringBuilder result, Stream stream)
+        public static void StreamToBase64(this TextWriter result, Stream stream)
         {
             if (stream != null && stream.CanRead)
             {
@@ -533,33 +512,29 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
                 {
                     stream.CopyTo(memory);
 
-                    result.Append(Convert.ToBase64String(memory.ToArray()));
+                    result.Write(Convert.ToBase64String(memory.ToArray()));
                 }
             }
-
-            return result;
         }
 
-        public static StringBuilder ApplyImageStyles(this StringBuilder result, PrintElementImage element)
+        public static void ApplyImageStyles(this TextWriter result, PrintElementImage element)
         {
             if (element.Size != null)
             {
                 if (element.Size.Width != null)
                 {
-                    result.Append("width:");
-                    result.Append(element.Size.Width);
-                    result.Append("px;");
+                    result.Write("width:");
+                    result.Write(element.Size.Width);
+                    result.Write("px;");
                 }
 
                 if (element.Size.Height != null)
                 {
-                    result.Append("height:");
-                    result.Append(element.Size.Height);
-                    result.Append("px;");
+                    result.Write("height:");
+                    result.Write(element.Size.Height);
+                    result.Write("px;");
                 }
             }
-
-            return result;
         }
     }
 }

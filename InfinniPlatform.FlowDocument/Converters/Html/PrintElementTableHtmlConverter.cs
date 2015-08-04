@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using System.IO;
 
 using InfinniPlatform.FlowDocument.Model.Blocks;
 
@@ -6,55 +6,66 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
 {
     class PrintElementTableHtmlConverter : IHtmlBuilderBase<PrintElementTable>
     {
-        public override void Build(HtmlBuilderContext context, PrintElementTable element, StringBuilder result)
+        public override void Build(HtmlBuilderContext context, PrintElementTable element, TextWriter result)
         {
-            result.Append("<table style=\"")
-                .ApplyBaseStyles(element)
-                .ApplyBlockStyles(element)
-                .Append("border-collapse: collapse;")
-                .Append("\">");
+            result.Write("<table style=\"");
+
+            result.ApplyBaseStyles(element);
+            result.ApplyBlockStyles(element);
+
+            result.Write("border-collapse: collapse;");
+
+            result.Write("\">");
 
             result.ApplySubOrSup(element);
 
             foreach (var column in element.Columns)
             {
-                result.Append("<col width=\"");
+                result.Write("<col width=\"");
 
                 if (column.Size != null)
                 {
-                    result.Append(column.Size);
+                    result.Write(column.Size);
                 }
 
-                result.Append("\">");
+                result.Write("\">");
             }
 
             foreach (var row in element.Rows)
             {
-                result.Append("<tr style=\"")
-                    .ApplyRowStyles(row)
-                    .Append("border-collapse: collapse;")
-                    .Append("\">");
+                result.Write("<tr style=\"");
+
+                result.ApplyRowStyles(row);
+
+                result.Write("border-collapse: collapse;");
+
+                result.Write("\">");
 
                 foreach (var cell in row.Cells)
                 {
-                    result.Append("<td ")
-                        .ApplyCellProperties(cell)
-                        .Append("style=\"")
-                        .ApplyCellStyles(cell)
-                        .Append("border-collapse: collapse;")
-                        .Append("\">");
+                    result.Write("<td ");
+
+                    result.ApplyCellProperties(cell);
+
+                    result.Write("style=\"");
+
+                    result.ApplyCellStyles(cell);
+
+                    result.Write("border-collapse: collapse;");
+
+                    result.Write("\">");
 
                     context.Build(cell.Block, result);
 
-                    result.Append("</td>");
+                    result.Write("</td>");
                 }
 
-                result.Append("</tr>");
+                result.Write("</tr>");
             }
 
             result.ApplySubOrSupSlash(element);
 
-            result.Append("</table>");
+            result.Write("</table>");
         }
     }
 }

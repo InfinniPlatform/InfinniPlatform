@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using System.IO;
 
 using InfinniPlatform.FlowDocument.Model.Inlines;
 
@@ -6,12 +6,12 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
 {
     class PrintElementBoldHtmlConverter : IHtmlBuilderBase<PrintElementBold>
     {
-        public override void Build(HtmlBuilderContext context, PrintElementBold element, StringBuilder result)
+        public override void Build(HtmlBuilderContext context, PrintElementBold element, TextWriter result)
         {
-            result.Append("<b style=\"")
-                .ApplyBaseStyles(element)
-                .ApplyInlineStyles(element)
-                .Append("\">");
+            result.Write("<b style=\"");
+            result.ApplyBaseStyles(element);
+            result.ApplyInlineStyles(element);
+            result.Write("\">");
 
             result.ApplySubOrSup(element);
 
@@ -22,7 +22,7 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
 
             result.ApplySubOrSupSlash(element);
 
-            result.Append("</b>");
+            result.Write("</b>");
         }
     }
 }

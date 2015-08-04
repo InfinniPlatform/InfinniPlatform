@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using System.IO;
 
 using InfinniPlatform.FlowDocument.Model.Inlines;
 
@@ -6,12 +6,14 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
 {
     class PrintElementSpanHtmlConverter : IHtmlBuilderBase<PrintElementSpan>
     {
-        public override void Build(HtmlBuilderContext context, PrintElementSpan element, StringBuilder result)
+        public override void Build(HtmlBuilderContext context, PrintElementSpan element, TextWriter result)
         {
-            result.Append("<span style=\"")
-                .ApplyBaseStyles(element)
-                .ApplyInlineStyles(element)
-                .Append("\">");
+            result.Write("<span style=\"");
+
+            result.ApplyBaseStyles(element);
+            result.ApplyInlineStyles(element);
+
+            result.Write("\">");
 
             result.ApplySubOrSup(element);
 
@@ -22,7 +24,7 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
 
             result.ApplySubOrSupSlash(element);
 
-            result.Append("</span>");
+            result.Write("</span>");
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using System.IO;
 
 using InfinniPlatform.FlowDocument.Model.Inlines;
 
@@ -6,12 +6,14 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
 {
     class PrintElementLineBreakHtmlConverter : IHtmlBuilderBase<PrintElementLineBreak>
     {
-        public override void Build(HtmlBuilderContext context, PrintElementLineBreak element, StringBuilder result)
+        public override void Build(HtmlBuilderContext context, PrintElementLineBreak element, TextWriter result)
         {
-            result.Append("<br style=\"")
-                .ApplyBaseStyles(element)
-                .ApplyInlineStyles(element)
-                .Append("\">");
+            result.Write("<br style=\"");
+
+            result.ApplyBaseStyles(element);
+            result.ApplyInlineStyles(element);
+
+            result.Write("\">");
         }
     }
 }
