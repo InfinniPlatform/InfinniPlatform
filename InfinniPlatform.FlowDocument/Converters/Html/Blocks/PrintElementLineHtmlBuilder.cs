@@ -1,10 +1,9 @@
 ﻿using System.IO;
-
 using InfinniPlatform.FlowDocument.Model.Blocks;
 
-namespace InfinniPlatform.FlowDocument.Converters.Html
+namespace InfinniPlatform.FlowDocument.Converters.Html.Blocks
 {
-    public class PrintElementLineHtmlConverter : IHtmlBuilderBase<PrintElementLine>
+    public class PrintElementLineHtmlBuilder : IHtmlBuilderBase<PrintElementLine>
     {
         public override void Build(HtmlBuilderContext context, PrintElementLine element, TextWriter result)
         {
@@ -12,6 +11,8 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
 
             result.ApplyBaseStyles(element);
             result.ApplyBlockStyles(element);
+
+            result.Write("\">");
 
             result.Write("</hr>");
         }

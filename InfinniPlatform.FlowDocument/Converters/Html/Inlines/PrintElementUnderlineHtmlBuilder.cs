@@ -1,16 +1,17 @@
 ﻿using System.IO;
-
 using InfinniPlatform.FlowDocument.Model.Inlines;
 
-namespace InfinniPlatform.FlowDocument.Converters.Html
+namespace InfinniPlatform.FlowDocument.Converters.Html.Inlines
 {
-    class PrintElementBoldHtmlConverter : IHtmlBuilderBase<PrintElementBold>
+    class PrintElementUnderlineHtmlBuilder : IHtmlBuilderBase<PrintElementUnderline>
     {
-        public override void Build(HtmlBuilderContext context, PrintElementBold element, TextWriter result)
+        public override void Build(HtmlBuilderContext context, PrintElementUnderline element, TextWriter result)
         {
-            result.Write("<b style=\"");
+            result.Write("<ins style=\"");
+
             result.ApplyBaseStyles(element);
             result.ApplyInlineStyles(element);
+
             result.Write("\">");
 
             result.ApplySubOrSup(element);
@@ -22,7 +23,7 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
 
             result.ApplySubOrSupSlash(element);
 
-            result.Write("</b>");
+            result.Write("</ins>");
         }
     }
 }

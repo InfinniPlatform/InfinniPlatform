@@ -24,7 +24,7 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
                     return "right";
             }
 
-            return "";
+            return null;
         }
 
         public static string GetFontStyle(PrintElementFontStyle style)
@@ -39,7 +39,7 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
                     return "oblique";
             }
 
-            return "";
+            return null;
         }
 
         public static string GetFontStretch(PrintElementFontStretch stretch)
@@ -66,7 +66,7 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
                     return "ultra-expanded";
             }
 
-            return "";
+            return null;
         }
 
         public static string GetFontWeight(PrintElementFontWeight weight)
@@ -93,7 +93,7 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
                     return "900";
             }
 
-            return "";
+            return null;
         }
 
         public static string GetTextDecoration(PrintElementTextDecoration decoration)
@@ -108,7 +108,7 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
                     return "underline";
             }
 
-            return "";
+            return null;
         }
 
         public static string GetMarkerStyle(PrintElementListMarkerStyle style)
@@ -137,7 +137,7 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
                     return "upper-roman";
             }
 
-            return "";
+            return null;
         }
         public static void ApplyBaseStyles(this TextWriter result, PrintElement element)
         {
@@ -198,15 +198,15 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
                 result.Write("border-top-width:");
                 result.Write(element.Border.Thickness.Top);
                 result.Write("px;");
-                       
+
                 result.Write("border-right-width:");
                 result.Write(element.Border.Thickness.Right);
                 result.Write("px;");
-                       
+
                 result.Write("border-bottom-width:");
                 result.Write(element.Border.Thickness.Bottom);
                 result.Write("px;");
-                       
+
                 result.Write("border-left-width:");
                 result.Write(element.Border.Thickness.Left);
                 result.Write("px;");
@@ -214,7 +214,7 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
                 if (!string.IsNullOrWhiteSpace(element.Border.Color))
                 {
                     result.Write("border-style:solid;");
-                           
+
                     result.Write("border-color:");
                     result.Write(element.Border.Color);
                     result.Write(";");
@@ -225,31 +225,31 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
             result.Write("margin-top:");
             result.Write(element.Margin.Top);
             result.Write("px;");
-                   
+
             result.Write("margin-right:");
             result.Write(element.Margin.Right);
             result.Write("px;");
-                   
+
             result.Write("margin-bottom:");
             result.Write(element.Margin.Bottom);
             result.Write("px;");
-                   
+
             result.Write("margin-left:");
             result.Write(element.Margin.Left);
             result.Write("px;");
-                   
+
             result.Write("padding-top:");
             result.Write(element.Padding.Top);
             result.Write("px;");
-                   
+
             result.Write("padding-right:");
             result.Write(element.Padding.Right);
             result.Write("px;");
-                   
+
             result.Write("padding-bottom:");
             result.Write(element.Padding.Bottom);
             result.Write("px;");
-                   
+
             result.Write("padding-left:");
             result.Write(element.Padding.Left);
             result.Write("px;");
@@ -283,8 +283,6 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
 
         public static void ApplyListStyles(this TextWriter result, PrintElementList element)
         {
-            //startindex todo
-
             if (element.MarkerStyle != null)
             {
                 result.Write("list-style-type:");
@@ -295,38 +293,32 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
 
         public static void ApplySubOrSup(this TextWriter result, PrintElement element)
         {
-            if (element.Font != null)
+            if (element.Font != null && element.Font.Variant != null)
             {
-                if (element.Font.Variant != null)
+                switch (element.Font.Variant)
                 {
-                    switch (element.Font.Variant)
-                    {
-                        case PrintElementFontVariant.Subscript:
-                            result.Write("<sub>");
-                            break;
-                        case PrintElementFontVariant.Superscript:
-                            result.Write("<sup>");
-                            break;
-                    }
+                    case PrintElementFontVariant.Subscript:
+                        result.Write("<sub>");
+                        break;
+                    case PrintElementFontVariant.Superscript:
+                        result.Write("<sup>");
+                        break;
                 }
             }
         }
 
         public static void ApplySubOrSupSlash(this TextWriter result, PrintElement element)
         {
-            if (element.Font != null)
+            if (element.Font != null && element.Font.Variant != null)
             {
-                if (element.Font.Variant != null)
+                switch (element.Font.Variant)
                 {
-                    switch (element.Font.Variant)
-                    {
-                        case PrintElementFontVariant.Subscript:
-                            result.Write("</sub>");
-                            break;
-                        case PrintElementFontVariant.Superscript:
-                            result.Write("</sup>");
-                            break;
-                    }
+                    case PrintElementFontVariant.Subscript:
+                        result.Write("</sub>");
+                        break;
+                    case PrintElementFontVariant.Superscript:
+                        result.Write("</sup>");
+                        break;
                 }
             }
         }
@@ -385,6 +377,11 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
 
         public static void ApplyCellStyles(this TextWriter result, PrintElementTableCell element)
         {
+            if (element == null)
+            {
+                return;
+            }
+
             if (element.Font != null)
             {
                 result.Write("font-family:");
@@ -439,15 +436,15 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
                 result.Write("border-top-width:");
                 result.Write(element.Border.Thickness.Top);
                 result.Write("px;");
-                       
+
                 result.Write("border-right-width:");
                 result.Write(element.Border.Thickness.Right);
                 result.Write("px;");
-                       
+
                 result.Write("border-bottom-width:");
                 result.Write(element.Border.Thickness.Bottom);
                 result.Write("px;");
-                       
+
                 result.Write("border-left-width:");
                 result.Write(element.Border.Thickness.Left);
                 result.Write("px;");
@@ -455,7 +452,7 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
                 if (!string.IsNullOrWhiteSpace(element.Border.Color))
                 {
                     result.Write("border-style:solid;");
-                           
+
                     result.Write("border-color:");
                     result.Write(element.Border.Color);
                     result.Write(";");
@@ -466,15 +463,15 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
             result.Write("padding-top:");
             result.Write(element.Padding.Top);
             result.Write("px;");
-                   
+
             result.Write("padding-right:");
             result.Write(element.Padding.Right);
             result.Write("px;");
-                   
+
             result.Write("padding-bottom:");
             result.Write(element.Padding.Bottom);
             result.Write("px;");
-                   
+
             result.Write("padding-left:");
             result.Write(element.Padding.Left);
             result.Write("px;");
@@ -489,6 +486,11 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
 
         public static void ApplyCellProperties(this TextWriter result, PrintElementTableCell element)
         {
+            if (element == null)
+            {
+                return;
+            }
+
             if (element.ColumnSpan != null)
             {
                 result.Write("colspan=\"");

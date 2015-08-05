@@ -229,5 +229,113 @@ namespace InfinniPlatform.FlowDocument.Tests.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;Bold Text.&lt;/span&gt;&lt;/b&gt;.
+        /// </summary>
+        internal static string ResultTestShouldBuildBold {
+            get {
+                return ResourceManager.GetString("ResultTestShouldBuildBold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body style=&quot;padding-top:100px;padding-right:100px;padding-bottom:100px;padding-left:100px;&quot;&gt;&lt;p style=&quot;margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;&quot;&gt;&lt;img src=&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAYAAAC0VX7mAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsEAAA7BAbiRa+0AAAAxSURBVDhPY/hPZQA2kIGBgSoYxUBKAVYD38qogGlywKiBEA4lAMNAamC4gdQD//8DAIQ5hk+d1VM4AAAAAElFTkSuQ [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ResultTestShouldBuildDocumentWithContents {
+            get {
+                return ResourceManager.GetString("ResultTestShouldBuildDocumentWithContents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;a href=&quot;http://google.com/&quot; style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;Hyperlink Google&lt;/span&gt;&lt;/a&gt;.
+        /// </summary>
+        internal static string ResultTestShouldBuildHyperlink {
+            get {
+                return ResourceManager.GetString("ResultTestShouldBuildHyperlink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;img src=&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHQAAAB0CAYAAABUmhYnAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsEAAA7BAbiRa+0AAAS4SURBVHhe7ZHBjmw7DsP6/3/6zrZABE0IcupNBybAlRQfV/nn3/IUe9DH2IM+xh70Mfagj7EHfYw96GPsQR9jD/oYe9DH2IM+xh70Mfagj7EHfYw96GPsQR+jPujPz89XJafOp4b1md+2ZQ8qfea3bdmDSp/5bVv2oNJnftuW8YNOk86f7lveMj2/njC9EEnnT/ctb5meX0+YXoik86f7lrdMz68nTC9E0vnTfctbpufXE2wh5ib5a7lJLE+pJ9hCzE3y13KTWJ5ST7CFmJvkr+UmsTylnmALMTfJX8tNYnlKPcEWYm6SNifTfeYmsTylnmALMTdJm5PpPnOTWJ5ST7CFmJukzcl0n7lJLE+pJ9hC [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ResultTestShouldBuildImage {
+            get {
+                return ResourceManager.GetString("ResultTestShouldBuildImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;hr style=&quot;margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;&quot;&gt;&lt;/hr&gt;.
+        /// </summary>
+        internal static string ResultTestShouldBuildLine {
+            get {
+                return ResourceManager.GetString("ResultTestShouldBuildLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;p style=&quot;margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;text-indent:30px;&quot;&gt;&lt;span style=&quot;&quot;&gt;Before Line Break.&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;&quot;&gt;After Line Break.&lt;/span&gt;&lt;/p&gt;.
+        /// </summary>
+        internal static string ResultTestShouldBuildLineBreak {
+            get {
+                return ResourceManager.GetString("ResultTestShouldBuildLineBreak", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;div style=&quot;margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;&quot;&gt;&lt;ol start=&quot;24&quot; style=&quot;list-style-type:lower-latin;&quot;&gt;&lt;li style=&quot;padding-left:0px;&quot;&gt;&lt;div style=&quot;margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;&quot;&gt;&lt;p style=&quot;margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;p [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ResultTestShouldBuildList {
+            get {
+                return ResourceManager.GetString("ResultTestShouldBuildList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;p style=&quot;margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;&quot;&gt;&lt;/p&gt;.
+        /// </summary>
+        internal static string ResultTestShouldBuildParagraphWithDefaultSettings {
+            get {
+                return ResourceManager.GetString("ResultTestShouldBuildParagraphWithDefaultSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;p style=&quot;margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;text-indent:15px;&quot;&gt;&lt;span style=&quot;font-family:Courier New;font-size:30px;color:Blue;text-decoration:underline;&quot;&gt;Проверка текста. &lt;/span&gt;&lt;span style=&quot;font-family:Courier New;font-size:30px;color:Blue;text-decoration:underline;&quot;&gt;Проверка текста. &lt;/span&gt;&lt;span style=&quot;font-family:Courier New;font-size:30px;color:Blue;text-decoration:underline;&quot;&gt;Проверка текста. &lt;/span&gt;&lt;s [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ResultTestShouldBuildParagraphWithSettings {
+            get {
+                return ResourceManager.GetString("ResultTestShouldBuildParagraphWithSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;div style=&quot;background-color:Green;border-top-width:5px;border-right-width:5px;border-bottom-width:5px;border-left-width:5px;border-style:solid;border-color:Red;margin-top:20px;margin-right:20px;margin-bottom:20px;margin-left:20px;padding-top:20px;padding-right:20px;padding-bottom:20px;padding-left:20px;&quot;&gt;&lt;div style=&quot;background-color:yellow;border-top-width:5px;border-right-width:5px;border-bottom-width:5px;border-left-width:5px;border-style:solid;border-color:blue;margin-top:20px;margin-right:20px;margin-b [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ResultTestShouldBuildSectioWithProperties {
+            get {
+                return ResourceManager.GetString("ResultTestShouldBuildSectioWithProperties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;table style=&quot;margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;border-collapse:collapse;&quot;&gt;&lt;tr style=&quot;border-collapse:collapse;&quot;&gt;&lt;td style=&quot;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-style:solid;border-color:black;padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px;border-collapse:collapse;&quot;&gt;&lt;p style=&quot;margin-top:0px;margin-right:0px;margin-bottom:0px;m [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ResultTestShouldBuildTable {
+            get {
+                return ResourceManager.GetString("ResultTestShouldBuildTable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;table style=&quot;margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;border-collapse:collapse;&quot;&gt;&lt;tr style=&quot;border-collapse:collapse;&quot;&gt;&lt;td colspan=&quot;2&quot; rowspan=&quot;2&quot; style=&quot;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-style:solid;border-color:black;padding-top:50px;padding-right:50px;padding-bottom:50px;padding-left:50px;border-collapse:collapse;&quot;&gt;&lt;/td&gt;&lt;td style=&quot;border-top-width: [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ResultTestShouldBuildTableWithColRowSpan {
+            get {
+                return ResourceManager.GetString("ResultTestShouldBuildTableWithColRowSpan", resourceCulture);
+            }
+        }
     }
 }

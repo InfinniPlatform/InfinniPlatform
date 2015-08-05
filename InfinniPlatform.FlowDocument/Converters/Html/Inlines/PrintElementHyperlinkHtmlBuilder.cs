@@ -1,18 +1,17 @@
 ﻿using System.IO;
-
 using InfinniPlatform.FlowDocument.Model.Inlines;
 
-namespace InfinniPlatform.FlowDocument.Converters.Html
+namespace InfinniPlatform.FlowDocument.Converters.Html.Inlines
 {
-    class PrintElementUnderlineHtmlConverter : IHtmlBuilderBase<PrintElementUnderline>
+    class PrintElementHyperlinkHtmlBuilder : IHtmlBuilderBase<PrintElementHyperlink>
     {
-        public override void Build(HtmlBuilderContext context, PrintElementUnderline element, TextWriter result)
+        public override void Build(HtmlBuilderContext context, PrintElementHyperlink element, TextWriter result)
         {
-            result.Write("<ins style=\"");
-
+            result.Write("<a href=\"");
+            result.Write(element.Reference);
+            result.Write("\" style=\"");
             result.ApplyBaseStyles(element);
             result.ApplyInlineStyles(element);
-
             result.Write("\">");
 
             result.ApplySubOrSup(element);
@@ -24,7 +23,7 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
 
             result.ApplySubOrSupSlash(element);
 
-            result.Write("</ins>");
+            result.Write("</a>");
         }
     }
 }

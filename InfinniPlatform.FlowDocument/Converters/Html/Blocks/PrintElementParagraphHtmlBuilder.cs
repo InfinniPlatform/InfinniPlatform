@@ -1,8 +1,7 @@
 ﻿using System.IO;
-
 using InfinniPlatform.FlowDocument.Model.Blocks;
 
-namespace InfinniPlatform.FlowDocument.Converters.Html
+namespace InfinniPlatform.FlowDocument.Converters.Html.Blocks
 {
     public class PrintElementParagraphHtmlBuilder : IHtmlBuilderBase<PrintElementParagraph>
     {
