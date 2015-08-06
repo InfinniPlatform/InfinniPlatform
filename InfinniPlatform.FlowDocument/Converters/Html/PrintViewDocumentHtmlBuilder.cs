@@ -11,25 +11,25 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
             result.Write("<!DOCTYPE html><html><head></head><body style=\"");
 
             result.Write("padding-top:");
-            result.Write(element.PagePadding.Top);
+            result.WriteInvariant(element.PagePadding.Top);
             result.Write("px;");
 
             result.Write("padding-right:");
-            result.Write(element.PagePadding.Right);
+            result.WriteInvariant(element.PagePadding.Right);
             result.Write("px;");
 
             result.Write("padding-bottom:");
-            result.Write(element.PagePadding.Bottom);
+            result.WriteInvariant(element.PagePadding.Bottom);
             result.Write("px;");
 
             result.Write("padding-left:");
-            result.Write(element.PagePadding.Left);
+            result.WriteInvariant(element.PagePadding.Left);
             result.Write("px;");
 
             if (element.PageSize != null && element.PageSize.Width != null)
             {
                 result.Write("width:");
-                result.Write(element.PageSize.Width);
+                result.WriteInvariant(element.PageSize.Width - element.PagePadding.Left - element.PagePadding.Right);
                 result.Write("px;");
             }
 

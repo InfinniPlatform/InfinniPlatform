@@ -39,7 +39,7 @@ namespace InfinniPlatform.FlowDocument.Converters.Html.Blocks
                 result.Write("<li style=\"");
 
                 result.Write("padding-left:");
-                result.Write(element.MarkerOffsetSize);
+                result.WriteInvariant(element.MarkerOffsetSize);
                 result.Write("px;");
 
                 result.Write("\">");

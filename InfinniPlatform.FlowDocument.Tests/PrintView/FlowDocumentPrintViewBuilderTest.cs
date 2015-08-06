@@ -38,7 +38,7 @@ namespace InfinniPlatform.FlowDocument.Tests.PrintView
 		[Test]
 		[RequiresMTA]
 		[Ignore("Manual")]
-		[TestCase(PrintViewFileFormat.Pdf)]
+		[TestCase(PrintViewFileFormat.Html)]
 		public void ShouldBuildFileAndThenOpenIt(PrintViewFileFormat printViewFileFormat)
 		{
 			// Given

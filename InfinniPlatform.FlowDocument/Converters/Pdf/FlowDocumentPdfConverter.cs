@@ -2,7 +2,7 @@
 
 using InfinniPlatform.FlowDocument.Model.Views;
 
-namespace InfinniPlatform.FlowDocument.Converters
+namespace InfinniPlatform.FlowDocument.Converters.Pdf
 {
     sealed class FlowDocumentPdfConverter : IFlowDocumentConverter
     {

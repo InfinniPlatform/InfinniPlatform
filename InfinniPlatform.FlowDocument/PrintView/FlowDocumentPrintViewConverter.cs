@@ -4,6 +4,8 @@ using System.IO;
 
 using InfinniPlatform.Api.PrintView;
 using InfinniPlatform.FlowDocument.Converters;
+using InfinniPlatform.FlowDocument.Converters.Html;
+using InfinniPlatform.FlowDocument.Converters.Pdf;
 using InfinniPlatform.FlowDocument.Model.Views;
 using InfinniPlatform.FlowDocument.Properties;
 

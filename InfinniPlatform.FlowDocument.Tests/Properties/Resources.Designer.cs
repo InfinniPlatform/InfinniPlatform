@@ -267,6 +267,15 @@ namespace InfinniPlatform.FlowDocument.Tests.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;i style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;Italic Text.&lt;/span&gt;&lt;/i&gt;.
+        /// </summary>
+        internal static string ResultTestShouldBuildItalic {
+            get {
+                return ResourceManager.GetString("ResultTestShouldBuildItalic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;hr style=&quot;margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;&quot;&gt;&lt;/hr&gt;.
         /// </summary>
         internal static string ResultTestShouldBuildLine {
@@ -312,11 +321,29 @@ namespace InfinniPlatform.FlowDocument.Tests.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;span style=&quot;font-family:Tahoma;font-size:30px;&quot;&gt;Здесь много текста&lt;/span&gt;.
+        /// </summary>
+        internal static string ResultTestShouldBuildRun {
+            get {
+                return ResourceManager.GetString("ResultTestShouldBuildRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;div style=&quot;background-color:Green;border-top-width:5px;border-right-width:5px;border-bottom-width:5px;border-left-width:5px;border-style:solid;border-color:Red;margin-top:20px;margin-right:20px;margin-bottom:20px;margin-left:20px;padding-top:20px;padding-right:20px;padding-bottom:20px;padding-left:20px;&quot;&gt;&lt;div style=&quot;background-color:yellow;border-top-width:5px;border-right-width:5px;border-bottom-width:5px;border-left-width:5px;border-style:solid;border-color:blue;margin-top:20px;margin-right:20px;margin-b [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ResultTestShouldBuildSectioWithProperties {
             get {
                 return ResourceManager.GetString("ResultTestShouldBuildSectioWithProperties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;span style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;Inline1. &lt;/span&gt;&lt;span style=&quot;&quot;&gt;Inline2. &lt;/span&gt;&lt;/span&gt;.
+        /// </summary>
+        internal static string ResultTestShouldBuildSpan {
+            get {
+                return ResourceManager.GetString("ResultTestShouldBuildSpan", resourceCulture);
             }
         }
         
@@ -335,6 +362,15 @@ namespace InfinniPlatform.FlowDocument.Tests.Properties {
         internal static string ResultTestShouldBuildTableWithColRowSpan {
             get {
                 return ResourceManager.GetString("ResultTestShouldBuildTableWithColRowSpan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;ins style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;Underline Text.&lt;/span&gt;&lt;/ins&gt;.
+        /// </summary>
+        internal static string ResultTestShouldBuildUnderline {
+            get {
+                return ResourceManager.GetString("ResultTestShouldBuildUnderline", resourceCulture);
             }
         }
     }

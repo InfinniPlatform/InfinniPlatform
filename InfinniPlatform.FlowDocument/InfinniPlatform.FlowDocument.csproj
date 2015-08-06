@@ -102,8 +102,8 @@
     <Compile Include="Builders\Factories\Inlines\PrintElementItalicFactory.cs" />
     <Compile Include="Builders\Factories\Inlines\PrintElementBoldFactory.cs" />
     <Compile Include="Builders\Factories\Views\PrintViewFactory.cs" />
-    <Compile Include="Converters\FlowDocumentPdfConverter.cs" />
-    <Compile Include="Converters\FlowDocumentHtmlConverter.cs" />
+    <Compile Include="Converters\Pdf\FlowDocumentPdfConverter.cs" />
+    <Compile Include="Converters\Html\FlowDocumentHtmlConverter.cs" />
     <Compile Include="Converters\IFlowDocumentConverter.cs" />
     <Compile Include="Model\Font\PrintElementFontVariant.cs" />
     <Compile Include="Model\Font\PrintElementFontWeight.cs" />

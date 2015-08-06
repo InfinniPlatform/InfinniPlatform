@@ -366,6 +366,11 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
         {
             if (border != null)
             {
+                if (element.Border == null)
+                {
+                    element.Border = new PrintElementBorder();
+                }
+
                 PrintElementThickness borderThickness;
 
                 if (TryToThickness(border.Thickness, out borderThickness))

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 
 using InfinniPlatform.FlowDocument.Model;
@@ -143,14 +144,17 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
         {
             if (element.Font != null)
             {
-                result.Write("font-family:");
-                result.Write(element.Font.Family);
-                result.Write(";");
+                if (!string.IsNullOrWhiteSpace(element.Font.Family))
+                {
+                    result.Write("font-family:");
+                    result.Write(element.Font.Family);
+                    result.Write(";");
+                }
 
                 if (element.Font.Size != null)
                 {
                     result.Write("font-size:");
-                    result.Write(element.Font.Size);
+                    result.WriteInvariant(element.Font.Size.Value);
                     result.Write("px;");
                 }
 
@@ -196,19 +200,19 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
             if (element.Border != null)
             {
                 result.Write("border-top-width:");
-                result.Write(element.Border.Thickness.Top);
+                result.WriteInvariant(element.Border.Thickness.Top);
                 result.Write("px;");
 
                 result.Write("border-right-width:");
-                result.Write(element.Border.Thickness.Right);
+                result.WriteInvariant(element.Border.Thickness.Right);
                 result.Write("px;");
 
                 result.Write("border-bottom-width:");
-                result.Write(element.Border.Thickness.Bottom);
+                result.WriteInvariant(element.Border.Thickness.Bottom);
                 result.Write("px;");
 
                 result.Write("border-left-width:");
-                result.Write(element.Border.Thickness.Left);
+                result.WriteInvariant(element.Border.Thickness.Left);
                 result.Write("px;");
 
                 if (!string.IsNullOrWhiteSpace(element.Border.Color))
@@ -223,35 +227,35 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
             }
 
             result.Write("margin-top:");
-            result.Write(element.Margin.Top);
+            result.WriteInvariant(element.Margin.Top);
             result.Write("px;");
 
             result.Write("margin-right:");
-            result.Write(element.Margin.Right);
+            result.WriteInvariant(element.Margin.Right);
             result.Write("px;");
 
             result.Write("margin-bottom:");
-            result.Write(element.Margin.Bottom);
+            result.WriteInvariant(element.Margin.Bottom);
             result.Write("px;");
 
             result.Write("margin-left:");
-            result.Write(element.Margin.Left);
+            result.WriteInvariant(element.Margin.Left);
             result.Write("px;");
 
             result.Write("padding-top:");
-            result.Write(element.Padding.Top);
+            result.WriteInvariant(element.Padding.Top);
             result.Write("px;");
 
             result.Write("padding-right:");
-            result.Write(element.Padding.Right);
+            result.WriteInvariant(element.Padding.Right);
             result.Write("px;");
 
             result.Write("padding-bottom:");
-            result.Write(element.Padding.Bottom);
+            result.WriteInvariant(element.Padding.Bottom);
             result.Write("px;");
 
             result.Write("padding-left:");
-            result.Write(element.Padding.Left);
+            result.WriteInvariant(element.Padding.Left);
             result.Write("px;");
 
             if (element.TextAlignment != null)
@@ -276,7 +280,7 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
             if (element.IndentSize != null)
             {
                 result.Write("text-indent:");
-                result.Write(element.IndentSize);
+                result.WriteInvariant(element.IndentSize);
                 result.Write("px;");
             }
         }
@@ -327,14 +331,17 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
         {
             if (element.Font != null)
             {
-                result.Write("font-family:");
-                result.Write(element.Font.Family);
-                result.Write(";");
+                if (!string.IsNullOrWhiteSpace(element.Font.Family))
+                {
+                    result.Write("font-family:");
+                    result.Write(element.Font.Family);
+                    result.Write(";");
+                }
 
                 if (element.Font.Size != null)
                 {
                     result.Write("font-size:");
-                    result.Write(element.Font.Size);
+                    result.WriteInvariant(element.Font.Size);
                     result.Write("px;");
                 }
 
@@ -384,14 +391,17 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
 
             if (element.Font != null)
             {
-                result.Write("font-family:");
-                result.Write(element.Font.Family);
-                result.Write(";");
+                if (!string.IsNullOrWhiteSpace(element.Font.Family))
+                {
+                    result.Write("font-family:");
+                    result.Write(element.Font.Family);
+                    result.Write(";");
+                }
 
                 if (element.Font.Size != null)
                 {
                     result.Write("font-size:");
-                    result.Write(element.Font.Size);
+                    result.WriteInvariant(element.Font.Size);
                     result.Write("px;");
                 }
 
@@ -434,19 +444,19 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
             if (element.Border != null)
             {
                 result.Write("border-top-width:");
-                result.Write(element.Border.Thickness.Top);
+                result.WriteInvariant(element.Border.Thickness.Top);
                 result.Write("px;");
 
                 result.Write("border-right-width:");
-                result.Write(element.Border.Thickness.Right);
+                result.WriteInvariant(element.Border.Thickness.Right);
                 result.Write("px;");
 
                 result.Write("border-bottom-width:");
-                result.Write(element.Border.Thickness.Bottom);
+                result.WriteInvariant(element.Border.Thickness.Bottom);
                 result.Write("px;");
 
                 result.Write("border-left-width:");
-                result.Write(element.Border.Thickness.Left);
+                result.WriteInvariant(element.Border.Thickness.Left);
                 result.Write("px;");
 
                 if (!string.IsNullOrWhiteSpace(element.Border.Color))
@@ -461,19 +471,19 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
             }
 
             result.Write("padding-top:");
-            result.Write(element.Padding.Top);
+            result.WriteInvariant(element.Padding.Top);
             result.Write("px;");
 
             result.Write("padding-right:");
-            result.Write(element.Padding.Right);
+            result.WriteInvariant(element.Padding.Right);
             result.Write("px;");
 
             result.Write("padding-bottom:");
-            result.Write(element.Padding.Bottom);
+            result.WriteInvariant(element.Padding.Bottom);
             result.Write("px;");
 
             result.Write("padding-left:");
-            result.Write(element.Padding.Left);
+            result.WriteInvariant(element.Padding.Left);
             result.Write("px;");
 
             if (element.TextAlignment != null)
@@ -526,16 +536,24 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
                 if (element.Size.Width != null)
                 {
                     result.Write("width:");
-                    result.Write(element.Size.Width);
+                    result.WriteInvariant(element.Size.Width);
                     result.Write("px;");
                 }
 
                 if (element.Size.Height != null)
                 {
                     result.Write("height:");
-                    result.Write(element.Size.Height);
+                    result.WriteInvariant(element.Size.Height);
                     result.Write("px;");
                 }
+            }
+        }
+
+        public static void WriteInvariant(this TextWriter writer, object value)
+        {
+            if (value != null)
+            {
+                writer.Write(Convert.ToString(value, CultureInfo.InvariantCulture));
             }
         }
     }
