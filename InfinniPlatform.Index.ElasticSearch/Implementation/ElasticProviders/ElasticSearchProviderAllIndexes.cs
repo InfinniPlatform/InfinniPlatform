@@ -40,10 +40,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
                 q => q
                     .AllIndices()
                     .AllTypes()
-                    .Routing(_tenantId)
                     .Query(
                         f => f.Term(ElasticConstants.IndexObjectPath + ElasticConstants.IndexObjectIdentifierField, key.ToLowerInvariant())
-                            && f.Term(ElasticConstants.TenantIdField, _tenantId)
                             && f.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid)
                     )
                 );

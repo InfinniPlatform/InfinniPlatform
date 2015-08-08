@@ -21,7 +21,7 @@ namespace InfinniPlatform.Update.ActionUnits
 
 			string version = target.Item.Version;
 
-			var documentProvider = config.GetDocumentProvider("package","system");
+			var documentProvider = config.GetDocumentProvider("package",version,"system");
 
 			// публикуем прикладную сборку
 

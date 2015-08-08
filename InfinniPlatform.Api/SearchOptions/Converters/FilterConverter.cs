@@ -45,14 +45,14 @@ namespace InfinniPlatform.Api.SearchOptions.Converters
             //op = IsEquals
             var op = criteria.Substring(0, criteria.IndexOf(" ", StringComparison.Ordinal)).ToLowerInvariant();
             //criteria = 200
-            var value = criteria.Substring(criteria.IndexOf(" ", StringComparison.Ordinal));
+            var value = criteria.Substring(criteria.IndexOf(" ", StringComparison.Ordinal) + 1);
 
             dynamic criteriaDynamic = new DynamicWrapper();
             criteriaDynamic.Property = propertyName;
 
             if (!_criteriaTypes.ContainsKey(op))
             {
-                throw new ArgumentException(string.Format("Can't find criteria type for operator: {0}",op));
+                throw new ArgumentException(string.Format("Can't find criteria type for operator: {0}", op));
             }
             criteriaDynamic.CriteriaType = _criteriaTypes[op];
             criteriaDynamic.Value = value;

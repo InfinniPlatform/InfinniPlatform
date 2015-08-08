@@ -57,7 +57,7 @@ namespace InfinniPlatform.Sdk.Tests
             };
 
             var ex = Assert.Throws<ApplicationException>(() => _api.SetDocument("gameshop", "catalogue", Guid.NewGuid().ToString(), documentObject));
-            Assert.AreEqual(ex.Message, "Unable to set document with exception: There an business logic error on request execution./r/nAdditional info: ﻿{\"Error\":\"Fail to commit transaction: \\r\\nExpected value for field 'Price' should have Float type, but value has System.String type ('someStringValueThatNotConvertToFloat')\"}");
+            Assert.AreEqual(ex.Message, "Unable to set document with exception: There an business logic error on request execution./r/nAdditional info: ﻿{\r\n  \"Error\": \"Fail to commit transaction: \\r\\nExpected value for field 'Price' should have Float type, but value has System.String type ('someStringValueThatNotConvertToFloat')\"\r\n}");
         }
 
         [Test]

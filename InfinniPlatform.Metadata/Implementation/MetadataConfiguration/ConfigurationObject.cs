@@ -39,8 +39,7 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
         /// </summary>
         /// <param name="metadata">метаданные объекта</param>
         /// <param name="version"></param>
-/// <param name="tenantId">Идентификатор организации-клиента для выполнения запросов</param>
-
+        /// <param name="tenantId">Идентификатор организации-клиента для выполнения запросов</param>
         /// <returns>Провайдер версий документа</returns>
         public IVersionProvider GetDocumentProvider(string metadata, string version, string tenantId)
         {
@@ -49,25 +48,6 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
                     MetadataConfiguration.GetMetadataIndexType(metadata)) != IndexStatus.NotExists)
             {
 				return _indexFactory.BuildVersionProvider(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata), tenantId, version);
-            }
-            return null;
-        }
-
-        /// <summary>
-        ///     Предоставить провайдер версий документа для работы в прикладных скриптах.
-        ///     Создает провайдер, возвращающий всегда все версии всех найденных документов
-        /// </summary>
-        /// <param name="metadata">метаданные объекта</param>
-        /// <param name="tenantId">Идентификатор организации-клиента выполнения запросов</param>
-        /// <returns></returns>
-		public IVersionProvider GetDocumentProvider(string metadata, string tenantId)
-        {
-            if (
-                _indexStateProvider.GetIndexStatus(MetadataConfiguration.ConfigurationId,
-                    MetadataConfiguration.GetMetadataIndexType(metadata)) != IndexStatus.NotExists)
-            {
-				return _indexFactory.BuildVersionProvider(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata), tenantId, null);
-                    
             }
             return null;
         }

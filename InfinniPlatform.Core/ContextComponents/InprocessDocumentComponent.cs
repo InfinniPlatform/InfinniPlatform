@@ -45,7 +45,7 @@ namespace InfinniPlatform.ContextComponents
 
             if (config != null)
             {
-                return config.GetDocumentProvider(documentId, GetUserRouting(userName));
+                return config.GetDocumentProvider(documentId, version, GetUserRouting(userName));
             }
             return null;
         }
