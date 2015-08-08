@@ -184,10 +184,10 @@ namespace InfinniPlatform.Api.SearchOptions.Builders
                 return this;
             }
 
-            public CriteriaBuilder ValueSet(params object[] values)
+            public CriteriaBuilder IsIn(params object[] values)
             {
                 _value = string.Join("\n", values.Select(v => v.ToString()));
-                _criteriaType = CriteriaType.ValueSet;
+                _criteriaType = CriteriaType.IsIn;
                 return this;
             }
 

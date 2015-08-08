@@ -17,6 +17,13 @@ namespace InfinniPlatform.Sdk.Environment.Index
         SearchViewModel Query(SearchModel searchModel);
 
         /// <summary>
+        ///   Определить количество объектов в индексе по указанной модели поиска
+        /// </summary>
+        /// <param name="searchModel">Модель поиска</param>
+        /// <returns>Количество объектов, удовлетворяющих условиям поиска</returns>
+        long CalculateCountQuery(SearchModel searchModel);
+
+        /// <summary>
         ///     Выполнить запрос с получением объектов индекса без дополнительной обработки
         /// </summary>
         /// <param name="searchModel">Модель поиска</param>

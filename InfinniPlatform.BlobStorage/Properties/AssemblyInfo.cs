@@ -1,8 +1,8 @@
 ﻿// 1
 // 0
 // 0
-// 6
-// ff7c3d5e-4aed-4210-94fb-04c14cf3da23
+// 2
+// a6d26346-8008-401f-aafa-a47e0dd25659
 // 73B241095D0833C507EA0AE09F605454
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -16,8 +16,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
-[assembly: Guid("ff7c3d5e-4aed-4210-94fb-04c14cf3da23")]
-[assembly: AssemblyVersion("1.0.0.6")]
-[assembly: AssemblyFileVersion("1.0.0.6")]
+[assembly: Guid("a6d26346-8008-401f-aafa-a47e0dd25659")]
+[assembly: AssemblyVersion("1.0.0.2")]
+[assembly: AssemblyFileVersion("1.0.0.2")]
 [assembly: InternalsVisibleTo("InfinniPlatform.BlobStorage.Tests")]
 [assembly: AssemblyDescription("InfinniPlatform.BlobStorage")]

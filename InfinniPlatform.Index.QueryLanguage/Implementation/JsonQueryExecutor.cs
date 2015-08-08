@@ -1,92 +1,96 @@
-﻿using System.Linq;
+﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Text.RegularExpressions;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Index.SearchOptions;
 using InfinniPlatform.Sdk.Environment.Index;
+
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Index.QueryLanguage.Implementation
 {
-    public class JsonQueryExecutor
-    {
-        private readonly Regex _elasticFilterRegex = new Regex(@"^[a-zA-Z\.]+$");
+	public class JsonQueryExecutor
+	{
+		private readonly IIndexFactory _indexFactory;
+		private readonly ReferenceBuilder _referenceBuilder;
+		private readonly ProjectionBuilder _projectionBuilder;
         private readonly IFilterBuilder _filterFactory;
-        private readonly IIndexFactory _indexFactory;
-        private readonly ProjectionBuilder _projectionBuilder;
-        private readonly ReferenceBuilder _referenceBuilder;
-        private readonly string _routing;
+		private readonly string _tenantId;
 
-        public JsonQueryExecutor(IIndexFactory indexFactory, IFilterBuilder filterFactory, string routing)
-        {
-            _indexFactory = indexFactory;
-            _filterFactory = filterFactory;
-            _routing = routing;
-            _referenceBuilder = new ReferenceBuilder(_indexFactory, routing);
-            _projectionBuilder = new ProjectionBuilder();
-        }
+		private readonly Regex _elasticFilterRegex = new Regex(@"^[a-zA-Z\.]+$");
 
-        public JArray ExecuteQuery(JObject query)
-        {
-            var queryTree = new QuerySyntaxTree(query);
+        public JsonQueryExecutor(IIndexFactory indexFactory, IFilterBuilder filterFactory, string tenantId)
+		{
+			_indexFactory = indexFactory;
+		    _filterFactory = filterFactory;
+	        _tenantId = tenantId;
+	        _referenceBuilder = new ReferenceBuilder(_indexFactory,tenantId);
+			_projectionBuilder = new ProjectionBuilder();			
+		}
 
-            //Получаем список условий фильтрации
-            var where = queryTree.GetConditionCriteria().ToArray();
+		public JArray ExecuteQuery(JObject query)
+		{
+			
 
-            //Получаем индекс для поиска основного объекта
-            var from = queryTree.GetFrom();
+			var queryTree = new QuerySyntaxTree(query);
 
-            var queryExecutor = _indexFactory.BuildIndexQueryExecutor(@from.Index.ToLowerInvariant(),
-                @from.Type.ToLowerInvariant(), _routing);
+			//Получаем список условий фильтрации
+			var where = queryTree.GetConditionCriteria().ToArray();
 
-            //модель поиска для выборки из индекса основного объекта
-            var searchBuilder = new SearchModelBuilder(_filterFactory);
+			//Получаем индекс для поиска основного объекта
+			var from = queryTree.GetFrom();
 
-            var limits = queryTree.GetLimits();
-            if (limits != null)
-            {
-                searchBuilder.FromPage(limits.StartPage);
-                searchBuilder.PageSize(limits.PageSize);
-                searchBuilder.Skip(limits.Skip);
-            }
+			var queryExecutor = _indexFactory.BuildIndexQueryExecutor(@from.Index.ToLowerInvariant(),@from.Type.ToLowerInvariant(), _tenantId);
 
-            var elasticFields = where.Where(x => _elasticFilterRegex.IsMatch(x.Property));
-            var notAliasedElasticFields =
-                QuerySyntaxTree.GetNotAliasedFields(queryTree.GetReferenceObjects().Select(r => r.Alias),
-                    elasticFields.Select(e => e.Property));
-            var fieldsToFilter = where.Where(wh => notAliasedElasticFields.Contains(wh.Property));
+			//модель поиска для выборки из индекса основного объекта
+			var searchBuilder = new SearchModelBuilder(_filterFactory);
+
+		    var limits = queryTree.GetLimits();
+		    if (limits != null)
+		    {
+		        searchBuilder.FromPage(limits.StartPage);
+		        searchBuilder.PageSize(limits.PageSize);
+		        searchBuilder.Skip(limits.Skip);
+		    }
+
+			var elasticFields = where.Where(x => _elasticFilterRegex.IsMatch(x.Property));
+			var notAliasedElasticFields = QuerySyntaxTree.GetNotAliasedFields(queryTree.GetReferenceObjects().Select(r => r.Alias),
+			                                                            elasticFields.Select(e => e.Property));
+			var fieldsToFilter = where.Where(wh => notAliasedElasticFields.Contains(wh.Property)) ;
+
 
 
             // в фильтры запроса к эластику включаются только те ограничения, в которых имя поля может быть интерпретировано как поле документа elastcsearch
-            foreach (var filter in fieldsToFilter)
-            {
-                searchBuilder.Filter(filter.Property, filter.Value, filter.CriteriaType);
-            }
+			foreach (var filter in fieldsToFilter)
+		    {
+		        searchBuilder.Filter(filter.Property, filter.Value, filter.CriteriaType);
+		    }
 
-            //выполняем поиск по индексу
-            var foundObjects = queryExecutor
-                .QueryAsJObject(searchBuilder.BuildQuery())
-                .Items
-                .ToArray();
+			//выполняем поиск по индексу
+		     var foundObjects = queryExecutor
+		        .QueryAsJObject(searchBuilder.BuildQuery())
+		        .Items
+		        .ToArray();
 
-            //для каждого из объектов выполняем разрешение ссылок
-            foreach (var foundObject in foundObjects)
-            {
-                _referenceBuilder.FillReference(foundObject, queryTree.GetReferenceObjects().ToArray(),
-                    queryTree.GetWhereObjects(), _filterFactory);
-            }
+			//для каждого из объектов выполняем разрешение ссылок
+			foreach (var foundObject in foundObjects)
+			{
+				_referenceBuilder.FillReference(foundObject, queryTree.GetReferenceObjects().ToArray(), queryTree.GetWhereObjects(), _filterFactory);	
+			}
 
 
-            var resultObject = new JArray();
+			var resultObject = new JArray();
 
-            //для каждого из найденных объектов получаем проекции результата исходя из условий выборки
-            foreach (var foundObject in foundObjects)
-            {
-                var projection = _projectionBuilder.GetProjection(foundObject, queryTree.GetProjectionObjects(),
-                    queryTree.GetWhereObjects(), queryTree.GetReferenceObjects());
+			//для каждого из найденных объектов получаем проекции результата исходя из условий выборки
+			foreach (var foundObject in foundObjects)
+			{
+			    var projection = _projectionBuilder.GetProjection(foundObject, queryTree.GetProjectionObjects(), queryTree.GetWhereObjects(), queryTree.GetReferenceObjects());
                 resultObject.Add(projection);
-            }
+			}
 
-            return resultObject;
-        }
-    }
+			return resultObject;
+		}
+
+	}
 }

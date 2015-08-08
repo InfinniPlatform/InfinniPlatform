@@ -130,8 +130,8 @@ namespace InfinniPlatform.WebApi.Tests.Services
             IRestResponse restResponse =
                 restClient.Post(new RestRequest("?linkedData={argument}") {RequestFormat = DataFormat.Json}
                                     .AddUrlSegment("argument", "123")
-                                    .AddFile("uploadFile", File.ReadAllBytes(@"TestData\CheckUpload.txt"),
-                                             "fileUploaded", "multipart/form-data"));
+                                    .AddFile("uploadFile", File.ReadAllBytes(@"TestData" + Path.DirectorySeparatorChar + "CheckUpload.txt"), "fileUploaded", "multipart/form-data"));
+
 
             Assert.AreEqual(expectedResult, restResponse.Content.Contains("STREAM_123"));
         }
@@ -163,8 +163,8 @@ namespace InfinniPlatform.WebApi.Tests.Services
             IRestResponse restResponse =
                 restClient.Post(new RestRequest("?linkedData={argument}") {RequestFormat = DataFormat.Json}
                                     .AddUrlSegment("argument", argumentsString)
-                                    .AddFile("uploadFile", File.ReadAllBytes(@"TestData\CheckUpload.txt"),
-                                             "fileUploaded", "multipart/form-data"));
+				.AddFile("uploadFile", File.ReadAllBytes(@"TestData" + Path.DirectorySeparatorChar + "CheckUpload.txt"), "fileUploaded", "multipart/form-data"));
+
 
             Assert.AreEqual(expectedResult,
                             restResponse.Content.Contains(

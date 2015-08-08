@@ -136,7 +136,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
 
             //получаем менеджер для управления распределенной транзакцией
             var transaction =
-                _globalContext.GetComponent<TransactionComponent>()
+	            _globalContext.GetComponent<ITransactionComponent>()
                     .GetTransactionManager()
                     .GetTransaction(targetMove.TransactionMarker);
 

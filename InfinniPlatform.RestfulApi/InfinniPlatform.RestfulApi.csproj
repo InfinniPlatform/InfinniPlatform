@@ -60,6 +60,8 @@
     <Compile Include="ActionUnits\ActionUnitProcessUpdateEvents.cs" />
     <Compile Include="ActionUnits\ActionUnitGetByQuery.cs" />
     <Compile Include="ActionUnits\ActionUnitGetConfigMetadata.cs" />
+    <Compile Include="ActionUnits\ActionUnitGetIndexStorageInfo.cs" />
+    <Compile Include="ActionUnits\ActionUnitGetNumberOfDocuments.cs" />
     <Compile Include="ActionUnits\ActionUnitGetDocument.cs" />
     <Compile Include="ActionUnits\ActionUnitGetFromIndex.cs" />
     <Compile Include="ActionUnits\ActionUnitIndexWithTimeStamp.cs" />
@@ -103,6 +105,7 @@
     <Compile Include="Credentials\ActionUnitSetAnonimousCredentials.cs" />
     <Compile Include="DefaultProcessUnits\ActionUnitSetCredentials.cs" />
     <Compile Include="DefaultProcessUnits\ActionUnitComplexAuth.cs" />
+    <Compile Include="DefaultProcessUnits\ValidationUnitDeleteDocumentError.cs" />
     <Compile Include="Extensions\FastStorageExtension.cs" />
     <Compile Include="Extensions\IndexedStorageExtension.cs" />
     <Compile Include="Installers\RestfulApiInstaller.cs" />
@@ -138,6 +141,7 @@
     <Compile Include="DefaultProcessUnits\ActionUnitSuccessDeleteDocument.cs" />
     <Compile Include="DefaultProcessUnits\ValidationUnitSetDocumentError.cs" />
     <Compile Include="DefaultProcessUnits\ValidationUnitSetDocumentWarning.cs" />
+    <Compile Include="Utils\TransactionUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

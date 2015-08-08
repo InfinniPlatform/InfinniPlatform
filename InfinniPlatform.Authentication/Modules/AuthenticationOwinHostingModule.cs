@@ -7,10 +7,12 @@ using Microsoft.Owin.Security.Cookies;
 using Owin;
 
 using InfinniPlatform.Api.Security;
+using InfinniPlatform.Authentication.DataProtectors;
 using InfinniPlatform.Authentication.Middleware;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Security;
+using Microsoft.Owin.Security.DataProtection;
 
 namespace InfinniPlatform.Authentication.Modules
 {
@@ -37,6 +39,11 @@ namespace InfinniPlatform.Authentication.Modules
 
 		public override void Configure(IAppBuilder builder, IHostingContext context)
 		{
+			if (IsRunningOnMono())
+			{
+				builder.SetDataProtectionProvider(new AesDataProtectionProvider());
+			}
+
 			// Разрешение использования cookie для входа в систему через внутренний провайдер
 
 			var cookieAuthOptions = new CookieAuthenticationOptions
@@ -126,6 +133,11 @@ namespace InfinniPlatform.Authentication.Modules
 					}
 				}
 			}
+		}
+
+		private static bool IsRunningOnMono()
+		{
+			return Type.GetType("Mono.Runtime") != null;
 		}
 	}
 }

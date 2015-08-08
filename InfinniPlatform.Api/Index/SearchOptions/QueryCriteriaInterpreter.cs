@@ -55,7 +55,8 @@ namespace InfinniPlatform.Api.Index.SearchOptions
                 value => new LessThanOrEqualValidator {Value = value});
 
             _criteriaInterpreter.Add(CriteriaType.IsIdIn,
-                value => new InValidator {Items = (value as IEnumerable).Cast<string>()});
+                value => new InValidator { Items = (value as IEnumerable).Cast<string>() });
+            _criteriaInterpreter.Add(CriteriaType.IsIn, value => new InValidator() { Items = (value as IEnumerable).Cast<string>() });
         }
 
         private static string ToStringOrEmpty(object value)

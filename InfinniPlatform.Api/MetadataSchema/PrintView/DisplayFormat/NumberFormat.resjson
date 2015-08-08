@@ -1,0 +1,17 @@
+﻿{
+	"id": "NumberFormat",
+	"description": "Формат отображения числового значения",
+	"type": "object",
+	"extends": {
+		"$ref": "http://demo.infinnity.ru:8081/display/MC/BaseFormat"
+	},
+	"properties": {
+		"Format": {
+			"description": "Строка форматирования числового значения",
+			"type": "string",
+			"required": true,
+			"default": "n"
+		}
+	},
+	"additionalProperties": false
+}

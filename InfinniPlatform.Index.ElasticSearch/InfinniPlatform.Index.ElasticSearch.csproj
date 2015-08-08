@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -11,7 +11,6 @@
     <AssemblyName>InfinniPlatform.Index.ElasticSearch</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -61,11 +60,33 @@
     <Compile Include="Implementation\ElasticProviders\SchemaIndexVersion\ElasticMappingExtension.cs" />
     <Compile Include="Implementation\ElasticProviders\SchemaIndexVersion\IndexToTypeAccordance.cs" />
     <Compile Include="Implementation\ElasticProviders\SchemaIndexVersion\IndexTypeMapping.cs" />
+    <Compile Include="Implementation\ElasticSearchModels\ElasticCountQueryBuilder.cs" />
+    <Compile Include="Implementation\ElasticSearchModels\CountModelFilterDescriptor.cs" />
     <Compile Include="Implementation\ElasticSearchModels\SearchModelSkipDescriptor.cs" />
     <Compile Include="Implementation\Filters\ElasticScript.cs" />
     <Compile Include="Implementation\ElasticProviders\ElasticSearchProvider.cs" />
     <Compile Include="Implementation\ElasticProviders\IndexQueryExecutor.cs" />
     <Compile Include="Implementation\ElasticProviders\IndexStateProvider.cs" />
+    <Compile Include="Implementation\Filters\QueryBuilderFactory.cs" />
+    <Compile Include="Implementation\Filters\NestQueries\ConcreteFilterBuilders\NestQueryContainsBuilder.cs" />
+    <Compile Include="Implementation\Filters\NestQueries\ConcreteFilterBuilders\NestQueryEmptyBuilder.cs" />
+    <Compile Include="Implementation\Filters\NestQueries\ConcreteFilterBuilders\NestQueryEndsWithBuilder.cs" />
+    <Compile Include="Implementation\Filters\NestQueries\ConcreteFilterBuilders\NestQueryEqualsBuilder.cs" />
+    <Compile Include="Implementation\Filters\NestQueries\ConcreteFilterBuilders\NestQueryFullTextSearchBuilder.cs" />
+    <Compile Include="Implementation\Filters\NestQueries\ConcreteFilterBuilders\NestQueryIdInListBuilder.cs" />
+    <Compile Include="Implementation\Filters\NestQueries\ConcreteFilterBuilders\NestQueryIsInBuilder.cs" />
+    <Compile Include="Implementation\Filters\NestQueries\ConcreteFilterBuilders\NestQueryLessThanBuilder.cs" />
+    <Compile Include="Implementation\Filters\NestQueries\ConcreteFilterBuilders\NestQueryLessThanOrEqualsBuilder.cs" />
+    <Compile Include="Implementation\Filters\NestQueries\ConcreteFilterBuilders\NestQueryMoreThanBuilder.cs" />
+    <Compile Include="Implementation\Filters\NestQueries\ConcreteFilterBuilders\NestQueryMoreThanOrEqualsBuilder.cs" />
+    <Compile Include="Implementation\Filters\NestQueries\ConcreteFilterBuilders\NestQueryNotContainsBuilder.cs" />
+    <Compile Include="Implementation\Filters\NestQueries\ConcreteFilterBuilders\NestQueryNotEmptyBuilder.cs" />
+    <Compile Include="Implementation\Filters\NestQueries\ConcreteFilterBuilders\NestQueryNotEndsWithBuilder.cs" />
+    <Compile Include="Implementation\Filters\NestQueries\ConcreteFilterBuilders\NestQueryNotEqualsBuilder.cs" />
+    <Compile Include="Implementation\Filters\NestQueries\ConcreteFilterBuilders\NestQueryNotStartsWithBuilder.cs" />
+    <Compile Include="Implementation\Filters\NestQueries\ConcreteFilterBuilders\NestQueryStartsWithBuilder.cs" />
+    <Compile Include="Implementation\Filters\NestQueries\NestQueryBuilder.cs" />
+    <Compile Include="Implementation\Filters\NestQueries\NestQuery.cs" />
     <Compile Include="Implementation\Filters\NestFilters\ConcreteFilterBuilders\NestFilterIdInListBuilder.cs" />
     <Compile Include="Implementation\IndexTypeVersions\IndexTypeMapper.cs" />
     <Compile Include="Implementation\ElasticSearchModels\ElasticSearchQueryBuilder.cs" />
@@ -88,7 +109,7 @@
     <Compile Include="Implementation\Filters\NestFilters\ConcreteFilterBuilders\NestFilterNotEqualsBuilder.cs" />
     <Compile Include="Implementation\Filters\NestFilters\ConcreteFilterBuilders\NestFilterNotStartsWithBuilder.cs" />
     <Compile Include="Implementation\Filters\NestFilters\ConcreteFilterBuilders\NestFilterStartsWithBuilder.cs" />
-    <Compile Include="Implementation\Filters\NestFilters\ConcreteFilterBuilders\NestFilterValueSetBuilder.cs" />
+    <Compile Include="Implementation\Filters\NestFilters\ConcreteFilterBuilders\NestFilterIsInBuilder.cs" />
     <Compile Include="Implementation\Filters\NestFilters\NestFilter.cs" />
     <Compile Include="Implementation\Filters\NestFilters\ConcreteFilterBuilders\NestFilterContainsBuilder.cs" />
     <Compile Include="Implementation\Filters\NestFilters\ConcreteFilterBuilders\NestFilterEqualsBuilder.cs" />

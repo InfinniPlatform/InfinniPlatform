@@ -31,7 +31,7 @@ namespace InfinniPlatform.Api.Packages
 
         public static void UnzipFile(this ZipArchive zipArchive, string zipEntry, Action<Stream> unzipAction)
         {
-            var zipEntryAlternate = zipEntry.Replace("/", @"\");
+			var zipEntryAlternate =  zipEntry.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
             var entry = zipArchive.GetEntry(zipEntry) ?? zipArchive.GetEntry(zipEntryAlternate);
             if (entry == null)
             {

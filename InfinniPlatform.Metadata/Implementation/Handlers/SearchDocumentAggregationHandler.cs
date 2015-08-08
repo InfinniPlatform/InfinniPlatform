@@ -49,11 +49,12 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
             target.IsValid = true;
             target.Configuration = ConfigRequestProvider.GetConfiguration();
             target.Metadata = ConfigRequestProvider.GetMetadataIdentifier();
+            target.UserName = ConfigRequestProvider.GetUserName();
 
             metadataConfig.MoveWorkflow(idType, metadataConfig.GetExtensionPointValue(ConfigRequestProvider, "Join"),
                 target);
 
-            //в качестве routing используется клэйм организации пользователя
+            //в качестве tenantId используется клэйм организации пользователя
             var executor =
                 target.Context.GetComponent<IIndexComponent>()
                     .IndexFactory.BuildAggregationProvider(aggregationConfiguration, aggregationMetadata,
@@ -66,7 +67,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
                 dimensions.ToArray(),
                 aggregationTypes.ToArray(),
                 aggregationFields.ToArray(),
-                filterObject.ExtractSearchModel(_filterFactory).Filter);
+                filterObject.ExtractSearchModel(_filterFactory)); 
 
             //выполняем постобработку результатов
             metadataConfig.MoveWorkflow(idType,

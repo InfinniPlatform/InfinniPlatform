@@ -1,4 +1,5 @@
 ﻿using Nest;
+
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,7 +13,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeSelectors
 	    /// <param name="searchDescriptor">Дескриптор поиска</param>
 	    /// <param name="indexNames">Имена индексов, по которым производить поиск</param>
 	    /// <param name="typeName">Наименование типа данных для выборки из индекса</param>
-	    /// <param name="routing">Роутинг запроса</param>
 	    /// <param name="searchInAllIndeces">Искать по всем инлдексам</param>
 	    /// <param name="searchInAllTypes">Искать по всем типам</param>
 	    /// <returns>Настроенный дескриптор</returns>
@@ -20,7 +20,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeSelectors
             this SearchDescriptor<dynamic> searchDescriptor,
             IEnumerable<string> indexNames,
             IEnumerable<string> typeName,
- 			string routing,
             bool searchInAllIndeces,
             bool searchInAllTypes)
         {
@@ -50,9 +49,54 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeSelectors
             {
                 searchDescriptor = searchDescriptor.Types(typeName);
             }
-	        searchDescriptor.Routing(routing);
 
-            return searchDescriptor;
+	        return searchDescriptor;
+        }
+
+        /// <summary>
+        ///   Настроить дескриптор поиска для выборки данных указанных в переданном типе
+        /// </summary>
+        /// <param name="countDescriptor">Дескриптор поиска</param>
+        /// <param name="indexNames">Имена индексов, по которым производить поиск</param>
+        /// <param name="typeName">Наименование типа данных для выборки из индекса</param>
+        /// <param name="searchInAllIndeces">Искать по всем инлдексам</param>
+        /// <param name="searchInAllTypes">Искать по всем типам</param>
+        /// <returns>Настроенный дескриптор</returns>
+        public static CountDescriptor<dynamic> BuildSearchForType(
+            this CountDescriptor<dynamic> countDescriptor,
+            IEnumerable<string> indexNames,
+            IEnumerable<string> typeName,
+            bool searchInAllIndeces,
+            bool searchInAllTypes)
+        {
+            if (indexNames == null || !indexNames.Any())
+            {
+                if (searchInAllIndeces)
+                {
+                    countDescriptor = countDescriptor.AllIndices();
+                }
+            }
+            else
+            {
+                countDescriptor = indexNames.Count() == 1 ?
+                    countDescriptor.Index(indexNames.First()) :
+                    countDescriptor.Indices(indexNames);
+            }
+
+
+            if (typeName == null || !typeName.Any())
+            {
+                if (searchInAllTypes)
+                {
+                    countDescriptor = countDescriptor.AllTypes();
+                }
+            }
+            else
+            {
+                countDescriptor = countDescriptor.Types(typeName);
+            }
+            
+            return countDescriptor;
         }
     }
 }

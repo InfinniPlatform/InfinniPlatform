@@ -11,7 +11,7 @@ using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
-using InfinniPlatform.SystemConfig.RoutingFactory;
+using InfinniPlatform.SystemConfig.Multitenancy;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Verifications
 {
@@ -22,6 +22,11 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
     {
         private readonly IIndexFactory _indexFactory;
 
+        public ChangingMappingVerification()
+        {
+            _indexFactory = new ElasticFactory(new MultitenancyProvider());
+        }
+
         /// <summary>
         ///     Конфигурация, к которой применяется правило проверки
         /// </summary>
@@ -30,10 +35,6 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
         private IGlobalContext _context;
         private string _version;
 
-        public ChangingMappingVerification()
-        {
-            _indexFactory = new ElasticFactory(new RoutingFactoryBase());
-        }
 
 
         /// <summary>

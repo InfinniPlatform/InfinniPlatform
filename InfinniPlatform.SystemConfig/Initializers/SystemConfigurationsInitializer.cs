@@ -10,10 +10,10 @@ using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Metadata;
 using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.SystemConfig.Multitenancy;
 using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Metadata;
-using InfinniPlatform.SystemConfig.RoutingFactory;
 
 namespace InfinniPlatform.SystemConfig.Initializers
 {
@@ -29,7 +29,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
         {
             _metadataConfigurationProvider = metadataConfigurationProvider;
 
-            _indexFactory = new ElasticFactory(new RoutingFactoryBase());
+            _indexFactory = new ElasticFactory(new MultitenancyProvider());
         }
 
         public void OnStart(HostingContextBuilder contextBuilder)

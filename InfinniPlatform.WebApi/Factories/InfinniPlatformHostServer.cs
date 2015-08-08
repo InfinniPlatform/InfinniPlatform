@@ -212,7 +212,7 @@ namespace InfinniPlatform.WebApi.Factories
 				var containerBuilder = _hostServer.ContainerBuilder;
 				containerBuilder.RegisterInstance(ServiceTemplateConfiguration).AsSelf().AsImplementedInterfaces().SingleInstance();
 				containerBuilder.RegisterInstance(_serviceRegistrationContainerFactory).AsImplementedInterfaces().AsSelf().SingleInstance();
-				containerBuilder.RegisterModule(new XmlFileReader("autofac.xml"));
+				containerBuilder.RegisterModule(new XmlFileReader("Autofac.xml"));
 			});
 			return this;
 		}

@@ -72,7 +72,7 @@
     <Compile Include="ContextComponents\WebClientNotificationComponent.cs" />
     <Compile Include="Factories\ContextRegistration.cs" />
     <Compile Include="Factories\IPrintViewBuilderFactory.cs" />
-    <Compile Include="Factories\IIndexRoutingFactory.cs" />
+    <Compile Include="Factories\IMultitenancyProvider.cs" />
     <Compile Include="Hosting\ExtensionPointHandlerConfig.cs" />
     <Compile Include="Hosting\HostingContext.cs" />
     <Compile Include="Hosting\HostingContextBuilder.cs" />
@@ -99,6 +99,7 @@
     <Compile Include="Index\DimensionType.cs" />
     <Compile Include="Index\ICalculatedFieldFactory.cs" />
     <Compile Include="Index\IndexObject.cs" />
+    <Compile Include="Index\IndexObjectStatus.cs" />
     <Compile Include="Json\BackboneBuilder.cs" />
     <Compile Include="Json\EventBuilders\ChangeCollectionItemIndexBuilder.cs" />
     <Compile Include="Json\JsonCollectionLastItemTokenProvider.cs" />

@@ -58,7 +58,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 		public void AddTransition(
 			string transitionName, string stateFrom, object validationPointError,
 			object validationPointWarning, object actionPoint, object successPoint, object registerPoint, object failPoint, object deletePoint,
-			string validationRuleWarning, string validationRuleError, string defaultValuesSchema, string credentialsType, object credentialsPoint)
+			string validationRuleWarning, string validationRuleError, object deletingDocumentValidationRuleError, string defaultValuesSchema, string credentialsType, object credentialsPoint)
 		{
 			object transition = null;
 			try
@@ -118,6 +118,11 @@ namespace InfinniPlatform.MetadataDesigner.Views
 				{
 					transition.BuildProperty("ValidationRuleError", validationRuleError);
 				}
+
+                if (deletingDocumentValidationRuleError != null)
+                {
+                    transition.BuildProperty("DeletingDocumentValidationPoint", deletingDocumentValidationRuleError);
+                }
 
 				if (defaultValuesSchema != null)
 				{

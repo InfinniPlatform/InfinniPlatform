@@ -64,7 +64,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions
                     .Type(schemaversionname)
                     .SearchAnalyzer("string_lowercase")
                     .IndexAnalyzer(searchAbility.ToString().ToLowerInvariant())
-					.RoutingField(r => r.Required())
                     .Properties( p => p.Object<dynamic>(
                         od => od.Name("Values").Properties(ps => ps.AddProperties(propertiesDictionary)))));
         }

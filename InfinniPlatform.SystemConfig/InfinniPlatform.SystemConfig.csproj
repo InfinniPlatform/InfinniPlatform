@@ -120,8 +120,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RoutingFactory\RoutingExtensions.cs" />
-    <Compile Include="RoutingFactory\RoutingFactoryBase.cs" />
+    <Compile Include="Multitenancy\MultitenancyExtensions.cs" />
+    <Compile Include="Multitenancy\MultitenancyProvider.cs" />
     <Compile Include="UserStorage\AdminApi.cs" />
     <Compile Include="UserStorage\ApplicationUserStorePersistentStorage.cs" />
   </ItemGroup>

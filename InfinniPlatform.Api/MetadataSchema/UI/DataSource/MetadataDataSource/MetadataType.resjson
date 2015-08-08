@@ -1,19 +1,22 @@
 ﻿{
-	"id": "MetadataType",
-	"description": "Тип метаданных",
-	"enum": [
-		"Configuration",
-		"Document",
-		"Classifier",
-		"ComplexType",
-		"Scenario",
-		"Workflow",
-		"Service",
-		"View",
-		"Report",
-		"Menu",
-		"Exchange",
-		"ValidationErrors",
-		"ValidationWarnings"
-	]
+  "id": "MetadataType",
+  "description": "Тип метаданных",
+  "enum": [
+    "Solution",
+    "Configuration",
+    "Menu",
+    "Document",
+    "Register",
+    "Assembly",
+    "View",
+    "PrintView",
+    "Service",
+    "Process",
+    "Scenario",
+    "Generator",
+    "Report",
+    "ValidationError",
+    "ValidationWarning",
+    "DocumentStatus"
+  ]
 }

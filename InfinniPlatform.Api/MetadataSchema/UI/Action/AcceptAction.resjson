@@ -1,10 +1,10 @@
 ﻿{
-	"id": "AcceptAction",
-	"description": "Действие закрытия представления со статусом подтверждения",
-	"type": "object",
-	"extends": {
-		"$ref": "http://demo.infinnity.ru:8081/display/MC/Command"
-	},
-	"properties": {},
-	"additionalProperties": false
+  "id": "AcceptAction",
+  "description": "Действие закрытия представления со статусом подтверждения",
+  "type": "object",
+  "extends": {
+    "$ref": "http://demo.infinnity.ru:8081/display/MC/ActionBase"
+  },
+  "properties": {},
+  "additionalProperties": false
 }

@@ -24,12 +24,12 @@ namespace InfinniPlatform.Runtime.Tests.ProjectConverter
             //Arrange
             var projectConverterFrom = new ProjectConverterFrom();
 
-            var config = new ProjectConfig
-            {
-                DebugOutputPath = @"bin\Debug\",
-                ReleaseOutputPath = @"bin\Release\",
-                TargetFrameworkVersion = "v4.5"
-            };
+	        var config = new ProjectConfig
+	        {
+		        DebugOutputPath = Path.Combine("bin", "Debug"),
+		        ReleaseOutputPath = Path.Combine("bin", "Release"),
+		        TargetFrameworkVersion = "v4.5"
+	        };
             var projStream = "InfinniPlatform.Runtime.Tests.Implementation.ProjectConverter.projExamples." + file;
 
             //Act

@@ -32,7 +32,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.Filters.NestFilters
             {CriteriaType.IsLessThanOrEquals, new NestFilterLessThanOrEqualsBuilder()},
             {CriteriaType.IsMoreThan, new NestFilterMoreThanBuilder()},
             {CriteriaType.IsMoreThanOrEquals, new NestFilterMoreThanOrEqualsBuilder()},
-            {CriteriaType.ValueSet, new NestFilterValueSetBuilder()},
+            {CriteriaType.IsIn, new NestFilterIsInBuilder()},
             {CriteriaType.Script, new NestFilterScriptBuilder()},
             {CriteriaType.FullTextSearch, new NestFilterFullTextSearchBuilder()},
 			{CriteriaType.IsIdIn, new NestFilterIdInListBuilder()}

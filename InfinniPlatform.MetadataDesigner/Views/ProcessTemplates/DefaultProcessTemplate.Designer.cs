@@ -61,6 +61,8 @@
             this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
             this.SimpleValidationWarningEditor = new DevExpress.XtraEditors.ImageComboBoxEdit();
             this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
+            this.DeletingDocumentValidationErrorEditor = new DevExpress.XtraEditors.ImageComboBoxEdit();
+            this.DeletingDocumentLabelControl = new DevExpress.XtraEditors.LabelControl();
             this.PanelCreateProcess = new DevExpress.XtraEditors.PanelControl();
             this.ButtonCreateMetadata = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.GroupControlOnOpen)).BeginInit();
@@ -85,6 +87,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.ComplexValidationWarningEditor.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SimpleValidationErrorEditor.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SimpleValidationWarningEditor.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DeletingDocumentValidationErrorEditor.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PanelCreateProcess)).BeginInit();
             this.PanelCreateProcess.SuspendLayout();
             this.SuspendLayout();
@@ -101,11 +104,11 @@
             this.GroupControlOnOpen.Controls.Add(this.ComplexPrefillEditor);
             this.GroupControlOnOpen.Controls.Add(this.labelControl2);
             this.GroupControlOnOpen.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.GroupControlOnOpen.Location = new System.Drawing.Point(0, 75);
+            this.GroupControlOnOpen.Location = new System.Drawing.Point(0, 69);
             this.GroupControlOnOpen.LookAndFeel.SkinName = "Office 2013";
             this.GroupControlOnOpen.LookAndFeel.UseDefaultLookAndFeel = false;
             this.GroupControlOnOpen.Name = "GroupControlOnOpen";
-            this.GroupControlOnOpen.Size = new System.Drawing.Size(729, 325);
+            this.GroupControlOnOpen.Size = new System.Drawing.Size(729, 311);
             this.GroupControlOnOpen.TabIndex = 0;
             this.GroupControlOnOpen.Text = "OnOpen document events";
             // 
@@ -175,7 +178,7 @@
             this.PropertyGridControl.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.RepositoryItemComboBoxEdit});
             this.PropertyGridControl.RowHeaderWidth = 250;
-            this.PropertyGridControl.Size = new System.Drawing.Size(376, 230);
+            this.PropertyGridControl.Size = new System.Drawing.Size(376, 216);
             this.PropertyGridControl.TabIndex = 6;
             // 
             // RepositoryItemComboBoxEdit
@@ -198,7 +201,7 @@
             // ComplexPrefillEditor
             // 
             this.ComplexPrefillEditor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.ComplexPrefillEditor.Location = new System.Drawing.Point(188, 299);
+            this.ComplexPrefillEditor.Location = new System.Drawing.Point(188, 285);
             this.ComplexPrefillEditor.Name = "ComplexPrefillEditor";
             this.ComplexPrefillEditor.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
@@ -210,7 +213,7 @@
             // labelControl2
             // 
             this.labelControl2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.labelControl2.Location = new System.Drawing.Point(14, 302);
+            this.labelControl2.Location = new System.Drawing.Point(14, 288);
             this.labelControl2.Name = "labelControl2";
             this.labelControl2.Size = new System.Drawing.Size(136, 13);
             this.labelControl2.TabIndex = 2;
@@ -228,7 +231,7 @@
             this.PanelCommon.LookAndFeel.SkinName = "Office 2013";
             this.PanelCommon.LookAndFeel.UseDefaultLookAndFeel = false;
             this.PanelCommon.Name = "PanelCommon";
-            this.PanelCommon.Size = new System.Drawing.Size(729, 75);
+            this.PanelCommon.Size = new System.Drawing.Size(729, 69);
             this.PanelCommon.TabIndex = 2;
             // 
             // ButtonSaveProcess
@@ -285,11 +288,11 @@
             this.GroupControlActionOnSave.Controls.Add(this.SuccessSaveEditor);
             this.GroupControlActionOnSave.Controls.Add(this.labelControl7);
             this.GroupControlActionOnSave.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.GroupControlActionOnSave.Location = new System.Drawing.Point(0, 400);
+            this.GroupControlActionOnSave.Location = new System.Drawing.Point(0, 380);
             this.GroupControlActionOnSave.LookAndFeel.SkinName = "Office 2013";
             this.GroupControlActionOnSave.LookAndFeel.UseDefaultLookAndFeel = false;
             this.GroupControlActionOnSave.Name = "GroupControlActionOnSave";
-            this.GroupControlActionOnSave.Size = new System.Drawing.Size(729, 121);
+            this.GroupControlActionOnSave.Size = new System.Drawing.Size(729, 115);
             this.GroupControlActionOnSave.TabIndex = 3;
             this.GroupControlActionOnSave.Text = "Document actions";
             // 
@@ -360,12 +363,14 @@
             this.GroupControlValidationOnSave.Controls.Add(this.labelControl4);
             this.GroupControlValidationOnSave.Controls.Add(this.SimpleValidationWarningEditor);
             this.GroupControlValidationOnSave.Controls.Add(this.labelControl3);
+            this.GroupControlValidationOnSave.Controls.Add(this.DeletingDocumentValidationErrorEditor);
+            this.GroupControlValidationOnSave.Controls.Add(this.DeletingDocumentLabelControl);
             this.GroupControlValidationOnSave.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.GroupControlValidationOnSave.Location = new System.Drawing.Point(0, 521);
+            this.GroupControlValidationOnSave.Location = new System.Drawing.Point(0, 495);
             this.GroupControlValidationOnSave.LookAndFeel.SkinName = "Office 2013";
             this.GroupControlValidationOnSave.LookAndFeel.UseDefaultLookAndFeel = false;
             this.GroupControlValidationOnSave.Name = "GroupControlValidationOnSave";
-            this.GroupControlValidationOnSave.Size = new System.Drawing.Size(729, 142);
+            this.GroupControlValidationOnSave.Size = new System.Drawing.Size(729, 168);
             this.GroupControlValidationOnSave.TabIndex = 4;
             this.GroupControlValidationOnSave.Text = "OnSave document validation";
             // 
@@ -445,6 +450,25 @@
             this.labelControl3.TabIndex = 0;
             this.labelControl3.Text = "Simple validation rule warning";
             // 
+            // DeletingDocumentValidationErrorEditor
+            // 
+            this.DeletingDocumentValidationErrorEditor.Location = new System.Drawing.Point(188, 136);
+            this.DeletingDocumentValidationErrorEditor.Name = "DeletingDocumentValidationErrorEditor";
+            this.DeletingDocumentValidationErrorEditor.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.DeletingDocumentValidationErrorEditor.Size = new System.Drawing.Size(273, 20);
+            this.DeletingDocumentValidationErrorEditor.TabIndex = 6;
+            this.DeletingDocumentValidationErrorEditor.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.EditorDeleteButtonClick);
+            // 
+            // DeletingDocumentLabelControl
+            // 
+            this.DeletingDocumentLabelControl.Location = new System.Drawing.Point(14, 139);
+            this.DeletingDocumentLabelControl.Name = "DeletingDocumentLabelControl";
+            this.DeletingDocumentLabelControl.Size = new System.Drawing.Size(151, 13);
+            this.DeletingDocumentLabelControl.TabIndex = 6;
+            this.DeletingDocumentLabelControl.Text = "Delete document validation rule";
+            // 
             // PanelCreateProcess
             // 
             this.PanelCreateProcess.Controls.Add(this.ButtonCreateMetadata);
@@ -504,6 +528,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.ComplexValidationWarningEditor.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SimpleValidationErrorEditor.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SimpleValidationWarningEditor.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DeletingDocumentValidationErrorEditor.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PanelCreateProcess)).EndInit();
             this.PanelCreateProcess.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -535,8 +560,10 @@
         private DevExpress.XtraEditors.LabelControl labelControl6;
         private DevExpress.XtraEditors.ImageComboBoxEdit ComplexValidationWarningEditor;
         private DevExpress.XtraEditors.LabelControl labelControl5;
+        private DevExpress.XtraEditors.ImageComboBoxEdit DeletingDocumentValidationErrorEditor;
         private DevExpress.XtraEditors.ImageComboBoxEdit SimpleValidationErrorEditor;
         private DevExpress.XtraEditors.LabelControl labelControl4;
+        private DevExpress.XtraEditors.LabelControl DeletingDocumentLabelControl;
         private DevExpress.XtraEditors.ImageComboBoxEdit SimpleValidationWarningEditor;
         private DevExpress.XtraEditors.LabelControl labelControl3;
         private DevExpress.XtraEditors.PanelControl PanelCreateProcess;

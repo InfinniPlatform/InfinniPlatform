@@ -1,31 +1,30 @@
-﻿
-using InfinniPlatform.Api.Index;
-using InfinniPlatform.Api.Index.SearchOptions;
-using InfinniPlatform.Api.SearchOptions;
-using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
+﻿using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeSelectors;
-using InfinniPlatform.Sdk.Environment.Index;
+
 using Nest;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using InfinniPlatform.Index.ElasticSearch.Implementation.Filters.NestFilters;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Index;
 using IFilter = InfinniPlatform.Sdk.Environment.Index.IFilter;
+
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 {
     public sealed class ElasticSearchAggregationProvider : IAggregationProvider
     {
-	    private readonly string _routing;
+	    private readonly string _tenantId;
 	    private readonly string _indexName;
         private readonly IEnumerable<IndexToTypeAccordance> _typeName;
         private IFilter _filters;
         private readonly ElasticConnection _elasticConnection;
 
-        public ElasticSearchAggregationProvider(string indexName, string typeName, string routing)
+        public ElasticSearchAggregationProvider(string indexName, string typeName, string tenantId)
         {
-	        _routing = routing;
+	        _tenantId = tenantId;
 	        _indexName = indexName.ToLowerInvariant();
             _elasticConnection = new ElasticConnection();
 
@@ -45,8 +44,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         public IEnumerable<AggregationResult> ExecuteAggregation(
             dynamic[] dimensions, 
             AggregationType[] measureTypes, 
-            string[] measureFieldNames, 
-            IFilter filters = null)
+            string[] measureFieldNames,
+            SearchModel filters = null)
         {
             Func<AggregationDescriptor<dynamic>, AggregationDescriptor<dynamic>> activeAggregation = null;
 
@@ -193,7 +192,17 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             }
 
             // Добавляем фильтр данных, только если он определен
-            _filters = filters;
+
+            if (filters == null)
+            {
+                filters = new SearchModel();
+            }
+            
+            filters.AddFilter(new NestFilter(Filter<dynamic>.Query(q => 
+                q.Term(ElasticConstants.TenantIdField, _tenantId) &&
+                q.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid))));
+            
+            _filters = filters.Filter;
             var hasFilter = _filters is IFilter<FilterContainer>;
             if (hasFilter)
             {
@@ -205,7 +214,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             }
 
             var rawResult = _elasticConnection.Client.Search<dynamic>(s => s
-                    .BuildSearchForType(new[]{_indexName}, _typeName.SelectMany(d => d.TypeNames), _routing, false, false)
+                    .BuildSearchForType(new[]{_indexName}, _typeName.SelectMany(d => d.TypeNames), false, false)
                     .Size(0)  // Нас интересуют только агрегации, исключаем результаты поискового запроса
                     .Aggregations(activeAggregation)
                 );
@@ -239,7 +248,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             IEnumerable<string> termFields,
             AggregationType measureType,
             string measureFieldName,
-            IFilter filters = null)
+            SearchModel filters = null)
         {
             var dimensions = termFields.Select(termField => new
             {
@@ -496,7 +505,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         ///  
         /// new {
         ///         Property = "Age",
-        ///         CriteriaType = CriteriaType.ValueSet,
+        ///         CriteriaType = CriteriaType.IsIn,
         ///         Value = 10\n20\n30
         ///     }
         ///  

@@ -131,10 +131,16 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 			ComboBoxValidationRuleErrorHandler.Properties.Items.AddRange(validationRuleHandlers.BuildImageComboBoxItemsString().ToList());
 		}
 
+        private void ReloadDeleteDocumentValidationRuleHandlers(IEnumerable<HandlerDescription> validationRuleHandlers)
+        {
+            ComboBoxDeleteDocumentValidationRuleHandler.Properties.Items.Clear();
+            ComboBoxDeleteDocumentValidationRuleHandler.Properties.Items.AddRange(validationRuleHandlers.BuildImageComboBoxItems().ToList());
+        }
+
 	    private void ButtonAddTransitionClick(object sender, EventArgs e)
 	    {
 	        ProcessBuilder.AddTransition(TransitionName, StateFrom, ValidationPointError, ValidationPointWarning,
-	            ActionPoint, SuccessPoint,null, FailPoint, null, ValidationRuleWarning, ValidationRuleError, null,CredentialsType, CredentialsPoint);
+	            ActionPoint, SuccessPoint,null, FailPoint, null, ValidationRuleWarning, ValidationRuleError, DeletingDocumentValidationRuleError, null,CredentialsType, CredentialsPoint);
 
 	        ClearValues();
 	    }
@@ -166,7 +172,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 			ComboBoxActionHandler.EditValue = null;
 			ComboBoxValidationRuleWarningHandler.EditValue = null;
 			ComboBoxValidationRuleErrorHandler.EditValue = null;
-
+		    ComboBoxDeleteDocumentValidationRuleHandler.EditValue = null;
 		}
 
 
@@ -185,22 +191,23 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 			ReloadValidationRuleWarningHandlers(ValidationWarnings);			
 
 			ReloadValidationRuleErrorHandlers(ValidationErrors);
+
+            ReloadDeleteDocumentValidationRuleHandlers(ValidationHandlers);
            
-			
+			ComboBoxFromState.Properties.Items.Clear();
+			ComboBoxFromState.Properties.Items.AddRange(DocumentStates.BuildImageComboBoxItemsString().ToList());
+
 		}
 
 		public IEnumerable<HandlerDescription> ActionHandlers { get; set; }
 		public IEnumerable<HandlerDescription> ValidationHandlers { get; set; }
 		public IEnumerable<string> ValidationWarnings { get; set; }
 		public IEnumerable<string> ValidationErrors { get; set; }
-		
-        public string ConfigId { get; set; }
-		
-        public string DocumentId { get; set; }
-
+        public IEnumerable<string> DeleteDocumentValidationErrors { get; set; }
+		public string ConfigId { get; set; }
+		public string DocumentId { get; set; }
         public string Version { get; set; }
-
-	    public IEnumerable<string> DocumentStates { get; set; }
+		public IEnumerable<string> DocumentStates { get; set; }
 
 		public IProcessBuilder ProcessBuilder { get; set; }
 
@@ -339,6 +346,18 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 				return null;
 			}
 		}
+
+        public dynamic DeletingDocumentValidationRuleError
+        {
+            get
+            {
+                if (ComboBoxDeleteDocumentValidationRuleHandler.EditValue != null)
+                {
+                    return ViewModelExtension.BuildValidationPointFromString(((HandlerDescription)ComboBoxDeleteDocumentValidationRuleHandler.EditValue).HandlerId);
+                }
+                return null;
+            }
+        }
 
 		public dynamic SuccessPoint
 		{

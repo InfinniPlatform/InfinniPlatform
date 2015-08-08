@@ -1,20 +1,17 @@
 ﻿{
-	"id": "DataSource",
-	"description": "Контейнер для описания источника данных представления",
-	"type": "object",
-	"properties": {
-		"ObjectDataSource": {
-			"description": "Источник данных представления для произвольного массива",
-			"$ref": "http://demo.infinnity.ru:8081/display/MC/ObjectDataSource"
-		},
-		"DocumentDataSource": {
-			"description": "Источник данных представления для документов",
-			"$ref": "http://demo.infinnity.ru:8081/display/MC/DocumentDataSource"
-		},
-		"MetadataDataSource": {
-			"description": "Источник данных представления для метаданных конфигурации",
-			"$ref": "http://demo.infinnity.ru:8081/display/MC/MetadataDataSource"
-		}
-	},
-	"additionalProperties": false
+  "id": "DataSource",
+  "description": "Контейнер для описания источника данных представления",
+  "type": "object",
+  "properties": {
+    "ObjectDataSource": {
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/ObjectDataSource"
+    },
+    "DocumentDataSource": {
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/DocumentDataSource"
+    },
+    "MetadataDataSource": {
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/MetadataDataSource"
+    }
+  },
+  "additionalProperties": false
 }

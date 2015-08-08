@@ -16,7 +16,10 @@ namespace InfinniPlatform.Conventions
 		private const string SolutionName = "InfinniConfiguration";
 
 		private static readonly string SolutionDir
-			= Path.GetFullPath(@"..\");
+			= Path.GetFullPath(".." + Path.DirectorySeparatorChar);
+
+		private static readonly string PackagesDir
+			= ".." + Path.DirectorySeparatorChar + "packages" + Path.DirectorySeparatorChar;
 
 		private static readonly string[] SolutionProjects
 			= Directory.GetDirectories(SolutionDir, string.Format("{0}.*", SolutionName))
@@ -47,8 +50,8 @@ namespace InfinniPlatform.Conventions
 		public void CodeProjectShouldHaveResources(string project)
 		{
 			// When
-			var result = File.Exists(Path.Combine(project, @"Properties\Resources.resx"))
-						 && File.Exists(Path.Combine(project, @"Properties\Resources.Designer.cs"));
+			var result = File.Exists(Path.Combine(project, @"Properties" + Path.DirectorySeparatorChar + "Resources.resx"))
+						 && File.Exists(Path.Combine(project, @"Properties" + Path.DirectorySeparatorChar + "Resources.Designer.cs"));
 
 			// Then
 			Assert.IsTrue(result, @"Проект ""{0}"" должен иметь файл ресурсов ""Properties\Resources"".", project);
@@ -60,7 +63,7 @@ namespace InfinniPlatform.Conventions
 		public void ProjectShouldHaveCommonOutputPath(string project)
 		{
 			// Given
-			const string outputPath = @"..\Assemblies\";
+			var outputPath = ".." + Path.DirectorySeparatorChar + "Assemblies" + Path.DirectorySeparatorChar;
 
 			// When
 			var result = LoadProject(project)
@@ -86,7 +89,7 @@ namespace InfinniPlatform.Conventions
 				.All(i => i == null
 						  || string.IsNullOrWhiteSpace(i.Value)
 						  || i.Value.StartsWith(@"C:\Program Files")
-						  || i.Value.StartsWith(@"..\packages\"));
+						  || i.Value.StartsWith(PackagesDir));
 
 			// Then
 			Assert.IsTrue(result, @"Проект ""{0}"" может ссылаться только на ""C:\Program Files"" или ""..\packages\""", project);
@@ -104,8 +107,8 @@ namespace InfinniPlatform.Conventions
 				.Select(i => i.Attribute("Include"))
 				.All(i => i != null
 						  && string.IsNullOrWhiteSpace(i.Value) == false
-						  && i.Value.StartsWith(@"..\")
-						  && Path.GetFullPath(i.Value.Insert(3, SolutionName + @"\"))
+						  && i.Value.StartsWith(".." + Path.DirectorySeparatorChar)
+						  && Path.GetFullPath(i.Value.Insert(3, SolutionName + Path.DirectorySeparatorChar))
 								 .StartsWith(SolutionDir));
 
 			// Then
@@ -125,13 +128,13 @@ namespace InfinniPlatform.Conventions
 				.Elements(ProjectNamespace + "HintPath")
 				.Where(i => i != null
 							&& string.IsNullOrWhiteSpace(i.Value) == false
-							&& i.Value.StartsWith(@"..\packages\"))
+							&& i.Value.StartsWith(PackagesDir))
 				.Select(i => i.Value)
 				.ToArray();
 
 			var packageConfig = LoadPackageConfig(project)
 				.Elements("package")
-				.Select(i => string.Format(@"..\packages\{0}.{1}\", i.Attribute("id").Value, i.Attribute("version").Value))
+				.Select(i => string.Format(PackagesDir + "{0}.{1}" + Path.DirectorySeparatorChar, i.Attribute("id").Value, i.Attribute("version").Value))
 				.ToArray();
 
 			// When
@@ -161,7 +164,7 @@ namespace InfinniPlatform.Conventions
 
 			var packageConfig = LoadPackageConfig(project)
 				.Elements("package")
-				.Select(i => string.Format(@"..\packages\{0}.{1}\", i.Attribute("id").Value, i.Attribute("version").Value))
+				.Select(i => string.Format(PackagesDir + "{0}.{1}" + Path.DirectorySeparatorChar, i.Attribute("id").Value, i.Attribute("version").Value))
 				.ToArray();
 
 			// When
@@ -261,7 +264,8 @@ namespace InfinniPlatform.Conventions
 		{
 			// Given
 			var result = new List<string>();
-			var codeFiles = Directory.GetFiles(SolutionDir, "*.cs", SearchOption.AllDirectories).Where(f => !f.Contains(@"\obj\"));
+			var objPath = Path.DirectorySeparatorChar + "obj" + Path.DirectorySeparatorChar;
+			var codeFiles = Directory.GetFiles(SolutionDir, "*.cs", SearchOption.AllDirectories).Where(f => !f.Contains(objPath));
 
 			// When
 
@@ -290,8 +294,8 @@ namespace InfinniPlatform.Conventions
 		public void CodeProjectShouldReferenceOnCommonAppConfig(string project)
 		{
 			// Given
-			const string appConfig = @"..\Files\Configuration\App.config";
-            const string appConfigForTest = @"..\Files\Tests\App.config";
+			var appConfig = Path.Combine("..", "Files", "Configuration", "App.config");
+			var appConfigForTest = Path.Combine("..", "Files", "Tests", "App.config");
 
 			// When
 			var result = LoadProject(project)
@@ -302,16 +306,16 @@ namespace InfinniPlatform.Conventions
 				.FirstOrDefault() ?? appConfig;
 
 			// Then
-		    if (project.EndsWith("RestfulApi"))
-		    {
-                Assert.AreEqual(appConfigForTest, result,
-                    @"Проект ""{0}"" должен ссылаться на файл конфигурации c настройками для тестов ""{1}""", project, appConfig);
-		    }
-		    else
-		    {
-		        Assert.AreEqual(appConfig, result,
-		            @"Проект ""{0}"" должен ссылаться на общий файл конфигурации для платформы ""{1}""", project, appConfig);
-		    }
+			if (project.EndsWith("RestfulApi"))
+			{
+				Assert.AreEqual(appConfigForTest, result,
+					@"Проект ""{0}"" должен ссылаться на файл конфигурации c настройками для тестов ""{1}""", project, appConfig);
+			}
+			else
+			{
+				Assert.AreEqual(appConfig, result,
+					@"Проект ""{0}"" должен ссылаться на общий файл конфигурации для платформы ""{1}""", project, appConfig);
+			}
 		}
 
 

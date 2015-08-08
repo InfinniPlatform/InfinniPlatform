@@ -398,6 +398,10 @@
   </data>
   <data name="DocumentNotFound" xml:space="preserve">
     <value>Document with identifier "{0}" not found.</value>
+      </data>
+
+  <data name="BinaryContentMaxSizeIsExceed" xml:space="preserve">
+    <value>Binary content max size {0} is exceed.</value>
   </data>
   <data name="DocumentDeletedSuccessfully" xml:space="preserve">
     <value>Document with identifier "{0}" deleted successfully</value>

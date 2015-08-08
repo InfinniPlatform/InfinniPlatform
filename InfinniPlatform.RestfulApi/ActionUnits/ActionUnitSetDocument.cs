@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
+using System.Collections.Generic;
+using System.Linq;
+using InfinniPlatform.RestfulApi.Utils;
 
 namespace InfinniPlatform.RestfulApi.ActionUnits
 {
@@ -26,7 +27,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             dynamic instanceId = null;
             if (documentProvider != null)
             {
-                ApplyTransactionMarker(target);
+                TransactionUtils.ApplyTransactionMarker(target);
 
                 _metadataComponent = target.Context.GetComponent<IMetadataComponent>();
 
@@ -79,7 +80,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                 target.Result = new DynamicWrapper();
 
                 target.Result.IsValid = true;
-                target.Result.ValidationMessage = "Document successfully saved.";
+                target.Result.ValidationMessage = string.Empty;
 
                 if (instanceId != null)
                 {
@@ -124,6 +125,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                 return null;
 
             var propertyNamesToRemove = new List<string>();
+            var propertiesToModify = new Dictionary<string, dynamic>();
 
             dynamic documentClone = document.Clone();
 
@@ -136,6 +138,8 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                 }
 
                 dynamic propertyMetadata = schema.Properties[documentProperty.Key];
+ 
+
 
                 if (propertyMetadata == null)
                 {
@@ -145,7 +149,12 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                 {
                     if (propertyMetadata.Type == "Object")
                     {
-                        ProcessInnerObjectProperties(version, propertyMetadata.TypeInfo, documentProperty);
+                    propertiesToModify.Add(
+                            documentProperty.Key,
+                            ProcessInnerObjectProperties(version,propertyMetadata.TypeInfo, documentProperty));
+
+
+
                     }
                     else if (propertyMetadata.Type == "Array")
                     {
@@ -154,14 +163,22 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                             continue;
                         }
 
-                        ProcessInnerArrayProperties(version, propertyMetadata.Items.TypeInfo, documentProperty);
+                        propertiesToModify.Add(
+                            documentProperty.Key,
+                            ProcessInnerArrayProperties(version, propertyMetadata.Items.TypeInfo, documentProperty));
+
                     }
                 }
             }
 
-            foreach (string propertyName in propertyNamesToRemove)
+            foreach (var propertyName in propertyNamesToRemove)
             {
                 documentClone[propertyName] = null;
+            }
+
+            foreach (var propertyToModify in propertiesToModify)
+            {
+                documentClone[propertyToModify.Key] = propertyToModify.Value;
             }
 
             return documentClone;
@@ -170,48 +187,45 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
         /// <summary>
         ///     Обработка вложенных свойств объектов
         /// </summary>
-        private static void ProcessInnerObjectProperties(string version, dynamic propertyTypeInfo,
-                                                         dynamic documentProperty)
+        private static dynamic ProcessInnerObjectProperties(string version, dynamic propertyTypeInfo, dynamic documentProperty)
+                                                       
         {
+            dynamic result = documentProperty.Value;
+
             if (propertyTypeInfo == null)
             {
-                return;
+                return result;
             }
 
             if (propertyTypeInfo.DocumentLink != null)
             {
-                dynamic document = documentProperty.Value;
-
                 if (propertyTypeInfo.DocumentLink.Inline == true)
                 {
                     dynamic documentSchema = null;
                     if (propertyTypeInfo.DocumentLink.ConfigId != null &&
                         propertyTypeInfo.DocumentLink.DocumentId != null)
                     {
-                        IEnumerable<dynamic> metadataList = _metadataComponent.GetMetadataList(version,
-                                                                                               propertyTypeInfo
-                                                                                                   .DocumentLink
-                                                                                                   .ConfigId,
-                                                                                               propertyTypeInfo
-                                                                                                   .DocumentLink
-                                                                                                   .DocumentId,
-                                                                                               MetadataType.Schema);
+                    IEnumerable<dynamic> metadataList = _metadataComponent.GetMetadataList(version,
+                            propertyTypeInfo.DocumentLink.ConfigId,
+                            propertyTypeInfo.DocumentLink.DocumentId,
+                              MetadataType.Schema);
 
                         documentSchema = metadataList.FirstOrDefault();
                     }
 
                     if (documentSchema != null)
                     {
-                        RemoveInappropriateProperties(version, document, documentSchema);
+                        result = RemoveInappropriateProperties(version, documentProperty.Value, documentSchema);
                     }
                 }
                 else
                 {
-                    if (document != null &&
+                    if (documentProperty.Value != null &&
                         propertyTypeInfo.DocumentLink.ConfigId != null &&
                         propertyTypeInfo.DocumentLink.DocumentId != null)
                     {
-                        RemoveLinkExtraProperties(document);
+                        RemoveLinkExtraProperties(documentProperty.Value);
+                        result = documentProperty.Value;
                     }
                 }
             }
@@ -221,19 +235,23 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             }
             else
             {
-                RemoveInappropriateProperties(version, documentProperty.Value, propertyTypeInfo);
+                result = RemoveInappropriateProperties(version, documentProperty.Value, propertyTypeInfo);
             }
+
+            return result;
         }
 
         /// <summary>
         ///     Обработка вложенных свойств массивов
         /// </summary>
-        private static void ProcessInnerArrayProperties(string version, dynamic propertyTypeInfo,
-                                                        dynamic documentProperty)
+        private static IEnumerable<dynamic> ProcessInnerArrayProperties(string version, dynamic propertyTypeInfo,
+            dynamic documentProperty)
         {
+            var handledItems = new List<dynamic>();
+
             if (propertyTypeInfo == null)
             {
-                return;
+                return documentProperty.Value;
             }
 
             if (propertyTypeInfo.DocumentLink != null)
@@ -245,13 +263,10 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                         propertyTypeInfo.DocumentLink.DocumentId != null)
                     {
                         IEnumerable<dynamic> metadataList = _metadataComponent.GetMetadataList(version,
-                                                                                               propertyTypeInfo
-                                                                                                   .DocumentLink
-                                                                                                   .ConfigId,
-                                                                                               propertyTypeInfo
-                                                                                                   .DocumentLink
-                                                                                                   .DocumentId,
-                                                                                               MetadataType.Schema);
+                            propertyTypeInfo.DocumentLink.ConfigId,
+                            propertyTypeInfo.DocumentLink.DocumentId,
+                            MetadataType.Schema);
+
 
                         documentSchema = metadataList.FirstOrDefault();
                     }
@@ -261,7 +276,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                     {
                         foreach (var documentValue in DynamicWrapperExtensions.ToEnumerable(documentProperty.Value))
                         {
-                            RemoveInappropriateProperties(version, documentValue, documentSchema);
+                            handledItems.Add(RemoveInappropriateProperties(version, documentValue, documentSchema));
                         }
                     }
                 }
@@ -271,6 +286,8 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                     {
                         RemoveLinkExtraProperties(documentValue);
                     }
+
+                    handledItems = documentProperty.Value;
                 }
             }
             else if (propertyTypeInfo.BinaryLink != null)
@@ -281,9 +298,11 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             {
                 foreach (var documentValue in DynamicWrapperExtensions.ToEnumerable(documentProperty.Value))
                 {
-                    RemoveInappropriateProperties(version, documentValue, propertyTypeInfo);
+                    handledItems.Add(RemoveInappropriateProperties(version, documentValue, propertyTypeInfo));
                 }
             }
+
+            return handledItems;
         }
 
         private static void RemoveLinkExtraProperties(dynamic instanceToHandle)
@@ -299,36 +318,12 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                 }
             }
 
-            foreach (string propertyName in propertyNames)
+            foreach (var propertyName in propertyNames)
             {
                 instanceToHandle[propertyName] = null;
             }
         }
 
-        /// <summary>
-        ///     Присоединить сохраняемые документы к указанной транзакции
-        /// </summary>
-        /// <param name="target"></param>
-        private void ApplyTransactionMarker(IApplyContext target)
-        {
-            if (!string.IsNullOrEmpty(target.TransactionMarker))
-            {
-                dynamic docs = (target.Item.Document != null ? new[] {target.Item.Document} : null) ??
-                               target.Item.Documents;
 
-                if (docs != null)
-                {
-                    target.Context.GetComponent<ITransactionComponent>().GetTransactionManager()
-                          .GetTransaction(target.TransactionMarker)
-                          .Attach(target.Item.Configuration,
-                                  target.Item.Metadata,
-                                  target.Context.GetVersion(target.Item.Configuration,target.UserName),
-                                  docs,
-                                  target.Context.GetComponent<ISecurityComponent>()
-                                        .GetClaim(AuthorizationStorageExtensions.OrganizationClaim, target.UserName) ??
-                                  AuthorizationStorageExtensions.AnonimousUser);
-                }
-            }
-        }
     }
 }

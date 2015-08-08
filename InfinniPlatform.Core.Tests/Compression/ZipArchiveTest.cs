@@ -32,7 +32,8 @@ namespace InfinniPlatform.Core.Tests.Compression
 		public void ShouldLoadZipArchive()
 		{
 			//given
-			var streamArchive = new FileStream(@"TestData\Assemblies.zip", FileMode.Open);
+			var pathAssemblies = Path.Combine("TestData", "Assemblies.zip");
+			var streamArchive = new FileStream(pathAssemblies, FileMode.Open);
 			
 			//when
 			var zipArchive = streamArchive.ReadArchive(Encoding.Default);

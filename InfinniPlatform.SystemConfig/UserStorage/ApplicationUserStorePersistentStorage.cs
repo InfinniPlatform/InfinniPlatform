@@ -168,30 +168,32 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             }
         }
 
-        public void AddUserClaim(ApplicationUser user, string claimType, string claimValue)
-        {
-            List<ApplicationUserClaim> claims = user.Claims.ToList();
+	    public void AddUserClaim(ApplicationUser user, string claimType, string claimValue, bool overwrite = true)
+	    {
+	        var claims = overwrite
+	            ? user.Claims.ToList().Where(c => c.Type.DisplayName != claimType).ToList()
+	            : user.Claims.ToList();
 
-            ApplicationClaimType claim = FindClaimType(claimType);
-            if (claim != null)
-            {
-                var userClaim = new ApplicationUserClaim();
-                userClaim.Type = new ForeignKey
-                    {
-                        DisplayName = claim.Name,
-                        Id = claim.Id
-                    };
-                userClaim.Value = claimValue;
+	        ApplicationClaimType claim = FindClaimType(claimType);
+	        if (claim != null)
+	        {
+	            var userClaim = new ApplicationUserClaim();
+	            userClaim.Type = new ForeignKey()
+	            {
+	                DisplayName = claim.Name,
+	                Id = claim.Id
+	            };
+	            userClaim.Value = claimValue;
 
-                claims.Add(userClaim);
-                user.Claims = claims;
-                UpdateUser(user);
-            }
-            else
-            {
-                throw new ArgumentException(string.Format("User claim not found: {0}", claimType));
-            }
-        }
+	            claims.Add(userClaim);
+	            user.Claims = claims;
+	            UpdateUser(user);
+	        }
+	        else
+	        {
+	            throw new ArgumentException(string.Format("User claim not found: {0}", claimType));
+	        }
+	    }
 
         public void RemoveUserClaim(ApplicationUser user, string claimType)
         {
@@ -201,18 +203,17 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             UpdateUser(user);
         }
 
-        public void AddUserLogin(ApplicationUser user, ApplicationUserLogin userLogin)
-        {
-            List<ApplicationUserLogin> logins = user.Logins.ToList();
-            if (
-                logins.FirstOrDefault(f => f.Provider == userLogin.ProviderKey && f.ProviderKey == userLogin.ProviderKey) ==
-                null)
-            {
-                logins.Add(userLogin);
-                user.Logins = logins;
-                UpdateUser(user);
-            }
-        }
+		public void AddUserLogin(ApplicationUser user, ApplicationUserLogin userLogin)
+		{
+			var logins = user.Logins.ToList();
+			if (logins.FirstOrDefault(f => f.Provider == userLogin.ProviderKey && f.ProviderKey == userLogin.ProviderKey) == null)
+			{
+				logins.Add(userLogin);
+				user.Logins = logins;
+				UpdateUser(user);
+			}
+		}
+
 
         public void RemoveUserLogin(ApplicationUser user, ApplicationUserLogin userLogin)
         {
@@ -232,6 +233,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             new DocumentApiUnsecured().SetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
                                                        AuthorizationStorageExtensions.UserStore, instance, false, true);
         }
+
 
         public void AddRole(string roleName, string caption, string description)
         {

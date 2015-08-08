@@ -7,12 +7,12 @@ using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.MigrationsAndVerifications.Helpers;
+using InfinniPlatform.SystemConfig.Multitenancy;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Metadata;
-using InfinniPlatform.SystemConfig.RoutingFactory;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 {
@@ -22,6 +22,13 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
     public sealed class UpdateStoreMigration : IConfigurationMigration
     {
         private readonly IIndexFactory _indexFactory;
+
+        public UpdateStoreMigration()
+        {
+            _updatedContainers = new List<string>();
+			_indexFactory = new ElasticFactory(new MultitenancyProvider());
+        }
+
 
         /// <summary>
         ///     Необходимо хранить имена контейнеров, для которых уже была создана новая версия, чтобы не сделать это несколько раз
@@ -35,13 +42,6 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 
         private IGlobalContext _context;
         private string _version;
-
-        public UpdateStoreMigration()
-        {
-            _updatedContainers = new List<string>();
-            _indexFactory = new ElasticFactory(new RoutingFactoryBase());
-        }
-
 
         /// <summary>
         ///     Текстовое описание миграции

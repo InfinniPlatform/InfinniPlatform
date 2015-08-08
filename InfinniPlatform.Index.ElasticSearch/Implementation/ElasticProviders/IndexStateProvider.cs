@@ -12,7 +12,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
     public sealed class IndexStateProvider : IIndexStateProvider
     {
         private readonly ElasticConnection _connection;
-       
 
         public IndexStateProvider()
         {

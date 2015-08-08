@@ -25,7 +25,7 @@ namespace InfinniPlatform.Api.TestEnvironment
         public static IGlobalContext CreateContext()
         {
             var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterModule(new XmlFileReader("autofac.xml"));
+			containerBuilder.RegisterModule(new XmlFileReader("Autofac.xml"));
             var container = containerBuilder.Build();
             return container.Resolve<IGlobalContext>();
         }

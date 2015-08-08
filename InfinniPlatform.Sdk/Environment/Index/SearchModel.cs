@@ -75,11 +75,7 @@ namespace InfinniPlatform.Sdk.Environment.Index
             IFilterBuilder filterFactory)
         {
             var searchModel = new SearchModel();
-
-            // В случае, если ищем документы по фильтру, мы должны игнорировать документы со статусами Deleted и Invalid
-            searchModel.AddFilter(filterFactory.Get("Status", "Deleted", CriteriaType.IsNotEquals));
-            searchModel.AddFilter(filterFactory.Get("Status", "Invalid", CriteriaType.IsNotEquals));
-
+            
             if (filterObject == null)
                 return searchModel;
 

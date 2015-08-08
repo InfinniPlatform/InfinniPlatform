@@ -234,8 +234,8 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 			{
 				try
 				{
-					var fileDll = baseDirectory + "\\" + filename + ".dll";
-					var fileExe = baseDirectory + "\\" + filename + ".exe";
+					var fileDll = Path.Combine(baseDirectory, filename + ".dll");
+					var fileExe = Path.Combine(baseDirectory, filename + ".exe");
 
 					if (File.Exists(fileDll))
 					{
@@ -643,6 +643,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
                 instance.DeletePoint = transition.DeletePoint != null ? transition.DeletePoint.ScenarioId : null;
 				instance.ValidationRuleWarning = transition.ValidationRuleWarning;
 				instance.ValidationRuleError = transition.ValidationRuleError;
+                instance.DeletingDocumentValidationRuleError = transition.DeletingDocumentValidationRuleError;
 				result.Add(instance);
 			}
 			return result.ToDataTable();

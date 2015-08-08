@@ -50,6 +50,20 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
             _isEmbeddedConfiguration = isEmbeddedConfiguration;
         }
 
+		private MetadataContainer RegisterContainer(string containerId)
+		{
+			var metadata = new MetadataContainer(containerId);
+			metadata.ContainerId = containerId;
+			_containers.Add(metadata);
+			return metadata;
+		}
+
+		private MetadataContainer GetMetadataContainer(string containerId)
+		{
+			return _containers.FirstOrDefault(c => c.ContainerId.ToLowerInvariant() == containerId.ToLowerInvariant()) ?? RegisterContainer(containerId);
+		}
+
+
         /// <summary>
         ///     Идентификатор конфигурации
         /// </summary>
@@ -204,15 +218,189 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
             LoadProcess(containerId, process);
         }
 
-        /// <summary>
-        ///     Регистрация метаданных сервиса
-        /// </summary>
-        /// <param name="containerId"></param>
-        /// <param name="service"></param>
-        public void RegisterService(string containerId, dynamic service)
-        {
-            GetMetadataContainer(containerId).RegisterService(service);
-        }
+		private void LoadProcess(string containerId, dynamic processFull)
+		{
+
+			try
+			{
+				Action<IStateWorkflowStartingPointConfig> workflowConfig = null;
+				if (processFull.Transitions == null || processFull.Transitions.Count == 0)
+				{
+					Logger.Log.Error("No one transition defined for process: {0}:{1}", processFull.Name, containerId);
+					return;
+				}
+
+				if (processFull.Type == null)
+				{
+					processFull.Type = WorkflowTypes.WithoutState;
+				}
+
+				if ((WorkflowTypes)processFull.Type == WorkflowTypes.WithoutState)
+				{
+
+					var transition = processFull.Transitions[0];
+					Action<IStateTransitionConfig> configTransition = ws =>
+					{
+						if (transition.ValidationPointError != null)
+						{
+							ws.WithValidationError(() => ScriptConfiguration.GetValidator(transition.ValidationPointError.ScenarioId));
+						}
+						if (transition.ValidationPointWarning != null)
+						{
+							ws.WithValidationWarning(() => ScriptConfiguration.GetValidator(transition.ValidationPointWarning.ScenarioId));
+						}
+                        if (transition.DeletingDocumentValidationPoint != null)
+                        {
+                            ws.WithValidationError(() => ScriptConfiguration.GetValidator(transition.DeletingDocumentValidationPoint.ScenarioId));
+                        }
+						//TODO: Необходимо переработать механизм подключения валидаций для бизнес-процессов без состояния
+						//if (transition.ValidationRuleError != null)
+						//{
+						//	ws.WithValidationError(() => ValidationExtensions.CreateValidatorFromConfigValidator(transition.ValidationRuleError.ValidationOperator));
+						//}
+						//if (transition.ValidationRuleWarning != null)
+						//{
+						//	ws.WithValidationWarning(() => ValidationExtensions.CreateValidatorFromConfigValidator(transition.ValidationRuleWarning.ValidationOperator));
+						//}
+						if (transition.ActionPoint != null)
+						{
+							ws.WithAction(() => ScriptConfiguration.GetAction(transition.ActionPoint.ScenarioId));
+						}
+						if (transition.SuccessPoint != null)
+						{
+							ws.OnSuccess(() => ScriptConfiguration.GetAction(transition.SuccessPoint.ScenarioId));
+						}
+						if (transition.FailPoint != null)
+						{
+							ws.OnFail(() => ScriptConfiguration.GetAction(transition.FailPoint.ScenarioId));
+						}
+						if (transition.DeletePoint != null)
+						{
+							ws.OnDelete(() => ScriptConfiguration.GetAction(transition.DeletePoint.ScenarioId));
+						}
+						if (transition.AuthorizationPoint != null)
+						{
+							ws.WithSimpleAuthorization(
+								() => ScriptConfiguration.GetAction(transition.AuthorizationPoint.ScenarioId));
+						}
+						if (transition.ComplexAuthorizationPoint != null)
+						{
+							ws.WithComplexAuthorization(
+								() => ScriptConfiguration.GetAction(transition.ComplexAuthorizationPoint.ScenarioId));
+						}
+						if (transition.CredentialsType == AuthorizationStorageExtensions.CustomCredentials)
+						{
+							ws.OnCredentials(() => ScriptConfiguration.GetAction(transition.CredentialsPoint.ScenarioId));
+						}
+						if (transition.CredentialsType == AuthorizationStorageExtensions.AnonimousUserCredentials)
+						{
+							ws.OnCredentials(() => ScriptConfiguration.GetAction("SetAnonimousCredentials"));
+						}
+					};
+
+
+					workflowConfig = wf => wf.FlowWithoutState(wc => wc.Move(configTransition));
+				}
+				if ((WorkflowTypes)processFull.Type == WorkflowTypes.WithState)
+				{
+					if (processFull.Transitions.Count == 0)
+					{
+						Logger.Log.Error("No transition found for process: {0}", processFull.Name);
+					}
+					var initialStateFrom = processFull.Transitions[0].StateFrom != null ? processFull.Transitions[0].StateFrom.Name.ToString() : null;
+
+					dynamic process1 = processFull;
+					Action<IStateWorkflowConfig> configWorkFlow = wc =>
+					{
+						foreach (var transition in DynamicWrapperExtensions.ToEnumerable(process1.Transitions))
+						{
+
+							dynamic transition1 = transition;
+							Action<IStateTransitionConfig> configTransition = ws =>
+							{
+								if (transition1.ValidationPointError != null)
+								{
+									ws.WithValidationError(() => ScriptConfiguration.GetValidator(transition1.ValidationPointError.ScenarioId));
+								}
+								if (transition1.ValidationPointWarning != null)
+								{
+									ws.WithValidationWarning(() => ScriptConfiguration.GetValidator(transition1.ValidationPointWarning.ScenarioId));
+								}
+                                if (transition1.DeletingDocumentValidationPoint != null)
+                                {
+                                    ws.WithValidationError(() => ScriptConfiguration.GetValidator(transition1.DeletingDocumentValidationPoint.ScenarioId));
+                                }
+
+								//TODO: Необходимо переработать механизм подключения валидаций для кастомных бизнес-процессов
+								//if (transition1.ValidationRuleError != null)
+								//{
+								//	ws.WithValidationError(() => ValidationExtensions.CreateValidatorFromConfigValidator(transition1.ValidationRuleError.ValidationOperator));
+								//}
+								//if (transition1.ValidationRuleWarning != null)
+								//{
+								//	ws.WithValidationWarning(() => ValidationExtensions.CreateValidatorFromConfigValidator(transition1.ValidationRuleWarning.ValidationOperator));
+								//}
+
+								if (transition1.ActionPoint != null)
+								{
+									ws.WithAction(() => ScriptConfiguration.GetAction(transition1.ActionPoint.ScenarioId));
+								}
+								if (transition1.SuccessPoint != null)
+								{
+									ws.OnSuccess(() => ScriptConfiguration.GetAction(transition1.SuccessPoint.ScenarioId));
+								}
+								if (transition1.FailPoint != null)
+								{
+									ws.OnFail(() => ScriptConfiguration.GetAction(transition1.FailPoint.ScenarioId));
+								}
+								if (transition1.DeletePoint != null)
+								{
+									ws.OnDelete(() => ScriptConfiguration.GetAction(transition1.DeletePoint.ScenarioId));
+								}
+								if (transition1.AuthorizationPoint != null)
+								{
+									ws.WithSimpleAuthorization(
+										() => ScriptConfiguration.GetAction(transition1.AuthorizationPoint.ScenarioId));
+								}
+								if (transition1.ComplexAuthorizationPoint != null)
+								{
+									ws.WithComplexAuthorization(
+										() => ScriptConfiguration.GetAction(transition1.ComplexAuthorizationPoint.ScenarioId));
+								}
+								if (transition1.CredentialsType == AuthorizationStorageExtensions.CustomCredentials)
+								{
+									ws.OnCredentials(() => ScriptConfiguration.GetAction(transition.CredentialsPoint.ScenarioId));
+								}
+								if (transition1.CredentialsType == AuthorizationStorageExtensions.AnonimousUserCredentials)
+								{
+									ws.OnCredentials(() => ScriptConfiguration.GetAction("SetAnonimousCredentials"));
+								}
+							};
+							wc.Move(configTransition);
+						}
+					};
+					workflowConfig = wf => wf.ForState(initialStateFrom, configWorkFlow);
+				}
+
+				RegisterWorkflow(containerId, processFull.Name, workflowConfig);
+
+				Logger.Log.Info("Config:{0}, Document: {1}, Process: {2} registered", ConfigurationId, containerId, processFull.Name);
+			}
+			catch (Exception e)
+			{
+				Logger.Log.Error("Config:{0}, Document: {1}, Process: {2}. REGISTRATION ERROR: {3}", ConfigurationId, containerId, processFull.Name, e.Message);
+			}
+		}
+
+		/// <summary>
+	    ///   Регистрация метаданных сервиса
+	    /// </summary>
+	    /// <param name="containerId"></param>
+	    /// <param name="service"></param>
+	    public void RegisterService(string containerId, dynamic service)
+	    {
+	        GetMetadataContainer(containerId).RegisterService(service);
+	    }
 
         /// <summary>
         ///     Регистрация метаданных сценария
@@ -579,204 +767,11 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
             GetMetadataContainer(containerId).UpdateSearchAbilityType(searchAbility);
         }
 
-        private MetadataContainer RegisterContainer(string containerId)
-        {
-            var metadata = new MetadataContainer(containerId);
-            metadata.ContainerId = containerId;
-            _containers.Add(metadata);
-            return metadata;
-        }
-
-        private MetadataContainer GetMetadataContainer(string containerId)
-        {
-            return
-                _containers.FirstOrDefault(c => c.ContainerId.ToLowerInvariant() == containerId.ToLowerInvariant()) ??
-                RegisterContainer(containerId);
-        }
-
-        private void LoadProcess(string containerId, dynamic processFull)
-        {
-            try
-            {
-                Action<IStateWorkflowStartingPointConfig> workflowConfig = null;
-                if (processFull.Transitions == null || processFull.Transitions.Count == 0)
-                {
-                    Logger.Log.Error("No one transition defined for process: {0}:{1}", processFull.Name, containerId);
-                    return;
-                }
-
-                if (processFull.Type == null)
-                {
-                    processFull.Type = WorkflowTypes.WithoutState;
-                }
-
-                if ((WorkflowTypes) processFull.Type == WorkflowTypes.WithoutState)
-                {
-                    var transition = processFull.Transitions[0];
-                    Action<IStateTransitionConfig> configTransition = ws =>
-                    {
-                        if (transition.ValidationPointError != null)
-                        {
-                            ws.WithValidationError(
-                                () => ScriptConfiguration.GetValidator(transition.ValidationPointError.ScenarioId));
-                        }
-                        if (transition.ValidationPointWarning != null)
-                        {
-                            ws.WithValidationWarning(
-                                () => ScriptConfiguration.GetValidator(transition.ValidationPointWarning.ScenarioId));
-                        }
-                        //TODO: Необходимо переработать механизм подключения валидаций для бизнес-процессов без состояния
-                        //if (transition.ValidationRuleError != null)
-                        //{
-                        //	ws.WithValidationError(() => ValidationExtensions.CreateValidatorFromConfigValidator(transition.ValidationRuleError.ValidationOperator));
-                        //}
-                        //if (transition.ValidationRuleWarning != null)
-                        //{
-                        //	ws.WithValidationWarning(() => ValidationExtensions.CreateValidatorFromConfigValidator(transition.ValidationRuleWarning.ValidationOperator));
-                        //}
-                        if (transition.ActionPoint != null)
-                        {
-                            ws.WithAction(() => ScriptConfiguration.GetAction(transition.ActionPoint.ScenarioId));
-                        }
-                        if (transition.SuccessPoint != null)
-                        {
-                            ws.OnSuccess(() => ScriptConfiguration.GetAction(transition.SuccessPoint.ScenarioId));
-                        }
-                        if (transition.FailPoint != null)
-                        {
-                            ws.OnFail(() => ScriptConfiguration.GetAction(transition.FailPoint.ScenarioId));
-                        }
-                        if (transition.DeletePoint != null)
-                        {
-                            ws.OnDelete(() => ScriptConfiguration.GetAction(transition.DeletePoint.ScenarioId));
-                        }
-                        if (transition.AuthorizationPoint != null)
-                        {
-                            ws.WithSimpleAuthorization(
-                                () => ScriptConfiguration.GetAction(transition.AuthorizationPoint.ScenarioId));
-                        }
-                        if (transition.ComplexAuthorizationPoint != null)
-                        {
-                            ws.WithComplexAuthorization(
-                                () => ScriptConfiguration.GetAction(transition.ComplexAuthorizationPoint.ScenarioId));
-                        }
-                        if (transition.CredentialsType == AuthorizationStorageExtensions.CustomCredentials)
-                        {
-                            ws.OnCredentials(() => ScriptConfiguration.GetAction(transition.CredentialsPoint.ScenarioId));
-                        }
-                        if (transition.CredentialsType == AuthorizationStorageExtensions.AnonimousUserCredentials)
-                        {
-                            ws.OnCredentials(() => ScriptConfiguration.GetAction("SetAnonimousCredentials"));
-                        }
-                    };
-
-
-                    workflowConfig = wf => wf.FlowWithoutState(wc => wc.Move(configTransition));
-                }
-                if ((WorkflowTypes) processFull.Type == WorkflowTypes.WithState)
-                {
-                    if (processFull.Transitions.Count == 0)
-                    {
-                        Logger.Log.Error("No transition found for process: {0}", processFull.Name);
-                    }
-                    var initialStateFrom = processFull.Transitions[0].StateFrom != null
-                        ? processFull.Transitions[0].StateFrom.Name.ToString()
-                        : null;
-
-                    dynamic process1 = processFull;
-                    Action<IStateWorkflowConfig> configWorkFlow = wc =>
-                    {
-                        foreach (var transition in DynamicWrapperExtensions.ToEnumerable(process1.Transitions))
-                        {
-                            dynamic transition1 = transition;
-                            Action<IStateTransitionConfig> configTransition = ws =>
-                            {
-                                if (transition1.ValidationPointError != null)
-                                {
-                                    ws.WithValidationError(
-                                        () =>
-                                            ScriptConfiguration.GetValidator(transition1.ValidationPointError.ScenarioId));
-                                }
-                                if (transition1.ValidationPointWarning != null)
-                                {
-                                    ws.WithValidationWarning(
-                                        () =>
-                                            ScriptConfiguration.GetValidator(
-                                                transition1.ValidationPointWarning.ScenarioId));
-                                }
-                                //TODO: Необходимо переработать механизм подключения валидаций для кастомных бизнес-процессов
-                                //if (transition1.ValidationRuleError != null)
-                                //{
-                                //	ws.WithValidationError(() => ValidationExtensions.CreateValidatorFromConfigValidator(transition1.ValidationRuleError.ValidationOperator));
-                                //}
-                                //if (transition1.ValidationRuleWarning != null)
-                                //{
-                                //	ws.WithValidationWarning(() => ValidationExtensions.CreateValidatorFromConfigValidator(transition1.ValidationRuleWarning.ValidationOperator));
-                                //}
-
-                                if (transition1.ActionPoint != null)
-                                {
-                                    ws.WithAction(
-                                        () => ScriptConfiguration.GetAction(transition1.ActionPoint.ScenarioId));
-                                }
-                                if (transition1.SuccessPoint != null)
-                                {
-                                    ws.OnSuccess(
-                                        () => ScriptConfiguration.GetAction(transition1.SuccessPoint.ScenarioId));
-                                }
-                                if (transition1.FailPoint != null)
-                                {
-                                    ws.OnFail(() => ScriptConfiguration.GetAction(transition1.FailPoint.ScenarioId));
-                                }
-                                if (transition1.DeletePoint != null)
-                                {
-                                    ws.OnDelete(() => ScriptConfiguration.GetAction(transition1.DeletePoint.ScenarioId));
-                                }
-                                if (transition1.AuthorizationPoint != null)
-                                {
-                                    ws.WithSimpleAuthorization(
-                                        () => ScriptConfiguration.GetAction(transition1.AuthorizationPoint.ScenarioId));
-                                }
-                                if (transition1.ComplexAuthorizationPoint != null)
-                                {
-                                    ws.WithComplexAuthorization(
-                                        () =>
-                                            ScriptConfiguration.GetAction(
-                                                transition1.ComplexAuthorizationPoint.ScenarioId));
-                                }
-                                if (transition1.CredentialsType == AuthorizationStorageExtensions.CustomCredentials)
-                                {
-                                    ws.OnCredentials(
-                                        () => ScriptConfiguration.GetAction(transition.CredentialsPoint.ScenarioId));
-                                }
-                                if (transition1.CredentialsType ==
-                                    AuthorizationStorageExtensions.AnonimousUserCredentials)
-                                {
-                                    ws.OnCredentials(() => ScriptConfiguration.GetAction("SetAnonimousCredentials"));
-                                }
-                            };
-                            wc.Move(configTransition);
-                        }
-                    };
-                    workflowConfig = wf => wf.ForState(initialStateFrom, configWorkFlow);
-                }
-
-                RegisterWorkflow(containerId, processFull.Name, workflowConfig);
-
-                Logger.Log.Info("Config:{0}, Document: {1}, Process: {2} registered", ConfigurationId, containerId,
-                    processFull.Name);
-            }
-            catch (Exception e)
-            {
-                Logger.Log.Error("Config:{0}, Document: {1}, Process: {2}. REGISTRATION ERROR: {3}", ConfigurationId,
-                    containerId, processFull.Name, e.Message);
-            }
-        }
-
-        public void UnregisterDocument(string documentName)
-        {
-            var container = GetMetadataContainer(documentName);
-            _containers.Remove(container);
-        }
+		public void UnregisterDocument(string documentName)
+		{
+			var container = GetMetadataContainer(documentName);
+			_containers.Remove(container);
+		}
+        
     }
 }

@@ -39,16 +39,16 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
         /// </summary>
         /// <param name="metadata">метаданные объекта</param>
         /// <param name="version"></param>
-        /// <param name="routing">Роутинг для выполнения запросов</param>
+/// <param name="tenantId">Идентификатор организации-клиента для выполнения запросов</param>
+
         /// <returns>Провайдер версий документа</returns>
-        public IVersionProvider GetDocumentProvider(string metadata, string version, string routing)
+        public IVersionProvider GetDocumentProvider(string metadata, string version, string tenantId)
         {
             if (
                 _indexStateProvider.GetIndexStatus(MetadataConfiguration.ConfigurationId,
                     MetadataConfiguration.GetMetadataIndexType(metadata)) != IndexStatus.NotExists)
             {
-                return _indexFactory.BuildVersionProvider(MetadataConfiguration.ConfigurationId,
-                    MetadataConfiguration.GetMetadataIndexType(metadata), routing, version);
+				return _indexFactory.BuildVersionProvider(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata), tenantId, version);
             }
             return null;
         }
@@ -58,16 +58,16 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
         ///     Создает провайдер, возвращающий всегда все версии всех найденных документов
         /// </summary>
         /// <param name="metadata">метаданные объекта</param>
-        /// <param name="routing">Роутинг выполнения запросов</param>
+        /// <param name="tenantId">Идентификатор организации-клиента выполнения запросов</param>
         /// <returns></returns>
-        public IVersionProvider GetDocumentProvider(string metadata, string routing)
+		public IVersionProvider GetDocumentProvider(string metadata, string tenantId)
         {
             if (
                 _indexStateProvider.GetIndexStatus(MetadataConfiguration.ConfigurationId,
                     MetadataConfiguration.GetMetadataIndexType(metadata)) != IndexStatus.NotExists)
             {
-                return _indexFactory.BuildVersionProvider(MetadataConfiguration.ConfigurationId,
-                    MetadataConfiguration.GetMetadataIndexType(metadata), routing, null);
+				return _indexFactory.BuildVersionProvider(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata), tenantId, null);
+                    
             }
             return null;
         }

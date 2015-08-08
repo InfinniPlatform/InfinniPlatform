@@ -100,7 +100,46 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         }
 
         [Test]
+        public void ShouldGetNumberOfDocuments()
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                new DocumentApi().SetDocument(ConfigurationId, DocumentId,
+                    new
+                    {
+                        Id = "firstWord" + i,
+                        TestProperty = "firstWord"
+                    });
+            }
+
+            var countGet = new DocumentApi().GetNumberOfDocuments(
+                ConfigurationId, 
+                DocumentId,
+                filter => filter.AddCriteria(cr => cr.IsEquals("firstWord").Property("TestProperty")));
+
+            Assert.AreEqual(countGet, 100);
+
+            for (int i = 0; i < 10; i++)
+            {
+                new DocumentApi().SetDocument(ConfigurationId, DocumentId,
+                    new
+                    {
+                        Id = "secondWord" + i,
+                        TestProperty = "secondWord"
+                    });
+            }
+
+            var countSet = new DocumentApi().GetNumberOfDocuments(
+                ConfigurationId,
+                DocumentId,
+                filter => filter.AddCriteria(cr => cr.IsEquals("secondWord").Property("TestProperty")));
+
+            Assert.AreEqual(countSet, 10);
+        }
+
+	    [Test]
         public void ShouldDeleteDocument()
+
         {
             new DocumentApi().SetDocument(ConfigurationId, DocumentId,
                                               new

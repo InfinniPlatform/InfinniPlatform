@@ -25,7 +25,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
 				if (sourceAssemblyInfo.Assembly == null)
 				{
 					var assemblyFileName = Path.Combine(pathToAssemblies, sourceAssemblyInfo.Name);
-                    var copyDir = Path.GetDirectoryName(assemblyFileName) + "\\temp_"+ folderExtension;
+					var copyDir = Path.Combine(Path.GetDirectoryName(assemblyFileName), "temp_" + folderExtension);
                     if (!Directory.Exists(copyDir))
                     {
                         Directory.CreateDirectory(copyDir);
@@ -33,7 +33,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
 
 					if (File.Exists(assemblyFileName + ".dll"))
 					{
-					    var copyFileName = copyDir + "\\" + sourceAssemblyInfo.Name + ".dll";
+						var copyFileName = Path.Combine(copyDir, sourceAssemblyInfo.Name + ".dll");
                         File.Copy(assemblyFileName + ".dll",copyFileName,true);
 
 					    sourceAssemblyInfo.Assembly = Assembly.Load(File.ReadAllBytes(copyFileName));
@@ -42,7 +42,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
 					}
 					else if (File.Exists(assemblyFileName + ".exe"))
 					{
-						var copyFileName = copyDir + "\\" + sourceAssemblyInfo.Name + ".exe";
+						var copyFileName = Path.Combine(copyDir, sourceAssemblyInfo.Name + ".exe");
 						File.Copy(assemblyFileName + ".exe", copyFileName,true);
 
 					    sourceAssemblyInfo.Assembly = Assembly.Load(File.ReadAllBytes(assemblyFileName + ".exe"));

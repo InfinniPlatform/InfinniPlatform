@@ -27,9 +27,11 @@ namespace InfinniPlatform.RestfulApi.Installers
             actionUnits.RegisterActionUnitDistributedStorage("indexexists", "ActionUnitIndexExists");
             actionUnits.RegisterActionUnitDistributedStorage("rebuildindex", "ActionUnitRebuildIndex");
             actionUnits.RegisterActionUnitDistributedStorage("getfromindex", "ActionUnitGetFromIndex");
+            actionUnits.RegisterActionUnitDistributedStorage("getindexstorageinfo", "ActionUnitGetIndexStorageInfo");
             actionUnits.RegisterActionUnitDistributedStorage("insertindex", "ActionUnitInsertIndex");
             actionUnits.RegisterActionUnitDistributedStorage("insertindexwithtimestamp", "ActionUnitIndexWithTimeStamp");
             actionUnits.RegisterActionUnitDistributedStorage("getdocument", "ActionUnitGetDocument");
+            actionUnits.RegisterActionUnitDistributedStorage("getnumberofdocuments", "ActionUnitGetNumberOfDocuments");
             actionUnits.RegisterActionUnitDistributedStorage("getconfigmetadata", "ActionUnitGetConfigMetadata");
             actionUnits.RegisterActionUnitDistributedStorage("getconfigmetadatalist", "ActionUnitGetConfigMetadataList");
             actionUnits.RegisterActionUnitDistributedStorage("getdocumentcrossconfig",
@@ -101,6 +103,7 @@ namespace InfinniPlatform.RestfulApi.Installers
 
             actionUnits.RegisterValidationUnitDistributedStorage("setdocumentvalidationwarning",
                                                                  "ValidationUnitSetDocumentWarning");
+            actionUnits.RegisterValidationUnitDistributedStorage("deletedocumentvalidationerror", "ValidationUnitDeleteDocumentError");
             actionUnits.RegisterValidationUnitDistributedStorage("setdocumentvalidationerror",
                                                                  "ValidationUnitSetDocumentError");
 
@@ -521,6 +524,16 @@ namespace InfinniPlatform.RestfulApi.Installers
                                                                                                                  "setcredentials"))
                                                                                      )));
 
+            metadataConfiguration.RegisterWorkflow("configuration", "getnumberofdocuments",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("getnumberofdocuments"))
+                        .WithSimpleAuthorization(() => actionUnits.GetAction("documentauth"))
+                        .WithComplexAuthorization(() => actionUnits.GetAction("complexauth"))
+                        .OnSuccess(() => actionUnits.GetAction("filterauthdocument"))
+                        .OnCredentials(() => actionUnits.GetAction("setcredentials"))
+                        )));
+
             metadataConfiguration.RegisterWorkflow("configuration", "getdocumentbyid",
                                                    f => f.FlowWithoutState(wc => wc
                                                                                      .Move(
@@ -613,6 +626,7 @@ namespace InfinniPlatform.RestfulApi.Installers
             metadataConfiguration.RegisterWorkflow("configuration", "deletedocument",
                                                    f => f.FlowWithoutState(wc => wc
                                                                                      .Move(ws => ws
+                        .WithValidationError(() => actionUnits.GetValidator("deletedocumentvalidationerror"))
                                                                                                      .WithAction(
                                                                                                          () =>
                                                                                                          actionUnits
@@ -649,6 +663,10 @@ namespace InfinniPlatform.RestfulApi.Installers
                                                                                                          actionUnits
                                                                                                              .GetAction(
                                                                                                                  "status")))));
+            metadataConfiguration.RegisterWorkflow("configuration", "getindexstorageinfo",
+                f => f.FlowWithoutState(wc => wc
+                    .Move(ws => ws
+                        .WithAction(() => actionUnits.GetAction("getindexstorageinfo")))));
 
             metadataConfiguration.RegisterWorkflow("configuration", "createsession",
                                                    f => f.FlowWithoutState(wc => wc
@@ -915,9 +933,12 @@ namespace InfinniPlatform.RestfulApi.Installers
                                                                                                insance
                                                                                                    .RegisterExtensionPoint
                                                                                                    ("Move", "signin"))
+
                                                                                            .SetResultHandler(
                                                                                                HttpResultHandlerType
                                                                                                    .SignIn));
+
+
 
             servicesConfiguration.AddRegistration("configuration", "Upload", reg => reg
                                                                                         .RegisterHandlerInstance(
@@ -935,6 +956,10 @@ namespace InfinniPlatform.RestfulApi.Installers
                                                                                                               .RegisterExtensionPoint
                                                                                                               ("GetResult",
                                                                                                                "status"))
+                    .RegisterHandlerInstance("getindexstorageinfo", insance => insance.RegisterExtensionPoint("GetResult", "getindexstorageinfo"))
+                    .RegisterHandlerInstance("getnumberofdocuments", insance => insance
+                                                                .RegisterExtensionPoint("Move", "getnumberofdocuments"))
+                                                                                                               
                                                                                            .RegisterHandlerInstance(
                                                                                                "createsession",
                                                                                                insance => insance

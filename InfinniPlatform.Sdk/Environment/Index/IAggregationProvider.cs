@@ -21,8 +21,8 @@ namespace InfinniPlatform.Sdk.Environment.Index
         /// <param name="measureFieldNames">Имена свойств, по которым необходимо произвести вычисление</param>
         /// <param name="filters">Фильтр для данных</param>
         /// <returns>Результат выполнения агрегации</returns>
-        IEnumerable<AggregationResult> ExecuteAggregation(dynamic[] dimensions, AggregationType[] measureTypes,
-            string[] measureFieldNames, IFilter filters = null);
+        IEnumerable<AggregationResult> ExecuteAggregation(dynamic[] dimensions, AggregationType[] measureTypes, string[] measureFieldNames, SearchModel filters = null);
+          
 
         /// <summary>
         ///     Выполнение агрегирующего запроса
@@ -36,6 +36,6 @@ namespace InfinniPlatform.Sdk.Environment.Index
             IEnumerable<string> termFields,
             AggregationType measureType,
             string measureFieldName,
-            IFilter filters = null);
+            SearchModel filters = null);
     }
 }

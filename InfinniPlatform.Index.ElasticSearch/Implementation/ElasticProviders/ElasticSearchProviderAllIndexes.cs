@@ -14,12 +14,12 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
     /// </summary>
     public sealed class ElasticSearchProviderAllIndexes : IAllIndexesOperationProvider
     {
-        private readonly string _routing;
+        private readonly string _tenantId;
         private readonly ElasticConnection _elasticConnection;
 
-        public ElasticSearchProviderAllIndexes(string routing)
+        public ElasticSearchProviderAllIndexes(string tenantId)
         {
-            _routing = routing;
+            _tenantId = tenantId;
             _elasticConnection = new ElasticConnection();
         }
 
@@ -40,20 +40,18 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
                 q => q
                     .AllIndices()
                     .AllTypes()
-                    .Routing(_routing)
-                    .Query(f => f.Term(
-                        ElasticConstants.IndexObjectPath + ElasticConstants.IndexObjectIdentifierField,
-                        key.ToLowerInvariant())
+                    .Routing(_tenantId)
+                    .Query(
+                        f => f.Term(ElasticConstants.IndexObjectPath + ElasticConstants.IndexObjectIdentifierField, key.ToLowerInvariant())
+                            && f.Term(ElasticConstants.TenantIdField, _tenantId)
+                            && f.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid)
                     )
                 );
 
 
             
             dynamic indexObject =
-                response.Documents.FirstOrDefault(
-                     d => d.Values.Status == null ||
-                     (d.Values.Status.ToString() != "Deleted" &&
-                     d.Values.Status.ToString() != "Invalid"));
+                response.Documents.FirstOrDefault();
 
             if (indexObject != null)
             {

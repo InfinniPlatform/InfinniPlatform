@@ -60,8 +60,10 @@ namespace InfinniPlatform.OceanInformatics.DataModelLoader
                 oceanArchetype.description.details[0].misuse,
                 oceanArchetype.description.details[0].copyright);
 
-            archetype.Properties.Add(_modelObjectExtractor.Extract(oceanArchetype.definition, ontologiesProvider));
-            
+            var extractedData = _modelObjectExtractor.Extract(oceanArchetype.definition, ontologiesProvider);
+            if (!archetype.Properties.ContainsKey(extractedData.Key))
+                archetype.Properties.Add(extractedData);
+
             if (!oceanArchetype.definition.occurrences.upperSpecified ||
                 (oceanArchetype.definition.occurrences.upperSpecified &&
                 oceanArchetype.definition.occurrences.upper != 1))
@@ -82,9 +84,7 @@ namespace InfinniPlatform.OceanInformatics.DataModelLoader
             // элементами, на которые они ссылаются)
 
             if (archetype.Properties != null)
-            {
                 ResolveArchetypeInternalRefs(archetype.Properties, archetype);
-            }
 
             return archetype;
         }
@@ -123,13 +123,9 @@ namespace InfinniPlatform.OceanInformatics.DataModelLoader
                         }
 
                         if (searchResult.Value.Type == DataType.Object.ToString())
-                        {
                             currentItemUnderSearch = searchResult.Value.Properties;
-                        }
                         else if (searchResult.Value.Type == DataType.Array.ToString())
-                        {
                             currentItemUnderSearch = searchResult.Value.Items.Properties;
-                        }
                     }
 
                     resolvedProperties.Add(searchResult.Key, searchResult.Value);
@@ -137,9 +133,7 @@ namespace InfinniPlatform.OceanInformatics.DataModelLoader
 
                 if (property.Value.Properties != null &&
                     property.Value.Properties.Count > 0)
-                {
                     ResolveArchetypeInternalRefs(property.Value.Properties, archetype);
-                }
             }
 
             foreach (var propsToRemove in propertiesToRemove)

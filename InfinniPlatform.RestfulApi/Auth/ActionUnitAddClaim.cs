@@ -25,7 +25,15 @@ namespace InfinniPlatform.RestfulApi.Auth
                 storage.AddClaimType(target.Item.ClaimType);
             }
 
-            storage.AddUserClaim(user, target.Item.ClaimType, target.Item.ClaimValue);
+            var overwrite = true;
+
+            if (target.Item.Overwrite != null &&
+                target.Item.Overwrite == false)
+            {
+                overwrite = false;
+            }
+
+            storage.AddUserClaim(user, target.Item.ClaimType, target.Item.ClaimValue, overwrite);
 
             //обновляем утверждение для указанного пользователя системы
 
