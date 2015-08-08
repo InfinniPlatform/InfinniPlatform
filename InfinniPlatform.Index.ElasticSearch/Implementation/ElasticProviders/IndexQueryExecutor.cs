@@ -33,7 +33,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
         public IndexQueryExecutor(string indexName, string typeName, string tenantId)
         {
-            _tenantId = tenantId;
+            _tenantId = string.IsNullOrEmpty(tenantId) ? "" : tenantId.ToLowerInvariant();
             _elasticConnection = new ElasticConnection();
 
             _typeNames = _elasticConnection.GetAllTypes(new[] {indexName}, new[] {typeName});

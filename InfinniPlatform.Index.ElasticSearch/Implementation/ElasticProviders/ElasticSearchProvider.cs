@@ -52,7 +52,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
             _indexName = indexName.ToLowerInvariant();
             _typeName = typeName.ToLowerInvariant();
-            _tenantId = tenantId;
+            _tenantId = string.IsNullOrEmpty(tenantId) ? "" : tenantId.ToLowerInvariant();
 	        _version = version;
 
 	        _elasticConnection = new ElasticConnection();
@@ -313,7 +313,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
                 Id = jInstance["Id"].ToString().ToLowerInvariant(),
                 TimeStamp = DateTime.Now,
                 Values = jInstance,
-                TenantId = tenantId,
+                TenantId = tenantId.ToLowerInvariant(),
                 Status = IndexObjectStatus.Valid,
                 Version = _version
 
