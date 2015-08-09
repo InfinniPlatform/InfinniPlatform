@@ -378,4 +378,10 @@
 	<data name="UnableToGetPrintViewMetadata" xml:space="preserve">
     <value>Unable to get print view metadata with exception {0}</value>
   </data>
+	<data name="UnableToGetAssemblyMetadata" xml:space="preserve">
+    <value>Unable to get assembly metadata with exception {0}</value>
+  </data>
+	<data name="UnableToUpdateSolutionMetadata" xml:space="preserve">
+    <value>Unable to update solution metadata with exception {0}</value>
+  </data>
 </root>

@@ -57,6 +57,8 @@ namespace InfinniPlatform.UserInterface.AppHost
     internal static class AppRunner
     {
         public const string ApplicationThemeName = "MetropolisLight";
+        public static string Server { get; set; }
+        public static int Port { get; set; }
 
         public static void Run(dynamic appViewMetadata)
         {
@@ -96,7 +98,7 @@ namespace InfinniPlatform.UserInterface.AppHost
 
         private static ObjectBuilderContext CreateBuilderContext()
         {
-            var context = new ObjectBuilderContext();
+            var context = new ObjectBuilderContext(Server, Port);
 
             // View
             context.Register("View", new ViewBuilder());
@@ -116,7 +118,7 @@ namespace InfinniPlatform.UserInterface.AppHost
 
             // DataSources
             context.Register("ObjectDataSource", new ObjectDataSourceBuilder());
-            context.Register("MetadataDataSource", new MetadataDataSourceBuilder());
+            context.Register("MetadataDataSource", new MetadataDataSourceBuilder(Server, Port));
 
             // Actions
             context.Register("AddAction", new AddActionBuilder());
@@ -132,7 +134,7 @@ namespace InfinniPlatform.UserInterface.AppHost
             context.Register("CancelAction", new CancelActionBuilder());
 
             // LinkViews
-            context.Register("ExistsView", new ExistsViewBuilder());
+            context.Register("ExistsView", new ExistsViewBuilder(Server, Port));
 
             // LayoutPanels
             context.Register("Panel", new PanelElementBuilder());
@@ -146,7 +148,7 @@ namespace InfinniPlatform.UserInterface.AppHost
             context.Register("ViewPanel", new ViewPanelElementBuilder());
 
             // ActionElements
-            context.Register("MenuBar", new MenuBarElementBuilder());
+            context.Register("MenuBar", new MenuBarElementBuilder(Server, Port));
             context.Register("ToolBar", new ToolBarElementBuilder());
             context.Register("ToolBarButton", new ToolBarButtonItemBuilder());
             context.Register("ToolBarPopupButton", new ToolBarPopupButtonItemBuilder());
@@ -171,14 +173,14 @@ namespace InfinniPlatform.UserInterface.AppHost
 
             // Designers
             context.Register("DeployDesigner", new DeployDesignerElementBuilder());
-            context.Register("ConfigDesigner", new ConfigDesignerElementBuilder());
+            context.Register("ConfigDesigner", new ConfigDesignerElementBuilder(Server, Port));
             context.Register("ConfigVerifyDesigner", new ConfigVerifyDesignerElementBuilder());
             context.Register("ConfigDeployDesigner", new ConfigDeployDesignerElementBuilder());
-            context.Register("ConfigSelector", new ConfigSelectorElementBuilder());
+            context.Register("ConfigSelector", new ConfigSelectorElementBuilder(Server, Port));
             context.Register("MenuDesigner", new MenuDesignerElementBuilder());
             context.Register("DocumentDesigner", new DocumentDesignerElementBuilder());
             context.Register("DocumentSchemaDesigner", new DocumentSchemaDesignerElementBuilder());
-            context.Register("DocumentSelector", new DocumentSelectorElementBuilder());
+            context.Register("DocumentSelector", new DocumentSelectorElementBuilder(Server, Port));
             context.Register("PrintViewDesigner", new PrintViewDesignerElementBuilder());
             context.Register("ReportDesigner", new ReportDesignerElementBuilder());
             context.Register("GeneratorDesigner", new GeneratorDesignerElementBuilder());

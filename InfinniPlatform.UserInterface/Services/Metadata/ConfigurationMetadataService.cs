@@ -1,7 +1,10 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
+using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.Metadata;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {
@@ -10,33 +13,39 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
     /// </summary>
     internal sealed class ConfigurationMetadataService : BaseMetadataService
     {
-        private readonly string _version;
 
-        public ConfigurationMetadataService(string version)
+        private InfinniMetadataApi _metadataApi;
+
+        public ConfigurationMetadataService(string version, string server, int port) : base(version,server, port)
         {
-            _version = version;
+           
+            _metadataApi = new InfinniMetadataApi(server, port.ToString(), version);
         }
 
-        public override IEnumerable GetItems()
+
+        public override object CreateItem()
         {
-            var items = base.GetItems();
-
-            if (items != null)
-            {
-                items = items.Cast<dynamic>().OrderBy(i => i.Name).ToArray();
-            }
-
-            return items;
+            return _metadataApi.CreateConfig();
         }
 
-        protected override IDataReader CreateDataReader()
+        public override void ReplaceItem(dynamic item)
         {
-            return ManagerFactoryConfiguration.BuildConfigurationMetadataReader(_version, true);
+            _metadataApi.UpdateConfig(item);
         }
 
-        protected override IDataManager CreateDataManager()
+        public override void DeleteItem(string itemId)
         {
-            return ManagerFactoryConfiguration.BuildConfigurationManager(_version);
+            _metadataApi.DeleteConfig(Version, itemId);
+        }
+
+        public override object GetItem(string itemId)
+        {
+            return _metadataApi.GetConfig(Version, itemId);
+        }
+
+        public override IEnumerable<object> GetItems()
+        {
+            return _metadataApi.GetConfigList();
         }
     }
 }

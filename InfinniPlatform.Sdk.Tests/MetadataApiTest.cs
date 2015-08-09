@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Metadata;
 using NUnit.Framework;
 
@@ -27,11 +28,15 @@ namespace InfinniPlatform.Sdk.Tests
         [Test]
         public void ShouldInsertUpdateDeleteSolution()
         {
-            var solution = new SolutionMetadata();
+            var solution = _metadataApi.CreateSolution();
+            
+            Assert.IsNotNull(solution);
+            Assert.IsNotNull(solution.Name);
+
             solution.Id = Guid.NewGuid().ToString();
             solution.Name = "TestSolutionVersion_"+Guid.NewGuid().ToString();
             solution.Version = "2.0.0.0";
-
+            
             _metadataApi.InsertSolution(solution);
             dynamic solutionRead = _metadataApi.GetSolution(solution.Version, solution.Name);
 
@@ -43,6 +48,9 @@ namespace InfinniPlatform.Sdk.Tests
             solutionRead = _metadataApi.GetSolution(solution.Version, solution.Name);
             Assert.AreEqual(solution.Name, solutionRead.Name);
 
+            var solutions = _metadataApi.GetSolutionItems();
+            Assert.True(solutions.Count > 0);
+
             _metadataApi.DeleteSolution(solution.Version, solution.Name);
             solutionRead = _metadataApi.GetSolution(solution.Version, solution.Name);
             Assert.IsNull(solutionRead);
@@ -51,7 +59,7 @@ namespace InfinniPlatform.Sdk.Tests
         [Test]
         public void ShouldInsertUpdateDeleteConfig()
         {
-            var config = new ConfigurationMetadata();
+            var config = _metadataApi.CreateConfig();
             config.Id = Guid.NewGuid().ToString();
             config.Name = "TestConfigVersion_" + Guid.NewGuid().ToString();
             config.Version = "2.0.0.0";
@@ -67,6 +75,9 @@ namespace InfinniPlatform.Sdk.Tests
             configRead = _metadataApi.GetConfig(config.Version, config.Name);
             Assert.AreEqual(config.Name, configRead.Name);
 
+            IEnumerable<dynamic> configList = _metadataApi.GetConfigList();
+            Assert.True(configList.Any());
+
             _metadataApi.DeleteConfig(config.Version, config.Name);
             configRead = _metadataApi.GetConfig(config.Version, config.Name);
             Assert.IsNull(configRead);
@@ -75,13 +86,13 @@ namespace InfinniPlatform.Sdk.Tests
         [Test()]
         public void ShouldInsertUpdateDeleteMenu()
         {
-            var config = new ConfigurationMetadata();
+            dynamic config = _metadataApi.CreateConfig();
             config.Id = Guid.NewGuid().ToString();
             config.Name = "TestConfigVersion_" + Guid.NewGuid().ToString();
             config.Version = "2.0.0.0";
             _metadataApi.InsertConfig(config);
 
-            var menu = new MenuMetadata();
+            var menu = _metadataApi.CreateMenu(config.Version, config.Name);
             menu.Id = Guid.NewGuid().ToString();
             menu.Name = "MainMenu";
 
@@ -99,6 +110,10 @@ namespace InfinniPlatform.Sdk.Tests
 
             Assert.AreEqual(menuRead.Name, menu.Name);
 
+            IEnumerable<dynamic> menuList = _metadataApi.GetMenuList(config.Version, config.Name);
+
+            Assert.True(menuList.Any());
+
             _metadataApi.DeleteMenu(config.Version, config.Name, menu.Name);
 
             menuRead = _metadataApi.GetMenu(config.Version, config.Name, menu.Name);
@@ -112,13 +127,13 @@ namespace InfinniPlatform.Sdk.Tests
         [Test()]
         public void ShouldInsertUpdateDeleteAssembly()
         {
-            var config = new ConfigurationMetadata();
+            dynamic config = _metadataApi.CreateConfig();
             config.Id = Guid.NewGuid().ToString();
             config.Name = "TestConfigVersion_" + Guid.NewGuid().ToString();
             config.Version = "2.0.0.0";
             _metadataApi.InsertConfig(config);
 
-            var assemblyMetadata = new AssemblyMetadata();
+            var assemblyMetadata = _metadataApi.CreateAssembly(config.Version, config.Name);
             assemblyMetadata.Id = Guid.NewGuid().ToString();
             assemblyMetadata.Name = "Assembly1";
 
@@ -136,6 +151,10 @@ namespace InfinniPlatform.Sdk.Tests
 
             Assert.AreEqual(assemblyRead.Name, assemblyMetadata.Name);
 
+            IEnumerable<dynamic> assemblyList = _metadataApi.GetAssemblies(config.Version, config.Name);
+
+            Assert.True(assemblyList.Any());
+
             _metadataApi.DeleteAssembly(config.Version, config.Name, assemblyMetadata.Name);
 
             assemblyRead = _metadataApi.GetAssembly(config.Version, config.Name, assemblyMetadata.Name);
@@ -149,13 +168,13 @@ namespace InfinniPlatform.Sdk.Tests
         [Test()]
         public void ShouldInsertUpdateDeleteRegister()
         {
-            var config = new ConfigurationMetadata();
+            var config = _metadataApi.CreateConfig();
             config.Id = Guid.NewGuid().ToString();
             config.Name = "TestConfigVersion_" + Guid.NewGuid().ToString();
             config.Version = "2.0.0.0";
             _metadataApi.InsertConfig(config);
 
-            var registerMetadata = new RegisterMetadata();
+            var registerMetadata = _metadataApi.CreateRegister(config.Version,config.Name);
             registerMetadata.Id = Guid.NewGuid().ToString();
             registerMetadata.Name = "Register1";
 
@@ -173,6 +192,9 @@ namespace InfinniPlatform.Sdk.Tests
 
             Assert.AreEqual(registerRead.Name, registerMetadata.Name);
 
+            IEnumerable<dynamic> registers = _metadataApi.GetRegisterItems(config.Version, config.Name);
+            Assert.True(registers.Any());
+
             _metadataApi.DeleteRegister(config.Version, config.Name, registerMetadata.Name);
 
             registerRead = _metadataApi.GetRegister(config.Version, config.Name, registerMetadata.Name);
@@ -186,13 +208,13 @@ namespace InfinniPlatform.Sdk.Tests
         [Test()]
         public void ShouldInsertUpdateDeleteDocument()
         {
-            var config = new ConfigurationMetadata();
+            var config = _metadataApi.CreateConfig();
             config.Id = Guid.NewGuid().ToString();
             config.Name = "TestConfigVersion_" + Guid.NewGuid().ToString();
             config.Version = "2.0.0.0";
             _metadataApi.InsertConfig(config);
 
-            var documentMetadata = new DocumentMetadata();
+            var documentMetadata = _metadataApi.CreateDocument(config.Version, config.Name);
             documentMetadata.Id = Guid.NewGuid().ToString();
             documentMetadata.Name = "Document1";
 
@@ -210,6 +232,9 @@ namespace InfinniPlatform.Sdk.Tests
 
             Assert.AreEqual(documentRead.Name, documentMetadata.Name);
 
+            IEnumerable<dynamic> documents = _metadataApi.GetDocuments(config.Version, config.Name);
+            Assert.True(documents.Any());
+
             _metadataApi.DeleteDocument(config.Version, config.Name, documentMetadata.Name);
 
             documentRead = _metadataApi.GetAssembly(config.Version, config.Name, documentMetadata.Name);
@@ -224,19 +249,19 @@ namespace InfinniPlatform.Sdk.Tests
         [Test]
         public void ShouldInsertUpdateDeleteDocumentScenario()
         {
-            var config = new ConfigurationMetadata();
+            var config = _metadataApi.CreateConfig();
             config.Id = Guid.NewGuid().ToString();
             config.Name = "TestConfigVersion_" + Guid.NewGuid().ToString();
             config.Version = "2.0.0.0";
             _metadataApi.InsertConfig(config);
 
-            var documentMetadata = new DocumentMetadata();
+            var documentMetadata = _metadataApi.CreateDocument(config.Version, config.Name);
             documentMetadata.Id = Guid.NewGuid().ToString();
-            documentMetadata.Name = "Scenario1";
+            documentMetadata.Name = "Document1";
 
             _metadataApi.InsertDocument(documentMetadata, config.Version, config.Name);
 
-            var scenarioMetadata = new ScenarioMetadata();
+            var scenarioMetadata = _metadataApi.CreateScenario(config.Version, config.Name, documentMetadata.Name);
             scenarioMetadata.Id = Guid.NewGuid().ToString();
             scenarioMetadata.Name = Guid.NewGuid().ToString();
             scenarioMetadata.ScenarioId = "ActionUnitThatNotExistsAndOnlyForTestName";
@@ -253,8 +278,11 @@ namespace InfinniPlatform.Sdk.Tests
             _metadataApi.UpdateScenario(scenarioMetadata, config.Version, config.Name, documentMetadata.Name);
 
             var scenarioRead = _metadataApi.GetScenario(config.Version, config.Name, documentMetadata.Name, scenarioMetadata.Name);
-
             Assert.AreEqual(scenarioRead.Name, scenarioMetadata.Name);
+
+            IEnumerable<dynamic> scenarios = _metadataApi.GetScenarioItems(config.Version, config.Name,
+                documentMetadata.Name);
+            Assert.True(scenarios.Any());
 
             _metadataApi.DeleteScenario(config.Version, config.Name, documentMetadata.Name, scenarioMetadata.Name);
 
@@ -269,19 +297,19 @@ namespace InfinniPlatform.Sdk.Tests
         [Test]
         public void ShouldInsertUpdateDeleteDocumentProcess()
         {
-            var config = new ConfigurationMetadata();
+            var config = _metadataApi.CreateConfig();
             config.Id = Guid.NewGuid().ToString();
             config.Name = "TestConfigVersion_" + Guid.NewGuid().ToString();
             config.Version = "2.0.0.0";
             _metadataApi.InsertConfig(config);
 
-            var documentMetadata = new DocumentMetadata();
+            var documentMetadata = _metadataApi.CreateDocument(config.Version, config.Name);
             documentMetadata.Id = Guid.NewGuid().ToString();
             documentMetadata.Name = "Document1";
 
             _metadataApi.InsertDocument(documentMetadata, config.Version, config.Name);
 
-            var processMetadata = new ProcessMetadata();
+            var processMetadata = _metadataApi.CreateProcess(config.Version, config.Name,documentMetadata.Name);
             processMetadata.Id = Guid.NewGuid().ToString();
             processMetadata.Name = "Process1";
             processMetadata.SettingsType = "Default";
@@ -302,6 +330,9 @@ namespace InfinniPlatform.Sdk.Tests
 
             Assert.AreEqual(processRead.Name, processMetadata.Name);
 
+            IEnumerable<dynamic> processes = _metadataApi.GetProcessItems(config.Version, config.Name, documentMetadata.Name);
+            Assert.True(processes.Any());
+
             _metadataApi.DeleteProcess(config.Version, config.Name, documentMetadata.Name, processMetadata.Name);
 
             processRead = _metadataApi.GetProcess(config.Version, config.Name, documentMetadata.Name, processMetadata.Name);
@@ -315,19 +346,19 @@ namespace InfinniPlatform.Sdk.Tests
         [Test]
         public void ShouldInsertUpdateDeleteDocumentService()
         {
-            var config = new ConfigurationMetadata();
+            var config = _metadataApi.CreateConfig();
             config.Id = Guid.NewGuid().ToString();
             config.Name = "TestConfigVersion_" + Guid.NewGuid().ToString();
             config.Version = "2.0.0.0";
             _metadataApi.InsertConfig(config);
 
-            var documentMetadata = new DocumentMetadata();
+            var documentMetadata = _metadataApi.CreateDocument(config.Version, config.Name);
             documentMetadata.Id = Guid.NewGuid().ToString();
             documentMetadata.Name = "Document1";
 
             _metadataApi.InsertDocument(documentMetadata, config.Version, config.Name);
 
-            var serviceMetadata = new ServiceMetadata();
+            var serviceMetadata = _metadataApi.CreateService(config.Version, config.Name,documentMetadata.Name);
             serviceMetadata.Id = Guid.NewGuid().ToString();
             serviceMetadata.Name = "Service1";
 
@@ -346,6 +377,10 @@ namespace InfinniPlatform.Sdk.Tests
 
             Assert.AreEqual(serviceRead.Name, serviceMetadata.Name);
 
+            IEnumerable<dynamic> services = _metadataApi.GetServiceItems(config.Version, config.Name,
+                documentMetadata.Name);
+            Assert.True(services.Any());
+
             _metadataApi.DeleteService(config.Version, config.Name, documentMetadata.Name, serviceMetadata.Name);
 
             serviceRead = _metadataApi.GetService(config.Version, config.Name, documentMetadata.Name, serviceMetadata.Name);
@@ -359,13 +394,13 @@ namespace InfinniPlatform.Sdk.Tests
         [Test]
         public void ShouldInsertUpdateDeleteDocumentView()
         {
-            var config = new ConfigurationMetadata();
+            var config = _metadataApi.CreateConfig();
             config.Id = Guid.NewGuid().ToString();
             config.Name = "TestConfigVersion_" + Guid.NewGuid().ToString();
             config.Version = "2.0.0.0";
             _metadataApi.InsertConfig(config);
 
-            var documentMetadata = new DocumentMetadata();
+            var documentMetadata = _metadataApi.CreateDocument(config.Version, config.Name);
             documentMetadata.Id = Guid.NewGuid().ToString();
             documentMetadata.Name = "Document1";
 
@@ -389,6 +424,10 @@ namespace InfinniPlatform.Sdk.Tests
             var viewMetadataREad = _metadataApi.GetView(config.Version, config.Name, documentMetadata.Name, viewMetadata.Name);
 
             Assert.AreEqual(viewMetadataREad.Name, viewMetadata.Name);
+
+            IEnumerable<dynamic> views = _metadataApi.GetViewItems(config.Version, config.Name, documentMetadata.Name);
+            Assert.True(views.Any());
+
 
             _metadataApi.DeleteView(config.Version, config.Name, documentMetadata.Name, viewMetadata.Name);
 

@@ -8,6 +8,15 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.LinkViews.ExistsView
 {
     internal sealed class ExistsViewBuilder : IObjectBuilder
     {
+        private readonly string _server;
+        private readonly int _port;
+
+        public ExistsViewBuilder(string server, int port)
+        {
+            _server = server;
+            _port = port;
+        }
+
         public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
         {
             var linkView = new LinkView(context.AppView, parent, () => CreateView(context, parent, metadata));
@@ -16,12 +25,12 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.LinkViews.ExistsView
             return linkView;
         }
 
-        private static View CreateView(ObjectBuilderContext context, View parent, dynamic metadata)
+        private View CreateView(ObjectBuilderContext context, View parent, dynamic metadata)
         {
             View view = null;
 
             // Получение метаданных представления
-            var viewMetadataService = new ViewMetadataService(null, metadata.ConfigId, metadata.DocumentId);
+            var viewMetadataService = new ViewMetadataService(null, metadata.ConfigId, metadata.DocumentId, _server, _port);
             var viewMetadata = viewMetadataService.GetItem(metadata.ViewId);
 
             if (viewMetadata != null)

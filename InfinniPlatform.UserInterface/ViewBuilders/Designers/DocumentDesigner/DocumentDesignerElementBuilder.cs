@@ -9,7 +9,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.DocumentDesigner
     {
         public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
         {
-            var documentDesigner = new DocumentDesignerElement(parent);
+            var documentDesigner = new DocumentDesignerElement(parent, context.Server, context.Port);
             documentDesigner.ApplyElementMeatadata((object) metadata);
 
             // Редакторы элементов метаданных

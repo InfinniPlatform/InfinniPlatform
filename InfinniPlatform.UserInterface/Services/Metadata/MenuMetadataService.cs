@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
+using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.Metadata;
 using InfinniPlatform.UserInterface.Configurations;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
@@ -13,35 +16,42 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
     internal sealed class MenuMetadataService : BaseMetadataService
     {
         private readonly string _configId;
-        private readonly Lazy<ManagerFactoryConfiguration> _factory;
+        private InfinniMetadataApi _metadataApi;
 
-        public MenuMetadataService(string version, string configId)
+        public MenuMetadataService(string version, string configId, string server, int port) : base(version,server, port)
         {
             _configId = configId;
-            _factory = new Lazy<ManagerFactoryConfiguration>(() => new ManagerFactoryConfiguration(version, configId),
-                LazyThreadSafetyMode.ExecutionAndPublication);
+            _metadataApi = new InfinniMetadataApi(server, port.ToString(), version);
         }
 
-        protected override IDataReader CreateDataReader()
+        public string ConfigId
         {
-            return _factory.Value.BuildMenuMetadataReader();
+            get { return _configId; }
         }
 
-        protected override IDataManager CreateDataManager()
+        public override object CreateItem()
         {
-            return _factory.Value.BuildMenuManager();
+            return _metadataApi.CreateMenu(Version, ConfigId);
         }
 
-        public override IEnumerable GetItems()
+        public override void ReplaceItem(dynamic item)
         {
-            return ConfigResourceRepository.GetMenu(_configId)
-                   ?? base.GetItems();
+            _metadataApi.UpdateMenu(item, Version, ConfigId);
+        }
+
+        public override void DeleteItem(string itemId)
+        {
+            _metadataApi.DeleteMenu(Version, ConfigId, itemId);
         }
 
         public override object GetItem(string itemId)
         {
-            return ConfigResourceRepository.GetMenu(_configId, itemId)
-                   ?? base.GetItem(itemId);
+            return _metadataApi.GetMenu(Version, ConfigId, itemId);
+        }
+
+        public override IEnumerable<object> GetItems()
+        {
+            return _metadataApi.GetMenuList(Version, ConfigId);
         }
     }
 }

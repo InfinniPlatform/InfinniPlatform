@@ -19,13 +19,9 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
 
         public IEnumerable<dynamic> GetItems()
         {
-            dynamic body = new
-                {
-                    Version = _version
-                };
             return
                 DynamicWrapperExtensions.ToEnumerable(
-                    RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getsolutionlist", null, body).ToDynamic().SolutionList);
+                    RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getsolutionlist", null, null).ToDynamic().SolutionList);
         }
 
         public dynamic GetItem(string metadataName)

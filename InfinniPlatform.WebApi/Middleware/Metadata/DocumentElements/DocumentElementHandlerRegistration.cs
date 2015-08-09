@@ -17,6 +17,14 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.DocumentElements
             {
                 return RouteFormatter.FormatRoutePath(context, new PathString(PathConstructor.GetVersionPath() + "/metadata/_versionMetadata_/_configuration_/_document_/_metadataType_")).Create(Priority);
             }
+
+            var routeDictionary = RouteFormatter.GetRouteDictionary(context);
+            if (routeDictionary.ContainsKey("instanceId") &&
+                routeDictionary["instanceId"].ToLowerInvariant() == "unknown" && Method == "GET")
+            {
+                return RouteFormatter.FormatRoutePath(context, new PathString(PathConstructor.GetVersionPath() + "/metadata/_versionMetadata_/_configuration_/_document_/_metadataType_/list")).Create(Priority);
+            }
+
             return RouteFormatter.FormatRoutePath(context, new PathString(PathConstructor.GetVersionPath() + "/metadata/_versionMetadata_/_configuration_/_document_/_metadataType_/_instanceId_/")).Create(Priority);
         }
     }

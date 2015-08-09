@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
+﻿using System;
+using System.Runtime.Remoting.Messaging;
+using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Owin.Middleware;
@@ -17,18 +19,33 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.Solution
 
         protected override IRequestHandlerResult ExecuteHandler(IOwinContext context)
         {
-            dynamic body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
+            
+            dynamic body = null;
 
-            if (body.Version == null || body.Name == null || body.Id == null)
+            try
             {
-                return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
+                body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
+            }
+            catch (Exception e)
+            {
+                body = null;
             }
 
-            MetadataManagerSolution managerSolution = ManagerFactorySolution.BuildSolutionManager(body.Version.ToString());
+            if (body != null)
+            {
+                if (body.Version == null || body.Name == null || body.Id == null)
+                {
+                    return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
+                }
 
-            managerSolution.MergeItem(DynamicWrapperExtensions.ToDynamic(body));
+                MetadataManagerSolution managerSolution =
+                    ManagerFactorySolution.BuildSolutionManager(body.Version.ToString());
 
-            return new EmptyRequestHandlerResult();
+                managerSolution.MergeItem(DynamicWrapperExtensions.ToDynamic(body));
+                
+                return new EmptyRequestHandlerResult();
+            }
+            return new ValueRequestHandlerResult(ManagerFactorySolution.BuildSolutionManager(null).CreateItem("NewSolution"));
         }
     }
 }

@@ -44,7 +44,11 @@ namespace InfinniPlatform.UserInterface
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var appViewMetadata = StaticMetadata.CreateAppView();
+            var appViewMetadata = StaticMetadata.CreateAppView(HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort);
+
+            //TODO здесь необходимо настроить, куда API метаданных будет в итоге делать запросы
+            AppRunner.Server = HostingConfig.Default.ServerName;
+            AppRunner.Port = HostingConfig.Default.ServerPort;
             AppRunner.Run(appViewMetadata);
         }
     }

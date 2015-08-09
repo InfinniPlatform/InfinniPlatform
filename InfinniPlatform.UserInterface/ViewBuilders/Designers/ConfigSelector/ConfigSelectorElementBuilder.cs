@@ -8,6 +8,15 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigSelector
 {
     internal sealed class ConfigSelectorElementBuilder : IObjectBuilder
     {
+        private readonly string _server;
+        private readonly int _port;
+
+        public ConfigSelectorElementBuilder(string server, int port)
+        {
+            _server = server;
+            _port = port;
+        }
+
         public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
         {
             var element = new ConfigSelectorElement(parent);
@@ -27,9 +36,9 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigSelector
             return element;
         }
 
-        private static IEnumerable GetConfigurations(string version)
+        private IEnumerable GetConfigurations(string version)
         {
-            return new ConfigurationMetadataService(version).GetItems();
+            return new ConfigurationMetadataService(version, _server, _port).GetItems();
         }
     }
 }

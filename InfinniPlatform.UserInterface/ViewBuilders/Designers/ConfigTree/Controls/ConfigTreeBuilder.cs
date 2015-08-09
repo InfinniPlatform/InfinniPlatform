@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using InfinniPlatform.Sdk.Api;
 using InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Factories;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Controls
@@ -10,7 +11,8 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Contro
 
         static ConfigTreeBuilder()
         {
-            ElementNodeBuilder = new ConfigElementNodeBuilder();
+            //TODO Необходимо придумать способ передачи параметров сервера в билдер
+            ElementNodeBuilder = new ConfigElementNodeBuilder(HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort);
 
             ElementNodeBuilder.Register(ConfigContainerNodeFactory.ElementType, new ConfigContainerNodeFactory());
             ElementNodeBuilder.Register(ConfigElementNodeFactory.ElementType, new ConfigElementNodeFactory());

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {
@@ -7,15 +8,12 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
     /// </summary>
     internal interface IMetadataService
     {
-        /// <summary>
-        ///     Создать объект метаданных.
-        /// </summary>
         object CreateItem();
 
         /// <summary>
         ///     Заменить объект метаданных.
         /// </summary>
-        void ReplaceItem(object item);
+        void ReplaceItem(dynamic item);
 
         /// <summary>
         ///     Удалить объект метаданных.
@@ -35,6 +33,6 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
         /// <summary>
         ///     Получить список объектов метаданных.
         /// </summary>
-        IEnumerable GetItems();
+        IEnumerable<object> GetItems();
     }
 }

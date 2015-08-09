@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
+using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.Metadata;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {
@@ -10,23 +13,46 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
     /// </summary>
     internal sealed class ProcessMetadataService : BaseMetadataService
     {
-        private readonly Lazy<ManagerFactoryDocument> _factory;
+        private readonly string _configId;
+        private string _documentId;
+        private InfinniMetadataApi _metadataApi;
 
-        public ProcessMetadataService(string version, string configId, string documentId)
+        public ProcessMetadataService(string version, string configId, string documentId, string server, int port)
+            : base(version, server, port)
         {
-            _factory = new Lazy<ManagerFactoryDocument>(
-                () => new ManagerFactoryDocument(version, configId, documentId),
-                LazyThreadSafetyMode.ExecutionAndPublication);
+            _configId = configId;
+            _documentId = documentId;
+            _metadataApi = new InfinniMetadataApi(server, port.ToString(), version);
         }
 
-        protected override IDataReader CreateDataReader()
+        public string ConfigId
         {
-            return _factory.Value.BuildProcessMetadataReader();
+            get { return _configId; }
         }
 
-        protected override IDataManager CreateDataManager()
+        public override object CreateItem()
         {
-            return _factory.Value.BuildProcessManager();
+            return _metadataApi.CreateProcess(Version, ConfigId, _documentId);
+        }
+
+        public override void ReplaceItem(dynamic item)
+        {
+            _metadataApi.UpdateProcess(item, Version, ConfigId, _documentId);
+        }
+
+        public override void DeleteItem(string itemId)
+        {
+            _metadataApi.DeleteProcess(Version, ConfigId, _documentId, itemId);
+        }
+
+        public override object GetItem(string itemId)
+        {
+            return _metadataApi.GetProcess(Version, ConfigId, _documentId, itemId);
+        }
+
+        public override IEnumerable<object> GetItems()
+        {
+            return _metadataApi.GetProcessItems(Version, ConfigId, _documentId);
         }
     }
 }

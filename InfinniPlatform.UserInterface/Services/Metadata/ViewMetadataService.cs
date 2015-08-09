@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
+using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.Metadata;
 using InfinniPlatform.UserInterface.Configurations;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
@@ -13,38 +16,45 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
     internal sealed class ViewMetadataService : BaseMetadataService
     {
         private readonly string _configId;
-        private readonly string _documentId;
-        private readonly Lazy<ManagerFactoryDocument> _factory;
+        private string _documentId;
+        private InfinniMetadataApi _metadataApi;
 
-        public ViewMetadataService(string version, string configId, string documentId)
+        public ViewMetadataService(string version, string configId, string documentId, string server, int port)
+            : base(version, server, port)
         {
             _configId = configId;
             _documentId = documentId;
-            _factory = new Lazy<ManagerFactoryDocument>(
-                () => new ManagerFactoryDocument(version, configId, documentId),
-                LazyThreadSafetyMode.ExecutionAndPublication);
+            _metadataApi = new InfinniMetadataApi(server, port.ToString(), version);
         }
 
-        protected override IDataReader CreateDataReader()
+        public string ConfigId
         {
-            return _factory.Value.BuildViewMetadataReader();
+            get { return _configId; }
         }
 
-        protected override IDataManager CreateDataManager()
+        public override object CreateItem()
         {
-            return _factory.Value.BuildViewManager();
+            return _metadataApi.CreateView(Version, ConfigId, _documentId);
         }
 
-        public override IEnumerable GetItems()
+        public override void ReplaceItem(dynamic item)
         {
-            return ConfigResourceRepository.GetViews(_configId, _documentId)
-                   ?? base.GetItems();
+            _metadataApi.UpdateView(item, Version, ConfigId, _documentId);
+        }
+
+        public override void DeleteItem(string itemId)
+        {
+            _metadataApi.DeleteView(Version, ConfigId, _documentId, itemId);
         }
 
         public override object GetItem(string itemId)
         {
-            return ConfigResourceRepository.GetView(_configId, _documentId, itemId)
-                   ?? base.GetItem(itemId);
+            return _metadataApi.GetView(Version, ConfigId, _documentId, itemId);
+        }
+
+        public override IEnumerable<object> GetItems()
+        {
+            return _metadataApi.GetViewItems(Version, ConfigId, _documentId);
         }
     }
 }

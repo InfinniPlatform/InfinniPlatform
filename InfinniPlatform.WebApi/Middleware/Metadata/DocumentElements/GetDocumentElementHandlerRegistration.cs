@@ -19,8 +19,12 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.DocumentElements
                                                                        routeDictionary["configuration"],
                                                                        routeDictionary["document"]);
 
+            if (routeDictionary["instanceId"].ToLowerInvariant() != "list")
+            {
+                return new ValueRequestHandlerResult(managerConfigElement.BuildMetadataReaderByType(routeDictionary["metadataType"]).GetItem(routeDictionary["instanceId"]));
+            }
+            return new ValueRequestHandlerResult(managerConfigElement.BuildMetadataReaderByType(routeDictionary["metadataType"]).GetItems());
 
-            return new ValueRequestHandlerResult(managerConfigElement.BuildMetadataReaderByType(routeDictionary["metadataType"]).GetItem(routeDictionary["instanceId"]));
         }
     }
 }

@@ -81,11 +81,11 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
         ///   Получить список метаданных решений
         /// </summary>
         /// <returns></returns>
-        public static string GetSolutionListIql(string version)
+        public static string GetSolutionListIql()
         {
             return JObject.FromObject(new
             {
-                Version = version,
+                
                 From = new
                 {
                     Index = "systemconfig",

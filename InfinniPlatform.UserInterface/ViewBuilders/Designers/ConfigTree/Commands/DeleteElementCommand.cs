@@ -27,7 +27,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Comman
             if (CommonHelper.AcceptQuestionMessage(Resources.DeleteConfigElementQuestion, _elementNode))
             {
                 // Удаление метаданных элемента
-                var metadataProvider = CommandHelper.GetMetadataProvider(_elementNode, _elementNode.ElementType);
+                var metadataProvider = CommandHelper.GetMetadataProvider(_elementNode, _elementNode.ElementType, _builder.Server, _builder.Port);
                 metadataProvider.DeleteItem(_elementNode.ElementId);
 
                 // Удаление элемента из визуального дерева

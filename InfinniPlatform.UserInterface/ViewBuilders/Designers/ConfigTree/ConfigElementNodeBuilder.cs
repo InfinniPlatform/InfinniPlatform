@@ -6,10 +6,30 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree
 {
     internal sealed class ConfigElementNodeBuilder
     {
+        private readonly string _server;
+        private readonly int _port;
+
         private readonly Dictionary<string, IConfigElementNodeFactory> _factories
             = new Dictionary<string, IConfigElementNodeFactory>(StringComparer.OrdinalIgnoreCase);
 
+
+        public ConfigElementNodeBuilder(string server, int port)
+        {
+            _server = server;
+            _port = port;
+        }
+
         public IConfigElementEditPanel EditPanel { get; set; }
+
+        public int Port
+        {
+            get { return _port; }
+        }
+
+        public string Server
+        {
+            get { return _server; }
+        }
 
         public void Register(string elementType, IConfigElementNodeFactory elementFactory)
         {

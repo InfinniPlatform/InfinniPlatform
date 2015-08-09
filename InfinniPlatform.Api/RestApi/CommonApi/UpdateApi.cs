@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using EnvDTE;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
 using InfinniPlatform.Sdk.Dynamic;

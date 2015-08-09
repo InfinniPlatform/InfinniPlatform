@@ -11,75 +11,64 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Data.DataProviders
     /// </summary>
     public sealed class MetadataProvider : IDataProvider
     {
-        private static readonly Dictionary<string, Func<string, string, string, IMetadataService>> MetadataServices
-            = new Dictionary<string, Func<string, string, string, IMetadataService>>
-            {
-                {
-                    MetadataType.Configuration,
-                    (version, configId, documentId) => new ConfigurationMetadataService(version)
-                },
-                {MetadataType.Menu, (version, configId, documentId) => new MenuMetadataService(version, configId)},
-                {
-                    MetadataType.Document,
-                    (version, configId, documentId) => new DocumentMetadataService(version, configId)
-                },
-                {
-                    MetadataType.Assembly,
-                    (version, configId, documentId) => new AssemblyMetadataService(version, configId)
-                },
-                {
-                    MetadataType.Register,
-                    (version, configId, documentId) => new RegisterMetadataService(version, configId)
-                },
-                {MetadataType.Report, (version, configId, documentId) => new ReportMetadataService(version, configId)},
-                {
-                    MetadataType.View,
-                    (version, configId, documentId) => new ViewMetadataService(version, configId, documentId)
-                },
-                {
-                    MetadataType.PrintView,
-                    (version, configId, documentId) => new PrintViewMetadataService(version, configId, documentId)
-                },
-                {
-                    MetadataType.Service,
-                    (version, configId, documentId) => new ServiceMetadataService(version, configId, documentId)
-                },
-                {
-                    MetadataType.Process,
-                    (version, configId, documentId) => new ProcessMetadataService(version, configId, documentId)
-                },
-                {
-                    MetadataType.Scenario,
-                    (version, configId, documentId) => new ScenarioMetadataService(version, configId, documentId)
-                },
-                {
-                    MetadataType.Generator,
-                    (version, configId, documentId) => new GeneratorMetadataService(version, configId, documentId)
-                },
-                {
-                    MetadataType.ValidationError,
-                    (version, configId, documentId) => new ValidationErrorMetadataService(version, configId, documentId)
-                },
-                {
-                    MetadataType.ValidationWarning,
-                    (version, configId, documentId) =>
-                        new ValidationWarningMetadataService(version, configId, documentId)
-                },
-                {
-                    MetadataType.Status,
-                    (version, configId, documentId) => new StatusMetadataService(version, configId, documentId)
-                }
-            };
+        private readonly Dictionary<string, Func<string, string, string, IMetadataService>> MetadataServices
+            = new Dictionary<string, Func<string, string, string, IMetadataService>>();
+            
 
         private string _configId;
         private string _documentId;
         private IMetadataService _metadataService;
         private string _versionId;
         private readonly string _metadataType;
+        private readonly string _server;
+        private readonly int _port;
 
-        public MetadataProvider(string metadataType)
+        public MetadataProvider(string metadataType, string server, int port)
         {
+            FillServices();
             _metadataType = metadataType;
+            _server = server;
+            _port = port;
+        }
+
+        private void FillServices()
+        {
+            MetadataServices.Add(
+                    MetadataType.Solution,
+                    (version, configId, documentId) => new SolutionMetadataService(version, _server, _port)
+            );
+            MetadataServices.Add(
+                    MetadataType.Configuration,
+                    (version, configId, documentId) => new ConfigurationMetadataService(version, _server, _port)                
+            );
+            MetadataServices.Add(
+                    MetadataType.Menu, (version, configId, documentId) => new MenuMetadataService(version, configId,_server, _port)
+            );
+            MetadataServices.Add(
+                    MetadataType.Assembly, (version, configId, documentId) => new AssemblyMetadataService(version, configId,_server, _port)
+            );
+            MetadataServices.Add(
+                    MetadataType.Register, (version, configId, documentId) => new RegisterMetadataService(version, configId,_server, _port)
+            );
+            MetadataServices.Add(
+                    MetadataType.Document, (version, configId, documentId) => new DocumentMetadataService(version, configId, _server, _port)
+            );
+
+            MetadataServices.Add(
+                    MetadataType.PrintView, (version, configId, documentId) => new PrintViewMetadataService(version, configId, documentId, _server, _port)
+            );
+            MetadataServices.Add(
+                    MetadataType.View, (version, configId, documentId) => new ViewMetadataService(version, configId, documentId, _server, _port)
+            );
+            MetadataServices.Add(
+                    MetadataType.Service, (version, configId, documentId) => new ServiceMetadataService(version, configId, documentId, _server, _port)
+            );
+            MetadataServices.Add(
+                    MetadataType.Process, (version, configId, documentId) => new ProcessMetadataService(version, configId, documentId, _server, _port)
+            );
+            MetadataServices.Add(
+                    MetadataType.Scenario, (version, configId, documentId) => new ScenarioMetadataService(version, configId, documentId, _server, _port)
+            );
         }
 
         public string GetConfigId()

@@ -1,4 +1,5 @@
-﻿using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
+﻿using System;
+using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Owin.Middleware;
@@ -17,18 +18,31 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.Configuration
 
         protected override IRequestHandlerResult ExecuteHandler(IOwinContext context)
         {
-            dynamic body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
+            dynamic body = null;
 
-            if (body.Version == null || body.Name == null || body.Id == null)
+            try
             {
-                return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
+                body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
+            }
+            catch (Exception e)
+            {
+                body = null;
             }
 
-            MetadataManagerConfiguration managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager(body.Version.ToString());
+            if (body != null)
+            {
+                if (body.Version == null || body.Name == null || body.Id == null)
+                {
+                    return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
+                }
 
-            managerConfig.MergeItem(DynamicWrapperExtensions.ToDynamic(body));
+                MetadataManagerConfiguration managerConfig =
+                    ManagerFactoryConfiguration.BuildConfigurationManager(body.Version.ToString());
 
-            return new EmptyRequestHandlerResult();
+                managerConfig.MergeItem(DynamicWrapperExtensions.ToDynamic(body));
+            }
+
+            return new ValueRequestHandlerResult(ManagerFactoryConfiguration.BuildConfigurationManager(null).CreateItem("NewConfig"));
         }
     }
 }

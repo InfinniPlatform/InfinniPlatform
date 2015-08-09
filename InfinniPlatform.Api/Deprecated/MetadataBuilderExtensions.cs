@@ -890,8 +890,10 @@ namespace InfinniPlatform.Api.Deprecated
             result
                 .BuildName(name)
                 .BuildCaption(caption)
-                .BuildDescription(description)
-                .BuildVersion(version);
+                .BuildVersion(version)
+                .BuildCollectionProperty("ReferencedConfigurations");
+
+            
 
             return result;
         }

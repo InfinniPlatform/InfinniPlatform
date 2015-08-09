@@ -18,7 +18,7 @@ namespace InfinniPlatform.Sdk.Api
         ///   Добавить метаданные указанного решения
         /// </summary>
         /// <returns>Результат добавления метаданных решения</returns>
-        public dynamic InsertSolution(SolutionMetadata solutionMetadata)
+        public dynamic InsertSolution(dynamic solutionMetadata)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
@@ -31,13 +31,25 @@ namespace InfinniPlatform.Sdk.Api
         ///   Обновить метаданные указанного решения
         /// </summary>
         /// <returns>Результат обновления метаданных решения</returns>
-        public dynamic UpdateSolution(SolutionMetadata solutionMetadata)
+        public dynamic UpdateSolution(dynamic solutionMetadata)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
             var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlMetadataSolution(), solutionMetadata);
 
-            return ProcessAsObjectResult(response, string.Format(Resources.UnableToInsertSolutionMetadata, response.GetErrorContent()));
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateSolutionMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Созздать метаданные нового решения
+        /// </summary>
+        public dynamic CreateSolution()
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlMetadataSolution());
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateSolutionMetadata, response.GetErrorContent()));
         }
 
         /// <summary>
@@ -69,10 +81,23 @@ namespace InfinniPlatform.Sdk.Api
         }
 
         /// <summary>
+        ///   Получить сеписок метаданных решений 
+        /// </summary>
+        /// <returns>Список метаданных решений</returns>
+        public dynamic GetSolutionItems()
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlMetadataSolution());
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToInsertSolutionMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
         ///   Добавить метаданные указанной конфигурации
         /// </summary>
         /// <returns>Результат добавления метаданных конфигурации</returns>
-        public dynamic InsertConfig(ConfigurationMetadata configMetadata)
+        public dynamic InsertConfig(dynamic configMetadata)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
@@ -85,11 +110,23 @@ namespace InfinniPlatform.Sdk.Api
         ///   Обновить метаданные указанной конфигурации
         /// </summary>
         /// <returns>Результат обновления метаданных конфигурации</returns>
-        public dynamic UpdateConfig(ConfigurationMetadata configMetadata)
+        public dynamic UpdateConfig(dynamic configMetadata)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
             var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlMetadataConfig(), configMetadata);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateConfigMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Создать метаданные новой конфигурации
+        /// </summary>
+        public dynamic CreateConfig()
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlMetadataConfig());
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateConfigMetadata, response.GetErrorContent()));
         }
@@ -123,10 +160,23 @@ namespace InfinniPlatform.Sdk.Api
         }
 
         /// <summary>
+        ///   Получить метаданные всех конфигураций
+        /// </summary>
+        /// <returns>Список метаданных конфигураций</returns>
+        public dynamic GetConfigList()
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlMetadataConfig());
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetConfigMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
         ///   Добавить метаданные указанного меню
         /// </summary>
         /// <returns>Результат добавления метаданных указанного меню</returns>
-        public dynamic InsertMenu(MenuMetadata menuMetadata, string version, string configuration)
+        public dynamic InsertMenu(dynamic menuMetadata, string version, string configuration)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
@@ -139,11 +189,23 @@ namespace InfinniPlatform.Sdk.Api
         ///   Обновить метаданные указанного меню
         /// </summary>
         /// <returns>Результат обновления метаданных меню</returns>
-        public dynamic UpdateMenu(MenuMetadata menuMetadata, string version, string configuration)
+        public dynamic UpdateMenu(dynamic menuMetadata, string version, string configuration)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
             var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlMetadataElement(version, configuration, "Menu"), menuMetadata);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateMenuMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Создать метаданные меню
+        /// </summary>
+        public dynamic CreateMenu(string version, string configuration)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlMetadataElement(version, configuration, "Menu"));
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateMenuMetadata, response.GetErrorContent()));
         }
@@ -176,12 +238,26 @@ namespace InfinniPlatform.Sdk.Api
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetMenuMetadata, response.GetErrorContent()));
         }
 
+        /// <summary>
+        ///   Получить метаданные всех меню для указанной конфигурации
+        /// </summary>
+        /// <param name="version">Версия конфигурации</param>
+        /// <returns>Метаданные меню</returns>
+        public dynamic GetMenuList(string version, string configuration)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlMetadataElement(version, configuration, "Menu"));
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetMenuMetadata, response.GetErrorContent()));
+        }
+
 
         /// <summary>
         ///   Добавить метаданные указанной сборки
         /// </summary>
         /// <returns>Результат добавления метаданных указанной сборки</returns>
-        public dynamic InsertAssembly(AssemblyMetadata assemblyMetadata, string version, string configuration)
+        public dynamic InsertAssembly(dynamic assemblyMetadata, string version, string configuration)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
@@ -194,11 +270,23 @@ namespace InfinniPlatform.Sdk.Api
         ///   Обновить метаданные указанной сборки
         /// </summary>
         /// <returns>Результат обновления метаданных сборок</returns>
-        public dynamic UpdateAssembly(AssemblyMetadata assemblyMetadata, string version, string configuration)
+        public dynamic UpdateAssembly(dynamic assemblyMetadata, string version, string configuration)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
             var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlMetadataElement(version, configuration, "Assembly"), assemblyMetadata);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateAssemblyMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Создать метаданные сборки
+        /// </summary>
+        public dynamic CreateAssembly(string version, string configuration)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlMetadataElement(version, configuration, "Assembly"));
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateAssemblyMetadata, response.GetErrorContent()));
         }
@@ -228,14 +316,29 @@ namespace InfinniPlatform.Sdk.Api
 
             var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlMetadataElementById(version, configuration, "Assembly", name));
 
-            return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetMenuMetadata, response.GetErrorContent()));
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetAssemblyMetadata, response.GetErrorContent()));
         }
+
+        /// <summary>
+        ///  Получить список метаданных сборок
+        /// </summary>
+        /// <param name="version">Версия конфигурации</param>
+        /// <param name="configuration">Наименование конфигурации</param>
+        /// <returns>Список сборок прикладной конфигурации</returns>
+        public IEnumerable<dynamic> GetAssemblies(string version, string configuration)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlMetadataElement(version, configuration, "Assembly"));
+
+            return ProcessAsArrayResult(response, string.Format(Resources.UnableToGetAssemblyMetadata, response.GetErrorContent()));
+        } 
 
         /// <summary>
         ///   Добавить метаданные указанного регистра
         /// </summary>
         /// <returns>Результат добавления метаданных указанного регистра</returns>
-        public dynamic InsertRegister(RegisterMetadata registerMetadata, string version, string configuration)
+        public dynamic InsertRegister(dynamic registerMetadata, string version, string configuration)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
@@ -248,11 +351,23 @@ namespace InfinniPlatform.Sdk.Api
         ///   Обновить метаданные указанного регистра
         /// </summary>
         /// <returns>Результат обновления метаданных регистра</returns>
-        public dynamic UpdateRegister(RegisterMetadata registerMetadata, string version, string configuration)
+        public dynamic UpdateRegister(dynamic registerMetadata, string version, string configuration)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
             var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlMetadataElement(version, configuration, "Register"), registerMetadata);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateRegisterMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Создать метаданные регистра
+        /// </summary>
+        public dynamic CreateRegister(string version, string configuration)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlMetadataElement(version, configuration, "Register"));
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateRegisterMetadata, response.GetErrorContent()));
         }
@@ -285,12 +400,26 @@ namespace InfinniPlatform.Sdk.Api
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetRegisterMetadata, response.GetErrorContent()));
         }
 
+        /// <summary>
+        ///   Получить метаданные регистров
+        /// </summary>
+        /// <param name="version">Версия конфигурации</param>
+        /// <returns>Метаданные регистров</returns>
+        public dynamic GetRegisterItems(string version, string configuration)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlMetadataElement(version, configuration, "Register"));
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetRegisterMetadata, response.GetErrorContent()));
+        }
+
 
         /// <summary>
         ///   Добавить метаданные указанного документа
         /// </summary>
         /// <returns>Результат добавления метаданных указанного документа</returns>
-        public dynamic InsertDocument(DocumentMetadata documentMetadata, string version, string configuration)
+        public dynamic InsertDocument(dynamic documentMetadata, string version, string configuration)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
@@ -303,11 +432,23 @@ namespace InfinniPlatform.Sdk.Api
         ///   Обновить метаданные указанного документа
         /// </summary>
         /// <returns>Результат обновления метаданных документа</returns>
-        public dynamic UpdateDocument(DocumentMetadata documentMetadata, string version, string configuration)
+        public dynamic UpdateDocument(dynamic documentMetadata, string version, string configuration)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
             var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlMetadataElement(version, configuration, "Document"), documentMetadata);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateDocumentMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Создать метаданные документа
+        /// </summary>
+        public dynamic CreateDocument(string version, string configuration)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlMetadataElement(version, configuration, "Document"));
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateDocumentMetadata, response.GetErrorContent()));
         }
@@ -341,10 +482,24 @@ namespace InfinniPlatform.Sdk.Api
         }
 
         /// <summary>
+        ///   Получить метаданные всех документов конфигурации
+        /// </summary>
+        /// <param name="version">Версия конфигурации</param>
+        /// <returns>Метаданные документа</returns>
+        public dynamic GetDocuments(string version, string configuration)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlMetadataElement(version, configuration, "Document"));
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetDocumentMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
         ///   Добавить метаданные указанного сценария
         /// </summary>
         /// <returns>Результат добавления метаданных указанного сценария</returns>
-        public dynamic InsertScenario(ScenarioMetadata scenarioMetadata, string version, string configuration, string document)
+        public dynamic InsertScenario(dynamic scenarioMetadata, string version, string configuration, string document)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
@@ -357,11 +512,23 @@ namespace InfinniPlatform.Sdk.Api
         ///   Обновить метаданные указанного сценария
         /// </summary>
         /// <returns>Результат обновления метаданных сценария</returns>
-        public dynamic UpdateScenario(ScenarioMetadata scenarioMetadata, string version, string configuration, string document)
+        public dynamic UpdateScenario(dynamic scenarioMetadata, string version, string configuration, string document)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
             var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElement(version, configuration, document, "Scenario"), scenarioMetadata);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateScenarioMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Создать метаданные сценария
+        /// </summary>
+        public dynamic CreateScenario(string version, string configuration, string document)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElement(version, configuration, document, "Scenario"));
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateScenarioMetadata, response.GetErrorContent()));
         }
@@ -392,10 +559,22 @@ namespace InfinniPlatform.Sdk.Api
         }
 
         /// <summary>
+        ///   Получить метаданные всех сценариев
+        /// </summary>
+        public dynamic GetScenarioItems(string version, string configuration, string document)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElementList(version, configuration, document, "Scenario"));
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetScenarioMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
         ///   Добавить метаданные указанного бизнес-процесса
         /// </summary>
         /// <returns>Результат добавления метаданных указанного бизнес-процесса</returns>
-        public dynamic InsertProcess(ProcessMetadata processMetadata, string version, string configuration, string document)
+        public dynamic InsertProcess(dynamic processMetadata, string version, string configuration, string document)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
@@ -408,11 +587,23 @@ namespace InfinniPlatform.Sdk.Api
         ///   Обновить метаданные указанного бизнес-процесса
         /// </summary>
         /// <returns>Результат обновления метаданных бизнес-процесса</returns>
-        public dynamic UpdateProcess(ProcessMetadata processMetadata, string version, string configuration, string document)
+        public dynamic UpdateProcess(dynamic processMetadata, string version, string configuration, string document)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
             var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElement(version, configuration, document, "Process"), processMetadata);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateProcessMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Создать метаданные бизнес-процесса
+        /// </summary>
+        public dynamic CreateProcess(string version, string configuration, string document)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElement(version, configuration, document, "Process"));
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateProcessMetadata, response.GetErrorContent()));
         }
@@ -443,10 +634,22 @@ namespace InfinniPlatform.Sdk.Api
         }
 
         /// <summary>
+        ///   Получить метаданные всех бизнес-процессов конфигурации
+        /// </summary>
+        public dynamic GetProcessItems(string version, string configuration, string document)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElementList(version, configuration, document, "Process"));
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetProcessMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
         ///   Добавить метаданные указанного сервиса
         /// </summary>
         /// <returns>Результат добавления метаданных указанного сервиса</returns>
-        public dynamic InsertService(ServiceMetadata serviceMetadata, string version, string configuration, string document)
+        public dynamic InsertService(dynamic serviceMetadata, string version, string configuration, string document)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
@@ -459,11 +662,23 @@ namespace InfinniPlatform.Sdk.Api
         ///   Обновить метаданные указанного сервиса
         /// </summary>
         /// <returns>Результат обновления метаданных сервиса</returns>
-        public dynamic UpdateService(ServiceMetadata serviceMetadata, string version, string configuration, string document)
+        public dynamic UpdateService(dynamic serviceMetadata, string version, string configuration, string document)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
             var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElement(version, configuration, document, "Service"), serviceMetadata);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateServiceMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Создать метаданные сервиса
+        /// </summary>
+        public dynamic CreateService(string version, string configuration, string document)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElement(version, configuration, document, "Service"));
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateServiceMetadata, response.GetErrorContent()));
         }
@@ -493,12 +708,24 @@ namespace InfinniPlatform.Sdk.Api
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetServiceMetadata, response.GetErrorContent()));
         }
 
+        /// <summary>
+        ///   Получить метаданные сервисов конфигурации
+        /// </summary>
+        public dynamic GetServiceItems(string version, string configuration, string document)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElementList(version, configuration, document, "Service"));
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetServiceMetadata, response.GetErrorContent()));
+        }
+
 
         /// <summary>
         ///   Добавить метаданные указанного представления
         /// </summary>
         /// <returns>Результат добавления метаданных указанного представления</returns>
-        public dynamic InsertView(ViewMetadata viewMetadata, string version, string configuration, string document)
+        public dynamic InsertView(dynamic viewMetadata, string version, string configuration, string document)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
@@ -511,11 +738,23 @@ namespace InfinniPlatform.Sdk.Api
         ///   Обновить метаданные указанного представления
         /// </summary>
         /// <returns>Результат обновления метаданных представления</returns>
-        public dynamic UpdateView(ViewMetadata viewMetadata, string version, string configuration, string document)
+        public dynamic UpdateView(dynamic viewMetadata, string version, string configuration, string document)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
             var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElement(version, configuration, document, "View"), viewMetadata);
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateViewMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Создать метаданные представления
+        /// </summary>
+        public dynamic CreateView(string version, string configuration, string document)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElement(version, configuration, document, "View"));
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateViewMetadata, response.GetErrorContent()));
         }
@@ -546,10 +785,22 @@ namespace InfinniPlatform.Sdk.Api
         }
 
         /// <summary>
+        ///   Получить список метаданных представлений конфигурации
+        /// </summary>
+        public dynamic GetViewItems(string version, string configuration, string document)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElementList(version, configuration, document, "View"));
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetViewMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
         ///   Добавить метаданные указанного представления печатной формы
         /// </summary>
         /// <returns>Результат добавления метаданных указанного представления печатной формы</returns>
-        public dynamic InsertPrintView(PrintViewMetadata printViewMetadata, string version, string configuration, string document)
+        public dynamic InsertPrintView(dynamic printViewMetadata, string version, string configuration, string document)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
@@ -562,7 +813,7 @@ namespace InfinniPlatform.Sdk.Api
         ///   Обновить метаданные указанного представления печатной формы
         /// </summary>
         /// <returns>Результат обновления метаданных представления печатной формы</returns>
-        public dynamic UpdatePrintView(PrintViewMetadata printViewMetadata, string version, string configuration, string document)
+        public dynamic UpdatePrintView(dynamic printViewMetadata, string version, string configuration, string document)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
@@ -595,6 +846,31 @@ namespace InfinniPlatform.Sdk.Api
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetPrintViewMetadata, response.GetErrorContent()));
         }
+
+        /// <summary>
+        ///   Получить метаданные представления печатной формы
+        /// </summary>
+        public dynamic GetPrintViewItems(string version, string configuration, string document)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElementList(version, configuration, document, "PrintView"));
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetPrintViewMetadata, response.GetErrorContent()));
+        }
+
+        /// <summary>
+        ///   Создать метаданные печатного представления
+        /// </summary>
+        public dynamic CreatePrintView(string version, string configuration, string document)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlDocumentMetadataElement(version, configuration, document, "PrintView"));
+
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdatePrintViewMetaata, response.GetErrorContent()));
+        }
+
 
     }
 }

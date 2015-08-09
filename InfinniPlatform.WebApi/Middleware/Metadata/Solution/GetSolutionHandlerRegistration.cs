@@ -14,9 +14,13 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.Solution
         {
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            var solutionReader = ManagerFactorySolution.BuildSolutionReader(routeDictionary["versionMetadata"]);                
+            var solutionReader = ManagerFactorySolution.BuildSolutionReader(routeDictionary["versionMetadata"]);
 
-            return new ValueRequestHandlerResult(solutionReader.GetItem(routeDictionary["instanceId"]));
+            if (routeDictionary["instanceId"].ToLowerInvariant() != "unknown")
+            {
+                return new ValueRequestHandlerResult(solutionReader.GetItem(routeDictionary["instanceId"]));
+            }
+            return new ValueRequestHandlerResult(solutionReader.GetItems());
         }
     }
 }

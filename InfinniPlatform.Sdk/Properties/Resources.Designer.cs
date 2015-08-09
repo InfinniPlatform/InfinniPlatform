@@ -448,6 +448,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to get assembly metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToGetAssemblyMetadata {
+            get {
+                return ResourceManager.GetString("UnableToGetAssemblyMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to get config metadata with exception {0}.
         /// </summary>
         internal static string UnableToGetConfigMetadata {
@@ -822,6 +831,15 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string UnableToUpdateServiceMetadata {
             get {
                 return ResourceManager.GetString("UnableToUpdateServiceMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to update solution metadata with exception {0}.
+        /// </summary>
+        internal static string UnableToUpdateSolutionMetadata {
+            get {
+                return ResourceManager.GetString("UnableToUpdateSolutionMetadata", resourceCulture);
             }
         }
         

@@ -8,6 +8,15 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.ActionElements.MenuBar
 {
     internal sealed class MenuBarElementBuilder : IObjectBuilder
     {
+        private readonly string _server;
+        private readonly int _port;
+
+        public MenuBarElementBuilder(string server, int port)
+        {
+            _server = server;
+            _port = port;
+        }
+
         public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
         {
             var menuBar = new MenuBarElement(parent,
@@ -21,7 +30,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.ActionElements.MenuBar
 
         private IEnumerable GetMenuListMetadata(string version, string configId)
         {
-            var menuMetadataService = new MenuMetadataService(version, configId);
+            var menuMetadataService = new MenuMetadataService(version, configId, _server, _port);
             return menuMetadataService.GetItems();
         }
 

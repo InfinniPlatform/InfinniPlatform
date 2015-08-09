@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
+using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.Metadata;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {
@@ -10,22 +13,43 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
     /// </summary>
     internal sealed class DocumentMetadataService : BaseMetadataService
     {
-        private readonly Lazy<ManagerFactoryConfiguration> _factory;
+        private readonly string _configId;
+        private InfinniMetadataApi _metadataApi;
 
-        public DocumentMetadataService(string version, string configId)
+        public DocumentMetadataService(string version, string configId, string server, int port) : base(version, server, port)
         {
-            _factory = new Lazy<ManagerFactoryConfiguration>(() => new ManagerFactoryConfiguration(version, configId),
-                LazyThreadSafetyMode.ExecutionAndPublication);
+            _configId = configId;
+            _metadataApi = new InfinniMetadataApi(server, port.ToString(), version);
         }
 
-        protected override IDataReader CreateDataReader()
+        public string ConfigId
         {
-            return _factory.Value.BuildDocumentMetadataReader();
+            get { return _configId; }
         }
 
-        protected override IDataManager CreateDataManager()
+        public override object CreateItem()
         {
-            return _factory.Value.BuildDocumentManager();
+            return _metadataApi.CreateDocument(Version,ConfigId);
+        }
+
+        public override void ReplaceItem(dynamic item)
+        {
+            _metadataApi.UpdateDocument(item, Version, ConfigId);
+        }
+
+        public override void DeleteItem(string itemId)
+        {
+            _metadataApi.DeleteDocument(Version, ConfigId, itemId);
+        }
+
+        public override object GetItem(string itemId)
+        {
+            return _metadataApi.GetDocument(Version, ConfigId, itemId);
+        }
+
+        public override IEnumerable<object> GetItems()
+        {
+            return _metadataApi.GetDocuments(Version, ConfigId);
         }
     }
 }

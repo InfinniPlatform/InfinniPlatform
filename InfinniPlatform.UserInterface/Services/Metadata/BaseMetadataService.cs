@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.UserInterface.Dynamic;
@@ -10,47 +11,37 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
     /// <summary>
     ///     Базовый класс сервисов для работы с метаданными системы.
     /// </summary>
-    internal abstract class BaseMetadataService : IMetadataService
+    public abstract class BaseMetadataService : IMetadataService 
     {
-        private readonly Lazy<IDataManager> _dataManager;
-        private readonly Lazy<IDataReader> _dataReader;
+        private readonly string _version;
+        private readonly string _server;
+        private readonly int _port;
 
-        protected BaseMetadataService()
+        protected BaseMetadataService(string version, string server, int port)
         {
-            _dataReader = new Lazy<IDataReader>(CreateDataReader, LazyThreadSafetyMode.ExecutionAndPublication);
-            _dataManager = new Lazy<IDataManager>(CreateDataManager, LazyThreadSafetyMode.ExecutionAndPublication);
+            _version = version;
+            _server = server;
+            _port = port;
         }
 
-        public virtual object CreateItem()
+        public string Version
         {
-            return _dataManager.Value.CreateItem(string.Empty);
+            get { return _version; }
         }
 
-        public virtual void ReplaceItem(object item)
-        {
-            _dataManager.Value.MergeItem(item);
-        }
+        public abstract object CreateItem();
 
-        public virtual void DeleteItem(string itemId)
-        {
-            var item = _dataReader.Value.GetItem(itemId);
+        public abstract void ReplaceItem(dynamic item);
 
-            if (item != null)
-            {
-                _dataManager.Value.DeleteItem(item);
-            }
-        }
+        public abstract void DeleteItem(string itemId);
 
-        public virtual object GetItem(string itemId)
-        {
-            return _dataReader.Value.GetItem(itemId);
-        }
+        public abstract object GetItem(string itemId);
 
-        public virtual object CloneItem(string itemId)
+        public object CloneItem(string itemId)
         {
             // Todo: Избавиться от этой конвертации после того, как в системе будет одна реализация Dynamic
 
-            var item = _dataReader.Value.GetItem(itemId);
+            dynamic item = GetItem(itemId);
 
             if (item != null)
             {
@@ -61,12 +52,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
             return DynamicExtensions.JsonToObject(item);
         }
 
-        public virtual IEnumerable GetItems()
-        {
-            return _dataReader.Value.GetItems();
-        }
+        public abstract IEnumerable<object> GetItems();
 
-        protected abstract IDataReader CreateDataReader();
-        protected abstract IDataManager CreateDataManager();
     }
 }

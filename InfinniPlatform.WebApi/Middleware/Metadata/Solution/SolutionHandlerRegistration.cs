@@ -21,6 +21,15 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.Solution
                         Priority = Priority
                     };
             }
+
+
+            var routeDictionary = RouteFormatter.GetRouteDictionary(context);
+            if (routeDictionary.ContainsKey("instanceId") &&
+                routeDictionary["instanceId"].ToLowerInvariant() == "unknown" && Method == "GET")
+            {
+                return RouteFormatter.FormatRoutePath(context, new PathString(PathConstructor.GetBaseApplicationPath() + "/solution/")).Create(Priority);
+            }
+
             return RouteFormatter.FormatRoutePath(context, new PathString(PathConstructor.GetBaseApplicationPath() + "/solution/_versionMetadata_/_instanceId_")).Create(Priority);
         }
     }

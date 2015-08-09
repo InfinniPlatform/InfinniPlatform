@@ -8,6 +8,15 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.DocumentSelector
 {
     internal sealed class DocumentSelectorElementBuilder : IObjectBuilder
     {
+        private readonly string _server;
+        private readonly int _port;
+
+        public DocumentSelectorElementBuilder(string server, int port)
+        {
+            _server = server;
+            _port = port;
+        }
+
         public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
         {
             var element = new DocumentSelectorElement(parent);
@@ -34,11 +43,11 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.DocumentSelector
             return element;
         }
 
-        private static IEnumerable GetDocuments(string version, string configId)
+        private IEnumerable GetDocuments(string version, string configId)
         {
             if (!string.IsNullOrWhiteSpace(configId))
             {
-                var documentService = new DocumentMetadataService(version, configId);
+                var documentService = new DocumentMetadataService(version, configId, _server, _port);
                 return documentService.GetItems();
             }
 

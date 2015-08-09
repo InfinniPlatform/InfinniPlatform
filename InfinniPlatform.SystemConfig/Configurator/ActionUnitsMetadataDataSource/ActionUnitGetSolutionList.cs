@@ -17,7 +17,7 @@ namespace InfinniPlatform.SystemConfig.Configurator.ActionUnitsMetadataDataSourc
         public void Action(IApplyResultContext target)
         {
             target.Result = new DynamicWrapper();
-            target.Result.SolutionList = QueryMetadata.QueryConfiguration(QueryMetadata.GetSolutionListIql(target.Item.Version));
+            target.Result.SolutionList = QueryMetadata.QueryConfiguration(QueryMetadata.GetSolutionListIql(),true);
         }
     }
 }

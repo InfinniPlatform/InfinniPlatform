@@ -24,6 +24,8 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigDesigner
     /// </summary>
     internal sealed class ConfigDesignerElement : BaseElement<UserControl>
     {
+        private readonly string _server;
+        private readonly int _port;
         // Editors
 
         private IEnumerable<ItemEditor> _editors;
@@ -34,9 +36,11 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigDesigner
         private readonly ContextMenuItem _addItemMenuButton;
         private readonly TreeViewElement _itemsTreeView;
 
-        public ConfigDesignerElement(View view)
+        public ConfigDesignerElement(View view, string server, int port)
             : base(view)
         {
+            _server = server;
+            _port = port;
             var mainPanel = new StackPanelElement(view);
 
             // TreeView
@@ -132,6 +136,8 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigDesigner
             _addItemMenuButton = addItemMenuButton;
 
             Control.Content = mainPanel.GetControl();
+
+
         }
 
         // Events
@@ -211,7 +217,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigDesigner
                 MessageBox.Show(string.Format(Resources.DocumentDesignerDeleteQuestion, itemText), GetView().GetText(),
                     MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                var dataProvider = new MetadataProvider(metadataType);
+                var dataProvider = new MetadataProvider(metadataType, _server, _port);
                 dataProvider.SetConfigId(configId);
                 dataProvider.DeleteItem(itemId);
 

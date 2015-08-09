@@ -8,14 +8,14 @@ namespace InfinniPlatform.UserInterface.AppHost
     ///     Статические метаданные приложения.
     /// </summary>
     internal static class StaticMetadata
-    {
+    {      
         /// <summary>
         ///     Создать метаданные главного окна приложения.
         /// </summary>
-        public static dynamic CreateAppView()
+        public static dynamic CreateAppView(string server, int port)
         {
             var configId = AppSettings.GetValue("ConfigId");
-            var viewMetadataService = new ViewMetadataService(null, configId, "Common");
+            var viewMetadataService = new ViewMetadataService(null, configId, "Common",server,port);
             return viewMetadataService.GetItem("App");
         }
 

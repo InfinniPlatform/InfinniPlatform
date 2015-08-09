@@ -1,4 +1,5 @@
-﻿using InfinniPlatform.Api.Metadata;
+﻿using System;
+using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Owin.Middleware;
@@ -17,22 +18,37 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.DocumentElements
 
         protected override IRequestHandlerResult ExecuteHandler(IOwinContext context)
         {
-            dynamic body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
+            dynamic body = null;
+
+            try
+            {
+                body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
+            }
+            catch (Exception e)
+            {
+                body = null;
+            }
+
 
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            if (body.Name == null || body.Id == null)
-            {
-                return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
-            }
-
-            var managerFactoryDocument = new ManagerFactoryDocument(routeDictionary["versionMetadata"], routeDictionary["configuration"], routeDictionary["document"]);
+            var managerFactoryDocument = new ManagerFactoryDocument(routeDictionary["versionMetadata"],
+                routeDictionary["configuration"], routeDictionary["document"]);
 
             IDataManager manager = managerFactoryDocument.BuildManagerByType(routeDictionary["metadataType"]);
 
-            manager.MergeItem(DynamicWrapperExtensions.ToDynamic(body));
+            if (body != null)
+            {
+                if (body.Name == null || body.Id == null)
+                {
+                    return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
+                }
 
-            return new EmptyRequestHandlerResult();
+
+                manager.MergeItem(DynamicWrapperExtensions.ToDynamic(body));
+            }
+
+            return new ValueRequestHandlerResult(manager.CreateItem("NewItem"));
         }
     }
 }

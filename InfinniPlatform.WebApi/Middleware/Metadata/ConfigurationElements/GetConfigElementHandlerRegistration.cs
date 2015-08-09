@@ -15,11 +15,15 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.ConfigurationElements
         {
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            var managerConfigElement = new ManagerFactoryConfiguration(routeDictionary["versionMetadata"],
+            var factoryConfiguration = new ManagerFactoryConfiguration(routeDictionary["versionMetadata"],
                                                                        routeDictionary["configuration"]);
 
+            if (routeDictionary["instanceId"].ToLowerInvariant() != "unknown")
+            {
+                return new ValueRequestHandlerResult(factoryConfiguration.BuildMetadataReaderByType(routeDictionary["metadataType"]).GetItem(routeDictionary["instanceId"]));
+            }
+            return new ValueRequestHandlerResult(factoryConfiguration.BuildMetadataReaderByType(routeDictionary["metadataType"]).GetItems());
 
-            return new ValueRequestHandlerResult(managerConfigElement.BuildMetadataReaderByType(routeDictionary["metadataType"]).GetItem(routeDictionary["instanceId"]));
         }
     }
 }

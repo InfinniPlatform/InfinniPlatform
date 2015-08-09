@@ -100,6 +100,7 @@ namespace InfinniPlatform.Sdk
                                       .ReplaceFormat("documentType", "configuration"));
         }
 
+
         /// <summary>
         ///  Сформировать роутинг запроса для работы с метаданными по идентификатору 
         /// </summary>
@@ -151,7 +152,22 @@ namespace InfinniPlatform.Sdk
         }
 
         /// <summary>
-        ///   Сформировать роутинг запроса для работы с метаданными меню
+        ///   Сформировать роутинг запроса для работы со списками элементов метаданных  документов
+        /// </summary>
+        /// <returns></returns>
+        public string BuildRestRoutingUrlDocumentMetadataElementList(string version, string configuration, string document, string metadataType)
+        {
+            return GetCompleteUrl(GetRestTemplateDocumentMetadataElementList()
+                                      .ReplaceFormat("application", "metadata")
+                                      .ReplaceFormat("version", version)
+                                      .ReplaceFormat("configuration", configuration)
+                                      .ReplaceFormat("document", document)
+                                      .ReplaceFormat("metadataType", metadataType)
+                                      );
+        }
+
+        /// <summary>
+        ///   Сформировать роутинг запроса для работы с элементами метаданных  документов
         /// </summary>
         /// <returns></returns>
         public string BuildRestRoutingUrlDocumentMetadataElement(string version, string configuration, string document, string metadataType)
@@ -164,6 +180,7 @@ namespace InfinniPlatform.Sdk
                                       .ReplaceFormat("metadataType", metadataType)
                                       );
         }
+
 
         /// <summary>
         ///  Сформировать роутинг запроса для работы с метаданными по идентификатору 
@@ -509,6 +526,16 @@ namespace InfinniPlatform.Sdk
         private string GetRestTemplateDocumentMetadataElement()
         {
             return GetBaseApplicationPath() + "/{version}/{configuration}/{document}/{metadataType}";
+        }
+
+
+        /// <summary>
+        ///Получить шаблон роутинга для доступа к списку метаданных указанного типа для документа
+        /// </summary>
+        /// <returns>Шаблон роутинга запроса</returns>
+        private string GetRestTemplateDocumentMetadataElementList()
+        {
+            return GetBaseApplicationPath() + "/{version}/{configuration}/{document}/{metadataType}/list";
         }
 
         /// <summary>

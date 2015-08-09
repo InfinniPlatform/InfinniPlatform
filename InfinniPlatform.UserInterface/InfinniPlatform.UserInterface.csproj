@@ -118,18 +118,14 @@
     <Compile Include="Services\Metadata\BaseMetadataService.cs" />
     <Compile Include="Services\Metadata\ConfigurationMetadataService.cs" />
     <Compile Include="Services\Metadata\RegisterMetadataService.cs" />
-    <Compile Include="Services\Metadata\ReportMetadataService.cs" />
-    <Compile Include="Services\Metadata\StatusMetadataService.cs" />
     <Compile Include="Services\Metadata\DocumentMetadataService.cs" />
-    <Compile Include="Services\Metadata\GeneratorMetadataService.cs" />
     <Compile Include="Services\Metadata\IMetadataService.cs" />
     <Compile Include="Services\Metadata\MenuMetadataService.cs" />
     <Compile Include="Services\Metadata\ProcessMetadataService.cs" />
     <Compile Include="Services\Metadata\ScenarioMetadataService.cs" />
     <Compile Include="Services\Metadata\ServiceMetadataService.cs" />
-    <Compile Include="Services\Metadata\ValidationErrorMetadataService.cs" />
-    <Compile Include="Services\Metadata\ValidationWarningMetadataService.cs" />
     <Compile Include="Services\Metadata\PrintViewMetadataService.cs" />
+    <Compile Include="Services\Metadata\SolutionMetadataService.cs" />
     <Compile Include="Services\Metadata\ViewMetadataService.cs" />
     <Compile Include="ViewBuilders\ActionElements\Buttons\ButtonControl.xaml.cs">
       <DependentUpon>ButtonControl.xaml</DependentUpon>
