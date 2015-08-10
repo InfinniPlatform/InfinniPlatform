@@ -1,4 +1,5 @@
-﻿using InfinniPlatform.FlowDocument.Model.Blocks;
+﻿using InfinniPlatform.FlowDocument.Model;
+using InfinniPlatform.FlowDocument.Model.Blocks;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 {
@@ -6,7 +7,14 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
     {
         public object Create(PrintElementBuildContext buildContext, dynamic elementMetadata)
         {
-            var element = new PrintElementLine();
+            var element = new PrintElementLine
+            {
+                Border = new PrintElementBorder
+                {
+                    Thickness = new PrintElementThickness(0, 0, 0, 1),
+                    Color = "Black"
+                }
+            };
 
             BuildHelper.ApplyTextProperties(element, buildContext.ElementStyle);
             BuildHelper.ApplyTextProperties(element, elementMetadata);
