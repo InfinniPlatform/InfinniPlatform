@@ -240,7 +240,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body style=&quot;padding-top:100px;padding-right:100px;padding-bottom:100px;padding-left:100px;&quot;&gt;&lt;p style=&quot;margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;&quot;&gt;&lt;img src=&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAYAAAC0VX7mAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsEAAA7BAbiRa+0AAAAxSURBVDhPY/hPZQA2kIGBgSoYxUBKAVYD38qogGlywKiBEA4lAMNAamC4gdQD//8DAIQ5hk+d1VM4AAAAAElFTkSuQ [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;style&gt;*{margin:0;padding:0;}&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot;padding-top:100px;padding-right:100px;padding-bottom:100px;padding-left:100px;&quot;&gt;&lt;p style=&quot;margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;&quot;&gt;&lt;img src=&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAYAAAC0VX7mAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsEAAA7BAbiRa+0AAAAxSURBVDhPY/hPZQA2kIGBgSoYxUBKAVYD38qogGlywKiBEA4lAMNA [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ResultTestShouldBuildDocumentWithContents {
             get {
