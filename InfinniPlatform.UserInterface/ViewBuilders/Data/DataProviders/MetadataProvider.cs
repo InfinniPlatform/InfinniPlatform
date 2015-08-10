@@ -22,52 +22,58 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Data.DataProviders
         private readonly string _metadataType;
         private readonly string _server;
         private readonly int _port;
+        private readonly string _versionRoute;
 
-        public MetadataProvider(string metadataType, string server, int port)
+        /// <summary>
+        ///   VersionRoute не является идентификатором версии конфигурации, это идентификатор роутинга
+        /// сервера (например "1.5") по которому nginx выполнит сопоставление урла в случае нескольких серверов приложения
+        /// </summary>
+        public MetadataProvider(string metadataType, string server, int port, string versionRoute)
         {
             FillServices();
             _metadataType = metadataType;
             _server = server;
             _port = port;
+            _versionRoute = versionRoute;
         }
 
         private void FillServices()
         {
             MetadataServices.Add(
                     MetadataType.Solution,
-                    (version, configId, documentId) => new SolutionMetadataService(version, _server, _port)
+                    (version, configId, documentId) => new SolutionMetadataService(version, _server, _port, _versionRoute)
             );
             MetadataServices.Add(
                     MetadataType.Configuration,
-                    (version, configId, documentId) => new ConfigurationMetadataService(version, _server, _port)                
+                    (version, configId, documentId) => new ConfigurationMetadataService(version, _server, _port, _versionRoute)                
             );
             MetadataServices.Add(
-                    MetadataType.Menu, (version, configId, documentId) => new MenuMetadataService(version, configId,_server, _port)
+                    MetadataType.Menu, (version, configId, documentId) => new MenuMetadataService(version, configId, _server, _port, _versionRoute)
             );
             MetadataServices.Add(
-                    MetadataType.Assembly, (version, configId, documentId) => new AssemblyMetadataService(version, configId,_server, _port)
+                    MetadataType.Assembly, (version, configId, documentId) => new AssemblyMetadataService(version, configId, _server, _port, _versionRoute)
             );
             MetadataServices.Add(
-                    MetadataType.Register, (version, configId, documentId) => new RegisterMetadataService(version, configId,_server, _port)
+                    MetadataType.Register, (version, configId, documentId) => new RegisterMetadataService(version, configId, _server, _port, _versionRoute)
             );
             MetadataServices.Add(
-                    MetadataType.Document, (version, configId, documentId) => new DocumentMetadataService(version, configId, _server, _port)
+                    MetadataType.Document, (version, configId, documentId) => new DocumentMetadataService(version, configId, _server, _port, _versionRoute)
             );
 
             MetadataServices.Add(
-                    MetadataType.PrintView, (version, configId, documentId) => new PrintViewMetadataService(version, configId, documentId, _server, _port)
+                    MetadataType.PrintView, (version, configId, documentId) => new PrintViewMetadataService(version, configId, documentId, _server, _port, _versionRoute)
             );
             MetadataServices.Add(
-                    MetadataType.View, (version, configId, documentId) => new ViewMetadataService(version, configId, documentId, _server, _port)
+                    MetadataType.View, (version, configId, documentId) => new ViewMetadataService(version, configId, documentId, _server, _port, _versionRoute)
             );
             MetadataServices.Add(
-                    MetadataType.Service, (version, configId, documentId) => new ServiceMetadataService(version, configId, documentId, _server, _port)
+                    MetadataType.Service, (version, configId, documentId) => new ServiceMetadataService(version, configId, documentId, _server, _port, _versionRoute)
             );
             MetadataServices.Add(
-                    MetadataType.Process, (version, configId, documentId) => new ProcessMetadataService(version, configId, documentId, _server, _port)
+                    MetadataType.Process, (version, configId, documentId) => new ProcessMetadataService(version, configId, documentId, _server, _port, _versionRoute)
             );
             MetadataServices.Add(
-                    MetadataType.Scenario, (version, configId, documentId) => new ScenarioMetadataService(version, configId, documentId, _server, _port)
+                    MetadataType.Scenario, (version, configId, documentId) => new ScenarioMetadataService(version, configId, documentId, _server, _port, _versionRoute)
             );
         }
 

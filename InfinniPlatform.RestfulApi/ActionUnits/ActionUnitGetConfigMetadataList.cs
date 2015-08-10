@@ -34,6 +34,10 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             var result = new List<dynamic>();
             foreach (dynamic o in target.Result)
             {
+                if (o == null)
+                {
+                    continue;                    
+                }
                 ValidationResult validationResult = authUtils.CheckDocumentAccess("SystemConfig",
                                                                                   paramsDoc.MetadataType + "metadata",
                                                                                   "getdocument",

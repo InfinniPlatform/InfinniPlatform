@@ -26,6 +26,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigDesigner
     {
         private readonly string _server;
         private readonly int _port;
+        private readonly string _routeVersion;
         // Editors
 
         private IEnumerable<ItemEditor> _editors;
@@ -36,11 +37,12 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigDesigner
         private readonly ContextMenuItem _addItemMenuButton;
         private readonly TreeViewElement _itemsTreeView;
 
-        public ConfigDesignerElement(View view, string server, int port)
+        public ConfigDesignerElement(View view, string server, int port, string routeVersion)
             : base(view)
         {
             _server = server;
             _port = port;
+            _routeVersion = routeVersion;
             var mainPanel = new StackPanelElement(view);
 
             // TreeView
@@ -217,7 +219,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigDesigner
                 MessageBox.Show(string.Format(Resources.DocumentDesignerDeleteQuestion, itemText), GetView().GetText(),
                     MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                var dataProvider = new MetadataProvider(metadataType, _server, _port);
+                var dataProvider = new MetadataProvider(metadataType, _server, _port, _routeVersion);
                 dataProvider.SetConfigId(configId);
                 dataProvider.DeleteItem(itemId);
 

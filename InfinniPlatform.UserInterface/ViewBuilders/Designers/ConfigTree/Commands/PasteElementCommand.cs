@@ -6,14 +6,16 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Comman
     {
         private readonly string _server;
         private readonly int _port;
+        private readonly string _version;
         private readonly ConfigElementNodeBuilder _builder;
         private readonly string _elementEditor;
         private readonly ConfigElementNode _elementNode;
 
-        public PasteElementCommand(string server, int port)
+        public PasteElementCommand(string server, int port, string version)
         {
             _server = server;
             _port = port;
+            _version = version;
         }
 
         public PasteElementCommand(ConfigElementNodeBuilder builder, ConfigElementNode elementNode, string elementEditor)
@@ -53,7 +55,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Comman
             }
 
             // Копирование метаданных элемента
-            var metadataProvider = CommandHelper.GetMetadataProvider(copyElement, copyElement.ElementType, _server, _port);
+            var metadataProvider = CommandHelper.GetMetadataProvider(copyElement, copyElement.ElementType, _server, _port, _version);
             var elementTemplate = metadataProvider.CloneItem(copyElement.ElementId);
 
             _builder.EditPanel.AddElement(_elementEditor,

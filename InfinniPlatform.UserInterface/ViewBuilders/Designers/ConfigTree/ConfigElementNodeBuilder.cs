@@ -8,15 +8,19 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree
     {
         private readonly string _server;
         private readonly int _port;
+        private readonly string _version;
+        private readonly string _routeVersion;
 
         private readonly Dictionary<string, IConfigElementNodeFactory> _factories
             = new Dictionary<string, IConfigElementNodeFactory>(StringComparer.OrdinalIgnoreCase);
 
 
-        public ConfigElementNodeBuilder(string server, int port)
+        public ConfigElementNodeBuilder(string server, int port, string version, string routeVersion)
         {
             _server = server;
             _port = port;
+            _version = version;
+            _routeVersion = routeVersion;
         }
 
         public IConfigElementEditPanel EditPanel { get; set; }
@@ -29,6 +33,16 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree
         public string Server
         {
             get { return _server; }
+        }
+
+        public string Version
+        {
+            get { return _version; }
+        }
+
+        public string RouteVersion
+        {
+            get { return _routeVersion; }
         }
 
         public void Register(string elementType, IConfigElementNodeFactory elementFactory)

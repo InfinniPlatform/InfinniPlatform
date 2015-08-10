@@ -19,12 +19,12 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
         private string _documentId;
         private InfinniMetadataApi _metadataApi;
 
-        public ViewMetadataService(string version, string configId, string documentId, string server, int port)
-            : base(version, server, port)
+        public ViewMetadataService(string version, string configId, string documentId, string server, int port, string route)
+            : base(version, server, port, route)
         {
             _configId = configId;
             _documentId = documentId;
-            _metadataApi = new InfinniMetadataApi(server, port.ToString(), version);
+            _metadataApi = new InfinniMetadataApi(server, port.ToString(), route);
         }
 
         public string ConfigId
@@ -49,12 +49,13 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
         public override object GetItem(string itemId)
         {
-            return _metadataApi.GetView(Version, ConfigId, _documentId, itemId);
+            return ConfigResourceRepository.GetView(_configId, _documentId, itemId)
+                ?? _metadataApi.GetView(Version, ConfigId, _documentId, itemId);
         }
 
         public override IEnumerable<object> GetItems()
         {
-            return _metadataApi.GetViewItems(Version, ConfigId, _documentId);
+            return ConfigResourceRepository.GetViews(_configId, _documentId) ?? _metadataApi.GetViewItems(Version, ConfigId, _documentId);
         }
     }
 }

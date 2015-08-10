@@ -12,9 +12,9 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
     {
         private InfinniMetadataApi _metadataApi;
 
-        public SolutionMetadataService(string version,string server, int port) : base(version, server, port)
+        public SolutionMetadataService(string version,string server, int port, string route) : base(version, server, port, route)
         {
-            _metadataApi = new InfinniMetadataApi(server,port.ToString(),version);
+            _metadataApi = new InfinniMetadataApi(server,port.ToString(),route);
         }
 
         public override object CreateItem()

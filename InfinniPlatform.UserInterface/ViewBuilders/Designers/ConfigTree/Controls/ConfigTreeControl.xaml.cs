@@ -217,14 +217,14 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Contro
 
                 if (command != null)
                 {
-                    try
-                    {
+                    //try
+                    //{
                         command.Execute(parameter);
-                    }
-                    catch (Exception error)
-                    {
-                        CommonHelper.ShowErrorMessage(error.Message);
-                    }
+                    //}
+                    //catch (Exception error)
+                    //{
+                    //    CommonHelper.ShowErrorMessage(error.Message);
+                    //}
                 }
             }
         }

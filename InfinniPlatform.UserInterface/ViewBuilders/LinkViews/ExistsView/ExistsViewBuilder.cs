@@ -10,11 +10,13 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.LinkViews.ExistsView
     {
         private readonly string _server;
         private readonly int _port;
+        private readonly string _routeVersion;
 
-        public ExistsViewBuilder(string server, int port)
+        public ExistsViewBuilder(string server, int port, string routeVersion)
         {
             _server = server;
             _port = port;
+            _routeVersion = routeVersion;
         }
 
         public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
@@ -30,7 +32,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.LinkViews.ExistsView
             View view = null;
 
             // Получение метаданных представления
-            var viewMetadataService = new ViewMetadataService(null, metadata.ConfigId, metadata.DocumentId, _server, _port);
+            var viewMetadataService = new ViewMetadataService(null, metadata.ConfigId, metadata.DocumentId, _server, _port, _routeVersion);
             var viewMetadata = viewMetadataService.GetItem(metadata.ViewId);
 
             if (viewMetadata != null)

@@ -19,7 +19,7 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.Configuration
         {         
             dynamic body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
 
-            if (body.Version == null || body.Name == null || body.Id == null)
+            if (body.Version == null || body.Name == null)
             {
                 return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
             }

@@ -79,7 +79,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 			bool withState = ((bool)CheckEditWithState.EditValue);
 			colStateFrom.Visible = withState;
 			LabelFromState.Visible = withState;
-			ComboBoxFromState.Visible = withState;
+			TextEditFromState.Visible = withState;
 		}
 
 
@@ -164,7 +164,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 
 		private void ClearValues()
 		{
-			ComboBoxFromState.EditValue = null;
+			TextEditFromState.EditValue = null;
 			ComboBoxFailHandler.EditValue = null;
 			ComboBoxSuccessHandler.EditValue = null;
 			ComboBoxValidationWarningHandler.EditValue = null;
@@ -194,9 +194,6 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 
             ReloadDeleteDocumentValidationRuleHandlers(ValidationHandlers);
            
-			ComboBoxFromState.Properties.Items.Clear();
-			ComboBoxFromState.Properties.Items.AddRange(DocumentStates.BuildImageComboBoxItemsString().ToList());
-
 		}
 
 		public IEnumerable<HandlerDescription> ActionHandlers { get; set; }
@@ -241,7 +238,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 		{
 			get
 			{
-				var stateFrom = ComboBoxFromState.EditValue;
+				var stateFrom = TextEditFromState.EditValue;
 
 				string transitionName = null;
 				if (stateFrom != null )
@@ -256,7 +253,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 		{
 			get
 			{
-				var stateFrom = ComboBoxFromState.EditValue;
+                var stateFrom = TextEditFromState.EditValue;
 				return stateFrom != null ? stateFrom.ToString() : null;
 			}
 		}

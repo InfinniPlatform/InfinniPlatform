@@ -43,7 +43,6 @@
             this.label28 = new System.Windows.Forms.Label();
             this.ComboBoxActionHandler = new DevExpress.XtraEditors.ImageComboBoxEdit();
             this.LabelFromState = new System.Windows.Forms.Label();
-            this.ComboBoxFromState = new DevExpress.XtraEditors.ImageComboBoxEdit();
             this.ButtonDeleteTransition = new DevExpress.XtraEditors.SimpleButton();
             this.GridControlTransitionStates = new DevExpress.XtraGrid.GridControl();
             this.GridViewTransitionStates = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -59,6 +58,8 @@
             this.gridView7 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.ButtonAddTransition = new DevExpress.XtraEditors.SimpleButton();
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
+            this.label4 = new System.Windows.Forms.Label();
+            this.ComboBoxDeleteDocumentValidationRuleHandler = new DevExpress.XtraEditors.ImageComboBoxEdit();
             this.label1 = new System.Windows.Forms.Label();
             this.ComboBoxValidationRuleWarningHandler = new DevExpress.XtraEditors.ImageComboBoxEdit();
             this.label3 = new System.Windows.Forms.Label();
@@ -74,8 +75,7 @@
             this.label23 = new System.Windows.Forms.Label();
             this.TextEditProcessName = new DevExpress.XtraEditors.TextEdit();
             this.label25 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.ComboBoxDeleteDocumentValidationRuleHandler = new DevExpress.XtraEditors.ImageComboBoxEdit();
+            this.TextEditFromState = new DevExpress.XtraEditors.TextEdit();
             ((System.ComponentModel.ISupportInitialize)(this.sourceTransitionStates)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
             this.panelControl1.SuspendLayout();
@@ -86,12 +86,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.ComboBoxFailHandler.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ComboBoxSuccessHandler.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ComboBoxActionHandler.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ComboBoxFromState.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.GridControlTransitionStates)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.GridViewTransitionStates)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
             this.groupControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ComboBoxDeleteDocumentValidationRuleHandler.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ComboBoxValidationRuleWarningHandler.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ComboBoxValidationErrorHandler.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ComboBoxValidationRuleErrorHandler.Properties)).BeginInit();
@@ -101,7 +101,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.CheckEditWithState.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TextEditProcessCaption.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TextEditProcessName.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ComboBoxDeleteDocumentValidationRuleHandler.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TextEditFromState.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // panelControl1
@@ -119,6 +119,7 @@
             // PanelTransitions
             // 
             this.PanelTransitions.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.PanelTransitions.Controls.Add(this.TextEditFromState);
             this.PanelTransitions.Controls.Add(this.LabelCredentialsAction);
             this.PanelTransitions.Controls.Add(this.CustomProcessCredentialsAction);
             this.PanelTransitions.Controls.Add(this.CustomProcessCredentialsEditor);
@@ -130,7 +131,6 @@
             this.PanelTransitions.Controls.Add(this.label28);
             this.PanelTransitions.Controls.Add(this.ComboBoxActionHandler);
             this.PanelTransitions.Controls.Add(this.LabelFromState);
-            this.PanelTransitions.Controls.Add(this.ComboBoxFromState);
             this.PanelTransitions.Controls.Add(this.ButtonDeleteTransition);
             this.PanelTransitions.Controls.Add(this.GridControlTransitionStates);
             this.PanelTransitions.Controls.Add(this.ButtonAddTransition);
@@ -261,18 +261,6 @@
             this.LabelFromState.TabIndex = 106;
             this.LabelFromState.Text = "From state";
             this.LabelFromState.Visible = false;
-            // 
-            // ComboBoxFromState
-            // 
-            this.ComboBoxFromState.Location = new System.Drawing.Point(184, 61);
-            this.ComboBoxFromState.Name = "ComboBoxFromState";
-            this.ComboBoxFromState.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
-            this.ComboBoxFromState.Size = new System.Drawing.Size(161, 20);
-            this.ComboBoxFromState.TabIndex = 105;
-            this.ComboBoxFromState.Visible = false;
-            this.ComboBoxFromState.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.DeleteButtonClick);
             // 
             // ButtonDeleteTransition
             // 
@@ -436,6 +424,25 @@
             this.groupControl1.TabIndex = 123;
             this.groupControl1.Text = "Validation";
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(325, 73);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(136, 13);
+            this.label4.TabIndex = 123;
+            this.label4.Text = "Delete document validation";
+            // 
+            // ComboBoxDeleteDocumentValidationRuleHandler
+            // 
+            this.ComboBoxDeleteDocumentValidationRuleHandler.Location = new System.Drawing.Point(467, 70);
+            this.ComboBoxDeleteDocumentValidationRuleHandler.Name = "ComboBoxDeleteDocumentValidationRuleHandler";
+            this.ComboBoxDeleteDocumentValidationRuleHandler.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.ComboBoxDeleteDocumentValidationRuleHandler.Size = new System.Drawing.Size(158, 20);
+            this.ComboBoxDeleteDocumentValidationRuleHandler.TabIndex = 124;
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -587,24 +594,12 @@
             this.label25.TabIndex = 122;
             this.label25.Text = "Process name";
             // 
-            // label4
+            // TextEditFromState
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(325, 73);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(136, 13);
-            this.label4.TabIndex = 123;
-            this.label4.Text = "Delete document validation";
-            // 
-            // ComboBoxDeleteDocumentValidationRuleHandler
-            // 
-            this.ComboBoxDeleteDocumentValidationRuleHandler.Location = new System.Drawing.Point(467, 70);
-            this.ComboBoxDeleteDocumentValidationRuleHandler.Name = "ComboBoxDeleteDocumentValidationRuleHandler";
-            this.ComboBoxDeleteDocumentValidationRuleHandler.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
-            this.ComboBoxDeleteDocumentValidationRuleHandler.Size = new System.Drawing.Size(158, 20);
-            this.ComboBoxDeleteDocumentValidationRuleHandler.TabIndex = 124;
+            this.TextEditFromState.Location = new System.Drawing.Point(184, 61);
+            this.TextEditFromState.Name = "TextEditFromState";
+            this.TextEditFromState.Size = new System.Drawing.Size(161, 20);
+            this.TextEditFromState.TabIndex = 142;
             // 
             // CustomProcessTemplate
             // 
@@ -624,13 +619,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.ComboBoxFailHandler.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ComboBoxSuccessHandler.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ComboBoxActionHandler.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ComboBoxFromState.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.GridControlTransitionStates)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.GridViewTransitionStates)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
             this.groupControl1.ResumeLayout(false);
             this.groupControl1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ComboBoxDeleteDocumentValidationRuleHandler.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ComboBoxValidationRuleWarningHandler.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ComboBoxValidationErrorHandler.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ComboBoxValidationRuleErrorHandler.Properties)).EndInit();
@@ -641,7 +636,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.CheckEditWithState.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.TextEditProcessCaption.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.TextEditProcessName.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ComboBoxDeleteDocumentValidationRuleHandler.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TextEditFromState.Properties)).EndInit();
             this.ResumeLayout(false);
 
 		}
@@ -663,8 +658,7 @@
 		public DevExpress.XtraEditors.ImageComboBoxEdit ComboBoxActionHandler;
 		private System.Windows.Forms.Label label26;
 		public DevExpress.XtraEditors.ImageComboBoxEdit ComboBoxValidationWarningHandler;
-		private System.Windows.Forms.Label LabelFromState;
-		public DevExpress.XtraEditors.ImageComboBoxEdit ComboBoxFromState;
+        private System.Windows.Forms.Label LabelFromState;
 		public DevExpress.XtraEditors.SimpleButton ButtonDeleteTransition;
 		public DevExpress.XtraGrid.GridControl GridControlTransitionStates;
 		public DevExpress.XtraGrid.Views.Grid.GridView GridViewTransitionStates;
@@ -695,5 +689,6 @@
 		private DevExpress.XtraGrid.Columns.GridColumn gridColumn3;
         private System.Windows.Forms.Label label4;
         public DevExpress.XtraEditors.ImageComboBoxEdit ComboBoxDeleteDocumentValidationRuleHandler;
+        public DevExpress.XtraEditors.TextEdit TextEditFromState;
 	}
 }

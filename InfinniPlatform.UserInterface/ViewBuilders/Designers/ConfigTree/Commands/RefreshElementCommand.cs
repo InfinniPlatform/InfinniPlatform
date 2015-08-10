@@ -4,18 +4,11 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Comman
 {
     internal sealed class RefreshElementCommand : CommandBase<bool>
     {
-        private readonly string _server;
-        private readonly int _port;
+
         private readonly ConfigElementNodeBuilder _builder;
         private readonly ConfigElementNode _elementNode;
         private readonly ICollection<ConfigElementNode> _elements;
         private readonly string _elementType;
-
-        public RefreshElementCommand(string server, int port)
-        {
-            _server = server;
-            _port = port;
-        }
 
         public RefreshElementCommand(ConfigElementNodeBuilder builder, ICollection<ConfigElementNode> elements,
             ConfigElementNode elementNode, string elementType)
@@ -39,7 +32,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Comman
                 CommandHelper.RemoveChildNodes(_elements, _elementNode);
 
                 // Загрузка актуального списка метаданных дочерних элементов
-                var metadataProvider = CommandHelper.GetMetadataProvider(_elementNode, _elementType, _server, _port);
+                var metadataProvider = CommandHelper.GetMetadataProvider(_elementNode, _elementType, _builder.Server, _builder.Port,_builder.RouteVersion);
                 var elementMetadata = metadataProvider.GetItems(null, 0, 1000);
 
                 // Обновление списка дочерних элементов в визуальном дереве

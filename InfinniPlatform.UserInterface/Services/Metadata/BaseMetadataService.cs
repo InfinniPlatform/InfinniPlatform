@@ -16,17 +16,27 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
         private readonly string _version;
         private readonly string _server;
         private readonly int _port;
+        private readonly string _route;
 
-        protected BaseMetadataService(string version, string server, int port)
+        protected BaseMetadataService(string version, string server, int port, string route)
         {
             _version = version;
             _server = server;
             _port = port;
+            _route = route;
         }
 
         public string Version
         {
             get { return _version; }
+        }
+
+        /// <summary>
+        ///   Роутинг-селектор, на который будет замаплен Nginx (например "1.5")
+        /// </summary>
+        public string Route
+        {
+            get { return _route; }
         }
 
         public abstract object CreateItem();

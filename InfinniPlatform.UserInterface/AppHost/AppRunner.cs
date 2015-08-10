@@ -66,16 +66,18 @@ namespace InfinniPlatform.UserInterface.AppHost
 
             var application = new Application();
 
-            application.DispatcherUnhandledException += (s, e) =>
-            {
-                MessageBox.Show(e.Exception.ToString());
-                e.Handled = true;
-            };
+            //application.DispatcherUnhandledException += (s, e) =>
+            //{
+            //    MessageBox.Show(e.Exception.ToString());
+            //    e.Handled = true;
+            //};
 
             application.Startup += (s, e) => OpenAppView(appViewMetadata);
 
             application.Run();
         }
+
+        private static string RouteVersion = "1";
 
         private static void OpenAppView(dynamic appViewMetadata)
         {
@@ -85,8 +87,10 @@ namespace InfinniPlatform.UserInterface.AppHost
             // Построение главного представления приложения
             context.AppView = context.Build(null, "View", appViewMetadata);
 
-            //TODO: здесь необходимо засунуть нужный идентификатор версии проекта
-            context.AppView.GetContext().Version = "0";
+            //TODO: необходимо продумать, как составлять роутинг для запросов дизайнера
+            //TODO: сейчас пока для теста используется "1", однако, при включении nginx здесь нужно будет указывать соответствующую версию для запросов к SDK
+            //TODO: пока она просто игнорируется
+            
             // Открытие главного представления приложения
 
             var linkView = new LinkView(context.AppView, null, () => context.AppView);
@@ -98,7 +102,7 @@ namespace InfinniPlatform.UserInterface.AppHost
 
         private static ObjectBuilderContext CreateBuilderContext()
         {
-            var context = new ObjectBuilderContext(Server, Port);
+            var context = new ObjectBuilderContext(Server, Port,RouteVersion);
 
             // View
             context.Register("View", new ViewBuilder());
@@ -118,7 +122,7 @@ namespace InfinniPlatform.UserInterface.AppHost
 
             // DataSources
             context.Register("ObjectDataSource", new ObjectDataSourceBuilder());
-            context.Register("MetadataDataSource", new MetadataDataSourceBuilder(Server, Port));
+            context.Register("MetadataDataSource", new MetadataDataSourceBuilder(Server, Port, RouteVersion));
 
             // Actions
             context.Register("AddAction", new AddActionBuilder());
@@ -134,7 +138,7 @@ namespace InfinniPlatform.UserInterface.AppHost
             context.Register("CancelAction", new CancelActionBuilder());
 
             // LinkViews
-            context.Register("ExistsView", new ExistsViewBuilder(Server, Port));
+            context.Register("ExistsView", new ExistsViewBuilder(Server, Port, RouteVersion));
 
             // LayoutPanels
             context.Register("Panel", new PanelElementBuilder());
@@ -148,7 +152,7 @@ namespace InfinniPlatform.UserInterface.AppHost
             context.Register("ViewPanel", new ViewPanelElementBuilder());
 
             // ActionElements
-            context.Register("MenuBar", new MenuBarElementBuilder(Server, Port));
+            context.Register("MenuBar", new MenuBarElementBuilder(Server, Port, RouteVersion));
             context.Register("ToolBar", new ToolBarElementBuilder());
             context.Register("ToolBarButton", new ToolBarButtonItemBuilder());
             context.Register("ToolBarPopupButton", new ToolBarPopupButtonItemBuilder());
@@ -173,14 +177,14 @@ namespace InfinniPlatform.UserInterface.AppHost
 
             // Designers
             context.Register("DeployDesigner", new DeployDesignerElementBuilder());
-            context.Register("ConfigDesigner", new ConfigDesignerElementBuilder(Server, Port));
+            context.Register("ConfigDesigner", new ConfigDesignerElementBuilder(Server, Port, RouteVersion));
             context.Register("ConfigVerifyDesigner", new ConfigVerifyDesignerElementBuilder());
             context.Register("ConfigDeployDesigner", new ConfigDeployDesignerElementBuilder());
-            context.Register("ConfigSelector", new ConfigSelectorElementBuilder(Server, Port));
+            context.Register("ConfigSelector", new ConfigSelectorElementBuilder(Server, Port, RouteVersion));
             context.Register("MenuDesigner", new MenuDesignerElementBuilder());
             context.Register("DocumentDesigner", new DocumentDesignerElementBuilder());
             context.Register("DocumentSchemaDesigner", new DocumentSchemaDesignerElementBuilder());
-            context.Register("DocumentSelector", new DocumentSelectorElementBuilder(Server, Port));
+            context.Register("DocumentSelector", new DocumentSelectorElementBuilder(Server, Port, RouteVersion));
             context.Register("PrintViewDesigner", new PrintViewDesignerElementBuilder());
             context.Register("ReportDesigner", new ReportDesignerElementBuilder());
             context.Register("GeneratorDesigner", new GeneratorDesignerElementBuilder());

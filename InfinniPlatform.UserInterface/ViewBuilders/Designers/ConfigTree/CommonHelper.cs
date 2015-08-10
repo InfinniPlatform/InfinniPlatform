@@ -16,17 +16,17 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree
         {
             if (command != null)
             {
-                try
-                {
+                //try
+                //{
                     if (command.CanExecute(parameter))
                     {
                         command.Execute(parameter);
                     }
-                }
-                catch (Exception error)
-                {
-                    ShowErrorMessage(error.Message);
-                }
+                //}
+                //catch (Exception error)
+                //{
+                //    ShowErrorMessage(error.Message);
+                //}
             }
         }
 

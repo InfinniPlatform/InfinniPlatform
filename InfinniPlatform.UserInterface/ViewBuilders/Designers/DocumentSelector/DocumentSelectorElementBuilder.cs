@@ -10,11 +10,13 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.DocumentSelector
     {
         private readonly string _server;
         private readonly int _port;
+        private readonly string _routeVersion;
 
-        public DocumentSelectorElementBuilder(string server, int port)
+        public DocumentSelectorElementBuilder(string server, int port, string routeVersion)
         {
             _server = server;
             _port = port;
+            _routeVersion = routeVersion;
         }
 
         public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
@@ -47,7 +49,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.DocumentSelector
         {
             if (!string.IsNullOrWhiteSpace(configId))
             {
-                var documentService = new DocumentMetadataService(version, configId, _server, _port);
+                var documentService = new DocumentMetadataService(version, configId, _server, _port, _routeVersion);
                 return documentService.GetItems();
             }
 

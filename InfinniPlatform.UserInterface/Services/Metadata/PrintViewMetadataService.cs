@@ -17,11 +17,12 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
         private readonly string _documentId;
         private InfinniMetadataApi _metadataApi;
 
-        public PrintViewMetadataService(string version, string configId, string documentId, string server, int port) : base(version, server, port)
+        public PrintViewMetadataService(string version, string configId, string documentId, string server, int port, string route)
+            : base(version, server, port, route)
         {
             _configId = configId;
             _documentId = documentId;
-            _metadataApi = new InfinniMetadataApi(server, port.ToString(), version);
+            _metadataApi = new InfinniMetadataApi(server, port.ToString(), route);
         }
 
         public string ConfigId

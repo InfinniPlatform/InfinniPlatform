@@ -16,10 +16,10 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
         private InfinniMetadataApi _metadataApi;
 
-        public ConfigurationMetadataService(string version, string server, int port) : base(version,server, port)
+        public ConfigurationMetadataService(string version, string server, int port, string route) : base(version,server, port, route)
         {
            
-            _metadataApi = new InfinniMetadataApi(server, port.ToString(), version);
+            _metadataApi = new InfinniMetadataApi(server, port.ToString(), route);
         }
 
 
@@ -30,7 +30,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
         public override void ReplaceItem(dynamic item)
         {
-            _metadataApi.UpdateConfig(item);
+            _metadataApi.InsertConfig(item);
         }
 
         public override void DeleteItem(string itemId)

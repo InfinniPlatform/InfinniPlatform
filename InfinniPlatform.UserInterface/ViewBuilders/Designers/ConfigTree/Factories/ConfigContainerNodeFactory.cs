@@ -21,6 +21,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Factor
         {
             elementNode.ElementId = HostingConfig.Default.ToString();
             elementNode.ElementName = HostingConfig.Default.ToString();
+            elementNode.Version = builder.Version;
 
             elementNode.RefreshCommand = new RefreshElementCommand(builder, elements, elementNode,
                 MetadataType.Configuration);

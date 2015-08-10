@@ -12,7 +12,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Contro
         static ConfigTreeBuilder()
         {
             //TODO Необходимо придумать способ передачи параметров сервера в билдер
-            ElementNodeBuilder = new ConfigElementNodeBuilder(HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort);
+            ElementNodeBuilder = new ConfigElementNodeBuilder(HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort, null, "1");
 
             ElementNodeBuilder.Register(ConfigContainerNodeFactory.ElementType, new ConfigContainerNodeFactory());
             ElementNodeBuilder.Register(ConfigElementNodeFactory.ElementType, new ConfigElementNodeFactory());
@@ -29,24 +29,11 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Contro
             ElementNodeBuilder.Register(RegisterContainerNodeFactory.ElementType, new RegisterContainerNodeFactory());
             ElementNodeBuilder.Register(RegisterElementNodeFactory.ElementType, new RegisterElementNodeFactory());
 
-            ElementNodeBuilder.Register(ReportContainerNodeFactory.ElementType, new ReportContainerNodeFactory());
-            ElementNodeBuilder.Register(ReportElementNodeFactory.ElementType, new ReportElementNodeFactory());
-
             ElementNodeBuilder.Register(ViewContainerNodeFactory.ElementType, new ViewContainerNodeFactory());
             ElementNodeBuilder.Register(ViewElementNodeFactory.ElementType, new ViewElementNodeFactory());
 
             ElementNodeBuilder.Register(PrintViewContainerNodeFactory.ElementType, new PrintViewContainerNodeFactory());
             ElementNodeBuilder.Register(PrintViewElementNodeFactory.ElementType, new PrintViewElementNodeFactory());
-
-            ElementNodeBuilder.Register(ValidationErrorContainerNodeFactory.ElementType,
-                new ValidationErrorContainerNodeFactory());
-            ElementNodeBuilder.Register(ValidationErrorElementNodeFactory.ElementType,
-                new ValidationErrorElementNodeFactory());
-
-            ElementNodeBuilder.Register(ValidationWarningContainerNodeFactory.ElementType,
-                new ValidationWarningContainerNodeFactory());
-            ElementNodeBuilder.Register(ValidationWarningElementNodeFactory.ElementType,
-                new ValidationWarningElementNodeFactory());
 
             ElementNodeBuilder.Register(ScenarioContainerNodeFactory.ElementType, new ScenarioContainerNodeFactory());
             ElementNodeBuilder.Register(ScenarioElementNodeFactory.ElementType, new ScenarioElementNodeFactory());
@@ -57,11 +44,6 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Contro
             ElementNodeBuilder.Register(ServiceContainerNodeFactory.ElementType, new ServiceContainerNodeFactory());
             ElementNodeBuilder.Register(ServiceElementNodeFactory.ElementType, new ServiceElementNodeFactory());
 
-            ElementNodeBuilder.Register(GeneratorContainerNodeFactory.ElementType, new GeneratorContainerNodeFactory());
-            ElementNodeBuilder.Register(GeneratorElementNodeFactory.ElementType, new GeneratorElementNodeFactory());
-
-            ElementNodeBuilder.Register(StatusContainerNodeFactory.ElementType, new StatusContainerNodeFactory());
-            ElementNodeBuilder.Register(StatusElementNodeFactory.ElementType, new StatusElementNodeFactory());
         }
 
         public static IEnumerable<ConfigElementNode> Build(IConfigElementEditPanel editPanel)

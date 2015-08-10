@@ -31,6 +31,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.RegisterDesigner
 
                     editor.SetConfigId(dataSource.GetConfigId);
                     editor.SetDocumentId(dataSource.GetDocumentId);
+                    editor.SetVersion(dataSource.GetVersion);
                 }
             }
 

@@ -10,11 +10,13 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigSelector
     {
         private readonly string _server;
         private readonly int _port;
+        private readonly string _routeVersion;
 
-        public ConfigSelectorElementBuilder(string server, int port)
+        public ConfigSelectorElementBuilder(string server, int port, string routeVersion)
         {
             _server = server;
             _port = port;
+            _routeVersion = routeVersion;
         }
 
         public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
@@ -38,7 +40,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigSelector
 
         private IEnumerable GetConfigurations(string version)
         {
-            return new ConfigurationMetadataService(version, _server, _port).GetItems();
+            return new ConfigurationMetadataService(version, _server, _port, _routeVersion).GetItems();
         }
     }
 }

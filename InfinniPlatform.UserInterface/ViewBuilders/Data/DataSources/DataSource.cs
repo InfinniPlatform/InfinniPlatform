@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms.VisualStyles;
+using InfinniPlatform.Api.Deprecated;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.UserInterface.ViewBuilders.Scripts;
 using InfinniPlatform.UserInterface.ViewBuilders.Views;
@@ -233,7 +235,12 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Data.DataSources
 
         public void SaveItem(object item)
         {
-            InvokeAction(() => _dataProvider.ReplaceItem(item));
+            InvokeAction(() =>
+            {
+                dynamic itemVersioned = item;
+                itemVersioned.Version = GetVersion();
+                _dataProvider.ReplaceItem(item);
+            });
 
             _dataItems.AddOrUpdate(item);
 
@@ -387,30 +394,12 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Data.DataSources
 
         private void InvokeAction(Action action)
         {
-            try
-            {
-                action();
-            }
-            catch (Exception error)
-            {
-                _strategy.OnError(error.Message);
-
-                throw;
-            }
+            action();
         }
 
         private TResult InvokeAction<TResult>(Func<TResult> action)
         {
-            try
-            {
-                return action();
-            }
-            catch (Exception error)
-            {
-                _strategy.OnError(error.Message);
-
-                throw;
-            }
+            return action();
         }
 
         private void OnSetPropertyValueHandler(dynamic context, dynamic arguments)

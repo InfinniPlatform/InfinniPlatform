@@ -13,14 +13,16 @@ namespace InfinniPlatform.UserInterface.ViewBuilders
     {
         private readonly string _server;
         private readonly int _port;
+        private readonly string _routeVersion;
 
         private readonly Dictionary<string, IObjectBuilder> _objectBuilders
             = new Dictionary<string, IObjectBuilder>();
 
-        public ObjectBuilderContext(string server, int port)
+        public ObjectBuilderContext(string server, int port, string routeVersion)
         {
             _server = server;
             _port = port;
+            _routeVersion = routeVersion;
         }
 
         /// <summary>
@@ -37,6 +39,12 @@ namespace InfinniPlatform.UserInterface.ViewBuilders
         {
             get { return _port; }
         }
+
+        public string RouteVersion
+        {
+            get { return _routeVersion; }
+        }
+
 
         /// <summary>
         ///     Зарегистрировать построитель.

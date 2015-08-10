@@ -65,6 +65,17 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.RegisterDesigner
             Control.DocumentId = value;
         }
 
+
+        public Func<string> GetVersion()
+        {
+            return Control.Version;
+        } 
+
+        public void SetVersion(Func<string> value)
+        {
+            Control.Version = value;
+        }
+
         // Value
 
         /// <summary>
