@@ -27,6 +27,7 @@ namespace InfinniPlatform.FlowDocument.Converters.Html.Blocks
                 if (column.Size != null)
                 {
                     result.WriteInvariant(column.Size);
+                    result.Write("px");
                 }
 
                 result.Write("\">");

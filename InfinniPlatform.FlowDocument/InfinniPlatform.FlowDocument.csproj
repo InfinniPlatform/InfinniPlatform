@@ -73,6 +73,7 @@
     <Compile Include="Converters\Html\Blocks\PrintElementTableHtmlBuilder.cs" />
     <Compile Include="Converters\Html\Inlines\PrintElementUnderlineHtmlBuilder.cs" />
     <Compile Include="Converters\Html\PrintViewDocumentHtmlBuilder.cs" />
+    <Compile Include="Converters\Pdf\HtmlToPdfUtil.cs" />
     <Compile Include="Model\Blocks\PrintElementLine.cs" />
     <Compile Include="Model\Blocks\PrintElementPageBreak.cs" />
     <Compile Include="Model\PrintElementBlock.cs" />
@@ -119,7 +120,6 @@
     <Compile Include="Model\Blocks\PrintElementTableCell.cs" />
     <Compile Include="Model\Blocks\PrintElementTableColumn.cs" />
     <Compile Include="Model\Blocks\PrintElementTableRow.cs" />
-    <Compile Include="Model\PrintElementSizeUnit.cs" />
     <Compile Include="Model\PrintElementBorder.cs" />
     <Compile Include="Model\PrintElementSize.cs" />
     <Compile Include="Model\PrintElementStretch.cs" />

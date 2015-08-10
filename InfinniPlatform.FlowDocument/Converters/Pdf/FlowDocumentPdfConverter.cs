@@ -1,30 +1,62 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
+using InfinniPlatform.Api.Settings;
+using InfinniPlatform.FlowDocument.Converters.Html;
+using InfinniPlatform.FlowDocument.Model;
 using InfinniPlatform.FlowDocument.Model.Views;
 
 namespace InfinniPlatform.FlowDocument.Converters.Pdf
 {
     sealed class FlowDocumentPdfConverter : IFlowDocumentConverter
     {
+        private static readonly HtmlToPdfUtil HtmlToPdfUtil;
+        private static readonly FlowDocumentHtmlConverter HtmlConverter;
+
+
+        static FlowDocumentPdfConverter()
+        {
+            var htmlToPdfUtil = AppSettings.GetValue("HtmlToPdfUtil");
+            var htmlToPdfTemp = AppSettings.GetValue("HtmlToPdfTemp");
+
+            if (string.IsNullOrWhiteSpace(htmlToPdfUtil))
+            {
+                htmlToPdfUtil = HtmlToPdfUtil.GetDefaultHtmlToPdfUtil();
+            }
+
+            if (string.IsNullOrWhiteSpace(htmlToPdfTemp))
+            {
+                htmlToPdfTemp = Path.GetTempPath();
+            }
+
+            HtmlToPdfUtil = new HtmlToPdfUtil(htmlToPdfUtil, htmlToPdfTemp);
+            HtmlConverter = new FlowDocumentHtmlConverter();
+        }
+
+
         public void Convert(PrintViewDocument document, Stream documentStream)
         {
-            //using (var xpsDocumentStream = new MemoryStream())
-            //{
-            //    using (var package = Package.Open(xpsDocumentStream, FileMode.Create, FileAccess.ReadWrite))
-            //    {
-            //        using (var xpsDocument = new XpsDocument(package, CompressionOption.Maximum))
-            //        {
-            //            var serializer = new XpsSerializationManager(new XpsPackagingPolicy(xpsDocument), false);
-            //            var paginator = ((IDocumentPaginatorSource)document).DocumentPaginator;
-            //            serializer.SaveAsXaml(paginator);
-            //            serializer.Commit();
-            //        }
-            //    }
+            var saveSize = document.PageSize;
+            var savePadding = document.PagePadding;
 
-            //    xpsDocumentStream.Position = 0;
+            document.PagePadding = default(PrintElementThickness);
+            document.PageSize = null;
 
-            //    XpsConverter.Convert(xpsDocumentStream, documentStream);
-            //}
+            try
+            {
+                using (var htmlStream = new MemoryStream())
+                {
+                    HtmlConverter.Convert(document, htmlStream);
+                    htmlStream.Position = 0;
+
+                    HtmlToPdfUtil.Convert(saveSize, savePadding, htmlStream, documentStream);
+                }
+            }
+            finally
+            {
+                document.PageSize = saveSize;
+                document.PagePadding = savePadding;
+            }
         }
     }
 }

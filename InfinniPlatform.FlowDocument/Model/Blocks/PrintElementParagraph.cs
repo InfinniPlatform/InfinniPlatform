@@ -10,7 +10,6 @@ namespace InfinniPlatform.FlowDocument.Model.Blocks
         }
 
         public double? IndentSize { get; set; }
-        public PrintElementSizeUnit? IndentSizeUnit { get; set; }
         public List<PrintElementInline> Inlines { get; private set; }
     }
 }

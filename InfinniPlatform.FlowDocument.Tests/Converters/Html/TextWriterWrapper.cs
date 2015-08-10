@@ -38,16 +38,5 @@ namespace InfinniPlatform.FlowDocument.Tests.Converters.Html
         {
             return GetText();
         }
-
-        public void WriteToDisk()
-        {
-            var path = @"C:\Test.html";
-            var html = GetText();
-
-            using (var writer = new StreamWriter(path, false, Encoding.UTF8))
-            {
-                writer.Write(html);
-            }
-        }
     }
 }

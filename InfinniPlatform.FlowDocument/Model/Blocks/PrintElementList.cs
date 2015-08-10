@@ -12,7 +12,6 @@ namespace InfinniPlatform.FlowDocument.Model.Blocks
         public int? StartIndex { get; set; }
         public PrintElementListMarkerStyle? MarkerStyle { get; set; }
         public double MarkerOffsetSize { get; set; }
-        public PrintElementSizeUnit? MarkerOffsetSizeUnit { get; set; }
         public List<PrintElementSection> Items { get; private set; }
     }
 }

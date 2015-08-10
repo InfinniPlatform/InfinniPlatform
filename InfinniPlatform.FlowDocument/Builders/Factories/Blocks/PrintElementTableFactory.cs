@@ -109,7 +109,6 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
                         }
 
                         tableColumn.Size = sizeInPixels;
-                        tableColumn.SizeUnit = PrintElementSizeUnit.Px;
                     }
                     // Если размер не указан, он высчитывается автоматически
                     else
@@ -117,7 +116,6 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
                         ++autoWidthColumns;
 
                         tableColumn.Size = null;
-                        tableColumn.SizeUnit = null;
                     }
 
                     table.Columns.Add(tableColumn);
@@ -134,7 +132,6 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
                         if (tableColumn.Size == null)
                         {
                             tableColumn.Size = autoWidth;
-                            tableColumn.SizeUnit = PrintElementSizeUnit.Px;
                         }
                     }
                 }

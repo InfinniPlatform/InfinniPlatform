@@ -8,7 +8,7 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
     {
         public override void Build(HtmlBuilderContext context, PrintViewDocument element, TextWriter result)
         {
-            result.Write("<!DOCTYPE html><html><head></head><body style=\"");
+            result.Write("<!DOCTYPE html><html><head><style>*{margin:0;padding:0;}</style></head><body style=\"");
 
             result.Write("padding-top:");
             result.WriteInvariant(element.PagePadding.Top);
