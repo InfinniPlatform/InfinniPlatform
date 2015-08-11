@@ -48,7 +48,7 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.ConfigurationElements
                 manager.MergeItem(DynamicWrapperExtensions.ToDynamic(body));
             }
 
-            return new ValueRequestHandlerResult(manager.CreateItem("NewItem"));
+            return new ValueRequestHandlerResult(manager.CreateItem(""));
         }
     }
 }

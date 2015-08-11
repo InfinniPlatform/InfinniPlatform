@@ -331,7 +331,7 @@ namespace InfinniPlatform.Sdk.Api
 
             var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlMetadataElement(version, configuration, "Assembly"));
 
-            return ProcessAsArrayResult(response, string.Format(Resources.UnableToGetAssemblyMetadata, response.GetErrorContent()));
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetAssemblyMetadata, response.GetErrorContent()));
         } 
 
         /// <summary>
