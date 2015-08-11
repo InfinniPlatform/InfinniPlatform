@@ -10,7 +10,7 @@ using System.Windows.Media;
 using InfinniPlatform.Api.PrintView;
 using InfinniPlatform.FlowDocument;
 using InfinniPlatform.FlowDocument.PrintView;
-
+using InfinniPlatform.PrintViewDesigner.ViewModel;
 using AppResources = InfinniPlatform.PrintViewDesigner.Properties.Resources;
 
 using FrameworkFlowDocument = System.Windows.Documents.FlowDocument;
@@ -77,7 +77,10 @@ namespace InfinniPlatform.PrintViewDesigner.Controls.PrintViewViewer
 				try
 				{
 					elementMetadataMap = new PrintElementMetadataMap();
-					printViewDocument = PrintViewFactory.Create(printView, null, elementMetadataMap);
+
+					var printViewDocumentModel = PrintViewFactory.Create(printView, null, elementMetadataMap);
+
+				    printViewDocument = FlowDocumentBuilder.Build(printViewDocumentModel, elementMetadataMap);
 				}
 				catch (Exception error)
 				{
