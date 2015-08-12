@@ -1,12 +1,12 @@
 ﻿using System.Windows.Documents;
-
+using InfinniPlatform.FlowDocument;
 using InfinniPlatform.FlowDocument.Model.Blocks;
 
 namespace InfinniPlatform.PrintViewDesigner.ViewModel.Blocks
 {
     sealed class FlowElementParagraphBuilder : IFlowElementBuilderBase<PrintElementParagraph>
     {
-        public override object Build(FlowElementBuilderContext context, PrintElementParagraph element)
+        public override object Build(FlowElementBuilderContext context, PrintElementParagraph element, PrintElementMetadataMap elementMetadataMap)
         {
             var elementContent = new Paragraph();
 
@@ -20,7 +20,7 @@ namespace InfinniPlatform.PrintViewDesigner.ViewModel.Blocks
 
             foreach (var inline in element.Inlines)
             {
-                var newInline = context.Build<Inline>(inline);
+                var newInline = context.Build<Inline>(inline, elementMetadataMap);
 
                 if (newInline != null)
                 {

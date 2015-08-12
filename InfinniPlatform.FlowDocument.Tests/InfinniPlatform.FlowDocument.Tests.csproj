@@ -71,7 +71,6 @@
     <Compile Include="Converters\Html\Inlines\PrintElementHyperlinkHtmlBuilderTest.cs" />
     <Compile Include="Converters\Html\Inlines\PrintElementImageHtmlBuilderTest.cs" />
     <Compile Include="Converters\Html\Blocks\PrintElementParagraphHtmlBuilderTest.cs" />
-    <Compile Include="Converters\Html\Blocks\PrintElementTableHtmlBuilderTest.cs" />
     <Compile Include="Converters\Html\Inlines\PrintElementItalicHtmlBuilderTest.cs" />
     <Compile Include="Converters\Html\Inlines\PrintElementLineBreakHtmlBuilderTest.cs" />
     <Compile Include="Converters\Html\Inlines\PrintElementRunHtmlBuilderTest.cs" />

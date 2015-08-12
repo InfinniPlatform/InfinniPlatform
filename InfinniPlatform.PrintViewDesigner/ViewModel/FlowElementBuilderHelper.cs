@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
-
+using InfinniPlatform.FlowDocument;
 using InfinniPlatform.FlowDocument.Model;
 using InfinniPlatform.FlowDocument.Model.Blocks;
 using InfinniPlatform.FlowDocument.Model.Font;
@@ -9,7 +9,7 @@ using InfinniPlatform.FlowDocument.Model.Views;
 
 namespace InfinniPlatform.PrintViewDesigner.ViewModel
 {
-    class FlowElementBuilderHelper
+    static class FlowElementBuilderHelper
     {
         public static void ApplyBaseStyles(dynamic elementContent, PrintElement element)
         {
@@ -319,11 +319,18 @@ namespace InfinniPlatform.PrintViewDesigner.ViewModel
 
         public static void ApplyDocumentStyles(System.Windows.Documents.FlowDocument document, PrintViewDocument element)
         {
+            var pagePadding = new Thickness(
+                element.PagePadding.Left,
+                element.PagePadding.Top,
+                element.PagePadding.Right,
+                element.PagePadding.Bottom);
+
+
             if (element.PageSize != null)
             {
                 if (element.PageSize.Width != null)
                 {
-                    document.PageWidth = element.PageSize.Width.Value;
+                    document.PageWidth = element.PageSize.Width.Value - pagePadding.Left - pagePadding.Right + 10 /* RichTextBox Default Padding */;
                 }
 
                 if (element.PageSize.Height != null)
@@ -331,13 +338,6 @@ namespace InfinniPlatform.PrintViewDesigner.ViewModel
                     document.PageHeight = element.PageSize.Height.Value;
                 }
             }
-
-            document.PagePadding=new Thickness(
-                element.PagePadding.Left,
-                element.PagePadding.Top,
-                element.PagePadding.Right,
-                element.PagePadding.Bottom
-                );
         }
 
         public static TextAlignment GetTextAlignment(PrintElementTextAlignment align)
@@ -483,6 +483,16 @@ namespace InfinniPlatform.PrintViewDesigner.ViewModel
             }
 
             return default(TextDecorationCollection);
+        }
+
+
+        public static void RemapElement(this PrintElementMetadataMap elementMetadataMap, dynamic element, object flowElement)
+        {
+            if (elementMetadataMap != null && flowElement != null)
+            {
+                var elementMetadata = elementMetadataMap.GetMetadata(element);
+                elementMetadataMap.Map(flowElement, elementMetadata);
+            }
         }
     }
 }

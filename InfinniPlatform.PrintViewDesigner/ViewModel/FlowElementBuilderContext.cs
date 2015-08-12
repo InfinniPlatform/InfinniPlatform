@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Documents;
-
+using InfinniPlatform.FlowDocument;
 using InfinniPlatform.FlowDocument.Model;
 
 namespace InfinniPlatform.PrintViewDesigner.ViewModel
@@ -20,7 +20,7 @@ namespace InfinniPlatform.PrintViewDesigner.ViewModel
             return this;
         }
 
-        public object Build(PrintElement element)
+        public object Build(PrintElement element, PrintElementMetadataMap elementMetadataMap)
         {
             if (element != null)
             {
@@ -28,16 +28,20 @@ namespace InfinniPlatform.PrintViewDesigner.ViewModel
 
                 if (_builders.TryGetValue(element.GetType(), out builder))
                 {
-                    return builder.Build(this, element);
+                    var flowElement = builder.Build(this, element, elementMetadataMap);
+
+                    elementMetadataMap.RemapElement(element, flowElement);
+
+                    return flowElement;
                 }
             }
 
             return null;
         }
 
-        public TResult Build<TResult>(PrintElement element) where TResult : TextElement
+        public TResult Build<TResult>(PrintElement element, PrintElementMetadataMap elementMetadataMap) where TResult : TextElement
         {
-            return (TResult)Build(element);
+            return (TResult)Build(element, elementMetadataMap);
         }
     }
 }

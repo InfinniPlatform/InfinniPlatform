@@ -1,18 +1,20 @@
 ﻿using System.Windows;
 using System.Windows.Documents;
-
+using InfinniPlatform.FlowDocument;
 using InfinniPlatform.FlowDocument.Model.Blocks;
 
 namespace InfinniPlatform.PrintViewDesigner.ViewModel.Blocks
 {
     sealed class FlowElementListBuilder : IFlowElementBuilderBase<PrintElementList>
     {
-        public override object Build(FlowElementBuilderContext context, PrintElementList element)
+        private const int DefaultMarkerOffsetSize = 7 + 5;
+
+        public override object Build(FlowElementBuilderContext context, PrintElementList element, PrintElementMetadataMap elementMetadataMap)
         {
             var elementContent = new List
             {
                 MarkerStyle = TextMarkerStyle.None,
-                MarkerOffset = element.MarkerOffsetSize
+                MarkerOffset = element.MarkerOffsetSize + DefaultMarkerOffsetSize
             };
 
             FlowElementBuilderHelper.ApplyBaseStyles(elementContent, element);
@@ -30,7 +32,7 @@ namespace InfinniPlatform.PrintViewDesigner.ViewModel.Blocks
 
             foreach (var item in element.Items)
             {
-                var itemContent = context.Build<Block>(item);
+                var itemContent = context.Build<Block>(item, elementMetadataMap);
 
                 if (itemContent != null)
                 {

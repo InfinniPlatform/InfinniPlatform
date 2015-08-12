@@ -1,14 +1,14 @@
 ﻿using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
-
+using InfinniPlatform.FlowDocument;
 using InfinniPlatform.FlowDocument.Model.Blocks;
 
 namespace InfinniPlatform.PrintViewDesigner.ViewModel.Blocks
 {
     sealed class FlowElementTableBuilder : IFlowElementBuilderBase<PrintElementTable>
     {
-        public override object Build(FlowElementBuilderContext context, PrintElementTable element)
+        public override object Build(FlowElementBuilderContext context, PrintElementTable element, PrintElementMetadataMap elementMetadataMap)
         {
             var elementContent = new Table
             {
@@ -25,6 +25,8 @@ namespace InfinniPlatform.PrintViewDesigner.ViewModel.Blocks
             {
                 var columnContent = new TableColumn { Width = new GridLength(column.Size ?? 1) };
 
+                elementMetadataMap.RemapElement(column, columnContent);
+
                 elementContent.Columns.Add(columnContent);
             }
 
@@ -33,6 +35,8 @@ namespace InfinniPlatform.PrintViewDesigner.ViewModel.Blocks
                 var rowContent = new TableRow();
 
                 FlowElementBuilderHelper.ApplyRowStyles(rowContent, row);
+
+                var colSpansCount = 0;
 
                 foreach (var cell in row.Cells)
                 {
@@ -46,24 +50,28 @@ namespace InfinniPlatform.PrintViewDesigner.ViewModel.Blocks
 
                     //Check ColSpan and RowSpan
 
-                    var colIndex = row.Cells.IndexOf(cell);
+                    colSpansCount += cell.ColumnSpan ?? 1;
 
-                    if (cell.ColumnSpan != null && cell.ColumnSpan > (element.Columns.Count - colIndex))
+                    if (colSpansCount > element.Columns.Count)
                     {
-                        cell.ColumnSpan = element.Columns.Count - colIndex;
+                        cell.ColumnSpan = element.Columns.Count - (colSpansCount - cell.ColumnSpan);
                     }
 
                     FlowElementBuilderHelper.ApplyCellStyles(cellContent, cell);
 
-                    var blockContent = context.Build<Block>(cell.Block);
+                    var blockContent = context.Build<Block>(cell.Block, elementMetadataMap);
 
                     if (blockContent != null)
                     {
                         cellContent.Blocks.Add(blockContent);
                     }
 
+                    elementMetadataMap.RemapElement(cell, cellContent);
+
                     rowContent.Cells.Add(cellContent);
                 }
+
+                elementMetadataMap.RemapElement(row, rowContent);
 
                 elementContent.RowGroups[0].Rows.Add(rowContent);
             }

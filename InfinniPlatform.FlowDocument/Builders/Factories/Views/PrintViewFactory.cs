@@ -28,7 +28,6 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Views
 
             // Настройка размеров колонки печатного представления
             var contentWidth = CalcContentWidth(element);
-            // element.ColumnWidth = contentWidth;
 
             // Генерация содержимого печатного представления
 

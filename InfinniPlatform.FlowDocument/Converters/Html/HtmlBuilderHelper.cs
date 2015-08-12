@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
-
+using System.Text.RegularExpressions;
 using InfinniPlatform.FlowDocument.Model;
 using InfinniPlatform.FlowDocument.Model.Blocks;
 using InfinniPlatform.FlowDocument.Model.Font;
@@ -183,14 +183,14 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
             if (!string.IsNullOrWhiteSpace(element.Background))
             {
                 result.Write("background-color:");
-                result.Write(element.Background);
+                result.Write(element.Background.TryToRgba());
                 result.Write(";");
             }
 
             if (!string.IsNullOrWhiteSpace(element.Foreground))
             {
                 result.Write("color:");
-                result.Write(element.Foreground);
+                result.Write(element.Foreground.TryToRgba());
                 result.Write(";");
             }
         }
@@ -220,7 +220,7 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
                     result.Write("border-style:solid;");
 
                     result.Write("border-color:");
-                    result.Write(element.Border.Color);
+                    result.Write(element.Border.Color.TryToRgba());
                     result.Write(";");
                 }
 
@@ -370,14 +370,14 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
             if (!string.IsNullOrWhiteSpace(element.Background))
             {
                 result.Write("background-color:");
-                result.Write(element.Background);
+                result.Write(element.Background.TryToRgba());
                 result.Write(";");
             }
 
             if (!string.IsNullOrWhiteSpace(element.Foreground))
             {
                 result.Write("color:");
-                result.Write(element.Foreground);
+                result.Write(element.Foreground.TryToRgba());
                 result.Write(";");
             }
         }
@@ -430,14 +430,14 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
             if (!string.IsNullOrWhiteSpace(element.Background))
             {
                 result.Write("background-color:");
-                result.Write(element.Background);
+                result.Write(element.Background.TryToRgba());
                 result.Write(";");
             }
 
             if (!string.IsNullOrWhiteSpace(element.Foreground))
             {
                 result.Write("color:");
-                result.Write(element.Foreground);
+                result.Write(element.Foreground.TryToRgba());
                 result.Write(";");
             }
 
@@ -464,7 +464,7 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
                     result.Write("border-style:solid;");
 
                     result.Write("border-color:");
-                    result.Write(element.Border.Color);
+                    result.Write(element.Border.Color.TryToRgba());
                     result.Write(";");
                 }
 
@@ -555,6 +555,29 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
             {
                 writer.Write(Convert.ToString(value, CultureInfo.InvariantCulture));
             }
+        }
+
+        public static string TryToRgba(this string color)
+        {
+            if (!string.IsNullOrWhiteSpace(color))
+            {
+                var colorMatch = Regex.Match(color, @"#(?<a>[0-9a-fA-F]{2}){0,1}(?<r>[0-9a-fA-F]{2}){1}(?<g>[0-9a-fA-F]{2}){1}(?<b>[0-9a-fA-F]{2}){1}", RegexOptions.Compiled);
+
+                if (colorMatch.Success && colorMatch.Groups["a"].Success)
+                {
+                    byte a, r, g, b;
+
+                    if (byte.TryParse(colorMatch.Groups["a"].Value, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out a)
+                        && byte.TryParse(colorMatch.Groups["r"].Value, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out r)
+                        && byte.TryParse(colorMatch.Groups["g"].Value, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out g)
+                        && byte.TryParse(colorMatch.Groups["b"].Value, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out b))
+                    {
+                        return string.Format(CultureInfo.InvariantCulture, "rgba({0},{1},{2},{3})", r, g, b, a / 255.0);
+                    }
+                }
+            }
+
+            return color;
         }
     }
 }

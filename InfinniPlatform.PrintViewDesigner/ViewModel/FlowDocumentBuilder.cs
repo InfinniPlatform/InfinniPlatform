@@ -40,7 +40,7 @@ namespace InfinniPlatform.PrintViewDesigner.ViewModel
 
         public static System.Windows.Documents.FlowDocument Build(PrintViewDocument innerDocument, PrintElementMetadataMap elementMetadataMap)
         {
-            return (System.Windows.Documents.FlowDocument)Context.Build(innerDocument);
+            return (System.Windows.Documents.FlowDocument)Context.Build(innerDocument, elementMetadataMap);
         }
     }
 }

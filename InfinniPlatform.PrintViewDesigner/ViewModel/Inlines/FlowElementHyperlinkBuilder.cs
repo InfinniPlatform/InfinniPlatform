@@ -1,12 +1,12 @@
 ﻿using System.Windows.Documents;
-
+using InfinniPlatform.FlowDocument;
 using InfinniPlatform.FlowDocument.Model.Inlines;
 
 namespace InfinniPlatform.PrintViewDesigner.ViewModel.Inlines
 {
     sealed class FlowElementHyperlinkBuilder : IFlowElementBuilderBase<PrintElementHyperlink>
     {
-        public override object Build(FlowElementBuilderContext context, PrintElementHyperlink element)
+        public override object Build(FlowElementBuilderContext context, PrintElementHyperlink element, PrintElementMetadataMap elementMetadataMap)
         {
             var elementContent = new Hyperlink();
 
@@ -17,7 +17,7 @@ namespace InfinniPlatform.PrintViewDesigner.ViewModel.Inlines
 
             foreach (var inline in element.Inlines)
             {
-                var inlineContent = context.Build<Inline>(inline);
+                var inlineContent = context.Build<Inline>(inline, elementMetadataMap);
 
                 elementContent.Inlines.Add(inlineContent);
             }
