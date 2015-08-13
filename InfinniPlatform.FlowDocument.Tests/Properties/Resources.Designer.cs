@@ -348,7 +348,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table style=&quot;margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;border-collapse:collapse;&quot;&gt;&lt;tr style=&quot;border-collapse:collapse;&quot;&gt;&lt;td style=&quot;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-style:solid;border-color:black;padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px;border-collapse:collapse;&quot;&gt;&lt;p style=&quot;margin-top:0px;margin-right:0px;margin-bottom:0px;m [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to &lt;table style=&quot;margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;border-collapse:collapse;&quot;&gt;&lt;col width=&quot;100px&quot;&gt;&lt;col width=&quot;200px&quot;&gt;&lt;tr style=&quot;border-collapse:collapse;&quot;&gt;&lt;td colspan=&quot;2&quot; style=&quot;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-style:solid;border-color:black;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;border-collapse:collapse;vertical-alig [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ResultTestShouldBuildTable {
             get {

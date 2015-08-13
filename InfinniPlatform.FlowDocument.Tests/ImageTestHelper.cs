@@ -64,7 +64,10 @@ namespace InfinniPlatform.FlowDocument.Tests
 
             var stream = image.Source;
 
-            if (stream == null) return null;
+            if (stream == null)
+            {
+                return null;
+            }
 
             using (var ms = new MemoryStream())
             {

@@ -66,6 +66,7 @@
     <Compile Include="Converters\Html\Blocks\PrintElementLineHtmlBuilderTest.cs" />
     <Compile Include="Converters\Html\Blocks\PrintElementListHtmlBuilderTest.cs" />
     <Compile Include="Converters\Html\Blocks\PrintElementSectionHtmlBuilderTest.cs" />
+    <Compile Include="Converters\Html\Blocks\PrintElementTableHtmlBuilderTest.cs" />
     <Compile Include="Converters\Html\HtmlBuilderTestHelper.cs" />
     <Compile Include="Converters\Html\Inlines\PrintElementBoldHtmlBuilderTest.cs" />
     <Compile Include="Converters\Html\Inlines\PrintElementHyperlinkHtmlBuilderTest.cs" />
