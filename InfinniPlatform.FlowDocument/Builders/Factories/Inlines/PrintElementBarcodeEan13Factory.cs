@@ -16,17 +16,17 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 
 		protected override string PrepareText(string barcodeText)
 		{
-			if (!string.IsNullOrEmpty(barcodeText))
+			if (!string.IsNullOrWhiteSpace(barcodeText))
 			{
 				barcodeText = barcodeText.Trim();
 
-				if (barcodeText.Length == 0 || barcodeText.Any(c => !char.IsDigit(c)))
+				if (barcodeText.All(char.IsDigit))
 				{
-					barcodeText = "0";
+					return barcodeText;
 				}
 			}
 
-			return barcodeText;
+			return "0";
 		}
 
 		private static void ApplyCalcCheckSum(BarcodeEAN13 barcode, dynamic calcCheckSum)

@@ -1,7 +1,6 @@
-﻿using System.IO;
-using System.Windows.Documents;
-using System.Windows.Markup;
+﻿using System.Windows.Documents;
 using System.Windows.Media;
+
 using InfinniPlatform.FlowDocument;
 using InfinniPlatform.FlowDocument.Model.Views;
 
@@ -27,12 +26,6 @@ namespace InfinniPlatform.PrintViewDesigner.ViewModel
                 var blockContent = context.Build<Block>(block, elementMetadataMap);
 
                 elementContent.Blocks.Add(blockContent);
-            }
-
-            using (var w = File.Create("C:\\Test.xaml"))
-            {
-                XamlWriter.Save(elementContent, w);
-                w.Flush();
             }
 
             return elementContent;

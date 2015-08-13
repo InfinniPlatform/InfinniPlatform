@@ -132,6 +132,16 @@ namespace InfinniPlatform.PrintViewDesigner.ViewModel
             {
                 elementContent.TextDecorations = GetTextDecoration(element.TextDecoration.Value);
             }
+
+            if (elementContent.Typography.Variants == FontVariants.Subscript)
+            {
+                elementContent.BaselineAlignment = BaselineAlignment.Subscript;
+            }
+
+            if (elementContent.Typography.Variants == FontVariants.Superscript)
+            {
+                elementContent.BaselineAlignment = BaselineAlignment.Superscript;
+            }
         }
 
         public static void ApplyRowStyles(TableRow elementContent, PrintElementTableRow element)

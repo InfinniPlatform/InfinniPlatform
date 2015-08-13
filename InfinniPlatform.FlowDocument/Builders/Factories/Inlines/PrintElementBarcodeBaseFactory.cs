@@ -91,7 +91,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 
             textSting = PrepareText(textSting);
 
-            if (!string.IsNullOrEmpty(textSting))
+            if (textSting != null)
             {
                 bool showText;
                 showText = !ConvertHelper.TryToBool(elementMetadata.ShowText, out showText) || showText;

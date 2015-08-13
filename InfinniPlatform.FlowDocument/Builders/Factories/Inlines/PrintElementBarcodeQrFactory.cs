@@ -14,7 +14,12 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 
 		protected override string PrepareText(string barcodeText)
 		{
-			return barcodeText;
+		    if (!string.IsNullOrEmpty(barcodeText))
+		    {
+		        return barcodeText;
+		    }
+
+			return "0";
 		}
 
 		private static void ApplyErrorCorrection(BarcodeQR barcode, dynamic errorCorrection)

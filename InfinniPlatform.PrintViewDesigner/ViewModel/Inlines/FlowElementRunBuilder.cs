@@ -1,4 +1,6 @@
-﻿using System.Windows.Documents;
+﻿using System.Windows;
+using System.Windows.Documents;
+
 using InfinniPlatform.FlowDocument;
 using InfinniPlatform.FlowDocument.Model.Inlines;
 
@@ -8,7 +10,7 @@ namespace InfinniPlatform.PrintViewDesigner.ViewModel.Inlines
     {
         public override object Build(FlowElementBuilderContext context, PrintElementRun element, PrintElementMetadataMap elementMetadataMap)
         {
-            var elementContent = new Run {Text = element.Text};
+            var elementContent = new Run { Text = element.Text };
 
             FlowElementBuilderHelper.ApplyBaseStyles(elementContent, element);
             FlowElementBuilderHelper.ApplyInlineStyles(elementContent, element);
