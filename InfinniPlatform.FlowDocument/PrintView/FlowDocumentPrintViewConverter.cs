@@ -4,9 +4,10 @@ using System.IO;
 
 using InfinniPlatform.Api.PrintView;
 using InfinniPlatform.FlowDocument.Converters;
+using InfinniPlatform.FlowDocument.Converters.Html;
+using InfinniPlatform.FlowDocument.Converters.Pdf;
+using InfinniPlatform.FlowDocument.Model.Views;
 using InfinniPlatform.FlowDocument.Properties;
-
-using FrameworkFlowDocument = System.Windows.Documents.FlowDocument;
 
 namespace InfinniPlatform.FlowDocument.PrintView
 {
@@ -16,9 +17,7 @@ namespace InfinniPlatform.FlowDocument.PrintView
 		{
 			DocumentConverters = new Dictionary<PrintViewFileFormat, IFlowDocumentConverter>();
 			DocumentConverters.Add(PrintViewFileFormat.Pdf, new FlowDocumentPdfConverter());
-			DocumentConverters.Add(PrintViewFileFormat.Xps, new FlowDocumentXpsConverter());
-			DocumentConverters.Add(PrintViewFileFormat.Rtf, new FlowDocumentRtfConverter());
-			DocumentConverters.Add(PrintViewFileFormat.Xml, new FlowDocumentXmlConverter());
+			DocumentConverters.Add(PrintViewFileFormat.Html, new FlowDocumentHtmlConverter());
 		}
 
 
@@ -30,7 +29,7 @@ namespace InfinniPlatform.FlowDocument.PrintView
 			return DocumentConverters.ContainsKey(printViewFileFormat);
 		}
 
-		public void Convert(FrameworkFlowDocument printView, Stream printViewStream, PrintViewFileFormat printViewFileFormat)
+		public void Convert(PrintViewDocument printView, Stream printViewStream, PrintViewFileFormat printViewFileFormat)
 		{
 			IFlowDocumentConverter documentConverter;
 

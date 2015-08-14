@@ -198,6 +198,26 @@
     <Compile Include="Controls\ValueConverters\DateTimeFormatValueConverter.cs" />
     <Compile Include="Controls\ValueConverters\NumberFormatValueConverter.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="ViewModel\Blocks\FlowElementLineBuilder.cs" />
+    <Compile Include="ViewModel\Blocks\FlowElementListBuilder.cs" />
+    <Compile Include="ViewModel\Blocks\FlowElementPageBreakBuilder.cs" />
+    <Compile Include="ViewModel\Blocks\FlowElementParagraphBuilder.cs" />
+    <Compile Include="ViewModel\Blocks\FlowElementSectionBuilder.cs" />
+    <Compile Include="ViewModel\Blocks\FlowElementTableBuilder.cs" />
+    <Compile Include="ViewModel\FlowDocumentBuilder.cs" />
+    <Compile Include="ViewModel\FlowElementBuilderContext.cs" />
+    <Compile Include="ViewModel\FlowElementBuilderHelper.cs" />
+    <Compile Include="ViewModel\FlowElementFlowDocumentBuilder.cs" />
+    <Compile Include="ViewModel\IFlowElementBuilder.cs" />
+    <Compile Include="ViewModel\IFlowElementBuilderBase.cs" />
+    <Compile Include="ViewModel\Inlines\FlowElementBoldBuilder.cs" />
+    <Compile Include="ViewModel\Inlines\FlowElementHyperlinkBuilder.cs" />
+    <Compile Include="ViewModel\Inlines\FlowElementImageBuilder.cs" />
+    <Compile Include="ViewModel\Inlines\FlowElementItalicBuilder.cs" />
+    <Compile Include="ViewModel\Inlines\FlowElementLineBreakBuilder.cs" />
+    <Compile Include="ViewModel\Inlines\FlowElementRunBuilder.cs" />
+    <Compile Include="ViewModel\Inlines\FlowElementSpanBuilder.cs" />
+    <Compile Include="ViewModel\Inlines\FlowElementUnderlineBuilder.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -566,6 +586,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\Files\Build\TransformOnBuild.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,4 +1,4 @@
-﻿using System.Windows.Documents;
+﻿using InfinniPlatform.FlowDocument.Model.Blocks;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 {
@@ -6,7 +6,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 	{
 		public object Create(PrintElementBuildContext buildContext, dynamic elementMetadata)
 		{
-			var element = new Section
+			var element = new PrintElementSection
 						  {
 							  Margin = BuildHelper.DefaultMargin,
 							  Padding = BuildHelper.DefaultPadding
@@ -25,7 +25,10 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 
 			if (blocks != null)
 			{
-				element.Blocks.AddRange(blocks);
+			    foreach (var block in blocks)
+			    {
+			        element.Blocks.Add(block);
+			    }
 			}
 
 			BuildHelper.PostApplyTextProperties(element, buildContext.ElementStyle);
@@ -34,9 +37,11 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 			return element;
 		}
 
-		private static PrintElementBuildContext CreateContentContext(Section element, PrintElementBuildContext buildContext)
+		private static PrintElementBuildContext CreateContentContext(PrintElementSection element, PrintElementBuildContext buildContext)
 		{
-			var contentWidth = BuildHelper.CalcContentWidth(buildContext.ElementWidth, element.Margin, element.Padding, element.BorderThickness);
+		    var contentWidth = (element.Border != null)
+		        ? BuildHelper.CalcContentWidth(buildContext.ElementWidth, element.Margin, element.Padding, element.Border.Thickness)
+		        : BuildHelper.CalcContentWidth(buildContext.ElementWidth, element.Margin, element.Padding);
 			return buildContext.Create(contentWidth);
 		}
 	}

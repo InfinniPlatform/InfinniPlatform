@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Windows.Controls;
-using System.Windows.Documents;
 
 using InfinniPlatform.Api.Dynamic;
+using InfinniPlatform.FlowDocument.Model.Inlines;
 using InfinniPlatform.FlowDocument.Tests.Properties;
 
 using NUnit.Framework;
@@ -27,15 +26,13 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.ShowText = false;
 
 			// When
-			InlineUIContainer element = BuildTestHelper.BuildBarcodeQr(elementMetadata);
+			PrintElementImage element = BuildTestHelper.BuildBarcodeQr(elementMetadata);
 
 			// Then
-			Assert.IsNotNull(element);
-			Assert.IsNotNull(element.Child);
-			Assert.IsInstanceOf<Image>(element.Child);
-			Assert.AreEqual(expectedImage.Width, ((Image)element.Child).Width, 0.1);
-			Assert.AreEqual(expectedImage.Height, ((Image)element.Child).Height, 0.1);
-			ImageTestHelper.AssertImagesAreEqual(expectedImage, (Image)element.Child);
+            Assert.IsNotNull(element); 
+            Assert.AreEqual(expectedImage.Width, element.Size.Width, 0.1);
+            Assert.AreEqual(expectedImage.Height, element.Size.Height, 0.1);
+            ImageTestHelper.AssertImagesAreEqual(expectedImage, element);
 		}
 
 		[Test]
@@ -49,15 +46,13 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.ShowText = false;
 
 			// When
-			InlineUIContainer element = BuildTestHelper.BuildBarcodeQr((object)elementMetadata, c => { c.PrintViewSource = BarcodeQrText; });
+			PrintElementImage element = BuildTestHelper.BuildBarcodeQr((object)elementMetadata, c => { c.PrintViewSource = BarcodeQrText; });
 
 			// Then
-			Assert.IsNotNull(element);
-			Assert.IsNotNull(element.Child);
-			Assert.IsInstanceOf<Image>(element.Child);
-			Assert.AreEqual(expectedImage.Width, ((Image)element.Child).Width, 0.1);
-			Assert.AreEqual(expectedImage.Height, ((Image)element.Child).Height, 0.1);
-			ImageTestHelper.AssertImagesAreEqual(expectedImage, (Image)element.Child);
+            Assert.IsNotNull(element); 
+            Assert.AreEqual(expectedImage.Width, element.Size.Width, 0.1);
+            Assert.AreEqual(expectedImage.Height, element.Size.Height, 0.1);
+            ImageTestHelper.AssertImagesAreEqual(expectedImage, element);
 		}
 
 		[Test]
@@ -72,15 +67,13 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Rotation = "Rotate0";
 
 			// When
-			InlineUIContainer element = BuildTestHelper.BuildBarcodeQr(elementMetadata);
+			PrintElementImage element = BuildTestHelper.BuildBarcodeQr(elementMetadata);
 
-			// Then
-			Assert.IsNotNull(element);
-			Assert.IsNotNull(element.Child);
-			Assert.IsInstanceOf<Image>(element.Child);
-			Assert.AreEqual(expectedImage.Width, ((Image)element.Child).Width, 0.1);
-			Assert.AreEqual(expectedImage.Height, ((Image)element.Child).Height, 0.1);
-			ImageTestHelper.AssertImagesAreEqual(expectedImage, (Image)element.Child);
+            // Then
+            Assert.IsNotNull(element);
+            Assert.AreEqual(expectedImage.Width, element.Size.Width, 0.1);
+            Assert.AreEqual(expectedImage.Height, element.Size.Height, 0.1);
+            ImageTestHelper.AssertImagesAreEqual(expectedImage, element);
 		}
 
 		[Test]
@@ -95,15 +88,13 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Rotation = "Rotate90";
 
 			// When
-			InlineUIContainer element = BuildTestHelper.BuildBarcodeQr(elementMetadata);
+			PrintElementImage element = BuildTestHelper.BuildBarcodeQr(elementMetadata);
 
-			// Then
-			Assert.IsNotNull(element);
-			Assert.IsNotNull(element.Child);
-			Assert.IsInstanceOf<Image>(element.Child);
-			Assert.AreEqual(expectedImage.Width, ((Image)element.Child).Width, 0.1);
-			Assert.AreEqual(expectedImage.Height, ((Image)element.Child).Height, 0.1);
-			ImageTestHelper.AssertImagesAreEqual(expectedImage, (Image)element.Child);
+            // Then
+            Assert.IsNotNull(element);
+            Assert.AreEqual(expectedImage.Width, element.Size.Width, 0.1);
+            Assert.AreEqual(expectedImage.Height, element.Size.Height, 0.1);
+            ImageTestHelper.AssertImagesAreEqual(expectedImage, element);
 		}
 
 		[Test]
@@ -118,15 +109,13 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Rotation = "Rotate180";
 
 			// When
-			InlineUIContainer element = BuildTestHelper.BuildBarcodeQr(elementMetadata);
+			PrintElementImage element = BuildTestHelper.BuildBarcodeQr(elementMetadata);
 
-			// Then
-			Assert.IsNotNull(element);
-			Assert.IsNotNull(element.Child);
-			Assert.IsInstanceOf<Image>(element.Child);
-			Assert.AreEqual(expectedImage.Width, ((Image)element.Child).Width, 0.1);
-			Assert.AreEqual(expectedImage.Height, ((Image)element.Child).Height, 0.1);
-			ImageTestHelper.AssertImagesAreEqual(expectedImage, (Image)element.Child);
+            // Then
+            Assert.IsNotNull(element);
+            Assert.AreEqual(expectedImage.Width, element.Size.Width, 0.1);
+            Assert.AreEqual(expectedImage.Height, element.Size.Height, 0.1);
+            ImageTestHelper.AssertImagesAreEqual(expectedImage, element);
 		}
 
 		[Test]
@@ -141,15 +130,13 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Rotation = "Rotate270";
 
 			// When
-			InlineUIContainer element = BuildTestHelper.BuildBarcodeQr(elementMetadata);
+			PrintElementImage element = BuildTestHelper.BuildBarcodeQr(elementMetadata);
 
-			// Then
-			Assert.IsNotNull(element);
-			Assert.IsNotNull(element.Child);
-			Assert.IsInstanceOf<Image>(element.Child);
-			Assert.AreEqual(expectedImage.Width, ((Image)element.Child).Width, 0.1);
-			Assert.AreEqual(expectedImage.Height, ((Image)element.Child).Height, 0.1);
-			ImageTestHelper.AssertImagesAreEqual(expectedImage, (Image)element.Child);
+            // Then
+            Assert.IsNotNull(element);
+            Assert.AreEqual(expectedImage.Width, element.Size.Width, 0.1);
+            Assert.AreEqual(expectedImage.Height, element.Size.Height, 0.1);
+            ImageTestHelper.AssertImagesAreEqual(expectedImage, element);
 		}
 
 		[Test]
@@ -164,15 +151,13 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.ErrorCorrection = "Low";
 
 			// When
-			InlineUIContainer element = BuildTestHelper.BuildBarcodeQr(elementMetadata);
+			PrintElementImage element = BuildTestHelper.BuildBarcodeQr(elementMetadata);
 
-			// Then
-			Assert.IsNotNull(element);
-			Assert.IsNotNull(element.Child);
-			Assert.IsInstanceOf<Image>(element.Child);
-			Assert.AreEqual(expectedImage.Width, ((Image)element.Child).Width, 0.1);
-			Assert.AreEqual(expectedImage.Height, ((Image)element.Child).Height, 0.1);
-			ImageTestHelper.AssertImagesAreEqual(expectedImage, (Image)element.Child);
+            // Then
+            Assert.IsNotNull(element);
+            Assert.AreEqual(expectedImage.Width, element.Size.Width, 0.1);
+            Assert.AreEqual(expectedImage.Height, element.Size.Height, 0.1);
+            ImageTestHelper.AssertImagesAreEqual(expectedImage, element);
 		}
 
 		[Test]
@@ -187,15 +172,13 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.ErrorCorrection = "Medium";
 
 			// When
-			InlineUIContainer element = BuildTestHelper.BuildBarcodeQr(elementMetadata);
+			PrintElementImage element = BuildTestHelper.BuildBarcodeQr(elementMetadata);
 
-			// Then
-			Assert.IsNotNull(element);
-			Assert.IsNotNull(element.Child);
-			Assert.IsInstanceOf<Image>(element.Child);
-			Assert.AreEqual(expectedImage.Width, ((Image)element.Child).Width, 0.1);
-			Assert.AreEqual(expectedImage.Height, ((Image)element.Child).Height, 0.1);
-			ImageTestHelper.AssertImagesAreEqual(expectedImage, (Image)element.Child);
+            // Then
+            Assert.IsNotNull(element);
+            Assert.AreEqual(expectedImage.Width, element.Size.Width, 0.1);
+            Assert.AreEqual(expectedImage.Height, element.Size.Height, 0.1);
+            ImageTestHelper.AssertImagesAreEqual(expectedImage, element);
 		}
 
 		[Test]
@@ -210,15 +193,13 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.ErrorCorrection = "Quartile";
 
 			// When
-			InlineUIContainer element = BuildTestHelper.BuildBarcodeQr(elementMetadata);
+			PrintElementImage element = BuildTestHelper.BuildBarcodeQr(elementMetadata);
 
-			// Then
-			Assert.IsNotNull(element);
-			Assert.IsNotNull(element.Child);
-			Assert.IsInstanceOf<Image>(element.Child);
-			Assert.AreEqual(expectedImage.Width, ((Image)element.Child).Width, 0.1);
-			Assert.AreEqual(expectedImage.Height, ((Image)element.Child).Height, 0.1);
-			ImageTestHelper.AssertImagesAreEqual(expectedImage, (Image)element.Child);
+            // Then
+            Assert.IsNotNull(element);
+            Assert.AreEqual(expectedImage.Width, element.Size.Width, 0.1);
+            Assert.AreEqual(expectedImage.Height, element.Size.Height, 0.1);
+            ImageTestHelper.AssertImagesAreEqual(expectedImage, element);
 		}
 
 		[Test]
@@ -233,15 +214,13 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.ErrorCorrection = "High";
 
 			// When
-			InlineUIContainer element = BuildTestHelper.BuildBarcodeQr(elementMetadata);
+			PrintElementImage element = BuildTestHelper.BuildBarcodeQr(elementMetadata);
 
-			// Then
-			Assert.IsNotNull(element);
-			Assert.IsNotNull(element.Child);
-			Assert.IsInstanceOf<Image>(element.Child);
-			Assert.AreEqual(expectedImage.Width, ((Image)element.Child).Width, 0.1);
-			Assert.AreEqual(expectedImage.Height, ((Image)element.Child).Height, 0.1);
-			ImageTestHelper.AssertImagesAreEqual(expectedImage, (Image)element.Child);
+            // Then
+            Assert.IsNotNull(element);
+            Assert.AreEqual(expectedImage.Width, element.Size.Width, 0.1);
+            Assert.AreEqual(expectedImage.Height, element.Size.Height, 0.1);
+            ImageTestHelper.AssertImagesAreEqual(expectedImage, element);
 		}
 	}
 }

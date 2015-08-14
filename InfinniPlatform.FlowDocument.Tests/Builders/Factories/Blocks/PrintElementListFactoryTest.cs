@@ -1,12 +1,8 @@
-﻿using System.Linq;
-using System.Windows;
-using System.Windows.Documents;
-
-using InfinniPlatform.Api.Dynamic;
-
+﻿using InfinniPlatform.Api.Dynamic;
+using InfinniPlatform.FlowDocument.Model;
+using InfinniPlatform.FlowDocument.Model.Blocks;
+using InfinniPlatform.FlowDocument.Model.Inlines;
 using NUnit.Framework;
-
-using List = System.Windows.Documents.List;
 
 namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
 {
@@ -39,14 +35,14 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
 			elementMetadata.Items = new[] { item1, item2 };
 
 			// When
-			List element = BuildTestHelper.BuildList(elementMetadata);
+			PrintElementList element = BuildTestHelper.BuildList(elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
-			Assert.IsNotNull(element.ListItems);
-			Assert.AreEqual(2, element.ListItems.Count);
-			Assert.AreEqual("Item1", ((Run)((Paragraph)element.ListItems.ElementAt(0).Blocks.ElementAt(0)).Inlines.ElementAt(0)).Text);
-			Assert.AreEqual("Item2", ((Run)((Paragraph)element.ListItems.ElementAt(1).Blocks.ElementAt(0)).Inlines.ElementAt(0)).Text);
+			Assert.IsNotNull(element.Items);
+            Assert.AreEqual(2, element.Items.Count);
+			Assert.AreEqual("Item1", ((PrintElementRun)((PrintElementParagraph)element.Items[0].Blocks[0]).Inlines[0]).Text);
+            Assert.AreEqual("Item2", ((PrintElementRun)((PrintElementParagraph)element.Items[1].Blocks[0]).Inlines[0]).Text);
 		}
 
 		[Test]
@@ -66,14 +62,14 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
 			elementMetadata.Source = "$";
 
 			// When
-			List element = BuildTestHelper.BuildList((object)elementMetadata, c => { c.PrintViewSource = new[] { "Item1", "Item2" }; });
+			PrintElementList element = BuildTestHelper.BuildList((object)elementMetadata, c => { c.PrintViewSource = new[] { "Item1", "Item2" }; });
 
 			// Then
 			Assert.IsNotNull(element);
-			Assert.IsNotNull(element.ListItems);
-			Assert.AreEqual(2, element.ListItems.Count);
-			Assert.AreEqual("Item1", ((Run)((Paragraph)element.ListItems.ElementAt(0).Blocks.ElementAt(0)).Inlines.ElementAt(0)).Text);
-			Assert.AreEqual("Item2", ((Run)((Paragraph)element.ListItems.ElementAt(1).Blocks.ElementAt(0)).Inlines.ElementAt(0)).Text);
+			Assert.IsNotNull(element.Items);
+            Assert.AreEqual(2, element.Items.Count);
+			Assert.AreEqual("Item1", ((PrintElementRun)((PrintElementParagraph)element.Items[0].Blocks[0]).Inlines[0]).Text);
+            Assert.AreEqual("Item2", ((PrintElementRun)((PrintElementParagraph)element.Items[1].Blocks[0]).Inlines[0]).Text);
 		}
 
 		[Test]
@@ -84,7 +80,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
 			elementMetadata.StartIndex = 5;
 
 			// When
-			List element = BuildTestHelper.BuildList(elementMetadata);
+			PrintElementList element = BuildTestHelper.BuildList(elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
@@ -99,11 +95,11 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
 			elementMetadata.MarkerStyle = "Decimal";
 
 			// When
-			List element = BuildTestHelper.BuildList(elementMetadata);
+            PrintElementList element = BuildTestHelper.BuildList(elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
-			Assert.AreEqual(TextMarkerStyle.Decimal, element.MarkerStyle);
+			Assert.AreEqual(PrintElementListMarkerStyle.Decimal, element.MarkerStyle);
 		}
 
 		[Test]
@@ -115,11 +111,11 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
 			elementMetadata.MarkerOffsetSizeUnit = "Px";
 
 			// When
-			List element = BuildTestHelper.BuildList(elementMetadata);
+			PrintElementList element = BuildTestHelper.BuildList(elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
-			Assert.AreEqual(10, element.MarkerOffset);
+			Assert.AreEqual(10, element.MarkerOffsetSize);
 		}
 	}
 }

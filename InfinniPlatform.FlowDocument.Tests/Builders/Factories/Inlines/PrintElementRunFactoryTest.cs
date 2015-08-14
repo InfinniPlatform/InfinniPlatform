@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Media;
 
 using InfinniPlatform.Api.Dynamic;
-
+using InfinniPlatform.FlowDocument.Model;
+using InfinniPlatform.FlowDocument.Model.Font;
+using InfinniPlatform.FlowDocument.Model.Inlines;
 using NUnit.Framework;
 
 namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
@@ -23,7 +21,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Text = "Some Text";
 
 			// When
-			Run element = BuildTestHelper.BuildRun(elementMetadata);
+			PrintElementRun element = BuildTestHelper.BuildRun(elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
@@ -38,7 +36,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Source = "$";
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewSource = "Some Text"; });
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewSource = "Some Text"; });
 
 			// Then
 			Assert.IsNotNull(element);
@@ -53,7 +51,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Source = "$.Property1";
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewSource = new { Property1 = "Some Text" }; });
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewSource = new { Property1 = "Some Text" }; });
 
 			// Then
 			Assert.IsNotNull(element);
@@ -68,7 +66,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Source = "$.0";
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewSource = new[] { "Some Text" }; });
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewSource = new[] { "Some Text" }; });
 
 			// Then
 			Assert.IsNotNull(element);
@@ -83,7 +81,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Source = "$.0.Property1";
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewSource = new[] { new { Property1 = "Some Text" } }; });
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewSource = new[] { new { Property1 = "Some Text" } }; });
 
 			// Then
 			Assert.IsNotNull(element);
@@ -98,7 +96,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Source = "$";
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewSource = new[] { "Text1", "Text2" }; });
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewSource = new[] { "Text1", "Text2" }; });
 
 			// Then
 			Assert.IsNotNull(element);
@@ -114,7 +112,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Source = "";
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.ElementSourceValue = "Some Text"; });
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.ElementSourceValue = "Some Text"; });
 
 			// Then
 			Assert.IsNotNull(element);
@@ -129,7 +127,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Source = "Property1";
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.ElementSourceValue = new { Property1 = "Some Text" }; });
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.ElementSourceValue = new { Property1 = "Some Text" }; });
 
 			// Then
 			Assert.IsNotNull(element);
@@ -144,7 +142,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Source = "0";
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.ElementSourceValue = new[] { "Some Text" }; });
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.ElementSourceValue = new[] { "Some Text" }; });
 
 			// Then
 			Assert.IsNotNull(element);
@@ -159,7 +157,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Source = "0.Property1";
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.ElementSourceValue = new[] { new { Property1 = "Some Text" } }; });
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.ElementSourceValue = new[] { new { Property1 = "Some Text" } }; });
 
 			// Then
 			Assert.IsNotNull(element);
@@ -174,7 +172,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Source = "";
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.ElementSourceValue = new[] { "Text1", "Text2" }; });
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.ElementSourceValue = new[] { "Text1", "Text2" }; });
 
 			// Then
 			Assert.IsNotNull(element);
@@ -192,7 +190,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Visibility = "Never";
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewSource = "Some Text"; });
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewSource = "Some Text"; });
 
 			// Then
 			Assert.IsNull(element);
@@ -208,7 +206,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Visibility = "Always";
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewSource = null; });
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewSource = null; });
 
 			// Then
 			Assert.IsNotNull(element);
@@ -225,7 +223,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Visibility = "Source";
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewSource = null; });
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewSource = null; });
 
 			// Then
 			Assert.IsNull(element);
@@ -251,16 +249,16 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Font = font;
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata);
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
-			Assert.AreEqual("Arial", element.FontFamily.FamilyNames.First().Value);
-			Assert.AreEqual(12, element.FontSize);
-			Assert.AreEqual(FontStyles.Italic, element.FontStyle);
-			Assert.AreEqual(FontStretches.UltraExpanded, element.FontStretch);
-			Assert.AreEqual(FontWeights.Bold, element.FontWeight);
-			Assert.AreEqual(FontVariants.Subscript, element.Typography.Variants);
+			Assert.AreEqual("Arial", element.Font.Family);
+			Assert.AreEqual(12, element.Font.Size);
+			Assert.AreEqual(PrintElementFontStyle.Italic, element.Font.Style);
+			Assert.AreEqual(PrintElementFontStretch.UltraExpanded, element.Font.Stretch);
+			Assert.AreEqual(PrintElementFontWeight.Bold, element.Font.Weight);
+			Assert.AreEqual(PrintElementFontVariant.Subscript, element.Font.Variant);
 		}
 
 		[Test]
@@ -284,16 +282,16 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Style = "style1";
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewStyles = new Dictionary<string, object> { { "style1", style } }; });
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewStyles = new Dictionary<string, object> { { "style1", style } }; });
 
 			// Then
 			Assert.IsNotNull(element);
-			Assert.AreEqual("Arial", element.FontFamily.FamilyNames.First().Value);
-			Assert.AreEqual(12, element.FontSize);
-			Assert.AreEqual(FontStyles.Italic, element.FontStyle);
-			Assert.AreEqual(FontStretches.UltraExpanded, element.FontStretch);
-			Assert.AreEqual(FontWeights.Bold, element.FontWeight);
-			Assert.AreEqual(FontVariants.Subscript, element.Typography.Variants);
+            Assert.AreEqual("Arial", element.Font.Family);
+            Assert.AreEqual(12, element.Font.Size);
+            Assert.AreEqual(PrintElementFontStyle.Italic, element.Font.Style);
+            Assert.AreEqual(PrintElementFontStretch.UltraExpanded, element.Font.Stretch);
+            Assert.AreEqual(PrintElementFontWeight.Bold, element.Font.Weight);
+            Assert.AreEqual(PrintElementFontVariant.Subscript, element.Font.Variant);
 		}
 
 
@@ -306,11 +304,11 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Foreground = "Red";
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata);
+			PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
-			Assert.AreEqual(Brushes.Red, element.Foreground);
+			Assert.AreEqual(PrintElementColors.Red, element.Foreground);
 		}
 
 		[Test]
@@ -327,11 +325,11 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Style = "style1";
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewStyles = new Dictionary<string, object> { { "style1", style } }; });
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewStyles = new Dictionary<string, object> { { "style1", style } }; });
 
 			// Then
 			Assert.IsNotNull(element);
-			Assert.AreEqual(Brushes.Red, element.Foreground);
+            Assert.AreEqual(PrintElementColors.Red, element.Foreground);
 		}
 
 
@@ -344,11 +342,11 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Background = "Green";
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata);
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
-			Assert.AreEqual(Brushes.Green, element.Background);
+            Assert.AreEqual(PrintElementColors.Green, element.Background);
 		}
 
 		[Test]
@@ -365,11 +363,11 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Style = "style1";
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewStyles = new Dictionary<string, object> { { "style1", style } }; });
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewStyles = new Dictionary<string, object> { { "style1", style } }; });
 
 			// Then
 			Assert.IsNotNull(element);
-			Assert.AreEqual(Brushes.Green, element.Background);
+            Assert.AreEqual(PrintElementColors.Green, element.Background);
 		}
 
 
@@ -382,11 +380,11 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.TextDecoration = "Underline";
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata);
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
-			Assert.AreEqual(TextDecorations.Underline, element.TextDecorations);
+			Assert.AreEqual(PrintElementTextDecoration.Underline, element.TextDecoration);
 		}
 
 		[Test]
@@ -403,11 +401,11 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Style = "style1";
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewStyles = new Dictionary<string, object> { { "style1", style } }; });
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewStyles = new Dictionary<string, object> { { "style1", style } }; });
 
 			// Then
 			Assert.IsNotNull(element);
-			Assert.AreEqual(TextDecorations.Underline, element.TextDecorations);
+            Assert.AreEqual(PrintElementTextDecoration.Underline, element.TextDecoration);
 		}
 
 
@@ -420,7 +418,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.TextCase = "Normal";
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata);
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
@@ -436,7 +434,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.TextCase = "SentenceCase";
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata);
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
@@ -452,7 +450,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.TextCase = "Lowercase";
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata);
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
@@ -468,7 +466,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.TextCase = "Uppercase";
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata);
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
@@ -484,7 +482,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.TextCase = "ToggleCase";
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata);
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
@@ -505,7 +503,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Style = "style1";
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewStyles = new Dictionary<string, object> { { "style1", style } }; });
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewStyles = new Dictionary<string, object> { { "style1", style } }; });
 
 			// Then
 			Assert.IsNotNull(element);
@@ -527,7 +525,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.SourceFormat = sourceFormat;
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewSource = new DateTime(2014, 10, 15); });
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewSource = new DateTime(2014, 10, 15); });
 
 			// Then
 			Assert.IsNotNull(element);
@@ -548,7 +546,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.SourceFormat = sourceFormat;
 
 			// When
-			Run element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewSource = new[] { new DateTime(2014, 10, 15), new DateTime(2014, 10, 16), new DateTime(2014, 10, 17) }; });
+            PrintElementRun element = BuildTestHelper.BuildRun((object)elementMetadata, c => { c.PrintViewSource = new[] { new DateTime(2014, 10, 15), new DateTime(2014, 10, 16), new DateTime(2014, 10, 17) }; });
 
 			// Then
 			Assert.IsNotNull(element);

@@ -1,7 +1,6 @@
-﻿using System.Windows.Documents;
-
-using InfinniPlatform.Api.Dynamic;
-
+﻿using InfinniPlatform.Api.Dynamic;
+using InfinniPlatform.FlowDocument.Model;
+using InfinniPlatform.FlowDocument.Model.Blocks;
 using NUnit.Framework;
 
 namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
@@ -17,13 +16,11 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
 			dynamic elementMetadata = new DynamicWrapper();
 
 			// When
-			Block element = BuildTestHelper.BuildLine(elementMetadata);
+			PrintElementBlock element = BuildTestHelper.BuildLine(elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
-			Assert.IsNotNull(element.BorderBrush);
-			Assert.IsNotNull(element.BorderThickness);
-			Assert.IsTrue(element.BorderThickness.Top > 0 || element.BorderThickness.Bottom > 0);
+            Assert.IsInstanceOf<PrintElementLine>(element);
 		}
 	}
 }

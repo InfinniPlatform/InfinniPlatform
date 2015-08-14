@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Media;
-
 using InfinniPlatform.Api.Dynamic;
-
+using InfinniPlatform.FlowDocument.Model;
+using InfinniPlatform.FlowDocument.Model.Blocks;
+using InfinniPlatform.FlowDocument.Model.Font;
+using InfinniPlatform.FlowDocument.Model.Inlines;
 using NUnit.Framework;
 
 namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
@@ -31,16 +30,16 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
 			elementMetadata.Inlines = new[] { inline1, inline2 };
 
 			// When
-			Paragraph element = BuildTestHelper.BuildParagraph(elementMetadata);
+			PrintElementParagraph element = BuildTestHelper.BuildParagraph(elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
 			Assert.IsNotNull(element.Inlines);
 			Assert.AreEqual(2, element.Inlines.Count);
-			Assert.IsInstanceOf<Run>(element.Inlines.FirstInline);
-			Assert.IsInstanceOf<Run>(element.Inlines.LastInline);
-			Assert.AreEqual("Inline1", ((Run)element.Inlines.FirstInline).Text);
-			Assert.AreEqual("Inline2", ((Run)element.Inlines.LastInline).Text);
+			Assert.IsInstanceOf<PrintElementRun>(element.Inlines.First());
+            Assert.IsInstanceOf<PrintElementRun>(element.Inlines.Last());
+            Assert.AreEqual("Inline1", ((PrintElementRun)element.Inlines.First()).Text);
+            Assert.AreEqual("Inline2", ((PrintElementRun)element.Inlines.Last()).Text);
 		}
 
 		[Test]
@@ -52,11 +51,11 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
 			elementMetadata.IndentSizeUnit = "Px";
 
 			// When
-			Paragraph element = BuildTestHelper.BuildParagraph(elementMetadata);
+			PrintElementParagraph element = BuildTestHelper.BuildParagraph(elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
-			Assert.AreEqual(10, element.TextIndent);
+			Assert.AreEqual(10, element.IndentSize);
 		}
 
 
@@ -78,16 +77,16 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
 			elementMetadata.Font = font;
 
 			// When
-			Paragraph element = BuildTestHelper.BuildParagraph((object)elementMetadata);
+			PrintElementParagraph element = BuildTestHelper.BuildParagraph((object)elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
-			Assert.AreEqual("Arial", element.FontFamily.FamilyNames.First().Value);
-			Assert.AreEqual(12, element.FontSize);
-			Assert.AreEqual(FontStyles.Italic, element.FontStyle);
-			Assert.AreEqual(FontStretches.UltraExpanded, element.FontStretch);
-			Assert.AreEqual(FontWeights.Bold, element.FontWeight);
-			Assert.AreEqual(FontVariants.Subscript, element.Typography.Variants);
+			Assert.AreEqual("Arial", element.Font.Family);
+			Assert.AreEqual(12, element.Font.Size);
+			Assert.AreEqual(PrintElementFontStyle.Italic, element.Font.Style);
+			Assert.AreEqual(PrintElementFontStretch.UltraExpanded, element.Font.Stretch);
+			Assert.AreEqual(PrintElementFontWeight.Bold, element.Font.Weight);
+			Assert.AreEqual(PrintElementFontVariant.Subscript, element.Font.Variant);
 		}
 
 		[Test]
@@ -110,16 +109,16 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
 			elementMetadata.Style = "style1";
 
 			// When
-			Paragraph element = BuildTestHelper.BuildParagraph((object)elementMetadata, c => { c.PrintViewStyles = new Dictionary<string, object> { { "style1", style } }; });
+			PrintElementParagraph element = BuildTestHelper.BuildParagraph((object)elementMetadata, c => { c.PrintViewStyles = new Dictionary<string, object> { { "style1", style } }; });
 
 			// Then
 			Assert.IsNotNull(element);
-			Assert.AreEqual("Arial", element.FontFamily.FamilyNames.First().Value);
-			Assert.AreEqual(12, element.FontSize);
-			Assert.AreEqual(FontStyles.Italic, element.FontStyle);
-			Assert.AreEqual(FontStretches.UltraExpanded, element.FontStretch);
-			Assert.AreEqual(FontWeights.Bold, element.FontWeight);
-			Assert.AreEqual(FontVariants.Subscript, element.Typography.Variants);
+			Assert.AreEqual("Arial", element.Font.Family);
+			Assert.AreEqual(12, element.Font.Size);
+			Assert.AreEqual(PrintElementFontStyle.Italic, element.Font.Style);
+			Assert.AreEqual(PrintElementFontStretch.UltraExpanded, element.Font.Stretch);
+			Assert.AreEqual(PrintElementFontWeight.Bold, element.Font.Weight);
+			Assert.AreEqual(PrintElementFontVariant.Subscript, element.Font.Variant);
 		}
 
 
@@ -131,11 +130,11 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
 			elementMetadata.Foreground = "Red";
 
 			// When
-			Paragraph element = BuildTestHelper.BuildParagraph((object)elementMetadata);
+			PrintElementParagraph element = BuildTestHelper.BuildParagraph((object)elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
-			Assert.AreEqual(Brushes.Red, element.Foreground);
+			Assert.AreEqual(PrintElementColors.Red, element.Foreground);
 		}
 
 		[Test]
@@ -151,11 +150,11 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
 			elementMetadata.Style = "style1";
 
 			// When
-			Paragraph element = BuildTestHelper.BuildParagraph((object)elementMetadata, c => { c.PrintViewStyles = new Dictionary<string, object> { { "style1", style } }; });
+			PrintElementParagraph element = BuildTestHelper.BuildParagraph((object)elementMetadata, c => { c.PrintViewStyles = new Dictionary<string, object> { { "style1", style } }; });
 
 			// Then
 			Assert.IsNotNull(element);
-			Assert.AreEqual(Brushes.Red, element.Foreground);
+			Assert.AreEqual(PrintElementColors.Red, element.Foreground);
 		}
 
 
@@ -167,11 +166,11 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
 			elementMetadata.Background = "Green";
 
 			// When
-			Paragraph element = BuildTestHelper.BuildParagraph((object)elementMetadata);
+			PrintElementParagraph element = BuildTestHelper.BuildParagraph((object)elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
-			Assert.AreEqual(Brushes.Green, element.Background);
+			Assert.AreEqual(PrintElementColors.Green, element.Background);
 		}
 
 		[Test]
@@ -187,11 +186,11 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
 			elementMetadata.Style = "style1";
 
 			// When
-			Paragraph element = BuildTestHelper.BuildParagraph((object)elementMetadata, c => { c.PrintViewStyles = new Dictionary<string, object> { { "style1", style } }; });
+			PrintElementParagraph element = BuildTestHelper.BuildParagraph((object)elementMetadata, c => { c.PrintViewStyles = new Dictionary<string, object> { { "style1", style } }; });
 
 			// Then
 			Assert.IsNotNull(element);
-			Assert.AreEqual(Brushes.Green, element.Background);
+			Assert.AreEqual(PrintElementColors.Green, element.Background);
 		}
 
 
@@ -213,13 +212,13 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
 			elementMetadata.TextCase = "Uppercase";
 
 			// When
-			Paragraph element = BuildTestHelper.BuildParagraph((object)elementMetadata);
+			PrintElementParagraph element = BuildTestHelper.BuildParagraph((object)elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
 			Assert.AreEqual(2, element.Inlines.Count);
-			Assert.AreEqual("INLINE1", ((Run)element.Inlines.FirstInline).Text);
-			Assert.AreEqual("INLINE2", ((Run)element.Inlines.LastInline).Text);
+			Assert.AreEqual("INLINE1", ((PrintElementRun)element.Inlines.First()).Text);
+            Assert.AreEqual("INLINE2", ((PrintElementRun)element.Inlines.Last()).Text);
 		}
 
 		[Test]
@@ -244,13 +243,13 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
 			elementMetadata.Style = "style1";
 
 			// When
-			Paragraph element = BuildTestHelper.BuildParagraph((object)elementMetadata, c => { c.PrintViewStyles = new Dictionary<string, object> { { "style1", style } }; });
+			PrintElementParagraph element = BuildTestHelper.BuildParagraph((object)elementMetadata, c => { c.PrintViewStyles = new Dictionary<string, object> { { "style1", style } }; });
 
 			// Then
 			Assert.IsNotNull(element);
 			Assert.AreEqual(2, element.Inlines.Count);
-			Assert.AreEqual("INLINE1", ((Run)element.Inlines.FirstInline).Text);
-			Assert.AreEqual("INLINE2", ((Run)element.Inlines.LastInline).Text);
+            Assert.AreEqual("INLINE1", ((PrintElementRun)element.Inlines.First()).Text);
+            Assert.AreEqual("INLINE2", ((PrintElementRun)element.Inlines.Last()).Text);
 		}
 	}
 }

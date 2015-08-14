@@ -22,8 +22,13 @@ namespace InfinniPlatform.Api.RestApi.AuthApi
 	/// </summary>
 	public sealed class SignInApi
 	{
+        [ThreadStatic]
+	    private static CookieContainer _cookieContainer;
 
-		public static CookieContainer CookieContainer { get; private set; }
+	    public static CookieContainer CookieContainer
+	    {
+	        get { return _cookieContainer; }
+	    }
 
 		/// <summary>
 		///   Зарегистрироваться в системе
@@ -52,7 +57,7 @@ namespace InfinniPlatform.Api.RestApi.AuthApi
 				throw new ArgumentException(string.Format("Fail in process of sign in user: {0} : {1} : ({2})", restResponse.ErrorException, restResponse.ErrorMessage, restResponse.Content));
 			}
 
-			CookieContainer = new CookieContainer();
+            _cookieContainer = new CookieContainer();
 
 		    var responseCookies = new List<dynamic>();
 
@@ -105,7 +110,7 @@ namespace InfinniPlatform.Api.RestApi.AuthApi
 			}
 			//----------------------------------------------------
 			//необходима доработка разлогинивания пользователей (при текущей реализации не разлогинивает пользователя на клиенте)
-			CookieContainer = null;
+            _cookieContainer = null;
 		}
 
 		/// <summary>

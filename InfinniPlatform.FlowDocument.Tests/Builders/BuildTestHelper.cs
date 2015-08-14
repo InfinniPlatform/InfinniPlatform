@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Windows.Documents;
 
 using InfinniPlatform.FlowDocument.Builders;
 using InfinniPlatform.FlowDocument.Builders.Factories.Blocks;
 using InfinniPlatform.FlowDocument.Builders.Factories.DisplayFormats;
 using InfinniPlatform.FlowDocument.Builders.Factories.Inlines;
 using InfinniPlatform.FlowDocument.Builders.Factories.Views;
-
-using FrameworkFlowDocument = System.Windows.Documents.FlowDocument;
+using InfinniPlatform.FlowDocument.Model;
+using InfinniPlatform.FlowDocument.Model.Blocks;
+using InfinniPlatform.FlowDocument.Model.Inlines;
+using FrameworkFlowDocument = InfinniPlatform.FlowDocument.Model.Views.PrintViewDocument;
 
 namespace InfinniPlatform.FlowDocument.Tests.Builders
 {
@@ -90,87 +91,87 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders
 
 		// Inlines
 
-		public static Span BuildSpan(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
+		public static PrintElementSpan BuildSpan(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
 		{
-			return BuildElement<Span>("Span", elementMetadata, elementContext);
+            return BuildElement<PrintElementSpan>("Span", elementMetadata, elementContext);
 		}
 
-		public static Bold BuildBold(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
+		public static PrintElementBold BuildBold(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
 		{
-			return BuildElement<Bold>("Bold", elementMetadata, elementContext);
+            return BuildElement<PrintElementBold>("Bold", elementMetadata, elementContext);
 		}
 
-		public static Italic BuildItalic(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
+		public static PrintElementItalic BuildItalic(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
 		{
-			return BuildElement<Italic>("Italic", elementMetadata, elementContext);
+            return BuildElement<PrintElementItalic>("Italic", elementMetadata, elementContext);
 		}
 
-		public static Underline BuildUnderline(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
+		public static PrintElementUnderline BuildUnderline(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
 		{
-			return BuildElement<Underline>("Underline", elementMetadata, elementContext);
+            return BuildElement<PrintElementUnderline>("Underline", elementMetadata, elementContext);
 		}
 
-		public static Hyperlink BuildHyperlink(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
+		public static PrintElementHyperlink BuildHyperlink(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
 		{
-			return BuildElement<Hyperlink>("Hyperlink", elementMetadata, elementContext);
+            return BuildElement<PrintElementHyperlink>("Hyperlink", elementMetadata, elementContext);
 		}
 
-		public static LineBreak BuildLineBreak(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
+		public static PrintElementLineBreak BuildLineBreak(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
 		{
-			return BuildElement<LineBreak>("LineBreak", elementMetadata, elementContext);
+            return BuildElement<PrintElementLineBreak>("LineBreak", elementMetadata, elementContext);
 		}
 
-		public static Run BuildRun(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
+		public static PrintElementRun BuildRun(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
 		{
-			return BuildElement<Run>("Run", elementMetadata, elementContext);
+            return BuildElement<PrintElementRun>("Run", elementMetadata, elementContext);
 		}
 
-		public static InlineUIContainer BuildImage(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
+		public static PrintElementImage BuildImage(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
 		{
-			return BuildElement<InlineUIContainer>("Image", elementMetadata, elementContext);
+            return BuildElement<PrintElementImage>("Image", elementMetadata, elementContext);
 		}
 
-		public static InlineUIContainer BuildBarcodeEan13(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
+        public static PrintElementImage BuildBarcodeEan13(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
 		{
-			return BuildElement<InlineUIContainer>("BarcodeEan13", elementMetadata, elementContext);
+            return BuildElement<PrintElementImage>("BarcodeEan13", elementMetadata, elementContext);
 		}
 
-		public static InlineUIContainer BuildBarcodeQr(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
+        public static PrintElementImage BuildBarcodeQr(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
 		{
-			return BuildElement<InlineUIContainer>("BarcodeQr", elementMetadata, elementContext);
+            return BuildElement<PrintElementImage>("BarcodeQr", elementMetadata, elementContext);
 		}
 
 
 		// Blocks
 
-		public static Section BuildSection(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
+		public static PrintElementSection BuildSection(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
 		{
-			return BuildElement<Section>("Section", elementMetadata, elementContext);
+            return BuildElement<PrintElementSection>("Section", elementMetadata, elementContext);
 		}
 
-		public static Paragraph BuildParagraph(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
+		public static PrintElementParagraph BuildParagraph(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
 		{
-			return BuildElement<Paragraph>("Paragraph", elementMetadata, elementContext);
+            return BuildElement<PrintElementParagraph>("Paragraph", elementMetadata, elementContext);
 		}
 
-		public static List BuildList(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
+		public static PrintElementList BuildList(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
 		{
-			return BuildElement<List>("List", elementMetadata, elementContext);
+            return BuildElement<PrintElementList>("List", elementMetadata, elementContext);
 		}
 
-		public static Table BuildTable(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
+		public static PrintElementTable BuildTable(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
 		{
-			return BuildElement<Table>("Table", elementMetadata, elementContext);
+            return BuildElement<PrintElementTable>("Table", elementMetadata, elementContext);
 		}
 
-		public static Block BuildLine(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
+		public static PrintElementBlock BuildLine(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
 		{
-			return BuildElement<Block>("Line", elementMetadata, elementContext);
+            return BuildElement<PrintElementBlock>("Line", elementMetadata, elementContext);
 		}
 
-		public static Block BuildPageBreak(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
+        public static PrintElementBlock BuildPageBreak(object elementMetadata, Action<PrintElementBuildContext> elementContext = null)
 		{
-			return BuildElement<Block>("PageBreak", elementMetadata, elementContext);
+            return BuildElement<PrintElementBlock>("PageBreak", elementMetadata, elementContext);
 		}
 
 

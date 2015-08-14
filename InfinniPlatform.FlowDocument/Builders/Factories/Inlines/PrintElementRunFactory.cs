@@ -1,4 +1,4 @@
-﻿using System.Windows.Documents;
+﻿using InfinniPlatform.FlowDocument.Model.Inlines;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 {
@@ -6,7 +6,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 	{
 		public object Create(PrintElementBuildContext buildContext, dynamic elementMetadata)
 		{
-			var element = new Run();
+			var element = new PrintElementRun();
 
 			BuildHelper.ApplyTextProperties(element, buildContext.ElementStyle);
 			BuildHelper.ApplyTextProperties(element, elementMetadata);
@@ -22,7 +22,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 			return element;
 		}
 
-		private static void ApplyText(Run element, PrintElementBuildContext buildContext, dynamic elementMetadata)
+		private static void ApplyText(PrintElementRun element, PrintElementBuildContext buildContext, dynamic elementMetadata)
 		{
 			element.Text = BuildHelper.FormatValue(buildContext, elementMetadata.Text, elementMetadata.SourceFormat);
 		}

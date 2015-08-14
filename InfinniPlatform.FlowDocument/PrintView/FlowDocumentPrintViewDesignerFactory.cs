@@ -3,8 +3,7 @@ using InfinniPlatform.FlowDocument.Builders.Factories.Blocks;
 using InfinniPlatform.FlowDocument.Builders.Factories.DisplayFormats;
 using InfinniPlatform.FlowDocument.Builders.Factories.Inlines;
 using InfinniPlatform.FlowDocument.Builders.Factories.Views;
-
-using FrameworkFlowDocument = System.Windows.Documents.FlowDocument;
+using InfinniPlatform.FlowDocument.Model.Views;
 
 namespace InfinniPlatform.FlowDocument.PrintView
 {
@@ -50,7 +49,7 @@ namespace InfinniPlatform.FlowDocument.PrintView
 		private static readonly PrintElementBuilder ElementBuilder;
 
 
-		public FrameworkFlowDocument Create(object printView, object printViewSource, PrintElementMetadataMap elementMetadataMap = null)
+        public PrintViewDocument Create(object printView, object printViewSource, PrintElementMetadataMap elementMetadataMap = null)
 		{
 			var buildContext = new PrintElementBuildContext
 							   {
@@ -60,7 +59,7 @@ namespace InfinniPlatform.FlowDocument.PrintView
 								   ElementMetadataMap = elementMetadataMap
 							   };
 
-			var document = ElementBuilder.BuildElement(buildContext, printView, "PrintView") as FrameworkFlowDocument;
+            var document = ElementBuilder.BuildElement(buildContext, printView, "PrintView") as PrintViewDocument;
 
 			return document;
 		}

@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Windows.Documents;
-
+using System.Linq;
 using InfinniPlatform.Api.Dynamic;
-
+using InfinniPlatform.FlowDocument.Model.Inlines;
 using NUnit.Framework;
 
 namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
@@ -28,16 +27,16 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Inlines = new[] { inline1, inline2 };
 
 			// When
-			Hyperlink element = BuildTestHelper.BuildHyperlink(elementMetadata);
+			PrintElementHyperlink element = BuildTestHelper.BuildHyperlink(elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
 			Assert.IsNotNull(element.Inlines);
 			Assert.AreEqual(2, element.Inlines.Count);
-			Assert.IsInstanceOf<Run>(element.Inlines.FirstInline);
-			Assert.IsInstanceOf<Run>(element.Inlines.LastInline);
-			Assert.AreEqual("Inline1", ((Run)element.Inlines.FirstInline).Text);
-			Assert.AreEqual("Inline2", ((Run)element.Inlines.LastInline).Text);
+			Assert.IsInstanceOf<PrintElementRun>(element.Inlines.First());
+            Assert.IsInstanceOf<PrintElementRun>(element.Inlines.Last());
+            Assert.AreEqual("Inline1", ((PrintElementRun)element.Inlines.First()).Text);
+            Assert.AreEqual("Inline2", ((PrintElementRun)element.Inlines.Last()).Text);
 		}
 
 		[Test]
@@ -48,11 +47,11 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Reference = "http://some.com";
 
 			// When
-			Hyperlink element = BuildTestHelper.BuildHyperlink(elementMetadata);
+			PrintElementHyperlink element = BuildTestHelper.BuildHyperlink(elementMetadata);
 
 			// Then
 			Assert.IsNotNull(element);
-			Assert.AreEqual(new Uri("http://some.com"), element.NavigateUri);
+			Assert.AreEqual(new Uri("http://some.com"), element.Reference);
 		}
 
 		[Test]
@@ -63,11 +62,11 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.Source = "$";
 
 			// When
-			Hyperlink element = BuildTestHelper.BuildHyperlink((object)elementMetadata, c => { c.PrintViewSource = "http://some.com"; });
+            PrintElementHyperlink element = BuildTestHelper.BuildHyperlink((object)elementMetadata, c => { c.PrintViewSource = "http://some.com"; });
 
 			// Then
 			Assert.IsNotNull(element);
-			Assert.AreEqual(new Uri("http://some.com"), element.NavigateUri);
+			Assert.AreEqual(new Uri("http://some.com"), element.Reference);
 		}
 
 		[Test]
@@ -84,11 +83,11 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 			elementMetadata.SourceFormat = sourceFormat;
 
 			// When
-			Hyperlink element = BuildTestHelper.BuildHyperlink((object)elementMetadata, c => { c.PrintViewSource = new { Id = 12345 }; });
+            PrintElementHyperlink element = BuildTestHelper.BuildHyperlink((object)elementMetadata, c => { c.PrintViewSource = new { Id = 12345 }; });
 
 			// Then
 			Assert.IsNotNull(element);
-			Assert.AreEqual(new Uri("http://some.com/12345"), element.NavigateUri);
+			Assert.AreEqual(new Uri("http://some.com/12345"), element.Reference);
 		}
 	}
 }

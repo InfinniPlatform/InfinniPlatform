@@ -1,4 +1,5 @@
-﻿using System.Windows.Documents;
+﻿using InfinniPlatform.FlowDocument.Model;
+using InfinniPlatform.FlowDocument.Model.Blocks;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 {
@@ -6,7 +7,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 	{
 		public object Create(PrintElementBuildContext buildContext, dynamic elementMetadata)
 		{
-			var element = new Paragraph
+			var element = new PrintElementParagraph
 						  {
 							  Margin = BuildHelper.DefaultMargin,
 							  Padding = BuildHelper.DefaultPadding
@@ -27,7 +28,10 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 
 			if (inlines != null)
 			{
-				element.Inlines.AddRange(inlines);
+			    foreach (var inline in inlines)
+			    {
+			        element.Inlines.Add(inline);
+			    }
 			}
 
 			BuildHelper.PostApplyTextProperties(element, buildContext.ElementStyle);
@@ -36,19 +40,22 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 			return element;
 		}
 
-		private static void ApplyIndent(Paragraph element, dynamic elementMetadata)
+		private static void ApplyIndent(PrintElementParagraph element, dynamic elementMetadata)
 		{
 			double indentSize;
 
 			if (BuildHelper.TryToSizeInPixels(elementMetadata.IndentSize, elementMetadata.IndentSizeUnit, out indentSize))
 			{
-				element.TextIndent = indentSize;
+				element.IndentSize = indentSize;
 			}
 		}
 
-		private static PrintElementBuildContext CreateContentContext(Paragraph element, PrintElementBuildContext buildContext)
+		private static PrintElementBuildContext CreateContentContext(PrintElementParagraph element, PrintElementBuildContext buildContext)
 		{
-			var contentWidth = BuildHelper.CalcContentWidth(buildContext.ElementWidth, element.Margin, element.Padding, element.BorderThickness);
+		    var contentWidth = (element.Border != null)
+		        ? BuildHelper.CalcContentWidth(buildContext.ElementWidth, element.Margin, element.Padding, element.Border.Thickness)
+		        : BuildHelper.CalcContentWidth(buildContext.ElementWidth, element.Margin, element.Padding);
+
 			return buildContext.Create(contentWidth);
 		}
 	}
