@@ -9,7 +9,7 @@ using InfinniPlatform.FlowDocument.Model.Views;
 
 namespace InfinniPlatform.FlowDocument.Converters.Html
 {
-    sealed class FlowDocumentHtmlConverter : IFlowDocumentConverter
+    internal sealed class FlowDocumentHtmlConverter : IFlowDocumentConverter
     {
         private const int DefaultBufferSize = 1024;
         private static readonly HtmlBuilderContext Builder = CreateHtmlBuilderContext();

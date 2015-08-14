@@ -3,7 +3,7 @@ using InfinniPlatform.FlowDocument.Model.Blocks;
 
 namespace InfinniPlatform.FlowDocument.Converters.Html.Blocks
 {
-    public class PrintElementLineHtmlBuilder : IHtmlBuilderBase<PrintElementLine>
+    internal sealed class PrintElementLineHtmlBuilder : IHtmlBuilderBase<PrintElementLine>
     {
         public override void Build(HtmlBuilderContext context, PrintElementLine element, TextWriter result)
         {

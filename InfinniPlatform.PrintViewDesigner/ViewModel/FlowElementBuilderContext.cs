@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Documents;
+
 using InfinniPlatform.FlowDocument;
 using InfinniPlatform.FlowDocument.Model;
 
 namespace InfinniPlatform.PrintViewDesigner.ViewModel
 {
-    internal class FlowElementBuilderContext
+    internal sealed class FlowElementBuilderContext
     {
         private readonly Dictionary<Type, IFlowElementBuilder> _builders
             = new Dictionary<Type, IFlowElementBuilder>();

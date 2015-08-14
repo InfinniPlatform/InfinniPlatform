@@ -8,7 +8,7 @@ using FrameworkFlowDocument = System.Windows.Documents.FlowDocument;
 
 namespace InfinniPlatform.PrintViewDesigner.ViewModel
 {
-    sealed class FlowElementFlowDocumentBuilder : IFlowElementBuilderBase<PrintViewDocument>
+    internal sealed class FlowElementFlowDocumentBuilder : IFlowElementBuilderBase<PrintViewDocument>
     {
 
         public override object Build(FlowElementBuilderContext context, PrintViewDocument element, PrintElementMetadataMap elementMetadataMap)

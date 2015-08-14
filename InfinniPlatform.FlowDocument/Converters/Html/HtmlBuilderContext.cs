@@ -6,7 +6,7 @@ using InfinniPlatform.FlowDocument.Model;
 
 namespace InfinniPlatform.FlowDocument.Converters.Html
 {
-    public class HtmlBuilderContext
+    public sealed class HtmlBuilderContext
     {
         private readonly Dictionary<Type, IHtmlBuilder> _builders
             = new Dictionary<Type, IHtmlBuilder>();

@@ -1,10 +1,11 @@
 ﻿using System.Windows.Documents;
+
 using InfinniPlatform.FlowDocument;
 using InfinniPlatform.FlowDocument.Model.Blocks;
 
 namespace InfinniPlatform.PrintViewDesigner.ViewModel.Blocks
 {
-    sealed class FlowElementSectionBuilder : IFlowElementBuilderBase<PrintElementSection>
+    internal sealed class FlowElementSectionBuilder : IFlowElementBuilderBase<PrintElementSection>
     {
         public override object Build(FlowElementBuilderContext context, PrintElementSection element, PrintElementMetadataMap elementMetadataMap)
         {

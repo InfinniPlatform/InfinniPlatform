@@ -1,9 +1,10 @@
 ﻿using System.IO;
+
 using InfinniPlatform.FlowDocument.Model.Inlines;
 
 namespace InfinniPlatform.FlowDocument.Converters.Html.Inlines
 {
-    class PrintElementHyperlinkHtmlBuilder : IHtmlBuilderBase<PrintElementHyperlink>
+    internal sealed class PrintElementHyperlinkHtmlBuilder : IHtmlBuilderBase<PrintElementHyperlink>
     {
         public override void Build(HtmlBuilderContext context, PrintElementHyperlink element, TextWriter result)
         {

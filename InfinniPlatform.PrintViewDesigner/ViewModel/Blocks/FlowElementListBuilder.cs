@@ -1,11 +1,12 @@
 ﻿using System.Windows;
 using System.Windows.Documents;
+
 using InfinniPlatform.FlowDocument;
 using InfinniPlatform.FlowDocument.Model.Blocks;
 
 namespace InfinniPlatform.PrintViewDesigner.ViewModel.Blocks
 {
-    sealed class FlowElementListBuilder : IFlowElementBuilderBase<PrintElementList>
+    internal sealed class FlowElementListBuilder : IFlowElementBuilderBase<PrintElementList>
     {
         private const int DefaultMarkerOffsetSize = 7 + 5;
 

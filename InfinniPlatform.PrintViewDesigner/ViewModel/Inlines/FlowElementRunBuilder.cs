@@ -1,12 +1,11 @@
-﻿using System.Windows;
-using System.Windows.Documents;
+﻿using System.Windows.Documents;
 
 using InfinniPlatform.FlowDocument;
 using InfinniPlatform.FlowDocument.Model.Inlines;
 
 namespace InfinniPlatform.PrintViewDesigner.ViewModel.Inlines
 {
-    sealed class FlowElementRunBuilder : IFlowElementBuilderBase<PrintElementRun>
+    internal sealed class FlowElementRunBuilder : IFlowElementBuilderBase<PrintElementRun>
     {
         public override object Build(FlowElementBuilderContext context, PrintElementRun element, PrintElementMetadataMap elementMetadataMap)
         {

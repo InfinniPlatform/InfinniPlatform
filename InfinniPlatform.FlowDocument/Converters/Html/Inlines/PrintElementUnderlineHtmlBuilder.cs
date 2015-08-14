@@ -1,9 +1,10 @@
 ﻿using System.IO;
+
 using InfinniPlatform.FlowDocument.Model.Inlines;
 
 namespace InfinniPlatform.FlowDocument.Converters.Html.Inlines
 {
-    class PrintElementUnderlineHtmlBuilder : IHtmlBuilderBase<PrintElementUnderline>
+    internal sealed class PrintElementUnderlineHtmlBuilder : IHtmlBuilderBase<PrintElementUnderline>
     {
         public override void Build(HtmlBuilderContext context, PrintElementUnderline element, TextWriter result)
         {

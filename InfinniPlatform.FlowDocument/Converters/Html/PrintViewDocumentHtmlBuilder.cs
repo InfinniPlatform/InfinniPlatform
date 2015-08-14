@@ -4,7 +4,7 @@ using InfinniPlatform.FlowDocument.Model.Views;
 
 namespace InfinniPlatform.FlowDocument.Converters.Html
 {
-    public class PrintViewDocumentHtmlBuilder : IHtmlBuilderBase<PrintViewDocument>
+    internal sealed class PrintViewDocumentHtmlBuilder : IHtmlBuilderBase<PrintViewDocument>
     {
         public override void Build(HtmlBuilderContext context, PrintViewDocument element, TextWriter result)
         {

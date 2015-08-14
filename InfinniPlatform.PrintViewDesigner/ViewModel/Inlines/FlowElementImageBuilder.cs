@@ -10,7 +10,7 @@ using InfinniPlatform.FlowDocument.Model.Inlines;
 
 namespace InfinniPlatform.PrintViewDesigner.ViewModel.Inlines
 {
-    sealed class FlowElementImageBuilder : IFlowElementBuilderBase<PrintElementImage>
+    internal sealed class FlowElementImageBuilder : IFlowElementBuilderBase<PrintElementImage>
     {
         public override object Build(FlowElementBuilderContext context, PrintElementImage element, PrintElementMetadataMap elementMetadataMap)
         {

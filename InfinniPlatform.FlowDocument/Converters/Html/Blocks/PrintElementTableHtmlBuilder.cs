@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
+
 using InfinniPlatform.FlowDocument.Model.Blocks;
 
 namespace InfinniPlatform.FlowDocument.Converters.Html.Blocks
 {
-    class PrintElementTableHtmlBuilder : IHtmlBuilderBase<PrintElementTable>
+    internal sealed class PrintElementTableHtmlBuilder : IHtmlBuilderBase<PrintElementTable>
     {
         public override void Build(HtmlBuilderContext context, PrintElementTable element, TextWriter result)
         {

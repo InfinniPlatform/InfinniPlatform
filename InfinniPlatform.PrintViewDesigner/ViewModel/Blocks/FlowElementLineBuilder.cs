@@ -1,12 +1,13 @@
 ﻿using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
+
 using InfinniPlatform.FlowDocument;
 using InfinniPlatform.FlowDocument.Model.Blocks;
 
 namespace InfinniPlatform.PrintViewDesigner.ViewModel.Blocks
 {
-    sealed class FlowElementLineBuilder : IFlowElementBuilderBase<PrintElementLine>
+    internal sealed class FlowElementLineBuilder : IFlowElementBuilderBase<PrintElementLine>
     {
         public override object Build(FlowElementBuilderContext context, PrintElementLine element, PrintElementMetadataMap elementMetadataMap)
         {

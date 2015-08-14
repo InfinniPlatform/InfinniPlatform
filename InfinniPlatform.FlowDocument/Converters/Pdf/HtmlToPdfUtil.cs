@@ -8,7 +8,7 @@ using InfinniPlatform.FlowDocument.Properties;
 
 namespace InfinniPlatform.FlowDocument.Converters.Pdf
 {
-    public sealed class HtmlToPdfUtil
+    internal sealed class HtmlToPdfUtil
     {
         private const string ReplacePaddingBottom = "{padding-bottom}";
         private const string ReplacePaddingLeft = "{padding-left}";

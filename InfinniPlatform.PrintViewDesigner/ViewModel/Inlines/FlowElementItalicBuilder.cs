@@ -1,10 +1,11 @@
 ﻿using System.Windows.Documents;
+
 using InfinniPlatform.FlowDocument;
 using InfinniPlatform.FlowDocument.Model.Inlines;
 
 namespace InfinniPlatform.PrintViewDesigner.ViewModel.Inlines
 {
-    sealed class FlowElementItalicBuilder : IFlowElementBuilderBase<PrintElementItalic>
+    internal sealed class FlowElementItalicBuilder : IFlowElementBuilderBase<PrintElementItalic>
     {
         public override object Build(FlowElementBuilderContext context, PrintElementItalic element, PrintElementMetadataMap elementMetadataMap)
         {
