@@ -20,5 +20,10 @@ namespace InfinniPlatform.Sdk.ContextComponents
 
         string GetClaim(string claimType, string userName);
         void UpdateClaim(string userName, string claimType, string claimValue);
+
+        /// <summary>
+        ///     Прогрев Acl на старте сервера
+        /// </summary>
+        void WarmUpAcl();
     }
 }

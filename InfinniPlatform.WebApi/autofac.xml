@@ -33,6 +33,14 @@
       type = "InfinniPlatform.Transactions.TransactionManager, InfinniPlatform.Core"
       service="InfinniPlatform.Sdk.Environment.Transactions.ITransactionManager, InfinniPlatform.Sdk"
       instance-scope="single-instance"/>
+	<component
+		type = "InfinniPlatform.ContextComponents.SharedCacheComponent, InfinniPlatform.Core"
+		service="InfinniPlatform.Sdk.ContextComponents.ISharedCacheComponent, InfinniPlatform.Sdk"
+		instance-scope="single-instance"/>	  
+	<component
+		type = "InfinniPlatform.ContextComponents.CachedSecurityComponent, InfinniPlatform.Core"
+		service="InfinniPlatform.Sdk.ContextComponents.ISecurityComponent, InfinniPlatform.Sdk"
+		instance-scope="single-instance"/>	  	  
     <component
       type = "InfinniPlatform.BlobStorage.CassandraBlobStorageFactory, InfinniPlatform.BlobStorage"
       service="InfinniPlatform.Factories.IBlobStorageFactory, InfinniPlatform.Core"

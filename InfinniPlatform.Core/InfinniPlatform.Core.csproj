@@ -47,6 +47,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\SecurityCache.cs" />
     <Compile Include="Compression\GZipDataCompressor.cs" />
     <Compile Include="Compression\IDataCompressor.cs" />
     <Compile Include="ContextComponents\BlobStorageComponent.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="ContextComponents\RegistryComponent.cs" />
     <Compile Include="ContextComponents\ScriptRunnerComponent.cs" />
     <Compile Include="ContextComponents\CachedSecurityComponent.cs" />
+    <Compile Include="ContextComponents\SharedCacheComponent.cs" />
     <Compile Include="ContextComponents\SystemComponent.cs" />
     <Compile Include="ContextComponents\TransactionComponent.cs" />
     <Compile Include="ContextComponents\VersionedScriptProcessor.cs" />

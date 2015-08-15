@@ -47,7 +47,7 @@ namespace InfinniPlatform.Factories
                 () => new InprocessDocumentComponent(new ConfigurationMediatorComponent(
                     dependencyContainerComponent.ResolveDependency<IConfigurationObjectBuilder>()
                     ),
-                    new CachedSecurityComponent(),
+                    new CachedSecurityComponent(dependencyContainerComponent.ResolveDependency<ISharedCacheComponent>()),
                     dependencyContainerComponent.ResolveDependency<IIndexFactory>())));
         }
 

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using InfinniPlatform.Api.RestApi.Auth;
+using InfinniPlatform.Cache;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -12,15 +14,35 @@ namespace InfinniPlatform.ContextComponents
     /// </summary>
     public sealed class CachedSecurityComponent : ISecurityComponent
     {
-        private static IEnumerable<dynamic> _userRoles;
-        private static IEnumerable<dynamic> _acl;
-        private static IEnumerable<dynamic> _users;
-        private static IEnumerable<dynamic> _roles;
-        private static IEnumerable<dynamic> _versions; 
+        private readonly ISharedCacheComponent _sharedCacheComponent;
+        private const string SecurityKey = "___security";
+
+        public CachedSecurityComponent(ISharedCacheComponent sharedCacheComponent)
+        {
+            _sharedCacheComponent = sharedCacheComponent;
+            _sharedCacheComponent.Lock();
+            try
+            {
+                var securityCache = _sharedCacheComponent.Get(SecurityKey);
+                if (securityCache == null)
+                {
+                    _sharedCacheComponent.Set(SecurityKey, new SecurityCache());
+                }
+            }
+            finally
+            {
+                _sharedCacheComponent.Unlock();
+            }
+        }
+
+        private SecurityCache SecurityCache
+        {
+            get { return (SecurityCache)_sharedCacheComponent.Get(SecurityKey); }
+        }
 
         public IEnumerable<dynamic> Versions
         {
-            get { return _versions; }
+            get { return SecurityCache.Versions; }
         }
 
         public void UpdateUserRoles()
@@ -35,12 +57,12 @@ namespace InfinniPlatform.ContextComponents
 
         public IEnumerable<dynamic> Roles
         {
-            get { return _roles; }
+            get { return SecurityCache.Roles; }
         }
 
         public IEnumerable<dynamic> UserRoles
         {
-            get { return _userRoles; }
+            get { return SecurityCache.UserRoles; }
         }
 
         public void UpdateAcl()
@@ -60,21 +82,21 @@ namespace InfinniPlatform.ContextComponents
 
         public IEnumerable<dynamic> Acl
         {
-            get { return _acl; }
+            get { return SecurityCache.Acl; }
         }
 
         public IEnumerable<dynamic> Users
         {
-            get { return _users; }
+            get { return SecurityCache.Users; }
         }
 
-        
+
 
         public void UpdateClaim(string userName, string claimType, string claimValue)
         {
-            if (_users != null)
+            if (Users != null)
             {
-                var user = _users.FirstOrDefault(u => u.UserName == userName);
+                var user = Users.FirstOrDefault(u => u.UserName == userName);
                 if (user != null)
                 {
                     dynamic claim = null;
@@ -84,7 +106,7 @@ namespace InfinniPlatform.ContextComponents
                     }
                     else
                     {
-                        claim = ((IEnumerable<dynamic>) user.Claims).FirstOrDefault(c => c.Type.DisplayName == claimType);
+                        claim = ((IEnumerable<dynamic>)user.Claims).FirstOrDefault(c => c.Type.DisplayName == claimType);
                     }
 
                     if (claim == null)
@@ -99,18 +121,18 @@ namespace InfinniPlatform.ContextComponents
                     claim.Value = claimValue;
 
 
-                    var users = _users.Where(u => u.UserName != userName).ToList();
+                    var users = Users.Where(u => u.UserName != userName).ToList();
                     users.Add(user);
-                    _users = users;
+                    SecurityCache.Users = users;
                 }
             }
         }
 
         public string GetClaim(string claimType, string userName)
         {
-            if (_users != null)
+            if (Users != null)
             {
-                var user = _users.FirstOrDefault(u => u.UserName == userName);
+                var user = Users.FirstOrDefault(u => u.UserName == userName);
                 if (user != null)
                 {
                     IEnumerable<dynamic> claims = user.Claims;
@@ -124,35 +146,35 @@ namespace InfinniPlatform.ContextComponents
             return null;
         }
 
-        private static void InternalUpdateUserRoles()
+        private void InternalUpdateUserRoles()
         {
-            _userRoles = new AuthApi().GetUserRoles(false);
+            SecurityCache.UserRoles = new AuthApi().GetUserRoles(false);
         }
 
-        private static void InternalUpdateUsers()
+        private void InternalUpdateUsers()
         {
-            _users = new AuthApi().GetUsers(false);
+            SecurityCache.Users = new AuthApi().GetUsers(false);
         }
 
-        private static void InternalUpdateAcl()
+        private void InternalUpdateAcl()
         {
-            _acl = new AuthApi().GetAcl(false);
+            SecurityCache.Acl = new AuthApi().GetAcl(false);
         }
 
-        private static void InternalUpdateRoles()
+        private void InternalUpdateRoles()
         {
-            _roles = new AuthApi().GetRoles(false);
+            SecurityCache.Roles = new AuthApi().GetRoles(false);
         }
 
-        private static void InternalUpdateVersions()
+        private void InternalUpdateVersions()
         {
-            _versions = new AuthApi().GetVersions(false);
+            SecurityCache.Versions = new AuthApi().GetVersions(false);
         }
 
         /// <summary>
         ///     Прогрев Acl на старте сервера
         /// </summary>
-        public static void WarmUpAcl()
+        public void WarmUpAcl()
         {
             InternalUpdateUsers();
             InternalUpdateUserRoles();

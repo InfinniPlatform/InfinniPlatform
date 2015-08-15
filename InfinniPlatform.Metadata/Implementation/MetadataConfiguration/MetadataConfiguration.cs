@@ -7,6 +7,7 @@ using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Logging;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Hosting;
@@ -41,6 +42,7 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
             IServiceTemplateConfiguration serviceTemplateConfiguration,
             bool isEmbeddedConfiguration)
         {
+
             _scriptConfiguration = scriptConfiguration;
 
             _serviceRegistrationContainer = serviceRegistrationContainer;

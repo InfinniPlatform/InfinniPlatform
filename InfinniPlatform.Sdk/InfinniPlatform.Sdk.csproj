@@ -53,6 +53,7 @@
     <Compile Include="Api\InfinniSignInApi.cs" />
     <Compile Include="Api\InfinniVersionApi.cs" />
     <Compile Include="AttachedInstance.cs" />
+    <Compile Include="ContextComponents\ISharedCacheComponent.cs" />
     <Compile Include="Environment\Actions\IActionOperator.cs" />
     <Compile Include="Environment\Actions\IActionOperatorBuilder.cs" />
     <Compile Include="Environment\Transactions\AttachedInstance.cs" />

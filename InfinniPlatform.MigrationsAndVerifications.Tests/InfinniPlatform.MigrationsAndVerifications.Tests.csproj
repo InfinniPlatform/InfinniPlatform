@@ -41,7 +41,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AssemblyInfo.tt</DependentUpon>
     </Compile>
-    <Compile Include="TestData\MetadataConfigurationBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Files\Tests\App.config">

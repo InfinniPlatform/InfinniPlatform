@@ -25,13 +25,15 @@ namespace InfinniPlatform.SystemConfig.Initializers
     {
         private readonly IChangeListener _changeListener;
         private readonly IIndexFactory _indexFactory;
+        private readonly ISecurityComponent _securityComponent;
         private readonly IMetadataConfigurationProvider _metadataConfigurationProvider;
 
-        public JsonConfigurationsInitializer(IChangeListener changeListener, IIndexFactory indexFactory,
+        public JsonConfigurationsInitializer(IChangeListener changeListener, IIndexFactory indexFactory, ISecurityComponent securityComponent,
                                              IMetadataConfigurationProvider metadataConfigurationProvider)
         {
             _changeListener = changeListener;
             _indexFactory = indexFactory;
+            _securityComponent = securityComponent;
             _metadataConfigurationProvider = metadataConfigurationProvider;
         }
 
@@ -63,7 +65,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
 
             if (configurationId.ToLowerInvariant() == "authorization")
             {
-                CachedSecurityComponent.WarmUpAcl();
+                _securityComponent.WarmUpAcl();
             }
         }
 

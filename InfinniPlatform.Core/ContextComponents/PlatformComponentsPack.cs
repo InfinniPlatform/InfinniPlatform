@@ -39,6 +39,10 @@ namespace InfinniPlatform.ContextComponents
                 dependencyContainerComponent.ResolveDependency<IMetadataConfigurationProvider>();
             var versionStrategy = dependencyContainerComponent.ResolveDependency<IVersionStrategy>();
 
+            var sharedCacheComponent = dependencyContainerComponent.ResolveDependency<ISharedCacheComponent>();
+
+            _components.Add(new ContextRegistration(typeof(ISharedCacheComponent), () => sharedCacheComponent));
+
             _components.Add(new ContextRegistration(typeof(IVersionStrategy), () => versionStrategy));
 
             _components.Add(new ContextRegistration(typeof(IBlobStorageComponent),
@@ -61,7 +65,7 @@ namespace InfinniPlatform.ContextComponents
             _components.Add(new ContextRegistration(typeof(IScriptRunnerComponent),
                 () => new ScriptRunnerComponent(metadataConfigurationProvider)));
             _components.Add(new ContextRegistration(typeof(ISecurityComponent),
-                () => new CachedSecurityComponent()));
+                dependencyContainerComponent.ResolveDependency<ISecurityComponent>));
             _components.Add(new ContextRegistration(typeof(ITransactionComponent),
                 () =>
                     new TransactionComponent(dependencyContainerComponent.ResolveDependency<ITransactionManager>())));
