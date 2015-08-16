@@ -123,17 +123,10 @@ namespace InfinniPlatform.RestfulApi.Utils
 
                 var queryAnalyzer = new QueryCriteriaAnalyzer(_metadataComponent, version, schema);
 
-                var watch = Stopwatch.StartNew();
-
-
                 IEnumerable<dynamic> result =
                     documentProvider.GetDocument(queryAnalyzer.GetBeforeResolveCriteriaList(filter), 0,
                                                  Convert.ToInt32(pageSizeUnresolvedDocuments), sorting,
                                                  pageNumber > 0 ? pageNumber*pageSize : 0);
-
-                watch.Stop();
-                _logComponent.GetLog().Error(string.Format("Elapsed milliseconds: {0}", watch.ElapsedMilliseconds));
-
 
                 new ReferenceResolver(_metadataComponent).ResolveReferences(version, configId, documentId, result,
                                                                             ignoreResolve);
