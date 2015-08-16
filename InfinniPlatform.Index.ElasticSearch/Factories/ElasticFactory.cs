@@ -1,8 +1,12 @@
-﻿using InfinniPlatform.Api.Index;
+﻿using System.CodeDom;
+using System.Collections.Concurrent;
+using InfinniPlatform.Api.Index;
 using InfinniPlatform.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Versioning;
 using System.Collections.Generic;
+using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Index.ElasticSearch.Factories
@@ -16,13 +20,34 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 		private readonly IMultitenancyProvider _multitenancyProvider;
 	    private readonly IndexToTypeAccordanceProvider _accordanceProvider;
 
+        private ConcurrentDictionary<string, IndexToTypeAccordanceSettings> _settings = new ConcurrentDictionary<string, IndexToTypeAccordanceSettings>(); 
+
 		public ElasticFactory(IMultitenancyProvider multitenancyProvider)
 		{
 		    _multitenancyProvider = multitenancyProvider;
 		    _accordanceProvider = new IndexToTypeAccordanceProvider();
 		}
 
+	    private string CreateKey(IEnumerable<string> indexNames, IEnumerable<string> typeNames)
+	    {
+	        return string.Format("Indexes:{0};TypeNames:{1}", string.Join("_", indexNames), string.Join("_", typeNames));
+	    }
 
+	    private IndexToTypeAccordanceSettings GetIndexTypeAccordanceSettings(IEnumerable<string> indexNames, IEnumerable<string> typeNames)
+	    {
+	        var key = CreateKey(indexNames, typeNames);
+	        if (_settings.ContainsKey(key))
+	        {
+	            return _settings[key];
+	        }
+	        else
+	        {
+	            var settings = _accordanceProvider.GetIndexTypeAccordances(indexNames, typeNames);
+                _settings.AddOrUpdate(key, settings, (k, old) => settings);
+	            return settings;
+	        }
+	    }
+ 
 	    /// <summary>
         ///   Создать конструктор версий хранилища документов
         /// </summary>
@@ -47,8 +72,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 
 			var expectedtenantId = _multitenancyProvider.GetTenantId(tenantId, indexName, typeName);
 	        return new VersionProvider(
-	            new ElasticSearchProvider(indexName, typeName, expectedtenantId, version), 
-                new DocumentProvider(new IndexQueryExecutor(_accordanceProvider.GetIndexTypeAccordances(new [] { indexName }, new []{ typeName}), expectedtenantId)));
+	            new ElasticSearchProvider(indexName, typeName, expectedtenantId, version),
+                new DocumentProvider(new IndexQueryExecutor(GetIndexTypeAccordanceSettings(new[] { indexName }, new[] { typeName }), expectedtenantId)));
 	    }
 
 	    /// <summary>
@@ -61,7 +86,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 	    public IDocumentProvider BuildMultiIndexDocumentProvider(string tenantId, IEnumerable<string> indexNames = null, IEnumerable<string> typeNames = null)
         {
             // Создаём универсальный провайдер для выполнения поисковых запросов ко всем документам конфигурации
-            return new DocumentProvider(new IndexQueryExecutor(_accordanceProvider.GetIndexTypeAccordances(indexNames, typeNames), tenantId));
+            return new DocumentProvider(new IndexQueryExecutor(GetIndexTypeAccordanceSettings(indexNames, typeNames), tenantId));
         }
         
 		private readonly List<ElasticSearchProviderInfo> _providersInfo = new List<ElasticSearchProviderInfo>();
@@ -117,7 +142,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 		public IIndexQueryExecutor BuildIndexQueryExecutor(string indexName, string typeName, string tenantId)
 	    {
 			var expectedtenantId = _multitenancyProvider.GetTenantId(tenantId, indexName, typeName);
-            return new IndexQueryExecutor(_accordanceProvider.GetIndexTypeAccordances(new [] {indexName}, new [] {typeName}), expectedtenantId);
+            return new IndexQueryExecutor(GetIndexTypeAccordanceSettings(new [] {indexName}, new [] {typeName}), expectedtenantId);
 	    }
 
 		/// <summary>

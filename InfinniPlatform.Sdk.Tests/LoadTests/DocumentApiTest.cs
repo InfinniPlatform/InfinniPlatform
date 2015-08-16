@@ -28,7 +28,7 @@ namespace InfinniPlatform.Sdk.Tests.LoadTests
                  f => f.AddCriteria(cr => cr.Property("Name").IsContains("gta")), 0, 100,
                  s => s.AddSorting("Price", "descending"));
 
-            var actions = Enumerable.Repeat(action, 1500).ToArray();
+            var actions = Enumerable.Repeat(action, 15000).ToArray();
             var watch = Stopwatch.StartNew();
             Parallel.Invoke(actions);
             watch.Stop();
