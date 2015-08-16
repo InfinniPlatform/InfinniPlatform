@@ -14,14 +14,16 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
     public sealed class ElasticFactory : IIndexFactory
     {
 		private readonly IMultitenancyProvider _multitenancyProvider;
+	    private readonly IndexToTypeAccordanceProvider _accordanceProvider;
 
 		public ElasticFactory(IMultitenancyProvider multitenancyProvider)
 		{
-			_multitenancyProvider = multitenancyProvider;
+		    _multitenancyProvider = multitenancyProvider;
+		    _accordanceProvider = new IndexToTypeAccordanceProvider();
 		}
 
 
-		/// <summary>
+	    /// <summary>
         ///   Создать конструктор версий хранилища документов
         /// </summary>
         /// <param name="indexName">Наименование индекса</param>
@@ -46,7 +48,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 			var expectedtenantId = _multitenancyProvider.GetTenantId(tenantId, indexName, typeName);
 	        return new VersionProvider(
 	            new ElasticSearchProvider(indexName, typeName, expectedtenantId, version), 
-                new DocumentProvider(new IndexQueryExecutor(indexName, typeName, expectedtenantId)));
+                new DocumentProvider(new IndexQueryExecutor(_accordanceProvider.GetIndexTypeAccordances(new [] { indexName }, new []{ typeName}), expectedtenantId)));
 	    }
 
 	    /// <summary>
@@ -59,7 +61,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 	    public IDocumentProvider BuildMultiIndexDocumentProvider(string tenantId, IEnumerable<string> indexNames = null, IEnumerable<string> typeNames = null)
         {
             // Создаём универсальный провайдер для выполнения поисковых запросов ко всем документам конфигурации
-            return new DocumentProvider(new IndexQueryExecutor(indexNames, typeNames,tenantId));
+            return new DocumentProvider(new IndexQueryExecutor(_accordanceProvider.GetIndexTypeAccordances(indexNames, typeNames), tenantId));
         }
         
 		private readonly List<ElasticSearchProviderInfo> _providersInfo = new List<ElasticSearchProviderInfo>();
@@ -115,7 +117,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 		public IIndexQueryExecutor BuildIndexQueryExecutor(string indexName, string typeName, string tenantId)
 	    {
 			var expectedtenantId = _multitenancyProvider.GetTenantId(tenantId, indexName, typeName);
-            return new IndexQueryExecutor(indexName, typeName, expectedtenantId);
+            return new IndexQueryExecutor(_accordanceProvider.GetIndexTypeAccordances(new [] {indexName}, new [] {typeName}), expectedtenantId);
 	    }
 
 		/// <summary>

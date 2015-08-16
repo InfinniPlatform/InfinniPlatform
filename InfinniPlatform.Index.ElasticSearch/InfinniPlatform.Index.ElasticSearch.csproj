@@ -57,8 +57,10 @@
     <Compile Include="Factories\ElasticFactory.cs" />
     <Compile Include="Implementation\ElasticProviders\ElasticSearchProviderAllIndexes.cs" />
     <Compile Include="Implementation\ElasticProviders\ElasticSearchProviderInfo.cs" />
+    <Compile Include="Implementation\ElasticProviders\IndexToTypeAccordanceProvider.cs" />
     <Compile Include="Implementation\ElasticProviders\SchemaIndexVersion\ElasticMappingExtension.cs" />
     <Compile Include="Implementation\ElasticProviders\SchemaIndexVersion\IndexToTypeAccordance.cs" />
+    <Compile Include="Implementation\ElasticProviders\SchemaIndexVersion\IndexToTypeAccordanceSettings.cs" />
     <Compile Include="Implementation\ElasticProviders\SchemaIndexVersion\IndexTypeMapping.cs" />
     <Compile Include="Implementation\ElasticSearchModels\ElasticCountQueryBuilder.cs" />
     <Compile Include="Implementation\ElasticSearchModels\CountModelFilterDescriptor.cs" />

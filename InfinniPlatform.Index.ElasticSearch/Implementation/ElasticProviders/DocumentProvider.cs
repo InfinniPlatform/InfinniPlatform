@@ -4,6 +4,7 @@ using System.Linq;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Index.SearchOptions;
 using InfinniPlatform.Api.SearchOptions;
+using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Sdk.Environment.Index;
 
@@ -21,7 +22,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             _indexQueryExecutor = indexQueryExecutor;
         }
 
-	    /// <summary>
+        /// <summary>
 	    ///   Получить актуальные версии объектов, отсортированные по дате вставки в индекс по убыванию  
 	    /// </summary>
 	    /// <param name="filterObject">Фильтр объектов</param>

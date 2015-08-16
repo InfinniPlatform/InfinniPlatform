@@ -494,35 +494,13 @@ namespace InfinniPlatform.RestfulApi.Installers
                                                                                      )));
 
 
-            metadataConfiguration.RegisterWorkflow("configuration", "getdocument",
-                                                   f => f.FlowWithoutState(wc => wc
-                                                                                     .Move(ws => ws
-                                                                                                     .WithAction(
-                                                                                                         () =>
-                                                                                                         actionUnits
-                                                                                                             .GetAction(
-                                                                                                                 "getdocument"))
-                                                                                                     .WithSimpleAuthorization
-                                                                                                     (() =>
-                                                                                                      actionUnits
-                                                                                                          .GetAction(
-                                                                                                              "documentauth"))
-                                                                                                     .WithComplexAuthorization
-                                                                                                     (() =>
-                                                                                                      actionUnits
-                                                                                                          .GetAction(
-                                                                                                              "complexauth"))
-                                                                                                     .OnSuccess(
-                                                                                                         () =>
-                                                                                                         actionUnits
-                                                                                                             .GetAction(
-                                                                                                                 "filterauthdocument"))
-                                                                                                     .OnCredentials(
-                                                                                                         () =>
-                                                                                                         actionUnits
-                                                                                                             .GetAction(
-                                                                                                                 "setcredentials"))
-                                                                                     )));
+            metadataConfiguration.RegisterWorkflow("configuration", "getdocument",f => f
+                .FlowWithoutState(wc => wc.Move(ws => ws.WithAction(() =>actionUnits.GetAction("getdocument"))
+                    .WithSimpleAuthorization(() =>actionUnits.GetAction("documentauth"))
+                    .WithComplexAuthorization(() =>actionUnits.GetAction("complexauth"))
+                    .OnSuccess(() =>actionUnits.GetAction("filterauthdocument"))
+                    .OnCredentials(() =>actionUnits.GetAction("setcredentials"))
+                    )));
 
             metadataConfiguration.RegisterWorkflow("configuration", "getnumberofdocuments",
                 f => f.FlowWithoutState(wc => wc

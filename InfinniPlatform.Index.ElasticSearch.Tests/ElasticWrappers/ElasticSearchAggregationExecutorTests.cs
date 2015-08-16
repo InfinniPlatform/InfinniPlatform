@@ -152,7 +152,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             }
 
             var executor = new ElasticSearchAggregationProvider(aggrindex, aggrindex, AuthorizationStorageExtensions.AnonimousUser);
-            var queryWrapper = new IndexQueryExecutor(aggrindex, aggrindex,AuthorizationStorageExtensions.AnonimousUser);
+            var queryWrapper = new IndexQueryExecutor(new IndexToTypeAccordanceProvider().GetIndexTypeAccordances(new[] { aggrindex }, new[] { aggrindex }),AuthorizationStorageExtensions.AnonimousUser);
 
             var r = executor.ExecuteTermAggregation(
                     new string[0],

@@ -30,57 +30,17 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         private readonly bool _searchInAllIndeces;
         private readonly bool _searchInAllTypes;
 
-
-        public IndexQueryExecutor(string indexName, string typeName, string tenantId)
+        public IndexQueryExecutor(IndexToTypeAccordanceSettings settings, string tenantId)
         {
             _tenantId = string.IsNullOrEmpty(tenantId) ? "" : tenantId.ToLowerInvariant();
             _elasticConnection = new ElasticConnection();
-
-            _typeNames = _elasticConnection.GetAllTypes(new[] {indexName}, new[] {typeName});
-            _indexNames = new[] {indexName.ToLowerInvariant()};
-
-            _elasticConnection.ConnectIndex();
-
-            _searchInAllIndeces = false;
-            _searchInAllTypes = false;
-        }
-
-        public IndexQueryExecutor(IEnumerable<string> indexNames, IEnumerable<string> typeNames, string tenantId)
-        {
-            _tenantId = tenantId;
-            _elasticConnection = new ElasticConnection();
-
-            if (indexNames != null && indexNames.Any())
-            {
-                _indexNames = indexNames.Select(s => s.ToLowerInvariant());
-                _searchInAllIndeces = false;
-
-                if (typeNames != null && typeNames.Any())
-                {
-                    _typeNames = _elasticConnection.GetAllTypes(_indexNames, typeNames);
-
-                    // Указанных типов не обнаружено, выполнять поисковые запросы нельзя
-                    if (!_typeNames.Any())
-                    {
-                        _searchInAllIndeces = false;
-                        _searchInAllTypes = false;
-                    }
-                }
-                else
-                {
-                    _searchInAllTypes = true;
-                }
-            }
-            else
-            {
-                _searchInAllIndeces = true;
-                _searchInAllTypes = true;
-            }
-
-
-
+            _indexNames = settings.Accordances.Select(i => i.IndexName).ToArray();
+            _typeNames = settings.Accordances.ToArray();
+            _searchInAllIndeces = settings.SearchInAllIndeces;
+            _searchInAllTypes = settings.SearchInAllTypes;
             _elasticConnection.ConnectIndex();
         }
+
 
         /// <summary>
         ///   Найти список объектов в индексе по указанной модели поиска

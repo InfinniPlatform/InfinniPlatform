@@ -6,6 +6,7 @@ using System.Linq;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
+using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.SystemConfig.Multitenancy;
@@ -99,7 +100,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 		{
 			var indexProvider = new ElasticFactory(new MultitenancyProvider()).BuildIndexStateProvider();
             indexProvider.RecreateIndex("testindex", "testindex");
-			var queryWrapper = new IndexQueryExecutor("testindex", "testindex", AuthorizationStorageExtensions.AnonimousUser);
+            var queryWrapper = new IndexQueryExecutor(new IndexToTypeAccordanceProvider().GetIndexTypeAccordances(new[] { "testindex" }, new[] { "testindex" }), AuthorizationStorageExtensions.AnonimousUser);
 			var elasticSearchProvider = new ElasticFactory(new MultitenancyProvider()).BuildCrudOperationProvider("testindex", "testindex", AuthorizationStorageExtensions.AnonimousUser);
             
 			for (int i = 0; i < recordCount; i++)

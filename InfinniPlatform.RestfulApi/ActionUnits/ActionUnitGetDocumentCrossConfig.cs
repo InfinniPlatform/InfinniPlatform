@@ -28,7 +28,8 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                             target.Context.GetComponent<IConfigurationMediatorComponent>(),
                             target.Context.GetComponent<IMetadataComponent>(),
                             target.Context.GetComponent<InprocessDocumentComponent>(),
-                            target.Context.GetComponent<IProfilerComponent>());
+                            target.Context.GetComponent<IProfilerComponent>(),
+                            target.Context.GetComponent<ILogComponent>());
 
                     resultDocuments.AddRange(executor.GetCompleteDocuments(target.Context.GetVersion(config, target.UserName), config, document,
                                                                            target.UserName,

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Index.SearchOptions;
@@ -23,15 +24,17 @@ namespace InfinniPlatform.RestfulApi.Utils
         private readonly InprocessDocumentComponent _documentComponent;
         private readonly IMetadataComponent _metadataComponent;
         private readonly IProfilerComponent _profilerComponent;
+        private readonly ILogComponent _logComponent;
 
         public DocumentExecutor(IConfigurationMediatorComponent configurationMediatorComponent,
                                 IMetadataComponent metadataComponent, InprocessDocumentComponent documentComponent,
-                                IProfilerComponent profilerComponent)
+                                IProfilerComponent profilerComponent, ILogComponent logComponent)
         {
             _configurationMediatorComponent = configurationMediatorComponent;
             _metadataComponent = metadataComponent;
             _documentComponent = documentComponent;
             _profilerComponent = profilerComponent;
+            _logComponent = logComponent;
         }
 
         public dynamic GetBaseDocument(string userName, string instanceId)
@@ -54,11 +57,13 @@ namespace InfinniPlatform.RestfulApi.Utils
                                                          IEnumerable<dynamic> filter, IEnumerable<dynamic> sorting,
                                                          IEnumerable<dynamic> ignoreResolve)
         {
+
             IVersionProvider documentProvider = _documentComponent.GetDocumentProvider(version, configId, documentId,
                                                                                        userName);
 
             if (documentProvider != null)
             {
+
                 IMetadataConfiguration metadataConfiguration =
                     _configurationMediatorComponent
                         .ConfigurationBuilder.GetConfigurationObject(version, configId)
@@ -118,10 +123,17 @@ namespace InfinniPlatform.RestfulApi.Utils
 
                 var queryAnalyzer = new QueryCriteriaAnalyzer(_metadataComponent, version, schema);
 
+                var watch = Stopwatch.StartNew();
+
+
                 IEnumerable<dynamic> result =
                     documentProvider.GetDocument(queryAnalyzer.GetBeforeResolveCriteriaList(filter), 0,
                                                  Convert.ToInt32(pageSizeUnresolvedDocuments), sorting,
                                                  pageNumber > 0 ? pageNumber*pageSize : 0);
+
+                watch.Stop();
+                _logComponent.GetLog().Error(string.Format("Elapsed milliseconds: {0}", watch.ElapsedMilliseconds));
+
 
                 new ReferenceResolver(_metadataComponent).ResolveReferences(version, configId, documentId, result,
                                                                             ignoreResolve);
