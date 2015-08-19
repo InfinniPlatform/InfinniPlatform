@@ -4,9 +4,9 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 using InfinniPlatform.Api.Properties;
-using InfinniPlatform.Api.Settings;
 using InfinniPlatform.Api.SystemExtensions;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Settings;
 
 namespace InfinniPlatform.Api.Packages.ConfigStructure
 {

@@ -19,7 +19,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         public IndexToTypeAccordanceSettings GetIndexTypeAccordances(IEnumerable<string> indeces,
             IEnumerable<string> types)
         {            
-            return new IndexToTypeAccordanceSettings(_elasticConnection.GetAllTypes(indeces, types));
+            return new IndexToTypeAccordanceSettings(_elasticConnection.GetAllTypes(indeces, types), indeces != null && indeces.Any());
         } 
     }
 }

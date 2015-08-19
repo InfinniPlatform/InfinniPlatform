@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Metadata;
@@ -134,8 +135,8 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
             //в случае системной конфигурации версия не имеет значения, т.к. для всех системных конфигурациц Version = null (одновременно запускается только одна версия платформы)
             var configToRemove =
                 Configurations.FirstOrDefault(
-                    c => c.ConfigurationId.ToLowerInvariant() != metadataConfigurationId.ToLowerInvariant() ||
-                         c.Version != version);
+                    c => c.ConfigurationId.ToLowerInvariant() == metadataConfigurationId.ToLowerInvariant() ||
+                         c.Version == version);
 
             if (configToRemove != null)
             {

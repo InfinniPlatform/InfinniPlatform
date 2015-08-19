@@ -9,17 +9,19 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
     public class IndexToTypeAccordanceSettings
     {
         private readonly IEnumerable<IndexToTypeAccordance> _accordances;
+        private readonly bool _indexEmpty;
 
-        public IndexToTypeAccordanceSettings(IEnumerable<IndexToTypeAccordance> accordances)
+        public IndexToTypeAccordanceSettings(IEnumerable<IndexToTypeAccordance> accordances, bool indexEmpty)
         {
             _accordances = accordances;
+            _indexEmpty = indexEmpty;
         }
 
         public bool SearchInAllTypes
         {
             get
             {
-                return !_accordances.Any();
+                return !_indexEmpty && Accordances.Select(s => s.TypeNames).Any();
             }
         }
 
@@ -27,7 +29,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
         {
             get
             {
-                return !_accordances.Any();
+                return _indexEmpty && !Accordances.Select(s => s.TypeNames).Any();
             }
         }
 

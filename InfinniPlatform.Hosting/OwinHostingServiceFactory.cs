@@ -2,7 +2,6 @@
 using System.Reflection;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.RestQuery;
-using InfinniPlatform.Api.Settings;
 using InfinniPlatform.Authentication.Modules;
 using InfinniPlatform.Cors;
 using InfinniPlatform.Factories;
@@ -14,6 +13,7 @@ using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Sdk.Api;
 using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Hosting;
+using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.SignalR;
 using InfinniPlatform.SystemInfo;
 using InfinniPlatform.WebApi;

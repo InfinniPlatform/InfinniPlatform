@@ -50,7 +50,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
         public override IEnumerable<object> GetItems()
         {
-            return _metadataApi.GetDocuments(Version, ConfigId);
+            return _metadataApi.GetDocumentList(Version, ConfigId);
         }
     }
 }

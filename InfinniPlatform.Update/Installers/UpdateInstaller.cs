@@ -1,4 +1,5 @@
-﻿using InfinniPlatform.Api.Hosting;
+﻿using System.Diagnostics;
+using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Hosting;
@@ -24,7 +25,7 @@ namespace InfinniPlatform.Update.Installers
 
 
 		protected override void RegisterConfiguration(IMetadataConfiguration metadataConfiguration)
-        {
+		{
             var actionUnits = metadataConfiguration.ScriptConfiguration;
 
 			actionUnits.RegisterActionUnitEmbedded("installjsonmetadata", new ActionOperatorBuilderEmbedded(typeof(ActionUnitInstallJsonMetadata)));

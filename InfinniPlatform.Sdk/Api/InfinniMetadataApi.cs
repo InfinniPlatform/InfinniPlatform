@@ -325,7 +325,7 @@ namespace InfinniPlatform.Sdk.Api
         /// <param name="version">Версия конфигурации</param>
         /// <param name="configuration">Наименование конфигурации</param>
         /// <returns>Список сборок прикладной конфигурации</returns>
-        public IEnumerable<dynamic> GetAssemblies(string version, string configuration)
+        public IEnumerable<dynamic> GetAssemblyList(string version, string configuration)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
@@ -405,7 +405,7 @@ namespace InfinniPlatform.Sdk.Api
         /// </summary>
         /// <param name="version">Версия конфигурации</param>
         /// <returns>Метаданные регистров</returns>
-        public dynamic GetRegisterItems(string version, string configuration)
+        public dynamic GetRegisterList(string version, string configuration)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
@@ -486,7 +486,7 @@ namespace InfinniPlatform.Sdk.Api
         /// </summary>
         /// <param name="version">Версия конфигурации</param>
         /// <returns>Метаданные документа</returns>
-        public dynamic GetDocuments(string version, string configuration)
+        public dynamic GetDocumentList(string version, string configuration)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 

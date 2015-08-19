@@ -50,12 +50,17 @@
     <Compile Include="Api\InfinniAuthApi.cs" />
     <Compile Include="Api\InfinniCustomServiceApi.cs" />
     <Compile Include="Api\InfinniMetadataApi.cs" />
+    <Compile Include="Api\InfinniRegisterApi.cs" />
     <Compile Include="Api\InfinniSignInApi.cs" />
     <Compile Include="Api\InfinniVersionApi.cs" />
     <Compile Include="AttachedInstance.cs" />
     <Compile Include="ContextComponents\ISharedCacheComponent.cs" />
     <Compile Include="Environment\Actions\IActionOperator.cs" />
     <Compile Include="Environment\Actions\IActionOperatorBuilder.cs" />
+    <Compile Include="Environment\Register\RegisterConstants.cs" />
+    <Compile Include="Environment\Register\RegisterEntryType.cs" />
+    <Compile Include="Environment\Settings\AppSettings.cs" />
+    <Compile Include="Environment\Settings\ConnectionStrings.cs" />
     <Compile Include="Environment\Transactions\AttachedInstance.cs" />
     <Compile Include="Environment\Binary\BlobData.cs" />
     <Compile Include="Environment\Binary\BlobInfo.cs" />

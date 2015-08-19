@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Linq;
 
-namespace InfinniPlatform.Api.Settings
+namespace InfinniPlatform.Sdk.Environment.Settings
 {
     /// <summary>
     ///     Provides access to the current application's default configuration.

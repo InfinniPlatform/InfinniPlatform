@@ -151,7 +151,7 @@ namespace InfinniPlatform.Sdk.Tests
 
             Assert.AreEqual(assemblyRead.Name, assemblyMetadata.Name);
 
-            IEnumerable<dynamic> assemblyList = _metadataApi.GetAssemblies(config.Version, config.Name);
+            IEnumerable<dynamic> assemblyList = _metadataApi.GetAssemblyList(config.Version, config.Name);
 
             Assert.True(assemblyList.Any());
 
@@ -192,7 +192,7 @@ namespace InfinniPlatform.Sdk.Tests
 
             Assert.AreEqual(registerRead.Name, registerMetadata.Name);
 
-            IEnumerable<dynamic> registers = _metadataApi.GetRegisterItems(config.Version, config.Name);
+            IEnumerable<dynamic> registers = _metadataApi.GetRegisterList(config.Version, config.Name);
             Assert.True(registers.Any());
 
             _metadataApi.DeleteRegister(config.Version, config.Name, registerMetadata.Name);
@@ -232,7 +232,7 @@ namespace InfinniPlatform.Sdk.Tests
 
             Assert.AreEqual(documentRead.Name, documentMetadata.Name);
 
-            IEnumerable<dynamic> documents = _metadataApi.GetDocuments(config.Version, config.Name);
+            IEnumerable<dynamic> documents = _metadataApi.GetDocumentList(config.Version, config.Name);
             Assert.True(documents.Any());
 
             _metadataApi.DeleteDocument(config.Version, config.Name, documentMetadata.Name);

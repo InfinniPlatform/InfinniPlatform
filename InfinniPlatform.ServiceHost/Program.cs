@@ -1,8 +1,7 @@
 ﻿using System;
-
-using InfinniPlatform.Api.Settings;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Modules;
+using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.ServiceHost.Properties;
 using InfinniPlatform.SystemConfig.Initializers;
 using InfinniPlatform.WebApi.Logging;

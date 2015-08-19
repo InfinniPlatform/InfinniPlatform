@@ -1,11 +1,11 @@
 ﻿using Elasticsearch.Net.ConnectionPool;
-using InfinniPlatform.Api.Settings;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.Index.ElasticSearch.Properties;
 using Nest.Resolvers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using InfinniPlatform.Sdk.Environment.Settings;
 using Nest;
 
 

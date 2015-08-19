@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security;
-using InfinniPlatform.Api.Settings;
 using InfinniPlatform.MessageQueue.Properties;
+using InfinniPlatform.Sdk.Environment.Settings;
 
 
 namespace InfinniPlatform.MessageQueue.Integration

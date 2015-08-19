@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using InfinniPlatform.Api.Settings;
+using InfinniPlatform.Sdk.Environment.Settings;
 
 namespace InfinniPlatform.Api.SelfDocumentation
 {

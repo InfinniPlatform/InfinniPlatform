@@ -8,6 +8,7 @@ using InfinniPlatform.Api.Registers;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Environment.Register;
 
 namespace InfinniPlatform.SystemConfig.Configurator
 {

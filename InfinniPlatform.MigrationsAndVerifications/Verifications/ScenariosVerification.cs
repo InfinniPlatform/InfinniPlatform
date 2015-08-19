@@ -7,10 +7,10 @@ using System.Text;
 using InfinniPlatform.Api.Context;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Api.Settings;
 using InfinniPlatform.Metadata;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Environment.Settings;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Verifications
 {

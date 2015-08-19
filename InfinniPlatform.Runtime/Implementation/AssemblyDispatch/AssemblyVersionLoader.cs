@@ -7,7 +7,6 @@ using System.Reflection;
 
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.SearchOptions;
-using InfinniPlatform.Api.Settings;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Metadata;
 using InfinniPlatform.Runtime.Properties;
@@ -15,6 +14,7 @@ using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Metadata;
+using InfinniPlatform.Sdk.Environment.Settings;
 
 namespace InfinniPlatform.Runtime.Implementation.AssemblyDispatch
 {

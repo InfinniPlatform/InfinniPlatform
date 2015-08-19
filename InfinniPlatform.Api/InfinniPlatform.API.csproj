@@ -189,8 +189,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Registers\RegisterEntryType.cs" />
-    <Compile Include="Registers\RegisterConstants.cs" />
     <Compile Include="Registers\RegisterPropertyType.cs" />
     <Compile Include="Registers\RegisterPeriod.cs" />
     <Compile Include="Registers\RegisterType.cs" />
@@ -298,8 +296,6 @@
     <Compile Include="RestQuery\RestQueryExecutors\RestQueryExecutor.cs" />
     <Compile Include="RestQuery\RestQueryResponse.cs" />
     <Compile Include="SearchOptions\SearchType.cs" />
-    <Compile Include="Settings\AppSettings.cs" />
-    <Compile Include="Settings\ConnectionStrings.cs" />
     <Compile Include="Threading\ProcessDispatcher.cs" />
     <Compile Include="Threading\ProcessEvent.cs" />
     <Compile Include="Transactions\BinaryManager.cs" />

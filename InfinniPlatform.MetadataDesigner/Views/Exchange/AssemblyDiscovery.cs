@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Api.Settings;
+using InfinniPlatform.Sdk.Environment.Settings;
 
 namespace InfinniPlatform.MetadataDesigner.Views.Exchange
 {

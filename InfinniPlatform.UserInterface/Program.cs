@@ -5,9 +5,9 @@ using System.Threading;
 using System.Windows.Forms;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.RestApi.Auth;
-using InfinniPlatform.Api.Settings;
 using InfinniPlatform.Api.TestEnvironment;
 using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.UserInterface.AppHost;
 
 namespace InfinniPlatform.UserInterface

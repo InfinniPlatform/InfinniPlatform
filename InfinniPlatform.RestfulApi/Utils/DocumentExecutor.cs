@@ -7,7 +7,6 @@ using InfinniPlatform.Api.Index.SearchOptions;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Profiling;
 using InfinniPlatform.Api.SearchOptions;
-using InfinniPlatform.Api.Settings;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
@@ -15,6 +14,7 @@ using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Metadata;
 using InfinniPlatform.Sdk.Environment.Profiling;
+using InfinniPlatform.Sdk.Environment.Settings;
 
 namespace InfinniPlatform.RestfulApi.Utils
 {

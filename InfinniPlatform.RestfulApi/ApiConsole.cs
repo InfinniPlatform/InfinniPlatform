@@ -8,7 +8,6 @@ using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.File;
 using InfinniPlatform.Api.Packages;
 using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Api.Settings;
 using InfinniPlatform.Api.TestEnvironment;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Hosting.Implementation;
@@ -16,6 +15,7 @@ using InfinniPlatform.Modules;
 using InfinniPlatform.RestfulApi.Extensions;
 using InfinniPlatform.RestfulApi.Properties;
 using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.SystemConfig.Initializers;
 
 namespace InfinniPlatform.RestfulApi

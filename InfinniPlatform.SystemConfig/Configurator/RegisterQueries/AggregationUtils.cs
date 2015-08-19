@@ -6,6 +6,7 @@ using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Index;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Register;
 
 namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
 {

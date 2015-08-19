@@ -53,7 +53,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
         public override IEnumerable<object> GetItems()
         {
-            return _metadataApi.GetAssemblies(Version, ConfigId);
+            return _metadataApi.GetAssemblyList(Version, ConfigId);
         }
     }
 }

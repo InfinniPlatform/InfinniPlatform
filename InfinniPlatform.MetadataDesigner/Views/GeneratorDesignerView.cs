@@ -9,7 +9,6 @@ using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
 using InfinniPlatform.Api.RestApi.CommonApi.RouteTraces;
-using InfinniPlatform.Api.Settings;
 using InfinniPlatform.MetadataDesigner.Views.Exchange;
 using InfinniPlatform.MetadataDesigner.Views.GeneratorResult;
 using InfinniPlatform.MetadataDesigner.Views.JsonEditor;
@@ -17,6 +16,7 @@ using InfinniPlatform.MetadataDesigner.Views.Status;
 using InfinniPlatform.MetadataDesigner.Views.Update;
 using InfinniPlatform.MetadataDesigner.Views.ViewModel;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Settings;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.MetadataDesigner.Views

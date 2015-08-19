@@ -1,5 +1,5 @@
 ﻿using System;
-using InfinniPlatform.Api.Settings;
+using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.UserInterface.Services.Metadata;
 
 namespace InfinniPlatform.UserInterface.AppHost

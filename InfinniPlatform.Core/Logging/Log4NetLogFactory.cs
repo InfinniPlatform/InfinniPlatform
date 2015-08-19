@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Web.Hosting;
-using InfinniPlatform.Api.Settings;
 using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Settings;
 using log4net;
 using log4net.Config;
 using ILog = InfinniPlatform.Sdk.Environment.Log.ILog;

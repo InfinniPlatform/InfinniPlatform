@@ -4,8 +4,8 @@ using System.Runtime.InteropServices;
 using EnvDTE;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.RestQuery;
-using InfinniPlatform.Api.Settings;
 using InfinniPlatform.Api.Threading;
+using InfinniPlatform.Sdk.Environment.Settings;
 using Newtonsoft.Json;
 
 namespace InfinniPlatform.Api.TestEnvironment
