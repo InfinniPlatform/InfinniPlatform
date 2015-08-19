@@ -47,12 +47,12 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
 
         public void UpdateConfigurationAppliedAssemblies(dynamic solution)
         {
-            foreach (var configuration in solution.Result.Solution.ReferencedConfigurations)
+            foreach (var configuration in solution.ReferencedConfigurations)
             {
                 if (_updatePrepareConfig.PrepareRoutingOperation())
                 {
-                    var configUpdater = new ConfigUpdater(configuration.Version);
-                    configUpdater.UpdateConfigurationAppliedAssemblies(configuration.Name);
+                    var configUpdater = new ConfigUpdater(configuration.Version.ToString());
+                    configUpdater.UpdateConfigurationAppliedAssemblies(configuration.Name.ToString());
                 }                
             }
         }

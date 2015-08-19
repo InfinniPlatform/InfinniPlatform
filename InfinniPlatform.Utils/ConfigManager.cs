@@ -33,17 +33,10 @@ namespace InfinniPlatform.Utils
                 dynamic solutionData = null;
                 if (uploadMetadata)
                 {
-                    solutionData = exchangeDirector.UpdateSolutionMetadataFromDirectory(solutionDir);
+                    exchangeDirector.UpdateSolutionMetadataFromDirectory(solutionDir);
                 }
 
-                if (solutionData != null)
-                {
-                    exchangeDirector.UpdateConfigurationAppliedAssemblies(solutionData);
-                }
-                else
-                {
-                    Console.WriteLine(string.Format("Fail to upload solution {0}", solution.Name));
-                }
+                exchangeDirector.UpdateConfigurationAppliedAssemblies(solution);
 
                 Console.WriteLine("Uploading solution '{0}' done", solution.Name);
             });

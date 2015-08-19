@@ -13,7 +13,7 @@ namespace InfinniPlatform.Utils
             switch (command)
             {
                 case "upload":
-                    new ConfigManager().Upload(arguments.Length > 0 ? arguments[0] : string.Empty, arguments.Length > 0);
+                    new ConfigManager().Upload(arguments.Length > 0 ? arguments[0] : string.Empty, arguments.Length > 1);
                     break;
                 case "download":
                     if (arguments.Length > 3)
