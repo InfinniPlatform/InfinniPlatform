@@ -11,11 +11,13 @@ namespace InfinniPlatform.Sdk.Api
     public sealed class InfinniRegisterApi : BaseApi
     {
         private readonly InfinniCustomServiceApi _customServiceApi;
+        private readonly InfinniDocumentApi _documentApi;
 
         public InfinniRegisterApi(string server, string port, string route)
             : base(server, port, route)
         {
             _customServiceApi = new InfinniCustomServiceApi(server,port,route);
+            _documentApi = new InfinniDocumentApi(server, port, route);
         }
 
         /// <summary>
@@ -50,7 +52,7 @@ namespace InfinniPlatform.Sdk.Api
                 filter.Invoke(filterBuilder);
             }
 
-            var response =
+            return 
                 _customServiceApi.ExecuteAction("SystemConfig", "metadata", "GetRegisterValuesByDate", new
                 {
                     Configuration = configuration,
@@ -62,7 +64,7 @@ namespace InfinniPlatform.Sdk.Api
                     Filter = filter == null ? null : filterBuilder.GetFilter()
                 });
 
-            return response.ToDynamicList();
+
         }
 
         /// <summary>
@@ -100,7 +102,7 @@ namespace InfinniPlatform.Sdk.Api
                 filter.Invoke(filterBuilder);
             }
 
-            var response =
+            return 
                 _customServiceApi.ExecuteAction("SystemConfig", "metadata", "GetRegisterValuesBetweenDates", new
                 {
                     Configuration = configuration,
@@ -113,7 +115,6 @@ namespace InfinniPlatform.Sdk.Api
                     Filter = filter == null ? null : filterBuilder.GetFilter()
                 });
 
-            return response.ToDynamicList();
         }
 
         /// <summary>
@@ -132,23 +133,9 @@ namespace InfinniPlatform.Sdk.Api
             int pageNumber,
             int pageSize)
         {
-            var filterBuilder = new FilterBuilder();
+            return _documentApi.GetDocument(configuration, RegisterConstants.RegisterNamePrefix + register, filter,
+                pageNumber, pageSize);
 
-            if (filter != null)
-            {
-                filter.Invoke(filterBuilder);
-            }
-
-            var response = _customServiceApi.ExecuteAction("RestfulApi", "configuration", "getdocument", new
-            {
-                Configuration = configuration,
-                Metadata = RegisterConstants.RegisterNamePrefix + register,
-                Filter = filter == null ? null : filterBuilder.GetFilter(),
-                PageNumber = pageNumber,
-                PageSize = pageSize
-            });
-
-            return response.ToDynamicList();
         }
     }
 }

@@ -5,6 +5,7 @@ using InfinniPlatform.Api.Registers;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Api.SearchOptions.Builders;
+using InfinniPlatform.Api.SearchOptions.Converters;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
@@ -59,9 +60,9 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
             var resultFilter = new List<object>();
             IEnumerable<object> filter = DynamicWrapperExtensions.ToEnumerable(target.Item.Filter);
 
-            if (filter != null)
+            if (filter.Any())
             {
-                resultFilter.AddRange(filter);
+                resultFilter = new FilterConverter().Convert(filter.First().ToString()).ToList();
             }
 
             resultFilter.AddRange(FilterBuilder.DateRangeCondition(RegisterConstants.DocumentDateProperty, startDate,

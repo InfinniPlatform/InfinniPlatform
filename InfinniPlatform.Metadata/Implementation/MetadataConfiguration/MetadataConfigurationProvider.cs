@@ -135,7 +135,7 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
             //в случае системной конфигурации версия не имеет значения, т.к. для всех системных конфигурациц Version = null (одновременно запускается только одна версия платформы)
             var configToRemove =
                 Configurations.FirstOrDefault(
-                    c => c.ConfigurationId.ToLowerInvariant() == metadataConfigurationId.ToLowerInvariant() ||
+                    c => c.ConfigurationId.ToLowerInvariant() == metadataConfigurationId.ToLowerInvariant() &&
                          c.Version == version);
 
             if (configToRemove != null)

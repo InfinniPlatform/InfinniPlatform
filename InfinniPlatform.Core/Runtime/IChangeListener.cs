@@ -2,6 +2,8 @@
 
 namespace InfinniPlatform.Runtime
 {
+
+    public enum Order { NoMatter = 0, Last = 1 }    
     /// <summary>
     ///     Слушатель изменений загруженных модулей
     /// </summary>
@@ -12,7 +14,7 @@ namespace InfinniPlatform.Runtime
         /// </summary>
         /// <param name="registrator">Зарегистрированный слушатель изменений</param>
         /// <param name="action">Действие</param>
-        void RegisterOnChange(string registrator, Action<string, string> action);
+        void RegisterOnChange(string registrator, Action<string, string> action, Order order);
 
         /// <summary>
         ///     Выполнить список действий, зарегистрированных для события изменения модуля

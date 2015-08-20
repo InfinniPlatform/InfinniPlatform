@@ -40,7 +40,7 @@ namespace InfinniPlatform.Runtime.Factories
         {
             _versionLoader = versionLoader;
             _changeListener = changeListener;
-            _changeListener.RegisterOnChange(metadataConfigurationId, UpdateCache);
+            _changeListener.RegisterOnChange(metadataConfigurationId, UpdateCache,Order.NoMatter);
             _metadataConfigurationId = metadataConfigurationId;
 	        _version = version;
         }

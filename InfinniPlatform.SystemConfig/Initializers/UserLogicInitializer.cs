@@ -56,7 +56,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
                         {
                             configuration.MoveWorkflow("system", "afterupdate", applyContext);
                         }
-                    });
+                    }, Order.NoMatter);
             }
         }
     }

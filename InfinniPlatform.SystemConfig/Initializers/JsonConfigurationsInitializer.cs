@@ -44,7 +44,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
             IEnumerable<dynamic> configurations = managerApi.GetItems();
 
             _changeListener.RegisterOnChange("JsonConfig",
-                                             (version, configurationId) => OnChangeModules(version, configurationId));
+                                             (version, configurationId) => OnChangeModules(version, configurationId), Order.NoMatter);
             foreach (dynamic configuration in configurations)
             {
                 InstallConfiguration(configuration.Version, configuration.Name);

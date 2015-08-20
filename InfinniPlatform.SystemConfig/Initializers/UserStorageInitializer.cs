@@ -1,6 +1,7 @@
 ﻿using InfinniPlatform.Api.Security;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Runtime;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Security;
 using InfinniPlatform.SystemConfig.UserStorage;
@@ -11,11 +12,13 @@ namespace InfinniPlatform.SystemConfig.Initializers
     {
         private readonly IChangeListener _changeListener;
         private readonly IGlobalContext _globalContext;
+        private readonly ISecurityComponent _securityComponent;
 
-        public UserStorageInitializer(IChangeListener changeListener, IGlobalContext globalContext)
+        public UserStorageInitializer(IChangeListener changeListener, IGlobalContext globalContext, ISecurityComponent securityComponent)
         {
             _changeListener = changeListener;
             _globalContext = globalContext;
+            _securityComponent = securityComponent;
         }
 
         public void OnStart(HostingContextBuilder contextBuilder)
@@ -27,7 +30,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
             contextBuilder.SetEnvironment<IApplicationUserPasswordHasher>(applicationUserPasswordHasher);
 
             ApplicationUserStorePersistentStorageExtensions.CheckStorage();
-            _changeListener.RegisterOnChange("UserStorage", OnChangeModules);
+            _changeListener.RegisterOnChange("UserStorage", OnChangeModules,Order.Last);
         }
 
         //TODO Дублирование кода обработчиков в нескольких Initializer
@@ -42,6 +45,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
             if (configurationId == "Authorization")
             {
                 ApplicationUserStorePersistentStorageExtensions.CheckStorage();
+                _securityComponent.WarmUpAcl();
             }
         }
     }

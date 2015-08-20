@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,10 +13,6 @@ namespace InfinniPlatform.ContextComponents
     {
         private readonly ConcurrentDictionary<string, object> _internalCache = new ConcurrentDictionary<string, object>();
 
-        static SharedCacheComponent()
-        {
-            
-        }
 
         public object Get(string key)
         {
