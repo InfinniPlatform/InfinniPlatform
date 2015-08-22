@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Properties;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -229,10 +230,33 @@ namespace InfinniPlatform.Sdk.Api
 
             var routeBuilder = new RouteBuilder(Server, Port, Route);
 
+            document = document.ToDynamic();
+
+            documentId = PrepareDocumentIdentifier(documentId,document);
+           
             var response = restQueryExecutor.QueryPut(
                 routeBuilder.BuildRestRoutingUrlDefaultById(applicationId, documentType, documentId), document);
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToSetDocument, response.GetErrorContent()));
+        }
+
+        private static string PrepareDocumentIdentifier(string documentId, dynamic document)
+        {
+            if (documentId == null)
+            {
+                var id = ObjectHelper.GetProperty(document, "Id");
+                if (id == null)
+                {
+                    id = Guid.NewGuid().ToString();
+                }
+                documentId = id.ToString();
+                ObjectHelper.SetProperty(document, "Id", documentId);
+            }
+            else
+            {
+                ObjectHelper.SetProperty(document, "Id", documentId);
+            }
+            return documentId;
         }
 
         /// <summary>

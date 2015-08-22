@@ -47,6 +47,22 @@ namespace InfinniPlatform.Sdk.Tests
             Assert.True(!string.IsNullOrEmpty(result));
         }
 
+
+        [Test]
+        public void ShouldSetDocumentWithNullId()
+        {
+            var documentObject = new
+            {
+                Name = "gta vice city",
+                Price = 100.50
+            };
+
+            var result = _api.SetDocument("gameshop", "catalogue", null, documentObject).Id.ToString();
+
+            var resultGet = _api.GetDocumentById("gameshop", "catalogue", result);
+            Assert.IsNotNull(resultGet);
+        }
+
         [Test]
         public void ShouldSetDocumentWithIncorrectMapping()
         {
