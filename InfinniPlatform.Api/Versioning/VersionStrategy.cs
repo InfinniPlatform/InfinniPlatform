@@ -28,7 +28,7 @@ namespace InfinniPlatform.Api.Versioning
             {
                 lock (lockObject)
                 {
-                    return _configVersions ?? (_configVersions = LoadUserVersions());
+                    return (_configVersions ?? (_configVersions = LoadUserVersions())).ToList();
                 }
             }
         }
