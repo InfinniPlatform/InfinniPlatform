@@ -10,6 +10,7 @@ using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Validations;
+using InfinniPlatform.Sdk.Global;
 
 namespace InfinniPlatform.RestfulApi.Auth
 {
@@ -51,7 +52,7 @@ namespace InfinniPlatform.RestfulApi.Auth
                 scriptArguments.CopyPropertiesFrom(target);
                 scriptArguments.Item.Configuration = target.Item.Configuration;
                 scriptArguments.Item.Metadata = target.Item.Metadata;
-
+                scriptArguments.Context = target.Context.GetComponent<ICustomServiceGlobalContext>();
                 try
                 {
                     target.Context.GetComponent<IScriptRunnerComponent>()
