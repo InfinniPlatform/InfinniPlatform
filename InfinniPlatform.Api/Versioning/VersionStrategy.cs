@@ -20,16 +20,20 @@ namespace InfinniPlatform.Api.Versioning
 
         private readonly object lockObject = new object();
 
-        private List<object> _configVersions;
+        private volatile List<object> _configVersions;
 
         public List<object> ConfigVersions
         {
             get
             {
-                lock (lockObject)
+                if (_configVersions == null)
                 {
-                    return (_configVersions ?? (_configVersions = LoadUserVersions())).ToList();
+                    lock (lockObject)
+                    {
+                        return (_configVersions ?? (_configVersions = LoadUserVersions())).ToList();
+                    }                    
                 }
+                return _configVersions;
             }
         }
 
