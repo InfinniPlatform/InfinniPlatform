@@ -15,6 +15,7 @@ using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Metadata;
+using InfinniPlatform.Sdk.Global;
 
 namespace InfinniPlatform.Factories
 {
@@ -31,6 +32,7 @@ namespace InfinniPlatform.Factories
         {
             _platformComponentsPack = new PlatformComponentsPack(dependencyContainerComponent);
 
+            _components.Add(new ContextRegistration(typeof(CustomServiceGlobalContext), dependencyContainerComponent.ResolveDependency<ICustomServiceGlobalContext>));
             _components.Add(new ContextRegistration(typeof (DocumentApi), () => new DocumentApi()));
             _components.Add(new ContextRegistration(typeof (DocumentApiUnsecured),
                 () => new DocumentApiUnsecured()));

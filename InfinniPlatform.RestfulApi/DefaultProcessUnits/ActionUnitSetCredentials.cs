@@ -3,6 +3,7 @@ using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Global;
 
 namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
 {
@@ -48,6 +49,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                     scriptArguments.Item = target.Item.Document;
                     scriptArguments.Item.Configuration = target.Item.Configuration;
                     scriptArguments.Item.Metadata = target.Item.Metadata;
+                    scriptArguments.Context = target.Context.GetComponent<ICustomServiceGlobalContext>();
 
                     target.Context.GetComponent<IScriptRunnerComponent>()
                           .GetScriptRunner(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration)

@@ -9,6 +9,7 @@ using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Metadata;
 using InfinniPlatform.Sdk.Environment.Validations;
+using InfinniPlatform.Sdk.Global;
 
 namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
 {
@@ -91,7 +92,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
 
                         context.CopyPropertiesFrom(target);
                         context.Item = target.Item.Document ?? target.Item;
-
+                        context.Context = target.Context.GetComponent<ICustomServiceGlobalContext>();
                         validator.Validate(context, new ValidationResult());
 
                         if (context.ValidationMessage != null)
