@@ -32,7 +32,7 @@ namespace InfinniPlatform.Factories
         {
             _platformComponentsPack = new PlatformComponentsPack(dependencyContainerComponent);
 
-            _components.Add(new ContextRegistration(typeof(CustomServiceGlobalContext), dependencyContainerComponent.ResolveDependency<ICustomServiceGlobalContext>));
+            _components.Add(new ContextRegistration(typeof(ICustomServiceGlobalContext), dependencyContainerComponent.ResolveDependency<ICustomServiceGlobalContext>));
             _components.Add(new ContextRegistration(typeof (DocumentApi), () => new DocumentApi()));
             _components.Add(new ContextRegistration(typeof (DocumentApiUnsecured),
                 () => new DocumentApiUnsecured()));
