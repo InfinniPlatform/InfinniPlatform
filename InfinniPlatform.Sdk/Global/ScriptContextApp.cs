@@ -51,5 +51,21 @@ namespace InfinniPlatform.Sdk.Global
         {
             return new InfinniSignInApi(_server, _port, _route);
         }
+
+        public InfinniRegisterApi GetRegisterApi()
+        {
+            return new InfinniRegisterApi(_server, _port, _route);
+        }
+
+        public InfinniMetadataApi GetMetadataApi()
+        {
+            return new InfinniMetadataApi(_server, _port, _route);
+        }
+
+        public InfinniVersionApi GetVersionApi()
+        {
+            return new InfinniVersionApi(_server,_port, _route);
+        }
+
     }
 }

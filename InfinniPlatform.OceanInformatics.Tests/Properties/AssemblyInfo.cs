@@ -20,4 +20,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.0.3")]
 [assembly: AssemblyFileVersion("1.0.0.3")]
 
-[assembly: AssemblyDescription("InfinniPlatform.OceanInformatics.Tests")] 
+[assembly: AssemblyDescription("InfinniPlatform.OceanInformatics.Tests")]
