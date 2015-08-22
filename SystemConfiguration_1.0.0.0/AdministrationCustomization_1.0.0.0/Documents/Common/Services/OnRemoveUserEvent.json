@@ -2,7 +2,7 @@
   "Id": "d0106430-d5b0-429f-86ab-ce56356d61f6",
   "Caption": "",
   "Type": {
-    "Name": "applyjson",
+    "Name": "apiapplyjson",
     "WorkflowExtensionPoints": [
       {
         "Name": "FilterEvents",
