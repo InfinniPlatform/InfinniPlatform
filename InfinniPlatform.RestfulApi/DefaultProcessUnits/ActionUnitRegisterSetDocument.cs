@@ -1,4 +1,5 @@
-﻿using InfinniPlatform.Api.ContextTypes.ContextImpl;
+﻿using System.Linq;
+using InfinniPlatform.Api.ContextTypes.ContextImpl;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
@@ -45,6 +46,20 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                       .GetScriptRunner(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration)
                       .InvokeScript(
                           defaultBusinessProcess.Transitions[0].RegisterPoint.ScenarioId, scriptArguments);
+
+                if (target.Item.Document != null && target.Item.Document.Id != null)
+                {
+                    var attached = target.Context.GetComponent<ITransactionComponent>()
+                        .GetTransactionManager()
+                        .GetTransaction(target.TransactionMarker)
+                        .GetTransactionItems()
+                        .FirstOrDefault(d => d.ContainsInstance(target.Item.Document.Id));
+
+                    if (attached != null)
+                    {
+                        attached.UpdateDocument(target.Item.Document.Id, scriptArguments.Item);
+                    }
+                }
             }
         }
     }

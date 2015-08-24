@@ -47,6 +47,22 @@ namespace InfinniPlatform.Sdk.Tests
             Assert.True(!string.IsNullOrEmpty(result));
         }
 
+        [Test]
+        public void ShouldSetDocumentOnSuccessAction()
+        {
+            //Given
+            dynamic comment = new
+            {
+                Text = "some text"
+            };
+
+            //When
+            string docId = _api.SetDocument("Gameshop", "Comment", Guid.NewGuid().ToString(), comment).Id.ToString();
+
+            //Then
+            dynamic documentResult = _api.GetDocumentById("Gameshop", "Comment", docId);
+            Assert.AreEqual(documentResult.Text, "some text123");
+        }
 
         [Test]
         public void ShouldSetDocumentWithNullId()

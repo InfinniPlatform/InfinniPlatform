@@ -52,5 +52,6 @@ namespace InfinniPlatform.Sdk.Tests
             dynamic documentResult = _documentApi.GetDocumentById("Gameshop", "review", docId);
             Assert.AreEqual(documentResult.Likes,1);
         }
+
     }
 }

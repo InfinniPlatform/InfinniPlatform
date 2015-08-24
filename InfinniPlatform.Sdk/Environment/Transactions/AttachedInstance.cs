@@ -100,5 +100,21 @@ namespace InfinniPlatform.Sdk.Environment.Transactions
                 ObjectHelper.RemoveItem(Files, fileDescription);
             }
         }
+
+        private object _syncObject = new object();
+
+        public void UpdateDocument(object id, object item)
+        {
+            lock (_syncObject)
+            {
+                var doc = Documents.FirstOrDefault(f => f.Id == id);
+                if (doc != null)
+                {
+                    Documents = Documents.Where(d => d.Id != id).ToArray();
+                    Documents = Documents.Concat(new[] {item});
+                }
+            }
+        }
+
     }
 }
