@@ -10,71 +10,61 @@
       "Id": "3a9c0b4e-f760-442e-9107-950c33f63e2d",
       "Name": "Common",
       "Caption": "Common options",
-      "Description": "Common options",
-      "Version": "1.0.0.0"
+      "Description": "Common options"
     },
     {
       "Id": "67a28de4-31d5-4ae5-8778-879c547a1911",
       "Name": "Gameshop_Registers",
       "Caption": "Registers common options",
-      "Description": "Storage for register's common information (e.g. actual date)",
-      "Version": "1.0.0.0"
+      "Description": "Storage for register's common information (e.g. actual date)"
     },
     {
       "Id": "1e82cd00-9e28-49c4-a965-c7a78eb69cc0",
       "Name": "Catalogue",
       "Caption": "Каталог игр",
-      "Description": "",
-      "Version": "1.0.0.0"
+      "Description": ""
     },
     {
       "Id": "d9a54b22-5d8b-4a1b-a1a6-6ce0ad5b1f3c",
       "Name": "Review",
       "Caption": "Обзор игры",
-      "Description": "",
-      "Version": "1.0.0.0"
+      "Description": ""
     },
     {
       "Id": "622b5316-a3b7-4e1b-b3ac-db138d75e93c",
       "Name": "Comment",
       "Caption": "Комментарий",
-      "Description": "",
-      "Version": "1.0.0.0"
+      "Description": ""
     },
     {
       "Id": "c5cc3a4f-f7b1-4434-88cf-f3ce8498172d",
       "Name": "UserProfile",
       "Caption": "Профиль пользователя",
-      "Description": "",
-      "Version": "1.0.0.0"
+      "Description": ""
     },
     {
       "Id": "fe981144-0591-4ffe-b5bc-1745dbc8b69b",
       "Name": "PCConfig",
       "Caption": "Конфигурация компьютера",
-      "Description": "",
-      "Version": "1.0.0.0"
+      "Description": ""
     },
     {
       "Id": "344cee2d-08b5-4a0c-90b5-ad75bbac0886",
       "Name": "GameRating",
       "Caption": "Оценка игры",
-      "Description": "",
-      "Version": "1.0.0.0"
+      "Description": ""
     },
     {
       "Id": "5bc338e6-cfa1-4951-8712-1e8e28bd489c",
       "Name": "GameInfo",
       "Caption": "Дополнительная информация о игре",
-      "Description": "1.0.0.0",
-      "Version": "v"
+      "Description": ""
     },
     {
       "Id": "e12486f9-343e-4bb8-87ba-0554a9c1e3a9",
       "Name": "Lottery",
       "Caption": "Розыгрыш призов для пользователей",
-      "Description": "1.0.0.0",
-      "Version": "1"
+      "Description": ""
     }
   ],
   "Registers": [],
@@ -83,8 +73,7 @@
       "Id": "d92f2e4c-7c3c-4cf2-947c-70ad095ade99",
       "Name": "InfinniPlatform.Sdk.Tests",
       "Caption": "InfinniPlatform.Sdk.Tests",
-      "Description": "1.0.0.0",
-      "Version": "1"
+      "Description": "1.0.0.0"
     }
   ],
   "Reports": [],

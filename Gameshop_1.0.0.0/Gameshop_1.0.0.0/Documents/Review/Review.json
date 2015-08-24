@@ -13,7 +13,8 @@
       "Name": "Like",
       "Caption": "Поставить лайк",
       "Version": "1"
-    }
+    },
+    {}
   ],
   "Processes": [
     {
@@ -22,6 +23,8 @@
       "Caption": "Like",
       "Version": "1"
     },
+    {},
+    {},
     {}
   ],
   "Scenarios": [
@@ -32,6 +35,8 @@
       "Description": "",
       "Version": "1"
     },
+    {},
+    {},
     {}
   ],
   "Generators": [],

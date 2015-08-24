@@ -1,7 +1,7 @@
 {
-  "Id": "6bd4e21d-fe4c-474f-80a5-628404c02fcd",
+  "Id": "b6be91a0-8ac0-4378-9bb7-be36d3f5e9cb",
   "Secured": true,
-  "Name": "Like",
+  "Name": "OnSaveComment",
   "Type": {
     "Name": "apiapplyjson",
     "WorkflowExtensionPoints": [
@@ -22,20 +22,9 @@
       }
     ]
   },
-  "Caption": "Поставить лайк",
-  "ExtensionPoints": [
-    {
-      "TypeName": {
-        "Name": "Move",
-        "ContextType": 2,
-        "Caption": "Document move context"
-      },
-      "ScenarioId": "Like"
-    },
-    {}
-  ],
-  "ParentId": "d9a54b22-5d8b-4a1b-a1a6-6ce0ad5b1f3c",
+  "Caption": "OnSaveComment",
   "Version": "1.0.0.0",
+  "ParentId": "622b5316-a3b7-4e1b-b3ac-db138d75e93c",
   "__ConfigId": "systemconfig",
   "__DocumentId": "servicemetadata"
 }

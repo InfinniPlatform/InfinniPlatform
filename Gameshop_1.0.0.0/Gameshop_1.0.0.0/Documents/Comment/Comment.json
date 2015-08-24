@@ -7,9 +7,28 @@
   "Versioning": 2,
   "Version": "1.0.0.0",
   "MetadataIndex": "Comment",
-  "Services": [],
-  "Processes": [],
-  "Scenarios": [],
+  "Services": [
+    {
+      "Id": "b6be91a0-8ac0-4378-9bb7-be36d3f5e9cb",
+      "Name": "OnSaveComment",
+      "Caption": "OnSaveComment"
+    }
+  ],
+  "Processes": [
+    {
+      "Id": "68684032-df60-4a42-bc58-045f7ecdafa8",
+      "Name": "Default",
+      "Caption": "Default business process"
+    }
+  ],
+  "Scenarios": [
+    {
+      "Id": "e31840bf-fa8a-4651-a8fd-37ea02662784",
+      "Name": "ActionUnitOnSaveComment",
+      "Caption": "ActionUnitOnSaveComment",
+      "Description": ""
+    }
+  ],
   "Generators": [],
   "Views": [],
   "PrintViews": [],
