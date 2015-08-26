@@ -55,7 +55,7 @@ namespace InfinniPlatform.Api.SearchOptions.Converters
                 throw new ArgumentException(string.Format("Can't find criteria type for operator: {0}", op));
             }
             criteriaDynamic.CriteriaType = _criteriaTypes[op];
-            criteriaDynamic.Value = value;
+            criteriaDynamic.Value = value == "null" ? null : value;
             criteriaDynamic.Property = propertyName;
 
             return criteriaDynamic;

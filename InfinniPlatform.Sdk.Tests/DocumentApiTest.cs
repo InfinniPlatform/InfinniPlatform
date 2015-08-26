@@ -80,6 +80,15 @@ namespace InfinniPlatform.Sdk.Tests
         }
 
         [Test]
+        public void ShouldMakeGetRequestWithNullValueInFilter()
+        {
+            var result = _api.GetDocument("gameshop", "catalogue",
+                f => f.AddCriteria(cr => cr.Property("Id").IsEquals(null)),0,1);
+
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
         public void ShouldSetDocumentWithIncorrectMapping()
         {
             var documentObject = new

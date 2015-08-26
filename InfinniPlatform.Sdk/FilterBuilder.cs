@@ -201,7 +201,7 @@ namespace InfinniPlatform.Sdk
 
             internal string GetCriteria()
             {
-                return string.Format("{0} {1} {2}", _property, _criteriaType, _value);
+                return string.Format("{0} {1} {2}", _property, _criteriaType, _value ?? "null");
             }
 
 
