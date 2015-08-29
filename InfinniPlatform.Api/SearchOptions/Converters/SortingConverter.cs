@@ -54,7 +54,7 @@ namespace InfinniPlatform.Api.SearchOptions.Converters
         public IEnumerable<dynamic> ConvertToInternal(Action<Sdk.SortingBuilder> sorting)
         {
             var sortingBuilder = new Sdk.SortingBuilder();
-            if (sortingBuilder != null)
+            if (sorting != null)
             {
                 sorting.Invoke(sortingBuilder);
                 var filterCriteriaStrings = sortingBuilder.GetSorting();
