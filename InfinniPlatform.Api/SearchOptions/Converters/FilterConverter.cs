@@ -42,11 +42,22 @@ namespace InfinniPlatform.Api.SearchOptions.Converters
             //propertyName = Price
             var propertyName = criteria.Substring(0, criteria.IndexOf(" ", StringComparison.Ordinal));
             //criteria = IsEquals 200
-            criteria = criteria.Substring(criteria.IndexOf(" ", StringComparison.Ordinal)).Trim();
+            var opIndex = criteria.IndexOf(" ", StringComparison.Ordinal);
+            if (opIndex == -1)
+            {
+                opIndex = 0;
+            }
+            criteria = criteria.Substring(opIndex).Trim();
             //op = IsEquals
             var op = criteria.Substring(0, criteria.IndexOf(" ", StringComparison.Ordinal)).ToLowerInvariant();
+            
+            var valueIndex = criteria.IndexOf(" ", StringComparison.Ordinal) + 1;
+            if (valueIndex == -1)
+            {
+                valueIndex = 0;
+            }
             //criteria = 200
-            var value = criteria.Substring(criteria.IndexOf(" ", StringComparison.Ordinal) + 1);
+            var value = criteria.Substring(valueIndex);
 
             dynamic criteriaDynamic = new DynamicWrapper();
             criteriaDynamic.Property = propertyName;
