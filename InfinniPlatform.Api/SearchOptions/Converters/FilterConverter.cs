@@ -14,7 +14,7 @@ namespace InfinniPlatform.Api.SearchOptions.Converters
     /// </summary>
     public sealed class FilterConverter
     {
-        private readonly Dictionary<string,CriteriaType> _criteriaTypes = new Dictionary<string, CriteriaType>()
+        private readonly Dictionary<string, CriteriaType> _criteriaTypes = new Dictionary<string, CriteriaType>()
         {
             {"isequals",CriteriaType.IsEquals},
             {"isnotequals",CriteriaType.IsNotEquals},
@@ -37,26 +37,30 @@ namespace InfinniPlatform.Api.SearchOptions.Converters
 
         private dynamic ConstructCriteria(string criteria)
         {
-            //Price IsEquals 200
 
             //propertyName = Price
             var propertyName = criteria.Substring(0, criteria.IndexOf(" ", StringComparison.Ordinal));
             //criteria = IsEquals 200
+            criteria = criteria.Substring(criteria.IndexOf(" ", StringComparison.Ordinal)).Trim();
+            //op = IsEquals
             var opIndex = criteria.IndexOf(" ", StringComparison.Ordinal);
+            string op = string.Empty;
             if (opIndex == -1)
             {
-                opIndex = 0;
+                op = criteria.Substring(0).ToLowerInvariant();
             }
-            criteria = criteria.Substring(opIndex).Trim();
-            //op = IsEquals
-            var op = criteria.Substring(0, criteria.IndexOf(" ", StringComparison.Ordinal)).ToLowerInvariant();
-            
+            else
+            {
+                op = criteria.Substring(0, opIndex).ToLowerInvariant();
+            }
+
+            //criteria = 200
             var valueIndex = criteria.IndexOf(" ", StringComparison.Ordinal) + 1;
             if (valueIndex == -1)
             {
                 valueIndex = 0;
             }
-            //criteria = 200
+
             var value = criteria.Substring(valueIndex);
 
             dynamic criteriaDynamic = new DynamicWrapper();
@@ -80,7 +84,7 @@ namespace InfinniPlatform.Api.SearchOptions.Converters
         /// <returns>Список критериев</returns>
         public IEnumerable<dynamic> Convert(string filter)
         {
-            var criteriaList = filter.Split(new string[] {" and "}, StringSplitOptions.RemoveEmptyEntries);
+            var criteriaList = filter.Split(new string[] { " and " }, StringSplitOptions.RemoveEmptyEntries);
 
             return criteriaList.Select(c => ConstructCriteria(c.Trim())).ToList();
         }
@@ -98,7 +102,7 @@ namespace InfinniPlatform.Api.SearchOptions.Converters
             }
             return null;
 
-        } 
+        }
 
 
     }
