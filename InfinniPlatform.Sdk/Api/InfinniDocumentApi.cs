@@ -185,13 +185,7 @@ namespace InfinniPlatform.Sdk.Api
         /// <param name="pageSize">Размер страницы</param>
         /// <param name="sorting">Выражение для сортировки документов</param>
         /// <returns>Список документов, удовлетворяющих указанному фильтру</returns>
-        public IEnumerable<dynamic> GetDocument(
-            string applicationId,
-            string documentType,
-            Action<FilterBuilder> filter,
-            int pageNumber,
-            int pageSize,
-            Action<SortingBuilder> sorting = null)
+        public IEnumerable<dynamic> GetDocument(string applicationId, string documentType, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting = null)
         {
 
             var restQueryExecutor = new RequestExecutor(CookieContainer);

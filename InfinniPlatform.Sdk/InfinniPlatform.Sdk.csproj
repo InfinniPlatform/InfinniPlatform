@@ -51,6 +51,7 @@
     <Compile Include="ApiContracts\IPrintViewApi.cs" />
     <Compile Include="ApiContracts\IRegisterApi.cs" />
     <Compile Include="ApiContracts\IFileApi.cs" />
+    <Compile Include="ApiContracts\ISignInApi.cs" />
     <Compile Include="Api\BaseApi.cs" />
     <Compile Include="Api\HostingConfig.cs" />
     <Compile Include="Api\InfinniAuthApi.cs" />

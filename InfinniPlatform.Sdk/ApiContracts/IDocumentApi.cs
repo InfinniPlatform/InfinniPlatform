@@ -90,13 +90,7 @@ namespace InfinniPlatform.Sdk.ApiContracts
         /// <param name="pageSize">Размер страницы</param>
         /// <param name="sorting">Выражение для сортировки документов</param>
         /// <returns>Список документов, удовлетворяющих указанному фильтру</returns>
-        IEnumerable<object> GetDocument(
-            string applicationId,
-            string documentType,
-            Action<FilterBuilder> filter,
-            int pageNumber,
-            int pageSize,
-            Action<SortingBuilder> sorting = null);
+        IEnumerable<dynamic> GetDocument(string applicationId, string documentType, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting = null);
 
         /// <summary>
         ///   Вставить или полностью заменить существующий документ

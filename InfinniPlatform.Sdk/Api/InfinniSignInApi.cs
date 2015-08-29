@@ -8,7 +8,7 @@ namespace InfinniPlatform.Sdk.Api
     /// <summary>
     ///   API для аутентификации пользователей
     /// </summary>
-    public sealed class InfinniSignInApi : BaseApi
+    public sealed class InfinniSignInApi : BaseApi, ISignInApi
     {
 
         public InfinniSignInApi(string server, string port, string route)
