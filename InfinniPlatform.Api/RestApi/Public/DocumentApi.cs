@@ -86,14 +86,7 @@ namespace InfinniPlatform.Api.RestApi.Public
         }
 
         public IEnumerable<dynamic> GetDocument(string applicationId, string documentType, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting = null)
-        {
-           
-            var sortingBuilder = new SortingBuilder();
-            if (sorting != null)
-            {
-                sorting.Invoke(sortingBuilder);
-            }
-
+        {          
             return new RestApi.DataApi.DocumentApi().GetDocument(applicationId, documentType, new FilterConverter().ConvertToInternal(filter), pageNumber,
                 pageSize, new SortingConverter().ConvertToInternal(sorting));
         }
