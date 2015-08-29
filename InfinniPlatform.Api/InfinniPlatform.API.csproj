@@ -215,6 +215,12 @@
     <Compile Include="RestApi\DataApi\DocumentApiUnsecured.cs" />
     <Compile Include="RestApi\DataApi\MetadataApi.cs" />
     <Compile Include="RestApi\DataApi\SessionApi.cs" />
+    <Compile Include="RestApi\Public\AuthApi.cs" />
+    <Compile Include="RestApi\Public\CustomServiceApi.cs" />
+    <Compile Include="RestApi\Public\DocumentApi.cs" />
+    <Compile Include="RestApi\Public\FileApi.cs" />
+    <Compile Include="RestApi\Public\PrintViewApi.cs" />
+    <Compile Include="RestApi\Public\RegisterApi.cs" />
     <Compile Include="RestQuery\EventObjects\EventSerializerExtensions.cs" />
     <Compile Include="SearchOptions\Builders\SortingBuilder.cs" />
     <Compile Include="RestApi\DataApi\PrintViewApi.cs" />

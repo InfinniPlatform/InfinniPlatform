@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using InfinniPlatform.Sdk.ApiContracts;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Properties;
 using Newtonsoft.Json;
@@ -11,7 +12,7 @@ namespace InfinniPlatform.Sdk.Api
     /// <summary>
     ///   API для работы с документами
     /// </summary>
-    public class InfinniDocumentApi : BaseApi
+    public class InfinniDocumentApi : BaseApi, IDocumentApi
     {
         public InfinniDocumentApi(string server, string port, string route)
             : base(server, port, route)

@@ -45,6 +45,12 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiContracts\IAuthApi.cs" />
+    <Compile Include="ApiContracts\ICustomServiceApi.cs" />
+    <Compile Include="ApiContracts\IDocumentApi.cs" />
+    <Compile Include="ApiContracts\IPrintViewApi.cs" />
+    <Compile Include="ApiContracts\IRegisterApi.cs" />
+    <Compile Include="ApiContracts\IFileApi.cs" />
     <Compile Include="Api\BaseApi.cs" />
     <Compile Include="Api\HostingConfig.cs" />
     <Compile Include="Api\InfinniAuthApi.cs" />
@@ -53,6 +59,7 @@
     <Compile Include="Api\InfinniRegisterApi.cs" />
     <Compile Include="Api\InfinniSignInApi.cs" />
     <Compile Include="Api\InfinniVersionApi.cs" />
+    <Compile Include="Api\InfinniPrintViewApi.cs" />
     <Compile Include="AttachedInstance.cs" />
     <Compile Include="ContextComponents\ISharedCacheComponent.cs" />
     <Compile Include="Environment\Actions\IActionOperator.cs" />
@@ -171,7 +178,6 @@
     <Compile Include="Global\CustomServiceGlobalContext.cs" />
     <Compile Include="Global\ICustomServiceGlobalContext.cs" />
     <Compile Include="Global\ScriptContext.cs" />
-    <Compile Include="Global\ScriptContextApp.cs" />
     <Compile Include="Metadata\DocumentMetadata.cs" />
     <Compile Include="Metadata\PrintViewMetadata.cs" />
     <Compile Include="Metadata\ProcessMetadata.cs" />

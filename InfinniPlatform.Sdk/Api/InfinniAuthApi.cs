@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using InfinniPlatform.Sdk.ApiContracts;
 using InfinniPlatform.Sdk.Properties;
 
 namespace InfinniPlatform.Sdk.Api
@@ -9,7 +10,7 @@ namespace InfinniPlatform.Sdk.Api
     /// <summary>
     ///   API для работы с ролями, пользователями и правами
     /// </summary>
-    public sealed class InfinniAuthApi : BaseApi
+    public sealed class InfinniAuthApi : BaseApi, IAuthApi
     {
         public InfinniAuthApi(string server, string port, string route) : base(server, port, route)
         {

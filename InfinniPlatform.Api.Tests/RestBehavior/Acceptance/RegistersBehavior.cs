@@ -899,7 +899,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             // Тот же запрос с установленной временной зоной
             aggregationInfo = new RegisterApi().GetValuesByPeriods(ConfigurationId, AvailableBedsRegisterId,
                                                                        DateTime.MinValue, DateTime.MaxValue,
-                                                                       RegisterPeriod.Month, null, null, "+05:00");
+                                                                       RegisterPeriod.Month, null, null, "+05:00", new List<dynamic>());
             Assert.IsTrue(aggregationInfo.Any());
         }
 

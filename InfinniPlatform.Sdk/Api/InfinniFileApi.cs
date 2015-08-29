@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using InfinniPlatform.Sdk.ApiContracts;
 using InfinniPlatform.Sdk.Properties;
 
 namespace InfinniPlatform.Sdk.Api
@@ -6,7 +7,7 @@ namespace InfinniPlatform.Sdk.Api
     /// <summary>
     ///   API для работы с файлами
     /// </summary>
-    public sealed class InfinniFileApi : BaseApi
+    public sealed class InfinniFileApi : BaseApi, IFileApi
     {
         public InfinniFileApi(string server, string port, string route)
             : base(server, port, route)
@@ -38,15 +39,15 @@ namespace InfinniPlatform.Sdk.Api
         /// <summary>
         ///   Загрузить файл с сервера
         /// </summary>
-        /// <param name="instanceId">Идентификатор экземпляра документа</param>
+        /// <param name="contentId"></param>
         /// <returns>Выгруженный контент</returns>
-        public dynamic DownloadFile(string instanceId)
+        public dynamic DownloadFile(string contentId)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
             var linkedData = new
             {
-                ContentId = instanceId,
+                ContentId = contentId,
             };
 
             var response = restQueryExecutor.QueryGetUrlEncodedData(

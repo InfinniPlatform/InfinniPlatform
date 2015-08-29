@@ -36,8 +36,6 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 
             dynamic linkedData = JObject.Parse(nameValueCollection.Get("linkedData"));
 
-            var routeDictionary = RouteFormatter.GetRouteDictionary(context);
-
             using (var fileStream = new MultipartFormDataParser(context.Request.Body, Encoding.UTF8).Files.Select(
                         f => f.Data).First())
             {

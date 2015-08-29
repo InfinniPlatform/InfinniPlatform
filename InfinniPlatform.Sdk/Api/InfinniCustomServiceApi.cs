@@ -1,4 +1,5 @@
 ﻿using InfinniPlatform.Sdk;
+using InfinniPlatform.Sdk.ApiContracts;
 using InfinniPlatform.Sdk.Properties;
 using InfinniPlatform.Sdk.Properties;
 
@@ -8,7 +9,7 @@ namespace InfinniPlatform.Sdk.Api
     /// <summary>
     ///  API для вызова кастомного сервиса
     /// </summary>
-    public sealed class InfinniCustomServiceApi : BaseApi
+    public sealed class InfinniCustomServiceApi : BaseApi, ICustomServiceApi
     {
         public InfinniCustomServiceApi(string server, string port, string route)
             : base(server, port, route)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using InfinniPlatform.Sdk.ApiContracts;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Global;
 
@@ -12,9 +13,7 @@ namespace InfinniPlatform.Sdk.Tests.TestData
     {
         public void Action(IApplyContext target)
         {
-            ScriptContextApp scriptContext = target.Context.GetComponent<ScriptContextApp>();
-
-            var documentApi = scriptContext.GetDocumentApi();
+            var documentApi = target.Context.GetComponent<IDocumentApi>();
 
             dynamic document = documentApi.GetDocumentById("Gameshop","review", target.Item.DocumentId);
 

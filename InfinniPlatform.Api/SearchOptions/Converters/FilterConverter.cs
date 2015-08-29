@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using InfinniPlatform.Api.SearchOptions.Builders;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
 
@@ -71,6 +72,21 @@ namespace InfinniPlatform.Api.SearchOptions.Converters
             var criteriaList = filter.Split(new string[] {" and "}, StringSplitOptions.RemoveEmptyEntries);
 
             return criteriaList.Select(c => ConstructCriteria(c.Trim())).ToList();
+        }
+
+
+        public IEnumerable<dynamic> ConvertToInternal(Action<Sdk.FilterBuilder> filter)
+        {
+
+            var filterBuilder = new Sdk.FilterBuilder();
+            if (filter != null)
+            {
+                filter.Invoke(filterBuilder);
+                var filterCriteriaStrings = filterBuilder.GetFilter();
+                return filterCriteriaStrings.Select(c => ConstructCriteria(c.Trim())).ToList();
+            }
+            return null;
+
         } 
 
 

@@ -34,5 +34,20 @@ namespace InfinniPlatform.Sdk.Global
         {
             return new InfinniSignInApi(server, port, route);
         }
+
+        public InfinniRegisterApi GetRegisterApi(string server, string port, string route)
+        {
+            return new InfinniRegisterApi(server, port, route);
+        }
+
+        public InfinniVersionApi GetVersionApi(string server, string port, string route)
+        {
+            return new InfinniVersionApi(server, port, route);
+        }
+
+        public InfinniMetadataApi GetMetadataApi(string server, string port, string route)
+        {
+            return new InfinniMetadataApi(server, port, route);
+        }
     }
 }

@@ -5,11 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Metadata;
+using InfinniPlatform.Api.RestApi.Auth;
+using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.Transactions;
 using InfinniPlatform.Api.Versioning;
 using InfinniPlatform.Factories;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Metadata;
+using InfinniPlatform.Sdk.ApiContracts;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment;
@@ -84,6 +87,12 @@ namespace InfinniPlatform.ContextComponents
             _components.Add(new ContextRegistration(typeof(IMetadataConfigurationProvider),
                 () => metadataConfigurationProvider));
 
+            _components.Add(new ContextRegistration(typeof(IDocumentApi), () => new Api.RestApi.Public.DocumentApi()));
+            _components.Add(new ContextRegistration(typeof(IPrintViewApi), () => new Api.RestApi.Public.PrintViewApi()));
+            _components.Add(new ContextRegistration(typeof(IRegisterApi), () => new Api.RestApi.Public.RegisterApi()));
+            _components.Add(new ContextRegistration(typeof(IFileApi), () => new Api.RestApi.Public.FileApi()));
+            _components.Add(new ContextRegistration(typeof(IAuthApi), () => new Api.RestApi.Public.AuthApi()));
+            _components.Add(new ContextRegistration(typeof(ICustomServiceApi), () => new Api.RestApi.Public.CustomServiceApi()));
         }
 
         public T GetComponent<T>() where T : class

@@ -23,10 +23,6 @@ namespace InfinniPlatform.Sdk.Global
             {
                 return new ScriptContext() as T;
             }
-            if (typeof (T) == typeof (ScriptContextApp))
-            {
-                return new ScriptContextApp() as T;
-            }
             return _platformComponentsPack.GetComponent<T>();
         }
 

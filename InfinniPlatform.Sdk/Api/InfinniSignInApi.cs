@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using InfinniPlatform.Sdk.ApiContracts;
 using InfinniPlatform.Sdk.Properties;
 
 namespace InfinniPlatform.Sdk.Api

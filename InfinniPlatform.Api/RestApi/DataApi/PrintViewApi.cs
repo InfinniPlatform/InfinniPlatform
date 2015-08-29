@@ -1,13 +1,14 @@
 ﻿using System;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.SearchOptions.Builders;
+using InfinniPlatform.Sdk.ApiContracts;
 
 namespace InfinniPlatform.Api.RestApi.DataApi
 {
-    public sealed class PrintViewApi
+    public sealed class PrintViewApi : IPrintViewApi
     {
         public dynamic GetPrintView(string configId, string documentId, string printViewId, string printViewType,
-            int pageNumber, int pageSize, Action<FilterBuilder> filter)
+            int pageNumber, int pageSize, Action<Sdk.FilterBuilder> filter)
         {
             var filterBuilder = new FilterBuilder();
 

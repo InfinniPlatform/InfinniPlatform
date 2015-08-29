@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using InfinniPlatform.Api.Registers;
 using InfinniPlatform.Api.RestApi.CommonApi;
+using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Api.SearchOptions.Builders;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Register;
+using NUnit.Framework;
 
 namespace InfinniPlatform.Api.RestApi.DataApi
 {
@@ -44,19 +46,32 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                 filter.Invoke(filterBuilder);
             }
 
-            var response =
-                RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetRegisterValuesByDate", null, new
-                    {
-                        Configuration = configuration,
-                        Register = register,
-                        Date = endDate,
-                        Dimensions = dimensions,
-                        ValueProperties = valueProperties,
-                        ValueAggregationTypes = valueAggregationTypes,
-                        Filter = filter == null ? null : filterBuilder.GetFilter()
-                    });
+            return GetValuesByDate(configuration, register, endDate, dimensions, valueProperties, valueAggregationTypes, filter == null ? null : filterBuilder.GetFilter());
+        }
 
-            return response.ToDynamicList();
+        public IEnumerable<dynamic> GetValuesByDate(string configuration, string register, DateTime endDate, IEnumerable<string> dimensions, IEnumerable<string> valueProperties, IEnumerable<AggregationType> valueAggregationTypes, IEnumerable<dynamic> filter)
+        {
+            return RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetRegisterValuesByDate", null, new
+            {
+                Configuration = configuration,
+                Register = register,
+                Date = endDate,
+                Dimensions = dimensions,
+                ValueProperties = valueProperties,
+                ValueAggregationTypes = valueAggregationTypes,
+                Filter = filter
+            }).ToDynamicList();
+        }
+
+        public IEnumerable<dynamic> GetValuesBetweenDates(
+            string configuration,
+            string register,
+            DateTime startDate,
+            DateTime endDate)
+        {
+            var response = GetValuesBetweenDates(configuration, register, startDate, endDate, null, null, null, new List<dynamic>() );
+
+            return response;
         }
 
         /// <summary>
@@ -94,20 +109,43 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                 filter.Invoke(filterBuilder);
             }
 
-            var response =
-                RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetRegisterValuesBetweenDates", null, new
-                    {
-                        Configuration = configuration,
-                        Register = register,
-                        FromDate = startDate,
-                        ToDate = endDate,
-                        Dimensions = dimensions,
-                        ValueProperties = valueProperties,
-                        ValueAggregationTypes = valueAggregationTypes,
-                        Filter = filter == null ? null : filterBuilder.GetFilter()
-                    });
+            var response = GetValuesBetweenDates(configuration, register, startDate, endDate, dimensions,
+                valueProperties, valueAggregationTypes, filter == null ? null : filterBuilder.GetFilter());
 
-            return response.ToDynamicList();
+            return response;
+        }
+
+        public IEnumerable<dynamic> GetValuesBetweenDates(
+            string configuration,
+            string register,
+            DateTime startDate,
+            DateTime endDate,
+            IEnumerable<string> dimensions = null,
+            IEnumerable<string> valueProperties = null,
+            IEnumerable<AggregationType> valueAggregationTypes = null,
+            IEnumerable<dynamic> filter = null)
+        {
+            return RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetRegisterValuesBetweenDates", null, new
+            {
+                Configuration = configuration,
+                Register = register,
+                FromDate = startDate,
+                ToDate = endDate,
+                Dimensions = dimensions,
+                ValueProperties = valueProperties,
+                ValueAggregationTypes = valueAggregationTypes,
+                Filter = filter
+            }).ToDynamicList();             
+        }
+
+        public IEnumerable<dynamic> GetValuesByPeriods(
+            string configuration,
+            string register,
+            DateTime startDate,
+            DateTime endDate,
+            string interval)
+        {
+            return GetValuesByPeriods(configuration, register, startDate, endDate, interval, null, null, null, new List<dynamic>());
         }
 
         /// <summary>
@@ -147,20 +185,34 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                 filter.Invoke(filterBuilder);
             }
 
-            var response =
-                RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetRegisterValuesByPeriods", null, new
-                    {
-                        Configuration = configuration,
-                        Register = register,
-                        FromDate = startDate,
-                        ToDate = endDate,
-                        Interval = interval,
-                        Dimensions = dimensions,
-                        ValueProperty = valueProperties,
-                        TimeZone = timezone,
-                        Filter = filter == null ? null : filterBuilder.GetFilter()
-                    });
+            return GetValuesByPeriods(configuration, register, startDate, endDate, interval, dimensions, valueProperties,
+                timezone, filter == null ? null : filterBuilder.GetFilter());
+        }
 
+
+        public IEnumerable<dynamic> GetValuesByPeriods(
+            string configuration,
+            string register,
+            DateTime startDate,
+            DateTime endDate,
+            string interval,
+            IEnumerable<string> dimensions = null,
+            IEnumerable<string> valueProperties = null,
+            string timezone = null,
+            IEnumerable<dynamic> filter = null)
+        {
+            var response = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetRegisterValuesByPeriods", null, new
+            {
+                Configuration = configuration,
+                Register = register,
+                FromDate = startDate,
+                ToDate = endDate,
+                Interval = interval,
+                Dimensions = dimensions,
+                ValueProperty = valueProperties,
+                TimeZone = timezone,
+                Filter = filter
+            });
 
             IEnumerable<dynamic> result;
 
@@ -170,12 +222,12 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             }
             catch (Exception)
             {
-                result = new List<dynamic>(new[] {response});
+                result = new List<dynamic>(new[] { response });
             }
 
             return result;
         }
-
+              
         /// <summary>
         ///     Получение результата агрегации по документу-регистратору
         /// </summary>
@@ -269,17 +321,26 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                 filter.Invoke(filterBuilder);
             }
 
+            return GetRegisterEntries(configuration, register, filter, pageNumber, pageSize);
+        }
+
+        public IEnumerable<dynamic> GetRegisterEntries(string configuration,
+            string register,
+            IEnumerable<dynamic> filter,
+            int pageNumber,
+            int pageSize)
+        {
             var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getdocument", null, new
-                {
-                    Configuration = configuration,
-                    Metadata = RegisterConstants.RegisterNamePrefix + register,
-                    Filter = filter == null ? null : filterBuilder.GetFilter(),
-                    PageNumber = pageNumber,
-                    PageSize = pageSize
-                });
+            {
+                Configuration = configuration,
+                Metadata = RegisterConstants.RegisterNamePrefix + register,
+                Filter = filter,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            });
 
             return response.ToDynamicList();
-        }
+        } 
 
         /// <summary>
         ///     Получение значений из таблицы итогов на дату, ближайшую к заданной
