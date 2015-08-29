@@ -50,5 +50,17 @@ namespace InfinniPlatform.Api.SearchOptions.Converters
             var criteriaList = sorting.Split(new[] {" and "}, StringSplitOptions.RemoveEmptyEntries);
             return criteriaList.Select(c => ConstructCriteria(c.Trim())).ToList();
         }
+
+        public IEnumerable<dynamic> ConvertToInternal(Action<Sdk.SortingBuilder> sorting)
+        {
+            var sortingBuilder = new Sdk.SortingBuilder();
+            if (sortingBuilder != null)
+            {
+                sorting.Invoke(sortingBuilder);
+                var filterCriteriaStrings = sortingBuilder.GetSorting();
+                return filterCriteriaStrings.Select(c => ConstructCriteria(c.Trim())).ToList();
+            }
+            return null;
+        }
     }
 }

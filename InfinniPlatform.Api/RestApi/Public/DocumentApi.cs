@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Api.SearchOptions.Converters;
 using InfinniPlatform.Sdk;
 using InfinniPlatform.Sdk.ApiContracts;
 using InfinniPlatform.Sdk.Dynamic;
@@ -86,22 +87,15 @@ namespace InfinniPlatform.Api.RestApi.Public
 
         public IEnumerable<dynamic> GetDocument(string applicationId, string documentType, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting = null)
         {
-            var filterBuilder = new FilterBuilder();
-
-            if (filter != null)
-            {
-                filter.Invoke(filterBuilder);
-            }
-
-            
+           
             var sortingBuilder = new SortingBuilder();
             if (sorting != null)
             {
                 sorting.Invoke(sortingBuilder);
             }
 
-            return new RestApi.DataApi.DocumentApi().GetDocument(applicationId, documentType, filterBuilder.GetFilter(), pageNumber,
-                pageSize, sortingBuilder.GetSorting());
+            return new RestApi.DataApi.DocumentApi().GetDocument(applicationId, documentType, new FilterConverter().ConvertToInternal(filter), pageNumber,
+                pageSize, new SortingConverter().ConvertToInternal(sorting));
         }
 
         public dynamic SetDocument(string applicationId, string documentType, string documentId, object document)
