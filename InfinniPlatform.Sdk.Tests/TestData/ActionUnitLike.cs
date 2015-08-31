@@ -19,7 +19,7 @@ namespace InfinniPlatform.Sdk.Tests.TestData
 
             document.Likes = document.Likes + 1;
 
-            documentApi.SetDocument("Gameshop", "review", document.Id, document);
+            documentApi.SetDocument("Gameshop", "review", document);
 
         }
     }

@@ -56,7 +56,7 @@ namespace InfinniPlatform.Sdk.Tests.LoadTests
                     }
                 };
                 
-                api.SetDocument("gameshop", "catalogue", document.Id, document);
+                api.SetDocument("gameshop", "catalogue", document);
             };
 
             var actions = Enumerable.Repeat(action, 15000).ToArray();

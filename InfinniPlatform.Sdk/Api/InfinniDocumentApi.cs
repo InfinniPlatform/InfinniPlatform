@@ -216,10 +216,9 @@ namespace InfinniPlatform.Sdk.Api
         /// </summary>
         /// <param name="applicationId">Идентификатор приложения</param>
         /// <param name="documentType">Тип документа</param>
-        /// <param name="documentId">Идентификатор документа</param>
         /// <param name="document">Экземпляр сохраняемого документа</param>
         /// <returns>Идентификатор сохраненного документа</returns>
-        public dynamic SetDocument(string applicationId, string documentType, string documentId, object document)
+        public dynamic SetDocument(string applicationId, string documentType, object document)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
@@ -227,7 +226,7 @@ namespace InfinniPlatform.Sdk.Api
 
             document = document.ToDynamic();
 
-            documentId = PrepareDocumentIdentifier(documentId,document);
+            var documentId = PrepareDocumentIdentifier(document);
            
             var response = restQueryExecutor.QueryPut(
                 routeBuilder.BuildRestRoutingUrlDefaultById(applicationId, documentType, documentId), document);
@@ -235,23 +234,13 @@ namespace InfinniPlatform.Sdk.Api
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToSetDocument, response.GetErrorContent()));
         }
 
-        private static string PrepareDocumentIdentifier(string documentId, dynamic document)
+        private static string PrepareDocumentIdentifier(dynamic document)
         {
-            if (documentId == null)
+            if (document.Id == null)
             {
-                var id = ObjectHelper.GetProperty(document, "Id");
-                if (id == null)
-                {
-                    id = Guid.NewGuid().ToString();
-                }
-                documentId = id.ToString();
-                ObjectHelper.SetProperty(document, "Id", documentId);
+                document.Id = ObjectHelper.GetProperty(document, "Id") ?? Guid.NewGuid().ToString();
             }
-            else
-            {
-                ObjectHelper.SetProperty(document, "Id", documentId);
-            }
-            return documentId;
+            return document.Id;
         }
 
         /// <summary>

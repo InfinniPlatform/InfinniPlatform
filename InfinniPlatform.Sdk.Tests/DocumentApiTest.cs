@@ -35,7 +35,7 @@ namespace InfinniPlatform.Sdk.Tests
                 Price = 100.50
             };
 
-            var result = _api.SetDocument("gameshop", "catalogue", Guid.NewGuid().ToString(), documentObject).Id.ToString();
+            var result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
 
             var resultDoc = _api.GetDocument("gameshop", "catalogue",
                  f => f.AddCriteria(cr => cr.Property("Id").IsEquals(result)), 0, 100,
@@ -53,7 +53,7 @@ namespace InfinniPlatform.Sdk.Tests
                 Price = 100.50
             };
 
-            var result = _api.SetDocument("gameshop", "catalogue", Guid.NewGuid().ToString(), documentObject).Id.ToString();
+            var result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
 
             var resultDoc = _api.GetDocument("gameshop", "catalogue",
                  f => f.AddCriteria(cr => cr.Property("Id").IsIdIn(new List<string>() {result})), 0, 100,
@@ -71,10 +71,10 @@ namespace InfinniPlatform.Sdk.Tests
                 Price = 100.50
             };
 
-            var result = _api.SetDocument("gameshop", "catalogue", Guid.NewGuid().ToString(), documentObject).Id.ToString();
+            var result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
 
             var resultDoc = _api.GetDocument("gameshop", "catalogue",
-                 f => f.AddCriteria(cr => cr.Property("Id").IsIn(new List<string>() { result })), 0, 100,
+                 f => f.AddCriteria(cr => cr.Property("Id").IsIn( result)), 0, 100,
                  s => s.AddSorting("Price", "descending"));
 
             Assert.AreEqual(1, resultDoc.Count());
@@ -89,7 +89,7 @@ namespace InfinniPlatform.Sdk.Tests
                 Price = 100.50
             };
 
-            var result = _api.SetDocument("gameshop", "catalogue", Guid.NewGuid().ToString(), documentObject).Id.ToString();
+            var result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
             Assert.True(!string.IsNullOrEmpty(result));
         }
 
@@ -103,7 +103,7 @@ namespace InfinniPlatform.Sdk.Tests
             };
 
             //When
-            string docId = _api.SetDocument("Gameshop", "Comment", Guid.NewGuid().ToString(), comment).Id.ToString();
+            string docId = _api.SetDocument("Gameshop", "Comment", comment).Id.ToString();
 
             //Then
             dynamic documentResult = _api.GetDocumentById("Gameshop", "Comment", docId);
@@ -119,7 +119,7 @@ namespace InfinniPlatform.Sdk.Tests
                 Price = 100.50
             };
 
-            var result = _api.SetDocument("gameshop", "catalogue", null, documentObject).Id.ToString();
+            var result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
 
             var resultGet = _api.GetDocumentById("gameshop", "catalogue", result);
             Assert.IsNotNull(resultGet);
@@ -143,7 +143,7 @@ namespace InfinniPlatform.Sdk.Tests
                 Price = "someStringValueThatNotConvertToFloat"  //string value but float in schema
             };
 
-            var ex = Assert.Throws<ApplicationException>(() => _api.SetDocument("gameshop", "catalogue", Guid.NewGuid().ToString(), documentObject));
+            var ex = Assert.Throws<ApplicationException>(() => _api.SetDocument("gameshop", "catalogue", documentObject));
             Assert.AreEqual(ex.Message, "Unable to set document with exception: There an business logic error on request execution./r/nAdditional info: ﻿{\r\n  \"Error\": \"Fail to commit transaction: \\r\\nExpected value for field 'Price' should have Float type, but value has System.String type ('someStringValueThatNotConvertToFloat')\"\r\n}");
         }
 
@@ -163,7 +163,7 @@ namespace InfinniPlatform.Sdk.Tests
                 }
             };
 
-            var result = _api.SetDocument("gameshop", "catalogue", Guid.NewGuid().ToString(), documentObject).Id.ToString();
+            var result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
 
             dynamic document = _api.GetDocument("gameshop", "catalogue", null, 0, 1).FirstOrDefault();
 
@@ -198,7 +198,7 @@ namespace InfinniPlatform.Sdk.Tests
                 Price = 1999
             };
 
-            var result = _api.SetDocument("gameshop", "catalogue", Guid.NewGuid().ToString(), documentObject).Id.ToString();
+            var result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
 
             IEnumerable<dynamic> docs = _api.GetDocument("gameshop", "catalogue",
                 f => f.AddCriteria(cr => cr.Property("Id").IsEquals(result)), 0, 1);
@@ -225,7 +225,7 @@ namespace InfinniPlatform.Sdk.Tests
                 Price = 1499
             };
 
-            var result = _api.SetDocument("gameshop", "catalogue", Guid.NewGuid().ToString(), documentObject).Id.ToString();
+            var result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
 
             dynamic persistentDocument = _api.GetDocumentById("gameshop", "catalogue", result);
 
@@ -359,7 +359,7 @@ namespace InfinniPlatform.Sdk.Tests
                 Price = 1900
             };
 
-            string id = _api.SetDocument("gameshop", "catalogue", Guid.NewGuid().ToString(), game).Id.ToString();
+            string id = _api.SetDocument("gameshop", "catalogue", game).Id.ToString();
 
             dynamic review = new
             {
@@ -370,7 +370,7 @@ namespace InfinniPlatform.Sdk.Tests
                 }
             };
 
-            string reviewId = _api.SetDocument("gameshop", "review", Guid.NewGuid().ToString(), review).Id.ToString();
+            string reviewId = _api.SetDocument("gameshop", "review", review).Id.ToString();
 
             //When
             dynamic item = _api.GetDocumentById("gameshop", "review", reviewId);
@@ -395,7 +395,7 @@ namespace InfinniPlatform.Sdk.Tests
                 ReviewRate = 95
             };
 
-            string rateId = _api.SetDocument("gameshop", "gamerating", Guid.NewGuid().ToString(), rate).Id.ToString();
+            string rateId = _api.SetDocument("gameshop", "gamerating", rate).Id.ToString();
 
 
             dynamic review = new
@@ -407,7 +407,7 @@ namespace InfinniPlatform.Sdk.Tests
                 }
             };
 
-            string reviewId = _api.SetDocument("gameshop", "review", Guid.NewGuid().ToString(), review).Id.ToString();
+            string reviewId = _api.SetDocument("gameshop", "review", review).Id.ToString();
 
             //When
             dynamic item = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetDocumentById("gameshop", "review", reviewId).ToString());
@@ -435,7 +435,7 @@ namespace InfinniPlatform.Sdk.Tests
                 SomeFieldWhichMissingInSchema = 1111
             };
 
-            string gameId = _api.SetDocument("gameshop", "catalogue", Guid.NewGuid().ToString(), game).Id.ToString();
+            string gameId = _api.SetDocument("gameshop", "catalogue", game).Id.ToString();
 
             //When
             dynamic item = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetDocumentById("gameshop", "catalogue", gameId).ToString());
@@ -460,7 +460,7 @@ namespace InfinniPlatform.Sdk.Tests
             };
 
 
-            string reviewId = _api.SetDocument("gameshop", "review", Guid.NewGuid().ToString(), review).Id.ToString();
+            string reviewId = _api.SetDocument("gameshop", "review", review).Id.ToString();
 
             //When
             dynamic item = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetDocumentById("gameshop", "review", reviewId).ToString());
@@ -486,7 +486,7 @@ namespace InfinniPlatform.Sdk.Tests
                 }
             };
 
-            string reviewId = _api.SetDocument("gameshop", "review", Guid.NewGuid().ToString(), review).Id.ToString();
+            string reviewId = _api.SetDocument("gameshop", "review", review).Id.ToString();
 
             //When
             dynamic item = _api.GetDocumentById("gameshop", "review", reviewId);
@@ -507,7 +507,7 @@ namespace InfinniPlatform.Sdk.Tests
                 Text = "I am first!"
             };
 
-            string rootCommentId = _api.SetDocument("gameshop", "comment", Guid.NewGuid().ToString(), rootComment).Id.ToString();
+            string rootCommentId = _api.SetDocument("gameshop", "comment", rootComment).Id.ToString();
 
             dynamic childComment = new
             {
@@ -520,7 +520,7 @@ namespace InfinniPlatform.Sdk.Tests
                 }
             };
 
-            string childCommentId = _api.SetDocument("gameshop", "comment", Guid.NewGuid().ToString(), childComment).Id.ToString();
+            string childCommentId = _api.SetDocument("gameshop", "comment", childComment).Id.ToString();
 
             dynamic childOfChildComment = new
             {
@@ -533,7 +533,7 @@ namespace InfinniPlatform.Sdk.Tests
                 }
             };
 
-            string childOfChildCommentId = _api.SetDocument("gameshop", "comment", Guid.NewGuid().ToString(), childOfChildComment).Id.ToString();
+            string childOfChildCommentId = _api.SetDocument("gameshop", "comment", childOfChildComment).Id.ToString();
 
             dynamic review = new
             {
@@ -554,7 +554,7 @@ namespace InfinniPlatform.Sdk.Tests
                 }
             };
 
-            string reviewId = _api.SetDocument("gameshop", "review", Guid.NewGuid().ToString(), review).Id.ToString();
+            string reviewId = _api.SetDocument("gameshop", "review", review).Id.ToString();
 
             //When
             dynamic item = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetDocumentById("gameshop", "review", reviewId).ToString());
@@ -574,7 +574,7 @@ namespace InfinniPlatform.Sdk.Tests
                 Text = "I am first!"
             };
 
-            string rootCommentId = _api.SetDocument("gameshop", "comment", Guid.NewGuid().ToString(), rootComment).Id.ToString();
+            string rootCommentId = _api.SetDocument("gameshop", "comment", rootComment).Id.ToString();
 
             dynamic childComment = new
             {
@@ -587,7 +587,7 @@ namespace InfinniPlatform.Sdk.Tests
                 }
             };
 
-            string childCommentId = _api.SetDocument("gameshop", "comment", Guid.NewGuid().ToString(), childComment).Id.ToString();
+            string childCommentId = _api.SetDocument("gameshop", "comment", childComment).Id.ToString();
 
             dynamic childOfChildComment = new
             {
@@ -600,7 +600,7 @@ namespace InfinniPlatform.Sdk.Tests
                 }
             };
 
-            string childOfChildCommentId = _api.SetDocument("gameshop", "comment", Guid.NewGuid().ToString(), childOfChildComment).Id.ToString();
+            string childOfChildCommentId = _api.SetDocument("gameshop", "comment", childOfChildComment).Id.ToString();
 
             dynamic review = new
             {
@@ -621,7 +621,7 @@ namespace InfinniPlatform.Sdk.Tests
                 }
             };
 
-            _api.SetDocument("gameshop", "review", Guid.NewGuid().ToString(), review).Id.ToString();
+            _api.SetDocument("gameshop", "review", review).Id.ToString();
 
             //When
             dynamic item = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetDocument("gameshop", "review", f => f.AddCriteria(cr => cr.Property("Comments.Id").IsEquals(childCommentId)), 0, 1).FirstOrDefault().ToString());
@@ -651,7 +651,7 @@ namespace InfinniPlatform.Sdk.Tests
                 }
             };
 
-            string reviewId = _api.SetDocument("gameshop", "review", Guid.NewGuid().ToString(), review).Id.ToString();
+            string reviewId = _api.SetDocument("gameshop", "review", review).Id.ToString();
             //When
             dynamic item = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetDocumentById("gameshop", "review", reviewId).ToString());
             //Then
@@ -685,7 +685,7 @@ namespace InfinniPlatform.Sdk.Tests
                 }
             };
 
-            string lotteryId = _api.SetDocument("gameshop", "lottery", Guid.NewGuid().ToString(), lottery).Id.ToString();
+            string lotteryId = _api.SetDocument("gameshop", "lottery", lottery).Id.ToString();
             //When
             dynamic item = _api.GetDocumentById("gameshop", "lottery", lotteryId);
             //Then
@@ -723,8 +723,8 @@ namespace InfinniPlatform.Sdk.Tests
 
 
             //When
-            _api.SetDocument("gameshop", "catalogue", game.Id, game).Id.ToString();
-            _api.SetDocument("gameshop", "catalogue", game1.Id, game1).Id.ToString();
+            _api.SetDocument("gameshop", "catalogue", game).Id.ToString();
+            _api.SetDocument("gameshop", "catalogue", game1).Id.ToString();
 
             dynamic item = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetDocumentById("gameshop", "catalogue", game1.Id).ToString());
             //Then

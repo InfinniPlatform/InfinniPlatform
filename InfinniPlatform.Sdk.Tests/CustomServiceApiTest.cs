@@ -40,7 +40,7 @@ namespace InfinniPlatform.Sdk.Tests
                 Likes = 0
             };
 
-            string docId = _documentApi.SetDocument("Gameshop", "review", Guid.NewGuid().ToString(), review).Id.ToString();
+            string docId = _documentApi.SetDocument("Gameshop", "review", review).Id.ToString();
 
             //When
             _customServiceApi.ExecuteAction("Gameshop", "Review", "Like", new

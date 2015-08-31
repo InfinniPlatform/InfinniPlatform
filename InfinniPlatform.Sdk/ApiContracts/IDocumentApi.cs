@@ -97,10 +97,9 @@ namespace InfinniPlatform.Sdk.ApiContracts
         /// </summary>
         /// <param name="applicationId">Идентификатор приложения</param>
         /// <param name="documentType">Тип документа</param>
-        /// <param name="documentId">Идентификатор документа</param>
         /// <param name="document">Экземпляр сохраняемого документа</param>
         /// <returns>Идентификатор сохраненного документа</returns>
-        dynamic SetDocument(string applicationId, string documentType, string documentId, object document);
+        dynamic SetDocument(string applicationId, string documentType, object document);
 
         /// <summary>
         ///   Вставить или полностью заменить документы в переданном списке

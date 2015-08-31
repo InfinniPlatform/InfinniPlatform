@@ -37,7 +37,7 @@ namespace InfinniPlatform.Sdk.Tests
                 LastName = "McDonald",
             };
 
-            var profileId = _documentApi.SetDocument("Gameshop", "UserProfile", Guid.NewGuid().ToString(), document).Id.ToString();
+            var profileId = _documentApi.SetDocument("Gameshop", "UserProfile", document).Id.ToString();
 
             using (var fileStream = new FileStream(@"TestData\avatar.gif", FileMode.Open))
             {

@@ -15,7 +15,7 @@ namespace InfinniPlatform.Sdk.Tests.TestData
         {
             target.Item.Text = target.Item.Text + "123";
             target.Context.GetComponent<IDocumentApi>()
-                .SetDocument("gameshop", "review", Guid.NewGuid().ToString(), new
+                .SetDocument("gameshop", "review", new
                 {
                     Text = "test"
                 });

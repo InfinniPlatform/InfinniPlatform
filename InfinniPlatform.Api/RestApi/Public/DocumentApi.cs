@@ -91,15 +91,10 @@ namespace InfinniPlatform.Api.RestApi.Public
                 pageSize, new SortingConverter().ConvertToInternal(sorting));
         }
 
-        public dynamic SetDocument(string applicationId, string documentType, string documentId, object document)
+        public dynamic SetDocument(string applicationId, string documentType, object document)
         {
-            dynamic innerDoc = document.ToDynamic();
-            if (documentId != null)
-            {
-                innerDoc.Id = documentId;
-            }
 
-            return new DataApi.DocumentApi().SetDocument(applicationId, documentType, innerDoc);
+            return new DataApi.DocumentApi().SetDocument(applicationId, documentType, document);
         }
 
         public dynamic SetDocuments(string applicationId, string documentType, IEnumerable<object> documents)
