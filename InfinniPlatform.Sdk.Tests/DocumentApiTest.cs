@@ -29,9 +29,55 @@ namespace InfinniPlatform.Sdk.Tests
         [Test]
         public void ShouldGetDocument()
         {
-            _api.GetDocument("gameshop", "catalogue",
-                 f => f.AddCriteria(cr => cr.Property("Name").IsContains("gta")), 0, 100,
+            var documentObject = new
+            {
+                Name = "gta vice city",
+                Price = 100.50
+            };
+
+            var result = _api.SetDocument("gameshop", "catalogue", Guid.NewGuid().ToString(), documentObject).Id.ToString();
+
+            var resultDoc = _api.GetDocument("gameshop", "catalogue",
+                 f => f.AddCriteria(cr => cr.Property("Id").IsEquals(result)), 0, 100,
                  s => s.AddSorting("Price", "descending"));
+
+            Assert.AreEqual(1, resultDoc.Count());
+        }
+
+        [Test]
+        public void ShouldGetDocumentByIdIn()               
+        {
+            var documentObject = new
+            {
+                Name = "gta vice city",
+                Price = 100.50
+            };
+
+            var result = _api.SetDocument("gameshop", "catalogue", Guid.NewGuid().ToString(), documentObject).Id.ToString();
+
+            var resultDoc = _api.GetDocument("gameshop", "catalogue",
+                 f => f.AddCriteria(cr => cr.Property("Id").IsIdIn(new List<string>() {result})), 0, 100,
+                 s => s.AddSorting("Price", "descending"));
+
+            Assert.AreEqual(1,resultDoc.Count());
+        }
+
+        [Test]
+        public void ShouldGetDocumentByIn()
+        {
+            var documentObject = new
+            {
+                Name = "gta vice city",
+                Price = 100.50
+            };
+
+            var result = _api.SetDocument("gameshop", "catalogue", Guid.NewGuid().ToString(), documentObject).Id.ToString();
+
+            var resultDoc = _api.GetDocument("gameshop", "catalogue",
+                 f => f.AddCriteria(cr => cr.Property("Id").IsIn(new List<string>() { result })), 0, 100,
+                 s => s.AddSorting("Price", "descending"));
+
+            Assert.AreEqual(1, resultDoc.Count());
         }
 
         [Test]

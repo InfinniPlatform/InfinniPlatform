@@ -35,6 +35,15 @@ namespace InfinniPlatform.Api.SearchOptions.Converters
             {"isidin",CriteriaType.IsIdIn}
         };
 
+        private readonly Dictionary<string, Func<string, object>> _criteriaProcessing = new Dictionary
+            <string, Func<string, object>>()
+        {
+            {
+                "isidin",
+                (criteriaValue) => criteriaValue.Split(new string[] {"[,]"}, StringSplitOptions.RemoveEmptyEntries)
+            }
+        };
+
         private dynamic ConstructCriteria(string criteria)
         {
             //Price IsEquals 200
@@ -42,32 +51,39 @@ namespace InfinniPlatform.Api.SearchOptions.Converters
             //propertyName = Price
             var propertyName = criteria.Substring(0, criteria.IndexOf(" ", StringComparison.Ordinal));
             //criteria = IsEquals 200
+            criteria = criteria.Substring(criteria.IndexOf(" ", StringComparison.Ordinal)).Trim();
+            //op = IsEquals
             var opIndex = criteria.IndexOf(" ", StringComparison.Ordinal);
             if (opIndex == -1)
             {
                 opIndex = 0;
             }
-            criteria = criteria.Substring(opIndex).Trim();
-            //op = IsEquals
-            var op = criteria.Substring(0, criteria.IndexOf(" ", StringComparison.Ordinal)).ToLowerInvariant();
-            
-            var valueIndex = criteria.IndexOf(" ", StringComparison.Ordinal) + 1;
-            if (valueIndex == -1)
-            {
-                valueIndex = 0;
-            }
+
+            var op = criteria.Substring(0,opIndex).ToLowerInvariant();
             //criteria = 200
-            var value = criteria.Substring(valueIndex);
+            var valueIndex = criteria.IndexOf(" ", StringComparison.Ordinal) + 1;
+
+            var value = string.Empty;
+            if (valueIndex != -1)
+            {
+                value = criteria.Substring(valueIndex);
+            }
 
             dynamic criteriaDynamic = new DynamicWrapper();
             criteriaDynamic.Property = propertyName;
+
+            object valueProcessed = null;
+            if (value != string.Empty && _criteriaProcessing.ContainsKey(op))
+            {
+                valueProcessed = _criteriaProcessing[op].Invoke(value);
+            }
 
             if (!_criteriaTypes.ContainsKey(op))
             {
                 throw new ArgumentException(string.Format("Can't find criteria type for operator: {0}", op));
             }
             criteriaDynamic.CriteriaType = _criteriaTypes[op];
-            criteriaDynamic.Value = value == "null" ? null : value;
+            criteriaDynamic.Value = valueProcessed ??  (value == "null" ? null : value);
             criteriaDynamic.Property = propertyName;
 
             return criteriaDynamic;

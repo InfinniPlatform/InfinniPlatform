@@ -188,13 +188,13 @@ namespace InfinniPlatform.Sdk
             public CriteriaBuilder IsIn(params object[] values)
             {
                 _value = string.Join("\n", values.Select(v => v.ToString()));
-                _criteriaType = "IsIn";
+                _criteriaType = "ValueSet";
                 return this;
             }
 
             public CriteriaBuilder IsIdIn(List<string> idList)
             {
-                _value = idList;
+                _value = string.Join("[,]",idList);
                 _criteriaType = "IsIdIn";
                 return this;
             }
