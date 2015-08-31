@@ -8,6 +8,7 @@ using NUnit.Framework;
 namespace InfinniPlatform.Sdk.Tests
 {
     [TestFixture]
+	[Category("IntegrationTest")]
     public class DocumentApiTest
     {
         [TestFixtureSetUp]

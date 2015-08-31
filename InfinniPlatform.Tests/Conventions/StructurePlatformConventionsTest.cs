@@ -45,6 +45,7 @@ namespace InfinniPlatform.Conventions
 
 			// When
 			var result = project.EndsWith("InfinniPlatform.ServiceHost")
+						 || project.EndsWith("InfinniPlatform.NodeServiceHost")
 						 || project.EndsWith("InfinniPlatform.MetadataDesigner")
 						 || project.EndsWith("InfinniPlatform.QueryDesigner")
 						 || project.EndsWith("InfinniPlatform.ReportDesigner")

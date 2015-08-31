@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,7 +8,7 @@ using Microsoft.Owin;
 namespace InfinniPlatform.WebApi.Middleware
 {
     /// <summary>
-    ///   Методы расширения для работы с хостингом приложений
+    ///   РњРµС‚РѕРґС‹ СЂР°СЃС€РёСЂРµРЅРёСЏ РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ С…РѕСЃС‚РёРЅРіРѕРј РїСЂРёР»РѕР¶РµРЅРёР№
     /// </summary>
     public static class ApplicationHostingModuleExtension
     {
@@ -33,11 +33,11 @@ namespace InfinniPlatform.WebApi.Middleware
         } 
 
         /// <summary>
-        ///   Получить параметр роутинга из контекста запроса
+        ///   РџРѕР»СѓС‡РёС‚СЊ РїР°СЂР°РјРµС‚СЂ СЂРѕСѓС‚РёРЅРіР° РёР· РєРѕРЅС‚РµРєСЃС‚Р° Р·Р°РїСЂРѕСЃР°
         /// </summary>
-        /// <param name="context">Контекст запроса</param>
-        /// <param name="path">Роутинг запроса</param>
-        /// <returns>Значение параметра роутинга</returns>
+        /// <param name="context">РљРѕРЅС‚РµРєСЃС‚ Р·Р°РїСЂРѕСЃР°</param>
+        /// <param name="path">Р РѕСѓС‚РёРЅРі Р·Р°РїСЂРѕСЃР°</param>
+        /// <returns>Р—РЅР°С‡РµРЅРёРµ РїР°СЂР°РјРµС‚СЂР° СЂРѕСѓС‚РёРЅРіР°</returns>
         public static PathString FormatRoutePath(this IOwinContext context, PathString path)
         {
             var routeDictionary = context.GetRouteDictionary();

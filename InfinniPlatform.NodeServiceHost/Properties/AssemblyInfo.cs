@@ -1,14 +1,14 @@
 ﻿// 1
 // 0
 // 0
-// 20
-// a4a50401-f0a2-4f0e-b341-ca1f2f1e92c4
-// 1D4B981751B44F32C94256A0DEE86948
+// 0
+// 9c9b13fd-c8d9-4459-b3f9-a1cac7009ccb
+// E043695EB8D4CC25EA71FF866910ADE6
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("InfinniPlatform.Core")]
+[assembly: AssemblyTitle("InfinniPlatform.NodeServiceHost")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Infinnity Solutions")]
 [assembly: AssemblyProduct("InfinniPlatform")]
@@ -16,8 +16,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
-[assembly: Guid("a4a50401-f0a2-4f0e-b341-ca1f2f1e92c4")]
-[assembly: AssemblyVersion("1.0.0.20")]
-[assembly: AssemblyFileVersion("1.0.0.20")]
-[assembly: InternalsVisibleTo("InfinniPlatform.Core.Tests")]
-[assembly: AssemblyDescription("InfinniPlatform.Core")]
+[assembly: Guid("9c9b13fd-c8d9-4459-b3f9-a1cac7009ccb")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: InternalsVisibleTo("InfinniPlatform.NodeServiceHost.Tests")]
+[assembly: AssemblyDescription("InfinniPlatform.NodeServiceHost")]

@@ -1,4 +1,4 @@
-using InfinniPlatform.FlowDocument.Model.Font;
+﻿using InfinniPlatform.FlowDocument.Model.Font;
 
 namespace InfinniPlatform.FlowDocument.Model.Views
 {
