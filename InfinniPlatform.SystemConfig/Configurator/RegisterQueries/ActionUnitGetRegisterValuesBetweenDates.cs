@@ -60,9 +60,9 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
             var resultFilter = new List<object>();
             IEnumerable<object> filter = DynamicWrapperExtensions.ToEnumerable(target.Item.Filter);
 
-            if (filter.Any())
+            if (filter != null)
             {
-                resultFilter = new FilterConverter().Convert(filter.First().ToString()).ToList();
+                resultFilter.AddRange(filter);
             }
 
             resultFilter.AddRange(FilterBuilder.DateRangeCondition(RegisterConstants.DocumentDateProperty, startDate,
