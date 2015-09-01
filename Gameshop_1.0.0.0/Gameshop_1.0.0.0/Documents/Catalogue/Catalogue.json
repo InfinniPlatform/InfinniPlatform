@@ -25,7 +25,8 @@
     "Properties": {
       "Name": {
         "Caption": "Наименование",
-        "Type": "String"
+        "Type": "String",
+	"Sortable": true
       },
       "Price": {
         "Caption": "Цена",
