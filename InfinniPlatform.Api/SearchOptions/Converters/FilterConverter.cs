@@ -54,28 +54,34 @@ namespace InfinniPlatform.Api.SearchOptions.Converters
             criteria = criteria.Substring(criteria.IndexOf(" ", StringComparison.Ordinal)).Trim();
             //op = IsEquals
             var opIndex = criteria.IndexOf(" ", StringComparison.Ordinal);
-            if (opIndex == -1)
-            {
-                opIndex = 0;
-            }
-
-            var op = criteria.Substring(0,opIndex).ToLowerInvariant();
-            //criteria = 200
-            var valueIndex = criteria.IndexOf(" ", StringComparison.Ordinal) + 1;
-
+            
+            object valueProcessed = null;
             var value = string.Empty;
-            if (valueIndex != -1)
-            {
-                value = criteria.Substring(valueIndex);
-            }
-
             dynamic criteriaDynamic = new DynamicWrapper();
             criteriaDynamic.Property = propertyName;
-
-            object valueProcessed = null;
-            if (value != string.Empty && _criteriaProcessing.ContainsKey(op))
+            
+            string op = string.Empty;
+            if (opIndex == -1)
             {
-                valueProcessed = _criteriaProcessing[op].Invoke(value);
+                op = criteria.Substring(0).ToLowerInvariant();
+            }
+            else
+            {
+                op = criteria.Substring(0, opIndex).ToLowerInvariant();
+
+                //criteria = 200
+                var valueIndex = criteria.IndexOf(" ", StringComparison.Ordinal) + 1;
+
+                
+                if (valueIndex != -1)
+                {
+                    value = criteria.Substring(valueIndex);
+                }
+               
+                if (value != string.Empty && _criteriaProcessing.ContainsKey(op))
+                {
+                    valueProcessed = _criteriaProcessing[op].Invoke(value);
+                }
             }
 
             if (!_criteriaTypes.ContainsKey(op))

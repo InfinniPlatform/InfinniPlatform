@@ -80,6 +80,43 @@ namespace InfinniPlatform.Sdk.Tests
             Assert.AreEqual(1, resultDoc.Count());
         }
 
+
+
+        [Test]
+        public void ShouldGetDocumentByIsNotEmpty()
+        {
+            var documentObject = new
+            {
+                Name = "gta vice city",
+                Price = 100.50
+            };
+
+            _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
+
+            var resultDoc = _api.GetDocument("gameshop", "catalogue",
+                 f => f.AddCriteria(cr => cr.Property("Id").IsNotEmpty()), 0, 1,
+                 s => s.AddSorting("Price", "descending"));
+
+            Assert.AreEqual(1, resultDoc.Count());
+        }
+
+        [Test]
+        public void ShouldGetDocumentByIsEmpty()
+        {
+            var documentObject = new
+            {
+                Price = 100.50
+            };
+
+            var result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
+
+            var resultDoc = _api.GetDocument("gameshop", "catalogue",
+                 f => f.AddCriteria(cr => cr.Property("Name").IsEmpty()), 0, 10000,
+                 s => s.AddSorting("Price", "descending"));
+
+            Assert.AreEqual(1, resultDoc.Count(r => r.Id == result));
+        }
+
         [Test]
         public void ShouldSetDocument()
         {
