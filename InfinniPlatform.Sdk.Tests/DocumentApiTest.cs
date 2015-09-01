@@ -45,6 +45,46 @@ namespace InfinniPlatform.Sdk.Tests
         }
 
         [Test]
+        public void ShouldGetDocumentWithSorting()
+        {
+            
+            var documentObject1 = new
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "Gta3",
+                Price = 100.50
+            };
+
+            var documentObject2 = new
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "Gta4",
+                Price = 120.50
+            };
+
+            var documentObject3 = new
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "Gta5",
+                Price = 1400
+            };
+
+            
+            _api.SetDocument("gameshop", "catalogue", documentObject1);
+            _api.SetDocument("gameshop", "catalogue", documentObject2);
+            _api.SetDocument("gameshop", "catalogue", documentObject3);
+
+            var resultDoc = _api.GetDocument("gameshop", "catalogue",
+                 f => f.AddCriteria(cr => cr.Property("Id").IsIdIn(new List<string>() {documentObject1.Id, documentObject2.Id, documentObject3.Id})), 0, 100,
+                 s => s.AddSorting("Name", "descending")).ToArray();
+
+            Assert.AreEqual(3, resultDoc.Length);
+            Assert.AreEqual(resultDoc[0].Name, "Gta5");
+            Assert.AreEqual(resultDoc[1].Name, "Gta4");
+            Assert.AreEqual(resultDoc[2].Name, "Gta3");
+        }
+
+        [Test]
         public void ShouldGetDocumentByIdIn()               
         {
             var documentObject = new

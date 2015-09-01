@@ -207,7 +207,7 @@ namespace InfinniPlatform.Sdk.Api
             var response = restQueryExecutor.QueryGet(routeBuilder.BuildRestRoutingUrlDefault(applicationId, documentType),
                 RequestExecutorExtensions.CreateQueryString(filterBuilder.GetFilter(), pageNumber, pageSize, sortingBuilder.GetSorting()));
 
-            return ProcessAsArrayResult(response,
+            return ProcessAsObjectResult(response,
                 string.Format(Resources.UnableToGetDocument, response.GetErrorContent()));
         }
 
