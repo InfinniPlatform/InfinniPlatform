@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -41,7 +42,9 @@ namespace InfinniPlatform.Api.Packages
             {
                 foreach (var referencedConfiguration in solution.ReferencedConfigurations)
                 {
+                    referencedConfiguration.OldVersion = referencedConfiguration.Version;
                     referencedConfiguration.Version = newVersion;
+                    
                 }
 
                 var result = ((string)solution.ToString()).Split("\n\r".ToCharArray(),
@@ -52,9 +55,13 @@ namespace InfinniPlatform.Api.Packages
 
                 foreach (var referencedConfig in solution.ReferencedConfigurations)
                 {
+                    var oldVersion = referencedConfig.OldVersion;
+
+                    referencedConfig.OldVersion = null;
+
                     var configExporter = new ConfigExporter(_exportStructureConfig(referencedConfig));
 
-                    configExporter.ExportHeaderToStructure(version, newVersion, referencedConfig.Name);
+                    configExporter.ExportHeaderToStructure(oldVersion, newVersion, referencedConfig.Name);
                 }
 
             }
