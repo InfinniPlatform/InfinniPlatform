@@ -115,7 +115,10 @@ namespace InfinniPlatform.Api.Versioning
                     storedConfigVersion.Version = actualVersion;
 
                     versionProvider.SetDocument(storedConfigVersion);
-                    ConfigVersions.Add(storedConfigVersion);
+                    lock (_syncObject)
+                    {
+                        ConfigVersions.Add(storedConfigVersion);
+                    }
 
                     return storedConfigVersion.Version;
                 }
@@ -124,6 +127,8 @@ namespace InfinniPlatform.Api.Versioning
 
             return null;
         }
+
+        private readonly object _syncObject = new object();
 
         /// <summary>
         ///   Получить список неактуальных версий
