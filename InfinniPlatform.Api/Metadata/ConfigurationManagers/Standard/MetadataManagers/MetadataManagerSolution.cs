@@ -58,7 +58,10 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
                 throw new ArgumentException();
             }
 
-
+            if (updatingSolution != null)
+            {
+                DeleteItem(updatingSolution);
+            }
             SetSolution(objectToCreate.Name, objectToCreate);
 
         }

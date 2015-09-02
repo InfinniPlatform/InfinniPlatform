@@ -122,6 +122,10 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 
             metadataConfig.Id = objectToCreate.Id;
 
+            if (updatingConfiguration != null)
+            {
+                DeleteItem(updatingConfiguration);
+            }
             SetConfiguration(updatingConfiguration.Name, metadataConfig);
 
             return metadataConfig;
