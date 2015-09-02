@@ -14,13 +14,7 @@ namespace InfinniPlatform.Utils
 		public void Upload(string config, bool uploadMetadata)
 		{
 			Console.WriteLine("ServiceHost should be executed for this operation.");
-			Console.WriteLine("All metadata will be DESTROYED!!! Are you sure?");
-			if (uploadMetadata && Console.ReadKey().KeyChar != 'y')
-			{
-				Console.WriteLine("Cancel upload");
-				return;
-			}
-
+			
 			ProcessConfigurations(config, configuration =>
 			{
 				Console.WriteLine("Uploading configuration '{0}' started", configuration.Name);
