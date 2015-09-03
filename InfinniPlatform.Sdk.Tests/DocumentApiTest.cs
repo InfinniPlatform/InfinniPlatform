@@ -160,6 +160,16 @@ namespace InfinniPlatform.Sdk.Tests
         }
 
         [Test]
+        public void ShouldGetDocumentByIdInEmpty()
+        {
+            var resultDoc = _api.GetDocument("gameshop", "catalogue",
+                 f => f.AddCriteria(cr => cr.Property("Id").IsIdIn(new List<string>())), 0, 100,
+                 s => s.AddSorting("Price", "descending"));
+
+            Assert.AreNotEqual(0, resultDoc.Count());
+        }
+
+        [Test]
         public void ShouldGetDocumentByIn()
         {
             var documentObject = new

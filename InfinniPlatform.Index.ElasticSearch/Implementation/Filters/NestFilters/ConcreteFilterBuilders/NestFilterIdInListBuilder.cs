@@ -14,6 +14,11 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.Filters.NestFilters
 		{
 			IEnumerable<string> values;
 
+		    if (value == null || string.IsNullOrEmpty(value.ToString()))
+		    {
+                return new NestFilter(Nest.Filter<dynamic>.Ids(new string[0]));
+		    } 
+
 			try
 			{
 				values = JArray.Parse((string)value).Where(s => s.Value<object>().ToString() != "{}"  ).Select(s => s.Value<string>()).ToList();
