@@ -173,24 +173,17 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
             dynamic container = GetMetadataContainer(updatingMetadata.Name);
 
             object body;
+            
 
+            //иначе создаем новое 
+            body = new AddCollectionItem(_metadataContainerName, metadataHeader, _version);
 
-            if (container.Index > -1)
-            {
-                //если находим, то апдейтим существующее
-                body = new UpdateCollectionItem(_metadataContainerName, container.Index, metadataHeader, _version);
-            }
-            else
-            {
-                //иначе создаем новое 
-                body = new AddCollectionItem(_metadataContainerName, metadataHeader, _version);
-            }
-
+            DeleteItem(updatingMetadata);
 
             //обновляем заголовочную часть в метаданных родительского объекта (ссылку на метаданные конкретного типа)
             //заменяем объект заголовочной части
             RestQueryApi.QueryPostRaw("SystemConfig", RootMetadataIndex, "changemetadata", _parentUid, body);
-
+            
             //обновляем полные метаданные конкретного типа
             //заменяем полные метаданные в индексе
             RestQueryApi.QueryPostRaw("SystemConfig", MetadataIndex, "changemetadata", objectToCreate.Id, objectToCreate);
