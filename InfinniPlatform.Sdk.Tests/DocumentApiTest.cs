@@ -45,6 +45,46 @@ namespace InfinniPlatform.Sdk.Tests
         }
 
         [Test]
+        public void ShouldGetDocumentMoreThanPrice()
+        {
+            var documentObject = new
+            {
+                Name = "gta vice city",
+                Price = 1000.50
+            };
+
+            var result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
+
+            var resultDoc = _api.GetDocument("gameshop", "catalogue",
+                 f => f
+                     .AddCriteria(cr => cr.Property("Id").IsEquals(result))
+                     .AddCriteria(cr => cr.Property("Price").IsMoreThanOrEquals(1000) ), 0, 100
+                );
+
+            Assert.AreEqual(1, resultDoc.Count());
+        }
+
+        [Test]
+        public void ShouldGetDocumentLessThanPrice()
+        {
+            var documentObject = new
+            {
+                Name = "gta vice city",
+                Price = 1000.50
+            };
+
+            var result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
+
+            var resultDoc = _api.GetDocument("gameshop", "catalogue",
+                 f => f
+                     .AddCriteria(cr => cr.Property("Price").IsMoreThanOrEquals(1000)) 
+                     .AddCriteria(cr => cr.Property("Price").IsLessThanOrEquals(10000)), 0, 1000
+                );
+
+            Assert.AreEqual(1, resultDoc.Count(r => r.Id == result));
+        }
+
+        [Test]
         public void ShouldGetDocumentWithSorting()
         {
             

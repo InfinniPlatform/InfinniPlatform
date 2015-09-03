@@ -26,13 +26,7 @@ namespace InfinniPlatform.Sdk.ApiContracts
         /// <param name="valueAggregationTypes">Тип агрегации по значениям (сумма, среднее и тд)</param>
         /// <param name="filter">Фильтр для отбора определенных значений из регистра</param>
         /// <returns>Результат агрегации</returns>
-        IEnumerable<object> GetValuesByDate(string configuration,
-            string register,
-            DateTime endDate,
-            IEnumerable<string> dimensions = null,
-            IEnumerable<string> valueProperties = null,
-            IEnumerable<AggregationType> valueAggregationTypes = null,
-            Action<FilterBuilder> filter = null);
+        IEnumerable<dynamic> GetValuesByDate(string configuration, string register, DateTime endDate, IEnumerable<string> dimensions = null, IEnumerable<string> valueProperties = null, IEnumerable<AggregationType> valueAggregationTypes = null, Action<FilterBuilder> filter = null);
 
         /// <summary>
         ///     Получение результата агрегации по регистру в период между двумя датами
@@ -52,15 +46,7 @@ namespace InfinniPlatform.Sdk.ApiContracts
         /// <param name="valueAggregationTypes">Тип агрегации по значениям (сумма, среднее и тд)</param>
         /// <param name="filter">Фильтр для отбора определенных значений из регистра</param>
         /// <returns>Результат агрегации</returns>
-        IEnumerable<object> GetValuesBetweenDates(
-            string configuration,
-            string register,
-            DateTime startDate,
-            DateTime endDate,
-            IEnumerable<string> dimensions = null,
-            IEnumerable<string> valueProperties = null,
-            IEnumerable<AggregationType> valueAggregationTypes = null,
-            Action<FilterBuilder> filter = null);
+        IEnumerable<dynamic> GetValuesBetweenDates(string configuration, string register, DateTime startDate, DateTime endDate, IEnumerable<string> dimensions = null, IEnumerable<string> valueProperties = null, IEnumerable<AggregationType> valueAggregationTypes = null, Action<FilterBuilder> filter = null);
 
         /// <summary>
         ///     Получение 'сырых' данных из регистра
@@ -71,11 +57,6 @@ namespace InfinniPlatform.Sdk.ApiContracts
         /// <param name="pageNumber">Номер страницы</param>
         /// <param name="pageSize">Размер страницы</param>
         /// <returns>Набор записей регистра</returns>
-        IEnumerable<object> GetRegisterEntries(
-            string configuration,
-            string register,
-            Action<FilterBuilder> filter,
-            int pageNumber,
-            int pageSize);
+        IEnumerable<dynamic> GetRegisterEntries(string configuration, string register, Action<FilterBuilder> filter, int pageNumber, int pageSize);
     }
 }

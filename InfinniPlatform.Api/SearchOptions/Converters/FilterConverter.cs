@@ -118,7 +118,7 @@ namespace InfinniPlatform.Api.SearchOptions.Converters
                 var filterCriteriaStrings = filterBuilder.GetFilter();
                 return filterCriteriaStrings.Select(c => ConstructCriteria(c.Trim())).ToList();
             }
-            return null;
+            return new List<dynamic>();
 
         } 
 
