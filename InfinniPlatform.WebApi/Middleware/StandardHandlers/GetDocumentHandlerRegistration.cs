@@ -36,7 +36,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
             IEnumerable<dynamic> criteriaList = new List<dynamic>();
             if (filter != null)
             {
-                criteriaList = new FilterConverter().Convert(filter);
+                criteriaList = new FilterConverter().ConvertFilter(filter);
             }
 
             var sorting = nameValueCollection.Get("sorting");

@@ -478,4 +478,7 @@
   <data name="MetadataElementNotFound" xml:space="preserve">
     <value>Metadata element with identifier {0} and version {1} not found.</value>
   </data>
+	<data name="FailToConvertFilterValueToDateTime" xml:space="preserve">
+    <value>Fail to convert value to datetime format: {0}</value>
+  </data>
 </root>

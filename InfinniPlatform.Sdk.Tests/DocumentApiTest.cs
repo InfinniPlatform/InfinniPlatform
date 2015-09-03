@@ -4,6 +4,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Reflection;
 using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.Dynamic;
 using Microsoft.CSharp.RuntimeBinder;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -62,6 +63,22 @@ namespace InfinniPlatform.Sdk.Tests
                 );
 
             Assert.AreEqual(1, resultDoc.Count());
+        }
+
+        [Test]
+        public void ShouldGetDocumentByDateTime()
+        {
+            dynamic documentObject = new DynamicWrapper();
+            documentObject.Availability = new DynamicWrapper();
+            documentObject.Availability.SaleStartDate = DateTime.Now;
+
+            var result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
+
+            var resultDoc = _api.GetDocument("gameshop", "catalogue",
+                 f => f
+                     .AddCriteria(cr => cr.Property("Availability.SaleStartDate").IsMoreThanOrEquals(DateTime.Now.Date))
+                     .AddCriteria(cr => cr.Property("Availability.SaleStartDate").IsLessThanOrEquals(DateTime.Now.Date.AddDays(1))), 0, 1000);
+            Assert.AreEqual(1, resultDoc.Count(r => r.Id == result));
         }
 
         [Test]

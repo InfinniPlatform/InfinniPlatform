@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.SearchOptions.Builders;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
@@ -89,10 +90,30 @@ namespace InfinniPlatform.Api.SearchOptions.Converters
                 throw new ArgumentException(string.Format("Can't find criteria type for operator: {0}", op));
             }
             criteriaDynamic.CriteriaType = _criteriaTypes[op];
-            criteriaDynamic.Value = valueProcessed ??  (value == "null" ? null : value);
+            criteriaDynamic.Value = valueProcessed ??  (value == "null" ? null : ProcessValue(value));
             criteriaDynamic.Property = propertyName;
 
             return criteriaDynamic;
+        }
+
+        private object ProcessValue(string value)
+        {
+
+            if (value.ToLowerInvariant().StartsWith("datetime"))
+            {
+                var start = value.IndexOf("'", StringComparison.InvariantCulture);
+                var end = value.LastIndexOf("'", StringComparison.InvariantCulture);
+                try
+                {
+                    return DateTime.Parse(value.Substring(start + 1, end - start - 1));
+                }
+                catch
+                {
+                    throw new ArgumentException(string.Format(Resources.FailToConvertFilterValueToDateTime,value));
+                }
+
+            }
+            return value;
         }
 
         /// <summary>
@@ -100,7 +121,7 @@ namespace InfinniPlatform.Api.SearchOptions.Converters
         /// </summary>
         /// <param name="filter">Строка фильтра</param>
         /// <returns>Список критериев</returns>
-        public IEnumerable<dynamic> Convert(string filter)
+        public IEnumerable<dynamic> ConvertFilter(string filter)
         {
             var criteriaList = filter.Split(new string[] {" and "}, StringSplitOptions.RemoveEmptyEntries);
 
