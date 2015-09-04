@@ -10,10 +10,10 @@
         <copyright>Copyright 2015</copyright>        
     </metadata>
     <files>
-        <file src="..\Assemblies\**" target="Assemblies"/>
-        <file src="..\SystemConfiguration\Administration.Configuration\**" target="Assemblies\Administration.Configuration"/>
-        <file src="..\SystemConfiguration\AdministrationCustomization.Configuration\**" target="Assemblies\AdministrationCustomization.Configuration"/>
-        <file src="..\SystemConfiguration\Authorization.Configuration\**" target="Assemblies\Authorization.Configuration"/>
+        <file src="..\Assemblies\**" target="lib\net45"/>
+        <file src="..\SystemConfiguration\Administration.Configuration\**" target="content\Administration.Configuration"/>
+        <file src="..\SystemConfiguration\AdministrationCustomization.Configuration\**" target="content\AdministrationCustomization.Configuration"/>
+        <file src="..\SystemConfiguration\Authorization.Configuration\**" target="content\Authorization.Configuration"/>
         <file src="Install.bat" target="Install.bat"/>
     </files>
 </package>
