@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>InfinniPlatform</id>
+        <version>1.0.0</version>
+        <authors>Infinnity Solutions</authors>
+        <owners>Infinnity Solutions</owners>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>InfinniPlatform</description>
+        <copyright>Copyright 2015</copyright>        
+    </metadata>
+    <files>
+        <file src="..\Assemblies\**" target="Assemblies"/>
+        <file src="..\SystemConfiguration\Administration.Configuration\**" target="Assemblies\Administration.Configuration"/>
+        <file src="..\SystemConfiguration\AdministrationCustomization.Configuration\**" target="Assemblies\AdministrationCustomization.Configuration"/>
+        <file src="..\SystemConfiguration\Authorization.Configuration\**" target="Assemblies\Authorization.Configuration"/>
+        <file src="Install.bat" target="Install.bat"/>
+    </files>
+</package>
