@@ -39,13 +39,14 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
             using (var fileStream = new MultipartFormDataParser(context.Request.Body, Encoding.UTF8).Files.Select(
                         f => f.Data).First())
             {
-                if (linkedData.InstanceId != null &&
+                if (linkedData.ApplicationId != null &&
+                    linkedData.DocumentType != null &&    
+                    linkedData.InstanceId != null &&
                     linkedData.FieldName != null &&
                     linkedData.FileName != null)
                 {
-
-                    return
-                        new ValueRequestHandlerResult(new UploadApi().UploadBinaryContent(linkedData.InstanceId.ToString(),
+                   return
+                        new ValueRequestHandlerResult(new UploadApi().UploadBinaryContent(linkedData.ApplicationId.ToString(), linkedData.DocumentType.ToString() , linkedData.InstanceId.ToString(),
                             linkedData.FieldName.ToString(), linkedData.FileName.ToString(), fileStream));
                 }
                 return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreSpecified);

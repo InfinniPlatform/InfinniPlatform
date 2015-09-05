@@ -31,7 +31,7 @@ namespace InfinniPlatform.Sdk.Api
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
 
-            var response = restQueryExecutor.QueryPostFile(RouteBuilder.BuildRestRoutingUploadFile(), instanceId, fieldName, fileName, fileStream);
+            var response = restQueryExecutor.QueryPostFile(RouteBuilder.BuildRestRoutingUploadFile(), application, documentType, instanceId, fieldName, fileName, fileStream);
 
             return ProcessAsObjectResult(response,string.Format(Resources.UnableToUploadFileOnServer, response.GetErrorContent()));   
         }

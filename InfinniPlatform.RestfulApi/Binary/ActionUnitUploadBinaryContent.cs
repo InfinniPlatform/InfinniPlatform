@@ -59,8 +59,8 @@ namespace InfinniPlatform.RestfulApi.Binary
 		    var configurationMediatorComponent = target.Context.GetComponent<IConfigurationMediatorComponent>();
 
             var schema = configurationMediatorComponent
-                .ConfigurationBuilder.GetConfigurationObject(target.Context.GetVersion(documentWithBinaryField.__ConfigId, target.UserName), documentWithBinaryField.__ConfigId)
-                .MetadataConfiguration.GetSchemaVersion(documentWithBinaryField.__DocumentId);
+                .ConfigurationBuilder.GetConfigurationObject(target.Context.GetVersion(target.LinkedData.Configuration, target.UserName), target.LinkedData.Configuration)
+                .MetadataConfiguration.GetSchemaVersion(target.LinkedData.Metadata);
             
 		    var maxFileSize = -1;
 

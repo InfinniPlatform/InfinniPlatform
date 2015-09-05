@@ -33,6 +33,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
                 Metadata = metadata,
                 FileContent = uploadStream,
                 Context = _globalContext,
+                UserName = ConfigRequestProvider.GetUserName()
             };
 
             var metadataConfig =

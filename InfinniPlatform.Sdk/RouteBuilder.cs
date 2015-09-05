@@ -24,7 +24,6 @@ namespace InfinniPlatform.Sdk
         /// <summary>
         ///   Сформировать роутинг запроса для запросов на загрузку файла на сервер
         /// </summary>
-        /// <param name="application">Приложение</param>
         /// <returns>Роутинг для запросов на загрузку файлов</returns>
         public string BuildRestRoutingUploadFile()
         {

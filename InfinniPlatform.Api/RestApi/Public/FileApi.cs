@@ -15,15 +15,8 @@ namespace InfinniPlatform.Api.RestApi.Public
         public dynamic UploadFile(string application, string documentType, string instanceId, string fieldName, string fileName,
             Stream fileStream)
         {
-            var linkedData = new
-            {
-                InstanceId = instanceId,
-                FieldName = fieldName,
-                FileName = fileName,
-            };
-
-            return new UploadApi().UploadBinaryContent(linkedData.InstanceId,
-                linkedData.FieldName, linkedData.FileName, fileStream);
+            return new UploadApi().UploadBinaryContent(application, documentType, instanceId,
+                fieldName, fileName, fileStream);
         }
 
         public dynamic DownloadFile(string contentId)

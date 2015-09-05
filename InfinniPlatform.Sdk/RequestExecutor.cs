@@ -142,7 +142,7 @@ namespace InfinniPlatform.Sdk
             return restResponse.ToQueryResponse();
         }
 
-        public RestQueryResponse QueryPostFile(string url, string instanceId, string fieldName, string fileName, Stream fileStream, string sessionId = null)
+        public RestQueryResponse QueryPostFile(string url,string applicationId, string documentType,  string instanceId, string fieldName, string fileName, Stream fileStream, string sessionId = null)
         {
             var restClient = new RestClient(url);
 
@@ -154,7 +154,9 @@ namespace InfinniPlatform.Sdk
                 InstanceId = instanceId,
                 FieldName = fieldName,
                 FileName = fileName,
-                SessionId = sessionId
+                SessionId = sessionId,
+                ApplicationId = applicationId,
+                DocumentType = documentType
             };
 
             IRestResponse restResponse = restClient.Post(new RestRequest("?linkedData={argument}") { RequestFormat = DataFormat.Json }

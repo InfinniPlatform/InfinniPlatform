@@ -33,7 +33,7 @@ namespace InfinniPlatform.Sdk.ApiContracts
         /// <param name="fieldName">Наименование поля для присоединения</param>
         /// <param name="fileName">Наименование файла</param>
         /// <param name="fileStream">Файловый поток</param>
-        void AttachFile(string session, string instanceId, string fieldName, string fileName, Stream fileStream);
+        void AttachFile(string session, string application, string documentType, string instanceId, string fieldName, string fileName, Stream fileStream);
 
         /// <summary>
         ///   Отсоединить от сессии указанный файл

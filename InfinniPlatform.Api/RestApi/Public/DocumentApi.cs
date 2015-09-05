@@ -34,11 +34,13 @@ namespace InfinniPlatform.Api.RestApi.Public
             return new SessionApi().Attach(session, document);
         }
 
-        public void AttachFile(string session, string instanceId, string fieldName, string fileName, Stream fileStream)
+        public void AttachFile(string session, string application, string documentType, string instanceId, string fieldName, string fileName, Stream fileStream)
         {
             
             var linkedData = new
             {
+                Configuration = application,
+                Metadata = documentType,
                 InstanceId = instanceId,
                 FieldName = fieldName,
                 FileName = fileName,

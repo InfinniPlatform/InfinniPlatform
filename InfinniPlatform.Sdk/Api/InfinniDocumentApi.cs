@@ -66,11 +66,11 @@ namespace InfinniPlatform.Sdk.Api
         /// <param name="fieldName">Наименование поля для присоединения</param>
         /// <param name="fileName">Наименование файла</param>
         /// <param name="fileStream">Файловый поток</param>
-        public void AttachFile(string session, string instanceId, string fieldName, string fileName, Stream fileStream)
+        public void AttachFile(string session, string application, string documentType, string instanceId, string fieldName, string fileName, Stream fileStream)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
-            var response = restQueryExecutor.QueryPostFile(RouteBuilder.BuildRestRoutingUrlDefaultSession(), instanceId, fieldName, fileName, fileStream, session);
+            var response = restQueryExecutor.QueryPostFile(RouteBuilder.BuildRestRoutingUrlDefaultSession(), application, documentType, instanceId, fieldName, fileName, fileStream, session);
 
             ProcessAsObjectResult(response, string.Format(Resources.UnableToAttachFileToSession, response.GetErrorContent()));            
         }

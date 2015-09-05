@@ -68,7 +68,7 @@ namespace InfinniPlatform.Sdk.Tests
 
             using (var fileStream = new FileStream(@"TestData\avatar.gif", FileMode.Open))
             {
-                _documentApi.AttachFile(sessionId, instanceId, "Avatar", "avatar.gif", fileStream);
+                _documentApi.AttachFile(sessionId, "Gameshop", "UserProfile", instanceId, "Avatar", "avatar.gif", fileStream);
             }
 
             _documentApi.SaveSession(sessionId);
@@ -98,7 +98,7 @@ namespace InfinniPlatform.Sdk.Tests
 
             using (var fileStream = new FileStream(@"TestData\avatar.gif", FileMode.Open))
             {
-                _documentApi.AttachFile(sessionId, instanceId, "Avatar", "avatar.gif", fileStream);
+                _documentApi.AttachFile(sessionId, "Gameshop", "UserProfile", instanceId, "Avatar", "avatar.gif", fileStream);
             }
 
             _documentApi.DetachFile(sessionId, instanceId, "Avatar");
