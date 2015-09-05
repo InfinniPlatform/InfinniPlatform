@@ -14,13 +14,12 @@ namespace InfinniPlatform.Sdk.ApiContracts
         /// </summary>
         /// <param name="application">Приложение</param>
         /// <param name="documentType">Идентификатор документа</param>
-        /// <param name="instanceId">Экземпляр документа</param>
+        /// <param name="documentId"></param>
         /// <param name="fieldName">Наименование поля в документе, хранящее ссылку на файл</param>
         /// <param name="fileName">Наименование файла</param>
         /// <param name="fileStream">Файловый поток</param>
         /// <returns>Результат загрузки файла на сервер</returns>
-        dynamic UploadFile(string application, string documentType, string instanceId, string fieldName, string fileName,
-            Stream fileStream);
+        dynamic UploadFile(string application, string documentType, string documentId, string fieldName, string fileName, Stream fileStream);
 
         /// <summary>
         ///   Загрузить файл с сервера

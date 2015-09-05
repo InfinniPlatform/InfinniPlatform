@@ -12,10 +12,9 @@ namespace InfinniPlatform.Api.RestApi.Public
 {
     public class FileApi : IFileApi
     {
-        public dynamic UploadFile(string application, string documentType, string instanceId, string fieldName, string fileName,
-            Stream fileStream)
+        public dynamic UploadFile(string application, string documentType, string documentId, string fieldName, string fileName, Stream fileStream)
         {
-            return new UploadApi().UploadBinaryContent(application, documentType, instanceId,
+            return new UploadApi().UploadBinaryContent(application, documentType, documentId,
                 fieldName, fileName, fileStream);
         }
 

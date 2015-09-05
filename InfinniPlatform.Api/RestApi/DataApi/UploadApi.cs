@@ -11,19 +11,19 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 	    /// <summary>
 	    ///     Выгрузить на сервер бинарный контент
 	    /// </summary>
+	    /// <param name="applicationId">Идентификатор приложения</param>
 	    /// <param name="metadataType">Идентификатор типа документа</param>
-	    /// <param name="instanceId">Идентификатор экземпляра</param>
+	    /// <param name="documentId"></param>
 	    /// <param name="fieldName">Поле, содержащее ссылку на бинарный контент</param>
 	    /// <param name="filePath">Путь к загружаемому файлу</param>
-	    /// <param name="applicationId">Идентификатор приложения</param>
 	    /// <returns>Результат загрузки файла</returns>
-	    public dynamic UploadBinaryContent(string applicationId, string metadataType, string instanceId, string fieldName, string filePath)
+	    public dynamic UploadBinaryContent(string applicationId, string metadataType, string documentId, string fieldName, string filePath)
         {
             var linkedData = new
             {
                 Configuration = applicationId,
                 MetadataType =  metadataType,
-                InstanceId = instanceId,
+                DocumentId = documentId,
                 FieldName = fieldName
             };
 
@@ -31,24 +31,23 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                 RestQueryApi.QueryPostFile("RestfulApi", "configuration", "uploadbinarycontent", linkedData, filePath).ToDynamic();
         }
 
-        /// <summary>
-        ///     Выгрузить на сервер бинарный контент
-        /// </summary>
-        /// <param name="applicationId">Идентификатор приложения</param>
-        /// <param name="instanceId">Идентификатор экземпляра</param>
-        /// <param name="fieldName">Поле, содержащее ссылку на бинарный контент</param>
-        /// <param name="fileName">Путь к загружаемому файлу</param>
-        /// <param name="stream">Результат загрузки файла</param>
-        /// <param name="metadataType">Идентификатор типа документа</param>
-        /// <returns>Результат загрузки файла</returns>
-        public dynamic UploadBinaryContent(string applicationId, string metadataType, string instanceId, string fieldName,
-            string fileName, Stream stream)
+	    /// <summary>
+	    ///     Выгрузить на сервер бинарный контент
+	    /// </summary>
+	    /// <param name="applicationId">Идентификатор приложения</param>
+	    /// <param name="documentType"></param>
+	    /// <param name="documentId"></param>
+	    /// <param name="fieldName">Поле, содержащее ссылку на бинарный контент</param>
+	    /// <param name="fileName">Путь к загружаемому файлу</param>
+	    /// <param name="stream">Результат загрузки файла</param>
+	    /// <returns>Результат загрузки файла</returns>
+	    public dynamic UploadBinaryContent(string applicationId, string documentType, string documentId, string fieldName, string fileName, Stream stream)
 		{			
 			var linkedData = new
 			{
                 Configuration = applicationId,
-                Metadata = metadataType,
-                InstanceId = instanceId,
+                Metadata = documentType,
+                DocumentId = documentId,
 				FieldName = fieldName,
                 FileName = fileName
 			};

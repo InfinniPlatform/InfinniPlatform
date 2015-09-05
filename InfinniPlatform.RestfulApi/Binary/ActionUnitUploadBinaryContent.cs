@@ -45,7 +45,7 @@ namespace InfinniPlatform.RestfulApi.Binary
         public void Action(IUploadContext target)
         {
             dynamic documentWithBinaryField =
-		                target.Context.GetComponent<DocumentApi>().GetDocument(target.LinkedData.InstanceId);
+		                target.Context.GetComponent<DocumentApi>().GetDocument(target.LinkedData.DocumentId);
 
             if (documentWithBinaryField == null)
             {

@@ -20,18 +20,17 @@ namespace InfinniPlatform.Sdk.Api
         /// </summary>
         /// <param name="application">Приложение</param>
         /// <param name="documentType">Идентификатор документа</param>
-        /// <param name="instanceId">Экземпляр документа</param>
+        /// <param name="documentId"></param>
         /// <param name="fieldName">Наименование поля в документе, хранящее ссылку на файл</param>
         /// <param name="fileName">Наименование файла</param>
         /// <param name="fileStream">Файловый поток</param>
         /// <returns>Результат загрузки файла на сервер</returns>
-        public dynamic UploadFile(string application, string documentType, string instanceId, string fieldName, string fileName,
-            Stream fileStream)
+        public dynamic UploadFile(string application, string documentType, string documentId, string fieldName, string fileName, Stream fileStream)
         {
             var restQueryExecutor = new RequestExecutor(CookieContainer);
 
 
-            var response = restQueryExecutor.QueryPostFile(RouteBuilder.BuildRestRoutingUploadFile(), application, documentType, instanceId, fieldName, fileName, fileStream);
+            var response = restQueryExecutor.QueryPostFile(RouteBuilder.BuildRestRoutingUploadFile(), application, documentType, documentId, fieldName, fileName, fileStream);
 
             return ProcessAsObjectResult(response,string.Format(Resources.UnableToUploadFileOnServer, response.GetErrorContent()));   
         }
