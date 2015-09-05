@@ -112,9 +112,9 @@ namespace InfinniPlatform.RestfulApi.Binary
 
             new BinaryManager(target.Context.GetComponent<IBlobStorageComponent>().GetBlobStorage())
                 .SaveBinary(new[] {documentWithBinaryField},
-                            documentWithBinaryField.__ConfigId,
-                            target.Context.GetVersion(documentWithBinaryField.__ConfigId,target.UserName),
-                            documentWithBinaryField.__DocumentId,
+                            target.LinkedData.Configuration,
+                            target.Context.GetVersion(target.LinkedData.Configuration, target.UserName),
+                            target.LinkedData.Metadata,
                             target.LinkedData.FieldName, _fileContent);
         }
     }
