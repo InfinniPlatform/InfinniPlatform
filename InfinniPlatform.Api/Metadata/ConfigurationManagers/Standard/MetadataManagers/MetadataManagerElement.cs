@@ -118,6 +118,11 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 
                 dynamic metadataContainer = GetMetadataContainer(element.Name);
 
+                if (metadataContainer == null)
+                {
+                    return;
+                }
+
                 RestQueryApi.QueryPostRaw("SystemConfig", RootMetadataIndex, "changemetadata", _parentUid,
                     configurationBody);
 
@@ -169,14 +174,8 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
                 throw new ArgumentException("metadata name should be specified!");
             }
 
-            //ищем существующий объект метаданных в конфигурации
-            dynamic container = GetMetadataContainer(updatingMetadata.Name);
-
-            object body;
-            
-
             //иначе создаем новое 
-            body = new AddCollectionItem(_metadataContainerName, metadataHeader, _version);
+            var body = new AddCollectionItem(_metadataContainerName, metadataHeader, _version);
 
             DeleteItem(updatingMetadata);
 
@@ -200,12 +199,17 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
         /// <returns>Контейнер меню</returns>
         private dynamic GetMetadataContainer(string metadataName)
         {
+            if (metadataName == null)
+            {
+                return null;
+            }
+
             var metadata = MetadataReader.GetItems().ToList();
             dynamic result = new DynamicWrapper();
             result.Index = -1;
 
             var metadataObject =
-                metadata.FirstOrDefault(m => m.Name.ToLowerInvariant() == metadataName.ToLowerInvariant());
+                metadata.FirstOrDefault(m => m.Name != null && m.Name.ToLowerInvariant() == metadataName.ToLowerInvariant());
 
             if (metadataObject != null)
             {
