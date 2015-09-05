@@ -211,6 +211,25 @@ namespace InfinniPlatform.Sdk.Api
                 string.Format(Resources.UnableToGetDocument, response.GetErrorContent()));
         }
 
+        public long GetNumberOfDocuments(string applicationId, string documentType, Action<FilterBuilder> filter)
+        {
+            var restQueryExecutor = new RequestExecutor(CookieContainer);
+
+            var routeBuilder = new RouteBuilder(Server, Port, Route);
+
+            var filterBuilder = new FilterBuilder();
+            if (filter != null)
+            {
+                filter.Invoke(filterBuilder);
+            }
+
+            var response = restQueryExecutor.QueryGet(routeBuilder.BuildRestRoutingUrlDefaultCount(applicationId, documentType),
+                RequestExecutorExtensions.CreateQueryStringCount(filterBuilder.GetFilter()));
+
+            return ProcessAsObjectResult(response,
+                string.Format(Resources.UnableToGetDocument, response.GetErrorContent()));
+        }
+
         /// <summary>
         ///   Вставить или полностью заменить существующий документ
         /// </summary>

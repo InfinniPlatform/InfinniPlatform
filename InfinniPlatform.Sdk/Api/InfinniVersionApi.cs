@@ -29,7 +29,7 @@ namespace InfinniPlatform.Sdk.Api
 
             var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingUrlVersion(userName));
 
-            return ProcessAsArrayResult(response, string.Format(Resources.FailToGetIrrelevantVersions, response.GetErrorContent())); 
+            return ProcessAsObjectResult(response, string.Format(Resources.FailToGetIrrelevantVersions, response.GetErrorContent())); 
         }
 
 

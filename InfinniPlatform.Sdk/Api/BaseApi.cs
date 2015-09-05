@@ -46,19 +46,6 @@ namespace InfinniPlatform.Sdk.Api
             return null;
         }
 
-
-        /// <summary>
-        ///  Обработать результат выполнения запроса как массив
-        /// </summary>
-        /// <param name="response">Результат выполнения запроса</param>
-        /// <param name="exceptionMessage">Сообщение в случае ошибки выполнения запроса</param>
-        /// <returns>Список объектов результата</returns>
-        protected IEnumerable<dynamic> ProcessAsArrayResult(RestQueryResponse response, string exceptionMessage)
-        {
-            return ProcessRequestResult(response, () => JArray.Parse(response.Content.Remove(0, 1)), () => Resources.ResultIsNotOfArrayType, () => exceptionMessage);   
-        }
-
-
         /// <summary>
         ///   Обработать результат выполнения запроса
         /// </summary>

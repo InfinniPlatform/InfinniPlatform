@@ -214,6 +214,19 @@ namespace InfinniPlatform.Sdk
         }
 
         /// <summary>
+        ///   Получить роутинг запроса для стандартного запроса количества документов указанного типа
+        /// </summary>
+        /// <param name="application">Приложение</param>
+        /// <param name="documentType">Тип документа</param>
+        /// <returns>Роутинг для стандартного запроса количества документов указанного типа</returns>
+        public string BuildRestRoutingUrlDefaultCount(string application, string documentType)
+        {
+            return GetCompleteUrl(GetRestTemplateStandardCount()
+                                        .ReplaceFormat("application", application)
+                                        .ReplaceFormat("documentType", documentType));
+        }
+
+        /// <summary>
         ///   Сформировать роутинг запроса для стандартного запроса документа указанного типа с указанным идентификатором
         /// </summary>
         /// <param name="application">Приложение</param>
@@ -481,6 +494,15 @@ namespace InfinniPlatform.Sdk
         private string GetRestTemplateStandard()
         {
             return GetBaseApplicationPath() + "/{documentType}";
+        }
+
+        /// <summary>
+        ///   Получить шаблон стандартного запроса для получения количества документов
+        /// </summary>
+        /// <returns>Шаблон роутинга запроса</returns>
+        private string GetRestTemplateStandardCount()
+        {
+            return GetBaseApplicationPath() + "/{documentType}/$count/";
         }
 
         /// <summary>

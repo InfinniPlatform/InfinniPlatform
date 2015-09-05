@@ -23,6 +23,7 @@ namespace InfinniPlatform.WebApi.Middleware
         {
             RegisterHandler(new GetDocumentByIdHandlerRegistration());
             RegisterHandler(new GetDocumentHandlerRegistration());
+            RegisterHandler(new GetDocumentCountHandlerRegistration());
             RegisterHandler(new DeleteDocumentHandlerRegistration());
             RegisterHandler(new ChangePasswordHandlerRegistration());
             RegisterHandler(new CustomServiceRegistrationHandler());

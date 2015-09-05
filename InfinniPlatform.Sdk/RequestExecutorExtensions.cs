@@ -8,5 +8,10 @@ namespace InfinniPlatform.Sdk
         {
             return string.Format("filter={0}&pageNumber={1}&pageSize={2}&sorting={3}",string.Join(" and ", filter), pageNumber, pageSize, string.Join(" and ", sorting));
         }
+
+        public static string CreateQueryStringCount(IEnumerable<string> filter)
+        {
+            return string.Format("$filter={0}", string.Join(" and ", filter));
+        }
     }
 }

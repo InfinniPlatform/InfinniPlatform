@@ -82,6 +82,23 @@ namespace InfinniPlatform.Sdk.Tests
         }
 
         [Test]
+        public void ShouldGetNumberOfDocuments()
+        {
+            var documentObject = new
+            {
+                Name = "gta vice city",
+                Price = 1000.50
+            };
+
+            var result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
+
+            var docCount = _api.GetNumberOfDocuments("gameshop", "catalogue",
+                f => f.AddCriteria(cr => cr.Property("Id").IsEquals(result)));
+
+            Assert.AreEqual(1, docCount);
+        }
+
+        [Test]
         public void ShouldGetDocumentLessThanPrice()
         {
             var documentObject = new

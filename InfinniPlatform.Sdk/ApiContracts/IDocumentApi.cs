@@ -127,5 +127,14 @@ namespace InfinniPlatform.Sdk.ApiContracts
         /// <param name="instanceId">Идентификатор экземпляра документа</param>
         /// <returns>Результат удаления документа</returns>
         dynamic DeleteDocument(string applicationId, string documentType, string instanceId);
+
+        /// <summary>
+        ///  Получить количество документов по указанному фильтру
+        /// </summary>
+        /// <param name="applicationId">Идентификатор приложения</param>
+        /// <param name="documentType">Идентификатор типа документа</param>
+        /// <param name="filter">Фильтр документов</param>
+        /// <returns>Количество документов</returns>
+        long GetNumberOfDocuments(string applicationId, string documentType, Action<FilterBuilder> filter);
     }
 }

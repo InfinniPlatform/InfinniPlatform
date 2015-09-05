@@ -91,6 +91,11 @@ namespace InfinniPlatform.Api.RestApi.Public
                 pageSize,null, new SortingConverter().ConvertToInternal(sorting));
         }
 
+        public long GetNumberOfDocuments(string applicationId, string documentType, Action<FilterBuilder> filter)
+        {
+            return new DataApi.DocumentApi().GetNumberOfDocuments(applicationId, documentType, new FilterConverter().ConvertToInternal(filter));
+        }
+
         public dynamic SetDocument(string applicationId, string documentType, object document)
         {
 
@@ -111,5 +116,7 @@ namespace InfinniPlatform.Api.RestApi.Public
         {
             return new DataApi.DocumentApi().DeleteDocument(applicationId, documentType, instanceId);
         }
+
+
     }
 }

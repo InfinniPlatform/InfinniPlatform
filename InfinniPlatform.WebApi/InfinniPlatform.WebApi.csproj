@@ -139,6 +139,7 @@
     <Compile Include="Middleware\StandardHandlers\FileDownloadHandlerRegistration.cs" />
     <Compile Include="Middleware\StandardHandlers\FileUploadHandlerRegistration.cs" />
     <Compile Include="Middleware\StandardHandlers\GetDocumentByIdHandlerRegistration.cs" />
+    <Compile Include="Middleware\StandardHandlers\GetDocumentCountHandlerRegistration.cs" />
     <Compile Include="Middleware\StandardHandlers\GetDocumentHandlerRegistration.cs" />
     <Compile Include="Middleware\StandardHandlers\GrantAccessHandlerRegistration.cs" />
     <Compile Include="Middleware\StandardHandlers\SetDocumentHandlerRegistration.cs" />
