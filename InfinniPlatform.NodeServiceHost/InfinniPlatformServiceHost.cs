@@ -2,13 +2,13 @@
 using System.ComponentModel.Composition;
 using System.Threading;
 
-using InfinniPlatform.Api.Settings;
 using InfinniPlatform.BlobStorage;
 using InfinniPlatform.Cassandra.Client;
 using InfinniPlatform.EventStorage;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Modules;
 using InfinniPlatform.NodeServiceHost.Properties;
+using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.SystemConfig.Initializers;
 
 namespace InfinniPlatform.NodeServiceHost

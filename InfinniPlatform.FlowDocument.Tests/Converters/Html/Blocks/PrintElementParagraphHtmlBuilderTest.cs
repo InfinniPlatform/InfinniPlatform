@@ -36,7 +36,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Converters.Html.Blocks
 
             var run = new PrintElementRun();
             run.Text = "Проверка текста. ";
-            run.Font = new PrintElementFont()
+            run.Font = new PrintElementFont
             {
                 Family = "Courier New",
                 Size = 30

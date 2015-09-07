@@ -28,10 +28,10 @@ namespace InfinniPlatform.FlowDocument.Tests.Converters.Html
             var image180 = new PrintElementImage(_getStream(Resources.ImageRotate180));
             var image270 = new PrintElementImage(_getStream(Resources.ImageRotate270));
 
-            image0.Size = new PrintElementSize() { Height = 50, Width = 150 };
-            image90.Size = new PrintElementSize() { Height = 150, Width = 50 };
-            image180.Size = new PrintElementSize() { Height = 50, Width = 150 };
-            image270.Size = new PrintElementSize() { Height = 150, Width = 50 };
+            image0.Size = new PrintElementSize {Height = 50, Width = 150};
+            image90.Size = new PrintElementSize {Height = 150, Width = 50};
+            image180.Size = new PrintElementSize {Height = 50, Width = 150};
+            image270.Size = new PrintElementSize {Height = 150, Width = 50};
 
             var par1 = new PrintElementParagraph();
 
@@ -40,16 +40,16 @@ namespace InfinniPlatform.FlowDocument.Tests.Converters.Html
             par1.Inlines.Add(image180);
             par1.Inlines.Add(image270);
 
-            var runNormal = new PrintElementRun() { Text = "Normal" };
-            var runSubscript = new PrintElementRun()
+            var runNormal = new PrintElementRun {Text = "Normal"};
+            var runSubscript = new PrintElementRun
             {
                 Text = "Subscript",
-                Font = new PrintElementFont() { Variant = PrintElementFontVariant.Subscript }
+                Font = new PrintElementFont {Variant = PrintElementFontVariant.Subscript}
             };
-            var runSuperscript = new PrintElementRun()
+            var runSuperscript = new PrintElementRun
             {
                 Text = "Superscript",
-                Font = new PrintElementFont() { Variant = PrintElementFontVariant.Superscript }
+                Font = new PrintElementFont {Variant = PrintElementFontVariant.Superscript}
             };
 
             var par2 = new PrintElementParagraph();
@@ -58,7 +58,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Converters.Html
             par2.Inlines.Add(runSubscript);
             par2.Inlines.Add(runSuperscript);
 
-            var run = new PrintElementRun() { Text = "White Foreground & Black Background" };
+            var run = new PrintElementRun {Text = "White Foreground & Black Background"};
 
             var par3 = new PrintElementParagraph();
 
@@ -80,6 +80,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Converters.Html
             //Then
             Assert.AreEqual(Resources.ResultTestShouldBuildDocumentWithContents, result.GetText());
         }
+
         private Stream _getStream(Bitmap image)
         {
             var stream = new MemoryStream();

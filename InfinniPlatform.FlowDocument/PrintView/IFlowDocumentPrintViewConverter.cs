@@ -2,6 +2,7 @@
 
 using InfinniPlatform.Api.PrintView;
 using InfinniPlatform.FlowDocument.Model.Views;
+using InfinniPlatform.Sdk.Environment;
 
 namespace InfinniPlatform.FlowDocument.PrintView
 {

@@ -16,11 +16,11 @@ namespace InfinniPlatform.FlowDocument.Tests.Converters.Html.Inlines
             var element = new PrintElementSpan();
             var result = new TextWriterWrapper();
 
-            var inline1 = new PrintElementRun { Text = "Inline1. " };
-            var inline2 = new PrintElementRun { Text = "Inline2. " };
+            var inline1 = new PrintElementRun {Text = "Inline1. "};
+            var inline2 = new PrintElementRun {Text = "Inline2. "};
 
             //When
-            element.Inlines.Add(inline1); 
+            element.Inlines.Add(inline1);
             element.Inlines.Add(inline2);
 
             context.Build(element, result.Writer);

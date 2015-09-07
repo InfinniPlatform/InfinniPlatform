@@ -16,7 +16,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Converters.Html.Inlines
             var element = new PrintElementUnderline();
             var result = new TextWriterWrapper();
 
-            var run = new PrintElementRun { Text = "Underline Text." };
+            var run = new PrintElementRun {Text = "Underline Text."};
 
             //When
             element.Inlines.Add(run);

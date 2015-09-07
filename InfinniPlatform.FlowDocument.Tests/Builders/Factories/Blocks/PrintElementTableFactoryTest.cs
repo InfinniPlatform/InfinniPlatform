@@ -1,9 +1,7 @@
 ﻿using System.Linq;
-
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.FlowDocument.Model.Blocks;
 using InfinniPlatform.FlowDocument.Model.Inlines;
-
+using InfinniPlatform.Sdk.Dynamic;
 using NUnit.Framework;
 
 namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
@@ -25,24 +23,24 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
             dynamic tableCell11 = CreateTableCellByText("11");
             dynamic tableCell12 = CreateTableCellByText("12");
             dynamic tableCell13 = CreateTableCellByText("13");
-            tableRow1.Cells = new[] { tableCell11, tableCell12, tableCell13 };
+            tableRow1.Cells = new[] {tableCell11, tableCell12, tableCell13};
 
             dynamic tableRow2 = new DynamicWrapper();
             dynamic tableCell21 = CreateTableCellByText("21");
             dynamic tableCell22 = CreateTableCellByText("22");
             dynamic tableCell23 = CreateTableCellByText("23");
-            tableRow2.Cells = new[] { tableCell21, tableCell22, tableCell23 };
+            tableRow2.Cells = new[] {tableCell21, tableCell22, tableCell23};
 
             dynamic tableRow3 = new DynamicWrapper();
             dynamic tableCell31 = CreateTableCellByText("31");
             dynamic tableCell32 = CreateTableCellByText("32");
             dynamic tableCell33 = CreateTableCellByText("33");
-            tableRow3.Cells = new[] { tableCell31, tableCell32, tableCell33 };
+            tableRow3.Cells = new[] {tableCell31, tableCell32, tableCell33};
 
             dynamic elementMetadata = new DynamicWrapper();
             elementMetadata.ShowHeader = false;
-            elementMetadata.Columns = new[] { tableColumn1, tableColumn2, tableColumn3 };
-            elementMetadata.Rows = new[] { tableRow1, tableRow2, tableRow3 };
+            elementMetadata.Columns = new[] {tableColumn1, tableColumn2, tableColumn3};
+            elementMetadata.Rows = new[] {tableRow1, tableRow2, tableRow3};
 
             // When
             PrintElementTable element = BuildTestHelper.BuildTable(elementMetadata);
@@ -73,11 +71,11 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
             // Given
 
             object source = new[]
-			                {
-				                new { Property1 = "11", Property2 = "12", Property3 = "13" },
-				                new { Property1 = "21", Property2 = "22", Property3 = "23" },
-				                new { Property1 = "31", Property2 = "32", Property3 = "33" }
-			                };
+            {
+                new {Property1 = "11", Property2 = "12", Property3 = "13"},
+                new {Property1 = "21", Property2 = "22", Property3 = "23"},
+                new {Property1 = "31", Property2 = "32", Property3 = "33"}
+            };
 
             dynamic tableColumn1 = new DynamicWrapper();
             tableColumn1.Header = CreateTableCellByText("Header1");
@@ -92,11 +90,11 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
             tableColumn3.CellTemplate = CreateTableCellBySource("Property3");
 
             dynamic elementMetadata = new DynamicWrapper();
-            elementMetadata.Columns = new[] { tableColumn1, tableColumn2, tableColumn3 };
+            elementMetadata.Columns = new[] {tableColumn1, tableColumn2, tableColumn3};
             elementMetadata.Source = "$";
 
             // When
-            PrintElementTable element = BuildTestHelper.BuildTable((object)elementMetadata, c => { c.PrintViewSource = source; });
+            var element = BuildTestHelper.BuildTable((object) elementMetadata, c => { c.PrintViewSource = source; });
 
             // Then
 
@@ -140,10 +138,10 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
 
             dynamic elementMetadata = new DynamicWrapper();
             elementMetadata.ShowHeader = false;
-            elementMetadata.Columns = new[] { tableColumn1, tableColumn2, tableColumn3 };
+            elementMetadata.Columns = new[] {tableColumn1, tableColumn2, tableColumn3};
 
             // When
-            PrintElementTable element = BuildTestHelper.BuildTable((object)elementMetadata, c => { c.ElementWidth = 60; });
+            var element = BuildTestHelper.BuildTable((object) elementMetadata, c => { c.ElementWidth = 60; });
 
             // Then
             Assert.IsNotNull(element);
@@ -152,7 +150,6 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
             Assert.AreEqual(20, element.Columns[1].Size);
             Assert.AreEqual(29, element.Columns[2].Size);
         }
-
 
         private static dynamic CreateTableCellByText(string cellText)
         {
@@ -173,7 +170,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
 
             dynamic cellParagraph = new DynamicWrapper();
             cellParagraph.Paragraph = new DynamicWrapper();
-            cellParagraph.Paragraph.Inlines = new[] { cellRun };
+            cellParagraph.Paragraph.Inlines = new[] {cellRun};
 
             dynamic cell = new DynamicWrapper();
             cell.Block = cellParagraph;
@@ -181,10 +178,10 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
             return cell;
         }
 
-
         private static void AssertTableCell(PrintElementTable table, int row, int column, string text)
         {
-            Assert.AreEqual(text, ((PrintElementRun)((PrintElementParagraph)table.Rows[row].Cells[column].Block).Inlines.First()).Text);
+            Assert.AreEqual(text,
+                ((PrintElementRun) ((PrintElementParagraph) table.Rows[row].Cells[column].Block).Inlines.First()).Text);
         }
     }
 }

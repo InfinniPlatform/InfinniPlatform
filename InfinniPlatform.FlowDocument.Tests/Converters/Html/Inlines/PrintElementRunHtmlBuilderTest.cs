@@ -14,15 +14,14 @@ namespace InfinniPlatform.FlowDocument.Tests.Converters.Html.Inlines
         {
             //Given
             var context = HtmlBuilderTestHelper.CreateHtmlBuilderContext();
-            var element = new PrintElementRun()
+            var element = new PrintElementRun
             {
                 Text = "Здесь много текста",
-                Font = new PrintElementFont()
+                Font = new PrintElementFont
                 {
                     Family = "Tahoma",
                     Size = 30
                 }
-
             };
             var result = new TextWriterWrapper();
 
