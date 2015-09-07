@@ -1,18 +1,12 @@
-﻿using System.Windows.Documents;
+﻿using InfinniPlatform.FlowDocument.Model.Blocks;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 {
-    internal sealed class PrintElementPageBreakFactory : IPrintElementFactory
+    sealed class PrintElementPageBreakFactory : IPrintElementFactory
     {
         public object Create(PrintElementBuildContext buildContext, dynamic elementMetadata)
         {
-            var element = new Paragraph
-            {
-                FontSize = 0.1,
-                Margin = BuildHelper.DefaultMargin,
-                Padding = BuildHelper.DefaultPadding,
-                BreakPageBefore = true
-            };
+            var element = new PrintElementPageBreak();
 
             BuildHelper.ApplyTextProperties(element, buildContext.ElementStyle);
             BuildHelper.ApplyTextProperties(element, elementMetadata);

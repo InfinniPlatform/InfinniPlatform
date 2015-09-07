@@ -1,25 +1,26 @@
-﻿using System.Windows.Documents;
-using InfinniPlatform.Sdk.Dynamic;
+﻿using InfinniPlatform.Api.Dynamic;
+using InfinniPlatform.FlowDocument.Model;
+using InfinniPlatform.FlowDocument.Model.Blocks;
 using NUnit.Framework;
 
 namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
 {
-    [TestFixture]
-    [Category(TestCategories.UnitTest)]
-    public sealed class PrintElementPageBreakFactoryTest
-    {
-        [Test]
-        public void ShouldBuild()
-        {
-            // Given
-            dynamic elementMetadata = new DynamicWrapper();
+	[TestFixture]
+	[Category(TestCategories.UnitTest)]
+	public sealed class PrintElementPageBreakFactoryTest
+	{
+		[Test]
+		public void ShouldBuild()
+		{
+			// Given
+			dynamic elementMetadata = new DynamicWrapper();
 
-            // When
-            Block element = BuildTestHelper.BuildPageBreak(elementMetadata);
+			// When
+			PrintElementBlock element = BuildTestHelper.BuildPageBreak(elementMetadata);
 
-            // Then
-            Assert.IsNotNull(element);
-            Assert.IsTrue(element.BreakPageBefore);
-        }
-    }
+			// Then
+			Assert.IsNotNull(element);
+            Assert.IsInstanceOf<PrintElementPageBreak>(element);
+		}
+	}
 }

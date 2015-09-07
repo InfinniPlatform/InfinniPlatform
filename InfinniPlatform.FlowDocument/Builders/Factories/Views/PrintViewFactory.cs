@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows;
-using FrameworkFlowDocument = System.Windows.Documents.FlowDocument;
+using InfinniPlatform.FlowDocument.Model;
+using InfinniPlatform.FlowDocument.Model.Font;
+using InfinniPlatform.FlowDocument.Model.Views;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Views
 {
-    internal sealed class PrintViewFactory : IPrintElementFactory
+    sealed class PrintViewFactory : IPrintElementFactory
     {
         public object Create(PrintElementBuildContext buildContext, dynamic elementMetadata)
         {
-            var element = new FrameworkFlowDocument
-            {
-                FontFamily = BuildHelper.DefautlFontFamily
-            };
+            var element = new PrintViewDocument
+                          {
+                              Font = new PrintElementFont { Family = BuildHelper.DefautlFontFamily }
+                          };
 
             // Установка стилей печатного представления
             ApplyPrintViewStyles(buildContext, elementMetadata.Styles);
@@ -27,7 +28,6 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Views
 
             // Настройка размеров колонки печатного представления
             var contentWidth = CalcContentWidth(element);
-            element.ColumnWidth = contentWidth;
 
             // Генерация содержимого печатного представления
 
@@ -36,7 +36,10 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Views
 
             if (blocks != null)
             {
-                element.Blocks.AddRange(blocks);
+                foreach (var block in blocks)
+                {
+                    element.Blocks.Add(block);
+                }
             }
 
             BuildHelper.PostApplyTextProperties(element, buildContext.ElementStyle);
@@ -44,6 +47,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Views
 
             return element;
         }
+
 
         private static void ApplyPrintViewStyles(PrintElementBuildContext buildContext, dynamic styles)
         {
@@ -65,11 +69,11 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Views
             }
         }
 
-        private static void ApplyPageSize(FrameworkFlowDocument element, dynamic pageSize)
+        private static void ApplyPageSize(PrintViewDocument element, dynamic pageSize)
         {
             // По умолчанию размер страницы A4
-            const double pageWidthA4 = 21.0*SizeUnits.Cm;
-            const double pageHeightA4 = 29.7*SizeUnits.Cm;
+            const double pageWidthA4 = 21.0 * SizeUnits.Cm;
+            const double pageHeightA4 = 29.7 * SizeUnits.Cm;
 
             var pageWidth = pageWidthA4;
             var pageHeight = pageHeightA4;
@@ -87,31 +91,30 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Views
                 }
             }
 
-            element.PageWidth = pageWidth;
-            element.PageHeight = pageHeight;
+            element.PageSize = new PrintElementSize { Width = pageWidth, Height = pageHeight };
         }
 
-        private static void ApplyPagePadding(FrameworkFlowDocument element, dynamic pagePadding)
+        private static void ApplyPagePadding(PrintViewDocument element, dynamic pagePadding)
         {
             // По умолчанию отступ на странице 1см
-            const double pagePadding1Cm = 1.0*SizeUnits.Cm;
+            const double pagePadding1Cm = 1.0 * SizeUnits.Cm;
 
-            Thickness pagePaddingThickness;
+            PrintElementThickness pagePaddingThickness;
 
             if (!BuildHelper.TryToThickness(pagePadding, out pagePaddingThickness))
             {
-                pagePaddingThickness = new Thickness(pagePadding1Cm);
+                pagePaddingThickness = new PrintElementThickness(pagePadding1Cm);
             }
 
             element.PagePadding = pagePaddingThickness;
         }
 
-        private static double CalcContentWidth(FrameworkFlowDocument element)
+        private static double CalcContentWidth(PrintViewDocument element)
         {
-            return Math.Max(element.PageWidth
-                            - element.PagePadding.Left
-                            - element.PagePadding.Right,
-                0);
+            return Math.Max((double)element.PageSize.Width
+                            - (double)element.PagePadding.Left
+                            - (double)element.PagePadding.Right,
+                            0);
         }
     }
 }

@@ -2,24 +2,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Media;
+
+using InfinniPlatform.FlowDocument.Model;
+using InfinniPlatform.FlowDocument.Model.Blocks;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 {
-    internal sealed class PrintElementTableFactory : IPrintElementFactory
+    sealed class PrintElementTableFactory : IPrintElementFactory
     {
         public object Create(PrintElementBuildContext buildContext, dynamic elementMetadata)
         {
-            var element = new Table
+            var element = new PrintElementTable
             {
-                CellSpacing = 0,
-                BorderBrush = Brushes.Black,
-                BorderThickness = new Thickness(1, 1, 0, 0),
+                Border = new PrintElementBorder
+                {
+                    Thickness = new PrintElementThickness(1, 1, 0, 0),
+                    Color = PrintElementColors.Black
+                },
                 Margin = BuildHelper.DefaultMargin,
                 Padding = BuildHelper.DefaultPadding,
-                RowGroups = {new TableRowGroup()}
             };
 
             BuildHelper.ApplyTextProperties(element, buildContext.ElementStyle);
@@ -39,7 +40,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
             if (!ConvertHelper.TryToBool(elementMetadata.ShowHeader, out showHeader) || showHeader)
             {
                 var tableRow = CreateHeaderTableRow(buildContext, element, elementMetadata.Columns);
-                element.RowGroups[0].Rows.Add(tableRow);
+                element.Rows.Add(tableRow);
             }
 
             // Генерация явно объявленных строк таблицы
@@ -54,10 +55,10 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
             {
                 if (HasCellTemplate(elementMetadata.Columns))
                 {
-                    foreach (var rowSource in (IEnumerable) tableSource)
+                    foreach (var rowSource in (IEnumerable)tableSource)
                     {
                         var tableRow = CreateDynamicTableRow(buildContext, element, elementMetadata.Columns, rowSource);
-                        element.RowGroups[0].Rows.Add(tableRow);
+                        element.Rows.Add(tableRow);
                     }
                 }
             }
@@ -68,7 +69,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
                 if (HasCellTemplate(elementMetadata.Columns))
                 {
                     var tableRow = CreateDynamicTableRow(buildContext, element, elementMetadata.Columns, null);
-                    element.RowGroups[0].Rows.Add(tableRow);
+                    element.Rows.Add(tableRow);
                 }
             }
 
@@ -78,18 +79,17 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
             return element;
         }
 
-        private static void CreateTableColumns(PrintElementBuildContext buildContext, Table table, dynamic columns)
+        private static void CreateTableColumns(PrintElementBuildContext buildContext, PrintElementTable table, dynamic columns)
         {
             if (columns != null)
             {
-                var autoWidthAvailable = BuildHelper.CalcContentWidth(buildContext.ElementWidth, table.Margin,
-                    table.Padding, table.BorderThickness);
+                var autoWidthAvailable = BuildHelper.CalcContentWidth(buildContext.ElementWidth, table.Margin, table.Padding, table.Border.Thickness);
                 var autoWidthColumns = 0;
 
                 // Генерация столбцов
                 foreach (var column in columns)
                 {
-                    var tableColumn = new TableColumn();
+                    var tableColumn = new PrintElementTableColumn();
 
                     double sizeInPixels;
 
@@ -108,14 +108,14 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
                             autoWidthAvailable = 0;
                         }
 
-                        tableColumn.Width = new GridLength(sizeInPixels, GridUnitType.Pixel);
+                        tableColumn.Size = sizeInPixels;
                     }
                     // Если размер не указан, он высчитывается автоматически
                     else
                     {
                         ++autoWidthColumns;
 
-                        tableColumn.Width = new GridLength(1, GridUnitType.Star);
+                        tableColumn.Size = null;
                     }
 
                     table.Columns.Add(tableColumn);
@@ -125,22 +125,22 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 
                 if (autoWidthColumns > 0)
                 {
-                    var autoWidth = new GridLength(Math.Max(autoWidthAvailable, 0)/autoWidthColumns, GridUnitType.Pixel);
+                    var autoWidth = Math.Max(autoWidthAvailable, 0) / autoWidthColumns;
 
                     foreach (var tableColumn in table.Columns)
                     {
-                        if (tableColumn.Width.GridUnitType == GridUnitType.Star)
+                        if (tableColumn.Size == null)
                         {
-                            tableColumn.Width = autoWidth;
+                            tableColumn.Size = autoWidth;
                         }
                     }
                 }
             }
         }
 
-        private static TableRow CreateHeaderTableRow(PrintElementBuildContext buildContext, Table table, dynamic columns)
+        private static PrintElementTableRow CreateHeaderTableRow(PrintElementBuildContext buildContext, PrintElementTable table, dynamic columns)
         {
-            var tableRow = new TableRow();
+            var tableRow = new PrintElementTableRow();
 
             if (columns != null)
             {
@@ -159,7 +159,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
             return tableRow;
         }
 
-        private static void CreateStaticTableRows(PrintElementBuildContext buildContext, Table table, dynamic rows)
+        private static void CreateStaticTableRows(PrintElementBuildContext buildContext, PrintElementTable table, dynamic rows)
         {
             if (rows != null)
             {
@@ -169,7 +169,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 
                 foreach (var rowMetadata in rows)
                 {
-                    var tableRow = new TableRow();
+                    var tableRow = new PrintElementTableRow();
 
                     if (rowMetadata != null)
                     {
@@ -186,9 +186,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
                             // Если ячейку не нужно отображать (из-за настроек RowSpan или ColumnSpan)
                             if (!skippedCells.Contains(cellOffset))
                             {
-                                var cellMetadata = (rowMetadata.Cells != null)
-                                    ? Enumerable.ElementAtOrDefault(rowMetadata.Cells, columnIndex)
-                                    : null;
+                                var cellMetadata = (rowMetadata.Cells != null) ? Enumerable.ElementAtOrDefault(rowMetadata.Cells, columnIndex) : null;
                                 var tableCell = CreateTableCell(buildContext, table, columnIndex, cellMetadata, true);
                                 tableRow.Cells.Add(tableCell);
 
@@ -203,15 +201,14 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 
                     buildContext.MapElement(tableRow, rowMetadata);
 
-                    table.RowGroups[0].Rows.Add(tableRow);
+                    table.Rows.Add(tableRow);
 
                     ++rowIndex;
                 }
             }
         }
 
-        private static void AddSkippedCells(ICollection<int> skippedCells, int columnCount, int rowIndex,
-            int columnIndex, dynamic cellMetadata)
+        private static void AddSkippedCells(ICollection<int> skippedCells, int columnCount, int rowIndex, int columnIndex, dynamic cellMetadata)
         {
             if (cellMetadata != null)
             {
@@ -240,7 +237,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 
         private static int GetCellOffset(int columnCount, int rowIndex, int columnIndex)
         {
-            return columnCount*rowIndex + columnIndex;
+            return columnCount * rowIndex + columnIndex;
         }
 
         private static bool HasCellTemplate(dynamic columns)
@@ -259,10 +256,9 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
             return false;
         }
 
-        private static TableRow CreateDynamicTableRow(PrintElementBuildContext buildContext, Table table,
-            dynamic columns, object rowSource)
+        private static PrintElementTableRow CreateDynamicTableRow(PrintElementBuildContext buildContext, PrintElementTable table, dynamic columns, object rowSource)
         {
-            var tableRow = new TableRow();
+            var tableRow = new PrintElementTableRow();
 
             if (columns != null)
             {
@@ -284,15 +280,17 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
             return tableRow;
         }
 
-        private static TableCell CreateTableCell(PrintElementBuildContext buildContext, Table table, int columnIndex,
-            dynamic cellMetadata, bool applySpan)
+        private static PrintElementTableCell CreateTableCell(PrintElementBuildContext buildContext, PrintElementTable table, int columnIndex, dynamic cellMetadata, bool applySpan)
         {
-            var tableCell = new TableCell
+            var tableCell = new PrintElementTableCell
             {
                 ColumnSpan = 1,
                 RowSpan = 1,
-                BorderBrush = Brushes.Black,
-                BorderThickness = new Thickness(0, 0, 1, 1),
+                Border = new PrintElementBorder
+                {
+                    Thickness = new PrintElementThickness(0, 0, 1, 1),
+                    Color = PrintElementColors.Black
+                },
                 Padding = BuildHelper.DefaultPadding
             };
 
@@ -321,19 +319,19 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 
                 for (var i = columnIndex; (i < columnIndex + tableCell.ColumnSpan) && (i < table.Columns.Count); ++i)
                 {
-                    cellWidth += table.Columns[i].Width.Value;
+                    cellWidth += table.Columns[i].Size.Value;
                 }
 
-                cellWidth = BuildHelper.CalcContentWidth(cellWidth, tableCell.Padding, tableCell.BorderThickness);
+                cellWidth = BuildHelper.CalcContentWidth(cellWidth, tableCell.Padding, tableCell.Border.Thickness);
 
                 // Создание содержимого и помещение его в ячейку
 
                 var cellContext = buildContext.Create(cellWidth);
                 var cellContent = buildContext.ElementBuilder.BuildElement(cellContext, cellMetadata.Block);
 
-                if (cellContent is Block)
+                if (cellContent is PrintElementBlock)
                 {
-                    tableCell.Blocks.Add(cellContent);
+                    tableCell.Block = cellContent;
                 }
 
                 // Пост-установка общих свойств для текста

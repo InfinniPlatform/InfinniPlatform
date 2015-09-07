@@ -1,20 +1,19 @@
-﻿using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Media;
+﻿using InfinniPlatform.FlowDocument.Model;
+using InfinniPlatform.FlowDocument.Model.Blocks;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 {
-    internal sealed class PrintElementLineFactory : IPrintElementFactory
+    sealed class PrintElementLineFactory : IPrintElementFactory
     {
         public object Create(PrintElementBuildContext buildContext, dynamic elementMetadata)
         {
-            var element = new Paragraph
+            var element = new PrintElementLine
             {
-                FontSize = 0.1,
-                Margin = BuildHelper.DefaultMargin,
-                Padding = BuildHelper.DefaultPadding,
-                BorderBrush = Brushes.Black,
-                BorderThickness = new Thickness(0, 0, 0, 1)
+                Border = new PrintElementBorder
+                {
+                    Thickness = new PrintElementThickness(0, 0, 0, 1),
+                    Color = "Black"
+                }
             };
 
             BuildHelper.ApplyTextProperties(element, buildContext.ElementStyle);

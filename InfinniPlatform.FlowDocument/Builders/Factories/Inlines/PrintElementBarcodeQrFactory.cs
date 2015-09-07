@@ -2,44 +2,49 @@
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 {
-    internal sealed class PrintElementBarcodeQrFactory : PrintElementBarcodeBaseFactory
-    {
-        protected override BarcodeBase CreateBarcode(dynamic elementMetadata)
-        {
-            var barcode = new BarcodeQR();
-            ApplyErrorCorrection(barcode, elementMetadata.ErrorCorrection);
+	sealed class PrintElementBarcodeQrFactory : PrintElementBarcodeBaseFactory
+	{
+		protected override BarcodeBase CreateBarcode(dynamic elementMetadata)
+		{
+			var barcode = new BarcodeQR();
+			ApplyErrorCorrection(barcode, elementMetadata.ErrorCorrection);
 
-            return barcode;
-        }
+			return barcode;
+		}
 
-        protected override string PrepareText(string barcodeText)
-        {
-            return barcodeText;
-        }
+		protected override string PrepareText(string barcodeText)
+		{
+		    if (!string.IsNullOrEmpty(barcodeText))
+		    {
+		        return barcodeText;
+		    }
 
-        private static void ApplyErrorCorrection(BarcodeQR barcode, dynamic errorCorrection)
-        {
-            string errorCorrectionString;
-            ConvertHelper.TryToNormString(errorCorrection, out errorCorrectionString);
+			return "0";
+		}
 
-            switch (errorCorrectionString)
-            {
-                case "low":
-                    barcode.ErrorCorrection = QRCodeErrorCorrection.L;
-                    break;
-                case "medium":
-                    barcode.ErrorCorrection = QRCodeErrorCorrection.M;
-                    break;
-                case "quartile":
-                    barcode.ErrorCorrection = QRCodeErrorCorrection.Q;
-                    break;
-                case "high":
-                    barcode.ErrorCorrection = QRCodeErrorCorrection.H;
-                    break;
-                default:
-                    barcode.ErrorCorrection = QRCodeErrorCorrection.L;
-                    break;
-            }
-        }
-    }
+		private static void ApplyErrorCorrection(BarcodeQR barcode, dynamic errorCorrection)
+		{
+			string errorCorrectionString;
+			ConvertHelper.TryToNormString(errorCorrection, out errorCorrectionString);
+
+			switch (errorCorrectionString)
+			{
+				case "low":
+					barcode.ErrorCorrection = QRCodeErrorCorrection.L;
+					break;
+				case "medium":
+					barcode.ErrorCorrection = QRCodeErrorCorrection.M;
+					break;
+				case "quartile":
+					barcode.ErrorCorrection = QRCodeErrorCorrection.Q;
+					break;
+				case "high":
+					barcode.ErrorCorrection = QRCodeErrorCorrection.H;
+					break;
+				default:
+					barcode.ErrorCorrection = QRCodeErrorCorrection.L;
+					break;
+			}
+		}
+	}
 }

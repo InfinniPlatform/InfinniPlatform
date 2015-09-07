@@ -1,18 +1,17 @@
-﻿using System.Globalization;
+﻿using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+
+using InfinniPlatform.FlowDocument.Model;
+using InfinniPlatform.FlowDocument.Model.Inlines;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 {
-    internal sealed class PrintElementImageFactory : IPrintElementFactory
+    sealed class PrintElementImageFactory : IPrintElementFactory
     {
         public object Create(PrintElementBuildContext buildContext, dynamic elementMetadata)
         {
-            var element = new InlineUIContainer();
+            var element = CreateImage(buildContext, elementMetadata);
 
             BuildHelper.ApplyTextProperties(element, buildContext.ElementStyle);
             BuildHelper.ApplyTextProperties(element, elementMetadata);
@@ -20,41 +19,33 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
             BuildHelper.ApplyInlineProperties(element, buildContext.ElementStyle);
             BuildHelper.ApplyInlineProperties(element, elementMetadata);
 
-            ApplyImageData(element, buildContext, elementMetadata);
-
             return element;
         }
 
-        private static void ApplyImageData(InlineUIContainer element, PrintElementBuildContext buildContext,
-            dynamic elementMetadata)
+        private static PrintElementImage CreateImage(PrintElementBuildContext buildContext, dynamic elementMetadata)
         {
-            var imageData = GetImageDataStream(buildContext, elementMetadata.Data);
-
-            if (imageData != null)
+            var imageStream = GetImageDataStream(buildContext, elementMetadata.Data);
+            if (imageStream != null)
             {
-                try
-                {
-                    var imageSource = new BitmapImage();
-                    imageSource.BeginInit();
-                    imageSource.StreamSource = imageData;
-                    ApplyRotation(imageSource, elementMetadata.Rotation);
-                    imageSource.EndInit();
-
-                    var imageControl = new Image();
-                    imageControl.BeginInit();
-                    imageControl.Width = imageSource.Width;
-                    imageControl.Height = imageSource.Height;
-                    ApplySize(imageControl, elementMetadata.Size);
-                    ApplyStretch(imageControl, elementMetadata.Stretch);
-                    imageControl.Source = imageSource;
-                    imageControl.EndInit();
-
-                    element.Child = imageControl;
-                }
-                catch
-                {
-                }
+                return ApplyImageData(imageStream, elementMetadata);
             }
+            return null;
+        }
+
+        private static PrintElementImage ApplyImageData(Stream imageStream, dynamic elementMetadata)
+        {
+            try
+            {
+                imageStream = ApplyRotation(imageStream, elementMetadata.Rotation);
+                var image = new PrintElementImage(imageStream);
+                ApplySize(image, elementMetadata.Size);
+                ApplyStretch(image, elementMetadata.Stretch);
+                return image;
+            }
+            catch
+            {
+            }
+            return null;
         }
 
         private static Stream GetImageDataStream(PrintElementBuildContext buildContext, dynamic imageData)
@@ -66,8 +57,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
             // Если данные не заданы, они берутся из источника
             if (!ConvertHelper.TryToBytes(imageData, out imageDataBytes) || imageDataBytes == null)
             {
-                if (!ConvertHelper.TryToBytes(buildContext.ElementSourceValue, out imageDataBytes) ||
-                    imageDataBytes == null)
+                if (!ConvertHelper.TryToBytes(buildContext.ElementSourceValue, out imageDataBytes) || imageDataBytes == null)
                 {
                     if (buildContext.IsDesignMode)
                     {
@@ -98,34 +88,25 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 
         private static Stream GetImageDataStreamStub(string imageText)
         {
-            var formattedText = new FormattedText(imageText, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
-                new Typeface("Arial"), 12, Brushes.Black)
+            var result = new MemoryStream();
+
+            using (var image = new Bitmap(200, 200))
             {
-                MaxTextWidth = 180,
-                MaxTextHeight = 180,
-                Trimming = TextTrimming.None,
-                TextAlignment = TextAlignment.Center
-            };
+                using (var graphics = Graphics.FromImage(image))
+                {
+                    graphics.Clear(Color.WhiteSmoke);
+                    graphics.DrawRectangle(Pens.LightGray, 0, 0, 200, 200);
+                    graphics.DrawString(imageText, new Font("Arial", 12), Brushes.Black, 10, 10);
+                }
 
-            var drawingVisual = new DrawingVisual();
-            var drawingContext = drawingVisual.RenderOpen();
-            drawingContext.DrawRectangle(Brushes.WhiteSmoke, new Pen(Brushes.LightGray, 1), new Rect(0, 0, 200, 200));
-            drawingContext.DrawText(formattedText, new Point(10, 10));
-            drawingContext.Close();
+                image.Save(result, ImageFormat.Png);
+                result.Seek(0, SeekOrigin.Begin);
+            }
 
-            var renderTargetBitmap = new RenderTargetBitmap(200, 200, 96, 96, PixelFormats.Default);
-            renderTargetBitmap.Render(drawingVisual);
-
-            var bitmapEncoder = new PngBitmapEncoder();
-            bitmapEncoder.Frames.Add(BitmapFrame.Create(renderTargetBitmap));
-
-            var bitmapImageStream = new MemoryStream();
-            bitmapEncoder.Save(bitmapImageStream);
-
-            return bitmapImageStream;
+            return result;
         }
 
-        private static void ApplyRotation(BitmapImage bitmap, dynamic rotation)
+        private static Stream ApplyRotation(Stream bitmap, dynamic rotation)
         {
             string rotationString;
 
@@ -133,41 +114,65 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
             {
                 switch (rotationString)
                 {
-                    case "rotate0":
-                        bitmap.Rotation = Rotation.Rotate0;
-                        break;
                     case "rotate90":
-                        bitmap.Rotation = Rotation.Rotate90;
-                        break;
+                        return RotateImage(bitmap, RotateFlipType.Rotate90FlipNone);
                     case "rotate180":
-                        bitmap.Rotation = Rotation.Rotate180;
-                        break;
+                        return RotateImage(bitmap, RotateFlipType.Rotate180FlipNone);
                     case "rotate270":
-                        bitmap.Rotation = Rotation.Rotate270;
-                        break;
+                        return RotateImage(bitmap, RotateFlipType.Rotate270FlipNone);
                 }
             }
+
+            return bitmap;
         }
 
-        private static void ApplySize(Image image, dynamic size)
+        private static Stream RotateImage(Stream image, RotateFlipType rotation)
+        {
+            try
+            {
+                using (var bitmap = new Bitmap(image))
+                {
+                    bitmap.RotateFlip(rotation);
+
+                    var result = new MemoryStream();
+                    bitmap.Save(result, ImageFormat.Png);
+                    result.Seek(0, SeekOrigin.Begin);
+
+                    return result;
+                }
+            }
+            catch
+            {
+                return image;
+            }
+        }
+        private static void ApplySize(PrintElementImage image, dynamic size)
         {
             if (size != null)
             {
-                double width, height;
+                PrintElementSize imageSize = null;
+
+                double width;
 
                 if (BuildHelper.TryToSizeInPixels(size.Width, size.SizeUnit, out width))
                 {
-                    image.Width = width;
+                    imageSize = imageSize ?? new PrintElementSize();
+                    imageSize.Width = width;
                 }
+
+                double height;
 
                 if (BuildHelper.TryToSizeInPixels(size.Height, size.SizeUnit, out height))
                 {
-                    image.Height = height;
+                    imageSize = imageSize ?? new PrintElementSize();
+                    imageSize.Height = height;
                 }
+
+                image.Size = imageSize;
             }
         }
 
-        private static void ApplyStretch(Image image, dynamic stretch)
+        private static void ApplyStretch(PrintElementImage image, dynamic stretch)
         {
             string stretchString;
 
@@ -176,13 +181,13 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
                 switch (stretchString)
                 {
                     case "none":
-                        image.Stretch = Stretch.None;
+                        image.Stretch = PrintElementStretch.None;
                         break;
                     case "fill":
-                        image.Stretch = Stretch.Fill;
+                        image.Stretch = PrintElementStretch.Fill;
                         break;
                     case "uniform":
-                        image.Stretch = Stretch.Uniform;
+                        image.Stretch = PrintElementStretch.Uniform;
                         break;
                 }
             }

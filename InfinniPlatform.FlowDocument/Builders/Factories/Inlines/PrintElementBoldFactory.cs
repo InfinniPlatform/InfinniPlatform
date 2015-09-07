@@ -1,32 +1,35 @@
-﻿using System.Windows.Documents;
+﻿using InfinniPlatform.FlowDocument.Model.Inlines;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 {
-    internal sealed class PrintElementBoldFactory : IPrintElementFactory
-    {
-        public object Create(PrintElementBuildContext buildContext, dynamic elementMetadata)
-        {
-            var element = new Bold();
+	sealed class PrintElementBoldFactory : IPrintElementFactory
+	{
+		public object Create(PrintElementBuildContext buildContext, dynamic elementMetadata)
+		{
+			var element = new PrintElementBold();
 
-            BuildHelper.ApplyTextProperties(element, buildContext.ElementStyle);
-            BuildHelper.ApplyTextProperties(element, elementMetadata);
+			BuildHelper.ApplyTextProperties(element, buildContext.ElementStyle);
+			BuildHelper.ApplyTextProperties(element, elementMetadata);
 
-            BuildHelper.ApplyInlineProperties(element, buildContext.ElementStyle);
-            BuildHelper.ApplyInlineProperties(element, elementMetadata);
+			BuildHelper.ApplyInlineProperties(element, buildContext.ElementStyle);
+			BuildHelper.ApplyInlineProperties(element, elementMetadata);
 
-            // Генерация содержимого элемента
+			// Генерация содержимого элемента
 
-            var inlines = buildContext.ElementBuilder.BuildElements(buildContext, elementMetadata.Inlines);
+			var inlines = buildContext.ElementBuilder.BuildElements(buildContext, elementMetadata.Inlines);
 
-            if (inlines != null)
-            {
-                element.Inlines.AddRange(inlines);
-            }
+			if (inlines != null)
+			{
+			    foreach (var inline in inlines)
+			    {
+                    element.Inlines.Add(inline);
+			    }
+			}
 
-            BuildHelper.PostApplyTextProperties(element, buildContext.ElementStyle);
-            BuildHelper.PostApplyTextProperties(element, elementMetadata);
+			BuildHelper.PostApplyTextProperties(element, buildContext.ElementStyle);
+			BuildHelper.PostApplyTextProperties(element, elementMetadata);
 
-            return element;
-        }
-    }
+			return element;
+		}
+	}
 }

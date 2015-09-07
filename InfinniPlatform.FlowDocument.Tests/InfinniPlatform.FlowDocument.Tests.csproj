@@ -37,13 +37,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Builders\Factories\Blocks\PrintElementTableFactoryTest.cs" />
@@ -69,6 +65,22 @@
     <Compile Include="Builders\Factories\Inlines\PrintElementUnderlineFactoryTest.cs" />
     <Compile Include="Builders\Factories\Views\PrintViewFactoryTest.cs" />
     <Compile Include="Builders\ImageTestHelper.cs" />
+    <Compile Include="Converters\Html\Blocks\PrintElementLineHtmlBuilderTest.cs" />
+    <Compile Include="Converters\Html\Blocks\PrintElementListHtmlBuilderTest.cs" />
+    <Compile Include="Converters\Html\Blocks\PrintElementSectionHtmlBuilderTest.cs" />
+    <Compile Include="Converters\Html\Blocks\PrintElementTableHtmlBuilderTest.cs" />
+    <Compile Include="Converters\Html\HtmlBuilderTestHelper.cs" />
+    <Compile Include="Converters\Html\Inlines\PrintElementBoldHtmlBuilderTest.cs" />
+    <Compile Include="Converters\Html\Inlines\PrintElementHyperlinkHtmlBuilderTest.cs" />
+    <Compile Include="Converters\Html\Inlines\PrintElementImageHtmlBuilderTest.cs" />
+    <Compile Include="Converters\Html\Blocks\PrintElementParagraphHtmlBuilderTest.cs" />
+    <Compile Include="Converters\Html\Inlines\PrintElementItalicHtmlBuilderTest.cs" />
+    <Compile Include="Converters\Html\Inlines\PrintElementLineBreakHtmlBuilderTest.cs" />
+    <Compile Include="Converters\Html\Inlines\PrintElementRunHtmlBuilderTest.cs" />
+    <Compile Include="Converters\Html\Inlines\PrintElementSpanHtmlBuilderTest.cs" />
+    <Compile Include="Converters\Html\Inlines\PrintElementUnderlineHtmlBuilderTest.cs" />
+    <Compile Include="Converters\Html\PrintViewDocumentHtmlBuilderTest.cs" />
+    <Compile Include="Converters\Html\TextWriterWrapper.cs" />
     <Compile Include="ImageTestHelper.cs" />
     <Compile Include="PrintView\FlowDocumentPrintViewBuilderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -110,23 +122,23 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\BarcodeEan13Rotate0.bmp" />
-    <Content Include="Images\BarcodeEan13Rotate180.bmp" />
-    <Content Include="Images\BarcodeEan13Rotate270.bmp" />
-    <Content Include="Images\BarcodeEan13Rotate90.bmp" />
-    <Content Include="Images\BarcodeQrErrorCorrectionHigh.bmp" />
-    <Content Include="Images\BarcodeQrErrorCorrectionLow.bmp" />
-    <Content Include="Images\BarcodeQrErrorCorrectionMedium.bmp" />
-    <Content Include="Images\BarcodeQrErrorCorrectionQuartile.bmp" />
-    <Content Include="Images\BarcodeQrRotate0.bmp" />
-    <Content Include="Images\BarcodeQrRotate180.bmp" />
-    <Content Include="Images\BarcodeQrRotate270.bmp" />
-    <Content Include="Images\BarcodeQrRotate90.bmp" />
+    <Content Include="Images\BarcodeEan13Rotate0.png" />
+    <Content Include="Images\BarcodeEan13Rotate180.png" />
+    <Content Include="Images\BarcodeEan13Rotate270.png" />
+    <Content Include="Images\BarcodeEan13Rotate90.png" />
+    <Content Include="Images\BarcodeQrErrorCorrectionHigh.png" />
+    <Content Include="Images\BarcodeQrErrorCorrectionLow.png" />
+    <Content Include="Images\BarcodeQrErrorCorrectionMedium.png" />
+    <Content Include="Images\BarcodeQrErrorCorrectionQuartile.png" />
+    <Content Include="Images\BarcodeQrRotate0.png" />
+    <Content Include="Images\BarcodeQrRotate180.png" />
+    <Content Include="Images\BarcodeQrRotate270.png" />
+    <Content Include="Images\BarcodeQrRotate90.png" />
     <Content Include="Images\Image.jpg" />
-    <Content Include="Images\ImageRotate0.bmp" />
-    <Content Include="Images\ImageRotate180.bmp" />
-    <Content Include="Images\ImageRotate270.bmp" />
-    <Content Include="Images\ImageRotate90.bmp" />
+    <Content Include="Images\ImageRotate0.png" />
+    <Content Include="Images\ImageRotate180.png" />
+    <Content Include="Images\ImageRotate270.png" />
+    <Content Include="Images\ImageRotate90.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,27 +1,26 @@
-﻿using System.Windows.Documents;
-using InfinniPlatform.Sdk.Dynamic;
+﻿using InfinniPlatform.Api.Dynamic;
+using InfinniPlatform.FlowDocument.Model;
+using InfinniPlatform.FlowDocument.Model.Blocks;
 using NUnit.Framework;
 
 namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Blocks
 {
-    [TestFixture]
-    [Category(TestCategories.UnitTest)]
-    public sealed class PrintElementLineFactoryTest
-    {
-        [Test]
-        public void ShouldBuild()
-        {
-            // Given
-            dynamic elementMetadata = new DynamicWrapper();
+	[TestFixture]
+	[Category(TestCategories.UnitTest)]
+	public sealed class PrintElementLineFactoryTest
+	{
+		[Test]
+		public void ShouldBuild()
+		{
+			// Given
+			dynamic elementMetadata = new DynamicWrapper();
 
-            // When
-            Block element = BuildTestHelper.BuildLine(elementMetadata);
+			// When
+			PrintElementBlock element = BuildTestHelper.BuildLine(elementMetadata);
 
-            // Then
-            Assert.IsNotNull(element);
-            Assert.IsNotNull(element.BorderBrush);
-            Assert.IsNotNull(element.BorderThickness);
-            Assert.IsTrue(element.BorderThickness.Top > 0 || element.BorderThickness.Bottom > 0);
-        }
-    }
+			// Then
+			Assert.IsNotNull(element);
+            Assert.IsInstanceOf<PrintElementLine>(element);
+		}
+	}
 }

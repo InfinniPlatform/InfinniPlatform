@@ -1,12 +1,13 @@
 ﻿using System.IO;
+using InfinniPlatform.FlowDocument.Model.Views;
 
 namespace InfinniPlatform.FlowDocument.Converters
 {
-    /// <summary>
-    ///     Преобразовывает документ в файл определенного формата.
-    /// </summary>
-    internal interface IFlowDocumentConverter
-    {
-        void Convert(System.Windows.Documents.FlowDocument document, Stream documentStream);
-    }
+	/// <summary>
+	/// Преобразовывает документ в файл определенного формата.
+	/// </summary>
+	interface IFlowDocumentConverter
+	{
+		void Convert(PrintViewDocument document, Stream documentStream);
+	}
 }

@@ -13,6 +13,7 @@ namespace InfinniPlatform.Sdk.Tests
 {
     //[Ignore("Тесты SDK не выполняют запуск сервера InfinniPlatform. Необходимо существование уже запущенного сервера на localhost : 9900")]
     [TestFixture]
+	[Category("IntegrationTest")]
     public class DocumentApiTest
     {
         private const string InfinniSessionPort = "9900";

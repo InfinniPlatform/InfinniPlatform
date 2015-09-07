@@ -2,23 +2,26 @@
 using System.Collections;
 using System.Linq;
 using System.Text;
-using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Media;
-using FrameworkFlowDocument = System.Windows.Documents.FlowDocument;
+
+using InfinniPlatform.FlowDocument.Model;
+using InfinniPlatform.FlowDocument.Model.Blocks;
+using InfinniPlatform.FlowDocument.Model.Font;
+using InfinniPlatform.FlowDocument.Model.Inlines;
+using InfinniPlatform.FlowDocument.Model.Views;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories
 {
-    internal static class BuildHelper
+    static class BuildHelper
     {
-        public static readonly Thickness DefaultMargin = new Thickness(0);
-        public static readonly Thickness DefaultPadding = new Thickness(0);
-        public static readonly FontFamily DefautlFontFamily = new FontFamily("Arial");
-        private static readonly BrushConverter BrushConverter = new BrushConverter();
+        public const string DefautlFontFamily = "Arial";
+        public static readonly PrintElementThickness DefaultMargin = new PrintElementThickness(0);
+        public static readonly PrintElementThickness DefaultPadding = new PrintElementThickness(0);
+
+
         // TEXT
 
         /// <summary>
-        ///     Применяет общие свойства к элементу печатного представления.
+        /// Применяет общие свойства к элементу печатного представления.
         /// </summary>
         public static void ApplyTextProperties(dynamic element, dynamic metadata)
         {
@@ -31,7 +34,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
         }
 
         /// <summary>
-        ///     Применяет общие свойства к элементу печатного представления после того, как он был сформирован.
+        /// Применяет общие свойства к элементу печатного представления после того, как он был сформирован.
         /// </summary>
         public static void PostApplyTextProperties(dynamic element, dynamic metadata)
         {
@@ -45,160 +48,139 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
         {
             if (font != null)
             {
-                ApplyFontFamily(element, font.Family);
-                ApplyFontSize(element, font.Size, font.SizeUnit);
-                ApplyFontStyle(element, font.Style);
-                ApplyFontStretch(element, font.Stretch);
-                ApplyFontWeight(element, font.Weight);
-                ApplyFontVariant(element, font.Variant);
-            }
-        }
+                var fontValue = new PrintElementFont();
 
-        private static void ApplyFontFamily(dynamic element, dynamic fontFamily)
-        {
-            string fontFamilyString;
+                string fontFamilyString;
 
-            if (ConvertHelper.TryToNormString(fontFamily, out fontFamilyString))
-            {
-                element.FontFamily = new FontFamily(fontFamilyString);
-            }
-        }
-
-        private static void ApplyFontSize(dynamic element, dynamic fontSize, dynamic fontSizeUnit)
-        {
-            double fontSizeInPixels;
-
-            if (TryToSizeInPixels(fontSize, fontSizeUnit, out fontSizeInPixels))
-            {
-                element.FontSize = fontSizeInPixels;
-            }
-        }
-
-        private static void ApplyFontStyle(dynamic element, dynamic fontStyle)
-        {
-            string fontStyleString;
-
-            if (ConvertHelper.TryToNormString(fontStyle, out fontStyleString))
-            {
-                switch (fontStyleString)
+                if (ConvertHelper.TryToString(font.Family, out fontFamilyString))
                 {
-                    case "normal":
-                        element.FontStyle = FontStyles.Normal;
-                        break;
-                    case "italic":
-                        element.FontStyle = FontStyles.Italic;
-                        break;
-                    case "oblique":
-                        element.FontStyle = FontStyles.Oblique;
-                        break;
+                    fontValue.Family = fontFamilyString;
                 }
-            }
-        }
 
-        private static void ApplyFontStretch(dynamic element, dynamic fontStretch)
-        {
-            string fontStretchString;
+                double fontSizeInPixels;
 
-            if (ConvertHelper.TryToNormString(fontStretch, out fontStretchString))
-            {
-                switch (fontStretchString)
+                if (TryToSizeInPixels(font.Size, font.SizeUnit, out fontSizeInPixels))
                 {
-                    case "ultracondensed":
-                        element.FontStretch = FontStretches.UltraCondensed;
-                        break;
-                    case "extracondensed":
-                        element.FontStretch = FontStretches.ExtraCondensed;
-                        break;
-                    case "condensed":
-                        element.FontStretch = FontStretches.Condensed;
-                        break;
-                    case "semicondensed":
-                        element.FontStretch = FontStretches.SemiCondensed;
-                        break;
-                    case "normal":
-                        element.FontStretch = FontStretches.Normal;
-                        break;
-                    case "semiexpanded":
-                        element.FontStretch = FontStretches.SemiExpanded;
-                        break;
-                    case "expanded":
-                        element.FontStretch = FontStretches.Expanded;
-                        break;
-                    case "extraexpanded":
-                        element.FontStretch = FontStretches.ExtraExpanded;
-                        break;
-                    case "ultraexpanded":
-                        element.FontStretch = FontStretches.UltraExpanded;
-                        break;
+                    fontValue.Size = fontSizeInPixels;
                 }
-            }
-        }
 
-        private static void ApplyFontWeight(dynamic element, dynamic fontWeight)
-        {
-            string fontWeightString;
+                string fontStyleString;
 
-            if (ConvertHelper.TryToNormString(fontWeight, out fontWeightString))
-            {
-                switch (fontWeightString)
+                if (ConvertHelper.TryToNormString(font.Style, out fontStyleString))
                 {
-                    case "ultralight":
-                        element.FontWeight = FontWeights.UltraLight;
-                        break;
-                    case "extralight":
-                        element.FontWeight = FontWeights.ExtraLight;
-                        break;
-                    case "light":
-                        element.FontWeight = FontWeights.Light;
-                        break;
-                    case "normal":
-                        element.FontWeight = FontWeights.Normal;
-                        break;
-                    case "medium":
-                        element.FontWeight = FontWeights.Medium;
-                        break;
-                    case "semibold":
-                        element.FontWeight = FontWeights.SemiBold;
-                        break;
-                    case "bold":
-                        element.FontWeight = FontWeights.Bold;
-                        break;
-                    case "extrabold":
-                        element.FontWeight = FontWeights.ExtraBold;
-                        break;
-                    case "ultrabold":
-                        element.FontWeight = FontWeights.UltraBold;
-                        break;
+                    switch (fontStyleString)
+                    {
+                        case "normal":
+                            fontValue.Style = PrintElementFontStyle.Normal;
+                            break;
+                        case "italic":
+                            fontValue.Style = PrintElementFontStyle.Italic;
+                            break;
+                        case "oblique":
+                            fontValue.Style = PrintElementFontStyle.Oblique;
+                            break;
+                    }
                 }
-            }
-        }
 
-        private static void ApplyFontVariant(dynamic element, dynamic fontVariant)
-        {
-            string fontVariantString;
+                string fontStretchString;
 
-            if (ConvertHelper.TryToNormString(fontVariant, out fontVariantString))
-            {
-                switch (fontVariantString)
+                if (ConvertHelper.TryToNormString(font.Stretch, out fontStretchString))
                 {
-                    case "normal":
-                        element.Typography.Variants = FontVariants.Normal;
-                        break;
-                    case "subscript":
-                        element.Typography.Variants = FontVariants.Subscript;
-                        break;
-                    case "superscript":
-                        element.Typography.Variants = FontVariants.Superscript;
-                        break;
+                    switch (fontStretchString)
+                    {
+                        case "ultracondensed":
+                            fontValue.Stretch = PrintElementFontStretch.UltraCondensed;
+                            break;
+                        case "extracondensed":
+                            fontValue.Stretch = PrintElementFontStretch.ExtraCondensed;
+                            break;
+                        case "condensed":
+                            fontValue.Stretch = PrintElementFontStretch.Condensed;
+                            break;
+                        case "semicondensed":
+                            fontValue.Stretch = PrintElementFontStretch.SemiCondensed;
+                            break;
+                        case "normal":
+                            fontValue.Stretch = PrintElementFontStretch.Normal;
+                            break;
+                        case "semiexpanded":
+                            fontValue.Stretch = PrintElementFontStretch.SemiExpanded;
+                            break;
+                        case "expanded":
+                            fontValue.Stretch = PrintElementFontStretch.Expanded;
+                            break;
+                        case "extraexpanded":
+                            fontValue.Stretch = PrintElementFontStretch.ExtraExpanded;
+                            break;
+                        case "ultraexpanded":
+                            fontValue.Stretch = PrintElementFontStretch.UltraExpanded;
+                            break;
+                    }
                 }
+
+                string fontWeightString;
+
+                if (ConvertHelper.TryToNormString(font.Weight, out fontWeightString))
+                {
+                    switch (fontWeightString)
+                    {
+                        case "ultralight":
+                            fontValue.Weight = PrintElementFontWeight.UltraLight;
+                            break;
+                        case "extralight":
+                            fontValue.Weight = PrintElementFontWeight.ExtraLight;
+                            break;
+                        case "light":
+                            fontValue.Weight = PrintElementFontWeight.Light;
+                            break;
+                        case "normal":
+                            fontValue.Weight = PrintElementFontWeight.Normal;
+                            break;
+                        case "medium":
+                            fontValue.Weight = PrintElementFontWeight.Medium;
+                            break;
+                        case "semibold":
+                            fontValue.Weight = PrintElementFontWeight.SemiBold;
+                            break;
+                        case "bold":
+                            fontValue.Weight = PrintElementFontWeight.Bold;
+                            break;
+                        case "extrabold":
+                            fontValue.Weight = PrintElementFontWeight.ExtraBold;
+                            break;
+                        case "ultrabold":
+                            fontValue.Weight = PrintElementFontWeight.UltraBold;
+                            break;
+                    }
+                }
+
+                string fontVariantString;
+
+                if (ConvertHelper.TryToNormString(font.Variant, out fontVariantString))
+                {
+                    switch (fontVariantString)
+                    {
+                        case "normal":
+                            fontValue.Variant = PrintElementFontVariant.Normal;
+                            break;
+                        case "subscript":
+                            fontValue.Variant = PrintElementFontVariant.Subscript;
+                            break;
+                        case "superscript":
+                            fontValue.Variant = PrintElementFontVariant.Superscript;
+                            break;
+                    }
+                }
+
+                element.Font = fontValue;
             }
         }
 
         private static void ApplyForeground(dynamic element, dynamic foreground)
         {
-            Brush foregroundBrush;
+            string foregroundBrush;
 
-            if (TryToBrush(foreground, out foregroundBrush))
+            if (ConvertHelper.TryToString(foreground, out foregroundBrush))
             {
                 element.Foreground = foregroundBrush;
             }
@@ -206,9 +188,9 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
 
         private static void ApplyBackground(dynamic element, dynamic background)
         {
-            Brush backgroundBrush;
+            string backgroundBrush;
 
-            if (TryToBrush(background, out backgroundBrush))
+            if (ConvertHelper.TryToString(background, out backgroundBrush))
             {
                 element.Background = backgroundBrush;
             }
@@ -238,11 +220,11 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
             }
         }
 
-        private static bool ForEachRunElements(object element, Func<Run, bool> action)
+        private static bool ForEachRunElements(object element, Func<PrintElementRun, bool> action)
         {
-            if (element is FrameworkFlowDocument)
+            if (element is PrintViewDocument)
             {
-                foreach (var item in ((FrameworkFlowDocument) element).Blocks.ToArray())
+                foreach (var item in ((PrintViewDocument)element).Blocks.ToArray())
                 {
                     if (!ForEachRunElements(item, action))
                     {
@@ -250,14 +232,9 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
                     }
                 }
             }
-            else if (element is Table)
+            else if (element is PrintElementTable)
             {
-                foreach (
-                    var item in
-                        ((Table) element).RowGroups.SelectMany(i => i.Rows)
-                            .SelectMany(i => i.Cells)
-                            .SelectMany(i => i.Blocks)
-                            .ToArray())
+                foreach (var item in ((PrintElementTable)element).Rows.SelectMany(i => i.Cells).Select(i => i.Block).ToArray())
                 {
                     if (!ForEachRunElements(item, action))
                     {
@@ -265,9 +242,9 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
                     }
                 }
             }
-            else if (element is TableRow)
+            else if (element is PrintElementTableRow)
             {
-                foreach (var item in ((TableRow) element).Cells.SelectMany(i => i.Blocks).ToArray())
+                foreach (var item in ((PrintElementTableRow)element).Cells.Select(i => i.Block).ToArray())
                 {
                     if (!ForEachRunElements(item, action))
                     {
@@ -275,9 +252,16 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
                     }
                 }
             }
-            else if (element is TableCell)
+            else if (element is PrintElementTableCell)
             {
-                foreach (var item in ((TableCell) element).Blocks.ToArray())
+                if (!ForEachRunElements(((PrintElementTableCell)element).Block, action))
+                {
+                    return false;
+                }
+            }
+            else if (element is PrintElementSection)
+            {
+                foreach (var item in ((PrintElementSection)element).Blocks.ToArray())
                 {
                     if (!ForEachRunElements(item, action))
                     {
@@ -285,9 +269,9 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
                     }
                 }
             }
-            else if (element is Section)
+            else if (element is PrintElementParagraph)
             {
-                foreach (var item in ((Section) element).Blocks.ToArray())
+                foreach (var item in ((PrintElementParagraph)element).Inlines.ToArray())
                 {
                     if (!ForEachRunElements(item, action))
                     {
@@ -295,9 +279,9 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
                     }
                 }
             }
-            else if (element is Paragraph)
+            else if (element is PrintElementSpan)
             {
-                foreach (var item in ((Paragraph) element).Inlines.ToArray())
+                foreach (var item in ((PrintElementSpan)element).Inlines.ToArray())
                 {
                     if (!ForEachRunElements(item, action))
                     {
@@ -305,25 +289,15 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
                     }
                 }
             }
-            else if (element is Span)
+            else if (element is PrintElementRun)
             {
-                foreach (var item in ((Span) element).Inlines.ToArray())
-                {
-                    if (!ForEachRunElements(item, action))
-                    {
-                        return false;
-                    }
-                }
-            }
-            else if (element is Run)
-            {
-                return action((Run) element);
+                return action((PrintElementRun)element);
             }
 
             return true;
         }
 
-        private static bool ApplySentenceCase(Run element)
+        private static bool ApplySentenceCase(PrintElementRun element)
         {
             if (!string.IsNullOrEmpty(element.Text))
             {
@@ -334,7 +308,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
             return true;
         }
 
-        private static bool ApplyLowercase(Run element)
+        private static bool ApplyLowercase(PrintElementRun element)
         {
             if (!string.IsNullOrEmpty(element.Text))
             {
@@ -344,7 +318,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
             return true;
         }
 
-        private static bool ApplyUppercase(Run element)
+        private static bool ApplyUppercase(PrintElementRun element)
         {
             if (!string.IsNullOrEmpty(element.Text))
             {
@@ -354,7 +328,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
             return true;
         }
 
-        private static bool ApplyToggleCase(Run element)
+        private static bool ApplyToggleCase(PrintElementRun element)
         {
             if (!string.IsNullOrEmpty(element.Text))
             {
@@ -371,10 +345,11 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
             return true;
         }
 
+
         // BLOCK
 
         /// <summary>
-        ///     Применяет общие свойства блочных элементов печатного представления.
+        /// Применяет общие свойства блочных элементов печатного представления.
         /// </summary>
         public static void ApplyBlockProperties(dynamic element, dynamic metadata)
         {
@@ -391,25 +366,30 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
         {
             if (border != null)
             {
-                Thickness borderThickness;
+                if (element.Border == null)
+                {
+                    element.Border = new PrintElementBorder();
+                }
+
+                PrintElementThickness borderThickness;
 
                 if (TryToThickness(border.Thickness, out borderThickness))
                 {
-                    element.BorderThickness = borderThickness;
+                    element.Border.Thickness = borderThickness;
                 }
 
-                Brush borderBrush;
+                string borderColor;
 
-                if (TryToBrush(border.Color, out borderBrush))
+                if (ConvertHelper.TryToNormString(border.Color, out borderColor))
                 {
-                    element.BorderBrush = borderBrush;
+                    element.Border.Color = borderColor;
                 }
             }
         }
 
         private static void ApplyMargin(dynamic element, dynamic margin)
         {
-            Thickness marginThickness;
+            PrintElementThickness marginThickness;
 
             if (TryToThickness(margin, out marginThickness))
             {
@@ -419,7 +399,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
 
         private static void ApplyPadding(dynamic element, dynamic padding)
         {
-            Thickness paddingThickness;
+            PrintElementThickness paddingThickness;
 
             if (TryToThickness(padding, out paddingThickness))
             {
@@ -436,25 +416,26 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
                 switch (textAlignmentString)
                 {
                     case "left":
-                        element.TextAlignment = TextAlignment.Left;
+                        element.TextAlignment = PrintElementTextAlignment.Left;
                         break;
                     case "center":
-                        element.TextAlignment = TextAlignment.Center;
+                        element.TextAlignment = PrintElementTextAlignment.Center;
                         break;
                     case "right":
-                        element.TextAlignment = TextAlignment.Right;
+                        element.TextAlignment = PrintElementTextAlignment.Right;
                         break;
                     case "justify":
-                        element.TextAlignment = TextAlignment.Justify;
+                        element.TextAlignment = PrintElementTextAlignment.Justify;
                         break;
                 }
             }
         }
 
+
         // INLINE
 
         /// <summary>
-        ///     Применяет общие свойства однострочных элементов печатного представления.
+        /// Применяет общие свойства однострочных элементов печатного представления.
         /// </summary>
         public static void ApplyInlineProperties(dynamic element, dynamic metadata)
         {
@@ -473,25 +454,26 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
                 switch (textDecorationString)
                 {
                     case "normal":
-                        element.TextDecorations = null;
+                        element.TextDecoration = null;
                         break;
                     case "overline":
-                        element.TextDecorations = TextDecorations.OverLine;
+                        element.TextDecoration = PrintElementTextDecoration.OverLine;
                         break;
                     case "strikethrough":
-                        element.TextDecorations = TextDecorations.Strikethrough;
+                        element.TextDecoration = PrintElementTextDecoration.Strikethrough;
                         break;
                     case "underline":
-                        element.TextDecorations = TextDecorations.Underline;
+                        element.TextDecoration = PrintElementTextDecoration.Underline;
                         break;
                 }
             }
         }
 
+
         // TABLE
 
         /// <summary>
-        ///     Применяет общие свойства к ячейке таблицы печатного представления.
+        /// Применяет общие свойства к ячейке таблицы печатного представления.
         /// </summary>
         public static void ApplyTableCellProperties(dynamic element, dynamic metadata)
         {
@@ -502,6 +484,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
                 ApplyTextAlignment(element, metadata.TextAlignment);
             }
         }
+
 
         // HELPERS
 
@@ -537,7 +520,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
             return false;
         }
 
-        public static bool TryToThickness(dynamic value, out Thickness result)
+        public static bool TryToThickness(dynamic value, out PrintElementThickness result)
         {
             if (value != null)
             {
@@ -545,7 +528,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
 
                 if (TryToSizeInPixels(value.All, value.SizeUnit, out all))
                 {
-                    result = new Thickness(all);
+                    result = new PrintElementThickness(all);
                 }
                 else
                 {
@@ -555,33 +538,13 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
                     TryToSizeInPixels(value.Right, value.SizeUnit, out right);
                     TryToSizeInPixels(value.Bottom, value.SizeUnit, out bottom);
 
-                    result = new Thickness(left, top, right, bottom);
+                    result = new PrintElementThickness(left, top, right, bottom);
                 }
 
                 return true;
             }
 
-            result = default(Thickness);
-            return false;
-        }
-
-        private static bool TryToBrush(dynamic value, out Brush result)
-        {
-            result = null;
-
-            string valueString;
-
-            if (ConvertHelper.TryToNormString(value, out valueString))
-            {
-                try
-                {
-                    result = (Brush) BrushConverter.ConvertFromString(valueString);
-                    return true;
-                }
-                catch
-                {
-                }
-            }
+            result = default(PrintElementThickness);
 
             return false;
         }
@@ -608,7 +571,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
 
                     // Форматирование значения (или значений для коллекции)
                     result = ConvertHelper.ObjectIsCollection(sourceValue)
-                        ? string.Join("; ", ((IEnumerable) sourceValue).Cast<object>().Select(formatFunc))
+                        ? string.Join("; ", ((IEnumerable)sourceValue).Cast<object>().Select(formatFunc))
                         : formatFunc(sourceValue);
                 }
                 else if (buildContext.IsDesignMode)
@@ -629,7 +592,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
             return result;
         }
 
-        public static double CalcContentWidth(double elementWidth, params Thickness[] thicknesses)
+        public static double CalcContentWidth(double elementWidth, params PrintElementThickness[] thicknesses)
         {
             var result = elementWidth;
 
@@ -644,14 +607,14 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories
             return Math.Max(result, 0);
         }
 
-        private static double ZeroIfNaN(double value)
+        private static double ZeroIfNaN(double? value)
         {
-            if (double.IsNaN(value))
+            if (value == null || double.IsNaN((double)value))
             {
                 return 0;
             }
 
-            return value;
+            return value.Value;
         }
     }
 }

@@ -1,19 +1,21 @@
-﻿using System.Collections;
-using System.Windows;
-using System.Windows.Documents;
+﻿using System;
+using System.Collections;
+
+using InfinniPlatform.FlowDocument.Model;
+using InfinniPlatform.FlowDocument.Model.Blocks;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 {
-    internal sealed class PrintElementListFactory : IPrintElementFactory
+    sealed class PrintElementListFactory : IPrintElementFactory
     {
         public object Create(PrintElementBuildContext buildContext, dynamic elementMetadata)
         {
-            var element = new List
-            {
-                Margin = BuildHelper.DefaultMargin,
-                Padding = BuildHelper.DefaultPadding,
-                MarkerStyle = TextMarkerStyle.None
-            };
+            var element = new PrintElementList
+                          {
+                              Margin = BuildHelper.DefaultMargin,
+                              Padding = BuildHelper.DefaultPadding,
+                              MarkerStyle = PrintElementListMarkerStyle.None
+                          };
 
             BuildHelper.ApplyTextProperties(element, buildContext.ElementStyle);
             BuildHelper.ApplyTextProperties(element, elementMetadata);
@@ -35,9 +37,9 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
             {
                 foreach (var staticItem in staticItems)
                 {
-                    var listItem = new ListItem();
+                    var listItem = new PrintElementSection();
                     listItem.Blocks.Add(staticItem);
-                    element.ListItems.Add(listItem);
+                    element.Items.Add(listItem);
                 }
             }
 
@@ -50,17 +52,17 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
             {
                 if (ConvertHelper.ObjectIsCollection(listSource))
                 {
-                    foreach (var itemSource in (IEnumerable) listSource)
+                    foreach (var itemSource in (IEnumerable)listSource)
                     {
                         itemContext.ElementSourceValue = itemSource;
 
                         var dynamicItem = buildContext.ElementBuilder.BuildElement(itemContext, listItemTemplate);
 
-                        if (dynamicItem is Block)
+                        if (dynamicItem is PrintElementBlock)
                         {
-                            var listItem = new ListItem();
+                            var listItem = new PrintElementSection();
                             listItem.Blocks.Add(dynamicItem);
-                            element.ListItems.Add(listItem);
+                            element.Items.Add(listItem);
                         }
                     }
                 }
@@ -72,11 +74,11 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 
                     var dynamicItem = buildContext.ElementBuilder.BuildElement(itemContext, listItemTemplate);
 
-                    if (dynamicItem is Block)
+                    if (dynamicItem is PrintElementBlock)
                     {
-                        var listItem = new ListItem();
+                        var listItem = new PrintElementSection();
                         listItem.Blocks.Add(dynamicItem);
-                        element.ListItems.Add(listItem);
+                        element.Items.Add(listItem);
                     }
                 }
             }
@@ -87,7 +89,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
             return element;
         }
 
-        private static void ApplyStartIndex(List element, dynamic startIndex)
+        private static void ApplyStartIndex(PrintElementList element, dynamic startIndex)
         {
             int startIndexInt;
 
@@ -97,7 +99,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
             }
         }
 
-        private static void ApplyMarkerStyle(List element, dynamic markerStyle)
+        private static void ApplyMarkerStyle(PrintElementList element, dynamic markerStyle)
         {
             string markerStyleString;
 
@@ -106,53 +108,54 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
                 switch (markerStyleString)
                 {
                     case "none":
-                        element.MarkerStyle = TextMarkerStyle.None;
+                        element.MarkerStyle = PrintElementListMarkerStyle.None;
                         break;
                     case "disc":
-                        element.MarkerStyle = TextMarkerStyle.Disc;
+                        element.MarkerStyle = PrintElementListMarkerStyle.Disc;
                         break;
                     case "circle":
-                        element.MarkerStyle = TextMarkerStyle.Circle;
+                        element.MarkerStyle = PrintElementListMarkerStyle.Circle;
                         break;
                     case "square":
-                        element.MarkerStyle = TextMarkerStyle.Square;
+                        element.MarkerStyle = PrintElementListMarkerStyle.Square;
                         break;
                     case "box":
-                        element.MarkerStyle = TextMarkerStyle.Box;
+                        element.MarkerStyle = PrintElementListMarkerStyle.Box;
                         break;
                     case "lowerroman":
-                        element.MarkerStyle = TextMarkerStyle.LowerRoman;
+                        element.MarkerStyle = PrintElementListMarkerStyle.LowerRoman;
                         break;
                     case "upperroman":
-                        element.MarkerStyle = TextMarkerStyle.UpperRoman;
+                        element.MarkerStyle = PrintElementListMarkerStyle.UpperRoman;
                         break;
                     case "lowerlatin":
-                        element.MarkerStyle = TextMarkerStyle.LowerLatin;
+                        element.MarkerStyle = PrintElementListMarkerStyle.LowerLatin;
                         break;
                     case "upperlatin":
-                        element.MarkerStyle = TextMarkerStyle.UpperLatin;
+                        element.MarkerStyle = PrintElementListMarkerStyle.UpperLatin;
                         break;
                     case "decimal":
-                        element.MarkerStyle = TextMarkerStyle.Decimal;
+                        element.MarkerStyle = PrintElementListMarkerStyle.Decimal;
                         break;
                 }
             }
         }
 
-        private static void MarkerOffsetStyle(List element, dynamic markerOffsetSize, dynamic markerOffsetSizeUnit)
+        private static void MarkerOffsetStyle(PrintElementList element, dynamic markerOffsetSize, dynamic markerOffsetSizeUnit)
         {
             double markerOffset;
 
             if (BuildHelper.TryToSizeInPixels(markerOffsetSize, markerOffsetSizeUnit, out markerOffset))
             {
-                element.MarkerOffset = markerOffset;
+                element.MarkerOffsetSize = markerOffset;
             }
         }
 
-        private static PrintElementBuildContext CreateItemContext(List element, PrintElementBuildContext buildContext)
+        private static PrintElementBuildContext CreateItemContext(PrintElementList element, PrintElementBuildContext buildContext)
         {
-            var contentWidth = BuildHelper.CalcContentWidth(buildContext.ElementWidth, element.Margin, element.Padding,
-                element.BorderThickness, new Thickness(element.MarkerOffset));
+            var contentWidth = (element.Border != null)
+                ? BuildHelper.CalcContentWidth(buildContext.ElementWidth, element.Margin, element.Padding, element.Border.Thickness, new PrintElementThickness(element.MarkerOffsetSize))
+                : BuildHelper.CalcContentWidth(buildContext.ElementWidth, element.Margin, element.Padding, new PrintElementThickness(element.MarkerOffsetSize));
             return buildContext.Create(contentWidth);
         }
     }
