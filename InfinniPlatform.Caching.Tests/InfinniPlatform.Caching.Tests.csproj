@@ -45,6 +45,8 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Redis\RedisCacheMessageBusImplTest.cs" />
+    <Compile Include="Redis\RedisCacheImplTest.cs" />
     <Compile Include="TwoLayer\FakeCacheImpl.cs" />
     <Compile Include="TwoLayer\TwoLayerCacheImplTest.cs" />
   </ItemGroup>
@@ -71,9 +73,7 @@
       <Name>InfinniPlatform.Tests</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Redis\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

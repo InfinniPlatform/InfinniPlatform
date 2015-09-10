@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Threading;
-using System.Threading.Tasks;
 
-using InfinniPlatform.Caching.Memory;
+using InfinniPlatform.Caching.Redis;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.Caching.Tests.Memory
+namespace InfinniPlatform.Caching.Tests.Redis
 {
 	[TestFixture]
 	[Category(TestCategories.UnitTest)]
-	public sealed class MemoryCacheMessageBusImplTest
+	public sealed class RedisCacheMessageBusImplTest
 	{
 		[Test]
 		public void GeneralPubSubTest()
 		{
 			// GIVEN
 
-			var messageBus = new MemoryCacheMessageBusImpl();
+			var messageBus = new RedisCacheMessageBusImpl("RedisCacheImplTest", "192.168.240.128"); // TODO: connectionString from .config
 
 			// subscriber1 for Key1
 
