@@ -38,11 +38,15 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Memory\MemoryCacheImplTest.cs" />
+    <Compile Include="Memory\MemoryCacheMessageBusImplTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <DependentUpon>AssemblyInfo.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="TwoLayer\FakeCacheImpl.cs" />
+    <Compile Include="TwoLayer\TwoLayerCacheImplTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Files\Tests\App.config">
@@ -66,6 +70,9 @@
       <Project>{a46f638c-c9c5-49be-bc8d-8144e8c8f87a}</Project>
       <Name>InfinniPlatform.Tests</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Redis\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

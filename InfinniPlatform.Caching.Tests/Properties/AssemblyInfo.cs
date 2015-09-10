@@ -3,7 +3,7 @@
 // 0
 // 0
 // e4d7c70c-f088-46df-8418-5cbd25792cac
-// 7E6565AA73619B5F31D6A17CEA72E13F
+// 64FB201946EB401EB9EB24853D481B3E
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -19,4 +19,5 @@ using System.Runtime.InteropServices;
 [assembly: Guid("e4d7c70c-f088-46df-8418-5cbd25792cac")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+
 [assembly: AssemblyDescription("InfinniPlatform.Caching.Tests")]

@@ -74,14 +74,14 @@ namespace InfinniPlatform.Caching.Memory
 			_cache.Set(key, value, new CacheItemPolicy());
 		}
 
-		public void Remove(string key)
+		public bool Remove(string key)
 		{
 			if (string.IsNullOrEmpty(key))
 			{
 				throw new ArgumentNullException("key");
 			}
 
-			_cache.Remove(key);
+			return (_cache.Remove(key) != null);
 		}
 
 		public void Clear()

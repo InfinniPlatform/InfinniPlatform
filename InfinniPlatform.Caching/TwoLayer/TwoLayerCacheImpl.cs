@@ -86,6 +86,10 @@ namespace InfinniPlatform.Caching.TwoLayer
 					SubscribeOnKeyChanged(key);
 				}
 			}
+			else
+			{
+				exists = true;
+			}
 
 			return exists;
 		}
@@ -109,29 +113,36 @@ namespace InfinniPlatform.Caching.TwoLayer
 			SubscribeOnKeyChanged(key);
 		}
 
-		public void Remove(string key)
+		public bool Remove(string key)
 		{
 			if (string.IsNullOrEmpty(key))
 			{
 				throw new ArgumentNullException("key");
 			}
 
+			var deleted = false;
+
 			try
 			{
 				try
 				{
-					_memoryCache.Remove(key);
+					deleted |= _memoryCache.Remove(key);
 				}
 				finally
 				{
-					_sharedCache.Remove(key);
+					deleted |= _sharedCache.Remove(key);
 				}
 			}
 			finally
 			{
-				UnsubscribeOnKeyChanged(key);
-				NotifyOnKeyChanged(key);
+				if (deleted)
+				{
+					UnsubscribeOnKeyChanged(key);
+					NotifyOnKeyChanged(key);
+				}
 			}
+
+			return deleted;
 		}
 
 		public void Clear()

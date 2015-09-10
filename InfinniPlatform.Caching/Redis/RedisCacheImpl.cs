@@ -85,14 +85,14 @@ namespace InfinniPlatform.Caching.Redis
 			TryExecute((d, k) => d.StringSet(k, value), key);
 		}
 
-		public void Remove(string key)
+		public bool Remove(string key)
 		{
 			if (string.IsNullOrEmpty(key))
 			{
 				throw new ArgumentNullException("key");
 			}
 
-			TryExecute((d, k) => d.KeyDelete(k), key);
+			return TryExecute((d, k) => d.KeyDelete(k), key);
 		}
 
 		public void Clear()
