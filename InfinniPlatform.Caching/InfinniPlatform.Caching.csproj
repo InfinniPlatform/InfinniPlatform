@@ -60,6 +60,7 @@
     </Compile>
     <Compile Include="Redis\RedisCacheImpl.cs" />
     <Compile Include="Redis\RedisCacheMessageBusImpl.cs" />
+    <Compile Include="TwoLayer\TwoLayerCacheImpl.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
