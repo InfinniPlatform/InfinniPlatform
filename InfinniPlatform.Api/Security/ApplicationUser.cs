@@ -31,6 +31,38 @@ namespace InfinniPlatform.Api.Security
 		public string UserName { get; set; }
 
 		/// <summary>
+		/// Электронная почта пользователя.
+		/// </summary>
+		/// <example>
+		/// user1@gmail.com
+		/// </example>
+		public string Email { get; set; }
+
+		/// <summary>
+		/// Электронная почта пользователя подтверждена.
+		/// </summary>
+		/// <example>
+		/// true
+		/// </example>
+		public bool EmailConfirmed { get; set; }
+
+		/// <summary>
+		/// Номер телефона пользователя.
+		/// </summary>
+		/// <example>
+		/// +7 (123) 456-78-90
+		/// </example>
+		public string PhoneNumber { get; set; }
+
+		/// <summary>
+		/// Номер телефона пользователя подтвержден.
+		/// </summary>
+		/// <example>
+		/// true
+		/// </example>
+		public bool PhoneNumberConfirmed { get; set; }
+
+		/// <summary>
 		/// Отображаемое имя пользователя.
 		/// </summary>
 		/// <example>

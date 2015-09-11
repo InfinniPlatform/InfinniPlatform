@@ -108,9 +108,26 @@ namespace InfinniPlatform.Security
 			return _users.FirstOrDefault(u => StringEquals(u.Id, userId));
 		}
 
-		public ApplicationUser FindUserByName(string userName)
+		public ApplicationUser FindUserByName(string name)
+		{
+			return FindUserByUserName(name)
+				   ?? FindUserByEmail(name)
+				   ?? FindUserByPhoneNumber(name);
+		}
+
+		public ApplicationUser FindUserByUserName(string userName)
 		{
 			return _users.FirstOrDefault(u => StringEquals(u.UserName, userName));
+		}
+
+		public ApplicationUser FindUserByEmail(string email)
+		{
+			return _users.FirstOrDefault(u => StringEquals(u.Email, email));
+		}
+
+		public ApplicationUser FindUserByPhoneNumber(string phoneNumber)
+		{
+			return _users.FirstOrDefault(u => StringEquals(u.PhoneNumber, phoneNumber));
 		}
 
 		public ApplicationUser FindUserByLogin(ApplicationUserLogin userLogin)

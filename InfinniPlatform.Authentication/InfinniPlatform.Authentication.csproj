@@ -108,6 +108,7 @@
     <Compile Include="Modules\IdentityApplicationRole.cs" />
     <Compile Include="Modules\IdentityApplicationUser.cs" />
     <Compile Include="Modules\IdentityApplicationUserPasswordHasher.cs" />
+    <Compile Include="Modules\IdentityApplicationUserValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
