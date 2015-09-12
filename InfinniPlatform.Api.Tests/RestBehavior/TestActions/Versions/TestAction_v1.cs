@@ -1,4 +1,5 @@
 ﻿using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Sdk.ApiContracts;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -13,7 +14,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions.Versions
                 dynamic testDoc1 = new DynamicWrapper();
                 testDoc1.Name = "Name_TestAction_v1";
 
-                target.Context.GetComponent<DocumentApi>()
+                target.Context.GetComponent<IDocumentApi>()
                       .SetDocument(target.Item.Configuration, target.Item.Metadata, testDoc1);
             }
         }

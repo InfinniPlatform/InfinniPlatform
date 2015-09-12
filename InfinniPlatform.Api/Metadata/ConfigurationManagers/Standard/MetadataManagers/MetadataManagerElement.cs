@@ -157,8 +157,12 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 
         private void SaveOrUpdateMetadata(dynamic objectToCreate)
         {
-            var updatingMetadata = MetadataExtensions.GetStoredMetadata(_metadataReader, objectToCreate) ??
-                                   objectToCreate;
+            var deleteMetadata = MetadataExtensions.GetStoredMetadata(_metadataReader, objectToCreate);
+            if (deleteMetadata != null)
+            {
+                DeleteItem(deleteMetadata);    
+            }
+
 
             objectToCreate.ParentId = _parentUid;
             objectToCreate.Version = _version;
@@ -177,7 +181,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
             //иначе создаем новое 
             var body = new AddCollectionItem(_metadataContainerName, metadataHeader, _version);
 
-            DeleteItem(updatingMetadata);
+            
 
             //обновляем заголовочную часть в метаданных родительского объекта (ссылку на метаданные конкретного типа)
             //заменяем объект заголовочной части
@@ -189,7 +193,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 
             if (_metadataCacheRefresher != null)
             {
-                _metadataCacheRefresher.RefreshMetadataAfterChanging(_version, updatingMetadata.Name);
+                _metadataCacheRefresher.RefreshMetadataAfterChanging(_version, objectToCreate.Name);
             }
         }
 

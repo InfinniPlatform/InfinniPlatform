@@ -12,17 +12,17 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 	    ///     Выгрузить на сервер бинарный контент
 	    /// </summary>
 	    /// <param name="applicationId">Идентификатор приложения</param>
-	    /// <param name="metadataType">Идентификатор типа документа</param>
+	    /// <param name="metadata">Идентификатор типа документа</param>
 	    /// <param name="documentId"></param>
 	    /// <param name="fieldName">Поле, содержащее ссылку на бинарный контент</param>
 	    /// <param name="filePath">Путь к загружаемому файлу</param>
 	    /// <returns>Результат загрузки файла</returns>
-	    public dynamic UploadBinaryContent(string applicationId, string metadataType, string documentId, string fieldName, string filePath)
+	    public dynamic UploadBinaryContent(string applicationId, string metadata, string documentId, string fieldName, string filePath)
         {
             var linkedData = new
             {
                 Configuration = applicationId,
-                MetadataType =  metadataType,
+                Metadata =  metadata,
                 DocumentId = documentId,
                 FieldName = fieldName
             };

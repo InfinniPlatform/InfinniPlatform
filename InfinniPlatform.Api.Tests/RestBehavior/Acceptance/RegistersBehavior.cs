@@ -1278,6 +1278,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         }
 
         [Test]
+        [Ignore]
         public void ShouldCalculateTotals()
         {
             // Тестирование функционала таблицы итогов:
@@ -1363,6 +1364,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         }
 
         [Test]
+        [Ignore]
         public void ShouldDeleteRegisterEntriesAfterDeletingDocument()
         {
             string testingDocumentGuid = Guid.NewGuid().ToString();

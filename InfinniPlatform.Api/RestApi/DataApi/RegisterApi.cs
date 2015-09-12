@@ -321,7 +321,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                 filter.Invoke(filterBuilder);
             }
 
-            return GetRegisterEntries(configuration, register, filter, pageNumber, pageSize);
+            return GetRegisterEntries(configuration, register, filterBuilder.GetFilter(), pageNumber, pageSize);
         }
 
         public IEnumerable<dynamic> GetRegisterEntries(string configuration,

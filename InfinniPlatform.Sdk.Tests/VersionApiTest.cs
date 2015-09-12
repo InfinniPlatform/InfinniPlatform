@@ -13,7 +13,7 @@ namespace InfinniPlatform.Sdk.Tests
     public sealed class VersionApiTest
     {
         private const string InfinniSessionPort = "9900";
-        private const string InfinniSessionServer = "localhost";
+        private const string InfinniSessionServer = "192.168.0.17";
         private const string Route = "1";
 
         private InfinniVersionApi _versionApi;
@@ -32,8 +32,6 @@ namespace InfinniPlatform.Sdk.Tests
             _signInApi.SignInInternal("Admin", "Admin", false);
 
             dynamic result = _versionApi.GetIrrelevantVersions("Admin");
-
-            Assert.AreEqual(result.Count, 0);
         }
 
         [Test]

@@ -12,6 +12,7 @@ using NUnit.Framework;
 namespace InfinniPlatform.Sdk.Tests.LoadTests
 {
     //[Ignore("Необходимо наличие запущенного сервера InfinniPlatform для данного теста")]
+    [Ignore("Нагрузочные тесты для ручного запуска")]
     [TestFixture]
     public class DocumentApiTest
     {

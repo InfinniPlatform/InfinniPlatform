@@ -103,9 +103,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 
             dynamic[] itemsArr = elasticProvider1.GetItems(new[] {instance1Id, instance2Id, instance3Id}).ToArray();
             Assert.AreEqual(3, itemsArr.Count());
-            Assert.AreEqual(itemsArr[0].Id, instance1Id);
-            Assert.AreEqual(itemsArr[1].Id, instance2Id);
-            Assert.AreEqual(itemsArr[2].Id, instance3Id);
+            Assert.True(itemsArr.Any(a => a.Id == instance1Id));
+            Assert.True(itemsArr.Any(a => a.Id == instance2Id));
+            Assert.True(itemsArr.Any(a => a.Id == instance3Id));
 
             //добавляем в индекс данные других типов
             dynamic instance4 = new DynamicWrapper();

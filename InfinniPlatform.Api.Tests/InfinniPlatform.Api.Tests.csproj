@@ -61,10 +61,8 @@
     <Compile Include="Packages\ConfigExporterBehavior.cs" />
     <Compile Include="Help\SelfDocumentationBehavior.cs" />
     <Compile Include="Packages\SolutionExporterBehavior.cs" />
-    <Compile Include="RestBehavior\Acceptance\AdminBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\AfterDocumentSaveEventsBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\ActionUnitExceptionHandlingBehavior.cs" />
-    <Compile Include="RestBehavior\Acceptance\AuthorizationBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\ContentUploadBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\SaaSBehaivor.cs" />
     <Compile Include="RestBehavior\Acceptance\SolutionVersionBehavior.cs" />
@@ -74,7 +72,6 @@
     <Compile Include="RestBehavior\Acceptance\DeleteReferencedDocumentBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\PrefillDocumentBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\ReportingBehavior.cs" />
-    <Compile Include="RestBehavior\Acceptance\ResolveReferencesDocumentBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\SchemaChangeDocumentBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\SignalRNotificationBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\TransactionBehavior.cs" />

@@ -15,6 +15,7 @@ using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 {
+    [Ignore]
     public sealed class TransactionBehavior
     {
         private string _configurationId = "TestTransactionConfig";
@@ -43,14 +44,14 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             new IndexApi().RebuildIndex(_configurationId, _documentIdPatient);
             new IndexApi().RebuildIndex(_configurationId, _documentIdAddress);
 
-            MetadataManagerConfiguration managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager(null);
+            MetadataManagerConfiguration managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager("1.0.0.0");
 
             dynamic config = managerConfig.CreateItem(_configurationId);
             managerConfig.DeleteItem(config);
             managerConfig.MergeItem(config);
 
             MetadataManagerDocument managerDocument =
-                new ManagerFactoryConfiguration(null, _configurationId).BuildDocumentManager();
+                new ManagerFactoryConfiguration("1.0.0.0", _configurationId).BuildDocumentManager();
 
 
             dynamic documentMetadata1 = managerDocument.CreateItem(_documentIdPatient);
@@ -161,13 +162,13 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             processManager.MergeItem(process);
 
-            dynamic package = new PackageBuilder().BuildPackage(_configurationId, null, GetType().Assembly.Location);
-            new UpdateApi(null).InstallPackages(new[] {package});
+            dynamic package = new PackageBuilder().BuildPackage(_configurationId, "1.0.0.0", GetType().Assembly.Location);
+            new UpdateApi("1.0.0.0").InstallPackages(new[] { package });
 
 
-            RestQueryApi.QueryPostNotify(null, _configurationId);
+            RestQueryApi.QueryPostNotify("1.0.0.0", _configurationId);
 
-            new UpdateApi(null).UpdateStore(_configurationId);
+            new UpdateApi("1.0.0.0").UpdateStore(_configurationId);
         }
 
 

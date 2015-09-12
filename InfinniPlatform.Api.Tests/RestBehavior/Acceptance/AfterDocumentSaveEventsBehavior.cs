@@ -25,9 +25,11 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-            _server = TestApi.StartServer(c => c.SetHostingConfig(TestSettings.DefaultHostingConfig));
+            
 
             TestApi.InitClientRouting(TestSettings.DefaultHostingConfig);
+            
+
         }
 
         [TestFixtureTearDown]
@@ -38,6 +40,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
         private void CreateTestConfig(bool hasOnSuccessPoint, bool hasRegisterMovePoint)
         {
+            _server = TestApi.StartServer(c => c.SetHostingConfig(TestSettings.DefaultHostingConfig));
+
             string configurationId = _configurationId;
             string documentId = "testdoc1";
 
@@ -107,17 +111,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                 scenarioManager.MergeItem(scenarioSuccessItem);
             }
 
-            if (hasRegisterMovePoint)
-            {
-                string scenarioRegisterId = "TestRegisterMoveAction";
-                dynamic scenarioRegisterItem = scenarioManager.CreateItem(scenarioRegisterId);
-                scenarioRegisterItem.ScenarioId = scenarioRegisterId;
-                scenarioRegisterItem.Id = scenarioRegisterId;
-                scenarioRegisterItem.Name = scenarioRegisterId;
-                scenarioRegisterItem.ScriptUnitType = ScriptUnitType.Action;
-                scenarioRegisterItem.ContextType = ContextTypeKind.ApplyMove;
-                scenarioManager.MergeItem(scenarioRegisterItem);
-            }
+
 
             //добавляем ссылку на сборку, в которой находится прикладной модуль
 
@@ -132,9 +126,13 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             RestQueryApi.QueryPostNotify("1.0.0.0", configurationId);
 
             new UpdateApi("1.0.0.0").UpdateStore(configurationId);
+
+            _server.Dispose();
+
+            _server = TestApi.StartServer(c => c.SetHostingConfig(TestSettings.DefaultHostingConfig));
         }
 
-        [Test]
+        [Test]       
         public void ShouldInvokeSuccessActionAfterChangingScenario()
         {
             var document = new
@@ -170,7 +168,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             var document = new
                 {
-                    Id = Guid.NewGuid(),
+                    Id = Guid.NewGuid().ToString(),
                     LastName = "123",
                 };
 
@@ -189,28 +187,6 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             Assert.AreEqual("Test", documents.First().TestValue);
         }
 
-        [Test]
-        public void ShouldInvokeSuccessAndRegisterActionsOnSuccessSaveDocument()
-        {
-            var document = new
-                {
-                    Id = Guid.NewGuid(),
-                    LastName = "123",
-                };
 
-
-            CreateTestConfig(true, true);
-
-            new DocumentApi().SetDocument(_configurationId, "testdoc1", document, false);
-
-            IEnumerable<dynamic> documents = new DocumentApi().GetDocument(_configurationId, "testdoc1",
-                                                                               f =>
-                                                                               f.AddCriteria(
-                                                                                   cr =>
-                                                                                   cr.Property("TestValue")
-                                                                                     .IsEquals("Test")), 0, 1);
-
-            Assert.AreEqual("Test", documents.First().TestValue);
-        }
     }
 }

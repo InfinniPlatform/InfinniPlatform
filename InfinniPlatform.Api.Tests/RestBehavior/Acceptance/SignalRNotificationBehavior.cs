@@ -47,20 +47,20 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         private void CreateTestConfig()
         {
             MetadataManagerConfiguration managerConfiguration =
-                ManagerFactoryConfiguration.BuildConfigurationManager(null);
+                ManagerFactoryConfiguration.BuildConfigurationManager("1.0.0.0");
 
             dynamic config = managerConfiguration.CreateItem(_configId);
             managerConfiguration.DeleteItem(config);
             managerConfiguration.MergeItem(config);
 
             MetadataManagerDocument managerDocument =
-                new ManagerFactoryConfiguration(null, _configId).BuildDocumentManager();
+                new ManagerFactoryConfiguration("1.0.0.0", _configId).BuildDocumentManager();
             dynamic documentMetadata1 = managerDocument.CreateItem(_documentId);
             managerDocument.MergeItem(documentMetadata1);
 
             //добавляем бизнес-процесс по умолчанию
             MetadataManagerElement processManager =
-                new ManagerFactoryDocument(null, _configId, _documentId).BuildProcessManager();
+                new ManagerFactoryDocument("1.0.0.0", _configId, _documentId).BuildProcessManager();
             dynamic defaultProcess = processManager.CreateItem("Default");
 
             dynamic instance = new DynamicWrapper();
@@ -77,7 +77,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             //указываем ссылку на тестовый сценарий комплексного предзаполнения
             MetadataManagerElement scenarioManager =
-                new ManagerFactoryDocument(null, _configId, _documentId).BuildScenarioManager();
+                new ManagerFactoryDocument("1.0.0.0", _configId, _documentId).BuildScenarioManager();
 
 
             string scenarioSuccessId = "TestSignalRAction";
@@ -93,16 +93,16 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             //добавляем ссылку на сборку, в которой находится прикладной модуль
 
             MetadataManagerElement assemblyManager =
-                new ManagerFactoryConfiguration(null, _configId).BuildAssemblyManager();
+                new ManagerFactoryConfiguration("1.0.0.0", _configId).BuildAssemblyManager();
             dynamic assemblyItem = assemblyManager.CreateItem("InfinniPlatform.Api.Tests");
             assemblyManager.MergeItem(assemblyItem);
 
-            dynamic package = new PackageBuilder().BuildPackage(_configId, null, GetType().Assembly.Location);
-            new UpdateApi(null).InstallPackages(new[] {package});
+            dynamic package = new PackageBuilder().BuildPackage(_configId, "1.0.0.0", GetType().Assembly.Location);
+            new UpdateApi("1.0.0.0").InstallPackages(new[] { package });
 
-            RestQueryApi.QueryPostNotify(null, _configId);
+            RestQueryApi.QueryPostNotify("1.0.0.0", _configId);
 
-            new UpdateApi(null).UpdateStore(_configId);
+            new UpdateApi("1.0.0.0").UpdateStore(_configId);
         }
     }
 }

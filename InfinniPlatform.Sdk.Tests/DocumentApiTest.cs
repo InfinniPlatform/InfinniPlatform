@@ -76,9 +76,9 @@ namespace InfinniPlatform.Sdk.Tests
             var result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
 
             var resultDoc = _api.GetDocument("gameshop", "catalogue",
-                 f => f
+                 f => f.AddCriteria(cr => cr.Property("Id").IsEquals(result))
                      .AddCriteria(cr => cr.Property("Availability.SaleStartDate").IsMoreThanOrEquals(DateTime.Now.Date))
-                     .AddCriteria(cr => cr.Property("Availability.SaleStartDate").IsLessThanOrEquals(DateTime.Now.Date.AddDays(1))), 0, 1000);
+                     .AddCriteria(cr => cr.Property("Availability.SaleStartDate").IsLessThanOrEquals(DateTime.Now.Date.AddDays(1))), 0, 100);
             Assert.AreEqual(1, resultDoc.Count(r => r.Id == result));
         }
 
@@ -112,6 +112,7 @@ namespace InfinniPlatform.Sdk.Tests
 
             var resultDoc = _api.GetDocument("gameshop", "catalogue",
                  f => f
+                     .AddCriteria(cr => cr.Property("Id").IsEquals(result))
                      .AddCriteria(cr => cr.Property("Price").IsMoreThanOrEquals(1000)) 
                      .AddCriteria(cr => cr.Property("Price").IsLessThanOrEquals(10000)), 0, 1000
                 );
