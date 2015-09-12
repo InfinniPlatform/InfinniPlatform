@@ -212,9 +212,9 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             //создание пакета со сборкой
             dynamic package = new PackageBuilder().BuildPackage(ConfigurationId, "1.0.0.0",
-                                                                "InfinniPlatform.Api.Tests.dll");
+                                                                @"..\Assemblies\InfinniPlatform.Api.Tests.dll");
             //установка пакета
-            new UpdateApi(null).InstallPackages(new[] {package});
+            new UpdateApi("1.0.0.0").InstallPackages(new[] { package });
 
             //обновление конфигурации
             RestQueryApi.QueryPostNotify("1.0.0.0", ConfigurationId);

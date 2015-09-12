@@ -19,6 +19,7 @@ using NUnit.Framework;
 namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 {
     [TestFixture]
+    [Category(TestCategories.AcceptanceTest)]
     class SolutionVersionBehavior
     {
         private IDisposable _server;

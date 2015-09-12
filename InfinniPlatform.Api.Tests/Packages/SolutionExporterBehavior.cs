@@ -14,6 +14,7 @@ using NUnit.Framework;
 namespace InfinniPlatform.Api.Tests.Packages
 {
     [TestFixture]
+    [Category(TestCategories.AcceptanceTest)]
     public class SolutionExporterBehavior
     {
         private IDisposable _server;
