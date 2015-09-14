@@ -22,7 +22,7 @@ namespace InfinniPlatform.RestfulApi.Auth
                 throw new ArgumentException(string.Format(Resources.UserToRemoveClaimNotFound, target.Item.UserName));
             }
 
-            storage.RemoveUserClaim(user, target.Item.ClaimType);
+            storage.RemoveUserClaim(user, target.Item.ClaimType,null);
 
             //обновляем пользователей системы
             target.Context.GetComponent<CachedSecurityComponent>().UpdateUsers();
