@@ -237,7 +237,14 @@ namespace InfinniPlatform.Authentication.Middleware
 																  if (user == null)
 																  {
 																	  // Создание записи о пользователе
-																	  user = new IdentityApplicationUser { UserName = loginInfo.DefaultUserName };
+
+																	  user = new IdentityApplicationUser
+																			 {
+																				 UserName = loginInfo.DefaultUserName,
+																				 Email = loginInfo.Email,
+																				 EmailConfirmed = !string.IsNullOrWhiteSpace(loginInfo.Email)
+																			 };
+
 																	  var createUserTask = userManager.CreateAsync(user);
 																	  ThrowIfError(createUserTask);
 
@@ -412,7 +419,7 @@ namespace InfinniPlatform.Authentication.Middleware
 					   DefaultRole = defaultRole,
 					   Roles = user.Roles,
 					   Logins = user.Logins,
-                       Claims = user.Claims
+					   Claims = user.Claims
 				   };
 		}
 

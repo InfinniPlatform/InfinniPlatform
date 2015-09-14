@@ -138,6 +138,18 @@
   <data name="AuthenticationGoogleClientSecretCannotBeNullOrWhiteSpace" xml:space="preserve">
     <value>Google Client Secret cannot be null or whitespace.</value>
   </data>
+  <data name="AuthenticationFacebookClientIdCannotBeNullOrWhiteSpace" xml:space="preserve">
+    <value>Facebook Client ID cannot be null or whitespace.</value>
+  </data>
+  <data name="AuthenticationFacebookClientSecretCannotBeNullOrWhiteSpace" xml:space="preserve">
+    <value>Facebook Client Secret cannot be null or whitespace.</value>
+  </data>
+  <data name="AuthenticationVkClientIdCannotBeNullOrWhiteSpace" xml:space="preserve">
+    <value>Vk Client ID cannot be null or whitespace.</value>
+  </data>
+  <data name="AuthenticationVkClientSecretCannotBeNullOrWhiteSpace" xml:space="preserve">
+    <value>Vk Client Secret cannot be null or whitespace.</value>
+  </data>
   <data name="AuthenticationManagerNotFound" xml:space="preserve">
     <value>AuthenticationManager not found.</value>
   </data>
@@ -176,5 +188,20 @@
   </data>
   <data name="UserNotFound" xml:space="preserve">
     <value>User not found.</value>
+  </data>
+  <data name="DuplicateEmail" xml:space="preserve">
+    <value>Duplicate e-mail: '{0}'.</value>
+  </data>
+  <data name="DuplicatePhoneNumber" xml:space="preserve">
+    <value>Duplicate phone number: '{0}'.</value>
+  </data>
+  <data name="DuplicateUserName" xml:space="preserve">
+    <value>Duplicate username: '{0}'.</value>
+  </data>
+  <data name="InvalidEmail" xml:space="preserve">
+    <value>Invalid e-mail: '{0}'.</value>
+  </data>
+  <data name="InvalidUserName" xml:space="preserve">
+    <value>Invalid username: '{0}'.</value>
   </data>
 </root>

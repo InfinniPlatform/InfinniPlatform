@@ -82,8 +82,9 @@ namespace InfinniPlatform.Authentication.Modules
 
 			if (applicationUserStore != null)
 			{
-				var identityApplicationUserStore = new IdentityApplicationUserStore(applicationUserStore);
-				var userManager = new UserManager<IdentityApplicationUser>(identityApplicationUserStore);
+				var userStore = new IdentityApplicationUserStore(applicationUserStore);
+				var userValidator = new IdentityApplicationUserValidator(userStore);
+				var userManager = new UserManager<IdentityApplicationUser>(userStore) { UserValidator = userValidator };
 
 				// Делается предположение, что IApplicationUserPasswordHasher попадает в контекст извне
 				var applicationUserPasswordHasher = context.Get<IApplicationUserPasswordHasher>() ?? new DefaultApplicationUserPasswordHasher();
