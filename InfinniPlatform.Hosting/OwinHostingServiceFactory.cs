@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.RestQuery;
-using InfinniPlatform.Api.Security;
 using InfinniPlatform.Api.Settings;
 using InfinniPlatform.Authentication.Modules;
 using InfinniPlatform.Cors;
@@ -13,7 +11,6 @@ using InfinniPlatform.Hosting.Implementation.ServiceTemplates;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Owin.Hosting;
 using InfinniPlatform.Owin.Modules;
-using InfinniPlatform.Security;
 using InfinniPlatform.SignalR;
 using InfinniPlatform.SystemInfo;
 using InfinniPlatform.WebApi;
@@ -22,20 +19,17 @@ using InfinniPlatform.WebApi.Factories;
 namespace InfinniPlatform.Hosting
 {
 	/// <summary>
-	/// Фабрика для создания сервиса хостинга на базе OWIN (Open Web Interface for .NET).
+	///     Фабрика для создания сервиса хостинга на базе OWIN (Open Web Interface for .NET).
 	/// </summary>
 	public sealed class OwinHostingServiceFactory : IHostingServiceFactory
 	{
-		private readonly OwinHostingService _hostingService;
-		private readonly WebApiOwinHostingModule _webApiOwinHostingModule;
-
+		readonly OwinHostingService _hostingService;
+		readonly WebApiOwinHostingModule _webApiOwinHostingModule;
 
 		public OwinHostingServiceFactory(IEnumerable<Assembly> assemblies, IServiceTemplateConfiguration serviceTemplateConfiguration = null, HostingConfig hostingConfig = null)
 		{
 			if (hostingConfig == null)
-			{
 				hostingConfig = HostingConfig.Default;
-			}
 
 			ControllerRoutingFactory.Instance = new ControllerRoutingFactory(hostingConfig);
 
@@ -65,7 +59,20 @@ namespace InfinniPlatform.Hosting
 			_hostingService.RegisterModule(_webApiOwinHostingModule);
 		}
 
-		private static IEnumerable<OwinHostingModule> GetExternalAuthenticationProviders()
+		public InfinniPlatformHostServer InfinniPlatformHostServer
+		{
+			get { return _webApiOwinHostingModule.HostServer; }
+		}
+
+		/// <summary>
+		///     Создать сервис хостинга.
+		/// </summary>
+		public IHostingService CreateHostingService()
+		{
+			return _hostingService;
+		}
+
+		static IEnumerable<OwinHostingModule> GetExternalAuthenticationProviders()
 		{
 			// Todo: Нужно подумать, как автоматизировать этот процесс
 
@@ -92,22 +99,21 @@ namespace InfinniPlatform.Hosting
 				result.Add(new AuthenticationEsiaOwinHostingModule(server, clientId, clientSecret));
 			}
 
+			if (AppSettings.GetValue("AppServerAuthVkEnable", false))
+			{
+				var clientId = AppSettings.GetValue("AppServerAuthVkClientId");
+				var clientSecret = AppSettings.GetValue("AppServerAuthVkClientSecret");
+				result.Add(new AuthenticationVkOwinHostingModule(clientId, clientSecret));
+			}
+
+			if (AppSettings.GetValue("AppServerAuthFacebookEnable", false))
+			{
+				var clientId = AppSettings.GetValue("AppServerAuthFacebookClientId");
+				var clientSecret = AppSettings.GetValue("AppServerAuthFacebookClientSecret");
+				result.Add(new AuthenticationFacebookOwinHostingModule(clientId, clientSecret));
+			}
+
 			return result;
-		}
-
-
-		public InfinniPlatformHostServer InfinniPlatformHostServer
-		{
-			get { return _webApiOwinHostingModule.HostServer; }
-		}
-
-
-		/// <summary>
-		/// Создать сервис хостинга.
-		/// </summary>
-		public IHostingService CreateHostingService()
-		{
-			return _hostingService;
 		}
 	}
 }

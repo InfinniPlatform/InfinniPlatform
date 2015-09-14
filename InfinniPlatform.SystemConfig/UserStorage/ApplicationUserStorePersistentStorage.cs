@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
+
 using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.RestApi.AuthApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.Security;
 using InfinniPlatform.Api.Settings;
+
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.SystemConfig.UserStorage
@@ -26,9 +26,9 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 
 		private void InsertUser(ApplicationUser user)
 		{
-		    user.SecurityStamp = Guid.NewGuid().ToString();
-            var instance = DynamicWrapperExtensions.ToDynamic(user);
-            
+			user.SecurityStamp = Guid.NewGuid().ToString();
+			var instance = DynamicWrapperExtensions.ToDynamic(user);
+
 			new DocumentApiUnsecured().SetDocument(AuthorizationStorageExtensions.AuthorizationConfigId, AuthorizationStorageExtensions.UserStore, instance, false, true);
 		}
 
@@ -45,25 +45,71 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 
 		public ApplicationUser FindUserById(string userId)
 		{
-            dynamic user = new DocumentApiUnsecured().GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId, AuthorizationStorageExtensions.UserStore,
-										  f => f.AddCriteria(cr => cr.Property("Id").IsEquals(userId)), 0, 1).FirstOrDefault();
-            if (user != null)
-            {
-                return (JObject.FromObject(user)).ToObject<ApplicationUser>();
-            }
-            return null;
-		}
-
-		public ApplicationUser FindUserByName(string userName)
-		{
 			dynamic user = new DocumentApiUnsecured().GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId, AuthorizationStorageExtensions.UserStore,
-										 f => f.AddCriteria(cr => cr.Property("UserName").IsEquals(userName)), 0, 1).FirstOrDefault();
+										  f => f.AddCriteria(cr => cr.Property("Id").IsEquals(userId)), 0, 1).FirstOrDefault();
 			if (user != null)
 			{
 				return (JObject.FromObject(user)).ToObject<ApplicationUser>();
 			}
 			return null;
+		}
 
+		public ApplicationUser FindUserByName(string name)
+		{
+			return FindUserByUserName(name)
+				   ?? FindUserByEmail(name)
+				   ?? FindUserByPhoneNumber(name);
+		}
+
+		public ApplicationUser FindUserByUserName(string userName)
+		{
+			var user = new DocumentApiUnsecured()
+				.GetDocument(
+					AuthorizationStorageExtensions.AuthorizationConfigId,
+					AuthorizationStorageExtensions.UserStore,
+					f => f.AddCriteria(cr => cr.Property("UserName").IsEquals(userName)), 0, 1)
+				.FirstOrDefault();
+
+			if (user != null)
+			{
+				return (JObject.FromObject(user)).ToObject<ApplicationUser>();
+			}
+
+			return null;
+		}
+
+		public ApplicationUser FindUserByEmail(string email)
+		{
+			var user = new DocumentApiUnsecured()
+				.GetDocument(
+					AuthorizationStorageExtensions.AuthorizationConfigId,
+					AuthorizationStorageExtensions.UserStore,
+					f => f.AddCriteria(cr => cr.Property("Email").IsEquals(email)), 0, 1)
+				.FirstOrDefault();
+
+			if (user != null)
+			{
+				return (JObject.FromObject(user)).ToObject<ApplicationUser>();
+			}
+
+			return null;
+		}
+
+		public ApplicationUser FindUserByPhoneNumber(string phoneNumber)
+		{
+			var user = new DocumentApiUnsecured()
+				.GetDocument(
+					AuthorizationStorageExtensions.AuthorizationConfigId,
+					AuthorizationStorageExtensions.UserStore,
+					f => f.AddCriteria(cr => cr.Property("PhoneNumber").IsEquals(phoneNumber)), 0, 1)
+				.FirstOrDefault();
+
+			if (user != null)
+			{
+				return (JObject.FromObject(user)).ToObject<ApplicationUser>();
+			}
+
+			return null;
 		}
 
 		public ApplicationUser FindUserByLogin(ApplicationUserLogin userLogin)
@@ -90,13 +136,13 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 
 			if (role == null)
 			{
-				throw new ArgumentException(string.Format("role with name \"{0}\" not found.",roleName));
+				throw new ArgumentException(string.Format("role with name \"{0}\" not found.", roleName));
 			}
 
 			var roles = user.Roles.ToList();
 			if (roles.FirstOrDefault(r => r.Id == role.Id) == null)
-			{        
-                //список ролей пользователя не используется в текущей реализации. Сделано только для обеспечения совместимости с внешними конфигурациями авторизации
+			{
+				//список ролей пользователя не используется в текущей реализации. Сделано только для обеспечения совместимости с внешними конфигурациями авторизации
 				var link = new ForeignKey();
 				link.Id = role.Id;
 				link.DisplayName = role.Name;
@@ -107,13 +153,13 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 
 				UpdateUser(user);
 
-                //добавляем связку в хранилище
-			    dynamic userRoleInstance = new DynamicWrapper();
-			    userRoleInstance.UserName = user.UserName;
-			    userRoleInstance.RoleName = role.Name;
+				//добавляем связку в хранилище
+				dynamic userRoleInstance = new DynamicWrapper();
+				userRoleInstance.UserName = user.UserName;
+				userRoleInstance.RoleName = role.Name;
 
 				new DocumentApiUnsecured().SetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
-			                                  AuthorizationStorageExtensions.UserRoleStore, userRoleInstance, false, true);
+											  AuthorizationStorageExtensions.UserRoleStore, userRoleInstance, false, true);
 			}
 
 		}
@@ -147,34 +193,34 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 			}
 		}
 
-	    public void AddUserClaim(ApplicationUser user, string claimType, string claimValue, bool overwrite = true)
-	    {
-	        var claims = overwrite
-	            ? user.Claims.ToList().Where(c => c.Type.DisplayName != claimType).ToList()
-	            : user.Claims.ToList();
+		public void AddUserClaim(ApplicationUser user, string claimType, string claimValue, bool overwrite = true)
+		{
+			var claims = overwrite
+				? user.Claims.ToList().Where(c => c.Type.DisplayName != claimType).ToList()
+				: user.Claims.ToList();
 
-	        ApplicationClaimType claim = FindClaimType(claimType);
-	        if (claim != null)
-	        {
-	            var userClaim = new ApplicationUserClaim();
-	            userClaim.Type = new ForeignKey()
-	            {
-	                DisplayName = claim.Name,
-	                Id = claim.Id
-	            };
-	            userClaim.Value = claimValue;
+			ApplicationClaimType claim = FindClaimType(claimType);
+			if (claim != null)
+			{
+				var userClaim = new ApplicationUserClaim();
+				userClaim.Type = new ForeignKey()
+				{
+					DisplayName = claim.Name,
+					Id = claim.Id
+				};
+				userClaim.Value = claimValue;
 
-	            claims.Add(userClaim);
-	            user.Claims = claims;
-	            UpdateUser(user);
-	        }
-	        else
-	        {
-	            throw new ArgumentException(string.Format("User claim not found: {0}", claimType));
-	        }
-	    }
+				claims.Add(userClaim);
+				user.Claims = claims;
+				UpdateUser(user);
+			}
+			else
+			{
+				throw new ArgumentException(string.Format("User claim not found: {0}", claimType));
+			}
+		}
 
-	    public void RemoveUserClaim(ApplicationUser user, string claimType, string claimValue)
+		public void RemoveUserClaim(ApplicationUser user, string claimType, string claimValue)
 		{
 			var claims = user.Claims.ToList().Where(c => c.Type.DisplayName != claimType).ToList();
 			user.Claims = claims;
@@ -279,9 +325,9 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 			{
 				dynamic claimLinks =
 					new DocumentApiUnsecured().GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
-					                              AuthorizationStorageExtensions.UserStore,
-					                              f => f.AddCriteria(cr => cr.Property("Claims.Type.DisplayName").IsEquals(claimType)), 0, 1)
-					                 .FirstOrDefault();
+												  AuthorizationStorageExtensions.UserStore,
+												  f => f.AddCriteria(cr => cr.Property("Claims.Type.DisplayName").IsEquals(claimType)), 0, 1)
+									 .FirstOrDefault();
 
 				if (claimLinks != null)
 				{
@@ -289,7 +335,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 						string.Format("Can't delete user claim \"{0}\": existing users have link to claim type.", claimType));
 				}
 				new DocumentApiUnsecured().DeleteDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
-				                                 AuthorizationStorageExtensions.ClaimStore, claim.Id);
+												 AuthorizationStorageExtensions.ClaimStore, claim.Id);
 			}
 		}
 
@@ -324,13 +370,13 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 
 			if (roleAdmin == null)
 			{
-				aclApi.AddRole(AuthorizationStorageExtensions.AdminRole, AuthorizationStorageExtensions.AdminRole,AuthorizationStorageExtensions.AdminRole);
+				aclApi.AddRole(AuthorizationStorageExtensions.AdminRole, AuthorizationStorageExtensions.AdminRole, AuthorizationStorageExtensions.AdminRole);
 			}
 
 			var users = aclApi.GetUsers();
 			if (users.FirstOrDefault(u => u.UserName == AuthorizationStorageExtensions.AdminUser) == null)
 			{
-				aclApi.AddUser(AuthorizationStorageExtensions.AdminUser, AppSettings.GetValue("AdminPassword","Admin"));
+				aclApi.AddUser(AuthorizationStorageExtensions.AdminUser, AppSettings.GetValue("AdminPassword", "Admin"));
 
 				//проверяем, удалось ли добавить пользователя
 				users = aclApi.GetUsers();
@@ -341,18 +387,18 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 				}
 
 				aclApi.AddUserToRole(AuthorizationStorageExtensions.AdminUser, AuthorizationStorageExtensions.AdminRole);
-			
+
 			}
 
 
 
-		    //проверяем наличие роли администратора системы
+			//проверяем наличие роли администратора системы
 			//если роль администратора отсутствует, то создаем ее заново
 			if (acl.FirstOrDefault(a => a.UserName == AuthorizationStorageExtensions.AdminRole) == null)
 			{
 				adminApi.GrantAdminAcl(AuthorizationStorageExtensions.AdminRole);
 
-			    adminApi.SetDefaultAcl();
+				adminApi.SetDefaultAcl();
 			}
 
 
