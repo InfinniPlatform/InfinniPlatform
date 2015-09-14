@@ -8,6 +8,7 @@ namespace InfinniPlatform.Caching.Tests.Redis
 {
 	[TestFixture]
 	[Category(TestCategories.UnitTest)]
+	[Ignore("Should setup Redis on TeamCity")]
 	public sealed class RedisCacheImplTest
 	{
 		private RedisCacheImpl _cache;
@@ -17,7 +18,7 @@ namespace InfinniPlatform.Caching.Tests.Redis
 		{
 			var redisConnectionString = CachingHelpers.GetConfigRedisConnectionString();
 
-			_cache = new RedisCacheImpl("RedisCacheImplTest", redisConnectionString);
+			_cache = new RedisCacheImpl(typeof(RedisCacheImplTest).Name, redisConnectionString);
 		}
 
 		[TearDown]

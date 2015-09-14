@@ -15,7 +15,7 @@ namespace InfinniPlatform.Caching.Tests.Memory
 		[SetUp]
 		public void SetUp()
 		{
-			_cache = new MemoryCacheImpl("MemoryCacheImplTest");
+			_cache = new MemoryCacheImpl(typeof(MemoryCacheImplTest).Name);
 		}
 
 		[TearDown]
