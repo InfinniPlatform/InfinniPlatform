@@ -106,6 +106,19 @@ namespace InfinniPlatform.Hosting
                 result.Add(new AuthenticationEsiaOwinHostingModule(server, clientId, clientSecret));
             }
 
+			if (AppSettings.GetValue("AppServerAuthVkEnable", false))
+			{
+				var clientId = AppSettings.GetValue("AppServerAuthVkClientId");
+				var clientSecret = AppSettings.GetValue("AppServerAuthVkClientSecret");
+				result.Add(new AuthenticationVkOwinHostingModule(clientId, clientSecret));
+			}
+
+			if (AppSettings.GetValue("AppServerAuthFacebookEnable", false))
+			{
+				var clientId = AppSettings.GetValue("AppServerAuthFacebookClientId");
+				var clientSecret = AppSettings.GetValue("AppServerAuthFacebookClientSecret");
+				result.Add(new AuthenticationFacebookOwinHostingModule(clientId, clientSecret));
+			}
             return result;
         }
     }

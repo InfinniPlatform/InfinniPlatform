@@ -138,6 +138,18 @@
   <data name="AuthenticationGoogleClientSecretCannotBeNullOrWhiteSpace" xml:space="preserve">
     <value>Google Client Secret cannot be null or whitespace.</value>
   </data>
+	<data name="AuthenticationFacebookClientIdCannotBeNullOrWhiteSpace" xml:space="preserve">
+    <value>Facebook Client ID cannot be null or whitespace.</value>
+  </data>
+	<data name="AuthenticationFacebookClientSecretCannotBeNullOrWhiteSpace" xml:space="preserve">
+    <value>Facebook Client Secret cannot be null or whitespace.</value>
+  </data>
+	<data name="AuthenticationVkClientIdCannotBeNullOrWhiteSpace" xml:space="preserve">
+    <value>Vk Client ID cannot be null or whitespace.</value>
+  </data>
+	<data name="AuthenticationVkClientSecretCannotBeNullOrWhiteSpace" xml:space="preserve">
+    <value>Vk Client Secret cannot be null or whitespace.</value>
+  </data>
   <data name="AuthenticationManagerNotFound" xml:space="preserve">
     <value>AuthenticationManager not found.</value>
   </data>
