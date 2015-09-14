@@ -42,16 +42,19 @@
     <Compile Include="Memory\MemoryCacheMessageBusImplTest.cs" />
     <Compile Include="Memory\MemoryCacheImplPerformanceTest.cs" />
     <Compile Include="Memory\MemoryCacheMessageBusImplPerformanceTest.cs" />
+    <Compile Include="Memory\MemoryCacheImplMemoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <DependentUpon>AssemblyInfo.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Redis\RedisCacheImplMemoryTest.cs" />
     <Compile Include="Redis\RedisCacheImplPerformanceTest.cs" />
     <Compile Include="Redis\RedisCacheMessageBusImplPerformanceTest.cs" />
     <Compile Include="Redis\RedisCacheMessageBusImplTest.cs" />
     <Compile Include="Redis\RedisCacheImplTest.cs" />
     <Compile Include="TwoLayer\FakeCacheImpl.cs" />
+    <Compile Include="TwoLayer\TwoLayerCacheImplMemoryTest.cs" />
     <Compile Include="TwoLayer\TwoLayerCacheImplPerformanceTest.cs" />
     <Compile Include="TwoLayer\TwoLayerCacheImplTest.cs" />
   </ItemGroup>
