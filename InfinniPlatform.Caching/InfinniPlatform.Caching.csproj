@@ -44,6 +44,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CachingExtensions.cs" />
+    <Compile Include="CachingHelpers.cs" />
+    <Compile Include="Factory\CacheFactory.cs" />
+    <Compile Include="Factory\CacheMessageBusFactory.cs" />
+    <Compile Include="Factory\ICacheFactory.cs" />
+    <Compile Include="Factory\ICacheMessageBusFactory.cs" />
     <Compile Include="ICache.cs" />
     <Compile Include="ICacheMessageBus.cs" />
     <Compile Include="Memory\MemoryCacheImpl.cs" />
@@ -78,7 +83,12 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
+      <Project>{7CA0F96C-7FF4-44B2-9D44-851984DF4532}</Project>
+      <Name>InfinniPlatform.Api</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

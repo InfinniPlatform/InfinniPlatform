@@ -91,17 +91,17 @@ namespace InfinniPlatform.Caching.Redis
 
 		private void TryPublish(string wrappedKey, string value)
 		{
-			CachingExtensions.TryExecute(() => _exchange.Value.Publish(wrappedKey, value));
+			CachingHelpers.TryExecute(() => _exchange.Value.Publish(wrappedKey, value));
 		}
 
 		private void TrySubscribe(RedisChannel wrappedKey, Action<string, string> handler)
 		{
-			CachingExtensions.TryExecute(() => _exchange.Value.Subscribe(wrappedKey, (k, v) => TryHandle(k, v, handler)));
+			CachingHelpers.TryExecute(() => _exchange.Value.Subscribe(wrappedKey, (k, v) => TryHandle(k, v, handler)));
 		}
 
 		private void TryUnsubscribe(RedisChannel wrappedKey)
 		{
-			CachingExtensions.TryExecute(() => _exchange.Value.Unsubscribe(wrappedKey));
+			CachingHelpers.TryExecute(() => _exchange.Value.Unsubscribe(wrappedKey));
 		}
 
 		private void TryHandle(string wrappedKey, string value, Action<string, string> handler)

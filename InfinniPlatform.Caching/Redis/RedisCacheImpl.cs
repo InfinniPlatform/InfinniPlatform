@@ -138,7 +138,7 @@ namespace InfinniPlatform.Caching.Redis
 		{
 			var wrappedKey = key.WrapCacheKey(_name);
 
-			return CachingExtensions.TryExecute(() => action(_database.Value, wrappedKey));
+			return CachingHelpers.TryExecute(() => action(_database.Value, wrappedKey));
 		}
 	}
 }

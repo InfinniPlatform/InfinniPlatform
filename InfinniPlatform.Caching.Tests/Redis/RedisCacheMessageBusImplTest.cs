@@ -16,7 +16,9 @@ namespace InfinniPlatform.Caching.Tests.Redis
 		{
 			// GIVEN
 
-			var messageBus = new RedisCacheMessageBusImpl("RedisCacheImplTest", "192.168.240.128"); // TODO: connectionString from .config
+			var redisConnectionString = CachingHelpers.GetConfigRedisConnectionString();
+
+			var messageBus = new RedisCacheMessageBusImpl("RedisCacheImplTest", redisConnectionString);
 
 			// subscriber1 for Key1
 

@@ -15,7 +15,9 @@ namespace InfinniPlatform.Caching.Tests.Redis
 		[SetUp]
 		public void SetUp()
 		{
-			_cache = new RedisCacheImpl("RedisCacheImplTest", "192.168.240.128"); // TODO: connectionString from .config
+			var redisConnectionString = CachingHelpers.GetConfigRedisConnectionString();
+
+			_cache = new RedisCacheImpl("RedisCacheImplTest", redisConnectionString);
 		}
 
 		[TearDown]
