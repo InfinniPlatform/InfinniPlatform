@@ -1,58 +1,52 @@
 ﻿<UserControl x:Name="This"
-			 x:Class="InfinniPlatform.UserInterface.ViewBuilders.DataElements.ToggleButton.ToggleButtonControl"
-			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-			 mc:Ignorable="d"
-			 d:DesignHeight="22"
-			 d:DesignWidth="60"
-			 RenderOptions.EdgeMode="Aliased"
-			 >
-	<Border Height="20"
-			Width="60"
-			BorderThickness="1"
-			BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
-			>
-		<Grid>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="*"/>
-			</Grid.ColumnDefinitions>
-			<TextBlock x:Name="TextBlockOn"
-					   Grid.Column="0"
-					   Text="{Binding ElementName=This, Path=TextOn}"
-					   Padding="0,2,0,2"
-					   TextAlignment="Center"
-					   VerticalAlignment="Center"
-					   Foreground="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}"
-					   Background="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"
-					   FontWeight="Bold"
-					   MouseDown="OnClickByTextOn"
-					   />
-			<TextBlock x:Name="TextBlockOff"
-					   Grid.Column="1"
-					   Text="{Binding ElementName=This, Path=TextOff}"
-					   Padding="0,2,0,2"
-					   TextAlignment="Center"
-					   VerticalAlignment="Center"
-					   Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
-					   Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
-					   FontWeight="Bold"
-					   MouseDown="OnClickByTextOff"
-					   />
-			<Button x:Name="ButtonOn"
-					Grid.Column="1"
-					Visibility="Collapsed"
-					Margin="-2"
-					Click="OnClickByButtonOn"
-					/>
-			<Button x:Name="ButtonOff"
-					Grid.Column="0"
-					Visibility="Visible"
-					Margin="-2"
-					Click="OnClickByButtonOff"
-					/>
-		</Grid>
-	</Border>
+             x:Class="InfinniPlatform.UserInterface.ViewBuilders.DataElements.ToggleButton.ToggleButtonControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="22"
+             d:DesignWidth="60"
+             RenderOptions.EdgeMode="Aliased">
+    <Border Height="20"
+            Width="60"
+            BorderThickness="1"
+            BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="TextBlockOn"
+                       Grid.Column="0"
+                       Text="{Binding ElementName=This, Path=TextOn}"
+                       Padding="0,2,0,2"
+                       TextAlignment="Center"
+                       VerticalAlignment="Center"
+                       Foreground="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}"
+                       Background="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"
+                       FontWeight="Bold"
+                       MouseDown="OnClickByTextOn" />
+            <TextBlock x:Name="TextBlockOff"
+                       Grid.Column="1"
+                       Text="{Binding ElementName=This, Path=TextOff}"
+                       Padding="0,2,0,2"
+                       TextAlignment="Center"
+                       VerticalAlignment="Center"
+                       Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
+                       Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+                       FontWeight="Bold"
+                       MouseDown="OnClickByTextOff" />
+            <Button x:Name="ButtonOn"
+                    Grid.Column="1"
+                    Visibility="Collapsed"
+                    Margin="-2"
+                    Click="OnClickByButtonOn" />
+            <Button x:Name="ButtonOff"
+                    Grid.Column="0"
+                    Visibility="Visible"
+                    Margin="-2"
+                    Click="OnClickByButtonOff" />
+        </Grid>
+    </Border>
 </UserControl>

@@ -1,9 +1,9 @@
 ﻿using System.IO;
 
-using InfinniPlatform.Api.Settings;
 using InfinniPlatform.FlowDocument.Converters.Html;
 using InfinniPlatform.FlowDocument.Model;
 using InfinniPlatform.FlowDocument.Model.Views;
+using InfinniPlatform.Sdk.Environment.Settings;
 
 namespace InfinniPlatform.FlowDocument.Converters.Pdf
 {

@@ -1,171 +1,159 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-
 using InfinniPlatform.UserInterface.ViewBuilders.Elements;
 using InfinniPlatform.UserInterface.ViewBuilders.Views;
-
 using DataFormat = InfinniPlatform.UserInterface.ViewBuilders.DisplayFormats.DataFormat;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.DataElements.Label
 {
-	/// <summary>
-	/// Элемент представления для текстовой метки.
-	/// </summary>
-	public sealed class LabelElement : BaseElement<TextBlock>
-	{
-		public LabelElement(View view)
-			: base(view)
-		{
-		}
+    /// <summary>
+    ///     Элемент представления для текстовой метки.
+    /// </summary>
+    public sealed class LabelElement : BaseElement<TextBlock>
+    {
+        // Format
 
+        private DataFormat _format;
+        // TextAlign
 
-		// Text
+        private HorizontalTextAlignment _horizontalTextAlignment;
+        // LineCount
 
-		public override void SetText(string value)
-		{
-			base.SetText(value);
+        private int _lineCount;
+        // Value
 
-			Control.InvokeControl(() =>
-								  {
-									  Control.Text = value;
-								  });
-		}
+        private object _value;
 
+        public LabelElement(View view)
+            : base(view)
+        {
+        }
 
-		// Format
+        // Text
 
-		private DisplayFormats.DataFormat _format;
+        public override void SetText(string value)
+        {
+            base.SetText(value);
 
-		/// <summary>
-		/// Возвращает формат отображения данных.
-		/// </summary>
-		public DisplayFormats.DataFormat GetFormat()
-		{
-			return _format;
-		}
+            Control.InvokeControl(() => { Control.Text = value; });
+        }
 
-		/// <summary>
-		/// Устанавливает формат отображения данных.
-		/// </summary>
-		public void SetFormat(DataFormat value)
-		{
-			_format = value;
+        /// <summary>
+        ///     Возвращает формат отображения данных.
+        /// </summary>
+        public DataFormat GetFormat()
+        {
+            return _format;
+        }
 
-			UpdateText();
-		}
+        /// <summary>
+        ///     Устанавливает формат отображения данных.
+        /// </summary>
+        public void SetFormat(DataFormat value)
+        {
+            _format = value;
 
+            UpdateText();
+        }
 
-		// Value
+        /// <summary>
+        ///     Возвращает значение.
+        /// </summary>
+        public object GetValue()
+        {
+            return _value;
+        }
 
-		private object _value;
+        /// <summary>
+        ///     Устанавливает значение.
+        /// </summary>
+        public void SetValue(object value)
+        {
+            _value = value;
 
-		/// <summary>
-		/// Возвращает значение.
-		/// </summary>
-		public object GetValue()
-		{
-			return _value;
-		}
+            UpdateText();
+        }
 
-		/// <summary>
-		/// Устанавливает значение.
-		/// </summary>
-		public void SetValue(object value)
-		{
-			_value = value;
+        private void UpdateText()
+        {
+            string text = null;
 
-			UpdateText();
-		}
+            var value = _value;
 
+            if (value != null)
+            {
+                var format = _format;
 
-		private void UpdateText()
-		{
-			string text = null;
+                text = (format != null)
+                    ? format.Format(value)
+                    : value.ToString();
+            }
 
-			var value = _value;
+            SetText(text);
+        }
 
-			if (value != null)
-			{
-				var format = _format;
+        /// <summary>
+        ///     Возвращает способ выравнивания текста.
+        /// </summary>
+        public HorizontalTextAlignment GetHorizontalTextAlignment()
+        {
+            return _horizontalTextAlignment;
+        }
 
-				text = (format != null)
-					? format.Format(value)
-					: value.ToString();
-			}
+        /// <summary>
+        ///     Устанавливает способ выравнивания текста.
+        /// </summary>
+        public void SetHorizontalTextAlignment(HorizontalTextAlignment value)
+        {
+            if (_horizontalTextAlignment != value)
+            {
+                _horizontalTextAlignment = value;
 
-			SetText(text);
-		}
+                switch (value)
+                {
+                    case HorizontalTextAlignment.Left:
+                        Control.TextAlignment = TextAlignment.Left;
+                        break;
+                    case HorizontalTextAlignment.Right:
+                        Control.TextAlignment = TextAlignment.Right;
+                        break;
+                    case HorizontalTextAlignment.Center:
+                        Control.TextAlignment = TextAlignment.Center;
+                        break;
+                    case HorizontalTextAlignment.Justify:
+                        Control.TextAlignment = TextAlignment.Justify;
+                        break;
+                    default:
+                        Control.TextAlignment = TextAlignment.Left;
+                        break;
+                }
+            }
+        }
 
+        /// <summary>
+        ///     Возвращает видимое количество строк.
+        /// </summary>
+        public int GetLineCount()
+        {
+            return _lineCount;
+        }
 
-		// TextAlign
+        /// <summary>
+        ///     Устанавливает видимое количество строк.
+        /// </summary>
+        public void SetLineCount(int value)
+        {
+            var correct = Math.Max(value, 0);
 
-		private HorizontalTextAlignment _horizontalTextAlignment;
+            if (_lineCount != correct)
+            {
+                _lineCount = correct;
 
-		/// <summary>
-		/// Возвращает способ выравнивания текста. 
-		/// </summary>
-		public HorizontalTextAlignment GetHorizontalTextAlignment()
-		{
-			return _horizontalTextAlignment;
-		}
-
-		/// <summary>
-		/// Устанавливает способ выравнивания текста. 
-		/// </summary>
-		public void SetHorizontalTextAlignment(HorizontalTextAlignment value)
-		{
-			if (_horizontalTextAlignment != value)
-			{
-				_horizontalTextAlignment = value;
-
-				switch (value)
-				{
-					case HorizontalTextAlignment.Left:
-						Control.TextAlignment = TextAlignment.Left;
-						break;
-					case HorizontalTextAlignment.Right:
-						Control.TextAlignment = TextAlignment.Right;
-						break;
-					case HorizontalTextAlignment.Center:
-						Control.TextAlignment = TextAlignment.Center;
-						break;
-					case HorizontalTextAlignment.Justify:
-						Control.TextAlignment = TextAlignment.Justify;
-						break;
-					default:
-						Control.TextAlignment = TextAlignment.Left;
-						break;
-				}
-			}
-		}
-
-
-		// LineCount
-
-		private int _lineCount;
-
-		/// <summary>
-		/// Возвращает видимое количество строк.
-		/// </summary>
-		public int GetLineCount()
-		{
-			return _lineCount;
-		}
-
-		/// <summary>
-		/// Устанавливает видимое количество строк.
-		/// </summary>
-		public void SetLineCount(int value)
-		{
-			var correct = Math.Max(value, 0);
-
-			if (_lineCount != correct)
-			{
-				_lineCount = correct;
-
-				Control.Height = (correct > 0) ? correct * Math.Ceiling(Control.FontSize * Control.FontFamily.LineSpacing * 96 / 72) : double.NaN;
-			}
-		}
-	}
+                Control.Height = (correct > 0)
+                    ? correct*Math.Ceiling(Control.FontSize*Control.FontFamily.LineSpacing*96/72)
+                    : double.NaN;
+            }
+        }
+    }
 }

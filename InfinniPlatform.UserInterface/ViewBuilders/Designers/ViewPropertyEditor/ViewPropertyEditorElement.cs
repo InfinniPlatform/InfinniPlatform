@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-
 using InfinniPlatform.UserInterface.ViewBuilders.DataElements;
 using InfinniPlatform.UserInterface.ViewBuilders.Elements;
 using InfinniPlatform.UserInterface.ViewBuilders.Scripts;
@@ -7,74 +6,69 @@ using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ViewPropertyEditor
 {
-	public sealed class ViewPropertyEditorElement : BaseElement<ViewPropertyEditorControl>
-	{
-		public ViewPropertyEditorElement(View view)
-			: base(view)
-		{
-			Control.EditValueChanged += OnEditValueChangedHandler;
-		}
+    public sealed class ViewPropertyEditorElement : BaseElement<ViewPropertyEditorControl>
+    {
+        // Editors
 
+        private IEnumerable<PropertyEditor> _editors;
+        // Value
 
-		private void OnEditValueChangedHandler(object sender, ValueChangedRoutedEventArgs e)
-		{
-			_value = e.NewValue;
+        private object _value;
 
-			this.InvokeScript(OnValueChanged, args => args.Value = e.NewValue);
-		}
+        public ViewPropertyEditorElement(View view)
+            : base(view)
+        {
+            Control.EditValueChanged += OnEditValueChangedHandler;
+        }
 
+        // Events
 
-		// Editors
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события изменения значения.
+        /// </summary>
+        public ScriptDelegate OnValueChanged { get; set; }
 
-		private IEnumerable<PropertyEditor> _editors;
+        private void OnEditValueChangedHandler(object sender, ValueChangedRoutedEventArgs e)
+        {
+            _value = e.NewValue;
 
-		/// <summary>
-		/// Возвращает список редакторов свойств.
-		/// </summary>
-		public IEnumerable<PropertyEditor> GetEditors()
-		{
-			return _editors;
-		}
+            this.InvokeScript(OnValueChanged, args => args.Value = e.NewValue);
+        }
 
-		/// <summary>
-		/// Устанавливает список редакторов свойств.
-		/// </summary>
-		public void SetEditors(IEnumerable<PropertyEditor> value)
-		{
-			_editors = value;
+        /// <summary>
+        ///     Возвращает список редакторов свойств.
+        /// </summary>
+        public IEnumerable<PropertyEditor> GetEditors()
+        {
+            return _editors;
+        }
 
-			Control.InvokeControl(() => Control.PropertyEditors = value);
-		}
+        /// <summary>
+        ///     Устанавливает список редакторов свойств.
+        /// </summary>
+        public void SetEditors(IEnumerable<PropertyEditor> value)
+        {
+            _editors = value;
 
+            Control.InvokeControl(() => Control.PropertyEditors = value);
+        }
 
-		// Value
+        /// <summary>
+        ///     Возвращает значение.
+        /// </summary>
+        public object GetValue()
+        {
+            return _value;
+        }
 
-		private object _value;
+        /// <summary>
+        ///     Устанавливает значение.
+        /// </summary>
+        public void SetValue(object value)
+        {
+            _value = value;
 
-		/// <summary>
-		/// Возвращает значение.
-		/// </summary>
-		public object GetValue()
-		{
-			return _value;
-		}
-
-		/// <summary>
-		/// Устанавливает значение.
-		/// </summary>
-		public void SetValue(object value)
-		{
-			_value = value;
-
-			Control.InvokeControl(() => Control.EditValue = value);
-		}
-
-
-		// Events
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события изменения значения.
-		/// </summary>
-		public ScriptDelegate OnValueChanged { get; set; }
-	}
+            Control.InvokeControl(() => Control.EditValue = value);
+        }
+    }
 }

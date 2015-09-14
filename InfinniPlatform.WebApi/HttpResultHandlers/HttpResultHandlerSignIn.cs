@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
-using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Owin.Formatting;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.WebApi.HttpResultHandlers
 {

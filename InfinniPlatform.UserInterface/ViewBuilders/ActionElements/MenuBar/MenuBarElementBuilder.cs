@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-
 using InfinniPlatform.UserInterface.Services.Metadata;
 using InfinniPlatform.UserInterface.ViewBuilders.Actions;
 using InfinniPlatform.UserInterface.ViewBuilders.Elements;
@@ -7,33 +6,44 @@ using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.ActionElements.MenuBar
 {
-	sealed class MenuBarElementBuilder : IObjectBuilder
-	{
-		public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
-		{
-			var menuBar = new MenuBarElement(parent,
-											 () => GetMenuListMetadata(metadata.ConfigId),
-											 menuItem => ExecuteMenuItemAction(context, parent, menuItem));
+    internal sealed class MenuBarElementBuilder : IObjectBuilder
+    {
+        private readonly string _server;
+        private readonly int _port;
+        private readonly string _routeVersion;
 
-			menuBar.ApplyElementMeatadata((object)metadata);
+        public MenuBarElementBuilder(string server, int port, string routeVersion)
+        {
+            _server = server;
+            _port = port;
+            _routeVersion = routeVersion;
+        }
 
-			return menuBar;
-		}
+        public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
+        {
+            var menuBar = new MenuBarElement(parent,
+                () => GetMenuListMetadata(metadata.Version, metadata.ConfigId),
+                menuItem => ExecuteMenuItemAction(context, parent, menuItem));
 
-		private IEnumerable GetMenuListMetadata(string configId)
-		{
-			var menuMetadataService = new MenuMetadataService(configId);
-			return menuMetadataService.GetItems();
-		}
+            menuBar.ApplyElementMeatadata((object) metadata);
 
-		private static void ExecuteMenuItemAction(ObjectBuilderContext context, View parent, dynamic menuItemMetadata)
-		{
-			BaseAction action = context.Build(parent, menuItemMetadata.Action);
+            return menuBar;
+        }
 
-			if (action != null)
-			{
-				action.Execute();
-			}
-		}
-	}
+        private IEnumerable GetMenuListMetadata(string version, string configId)
+        {
+            var menuMetadataService = new MenuMetadataService(version, configId, _server, _port, _routeVersion);
+            return menuMetadataService.GetItems();
+        }
+
+        private static void ExecuteMenuItemAction(ObjectBuilderContext context, View parent, dynamic menuItemMetadata)
+        {
+            BaseAction action = context.Build(parent, menuItemMetadata.Action);
+
+            if (action != null)
+            {
+                action.Execute();
+            }
+        }
+    }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace InfinniPlatform.DesignControls.PropertyDesigner
+﻿namespace InfinniPlatform.DesignControls.PropertyDesigner
 {
     public sealed class SimpleProperty : IControlProperty
     {
@@ -16,13 +10,11 @@ namespace InfinniPlatform.DesignControls.PropertyDesigner
             Value = defaultValue;
         }
 
-
         public object DefaultValue
         {
             get { return _defaultValue; }
         }
 
         public object Value { get; set; }
-
     }
 }

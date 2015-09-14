@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Windows;
-
 using InfinniPlatform.UserInterface.ViewBuilders.DataElements;
 using InfinniPlatform.UserInterface.ViewBuilders.Elements;
 using InfinniPlatform.UserInterface.ViewBuilders.Scripts;
@@ -9,118 +8,113 @@ using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigSelector
 {
-	public sealed class ConfigSelectorElement : BaseElement<ConfigSelectorControl>
-	{
-		public ConfigSelectorElement(View view)
-			: base(view)
-		{
-			Control.Loaded += OnLoadedHandler;
-			Control.RefreshClick += OnRefreshHandler;
-			Control.EditValueChanged += OnEditValueChangedHandler;
-		}
+    public sealed class ConfigSelectorElement : BaseElement<ConfigSelectorControl>
+    {
+        // ItemsFunc
 
+        private Func<IEnumerable> _configurationsFunc;
+        // Value
 
-		// ItemsFunc
+        private object _value;
 
-		private Func<IEnumerable> _configurationsFunc;
+        public ConfigSelectorElement(View view)
+            : base(view)
+        {
+            Control.Loaded += OnLoadedHandler;
+            Control.RefreshClick += OnRefreshHandler;
+            Control.EditValueChanged += OnEditValueChangedHandler;
+        }
 
-		/// <summary>
-		/// Возвращает функцию загрузки списка конфигураций.
-		/// </summary>
-		public Func<IEnumerable> GetConfigurationsFunc()
-		{
-			return _configurationsFunc;
-		}
+        // Events
 
-		/// <summary>
-		/// Устанавливает функцию загрузки списка конфигураций.
-		/// </summary>
-		public void SetConfigurationsFunc(Func<IEnumerable> value)
-		{
-			_configurationsFunc = value;
-		}
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события изменения значения.
+        /// </summary>
+        public ScriptDelegate OnValueChanged { get; set; }
 
+        /// <summary>
+        ///     Возвращает функцию загрузки списка конфигураций.
+        /// </summary>
+        public Func<IEnumerable> GetConfigurationsFunc()
+        {
+            return _configurationsFunc;
+        }
 
-		// Value
+        /// <summary>
+        ///     Устанавливает функцию загрузки списка конфигураций.
+        /// </summary>
+        public void SetConfigurationsFunc(Func<IEnumerable> value)
+        {
+            _configurationsFunc = value;
+        }
 
-		private object _value;
+        /// <summary>
+        ///     Возвращает значение.
+        /// </summary>
+        public object GetValue()
+        {
+            return _value;
+        }
 
-		/// <summary>
-		/// Возвращает значение.
-		/// </summary>
-		public object GetValue()
-		{
-			return _value;
-		}
+        /// <summary>
+        ///     Устанавливает значение.
+        /// </summary>
+        public void SetValue(object value)
+        {
+            _value = value;
 
-		/// <summary>
-		/// Устанавливает значение.
-		/// </summary>
-		public void SetValue(object value)
-		{
-			_value = value;
+            Control.InvokeControl(() => Control.EditValue = value);
+        }
 
-			Control.InvokeControl(() => Control.EditValue = value);
-		}
+        private void OnEditValueChangedHandler(object sender, ValueChangedRoutedEventArgs e)
+        {
+            _value = e.NewValue;
 
-		private void OnEditValueChangedHandler(object sender, ValueChangedRoutedEventArgs e)
-		{
-			_value = e.NewValue;
+            this.InvokeScript(OnValueChanged, args => args.Value = e.NewValue);
+        }
 
-			this.InvokeScript(OnValueChanged, args => args.Value = e.NewValue);
-		}
+        // Methods
 
+        public void Refresh()
+        {
+            LoadItems(true);
+        }
 
-		// Methods
+        private void OnRefreshHandler(object sender, RoutedEventArgs e)
+        {
+            LoadItems(true);
+        }
 
-		public void Refresh()
-		{
-			LoadItems(true);
-		}
+        private void OnLoadedHandler(object sender, RoutedEventArgs e)
+        {
+            LoadItems(false);
+        }
 
-		private void OnRefreshHandler(object sender, RoutedEventArgs e)
-		{
-			LoadItems(true);
-		}
+        private void LoadItems(bool refresh)
+        {
+            const string cacheKey = "Configurations";
 
-		private void OnLoadedHandler(object sender, RoutedEventArgs e)
-		{
-			LoadItems(false);
-		}
+            var items = ControlCache.Get<IEnumerable>(cacheKey);
 
-		private void LoadItems(bool refresh)
-		{
-			const string cacheKey = "Configurations";
+            if (refresh || items == null)
+            {
+                var itemsFunc = GetConfigurationsFunc();
 
-			var items = ControlCache.Get<IEnumerable>(cacheKey);
+                if (itemsFunc != null)
+                {
+                    try
+                    {
+                        items = itemsFunc();
 
-			if (refresh || items == null)
-			{
-				var itemsFunc = GetConfigurationsFunc();
+                        ControlCache.Set(cacheKey, items);
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
 
-				if (itemsFunc != null)
-				{
-					try
-					{
-						items = itemsFunc();
-
-						ControlCache.Set(cacheKey, items);
-					}
-					catch
-					{
-					}
-				}
-			}
-
-			Control.ItemsSource = items;
-		}
-
-
-		// Events
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события изменения значения.
-		/// </summary>
-		public ScriptDelegate OnValueChanged { get; set; }
-	}
+            Control.ItemsSource = items;
+        }
+    }
 }

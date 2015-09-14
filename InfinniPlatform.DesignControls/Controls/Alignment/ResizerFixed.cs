@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.DesignControls.Layout;
+﻿using InfinniPlatform.DesignControls.Layout;
 using InfinniPlatform.DesignControls.PropertyDesigner;
 
 namespace InfinniPlatform.DesignControls.Controls.Alignment

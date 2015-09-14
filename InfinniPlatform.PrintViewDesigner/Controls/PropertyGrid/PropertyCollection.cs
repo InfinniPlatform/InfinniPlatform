@@ -3,137 +3,132 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Windows;
-
 using DevExpress.Xpf.Grid;
 
 namespace InfinniPlatform.PrintViewDesigner.Controls.PropertyGrid
 {
-	/// <summary>
-	/// Список свойств.
-	/// </summary>
-	public sealed class PropertyCollection : IEnumerable<PropertyDefinition>, INotifyCollectionChanged
-	{
-		public PropertyCollection(PropertyRegister register, TreeListNodeCollection parentNodes)
-		{
-			if (register == null)
-			{
-				throw new ArgumentNullException("register");
-			}
+    /// <summary>
+    ///     Список свойств.
+    /// </summary>
+    public sealed class PropertyCollection : IEnumerable<PropertyDefinition>, INotifyCollectionChanged
+    {
+        private readonly TreeListNodeCollection _parentNodes;
+        private readonly Dictionary<PropertyDefinition, TreeListNode> _properties;
+        private readonly PropertyRegister _register;
 
-			if (parentNodes == null)
-			{
-				throw new ArgumentNullException("parentNodes");
-			}
+        public PropertyCollection(PropertyRegister register, TreeListNodeCollection parentNodes)
+        {
+            if (register == null)
+            {
+                throw new ArgumentNullException("register");
+            }
 
-			_register = register;
-			_parentNodes = parentNodes;
-			_properties = new Dictionary<PropertyDefinition, TreeListNode>();
-		}
+            if (parentNodes == null)
+            {
+                throw new ArgumentNullException("parentNodes");
+            }
 
+            _register = register;
+            _parentNodes = parentNodes;
+            _properties = new Dictionary<PropertyDefinition, TreeListNode>();
+        }
 
-		private readonly PropertyRegister _register;
-		private readonly TreeListNodeCollection _parentNodes;
-		private readonly Dictionary<PropertyDefinition, TreeListNode> _properties;
+        public IEnumerator<PropertyDefinition> GetEnumerator()
+        {
+            return _properties.Keys.GetEnumerator();
+        }
 
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
 
-		/// <summary>
-		/// Добавляет свойство в список.
-		/// </summary>
-		/// <exception cref="ArgumentNullException"></exception>
-		public void Add(PropertyDefinition property)
-		{
-			if (property == null)
-			{
-				throw new ArgumentNullException("property");
-			}
+        public event NotifyCollectionChangedEventHandler CollectionChanged;
 
-			if (!_properties.ContainsKey(property))
-			{
-				var node = new TreeListNode(property);
+        /// <summary>
+        ///     Добавляет свойство в список.
+        /// </summary>
+        /// <exception cref="ArgumentNullException"></exception>
+        public void Add(PropertyDefinition property)
+        {
+            if (property == null)
+            {
+                throw new ArgumentNullException("property");
+            }
 
-				if (property.Editor != null)
-				{
-					property.Editor.Properties = new PropertyCollection(_register, node.Nodes);
-				}
+            if (!_properties.ContainsKey(property))
+            {
+                var node = new TreeListNode(property);
 
-				_register.Register(property);
+                if (property.Editor != null)
+                {
+                    property.Editor.Properties = new PropertyCollection(_register, node.Nodes);
+                }
 
-				if (property.Visibility == Visibility.Visible)
-				{
-					_parentNodes.Add(node);					
-				}
-				
-				_properties.Add(property, node);
+                _register.Register(property);
 
-				OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, property));
-			}
-		}
+                if (property.Visibility == Visibility.Visible)
+                {
+                    _parentNodes.Add(node);
+                }
 
-		/// <summary>
-		/// Удаляет свойство из списка.
-		/// </summary>
-		/// <exception cref="ArgumentNullException"></exception>
-		public void Remove(PropertyDefinition property)
-		{
-			if (property == null)
-			{
-				throw new ArgumentNullException("property");
-			}
+                _properties.Add(property, node);
 
-			TreeListNode node;
+                OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, property));
+            }
+        }
 
-			if (_properties.TryGetValue(property, out node))
-			{
-				_register.Unregister(property);
+        /// <summary>
+        ///     Удаляет свойство из списка.
+        /// </summary>
+        /// <exception cref="ArgumentNullException"></exception>
+        public void Remove(PropertyDefinition property)
+        {
+            if (property == null)
+            {
+                throw new ArgumentNullException("property");
+            }
 
-				_parentNodes.Remove(node);
-				_properties.Remove(property);
+            TreeListNode node;
 
-				OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, property));
-			}
-		}
+            if (_properties.TryGetValue(property, out node))
+            {
+                _register.Unregister(property);
 
-		/// <summary>
-		/// Очищает список свойств.
-		/// </summary>
-		public void Clear()
-		{
-			if (_properties.Count > 0)
-			{
-				foreach (var item in _properties)
-				{
-					_register.Unregister(item.Key);
-				}
+                _parentNodes.Remove(node);
+                _properties.Remove(property);
 
-				_properties.Clear();
-				_parentNodes.Clear();
+                OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, property));
+            }
+        }
 
-				OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-			}
-		}
+        /// <summary>
+        ///     Очищает список свойств.
+        /// </summary>
+        public void Clear()
+        {
+            if (_properties.Count > 0)
+            {
+                foreach (var item in _properties)
+                {
+                    _register.Unregister(item.Key);
+                }
 
+                _properties.Clear();
+                _parentNodes.Clear();
 
-		public IEnumerator<PropertyDefinition> GetEnumerator()
-		{
-			return _properties.Keys.GetEnumerator();
-		}
+                OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+            }
+        }
 
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
-		}
+        private void OnCollectionChanged(NotifyCollectionChangedEventArgs args)
+        {
+            var handler = CollectionChanged;
 
-
-		public event NotifyCollectionChangedEventHandler CollectionChanged;
-
-		private void OnCollectionChanged(NotifyCollectionChangedEventArgs args)
-		{
-			var handler = CollectionChanged;
-
-			if (handler != null)
-			{
-				handler(this, args);
-			}
-		}
-	}
+            if (handler != null)
+            {
+                handler(this, args);
+            }
+        }
+    }
 }

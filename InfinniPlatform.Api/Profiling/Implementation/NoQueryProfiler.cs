@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Profiling;
 
 namespace InfinniPlatform.Api.Profiling.Implementation
 {
-	public sealed class NoQueryProfiler : IOperationProfiler
-	{
-		public void Reset()
-		{
-			
-		}
+    public sealed class NoQueryProfiler : IOperationProfiler
+    {
+        public void Reset()
+        {
+        }
 
-		public void TakeSnapshot()
-		{
-			
-		}
-	}
+        public void TakeSnapshot()
+        {
+        }
+    }
 }

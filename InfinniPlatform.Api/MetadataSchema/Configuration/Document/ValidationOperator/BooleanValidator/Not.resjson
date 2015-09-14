@@ -1,34 +1,34 @@
 ﻿{
-  "id": "Not",
-  "description": "Объект не должен удовлетворять заданному условию",
-  "type": "object",
-  "extends": {
-    "$ref": "http://wiki.infinnity.lan:8081/display/MC/BaseValidationOperator"
-  },
-  "properties": {
-    "Message": {
-      "description": "Сообщение об ошибке",
-      "type": "string"
-    },
-    "Property": {
-      "description": "Наименование свойства",
-      "type": "string"
-    },
-    "Operator": {
-      "description": "Оператор проверки",
-      "type": "object",
-      "extends": [
-        {
-          "$ref": "http://wiki.infinnity.lan:8081/display/MC/BooleanValidator"
-        },
-        {
-          "$ref": "http://wiki.infinnity.lan:8081/display/MC/CollectionValidator"
-        },
-        {
-          "$ref": "http://wiki.infinnity.lan:8081/display/MC/ObjectValidator"
-        }
-      ]
-    }
-  },
-  "additionalProperties": false
+	"id": "Not",
+	"description": "Объект не должен удовлетворять заданному условию",
+	"type": "object",
+	"extends": {
+		"$ref": "http://wiki.infinnity.lan:8081/display/MC/BaseValidationOperator"
+	},
+	"properties": {
+		"Message": {
+			"description": "Сообщение об ошибке",
+			"type": "string"
+		},
+		"Property": {
+			"description": "Наименование свойства",
+			"type": "string"
+		},
+		"Operator": {
+			"description": "Оператор проверки",
+			"type": "object",
+			"extends": [
+				{
+					"$ref": "http://wiki.infinnity.lan:8081/display/MC/BooleanValidator"
+				},
+				{
+					"$ref": "http://wiki.infinnity.lan:8081/display/MC/CollectionValidator"
+				},
+				{
+					"$ref": "http://wiki.infinnity.lan:8081/display/MC/ObjectValidator"
+				}
+			]
+		}
+	},
+	"additionalProperties": false
 }

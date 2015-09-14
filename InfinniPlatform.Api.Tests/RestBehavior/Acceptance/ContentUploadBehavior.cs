@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
+using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.TestEnvironment;
+using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.Dynamic;
 using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
@@ -25,7 +23,6 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 		[TestFixtureSetUp]
 		public void FixtureSetup()
 		{
-
 			_server = TestApi.StartServer(c => c
 				.SetHostingConfig(HostingConfig.Default));
 
@@ -37,6 +34,32 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 		{
 			_server.Dispose();
 		}
+
+        private void CreateTestConfig()
+        {
+            new IndexApi().RebuildIndex(_configurationId, _documentId);
+
+            MetadataManagerConfiguration managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager(null);
+            dynamic config = managerConfig.CreateItem(_configurationId);
+            managerConfig.DeleteItem(config);
+            managerConfig.MergeItem(config);
+
+            var managerFactoryDocument = new ManagerFactoryConfiguration(null, _configurationId);
+            MetadataManagerDocument documentManager = managerFactoryDocument.BuildDocumentManager();
+            dynamic doc = documentManager.CreateItem(_documentId);
+
+            doc.Schema = new DynamicWrapper();
+            doc.Schema.Properties = new DynamicWrapper();
+
+            doc.Schema.Properties.ContentField = new DynamicWrapper();
+            doc.Schema.Properties.ContentField.Type = "Binary";
+            doc.Schema.Properties.ContentField.Caption = "Field with content";
+
+            documentManager.MergeItem(doc);
+
+            RestQueryApi.QueryPostNotify(null, _configurationId);
+            new UpdateApi(null).UpdateStore(_configurationId);
+        }
 
 		[Test]
 		public void ShouldUploadContent()
@@ -52,55 +75,20 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			testDocument.ContentField.Info.Size = 11723;
 			
 
-			var result = new DocumentApi().SetDocument(_configurationId, _documentId, testDocument);
+            dynamic result = new DocumentApi().SetDocument(_configurationId, _documentId, testDocument);
 
-			Assert.AreNotEqual(result.IsValid,false);
+            Assert.AreNotEqual(result.IsValid, false);
 
-			var path = Path.Combine("TestData", "Configurations", "Authorization.zip");
-			dynamic uploadResult = new UploadApi().UploadBinaryContent(_configurationId, _documentId, testDocument.Id, "ContentField", path);
+            dynamic uploadResult = new UploadApi().UploadBinaryContent(_configurationId, _documentId, testDocument.Id, "ContentField",
+			                                    @"TestData\Configurations\Authorization.zip");
 
-			Assert.AreNotEqual(uploadResult.IsValid,false);
+            Assert.AreNotEqual(uploadResult.IsValid, false);
 
-			dynamic resultBlob =new UploadApi().DownloadBinaryContent(_configurationId, _documentId, testDocument.Id, "ContentField");
+            dynamic storedDocument = new DocumentApi().GetDocument(_configurationId, _documentId, cr => cr.AddCriteria(f => f.Property("Id").IsEquals(testDocument.Id)), 0, 1).FirstOrDefault();
 
-			Assert.IsNotNull(resultBlob);
-
-
-		    dynamic storedDocument = new DocumentApi().GetDocument(_configurationId, _documentId, cr => cr.AddCriteria(f => f.Property("Id").IsEquals(testDocument.Id)) ,0,1).FirstOrDefault();
-
-		    resultBlob = new UploadApi().DownloadBinaryContent(storedDocument.ContentField.Info.ContentId);
+            var resultBlob = new UploadApi().DownloadBinaryContent(storedDocument.ContentField.Info.ContentId);
 
             Assert.IsNotNull(resultBlob);
 		}
-
-		private void CreateTestConfig()
-		{
-			
-			IndexApi.RebuildIndex(_configurationId, _documentId);
-
-			var managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager();
-			dynamic config = managerConfig.CreateItem(_configurationId);
-			managerConfig.DeleteItem(config);
-			managerConfig.MergeItem(config);
-
-			var managerFactoryDocument = new ManagerFactoryConfiguration(_configurationId);
-			var documentManager = managerFactoryDocument.BuildDocumentManager();
-			dynamic doc = documentManager.CreateItem(_documentId);
-			
-			doc.Schema = new DynamicWrapper();
-			doc.Schema.Properties = new DynamicWrapper();
-
-			doc.Schema.Properties.ContentField = new DynamicWrapper();
-			doc.Schema.Properties.ContentField.Type = "Binary";
-			doc.Schema.Properties.ContentField.Caption = "Field with content";
-
-			documentManager.MergeItem(doc);
-
-			RestQueryApi.QueryPostNotify(_configurationId);
-			UpdateApi.UpdateStore(_configurationId);
-
-		}
-
-
 	}
 }

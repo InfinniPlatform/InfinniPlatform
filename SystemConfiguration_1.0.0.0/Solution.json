@@ -1,0 +1,27 @@
+﻿{
+  "Id": "5f9819c5-be82-451c-9903-5d6333f973c6",
+  "Name": "SystemConfiguration",
+  "Caption": "Системные конфигурации",
+  "Description": "Системные конфигурации",
+  "Version": "1.0.0.0",
+  "ReferencedConfigurations": [
+   {
+    "Name": "Administration",
+    "Caption": "Администрирование",
+    "Description": "Администрирование",
+    "Version": "1.0.0.0"
+   },
+   {
+    "Name": "AdministrationCustomization",
+    "Caption": "Настройки кастомизации конфигурации администрирования",
+    "Description": "Настройки кастомизации конфигурации администрирования",
+    "Version": "1.0.0.0"
+   },
+   {
+    "Name": "Authorization",
+    "Caption": "Авторизация",
+    "Description": "Авторизация",
+    "Version": "1.0.0.0"
+   }
+  ]
+}

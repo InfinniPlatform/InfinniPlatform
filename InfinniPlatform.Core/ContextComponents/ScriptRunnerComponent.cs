@@ -1,46 +1,55 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.Factories;
+using InfinniPlatform.Api.Versioning;
 using InfinniPlatform.Metadata;
-using InfinniPlatform.Runtime;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Scripts;
 
 namespace InfinniPlatform.ContextComponents
 {
-	/// <summary>
-	///   Исполнитель скриптов из глобального контекста
-	/// </summary>
-	public sealed class ScriptRunnerComponent : IScriptRunnerComponent
-	{
-		private readonly IMetadataConfigurationProvider _metadataConfigurationProvider;
+    /// <summary>
+    ///     Исполнитель скриптов из глобального контекста
+    /// </summary>
+    public sealed class ScriptRunnerComponent : IScriptRunnerComponent
+    {
+        private readonly IMetadataConfigurationProvider _metadataConfigurationProvider;
+        private readonly List<VersionedScriptProcessor> _scriptProcessors = new List<VersionedScriptProcessor>();
 
-		private Dictionary<string, IScriptProcessor> _scriptProcessors = new Dictionary<string, IScriptProcessor>();
+        public ScriptRunnerComponent(IMetadataConfigurationProvider metadataConfigurationProvider)
+        {
+            _metadataConfigurationProvider = metadataConfigurationProvider;
+        }
 
-		public ScriptRunnerComponent(IMetadataConfigurationProvider metadataConfigurationProvider)
-		{
-			_metadataConfigurationProvider = metadataConfigurationProvider;
-		}
+        /// <summary>
+        ///     Получить исполнителя скриптов для указанного идентификатора метаданных конфигурации
+        /// </summary>
+        /// <param name="version"></param>
+        /// <param name="configurationId">Идентификатор метаданных конфигурации</param>
+        /// <returns>Исполнитель скриптов</returns>
+        public IScriptProcessor GetScriptRunner(string version, string configurationId)
+        {
+            
+            var scriptProcessorVersioned =
+                _scriptProcessors.FirstOrDefault(sc => sc.ConfigurationId == configurationId && sc.Version == version);
 
-		/// <summary>
-		///   Получить исполнителя скриптов для указанного идентификатора метаданных конфигурации
-		/// </summary>
-		/// <param name="configurationId">Идентификатор метаданных конфигурации</param>
-		/// <returns>Исполнитель скриптов</returns>
-		public IScriptProcessor GetScriptRunner(string configurationId)
-		{
-			if (_scriptProcessors.ContainsKey(configurationId))
-			{
-				return _scriptProcessors[configurationId];
-			}
+            if (scriptProcessorVersioned == null)
+            {
+                var scriptProcessor =
+                    _metadataConfigurationProvider.GetMetadataConfiguration(version, configurationId)
+                        .ScriptConfiguration.GetScriptProcessor(version);
 
-			var scriptProcessor = _metadataConfigurationProvider.GetMetadataConfiguration(configurationId).ScriptConfiguration.GetScriptProcessor();
+                scriptProcessorVersioned = new VersionedScriptProcessor
+                {
+                    ConfigurationId = configurationId,
+                    ScriptProcessor = scriptProcessor,
+                    Version = version
+                };
 
-			_scriptProcessors.Add(configurationId, scriptProcessor);
+                _scriptProcessors.Add(scriptProcessorVersioned);
+            }
 
-			return scriptProcessor;
-		}
-	}
+            return scriptProcessorVersioned.ScriptProcessor;
+        }
+    }
 }

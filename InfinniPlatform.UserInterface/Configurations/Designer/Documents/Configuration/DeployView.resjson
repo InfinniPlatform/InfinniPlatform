@@ -1,37 +1,37 @@
 ﻿{
-  "Name": "DeployView",
-  "Image": "System/Deploy_16x16",
-  "Text": {
-    "PropertyBinding": {
-      "DataSource": "MainDataSource",
-      "Property": "Name"
-    }
-  },
-  "DataSources": [
-    {
-      "MetadataDataSource": {
-        "Name": "MainDataSource",
-        "FillCreatedItem": true,
-        "MetadataType": "Configuration"
-      }
-    }
-  ],
-  "LayoutPanel": {
-    "StackPanel": {
-      "Name": "DeployPagePanel",
-      "Items": [
-        {
-          "ConfigDeployDesigner": {
-            "Name": "ConfigDeployDesigner",
-            "Value": {
-              "PropertyBinding": {
-                "DataSource": "MainDataSource",
-                "Property": "{this}"
-              }
-            }
-          }
-        }
-      ]
-    }
-  }
+	"Name": "DeployView",
+	"Image": "System/Deploy_16x16",
+	"Text": {
+		"PropertyBinding": {
+			"DataSource": "MainDataSource",
+			"Property": "Name"
+		}
+	},
+	"DataSources": [
+		{
+			"MetadataDataSource": {
+				"Name": "MainDataSource",
+				"FillCreatedItem": true,
+				"MetadataType": "Configuration"
+			}
+		}
+	],
+	"LayoutPanel": {
+		"StackPanel": {
+			"Name": "DeployPagePanel",
+			"Items": [
+				{
+					"ConfigDeployDesigner": {
+						"Name": "ConfigDeployDesigner",
+						"Value": {
+							"PropertyBinding": {
+								"DataSource": "MainDataSource",
+								"Property": "{this}"
+							}
+						}
+					}
+				}
+			]
+		}
+	}
 }

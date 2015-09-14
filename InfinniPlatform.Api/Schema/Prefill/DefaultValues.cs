@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 
-using InfinniPlatform.Api.Dynamic;
+
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Api.Schema.Prefill
 {

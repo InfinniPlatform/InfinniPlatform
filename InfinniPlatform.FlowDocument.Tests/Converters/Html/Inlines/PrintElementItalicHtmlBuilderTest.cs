@@ -16,7 +16,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Converters.Html.Inlines
             var element = new PrintElementItalic();
             var result = new TextWriterWrapper();
 
-            var run = new PrintElementRun { Text = "Italic Text." };
+            var run = new PrintElementRun {Text = "Italic Text."};
 
             //When
             element.Inlines.Add(run);

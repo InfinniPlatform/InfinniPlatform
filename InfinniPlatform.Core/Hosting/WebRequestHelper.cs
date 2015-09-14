@@ -3,192 +3,186 @@ using System.IO;
 using System.IO.Compression;
 using System.Net;
 using System.Web;
-
 using InfinniPlatform.Api.Serialization;
 
 namespace InfinniPlatform.Hosting
 {
-	public static class WebRequestHelper
-	{
-		private const int RequestTimeout = 5 * 60 * 1000;
-		private const string JsonContentType = "application/json; encoding='utf-8'";
-		private const string StreamContentType = "application/octet-stream";
+    public static class WebRequestHelper
+    {
+        private const int RequestTimeout = 5*60*1000;
+        private const string JsonContentType = "application/json; encoding='utf-8'";
+        private const string StreamContentType = "application/octet-stream";
+        private static readonly IObjectSerializer Serializer = JsonObjectSerializer.Default;
 
-		private static readonly IObjectSerializer Serializer = JsonObjectSerializer.Default;
+        /// <summary>
+        ///     Выполняет GET-запрос.
+        /// </summary>
+        public static Stream Get(Uri address)
+        {
+            var request = WebRequest.Create(address);
+            request.Timeout = RequestTimeout;
+            request.ContentType = JsonContentType;
+            request.Method = "GET";
 
+            return ProcessRequest(request);
+        }
 
-		/// <summary>
-		/// Выполняет GET-запрос.
-		/// </summary>
-		public static Stream Get(Uri address)
-		{
-			var request = WebRequest.Create(address);
-			request.Timeout = RequestTimeout;
-			request.ContentType = JsonContentType;
-			request.Method = "GET";
+        /// <summary>
+        ///     Выполняет DELETE-запрос.
+        /// </summary>
+        public static Stream Delete(Uri address)
+        {
+            var request = WebRequest.Create(address);
+            request.Timeout = RequestTimeout;
+            request.ContentType = JsonContentType;
+            request.Method = "DELETE";
 
-			return ProcessRequest(request);
-		}
+            return ProcessRequest(request);
+        }
 
-		/// <summary>
-		/// Выполняет DELETE-запрос.
-		/// </summary>
-		public static Stream Delete(Uri address)
-		{
-			var request = WebRequest.Create(address);
-			request.Timeout = RequestTimeout;
-			request.ContentType = JsonContentType;
-			request.Method = "DELETE";
+        /// <summary>
+        ///     Выполняет POST-запрос.
+        /// </summary>
+        public static Stream Post(Uri address, object content, bool compress = false)
+        {
+            var contentBytes = Serializer.Serialize(content);
+            return Post(address, contentBytes, compress);
+        }
 
-			return ProcessRequest(request);
-		}
+        /// <summary>
+        ///     Выполняет POST-запрос.
+        /// </summary>
+        public static Stream Post(Uri address, byte[] content, bool compress = false)
+        {
+            var request = WebRequest.Create(address);
+            request.Timeout = RequestTimeout;
+            request.Method = "POST";
 
-		/// <summary>
-		/// Выполняет POST-запрос.
-		/// </summary>
-		public static Stream Post(Uri address, object content, bool compress = false)
-		{
-			var contentBytes = Serializer.Serialize(content);
-			return Post(address, contentBytes, compress);
-		}
+            using (var memory = new MemoryStream())
+            {
+                if (compress)
+                {
+                    request.ContentType = StreamContentType;
 
-		/// <summary>
-		/// Выполняет POST-запрос.
-		/// </summary>
-		public static Stream Post(Uri address, byte[] content, bool compress = false)
-		{
-			var request = WebRequest.Create(address);
-			request.Timeout = RequestTimeout;
-			request.Method = "POST";
+                    using (var compressionStream = new GZipStream(memory, CompressionMode.Compress, true))
+                    {
+                        compressionStream.Write(content, 0, content.Length);
+                    }
+                }
+                else
+                {
+                    request.ContentType = JsonContentType;
 
-			using (var memory = new MemoryStream())
-			{
-				if (compress)
-				{
-					request.ContentType = StreamContentType;
+                    memory.Write(content, 0, content.Length);
+                }
 
-					using (var compressionStream = new GZipStream(memory, CompressionMode.Compress, true))
-					{
-						compressionStream.Write(content, 0, content.Length);
-					}
-				}
-				else
-				{
-					request.ContentType = JsonContentType;
+                memory.Position = 0;
 
-					memory.Write(content, 0, content.Length);
-				}
+                request.ContentLength = memory.Length;
 
-				memory.Position = 0;
+                var requestStream = request.GetRequestStream();
+                memory.CopyTo(requestStream);
+                requestStream.Close();
+            }
 
-				request.ContentLength = memory.Length;
+            return ProcessRequest(request);
+        }
 
-				var requestStream = request.GetRequestStream();
-				memory.CopyTo(requestStream);
-				requestStream.Close();
-			}
+        private static Stream ProcessRequest(WebRequest request)
+        {
+            HttpWebResponse response;
 
-			return ProcessRequest(request);
-		}
+            try
+            {
+                response = (HttpWebResponse) request.GetResponse();
+            }
+            catch (WebException error)
+            {
+                if (error.Response is HttpWebResponse)
+                {
+                    response = (HttpWebResponse) error.Response;
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
-		private static Stream ProcessRequest(WebRequest request)
-		{
-			HttpWebResponse response;
+            var result = response.GetResponseStream();
 
-			try
-			{
-				response = (HttpWebResponse)request.GetResponse();
-			}
-			catch (WebException error)
-			{
-				if (error.Response is HttpWebResponse)
-				{
-					response = (HttpWebResponse)error.Response;
-				}
-				else
-				{
-					throw;
-				}
-			}
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                if (result != null)
+                {
+                    using (result)
+                    {
+                        using (var reader = new StreamReader(result))
+                        {
+                            throw new HttpException((int) response.StatusCode, reader.ReadToEnd());
+                        }
+                    }
+                }
 
-			var result = response.GetResponseStream();
+                throw new HttpException((int) response.StatusCode, response.StatusDescription);
+            }
 
-			if (response.StatusCode != HttpStatusCode.OK)
-			{
-				if (result != null)
-				{
-					using (result)
-					{
-						using (var reader = new StreamReader(result))
-						{
-							throw new HttpException((int)response.StatusCode, reader.ReadToEnd());
-						}
-					}
+            return result;
+        }
 
-				}
+        /// <summary>
+        ///     Преобразовать поток в объект.
+        /// </summary>
+        public static T AsObject<T>(this Stream stream)
+        {
+            if (stream != null)
+            {
+                if (stream.CanSeek)
+                {
+                    stream.Position = 0;
+                }
 
-				throw new HttpException((int)response.StatusCode, response.StatusDescription);
-			}
+                using (stream)
+                {
+                    return (T) Serializer.Deserialize(stream, typeof (T));
+                }
+            }
 
-			return result;
-		}
+            return default(T);
+        }
 
+        /// <summary>
+        ///     Преобразовать поток в массив байт.
+        /// </summary>
+        public static byte[] AsBytes(this Stream stream)
+        {
+            if (stream != null)
+            {
+                if (stream.CanSeek)
+                {
+                    stream.Position = 0;
+                }
 
-		/// <summary>
-		/// Преобразовать поток в объект.
-		/// </summary>
-		public static T AsObject<T>(this Stream stream)
-		{
-			if (stream != null)
-			{
-				if (stream.CanSeek)
-				{
-					stream.Position = 0;
-				}
+                using (stream)
+                {
+                    using (var memory = new MemoryStream())
+                    {
+                        stream.CopyTo(memory);
+                        return memory.ToArray();
+                    }
+                }
+            }
 
-				using (stream)
-				{
-					return (T)Serializer.Deserialize(stream, typeof(T));
-				}
-			}
+            return null;
+        }
 
-			return default(T);
-		}
+        /// <summary>
+        ///     Добавляет относительный адрес к базовому.
+        /// </summary>
+        public static Uri AppendRelative(this Uri baseUri, string relativeUri)
+        {
+            // Это пришлось сделать из-за какого-то странного поведения конструктора: Uri(Uri baseUri, string relativeUri)
 
-		/// <summary>
-		/// Преобразовать поток в массив байт.
-		/// </summary>
-		public static byte[] AsBytes(this Stream stream)
-		{
-			if (stream != null)
-			{
-				if (stream.CanSeek)
-				{
-					stream.Position = 0;
-				}
-
-				using (stream)
-				{
-					using (var memory = new MemoryStream())
-					{
-						stream.CopyTo(memory);
-						return memory.ToArray();
-					}
-				}
-			}
-
-			return null;
-		}
-
-
-		/// <summary>
-		/// Добавляет относительный адрес к базовому.
-		/// </summary>
-		public static Uri AppendRelative(this Uri baseUri, string relativeUri)
-		{
-			// Это пришлось сделать из-за какого-то странного поведения конструктора: Uri(Uri baseUri, string relativeUri)
-
-			return new Uri(baseUri.ToString().TrimEnd('/') + "/" + (relativeUri ?? string.Empty).TrimStart('/'));
-		}
-	}
+            return new Uri(baseUri.ToString().TrimEnd('/') + "/" + (relativeUri ?? string.Empty).TrimStart('/'));
+        }
+    }
 }

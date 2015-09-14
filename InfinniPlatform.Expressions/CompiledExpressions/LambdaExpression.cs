@@ -6,64 +6,64 @@ using System.Reflection;
 
 namespace InfinniPlatform.Expressions.CompiledExpressions
 {
-	sealed class LambdaExpression : ICompiledExpression
-	{
-		public LambdaExpression(IDictionary<string, Type> parameters, ICompiledExpression body)
-		{
-			_parameters = (parameters != null) ? parameters.Select(p => CreateParameter(p.Key, p.Value)).ToArray() : EmptyParameters;
-			_body = body;
-		}
+    internal sealed class LambdaExpression : ICompiledExpression
+    {
+        private static readonly ParameterExpression[] EmptyParameters
+            = {};
 
+        private static readonly MethodInfo ExecuteLambdaExpressionMethod
+            = typeof (LambdaExpression).GetMethod("ExecuteLambdaExpression",
+                BindingFlags.Instance | BindingFlags.NonPublic);
 
-		private readonly ICompiledExpression _body;
-		private readonly IList<ParameterExpression> _parameters;
+        private readonly ICompiledExpression _body;
+        private readonly IList<ParameterExpression> _parameters;
 
+        public LambdaExpression(IDictionary<string, Type> parameters, ICompiledExpression body)
+        {
+            _parameters = (parameters != null)
+                ? parameters.Select(p => CreateParameter(p.Key, p.Value)).ToArray()
+                : EmptyParameters;
+            _body = body;
+        }
 
-		private static readonly ParameterExpression[] EmptyParameters
-			= { };
+        public object Execute(object dataContext, ExpressionScope scope)
+        {
+            // Формирование делегата для исполнения функции
 
-		private static readonly MethodInfo ExecuteLambdaExpressionMethod
-			= typeof(LambdaExpression).GetMethod("ExecuteLambdaExpression", BindingFlags.Instance | BindingFlags.NonPublic);
+            return Expression.Lambda(Expression.Call(Expression.Constant(this),
+                ExecuteLambdaExpressionMethod,
+                Expression.Constant(dataContext),
+                Expression.Constant(scope),
+                Expression.NewArrayInit(typeof (object), _parameters)),
+                _parameters)
+                .Compile();
+        }
 
-		private object ExecuteLambdaExpression(object dataContext, ExpressionScope scope, object[] arguments)
-		{
-			if (_body != null)
-			{
-				var lambdaScope = new ExpressionScope(scope);
+        private object ExecuteLambdaExpression(object dataContext, ExpressionScope scope, object[] arguments)
+        {
+            if (_body != null)
+            {
+                var lambdaScope = new ExpressionScope(scope);
 
-				// Заполнение контекста параметрами функции
+                // Заполнение контекста параметрами функции
 
-				if (arguments != null)
-				{
-					for (var i = 0; i < arguments.Length && i < _parameters.Count; ++i)
-					{
-						lambdaScope.DeclareVariable(_parameters[i].Name, arguments[i]);
-					}
-				}
+                if (arguments != null)
+                {
+                    for (var i = 0; i < arguments.Length && i < _parameters.Count; ++i)
+                    {
+                        lambdaScope.DeclareVariable(_parameters[i].Name, arguments[i]);
+                    }
+                }
 
-				return _body.Execute(dataContext, lambdaScope);
-			}
+                return _body.Execute(dataContext, lambdaScope);
+            }
 
-			return null;
-		}
+            return null;
+        }
 
-		private static ParameterExpression CreateParameter(string name, Type type)
-		{
-			return Expression.Parameter(type ?? typeof(object), name);
-		}
-
-
-		public object Execute(object dataContext, ExpressionScope scope)
-		{
-			// Формирование делегата для исполнения функции
-
-			return Expression.Lambda(Expression.Call(Expression.Constant(this),
-													 ExecuteLambdaExpressionMethod,
-													 Expression.Constant(dataContext),
-													 Expression.Constant(scope),
-													 Expression.NewArrayInit(typeof(object), _parameters)),
-									 _parameters)
-							 .Compile();
-		}
-	}
+        private static ParameterExpression CreateParameter(string name, Type type)
+        {
+            return Expression.Parameter(type ?? typeof (object), name);
+        }
+    }
 }

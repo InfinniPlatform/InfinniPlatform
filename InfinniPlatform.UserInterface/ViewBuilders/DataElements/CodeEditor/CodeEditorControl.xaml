@@ -1,103 +1,102 @@
 ﻿<UserControl x:Class="InfinniPlatform.UserInterface.ViewBuilders.DataElements.CodeEditor.CodeEditorControl"
-			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-			 xmlns:edit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"
-			 xmlns:codeEditor="clr-namespace:InfinniPlatform.UserInterface.ViewBuilders.DataElements.CodeEditor"
-			 xmlns:images="clr-namespace:InfinniPlatform.UserInterface.ViewBuilders.Images"
-			 xmlns:themes="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
-			 xmlns:app="clr-namespace:InfinniPlatform.UserInterface.AppHost"
-			 mc:Ignorable="d"
-			 d:DesignHeight="300"
-			 d:DesignWidth="300"
-			 MinHeight="200"
-			 >
-	<UserControl.Resources>
-		<images:ImageValueConverter x:Key="ImageValueConverter"/>
-		<RoutedCommand x:Key="CloseDialogCommand"/>
-	</UserControl.Resources>
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="*"/>
-			<RowDefinition Height="Auto"/>
-		</Grid.RowDefinitions>
-		<Border x:Name="MenuBarPlaceHolder"
-				Grid.Row="0"
-				Visibility="Hidden"
-				/>
-		<Border x:Name="DialogPlaceHolder"
-				Grid.Row="1"
-				HorizontalAlignment="Left"
-				Visibility="Collapsed"
-				>
-			<StackPanel Orientation="Horizontal" Margin="3">
-				<Border x:Name="DialogPlaceHolderContent"
-						Width="500"
-						/>
-				<Button Width="21" 
-						Height="21" 
-						Focusable="False"
-						HorizontalAlignment="Left"
-						VerticalAlignment="Top"
-						Template="{DynamicResource {themes:FloatingContainerThemeKey ResourceKey=FloatingContainerCloseButtonTemplate, ThemeName={x:Static app:AppRunner.ApplicationThemeName}}}" 
-						Command="{StaticResource CloseDialogCommand}"
-						/>
-			</StackPanel>
-		</Border>
-		<edit:TextEditor x:Name="CodeEditor"
-						 Grid.Row="2"
-						 HorizontalScrollBarVisibility="Auto"
-						 VerticalScrollBarVisibility="Auto"
-						 ShowLineNumbers="True"
-						 FontFamily="Consolas"
-						 FontSize="10pt"
-						 TextChanged="OnCodeEditorTextChanged"
-						 />
-		<GroupBox Name="ErrorMessagesGroup"
-				  Grid.Row="3"
-				  Height="150"
-				  Header="Error List"
-				  Visibility="Collapsed"
-				  >
-			<ListBox x:Name="ErrorMessagesList">
-				<ListBox.ItemTemplate>
-					<DataTemplate DataType="codeEditor:CodeEditorError">
-						<StackPanel Orientation="Horizontal" MouseUp="OnErrorMessageClick">
-							<Image Name="CategoryImage">
-								<Image.Style>
-									<Style TargetType="Image">
-										<Style.Triggers>
-											<DataTrigger Binding="{Binding Category}" Value="{x:Static codeEditor:CodeEditorErrorCategory.Information}">
-												<Setter Property="Source" Value="{Binding ConverterParameter='Information/Information_16x16', Converter={StaticResource ImageValueConverter}}" />
-											</DataTrigger>
-											<DataTrigger Binding="{Binding Category}" Value="{x:Static codeEditor:CodeEditorErrorCategory.Warning}">
-												<Setter Property="Source" Value="{Binding ConverterParameter='Information/Warning_16x16', Converter={StaticResource ImageValueConverter}}" />
-											</DataTrigger>
-											<DataTrigger Binding="{Binding Category}" Value="{x:Static codeEditor:CodeEditorErrorCategory.Error}">
-												<Setter Property="Source" Value="{Binding ConverterParameter='Information/Error_16x16', Converter={StaticResource ImageValueConverter}}" />
-											</DataTrigger>
-										</Style.Triggers>
-									</Style>
-								</Image.Style>
-							</Image>
-							<TextBlock Text="{Binding Message}" Margin="5,0,0,0">
-								<TextBlock.ToolTip>
-									<TextBlock Text="{Binding Message}"/>
-								</TextBlock.ToolTip>
-							</TextBlock>
-						</StackPanel>
-					</DataTemplate>
-				</ListBox.ItemTemplate>
-			</ListBox>
-		</GroupBox>
-	</Grid>
-	<UserControl.CommandBindings>
-		<CommandBinding Command="{StaticResource CloseDialogCommand}" Executed="OnCloseDialogHandler" />
-	</UserControl.CommandBindings>
-	<UserControl.InputBindings>
-		<KeyBinding Command="{StaticResource CloseDialogCommand}" Gesture="Esc" />
-	</UserControl.InputBindings>
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:edit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"
+             xmlns:codeEditor="clr-namespace:InfinniPlatform.UserInterface.ViewBuilders.DataElements.CodeEditor"
+             xmlns:images="clr-namespace:InfinniPlatform.UserInterface.ViewBuilders.Images"
+             xmlns:themes="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
+             xmlns:app="clr-namespace:InfinniPlatform.UserInterface.AppHost"
+             mc:Ignorable="d"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             MinHeight="200">
+    <UserControl.Resources>
+        <images:ImageValueConverter x:Key="ImageValueConverter" />
+        <RoutedCommand x:Key="CloseDialogCommand" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Border x:Name="MenuBarPlaceHolder"
+                Grid.Row="0"
+                Visibility="Hidden" />
+        <Border x:Name="DialogPlaceHolder"
+                Grid.Row="1"
+                HorizontalAlignment="Left"
+                Visibility="Collapsed">
+            <StackPanel Orientation="Horizontal" Margin="3">
+                <Border x:Name="DialogPlaceHolderContent"
+                        Width="500" />
+                <Button Width="21"
+                        Height="21"
+                        Focusable="False"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Template="{DynamicResource {themes:FloatingContainerThemeKey ResourceKey=FloatingContainerCloseButtonTemplate, ThemeName={x:Static app:AppRunner.ApplicationThemeName}}}"
+                        Command="{StaticResource CloseDialogCommand}" />
+            </StackPanel>
+        </Border>
+        <edit:TextEditor x:Name="CodeEditor"
+                         Grid.Row="2"
+                         HorizontalScrollBarVisibility="Auto"
+                         VerticalScrollBarVisibility="Auto"
+                         ShowLineNumbers="True"
+                         FontFamily="Consolas"
+                         FontSize="10pt"
+                         TextChanged="OnCodeEditorTextChanged" />
+        <GroupBox Name="ErrorMessagesGroup"
+                  Grid.Row="3"
+                  Height="150"
+                  Header="Error List"
+                  Visibility="Collapsed">
+            <ListBox x:Name="ErrorMessagesList">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="codeEditor:CodeEditorError">
+                        <StackPanel Orientation="Horizontal" MouseUp="OnErrorMessageClick">
+                            <Image Name="CategoryImage">
+                                <Image.Style>
+                                    <Style TargetType="Image">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Category}"
+                                                         Value="{x:Static codeEditor:CodeEditorErrorCategory.Information}">
+                                                <Setter Property="Source"
+                                                        Value="{Binding ConverterParameter='Information/Information_16x16', Converter={StaticResource ImageValueConverter}}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Category}"
+                                                         Value="{x:Static codeEditor:CodeEditorErrorCategory.Warning}">
+                                                <Setter Property="Source"
+                                                        Value="{Binding ConverterParameter='Information/Warning_16x16', Converter={StaticResource ImageValueConverter}}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Category}"
+                                                         Value="{x:Static codeEditor:CodeEditorErrorCategory.Error}">
+                                                <Setter Property="Source"
+                                                        Value="{Binding ConverterParameter='Information/Error_16x16', Converter={StaticResource ImageValueConverter}}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                            <TextBlock Text="{Binding Message}" Margin="5,0,0,0">
+                                <TextBlock.ToolTip>
+                                    <TextBlock Text="{Binding Message}" />
+                                </TextBlock.ToolTip>
+                            </TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </GroupBox>
+    </Grid>
+    <UserControl.CommandBindings>
+        <CommandBinding Command="{StaticResource CloseDialogCommand}" Executed="OnCloseDialogHandler" />
+    </UserControl.CommandBindings>
+    <UserControl.InputBindings>
+        <KeyBinding Command="{StaticResource CloseDialogCommand}" Gesture="Esc" />
+    </UserControl.InputBindings>
 </UserControl>

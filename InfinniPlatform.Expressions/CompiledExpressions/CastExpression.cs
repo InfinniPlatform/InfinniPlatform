@@ -1,37 +1,36 @@
 ﻿using System;
-
-using InfinniPlatform.Api.Extensions;
+using InfinniPlatform.Sdk.Extensions;
 
 namespace InfinniPlatform.Expressions.CompiledExpressions
 {
-	sealed class CastExpression : ICompiledExpression
-	{
-		private readonly Type _type;
-		private readonly ICompiledExpression _expression;
+    internal sealed class CastExpression : ICompiledExpression
+    {
+        private readonly ICompiledExpression _expression;
+        private readonly Type _type;
 
-		public CastExpression(Type type, ICompiledExpression expression)
-		{
-			_type = type;
-			_expression = expression;
-		}
+        public CastExpression(Type type, ICompiledExpression expression)
+        {
+            _type = type;
+            _expression = expression;
+        }
 
-		public object Execute(object dataContext, ExpressionScope scope)
-		{
-			var expression = _expression.Execute(dataContext, scope);
+        public object Execute(object dataContext, ExpressionScope scope)
+        {
+            var expression = _expression.Execute(dataContext, scope);
 
-			if (expression == null)
-			{
-				if (_type.IsValueType)
-				{
-					expression = ReflectionExtensions.GetDefaultValue(_type);
-				}
-			}
-			else
-			{
-				expression = Convert.ChangeType(expression, _type);
-			}
+            if (expression == null)
+            {
+                if (_type.IsValueType)
+                {
+                    expression = ReflectionExtensions.GetDefaultValue(_type);
+                }
+            }
+            else
+            {
+                expression = Convert.ChangeType(expression, _type);
+            }
 
-			return expression;
-		}
-	}
+            return expression;
+        }
+    }
 }

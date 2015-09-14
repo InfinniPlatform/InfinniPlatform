@@ -17,9 +17,9 @@ namespace InfinniPlatform.FlowDocument.Tests.Converters.Html.Blocks
             var element = new PrintElementList();
             var result = new TextWriterWrapper();
 
-            var item1 = new PrintElementRun() { Text = "Item1" };
-            var item2 = new PrintElementRun() { Text = "Item2" };
-            var item3 = new PrintElementRun() { Text = "Item3" };
+            var item1 = new PrintElementRun {Text = "Item1"};
+            var item2 = new PrintElementRun {Text = "Item2"};
+            var item3 = new PrintElementRun {Text = "Item3"};
 
             var par1 = new PrintElementParagraph();
             var par2 = new PrintElementParagraph();

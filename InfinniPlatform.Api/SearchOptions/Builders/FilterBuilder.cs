@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Api.SearchOptions.Builders
 {
     /// <summary>
-    /// Позволяет описать набор критериев
+    ///     Позволяет описать набор критериев
     /// </summary>
     public sealed class FilterBuilder
     {
         private readonly IList<object> _criteriaList;
 
-	    public FilterBuilder()
+        public FilterBuilder()
         {
             _criteriaList = new List<dynamic>();
         }
@@ -44,28 +45,26 @@ namespace InfinniPlatform.Api.SearchOptions.Builders
         public static IEnumerable<object> DateRangeCondition(string propertyName, DateTime from, DateTime to)
         {
             var builder = new FilterBuilder();
-           
+
             builder.AddCriteria(c => c
                 .Property(propertyName)
                 .IsMoreThanOrEquals(from));
 
             builder.AddCriteria(c => c
-               .Property(propertyName)
-               .IsLessThanOrEquals(to));
+                .Property(propertyName)
+                .IsLessThanOrEquals(to));
 
             return builder.GetFilter();
         }
 
         /// <summary>
-        /// Позволяет задать одно условие
+        ///     Позволяет задать одно условие
         /// </summary>
         public class CriteriaBuilder
         {
-            private string _property;
-
-            private object _value;
-
             private CriteriaType _criteriaType = CriteriaType.IsEquals;
+            private string _property;
+            private object _value;
 
             public CriteriaBuilder Property(string property)
             {
@@ -202,12 +201,12 @@ namespace InfinniPlatform.Api.SearchOptions.Builders
                 };
             }
 
-	        public CriteriaBuilder IsIdIn(List<string> idList)
-	        {
-				_value = idList;
-				_criteriaType = CriteriaType.IsIdIn;
-				return this;
-	        }
+            public CriteriaBuilder IsIdIn(List<string> idList)
+            {
+                _value = idList;
+                _criteriaType = CriteriaType.IsIdIn;
+                return this;
+            }
         }
     }
 }

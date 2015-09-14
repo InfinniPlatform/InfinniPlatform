@@ -1,28 +1,28 @@
 ﻿namespace InfinniPlatform.ReportDesigner.Views.DataSources
 {
-	/// <summary>
-	/// Типы поставщиков данных.
-	/// </summary>
-	enum DataSourceProviderType
-	{
-		/// <summary>
-		/// InfinniPlatform Register.
-		/// </summary>
-		Register = 0,
+    /// <summary>
+    ///     Типы поставщиков данных.
+    /// </summary>
+    internal enum DataSourceProviderType
+    {
+        /// <summary>
+        ///     InfinniPlatform Register.
+        /// </summary>
+        Register = 0,
 
-		/// <summary>
-		/// REST Service.
-		/// </summary>
-		RestService = 1,
+        /// <summary>
+        ///     REST Service.
+        /// </summary>
+        RestService = 1,
 
-		/// <summary>
-		/// MS SQL Server.
-		/// </summary>
-		MsSqlServer = 2,
+        /// <summary>
+        ///     MS SQL Server.
+        /// </summary>
+        MsSqlServer = 2,
 
-		/// <summary>
-		/// Firebird.
-		/// </summary>
-		Firebird = 4,
-	}
+        /// <summary>
+        ///     Firebird.
+        /// </summary>
+        Firebird = 4
+    }
 }

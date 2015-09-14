@@ -104,7 +104,7 @@ namespace InfinniPlatform.Extensions
                 {"Э", "E"},
                 {"Ю", "Yu"},
                 {"Я", "Ya"},
-                {" ", "_"},
+            {" ", "_"}
             };
     }
 }

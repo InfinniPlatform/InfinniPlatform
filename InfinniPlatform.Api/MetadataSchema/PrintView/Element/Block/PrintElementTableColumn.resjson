@@ -1,32 +1,32 @@
 ﻿{
-  "id": "PrintElementTableColumn",
-  "description": "Настройки столбца таблицы",
-  "type": "object",
-  "properties": {
-    "Name": {
-      "description": "Наименование ячейки",
-      "type": "string",
-      "minLength": 1
-    },
-    "Size": {
-      "description": "Ширина столбца",
-      "type": "number",
-      "minimum": 0,
-      "exclusiveMinimum": false
-    },
-    "SizeUnit": {
-      "description": "Единица измерения ширины столбца",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/SizeUnit",
-      "default": "Pt"
-    },
-    "Header": {
-      "description": "Заголовок столбца",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/PrintElementTableCell"
-    },
-    "CellTemplate": {
-      "description": "Шаблон ячеек столбца",
-      "$ref": "http://demo.infinnity.ru:8081/display/MC/PrintElementTableCell"
-    }
-  },
-  "additionalProperties": false
+	"id": "PrintElementTableColumn",
+	"description": "Настройки столбца таблицы",
+	"type": "object",
+	"properties": {
+		"Name": {
+			"description": "Наименование ячейки",
+			"type": "string",
+			"minLength": 1
+		},
+		"Size": {
+			"description": "Ширина столбца",
+			"type": "number",
+			"minimum": 0,
+			"exclusiveMinimum": false
+		},
+		"SizeUnit": {
+			"description": "Единица измерения ширины столбца",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/SizeUnit",
+			"default": "Pt"
+		},
+		"Header": {
+			"description": "Заголовок столбца",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/PrintElementTableCell"
+		},
+		"CellTemplate": {
+			"description": "Шаблон ячеек столбца",
+			"$ref": "http://demo.infinnity.ru:8081/display/MC/PrintElementTableCell"
+		}
+	},
+	"additionalProperties": false
 }

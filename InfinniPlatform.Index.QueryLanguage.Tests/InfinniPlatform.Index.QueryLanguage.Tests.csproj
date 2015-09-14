@@ -11,6 +11,7 @@
     <AssemblyName>InfinniPlatform.Index.QueryLanguage.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -72,6 +73,10 @@
     <ProjectReference Include="..\InfinniPlatform.Index.QueryLanguage\InfinniPlatform.Index.QueryLanguage.csproj">
       <Project>{25ccb048-c239-4a2d-8090-39ae34514884}</Project>
       <Name>InfinniPlatform.Index.QueryLanguage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
+      <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
+      <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.SystemConfig\InfinniPlatform.SystemConfig.csproj">
       <Project>{6EFC2069-AFEB-453D-AD2C-3E170486A4F1}</Project>

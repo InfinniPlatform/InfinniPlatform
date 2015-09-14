@@ -1,16 +1,15 @@
 ﻿using System.Windows;
-
-using InfinniPlatform.Api.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.PrintViewDesigner.Views
 {
-	public partial class MainWindow : Window
-	{
-		public MainWindow()
-		{
-			InitializeComponent();
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
 
-			Designer.PrintView = new DynamicWrapper();
-		}
-	}
+            Designer.PrintView = new DynamicWrapper();
+        }
+    }
 }

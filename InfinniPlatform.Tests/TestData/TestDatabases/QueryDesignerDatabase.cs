@@ -121,7 +121,7 @@ namespace InfinniPlatform.TestData.TestDatabases
             managerDocument.MergeItem(documentMetadata2);
             managerDocument.MergeItem(documentMetadata3);
 
-			RestQueryApi.QueryPostNotify(configurationId);
+			RestQueryApi.QueryPostNotify(configurationId, TODO);
 
 			var addressId = Guid.NewGuid().ToString();
 			var policy1Id = Guid.NewGuid().ToString();

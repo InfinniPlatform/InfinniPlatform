@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Api.ContextTypes;
+﻿using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.SystemConfig.Configurator
 {
@@ -6,7 +6,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
     {
         public void Action(ISearchContext context)
         {
-            context.SearchResult = new string[]
+            context.SearchResult = new[]
                 {
                     "Action",
                     "OnSuccess",

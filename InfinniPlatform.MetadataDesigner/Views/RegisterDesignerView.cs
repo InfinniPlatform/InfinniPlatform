@@ -1,11 +1,12 @@
-﻿using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.Registers;
+﻿using InfinniPlatform.Api.Registers;
 using InfinniPlatform.MetadataDesigner.Views.Status;
 using InfinniPlatform.MetadataDesigner.Views.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Register;
 
 namespace InfinniPlatform.MetadataDesigner.Views
 {
@@ -34,6 +35,8 @@ namespace InfinniPlatform.MetadataDesigner.Views
         public Func<string> ConfigId { get; set; }
 
         public Func<string> DocumentId { get; set; }
+
+        public Func<string> Version { get; set; } 
         
         public object Value
         {
@@ -83,7 +86,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
                         }
                     }
 
-                    _documentSchema = ViewModelExtension.GetRegisterDocumentSchema(ConfigId(), _register.Name);
+                    _documentSchema = ViewModelExtension.GetRegisterDocumentSchema(Version(), ConfigId(), _register.Name);
 
                     PropertiesListBoxControl.Items.Clear();
 
@@ -138,15 +141,15 @@ namespace InfinniPlatform.MetadataDesigner.Views
             _register.Properties.Add(new { Property = RegisterConstants.EntryTypeProperty, Type = RegisterPropertyType.Info });
             
             PropertiesPanelControl.Visible = true;
-            
-            _documentSchema = ViewModelExtension.GetRegisterDocumentSchema(ConfigId(), _register.Name);
+
+            _documentSchema = ViewModelExtension.GetRegisterDocumentSchema(Version(), ConfigId(), _register.Name);
             if (_documentSchema == null)
             {
                 var proc = new StatusProcess();
                 proc.StartOperation(
                     delegate
                     {
-                        _register.DocumentId = ViewModelExtension.CreateRegisterDocuments(ConfigId(), _register.Name);
+                        _register.DocumentId = ViewModelExtension.CreateRegisterDocuments(Version(), ConfigId(), _register.Name);
                     });
                 proc.EndOperation();
             }
@@ -242,7 +245,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 
             if (_documentSchema == null)
             {
-                _documentSchema = ViewModelExtension.GetRegisterDocumentSchema(ConfigId(), _register.Name);
+                _documentSchema = ViewModelExtension.GetRegisterDocumentSchema(Version(), ConfigId(), _register.Name);
             }
 
             if (_documentSchema == null)
@@ -251,11 +254,11 @@ namespace InfinniPlatform.MetadataDesigner.Views
                 proc.StartOperation(
                     delegate
                     {
-                        _register.DocumentId = ViewModelExtension.CreateRegisterDocuments(ConfigId(), _register.Name);
+                        _register.DocumentId = ViewModelExtension.CreateRegisterDocuments(Version(), ConfigId(), _register.Name);
                     });
                 proc.EndOperation();
 
-                _documentSchema = ViewModelExtension.GetRegisterDocumentSchema(ConfigId(), _register.Name);
+                _documentSchema = ViewModelExtension.GetRegisterDocumentSchema(Version(), ConfigId(), _register.Name);
             }
 
             _documentSchema.Properties[newProperty.Name] =
@@ -267,7 +270,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 
             var process = new StatusProcess();
             process.StartOperation(
-                () => ViewModelExtension.UpdateRegisterDocumentSchema(ConfigId(), _register.Name, _documentSchema));
+                () => ViewModelExtension.UpdateRegisterDocumentSchema(Version(), ConfigId(), _register.Name, _documentSchema));
             process.EndOperation();
 
             // Обновляем схему документа, рассчитываеющего промежуточные итоги по регистру
@@ -276,7 +279,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
             {
                 if (_documentTotalSchema == null)
                 {
-                    _documentTotalSchema = ViewModelExtension.GetRegisterDocumentTotalSchema(ConfigId(), _register.Name);
+                    _documentTotalSchema = ViewModelExtension.GetRegisterDocumentTotalSchema(Version(), ConfigId(), _register.Name);
                 }
 
                 _documentTotalSchema.Properties[newProperty.Name] =
@@ -288,7 +291,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
                 process = new StatusProcess();
                 process.StartOperation(
                     () =>
-                        ViewModelExtension.UpdateRegisterDocumentTotalSchema(ConfigId(), _register.Name,
+                        ViewModelExtension.UpdateRegisterDocumentTotalSchema(Version(), ConfigId(), _register.Name,
                             _documentTotalSchema));
                 process.EndOperation();
             }
@@ -335,14 +338,14 @@ namespace InfinniPlatform.MetadataDesigner.Views
 
                 if (_documentSchema == null)
                 {
-                    _documentSchema = ViewModelExtension.GetRegisterDocumentSchema(ConfigId(), _register.Name);
+                    _documentSchema = ViewModelExtension.GetRegisterDocumentSchema(Version(), ConfigId(), _register.Name);
                 }
 
                 _documentSchema.Properties[propertyToDelete.Name] = null;
                 
                 var process = new StatusProcess();
                 process.StartOperation(
-                    () => ViewModelExtension.UpdateRegisterDocumentSchema(ConfigId(), _register.Name, _documentSchema));
+                    () => ViewModelExtension.UpdateRegisterDocumentSchema(Version(), ConfigId(), _register.Name, _documentSchema));
                 process.EndOperation();
 
                 // Обновляем схему документа, рассчитываеющего промежуточные итоги по регистру
@@ -351,7 +354,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
                 {
                     if (_documentTotalSchema == null)
                     {
-                        _documentTotalSchema = ViewModelExtension.GetRegisterDocumentTotalSchema(ConfigId(), _register.Name);
+                        _documentTotalSchema = ViewModelExtension.GetRegisterDocumentTotalSchema(Version(), ConfigId(), _register.Name);
                     }
 
                     _documentTotalSchema.Properties[propertyToDelete.Name] = null;
@@ -359,7 +362,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
                     process = new StatusProcess();
                     process.StartOperation(
                         () =>
-                            ViewModelExtension.UpdateRegisterDocumentTotalSchema(ConfigId(), _register.Name,
+                            ViewModelExtension.UpdateRegisterDocumentTotalSchema(Version(), ConfigId(), _register.Name,
                                 _documentTotalSchema));
                     process.EndOperation();
                 }

@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using InfinniPlatform.Api.Dynamic;
+using InfinniPlatform.Api.Properties;
+using InfinniPlatform.Api.SearchOptions.Builders;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Api.SearchOptions.Converters
 {
@@ -33,6 +36,15 @@ namespace InfinniPlatform.Api.SearchOptions.Converters
             {"isidin",CriteriaType.IsIdIn}
         };
 
+        private readonly Dictionary<string, Func<string, object>> _criteriaProcessing = new Dictionary
+            <string, Func<string, object>>()
+        {
+            {
+                "isidin",
+                (criteriaValue) => criteriaValue.Split(new string[] {"[,]"}, StringSplitOptions.RemoveEmptyEntries)
+            }
+        };
+
         private dynamic ConstructCriteria(string criteria)
         {
             //Price IsEquals 200
@@ -42,22 +54,66 @@ namespace InfinniPlatform.Api.SearchOptions.Converters
             //criteria = IsEquals 200
             criteria = criteria.Substring(criteria.IndexOf(" ", StringComparison.Ordinal)).Trim();
             //op = IsEquals
-            var op = criteria.Substring(0, criteria.IndexOf(" ", StringComparison.Ordinal)).ToLowerInvariant();
-            //criteria = 200
-            var value = criteria.Substring(criteria.IndexOf(" ", StringComparison.Ordinal));
-
+            var opIndex = criteria.IndexOf(" ", StringComparison.Ordinal);
+            
+            object valueProcessed = null;
+            var value = string.Empty;
             dynamic criteriaDynamic = new DynamicWrapper();
             criteriaDynamic.Property = propertyName;
+            
+            string op = string.Empty;
+            if (opIndex == -1)
+            {
+                op = criteria.Substring(0).ToLowerInvariant();
+            }
+            else
+            {
+                op = criteria.Substring(0, opIndex).ToLowerInvariant();
+
+                //criteria = 200
+                var valueIndex = criteria.IndexOf(" ", StringComparison.Ordinal) + 1;
+
+                
+                if (valueIndex != -1)
+                {
+                    value = criteria.Substring(valueIndex);
+                }
+               
+                if (value != string.Empty && _criteriaProcessing.ContainsKey(op))
+                {
+                    valueProcessed = _criteriaProcessing[op].Invoke(value);
+                }
+            }
 
             if (!_criteriaTypes.ContainsKey(op))
             {
-                throw new ArgumentException(string.Format("Can't find criteria type for operator: {0}",op));
+                throw new ArgumentException(string.Format("Can't find criteria type for operator: {0}", op));
             }
             criteriaDynamic.CriteriaType = _criteriaTypes[op];
-            criteriaDynamic.Value = value;
+            criteriaDynamic.Value = valueProcessed ??  (value == "null" ? null : ProcessValue(value));
             criteriaDynamic.Property = propertyName;
 
             return criteriaDynamic;
+        }
+
+        private object ProcessValue(string value)
+        {
+
+            if (value.ToLowerInvariant().StartsWith("datetime"))
+            {
+                var start = value.IndexOf("'", StringComparison.InvariantCulture);
+                var end = value.LastIndexOf("'", StringComparison.InvariantCulture);
+                try
+                {
+                    return DateTime.Parse(value.Substring(start + 1, end - start - 1));
+                }
+                catch
+                {
+                    throw new ArgumentException(string.Format(Resources.FailToConvertFilterValueToDateTime,value));
+                }
+
+            }
+            return value;
         }
 
         /// <summary>
@@ -65,11 +121,26 @@ namespace InfinniPlatform.Api.SearchOptions.Converters
         /// </summary>
         /// <param name="filter">Строка фильтра</param>
         /// <returns>Список критериев</returns>
-        public IEnumerable<dynamic> Convert(string filter)
+        public IEnumerable<dynamic> ConvertFilter(string filter)
         {
             var criteriaList = filter.Split(new string[] {" and "}, StringSplitOptions.RemoveEmptyEntries);
 
             return criteriaList.Select(c => ConstructCriteria(c.Trim())).ToList();
+        }
+
+
+        public IEnumerable<dynamic> ConvertToInternal(Action<Sdk.FilterBuilder> filter)
+        {
+
+            var filterBuilder = new Sdk.FilterBuilder();
+            if (filter != null)
+            {
+                filter.Invoke(filterBuilder);
+                var filterCriteriaStrings = filterBuilder.GetFilter();
+                return filterCriteriaStrings.Select(c => ConstructCriteria(c.Trim())).ToList();
+            }
+            return new List<dynamic>();
+
         } 
 
 

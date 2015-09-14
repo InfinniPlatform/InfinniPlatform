@@ -11,6 +11,7 @@
     <AssemblyName>InfinniPlatform.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,10 +47,13 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\SecurityCache.cs" />
     <Compile Include="Compression\GZipDataCompressor.cs" />
     <Compile Include="Compression\IDataCompressor.cs" />
     <Compile Include="ContextComponents\BlobStorageComponent.cs" />
-    <Compile Include="ContextComponents\ConfigurationMediatorComponent.cs" />
+    <Compile Include="ContextComponents\ConfigurationMediatorComponent.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ContextComponents\CrossConfigSearchComponent.cs" />
     <Compile Include="ContextComponents\DependencyContainerComponent.cs" />
     <Compile Include="ContextComponents\EventStorageComponent.cs" />
@@ -57,14 +61,18 @@
     <Compile Include="ContextComponents\InprocessDocumentComponent.cs" />
     <Compile Include="ContextComponents\LogComponent.cs" />
     <Compile Include="ContextComponents\MetadataComponent.cs" />
+    <Compile Include="ContextComponents\PlatformComponentsPack.cs" />
     <Compile Include="ContextComponents\PrintViewComponent.cs" />
     <Compile Include="ContextComponents\ProfilerComponent.cs" />
     <Compile Include="ContextComponents\RegistryComponent.cs" />
     <Compile Include="ContextComponents\ScriptRunnerComponent.cs" />
-    <Compile Include="ContextComponents\SecurityComponent.cs" />
+    <Compile Include="ContextComponents\CachedSecurityComponent.cs" />
+    <Compile Include="ContextComponents\SharedCacheComponent.cs" />
     <Compile Include="ContextComponents\SystemComponent.cs" />
     <Compile Include="ContextComponents\TransactionComponent.cs" />
+    <Compile Include="ContextComponents\VersionedScriptProcessor.cs" />
     <Compile Include="ContextComponents\WebClientNotificationComponent.cs" />
+    <Compile Include="Factories\ContextRegistration.cs" />
     <Compile Include="Factories\IPrintViewBuilderFactory.cs" />
     <Compile Include="Factories\IMultitenancyProvider.cs" />
     <Compile Include="Hosting\ExtensionPointHandlerConfig.cs" />
@@ -90,7 +98,6 @@
     <Compile Include="Hosting\MethodInvokationInfo.cs" />
     <Compile Include="Hosting\QueryHandler.cs" />
     <Compile Include="Hosting\ReflectedParameterInfo.cs" />
-    <Compile Include="Factories\IAggregateProvider.cs" />
     <Compile Include="Index\DimensionType.cs" />
     <Compile Include="Index\ICalculatedFieldFactory.cs" />
     <Compile Include="Index\IndexObject.cs" />
@@ -128,7 +135,6 @@
     <Compile Include="MessageQueue\Integration\IntegrationBusMessage.cs" />
     <Compile Include="MessageQueue\Integration\IntegrationBusSubscription.cs" />
     <Compile Include="Metadata\ExtensionPointType.cs" />
-    <Compile Include="Metadata\IMetadataConfigurationProvider.cs" />
     <Compile Include="Metadata\IMetadataIndexNameProvider.cs" />
     <Compile Include="Metadata\IObjectMetadataHandler.cs" />
     <Compile Include="Metadata\IStateTransitionApprover.cs" />
@@ -213,6 +219,10 @@
     <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
       <Project>{7ca0f96c-7ff4-44b2-9d44-851984df4532}</Project>
       <Name>InfinniPlatform.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
+      <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
+      <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

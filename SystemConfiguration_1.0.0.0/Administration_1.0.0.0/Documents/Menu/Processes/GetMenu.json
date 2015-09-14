@@ -1,0 +1,20 @@
+{
+  "Id": "c04d404f-fde4-4845-b172-f2cce1aecfe7",
+  "SettingsType": "Custom",
+  "Transitions": [
+    {
+      "Id": "511a9632-1455-4606-bf7e-16e6f18e6233",
+      "Name": "GetMenu",
+      "ActionPoint": {
+        "TypeName": "Action",
+        "ScenarioId": "359a78cb-c9ed-4d78-b739-b8493925c988"
+      }
+    }
+  ],
+  "Type": 2,
+  "Caption": "GetMenu",
+  "Name": "GetMenu",
+  "ParentId": "d2da06bc-80c7-40a9-b882-6276210eb229",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "processmetadata"
+}

@@ -1,9 +1,8 @@
 ﻿using System.Dynamic;
 using System.Linq;
 
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Reporting.DataProviders;
-
+using InfinniPlatform.Sdk.Dynamic;
 using Newtonsoft.Json.Linq;
 
 using NUnit.Framework;

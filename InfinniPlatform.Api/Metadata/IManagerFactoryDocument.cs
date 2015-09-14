@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
+﻿using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
 
 namespace InfinniPlatform.Api.Metadata
 {
     /// <summary>
-    ///   Контракт менеджера фабрик элементов метаданных документа
+    ///     Контракт менеджера фабрик элементов метаданных документа
     /// </summary>
     public interface IManagerFactoryDocument
     {
@@ -17,17 +12,15 @@ namespace InfinniPlatform.Api.Metadata
         IDataReader BuildScenarioMetadataReader();
         IDataReader BuildProcessMetadataReader();
         IDataReader BuildServiceMetadataReader();
-		IDataReader BuildValidationWarningsMetadataReader();
-		IDataReader BuildValidationErrorsMetadataReader();
-
+        IDataReader BuildValidationWarningsMetadataReader();
+        IDataReader BuildValidationErrorsMetadataReader();
         MetadataManagerElement BuildViewManager();
         MetadataManagerElement BuildGeneratorManager();
         MetadataManagerElement BuildScenarioManager();
         MetadataManagerElement BuildProcessManager();
         MetadataManagerElement BuildServiceManager();
-		MetadataManagerElement BuildValidationErrorsManager();
-		MetadataManagerElement BuildValidationWarningsManager();
-
+        MetadataManagerElement BuildValidationErrorsManager();
+        MetadataManagerElement BuildValidationWarningsManager();
         MetadataManagerElement BuildManagerByType(string metadataType);
     }
 }

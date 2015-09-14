@@ -1,199 +1,143 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
-
-using Microsoft.Owin;
-
 using InfinniPlatform.Owin.Formatting;
 using InfinniPlatform.Owin.Properties;
+using Microsoft.Owin;
 
 namespace InfinniPlatform.Owin.Middleware
 {
-	/// <summary>
-	/// Обработчик HTTP-запросов на базе OWIN.
-	/// </summary>
-	public class RoutingOwinMiddleware : OwinMiddleware
-	{
-		public RoutingOwinMiddleware(OwinMiddleware next)
-			: base(next)
-		{
-		}
+    /// <summary>
+    ///     Обработчик HTTP-запросов на базе OWIN.
+    /// </summary>
+    public class RoutingOwinMiddleware : OwinMiddleware
+    {
+        private readonly List<IHandlerRegistration> _handlers = new List<IHandlerRegistration>();
+
+        public RoutingOwinMiddleware(OwinMiddleware next)
+            : base(next)
+        {
+        }
+
+        public void RegisterHandler(IHandlerRegistration handlerRegistration)
+        {
+            _handlers.Add(handlerRegistration);
+        }
+
+        /// <summary>
+        ///     Обрабатывает HTTP-запрос.
+        /// </summary>
+        public override Task Invoke(IOwinContext context)
+        {
+            Task task;
+
+            var request = context.Request;
+            var requestPath = NormalizePath(request.Path);
+
+            IHandlerRegistration handlerInfo;
+
+            //var handlersRegistered = _handlers.Select(h => new KeyValuePair<PathStringProvider, HandlerRouting>(
+            //    h.ContextRouting.Invoke(context), h)).Where(h => NormalizePath(h.Key.PathString).ToLowerInvariant() == requestPath.ToLowerInvariant()).ToList();
+
+            var handlersRegistered = _handlers.Where(h => h.CanProcessRequest(context, requestPath)).ToList();
 
 
-        private readonly List<HandlerRouting> _handlers = new List<HandlerRouting>(); 
-
-
-		/// <summary>
-		/// Регистрирует обработчик GET-запросов.
-		/// </summary>
-		public void RegisterGetRequestHandler(PathString path, Func<IOwinContext, IRequestHandlerResult> handler)
-		{
-			RegisterRequestHandler("GET", (context) => path, handler);
-		}
-
-		/// <summary>
-		/// Регистрирует обработчик POST-запросов.
-		/// </summary>
-		public void RegisterPostRequestHandler(PathString path, Func<IOwinContext, IRequestHandlerResult> handler)
-		{
-			RegisterRequestHandler("POST", context => path, handler);
-		}
-
-		/// <summary>
-		///   Регистрирует обработчик DELETE-запросов
-		/// </summary>
-		public void RegisterDeleteRequestHandler(PathString path, Func<IOwinContext, IRequestHandlerResult> handler)
-		{
-			RegisterRequestHandler("DELETE", context => path, handler);
-		}
-
-		/// <summary>
-		///   Регистрирует обработчик PUT-запросов
-		/// </summary>
-		public void RegisterPutRequestHandler(PathString path, Func<IOwinContext, IRequestHandlerResult> handler)
-		{
-			RegisterRequestHandler("PUT", context => path, handler);
-		}
-
-		/// <summary>
-		/// Регистрирует обработчик GET-запросов.
-		/// </summary>
-		public void RegisterGetRequestHandler(Func<IOwinContext, PathString> path, Func<IOwinContext, IRequestHandlerResult> handler)
-		{
-			RegisterRequestHandler("GET", path, handler);
-		}
-
-		/// <summary>
-		/// Регистрирует обработчик POST-запросов.
-		/// </summary>
-		public void RegisterPostRequestHandler(Func<IOwinContext, PathString> path, Func<IOwinContext, IRequestHandlerResult> handler)
-		{
-			RegisterRequestHandler("POST", path, handler);
-		}
-
-		/// <summary>
-		///   Регистрирует обработчик DELETE-запросов
-		/// </summary>
-		public void RegisterDeleteRequestHandler(Func<IOwinContext, PathString> path, Func<IOwinContext, IRequestHandlerResult> handler)
-		{
-			RegisterRequestHandler("DELETE", path, handler);
-		}
-
-		/// <summary>
-		///   Регистрирует обработчик PUT-запросов
-		/// </summary>
-		public void RegisterPutRequestHandler(Func<IOwinContext, PathString> path, Func<IOwinContext, IRequestHandlerResult> handler)
-		{
-			RegisterRequestHandler("PUT", path, handler);
-		}
-
-		/// <summary>
-		/// Регистрирует обработчик HTTP-запросов.
-		/// </summary>
-		public void RegisterRequestHandler(string method, Func<IOwinContext, PathString> path, Func<IOwinContext, IRequestHandlerResult> handler)
-		{
-            _handlers.Add(new HandlerRouting()
+            // Если найден обработчик входящего запроса
+            if (handlersRegistered.Any())
             {
-                ContextRouting = path,
-                Handler = handler,
-                Method = method
-            });			
-		}
+                IRequestHandlerResult result;
 
+                handlerInfo =
+                    handlersRegistered.OrderByDescending(h => h.Priority)
+                        .FirstOrDefault(h => string.Equals(request.Method, h.Method, StringComparison.OrdinalIgnoreCase));
 
-		/// <summary>
-		/// Обрабатывает HTTP-запрос.
-		/// </summary>
-		public override Task Invoke(IOwinContext context)
-		{
-			Task task;
+                if (handlersRegistered.Any() && handlerInfo == null)
+                {
+                    result =
+                        new ErrorRequestHandlerResult(string.Format(Resources.MethodIsNotSupported, request.Method,
+                            request.Path));
+                }
 
-			var request = context.Request;
-			var requestPath = NormalizePath(request.Path);
+                // Если метод входящего запроса совпадает с ожидаемым
+                else
+                {
+                    try
+                    {
+                        result = handlerInfo.Execute(context);
+                    }
+                    catch (Exception error)
+                    {
+                        if (error is TargetInvocationException)
+                        {
+                            result = new ErrorRequestHandlerResult(BuildErrorMessage(error.InnerException));
+                        }
+                        else
+                        {
+                            result = new ErrorRequestHandlerResult(BuildErrorMessage(error));
+                        }
+                    }
+                }
 
-			HandlerRouting handlerInfo;
+                task = result.GetResult(context);
+            }
+            else
+            {
+                task = Next.Invoke(context);
+            }
 
-			var handlersRegistered = _handlers.Select(h => new KeyValuePair<string, HandlerRouting>(NormalizePath(h.ContextRouting.Invoke(context)),h)).Where(h => h.Key == requestPath).ToList();
+            return task;
+        }
 
-			// Если найден обработчик входящего запроса
-			if (handlersRegistered.Any())
-			{
-				IRequestHandlerResult result;
+        private static string NormalizePath(PathString path)
+        {
+            if (path.HasValue)
+            {
+                return
+                    path.Value.Split(new[] {'?'}, StringSplitOptions.RemoveEmptyEntries).First().TrimEnd('/').ToLower();
+            }
+            return string.Empty;
+        }
 
-				handlerInfo = handlersRegistered.Where(h => string.Equals(request.Method, h.Value.Method, StringComparison.OrdinalIgnoreCase)).Select(h => h.Value).FirstOrDefault();
+        private static object BuildErrorMessage(Exception error)
+        {
+            var aggregateException = error as AggregateException;
 
-			    if (handlersRegistered.Any() && handlerInfo == null)
-			    {
-                    result = new ErrorRequestHandlerResult(string.Format(Resources.MethodIsNotSupported, request.Method, request.Path, handlerInfo.Method));
-			    }
+            return (aggregateException != null && aggregateException.InnerExceptions != null &&
+                    aggregateException.InnerExceptions.Count > 0)
+                ? string.Join(Environment.NewLine, aggregateException.InnerExceptions.Select(i => i.Message))
+                : error.Message;
+        }
 
-				// Если метод входящего запроса совпадает с ожидаемым
-				else 
-				{
-					try
-					{
-						result = handlerInfo.Handler(context);
-					}
-					catch (Exception error)
-					{
-						result = new ErrorRequestHandlerResult(BuildErrorMessage(error));
-					}
-				}
+        public static object ReadRequestBody(IOwinContext context)
+        {
+            object result;
 
-				task = result.GetResult(context);
-			}
-			else
-			{
-				task = Next.Invoke(context);
-			}
+            var request = context.Request;
+            var requestContentType = request.ContentType ?? JsonBodyFormatter.Instance.ContentType;
 
-			return task;
-		}
+            if (requestContentType.StartsWith(JsonBodyFormatter.Instance.ContentType, StringComparison.OrdinalIgnoreCase))
+            {
+                result = JsonBodyFormatter.Instance.ReadBody(request);
+            }
+            else if (requestContentType.StartsWith(FormBodyFormatter.Instance.ContentType,
+                StringComparison.OrdinalIgnoreCase))
+            {
+                result = FormBodyFormatter.Instance.ReadBody(request);
+            }
+            else
+            {
+                throw new ArgumentException(string.Format(Resources.RequestHasUnsupportedContentType,
+                    requestContentType));
+            }
 
+            if (result == null)
+            {
+                throw new ArgumentException(Resources.RequestBodyCannotBeNull);
+            }
 
-		private static string NormalizePath(PathString path)
-		{
-			return path.HasValue ? path.Value.TrimEnd('/').ToLower() : string.Empty;
-		}
-
-		private static object BuildErrorMessage(Exception error)
-		{
-			var aggregateException = error as AggregateException;
-
-			return (aggregateException != null && aggregateException.InnerExceptions != null && aggregateException.InnerExceptions.Count > 0)
-				? string.Join(Environment.NewLine, aggregateException.InnerExceptions.Select(i => i.Message))
-				: error.Message;
-		}
-
-		protected static object ReadRequestBody(IOwinContext context)
-		{
-			object result;
-
-			var request = context.Request;
-			var requestContentType = request.ContentType ?? JsonBodyFormatter.Instance.ContentType;
-
-			if (requestContentType.StartsWith(JsonBodyFormatter.Instance.ContentType, StringComparison.OrdinalIgnoreCase))
-			{
-				result = JsonBodyFormatter.Instance.ReadBody(request);
-			}
-			else if (requestContentType.StartsWith(FormBodyFormatter.Instance.ContentType, StringComparison.OrdinalIgnoreCase))
-			{
-				result = FormBodyFormatter.Instance.ReadBody(request);
-			}
-			else
-			{
-				throw new ArgumentException(string.Format(Resources.RequestHasUnsupportedContentType, requestContentType));
-			}
-
-			if (result == null)
-			{
-				throw new ArgumentException(Resources.RequestBodyCannotBeNull);
-			}
-
-			return result;
-		}
-
-
-	}
+            return result;
+        }
+    }
 }

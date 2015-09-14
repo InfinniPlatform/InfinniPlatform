@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.Events;
 using InfinniPlatform.Api.RestQuery.EventObjects;
 using InfinniPlatform.Api.RestQuery.EventObjects.EventSerializers;
 using InfinniPlatform.Factories;
 using InfinniPlatform.Json;
 using InfinniPlatform.Metadata;
+using InfinniPlatform.Sdk.Events;
 using NUnit.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -77,7 +76,7 @@ namespace InfinniPlatform.Core.Tests.Events
 				}
 			};
 
-			var addCollectionItem = new AddCollectionItem("Test", obj);
+			var addCollectionItem = new AddCollectionItem("Test", obj,null);
 			var events = addCollectionItem.GetEvents().ToArray();
 
 			aggregateProvider.ApplyChanges(ref itemToApply,events);
@@ -136,7 +135,7 @@ namespace InfinniPlatform.Core.Tests.Events
 				}
 			};
 
-			var addCollectionItem = new AddCollectionItem("Test.$.TestProperty:Test2.TestInnerCollection", obj);
+			var addCollectionItem = new AddCollectionItem("Test.$.TestProperty:Test2.TestInnerCollection", obj,null);
 			var events = addCollectionItem.GetEvents().ToArray();
 
 			aggregateProvider.ApplyChanges(ref itemToApply, events);
@@ -180,7 +179,7 @@ namespace InfinniPlatform.Core.Tests.Events
 						}
 			};
 
-			var addCollectionItem = new RemoveCollectionItem("Test.$.TestObject.TestProperty:Test2");
+			var addCollectionItem = new RemoveCollectionItem("Test.$.TestObject.TestProperty:Test2",null);
 			var events = addCollectionItem.GetEvents().ToArray();
 
 			aggregateProvider.ApplyChanges(ref itemToApply, events);

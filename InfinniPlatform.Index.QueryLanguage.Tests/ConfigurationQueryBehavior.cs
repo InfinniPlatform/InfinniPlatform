@@ -2,19 +2,17 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
-using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.Factories;
-using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Index.SearchOptions;
-using InfinniPlatform.Api.RestApi.AuthApi;
-using InfinniPlatform.Api.SearchOptions;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Index.QueryLanguage.Implementation;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.SystemConfig.Multitenancy;
-using NUnit.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NUnit.Framework;
 
 namespace InfinniPlatform.Index.QueryLanguage.Tests
 {

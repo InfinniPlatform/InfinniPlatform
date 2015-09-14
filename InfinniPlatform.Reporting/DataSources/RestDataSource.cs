@@ -4,11 +4,10 @@ using System.IO;
 using System.Net;
 using System.Xml.Linq;
 using InfinniPlatform.Api.Schema;
-using InfinniPlatform.Api.Settings;
 using InfinniPlatform.FastReport.Templates.Data;
 using InfinniPlatform.Reporting.DataProviders;
 using InfinniPlatform.Reporting.Properties;
-
+using InfinniPlatform.Sdk.Environment.Settings;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 

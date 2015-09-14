@@ -1,8 +1,7 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Api.SearchOptions.Builders;
+﻿using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Api.Transactions;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Contracts;
 
 using System;
 using System.Collections.Generic;
@@ -12,26 +11,26 @@ using InfinniPlatform.Api.Properties;
 
 namespace InfinniPlatform.RestfulApi.Binary
 {
-	/// <summary>
-	///   Модуль загрузки бинарных данных на сервер
-	/// </summary>
-	public sealed class ActionUnitUploadBinaryContent
-	{
+    /// <summary>
+    ///     Модуль загрузки бинарных данных на сервер
+    /// </summary>
+    public sealed class ActionUnitUploadBinaryContent
+    {
 		private byte[] _fileContent;
 
 		private static byte[] ReadAllBytes(Stream input, int maxSize)
-		{
+        {
 			var buffer = new byte[16 * 1024];
 
 		    var totalBytesRead = 0;
 
 			using (var ms = new MemoryStream())
-			{
-				int read;
-				while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
-				{
+            {
+                int read;
+                while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+                {
 				    totalBytesRead += read;
-					ms.Write(buffer, 0, read);
+                    ms.Write(buffer, 0, read);
 
 				    if (maxSize != -1 && totalBytesRead > maxSize)
 				    {
@@ -39,32 +38,28 @@ namespace InfinniPlatform.RestfulApi.Binary
 				    }
 				}
 
-				return ms.ToArray();
-			}
-		}
+                return ms.ToArray();
+            }
+        }
 
-		public void Action(IUploadContext target)
-		{
-			//ищем документ, для которого необходимо сохранить контент
-			Action<FilterBuilder> filter = f => f.AddCriteria(cr => cr.Property("Id").IsEquals(target.LinkedData.DocumentId));
+        public void Action(IUploadContext target)
+        {
+            dynamic documentWithBinaryField =
+		                target.Context.GetComponent<DocumentApi>().GetDocument(target.LinkedData.DocumentId);
 
-			IEnumerable<dynamic> docs = new DocumentApi().GetDocument(target.LinkedData.Configuration, target.LinkedData.Metadata, filter , 0,1 );
-
-			dynamic documentWithBinaryField = docs.FirstOrDefault();
-
-			if (documentWithBinaryField == null)
-			{
-				target.IsValid = false;
-				target.ValidationMessage = string.Format("Document from configuration {0}, document type {1}, with identifier {2}, not found.",
-					target.LinkedData.Configuration, target.LinkedData.Metadata, target.LinkedData.DocumentId);
-				return;
-			}
+            if (documentWithBinaryField == null)
+            {
+                target.IsValid = false;
+                target.ValidationMessage = string.Format("Document with identifier {0}, not found.",
+                                                         target.LinkedData.InstanceId);
+                return;
+            }
 
             // Считываем метаданные свойства документа для того, чтобы получить максимальный возможный размер бинарного содержимого
 		    var configurationMediatorComponent = target.Context.GetComponent<IConfigurationMediatorComponent>();
 
             var schema = configurationMediatorComponent
-                .ConfigurationBuilder.GetConfigurationObject(target.LinkedData.Configuration)
+                .ConfigurationBuilder.GetConfigurationObject(target.Context.GetVersion(target.LinkedData.Configuration, target.UserName), target.LinkedData.Configuration)
                 .MetadataConfiguration.GetSchemaVersion(target.LinkedData.Metadata);
             
 		    var maxFileSize = -1;
@@ -113,20 +108,14 @@ namespace InfinniPlatform.RestfulApi.Binary
 		        }
 		    }
 
-			var blobStorage = target.Context.GetComponent<IBlobStorageComponent>().GetBlobStorage();
-
             _fileContent = ReadAllBytes(target.FileContent, maxFileSize);
 
-			var contentId = Guid.NewGuid();
-			blobStorage.SaveBlob(contentId, target.LinkedData.FieldName, _fileContent);
-
-			dynamic infoBlobProperty = ObjectHelper.GetProperty(documentWithBinaryField, target.LinkedData.FieldName);
-
-			infoBlobProperty.Info.ContentId = contentId.ToString();
-
-			ObjectHelper.SetProperty(documentWithBinaryField, target.LinkedData.FieldName, infoBlobProperty);
-
-			new DocumentApi().SetDocument(target.LinkedData.Configuration, target.LinkedData.Metadata, documentWithBinaryField);
-		}
-	}
+            new BinaryManager(target.Context.GetComponent<IBlobStorageComponent>().GetBlobStorage())
+                .SaveBinary(new[] {documentWithBinaryField},
+                            target.LinkedData.Configuration,
+                            target.Context.GetVersion(target.LinkedData.Configuration, target.UserName),
+                            target.LinkedData.Metadata,
+                            target.LinkedData.FieldName, _fileContent);
+        }
+    }
 }

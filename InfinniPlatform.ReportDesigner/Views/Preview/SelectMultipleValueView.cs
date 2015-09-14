@@ -3,178 +3,166 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-
 using InfinniPlatform.ReportDesigner.Properties;
 using InfinniPlatform.ReportDesigner.Views.Editors;
 
 namespace InfinniPlatform.ReportDesigner.Views.Preview
 {
-	/// <summary>
-	/// Представление для выбора нескольких значений из списка.
-	/// </summary>
-	sealed partial class SelectMultipleValueView : UserControl
-	{
-		public SelectMultipleValueView()
-			: this(null)
-		{
-		}
+    /// <summary>
+    ///     Представление для выбора нескольких значений из списка.
+    /// </summary>
+    sealed partial class SelectMultipleValueView : UserControl
+    {
+        private IDictionary<string, object> _availableValues;
+        private readonly EditorBase _editor;
 
-		public SelectMultipleValueView(EditorBase editor)
-		{
-			InitializeComponent();
+        public SelectMultipleValueView()
+            : this(null)
+        {
+        }
 
-			Text = Resources.SelectMultipleValueView;
+        public SelectMultipleValueView(EditorBase editor)
+        {
+            InitializeComponent();
 
-			_editor = editor;
+            Text = Resources.SelectMultipleValueView;
 
-			if (editor != null)
-			{
-				InitializeEditor(editor);
-				ControlPanel.Visible = true;
-			}
-			else
-			{
-				ControlPanel.Visible = false;
-			}
-		}
+            _editor = editor;
 
-		private void InitializeEditor(Control editor)
-		{
-			EditorPanel.Controls.Add(editor);
+            if (editor != null)
+            {
+                InitializeEditor(editor);
+                ControlPanel.Visible = true;
+            }
+            else
+            {
+                ControlPanel.Visible = false;
+            }
+        }
 
-			editor.Dock = DockStyle.Fill;
+        /// <summary>
+        ///     Список значений.
+        /// </summary>
+        public IDictionary<string, object> AvailableValues
+        {
+            get { return _availableValues; }
+            set
+            {
+                _availableValues = value;
 
-			IButtonControl acceptButton = null;
+                ItemsEdit.Items.Clear();
 
-			editor.Enter += (s, e) =>
-								{
-									var parentForm = editor.FindForm();
+                if (value != null)
+                {
+                    foreach (var item in value)
+                    {
+                        ItemsEdit.Items.Add(new ParameterValue(item.Value, item.Key));
+                    }
+                }
 
-									if (parentForm != null)
-									{
-										acceptButton = parentForm.AcceptButton;
-										parentForm.AcceptButton = null;
-									}
-								};
+                ResetSelection();
+            }
+        }
 
-			editor.Leave += (s, e) =>
-								{
-									var parentForm = editor.FindForm();
+        /// <summary>
+        ///     Список выбранных значений.
+        /// </summary>
+        public IEnumerable SelectedValues
+        {
+            get { return ItemsEdit.CheckedItems.Cast<ParameterValue>().Select(i => i.Value).ToArray(); }
+            set
+            {
+                var index = 0;
+                var checkedItems = (value != null) ? value.Cast<object>().ToList() : null;
 
-									if (parentForm != null)
-									{
-										parentForm.AcceptButton = acceptButton;
-										acceptButton = null;
-									}
-								};
+                foreach (var item in ItemsEdit.Items.Cast<ParameterValue>().ToArray())
+                {
+                    ItemsEdit.SetItemChecked(index++, checkedItems != null && checkedItems.Contains(item.Value));
+                }
 
-			editor.KeyDown += (s, e) =>
-								  {
-									  if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
-									  {
-										  OnAdd(s, e);
-									  }
-								  };
-		}
+                ResetSelection();
+            }
+        }
 
+        private void InitializeEditor(Control editor)
+        {
+            EditorPanel.Controls.Add(editor);
 
-		private readonly EditorBase _editor;
+            editor.Dock = DockStyle.Fill;
 
+            IButtonControl acceptButton = null;
 
-		private IDictionary<string, object> _availableValues;
+            editor.Enter += (s, e) =>
+            {
+                var parentForm = editor.FindForm();
 
-		/// <summary>
-		/// Список значений.
-		/// </summary>
-		public IDictionary<string, object> AvailableValues
-		{
-			get
-			{
-				return _availableValues;
-			}
-			set
-			{
-				_availableValues = value;
+                if (parentForm != null)
+                {
+                    acceptButton = parentForm.AcceptButton;
+                    parentForm.AcceptButton = null;
+                }
+            };
 
-				ItemsEdit.Items.Clear();
+            editor.Leave += (s, e) =>
+            {
+                var parentForm = editor.FindForm();
 
-				if (value != null)
-				{
-					foreach (var item in value)
-					{
-						ItemsEdit.Items.Add(new ParameterValue(item.Value, item.Key));
-					}
-				}
+                if (parentForm != null)
+                {
+                    parentForm.AcceptButton = acceptButton;
+                    acceptButton = null;
+                }
+            };
 
-				ResetSelection();
-			}
-		}
+            editor.KeyDown += (s, e) =>
+            {
+                if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
+                {
+                    OnAdd(s, e);
+                }
+            };
+        }
 
+        private void ResetSelection()
+        {
+            if (_editor != null)
+            {
+                _editor.Value = null;
+            }
 
-		/// <summary>
-		/// Список выбранных значений.
-		/// </summary>
-		public IEnumerable SelectedValues
-		{
-			get
-			{
-				return ItemsEdit.CheckedItems.Cast<ParameterValue>().Select(i => i.Value).ToArray();
-			}
-			set
-			{
-				var index = 0;
-				var checkedItems = (value != null) ? value.Cast<object>().ToList() : null;
+            ItemsEdit.SelectedIndex = -1;
+        }
 
-				foreach (var item in ItemsEdit.Items.Cast<ParameterValue>().ToArray())
-				{
-					ItemsEdit.SetItemChecked(index++, checkedItems != null && checkedItems.Contains(item.Value));
-				}
+        private void OnAdd(object sender, EventArgs e)
+        {
+            var itemValue = _editor.Value;
+            var itemLabel = _editor.Text;
 
-				ResetSelection();
-			}
-		}
+            if (itemValue != null && ReferenceEquals(itemValue, string.Empty) == false)
+            {
+                ItemsEdit.Items.Add(new ParameterValue(itemValue, itemLabel));
 
+                _editor.Value = null;
+            }
+        }
 
-		private void ResetSelection()
-		{
-			if (_editor != null)
-			{
-				_editor.Value = null;
-			}
+        private void OnDelete(object sender, EventArgs e)
+        {
+            var itemIndex = ItemsEdit.SelectedIndex;
 
-			ItemsEdit.SelectedIndex = -1;
-		}
+            if (itemIndex >= 0)
+            {
+                ItemsEdit.Items.RemoveAt(itemIndex);
 
-		private void OnAdd(object sender, EventArgs e)
-		{
-			var itemValue = _editor.Value;
-			var itemLabel = _editor.Text;
-
-			if (itemValue != null && ReferenceEquals(itemValue, string.Empty) == false)
-			{
-				ItemsEdit.Items.Add(new ParameterValue(itemValue, itemLabel));
-
-				_editor.Value = null;
-			}
-		}
-
-		private void OnDelete(object sender, EventArgs e)
-		{
-			var itemIndex = ItemsEdit.SelectedIndex;
-
-			if (itemIndex >= 0)
-			{
-				ItemsEdit.Items.RemoveAt(itemIndex);
-
-				if (itemIndex != 0)
-				{
-					ItemsEdit.SelectedIndex = itemIndex - 1;
-				}
-				else if (ItemsEdit.Items.Count > 0)
-				{
-					ItemsEdit.SelectedIndex = 0;
-				}
-			}
-		}
-	}
+                if (itemIndex != 0)
+                {
+                    ItemsEdit.SelectedIndex = itemIndex - 1;
+                }
+                else if (ItemsEdit.Items.Count > 0)
+                {
+                    ItemsEdit.SelectedIndex = 0;
+                }
+            }
+        }
+    }
 }

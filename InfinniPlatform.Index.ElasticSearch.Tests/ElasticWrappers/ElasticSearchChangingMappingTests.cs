@@ -1,23 +1,19 @@
-﻿using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.Factories;
-using InfinniPlatform.Api.Index;
-using InfinniPlatform.Api.Index.SearchOptions;
-using InfinniPlatform.Api.RestApi.AuthApi;
-using InfinniPlatform.Api.SearchOptions;
-
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Dynamic;
+using System.Linq;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Versioning;
 using InfinniPlatform.Index.ElasticSearch.Tests.Builders;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Dynamic;
-using System.Linq;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.SystemConfig.Multitenancy;
+using NUnit.Framework;
 
 namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 {

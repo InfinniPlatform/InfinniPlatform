@@ -4,126 +4,125 @@ using System.Windows.Controls;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.LayoutPanels.StackPanel
 {
-	/// <summary>
-	/// Элемент управления для контейнера элементов представления в виде стека.
-	/// </summary>
-	public sealed class StackPanelControl : Grid
-	{
-		public StackPanelControl()
-		{
-			Loaded += (s, e) => ArrangeChildren();
-		}
+    /// <summary>
+    ///     Элемент управления для контейнера элементов представления в виде стека.
+    /// </summary>
+    public sealed class StackPanelControl : Grid
+    {
+        private bool _arrangeChildren;
 
+        public StackPanelControl()
+        {
+            Loaded += (s, e) => ArrangeChildren();
+        }
 
-		// Orientation
+        /// <summary>
+        ///     Ориентация стека.
+        /// </summary>
+        public Orientation Orientation
+        {
+            get { return (Orientation) GetValue(OrientationProperty); }
+            set { SetValue(OrientationProperty, value); }
+        }
 
-		public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(Orientation), typeof(StackPanelControl), new FrameworkPropertyMetadata(Orientation.Vertical, OnVisualPropertyChanged));
+        private static void OnVisualPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = d as StackPanelControl;
 
-		/// <summary>
-		/// Ориентация стека.
-		/// </summary>
-		public Orientation Orientation
-		{
-			get { return (Orientation)GetValue(OrientationProperty); }
-			set { SetValue(OrientationProperty, value); }
-		}
+            if (control != null)
+            {
+                control.ArrangeChildren();
+            }
+        }
 
-		private static void OnVisualPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			var control = d as StackPanelControl;
+        protected override void OnVisualChildrenChanged(DependencyObject visualAdded, DependencyObject visualRemoved)
+        {
+            base.OnVisualChildrenChanged(visualAdded, visualRemoved);
 
-			if (control != null)
-			{
-				control.ArrangeChildren();
-			}
-		}
+            ArrangeChildren();
+        }
 
+        private void ArrangeChildren()
+        {
+            if (_arrangeChildren == false)
+            {
+                _arrangeChildren = true;
 
-		protected override void OnVisualChildrenChanged(DependencyObject visualAdded, DependencyObject visualRemoved)
-		{
-			base.OnVisualChildrenChanged(visualAdded, visualRemoved);
+                RowDefinitions.Clear();
+                ColumnDefinitions.Clear();
 
-			ArrangeChildren();
-		}
+                var children = Children.Cast<FrameworkElement>().ToArray();
 
+                if (Orientation == Orientation.Vertical)
+                {
+                    var index = 0;
+                    var rows = RowDefinitions;
 
-		private bool _arrangeChildren;
+                    foreach (var child in children)
+                    {
+                        rows.Add(new RowDefinition
+                        {
+                            Height = CalcChildLength(child, child.Height),
+                            MinHeight = child.MinHeight,
+                            MaxHeight = child.MaxHeight
+                        });
 
-		private void ArrangeChildren()
-		{
-			if (_arrangeChildren == false)
-			{
-				_arrangeChildren = true;
+                        SetRow(child, index);
+                        SetColumn(child, 0);
 
-				RowDefinitions.Clear();
-				ColumnDefinitions.Clear();
+                        ++index;
+                    }
+                }
+                else
+                {
+                    var index = 0;
+                    var columns = ColumnDefinitions;
 
-				var children = Children.Cast<FrameworkElement>().ToArray();
+                    foreach (var child in children)
+                    {
+                        columns.Add(new ColumnDefinition
+                        {
+                            Width = CalcChildLength(child, child.Width),
+                            MinWidth = child.MinWidth,
+                            MaxWidth = child.MaxWidth
+                        });
 
-				if (Orientation == Orientation.Vertical)
-				{
-					var index = 0;
-					var rows = RowDefinitions;
+                        SetRow(child, 0);
+                        SetColumn(child, index);
 
-					foreach (var child in children)
-					{
-						rows.Add(new RowDefinition
-								 {
-									 Height = CalcChildLength(child, child.Height),
-									 MinHeight = child.MinHeight,
-									 MaxHeight = child.MaxHeight
-								 });
+                        ++index;
+                    }
+                }
 
-						SetRow(child, index);
-						SetColumn(child, 0);
+                _arrangeChildren = false;
+            }
+        }
 
-						++index;
-					}
-				}
-				else
-				{
-					var index = 0;
-					var columns = ColumnDefinitions;
+        private static GridLength CalcChildLength(FrameworkElement child, double size)
+        {
+            // Todo: Эту логику еще нужно хорошенько отладить
 
-					foreach (var child in children)
-					{
-						columns.Add(new ColumnDefinition
-									{
-										Width = CalcChildLength(child, child.Width),
-										MinWidth = child.MinWidth,
-										MaxWidth = child.MaxWidth
-									});
+            if (double.IsNaN(size) == false)
+            {
+                return new GridLength(1, GridUnitType.Auto);
+            }
 
-						SetRow(child, 0);
-						SetColumn(child, index);
+            if (child is StackPanelControl)
+            {
+                return new GridLength(1, GridUnitType.Star);
+            }
 
-						++index;
-					}
-				}
+            return new GridLength(1, GridUnitType.Star);
 
-				_arrangeChildren = false;
-			}
-		}
+            //return (double.IsNaN(size) == false || child is StackPanelControl)
+            //	? new GridLength(1, GridUnitType.Auto)
+            //	: new GridLength(1, GridUnitType.Star);
+        }
 
-		private static GridLength CalcChildLength(FrameworkElement child, double size)
-		{
-			// Todo: Эту логику еще нужно хорошенько отладить
+        // Orientation
 
-			if (double.IsNaN(size) == false)
-			{
-				return new GridLength(1, GridUnitType.Auto);
-			}
-
-			if (child is StackPanelControl)
-			{
-				return new GridLength(1, GridUnitType.Star);
-			}
-
-			return new GridLength(1, GridUnitType.Star);
-
-			//return (double.IsNaN(size) == false || child is StackPanelControl)
-			//	? new GridLength(1, GridUnitType.Auto)
-			//	: new GridLength(1, GridUnitType.Star);
-		}
-	}
+        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation",
+            typeof (Orientation), typeof (StackPanelControl),
+            new FrameworkPropertyMetadata(Orientation.Vertical, OnVisualPropertyChanged));
+    }
 }

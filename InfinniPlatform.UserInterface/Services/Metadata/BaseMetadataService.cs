@@ -1,75 +1,68 @@
-﻿using InfinniPlatform.Api.Metadata;
-using System;
+﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
-
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.UserInterface.Dynamic;
 using InfinniPlatform.UserInterface.Properties;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {
-	/// <summary>
-	/// Базовый класс сервисов для работы с метаданными системы.
-	/// </summary>
-	abstract class BaseMetadataService : IMetadataService
-	{
-		protected BaseMetadataService()
-		{
-			_dataReader = new Lazy<IDataReader>(CreateDataReader, LazyThreadSafetyMode.ExecutionAndPublication);
-			_dataManager = new Lazy<IDataManager>(CreateDataManager, LazyThreadSafetyMode.ExecutionAndPublication);
-		}
+    /// <summary>
+    ///     Базовый класс сервисов для работы с метаданными системы.
+    /// </summary>
+    public abstract class BaseMetadataService : IMetadataService 
+    {
+        private readonly string _version;
+        private readonly string _server;
+        private readonly int _port;
+        private readonly string _route;
 
-		private readonly Lazy<IDataReader> _dataReader;
-		private readonly Lazy<IDataManager> _dataManager;
+        protected BaseMetadataService(string version, string server, int port, string route)
+        {
+            _version = version;
+            _server = server;
+            _port = port;
+            _route = route;
+        }
 
-		protected abstract IDataReader CreateDataReader();
-		protected abstract IDataManager CreateDataManager();
+        public string Version
+        {
+            get { return _version; }
+        }
 
+        /// <summary>
+        ///   Роутинг-селектор, на который будет замаплен Nginx (например "1.5")
+        /// </summary>
+        public string Route
+        {
+            get { return _route; }
+        }
 
-		public virtual object CreateItem()
-		{
-			return _dataManager.Value.CreateItem(string.Empty);
-		}
+        public abstract object CreateItem();
 
-		public virtual void ReplaceItem(object item)
-		{
-			_dataManager.Value.MergeItem(item);
-		}
+        public abstract void ReplaceItem(dynamic item);
 
-		public virtual void DeleteItem(string itemId)
-		{
-		    var item = _dataReader.Value.GetItem(itemId);
+        public abstract void DeleteItem(string itemId);
 
-		    if (item != null)
-		    {
-		        _dataManager.Value.DeleteItem(item);
-		    }
-		}
+        public abstract object GetItem(string itemId);
 
-		public virtual object GetItem(string itemId)
-		{
-			return _dataReader.Value.GetItem(itemId);
-		}
+        public object CloneItem(string itemId)
+        {
+            // Todo: Избавиться от этой конвертации после того, как в системе будет одна реализация Dynamic
 
-		public virtual object CloneItem(string itemId)
-		{
-			// Todo: Избавиться от этой конвертации после того, как в системе будет одна реализация Dynamic
+            dynamic item = GetItem(itemId);
 
-			var item = _dataReader.Value.GetItem(itemId);
+            if (item != null)
+            {
+                item.Id = Guid.NewGuid().ToString();
+                item.Name = string.Format(Resources.CloneElementName, item.Name);
+            }
 
-			if (item != null)
-			{
-				item.Id = Guid.NewGuid().ToString();
-				item.Name = string.Format(Resources.CloneElementName, item.Name);
-			}
+            return DynamicExtensions.JsonToObject(item);
+        }
 
-			return DynamicExtensions.JsonToObject(item);
-		}
+        public abstract IEnumerable<object> GetItems();
 
-		public virtual IEnumerable GetItems()
-		{
-			return _dataReader.Value.GetItems();
-		}
-	}
+    }
 }

@@ -1,46 +1,39 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using InfinniPlatform.QueryDesigner.Contracts;
 
 namespace InfinniPlatform.QueryDesigner.Views
 {
-	public partial class QueryJsonEditor : UserControl, IQueryBlockProvider
-	{
-		public QueryJsonEditor()
-		{
-			InitializeComponent();
-		}
+    public partial class QueryJsonEditor : UserControl, IQueryBlockProvider
+    {
+        public QueryJsonEditor()
+        {
+            InitializeComponent();
+        }
 
-		public ConstructOrder GetConstructOrder()
-		{
-			return ConstructOrder.ConstructFullQuery;			
-		}
+        public string JsonQueryText
+        {
+            get { return JsonEdit.Text; }
+        }
 
-		public void ProcessQuery(dynamic query)
-		{
-			JsonEdit.Text = query.ToString();
-		}
+        public ConstructOrder GetConstructOrder()
+        {
+            return ConstructOrder.ConstructFullQuery;
+        }
 
-		public bool DefinitionCompleted()
-		{
-			return true;
-		}
+        public void ProcessQuery(dynamic query)
+        {
+            JsonEdit.Text = query.ToString();
+        }
 
-		public string GetErrorMessage()
-		{
-			throw new NotImplementedException();
-		}
+        public bool DefinitionCompleted()
+        {
+            return true;
+        }
 
-		public string JsonQueryText
-		{
-			get { return JsonEdit.Text; }
-		}
-	}
+        public string GetErrorMessage()
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

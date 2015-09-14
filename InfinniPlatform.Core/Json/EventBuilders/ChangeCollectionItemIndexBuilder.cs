@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.Events;
+using InfinniPlatform.Sdk.Events;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Json.EventBuilders
@@ -14,8 +11,8 @@ namespace InfinniPlatform.Json.EventBuilders
         {
             var indexes =
                 ((string) eventDefinition.Value).Split(new[] {':'}, StringSplitOptions.RemoveEmptyEntries)
-                                                .Select(r => Convert.ToInt32(r))
-                                                .ToArray();
+                    .Select(r => Convert.ToInt32(r))
+                    .ToArray();
 
             var tokenList = new JsonParser().FindJsonToken(backboneObject, eventDefinition.Property);
 
@@ -40,7 +37,6 @@ namespace InfinniPlatform.Json.EventBuilders
             {
                 jArray.Insert(indexes[1], tokenToMove);
             }
-
         }
     }
 }

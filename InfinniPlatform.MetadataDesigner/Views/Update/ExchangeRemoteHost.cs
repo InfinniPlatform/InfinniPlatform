@@ -2,21 +2,27 @@
 
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.TestEnvironment;
+using InfinniPlatform.Sdk.Api;
 
 namespace InfinniPlatform.MetadataDesigner.Views.Update
 {
     public sealed class ExchangeRemoteHost : IUpdatePrepareConfig
     {
+        private readonly string _version;
+
         public ExchangeRemoteHost(HostingConfig hostingConfig, string version)
         {
+            _version = version;
             HostingConfig = hostingConfig;
-            Version = version;
         }
 
 
         public HostingConfig HostingConfig { get; private set; }
 
-        public string Version { get; private set; }
+        public string Version
+        {
+            get { return _version; }
+        }
 
 
         public bool PrepareRoutingOperation()
@@ -32,19 +38,6 @@ namespace InfinniPlatform.MetadataDesigner.Views.Update
                 HostingConfig = HostingConfig.Default;
             }
 
-            var versionName = Version;
-
-            if (string.IsNullOrEmpty(versionName))
-            {
-                if (MessageBox.Show(
-                    @"Не указана версия развертывания.\n\rУстановить версию по умолчанию?\n\r (В этом случае обновлена будет версия с идентификатором TestVersion! )",
-                    @"Требуется подтверждение", MessageBoxButtons.YesNo) == DialogResult.No)
-                {
-                    return false;
-                }
-
-                Version = "TestVersion";
-            }
 
             TestApi.InitClientRouting(HostingConfig);
 

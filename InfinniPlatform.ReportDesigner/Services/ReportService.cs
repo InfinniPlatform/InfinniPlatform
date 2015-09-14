@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-
 using InfinniPlatform.Api.Reporting;
 using InfinniPlatform.FastReport.Templates.Data;
 using InfinniPlatform.FastReport.Templates.Reports;
@@ -9,79 +8,77 @@ using InfinniPlatform.Reporting.Services;
 
 namespace InfinniPlatform.ReportDesigner.Services
 {
-	// Todo: Удалить зависимость от серверной сборки InfinniPlatform.Reporting
+    // Todo: Удалить зависимость от серверной сборки InfinniPlatform.Reporting
 
-	sealed class ReportService
-	{
-		private static readonly ReportServiceFactory ReportServiceFactory = new ReportServiceFactory();
+    internal sealed class ReportService
+    {
+        private static readonly ReportServiceFactory ReportServiceFactory = new ReportServiceFactory();
+        public string Address { get; set; }
 
+        public IDictionary<string, ParameterValues> GetParameterValues(ReportTemplate template)
+        {
+            //Thread.Sleep(1000);
 
-		public string Address { get; set; }
+            //var result = new Dictionary<string, ParameterValues>();
 
+            //if (template.Parameters != null)
+            //{
+            //	foreach (var parameterInfo in template.Parameters)
+            //	{
+            //		var availableValues = new Dictionary<string, object>();
+            //		var defaultValues = new Dictionary<string, object>();
 
-		public IDictionary<string, ParameterValues> GetParameterValues(ReportTemplate template)
-		{
-			//Thread.Sleep(1000);
+            //		var availableValuesInfo = parameterInfo.AvailableValues as ParameterConstantValueProviderInfo;
+            //		var defaultValuesInfo = parameterInfo.DefaultValues as ParameterConstantValueProviderInfo;
 
-			//var result = new Dictionary<string, ParameterValues>();
+            //		if (availableValuesInfo != null)
+            //		{
+            //			foreach (var item in availableValuesInfo.Items)
+            //			{
+            //				var label = item.Key;
+            //				var value = ((ConstantBind)item.Value).Value;
+            //				availableValues.Add(label, value);
+            //			}
+            //		}
 
-			//if (template.Parameters != null)
-			//{
-			//	foreach (var parameterInfo in template.Parameters)
-			//	{
-			//		var availableValues = new Dictionary<string, object>();
-			//		var defaultValues = new Dictionary<string, object>();
+            //		if (defaultValuesInfo != null)
+            //		{
+            //			foreach (var item in defaultValuesInfo.Items)
+            //			{
+            //				var label = item.Key;
+            //				var value = ((ConstantBind)item.Value).Value;
+            //				defaultValues.Add(label, value);
+            //			}
+            //		}
 
-			//		var availableValuesInfo = parameterInfo.AvailableValues as ParameterConstantValueProviderInfo;
-			//		var defaultValuesInfo = parameterInfo.DefaultValues as ParameterConstantValueProviderInfo;
+            //		result.Add(parameterInfo.Name, new ParameterValues
+            //										   {
+            //											   AvailableValues = availableValues,
+            //											   DefaultValues = defaultValues
+            //										   });
+            //	}
+            //}
 
-			//		if (availableValuesInfo != null)
-			//		{
-			//			foreach (var item in availableValuesInfo.Items)
-			//			{
-			//				var label = item.Key;
-			//				var value = ((ConstantBind)item.Value).Value;
-			//				availableValues.Add(label, value);
-			//			}
-			//		}
+            //return result;
 
-			//		if (defaultValuesInfo != null)
-			//		{
-			//			foreach (var item in defaultValuesInfo.Items)
-			//			{
-			//				var label = item.Key;
-			//				var value = ((ConstantBind)item.Value).Value;
-			//				defaultValues.Add(label, value);
-			//			}
-			//		}
+            //return ReportServiceFactory.CreateReportService().GetParameterValues(template);
 
-			//		result.Add(parameterInfo.Name, new ParameterValues
-			//										   {
-			//											   AvailableValues = availableValues,
-			//											   DefaultValues = defaultValues
-			//										   });
-			//	}
-			//}
+            return null;
+        }
 
-			//return result;
+        public byte[] CreateReportFile(ReportTemplate template, IDictionary<string, object> parameterValues = null,
+            ReportFileFormat fileFormat = ReportFileFormat.Pdf)
+        {
+            // Todo: Здесь должно быть обращение к серверу через REST API
+            var data = ReportServiceFactory.CreateReportService()
+                .CreateReportFile(template, parameterValues, fileFormat);
+            var file = "Temp." + fileFormat;
 
-			//return ReportServiceFactory.CreateReportService().GetParameterValues(template);
+            File.WriteAllBytes(file, data);
 
-			return null;
-		}
+            Process.Start(file);
 
-
-		public byte[] CreateReportFile(ReportTemplate template, IDictionary<string, object> parameterValues = null, ReportFileFormat fileFormat = ReportFileFormat.Pdf)
-		{
-			// Todo: Здесь должно быть обращение к серверу через REST API
-			var data = ReportServiceFactory.CreateReportService().CreateReportFile(template, parameterValues, fileFormat);
-			var file = "Temp." + fileFormat;
-
-			File.WriteAllBytes(file, data);
-
-			Process.Start(file);
-
-			return null;
-		}
-	}
+            return null;
+        }
+    }
 }

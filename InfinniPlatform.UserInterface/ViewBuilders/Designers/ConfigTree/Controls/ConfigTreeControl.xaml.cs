@@ -5,229 +5,228 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-
 using DevExpress.Xpf.Grid;
 using DevExpress.Xpf.Grid.TreeList;
-
 using InfinniPlatform.UserInterface.ViewBuilders.Commands;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Controls
 {
-	/// <summary>
-	/// Элемент управления для отображения и редактирования дерева конфигураций.
-	/// </summary>
-	public sealed partial class ConfigTreeControl : UserControl
-	{
-		public ConfigTreeControl()
-		{
-			InitializeComponent();
-		}
+    /// <summary>
+    ///     Элемент управления для отображения и редактирования дерева конфигураций.
+    /// </summary>
+    public sealed partial class ConfigTreeControl : UserControl
+    {
+        // EditPanel
 
+        public static readonly DependencyProperty EditPanelProperty = DependencyProperty.Register("EditPanel",
+            typeof (IConfigElementEditPanel), typeof (ConfigTreeControl));
 
-		private void OnLoaded(object sender, RoutedEventArgs e)
-		{
-			if (!DesignerProperties.GetIsInDesignMode(this))
-			{
-				var editPanel = EditPanel;
+        // SelectedElement
 
-				Task.Factory
-					.StartNew(() => ConfigTreeBuilder.Build(editPanel))
-					.ContinueWith(t =>
-								  {
-									  if (!t.IsFaulted)
-									  {
-										  TreeList.ItemsSource = t.Result;
+        public static readonly DependencyProperty SelectedElementProperty =
+            DependencyProperty.Register("SelectedElement", typeof (ConfigElementNode), typeof (ConfigTreeControl));
 
-										  if (TreeList.View.Nodes.Count > 0)
-										  {
-											  TreeList.View.Nodes[0].IsExpanded = true;
-										  }
-									  }
-								  },
-								  TaskScheduler.FromCurrentSynchronizationContext());
-			}
-		}
+        public ConfigTreeControl()
+        {
+            InitializeComponent();
+        }
 
+        /// <summary>
+        ///     Панель для размещения редакторов элементов конфигурации.
+        /// </summary>
+        public IConfigElementEditPanel EditPanel
+        {
+            get { return (IConfigElementEditPanel) GetValue(EditPanelProperty); }
+            set { SetValue(EditPanelProperty, value); }
+        }
 
-		// EditPanel
+        /// <summary>
+        ///     Элемент печатного представления, который выделен в дереве.
+        /// </summary>
+        public ConfigElementNode SelectedElement
+        {
+            get { return (ConfigElementNode) GetValue(SelectedElementProperty); }
+            set { SetValue(SelectedElementProperty, value); }
+        }
 
-		public static readonly DependencyProperty EditPanelProperty = DependencyProperty.Register("EditPanel", typeof(IConfigElementEditPanel), typeof(ConfigTreeControl));
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            if (!DesignerProperties.GetIsInDesignMode(this))
+            {
+                var editPanel = EditPanel;
 
-		/// <summary>
-		/// Панель для размещения редакторов элементов конфигурации.
-		/// </summary>
-		public IConfigElementEditPanel EditPanel
-		{
-			get { return (IConfigElementEditPanel)GetValue(EditPanelProperty); }
-			set { SetValue(EditPanelProperty, value); }
-		}
+                Task.Factory
+                    .StartNew(() => ConfigTreeBuilder.Build(editPanel))
+                    .ContinueWith(t =>
+                    {
+                        if (!t.IsFaulted)
+                        {
+                            TreeList.ItemsSource = t.Result;
 
+                            if (TreeList.View.Nodes.Count > 0)
+                            {
+                                TreeList.View.Nodes[0].IsExpanded = true;
+                            }
+                        }
+                    },
+                        TaskScheduler.FromCurrentSynchronizationContext());
+            }
+        }
 
-		// SelectedElement
+        private void OnTreeListSelectedItemChanged(object sender, SelectedItemChangedEventArgs e)
+        {
+            SelectedElement = e.NewItem as ConfigElementNode;
+        }
 
-		public static readonly DependencyProperty SelectedElementProperty = DependencyProperty.Register("SelectedElement", typeof(ConfigElementNode), typeof(ConfigTreeControl));
+        private void OnTreeListMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var rowHandle = TreeList.View.GetRowHandleByMouseEventArgs(e);
+            TreeList.View.FocusedRowHandle = rowHandle;
+        }
 
-		/// <summary>
-		/// Элемент печатного представления, который выделен в дереве.
-		/// </summary>
-		public ConfigElementNode SelectedElement
-		{
-			get { return (ConfigElementNode)GetValue(SelectedElementProperty); }
-			set { SetValue(SelectedElementProperty, value); }
-		}
+        // ContextMenu
 
-		private void OnTreeListSelectedItemChanged(object sender, SelectedItemChangedEventArgs e)
-		{
-			SelectedElement = e.NewItem as ConfigElementNode;
-		}
+        private void OnCanRefreshCommandHandler(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = CanExecuteCommand(SelectedElement, i => i.RefreshCommand, true);
+        }
 
-		private void OnTreeListMouseDown(object sender, MouseButtonEventArgs e)
-		{
-			var rowHandle = TreeList.View.GetRowHandleByMouseEventArgs(e);
-			TreeList.View.FocusedRowHandle = rowHandle;
-		}
+        private void OnRefreshCommandHandler(object sender, ExecutedRoutedEventArgs e)
+        {
+            ExecuteCommand(SelectedElement, i => i.RefreshCommand, true);
+        }
 
+        private void OnCanCopyCommandHandler(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = CanExecuteCommand(SelectedElement, i => i.CopyCommand);
+        }
 
-		// ContextMenu
+        private void OnCopyCommandHandler(object sender, ExecutedRoutedEventArgs e)
+        {
+            ExecuteCommand(SelectedElement, i => i.CopyCommand);
+        }
 
-		private void OnCanRefreshCommandHandler(object sender, CanExecuteRoutedEventArgs e)
-		{
-			e.CanExecute = CanExecuteCommand(SelectedElement, i => i.RefreshCommand, true);
-		}
+        private void OnCanPasteCommandHandler(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = CanExecuteCommand(SelectedElement, i => i.PasteCommand);
+        }
 
-		private void OnRefreshCommandHandler(object sender, ExecutedRoutedEventArgs e)
-		{
-			ExecuteCommand(SelectedElement, i => i.RefreshCommand, true);
-		}
+        private void OnPasteCommandHandler(object sender, ExecutedRoutedEventArgs e)
+        {
+            ExecuteCommand(SelectedElement, i => i.PasteCommand);
+        }
 
-		private void OnCanCopyCommandHandler(object sender, CanExecuteRoutedEventArgs e)
-		{
-			e.CanExecute = CanExecuteCommand(SelectedElement, i => i.CopyCommand);
-		}
+        private void OnCanDeleteCommandHandler(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = CanExecuteCommand(SelectedElement, i => i.DeleteCommand);
+        }
 
-		private void OnCopyCommandHandler(object sender, ExecutedRoutedEventArgs e)
-		{
-			ExecuteCommand(SelectedElement, i => i.CopyCommand);
-		}
+        private void OnDeleteCommandHandler(object sender, ExecutedRoutedEventArgs e)
+        {
+            ExecuteCommand(SelectedElement, i => i.DeleteCommand);
+        }
 
-		private void OnCanPasteCommandHandler(object sender, CanExecuteRoutedEventArgs e)
-		{
-			e.CanExecute = CanExecuteCommand(SelectedElement, i => i.PasteCommand);
-		}
+        private void OnTreeListKeyDown(object sender, KeyEventArgs e)
+        {
+            var treeView = TreeList.View;
+            var focusedNode = treeView.GetNodeByRowHandle(treeView.FocusedRowHandle);
 
-		private void OnPasteCommandHandler(object sender, ExecutedRoutedEventArgs e)
-		{
-			ExecuteCommand(SelectedElement, i => i.PasteCommand);
-		}
+            if (focusedNode != null)
+            {
+                if (e.Key == Key.Right)
+                {
+                    e.Handled = true;
 
-		private void OnCanDeleteCommandHandler(object sender, CanExecuteRoutedEventArgs e)
-		{
-			e.CanExecute = CanExecuteCommand(SelectedElement, i => i.DeleteCommand);
-		}
+                    if (focusedNode.IsExpanded)
+                    {
+                        treeView.MoveNextRow();
+                    }
+                    else
+                    {
+                        focusedNode.IsExpanded = true;
+                    }
+                }
+                else if (e.Key == Key.Left)
+                {
+                    e.Handled = true;
 
-		private void OnDeleteCommandHandler(object sender, ExecutedRoutedEventArgs e)
-		{
-			ExecuteCommand(SelectedElement, i => i.DeleteCommand);
-		}
+                    if (focusedNode.IsExpanded)
+                    {
+                        focusedNode.IsExpanded = false;
+                    }
+                    else
+                    {
+                        treeView.MovePrevRow();
+                    }
+                }
+                else if (e.Key == Key.Enter)
+                {
+                    e.Handled = true;
 
-		private void OnTreeListKeyDown(object sender, KeyEventArgs e)
-		{
-			var treeView = TreeList.View;
-			var focusedNode = treeView.GetNodeByRowHandle(treeView.FocusedRowHandle);
+                    ExecuteEditCommand();
+                }
+            }
+        }
 
-			if (focusedNode != null)
-			{
-				if (e.Key == Key.Right)
-				{
-					e.Handled = true;
+        private void OnNodeExpanded(object sender, TreeListNodeEventArgs e)
+        {
+            var node = e.Row as ConfigElementNode;
 
-					if (focusedNode.IsExpanded)
-					{
-						treeView.MoveNextRow();
-					}
-					else
-					{
-						focusedNode.IsExpanded = true;
-					}
-				}
-				else if (e.Key == Key.Left)
-				{
-					e.Handled = true;
+            if (CanExecuteCommand(node, i => i.RefreshCommand))
+            {
+                ExecuteCommand(node, i => i.RefreshCommand);
+            }
+        }
 
-					if (focusedNode.IsExpanded)
-					{
-						focusedNode.IsExpanded = false;
-					}
-					else
-					{
-						treeView.MovePrevRow();
-					}
-				}
-				else if (e.Key == Key.Enter)
-				{
-					e.Handled = true;
+        private void OnNodeDoubleClick(object sender, RowDoubleClickEventArgs e)
+        {
+            ExecuteEditCommand();
+        }
 
-					ExecuteEditCommand();
-				}
-			}
-		}
+        private void ExecuteEditCommand()
+        {
+            if (CanExecuteCommand(SelectedElement,
+                i => (i.EditCommands != null) ? i.EditCommands.FirstOrDefault() : null))
+            {
+                ExecuteCommand(SelectedElement, i => (i.EditCommands != null) ? i.EditCommands.FirstOrDefault() : null);
+            }
+        }
 
-		private void OnNodeExpanded(object sender, TreeListNodeEventArgs e)
-		{
-			var node = e.Row as ConfigElementNode;
+        private static bool CanExecuteCommand<T>(ConfigElementNode node, Func<ConfigElementNode, ICommand<T>> selector,
+            T parameter = default(T))
+        {
+            if (node != null)
+            {
+                var command = selector(node);
 
-			if (CanExecuteCommand(node, i => i.RefreshCommand))
-			{
-				ExecuteCommand(node, i => i.RefreshCommand);
-			}
-		}
+                if (command != null)
+                {
+                    return command.CanExecute(parameter);
+                }
+            }
 
-		private void OnNodeDoubleClick(object sender, RowDoubleClickEventArgs e)
-		{
-			ExecuteEditCommand();
-		}
+            return false;
+        }
 
-		private void ExecuteEditCommand()
-		{
-			if (CanExecuteCommand(SelectedElement, i => (i.EditCommands != null) ? i.EditCommands.FirstOrDefault() : null))
-			{
-				ExecuteCommand(SelectedElement, i => (i.EditCommands != null) ? i.EditCommands.FirstOrDefault() : null);
-			}
-		}
+        private static void ExecuteCommand<T>(ConfigElementNode node, Func<ConfigElementNode, ICommand<T>> selector,
+            T parameter = default(T))
+        {
+            if (node != null)
+            {
+                var command = selector(node);
 
-		private static bool CanExecuteCommand<T>(ConfigElementNode node, Func<ConfigElementNode, ICommand<T>> selector, T parameter = default(T))
-		{
-			if (node != null)
-			{
-				var command = selector(node);
-
-				if (command != null)
-				{
-					return command.CanExecute(parameter);
-				}
-			}
-
-			return false;
-		}
-
-		private static void ExecuteCommand<T>(ConfigElementNode node, Func<ConfigElementNode, ICommand<T>> selector, T parameter = default(T))
-		{
-			if (node != null)
-			{
-				var command = selector(node);
-
-				if (command != null)
-				{
-					try
-					{
-						command.Execute(parameter);
-					}
-					catch (Exception error)
-					{
-						CommonHelper.ShowErrorMessage(error.Message);
-					}
-				}
-			}
-		}
-	}
+                if (command != null)
+                {
+                    //try
+                    //{
+                        command.Execute(parameter);
+                    //}
+                    //catch (Exception error)
+                    //{
+                    //    CommonHelper.ShowErrorMessage(error.Message);
+                    //}
+                }
+            }
+        }
+    }
 }

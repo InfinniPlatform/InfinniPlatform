@@ -1,148 +1,130 @@
 ﻿<UserControl x:Class="InfinniPlatform.UserInterface.ViewBuilders.DataElements.DataNavigation.DataNavigationControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              xmlns:images="clr-namespace:InfinniPlatform.UserInterface.ViewBuilders.Images"
              mc:Ignorable="d"
-			 Height="30"
-			 >
-	<UserControl.Resources>
-		<images:ImageValueConverter x:Key="ImageValueConverter"/>
-	</UserControl.Resources>
-	<Grid Margin="2">
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="Auto"></ColumnDefinition>
-			<ColumnDefinition Width="*" MinWidth="{Binding ElementName=DataNavigation, Path=ActualWidth}"></ColumnDefinition>
-			<ColumnDefinition Width="Auto"></ColumnDefinition>
-		</Grid.ColumnDefinitions>
-		<dxb:BarManager Name="UpdatePanel"
-						Grid.Row="0" Grid.Column="0"
-						HorizontalAlignment="Left"
-						AllowCustomization="False"
-						AllowHotCustomization="False"
-						AllowQuickCustomization="False"
-						ToolbarGlyphSize="Small"
-						>
-			<dxb:BarManager.Items>
-				<dxb:BarButtonItem x:Name="UpdateItemsButton"
-								   Glyph="{Binding ConverterParameter='Actions/Refresh_16x16', Converter={StaticResource ImageValueConverter}}"
-								   ItemClick="OnUpdateItemsClick"
-								   KeyGesture="F5"
-								   />
-			</dxb:BarManager.Items>
-			<dxb:BarManager.Bars>
-				<dxb:Bar AllowDrop="False"
-						 ShowDragWidget="False"
-						 AllowCustomizationMenu="False"
-						 AllowHide="False"
-						 UseWholeRow="False"
-						 AllowQuickCustomization="False"
-						 BarItemsAlignment="Near"
-						 >
-					<dxb:BarButtonItemLink BarItemName="UpdateItemsButton"/>
-				</dxb:Bar>
-			</dxb:BarManager.Bars>
-		</dxb:BarManager>
+             Height="30">
+    <UserControl.Resources>
+        <images:ImageValueConverter x:Key="ImageValueConverter" />
+    </UserControl.Resources>
+    <Grid Margin="2">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" MinWidth="{Binding ElementName=DataNavigation, Path=ActualWidth}" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <dxb:BarManager Name="UpdatePanel"
+                        Grid.Row="0" Grid.Column="0"
+                        HorizontalAlignment="Left"
+                        AllowCustomization="False"
+                        AllowHotCustomization="False"
+                        AllowQuickCustomization="False"
+                        ToolbarGlyphSize="Small">
+            <dxb:BarManager.Items>
+                <dxb:BarButtonItem x:Name="UpdateItemsButton"
+                                   Glyph="{Binding ConverterParameter='Actions/Refresh_16x16', Converter={StaticResource ImageValueConverter}}"
+                                   ItemClick="OnUpdateItemsClick"
+                                   KeyGesture="F5" />
+            </dxb:BarManager.Items>
+            <dxb:BarManager.Bars>
+                <dxb:Bar AllowDrop="False"
+                         ShowDragWidget="False"
+                         AllowCustomizationMenu="False"
+                         AllowHide="False"
+                         UseWholeRow="False"
+                         AllowQuickCustomization="False"
+                         BarItemsAlignment="Near">
+                    <dxb:BarButtonItemLink BarItemName="UpdateItemsButton" />
+                </dxb:Bar>
+            </dxb:BarManager.Bars>
+        </dxb:BarManager>
 
-		<dxb:BarManager Name="DataNavigation"
-						Grid.Row="0" Grid.Column="1"
-						HorizontalAlignment="Center"
-						AllowCustomization="False"
-						AllowHotCustomization="False"
-						AllowQuickCustomization="False"
-						ToolbarGlyphSize="Small"
-					>
-			<dxb:BarManager.Items>
-				<dxb:BarButtonItem x:Name="FirstPageButton"
-								   Glyph="{Binding ConverterParameter='Navigation/First_16x16', Converter={StaticResource ImageValueConverter}}"
-								   ItemClick="OnFirstPage"
-								   />
-				<dxb:BarButtonItem x:Name="PreviousPageButton"
-								   Glyph="{Binding ConverterParameter='Navigation/Prev_16x16', Converter={StaticResource ImageValueConverter}}"
-								   ItemClick="OnPreviousPage"
-								   />
-				<dxb:BarEditItem x:Name="PageNumberEditor"
-								 EditWidth="40"
-								 EditValue="1"
-								 EditValueChanged="OnPageNumberEditor"
-								 >
-					<dxb:BarEditItem.EditSettings>
-						<dxe:TextEditSettings HorizontalContentAlignment="Center" 
-											  MaskType="Numeric"
-											  Mask="N0"
-											  />
-					</dxb:BarEditItem.EditSettings>
-				</dxb:BarEditItem>
-				<dxb:BarStaticItem x:Name="PageCountEditor"
-								   ShowBorder="False"
-								   AutoSizeMode="Content"
-								   Content="/ ?"
-								   />
-				<dxb:BarButtonItem x:Name="NextPageButton" 
-								   Glyph="{Binding ConverterParameter='Navigation/Next_16x16', Converter={StaticResource ImageValueConverter}}"
-								   ItemClick="OnNextPage"
-								   />
-				<dxb:BarButtonItem x:Name="LastPageButton" 
-								   Glyph="{Binding ConverterParameter='Navigation/Last_16x16', Converter={StaticResource ImageValueConverter}}"
-								   ItemClick="OnLastPage"
-								   />
-			</dxb:BarManager.Items>
-			<dxb:BarManager.Bars>
-				<dxb:Bar AllowDrop="False"
-						 ShowDragWidget="False"
-						 AllowCustomizationMenu="False"
-						 AllowHide="False"
-						 UseWholeRow="False"
-						 AllowQuickCustomization="False"
-						 BarItemsAlignment="Default"
-						 >
-					<dxb:BarButtonItemLink BarItemName="FirstPageButton"/>
-					<dxb:BarButtonItemLink BarItemName="PreviousPageButton"/>
-					<dxb:BarEditItemLink BarItemName="PageNumberEditor"/>
-					<dxb:BarStaticItemLink BarItemName="PageCountEditor"/>
-					<dxb:BarButtonItemLink BarItemName="NextPageButton"/>
-					<dxb:BarButtonItemLink BarItemName="LastPageButton"/>
-				</dxb:Bar>
-			</dxb:BarManager.Bars>
-		</dxb:BarManager>
+        <dxb:BarManager Name="DataNavigation"
+                        Grid.Row="0" Grid.Column="1"
+                        HorizontalAlignment="Center"
+                        AllowCustomization="False"
+                        AllowHotCustomization="False"
+                        AllowQuickCustomization="False"
+                        ToolbarGlyphSize="Small">
+            <dxb:BarManager.Items>
+                <dxb:BarButtonItem x:Name="FirstPageButton"
+                                   Glyph="{Binding ConverterParameter='Navigation/First_16x16', Converter={StaticResource ImageValueConverter}}"
+                                   ItemClick="OnFirstPage" />
+                <dxb:BarButtonItem x:Name="PreviousPageButton"
+                                   Glyph="{Binding ConverterParameter='Navigation/Prev_16x16', Converter={StaticResource ImageValueConverter}}"
+                                   ItemClick="OnPreviousPage" />
+                <dxb:BarEditItem x:Name="PageNumberEditor"
+                                 EditWidth="40"
+                                 EditValue="1"
+                                 EditValueChanged="OnPageNumberEditor">
+                    <dxb:BarEditItem.EditSettings>
+                        <dxe:TextEditSettings HorizontalContentAlignment="Center"
+                                              MaskType="Numeric"
+                                              Mask="N0" />
+                    </dxb:BarEditItem.EditSettings>
+                </dxb:BarEditItem>
+                <dxb:BarStaticItem x:Name="PageCountEditor"
+                                   ShowBorder="False"
+                                   AutoSizeMode="Content"
+                                   Content="/ ?" />
+                <dxb:BarButtonItem x:Name="NextPageButton"
+                                   Glyph="{Binding ConverterParameter='Navigation/Next_16x16', Converter={StaticResource ImageValueConverter}}"
+                                   ItemClick="OnNextPage" />
+                <dxb:BarButtonItem x:Name="LastPageButton"
+                                   Glyph="{Binding ConverterParameter='Navigation/Last_16x16', Converter={StaticResource ImageValueConverter}}"
+                                   ItemClick="OnLastPage" />
+            </dxb:BarManager.Items>
+            <dxb:BarManager.Bars>
+                <dxb:Bar AllowDrop="False"
+                         ShowDragWidget="False"
+                         AllowCustomizationMenu="False"
+                         AllowHide="False"
+                         UseWholeRow="False"
+                         AllowQuickCustomization="False"
+                         BarItemsAlignment="Default">
+                    <dxb:BarButtonItemLink BarItemName="FirstPageButton" />
+                    <dxb:BarButtonItemLink BarItemName="PreviousPageButton" />
+                    <dxb:BarEditItemLink BarItemName="PageNumberEditor" />
+                    <dxb:BarStaticItemLink BarItemName="PageCountEditor" />
+                    <dxb:BarButtonItemLink BarItemName="NextPageButton" />
+                    <dxb:BarButtonItemLink BarItemName="LastPageButton" />
+                </dxb:Bar>
+            </dxb:BarManager.Bars>
+        </dxb:BarManager>
 
-		<dxb:BarManager Name="PageSizePanel"
-						Grid.Row="0" Grid.Column="2"
-						AllowCustomization="False"
-						AllowHotCustomization="False"
-						AllowQuickCustomization="False"
-						ToolbarGlyphSize="Small"
-						Visibility="Collapsed"
-						>
-			<dxb:BarManager.Items>
-				<dxb:BarEditItem x:Name="PageSizeEditor"
-								 EditWidth="70"
-								 EditValueChanged="OnPageSizeEditor"
-								 >
-					<dxb:BarEditItem.EditSettings>
-						<dxe:ComboBoxEditSettings Name="PageSizeEditorList" 
-												  IsTextEditable="False" 
-												  HorizontalContentAlignment="Center"
-												  >
-						</dxe:ComboBoxEditSettings>
-					</dxb:BarEditItem.EditSettings>
-				</dxb:BarEditItem>
-			</dxb:BarManager.Items>
-			<dxb:BarManager.Bars>
-				<dxb:Bar AllowDrop="False"
-						 ShowDragWidget="False"
-						 AllowCustomizationMenu="False"
-						 AllowHide="False"
-						 UseWholeRow="False"
-						 AllowQuickCustomization="False"
-						 BarItemsAlignment="Far"
-						 >
-					<dxb:BarEditItemLink BarItemName="PageSizeEditor"/>
-				</dxb:Bar>
-			</dxb:BarManager.Bars>
-		</dxb:BarManager>
-	</Grid>
+        <dxb:BarManager Name="PageSizePanel"
+                        Grid.Row="0" Grid.Column="2"
+                        AllowCustomization="False"
+                        AllowHotCustomization="False"
+                        AllowQuickCustomization="False"
+                        ToolbarGlyphSize="Small"
+                        Visibility="Collapsed">
+            <dxb:BarManager.Items>
+                <dxb:BarEditItem x:Name="PageSizeEditor"
+                                 EditWidth="70"
+                                 EditValueChanged="OnPageSizeEditor">
+                    <dxb:BarEditItem.EditSettings>
+                        <dxe:ComboBoxEditSettings Name="PageSizeEditorList"
+                                                  IsTextEditable="False"
+                                                  HorizontalContentAlignment="Center" />
+                    </dxb:BarEditItem.EditSettings>
+                </dxb:BarEditItem>
+            </dxb:BarManager.Items>
+            <dxb:BarManager.Bars>
+                <dxb:Bar AllowDrop="False"
+                         ShowDragWidget="False"
+                         AllowCustomizationMenu="False"
+                         AllowHide="False"
+                         UseWholeRow="False"
+                         AllowQuickCustomization="False"
+                         BarItemsAlignment="Far">
+                    <dxb:BarEditItemLink BarItemName="PageSizeEditor" />
+                </dxb:Bar>
+            </dxb:BarManager.Bars>
+        </dxb:BarManager>
+    </Grid>
 </UserControl>

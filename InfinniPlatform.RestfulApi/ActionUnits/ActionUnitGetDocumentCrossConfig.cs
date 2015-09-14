@@ -1,13 +1,10 @@
-﻿using System.Linq;
-using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using InfinniPlatform.Api.RestApi.AuthApi;
-using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.RestfulApi.Utils;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.RestfulApi.ActionUnits
 {
@@ -20,26 +17,33 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             IEnumerable<object> configs = DynamicWrapperExtensions.ToEnumerable(target.Item.Configurations);
             IEnumerable<object> documents = DynamicWrapperExtensions.ToEnumerable(target.Item.Documents);
 
-			List<dynamic> resultDocuments = new List<dynamic>();
+            var resultDocuments = new List<dynamic>();
 
-	        foreach (string config in configs)
-	        {
-		        foreach (string document in documents)
-		        {
-					var executor = new DocumentExecutor(target.Context.GetComponent<IConfigurationMediatorComponent>(),
-														target.Context.GetComponent<IMetadataComponent>(),
-														target.Context.GetComponent<InprocessDocumentComponent>(),
-														target.Context.GetComponent<IProfilerComponent>());
+            foreach (string config in configs)
+            {
+                foreach (string document in documents)
+                {
+                    var executor =
+                        new DocumentExecutor(
+                            target.Context.GetComponent<IConfigurationMediatorComponent>(),
+                            target.Context.GetComponent<IMetadataComponent>(),
+                            target.Context.GetComponent<InprocessDocumentComponent>(),
+                            target.Context.GetComponent<IProfilerComponent>(),
+                            target.Context.GetComponent<ILogComponent>());
 
-					resultDocuments.AddRange(executor.GetCompleteDocuments(config, document, target.UserName,
-										  Convert.ToInt32(target.Item.PageNumber), Convert.ToInt32(target.Item.PageSize),
-										  filter, sorting, target.Item.IgnoreResolve));
-		        }
-	        }
+                    resultDocuments.AddRange(executor.GetCompleteDocuments(target.Context.GetVersion(config, target.UserName), config, document,
+                                                                           target.UserName,
+                                                                           Convert.ToInt32(target.Item.PageNumber),
+                                                                           Convert.ToInt32(target.Item.PageSize),
+                                                                           filter, sorting, target.Item.IgnoreResolve));
+                }
+            }
 
-	        target.Result = resultDocuments;
+            target.Result = resultDocuments;
 
-			target.Context.GetComponent<ILogComponent>().GetLog().Info("Cross configuration document search completed");
+            target.Context.GetComponent<ILogComponent>()
+                  .GetLog()
+                  .Info("Cross configuration document search completed");
         }
     }
 }

@@ -7,25 +7,21 @@ using System.Web.Http;
 
 namespace InfinniPlatform.WebApi.Tests.Builders
 {
+    public class TestResponseController : ApiController
+    {
+        public HttpResponseMessage GetData()
+        {
+            var resp = new HttpResponseMessage(HttpStatusCode.OK);
+            return resp;
+        }
+    }
 
-	public class TestResponseController : ApiController
-	{
-
-		public HttpResponseMessage GetData()
-		{
-			var resp = new HttpResponseMessage(HttpStatusCode.OK);
-			return resp;
-		}
-	}
-
-	public class NoVerbProcessorQuery
-	{
-		
-	}
+    public class NoVerbProcessorQuery
+    {
+    }
 
     public class TestConfigInstallerHttpQuery
     {
-
         public object ProcessTestGetVerb()
         {
             return "GET";
@@ -33,31 +29,35 @@ namespace InfinniPlatform.WebApi.Tests.Builders
     }
 
 
-	public class TestVerbProcessorHttpQuery 
-	{
+    public class TestVerbProcessorHttpQuery
+    {
+        public object ProcessTestGetVerb(string argument1, int argument2, double argument3,
+                                         IEnumerable<TestPerson> argument4, TestPerson argument5, bool argument7,
+                                         Guid argument8, bool testDefaultValue = true)
+        {
+            return "GET";
+        }
 
-		public object ProcessTestGetVerb(string argument1, int argument2, double argument3, IEnumerable<TestPerson> argument4, TestPerson argument5, bool argument7, Guid argument8, bool testDefaultValue = true)
-		{
-			return "GET";
-		}
 
+        public object ProcessTestPutVerb(string argument1, int argument2, double argument3,
+                                         IEnumerable<TestPerson> argument4, TestPerson argument5, bool argument7,
+                                         Guid argument8, bool testDefaultValue = true)
+        {
+            return "PUT";
+        }
 
-		public object ProcessTestPutVerb(string argument1, int argument2, double argument3, IEnumerable<TestPerson> argument4, TestPerson argument5, bool argument7, Guid argument8, bool testDefaultValue = true)
-		{
-			return "PUT";
-		}
+        public object ProcessTestPostVerb(string argument1, int argument2, double argument3,
+                                          IEnumerable<TestPerson> argument4, TestPerson argument5, bool argument7,
+                                          Guid argument8, bool testDefaultValue = true)
+        {
+            return "POST";
+        }
 
-		public object ProcessTestPostVerb(string argument1, int argument2, double argument3, IEnumerable<TestPerson> argument4, TestPerson argument5, bool argument7, Guid argument8, bool testDefaultValue = true)
-		{
-			return "POST";
-		}
-
-		public object ProcessTestDeleteVerb(IEnumerable<string> paramsToDelete)
-		{
-			return "DELETE";
-		}
-
-	}
+        public object ProcessTestDeleteVerb(IEnumerable<string> paramsToDelete)
+        {
+            return "DELETE";
+        }
+    }
 
     public class TestVerbProcessorUploadQuery
     {
@@ -67,12 +67,12 @@ namespace InfinniPlatform.WebApi.Tests.Builders
             {
                 CopyStream(uploadStream, file);
             }
-            return string.Format("STREAM_{0}",linkedData);
+            return string.Format("STREAM_{0}", linkedData);
         }
 
         private static void CopyStream(Stream input, Stream output)
         {
-            byte[] buffer = new byte[8 * 1024];
+            var buffer = new byte[8*1024];
             int len;
             while ((len = input.Read(buffer, 0, buffer.Length)) > 0)
             {
@@ -80,7 +80,6 @@ namespace InfinniPlatform.WebApi.Tests.Builders
             }
         }
     }
-
 
 
     public class AnotherVerbProcessorWithoutServiceNameHttpQuery
@@ -107,6 +106,4 @@ namespace InfinniPlatform.WebApi.Tests.Builders
             return "POST3";
         }
     }
-
-
 }

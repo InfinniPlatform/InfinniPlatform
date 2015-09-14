@@ -141,7 +141,7 @@ namespace InfinniPlatform.SystemConfig.Administration.Menu.ActionUnits
 				parentMenuItem.Items = menuItems;
 
 				// Сохранение меню
-				var menuManager = new ManagerFactoryConfiguration(editMenuItem.ConfigId).BuildMenuManager();
+				var menuManager = new ManagerFactoryConfiguration(TODO, editMenuItem.ConfigId).BuildMenuManager();
 				menuManager.MergeItem(editMenu);
 
 				// Сохранение ролей
@@ -163,7 +163,7 @@ namespace InfinniPlatform.SystemConfig.Administration.Menu.ActionUnits
 			// Конфигурация является корневым пунктом меню
 			var configMenuItemId = "/PatientEhr__0_0";
 
-			var configFactory = new ManagerFactoryConfiguration("PatientEhr");
+			var configFactory = new ManagerFactoryConfiguration(TODO, "PatientEhr");
 			var menuReader = configFactory.BuildMenuMetadataReader();
 			var menuInfoItems = MenuHelper.GetMenuInfoItems(menuReader);
 

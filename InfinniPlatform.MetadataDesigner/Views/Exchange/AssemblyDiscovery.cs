@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Api.Settings;
+using InfinniPlatform.Sdk.Environment.Settings;
 
 namespace InfinniPlatform.MetadataDesigner.Views.Exchange
 {
@@ -12,9 +12,9 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
 	{
 		private readonly IList<SourceAssemblyInfo> _sourceAssemblyList = new List<SourceAssemblyInfo>();
         
-		public bool DiscoverAppliedAssemblies(string configurationId)
+		public bool DiscoverAppliedAssemblies(string version, string configurationId)
 		{
-			LoadSourceAssembliesForConfig(configurationId);
+			LoadSourceAssembliesForConfig(version, configurationId);
 
 		    var folderExtension = DateTime.Now.ToString("yyyyMMddHHmmss");
 			foreach (var sourceAssemblyInfo in SourceAssemblyList)
@@ -57,11 +57,11 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
 			return true;
 		}
 
-	    private void LoadSourceAssembliesForConfig(string configurationId)
+	    private void LoadSourceAssembliesForConfig(string version, string configurationId)
 		{
 			SourceAssemblyList.Clear();
 
-			var reader = new ManagerFactoryConfiguration(configurationId).BuildAssemblyMetadataReader();
+			var reader = new ManagerFactoryConfiguration(version, configurationId).BuildAssemblyMetadataReader();
 			var items = reader.GetItems();
 			foreach (var item in items)
 			{

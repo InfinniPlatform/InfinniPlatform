@@ -1,4 +1,5 @@
 ﻿using InfinniPlatform.Api.Index;
+using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Index
 {

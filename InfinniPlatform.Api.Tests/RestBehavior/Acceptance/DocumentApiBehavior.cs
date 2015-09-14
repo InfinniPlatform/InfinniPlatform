@@ -1,53 +1,103 @@
-﻿using InfinniPlatform.Api.Dynamic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
+using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.TestEnvironment;
+using InfinniPlatform.Sdk.Dynamic;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 {
-	[TestFixture]
-	[Category(TestCategories.AcceptanceTest)]
-	public sealed class DocumentApiBehavior
-	{
-		private IDisposable _server;
-	    private const string ConfigurationId = "testdocumentapi";
-	    private const string DocumentId = "documentapitest";
+    [TestFixture]
+    [Category(TestCategories.AcceptanceTest)]
+    public sealed class DocumentApiBehavior
+    {
+        private IDisposable _server;
+        private const string ConfigurationId = "testdocumentapi";
+        private const string DocumentId = "documentapitest";
 
-	    [TestFixtureSetUp]
-		public void FixtureSetup()
-		{
-			_server = TestApi.StartServer(c => c.SetHostingConfig(TestSettings.DefaultHostingConfig));
+        [TestFixtureSetUp]
+        public void FixtureSetup()
+        {
+            _server = TestApi.StartServer(c => c.SetHostingConfig(TestSettings.DefaultHostingConfig));
 
-	        TestApi.InitClientRouting(TestSettings.DefaultHostingConfig);
+            TestApi.InitClientRouting(TestSettings.DefaultHostingConfig);
 
-			CreateTestConfig();
-		}
+            CreateTestConfig();
+        }
 
-		[TestFixtureTearDown]
-		public void FixtureTearDown()
-		{
-			_server.Dispose();
-		}
+        [TestFixtureTearDown]
+        public void FixtureTearDown()
+        {
+            _server.Dispose();
+        }
 
-		[Test]
-		public void ShouldGetDocuments()
-		{
-			new DocumentApi().SetDocument(ConfigurationId, DocumentId,
-			                              new
-				                              {
-					                              Id = Guid.NewGuid().ToString(),
-					                              TestProperty = "get"
-				                              });
+        private void CreateTestConfig()
+        {
+            string configurationId = ConfigurationId;
+            string documentId = DocumentId;
 
-			IEnumerable<dynamic> items = new DocumentApi().GetDocument(ConfigurationId, DocumentId, filter => filter.AddCriteria(cr => cr.IsEquals("get").Property("TestProperty")), 0, 10).ToEnumerable();
-			Assert.AreEqual(items.Count(), 1);
-		}
+            new IndexApi().RebuildIndex(configurationId, documentId);
+
+            MetadataManagerConfiguration managerConfiguration =
+                ManagerFactoryConfiguration.BuildConfigurationManager(null);
+
+            dynamic config = managerConfiguration.CreateItem(configurationId);
+            managerConfiguration.DeleteItem(config);
+            managerConfiguration.MergeItem(config);
+
+            MetadataManagerDocument managerDocument =
+                new ManagerFactoryConfiguration(null, configurationId).BuildDocumentManager();
+            dynamic documentMetadata1 = managerDocument.CreateItem(documentId);
+
+            dynamic schemaProperties = new DynamicWrapper();
+
+            dynamic idPropertyModel = new DynamicWrapper();
+            idPropertyModel.Type = DataType.String.ToString();
+            idPropertyModel.Caption = "Id";
+            idPropertyModel.Description = "Идетификатор";
+            schemaProperties.Id = idPropertyModel;
+
+            schemaProperties.TestProperty = new DynamicWrapper();
+            schemaProperties.TestProperty.Type = DataType.String.ToString();
+            schemaProperties.TestProperty.Caption = "TestProperty";
+            schemaProperties.TestProperty.Description = "Тестовое свойство";
+
+            schemaProperties.ComplexObject = new DynamicWrapper();
+            schemaProperties.ComplexObject.Type = DataType.Object.ToString();
+            schemaProperties.ComplexObject.Caption = "ComplexObject";
+            schemaProperties.ComplexObject.TypeInfo = new DynamicWrapper();
+            schemaProperties.ComplexObject.TypeInfo.Properties = new DynamicWrapper();
+            schemaProperties.ComplexObject.TypeInfo.Properties.ValidProperty = new DynamicWrapper();
+            schemaProperties.ComplexObject.TypeInfo.Properties.ValidProperty.Type = DataType.Integer.ToString();
+            schemaProperties.ComplexObject.TypeInfo.Properties.ValidProperty.Caption = "ValidProperty";
+
+            schemaProperties.ComplexArray = new DynamicWrapper();
+            schemaProperties.ComplexArray.Type = DataType.Array.ToString();
+            schemaProperties.ComplexArray.Caption = "ComplexArray";
+            schemaProperties.ComplexArray.Items = new DynamicWrapper();
+            schemaProperties.ComplexArray.Items.TypeInfo = new DynamicWrapper();
+            schemaProperties.ComplexArray.Items.TypeInfo.Properties = new DynamicWrapper();
+            schemaProperties.ComplexArray.Items.TypeInfo.Properties.ValidProperty = new DynamicWrapper();
+            schemaProperties.ComplexArray.Items.TypeInfo.Properties.ValidProperty.Type = DataType.Integer.ToString();
+            schemaProperties.ComplexArray.Items.TypeInfo.Properties.ValidProperty.Caption = "ValidProperty";
+
+            documentMetadata1.Schema = new DynamicWrapper();
+            documentMetadata1.Schema.Type = "Object";
+            documentMetadata1.Schema.Caption = "Register document";
+            documentMetadata1.Schema.Description = "Register document schema";
+            documentMetadata1.Schema.Properties = schemaProperties;
+
+            managerDocument.MergeItem(documentMetadata1);
+
+            RestQueryApi.QueryPostNotify(null, configurationId);
+
+            new UpdateApi(null).UpdateStore(configurationId);
+        }
 
         [Test]
         public void ShouldGetNumberOfDocuments()
@@ -88,55 +138,369 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         }
 
 	    [Test]
-	    public void ShouldGetDocumentCrossConfig()
-	    {
-	        new DocumentApi().SetDocument(ConfigurationId, DocumentId,
-	            new
-	            {
-	                Id = Guid.NewGuid().ToString(),
-	                TestProperty = "crossget"
-	            });
+        public void ShouldDeleteDocument()
+
+        {
+            new DocumentApi().SetDocument(ConfigurationId, DocumentId,
+                                              new
+                                                  {
+                                                      Id = Guid.NewGuid().ToString(),
+                                                      TestProperty = "delete"
+                                                  });
+
+            IEnumerable<dynamic> items =
+                new DocumentApi().GetDocument(ConfigurationId, DocumentId,
+                                                  filter =>
+                                                  filter.AddCriteria(
+                                                      cr => cr.IsEquals("delete").Property("TestProperty")), 0, 1)
+                                     .ToEnumerable();
+
+            dynamic itemId = items.First().Id;
+
+            new DocumentApi().DeleteDocument(ConfigurationId, DocumentId, itemId);
+
+            items =
+                new DocumentApi().GetDocument(ConfigurationId, DocumentId,
+                                                  f => f.AddCriteria(c => c.Property("Id").IsEquals(itemId)), 0, 2)
+                                     .ToEnumerable();
+            Assert.AreEqual(0, items.Count());
+        }
+
+        [Test]
+        [Ignore]
+        public void ShouldDeleteExtraArrayPropertiesDuringSetDocuments()
+        {
+            var documents = new object[]
+                {
+                    new
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            TestProperty = "111",
+                            ComplexArray = new[]
+                                {
+                                    new
+                                        {
+                                            ValidProperty = 1,
+                                            InvalidProperty = 2
+                                        }
+                                }
+                        },
+                    new
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            TestProperty = "111",
+                            ComplexArray = new[]
+                                {
+                                    new
+                                        {
+                                            ValidProperty = 1,
+                                            InvalidProperty = 2
+                                        }
+                                }
+                        }
+                };
+
+            new DocumentApi().SetDocuments(ConfigurationId, DocumentId, documents, 2);
+
+            IEnumerable<dynamic> items =
+                new DocumentApi().GetDocument(ConfigurationId, DocumentId,
+                                                  f => f.AddCriteria(c => c.Property("TestProperty").IsEquals("111")), 0,
+                                                  10).ToEnumerable();
+            Assert.AreEqual(items.Count(), 2);
+
+            dynamic firstDoc = items.First();
+
+            Assert.NotNull(firstDoc.ComplexArray);
+            Assert.NotNull(firstDoc.ComplexArray[0].ValidProperty);
+            Assert.Null(firstDoc.ComplexArray[0].InvalidProperty);
+        }
+
+        [Test]
+        [Ignore]
+        public void ShouldDeleteExtraObjectPropertiesDuringSetDocuments()
+        {
+            var documents = new object[]
+                {
+                    new
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            TestProperty = "123",
+                            ComplexObject = new
+                                {
+                                    ValidProperty = 1,
+                                    InvalidProperty = 2,
+                                }
+                        },
+                    new
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            TestProperty = "123",
+                            ComplexObject = new
+                                {
+                                    ValidProperty = 1,
+                                    InvalidProperty = 2,
+                                }
+                        }
+                };
+
+            new DocumentApi().SetDocuments(ConfigurationId, DocumentId, documents, 2);
+
+            IEnumerable<dynamic> items =
+                new DocumentApi().GetDocument(ConfigurationId, DocumentId,
+                                                  f => f.AddCriteria(c => c.Property("TestProperty").IsEquals("123")), 0,
+                                                  10).ToEnumerable();
+            Assert.Greater(items.Count(), 0);
+
+            dynamic firstDoc = items.First();
+
+            Assert.NotNull(firstDoc.ComplexObject.ValidProperty);
+            Assert.Null(firstDoc.ComplexObject.InvalidProperty);
+        }
+
+        [Test]
+        [Ignore]
+        public void ShouldDeleteExtraPropertiesDuringSetDocuments()
+        {
+            var documents = new object[]
+                {
+                    new
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            TestProperty = "1",
+                            PropertyToDelete = "DeleteMe"
+                        },
+                    new
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            TestProperty = "2",
+                            PropertyToDelete = "DeleteMe"
+                        }
+                };
+
+            new DocumentApi().SetDocuments(ConfigurationId, DocumentId, documents, 2);
+
+            IEnumerable<dynamic> items =
+                new DocumentApi().GetDocument(ConfigurationId, DocumentId, null, 0, 10).ToEnumerable();
+            Assert.Greater(items.Count(), 0);
+
+            dynamic firstDoc = items.First();
+
+            Assert.NotNull(firstDoc.TestProperty);
+            Assert.Null(firstDoc.PropertyToDelete);
+        }
+
+        [Test]
+        public void ShouldGetDocumentCrossConfig()
+        {
+            new DocumentApi().SetDocument(ConfigurationId, DocumentId,
+                                              new
+                                                  {
+                                                      Id = Guid.NewGuid().ToString(),
+                                                      TestProperty = "crossget"
+                                                  });
 
             var items =
                 new DocumentApi().GetDocumentCrossConfig(
                     filter => filter.AddCriteria(cr => cr.IsEquals("crossget").Property("TestProperty")), 0, 10,
-                    new[] { ConfigurationId }, new[] { DocumentId}).ToEnumerable();
-            Assert.AreEqual(items.Count(), 1);
-            
-            items =
-	            new DocumentApi().GetDocumentCrossConfig(
-					filter => filter.AddCriteria(cr => cr.IsEquals("crossget").Property("TestProperty")), 0, 10, new[] { ConfigurationId }, new[] { DocumentId }).ToEnumerable();
-	        Assert.AreEqual(items.Count(), 1);
-
-            items =
-                new DocumentApi().GetDocumentCrossConfig(
-                    filter => filter.AddCriteria(cr => cr.IsEquals("crossget").Property("TestProperty")), 0, 10, 
-                    new[] { "sdf" }, new[] { DocumentId, "ds" }).ToEnumerable();
-            Assert.AreEqual(items.Count(), 0);
-            
-            items =
-                new DocumentApi().GetDocumentCrossConfig(
-                    filter => filter.AddCriteria(cr => cr.IsEquals("crossget").Property("TestProperty")), 0, 10, 
-                    new[] { ConfigurationId, "update" },new [] {DocumentId}).ToEnumerable();
+                    new[] {ConfigurationId}, new[] {DocumentId}).ToEnumerable();
             Assert.AreEqual(items.Count(), 1);
 
             items =
                 new DocumentApi().GetDocumentCrossConfig(
-                    filter => filter.AddCriteria(cr => cr.IsEquals("crossget").Property("TestProperty")), 0, 10, 
-                    new[] { ConfigurationId }, new[] { "ds" }).ToEnumerable();
+                    filter => filter.AddCriteria(cr => cr.IsEquals("crossget").Property("TestProperty")), 0, 10,
+                    new[] {ConfigurationId}, new[] {DocumentId}).ToEnumerable();
+            Assert.AreEqual(items.Count(), 1);
+
+            items =
+                new DocumentApi().GetDocumentCrossConfig(
+                    filter => filter.AddCriteria(cr => cr.IsEquals("crossget").Property("TestProperty")), 0, 10,
+                    new[] {"sdf"}, new[] {DocumentId, "ds"}).ToEnumerable();
             Assert.AreEqual(items.Count(), 0);
 
             items =
                 new DocumentApi().GetDocumentCrossConfig(
                     filter => filter.AddCriteria(cr => cr.IsEquals("crossget").Property("TestProperty")), 0, 10,
-                    new[] { ConfigurationId, "systemconfig" }, new[] { "sdf", DocumentId, "ds" }).ToEnumerable();
+                    new[] {ConfigurationId, "update"}, new[] {DocumentId}).ToEnumerable();
             Assert.AreEqual(items.Count(), 1);
-	    }
 
-	    [Test]
-		public void ShouldSetDocuments()
-		{
-			var documents = new object[]
+            items =
+                new DocumentApi().GetDocumentCrossConfig(
+                    filter => filter.AddCriteria(cr => cr.IsEquals("crossget").Property("TestProperty")), 0, 10,
+                    new[] {ConfigurationId}, new[] {"ds"}).ToEnumerable();
+            Assert.AreEqual(items.Count(), 0);
+
+            items =
+                new DocumentApi().GetDocumentCrossConfig(
+                    filter => filter.AddCriteria(cr => cr.IsEquals("crossget").Property("TestProperty")), 0, 10,
+                    new[] {ConfigurationId, "systemconfig"}, new[] {"sdf", DocumentId, "ds"}).ToEnumerable();
+            Assert.AreEqual(items.Count(), 1);
+        }
+
+        [Test]
+        public void ShouldGetDocuments()
+        {
+            new DocumentApi().SetDocument(ConfigurationId, DocumentId,
+                                              new
+                                                  {
+                                                      Id = Guid.NewGuid().ToString(),
+                                                      TestProperty = "get"
+                                                  });
+
+            IEnumerable<dynamic> items =
+                new DocumentApi().GetDocument(ConfigurationId, DocumentId,
+                                                  filter =>
+                                                  filter.AddCriteria(cr => cr.IsEquals("get").Property("TestProperty")),
+                                                  0, 10).ToEnumerable();
+            Assert.AreEqual(items.Count(), 1);
+        }
+
+        [Test]
+        public void ShouldReturnCorrectMessageAfterSetDocumentWithIncorrectSchema()
+        {
+            new DocumentApi().SetDocument(ConfigurationId, DocumentId, new
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    StringProperty = "StringValue1",
+                    NumberProperty = 1,
+                    DateProperty = DateTime.Now,
+                    BoolProperty = true,
+                    ObjectProperty = new
+                        {
+                            NestedStringProperty = "NestedStringValue1",
+                            NestedNumberPrperty = 2,
+                            NestedDateProperty = DateTime.Now,
+                            NestedBoolProperty = false,
+                        }
+                }, false, true);
+
+            new DocumentApi().SetDocument(ConfigurationId, DocumentId, new
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    StringProperty = "StringValue2",
+                    NumberProperty = 2,
+                    DateProperty = DateTime.Now,
+                    BoolProperty = true,
+                    ObjectProperty = new
+                        {
+                            NestedStringProperty = "NestedStringValue2",
+                            NestedNumberPrperty = 3,
+                            NestedDateProperty = DateTime.Now,
+                            NestedBoolProperty = false,
+                        }
+                }, false, true);
+
+            string errorMessage = "";
+
+            try
+            {
+                new DocumentApi().SetDocument(ConfigurationId, DocumentId, new
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        StringProperty = 1,
+                        NumberProperty = "1",
+                        DateProperty = "Now",
+                        BoolProperty = "true",
+                        ObjectProperty = new
+                            {
+                                NestedStringProperty = 2,
+                                NestedNumberPrperty = "2",
+                                NestedDateProperty = 3,
+                                NestedBoolProperty = "false",
+                            }
+                    }, false, true);
+            }
+            catch (Exception e)
+            {
+                errorMessage = e.Message;
+            }
+
+            // Сообщение об ошибке должно содержать фразы вида:
+            // Expected value for field 'StringProperty' should have String type, but value has System.Int64 type ('1')
+
+            Assert.IsFalse(string.IsNullOrEmpty(errorMessage));
+            Assert.IsTrue(errorMessage.Contains("Expected value for field"));
+        }
+
+        [Test]
+        public void ShouldReturnCorrectMessageAfterSetDocumentsWithIncorrectSchema()
+        {
+            new DocumentApi().SetDocuments(ConfigurationId, DocumentId, new[]
+                {
+                    new
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            StringProperty = "StringValue1",
+                            NumberProperty = 1,
+                            DateProperty = DateTime.Now,
+                            BoolProperty = true,
+                            ObjectProperty = new
+                                {
+                                    NestedStringProperty = "NestedStringValue1",
+                                    NestedNumberPrperty = 2,
+                                    NestedDateProperty = DateTime.Now,
+                                    NestedBoolProperty = false,
+                                }
+                        }
+                }, 200, true);
+
+            new DocumentApi().SetDocuments(ConfigurationId, DocumentId, new[]
+                {
+                    new
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            StringProperty = "StringValue2",
+                            NumberProperty = 2,
+                            DateProperty = DateTime.Now,
+                            BoolProperty = true,
+                            ObjectProperty = new
+                                {
+                                    NestedStringProperty = "NestedStringValue2",
+                                    NestedNumberPrperty = 3,
+                                    NestedDateProperty = DateTime.Now,
+                                    NestedBoolProperty = false,
+                                }
+                        }
+                }, 200, true);
+
+            string errorMessage = "";
+
+            try
+            {
+                new DocumentApi().SetDocuments(ConfigurationId, DocumentId, new[]
+                    {
+                        new
+                            {
+                                Id = Guid.NewGuid().ToString(),
+                                StringProperty = 1,
+                                NumberProperty = "1",
+                                DateProperty = "Now",
+                                BoolProperty = "true",
+                                ObjectProperty = new
+                                    {
+                                        NestedStringProperty = 2,
+                                        NestedNumberPrperty = "2",
+                                        NestedDateProperty = 3,
+                                        NestedBoolProperty = "false",
+                                    }
+                            }
+                    }, 200, true);
+            }
+            catch (ArgumentException e)
+            {
+                errorMessage = e.Message;
+            }
+
+            // Сообщение об ошибке должно содержать фразы вида:
+            // Expected value for field 'StringProperty' should have String type, but value has System.Int64 type ('1')
+
+            Assert.IsFalse(string.IsNullOrEmpty(errorMessage));
+            Assert.IsTrue(errorMessage.Contains("Expected value for field"));
+        }
+
+        [Test]
+        public void ShouldSetDocuments()
+        {
+            var documents = new object[]
                 {
                     new
                         {
@@ -165,339 +529,14 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                         }
                 };
 
-			new DocumentApi().SetDocuments(ConfigurationId, DocumentId, documents, 2);
-
-			IEnumerable<dynamic> items = new DocumentApi().GetDocument(ConfigurationId, DocumentId, filter => filter.AddCriteria(cr => cr.IsEquals(1).Property("TestProperty")), 0, 10).ToEnumerable();
-			Assert.Greater(items.Count(), 0);
-		}
-
-        [Test]
-        public void ShouldDeleteExtraPropertiesDuringSetDocuments()
-        {
-            var documents = new object[]
-            {
-                new
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    TestProperty = "1",
-                    PropertyToDelete = "DeleteMe"
-                },
-                new
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    TestProperty = "2",
-                    PropertyToDelete = "DeleteMe"
-                }
-            };
-
             new DocumentApi().SetDocuments(ConfigurationId, DocumentId, documents, 2);
 
-            IEnumerable<dynamic> items = new DocumentApi().GetDocument(ConfigurationId, DocumentId, null, 0, 10).ToEnumerable();
+            IEnumerable<dynamic> items =
+                new DocumentApi().GetDocument(ConfigurationId, DocumentId,
+                                                  filter =>
+                                                  filter.AddCriteria(cr => cr.IsEquals(1).Property("TestProperty")), 0,
+                                                  10).ToEnumerable();
             Assert.Greater(items.Count(), 0);
-
-            var firstDoc = items.First();
-
-            Assert.NotNull(firstDoc.TestProperty);
-            Assert.Null(firstDoc.PropertyToDelete);
         }
-
-        [Test]
-        public void ShouldDeleteExtraObjectPropertiesDuringSetDocuments()
-        {
-            var documents = new object[]
-            {
-                new
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    TestProperty = "123",
-                    ComplexObject = new
-                    {
-                        ValidProperty = 1,
-                        InvalidProperty = 2,
-                    }
-                },
-                new
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    TestProperty = "123",
-                    ComplexObject = new
-                    {
-                        ValidProperty = 1,
-                        InvalidProperty = 2,
-                    }
-                }
-            };
-
-            new DocumentApi().SetDocuments(ConfigurationId, DocumentId, documents, 2);
-
-            IEnumerable<dynamic> items = new DocumentApi().GetDocument(ConfigurationId, DocumentId, f => f.AddCriteria(c => c.Property("TestProperty").IsEquals("123")), 0, 10).ToEnumerable();
-            Assert.Greater(items.Count(), 0);
-
-            var firstDoc = items.First();
-
-            Assert.NotNull(firstDoc.ComplexObject.ValidProperty);
-            Assert.Null(firstDoc.ComplexObject.InvalidProperty);
-        }
-
-        [Test]
-        public void ShouldDeleteExtraArrayPropertiesDuringSetDocuments()
-        {
-            var documents = new object[]
-            {
-                new
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    TestProperty = "111",
-                    ComplexArray = new[]
-                    {
-                        new
-                        {
-                            ValidProperty = 1,
-                            InvalidProperty = 2
-                        }
-                    }
-                },
-                new
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    TestProperty = "111",
-                    ComplexArray = new[]
-                    {
-                        new
-                        {
-                            ValidProperty = 1,
-                            InvalidProperty = 2
-                        }
-                    }
-                }
-            };
-
-            new DocumentApi().SetDocuments(ConfigurationId, DocumentId, documents, 2);
-
-            IEnumerable<dynamic> items = new DocumentApi().GetDocument(ConfigurationId, DocumentId, f => f.AddCriteria(c => c.Property("TestProperty").IsEquals("111")), 0, 10).ToEnumerable();
-            Assert.AreEqual(items.Count(), 2);
-
-            var firstDoc = items.First();
-
-            Assert.NotNull(firstDoc.ComplexArray);
-            Assert.NotNull(firstDoc.ComplexArray[0].ValidProperty);
-            Assert.Null(firstDoc.ComplexArray[0].InvalidProperty);
-        }
-
-		[Test]
-		public void ShouldDeleteDocument()
-		{
-			new DocumentApi().SetDocument(ConfigurationId, DocumentId,
-										  new
-										  {
-											  Id = Guid.NewGuid().ToString(),
-											  TestProperty = "delete"
-										  });
-
-			IEnumerable<dynamic> items = new DocumentApi().GetDocument(ConfigurationId, DocumentId, filter => filter.AddCriteria(cr => cr.IsEquals("delete").Property("TestProperty")), 0, 1).ToEnumerable();
-
-			var itemId = items.First().Id;
-
-			new DocumentApi().DeleteDocument(ConfigurationId, DocumentId, itemId);
-
-			items = new DocumentApi().GetDocument(ConfigurationId, DocumentId, f => f.AddCriteria(c => c.Property("Id").IsEquals(itemId)), 0, 2).ToEnumerable();
-			Assert.AreEqual(0, items.Count());	
-		}
-
-		[Test]
-		public void ShouldReturnCorrectMessageAfterSetDocumentWithIncorrectSchema()
-		{
-			new DocumentApi().SetDocument(ConfigurationId, DocumentId, new
-			{
-				Id = Guid.NewGuid().ToString(),
-				StringProperty = "StringValue1",
-				NumberProperty = 1,
-				DateProperty = DateTime.Now,
-				BoolProperty = true,
-				ObjectProperty = new
-				{
-					NestedStringProperty = "NestedStringValue1",
-					NestedNumberPrperty = 2,
-					NestedDateProperty = DateTime.Now,
-					NestedBoolProperty = false,
-				}
-			}, false, true);
-
-			new DocumentApi().SetDocument(ConfigurationId, DocumentId, new
-			{
-				Id = Guid.NewGuid().ToString(),
-				StringProperty = "StringValue2",
-				NumberProperty = 2,
-				DateProperty = DateTime.Now,
-				BoolProperty = true,
-				ObjectProperty = new
-				{
-					NestedStringProperty = "NestedStringValue2",
-					NestedNumberPrperty = 3,
-					NestedDateProperty = DateTime.Now,
-					NestedBoolProperty = false,
-				}
-            }, false, true);
-
-			string errorMessage = "";
-
-			try
-			{
-				new DocumentApi().SetDocument(ConfigurationId, DocumentId, new
-				{
-					Id = Guid.NewGuid().ToString(),
-					StringProperty = 1,
-					NumberProperty = "1",
-					DateProperty = "Now",
-					BoolProperty = "true",
-					ObjectProperty = new
-					{
-						NestedStringProperty = 2,
-						NestedNumberPrperty = "2",
-						NestedDateProperty = 3,
-						NestedBoolProperty = "false",
-					}
-                }, false, true);
-			}
-			catch (Exception e)
-			{
-				errorMessage = e.Message;
-			}
-
-			// Сообщение об ошибке должно содержать фразы вида:
-			// Expected value for field 'StringProperty' should have String type, but value has System.Int64 type ('1')
-
-			Assert.IsFalse(string.IsNullOrEmpty(errorMessage));
-			Assert.IsTrue(errorMessage.Contains("Expected value for field"));
-		}
-
-		[Test]
-		public void ShouldReturnCorrectMessageAfterSetDocumentsWithIncorrectSchema()
-		{
-			new DocumentApi().SetDocuments(ConfigurationId, DocumentId, new[] {new
-            {
-                Id = Guid.NewGuid().ToString(),
-                StringProperty = "StringValue1",
-                NumberProperty = 1,
-                DateProperty = DateTime.Now,
-                BoolProperty = true,
-                ObjectProperty = new
-                {
-                    NestedStringProperty = "NestedStringValue1",
-                    NestedNumberPrperty = 2,
-                    NestedDateProperty = DateTime.Now,
-                    NestedBoolProperty = false,
-                }
-            }},200, true);
-
-			new DocumentApi().SetDocuments(ConfigurationId, DocumentId, new[] {new
-            {
-                Id = Guid.NewGuid().ToString(),
-                StringProperty = "StringValue2",
-                NumberProperty = 2,
-                DateProperty = DateTime.Now,
-                BoolProperty = true,
-                ObjectProperty = new
-                {
-                    NestedStringProperty = "NestedStringValue2",
-                    NestedNumberPrperty = 3,
-                    NestedDateProperty = DateTime.Now,
-                    NestedBoolProperty = false,
-                }
-            }}, 200, true);
-
-			string errorMessage = "";
-
-			try
-			{
-				new DocumentApi().SetDocuments(ConfigurationId, DocumentId, new[] {new
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    StringProperty = 1,
-                    NumberProperty = "1",
-                    DateProperty = "Now",
-                    BoolProperty = "true",
-                    ObjectProperty = new
-                    {
-                        NestedStringProperty = 2,
-                        NestedNumberPrperty = "2",
-                        NestedDateProperty = 3,
-                        NestedBoolProperty = "false",
-                    }
-                }}, 200, true);
-			}
-			catch (ArgumentException e)
-			{
-				errorMessage = e.Message;
-			}
-
-			// Сообщение об ошибке должно содержать фразы вида:
-			// Expected value for field 'StringProperty' should have String type, but value has System.Int64 type ('1')
-
-			Assert.IsFalse(string.IsNullOrEmpty(errorMessage));
-			Assert.IsTrue(errorMessage.Contains("Expected value for field"));
-		}
-
-		private void CreateTestConfig()
-		{
-
-			string configurationId = ConfigurationId;
-			string documentId = DocumentId;
-
-			IndexApi.RebuildIndex(configurationId, documentId);
-
-			var managerConfiguration = ManagerFactoryConfiguration.BuildConfigurationManager();
-
-			var config = managerConfiguration.CreateItem(configurationId);
-			managerConfiguration.DeleteItem(config);
-			managerConfiguration.MergeItem(config);
-
-			var managerDocument = new ManagerFactoryConfiguration(configurationId).BuildDocumentManager();
-			dynamic documentMetadata1 = managerDocument.CreateItem(documentId);
-
-            dynamic schemaProperties = new DynamicWrapper();
-
-            dynamic idPropertyModel = new DynamicWrapper();
-            idPropertyModel.Type = DataType.String.ToString();
-            idPropertyModel.Caption = "Id";
-            idPropertyModel.Description = "Идетификатор";
-            schemaProperties.Id = idPropertyModel;
-
-            schemaProperties.TestProperty = new DynamicWrapper();
-            schemaProperties.TestProperty.Type = DataType.String.ToString();
-            schemaProperties.TestProperty.Caption = "TestProperty";
-            schemaProperties.TestProperty.Description = "Тестовое свойство";
-
-            schemaProperties.ComplexObject = new DynamicWrapper();
-            schemaProperties.ComplexObject.Type = DataType.Object.ToString();
-            schemaProperties.ComplexObject.Caption = "ComplexObject";
-		    schemaProperties.ComplexObject.TypeInfo = new DynamicWrapper();
-            schemaProperties.ComplexObject.TypeInfo.Properties = new DynamicWrapper();
-            schemaProperties.ComplexObject.TypeInfo.Properties.ValidProperty = new DynamicWrapper();
-            schemaProperties.ComplexObject.TypeInfo.Properties.ValidProperty.Type = DataType.Integer.ToString();
-            schemaProperties.ComplexObject.TypeInfo.Properties.ValidProperty.Caption = "ValidProperty";
-
-            schemaProperties.ComplexArray = new DynamicWrapper();
-            schemaProperties.ComplexArray.Type = DataType.Array.ToString();
-            schemaProperties.ComplexArray.Caption = "ComplexArray";
-            schemaProperties.ComplexArray.Items = new DynamicWrapper();
-            schemaProperties.ComplexArray.Items.TypeInfo = new DynamicWrapper();
-            schemaProperties.ComplexArray.Items.TypeInfo.Properties = new DynamicWrapper();
-            schemaProperties.ComplexArray.Items.TypeInfo.Properties.ValidProperty = new DynamicWrapper();
-            schemaProperties.ComplexArray.Items.TypeInfo.Properties.ValidProperty.Type = DataType.Integer.ToString();
-            schemaProperties.ComplexArray.Items.TypeInfo.Properties.ValidProperty.Caption = "ValidProperty";
-
-		    documentMetadata1.Schema = new DynamicWrapper();
-		    documentMetadata1.Schema.Type = "Object";
-		    documentMetadata1.Schema.Caption = "Register document";
-            documentMetadata1.Schema.Description = "Register document schema";
-            documentMetadata1.Schema.Properties = schemaProperties;
-
-			managerDocument.MergeItem(documentMetadata1);
-
-			RestQueryApi.QueryPostNotify(configurationId);
-
-			UpdateApi.UpdateStore(configurationId);
-		}
-	}
+    }
 }

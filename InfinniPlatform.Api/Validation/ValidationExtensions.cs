@@ -2,107 +2,103 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.Validation.Serialization;
-using Newtonsoft.Json.Linq;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Validations;
 
 namespace InfinniPlatform.Api.Validation
 {
-	public static class ValidationExtensions
-	{
-		public static string CombineProperties(string parent, string property)
-		{
-			var parentIsNull = string.IsNullOrEmpty(parent);
-			var propertyIsNull = string.IsNullOrEmpty(property);
+    public static class ValidationExtensions
+    {
+        public static string CombineProperties(string parent, string property)
+        {
+            var parentIsNull = string.IsNullOrEmpty(parent);
+            var propertyIsNull = string.IsNullOrEmpty(property);
 
-			var result = parent;
+            var result = parent;
 
-			if (!parentIsNull && !propertyIsNull)
-			{
-				result += '.' + property;
-			}
-			else if (parentIsNull)
-			{
-				result = property;
-			}
+            if (!parentIsNull && !propertyIsNull)
+            {
+                result += '.' + property;
+            }
+            else if (parentIsNull)
+            {
+                result = property;
+            }
 
-			return result ?? string.Empty;
-		}
+            return result ?? string.Empty;
+        }
 
+        public static IEnumerable<object> TryCastToEnumerable(this object target)
+        {
+            if (target is DynamicWrapper)
+            {
+                return target.ToEnumerable();
+            }
 
-		public static IEnumerable<object> TryCastToEnumerable(this object target)
-		{
-			if (target is DynamicWrapper)
-			{
-				return target.ToEnumerable();
-			}
+            if (target is IEnumerable)
+            {
+                return ((IEnumerable) target).OfType<object>().ToArray();
+            }
 
-			if (target is IEnumerable)
-			{
-				return ((IEnumerable)target).OfType<object>().ToArray();
-			}
+            return null;
+        }
 
-			return null;
-		}
+        public static void SetValidationResult(this ValidationResult result, bool isValid, string parent,
+            string property, object message)
+        {
+            if (result != null)
+            {
+                result.IsValid = isValid;
 
+                if (!isValid)
+                {
+                    if (result.Items == null)
+                    {
+                        result.Items = new List<dynamic>();
+                    }
 
-		public static void SetValidationResult(this ValidationResult result, bool isValid, string parent, string property, object message)
-		{
-			if (result != null)
-			{
-				result.IsValid = isValid;
+                    dynamic validationResultItem = new DynamicWrapper();
+                    validationResultItem.Property = CombineProperties(parent, property);
+                    validationResultItem.Message = message;
 
-				if (!isValid)
-				{
-					if (result.Items == null)
-					{
-						result.Items = new List<dynamic>();
-					}
+                    result.Items.Add(validationResultItem);
+                }
+            }
+        }
 
-					dynamic validationResultItem = new DynamicWrapper();
-					validationResultItem.Property = CombineProperties(parent, property);
-					validationResultItem.Message = message;
+        public static void SetValidationResult(this ValidationResult result, bool isValid, ValidationResult source)
+        {
+            if (result != null)
+            {
+                result.IsValid = isValid;
 
-					result.Items.Add(validationResultItem);
-				}
-			}
-		}
+                if (!isValid && source != null && source.Items.Count > 0)
+                {
+                    if (result.Items == null)
+                    {
+                        result.Items = new List<dynamic>();
+                    }
 
-		public static void SetValidationResult(this ValidationResult result, bool isValid, ValidationResult source)
-		{
-			if (result != null)
-			{
-				result.IsValid = isValid;
+                    result.Items.AddRange(source.Items);
+                }
+            }
+        }
 
-				if (!isValid && source != null && source.Items.Count > 0)
-				{
-					if (result.Items == null)
-					{
-						result.Items = new List<dynamic>();
-					}
+        public static IValidationOperator CreateValidatorFromConfigValidator(dynamic validatorConfig)
+        {
+            if (validatorConfig == null)
+            {
+                throw new ArgumentException(Resources.ValidatorNotFound);
+            }
 
-					result.Items.AddRange(source.Items);
-				}
-			}
-		}
-
-
-		public static IValidationOperator CreateValidatorFromConfigValidator(dynamic validatorConfig)
-		{
-			if (validatorConfig == null)
-			{
-				throw new ArgumentException(Resources.ValidatorNotFound);
-			}
-
-			if (validatorConfig is string)
-			{
-				return ValidationOperatorSerializer.Instance.Deserialize(((object) validatorConfig).ToDynamic());
-			}
-			return ValidationOperatorSerializer.Instance.Deserialize(validatorConfig);
-		}
-
-
-	}
+            if (validatorConfig is string)
+            {
+                return ValidationOperatorSerializer.Instance.Deserialize(((object) validatorConfig).ToDynamic());
+            }
+            return ValidationOperatorSerializer.Instance.Deserialize(validatorConfig);
+        }
+    }
 }

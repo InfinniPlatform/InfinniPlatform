@@ -10,7 +10,7 @@ using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Owin.Hosting;
 using InfinniPlatform.Owin.Modules;
-
+using InfinniPlatform.Sdk.Api;
 using NUnit.Framework;
 
 using Owin;

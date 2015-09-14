@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Metadata;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.SystemConfig.Configurator
 {
@@ -19,29 +18,32 @@ namespace InfinniPlatform.SystemConfig.Configurator
             string migrationName = target.Item.MigrationName.ToString();
             string configurationName = target.Item.ConfigurationName.ToString();
 
-            var assembly = Assembly.Load(
+            Assembly assembly = Assembly.Load(
                 new AssemblyName
-                {
-                    CodeBase = AssemblyName
-                });
+                    {
+                        CodeBase = AssemblyName
+                    });
 
-            var selectedType = assembly.GetTypes().FirstOrDefault(t => typeof (IConfigurationMigration).IsAssignableFrom(t) && t.Name == migrationName);
+            Type selectedType =
+                assembly.GetTypes()
+                        .FirstOrDefault(
+                            t => typeof (IConfigurationMigration).IsAssignableFrom(t) && t.Name == migrationName);
 
             if (selectedType != null)
             {
                 var migration = (IConfigurationMigration) Activator.CreateInstance(selectedType);
 
-                migration.AssignActiveConfiguration(configurationName, target.Context);
+                migration.AssignActiveConfiguration(target.Context.GetVersion(configurationName, target.UserName), configurationName, target.Context);
 
                 target.Result = new
-                {
-                    selectedType.Name,
-                    migration.Description,
-                    migration.IsUndoable,
-                    migration.ConfigurationId,
-                    migration.ConfigVersion,
-                    migration.Parameters
-                }.ToDynamic();
+                    {
+                        selectedType.Name,
+                        migration.Description,
+                        migration.IsUndoable,
+                        migration.ConfigurationId,
+                        migration.ConfigVersion,
+                        migration.Parameters
+                    }.ToDynamic();
             }
         }
     }

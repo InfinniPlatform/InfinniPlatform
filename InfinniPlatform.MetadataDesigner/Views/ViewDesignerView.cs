@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 using DevExpress.XtraEditors.Controls;
 
-using InfinniPlatform.Api.Dynamic;
+
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.RestApi.CommonApi.RouteTraces;
@@ -12,7 +12,7 @@ using InfinniPlatform.DesignControls;
 using InfinniPlatform.MetadataDesigner.Views.GeneratorResult;
 using InfinniPlatform.MetadataDesigner.Views.JsonEditor;
 using InfinniPlatform.MetadataDesigner.Views.ViewModel;
-
+using InfinniPlatform.Sdk.Dynamic;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.MetadataDesigner.Views
@@ -54,6 +54,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 			_view.Caption = CaptionEditor.EditValue;
 			_view.Description = DescriptionEditor.EditValue;
 			_view.MetadataType = ComboBoxSelectViewType.EditValue;
+
 			OnValueChanged(_view, new EventArgs());
 			
 		}
@@ -61,6 +62,8 @@ namespace InfinniPlatform.MetadataDesigner.Views
 		public Func<string> ConfigId { get; set; }
 
 		public Func<string> DocumentId { get; set; }
+
+        public Func<string> Version { get; set; }
 
 
 		private bool _isVisible;
@@ -111,10 +114,10 @@ namespace InfinniPlatform.MetadataDesigner.Views
 			{
 				try
 				{
-				var metadataManager = new ManagerFactoryDocument(ConfigId(), DocumentId());
+				var metadataManager = new ManagerFactoryDocument(Version(), ConfigId(), DocumentId());
 				var generatorItemsDocument = metadataManager.BuildGeneratorMetadataReader().GetItems();
 
-				var metadataManagerCommon = new ManagerFactoryDocument(ConfigId(), "Common");
+                var metadataManagerCommon = new ManagerFactoryDocument(Version(), ConfigId(), "Common");
 				var generatorItemsCommon = metadataManagerCommon.BuildGeneratorMetadataReader().GetItems();
 
 				MetadataGeneratorSelect.Properties.Items.Clear();
@@ -204,7 +207,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 
 			try
 			{
-				return ViewModelExtension.CheckGetView(ConfigId(), documentId, generatorName,viewType, jsonParams);
+				return ViewModelExtension.CheckGetView(Version(), ConfigId(), documentId, generatorName,viewType, jsonParams);
 			}
 			catch (Exception e)
 			{
@@ -235,7 +238,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 			var tracer = new RouteTraceSaveQueryLog();
 
 			dynamic item = MetadataGeneratorSelect.EditValue;
-			var result = ViewModelExtension.CheckGetView(ConfigId(), item.DocumentId, NameEditor.Text,ComboBoxSelectViewType.EditValue.ToString(), jsonParams);
+			var result = ViewModelExtension.CheckGetView(Version(), ConfigId(), item.DocumentId, NameEditor.Text,ComboBoxSelectViewType.EditValue.ToString(), jsonParams);
 			var checkForm = new CheckForm();
 			checkForm.MemoText = result;
 			checkForm.BodyText = tracer.GetCatchedData().Select(r => r.Body.ToString()).FirstOrDefault();

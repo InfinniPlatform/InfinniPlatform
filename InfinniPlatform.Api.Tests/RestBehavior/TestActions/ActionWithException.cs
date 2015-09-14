@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Api.ContextTypes;
-using System;
+﻿using System;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
 {
@@ -11,7 +11,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
         }
 
         /// <summary>
-        /// Throws Not Supported Exception.
+        ///     Throws Not Supported Exception.
         /// </summary>
         /// <exception cref="System.NotSupportedException"></exception>
         private static void ThrowOne()
@@ -22,7 +22,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
         }
 
         /// <summary>
-        /// Throws Not Implemented Exception.
+        ///     Throws Not Implemented Exception.
         /// </summary>
         /// <exception cref="System.NotImplementedException"></exception>
         private static void ThrowTwo()
@@ -33,7 +33,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
         }
 
         /// <summary>
-        /// Throws Argument Null Exception.
+        ///     Throws Argument Null Exception.
         /// </summary>
         /// <exception cref="System.ArgumentNullException"></exception>
         private static void ThrowThree()

@@ -1,24 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Validation;
 using InfinniPlatform.DesignControls.Controls.Properties;
 using InfinniPlatform.DesignControls.Layout;
 using InfinniPlatform.DesignControls.ObjectInspector;
 using InfinniPlatform.DesignControls.PropertyDesigner;
 using InfinniPlatform.DesignControls.PropertyEditors;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Validations;
 
 namespace InfinniPlatform.DesignControls.Controls.LayoutPanels
 {
-    public partial class StackPanel : UserControl, IPropertiesProvider, ILayoutProvider, ILayoutContainer,  IAlignment, IControlHost, IInspectedItem
+    public partial class StackPanel : UserControl, IPropertiesProvider, ILayoutProvider, ILayoutContainer, IAlignment,
+        IControlHost, IInspectedItem
     {
+        private readonly CompositPanel _compositPanel;
+
+        private readonly Dictionary<string, IControlProperty> _simpleProperties =
+            new Dictionary<string, IControlProperty>();
+
         public StackPanel()
         {
             InitializeComponent();
@@ -30,69 +32,31 @@ namespace InfinniPlatform.DesignControls.Controls.LayoutPanels
             InitProperties();
         }
 
-        private readonly CompositPanel _compositPanel;
-
-        private readonly Dictionary<string, IControlProperty> _simpleProperties = new Dictionary<string, IControlProperty>();
-
-        private void InitProperties()
+        public void AlignControls()
         {
-            _simpleProperties.InheritBaseElementSimpleProperties();
-            _simpleProperties.Add("Orientation", new SimpleProperty("Vertical"));
+            _compositPanel.AlignControls();
         }
 
-        public void ApplySimpleProperties()
+        public CompositPanel GetHost()
         {
-            ApplyOrientationPanels();
+            return _compositPanel;
         }
 
-        private void ApplyOrientationPanels()
+        public ObjectInspectorTree ObjectInspector { get; set; }
+
+        public void InsertLayout(dynamic layout)
         {
-            var orientation = _simpleProperties["Orientation"].Value.ToString();
-            _compositPanel.ControlOrientation = orientation;
+            _compositPanel.InsertLayout(layout);
         }
 
-        public void ApplyCollections()
-        {
-            
-        }
-
-        public Dictionary<string, IControlProperty> GetSimpleProperties()
-        {
-            return _simpleProperties;
-        }
-
-        public Dictionary<string, CollectionProperty> GetCollections()
-        {
-            return new Dictionary<string, CollectionProperty>();
-        }
-
-        public void LoadProperties(dynamic value)
-        {
-            DesignerExtensions.SetSimplePropertiesFromInstance(_simpleProperties, value);
-        }
-
-		public Dictionary<string, Func<IPropertyEditor>> GetPropertyEditors()
-		{
-			return new Dictionary<string, Func<IPropertyEditor>>().InheritBaseElementPropertyEditors(ObjectInspector);
-		}
-
-	    public Dictionary<string, Func<Func<string, dynamic>, ValidationResult>> GetValidationRules()
-	    {
-		    return new Dictionary<string, Func<Func<string, dynamic>, ValidationResult>>()
-			           {
-				           {"Orientation", Common.CreateNullOrEmptyValidator("StackPanel","Orientation")}
-			           }.InheritBaseElementValidators("StackPanel");
-	    }
-
-
-	    public dynamic GetLayout()
+        public dynamic GetLayout()
         {
             dynamic instanceLayout = new DynamicWrapper();
 
             DesignerExtensions.SetSimplePropertiesToInstance(this, instanceLayout);
 
             instanceLayout.Items = new List<dynamic>();
-            foreach (ILayoutProvider layoutProvider in _compositPanel.GetLayoutControls())
+            foreach (var layoutProvider in _compositPanel.GetLayoutControls())
             {
                 dynamic instanceItem = new DynamicWrapper();
                 instanceLayout.Items.Add(instanceItem);
@@ -111,23 +75,53 @@ namespace InfinniPlatform.DesignControls.Controls.LayoutPanels
             return "StackPanel";
         }
 
-        public void AlignControls()
+        public void ApplySimpleProperties()
         {
-            _compositPanel.AlignControls();
+            ApplyOrientationPanels();
         }
 
-	    public CompositPanel GetHost()
-	    {
-		    return _compositPanel;
-	    }
+        public void ApplyCollections()
+        {
+        }
 
-		public void InsertLayout(dynamic layout)
-		{
-			_compositPanel.InsertLayout(layout);
-		}
+        public Dictionary<string, IControlProperty> GetSimpleProperties()
+        {
+            return _simpleProperties;
+        }
 
+        public Dictionary<string, CollectionProperty> GetCollections()
+        {
+            return new Dictionary<string, CollectionProperty>();
+        }
 
-	    public ObjectInspectorTree ObjectInspector { get; set; }
+        public void LoadProperties(dynamic value)
+        {
+            DesignerExtensions.SetSimplePropertiesFromInstance(_simpleProperties, value);
+        }
 
+        public Dictionary<string, Func<IPropertyEditor>> GetPropertyEditors()
+        {
+            return new Dictionary<string, Func<IPropertyEditor>>().InheritBaseElementPropertyEditors(ObjectInspector);
+        }
+
+        public Dictionary<string, Func<Func<string, dynamic>, ValidationResult>> GetValidationRules()
+        {
+            return new Dictionary<string, Func<Func<string, dynamic>, ValidationResult>>
+            {
+                {"Orientation", Common.CreateNullOrEmptyValidator("StackPanel", "Orientation")}
+            }.InheritBaseElementValidators("StackPanel");
+        }
+
+        private void InitProperties()
+        {
+            _simpleProperties.InheritBaseElementSimpleProperties();
+            _simpleProperties.Add("Orientation", new SimpleProperty("Vertical"));
+        }
+
+        private void ApplyOrientationPanels()
+        {
+            var orientation = _simpleProperties["Orientation"].Value.ToString();
+            _compositPanel.ControlOrientation = orientation;
+        }
     }
 }

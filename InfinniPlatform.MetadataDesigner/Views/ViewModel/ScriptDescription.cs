@@ -2,6 +2,7 @@
 using System.Linq;
 using DevExpress.XtraEditors.Controls;
 using InfinniPlatform.Api.ContextTypes;
+using InfinniPlatform.Sdk.Environment.Hosting;
 
 namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 {

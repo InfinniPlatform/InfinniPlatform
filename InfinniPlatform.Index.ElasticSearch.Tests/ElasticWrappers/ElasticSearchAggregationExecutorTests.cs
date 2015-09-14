@@ -1,21 +1,17 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Dynamic;
-using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.Factories;
-using InfinniPlatform.Api.Index;
-using InfinniPlatform.Api.Index.SearchOptions;
-using InfinniPlatform.Api.RestApi.AuthApi;
-using InfinniPlatform.Api.SearchOptions;
+using System.Linq;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Index.ElasticSearch.Tests.Builders;
-using NUnit.Framework;
-
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.SystemConfig.Multitenancy;
+using NUnit.Framework;
 
 namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 {
@@ -156,7 +152,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             }
 
             var executor = new ElasticSearchAggregationProvider(aggrindex, aggrindex, AuthorizationStorageExtensions.AnonimousUser);
-            var queryWrapper = new IndexQueryExecutor(aggrindex, aggrindex,AuthorizationStorageExtensions.AnonimousUser);
+            var queryWrapper = new IndexQueryExecutor(new IndexToTypeAccordanceProvider().GetIndexTypeAccordances(new[] { aggrindex }, new[] { aggrindex }),AuthorizationStorageExtensions.AnonimousUser);
 
             var r = executor.ExecuteTermAggregation(
                     new string[0],

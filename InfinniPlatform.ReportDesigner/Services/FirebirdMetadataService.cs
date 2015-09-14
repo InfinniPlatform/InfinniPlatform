@@ -1,51 +1,60 @@
 ﻿using System.Collections.Generic;
-
 using FirebirdSql.Data.FirebirdClient;
 using InfinniPlatform.Api.Schema;
 using InfinniPlatform.FastReport.Templates.Data;
 
 namespace InfinniPlatform.ReportDesigner.Services
 {
-	sealed class FirebirdMetadataService
-	{
-		public IEnumerable<string> GetTableNames(string connectionString)
-		{
-			var result = new List<string>();
+    internal sealed class FirebirdMetadataService
+    {
+        private static readonly Dictionary<string, SchemaDataType> DataTypes
+            = new Dictionary<string, SchemaDataType>
+            {
+                {"String", SchemaDataType.String},
+                {"Float", SchemaDataType.Float},
+                {"Integer", SchemaDataType.Integer},
+                {"Boolean", SchemaDataType.Boolean},
+                {"DateTime", SchemaDataType.DateTime}
+            };
 
-			using (var connection = new FbConnection(connectionString))
-			{
-				using (var command = connection.CreateCommand())
-				{
-					command.CommandText = @"
+        public IEnumerable<string> GetTableNames(string connectionString)
+        {
+            var result = new List<string>();
+
+            using (var connection = new FbConnection(connectionString))
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = @"
 						select rdb$relation_name as Name
 						from rdb$relations
 						where rdb$view_blr is null and (rdb$system_flag is null or rdb$system_flag = 0)
 						order by Name asc;";
 
-					connection.Open();
+                    connection.Open();
 
-					using (var reader = command.ExecuteReader())
-					{
-						while (reader.Read())
-						{
-							result.Add(((string)reader["Name"]).Trim());
-						}
-					}
-				}
-			}
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            result.Add(((string) reader["Name"]).Trim());
+                        }
+                    }
+                }
+            }
 
-			return result;
-		}
+            return result;
+        }
 
-		public DataSourceInfo GetTableDataSource(string connectionString, string tableName)
-		{
-			var properties = new Dictionary<string, DataSchema>();
+        public DataSourceInfo GetTableDataSource(string connectionString, string tableName)
+        {
+            var properties = new Dictionary<string, DataSchema>();
 
-			using (var connection = new FbConnection(connectionString))
-			{
-				using (var command = connection.CreateCommand())
-				{
-					command.CommandText = @"
+            using (var connection = new FbConnection(connectionString))
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = @"
 						select
 							tables.rdb$field_name as name,
 							case columns.rdb$field_type
@@ -79,63 +88,50 @@ namespace InfinniPlatform.ReportDesigner.Services
 						where (tables.rdb$relation_name = @tableName) and (coalesce(tables.rdb$system_flag, 0) = 0)
 						order by tables.rdb$field_position;";
 
-					command.Parameters.Add(new FbParameter("tableName", tableName));
+                    command.Parameters.Add(new FbParameter("tableName", tableName));
 
-					connection.Open();
+                    connection.Open();
 
-					using (var reader = command.ExecuteReader())
-					{
-						while (reader.Read())
-						{
-							var propertyName = ((string)reader["Name"]).Trim();
-							var propertyType = ((string)reader["Type"]).Trim();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var propertyName = ((string) reader["Name"]).Trim();
+                            var propertyType = ((string) reader["Type"]).Trim();
 
-							properties.Add(propertyName, new DataSchema { Type = GetDataType(propertyType) });
-						}
-					}
-				}
-			}
+                            properties.Add(propertyName, new DataSchema {Type = GetDataType(propertyType)});
+                        }
+                    }
+                }
+            }
 
-			return new DataSourceInfo
-				   {
-					   Name = tableName,
+            return new DataSourceInfo
+            {
+                Name = tableName,
+                Schema = new DataSchema
+                {
+                    Type = SchemaDataType.Object,
+                    Properties = properties
+                },
+                Provider = new SqlDataProviderInfo
+                {
+                    ServerType = SqlServerType.Firebird,
+                    ConnectionString = connectionString,
+                    SelectCommand = string.Format("select * from \"{0}\"", tableName)
+                }
+            };
+        }
 
-					   Schema = new DataSchema
-								{
-									Type = SchemaDataType.Object,
-									Properties = properties
-								},
+        private static SchemaDataType GetDataType(string sqlType)
+        {
+            SchemaDataType result;
 
-					   Provider = new SqlDataProviderInfo
-								  {
-									  ServerType = SqlServerType.Firebird,
-									  ConnectionString = connectionString,
-									  SelectCommand = string.Format("select * from \"{0}\"", tableName)
-								  }
-				   };
-		}
+            if (DataTypes.TryGetValue(sqlType, out result) == false)
+            {
+                result = SchemaDataType.String;
+            }
 
-		private static SchemaDataType GetDataType(string sqlType)
-		{
-			SchemaDataType result;
-
-			if (DataTypes.TryGetValue(sqlType, out result) == false)
-			{
-				result = SchemaDataType.String;
-			}
-
-			return result;
-		}
-
-
-		private static readonly Dictionary<string, SchemaDataType> DataTypes
-			= new Dictionary<string, SchemaDataType>
-			  {
-				  { "String", SchemaDataType.String },
-				  { "Float", SchemaDataType.Float },
-				  { "Integer", SchemaDataType.Integer },
-				  { "Boolean", SchemaDataType.Boolean },
-				  { "DateTime", SchemaDataType.DateTime }
-			  };
-	}
+            return result;
+        }
+    }
 }

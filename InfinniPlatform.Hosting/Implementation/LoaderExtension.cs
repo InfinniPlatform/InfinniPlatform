@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using InfinniPlatform.Api.Packages;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.SystemExtensions;
@@ -22,10 +18,11 @@ namespace InfinniPlatform.Hosting.Implementation
             {
                 foreach (var assemblyType in assembly.GetTypes())
                 {
-                    if (typeof(MetadataConfigurationInstaller).IsAssignableFrom(assemblyType))
+                    if (typeof (MetadataConfigurationInstaller).IsAssignableFrom(assemblyType))
                     {
                         var info = new InstallerInfo();
-                        info.ConfigurationName = Regex.Replace(assemblyType.Name, "Installer", "", RegexOptions.IgnoreCase);
+                        info.ConfigurationName = Regex.Replace(assemblyType.Name, "Installer", "",
+                            RegexOptions.IgnoreCase);
 
                         info.AssemblyName = assembly.GetName().Name;
                         result.Add(info);
@@ -34,12 +31,12 @@ namespace InfinniPlatform.Hosting.Implementation
             }
             catch
             {
-
             }
             return result;
         }
 
-        public static IEnumerable<string> InstallFromAssembly(this AssemblyInfo assembly, PackageBuilder packageBuilder, string versionName)
+        public static IEnumerable<string> InstallFromAssembly(this AssemblyInfo assembly, PackageBuilder packageBuilder,
+            string versionName)
         {
             var installers = assembly.Assembly.GetInstallers();
             var result = new List<string>();
@@ -50,7 +47,7 @@ namespace InfinniPlatform.Hosting.Implementation
                     versionName,
                     installer.AssemblyName + (assembly.IsExecutable ? ".exe" : ".dll"));
 
-                UpdateApi.InstallPackages(new[] { package });
+                new UpdateApi(versionName).InstallPackages(new[] {package});
 
                 result.Add(package.ConfigurationName.ToString());
             }

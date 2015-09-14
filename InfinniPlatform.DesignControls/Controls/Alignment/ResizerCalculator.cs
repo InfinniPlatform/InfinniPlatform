@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using InfinniPlatform.DesignControls.PropertyDesigner;
 
@@ -12,7 +9,7 @@ namespace InfinniPlatform.DesignControls.Controls.Alignment
     {
         private readonly PropertiesControl _control;
 
-        public ResizerCalculator( PropertiesControl control)
+        public ResizerCalculator(PropertiesControl control)
         {
             _control = control;
         }
@@ -22,24 +19,23 @@ namespace InfinniPlatform.DesignControls.Controls.Alignment
             var listResizers = new List<ResizerFixed>();
 
             var checkChildResizers = resizers.ToList();
-            foreach (ResizerFixed resizer in checkChildResizers)
+            foreach (var resizer in checkChildResizers)
             {
                 var parentList = new List<Control>();
                 GetParents(parentList, resizer.GetControl());
                 if (parentList.FirstOrDefault(p => p == _control) != null)
                 {
-                    listResizers.Add(resizer);                    
+                    listResizers.Add(resizer);
                 }
             }
 
             listResizers = CheckResizersIntersect(listResizers);
 
-            return listResizers.Sum(r => r.GetSize());           
+            return listResizers.Sum(r => r.GetSize());
         }
 
         private List<ResizerFixed> CheckResizersIntersect(List<ResizerFixed> listResizers)
         {
-
             var removedControls = new List<ResizerFixed>();
             foreach (var resizerFixed in listResizers)
             {
@@ -48,7 +44,7 @@ namespace InfinniPlatform.DesignControls.Controls.Alignment
                 GetParents(parentsAll, resizerFixed.GetControl());
                 foreach (var @fixed in checkList)
                 {
-                    if(parentsAll.Contains(@fixed.GetControl()))
+                    if (parentsAll.Contains(@fixed.GetControl()))
                     {
                         removedControls.Add(resizerFixed);
                     }
@@ -57,7 +53,6 @@ namespace InfinniPlatform.DesignControls.Controls.Alignment
 
             return listResizers.Except(removedControls).ToList();
         }
-
 
         private List<Control> GetParents(List<Control> parents, Control control)
         {
@@ -68,7 +63,7 @@ namespace InfinniPlatform.DesignControls.Controls.Alignment
                 return GetParents(parents, parent);
             }
             return parents;
-        } 
+        }
 
         public PropertiesControl GetControl()
         {

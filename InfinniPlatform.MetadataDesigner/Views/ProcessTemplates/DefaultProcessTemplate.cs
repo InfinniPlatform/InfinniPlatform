@@ -2,11 +2,8 @@
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraVerticalGrid.Rows;
 using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.SchemaReaders;
-using InfinniPlatform.Api.RestApi.AuthApi;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.Schema;
@@ -16,6 +13,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using InfinniPlatform.Api.RestApi.Auth;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 {
@@ -43,13 +42,13 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 
 		private void ReloadSchema()
 		{
-			_schemaPrefill = new MetadataApi().GetDocumentSchema(ConfigId, DocumentId);
+			_schemaPrefill = new MetadataApi().GetDocumentSchema(Version, ConfigId, DocumentId);
 			FillPropertiesBySchema();
 		}
 
 		private IEnumerable<string> LoadPropertiesNames()
 		{
-			var schema = new MetadataApi().GetDocumentSchema(ConfigId, DocumentId);
+            var schema = new MetadataApi().GetDocumentSchema(Version,ConfigId, DocumentId);
 
 			var properiesNames = new List<string>();
 
@@ -59,7 +58,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 				OnPrimitiveProperty = schemaObject => properiesNames.Add(schemaObject.Name)
 			};
 
-			schemaIterator.ProcessSchema(schema);
+			schemaIterator.ProcessSchema(Version, schema);
 
 			return properiesNames;
 		}
@@ -145,7 +144,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 																								row.Properties.Value = obj.Value.DefaultValue;
 																								return row;
 																							});
-			schemaIterator.ProcessSchema(_schemaPrefill);
+			schemaIterator.ProcessSchema(Version,_schemaPrefill);
 
 
 		}
@@ -196,7 +195,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 			schemaIterator.OnPrimitiveProperty = action;
 			schemaIterator.OnObjectProperty = action;
 
-			schemaIterator.ProcessSchema(_schemaPrefill);
+			schemaIterator.ProcessSchema(Version,_schemaPrefill);
 			return _schemaPrefill;
 		}
 
@@ -214,7 +213,9 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 		public IEnumerable<string> ValidationErrors { get; set; }
 		public string ConfigId { get; set; }
 		public string DocumentId { get; set; }
-		public IEnumerable<string> DocumentStates { get; set; }
+        public string Version { get; set; }
+
+	    public IEnumerable<string> DocumentStates { get; set; }
 		public IProcessBuilder ProcessBuilder { get; set; }
 
 
@@ -365,7 +366,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 		{
 			ProcessBuilder.EditTransition(GetTransition());
 
-			var processManager = new ManagerFactoryDocument(ConfigId, DocumentId).BuildProcessManager();
+			var processManager = new ManagerFactoryDocument(Version, ConfigId, DocumentId).BuildProcessManager();
 			processManager.DeleteItem(_process);
 			processManager.MergeItem(_process);
 

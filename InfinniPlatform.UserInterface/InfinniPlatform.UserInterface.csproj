@@ -13,6 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -117,18 +118,14 @@
     <Compile Include="Services\Metadata\BaseMetadataService.cs" />
     <Compile Include="Services\Metadata\ConfigurationMetadataService.cs" />
     <Compile Include="Services\Metadata\RegisterMetadataService.cs" />
-    <Compile Include="Services\Metadata\ReportMetadataService.cs" />
-    <Compile Include="Services\Metadata\StatusMetadataService.cs" />
     <Compile Include="Services\Metadata\DocumentMetadataService.cs" />
-    <Compile Include="Services\Metadata\GeneratorMetadataService.cs" />
     <Compile Include="Services\Metadata\IMetadataService.cs" />
     <Compile Include="Services\Metadata\MenuMetadataService.cs" />
     <Compile Include="Services\Metadata\ProcessMetadataService.cs" />
     <Compile Include="Services\Metadata\ScenarioMetadataService.cs" />
     <Compile Include="Services\Metadata\ServiceMetadataService.cs" />
-    <Compile Include="Services\Metadata\ValidationErrorMetadataService.cs" />
-    <Compile Include="Services\Metadata\ValidationWarningMetadataService.cs" />
     <Compile Include="Services\Metadata\PrintViewMetadataService.cs" />
+    <Compile Include="Services\Metadata\SolutionMetadataService.cs" />
     <Compile Include="Services\Metadata\ViewMetadataService.cs" />
     <Compile Include="ViewBuilders\ActionElements\Buttons\ButtonControl.xaml.cs">
       <DependentUpon>ButtonControl.xaml</DependentUpon>
@@ -683,14 +680,6 @@
       <Project>{7CA0F96C-7FF4-44B2-9D44-851984DF4532}</Project>
       <Name>InfinniPlatform.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.DesignControls\InfinniPlatform.DesignControls.csproj">
-      <Project>{9E7FD106-8434-41ED-8DB1-10761C25A25C}</Project>
-      <Name>InfinniPlatform.DesignControls</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.FastReport\InfinniPlatform.FastReport.csproj">
-      <Project>{774D0E71-1848-4074-B537-F182FEFED717}</Project>
-      <Name>InfinniPlatform.FastReport</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.MetadataDesigner\InfinniPlatform.MetadataDesigner.csproj">
       <Project>{b5108924-dda4-4857-8e15-1abb0d49c6f6}</Project>
       <Name>InfinniPlatform.MetadataDesigner</Name>
@@ -702,6 +691,10 @@
     <ProjectReference Include="..\InfinniPlatform.ReportDesigner\InfinniPlatform.ReportDesigner.csproj">
       <Project>{65734184-a04c-4509-bf68-6f07ca324104}</Project>
       <Name>InfinniPlatform.ReportDesigner</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
+      <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
+      <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

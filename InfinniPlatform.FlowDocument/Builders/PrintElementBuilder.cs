@@ -2,186 +2,185 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
-
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Expressions.Parser;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.FlowDocument.Builders
 {
-	/// <summary>
-	/// Построитель элементов печатного представления.
-	/// </summary>
-	sealed class PrintElementBuilder
-	{
-		private readonly Dictionary<string, IPrintElementFactory> _factories
-			= new Dictionary<string, IPrintElementFactory>(StringComparer.OrdinalIgnoreCase);
+    /// <summary>
+    ///     Построитель элементов печатного представления.
+    /// </summary>
+    internal sealed class PrintElementBuilder
+    {
+        private readonly Dictionary<string, IPrintElementFactory> _factories
+            = new Dictionary<string, IPrintElementFactory>(StringComparer.OrdinalIgnoreCase);
 
+        public void Register(string elementType, IPrintElementFactory elementFactory)
+        {
+            if (string.IsNullOrEmpty(elementType))
+            {
+                throw new ArgumentNullException("elementType");
+            }
 
-		public void Register(string elementType, IPrintElementFactory elementFactory)
-		{
-			if (string.IsNullOrEmpty(elementType))
-			{
-				throw new ArgumentNullException("elementType");
-			}
+            if (elementFactory == null)
+            {
+                throw new ArgumentNullException("elementFactory");
+            }
 
-			if (elementFactory == null)
-			{
-				throw new ArgumentNullException("elementFactory");
-			}
+            _factories.Add(elementType, elementFactory);
+        }
 
-			_factories.Add(elementType, elementFactory);
-		}
+        public object BuildElement(PrintElementBuildContext buildContext, dynamic elementMetadata)
+        {
+            if (elementMetadata is IDynamicMetaObjectProvider)
+            {
+                foreach (var property in elementMetadata)
+                {
+                    return BuildElement(buildContext, property.Value, property.Key);
+                }
+            }
 
+            return null;
+        }
 
-		public object BuildElement(PrintElementBuildContext buildContext, dynamic elementMetadata)
-		{
-			if (elementMetadata is IDynamicMetaObjectProvider)
-			{
-				foreach (var property in elementMetadata)
-				{
-					return BuildElement(buildContext, property.Value, property.Key);
-				}
-			}
+        public object BuildElement(PrintElementBuildContext buildContext, dynamic elementMetadata, string elementType)
+        {
+            if (elementMetadata != null)
+            {
+                IPrintElementFactory elementFactory;
 
-			return null;
-		}
+                if (_factories.TryGetValue(elementType, out elementFactory) &&
+                    CanCreateElement(buildContext, elementMetadata))
+                {
+                    var element = elementFactory.Create(buildContext, elementMetadata);
+                    buildContext.MapElement(element, elementMetadata);
+                    return element;
+                }
+            }
 
-		public object BuildElement(PrintElementBuildContext buildContext, dynamic elementMetadata, string elementType)
-		{
-			if (elementMetadata != null)
-			{
-				IPrintElementFactory elementFactory;
+            return null;
+        }
 
-				if (_factories.TryGetValue(elementType, out elementFactory) && CanCreateElement(buildContext, elementMetadata))
-				{
-					var element = elementFactory.Create(buildContext, elementMetadata);
-					buildContext.MapElement(element, elementMetadata);
-					return element;
-				}
-			}
+        public IEnumerable BuildElements(PrintElementBuildContext buildContext, IEnumerable elementMetadata)
+        {
+            if (elementMetadata != null)
+            {
+                var items = new List<object>();
 
-			return null;
-		}
+                foreach (var itemMetadata in elementMetadata)
+                {
+                    var item = BuildElement(buildContext.Clone(), itemMetadata.ToDynamic());
 
+                    if (item != null)
+                    {
+                        items.Add(item);
+                    }
+                }
 
-		public IEnumerable BuildElements(PrintElementBuildContext buildContext, IEnumerable elementMetadata)
-		{
-			if (elementMetadata != null)
-			{
-				var items = new List<object>();
+                return items;
+            }
 
-				foreach (var itemMetadata in elementMetadata)
-				{
-					var item = BuildElement(buildContext.Clone(), itemMetadata.ToDynamic());
+            return null;
+        }
 
-					if (item != null)
-					{
-						items.Add(item);
-					}
-				}
+        public IEnumerable BuildElements(PrintElementBuildContext buildContext, IEnumerable elementMetadata,
+            string elementType)
+        {
+            if (elementMetadata != null)
+            {
+                var items = new List<object>();
 
-				return items;
-			}
+                foreach (var itemMetadata in elementMetadata)
+                {
+                    var item = BuildElement(buildContext.Clone(), itemMetadata, elementType);
 
-			return null;
-		}
+                    if (item != null)
+                    {
+                        items.Add(item);
+                    }
+                }
 
-		public IEnumerable BuildElements(PrintElementBuildContext buildContext, IEnumerable elementMetadata, string elementType)
-		{
-			if (elementMetadata != null)
-			{
-				var items = new List<object>();
+                return items;
+            }
 
-				foreach (var itemMetadata in elementMetadata)
-				{
-					var item = BuildElement(buildContext.Clone(), itemMetadata, elementType);
+            return null;
+        }
 
-					if (item != null)
-					{
-						items.Add(item);
-					}
-				}
+        private static bool CanCreateElement(PrintElementBuildContext buildContext, dynamic elementMetadata)
+        {
+            string visibility;
 
-				return items;
-			}
+            if (!ConvertHelper.TryToNormString(elementMetadata.Visibility, out visibility))
+            {
+                visibility = "source";
+            }
 
-			return null;
-		}
+            if (visibility == "never")
+            {
+                return false;
+            }
 
+            string sourceProperty;
+            string sourceExpression = null;
 
-		private static bool CanCreateElement(PrintElementBuildContext buildContext, dynamic elementMetadata)
-		{
-			string visibility;
+            var hasDataSource = ConvertHelper.TryToString(elementMetadata.Source, out sourceProperty)
+                                || ConvertHelper.TryToString(elementMetadata.Expression, out sourceExpression);
 
-			if (!ConvertHelper.TryToNormString(elementMetadata.Visibility, out visibility))
-			{
-				visibility = "source";
-			}
+            // Если у элемента указан источник данных
+            if (hasDataSource)
+            {
+                // Установка данных элемента по источнику
+                SetElementData(buildContext, sourceProperty, sourceExpression);
 
-			if (visibility == "never")
-			{
-				return false;
-			}
+                // Если элемент печатается только при наличии данных
+                if (!buildContext.IsDesignMode && (visibility == "source") &&
+                    ConvertHelper.ObjectIsNullOrEmpty(buildContext.ElementSourceValue))
+                {
+                    return false;
+                }
+            }
 
-			string sourceProperty;
-			string sourceExpression = null;
+            // Установка стиля элемента по имени
+            SetElementStyle(buildContext, elementMetadata.Style);
 
-			var hasDataSource = ConvertHelper.TryToString(elementMetadata.Source, out sourceProperty)
-								|| ConvertHelper.TryToString(elementMetadata.Expression, out sourceExpression);
+            return true;
+        }
 
-			// Если у элемента указан источник данных
-			if (hasDataSource)
-			{
-				// Установка данных элемента по источнику
-				SetElementData(buildContext, sourceProperty, sourceExpression);
+        private static void SetElementData(PrintElementBuildContext buildContext, string sourceProperty,
+            string sourceExpression)
+        {
+            buildContext.ElementSourceProperty = sourceProperty;
+            buildContext.ElementSourceExpression = sourceExpression;
 
-				// Если элемент печатается только при наличии данных
-				if (!buildContext.IsDesignMode && (visibility == "source") && ConvertHelper.ObjectIsNullOrEmpty(buildContext.ElementSourceValue))
-				{
-					return false;
-				}
-			}
+            var elementSourceValue = buildContext.ElementSourceValue;
 
-			// Установка стиля элемента по имени
-			SetElementStyle(buildContext, elementMetadata.Style);
+            // Если указано свойство данных
+            if (!string.IsNullOrEmpty(sourceProperty))
+            {
+                if (sourceProperty != "$")
+                {
+                    elementSourceValue = sourceProperty.StartsWith("$.")
+                        ? buildContext.PrintViewSource.GetProperty(sourceProperty.Substring(2))
+                        : buildContext.ElementSourceValue.GetProperty(sourceProperty);
+                }
+                else
+                {
+                    elementSourceValue = buildContext.PrintViewSource;
+                }
+            }
 
-			return true;
-		}
+            // Если указано выражение над данными
+            if (!string.IsNullOrEmpty(sourceExpression))
+            {
+                elementSourceValue = ExpressionExecutor.Execute(sourceExpression, elementSourceValue);
+            }
 
-		private static void SetElementData(PrintElementBuildContext buildContext, string sourceProperty, string sourceExpression)
-		{
-			buildContext.ElementSourceProperty = sourceProperty;
-			buildContext.ElementSourceExpression = sourceExpression;
+            buildContext.ElementSourceValue = elementSourceValue;
+        }
 
-			var elementSourceValue = buildContext.ElementSourceValue;
-
-			// Если указано свойство данных
-			if (!string.IsNullOrEmpty(sourceProperty))
-			{
-				if (sourceProperty != "$")
-				{
-					elementSourceValue = sourceProperty.StartsWith("$.")
-						? buildContext.PrintViewSource.GetProperty(sourceProperty.Substring(2))
-						: buildContext.ElementSourceValue.GetProperty(sourceProperty);
-				}
-				else
-				{
-					elementSourceValue = buildContext.PrintViewSource;
-				}
-			}
-
-			// Если указано выражение над данными
-			if (!string.IsNullOrEmpty(sourceExpression))
-			{
-				elementSourceValue = ExpressionExecutor.Execute(sourceExpression, elementSourceValue);
-			}
-
-			buildContext.ElementSourceValue = elementSourceValue;
-		}
-
-		private static void SetElementStyle(PrintElementBuildContext buildContext, object elementStyleName)
-		{
-			buildContext.ElementStyle = buildContext.FindStyle(elementStyleName);
-		}
-	}
+        private static void SetElementStyle(PrintElementBuildContext buildContext, object elementStyleName)
+        {
+            buildContext.ElementStyle = buildContext.FindStyle(elementStyleName);
+        }
+    }
 }

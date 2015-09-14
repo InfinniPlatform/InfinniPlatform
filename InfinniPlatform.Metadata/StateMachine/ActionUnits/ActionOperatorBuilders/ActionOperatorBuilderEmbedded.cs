@@ -1,6 +1,6 @@
 ﻿using System;
-using InfinniPlatform.Api.Actions;
 using InfinniPlatform.Metadata.Properties;
+using InfinniPlatform.Sdk.Environment.Actions;
 
 namespace InfinniPlatform.Metadata.StateMachine.ActionUnits.ActionOperatorBuilders
 {
@@ -20,7 +20,8 @@ namespace InfinniPlatform.Metadata.StateMachine.ActionUnits.ActionOperatorBuilde
             var methodInfo = _actionUnitType.GetMethod("Action");
             if (methodInfo != null)
             {
-                return new ActionOperator(_actionUnitType.Name, context => methodInfo.Invoke(actionInstance, new object[] {context}));
+                return new ActionOperator(_actionUnitType.Name,
+                    context => methodInfo.Invoke(actionInstance, new object[] {context}));
             }
 
             throw new ArgumentException(Resources.ActionMethodNotSpecified);

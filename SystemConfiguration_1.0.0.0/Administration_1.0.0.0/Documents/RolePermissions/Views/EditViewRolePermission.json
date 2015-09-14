@@ -1,0 +1,189 @@
+{
+  "Id": "3fd98df5-9674-44f2-aeac-f3d9387b8a72",
+  "LayoutPanel": {
+    "StackPanel": {
+      "Items": [
+        {
+          "ScrollPanel": {
+            "LayoutPanel": {
+              "GridPanel": {
+                "Rows": [
+                  {
+                    "Cells": [
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "Label": {
+                              "Text": "Права на просмотр"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "CheckBox": {
+                              "Value": {
+                                "PropertyBinding": {
+                                  "DataSource": "MainDataSource",
+                                  "Property": "PermissionRead"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "Label": {
+                              "Text": "Права на создание"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "CheckBox": {
+                              "Value": {
+                                "PropertyBinding": {
+                                  "DataSource": "MainDataSource",
+                                  "Property": "PermissionCreate"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "Label": {
+                              "Text": "Права на изменение"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "CheckBox": {
+                              "Value": {
+                                "PropertyBinding": {
+                                  "DataSource": "MainDataSource",
+                                  "Property": "PermissionUpdate"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "Label": {
+                              "Text": "Права на удаление"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "ColumnSpan": 3,
+                        "Items": [
+                          {
+                            "CheckBox": {
+                              "Value": {
+                                "PropertyBinding": {
+                                  "DataSource": "MainDataSource",
+                                  "Property": "PermissionDelete"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ToolBar": {
+            "Items": [
+              {
+                "ToolBarButton": {
+                  "Text": "Сохранить",
+                  "OnClick": {
+                    "Name": "SaveClick"
+                  },
+                  "Action": {
+                    "SaveAction": {
+                      "DataSource": "MainDataSource"
+                    }
+                  }
+                }
+              },
+              {
+                "ToolBarButton": {
+                  "Text": "Отмена",
+                  "Action": {
+                    "CancelAction": {}
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "DataSources": [
+    {
+      "DocumentDataSource": {
+        "Name": "MainDataSource",
+        "ConfigId": "Administration",
+        "DocumentId": "RolePermissions",
+        "UpdateAction": "CreatePermissionsForRole"
+      }
+    },
+    {
+      "DocumentDataSource": {
+        "ConfigId": "Administration",
+        "DocumentId": "Role",
+        "Name": "RoleDataSource"
+      }
+    },
+    {
+      "DocumentDataSource": {
+        "ConfigId": "Administration",
+        "DocumentId": "Section",
+        "Name": "SectionDataSource"
+      }
+    }
+  ],
+  "ChildViews": [],
+  "Text": "Права доступа для роли",
+  "MetadataType": "EditView",
+  "Description": "",
+  "Caption": "Редактирование роли пользователя",
+  "Name": "EditViewRolePermission",
+  "ParentId": "cf4d2816-9dde-4143-8e53-1bcaa1972bcf",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "viewmetadata",
+  "Scripts": [
+    {
+      "Name": "SaveClick",
+      "Body": "context.Global.executeAction({\r\n   SaveAction : {\r\n      DataSource : 'MainDataSource'\r\n   }\r\n}, function(data) {\r\n   context.ParentView.getParentView().getContext().DataSources['PermissionsDataSource'].resumeUpdate();\r\n});\r\n\r\n\r\n"
+    }
+  ]
+}

@@ -1,56 +1,99 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Api.SearchOptions;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers
 {
     public sealed class ManagerIdentifiersStandard : IManagerIdentifiers
     {
 
-	    private static IEnumerable<dynamic> ConfigList
-	    {
-		    get
-		    {
-			    return DynamicWrapperExtensions.ToEnumerable(
-				            RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getregisteredconfiglist", null, null)
-				                        .ToDynamic()
-				                        .ConfigList);
-		    }
-	    }
+        public string GetSolutionUid(string version, string name)
+        {
+            var solutionList = GetSolutionList(version);
 
+            return solutionList.Where(
+                    c =>
+                        c.Name.ToLowerInvariant() == name.ToLowerInvariant() &&
+                        ((c.Version == null || version == null) ||
+                         c.Version.ToLowerInvariant() == version.ToLowerInvariant()))
+                    .Select(c => c.Id).FirstOrDefault();
+        }
+             
         /// <summary>
-        ///   Получить идентификатор элемента конфигурации
+        ///     Получить идентификатор элемента конфигурации
         /// </summary>
+        /// <param name="version">Версия конфигурации</param>
         /// <param name="name">Наименование элемента</param>
         /// <returns>Идентификатор элемента</returns>
-        public string GetConfigurationUid(string name)
+        public string GetConfigurationUid(string version, string name)
         {
-			return ConfigList.Where(c => c.Name.ToLowerInvariant() == name.ToLowerInvariant()).Select(c => c.Id).FirstOrDefault();
+            var configList = GetConfigList(version);
+
+            return
+                configList.Where(
+                    c =>
+                        c.Name.ToLowerInvariant() == name.ToLowerInvariant() &&
+                        ((c.Version == null || version == null) ||
+                         c.Version.ToLowerInvariant() == version.ToLowerInvariant()))
+                    .Select(c => c.Id).FirstOrDefault();
         }
 
-
         /// <summary>
-        ///   Получить идентификатор документа
+        ///     Получить идентификатор документа
         /// </summary>
-        public string GetDocumentUid(string configurationId, string documentId)
+        public string GetDocumentUid(string version, string configurationId, string documentId)
         {
-			var config = ConfigList.FirstOrDefault(c => c.Name.ToLowerInvariant() == configurationId.ToLowerInvariant());
-			if (config != null)
-			{
-				IEnumerable<dynamic> documents = config.Documents;
-				foreach (var document in documents)
-				{
-					if (document.Name.ToLowerInvariant() == documentId.ToLowerInvariant())
-					{
-						return document.Id;
-					}
-				}
+            var config =
+                GetConfigList(version)
+                    .FirstOrDefault(
+                        c =>
+                            c.Name.ToLowerInvariant() == configurationId.ToLowerInvariant() &&
+                            ((c.Version == null || version == null) ||
+                             c.Version.ToLowerInvariant() == version.ToLowerInvariant()));
+            if (config != null)
+            {
+                IEnumerable<dynamic> documents = config.Documents;
+                if (config.Documents != null)
+                {
+                    foreach (var document in documents)
+                    {
+                        if (document.Name.ToLowerInvariant() == documentId.ToLowerInvariant())
+                        {
+                            return document.Id;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
 
-			}
-	        return null;
+        private static IEnumerable<dynamic> GetConfigList(string version)
+        {
+            dynamic body = new
+                {
+                    Version = version
+                };
+            IEnumerable<dynamic> configList = DynamicWrapperExtensions.ToEnumerable(
+                RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getregisteredconfiglist", null, body)
+                    .ToDynamic().ConfigList);
+            return configList;
+        }
+
+        private static IEnumerable<dynamic> GetSolutionList(string version)
+        {
+            dynamic body = new
+            {
+                Version = version
+            };
+
+            IEnumerable<dynamic> configList = DynamicWrapperExtensions.ToEnumerable(
+                RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getsolutionlist", null, body)
+                    .ToDynamic().SolutionList);
+            return configList;
         }
     }
 }

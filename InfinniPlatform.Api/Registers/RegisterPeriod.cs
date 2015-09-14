@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace InfinniPlatform.Api.Registers
 {
     /// <summary>
-    /// Периодичность записи в регистр
+    ///     Периодичность записи в регистр
     /// </summary>
     public static class RegisterPeriod
     {
@@ -16,25 +16,24 @@ namespace InfinniPlatform.Api.Registers
         public const string Quarter = "Quarter";
         public const string HalfYear = "HalfYear";
         public const string Year = "Year";
-        
 
         public static IEnumerable<string> GetRegisterPeriods()
         {
             return new[]
-	        {
-	            Second, 
-                Minute, 
+            {
+                Second,
+                Minute,
                 Hour,
                 Day,
                 Month,
                 Quarter,
                 HalfYear,
                 Year
-	        };
+            };
         }
 
         /// <summary>
-        /// Подстраивает дату документа под период
+        ///     Подстраивает дату документа под период
         /// </summary>
         public static DateTime AdjustDateToPeriod(DateTime sourceDateTime, string period)
         {

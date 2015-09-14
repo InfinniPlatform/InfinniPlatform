@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.SelfDocumentation;
+﻿using InfinniPlatform.Api.SelfDocumentation;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.SystemConfig.HelpSystem
 {

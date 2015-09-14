@@ -19,7 +19,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Converters.Html.Inlines
 
             element.Reference = new Uri("http://google.com");
 
-            var run = new PrintElementRun { Text = "Hyperlink Google" };
+            var run = new PrintElementRun {Text = "Hyperlink Google"};
 
             element.Inlines.Add(run);
 

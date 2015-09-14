@@ -23,9 +23,12 @@ namespace InfinniPlatform.MetadataDesigner.Views
 
         public dynamic Value { get; set; }
 
+        public string Version { get; set; }
+
+
         private void ConfigVerifyDesignerView_Load(object sender, EventArgs e)
         {
-            MigrationsComboBox.Properties.Items.AddRange(ViewModelExtension.BuildMigrations(Value.Name, Value.Version).ToArray());
+            MigrationsComboBox.Properties.Items.AddRange(ViewModelExtension.BuildMigrations(Value.Version, Value.Name).ToArray());
             VerificationsComboBox.Properties.Items.AddRange(ViewModelExtension.BuildVerifications(Value.Name, Value.Version).ToArray());
         }
 
@@ -44,7 +47,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
             var process = new StatusProcess();
             process.StartOperation(() =>
             {
-                resultString = ViewModelExtension.RunMigration(Value.Name.ToString(), MigrationsComboBox.Text, GetParameterValues());
+                resultString = ViewModelExtension.RunMigration(Version, Value.Name.ToString(), MigrationsComboBox.Text, GetParameterValues());
             });
             process.EndOperation();
             
@@ -75,7 +78,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
             var process = new StatusProcess();
             process.StartOperation(() =>
             {
-                resultString = ViewModelExtension.RevertMigration(Value.Name.ToString(), MigrationsComboBox.Text, GetParameterValues());
+                resultString = ViewModelExtension.RevertMigration(Version, Value.Name.ToString(), MigrationsComboBox.Text, GetParameterValues());
             });
             process.EndOperation();
 
@@ -106,7 +109,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
             var process = new StatusProcess();
             process.StartOperation(() =>
             {
-                resultString = ViewModelExtension.RunVerification(Value.Name.ToString(), VerificationsComboBox.Text);
+                resultString = ViewModelExtension.RunVerification(Version, Value.Name.ToString(), VerificationsComboBox.Text);
             });
             process.EndOperation();
 
@@ -137,7 +140,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
             {
                 foreach (string verification in ViewModelExtension.BuildVerifications(Value.Name, Value.Version))
                 {
-                    string resultString = ViewModelExtension.RunVerification(Value.Name.ToString(), verification);
+                    string resultString = ViewModelExtension.RunVerification(Version, Value.Name.ToString(), verification);
 
                     lines.Add(string.Format("Verification {0} started.", verification));
 
@@ -200,7 +203,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
             var process = new StatusProcess();
             process.StartOperation(() =>
             {
-                migration = ViewModelExtension.BuildMigrationDetails(Value.Name.ToString(), selectedMigration);
+                migration = ViewModelExtension.BuildMigrationDetails(Version, Value.Name.ToString(), selectedMigration);
             });
             process.EndOperation();
 

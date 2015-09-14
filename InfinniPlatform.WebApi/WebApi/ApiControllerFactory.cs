@@ -3,51 +3,83 @@ using System.Collections.Generic;
 using System.Linq;
 using Autofac;
 using InfinniPlatform.Api.RestQuery;
+using InfinniPlatform.Api.Versioning;
 using InfinniPlatform.Hosting;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.WebApi.WebApi
 {
     public class ApiControllerFactory : IApiControllerFactory {
 	    private readonly Func<IContainer> _container;
 	    
-	    private Dictionary<string, RestVerbsContainer> _restVerbsContainers = new Dictionary<string, RestVerbsContainer>();
+	    private List<RestVerbsContainer> _restVerbsContainers = new List<RestVerbsContainer>();
+
+        private List<Tuple<string, string>> _versions = new List<Tuple<string, string>>();
+
+        private IVersionStrategy _versionStrategy;
+
+        private IVersionStrategy VersionStrategy
+        {
+            get { return _versionStrategy ?? (_versionStrategy = _container().Resolve<IVersionStrategy>()); }
+        }
+
+        public List<Tuple<string, string>> Versions
+        {
+            get { return _versions; }
+        }
 
         public ApiControllerFactory(Func<IContainer> container)
         {
 	        _container = container;
         }
 
-		private string FormatTemplateName(string metadataConfigurationId, string metadataName)
-		{
-			return string.Format("{0}_{1}", metadataConfigurationId, metadataName).ToLowerInvariant();
-		}
+        public void RegisterVersion(string metadataConfigurationId, string version)
+        {
+            if (!Versions.Any(v => v.Item1.ToLowerInvariant() == metadataConfigurationId.ToLowerInvariant() &&
+                 v.Item2 == version))
+            {
+                Versions.Add(new Tuple<string, string>(metadataConfigurationId, version));
+            }
+        }
 
-	    public IRestVerbsRegistrator CreateTemplate(string metadataConfigurationId, string metadataName)
+        public void UnregisterVersion(string metadataConfigurationId, string version)
+        {
+            _versions = Versions.Where(v => !(v.Item1.ToLowerInvariant() == metadataConfigurationId.ToLowerInvariant() && v.Item2 == version)).ToList();
+        }
+
+	    public IRestVerbsRegistrator CreateTemplate(string version, string metadataConfigurationId, string metadataName)
 	    {
 
-			var verbsContainer = GetRegistrator(metadataConfigurationId, metadataName);
+			var verbsContainer = GetRegistrator(version, metadataConfigurationId, metadataName);
 	        if (verbsContainer == null)
 	        {
-	            verbsContainer = new RestVerbsContainer(FormatTemplateName(metadataConfigurationId,metadataName), _container);
-				_restVerbsContainers.Add(FormatTemplateName(metadataConfigurationId, metadataName), verbsContainer);
+	            verbsContainer = new RestVerbsContainer(version, metadataConfigurationId,metadataName, _container);
+				_restVerbsContainers.Add(verbsContainer);
 	        }
 	        return verbsContainer;
 	    }
 
-		private RestVerbsContainer GetRegistrator(string metadataConfigurationId, string metadataName)
+		private RestVerbsContainer GetRegistrator(string version, string metadataConfigurationId, string metadataName)
 		{
-			return _restVerbsContainers.Where(r => r.Key.ToLowerInvariant() == FormatTemplateName(metadataConfigurationId, metadataName)).Select(r => r.Value).FirstOrDefault();
+			return _restVerbsContainers.FirstOrDefault(r => r.HasRoute(version, metadataConfigurationId, metadataName));
 		}
 
-
-		public IRestVerbsContainer GetTemplate(string metadataConfigurationId, string metadataName)
+        /// <summary>
+        ///   Получить шаблон контейнера регистрации сервиса для указанной версии конфигурации и указанного пользователя
+        /// </summary>
+        /// <param name="metadataConfigurationId">Идентификатор конфигурации</param>
+        /// <param name="metadataName">Идентификатор контейнера метаданных</param>
+        /// <param name="userName">Логин пользователя</param>
+        /// <returns>Шаблон регистрации сервиса</returns>
+        public IRestVerbsContainer GetTemplate(string metadataConfigurationId, string metadataName, string userName)
 		{
-			return _restVerbsContainers.Where(r => r.Key.ToLowerInvariant() == FormatTemplateName(metadataConfigurationId,metadataName)).Select(r => r.Value).FirstOrDefault();
+            return _restVerbsContainers.FirstOrDefault(r => r.HasRoute(VersionStrategy.GetActualVersion(metadataConfigurationId, Versions, userName), metadataConfigurationId, metadataName));
         }
 
-	    public void RemoveTemplates(string metadataConfigurationId)
+	    public void RemoveTemplates(string version, string metadataConfigurationId)
 	    {
-		    _restVerbsContainers = _restVerbsContainers.Where(r => !r.Key.ToLowerInvariant().StartsWith(metadataConfigurationId.ToLowerInvariant())).ToDictionary(r => r.Key, r => r.Value);
+            _restVerbsContainers = _restVerbsContainers.Where(r => !r.HasRoute(version, metadataConfigurationId)).ToList();
 	    }
+
     }
 }

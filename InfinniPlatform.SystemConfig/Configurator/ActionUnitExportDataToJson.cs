@@ -1,14 +1,14 @@
-﻿using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.RestApi.DataApi;
-using System;
+﻿using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.SystemConfig.Configurator
 {
     /// <summary>
-    /// Точка расширения для сохранения данных, относящихся к метаданным определенной конфигурации
+    ///     Точка расширения для сохранения данных, относящихся к метаданным определенной конфигурации
     /// </summary>
     public sealed class ActionUnitExportDataToJson
     {
@@ -33,9 +33,9 @@ namespace InfinniPlatform.SystemConfig.Configurator
                 throw new ArgumentException("Path to archive should be specified via 'PathToZip' property");
             }
 
-            var documentProvider = new DocumentApi();
+            var documentProvider = target.Context.GetComponent<DocumentApi>();
 
-            var page = 0;
+            int page = 0;
 
             bool hasDocuments = false;
 
@@ -47,7 +47,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
                     {
                         var documents = documentProvider.GetDocument(configuration, metadata, null, page, 1000);
 
-                        var documentsAsArray = documents as dynamic[] ?? documents.ToArray();
+                        dynamic[] documentsAsArray = documents as dynamic[] ?? documents.ToArray();
                         if (documents == null || !documentsAsArray.Any())
                         {
                             break;
@@ -55,16 +55,16 @@ namespace InfinniPlatform.SystemConfig.Configurator
 
                         hasDocuments = true;
 
-                        var archiveFile = archive.CreateEntry(string.Format("part_{0}.json", page));
+                        ZipArchiveEntry archiveFile = archive.CreateEntry(string.Format("part_{0}.json", page));
 
-                        using (var entryStream = archiveFile.Open())
+                        using (Stream entryStream = archiveFile.Open())
                         using (var streamWriter = new StreamWriter(entryStream))
                         {
                             streamWriter.Write('[');
 
                             for (int index = 0; index < documentsAsArray.Length; index++)
                             {
-                                var document = documentsAsArray[index];
+                                dynamic document = documentsAsArray[index];
                                 streamWriter.Write(document.ToString());
 
                                 if (index != (documentsAsArray.Length - 1))
@@ -81,7 +81,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
                     }
                 }
 
-                var archiveName = Path.Combine(pathToZip, string.Format("{0}_{1}.zip", configuration, metadata));
+                string archiveName = Path.Combine(pathToZip, string.Format("{0}_{1}.zip", configuration, metadata));
 
                 if (File.Exists(archiveName))
                 {

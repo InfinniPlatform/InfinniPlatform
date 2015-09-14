@@ -1,26 +1,22 @@
 ﻿using System.IO;
-using System.Text;
 
 namespace InfinniPlatform.FlowDocument.Tests.Converters.Html
 {
-    sealed class TextWriterWrapper
+    internal sealed class TextWriterWrapper
     {
+        private readonly MemoryStream _stream;
+        private readonly StreamWriter _writer;
+
         public TextWriterWrapper()
         {
             _stream = new MemoryStream();
             _writer = new StreamWriter(_stream);
         }
 
-
-        private readonly MemoryStream _stream;
-        private readonly StreamWriter _writer;
-
-
         public TextWriter Writer
         {
             get { return _writer; }
         }
-
 
         public string GetText()
         {
@@ -32,7 +28,6 @@ namespace InfinniPlatform.FlowDocument.Tests.Converters.Html
                 return reader.ReadToEnd();
             }
         }
-
 
         public override string ToString()
         {

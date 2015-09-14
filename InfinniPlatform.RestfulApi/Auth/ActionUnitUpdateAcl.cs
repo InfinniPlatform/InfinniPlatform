@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.ContextComponents;
+﻿using InfinniPlatform.ContextComponents;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.RestfulApi.Auth
 {
     /// <summary>
-    ///   Модуль обновления ACL в кэше сервера
+    ///     Модуль обновления ACL в кэше сервера
     /// </summary>
     public sealed class ActionUnitUpdateAcl
     {
         public void Action(IApplyContext target)
         {
-			target.Context.GetComponent<ISecurityComponent>().UpdateAcl();
+            target.Context.GetComponent<CachedSecurityComponent>().UpdateAcl();
         }
     }
 }

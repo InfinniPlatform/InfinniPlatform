@@ -2,15 +2,16 @@
 
 namespace InfinniPlatform.PrintViewDesigner.Controls.PrintViewTreeBuilders.Inlines
 {
-	sealed class PrintElementBarcodeQrNodeFactory : IPrintElementNodeFactory
-	{
-		public void Create(PrintElementNodeBuilder builder, ICollection<PrintElementNode> elements, PrintElementNode elementNode)
-		{
-			elementNode.CanCut = BuildHelper.CanCut(elementNode);
-			elementNode.Cut = BuildHelper.Cut(elementNode);
+    internal sealed class PrintElementBarcodeQrNodeFactory : IPrintElementNodeFactory
+    {
+        public void Create(PrintElementNodeBuilder builder, ICollection<PrintElementNode> elements,
+            PrintElementNode elementNode)
+        {
+            elementNode.CanCut = BuildHelper.CanCut(elementNode);
+            elementNode.Cut = BuildHelper.Cut(elementNode);
 
-			elementNode.CanCopy = BuildHelper.CanCopy(elementNode);
-			elementNode.Copy = BuildHelper.Copy(elementNode);
-		}
-	}
+            elementNode.CanCopy = BuildHelper.CanCopy(elementNode);
+            elementNode.Copy = BuildHelper.Copy(elementNode);
+        }
+    }
 }

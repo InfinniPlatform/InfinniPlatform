@@ -3,20 +3,20 @@ using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Data.DataBindings
 {
-	sealed class ParameterBindingBuilder : IObjectBuilder
-	{
-		public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
-		{
-			var dataBinding = new ParameterBinding(parent, metadata.Parameter, metadata.Property);
+    internal sealed class ParameterBindingBuilder : IObjectBuilder
+    {
+        public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
+        {
+            var dataBinding = new ParameterBinding(parent, metadata.Parameter, metadata.Property);
 
-			ParameterElement dataSource = parent.GetParameter(metadata.Parameter);
+            ParameterElement dataSource = parent.GetParameter(metadata.Parameter);
 
-			if (dataSource != null)
-			{
-				dataSource.AddDataBinding(dataBinding);
-			}
+            if (dataSource != null)
+            {
+                dataSource.AddDataBinding(dataBinding);
+            }
 
-			return dataBinding;
-		}
-	}
+            return dataBinding;
+        }
+    }
 }

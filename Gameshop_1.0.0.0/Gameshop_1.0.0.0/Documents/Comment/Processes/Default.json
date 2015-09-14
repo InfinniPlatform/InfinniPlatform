@@ -1,0 +1,24 @@
+{
+  "Id": "68684032-df60-4a42-bc58-045f7ecdafa8",
+  "Secured": true,
+  "Name": "Default",
+  "Caption": "Default business process",
+  "Type": 2,
+  "Transitions": [
+    {
+      "Id": "9177227b-1abc-4b6d-86b0-ae2e5bed4a83",
+      "Name": "DefaultTransition",
+      "SuccessPoint": {
+        "TypeName": "OnSuccess",
+        "ScenarioId": "e31840bf-fa8a-4651-a8fd-37ea02662784"
+      },
+      "SchemaPrefill": "{\r\n  \"Type\": \"Object\",\r\n  \"Caption\": \"Schema\",\r\n  \"Properties\": {\r\n    \"Author\": {\r\n      \"Caption\": \"Автор комментария\",\r\n      \"Type\": \"Object\",\r\n      \"TypeInfo\": {\r\n        \"DocumentLink\": {\r\n          \"ConfigId\": \"Gameshop\",\r\n          \"DocumentId\": \"UserProfile\"\r\n        }\r\n      },\r\n      \"Properties\": {}\r\n    },\r\n    \"Likes\": {\r\n      \"Caption\": \"Количество лайков\",\r\n      \"Type\": \"Integer\"\r\n    },\r\n    \"Text\": {\r\n      \"Caption\": \"Текст комментария\",\r\n      \"Type\": \"String\"\r\n    },\r\n    \"ParentComment\": {\r\n      \"Caption\": \"Комментарий, к которому относится текущий комментарий\",\r\n      \"Type\": \"Object\",\r\n      \"TypeInfo\": {\r\n        \"DocumentLink\": {\r\n          \"ConfigId\": \"Gameshop\",\r\n          \"DocumentId\": \"Comment\",\r\n          \"Resolve\": false\r\n        }\r\n      },\r\n      \"Properties\": {}\r\n    }\r\n  }\r\n}"
+    },
+    {}
+  ],
+  "SettingsType": "Default",
+  "ParentId": "622b5316-a3b7-4e1b-b3ac-db138d75e93c",
+  "Version": "1.0.0.0",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "processmetadata"
+}

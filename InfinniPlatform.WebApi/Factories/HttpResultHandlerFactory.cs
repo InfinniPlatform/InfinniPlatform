@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Hosting;
+using InfinniPlatform.Sdk.Environment.Hosting;
 using InfinniPlatform.WebApi.HttpResultHandlers;
 
 namespace InfinniPlatform.WebApi.Factories

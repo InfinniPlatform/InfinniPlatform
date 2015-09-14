@@ -1,6 +1,7 @@
 ﻿using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Owin;
 using InfinniPlatform.Owin.Hosting;
+using InfinniPlatform.Sdk.Api;
 using InfinniPlatform.SignalR;
 
 using NUnit.Framework;

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -11,6 +11,7 @@
     <AssemblyName>InfinniPlatform.Metadata</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,28 +32,30 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Implementation\Handlers\AggregateExtensions.cs" />
     <Compile Include="Implementation\Handlers\ApplyChangesHandler.cs" />
-    <Compile Include="Implementation\Handlers\HelpHandler.cs" />
+    <Compile Include="Implementation\Handlers\CustomServiceHandler.cs" />
     <Compile Include="Implementation\Handlers\SearchDocumentAggregationHandler.cs" />
-    <Compile Include="Implementation\Handlers\SearchHandler.cs" />
+    <Compile Include="Implementation\Handlers\SearchHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Implementation\Handlers\SystemEventsHandler.cs" />
     <Compile Include="Implementation\Handlers\UploadHandler.cs" />
     <Compile Include="Implementation\Handlers\UrlEncodedDataHandler.cs" />
     <Compile Include="Implementation\HostServerConfiguration\InfinniPlatformHostFactory.cs" />
+    <Compile Include="Implementation\MetadataConfiguration\ConfigurationObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Implementation\MetadataConfiguration\ConfigurationObjectBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Implementation\MetadataConfiguration\CrossConfigSearcher.cs" />
     <Compile Include="Implementation\MetadataConfiguration\ScriptConfiguration.cs" />
-    <Compile Include="Implementation\MetadataConfiguration\ConfigurationObjectBuilder.cs" />
     <Compile Include="Implementation\MetadataConfiguration\MetadataConfiguration.cs" />
-    <Compile Include="Implementation\MetadataConfiguration\ConfigurationObject.cs" />
     <Compile Include="Implementation\MetadataConfiguration\MetadataConfigurationProvider.cs" />
     <Compile Include="Implementation\MetadataConfiguration\MetadataContainer.cs" />
     <Compile Include="Implementation\Modules\StandardTemplatesInstaller.cs" />
@@ -102,6 +105,10 @@
     <ProjectReference Include="..\InfinniPlatform.Index.ElasticSearch\InfinniPlatform.Index.ElasticSearch.csproj">
       <Project>{2B2F3FA6-F434-4FCF-A4C7-323FFC602F0C}</Project>
       <Name>InfinniPlatform.Index.ElasticSearch</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
+      <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
+      <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

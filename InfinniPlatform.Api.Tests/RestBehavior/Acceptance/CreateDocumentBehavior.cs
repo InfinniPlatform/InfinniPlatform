@@ -45,16 +45,16 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 			string documentIdReferenceInlineInner = "TestDocument2";
 
 
-			var managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager();
+			var managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager(null);
 
 			dynamic config = managerConfig.CreateItem(configId);
             managerConfig.DeleteItem(config);
             managerConfig.MergeItem(config);
 
-			var managerDocument = new ManagerFactoryConfiguration(configId).BuildDocumentManager();
+			var managerDocument = new ManagerFactoryConfiguration(null, configId).BuildDocumentManager();
 
 
-			IndexApi.RebuildIndex(configId, documentId);
+			new IndexApi().RebuildIndex(configId, documentId);
 
 			var documentMetadata1 = managerDocument.CreateItem(documentId);
 
@@ -130,17 +130,17 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             managerDocument.MergeItem(documentMetadata2);
             managerDocument.MergeItem(documentMetadata3);
 
-			RestQueryApi.QueryPostNotify(configId);
+			RestQueryApi.QueryPostNotify(null, configId);
 
-			UpdateApi.UpdateStore(configId);
+            new UpdateApi(null).UpdateStore(configId);
 
 			//создаем экземпляр документа
-			new DocumentApi().CreateDocument(configId, documentId);
+			new DocumentApi(null).CreateDocument(configId, documentId);
 
 			//после повторного вызова (выполнилась загрузка модуля)
 			var watch = Stopwatch.StartNew();
 
-			dynamic item = new DocumentApi().CreateDocument(configId, documentId);
+			dynamic item = new DocumentApi(null).CreateDocument(configId, documentId);
 
 			watch.Stop();
 

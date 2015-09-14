@@ -1,6 +1,8 @@
 ﻿using System.Web.Http.Filters;
 using InfinniPlatform.Api.Profiling;
 using InfinniPlatform.Logging;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Log;
 
 namespace InfinniPlatform.WebApi.Logging
 {

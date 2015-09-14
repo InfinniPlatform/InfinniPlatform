@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Index.SearchOptions;
 using InfinniPlatform.Api.SearchOptions;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Index;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Index.QueryLanguage.Implementation
@@ -11,15 +12,10 @@ namespace InfinniPlatform.Index.QueryLanguage.Implementation
     public class QuerySyntaxTree
     {
         private readonly dynamic _fromObject;
-
         private readonly dynamic _joinObject;
-
-        private readonly dynamic _whereObject;
-
-        private readonly dynamic _selectObject;
-
         private readonly dynamic _limitsObject;
-
+        private readonly dynamic _selectObject;
+        private readonly dynamic _whereObject;
 
         public QuerySyntaxTree(JObject queryTree)
         {
@@ -36,7 +32,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Implementation
             if (_selectObject != null)
             {
                 IEnumerable<dynamic> select = DynamicWrapperExtensions.ToEnumerable(_selectObject);
-                return select.Select(s => new ProjectionObject()
+                return select.Select(s => new ProjectionObject
                 {
                     ProjectionPath = GetProjectionPath(s)
                 });
@@ -69,33 +65,29 @@ namespace InfinniPlatform.Index.QueryLanguage.Implementation
             if (_whereObject != null)
             {
                 IEnumerable<dynamic> where = DynamicWrapperExtensions.ToEnumerable(_whereObject);
-                return where.Select(w => new WhereObject()
+                return where.Select(w => new WhereObject
                 {
                     Property = GetProjectionPath(w.Property),
                     Value = w.Value != null ? ((JValue) w.Value).Value : null,
                     CriteriaType = (CriteriaType) w.CriteriaType,
                     RawProperty = w.Property
                 }).ToList();
-
             }
             return new List<WhereObject>();
         }
-
-
 
         public IEnumerable<ReferencedObject> GetReferenceObjects()
         {
             if (_joinObject != null)
             {
                 IEnumerable<dynamic> joinObjects = DynamicWrapperExtensions.ToEnumerable(_joinObject);
-                return joinObjects.Select(j => new ReferencedObject()
+                return joinObjects.Select(j => new ReferencedObject
                 {
                     Alias = j.Alias,
                     Index = j.Index,
                     Path = j.Path,
                     Type = j.Type
                 });
-
             }
             return new List<ReferencedObject>();
         }
@@ -105,7 +97,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Implementation
             if (_whereObject != null)
             {
                 IEnumerable<dynamic> whereObjects = DynamicWrapperExtensions.ToEnumerable(_whereObject);
-                return whereObjects.Select(w => new Criteria()
+                return whereObjects.Select(w => new Criteria
                 {
                     CriteriaType = (CriteriaType) Convert.ToInt32(w.CriteriaType),
                     Property = w.Property,
@@ -119,7 +111,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Implementation
         {
             if (_fromObject != null)
             {
-                return new ReferencedObject()
+                return new ReferencedObject
                 {
                     Alias = _fromObject.Alias,
                     Index = _fromObject.Index,
@@ -134,11 +126,11 @@ namespace InfinniPlatform.Index.QueryLanguage.Implementation
             ResultLimits result = null;
             if (_limitsObject != null)
             {
-                var fromPage = (int)_limitsObject.StartPage;
+                var fromPage = (int) _limitsObject.StartPage;
 
-                var pageSize = (int)_limitsObject.PageSize;
+                var pageSize = (int) _limitsObject.PageSize;
 
-                var skip = (int)_limitsObject.Skip;
+                var skip = (int) _limitsObject.Skip;
 
                 result = new ResultLimits(fromPage, pageSize, skip);
             }
@@ -146,7 +138,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Implementation
         }
 
         /// <summary>
-        ///   Получить список полей для составления критериев по эластику, не являющихся алиасами JOIN
+        ///     Получить список полей для составления критериев по эластику, не являющихся алиасами JOIN
         /// </summary>
         /// <param name="aliases">Указанные в запросе алиасы JOIN</param>
         /// <param name="checkedProperties">Проверяемые поля</param>
@@ -159,7 +151,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Implementation
             {
                 foreach (var checkedProperty in checkedProperties)
                 {
-                    var path = checkedProperty.Split(new char[] {'.'}, StringSplitOptions.RemoveEmptyEntries);
+                    var path = checkedProperty.Split(new[] {'.'}, StringSplitOptions.RemoveEmptyEntries);
                     if (path[0].ToLowerInvariant() == alias.ToLowerInvariant())
                     {
                         aliasedFields.Add(checkedProperty);
@@ -170,5 +162,4 @@ namespace InfinniPlatform.Index.QueryLanguage.Implementation
             return checkedProperties.Except(aliasedFields).ToList();
         }
     }
-
 }

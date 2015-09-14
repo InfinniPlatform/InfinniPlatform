@@ -11,6 +11,8 @@
     <AssemblyName>InfinniPlatform.Api</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>false</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -69,38 +71,12 @@
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actions\IActionOperator.cs" />
-    <Compile Include="Actions\IActionOperatorBuilder.cs" />
-    <Compile Include="Actions\IScriptConfiguration.cs" />
     <Compile Include="ClientNotification\IWebClientNotificationService.cs" />
-    <Compile Include="ContextComponents\IBlobStorageComponent.cs" />
-    <Compile Include="ContextComponents\IComponentContainer.cs" />
-    <Compile Include="ContextComponents\IConfigurationMediatorComponent.cs" />
-    <Compile Include="ContextComponents\ICrossConfigSearchComponent.cs" />
-    <Compile Include="ContextComponents\IDependencyContainerComponent.cs" />
-    <Compile Include="ContextComponents\IPasswordVerifierComponent.cs" />
-    <Compile Include="ContextComponents\IReferenceResolver.cs" />
-    <Compile Include="ContextComponents\ISystemComponent.cs" />
-    <Compile Include="Extensions\ReflectionCache.cs" />
-    <Compile Include="Dynamic\DynamicWrapperExtensions.cs" />
-    <Compile Include="Factories\ICrossConfigSearcher.cs" />
-    <Compile Include="ContextComponents\IEventStorageComponent.cs" />
-    <Compile Include="ContextComponents\IIndexComponent.cs" />
-    <Compile Include="ContextComponents\ILogComponent.cs" />
-    <Compile Include="ContextComponents\IMetadataComponent.cs" />
-    <Compile Include="ContextComponents\IPrintViewComponent.cs" />
-    <Compile Include="ContextComponents\IProfilerComponent.cs" />
-    <Compile Include="ContextComponents\IRegistryComponent.cs" />
-    <Compile Include="ContextComponents\IScriptRunnerComponent.cs" />
-    <Compile Include="ContextComponents\ISecurityComponent.cs" />
-    <Compile Include="ContextComponents\ITransactionComponent.cs" />
-    <Compile Include="ContextComponents\IWebClientNotificationComponent.cs" />
     <Compile Include="ContextTypes\ContextImpl\ApplyContext.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -108,72 +84,26 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ContextTypes\ContextImpl\UrlEncodedDataContext.cs" />
-    <Compile Include="ContextTypes\ContextTypeKind.cs" />
-    <Compile Include="ContextTypes\ContextImpl\FilterEventContext.cs">
+    <Compile Include="ContextTypes\ContextImpl\ProcessEventContext.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ContextTypes\ContextTypeProvider.cs" />
-    <Compile Include="ContextTypes\IUploadContext.cs" />
     <Compile Include="ContextTypes\ContextImpl\SearchContext.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ContextTypes\ContextImpl\UploadContext.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ContextTypes\IUrlEncodedDataContext.cs" />
     <Compile Include="ContextTypes\WorkflowTypes.cs" />
     <Compile Include="Context\ScriptInfoProvider.cs" />
     <Compile Include="Context\ScriptUnitType.cs" />
-    <Compile Include="Dynamic\DynamicWrapper.cs" />
-    <Compile Include="Dynamic\DynamicWrapperJsonConverter.cs" />
-    <Compile Include="Dynamic\DynamicWrapperMetaObject.cs" />
-    <Compile Include="Dynamic\DynamicWrapperPropertyDescriptor.cs" />
-    <Compile Include="Dynamic\ObjectHelper.cs" />
     <Compile Include="Extensions\MonadExtensions.cs" />
-    <Compile Include="Extensions\ReflectionExtensions.cs" />
-    <Compile Include="Factories\BlobData.cs" />
-    <Compile Include="Factories\BlobInfo.cs" />
-    <Compile Include="Factories\IBlobStorage.cs" />
-    <Compile Include="Factories\IEventStorage.cs" />
-    <Compile Include="Hosting\ExtensionPointValue.cs" />
     <Compile Include="Hosting\IConfigRequestProvider.cs" />
-    <Compile Include="Hosting\IExtensionPointHandler.cs" />
-    <Compile Include="Hosting\IExtensionPointHandlerConfig.cs" />
-    <Compile Include="Hosting\IExtensionPointHandlerInstance.cs" />
-    <Compile Include="Hosting\IModule.cs" />
-    <Compile Include="Hosting\IQueryHandler.cs" />
-    <Compile Include="Hosting\IServiceRegistration.cs" />
-    <Compile Include="Hosting\IServiceRegistrationContainer.cs" />
-    <Compile Include="Hosting\IServiceTemplate.cs" />
-    <Compile Include="Hosting\IServiceTemplateConfiguration.cs" />
     <Compile Include="Hosting\MetadataConfigurationExtensions.cs" />
-    <Compile Include="Hosting\VerbType.cs" />
-    <Compile Include="Index\AggregationResult.cs" />
-    <Compile Include="Index\IAggregationProvider.cs" />
-    <Compile Include="Index\ICalculatedField.cs" />
-    <Compile Include="Index\ICrudOperationProvider.cs" />
-    <Compile Include="Index\IDocumentProvider.cs" />
-    <Compile Include="Index\IIndexFactory.cs" />
-    <Compile Include="Index\IIndexQueryExecutor.cs" />
-    <Compile Include="Index\IIndexStateProvider.cs" />
-    <Compile Include="Factories\IScriptProcessor.cs" />
-    <Compile Include="Hosting\HostingConfig.cs" />
-    <Compile Include="Index\IIndexTypeMapping.cs" />
-    <Compile Include="Index\IndexItemStrategy.cs" />
-    <Compile Include="Index\IndexStatus.cs" />
-    <Compile Include="Index\IVersionBuilder.cs" />
-    <Compile Include="Index\IVersionProvider.cs" />
-    <Compile Include="Index\PropertyMapping.cs" />
-    <Compile Include="Index\SearchAbilityType.cs" />
     <Compile Include="Index\SearchOptions\Criteria.cs" />
-    <Compile Include="Index\SearchOptions\IFilter.cs" />
-    <Compile Include="Index\SearchOptions\IFilterBuilder.cs" />
     <Compile Include="Index\SearchOptions\QueryCriteriaAnalyzer.cs" />
     <Compile Include="Index\SearchOptions\QueryCriteriaInterpreter.cs" />
-    <Compile Include="Index\SearchOptions\SearchModel.cs" />
     <Compile Include="Index\SearchOptions\SearchModelBuilder.cs" />
-    <Compile Include="Index\SearchOptions\SearchViewModel.cs" />
-    <Compile Include="Index\SearchOptions\SortOption.cs" />
     <Compile Include="Linq\LinqExtensions.cs" />
     <Compile Include="LocalRouting\ILocalHostServer.cs" />
     <Compile Include="LocalRouting\IRequestLocal.cs" />
@@ -181,18 +111,18 @@
     <Compile Include="Metadata\ConfigurationManagers\File\JsonFileRegisterReader.cs" />
     <Compile Include="Metadata\ConfigurationManagers\File\MetadataReaders\JsonFileDocumentElementReader.cs" />
     <Compile Include="Metadata\ConfigurationManagers\File\JsonFileDocumentReader.cs" />
-    <Compile Include="Metadata\ConfigurationManagers\File\JsonConfigReaderFile.cs" />
     <Compile Include="Metadata\ConfigurationManagers\File\JsonFileConfig.cs" />
     <Compile Include="Metadata\ConfigurationManagers\File\JsonFileConfigManager.cs" />
+    <Compile Include="Metadata\ConfigurationManagers\Standard\Factories\ManagerFactorySolution.cs" />
     <Compile Include="Metadata\ConfigurationManagers\Standard\JsonConfigReaderStandard.cs" />
     <Compile Include="Metadata\ConfigurationManagers\Standard\Factories\ManagerFactoryConfiguration.cs" />
     <Compile Include="Metadata\ConfigurationManagers\Standard\Factories\ManagerFactoryDocument.cs" />
     <Compile Include="Metadata\ConfigurationManagers\Standard\Factories\MetadataContainerInfoFactory.cs" />
     <Compile Include="Metadata\ConfigurationManagers\Standard\MetadataManagers\MetadataCacheRefresher.cs" />
+    <Compile Include="Metadata\ConfigurationManagers\Standard\MetadataManagers\MetadataManagerSolution.cs" />
+    <Compile Include="Metadata\ConfigurationManagers\Standard\MetadataReaders\MetadataReaderSolution.cs" />
     <Compile Include="Metadata\ConfigurationManagers\Standard\SchemaReaders\SchemaConverter.cs" />
     <Compile Include="Metadata\ConfigurationManagers\Standard\SchemaReaders\SchemaReaderManager.cs" />
-    <Compile Include="Metadata\IConfigurationObject.cs" />
-    <Compile Include="Metadata\IConfigurationObjectBuilder.cs" />
     <Compile Include="Metadata\IConfigurationVerification.cs" />
     <Compile Include="Metadata\DataType.cs" />
     <Compile Include="Metadata\FieldMetadata\InlineDocumentLink.cs" />
@@ -203,9 +133,7 @@
     <Compile Include="Metadata\IJsonConfigReader.cs" />
     <Compile Include="Metadata\IManagerFactoryConfiguration.cs" />
     <Compile Include="Metadata\IManagerFactoryDocument.cs" />
-    <Compile Include="Metadata\IManagerIdentifiers.cs" />
-    <Compile Include="Metadata\IMetadataConfiguration.cs" />
-    <Compile Include="Metadata\MetadataBuilderExtensions.cs" />
+    <Compile Include="Deprecated\MetadataBuilderExtensions.cs" />
     <Compile Include="Metadata\MetadataContainers\MetadataContainerRegister.cs" />
     <Compile Include="Metadata\MetadataContainers\MetadataContainerStatus.cs" />
     <Compile Include="Metadata\MetadataContainers\MetadataContainerAssembly.cs" />
@@ -244,16 +172,14 @@
     <Compile Include="Packages\ConfigStructure\DirectoryStructure.cs" />
     <Compile Include="Packages\ConfigStructure\ZipStructure.cs" />
     <Compile Include="Packages\ConfigurationIterator.cs" />
-    <Compile Include="Packages\IConfigStructure.cs" />
+    <Compile Include="Packages\IExportStructure.cs" />
     <Compile Include="Packages\PackageBuilder.cs" />
+    <Compile Include="Packages\SolutionExporter.cs" />
     <Compile Include="Packages\ZipLoader.cs" />
     <Compile Include="PrintView\IPrintViewBuilder.cs" />
-    <Compile Include="PrintView\PrintViewFileFormat.cs" />
-    <Compile Include="Profiling\ILog.cs" />
     <Compile Include="Profiling\Implementation\ActionUnitFormatterLog.cs" />
     <Compile Include="Profiling\Implementation\ActionUnitProfiler.cs" />
     <Compile Include="Profiling\Implementation\NoQueryProfiler.cs" />
-    <Compile Include="Profiling\IOperationProfiler.cs" />
     <Compile Include="Profiling\ISnapshotFormatter.cs" />
     <Compile Include="Profiling\ProfilingType.cs" />
     <Compile Include="Profiling\Implementation\RestQueryProfiler.cs" />
@@ -265,19 +191,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Registers\RegisterEntryType.cs" />
-    <Compile Include="Registers\RegisterConstants.cs" />
     <Compile Include="Registers\RegisterPropertyType.cs" />
     <Compile Include="Registers\RegisterPeriod.cs" />
     <Compile Include="Registers\RegisterType.cs" />
     <Compile Include="Reporting\ReportFileFormat.cs" />
-    <Compile Include="RestApi\AuthApi\AuthorizationStorageExtensions.cs" />
-    <Compile Include="RestApi\AuthApi\AclApi.cs" />
-    <Compile Include="RestApi\AuthApi\SignInApi.cs" />
+    <Compile Include="RestApi\Auth\AuthorizationStorageExtensions.cs" />
+    <Compile Include="RestApi\Auth\AuthApi.cs" />
+    <Compile Include="RestApi\Auth\SignInApi.cs" />
+    <Compile Include="RestApi\Auth\UsersApi.cs" />
     <Compile Include="RestApi\CommonApi\IRouteTrace.cs" />
     <Compile Include="RestApi\CommonApi\RouteTraces\RouteTraceNoTrace.cs" />
     <Compile Include="RestApi\CommonApi\RouteTraces\RouteTraceSaveQueryLog.cs" />
     <Compile Include="RestApi\CommonApi\RestQueryApi.cs" />
+    <Compile Include="RestApi\CommonApi\SolutionUpdateApi.cs" />
     <Compile Include="RestApi\CommonApi\UpdateApi.cs" />
     <Compile Include="Metadata\IMetadataContainerInfo.cs" />
     <Compile Include="Metadata\MetadataContainers\MetadataContainerDocument.cs" />
@@ -290,18 +216,25 @@
     <Compile Include="Metadata\ConfigurationManagers\Standard\MetadataManagers\MetadataManagerElement.cs" />
     <Compile Include="RestApi\DataApi\DocumentApiUnsecured.cs" />
     <Compile Include="RestApi\DataApi\MetadataApi.cs" />
+    <Compile Include="RestApi\DataApi\SessionApi.cs" />
+    <Compile Include="RestApi\Public\AuthApi.cs" />
+    <Compile Include="RestApi\Public\CustomServiceApi.cs" />
+    <Compile Include="RestApi\Public\DocumentApi.cs" />
+    <Compile Include="RestApi\Public\FileApi.cs" />
+    <Compile Include="RestApi\Public\PrintViewApi.cs" />
+    <Compile Include="RestApi\Public\RegisterApi.cs" />
+    <Compile Include="RestApi\Public\SignInApi.cs" />
+    <Compile Include="RestQuery\EventObjects\EventSerializerExtensions.cs" />
     <Compile Include="SearchOptions\Builders\SortingBuilder.cs" />
     <Compile Include="RestApi\DataApi\PrintViewApi.cs" />
     <Compile Include="RestApi\DataApi\RegisterApi.cs" />
     <Compile Include="SearchOptions\Builders\FilterBuilder.cs" />
-    <Compile Include="RestApi\DataApi\FederalIntegrationApi.cs" />
     <Compile Include="Metadata\ConfigurationManagers\Standard\MetadataManagers\MetadataExtensions.cs" />
     <Compile Include="Metadata\ConfigurationManagers\Standard\MetadataReaders\MetadataReaderConfiguration.cs" />
     <Compile Include="Metadata\ConfigurationManagers\Standard\MetadataReaders\QueryMetadata.cs" />
     <Compile Include="Metadata\ConfigurationManagers\Standard\MetadataReaders\MetadataReaderConfigurationElement.cs" />
     <Compile Include="RestApi\DataApi\ReportApi.cs" />
     <Compile Include="RestApi\DataApi\UploadApi.cs" />
-    <Compile Include="RestQuery\HttpResultHandlerType.cs" />
     <Compile Include="RestQuery\IApiControllerFactory.cs" />
     <Compile Include="RestQuery\IRestVerbsContainer.cs" />
     <Compile Include="RestQuery\RestQueryBuilders\LocalQueryBuilder.cs" />
@@ -321,7 +254,6 @@
     <Compile Include="Schema\SchemaProvider.cs" />
     <Compile Include="SearchOptions\Converters\FilterConverter.cs" />
     <Compile Include="SearchOptions\Converters\SortingConverter.cs" />
-    <Compile Include="SearchOptions\SortOrder.cs" />
     <Compile Include="Security\ApplicationClaimTypes.cs" />
     <Compile Include="Security\ApplicationClaimType.cs" />
     <Compile Include="Security\ApplicationRole.cs" />
@@ -346,8 +278,10 @@
     <Compile Include="SystemExtensions\InstallerInfo.cs" />
     <Compile Include="SystemExtensions\InstallExtension.cs" />
     <Compile Include="TestEnvironment\ConfigurationInfo.cs" />
+    <Compile Include="TestEnvironment\TestApi.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TestEnvironment\TestServerParameters.cs" />
-    <Compile Include="TestEnvironment\TestApi.cs" />
     <Compile Include="TestEnvironment\TestServer.cs" />
     <Compile Include="TestEnvironment\TestServerTracker.cs" />
     <Compile Include="TestEnvironment\TestServerInfo.cs" />
@@ -360,17 +294,7 @@
     <Compile Include="RestQuery\EventObjects\EventSerializers\UpdatePropertyItem.cs" />
     <Compile Include="RestQuery\EventObjects\IObjectToEventSerializer.cs" />
     <Compile Include="RestQuery\RestSharpExtension.cs" />
-    <Compile Include="SearchOptions\AggregationType.cs" />
-    <Compile Include="SearchOptions\CriteriaType.cs" />
     <Compile Include="RestApi\DataApi\DocumentApi.cs" />
-    <Compile Include="ContextTypes\IApplyContext.cs" />
-    <Compile Include="ContextTypes\IApplyResultContext.cs" />
-    <Compile Include="ContextTypes\ICommonContext.cs" />
-    <Compile Include="ContextTypes\IFilterEventContext.cs" />
-    <Compile Include="ContextTypes\ISearchContext.cs" />
-    <Compile Include="Context\IGlobalContext.cs" />
-    <Compile Include="Events\EventDefinition.cs" />
-    <Compile Include="Events\EventType.cs" />
     <Compile Include="RestApi\CommonApi\IndexApi.cs" />
     <Compile Include="RestQuery\ControllerRoutingFactory.cs" />
     <Compile Include="RestQuery\EventObjects\EventList.cs" />
@@ -381,13 +305,9 @@
     <Compile Include="RestQuery\RestQueryExecutors\RestQueryExecutor.cs" />
     <Compile Include="RestQuery\RestQueryResponse.cs" />
     <Compile Include="SearchOptions\SearchType.cs" />
-    <Compile Include="Settings\AppSettings.cs" />
-    <Compile Include="Settings\ConnectionStrings.cs" />
     <Compile Include="Threading\ProcessDispatcher.cs" />
     <Compile Include="Threading\ProcessEvent.cs" />
-    <Compile Include="Transactions\AttachedInstance.cs" />
-    <Compile Include="Transactions\ITransaction.cs" />
-    <Compile Include="Transactions\ITransactionManager.cs" />
+    <Compile Include="Transactions\BinaryManager.cs" />
     <Compile Include="Validation\CollectionValidators\AllCollectionValidator.cs" />
     <Compile Include="Validation\BooleanValidators\AndValidator.cs" />
     <Compile Include="Validation\CollectionValidators\AnyCollectionValidator.cs" />
@@ -420,13 +340,11 @@
     <Compile Include="Validation\ObjectValidators\StartsWithValidator.cs" />
     <Compile Include="Validation\ObjectValidators\UriValidator.cs" />
     <Compile Include="Validation\BooleanValidators\CompositeValidator.cs" />
-    <Compile Include="Validation\IValidationOperator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AssemblyInfo.tt</DependentUpon>
     </Compile>
-    <Compile Include="Validation\IValidationUnitBuilder.cs" />
     <Compile Include="Validation\BooleanValidators\OrValidator.cs" />
     <Compile Include="Validation\ValidationBuilders\ObjectCompositeValidationGenericBuilder.cs" />
     <Compile Include="Validation\ValidationBuilders\ObjectValidationBuilder.cs" />
@@ -436,15 +354,9 @@
     <Compile Include="Validation\ValidationBuilders\ReflectionExtensions.cs" />
     <Compile Include="Validation\ValidationBuilders\ValidationBuilder.cs" />
     <Compile Include="Validation\ValidationExtensions.cs" />
-    <Compile Include="Validation\ValidationResult.cs" />
     <Compile Include="Validation\ValidationResultItem.cs" />
     <Compile Include="Validation\ValidationUtils.cs" />
-    <Compile Include="Worklow\IStateTransitionCondition.cs" />
-    <Compile Include="Worklow\IStateTransitionConfig.cs" />
-    <Compile Include="Worklow\IStateWorkflow.cs" />
-    <Compile Include="Worklow\IStateWorkflowConfig.cs" />
-    <Compile Include="Worklow\IStateWorkflowRegister.cs" />
-    <Compile Include="Worklow\IStateWorkflowStartingPointConfig.cs" />
+    <Compile Include="Versioning\VersionStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -678,6 +590,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
+      <Project>{2322469d-7d54-4c76-97e2-ef40f15645f5}</Project>
+      <Name>InfinniPlatform.Sdk</Name>
+    </ProjectReference>
     <EmbeddedResource Include="MetadataSchema\UI\DataBinding\BindingMode.resjson" />
   </ItemGroup>
   <ItemGroup>

@@ -1,42 +1,45 @@
 ﻿using System;
-using System.Collections.Generic;
-using InfinniPlatform.Api.Dynamic;
+using InfinniPlatform.Api.Deprecated;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Properties;
-using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.Registers;
+using InfinniPlatform.Api.RestApi.CommonApi;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Register;
 
 namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers
 {
     /// <summary>
-    ///   API для управления конфигурациями метаданных JSON
+    ///     API для управления конфигурациями метаданных JSON
     /// </summary>
     public sealed class MetadataManagerConfiguration : IDataManager
     {
         private readonly IDataReader _metadataReader;
+        private readonly string _version;
 
-        public MetadataManagerConfiguration(IDataReader metadataReader)
+        public MetadataManagerConfiguration(IDataReader metadataReader, string version)
         {
             _metadataReader = metadataReader;
+            _version = version;
         }
 
-        private void SetConfiguration(string name, dynamic metadataConfig)
+        public IDataReader MetadataReader
         {
-            RestQueryApi.QueryPostRaw("SystemConfig", "metadata", "changemetadata", name, metadataConfig).ToDynamic();
+            get { return _metadataReader; }
         }
 
         /// <summary>
-        ///   Сформировать предзаполненный объект метаданных
+        ///     Сформировать предзаполненный объект метаданных
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="name">Наименование создаваемой конфигурации</param>
         /// <returns>Предзаполненный объект метаданных</returns>
         public dynamic CreateItem(string name)
         {
-            return MetadataBuilderExtensions.BuildConfiguration(name, name, name);
+            return MetadataBuilderExtensions.BuildConfiguration(name, name, name, _version);
         }
 
         /// <summary>
-        ///   Добавить метаданные конфигурации
+        ///     Добавить метаданные конфигурации
         /// </summary>
         /// <param name="objectToCreate">Метаданные создаваемой конфигурации</param>
         public void InsertItem(dynamic objectToCreate)
@@ -46,68 +49,19 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
             InsertRegistersCommonDocument(metadataConfig.Name);
         }
 
-        private dynamic InsertConfiguration(dynamic objectToCreate)
-        {
-            //изменяемая конфигурация - либо сохраненная конфигурация, либо вновь создаваемая
-            var updatingConfiguration = MetadataExtensions.GetStoredMetadata(_metadataReader, objectToCreate) ?? objectToCreate;
-
-            objectToCreate = ((object)objectToCreate).ToDynamic();
-            if (String.IsNullOrEmpty(objectToCreate.Name))
-            {
-                throw new ArgumentException(Resources.IncorrectConfigurationName);
-            }
-
-            var metadataConfig = MetadataBuilderExtensions.BuildConfiguration(objectToCreate.Name, objectToCreate.Caption,
-                                                                              objectToCreate.Description);
-
-            metadataConfig.Id = objectToCreate.Id;
-
-            SetConfiguration(updatingConfiguration.Name, metadataConfig);
-
-            return metadataConfig;
-
-
-        }
-
-        private void InsertCommonDocument(string configurationId)
-        {
-            var manager = new ManagerFactoryConfiguration(configurationId).BuildDocumentManager();
-
-            var document = MetadataBuilderExtensions.BuildDocument("Common", "Common options", "Common options", "Common");
-
-            manager.InsertItem(document);
-        }
-
-        private void InsertRegistersCommonDocument(string configurationId)
-        {
-            // В конфигурации должен быть один документ, хранящий общие сведения по всем регистрам
-            var manager = new ManagerFactoryConfiguration(configurationId).BuildDocumentManager();
-            var document = MetadataBuilderExtensions.BuildDocument(
-                configurationId + RegisterConstants.RegistersCommonInfo,
-                "Registers common options",
-                "Storage for register's common information (e.g. actual date)",
-                configurationId + RegisterConstants.RegistersCommonInfo);
-
-            document.SearchAbility = 0; // SearchAbilityType.KeywordBasedSearch;
-            document.Versioning = 4;
-
-            manager.InsertItem(document);
-        }
-
         /// <summary>
-        ///   Удалить метаданные указанной конфигурации
+        ///     Удалить метаданные указанной конфигурации
         /// </summary>
-        /// <param name="metadataObject"></param>
+        /// <param name="metadataObject">Удаляемый объект метаданных</param>
         public void DeleteItem(dynamic metadataObject)
         {
-
             var configHeader =
-                MetadataExtensions.GetStoredMetadata(ManagerFactoryConfiguration.BuildConfigurationMetadataReader(),
-                                                     metadataObject);
+                MetadataExtensions.GetStoredMetadata(
+                    ManagerFactoryConfiguration.BuildConfigurationMetadataReader(_version, false), metadataObject);
 
             if (configHeader != null)
             {
-                var managerConfig = new ManagerFactoryConfiguration(configHeader.Name);
+                var managerConfig = new ManagerFactoryConfiguration(_version, configHeader.Name);
                 foreach (var configMetadataType in MetadataType.GetConfigMetadataTypes())
                 {
                     var manager = managerConfig.BuildManagerByType(configMetadataType);
@@ -117,38 +71,22 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
                     {
                         manager.DeleteItem(item);
                     }
-
-
                 }
-                RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "deletemetadata", configHeader.Name, null);
+
+                RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "deletemetadata", configHeader.Name, new
+                    {
+                        Version = _version
+                    });
             }
         }
 
         /// <summary>
-        ///   Применить изменения метаданных конфигурации
-        /// </summary>
-        /// <param name="metadataName">Наименование объекта метаданных</param>
-        /// <param name="eventDefinitions">События для применения к метаданным</param>
-        public void ApplyMetadataChanges(string metadataName, IEnumerable<object> eventDefinitions)
-        {
-            foreach (var @event in eventDefinitions)
-            {
-                //имзменение метаданных описывается только с использованием механизма событий
-                var result = RestQueryApi.QueryPostRaw("SystemConfig", "metadata", "changemetadata", metadataName, @event);
-                if (!result.IsAllOk)
-                {
-                    throw new ArgumentException(result.Content);
-                }
-            }
-        }
-
-        /// <summary>
-        ///   Обновить метаданные указанной конфигурации
+        ///     Обновить метаданные указанной конфигурации
         /// </summary>
         /// <param name="objectToCreate">Метаданные обновляемой конфигурации</param>
         public void MergeItem(dynamic objectToCreate)
         {
-            objectToCreate = ((object)objectToCreate).ToDynamic();
+            objectToCreate = ((object) objectToCreate).ToDynamic();
 
             //если создаем новую конфигурацию (Id не установлен, то добавляем Common документ)
             if (objectToCreate.Id == null)
@@ -161,7 +99,62 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
             }
         }
 
+        private void SetConfiguration(string name, dynamic metadataConfig)
+        {
+            RestQueryApi.QueryPostRaw("SystemConfig", "metadata", "changemetadata", name, metadataConfig).ToDynamic();
+        }
 
+        private dynamic InsertConfiguration(dynamic objectToCreate)
+        {
+            //изменяемая конфигурация - либо сохраненная конфигурация, либо вновь создаваемая
+            var updatingConfiguration = MetadataExtensions.GetStoredMetadata(MetadataReader, objectToCreate) ??
+                                        objectToCreate;
 
+            objectToCreate = ((object) objectToCreate).ToDynamic();
+            if (String.IsNullOrEmpty(objectToCreate.Name))
+            {
+                throw new ArgumentException(Resources.IncorrectConfigurationName);
+            }
+
+            var metadataConfig = MetadataBuilderExtensions.BuildConfiguration(objectToCreate.Name,
+                objectToCreate.Caption,
+                objectToCreate.Description, objectToCreate.Version);
+
+            metadataConfig.Id = objectToCreate.Id;
+
+            if (updatingConfiguration != null)
+            {
+                DeleteItem(updatingConfiguration);
+            }
+            SetConfiguration(updatingConfiguration.Name, metadataConfig);
+
+            return metadataConfig;
+        }
+
+        private void InsertCommonDocument(string configurationId)
+        {
+            var manager = new ManagerFactoryConfiguration(_version, configurationId).BuildDocumentManager();
+
+            var document = MetadataBuilderExtensions.BuildDocument("Common", "Common options", "Common options",
+                "Common", _version);
+
+            manager.InsertItem(document);
+        }
+
+        private void InsertRegistersCommonDocument(string configurationId)
+        {
+            // В конфигурации должен быть один документ, хранящий общие сведения по всем регистрам
+            var manager = new ManagerFactoryConfiguration(_version, configurationId).BuildDocumentManager();
+            var document = MetadataBuilderExtensions.BuildDocument(
+                configurationId + RegisterConstants.RegistersCommonInfo,
+                "Registers common options",
+                "Storage for register's common information (e.g. actual date)",
+                configurationId + RegisterConstants.RegistersCommonInfo, _version);
+
+            document.SearchAbility = 0; // SearchAbilityType.KeywordBasedSearch;
+            document.Versioning = 4;
+
+            manager.InsertItem(document);
+        }
     }
 }

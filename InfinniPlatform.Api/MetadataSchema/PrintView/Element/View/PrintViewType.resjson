@@ -1,8 +1,8 @@
 ﻿{
-  "id": "PrintViewType",
-  "description": "Тип печатного представления",
-  "enum": [
-    "ObjectView",
-    "ListView"
-  ]
+	"id": "PrintViewType",
+	"description": "Тип печатного представления",
+	"enum": [
+		"ObjectView",
+		"ListView"
+	]
 }

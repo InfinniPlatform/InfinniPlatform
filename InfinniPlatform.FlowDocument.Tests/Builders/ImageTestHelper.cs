@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Runtime.InteropServices;
 using InfinniPlatform.FlowDocument.Model.Inlines;
 using NUnit.Framework;
 
 namespace InfinniPlatform.FlowDocument.Tests.Builders
 {
-    static class ImageTestHelper
+    internal static class ImageTestHelper
     {
         public static string BitmapToBase64(Bitmap bitmap)
         {

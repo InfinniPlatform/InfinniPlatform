@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using InfinniPlatform.Api.Hosting;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Hosting;
 using Owin;
 
 using InfinniPlatform.Api.LocalRouting;

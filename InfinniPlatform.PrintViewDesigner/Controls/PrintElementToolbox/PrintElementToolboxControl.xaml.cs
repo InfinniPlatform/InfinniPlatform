@@ -3,271 +3,275 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-
 using DevExpress.Xpf.Bars;
-
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.PrintViewDesigner.Controls.PrintViewTreeBuilders;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.PrintViewDesigner.Controls.PrintElementToolbox
 {
-	/// <summary>
-	/// Панель инструментов для редактирования элементов печатного представления.
-	/// </summary>
-	public sealed partial class PrintElementToolboxControl : UserControl
-	{
-		public PrintElementToolboxControl()
-		{
-			InitializeComponent();
-		}
+    /// <summary>
+    ///     Панель инструментов для редактирования элементов печатного представления.
+    /// </summary>
+    public sealed partial class PrintElementToolboxControl : UserControl
+    {
+        public PrintElementToolboxControl()
+        {
+            InitializeComponent();
+        }
 
+        /// <summary>
+        ///     Элемент печатного представления, который выделен в дереве.
+        /// </summary>
+        public PrintElementNode SelectedElement
+        {
+            get { return (PrintElementNode) GetValue(SelectedElementProperty); }
+            set { SetValue(SelectedElementProperty, value); }
+        }
 
-		// SelectedElement
+        private static void OnSelectedElementChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            var control = sender as PrintElementToolboxControl;
 
-		public static readonly DependencyProperty SelectedElementProperty = DependencyProperty.Register("SelectedElement", typeof(PrintElementNode), typeof(PrintElementToolboxControl), new FrameworkPropertyMetadata(OnSelectedElementChanged));
+            if (control != null)
+            {
+                var elementNode = e.NewValue as PrintElementNode;
 
-		/// <summary>
-		/// Элемент печатного представления, который выделен в дереве.
-		/// </summary>
-		public PrintElementNode SelectedElement
-		{
-			get { return (PrintElementNode)GetValue(SelectedElementProperty); }
-			set { SetValue(SelectedElementProperty, value); }
-		}
+                var hasElementNode = (elementNode != null);
+                var hasElementParentNode = hasElementNode && (elementNode.Parent != null);
 
-		private static void OnSelectedElementChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-		{
-			var control = sender as PrintElementToolboxControl;
+                // Регулировка доступности кнопок создания
 
-			if (control != null)
-			{
-				var elementNode = e.NewValue as PrintElementNode;
+                foreach (var itemLink in control.ToolboxCreateElementBar.ItemLinks.OfType<BarButtonItemLink>())
+                {
+                    var item = itemLink.Item;
+                    var childElementNode = CreateElementNode(elementNode, item, true);
 
-				var hasElementNode = (elementNode != null);
-				var hasElementParentNode = hasElementNode && (elementNode.Parent != null);
+                    item.IsEnabled = (elementNode != null) && elementNode.CanInsertChild.TryInvoke(childElementNode);
+                }
 
-				// Регулировка доступности кнопок создания
+                // Регулировка доступности прочих операций
 
-				foreach (var itemLink in control.ToolboxCreateElementBar.ItemLinks.OfType<BarButtonItemLink>())
-				{
-					var item = itemLink.Item;
-					var childElementNode = CreateElementNode(elementNode, item, true);
+                control.CutElementButton.IsEnabled = hasElementNode && elementNode.CanCut.TryInvoke();
+                control.CopyElementButton.IsEnabled = hasElementNode && elementNode.CanCopy.TryInvoke();
+                control.PasteElementButton.IsEnabled = hasElementNode && elementNode.CanPaste.TryInvoke();
 
-					item.IsEnabled = (elementNode != null) && elementNode.CanInsertChild.TryInvoke(childElementNode);
-				}
+                control.DeleteElementButton.IsEnabled = hasElementParentNode &&
+                                                        elementNode.Parent.CanDeleteChild.TryInvoke(elementNode, true);
+                control.MoveUpElementButton.IsEnabled = hasElementParentNode &&
+                                                        elementNode.Parent.CanMoveChild.TryInvoke(elementNode, -1);
+                control.MoveDownElementButton.IsEnabled = hasElementParentNode &&
+                                                          elementNode.Parent.CanMoveChild.TryInvoke(elementNode, +1);
+            }
+        }
 
-				// Регулировка доступности прочих операций
+        private void OnInsertChildElement(object sender, ItemClickEventArgs e)
+        {
+            ModifySelectedElement(el => el.InsertChild.TryInvoke(CreateElementNode(el, e.Item, false)));
+        }
 
-				control.CutElementButton.IsEnabled = hasElementNode && elementNode.CanCut.TryInvoke();
-				control.CopyElementButton.IsEnabled = hasElementNode && elementNode.CanCopy.TryInvoke();
-				control.PasteElementButton.IsEnabled = hasElementNode && elementNode.CanPaste.TryInvoke();
+        private void OnDeleteChildElement(object sender, ItemClickEventArgs e)
+        {
+            ModifySelectedElementParent(el => el.Parent.DeleteChild.TryInvoke(el, true));
+        }
 
-				control.DeleteElementButton.IsEnabled = hasElementParentNode && elementNode.Parent.CanDeleteChild.TryInvoke(elementNode, true);
-				control.MoveUpElementButton.IsEnabled = hasElementParentNode && elementNode.Parent.CanMoveChild.TryInvoke(elementNode, -1);
-				control.MoveDownElementButton.IsEnabled = hasElementParentNode && elementNode.Parent.CanMoveChild.TryInvoke(elementNode, +1);
-			}
-		}
+        private void OnMoveUpChildElement(object sender, ItemClickEventArgs e)
+        {
+            ModifySelectedElementParent(el => el.Parent.MoveChild.TryInvoke(el, -1));
+        }
 
-		private void OnInsertChildElement(object sender, ItemClickEventArgs e)
-		{
-			ModifySelectedElement(el => el.InsertChild.TryInvoke(CreateElementNode(el, e.Item, false)));
-		}
+        private void OnMoveDownChildElement(object sender, ItemClickEventArgs e)
+        {
+            ModifySelectedElementParent(el => el.Parent.MoveChild.TryInvoke(el, +1));
+        }
 
-		private void OnDeleteChildElement(object sender, ItemClickEventArgs e)
-		{
-			ModifySelectedElementParent(el => el.Parent.DeleteChild.TryInvoke(el, true));
-		}
+        private void OnCutChildElement(object sender, ItemClickEventArgs e)
+        {
+            ModifySelectedElement(el => !el.Cut.TryInvoke());
+        }
 
-		private void OnMoveUpChildElement(object sender, ItemClickEventArgs e)
-		{
-			ModifySelectedElementParent(el => el.Parent.MoveChild.TryInvoke(el, -1));
-		}
+        private void OnCopyChildElement(object sender, ItemClickEventArgs e)
+        {
+            ModifySelectedElement(el => !el.Copy.TryInvoke());
+        }
 
-		private void OnMoveDownChildElement(object sender, ItemClickEventArgs e)
-		{
-			ModifySelectedElementParent(el => el.Parent.MoveChild.TryInvoke(el, +1));
-		}
+        private void OnPasteChildElement(object sender, ItemClickEventArgs e)
+        {
+            ModifySelectedElement(el => el.Paste.TryInvoke());
+        }
 
-		private void OnCutChildElement(object sender, ItemClickEventArgs e)
-		{
-			ModifySelectedElement(el => !el.Cut.TryInvoke());
-		}
+        private void ModifySelectedElement(Func<PrintElementNode, bool> action)
+        {
+            var selectedElement = SelectedElement;
 
-		private void OnCopyChildElement(object sender, ItemClickEventArgs e)
-		{
-			ModifySelectedElement(el => !el.Copy.TryInvoke());
-		}
+            if (selectedElement != null)
+            {
+                if (action(selectedElement))
+                {
+                    OnElementMetadataChanged();
+                }
+            }
+        }
 
-		private void OnPasteChildElement(object sender, ItemClickEventArgs e)
-		{
-			ModifySelectedElement(el => el.Paste.TryInvoke());
-		}
+        private void ModifySelectedElementParent(Func<PrintElementNode, bool> action)
+        {
+            var selectedElement = SelectedElement;
 
-		private void ModifySelectedElement(Func<PrintElementNode, bool> action)
-		{
-			var selectedElement = SelectedElement;
+            if (selectedElement != null && selectedElement.Parent != null)
+            {
+                if (action(selectedElement))
+                {
+                    OnElementMetadataChanged();
+                }
+            }
+        }
 
-			if (selectedElement != null)
-			{
-				if (action(selectedElement))
-				{
-					OnElementMetadataChanged();
-				}
-			}
-		}
+        /// <summary>
+        ///     Событие разворачивания всех элементов в дереве печатного представления.
+        /// </summary>
+        public event RoutedEventHandler ExpandAll
+        {
+            add { AddHandler(ExpandAllEvent, value); }
+            remove { RemoveHandler(ExpandAllEvent, value); }
+        }
 
-		private void ModifySelectedElementParent(Func<PrintElementNode, bool> action)
-		{
-			var selectedElement = SelectedElement;
+        private void OnExpandAll(object sender, ItemClickEventArgs e)
+        {
+            RaiseEvent(new RoutedEventArgs(ExpandAllEvent));
+        }
 
-			if (selectedElement != null && selectedElement.Parent != null)
-			{
-				if (action(selectedElement))
-				{
-					OnElementMetadataChanged();
-				}
-			}
-		}
+        /// <summary>
+        ///     Событие сворачивания всех элементов в дереве печатного представления.
+        /// </summary>
+        public event RoutedEventHandler CollapseAll
+        {
+            add { AddHandler(CollapseAllEvent, value); }
+            remove { RemoveHandler(CollapseAllEvent, value); }
+        }
 
+        private void OnCollapseAll(object sender, ItemClickEventArgs e)
+        {
+            RaiseEvent(new RoutedEventArgs(CollapseAllEvent));
+        }
 
-		// ExpandAll
+        /// <summary>
+        ///     Событие предпросмотра печатного представления.
+        /// </summary>
+        public event RoutedEventHandler Preview
+        {
+            add { AddHandler(PreviewEvent, value); }
+            remove { RemoveHandler(PreviewEvent, value); }
+        }
 
-		public static readonly RoutedEvent ExpandAllEvent = EventManager.RegisterRoutedEvent("ExpandAll", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PrintElementToolboxControl));
+        private void OnPreview(object sender, ItemClickEventArgs e)
+        {
+            RaiseEvent(new RoutedEventArgs(PreviewEvent));
+        }
 
-		/// <summary>
-		/// Событие разворачивания всех элементов в дереве печатного представления.
-		/// </summary>
-		public event RoutedEventHandler ExpandAll
-		{
-			add { AddHandler(ExpandAllEvent, value); }
-			remove { RemoveHandler(ExpandAllEvent, value); }
-		}
+        /// <summary>
+        ///     Событие импорта печатного представления.
+        /// </summary>
+        public event RoutedEventHandler Import
+        {
+            add { AddHandler(ImportEvent, value); }
+            remove { RemoveHandler(ImportEvent, value); }
+        }
 
-		private void OnExpandAll(object sender, ItemClickEventArgs e)
-		{
-			RaiseEvent(new RoutedEventArgs(ExpandAllEvent));
-		}
+        private void OnImport(object sender, ItemClickEventArgs e)
+        {
+            RaiseEvent(new RoutedEventArgs(ImportEvent));
+        }
 
+        /// <summary>
+        ///     Событие экспорта печатного представления.
+        /// </summary>
+        public event RoutedEventHandler Export
+        {
+            add { AddHandler(ExportEvent, value); }
+            remove { RemoveHandler(ExportEvent, value); }
+        }
 
-		// CollapseAll
+        private void OnExport(object sender, ItemClickEventArgs e)
+        {
+            RaiseEvent(new RoutedEventArgs(ExportEvent));
+        }
 
-		public static readonly RoutedEvent CollapseAllEvent = EventManager.RegisterRoutedEvent("CollapseAll", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PrintElementToolboxControl));
+        /// <summary>
+        ///     Событие метаданных элемента печатного представления.
+        /// </summary>
+        public event PropertyValueChangedEventHandler ElementMetadataChanged
+        {
+            add { AddHandler(ElementMetadataChangedEvent, value); }
+            remove { RemoveHandler(ElementMetadataChangedEvent, value); }
+        }
 
-		/// <summary>
-		/// Событие сворачивания всех элементов в дереве печатного представления.
-		/// </summary>
-		public event RoutedEventHandler CollapseAll
-		{
-			add { AddHandler(CollapseAllEvent, value); }
-			remove { RemoveHandler(CollapseAllEvent, value); }
-		}
+        private void OnElementMetadataChanged()
+        {
+            RaiseEvent(new PropertyValueChangedEventArgs(ElementMetadataChangedEvent, null, null, null));
+        }
 
-		private void OnCollapseAll(object sender, ItemClickEventArgs e)
-		{
-			RaiseEvent(new RoutedEventArgs(CollapseAllEvent));
-		}
+        private static PrintElementNode CreateElementNode(PrintElementNode elementParent, BarItem elementItem,
+            bool useElementCache)
+        {
+            PrintElementNode elementNode;
 
+            var elementType = elementItem.Tag as string ?? string.Empty;
 
-		// Preview
+            if (useElementCache)
+            {
+                if (!ElementNodeCache.TryGetValue(elementType, out elementNode))
+                {
+                    elementNode = new PrintElementNode(elementParent, elementType, new DynamicWrapper());
+                    ElementNodeCache[elementType] = elementNode;
+                }
+            }
+            else
+            {
+                elementNode = new PrintElementNode(elementParent, elementType, new DynamicWrapper());
+            }
 
-		public static readonly RoutedEvent PreviewEvent = EventManager.RegisterRoutedEvent("Preview", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PrintElementToolboxControl));
+            return elementNode;
+        }
 
-		/// <summary>
-		/// Событие предпросмотра печатного представления.
-		/// </summary>
-		public event RoutedEventHandler Preview
-		{
-			add { AddHandler(PreviewEvent, value); }
-			remove { RemoveHandler(PreviewEvent, value); }
-		}
+        // SelectedElement
 
-		private void OnPreview(object sender, ItemClickEventArgs e)
-		{
-			RaiseEvent(new RoutedEventArgs(PreviewEvent));
-		}
+        public static readonly DependencyProperty SelectedElementProperty =
+            DependencyProperty.Register("SelectedElement", typeof (PrintElementNode),
+                typeof (PrintElementToolboxControl), new FrameworkPropertyMetadata(OnSelectedElementChanged));
 
+        // ExpandAll
 
-		// Import
+        public static readonly RoutedEvent ExpandAllEvent = EventManager.RegisterRoutedEvent("ExpandAll",
+            RoutingStrategy.Bubble, typeof (RoutedEventHandler), typeof (PrintElementToolboxControl));
 
-		public static readonly RoutedEvent ImportEvent = EventManager.RegisterRoutedEvent("Import", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PrintElementToolboxControl));
+        // CollapseAll
 
-		/// <summary>
-		/// Событие импорта печатного представления.
-		/// </summary>
-		public event RoutedEventHandler Import
-		{
-			add { AddHandler(ImportEvent, value); }
-			remove { RemoveHandler(ImportEvent, value); }
-		}
+        public static readonly RoutedEvent CollapseAllEvent = EventManager.RegisterRoutedEvent("CollapseAll",
+            RoutingStrategy.Bubble, typeof (RoutedEventHandler), typeof (PrintElementToolboxControl));
 
-		private void OnImport(object sender, ItemClickEventArgs e)
-		{
-			RaiseEvent(new RoutedEventArgs(ImportEvent));
-		}
+        // Preview
 
+        public static readonly RoutedEvent PreviewEvent = EventManager.RegisterRoutedEvent("Preview",
+            RoutingStrategy.Bubble, typeof (RoutedEventHandler), typeof (PrintElementToolboxControl));
 
-		// Export
+        // Import
 
-		public static readonly RoutedEvent ExportEvent = EventManager.RegisterRoutedEvent("Export", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PrintElementToolboxControl));
+        public static readonly RoutedEvent ImportEvent = EventManager.RegisterRoutedEvent("Import",
+            RoutingStrategy.Bubble, typeof (RoutedEventHandler), typeof (PrintElementToolboxControl));
 
-		/// <summary>
-		/// Событие экспорта печатного представления.
-		/// </summary>
-		public event RoutedEventHandler Export
-		{
-			add { AddHandler(ExportEvent, value); }
-			remove { RemoveHandler(ExportEvent, value); }
-		}
+        // Export
 
-		private void OnExport(object sender, ItemClickEventArgs e)
-		{
-			RaiseEvent(new RoutedEventArgs(ExportEvent));
-		}
+        public static readonly RoutedEvent ExportEvent = EventManager.RegisterRoutedEvent("Export",
+            RoutingStrategy.Bubble, typeof (RoutedEventHandler), typeof (PrintElementToolboxControl));
 
+        // ElementMetadataChanged
 
-		// ElementMetadataChanged
+        public static readonly RoutedEvent ElementMetadataChangedEvent =
+            EventManager.RegisterRoutedEvent("ElementMetadataChanged", RoutingStrategy.Bubble,
+                typeof (PropertyValueChangedEventHandler), typeof (PrintElementToolboxControl));
 
-		public static readonly RoutedEvent ElementMetadataChangedEvent = EventManager.RegisterRoutedEvent("ElementMetadataChanged", RoutingStrategy.Bubble, typeof(PropertyValueChangedEventHandler), typeof(PrintElementToolboxControl));
+        // Helpers
 
-		/// <summary>
-		/// Событие метаданных элемента печатного представления.
-		/// </summary>
-		public event PropertyValueChangedEventHandler ElementMetadataChanged
-		{
-			add { AddHandler(ElementMetadataChangedEvent, value); }
-			remove { RemoveHandler(ElementMetadataChangedEvent, value); }
-		}
-
-		private void OnElementMetadataChanged()
-		{
-			RaiseEvent(new PropertyValueChangedEventArgs(ElementMetadataChangedEvent, null, null, null));
-		}
-
-
-		// Helpers
-
-		private static readonly Dictionary<string, PrintElementNode> ElementNodeCache = new Dictionary<string, PrintElementNode>();
-
-		private static PrintElementNode CreateElementNode(PrintElementNode elementParent, BarItem elementItem, bool useElementCache)
-		{
-			PrintElementNode elementNode;
-
-			var elementType = elementItem.Tag as string ?? string.Empty;
-
-			if (useElementCache)
-			{
-				if (!ElementNodeCache.TryGetValue(elementType, out elementNode))
-				{
-					elementNode = new PrintElementNode(elementParent, elementType, new DynamicWrapper());
-					ElementNodeCache[elementType] = elementNode;
-				}
-			}
-			else
-			{
-				elementNode = new PrintElementNode(elementParent, elementType, new DynamicWrapper());
-			}
-
-			return elementNode;
-		}
-	}
+        private static readonly Dictionary<string, PrintElementNode> ElementNodeCache =
+            new Dictionary<string, PrintElementNode>();
+    }
 }

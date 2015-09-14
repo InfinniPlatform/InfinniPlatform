@@ -1,12 +1,11 @@
 ﻿using System;
 using System.IO;
-
-using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.Factories;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.BlobStorage;
 using InfinniPlatform.Cassandra.Client;
 using InfinniPlatform.Index.ElasticSearch.Factories;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Binary;
 using InfinniPlatform.SystemConfig.Multitenancy;
 
 namespace InfinniPlatform.WebApi.Tests.Builders

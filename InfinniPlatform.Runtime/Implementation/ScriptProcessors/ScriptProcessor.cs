@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection;
-using InfinniPlatform.Api.Factories;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Scripts;
 
 namespace InfinniPlatform.Runtime.Implementation.ScriptProcessors
 {
@@ -24,19 +26,19 @@ namespace InfinniPlatform.Runtime.Implementation.ScriptProcessors
 				throw new ArgumentException(string.Format("Script metadata for {0} not registered", scriptIdentifier));
 			}
 
-		    MethodInfo methodInfo = null;
-		    if (scriptContext.Version != null)
-		    {
-		        var cache = _methodInvokationCacheList.GetCache(scriptContext.Version,true);
-		        if (cache == null)
-		        {
-		            throw new ArgumentException(string.Format("script configuration version \"{0}\" not found!",
-		                                                      scriptContext.Version));
-		        }
-                methodInfo = cache.FindMethodInfo(scriptMetadata.Type, scriptMetadata.Method);
-		    }
-		    else
-		    {
+            MethodInfo methodInfo = null;
+            //if (scriptContext.Version != null)
+            //{
+            //    var cache = _methodInvokationCacheList.GetCache(scriptContext.Version,true);
+            //    if (cache == null)
+            //    {
+            //        throw new ArgumentException(string.Format("script configuration version \"{0}\" not found!",
+            //                                                  scriptContext.Version));
+            //    }
+            //    methodInfo = cache.FindMethodInfo(scriptMetadata.Type, scriptMetadata.Method);
+            //}
+		    //else
+		    //{
                 //если версия не указана, то не знаем, в каком именно кэше искать необходимый метод
                 //поэтому, перебираем все, упорядоченные по дате кэши методов
 		        foreach (var cache in _methodInvokationCacheList.CacheList)
@@ -47,7 +49,7 @@ namespace InfinniPlatform.Runtime.Implementation.ScriptProcessors
                         break;
                     }
 		        }
-		    }
+		    //}
 		    
 			if (methodInfo != null)
 			{

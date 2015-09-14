@@ -3,8 +3,8 @@
 namespace InfinniPlatform.Api.SelfDocumentation
 {
     /// <summary>
-    /// Атрибут, используемый для юнит-тестов.
-    /// Позволяет генерировать документацию по юнит-тестам
+    ///     Атрибут, используемый для юнит-тестов.
+    ///     Позволяет генерировать документацию по юнит-тестам
     /// </summary>
     public class SelfDocumentedTestAttribute : Attribute
     {

@@ -1,67 +1,71 @@
-﻿using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.RestApi.AuthApi;
+﻿using System.Linq;
+using InfinniPlatform.Api.Properties;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.CommonApi;
-using System.Linq;
+using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 {
-	public sealed class ActionUnitAddUser
-	{
-		public void Action(IApplyContext target)
-		{
-			var aclApi = target.Context.GetComponent<AclApi>();
+    public sealed class ActionUnitAddUser
+    {
+        public void Action(IApplyContext target)
+        {
+            var aclApi = target.Context.GetComponent<AuthApi>();
 
-			var user = target.Item.Document;
+            dynamic user = null;
 
-			if (user == null || string.IsNullOrEmpty(user.UserName))
-			{
-				target.IsValid = false;
-				target.ValidationMessage = "User name is not specified";
-				return;				
-			}
+            user = target.Item.Document ?? target.Item;
 
-			var userFound = aclApi.GetUsers().FirstOrDefault(r => r.UserName.ToLowerInvariant() == user.UserName.ToLowerInvariant());
+            if (user == null || string.IsNullOrEmpty(user.UserName))
+            {
+                target.IsValid = false;
+                target.ValidationMessage = "User name is not specified";
+                return;
+            }
 
-			if (userFound != null && user.Password != null)
-			{
-				target.IsValid = false;
-				target.ValidationMessage = "User with user name " + user.UserName + " already exists.";
-				return;
-			}
+            var userFound =
+                aclApi.GetUsers(false)
+                    .FirstOrDefault(r => r.UserName.ToLowerInvariant() == user.UserName.ToLowerInvariant());
 
-		    if (user.Password != null)
-		    {
-		        aclApi.AddUser(user.UserName, user.Password);
-		    }
-		    else
-		    {
-		        // Если пароль не задан, то происходит редактирование существующего пользователя
-		        if (userFound.Roles != null)
-		        {
-		            foreach (var role in userFound.Roles)
-		            {
-                        aclApi.RemoveUserRole(user.UserName, role.DisplayName);
-		            }
-		        }
-		    }
+            if (userFound != null && user.Password != null)
+            {
+                target.IsValid = false;
+                target.ValidationMessage = "User with user name " + user.UserName + " already exists.";
+                return;
+            }
 
-		    if (user.UserRoles != null)
-		    {
-		        foreach (var userRole in user.UserRoles)
-		        {
-		            aclApi.AddUserToRole(user.UserName, userRole.DisplayName);
-		        }
-		    }
-            
-		    if (target.Item.Document.IsAdmin == true)
-			{				
-				aclApi.AddUserToRole(user.UserName,AuthorizationStorageExtensions.AdminRole);
-			}
-		   
-			RestQueryApi.QueryPostJsonRaw("AdministrationCustomization", "Common", "OnAddUserEvent", null, target.Item.Document);
+            if (user.Password != null)
+            {
+                aclApi.AddUser(user.UserName, user.Password);
+            }
 
-            target.Item.Document.Password = null;
+            if (user.UserRoles != null)
+            {
+                foreach (var userRole in user.UserRoles)
+                {
+                    aclApi.AddUserToRole(user.UserName, userRole.DisplayName);
+                }
+            }
 
-		}
-	}
+
+            if (user.IsAdmin == true)
+            {
+                aclApi.AddUserToRole(user.UserName, AuthorizationStorageExtensions.AdminRole);
+            }
+
+            user.Password = null;
+
+            target.Context.GetComponent<DocumentApi>()
+                .SetDocument(AuthorizationStorageExtensions.AdministrationConfigId, "User",
+                    user);
+
+            RestQueryApi.QueryPostJsonRaw("AdministrationCustomization", "Common", "OnAddUserEvent", null, user);
+
+            target.Result = new DynamicWrapper();
+            target.Result.IsValid = true;
+            target.Result.ValidationMessage = Resources.UserCreatedSuccessfully;
+        }
+    }
 }

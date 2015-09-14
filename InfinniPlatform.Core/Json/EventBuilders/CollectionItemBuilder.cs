@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using InfinniPlatform.Api.Events;
+using InfinniPlatform.Sdk.Events;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Json.EventBuilders
@@ -22,30 +22,27 @@ namespace InfinniPlatform.Json.EventBuilders
                 throw new ArgumentException("object to add item is not a collection");
             }
 
-	        var tokenToAdd = eventDefinition.Value != null ? JToken.FromObject(eventDefinition.Value) : null;
+            var tokenToAdd = eventDefinition.Value != null ? JToken.FromObject(eventDefinition.Value) : null;
 
-			UpdateProperty(jArray,tokenToAdd  ?? new JObject(), eventDefinition.Index);
+            UpdateProperty(jArray, tokenToAdd ?? new JObject(), eventDefinition.Index);
         }
 
-        private void UpdateProperty(JArray parentArray, JToken objectToAdd, int index )
+        private void UpdateProperty(JArray parentArray, JToken objectToAdd, int index)
         {
-			//Если указанный индекс больше количества элементов в массиве, просто добавляем элемент
+            //Если указанный индекс больше количества элементов в массиве, просто добавляем элемент
             if (index > parentArray.Count - 1)
             {
-				parentArray.Add(objectToAdd);
-				return;
+                parentArray.Add(objectToAdd);
+                return;
             }
 
-			//если объект в указанном индексе уже сушествует, то ничего не делаем
-			if (index != -1 && parentArray[index] != null)
-			{
-				return;
-			}
-			
+            //если объект в указанном индексе уже сушествует, то ничего не делаем
+            if (index != -1 && parentArray[index] != null)
+            {
+                return;
+            }
+
             parentArray.Add(objectToAdd);
-            
         }
-
-
     }
 }

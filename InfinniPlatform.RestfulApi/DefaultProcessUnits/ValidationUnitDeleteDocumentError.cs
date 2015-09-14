@@ -1,11 +1,13 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
+﻿using System.Collections;
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Properties;
-using InfinniPlatform.Api.Validation;
 using InfinniPlatform.Logging;
-using System.Collections;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Environment.Metadata;
+using InfinniPlatform.Sdk.Environment.Validations;
+using InfinniPlatform.Sdk.Global;
 
 namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
 {
@@ -24,7 +26,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
             if (target.Item.Configuration.ToLowerInvariant() != "systemconfig" && target.Item.Configuration.ToLowerInvariant() != "update" && target.Item.Configuration.ToLowerInvariant() != "restfulapi")
             {
                 //ищем метаданные бизнес-процесса по умолчанию документа 
-                defaultBusinessProcess = target.Context.GetComponent<IMetadataComponent>().GetMetadata(target.Item.Configuration, target.Item.Metadata, MetadataType.Process, "Default");
+                defaultBusinessProcess = target.Context.GetComponent<IMetadataComponent>().GetMetadata(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration, target.Item.Metadata, MetadataType.Process, "Default");
             }
 
             if (defaultBusinessProcess == null || defaultBusinessProcess.Transitions.Count == 0)
@@ -40,7 +42,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                 //получаем конструктор метаданных конфигураций
                 var configBuilder = target.Context.GetComponent<IConfigurationMediatorComponent>().ConfigurationBuilder;
 
-                IConfigurationObject configurationObject = configBuilder.GetConfigurationObject(target.Item.Configuration);
+                IConfigurationObject configurationObject = configBuilder.GetConfigurationObject(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration);
 
                 if (configurationObject == null)
                 {
@@ -59,6 +61,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
 
                         context.CopyPropertiesFrom(target);
                         context.Item = target.Item.Document ?? target.Item;
+                        context.Context = target.Context.GetComponent<ICustomServiceGlobalContext>();
 
                         validator.Validate(context, new ValidationResult());
 

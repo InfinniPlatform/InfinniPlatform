@@ -2,11 +2,11 @@
 
 namespace InfinniPlatform.PrintViewDesigner.Controls.PropertyGridExtensions
 {
-	public partial class PropertyEditorFontSize : PropertyEditorBase
-	{
-		public PropertyEditorFontSize()
-		{
-			InitializeComponent();
-		}
-	}
+    public partial class PropertyEditorFontSize : PropertyEditorBase
+    {
+        public PropertyEditorFontSize()
+        {
+            InitializeComponent();
+        }
+    }
 }

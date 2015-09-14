@@ -2,23 +2,24 @@
 
 namespace InfinniPlatform.PrintViewDesigner.Controls.PrintViewTreeBuilders.Blocks
 {
-	sealed class PrintElementTableColumnHeaderNodeFactory : IPrintElementNodeFactory
-	{
-		private static readonly string[] TableCells = { "TableCell" };
+    internal sealed class PrintElementTableColumnHeaderNodeFactory : IPrintElementNodeFactory
+    {
+        private static readonly string[] TableCells = {"TableCell"};
 
-		public void Create(PrintElementNodeBuilder builder, ICollection<PrintElementNode> elements, PrintElementNode elementNode)
-		{
-			elementNode.ElementChildrenTypes = TableCells;
-			elementNode.CanInsertChild = BuildHelper.CanInsertChild(elementNode);
-			elementNode.InsertChild = BuildHelper.InsertChildToContainer(builder, elements, elementNode, "Header", false);
+        public void Create(PrintElementNodeBuilder builder, ICollection<PrintElementNode> elements,
+            PrintElementNode elementNode)
+        {
+            elementNode.ElementChildrenTypes = TableCells;
+            elementNode.CanInsertChild = BuildHelper.CanInsertChild(elementNode);
+            elementNode.InsertChild = BuildHelper.InsertChildToContainer(builder, elements, elementNode, "Header", false);
 
-			elementNode.CanDeleteChild = BuildHelper.CanDeleteChild(elementNode);
-			elementNode.DeleteChild = BuildHelper.DeleteChildFromContainer(elements, elementNode, "Header", false);
+            elementNode.CanDeleteChild = BuildHelper.CanDeleteChild(elementNode);
+            elementNode.DeleteChild = BuildHelper.DeleteChildFromContainer(elements, elementNode, "Header", false);
 
-			elementNode.CanPaste = BuildHelper.CanPaste(elementNode);
-			elementNode.Paste = BuildHelper.Paste(elementNode);
+            elementNode.CanPaste = BuildHelper.CanPaste(elementNode);
+            elementNode.Paste = BuildHelper.Paste(elementNode);
 
-			builder.BuildElement(elements, elementNode, elementNode.ElementMetadata.Header, "TableCell");
-		}
-	}
+            builder.BuildElement(elements, elementNode, elementNode.ElementMetadata.Header, "TableCell");
+        }
+    }
 }

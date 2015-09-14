@@ -1,6 +1,5 @@
-﻿using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Api.RestApi.DataApi;
+﻿using InfinniPlatform.Api.RestApi.CommonApi;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.Metadata.Tests.Builders
 {
@@ -8,7 +7,7 @@ namespace InfinniPlatform.Metadata.Tests.Builders
     {
         public void Action(IApplyContext applyContext)
         {
-			IndexApi.InsertDocument(applyContext.Item, "Handlers", "patienttest");
+            new IndexApi().InsertDocument(applyContext.Item, "Handlers", "patienttest");
         }
     }
 }

@@ -1,14 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using InfinniPlatform.Api.Context;
 using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
+using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
 using InfinniPlatform.Api.Packages;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.TestEnvironment;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Hosting;
 using NUnit.Framework;
-using System;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 {
@@ -33,47 +35,28 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             _server.Dispose();
         }
 
-        [Test]
-        public void ShouldFormatExceptionMessage()
-        {
-            var document = new
-            {
-                Id = Guid.NewGuid(),
-                LastName = "123",
-            };
-
-            CreateTestConfig();
-
-	        try
-	        {
-		        var result = new DocumentApi().SetDocument(ConfigurationId, "testdoc1", document);
-
-	        }
-	        catch (Exception e)
-	        {
-		        Assert.IsTrue(e.Message.Contains("Important exception details"));
-	        }
-        }
-        
         private void CreateTestConfig()
         {
             const string documentId = "testdoc1";
 
-            IndexApi.RebuildIndex(ConfigurationId, documentId);
+            new IndexApi().RebuildIndex(ConfigurationId, documentId);
 
-            var managerConfiguration = ManagerFactoryConfiguration.BuildConfigurationManager();
+            MetadataManagerConfiguration managerConfiguration =
+                ManagerFactoryConfiguration.BuildConfigurationManager("1.0.0.0");
 
-            var config = managerConfiguration.CreateItem(ConfigurationId);
+            dynamic config = managerConfiguration.CreateItem(ConfigurationId);
             managerConfiguration.DeleteItem(config);
             managerConfiguration.MergeItem(config);
 
-            var managerDocument = new ManagerFactoryConfiguration(ConfigurationId).BuildDocumentManager();
+            MetadataManagerDocument managerDocument =
+                new ManagerFactoryConfiguration("1.0.0.0", ConfigurationId).BuildDocumentManager();
             dynamic documentMetadata1 = managerDocument.CreateItem(documentId);
             managerDocument.MergeItem(documentMetadata1);
 
             //добавляем бизнес-процесс по умолчанию
-            var processManager = new ManagerFactoryDocument(ConfigurationId, documentId).BuildProcessManager();
-            var defaultProcess = processManager.CreateItem("Default");
+            MetadataManagerElement processManager =
+                new ManagerFactoryDocument("1.0.0.0", ConfigurationId, documentId).BuildProcessManager();
+            dynamic defaultProcess = processManager.CreateItem("Default");
 
             dynamic instance = new DynamicWrapper();
             instance.Name = "Default transition";
@@ -85,12 +68,13 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             instance.SuccessPoint = new DynamicWrapper();
             instance.SuccessPoint.TypeName = "Action";
             instance.SuccessPoint.ScenarioId = "actionwithexception";
-            
+
             processManager.MergeItem(defaultProcess);
 
             //указываем ссылку на тестовый сценарий комплексного предзаполнения
-            var scenarioManager = new ManagerFactoryDocument(ConfigurationId, documentId).BuildScenarioManager();
-            
+            MetadataManagerElement scenarioManager =
+                new ManagerFactoryDocument("1.0.0.0", ConfigurationId, documentId).BuildScenarioManager();
+
             const string scenarioSuccessId = "ActionWithException";
             dynamic scenarioSuccessItem = scenarioManager.CreateItem(scenarioSuccessId);
             scenarioSuccessItem.ScenarioId = scenarioSuccessId;
@@ -101,17 +85,38 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             scenarioManager.MergeItem(scenarioSuccessItem);
 
             //добавляем ссылку на сборку, в которой находится прикладной модуль
-            var assemblyManager = new ManagerFactoryConfiguration(ConfigurationId).BuildAssemblyManager();
+            MetadataManagerElement assemblyManager =
+                new ManagerFactoryConfiguration("1.0.0.0", ConfigurationId).BuildAssemblyManager();
             dynamic assemblyItem = assemblyManager.CreateItem("InfinniPlatform.Api.Tests");
             assemblyManager.MergeItem(assemblyItem);
 
-            var package = new PackageBuilder().BuildPackage(ConfigurationId, "test_version", GetType().Assembly.Location);
-            UpdateApi.InstallPackages(new[] {package});
+            dynamic package = new PackageBuilder().BuildPackage(ConfigurationId, "1.0.0.0", GetType().Assembly.Location);
+            new UpdateApi("1.0.0.0").InstallPackages(new[] { package });
 
-            RestQueryApi.QueryPostNotify(ConfigurationId);
+            RestQueryApi.QueryPostNotify(null, ConfigurationId);
 
-            UpdateApi.UpdateStore(ConfigurationId);
+            new UpdateApi("1.0.0.0").UpdateStore(ConfigurationId);
         }
 
+        [Test]
+        public void ShouldFormatExceptionMessage()
+        {
+            var document = new
+                {
+                    Id = Guid.NewGuid(),
+                    LastName = "123",
+                };
+
+            CreateTestConfig();
+
+            try
+            {
+                dynamic result = new DocumentApi().SetDocument(ConfigurationId, "testdoc1", document);
+            }
+            catch (Exception e)
+            {
+                Assert.IsTrue(e.Message.Contains("Important exception details"));
+            }
+        }
     }
 }

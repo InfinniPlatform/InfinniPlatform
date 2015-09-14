@@ -4,6 +4,7 @@ using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters.Extensions;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters.NestFilters.ConcreteFilterBuilders;
 using System.Collections.Generic;
+using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.Filters.NestFilters
 {

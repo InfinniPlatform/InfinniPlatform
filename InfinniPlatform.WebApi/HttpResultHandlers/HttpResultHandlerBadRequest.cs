@@ -3,7 +3,7 @@ using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
-using InfinniPlatform.Api.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.WebApi.HttpResultHandlers
 {

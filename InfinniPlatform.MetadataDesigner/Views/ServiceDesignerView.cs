@@ -4,9 +4,11 @@ using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraEditors.Controls;
-using InfinniPlatform.Api.Dynamic;
+using InfinniPlatform.Api.Deprecated;
+
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.MetadataDesigner.Views.ViewModel;
+using InfinniPlatform.Sdk.Dynamic;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.MetadataDesigner.Views
@@ -114,6 +116,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 
         }
 
+        public Func<string> Version { get; set; } 
 
         public Func<string> ConfigId { get; set; }
 
@@ -127,8 +130,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
                 ComboBoxServiceType.Properties.Items.Clear();
                 ComboBoxServiceType.Properties.Items.AddRange(ViewModelExtension.BuildServiceTypesHeaders().BuildImageComboBoxItemsString().ToList());
 
-                IEnumerable<ProcessDescription> descriptions = ViewModelExtension.GetDocumentProcessesList(
-                    ConfigId(), DocumentId());
+                IEnumerable<ProcessDescription> descriptions = ViewModelExtension.GetDocumentProcessesList(Version(), ConfigId(), DocumentId());
 
 
                 ComboBoxScenarioId.Properties.Items.Clear();

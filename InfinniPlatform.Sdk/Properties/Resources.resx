@@ -1,116 +1,387 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!-- 
-		Microsoft ResX Schema
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
 
-		Version 1.3
-
-		The primary goals of this format is to allow a simple XML format 
-		that is mostly human readable. The generation and parsing of the 
-		various data types are done through the TypeConverter classes 
-		associated with the data types.
-
-		Example:
-
-		... ado.net/XML headers & schema ...
-		<resheader name="resmimetype">text/microsoft-resx</resheader>
-		<resheader name="version">1.3</resheader>
-		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-		<data name="Name1">this is my long string</data>
-		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-			[base64 mime encoded serialized .NET Framework object]
-		</data>
-		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-			[base64 mime encoded string representing a byte array form of the .NET Framework object]
-		</data>
-
-		There are any number of "resheader" rows that contain simple 
-		name/value pairs.
-
-		Each data row contains a name, and value. The row also contains a 
-		type or mimetype. Type corresponds to a .NET class that support 
-		text/value conversion through the TypeConverter architecture. 
-		Classes that don't support this are serialized and stored with the 
-		mimetype set.
-
-		The mimetype is used for serialized objects, and tells the 
-		ResXResourceReader how to depersist the object. This is currently not 
-		extensible. For a given mimetype the value must be set accordingly:
-
-		Note - application/x-microsoft.net.object.binary.base64 is the format 
-		that the ResXResourceWriter will generate, however the reader can 
-		read any of the formats listed below.
-
-		mimetype: application/x-microsoft.net.object.binary.base64
-		value   : The object must be serialized with 
-			: System.Serialization.Formatters.Binary.BinaryFormatter
-			: and then encoded with base64 encoding.
-
-		mimetype: application/x-microsoft.net.object.soap.base64
-		value   : The object must be serialized with 
-			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-			: and then encoded with base64 encoding.
-
-		mimetype: application/x-microsoft.net.object.bytearray.base64
-		value   : The object must be serialized into a byte array 
-			: using a System.ComponentModel.TypeConverter
-			: and then encoded with base64 encoding.
-	-->
-	
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>1.3</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
   <data name="ServiceNotRegistered" xml:space="preserve">
     <value>Service not registered! Please check type of request (GET,POST) and name of invoked service instance.</value>
   </data>
   <data name="SessionNotInitialized" xml:space="preserve">
     <value>Client session not initialized.</value>
   </data>
-  <data name="FailGetDocument" xml:space="preserve">
-    <value>Fail to get document with exception: {0}</value>
+  <data name="UnableToGetDocument" xml:space="preserve">
+    <value>Unable to get document with exception: {0}</value>
   </data>
   <data name="ResultIsNotOfArrayType" xml:space="preserve">
     <value>query result is not of array type</value>
   </data>
   <data name="ResultIsNotOfObjectType" xml:space="preserve">
     <value>query result is not of object type</value>
+  </data>
+  <data name="UnableToSetDocument" xml:space="preserve">
+    <value>Unable to set document with exception: {0}</value>
+  </data>
+  <data name="UnableToUpdateDocument" xml:space="preserve">
+    <value>Unable to update document with exception: {0}</value>
+  </data>
+  <data name="BusinessLogicError" xml:space="preserve">
+    <value>There an business logic error on request execution.</value>
+  </data>
+  <data name="RemoteServerNotFound" xml:space="preserve">
+    <value>Remote server not found.</value>
+  </data>
+  <data name="InternalServerError" xml:space="preserve">
+    <value>There is an internal server error.</value>
+  </data>
+  <data name="ServiceNotRegisteredError" xml:space="preserve">
+    <value>There is not service on specified url</value>
+  </data>
+  <data name="UnableToDeleteDocument" xml:space="preserve">
+    <value>Unable to delete document with exception: {0}</value>
+  </data>
+  <data name="UnableToCreateNewSession" xml:space="preserve">
+    <value>Unable to create new session.</value>
+  </data>
+  <data name="UnableToAttachDocumentToSession" xml:space="preserve">
+    <value>Unable to attach document to session with exception: {0}</value>
+  </data>
+  <data name="UnableToGetSession" xml:space="preserve">
+    <value>Unable to get session with exception: {0}</value>
+  </data>
+  <data name="UnableToDetachDocument" xml:space="preserve">
+    <value>Unable to detach document from session with exception: {0}</value>
+  </data>
+  <data name="DocumentToDetachShouldntBeEmpty" xml:space="preserve">
+    <value>Document to detach should not be null.</value>
+  </data>
+  <data name="UnableToCommitException" xml:space="preserve">
+    <value>Unable to commit session with exception: {0}</value>
+  </data>
+  <data name="UnableToUploadFileOnServer" xml:space="preserve">
+    <value>Unable to upload file on server with exception: {0}</value>
+  </data>
+  <data name="UnableToDownloadFileFromServer" xml:space="preserve">
+    <value>Unable to download file from server with exception: {0}</value>
+  </data>
+  <data name="UnableToAttachFileToSession" xml:space="preserve">
+    <value>Unable to attach file to session with exception: {0}</value>
+  </data>
+  <data name="UnableToDetachFileFromSession" xml:space="preserve">
+    <value>Unable to detach file from session with exception: {0}</value>
+  </data>
+  <data name="UnableToSignUser" xml:space="preserve">
+    <value>Unable to sign in user with exception: {0}</value>
+  </data>
+  <data name="UnableToSignOutUser" xml:space="preserve">
+    <value>Unable to sign out user with exception: {0}</value>
+  </data>
+  <data name="UnableToChangePasswordUser" xml:space="preserve">
+    <value>Unable to change password for user with exception: {0}</value>
+  </data>
+  <data name="UnableToAddUser" xml:space="preserve">
+    <value>Unable to add user with exception: {0}</value>
+  </data>
+  <data name="UnableToDeleteUser" xml:space="preserve">
+    <value>Unable to delete user with exception: {0}</value>
+  </data>
+  <data name="UnableToGetUser" xml:space="preserve">
+    <value>Unable to get user with exception: {0}</value>
+  </data>
+  <data name="UnableToGrantAccessToUser" xml:space="preserve">
+    <value>Unable to grant access to user with exception: {0}</value>
+  </data>
+  <data name="UnableToAddUserClaim" xml:space="preserve">
+    <value>Unable to add user claim with exception: {0}</value>
+  </data>
+  <data name="UnableToRemoveUserClaim" xml:space="preserve">
+    <value>Unable to remove user claim with exception:{0}</value>
+  </data>
+  <data name="UnableToGetUserClaim" xml:space="preserve">
+    <value>Unable to get user claim with exception: {0}</value>
+  </data>
+  <data name="UnableToAddRole" xml:space="preserve">
+    <value>Unable to add role with exception:{0}</value>
+  </data>
+  <data name="UnableToDeleteRole" xml:space="preserve">
+    <value>Unable to delete role with exception: {0}</value>
+  </data>
+  <data name="UnableToAddUserRole" xml:space="preserve">
+    <value>Unable to add role to user with exception: {0}</value>
+  </data>
+  <data name="UnableToDeleteUserRole" xml:space="preserve">
+    <value>Unable to delete user role with exception: {0}</value>
+  </data>
+  <data name="UnableToSignInUser" xml:space="preserve">
+    <value>Unable to sign in user with exception: {0}</value>
+  </data>
+  <data name="UnableToRemoveSession" xml:space="preserve">
+    <value>Unable to remove session with exception: {0}</value>
+  </data>
+  <data name="CantGetAclListForSpecifiedType" xml:space="preserve">
+    <value>Can't get acl list with selected aclType: {0}</value>
+  </data>
+  <data name="UnableToInvokeCustomService" xml:space="preserve">
+    <value>Unable to invoke custom user service: {0}</value>
+  </data>
+  <data name="PropertyPathCannotBeNullOrEmpty" xml:space="preserve">
+    <value>Property path cannot be null or empty.</value>
+  </data>
+  <data name="TargetObjectCannotBeNull" xml:space="preserve">
+    <value>Target object cannot be null.</value>
+  </data>
+  <data name="CollectionCanNotBeModified" xml:space="preserve">
+    <value>Collection can not be modified</value>
+  </data>
+  <data name="FailToGetIrrelevantVersions" xml:space="preserve">
+    <value>Fail to get user irrelevant versions with exception: {0}</value>
+  </data>
+  <data name="FailToGetApplicationActualVersions" xml:space="preserve">
+    <value>Fail to get user applications actual versions with exception "{0}"</value>
+  </data>
+  <data name="FailToSetUserRelevantVersions" xml:space="preserve">
+    <value>Fail to set user application relevant versions with exception "{0}"</value>
+  </data>
+  <data name="UnableToInsertSolutionMetadata" xml:space="preserve">
+    <value>Unable to insert solution metadata with exception: {0}</value>
+  </data>
+  <data name="UnableToDeleteSolutionMetadata" xml:space="preserve">
+    <value>Unable to delete solution metadata with exception: {0}</value>
+  </data>
+  <data name="UnableToInsertConfigMetadata" xml:space="preserve">
+    <value>Unable to insert config metadata with exception {0}</value>
+  </data>
+  <data name="UnableToUpdateConfigMetadata" xml:space="preserve">
+    <value>Unable to update config metadata with exception {0}</value>
+  </data>
+  <data name="UnableToDeleteConfigMetadata" xml:space="preserve">
+    <value>Unable to delete config metadata with exception {0}</value>
+  </data>
+  <data name="UnableToGetConfigMetadata" xml:space="preserve">
+    <value>Unable to get config metadata with exception {0}</value>
+  </data>
+  <data name="UnableToInsertMenuMetadata" xml:space="preserve">
+    <value>Unable to insert menu metadata with exception {0}</value>
+  </data>
+  <data name="UnableToUpdateMenuMetadata" xml:space="preserve">
+    <value>Unable to update menu metadata with exception {0}</value>
+  </data>
+  <data name="UnableToDeleteMenuMetadata" xml:space="preserve">
+    <value>Unable to delete menu metadata with exception {0}</value>
+  </data>
+  <data name="UnableToGetMenuMetadata" xml:space="preserve">
+    <value>Unable to get menu metadata with exception {0}</value>
+  </data>
+  <data name="UnableToInsertAssemblyMetadata" xml:space="preserve">
+    <value>Unable to insert assembly metadata with exception {0}</value>
+  </data>
+  <data name="UnableToUpdateAssemblyMetadata" xml:space="preserve">
+    <value>Unable to update assembly metadata with exception {0}</value>
+  </data>
+  <data name="UnableToDeleteAssemblyMetadata" xml:space="preserve">
+    <value>Unable to delete assembly metadata with exception {0}</value>
+  </data>
+	<data name="UnableToInsertRegisterMetadata" xml:space="preserve">
+    <value>Unable to insert register metadata with exception {0}</value>
+  </data>
+	<data name="UnableToUpdateRegisterMetadata" xml:space="preserve">
+    <value>Unable to update register metadata with exception {0}</value>
+  </data>
+	<data name="UnableToDeleteRegisterMetadata" xml:space="preserve">
+    <value>Unable to delete register metadata with exception {0}</value>
+  </data>
+	<data name="UnableToGetRegisterMetadata" xml:space="preserve">
+    <value>Unable to get register metadata with exception {0}</value>
+  </data>
+	<data name="UnableToInsertDocumentMetadata" xml:space="preserve">
+    <value>Unable to insert document metadata with exception {0}</value>
+  </data>
+	<data name="UnableToUpdateDocumentMetadata" xml:space="preserve">
+    <value>Unable to update document metadata with exception {0}</value>
+  </data>
+	<data name="UnableToDeleteDocumentMetadata" xml:space="preserve">
+    <value>Unable to delete document metadata with exception {0}</value>
+  </data>
+	<data name="UnableToGetDocumentMetadata" xml:space="preserve">
+    <value>Unable to get document metadata with exception {0}</value>
+  </data>
+	<data name="UnableToInsertScenarioMetadata" xml:space="preserve">
+    <value>Unable to insert scenario metadata with exception {0}</value>
+  </data>
+	<data name="UnableToUpdateScenarioMetadata" xml:space="preserve">
+    <value>Unable to update scenario metadata with exception {0}</value>
+  </data>
+	<data name="UnableToDeleteScenarioMetadata" xml:space="preserve">
+    <value>Unable to delete scenario metadata by id with exception {0}</value>
+  </data>
+	<data name="UnableToGetScenarioMetadata" xml:space="preserve">
+    <value>Unable to get scenario metadata with exception {0}</value>
+  </data>
+	<data name="UnableToInsertProcessMetadata" xml:space="preserve">
+    <value>Unable to insert service metadata with exception {0}</value>
+  </data>
+	<data name="UnableToUpdateProcessMetadata" xml:space="preserve">
+    <value>Unable to update service metadata with exception {0}</value>
+  </data>
+	<data name="UnableToDeleteProcessMetadata" xml:space="preserve">
+    <value>Unable to delete service metadata with exception {0}</value>
+  </data>
+	<data name="UnableToGetProcessMetadata" xml:space="preserve">
+    <value>Unable to get service metadata with exception {0}</value>
+  </data>
+	<data name="UnableToInsertServiceMetadata" xml:space="preserve">
+    <value>Unable to insert service metadata with exception {0}</value>
+  </data>
+	<data name="UnableToUpdateServiceMetadata" xml:space="preserve">
+    <value>Unable to update service metadata with exception {0}</value>
+  </data>
+	<data name="UnableToDeleteServiceMetadata" xml:space="preserve">
+    <value>Unable to delete service metadata with exception {0}</value>
+  </data>
+	<data name="UnableToGetServiceMetadata" xml:space="preserve">
+    <value>Unable to get service metadata with exception {0}</value>
+  </data>
+	<data name="UnableToInsertViewMetadata" xml:space="preserve">
+    <value>Unable to insert view metadata with exception {0}</value>
+  </data>
+	<data name="UnableToUpdateViewMetadata" xml:space="preserve">
+    <value>Unable to update view metadata with exception {0}</value>
+  </data>
+	<data name="UnableToDeleteViewMetadaa" xml:space="preserve">
+    <value>Unable to delete view metadata with exception {0}</value>
+  </data>
+	<data name="UnableToGetViewMetadata" xml:space="preserve">
+    <value>Unable to get view metadata with exception {0}</value>
+  </data>
+	<data name="UnableToInsertPrintViewMetadata" xml:space="preserve">
+    <value>Unable to insert print view metadata with exception {0}</value>
+  </data>
+	<data name="UnableToUpdatePrintViewMetaata" xml:space="preserve">
+    <value>Unable to update printview metadata with exception {0}</value>
+  </data>
+	<data name="UnableToDeletePrintViewMetadata" xml:space="preserve">
+    <value>Unable to delete print view metadata with exception {0}</value>
+  </data>
+	<data name="UnableToGetPrintViewMetadata" xml:space="preserve">
+    <value>Unable to get print view metadata with exception {0}</value>
+  </data>
+	<data name="UnableToGetAssemblyMetadata" xml:space="preserve">
+    <value>Unable to get assembly metadata with exception {0}</value>
+  </data>
+	<data name="UnableToUpdateSolutionMetadata" xml:space="preserve">
+    <value>Unable to update solution metadata with exception {0}</value>
   </data>
 </root>

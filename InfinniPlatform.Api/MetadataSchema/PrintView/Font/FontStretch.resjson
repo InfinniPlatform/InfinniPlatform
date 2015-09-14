@@ -1,15 +1,15 @@
 ﻿{
-  "id": "FontStretch",
-  "description": "Степень растягивания шрифта по горизонтали",
-  "enum": [
-    "UltraCondensed",
-    "ExtraCondensed",
-    "Condensed",
-    "SemiCondensed",
-    "Normal",
-    "SemiExpanded",
-    "Expanded",
-    "ExtraExpanded",
-    "UltraExpanded"
-  ]
+	"id": "FontStretch",
+	"description": "Степень растягивания шрифта по горизонтали",
+	"enum": [
+		"UltraCondensed",
+		"ExtraCondensed",
+		"Condensed",
+		"SemiCondensed",
+		"Normal",
+		"SemiExpanded",
+		"Expanded",
+		"ExtraExpanded",
+		"UltraExpanded"
+	]
 }

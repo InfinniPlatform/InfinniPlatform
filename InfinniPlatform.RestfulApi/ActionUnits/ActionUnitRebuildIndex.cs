@@ -1,6 +1,6 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.RestfulApi.Extensions;
+﻿using InfinniPlatform.RestfulApi.Extensions;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.RestfulApi.ActionUnits
 {
@@ -10,7 +10,10 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
         {
             IndexedStorageExtension.RebuildIndex(target.Item.Configuration, target.Item.Metadata ?? string.Empty);
 
-            target.Context.GetComponent<ILogComponent>().GetLog().Info("Configuration \"{0}\" type index \"{1}\" recreated", target.Item.Configuration,target.Item.Metadata);
+            target.Context.GetComponent<ILogComponent>()
+                  .GetLog()
+                  .Info("Configuration \"{0}\" type index \"{1}\" recreated", target.Item.Configuration,
+                        target.Item.Metadata);
         }
     }
 }

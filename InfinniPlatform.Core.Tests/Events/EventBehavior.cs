@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.Events;
 using InfinniPlatform.Api.RestQuery.EventObjects;
-using InfinniPlatform.Core.Tests.Events.Builders;
 using InfinniPlatform.Json;
 using InfinniPlatform.Json.EventBuilders;
-using InfinniPlatform.Metadata;
-using NUnit.Framework;
+using InfinniPlatform.Sdk.Events;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NUnit.Framework;
 
 namespace InfinniPlatform.Core.Tests.Events
 {

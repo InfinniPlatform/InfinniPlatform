@@ -3,193 +3,175 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
-
 using InfinniPlatform.FastReport.Templates.Data;
 using InfinniPlatform.ReportDesigner.Properties;
 using InfinniPlatform.ReportDesigner.Views.DataSources;
 
 namespace InfinniPlatform.ReportDesigner.Views.Parameters
 {
-	/// <summary>
-	/// Представление для указания значений параметров отчета в виде списка, получаемого из источника данных.
-	/// </summary>
-	sealed partial class ParameterDataSourceValuesView : UserControl
-	{
-		public ParameterDataSourceValuesView()
-		{
-			InitializeComponent();
+    /// <summary>
+    ///     Представление для указания значений параметров отчета в виде списка, получаемого из источника данных.
+    /// </summary>
+    sealed partial class ParameterDataSourceValuesView : UserControl
+    {
+        private IEnumerable<DataSourceInfo> _dataSources;
+        private readonly DialogView<DataSourcePropertySelectView> _propertySelectForm;
 
-			ShowLabel = true;
+        public ParameterDataSourceValuesView()
+        {
+            InitializeComponent();
 
-			_propertySelectForm = new DialogView<DataSourcePropertySelectView>();
-		}
+            ShowLabel = true;
 
+            _propertySelectForm = new DialogView<DataSourcePropertySelectView>();
+        }
 
-		private readonly DialogView<DataSourcePropertySelectView> _propertySelectForm;
+        /// <summary>
+        ///     Отображать наименование значения.
+        /// </summary>
+        [DefaultValue(true)]
+        public bool ShowLabel
+        {
+            get { return LabelPropertyPanel.Visible; }
+            set { LabelPropertyPanel.Visible = value; }
+        }
 
+        /// <summary>
+        ///     Список источников данных.
+        /// </summary>
+        [Browsable(false)]
+        [DefaultValue(null)]
+        public IEnumerable<DataSourceInfo> DataSources
+        {
+            get { return _dataSources; }
+            set
+            {
+                _dataSources = value;
 
-		/// <summary>
-		/// Отображать наименование значения.
-		/// </summary>
-		[DefaultValue(true)]
-		public bool ShowLabel
-		{
-			get { return LabelPropertyPanel.Visible; }
-			set { LabelPropertyPanel.Visible = value; }
-		}
+                RenderDataSourceList(value);
+            }
+        }
 
+        /// <summary>
+        ///     Значения параметров отчета в виде списка, получаемого из источника данных.
+        /// </summary>
+        [Browsable(false)]
+        [DefaultValue(null)]
+        public ParameterDataSourceValueProviderInfo ParameterValues
+        {
+            get { return GetParameterValues(); }
+            set { SetParameterValues(value); }
+        }
 
-		private IEnumerable<DataSourceInfo> _dataSources;
+        private void RenderDataSourceList(IEnumerable<DataSourceInfo> dataSources)
+        {
+            DataSourceEdit.Items.Clear();
 
-		/// <summary>
-		/// Список источников данных.
-		/// </summary>
-		[Browsable(false)]
-		[DefaultValue(null)]
-		public IEnumerable<DataSourceInfo> DataSources
-		{
-			get
-			{
-				return _dataSources;
-			}
-			set
-			{
-				_dataSources = value;
+            if (dataSources != null)
+            {
+                foreach (var dataSource in dataSources)
+                {
+                    DataSourceEdit.Items.Add(dataSource.Name);
+                }
 
-				RenderDataSourceList(value);
-			}
-		}
+                if (DataSourceEdit.Items.Count > 0)
+                {
+                    DataSourceEdit.SelectedIndex = 0;
+                }
+            }
+        }
 
+        private ParameterDataSourceValueProviderInfo GetParameterValues()
+        {
+            return new ParameterDataSourceValueProviderInfo
+            {
+                DataSource = DataSourceEdit.Text,
+                LabelProperty = LabelPropertyEdit.Text,
+                ValueProperty = ValuePropertyEdit.Text
+            };
+        }
 
-		/// <summary>
-		/// Значения параметров отчета в виде списка, получаемого из источника данных.
-		/// </summary>
-		[Browsable(false)]
-		[DefaultValue(null)]
-		public ParameterDataSourceValueProviderInfo ParameterValues
-		{
-			get
-			{
-				return GetParameterValues();
-			}
-			set
-			{
-				SetParameterValues(value);
-			}
-		}
+        private void SetParameterValues(ParameterDataSourceValueProviderInfo parameterValues)
+        {
+            if (parameterValues != null)
+            {
+                DataSourceEdit.Text = parameterValues.DataSource;
+                LabelPropertyEdit.Text = parameterValues.LabelProperty;
+                ValuePropertyEdit.Text = parameterValues.ValueProperty;
+            }
+            else
+            {
+                DataSourceEdit.Text = null;
+                LabelPropertyEdit.Text = null;
+                ValuePropertyEdit.Text = null;
+            }
+        }
 
+        private void OnDataSourceChanged(object sender, EventArgs e)
+        {
+            LabelPropertyEdit.Text = null;
+            ValuePropertyEdit.Text = null;
+        }
 
-		private void RenderDataSourceList(IEnumerable<DataSourceInfo> dataSources)
-		{
-			DataSourceEdit.Items.Clear();
+        private void OnLabelPropertyEdit(object sender, EventArgs e)
+        {
+            SelectDataSourceProperty(LabelPropertyEdit);
+        }
 
-			if (dataSources != null)
-			{
-				foreach (var dataSource in dataSources)
-				{
-					DataSourceEdit.Items.Add(dataSource.Name);
-				}
+        private void OnValuePropertyEdit(object sender, EventArgs e)
+        {
+            SelectDataSourceProperty(ValuePropertyEdit);
+        }
 
-				if (DataSourceEdit.Items.Count > 0)
-				{
-					DataSourceEdit.SelectedIndex = 0;
-				}
-			}
-		}
+        private void SelectDataSourceProperty(Control propertyEditor)
+        {
+            if (DataSources != null)
+            {
+                var selectedDataSourceName = DataSourceEdit.Text;
 
-		private ParameterDataSourceValueProviderInfo GetParameterValues()
-		{
-			return new ParameterDataSourceValueProviderInfo
-					   {
-						   DataSource = DataSourceEdit.Text,
-						   LabelProperty = LabelPropertyEdit.Text,
-						   ValueProperty = ValuePropertyEdit.Text
-					   };
-		}
+                if (string.IsNullOrWhiteSpace(selectedDataSourceName) == false)
+                {
+                    var selectedDataSource = DataSources.FirstOrDefault(ds => ds.Name == selectedDataSourceName);
 
-		private void SetParameterValues(ParameterDataSourceValueProviderInfo parameterValues)
-		{
-			if (parameterValues != null)
-			{
-				DataSourceEdit.Text = parameterValues.DataSource;
-				LabelPropertyEdit.Text = parameterValues.LabelProperty;
-				ValuePropertyEdit.Text = parameterValues.ValueProperty;
-			}
-			else
-			{
-				DataSourceEdit.Text = null;
-				LabelPropertyEdit.Text = null;
-				ValuePropertyEdit.Text = null;
-			}
-		}
+                    if (selectedDataSource != null)
+                    {
+                        _propertySelectForm.View.DataSourceName = selectedDataSourceName;
+                        _propertySelectForm.View.DataSourceSchema = selectedDataSource.Schema;
+                        _propertySelectForm.View.DataSourceProperty = propertyEditor.Text;
 
+                        if (_propertySelectForm.ShowDialog(this) == DialogResult.OK)
+                        {
+                            propertyEditor.Text = _propertySelectForm.View.DataSourceProperty;
+                        }
+                    }
+                }
+            }
+        }
 
-		private void OnDataSourceChanged(object sender, EventArgs e)
-		{
-			LabelPropertyEdit.Text = null;
-			ValuePropertyEdit.Text = null;
-		}
+        public override bool ValidateChildren()
+        {
+            if (string.IsNullOrEmpty(DataSourceEdit.Text))
+            {
+                Resources.SelectDataSource.ShowError();
+                DataSourceEdit.Focus();
+                return false;
+            }
 
-		private void OnLabelPropertyEdit(object sender, EventArgs e)
-		{
-			SelectDataSourceProperty(LabelPropertyEdit);
-		}
+            if (ShowLabel && string.IsNullOrEmpty(LabelPropertyEdit.Text))
+            {
+                Resources.SelectLabelProperty.ShowError();
+                LabelPropertyButton.Focus();
+                return false;
+            }
 
-		private void OnValuePropertyEdit(object sender, EventArgs e)
-		{
-			SelectDataSourceProperty(ValuePropertyEdit);
-		}
+            if (string.IsNullOrEmpty(ValuePropertyEdit.Text))
+            {
+                Resources.SelectValueProperty.ShowError();
+                ValuePropertyButton.Focus();
+                return false;
+            }
 
-		private void SelectDataSourceProperty(Control propertyEditor)
-		{
-			if (DataSources != null)
-			{
-				var selectedDataSourceName = DataSourceEdit.Text;
-
-				if (string.IsNullOrWhiteSpace(selectedDataSourceName) == false)
-				{
-					var selectedDataSource = DataSources.FirstOrDefault(ds => ds.Name == selectedDataSourceName);
-
-					if (selectedDataSource != null)
-					{
-						_propertySelectForm.View.DataSourceName = selectedDataSourceName;
-						_propertySelectForm.View.DataSourceSchema = selectedDataSource.Schema;
-						_propertySelectForm.View.DataSourceProperty = propertyEditor.Text;
-
-						if (_propertySelectForm.ShowDialog(this) == DialogResult.OK)
-						{
-							propertyEditor.Text = _propertySelectForm.View.DataSourceProperty;
-						}
-					}
-				}
-			}
-		}
-
-
-		public override bool ValidateChildren()
-		{
-			if (string.IsNullOrEmpty(DataSourceEdit.Text))
-			{
-				Resources.SelectDataSource.ShowError();
-				DataSourceEdit.Focus();
-				return false;
-			}
-
-			if (ShowLabel && string.IsNullOrEmpty(LabelPropertyEdit.Text))
-			{
-				Resources.SelectLabelProperty.ShowError();
-				LabelPropertyButton.Focus();
-				return false;
-			}
-
-			if (string.IsNullOrEmpty(ValuePropertyEdit.Text))
-			{
-				Resources.SelectValueProperty.ShowError();
-				ValuePropertyButton.Focus();
-				return false;
-			}
-
-			return true;
-		}
-	}
+            return true;
+        }
+    }
 }

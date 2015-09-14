@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Api.SearchOptions.Builders
 {
     /// <summary>
-    /// Позволяет описать набор условий сортировки
+    ///     Позволяет описать набор условий сортировки
     /// </summary>
     public sealed class SortingBuilder
     {

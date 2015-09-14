@@ -1,15 +1,14 @@
 ﻿namespace InfinniPlatform.PrintViewDesigner.Common
 {
-	sealed class AppClipboardEntry
-	{
-		public AppClipboardEntry(object data, bool copy)
-		{
-			Data = data;
-			Copy = copy;
-		}
+    internal sealed class AppClipboardEntry
+    {
+        public readonly bool Copy;
+        public readonly object Data;
 
-		public readonly object Data;
-
-		public readonly bool Copy;
-	}
+        public AppClipboardEntry(object data, bool copy)
+        {
+            Data = data;
+            Copy = copy;
+        }
+    }
 }

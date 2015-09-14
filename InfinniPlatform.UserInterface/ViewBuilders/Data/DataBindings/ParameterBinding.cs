@@ -4,87 +4,79 @@ using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Data.DataBindings
 {
-	/// <summary>
-	/// Описывает связь между элементом представления и параметром представления.
-	/// </summary>
-	public sealed class ParameterBinding : IElementDataBinding, ISourceDataBinding
-	{
-		public ParameterBinding(View view, string dataSource, string property)
-		{
-			_view = view;
-			_dataSource = dataSource;
-			_property = property;
-		}
+    /// <summary>
+    ///     Описывает связь между элементом представления и параметром представления.
+    /// </summary>
+    public sealed class ParameterBinding : IElementDataBinding, ISourceDataBinding
+    {
+        // Binding
 
+        private object _value;
+        // DataSource
 
-		// View
+        private readonly string _dataSource;
+        // Property
 
-		private readonly View _view;
+        private readonly string _property;
+        // View
 
-		public View GetView()
-		{
-			return _view;
-		}
+        private readonly View _view;
 
+        public ParameterBinding(View view, string dataSource, string property)
+        {
+            _view = view;
+            _dataSource = dataSource;
+            _property = property;
+        }
 
-		// DataSource
+        public View GetView()
+        {
+            return _view;
+        }
 
-		private readonly string _dataSource;
+        public void SetPropertyValue(object value, bool force = false)
+        {
+            if (force || !Equals(_value, value))
+            {
+                _value = value;
 
-		public string GetDataSource()
-		{
-			return _dataSource;
-		}
+                InvokePropertyValueEventHandler(OnSetPropertyValue, force);
+            }
+        }
 
+        public ScriptDelegate OnPropertyValueChanged { get; set; }
 
-		// Property
+        public string GetDataSource()
+        {
+            return _dataSource;
+        }
 
-		private readonly string _property;
+        public string GetProperty()
+        {
+            return _property;
+        }
 
-		public string GetProperty()
-		{
-			return _property;
-		}
+        public void PropertyValueChanged(object value, bool force = false)
+        {
+            if (force || !Equals(_value, value))
+            {
+                _value = value;
 
+                InvokePropertyValueEventHandler(OnPropertyValueChanged, force);
+            }
+        }
 
-		// Binding
+        public ScriptDelegate OnSetPropertyValue { get; set; }
 
-		private object _value;
-
-		public void SetPropertyValue(object value, bool force = false)
-		{
-			if (force || !Equals(_value, value))
-			{
-				_value = value;
-
-				InvokePropertyValueEventHandler(OnSetPropertyValue, force);
-			}
-		}
-
-		public void PropertyValueChanged(object value, bool force = false)
-		{
-			if (force || !Equals(_value, value))
-			{
-				_value = value;
-
-				InvokePropertyValueEventHandler(OnPropertyValueChanged, force);
-			}
-		}
-
-		public ScriptDelegate OnSetPropertyValue { get; set; }
-
-		public ScriptDelegate OnPropertyValueChanged { get; set; }
-
-
-		private void InvokePropertyValueEventHandler(ScriptDelegate handler, bool force)
-		{
-			this.InvokeScript(handler, args =>
-									   {
-										   args.DataSource = _dataSource;
-										   args.Property = _property;
-										   args.Value = _value;
-										   args.Force = force;
-									   });
-		}
-	}
+        private void InvokePropertyValueEventHandler(ScriptDelegate handler, bool force)
+        {
+            this.InvokeScript(handler, args =>
+            {
+                args.DataSource = _dataSource;
+                args.Property = _property;
+                args.Value = _value;
+                args.Force = force;
+            });
+        }
+    }
 }

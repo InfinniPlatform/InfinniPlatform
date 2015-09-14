@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.Events;
+﻿using System.Collections.Generic;
+using InfinniPlatform.Sdk.Events;
 
 namespace InfinniPlatform.Api.RestQuery.EventObjects.EventSerializers
 {
     public sealed class ChangeIndexCollectionItem : IObjectToEventSerializer
     {
-		private readonly string _collectionName;
+        private readonly string _collectionName;
         private readonly int _indexFrom;
         private readonly int _indexTo;
 
@@ -26,9 +22,9 @@ namespace InfinniPlatform.Api.RestQuery.EventObjects.EventSerializers
             {
                 Action = EventType.ChangeCollectionItemIndex,
                 Property = _collectionName,
-                Value = string.Format("{0}:{1}", _indexFrom,_indexTo)
+                Value = string.Format("{0}:{1}", _indexFrom, _indexTo)
             };
-            return new List<EventDefinition>() { eventDefinition };
+            return new List<EventDefinition> {eventDefinition};
         }
     }
 }

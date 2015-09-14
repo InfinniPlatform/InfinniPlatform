@@ -26,20 +26,22 @@ namespace InfinniPlatform.Authentication.Middleware
 			: base(next)
 		{
 			// Методы, связанные с учетной записью пользователя
-			RegisterGetRequestHandler(GetCurrentUserPath, GetCurrentUser);
-			RegisterPostRequestHandler(ChangePasswordPath, ChangePassword);
-			RegisterPostRequestHandler(ChangeProfilePath, ChangeProfile);
-			RegisterPostRequestHandler(ChangeActiveRolePath, ChangeActiveRole);
+			RegisterHandler(new RegistrationHandlerBase("GET", GetCurrentUserPath, GetCurrentUser));
+            RegisterHandler(new RegistrationHandlerBase("POST", ChangePasswordPath, ChangePassword));
+            RegisterHandler(new RegistrationHandlerBase("POST", ChangeProfilePath, ChangeProfile));
+            RegisterHandler(new RegistrationHandlerBase("POST", ChangeActiveRolePath, ChangeActiveRole));
 
 			// Методы, связанные с входом пользователя в систему
-			RegisterGetRequestHandler(GetExternalProvidersPath, GetExternalProviders);
-			RegisterPostRequestHandler(SignInInternalPath, SignInInternal);
-			RegisterPostRequestHandler(SignInExternalPath, SignInExternal);
-			RegisterGetRequestHandler(SignInExternalCallbackPath, SignInExternalCallback);
-			RegisterPostRequestHandler(LinkExternalLoginPath, LinkExternalLogin);
-			RegisterGetRequestHandler(LinkExternalLoginCallbackPath, LinkExternalLoginCallback);
-			RegisterPostRequestHandler(UnlinkExternalLoginPath, UnlinkExternalLogin);
-			RegisterPostRequestHandler(SignOutPath, SignOut);
+            RegisterHandler(new RegistrationHandlerBase("GET", GetExternalProvidersPath, GetExternalProviders));
+            RegisterHandler(new RegistrationHandlerBase("POST", GetExternalProvidersPath, GetExternalProviders));
+            RegisterHandler(new RegistrationHandlerBase("POST", SignInInternalPath, SignInInternal));
+            RegisterHandler(new RegistrationHandlerBase("POST", SignInExternalPath, SignInExternal));
+
+            RegisterHandler(new RegistrationHandlerBase("GET", SignInExternalCallbackPath, SignInExternalCallback));
+            RegisterHandler(new RegistrationHandlerBase("POST", LinkExternalLoginPath, LinkExternalLogin));
+            RegisterHandler(new RegistrationHandlerBase("GET", LinkExternalLoginCallbackPath, LinkExternalLoginCallback));
+            RegisterHandler(new RegistrationHandlerBase("POST", UnlinkExternalLoginPath, UnlinkExternalLogin));
+            RegisterHandler(new RegistrationHandlerBase("POST", SignOutPath, SignOut));
 		}
 
 
@@ -235,14 +237,12 @@ namespace InfinniPlatform.Authentication.Middleware
 																  if (user == null)
 																  {
 																	  // Создание записи о пользователе
-
 																	  user = new IdentityApplicationUser
-																			 {
-																				 UserName = loginInfo.DefaultUserName,
-																				 Email = loginInfo.Email,
-																				 EmailConfirmed = !string.IsNullOrWhiteSpace(loginInfo.Email)
-																			 };
-
+																	  {
+																		  UserName = loginInfo.DefaultUserName,
+																		  Email = loginInfo.Email,
+																		  EmailConfirmed = !string.IsNullOrWhiteSpace(loginInfo.Email)
+																	  };
 																	  var createUserTask = userManager.CreateAsync(user);
 																	  ThrowIfError(createUserTask);
 
@@ -417,7 +417,7 @@ namespace InfinniPlatform.Authentication.Middleware
 					   DefaultRole = defaultRole,
 					   Roles = user.Roles,
 					   Logins = user.Logins,
-					   Claims = user.Claims
+                       Claims = user.Claims
 				   };
 		}
 

@@ -5,28 +5,28 @@ namespace InfinniPlatform.Api.Registers
     public static class RegisterPropertyType
     {
         /// <summary>
-        /// Измерение
+        ///     Измерение
         /// </summary>
         public const string Dimension = "Dimension";
-        
+
         /// <summary>
-        /// Реквизит
+        ///     Реквизит
         /// </summary>
         public const string Info = "Info";
-        
+
         /// <summary>
-        /// Ресурс
+        ///     Ресурс
         /// </summary>
         public const string Value = "Value";
 
         public static IEnumerable<string> GetRegisterPropertyTypes()
         {
             return new[]
-	        {
-	            Dimension, 
-                Info, 
+            {
+                Dimension,
+                Info,
                 Value
-	        };
-        } 
+            };
+        }
     }
 }
