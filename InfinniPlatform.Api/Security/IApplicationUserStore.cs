@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace InfinniPlatform.Api.Security
 {
@@ -36,9 +35,30 @@ namespace InfinniPlatform.Api.Security
 		/// <summary>
 		/// Возвращает сведения о пользователе системы по его имени.
 		/// </summary>
-		/// <param name="userName">Уникальное имя пользователя.</param>
+		/// <param name="name">Уникальное имя пользователя.</param>
 		/// <returns>Сведения о пользователе системы.</returns>
-		ApplicationUser FindUserByName(string userName);
+		ApplicationUser FindUserByName(string name);
+
+		/// <summary>
+		/// Возвращает сведения о пользователе системы по его имени.
+		/// </summary>
+		/// <param name="userName">Имя пользователя.</param>
+		/// <returns>Сведения о пользователе системы.</returns>
+		ApplicationUser FindUserByUserName(string userName);
+
+		/// <summary>
+		/// Возвращает сведения о пользователе системы по его электронной почте.
+		/// </summary>
+		/// <param name="email">Электронная почта пользователя.</param>
+		/// <returns>Сведения о пользователе системы.</returns>
+		ApplicationUser FindUserByEmail(string email);
+
+		/// <summary>
+		/// Возвращает сведения о пользователе системы по его номеру телефона.
+		/// </summary>
+		/// <param name="phoneNumber">Номер телефона пользователя.</param>
+		/// <returns>Сведения о пользователе системы.</returns>
+		ApplicationUser FindUserByPhoneNumber(string phoneNumber);
 
 		/// <summary>
 		/// Возвращает сведения о пользователе системы по его имени у внешнего провайдера.
@@ -61,21 +81,22 @@ namespace InfinniPlatform.Api.Security
 		/// <param name="roleName">Наименование системной роли.</param>
 		void RemoveUserFromRole(ApplicationUser user, string roleName);
 
-	    /// <summary>
-	    /// Добавляет пользователю утверждение.
-	    /// </summary>
-	    /// <param name="user">Сведения о пользователе системы.</param>
-	    /// <param name="claimType">Уникальный идентификатор типа утверждения.</param>
-	    /// <param name="claimValue">Значение утверждения заданного типа.</param>
-	    /// <param name="overwrite">Признак необходимости перезаписать значение имеющегося утверждения</param>
-	    void AddUserClaim(ApplicationUser user, string claimType, string claimValue, bool overwrite = true);
+		/// <summary>
+		/// Добавляет пользователю утверждение.
+		/// </summary>
+		/// <param name="user">Сведения о пользователе системы.</param>
+		/// <param name="claimType">Уникальный идентификатор типа утверждения.</param>
+		/// <param name="claimValue">Значение утверждения заданного типа.</param>
+		/// <param name="overwrite">Признак необходимости перезаписать значение имеющегося утверждения.</param>
+		void AddUserClaim(ApplicationUser user, string claimType, string claimValue, bool overwrite = true);
 
 		/// <summary>
 		/// Удаляет у пользователя утверждение.
 		/// </summary>
 		/// <param name="user">Сведения о пользователе системы.</param>
 		/// <param name="claimType">Уникальный идентификатор типа утверждения.</param>
-		void RemoveUserClaim(ApplicationUser user, string claimType);
+		/// <param name="claimValue">Значение утверждения заданного типа.</param>
+		void RemoveUserClaim(ApplicationUser user, string claimType, string claimValue);
 
 		/// <summary>
 		/// Добавляет пользователю имя входа у внешнего провайдера.
@@ -90,6 +111,5 @@ namespace InfinniPlatform.Api.Security
 		/// <param name="user">Сведения о пользователе системы.</param>
 		/// <param name="userLogin">Имя входа пользователя системы у внешнего провайдера.</param>
 		void RemoveUserLogin(ApplicationUser user, ApplicationUserLogin userLogin);
-		
 	}
 }

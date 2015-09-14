@@ -18,12 +18,14 @@ namespace InfinniPlatform.Authentication.Modules
 	/// <remarks>
 	/// Данный класс представляет реализует множество интерфейсов из-за особенностей реализации <see cref="UserManager{TUser}"/>.
 	/// </remarks>
-	sealed class IdentityApplicationUserStore : IUserStore<IdentityApplicationUser>,
-												IUserPasswordStore<IdentityApplicationUser>,
-												IUserSecurityStampStore<IdentityApplicationUser>,
-												IUserRoleStore<IdentityApplicationUser>,
-												IUserClaimStore<IdentityApplicationUser>,
-												IUserLoginStore<IdentityApplicationUser>
+	internal sealed class IdentityApplicationUserStore : IUserStore<IdentityApplicationUser>,
+														 IUserPasswordStore<IdentityApplicationUser>,
+														 IUserSecurityStampStore<IdentityApplicationUser>,
+														 IUserRoleStore<IdentityApplicationUser>,
+														 IUserClaimStore<IdentityApplicationUser>,
+														 IUserLoginStore<IdentityApplicationUser>,
+														 IUserEmailStore<IdentityApplicationUser>,
+														 IUserPhoneNumberStore<IdentityApplicationUser>
 	{
 		public IdentityApplicationUserStore(IApplicationUserStore userStore)
 		{
@@ -64,6 +66,11 @@ namespace InfinniPlatform.Authentication.Modules
 		public Task<IdentityApplicationUser> FindByNameAsync(string userName)
 		{
 			return InvokeUserStore((s, v) => ToIdentityUser(s.FindUserByName(v)), userName);
+		}
+
+		public Task<IdentityApplicationUser> FindByUserNameAsync(string userName)
+		{
+			return InvokeUserStore((s, v) => ToIdentityUser(s.FindUserByUserName(v)), userName);
 		}
 
 
@@ -147,7 +154,7 @@ namespace InfinniPlatform.Authentication.Modules
 
 		public Task RemoveClaimAsync(IdentityApplicationUser user, Claim claim)
 		{
-			return InvokeUserStore((s, u, v) => s.RemoveUserClaim(u, v.Type), user, claim);
+			return InvokeUserStore((s, u, v) => s.RemoveUserClaim(u, v.Type, v.Value), user, claim);
 		}
 
 
@@ -182,6 +189,78 @@ namespace InfinniPlatform.Authentication.Modules
 		private static UserLoginInfo FromApplicationUserLogin(ApplicationUserLogin login)
 		{
 			return new UserLoginInfo(login.Provider, login.ProviderKey);
+		}
+
+
+		// IUserEmailStore
+
+		public Task SetEmailAsync(IdentityApplicationUser user, string email)
+		{
+			return InvokeUserStore((s, u, v) =>
+								   {
+									   u.Email = v;
+								   }, user, email);
+		}
+
+		public Task<string> GetEmailAsync(IdentityApplicationUser user)
+		{
+			var result = user.Email;
+			return Task.FromResult(result);
+		}
+
+		public Task SetEmailConfirmedAsync(IdentityApplicationUser user, bool confirmed)
+		{
+			return InvokeUserStore((s, u, v) =>
+								   {
+									   u.EmailConfirmed = v;
+								   }, user, confirmed);
+		}
+
+		public Task<bool> GetEmailConfirmedAsync(IdentityApplicationUser user)
+		{
+			var result = user.EmailConfirmed;
+			return Task.FromResult(result);
+		}
+
+		public Task<IdentityApplicationUser> FindByEmailAsync(string email)
+		{
+			return InvokeUserStore((s, v) => ToIdentityUser(s.FindUserByEmail(v)), email);
+		}
+
+
+		// IUserPhoneNumberStore
+
+		public Task SetPhoneNumberAsync(IdentityApplicationUser user, string phoneNumber)
+		{
+			return InvokeUserStore((s, u, v) =>
+								   {
+									   u.PhoneNumber = v;
+								   }, user, phoneNumber);
+		}
+
+		public Task<string> GetPhoneNumberAsync(IdentityApplicationUser user)
+		{
+			var result = user.PhoneNumber;
+			return Task.FromResult(result);
+		}
+
+		public Task SetPhoneNumberConfirmedAsync(IdentityApplicationUser user, bool confirmed)
+		{
+			return InvokeUserStore((s, u, v) =>
+								   {
+									   u.PhoneNumberConfirmed = v;
+								   }, user, confirmed);
+		}
+
+		public Task<bool> GetPhoneNumberConfirmedAsync(IdentityApplicationUser user)
+		{
+			var result = user.PhoneNumberConfirmed;
+			return Task.FromResult(result);
+		}
+
+		public Task<IdentityApplicationUser> FindByPhoneNumberAsync(string phoneNumber)
+		{
+			return InvokeUserStore((s, v) => ToIdentityUser(s.FindUserByPhoneNumber(v)), phoneNumber);
 		}
 
 

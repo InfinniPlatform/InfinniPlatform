@@ -169,6 +169,33 @@ namespace InfinniPlatform.Authentication.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Duplicate e-mail: &apos;{0}&apos;..
+        /// </summary>
+        internal static string DuplicateEmail {
+            get {
+                return ResourceManager.GetString("DuplicateEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate phone number: &apos;{0}&apos;..
+        /// </summary>
+        internal static string DuplicatePhoneNumber {
+            get {
+                return ResourceManager.GetString("DuplicatePhoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate username: &apos;{0}&apos;..
+        /// </summary>
+        internal static string DuplicateUserName {
+            get {
+                return ResourceManager.GetString("DuplicateUserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to External provider cannot be null or whitespace..
         /// </summary>
         internal static string ExternalProviderCannotBeNullOrWhiteSpace {
@@ -192,6 +219,24 @@ namespace InfinniPlatform.Authentication.Properties {
         internal static string FailureUrlCannotBeNullOrWhiteSpace {
             get {
                 return ResourceManager.GetString("FailureUrlCannotBeNullOrWhiteSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid e-mail: &apos;{0}&apos;..
+        /// </summary>
+        internal static string InvalidEmail {
+            get {
+                return ResourceManager.GetString("InvalidEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid username: &apos;{0}&apos;..
+        /// </summary>
+        internal static string InvalidUserName {
+            get {
+                return ResourceManager.GetString("InvalidUserName", resourceCulture);
             }
         }
         

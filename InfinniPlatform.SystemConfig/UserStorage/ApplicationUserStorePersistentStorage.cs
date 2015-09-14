@@ -34,54 +34,86 @@ namespace InfinniPlatform.SystemConfig.UserStorage
                                                           AuthorizationStorageExtensions.UserStore, user.Id);
         }
 
-        public ApplicationUser FindUserById(string userId)
-        {
-            dynamic user =
-                new DocumentApiUnsecured().GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
-                                                           AuthorizationStorageExtensions.UserStore,
-                                                           f => f.AddCriteria(cr => cr.Property("Id").IsEquals(userId)),
-                                                           0, 1).FirstOrDefault();
-            if (user != null)
-            {
-                return (JObject.FromObject(user)).ToObject<ApplicationUser>();
-            }
-            return null;
-        }
+		public ApplicationUser FindUserById(string userId)
+		{
+			dynamic user = new DocumentApiUnsecured().GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId, AuthorizationStorageExtensions.UserStore,
+										  f => f.AddCriteria(cr => cr.Property("Id").IsEquals(userId)), 0, 1).FirstOrDefault();
+			if (user != null)
+			{
+				return (JObject.FromObject(user)).ToObject<ApplicationUser>();
+			}
+			return null;
+		}
 
-        public ApplicationUser FindUserByName(string userName)
-        {
-            dynamic user =
-                new DocumentApiUnsecured().GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
-                                                           AuthorizationStorageExtensions.UserStore,
-                                                           f =>
-                                                           f.AddCriteria(
-                                                               cr => cr.Property("UserName").IsEquals(userName)), 0, 1)
-                                              .FirstOrDefault();
-            if (user != null)
-            {
-                return (JObject.FromObject(user)).ToObject<ApplicationUser>();
-            }
-            return null;
-        }
+		public ApplicationUser FindUserByName(string name)
+		{
+			return FindUserByUserName(name)
+				   ?? FindUserByEmail(name)
+				   ?? FindUserByPhoneNumber(name);
+		}
 
-        public ApplicationUser FindUserByLogin(ApplicationUserLogin userLogin)
-        {
-            dynamic user =
-                new DocumentApiUnsecured().GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
-                                                           AuthorizationStorageExtensions.UserStore,
-                                                           f =>
-                                                           f.AddCriteria(
-                                                               cr =>
-                                                               cr.Property("Logins.ProviderKey")
-                                                                 .IsEquals(userLogin.ProviderKey)), 0, 1)
-                                              .FirstOrDefault();
+		public ApplicationUser FindUserByUserName(string userName)
+		{
+			var user = new DocumentApiUnsecured()
+				.GetDocument(
+					AuthorizationStorageExtensions.AuthorizationConfigId,
+					AuthorizationStorageExtensions.UserStore,
+					f => f.AddCriteria(cr => cr.Property("UserName").IsEquals(userName)), 0, 1)
+				.FirstOrDefault();
 
-            if (user != null)
-            {
-                return (JObject.FromObject(user)).ToObject<ApplicationUser>();
-            }
-            return null;
-        }
+			if (user != null)
+			{
+				return (JObject.FromObject(user)).ToObject<ApplicationUser>();
+			}
+
+			return null;
+		}
+
+		public ApplicationUser FindUserByEmail(string email)
+		{
+			var user = new DocumentApiUnsecured()
+				.GetDocument(
+					AuthorizationStorageExtensions.AuthorizationConfigId,
+					AuthorizationStorageExtensions.UserStore,
+					f => f.AddCriteria(cr => cr.Property("Email").IsEquals(email)), 0, 1)
+				.FirstOrDefault();
+
+			if (user != null)
+			{
+				return (JObject.FromObject(user)).ToObject<ApplicationUser>();
+			}
+
+			return null;
+		}
+
+		public ApplicationUser FindUserByPhoneNumber(string phoneNumber)
+		{
+			var user = new DocumentApiUnsecured()
+				.GetDocument(
+					AuthorizationStorageExtensions.AuthorizationConfigId,
+					AuthorizationStorageExtensions.UserStore,
+					f => f.AddCriteria(cr => cr.Property("PhoneNumber").IsEquals(phoneNumber)), 0, 1)
+				.FirstOrDefault();
+
+			if (user != null)
+			{
+				return (JObject.FromObject(user)).ToObject<ApplicationUser>();
+			}
+
+			return null;
+		}
+
+		public ApplicationUser FindUserByLogin(ApplicationUserLogin userLogin)
+		{
+			dynamic user = new DocumentApiUnsecured().GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId, AuthorizationStorageExtensions.UserStore,
+										 f => f.AddCriteria(cr => cr.Property("Logins.ProviderKey").IsEquals(userLogin.ProviderKey)), 0, 1).FirstOrDefault();
+
+			if (user != null)
+			{
+				return (JObject.FromObject(user)).ToObject<ApplicationUser>();
+			}
+			return null;
+		}
 
         public void AddUserToRole(ApplicationUser user, string roleName)
         {
@@ -195,7 +227,14 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 	        }
 	    }
 
-        public void RemoveUserClaim(ApplicationUser user, string claimType)
+	    public void RemoveUserClaim(ApplicationUser user, string claimType, string claimValue)
+	    {
+			var claims = user.Claims.ToList().Where(c => c.Type.DisplayName != claimType).ToList();
+			user.Claims = claims;
+			UpdateUser(user);
+	    }
+
+	    public void RemoveUserClaim(ApplicationUser user, string claimType)
         {
             List<ApplicationUserClaim> claims =
                 user.Claims.ToList().Where(c => c.Type.DisplayName != claimType).ToList();
@@ -225,15 +264,13 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             UpdateUser(user);
         }
 
-        private void InsertUser(ApplicationUser user)
-        {
-            user.SecurityStamp = Guid.NewGuid().ToString();
-            var instance = DynamicWrapperExtensions.ToDynamic(user);
+		private void InsertUser(ApplicationUser user)
+		{
+			user.SecurityStamp = Guid.NewGuid().ToString();
+			var instance = DynamicWrapperExtensions.ToDynamic(user);
 
-            new DocumentApiUnsecured().SetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
-                                                       AuthorizationStorageExtensions.UserStore, instance, false, true);
-        }
-
+			new DocumentApiUnsecured().SetDocument(AuthorizationStorageExtensions.AuthorizationConfigId, AuthorizationStorageExtensions.UserStore, instance, false, true);
+		}
 
         public void AddRole(string roleName, string caption, string description)
         {

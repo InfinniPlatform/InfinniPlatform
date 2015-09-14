@@ -108,9 +108,26 @@ namespace InfinniPlatform.Security
 			return _users.FirstOrDefault(u => StringEquals(u.Id, userId));
 		}
 
-		public ApplicationUser FindUserByName(string userName)
+		public ApplicationUser FindUserByName(string name)
+		{
+			return FindUserByUserName(name)
+				   ?? FindUserByEmail(name)
+				   ?? FindUserByPhoneNumber(name);
+		}
+
+		public ApplicationUser FindUserByUserName(string userName)
 		{
 			return _users.FirstOrDefault(u => StringEquals(u.UserName, userName));
+		}
+
+		public ApplicationUser FindUserByEmail(string email)
+		{
+			return _users.FirstOrDefault(u => StringEquals(u.Email, email));
+		}
+
+		public ApplicationUser FindUserByPhoneNumber(string phoneNumber)
+		{
+			return _users.FirstOrDefault(u => StringEquals(u.PhoneNumber, phoneNumber));
 		}
 
 		public ApplicationUser FindUserByLogin(ApplicationUserLogin userLogin)
@@ -262,7 +279,7 @@ namespace InfinniPlatform.Security
 			UpdateInfo(user, userEntry);
 		}
 
-		public void RemoveUserClaim(ApplicationUser user, string claimType)
+		public void RemoveUserClaim(ApplicationUser user, string claimType, string claimValue)
 		{
 			if (user == null)
 			{
@@ -274,6 +291,10 @@ namespace InfinniPlatform.Security
 				throw new ArgumentNullException("claimType");
 			}
 
+			if (string.IsNullOrEmpty(claimValue))
+			{
+				throw new ArgumentNullException("claimValue");
+			}
 
 			// Поиск указанного пользователя
 			var userEntry = FindUserById(user.Id);
