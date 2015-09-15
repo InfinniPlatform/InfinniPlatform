@@ -52,17 +52,17 @@ namespace InfinniPlatform.Authentication.Modules
 
 		public Task<IdentityResult> ValidateAsync(IdentityApplicationUser user)
 		{
-			return new Task<IdentityResult>(() =>
-											{
-												var errors = new List<string>();
-												ValidateUserName(user, errors);
-												ValidateEmail(user, errors);
-												ValidatePhoneNumber(user, errors);
+			return Task.Run(() =>
+							{
+								var errors = new List<string>();
+								ValidateUserName(user, errors);
+								ValidateEmail(user, errors);
+								ValidatePhoneNumber(user, errors);
 
-												return (errors.Count <= 0)
-													? IdentityResult.Success
-													: IdentityResult.Failed(errors.ToArray());
-											});
+								return (errors.Count <= 0)
+									? IdentityResult.Success
+									: IdentityResult.Failed(errors.ToArray());
+							});
 		}
 
 
