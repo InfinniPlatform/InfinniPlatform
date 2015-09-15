@@ -11,9 +11,10 @@
     </metadata>
     <files>
         <file src="..\Assemblies\**" target="lib\net45"/>
-        <file src="..\SystemConfiguration\Administration.Configuration\**" target="content\Administration.Configuration"/>
-        <file src="..\SystemConfiguration\AdministrationCustomization.Configuration\**" target="content\AdministrationCustomization.Configuration"/>
-        <file src="..\SystemConfiguration\Authorization.Configuration\**" target="content\Authorization.Configuration"/>
+        <file src="..\SystemConfiguration_1.0.0.0\Administration_1.0.0.0\**" target="content\Administration_1.0.0.0"/>
+        <file src="..\SystemConfiguration_1.0.0.0\AdministrationCustomization_1.0.0.0\**" target="content\AdministrationCustomization_1.0.0.0"/>
+        <file src="..\SystemConfiguration_1.0.0.0\Authorization_1.0.0.0\**" target="content\Authorization_1.0.0.0"/>
+        <file src="..\SystemConfiguration_1.0.0.0\Solution.json" target="content\Solution.json"/>
         <file src="Install.bat" target="Install.bat"/>
     </files>
 </package>

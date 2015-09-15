@@ -1,3 +1,3 @@
 pushd ..
-InfinniPlatform.Utils.exe upload Administration,Authorization,AdministrationCustomization withMetadata
+InfinniPlatform.Utils.exe upload content\InfinniPlatform withMetadata
 popd
