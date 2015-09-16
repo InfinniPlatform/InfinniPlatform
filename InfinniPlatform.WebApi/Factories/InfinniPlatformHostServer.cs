@@ -218,8 +218,11 @@ namespace InfinniPlatform.WebApi.Factories
 		}
 
 
-		public void Build()
+		public void Build(IHostingContext context)
 		{
+			// Регистрация IHostingContext в контейнере
+			_hostServer.ContainerBuilder.RegisterInstance(context).As<IHostingContext>();
+
 			_hostServer.BuildServer();
 		}
 
@@ -267,9 +270,6 @@ namespace InfinniPlatform.WebApi.Factories
 		/// </summary>
 		public void OnStartHost(HostingContextBuilder contextBuilder, IHostingContext context)
 		{
-			// Регистрация IHostingContext в контейнере
-			_hostServer.ContainerBuilder.RegisterInstance(context).AsSelf().AsImplementedInterfaces();
-
 			foreach (var startupInitializer in _startupInitializers)
 			{
 				((IStartupInitializer)_hostServer.Container().Resolve(startupInitializer)).OnStart(contextBuilder);

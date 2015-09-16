@@ -45,7 +45,7 @@ namespace InfinniPlatform.WebApi
 				RestQueryApi.Log = new Log4NetLogFactory().CreateLog();
 			}
 
-			HostServer.Build();
+			HostServer.Build(context);
 			builder.UseWebApi(HostServer.HttpConfiguration);
 		}
 
