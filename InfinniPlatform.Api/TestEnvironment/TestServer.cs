@@ -1,12 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
+
 using EnvDTE;
+
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Api.Threading;
 using InfinniPlatform.Sdk.Environment.Settings;
-using Newtonsoft.Json;
+
 
 namespace InfinniPlatform.Api.TestEnvironment
 {
@@ -129,6 +131,7 @@ namespace InfinniPlatform.Api.TestEnvironment
 
         private static void AttachToTestServer()
         {
+#if DEBUG
             var repeats = 0;
 
             DTE dte;
@@ -173,6 +176,7 @@ namespace InfinniPlatform.Api.TestEnvironment
             }
 
             throw new InvalidOperationException(Resources.CannotAttachToTestServer);
+#endif
         }
     }
 }
