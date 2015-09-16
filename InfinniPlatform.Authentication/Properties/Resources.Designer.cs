@@ -286,6 +286,15 @@ namespace InfinniPlatform.Authentication.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to UserId not found..
+        /// </summary>
+        internal static string UserIdNotFound {
+            get {
+                return ResourceManager.GetString("UserIdNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User is not in the role &apos;{0}&apos;..
         /// </summary>
         internal static string UserIsNotInRole {

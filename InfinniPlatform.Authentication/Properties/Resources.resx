@@ -204,4 +204,7 @@
   <data name="InvalidUserName" xml:space="preserve">
     <value>Invalid username: '{0}'.</value>
   </data>
+  <data name="UserIdNotFound" xml:space="preserve">
+    <value>UserId not found.</value>
+  </data>
 </root>

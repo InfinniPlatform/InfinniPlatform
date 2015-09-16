@@ -107,6 +107,7 @@
     <Compile Include="Modules\AuthenticationVkOwinHostingModule.cs" />
     <Compile Include="Modules\IdentityApplicationRole.cs" />
     <Compile Include="Modules\IdentityApplicationUser.cs" />
+    <Compile Include="Modules\IdentityApplicationUserManager.cs" />
     <Compile Include="Modules\IdentityApplicationUserPasswordHasher.cs" />
     <Compile Include="Modules\IdentityApplicationUserValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

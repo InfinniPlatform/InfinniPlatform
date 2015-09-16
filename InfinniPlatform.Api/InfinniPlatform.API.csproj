@@ -261,6 +261,7 @@
     <Compile Include="Security\ApplicationUserClaim.cs" />
     <Compile Include="Security\ApplicationUserLogin.cs" />
     <Compile Include="Security\ForeignKey.cs" />
+    <Compile Include="Security\IApplicationUserManager.cs" />
     <Compile Include="Security\IApplicationUserStore.cs" />
     <Compile Include="Security\IApplicationUserPasswordHasher.cs" />
     <Compile Include="Security\PasswordVerifierComponent.cs" />

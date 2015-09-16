@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
@@ -151,7 +152,7 @@ namespace InfinniPlatform.Authentication.Middleware
 					throw new ArgumentException(string.Format(Resources.UserIsNotInRole, activeRole));
 				}
 
-				userIdentity.AddOrUpdateClaim(ApplicationClaimTypes.ActiveRole, activeRole);
+				userIdentity.SetClaim(ApplicationClaimTypes.ActiveRole, activeRole);
 			}
 
 			return new EmptyRequestHandlerResult();
@@ -369,8 +370,8 @@ namespace InfinniPlatform.Authentication.Middleware
 
 			if (user.DefaultRole != null)
 			{
-				identity.AddOrUpdateClaim(ApplicationClaimTypes.ActiveRole, user.DefaultRole.Id);
-				identity.AddOrUpdateClaim(ApplicationClaimTypes.DefaultRole, user.DefaultRole.Id);
+				identity.SetClaim(ApplicationClaimTypes.ActiveRole, user.DefaultRole.Id);
+				identity.SetClaim(ApplicationClaimTypes.DefaultRole, user.DefaultRole.Id);
 			}
 
 			// Вход в систему с новыми учетными данными
@@ -392,6 +393,7 @@ namespace InfinniPlatform.Authentication.Middleware
 				userIdentity = GetIdentity(context);
 			}
 
+			var claims = GetCurrentUserClaims(context, user);
 			var activeRole = userIdentity.FindFirstClaim(ApplicationClaimTypes.ActiveRole);
 			var defaultRole = userIdentity.FindFirstClaim(ApplicationClaimTypes.DefaultRole);
 
@@ -417,7 +419,7 @@ namespace InfinniPlatform.Authentication.Middleware
 					   DefaultRole = defaultRole,
 					   Roles = user.Roles,
 					   Logins = user.Logins,
-                       Claims = user.Claims
+					   Claims = claims
 				   };
 		}
 
@@ -537,6 +539,39 @@ namespace InfinniPlatform.Authentication.Middleware
 			}
 
 			throw new InvalidOperationException(Resources.UserNotFound);
+		}
+
+		private static IEnumerable<ApplicationUserClaim> GetCurrentUserClaims(IOwinContext context, IdentityApplicationUser user)
+		{
+			var result = new List<ApplicationUserClaim>();
+
+			var identity = GetIdentity(context) as ClaimsIdentity;
+
+			if (identity != null && identity.Claims != null)
+			{
+				foreach (var claim in identity.Claims)
+				{
+					result.Add(new ApplicationUserClaim
+					{
+						Type = new ForeignKey { Id = claim.Type },
+						Value = claim.Value
+					});
+				}
+			}
+
+			if (user != null && user.Claims != null)
+			{
+				foreach (var claim in user.Claims)
+				{
+					if (claim.Type != null && !result.Exists(c => string.Equals(c.Type.Id, claim.Type.Id, StringComparison.OrdinalIgnoreCase)
+																  && string.Equals(c.Value, claim.Value, StringComparison.Ordinal)))
+					{
+						result.Add(claim);
+					}
+				}
+			}
+
+			return result;
 		}
 
 		private static IIdentity GetIdentity(IOwinContext context)

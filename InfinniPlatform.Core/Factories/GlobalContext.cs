@@ -8,6 +8,7 @@ using InfinniPlatform.Api.Security;
 using InfinniPlatform.Api.Transactions;
 using InfinniPlatform.Api.Versioning;
 using InfinniPlatform.ContextComponents;
+using InfinniPlatform.Hosting;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Metadata;
 using InfinniPlatform.Sdk.ContextComponents;
