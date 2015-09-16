@@ -93,6 +93,14 @@ namespace InfinniPlatform.ContextComponents
             _components.Add(new ContextRegistration(typeof(IFileApi), () => new Api.RestApi.Public.FileApi()));
             _components.Add(new ContextRegistration(typeof(IAuthApi), () => new Api.RestApi.Public.AuthApi()));
             _components.Add(new ContextRegistration(typeof(ICustomServiceApi), () => new Api.RestApi.Public.CustomServiceApi()));
+
+			_components.Add(new ContextRegistration(typeof(IApplicationUserManager), () =>
+			{
+				// Должен быть зарегистрирован при старте системы
+				var hostingContext = dependencyContainerComponent.ResolveDependency<Hosting.IHostingContext>();
+
+				return hostingContext.Get<IApplicationUserManager>();
+			}));
         }
 
         public T GetComponent<T>() where T : class
