@@ -52,6 +52,13 @@ namespace InfinniPlatform.Factories
                     ),
                     new CachedSecurityComponent(dependencyContainerComponent.ResolveDependency<ISharedCacheComponent>()),
                     dependencyContainerComponent.ResolveDependency<IIndexFactory>())));
+	        _components.Add(new ContextRegistration(typeof(IApplicationUserManager), () =>
+	                                                                                 {
+		                                                                                 // Должен быть зарегистрирован при старте системы
+		                                                                                 var hostingContext = dependencyContainerComponent.ResolveDependency<IHostingContext>();
+
+		                                                                                 return hostingContext.Get<IApplicationUserManager>();
+	                                                                                 }));
         }
 
         public T GetComponent<T>() where T : class
