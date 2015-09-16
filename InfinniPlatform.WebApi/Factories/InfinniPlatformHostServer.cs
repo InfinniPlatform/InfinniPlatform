@@ -248,6 +248,8 @@ namespace InfinniPlatform.WebApi.Factories
 		/// </summary>
 		public void OnStartHost(HostingContextBuilder contextBuilder, IHostingContext context)
 		{
+			// Регистрация IHostingContext в контейнере
+			_hostServer.ContainerBuilder.RegisterInstance(context).AsSelf().AsImplementedInterfaces();
 
 			foreach (var startupInitializer in _startupInitializers)
 			{

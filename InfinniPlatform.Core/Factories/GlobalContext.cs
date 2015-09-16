@@ -11,6 +11,7 @@ using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.Security;
 using InfinniPlatform.Api.Transactions;
 using InfinniPlatform.ContextComponents;
+using InfinniPlatform.Hosting;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Metadata;
 
@@ -145,6 +146,14 @@ namespace InfinniPlatform.Factories
 				var configurationMediatorComponent = new ConfigurationMediatorComponent(configurationObjectBuilder, metadataConfigurationProvider);
 				return new InprocessDocumentComponent(configurationMediatorComponent, new SecurityComponent());
 			});
+
+			RegisterComponent(() =>
+							  {
+								  // Должен быть зарегистрирован при старте системы
+								  var hostingContext = container.ResolveDependency<IHostingContext>();
+
+								  return hostingContext.Get<IApplicationUserManager>();
+							  });
 		}
 	}
 }

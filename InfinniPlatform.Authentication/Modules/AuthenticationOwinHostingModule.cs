@@ -9,6 +9,7 @@ using Owin;
 using InfinniPlatform.Api.Security;
 using InfinniPlatform.Authentication.DataProtectors;
 using InfinniPlatform.Authentication.Middleware;
+using InfinniPlatform.Factories;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Security;
@@ -73,6 +74,9 @@ namespace InfinniPlatform.Authentication.Modules
 
 			// Регистрация обработчика запросов к подсистеме аутентификации
 			builder.Use(typeof(AuthenticationOwinMiddleware));
+
+			// Регистрация IApplicationUserManager в контексте
+			context.Set<IApplicationUserManager>(new IdentityApplicationUserManager(() => CreateUserManager(context)));
 		}
 
 		private static UserManager<IdentityApplicationUser> CreateUserManager(IHostingContext context)

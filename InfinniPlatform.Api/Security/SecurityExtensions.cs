@@ -108,6 +108,28 @@ namespace InfinniPlatform.Api.Security
 		{
 			identity.AsClaimsIdentity(claimType, claimValue, (ci, ct, cv) =>
 															 {
+																 if (cv != null)
+																 {
+																	 var claims = ci.FindAll(ct);
+
+																	 if (!claims.Any(c => string.Equals(c.Value, cv)))
+																	 {
+																		 ci.AddClaim(new Claim(ct, cv));
+																	 }
+																 }
+															 });
+		}
+
+		/// <summary>
+		/// Устанавливает утверждение заданного типа.
+		/// </summary>
+		/// <param name="identity">Объект идентификации.</param>
+		/// <param name="claimType">Тип утверждения (например, <see cref="ClaimTypes"/> или <see cref="ApplicationClaimTypes"/>).</param>
+		/// <param name="claimValue">Значение утверждения.</param>
+		public static void SetClaim(this IIdentity identity, string claimType, string claimValue)
+		{
+			identity.AsClaimsIdentity(claimType, claimValue, (ci, ct, cv) =>
+															 {
 																 var claims = ci.FindAll(ct);
 
 																 foreach (var c in claims)
@@ -127,7 +149,8 @@ namespace InfinniPlatform.Api.Security
 		/// </summary>
 		/// <param name="identity">Объект идентификации.</param>
 		/// <param name="claimType">Тип утверждения (например, <see cref="ClaimTypes"/> или <see cref="ApplicationClaimTypes"/>).</param>
-		public static void RemoveClaims(this IIdentity identity, string claimType)
+		/// <param name="claimValueMatch">Функция выборки утверждений, которые следует удалить.</param>
+		public static void RemoveClaims(this IIdentity identity, string claimType, Func<string, bool> claimValueMatch = null)
 		{
 			identity.AsClaimsIdentity(claimType, null, (ci, ct, cv) =>
 													   {
@@ -135,7 +158,10 @@ namespace InfinniPlatform.Api.Security
 
 														   foreach (var c in claims)
 														   {
-															   ci.TryRemoveClaim(c);
+															   if (claimValueMatch == null || claimValueMatch(c.Value))
+															   {
+																   ci.TryRemoveClaim(c);
+															   }
 														   }
 													   });
 		}

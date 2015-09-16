@@ -84,7 +84,7 @@ namespace InfinniPlatform.Authentication.Modules
 			{
 				// Проверка уникальности
 
-				var owner = _store.FindByNameAsync(userName).Result;
+				var owner = _store.FindByUserNameAsync(userName).Result;
 
 				if (owner != null && !string.Equals(owner.Id, user.Id))
 				{
