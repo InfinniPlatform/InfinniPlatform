@@ -9,6 +9,7 @@ using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Api.Threading;
 using InfinniPlatform.Sdk.Environment.Settings;
 
+using Newtonsoft.Json;
 
 namespace InfinniPlatform.Api.TestEnvironment
 {
