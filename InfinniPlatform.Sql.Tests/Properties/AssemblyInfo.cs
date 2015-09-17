@@ -1,9 +1,9 @@
 ﻿// 1
 // 0
 // 0
-// 2
+// 3
 // 2b74007d-478b-4e72-bcb0-d2eac84d1413
-// 8E821352A1CD6A6302CB139E9EF16E32
+// 6FCF5E11A2B9E6082D2FA90464BFAA2E
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -17,7 +17,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: Guid("2b74007d-478b-4e72-bcb0-d2eac84d1413")]
-[assembly: AssemblyVersion("1.0.0.2")]
-[assembly: AssemblyFileVersion("1.0.0.2")]
+[assembly: AssemblyVersion("1.0.0.3")]
+[assembly: AssemblyFileVersion("1.0.0.3")]
 
 [assembly: AssemblyDescription("InfinniPlatform.Sql.Tests")]

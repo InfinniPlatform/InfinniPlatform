@@ -453,6 +453,9 @@ namespace InfinniPlatform.Security
 			}
 
 			userEntry.DefaultRole = userInfo.DefaultRole;
+			userEntry.Roles = userInfo.Roles;
+			userEntry.Claims = userInfo.Claims;
+			userEntry.Logins = userInfo.Logins;
 		}
 
 		private static void UpdateInfo(ApplicationUser userInfo, ApplicationUser userEntry)
