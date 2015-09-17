@@ -11,6 +11,7 @@ using NUnit.Framework;
 namespace InfinniPlatform.Sdk.Tests
 {
     [TestFixture]
+	[Category(TestCategories.IntegrationTest)]
     public class MetadataApiTest
     {
         private const string InfinniSessionPort = "9900";

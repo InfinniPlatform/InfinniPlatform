@@ -10,6 +10,7 @@ using NUnit.Framework;
 namespace InfinniPlatform.Sdk.Tests
 {
     [TestFixture]
+	[Category(TestCategories.IntegrationTest)]
     public sealed class CustomServiceApiTest
     {
         private const string InfinniSessionPort = "9900";
