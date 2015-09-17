@@ -68,5 +68,59 @@ namespace InfinniPlatform.NodeServiceHost.Properties {
                 return ResourceManager.GetString("ConfigurationListIsEmpty", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service host has been successfully started..
+        /// </summary>
+        internal static string ServiceHostHasBeenSuccessfullyStarted {
+            get {
+                return ResourceManager.GetString("ServiceHostHasBeenSuccessfullyStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service host has been successfully stopped..
+        /// </summary>
+        internal static string ServiceHostHasBeenSuccessfullyStopped {
+            get {
+                return ResourceManager.GetString("ServiceHostHasBeenSuccessfullyStopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service host has not been started..
+        /// </summary>
+        internal static string ServiceHostHasNotBeenStarted {
+            get {
+                return ResourceManager.GetString("ServiceHostHasNotBeenStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service host has not been stopped..
+        /// </summary>
+        internal static string ServiceHostHasNotBeenStopped {
+            get {
+                return ResourceManager.GetString("ServiceHostHasNotBeenStopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service host is starting..
+        /// </summary>
+        internal static string ServiceHostIsStarting {
+            get {
+                return ResourceManager.GetString("ServiceHostIsStarting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service host is stopping..
+        /// </summary>
+        internal static string ServiceHostIsStopping {
+            get {
+                return ResourceManager.GetString("ServiceHostIsStopping", resourceCulture);
+            }
+        }
     }
 }

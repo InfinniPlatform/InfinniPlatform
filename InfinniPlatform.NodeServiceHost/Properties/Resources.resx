@@ -120,4 +120,22 @@
   <data name="ConfigurationListIsEmpty" xml:space="preserve">
     <value>Configuration list should not be empty.</value>
   </data>
+  <data name="ServiceHostHasBeenSuccessfullyStarted" xml:space="preserve">
+    <value>Service host has been successfully started.</value>
+  </data>
+  <data name="ServiceHostHasBeenSuccessfullyStopped" xml:space="preserve">
+    <value>Service host has been successfully stopped.</value>
+  </data>
+  <data name="ServiceHostHasNotBeenStarted" xml:space="preserve">
+    <value>Service host has not been started.</value>
+  </data>
+  <data name="ServiceHostHasNotBeenStopped" xml:space="preserve">
+    <value>Service host has not been stopped.</value>
+  </data>
+  <data name="ServiceHostIsStarting" xml:space="preserve">
+    <value>Service host is starting.</value>
+  </data>
+  <data name="ServiceHostIsStopping" xml:space="preserve">
+    <value>Service host is stopping.</value>
+  </data>
 </root>

@@ -6,6 +6,7 @@ using InfinniPlatform.BlobStorage;
 using InfinniPlatform.Cassandra.Client;
 using InfinniPlatform.EventStorage;
 using InfinniPlatform.Hosting;
+using InfinniPlatform.Logging;
 using InfinniPlatform.Modules;
 using InfinniPlatform.NodeServiceHost.Properties;
 using InfinniPlatform.Sdk.Environment.Settings;
@@ -40,10 +41,16 @@ namespace InfinniPlatform.NodeServiceHost
 
 						try
 						{
+							Logger.Log.Info(Resources.ServiceHostIsStarting);
+
 							_hostingService.Value.Start();
+
+							Logger.Log.Info(Resources.ServiceHostHasBeenSuccessfullyStarted);
 						}
-						catch
+						catch (Exception error)
 						{
+							Logger.Log.Fatal(Resources.ServiceHostHasNotBeenStarted, error);
+
 							_status = prevStatus;
 
 							throw;
@@ -69,10 +76,16 @@ namespace InfinniPlatform.NodeServiceHost
 
 						try
 						{
+							Logger.Log.Info(Resources.ServiceHostIsStopping);
+
 							_hostingService.Value.Stop();
+
+							Logger.Log.Info(Resources.ServiceHostHasBeenSuccessfullyStopped);
 						}
-						catch
+						catch (Exception error)
 						{
+							Logger.Log.Fatal(Resources.ServiceHostHasNotBeenStopped, error);
+
 							_status = prevStatus;
 
 							throw;

@@ -1,94 +1,102 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Web.Hosting;
-using InfinniPlatform.Sdk.Environment;
+
 using InfinniPlatform.Sdk.Environment.Settings;
+
 using log4net;
 using log4net.Config;
+
 using ILog = InfinniPlatform.Sdk.Environment.Log.ILog;
 
 namespace InfinniPlatform.Logging
 {
-    /// <summary>
-    ///     Фабрика для создания <see cref="ILog" /> на базе log4net.
-    /// </summary>
-    public sealed class Log4NetLogFactory : ILogFactory
-    {
-        /// <summary>
-        ///     Создает <see cref="ILog" />.
-        /// </summary>
-        public ILog CreateLog()
-        {
-            var logConfiguration = GetLogConfigFile();
+	/// <summary>
+	/// Фабрика для создания <see cref="Sdk.Environment.Log.ILog" /> на базе log4net.
+	/// </summary>
+	public sealed class Log4NetLogFactory : ILogFactory
+	{
+		static Log4NetLogFactory()
+		{
+			GlobalContext.Properties["pid"] = Process.GetCurrentProcess().Id;
+		}
 
-            if (logConfiguration.Exists)
-            {
-                XmlConfigurator.Configure(logConfiguration);
-            }
-            else
-            {
-                XmlConfigurator.Configure();
-            }
+		/// <summary>
+		/// Создает <see cref="Sdk.Environment.Log.ILog" />.
+		/// </summary>
+		public ILog CreateLog()
+		{
+			var logConfiguration = GetLogConfigFile();
 
-            return new Log4NetLog(LogManager.GetLogger("Log4Net"));
-        }
+			if (logConfiguration.Exists)
+			{
+				XmlConfigurator.Configure(logConfiguration);
+			}
+			else
+			{
+				XmlConfigurator.Configure();
+			}
 
-        /// <summary>
-        ///     Получить конфигурационный файл для настройки сервиса журналирования.
-        /// </summary>
-        private static FileInfo GetLogConfigFile()
-        {
-            var isNonWebContext = string.IsNullOrEmpty(HostingEnvironment.MapPath("~"));
-            var defaultLogConfigFilePath = isNonWebContext ? "Log.config" : "~/Log.config";
-            var specifiedLogConfigFilePath = AppSettings.GetValue("LogConfigFile", defaultLogConfigFilePath);
+			return new Log4NetLog(LogManager.GetLogger("Log4Net"));
+		}
 
-            if (Path.IsPathRooted(specifiedLogConfigFilePath) == false)
-            {
-                specifiedLogConfigFilePath = isNonWebContext
-                    ? GetFullPathForApp(specifiedLogConfigFilePath)
-                    : GetFullPathForWeb(specifiedLogConfigFilePath);
-            }
+		/// <summary>
+		/// Получить конфигурационный файл для настройки сервиса журналирования.
+		/// </summary>
+		private static FileInfo GetLogConfigFile()
+		{
+			var isNonWebContext = string.IsNullOrEmpty(HostingEnvironment.MapPath("~"));
+			var defaultLogConfigFilePath = isNonWebContext ? "Log.config" : "~/Log.config";
+			var specifiedLogConfigFilePath = AppSettings.GetValue("LogConfigFile", defaultLogConfigFilePath);
 
-            return new FileInfo(specifiedLogConfigFilePath);
-        }
+			if (Path.IsPathRooted(specifiedLogConfigFilePath) == false)
+			{
+				specifiedLogConfigFilePath = isNonWebContext
+					? GetFullPathForApp(specifiedLogConfigFilePath)
+					: GetFullPathForWeb(specifiedLogConfigFilePath);
+			}
 
-        /// <summary>
-        ///     Получить абсолютный путь к файлу для Web-приложения.
-        /// </summary>
-        private static string GetFullPathForWeb(string relativePath)
-        {
-            return HostingEnvironment.MapPath(relativePath);
-        }
+			return new FileInfo(specifiedLogConfigFilePath);
+		}
 
-        /// <summary>
-        ///     Получить абсолютный путь к файлу не для Web-приложения.
-        /// </summary>
-        private static string GetFullPathForApp(string relativePath)
-        {
-            string absolutePath;
+		/// <summary>
+		///     Получить абсолютный путь к файлу для Web-приложения.
+		/// </summary>
+		private static string GetFullPathForWeb(string relativePath)
+		{
+			return HostingEnvironment.MapPath(relativePath);
+		}
 
-            var currentDirectory = Directory.GetCurrentDirectory();
-            var domainBaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+		/// <summary>
+		/// Получить абсолютный путь к файлу не для Web-приложения.
+		/// </summary>
+		private static string GetFullPathForApp(string relativePath)
+		{
+			string absolutePath;
 
-            if (string.Equals(currentDirectory, domainBaseDirectory, StringComparison.InvariantCultureIgnoreCase))
-            {
-                absolutePath = Path.GetFullPath(relativePath);
-            }
-            else
-            {
-                try
-                {
-                    Directory.SetCurrentDirectory(domainBaseDirectory);
+			var currentDirectory = Directory.GetCurrentDirectory();
+			var domainBaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
-                    absolutePath = Path.GetFullPath(relativePath);
-                }
-                finally
-                {
-                    Directory.SetCurrentDirectory(currentDirectory);
-                }
-            }
+			if (string.Equals(currentDirectory, domainBaseDirectory, StringComparison.InvariantCultureIgnoreCase))
+			{
+				absolutePath = Path.GetFullPath(relativePath);
+			}
+			else
+			{
+				try
+				{
+					Directory.SetCurrentDirectory(domainBaseDirectory);
 
-            return absolutePath;
-        }
-    }
+					absolutePath = Path.GetFullPath(relativePath);
+				}
+				finally
+				{
+					Directory.SetCurrentDirectory(currentDirectory);
+				}
+			}
+
+			return absolutePath;
+		}
+	}
 }
