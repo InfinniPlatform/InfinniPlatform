@@ -238,12 +238,7 @@ namespace InfinniPlatform.Authentication.Middleware
 																  if (user == null)
 																  {
 																	  // Создание записи о пользователе
-																	  user = new IdentityApplicationUser
-																	  {
-																		  UserName = loginInfo.DefaultUserName,
-																		  Email = loginInfo.Email,
-																		  EmailConfirmed = !string.IsNullOrWhiteSpace(loginInfo.Email)
-																	  };
+																	  user = CreateUserByLoginInfo(loginInfo);
 																	  var createUserTask = userManager.CreateAsync(user);
 																	  ThrowIfError(createUserTask);
 
@@ -541,6 +536,31 @@ namespace InfinniPlatform.Authentication.Middleware
 			throw new InvalidOperationException(Resources.UserNotFound);
 		}
 
+		private static IdentityApplicationUser CreateUserByLoginInfo(ExternalLoginInfo loginInfo)
+		{
+			var userName = loginInfo.DefaultUserName;
+
+			if (loginInfo.Login != null)
+			{
+				userName = string.Format("{0}{1}", loginInfo.Login.LoginProvider, loginInfo.Login.ProviderKey).Replace(" ", "");
+			}
+
+			var user = new IdentityApplicationUser
+					   {
+						   Id = Guid.NewGuid().ToString(),
+						   UserName = userName,
+						   Email = loginInfo.Email,
+						   EmailConfirmed = !string.IsNullOrWhiteSpace(loginInfo.Email)
+					   };
+
+			if (loginInfo.ExternalIdentity != null && loginInfo.ExternalIdentity.Claims != null)
+			{
+				user.Claims = loginInfo.ExternalIdentity.Claims.Select(CreateApplicationUserClaim);
+			}
+
+			return user;
+		}
+
 		private static IEnumerable<ApplicationUserClaim> GetCurrentUserClaims(IdentityApplicationUser user, IIdentity userIdentity)
 		{
 			var result = new List<ApplicationUserClaim>();
@@ -562,19 +582,23 @@ namespace InfinniPlatform.Authentication.Middleware
 			{
 				foreach (var claim in identity.Claims)
 				{
-					if (claim.Type != null && !result.Exists(c => string.Equals(c.Type.Id, claim.Type, StringComparison.OrdinalIgnoreCase)
-																  && string.Equals(c.Value, claim.Value, StringComparison.Ordinal)))
+					if (claim.Type != null && !result.Exists(c => string.Equals(c.Type.Id, claim.Type, StringComparison.OrdinalIgnoreCase) && string.Equals(c.Value, claim.Value, StringComparison.Ordinal)))
 					{
-						result.Add(new ApplicationUserClaim
-								   {
-									   Type = new ForeignKey { Id = claim.Type },
-									   Value = claim.Value
-								   });
+						result.Add(CreateApplicationUserClaim(claim));
 					}
 				}
 			}
 
 			return result;
+		}
+
+		private static ApplicationUserClaim CreateApplicationUserClaim(Claim claim)
+		{
+			return new ApplicationUserClaim
+				   {
+					   Type = new ForeignKey { Id = claim.Type },
+					   Value = claim.Value
+				   };
 		}
 
 		private static IIdentity GetIdentity(IOwinContext context)
