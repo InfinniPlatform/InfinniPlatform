@@ -545,28 +545,31 @@ namespace InfinniPlatform.Authentication.Middleware
 		{
 			var result = new List<ApplicationUserClaim>();
 
+			if (user != null && user.Claims != null)
+			{
+				foreach (var claim in user.Claims)
+				{
+					if (claim.Type != null && claim.Value != null)
+					{
+						result.Add(claim);
+					}
+				}
+			}
+
 			var identity = userIdentity as ClaimsIdentity;
 
 			if (identity != null && identity.Claims != null)
 			{
 				foreach (var claim in identity.Claims)
 				{
-					result.Add(new ApplicationUserClaim
-					{
-						Type = new ForeignKey { Id = claim.Type },
-						Value = claim.Value
-					});
-				}
-			}
-
-			if (user != null && user.Claims != null)
-			{
-				foreach (var claim in user.Claims)
-				{
-					if (claim.Type != null && !result.Exists(c => string.Equals(c.Type.Id, claim.Type.Id, StringComparison.OrdinalIgnoreCase)
+					if (claim.Type != null && !result.Exists(c => string.Equals(c.Type.Id, claim.Type, StringComparison.OrdinalIgnoreCase)
 																  && string.Equals(c.Value, claim.Value, StringComparison.Ordinal)))
 					{
-						result.Add(claim);
+						result.Add(new ApplicationUserClaim
+								   {
+									   Type = new ForeignKey { Id = claim.Type },
+									   Value = claim.Value
+								   });
 					}
 				}
 			}
