@@ -2,8 +2,8 @@
 using System.IO;
 using System.Linq;
 using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Utils.Exchange;
 
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Utils
