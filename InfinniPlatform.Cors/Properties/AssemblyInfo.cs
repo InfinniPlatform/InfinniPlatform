@@ -1,9 +1,9 @@
 ﻿// 1
 // 0
 // 0
-// 4
+// 5
 // 51644618-c31e-4882-b9ec-8163b13764cd
-// C7BFD1EB5D3D151C9D62B4245AB099E2
+// 681963F6CFB2FFF72C85EED275037FDB
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -17,7 +17,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: Guid("51644618-c31e-4882-b9ec-8163b13764cd")]
-[assembly: AssemblyVersion("1.0.0.4")]
-[assembly: AssemblyFileVersion("1.0.0.4")]
+[assembly: AssemblyVersion("1.0.0.5")]
+[assembly: AssemblyFileVersion("1.0.0.5")]
 [assembly: InternalsVisibleTo("InfinniPlatform.Cors.Tests")]
 [assembly: AssemblyDescription("InfinniPlatform.Cors")]
