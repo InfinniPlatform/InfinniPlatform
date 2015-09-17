@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Security.Principal;
 using System.Text;
@@ -103,6 +104,7 @@ namespace InfinniPlatform.Authentication.Tests
 			var signInInternalUri = new Uri(string.Format("{0}://{1}:{2}/Auth/SignInInternal", HostingConfig.ServerScheme, HostingConfig.ServerName, HostingConfig.ServerPort));
 			var response = client.PostAsync(signInInternalUri, new StringContent(signInForm, Encoding.UTF8, "application/json")).Result;
 			Console.WriteLine(@"SignInInternal: {0}, {1}", response.StatusCode, response.Content.ReadAsStringAsync().Result);
+			Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
 		}
 
 		private static void SignOut(HttpClient client)
@@ -110,6 +112,7 @@ namespace InfinniPlatform.Authentication.Tests
 			var signOutUri = new Uri(string.Format("{0}://{1}:{2}/Auth/SignOut", HostingConfig.ServerScheme, HostingConfig.ServerName, HostingConfig.ServerPort));
 			var response = client.PostAsync(signOutUri, new StringContent("")).Result;
 			Console.WriteLine(@"SignOut: {0}, {1}", response.StatusCode, response.Content.ReadAsStringAsync().Result);
+			Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
 		}
 
 		private static void SomePostRequest(HttpClient client)
@@ -117,6 +120,7 @@ namespace InfinniPlatform.Authentication.Tests
 			var somePostActionUri = new Uri(string.Format("{0}://{1}:{2}/Some/Post/Action", HostingConfig.ServerScheme, HostingConfig.ServerName, HostingConfig.ServerPort));
 			var response = client.PostAsync(somePostActionUri, new StringContent("")).Result;
 			Console.WriteLine(@"Some HTTP POST: {0}, {1}", response.StatusCode, response.Content.ReadAsStringAsync().Result);
+			Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
 		}
 
 		private static void SomeGetRequest(HttpClient client)
@@ -124,6 +128,7 @@ namespace InfinniPlatform.Authentication.Tests
 			var someGetActionUri = new Uri(string.Format("{0}://{1}:{2}/Some/Get/Action", HostingConfig.ServerScheme, HostingConfig.ServerName, HostingConfig.ServerPort));
 			var response = client.GetAsync(someGetActionUri).Result;
 			Console.WriteLine(@"Some HTTP GET: {0}, {1}", response.StatusCode, response.Content.ReadAsStringAsync().Result);
+			Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
 		}
 
 
