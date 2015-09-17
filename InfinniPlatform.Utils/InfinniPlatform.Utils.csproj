@@ -36,7 +36,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release_TeamCity|AnyCPU'">
-    <OutputPath>bin\Release_TeamCity\</OutputPath>
+    <OutputPath>..\Assemblies\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -45,6 +45,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Exchange\ConfigUpdater.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <DependentUpon>AssemblyInfo.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -59,6 +60,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Exchange\AssemblyDiscovery.cs" />
+    <Compile Include="Exchange\ExchangeDirectorSolution.cs" />
+    <Compile Include="Exchange\ExchangeRemoteHost.cs" />
+    <Compile Include="Update\IUpdatePrepareConfig.cs" />
+    <Compile Include="Exchange\SourceAssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -83,10 +89,6 @@
     <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
       <Project>{7ca0f96c-7ff4-44b2-9d44-851984df4532}</Project>
       <Name>InfinniPlatform.Api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.MetadataDesigner\InfinniPlatform.MetadataDesigner.csproj">
-      <Project>{b5108924-dda4-4857-8e15-1abb0d49c6f6}</Project>
-      <Name>InfinniPlatform.MetadataDesigner</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>

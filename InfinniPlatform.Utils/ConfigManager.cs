@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Configuration;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
-using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.MetadataDesigner.Views.Exchange;
-using InfinniPlatform.MetadataDesigner.Views.Update;
 using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Utils.Exchange;
 
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Utils
@@ -27,21 +22,21 @@ namespace InfinniPlatform.Utils
 			}
 
 			ProcessSolution(solutionDir, solution =>
-			{
-				Console.WriteLine("Uploading solution '{0}' started", solution.Name);
+										 {
+											 Console.WriteLine("Uploading solution '{0}' started", solution.Name);
 
-				ExchangeDirectorSolution exchangeDirector = CreateExchangeDirector(solution.Name.ToString(), solution.Version.ToString());
+											 ExchangeDirectorSolution exchangeDirector = CreateExchangeDirector(solution.Name.ToString(), solution.Version.ToString());
 
-				dynamic solutionData = null;
-				if (uploadMetadata)
-				{
-					exchangeDirector.UpdateSolutionMetadataFromDirectory(solutionDir);
-				}
+											 dynamic solutionData = null;
+											 if (uploadMetadata)
+											 {
+												 exchangeDirector.UpdateSolutionMetadataFromDirectory(solutionDir);
+											 }
 
-				exchangeDirector.UpdateConfigurationAppliedAssemblies(solution);
+											 exchangeDirector.UpdateConfigurationAppliedAssemblies(solution);
 
-				Console.WriteLine("Uploading solution '{0}' done", solution.Name);
-			});
+											 Console.WriteLine("Uploading solution '{0}' done", solution.Name);
+										 });
 		}
 
 		public void Download(string solutionDir, string solution, string version, string newVersion)
@@ -51,14 +46,12 @@ namespace InfinniPlatform.Utils
 			exchangeDirector.ExportJsonSolutionToDirectory(solutionDir, version, newVersion);
 
 			Console.WriteLine("Downloading solution '{0}' done", solution);
-
 		}
 
-		private static void ProcessSolution(string solutionDir, Action<dynamic> action)
+		static void ProcessSolution(string solutionDir, Action<dynamic> action)
 		{
-
 			var solutionFile = Directory.GetFiles(solutionDir)
-					 .FirstOrDefault(file => file.ToLowerInvariant().Contains("solution.json"));
+										.FirstOrDefault(file => file.ToLowerInvariant().Contains("solution.json"));
 
 			if (solutionFile != null)
 			{
@@ -67,7 +60,7 @@ namespace InfinniPlatform.Utils
 			}
 		}
 
-		private static ExchangeDirectorSolution CreateExchangeDirector(string configName, string version)
+		static ExchangeDirectorSolution CreateExchangeDirector(string configName, string version)
 		{
 			var remoteHost = new ExchangeRemoteHost(new HostingConfig(), version);
 			return new ExchangeDirectorSolution(remoteHost, configName);

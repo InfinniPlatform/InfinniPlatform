@@ -40,7 +40,7 @@
     <AssemblyOriginatorKeyFile>InfinniPlatform.Api.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release_TeamCity|AnyCPU'">
-    <OutputPath>bin\Release_TeamCity\</OutputPath>
+    <OutputPath>..\Assemblies\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <DocumentationFile>..\Assemblies\InfinniPlatform.Api.xml</DocumentationFile>
     <Optimize>true</Optimize>
