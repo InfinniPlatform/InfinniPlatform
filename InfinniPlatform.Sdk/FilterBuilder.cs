@@ -208,7 +208,7 @@ namespace InfinniPlatform.Sdk
             {
                 if (value is DateTime)
                 {
-                    return string.Format("datetime'{0}'", ((DateTime)value));
+                    return string.Format("datetime'{0}'", ((DateTime)value).ToString("O"));
                 }
                 return value;
             }
