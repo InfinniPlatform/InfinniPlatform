@@ -82,7 +82,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             dynamic points = new DynamicWrapper();
             points.Property = "Rating";
             points.CriteriaType = CriteriaType.IsIn;
-	        points.Value = string.Format("{0}\n{1}", 2.5.ToString(CultureInfo.CurrentCulture), 4.5.ToString(CultureInfo.CurrentCulture));
+	        points.Value = string.Format("{0}\n{1}", 2.5, 4.5);
 
             // Пример агрегации по диапазонам
             var rangeDim = new

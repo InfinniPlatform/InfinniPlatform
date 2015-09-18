@@ -523,7 +523,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             var points = new List<T>();
             foreach (string strPoint in criteria.Value.ToString().Split('\n'))
             {
-                var convertedValue = converter.ConvertFromString(strPoint.Replace(".", ","));
+                var convertedValue = converter.ConvertFromInvariantString(strPoint.Replace(',', '.'));
                 if (convertedValue != null)
                 {
                     points.Add((T)convertedValue);
