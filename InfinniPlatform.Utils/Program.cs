@@ -9,11 +9,13 @@ namespace InfinniPlatform.Utils
         {
             var command = args[0];
             var arguments = args.Skip(1).ToArray();
-
+            
             switch (command)
             {
                 case "upload":
-                    new ConfigManager().Upload(arguments.Length > 0 ? arguments[0] : string.Empty, arguments.Length > 1);
+                    new ConfigManager().Upload(arguments.Length > 0
+                                                   ? arguments[0]
+                                                   : string.Empty, arguments.Length > 1, arguments.Contains("/y"));
                     break;
                 case "download":
                     if (arguments.Length > 3)
@@ -26,7 +28,9 @@ namespace InfinniPlatform.Utils
                     }
                     break;                    
                 case "importdata":
-                    new DataManager().Import(arguments.Length > 0 ? arguments[0] : null);
+                    new DataManager().Import(arguments.Length > 0
+                                                 ? arguments[0]
+                                                 : null);
                     break;
             }
         }

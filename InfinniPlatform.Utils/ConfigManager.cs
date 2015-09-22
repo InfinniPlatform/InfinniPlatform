@@ -10,17 +10,18 @@ namespace InfinniPlatform.Utils
 {
 	public class ConfigManager
 	{
-		public void Upload(string solutionDir, bool uploadMetadata)
+		public void Upload(string solutionDir, bool uploadMetadata, bool skipPromt = false)
 		{
 			Console.WriteLine("ServiceHost should be executed for this operation.");
 			Console.WriteLine("All metadata will be DESTROYED!!! Are you sure?");
-			if (uploadMetadata && Console.ReadKey().KeyChar != 'y')
-			{
-				Console.WriteLine("Cancel upload");
-				return;
-			}
+		    if (!skipPromt &&
+                uploadMetadata && Console.ReadKey().KeyChar != 'y')
+		    {
+		        Console.WriteLine("Cancel upload");
+		        return;
+		    }
 
-			ProcessSolution(solutionDir, solution =>
+		    ProcessSolution(solutionDir, solution =>
 			{
 				Console.WriteLine("Uploading solution '{0}' started", solution.Name);
 
