@@ -8,6 +8,7 @@ using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManage
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataReaders;
 using InfinniPlatform.Api.TestEnvironment;
 using InfinniPlatform.Api.Tests.Builders;
+using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Sdk.Dynamic;
 using NUnit.Framework;
 
@@ -102,6 +103,10 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
+			//TODO Тест работает только на чистой базе.
+			var indexProvider = new IndexStateProvider();
+			indexProvider.DeleteIndex("_all");
+
             _server = TestApi.StartServer(c => c.SetHostingConfig(TestSettings.DefaultHostingConfig));
 
             TestApi.InitClientRouting(TestSettings.DefaultHostingConfig);
