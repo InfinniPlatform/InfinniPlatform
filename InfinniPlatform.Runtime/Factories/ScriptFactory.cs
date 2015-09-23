@@ -1,101 +1,84 @@
-﻿using InfinniPlatform.Factories;
+﻿using System;
+
+using InfinniPlatform.Factories;
 using InfinniPlatform.Runtime.Implementation.ScriptMetadataProviders;
 using InfinniPlatform.Runtime.Implementation.ScriptProcessors;
-using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Scripts;
 
 namespace InfinniPlatform.Runtime.Factories
 {
-	/// <summary>
-	///   Фабрика скриптовых компонентов 
-	/// </summary>
 	public sealed class ScriptFactory : IScriptFactory
 	{
-	    private readonly string _metadataConfigurationId;
+		/// <summary>
+		/// Конструктор.
+		/// </summary>
+		/// <param name="versionLoader">Загрузчик версий прикладных скриптов.</param>
+		/// <param name="changeListener">Слушатель изменений загруженных конфигураций.</param>
+		/// <param name="metadataConfigurationId">Идентификатор загружаемой конфигурации.</param>
+		/// <param name="version">Идентификатор загружаемой версии конфигурации.</param>
+		public ScriptFactory(IVersionLoader versionLoader, IChangeListener changeListener, string metadataConfigurationId, string version)
+		{
+			_versionLoader = versionLoader;
+			_metadataConfigurationId = metadataConfigurationId;
+			_version = version;
 
-        private readonly string _version;
+			_scriptInvokationCache = new Lazy<IMethodInvokationCacheList>(CreateScriptInvokationCache);
+			_scriptMetadataProvider = new Lazy<IScriptMetadataProvider>(CreateScriptMetadataProvider);
+			_scriptProcessor = new Lazy<IScriptProcessor>(CreateScriptProcessor);
 
-	    private readonly IVersionLoader _versionLoader;
-	    
-        private readonly IChangeListener _changeListener;
-
-	    private IScriptMetadataProvider _scriptMetadataProvider;
-
-	    private volatile ScriptProcessor _scriptProcessor;
-
-        /// <summary>
-        ///  Кэш версий конфигурации скриптов
-        /// </summary>
-	    private volatile MethodInvokationCacheList _versionCacheList;
-
-	    /// <summary>
-	    ///   Конструктор принимает идентификатор конфигурации метаданных, для которой создается фабрика
-	    ///   Это необходимо для реализации корректной реакции на событие обновления метаданных конфигураций
-	    /// </summary>
-	    /// <param name="changeListener"></param>
-	    /// <param name="metadataConfigurationId">Идентификатор конфигурации метаданных</param>
-	    /// <param name="versionLoader"></param>
-	    /// <param name="version"></param>
-	    public ScriptFactory(IVersionLoader versionLoader, IChangeListener changeListener, string metadataConfigurationId, string version)
-        {
-            _versionLoader = versionLoader;
-            _changeListener = changeListener;
-            _changeListener.RegisterOnChange(metadataConfigurationId, UpdateCache,Order.NoMatter);
-            _metadataConfigurationId = metadataConfigurationId;
-	        _version = version;
-        }
-
-	    /// <summary>
-	    ///   Создать процессор запуска прикладных скриптов на основе использования
-	    ///   распределенного хранилища
-	    /// </summary>
-	    /// <returns>Процессор запуска прикладных скриптов</returns>
-	    public IScriptProcessor BuildScriptProcessor()
-	    {
-	        if (_scriptProcessor == null)
-	        {
-	            UpdateCache(_version, _metadataConfigurationId);
-	        }
-	        return _scriptProcessor;
-	    }
-
-        private readonly object _lockCache = new object();
-	    
-
-	    private void UpdateCache(string version, string metadataConfigurationId)
-        {
-            //если событие обновления соответствует текущей конфигурации метаданных, то выполняем обновление кэша метаданных
-            if (metadataConfigurationId.ToLowerInvariant() == _metadataConfigurationId.ToLowerInvariant() && _version == version)
-            {
-                lock (_lockCache)
-                {
-                    if (_versionCacheList != null)
-                    {
-                        _versionLoader.UpdateInvokationCache(version, _metadataConfigurationId, _versionCacheList);
-                    }
-                    else
-                    {
-                        _versionCacheList = _versionLoader.ConstructInvokationCache(version, _metadataConfigurationId);
-                    }
+			changeListener.RegisterOnChange(metadataConfigurationId, UpdateCache, Order.NoMatter);
+		}
 
 
-                    _scriptProcessor = new ScriptProcessor(_versionCacheList, _scriptMetadataProvider);
-                    _scriptProcessor.UpdateCache(_versionCacheList);
-                }
-            }
-        }
+		private readonly IVersionLoader _versionLoader;
+		private readonly string _metadataConfigurationId;
+		private readonly string _version;
 
 
-	    /// <summary>
-        ///   Создать провайдер метаданных прикладных скриптов
-        /// </summary>
-        /// <returns>Провайдер метаданных прикладных скриптов</returns>
-        public IScriptMetadataProvider BuildScriptMetadataProvider()
-        {
-            return _scriptMetadataProvider ?? (_scriptMetadataProvider = new ScriptMetadataProviderMemory());
-        }
+		private readonly Lazy<IScriptMetadataProvider> _scriptMetadataProvider;
+		private readonly Lazy<IMethodInvokationCacheList> _scriptInvokationCache;
+		private readonly Lazy<IScriptProcessor> _scriptProcessor;
 
 
+		public IScriptProcessor BuildScriptProcessor()
+		{
+			return _scriptProcessor.Value;
+		}
+
+		public IScriptMetadataProvider BuildScriptMetadataProvider()
+		{
+			return _scriptMetadataProvider.Value;
+		}
+
+
+		private IMethodInvokationCacheList CreateScriptInvokationCache()
+		{
+			return _versionLoader.ConstructInvokationCache(_version, _metadataConfigurationId);
+		}
+
+		private static IScriptMetadataProvider CreateScriptMetadataProvider()
+		{
+			return new ScriptMetadataProviderMemory();
+		}
+
+		private IScriptProcessor CreateScriptProcessor()
+		{
+			return new ScriptProcessor(_scriptInvokationCache.Value, _scriptMetadataProvider.Value);
+		}
+
+
+		private void UpdateCache(string version, string metadataConfigurationId)
+		{
+			// Если событие обновления соответствует текущей конфигурации метаданных, то выполняем обновление кэша метаданных
+
+			if (string.Equals(_version, version, StringComparison.OrdinalIgnoreCase)
+				&& string.Equals(_metadataConfigurationId, metadataConfigurationId, StringComparison.OrdinalIgnoreCase))
+			{
+				if (_scriptInvokationCache.IsValueCreated)
+				{
+					_versionLoader.UpdateInvokationCache(_version, _metadataConfigurationId, _scriptInvokationCache.Value);
+				}
+			}
+		}
 	}
-
 }

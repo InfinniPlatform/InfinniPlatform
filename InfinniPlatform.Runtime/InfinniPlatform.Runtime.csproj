@@ -46,7 +46,13 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementation\AssemblyDispatch\AppDomainSctiptCache.cs" />
     <Compile Include="Implementation\AssemblyDispatch\AssemblyVersionLoader.cs" />
+    <Compile Include="Implementation\AssemblyDispatch\MethodInvokationCache.cs" />
+    <Compile Include="Implementation\AssemblyDispatch\MethodInvokationCacheList.cs" />
+    <Compile Include="Implementation\AssemblyDispatch\PackageMethodInvokationCache.cs" />
+    <Compile Include="Implementation\AssemblyDispatch\PackageMethodInvokationCacheList.cs" />
+    <Compile Include="Implementation\AssemblyDispatch\PackageVersionLoader.cs" />
     <Compile Include="Implementation\ChangeListeners\ChangeListener.cs" />
     <Compile Include="Implementation\ProjectConverter\Content.cs" />
     <Compile Include="Implementation\ProjectConverter\EmbeddedResource.cs" />

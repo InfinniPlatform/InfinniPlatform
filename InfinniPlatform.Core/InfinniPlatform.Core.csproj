@@ -152,13 +152,13 @@
     <Compile Include="Modules\ITemplateInstaller.cs" />
     <Compile Include="Modules\ModuleExtension.cs" />
     <Compile Include="Runtime\IChangeListener.cs" />
+    <Compile Include="Runtime\IMethodInvokationCache.cs" />
+    <Compile Include="Runtime\IMethodInvokationCacheList.cs" />
     <Compile Include="Runtime\IVersionLoader.cs" />
     <Compile Include="Runtime\IdentityMap.cs" />
     <Compile Include="Factories\IScriptFactory.cs" />
     <Compile Include="Runtime\IScriptMetadataProvider.cs" />
     <Compile Include="Runtime\ReflectionExtensions.cs" />
-    <Compile Include="Runtime\MethodInvokationCacheList.cs" />
-    <Compile Include="Runtime\MethodInvokationCache.cs" />
     <Compile Include="Runtime\ScriptMetadata.cs" />
     <Compile Include="BlobStorage\IBlobStorageManager.cs" />
     <Compile Include="EventStorage\IEventStorageManager.cs" />

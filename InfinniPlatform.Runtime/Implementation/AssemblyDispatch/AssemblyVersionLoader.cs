@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Logging;
-using InfinniPlatform.Metadata;
 using InfinniPlatform.Runtime.Properties;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Metadata;
 using InfinniPlatform.Sdk.Environment.Settings;
@@ -21,6 +16,7 @@ namespace InfinniPlatform.Runtime.Implementation.AssemblyDispatch
 	/// <summary>
 	/// Загрузчик версий конфигурационных объектов.
 	/// </summary>
+	[Obsolete]
 	public class AssemblyVersionLoader : IVersionLoader
 	{
 		private readonly IConfigurationObjectBuilder _configurationObjectBuilder;
@@ -45,9 +41,9 @@ namespace InfinniPlatform.Runtime.Implementation.AssemblyDispatch
 
 		private IEnumerable<dynamic> LoadVersions(string version, string configurationId)
 		{
-		    //функционал всех версий конфигурации 'update' одинаков, можно не указывать версию
-            var configurationObject = _configurationObjectBuilder.GetConfigurationObject(null, "update");
-			var packageProvider = configurationObject.GetDocumentProvider("package",version, null);
+			//функционал всех версий конфигурации 'update' одинаков, можно не указывать версию
+			var configurationObject = _configurationObjectBuilder.GetConfigurationObject(null, "update");
+			var packageProvider = configurationObject.GetDocumentProvider("package", version, null);
 
 			// если индекс не существует, конфигурация еще не развернута
 			if (packageProvider == null)
@@ -60,10 +56,10 @@ namespace InfinniPlatform.Runtime.Implementation.AssemblyDispatch
 			criteria.Value = configurationId;
 			criteria.CriteriaType = CriteriaType.IsEquals;
 
-		    dynamic criteriaVersion = new DynamicWrapper();
-            criteriaVersion.Property = "Version";
-            criteriaVersion.Value = version;
-            criteriaVersion.CriteriaType = CriteriaType.IsEquals;
+			dynamic criteriaVersion = new DynamicWrapper();
+			criteriaVersion.Property = "Version";
+			criteriaVersion.Value = version;
+			criteriaVersion.CriteriaType = CriteriaType.IsEquals;
 
 
 			// получаем актуальные версии сохраненных сборок конфигурации
@@ -118,7 +114,7 @@ namespace InfinniPlatform.Runtime.Implementation.AssemblyDispatch
 			return searchResult;
 		}
 
-		public MethodInvokationCacheList RefreshInvokationCache(string version, string metadataConfigurationId, MethodInvokationCacheList invokationCacheList)
+		private IMethodInvokationCacheList RefreshInvokationCache(string version, string metadataConfigurationId, IMethodInvokationCacheList invokationCacheList)
 		{
 			var assemblyVersionPath = AppSettings.GetValue("AssemblyVersionPath");
 
@@ -127,7 +123,7 @@ namespace InfinniPlatform.Runtime.Implementation.AssemblyDispatch
 				throw new ArgumentException(Resources.AssemblyVersionRepositoryNotSpecified);
 			}
 
-            var versionAssemblies = LoadVersions(version, metadataConfigurationId).ToList();
+			var versionAssemblies = LoadVersions(version, metadataConfigurationId).ToList();
 
 			foreach (var configurationVersion in versionAssemblies)
 			{
@@ -139,7 +135,7 @@ namespace InfinniPlatform.Runtime.Implementation.AssemblyDispatch
 				{
 					LoadAppliedAssemblies(directory, configurationVersion, assemblyResult);
 
-				    MethodInvokationCache cacheExisting = invokationCacheList.GetCache(configurationVersion.Version, false);
+					IMethodInvokationCache cacheExisting = invokationCacheList.GetCache(configurationVersion.Version, false);
 
 					if (cacheExisting == null)
 					{
@@ -148,7 +144,7 @@ namespace InfinniPlatform.Runtime.Implementation.AssemblyDispatch
 																				 assemblyResult));
 					}
 					else
-					{                        
+					{
 						cacheExisting.AddVersionAssembly(assemblyResult);
 					}
 				}
@@ -157,42 +153,40 @@ namespace InfinniPlatform.Runtime.Implementation.AssemblyDispatch
 			return invokationCacheList;
 		}
 
-	    public MethodInvokationCacheList ConstructInvokationCache(string version, string metadataConfigurationId)
-	    {
-	        return RefreshInvokationCache(version, metadataConfigurationId,new MethodInvokationCacheList());
-	    }
+		public IMethodInvokationCacheList ConstructInvokationCache(string version, string metadataConfigurationId)
+		{
+			return RefreshInvokationCache(version, metadataConfigurationId, new MethodInvokationCacheList());
+		}
 
-        public void UpdateInvokationCache(string version, string metadataConfigurationId, MethodInvokationCacheList versionCacheList)
-        {
-            RefreshInvokationCache(version, metadataConfigurationId, versionCacheList);
-        }
+		public void UpdateInvokationCache(string version, string metadataConfigurationId, IMethodInvokationCacheList versionCacheList)
+		{
+			RefreshInvokationCache(version, metadataConfigurationId, versionCacheList);
+		}
 
-	    private static void LoadAppliedAssemblies(dynamic directory, dynamic configurationVersion, List<Assembly> assemblyResult)
-	    {
-	        var assemblyLocation = Path.Combine(directory, configurationVersion.ModuleId);
-	        var pdbLocation = Path.Combine(directory, Path.GetFileNameWithoutExtension(configurationVersion.ModuleId) + ".pdb");
+		private static void LoadAppliedAssemblies(dynamic directory, dynamic configurationVersion, List<Assembly> assemblyResult)
+		{
+			var assemblyLocation = Path.Combine(directory, configurationVersion.ModuleId);
+			var pdbLocation = Path.Combine(directory, Path.GetFileNameWithoutExtension(configurationVersion.ModuleId) + ".pdb");
 
-	        try
-	        {
-	            File.WriteAllBytes(assemblyLocation, configurationVersion.Assembly);
+			try
+			{
+				File.WriteAllBytes(assemblyLocation, configurationVersion.Assembly);
 
-	            if (configurationVersion.Pdb != null)
-	            {
-	                File.WriteAllBytes(pdbLocation, configurationVersion.Pdb);
-	            }
-	        }
-	        catch (Exception)
-	        {
-	            throw new ArgumentException(string.Format("Cannot write file in location: {0}.", assemblyLocation));
-	        }
+				if (configurationVersion.Pdb != null)
+				{
+					File.WriteAllBytes(pdbLocation, configurationVersion.Pdb);
+				}
+			}
+			catch (Exception)
+			{
+				throw new ArgumentException(string.Format("Cannot write file in location: {0}.", assemblyLocation));
+			}
 
-	        // Желательно загрузить еще pdb file, чтобы в случае возникновения исключения получить информацию о строке,
-	        // в которой это исключение произошло
-	        assemblyResult.Add(configurationVersion.Pdb == null
-	            ? Assembly.Load(File.ReadAllBytes(assemblyLocation))
-	            : Assembly.Load(File.ReadAllBytes(assemblyLocation), File.ReadAllBytes(pdbLocation)));
-	    }
-
-
+			// Желательно загрузить еще pdb file, чтобы в случае возникновения исключения получить информацию о строке,
+			// в которой это исключение произошло
+			assemblyResult.Add(configurationVersion.Pdb == null
+				? Assembly.Load(File.ReadAllBytes(assemblyLocation))
+				: Assembly.Load(File.ReadAllBytes(assemblyLocation), File.ReadAllBytes(pdbLocation)));
+		}
 	}
 }
