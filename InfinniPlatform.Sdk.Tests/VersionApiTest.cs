@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Sdk.Api;
+﻿using InfinniPlatform.Sdk.Api;
 using NUnit.Framework;
 
 namespace InfinniPlatform.Sdk.Tests
@@ -14,7 +9,7 @@ namespace InfinniPlatform.Sdk.Tests
     public sealed class VersionApiTest
     {
         private const string InfinniSessionPort = "9900";
-        private const string InfinniSessionServer = "192.168.0.17";
+        private const string InfinniSessionServer = "localhost";
         private const string Route = "1";
 
         private InfinniVersionApi _versionApi;

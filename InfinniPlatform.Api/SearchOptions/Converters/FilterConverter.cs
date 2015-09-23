@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using InfinniPlatform.Api.Properties;
-using InfinniPlatform.Api.SearchOptions.Builders;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
 
@@ -98,14 +95,14 @@ namespace InfinniPlatform.Api.SearchOptions.Converters
 
         private object ProcessValue(string value)
         {
-
+            //TODO На костыль похоже.
             if (value.ToLowerInvariant().StartsWith("datetime"))
             {
                 var start = value.IndexOf("'", StringComparison.InvariantCulture);
                 var end = value.LastIndexOf("'", StringComparison.InvariantCulture);
                 try
                 {
-                    return DateTime.Parse(value.Substring(start + 1, end - start - 1));
+                    return DateTime.Parse(value.Substring(start + 1, end - start - 1).Replace(" ", "+"));
                 }
                 catch
                 {
