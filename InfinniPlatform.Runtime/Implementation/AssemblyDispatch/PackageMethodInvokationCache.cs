@@ -57,9 +57,18 @@ namespace InfinniPlatform.Runtime.Implementation.AssemblyDispatch
 			{
 				lock (SctiptCacheSync)
 				{
-					_sctiptCache = null;
+					ResetCache();
 				}
 			}
+		}
+
+
+		private static void ResetCache()
+		{
+			// Отключили сброс кэша, так как, во-первых, в этом реально нет необходимости, во-вторых,
+			// есть подозрение, что этот сброс в данный момент выполняется неадекватно часто.
+
+			// _sctiptCache = null;
 		}
 	}
 }
