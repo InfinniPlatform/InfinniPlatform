@@ -135,4 +135,7 @@
   <data name="ScriptMetadataIsNotRegistered" xml:space="preserve">
     <value>Script metadata is not registered. Script Identifier = '{0}'.</value>
   </data>
+  <data name="UpdateCacheRequest" xml:space="preserve">
+    <value>Update cache request. Version = '{0}', Configuration = '{1}'.</value>
+  </data>
 </root>

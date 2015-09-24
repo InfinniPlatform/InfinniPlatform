@@ -113,5 +113,14 @@ namespace InfinniPlatform.Runtime.Properties {
                 return ResourceManager.GetString("ScriptMetadataIsNotRegistered", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update cache request. Version = &apos;{0}&apos;, Configuration = &apos;{1}&apos;..
+        /// </summary>
+        internal static string UpdateCacheRequest {
+            get {
+                return ResourceManager.GetString("UpdateCacheRequest", resourceCulture);
+            }
+        }
     }
 }

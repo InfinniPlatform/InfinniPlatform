@@ -3,6 +3,7 @@
 using InfinniPlatform.Factories;
 using InfinniPlatform.Runtime.Implementation.ScriptMetadataProviders;
 using InfinniPlatform.Runtime.Implementation.ScriptProcessors;
+using InfinniPlatform.Runtime.Properties;
 using InfinniPlatform.Sdk.Environment.Scripts;
 
 namespace InfinniPlatform.Runtime.Factories
@@ -76,6 +77,8 @@ namespace InfinniPlatform.Runtime.Factories
 			{
 				if (_scriptInvokationCache.IsValueCreated)
 				{
+					Logging.Logger.Log.Info(Resources.UpdateCacheRequest, _version, _metadataConfigurationId);
+
 					_versionLoader.UpdateInvokationCache(_version, _metadataConfigurationId, _scriptInvokationCache.Value);
 				}
 			}
