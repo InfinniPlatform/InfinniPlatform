@@ -96,7 +96,8 @@ namespace InfinniPlatform.Sdk.Api
                     {
                         Name = cookie.Name.ToString(),
                         Value = cookie.Value.ToString(),
-                        Domain = cookie.Domain.ToString(),
+						//TODO В куки попадал localhost, вместо реального адреса сервера.
+						Domain = Server,
                         Expires = Convert.ToDateTime(cookie.Expires),
                         Path = cookie.Path.ToString(),
                         Discard = Convert.ToBoolean(cookie.Discard)
