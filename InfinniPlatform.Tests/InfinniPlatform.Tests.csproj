@@ -54,7 +54,6 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Conventions\StructureConfigurationConventionsTest.cs" />
     <Compile Include="Conventions\StructurePlatformConventionsTest.cs" />
     <Compile Include="Helpers\WindowsServices.cs" />
     <Compile Include="TestCategories.cs" />
