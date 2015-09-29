@@ -294,94 +294,97 @@
   <data name="UnableToDeleteAssemblyMetadata" xml:space="preserve">
     <value>Unable to delete assembly metadata with exception {0}</value>
   </data>
-	<data name="UnableToInsertRegisterMetadata" xml:space="preserve">
+  <data name="UnableToInsertRegisterMetadata" xml:space="preserve">
     <value>Unable to insert register metadata with exception {0}</value>
   </data>
-	<data name="UnableToUpdateRegisterMetadata" xml:space="preserve">
+  <data name="UnableToUpdateRegisterMetadata" xml:space="preserve">
     <value>Unable to update register metadata with exception {0}</value>
   </data>
-	<data name="UnableToDeleteRegisterMetadata" xml:space="preserve">
+  <data name="UnableToDeleteRegisterMetadata" xml:space="preserve">
     <value>Unable to delete register metadata with exception {0}</value>
   </data>
-	<data name="UnableToGetRegisterMetadata" xml:space="preserve">
+  <data name="UnableToGetRegisterMetadata" xml:space="preserve">
     <value>Unable to get register metadata with exception {0}</value>
   </data>
-	<data name="UnableToInsertDocumentMetadata" xml:space="preserve">
+  <data name="UnableToInsertDocumentMetadata" xml:space="preserve">
     <value>Unable to insert document metadata with exception {0}</value>
   </data>
-	<data name="UnableToUpdateDocumentMetadata" xml:space="preserve">
+  <data name="UnableToUpdateDocumentMetadata" xml:space="preserve">
     <value>Unable to update document metadata with exception {0}</value>
   </data>
-	<data name="UnableToDeleteDocumentMetadata" xml:space="preserve">
+  <data name="UnableToDeleteDocumentMetadata" xml:space="preserve">
     <value>Unable to delete document metadata with exception {0}</value>
   </data>
-	<data name="UnableToGetDocumentMetadata" xml:space="preserve">
+  <data name="UnableToGetDocumentMetadata" xml:space="preserve">
     <value>Unable to get document metadata with exception {0}</value>
   </data>
-	<data name="UnableToInsertScenarioMetadata" xml:space="preserve">
+  <data name="UnableToInsertScenarioMetadata" xml:space="preserve">
     <value>Unable to insert scenario metadata with exception {0}</value>
   </data>
-	<data name="UnableToUpdateScenarioMetadata" xml:space="preserve">
+  <data name="UnableToUpdateScenarioMetadata" xml:space="preserve">
     <value>Unable to update scenario metadata with exception {0}</value>
   </data>
-	<data name="UnableToDeleteScenarioMetadata" xml:space="preserve">
+  <data name="UnableToDeleteScenarioMetadata" xml:space="preserve">
     <value>Unable to delete scenario metadata by id with exception {0}</value>
   </data>
-	<data name="UnableToGetScenarioMetadata" xml:space="preserve">
+  <data name="UnableToGetScenarioMetadata" xml:space="preserve">
     <value>Unable to get scenario metadata with exception {0}</value>
   </data>
-	<data name="UnableToInsertProcessMetadata" xml:space="preserve">
+  <data name="UnableToInsertProcessMetadata" xml:space="preserve">
     <value>Unable to insert service metadata with exception {0}</value>
   </data>
-	<data name="UnableToUpdateProcessMetadata" xml:space="preserve">
+  <data name="UnableToUpdateProcessMetadata" xml:space="preserve">
     <value>Unable to update service metadata with exception {0}</value>
   </data>
-	<data name="UnableToDeleteProcessMetadata" xml:space="preserve">
+  <data name="UnableToDeleteProcessMetadata" xml:space="preserve">
     <value>Unable to delete service metadata with exception {0}</value>
   </data>
-	<data name="UnableToGetProcessMetadata" xml:space="preserve">
+  <data name="UnableToGetProcessMetadata" xml:space="preserve">
     <value>Unable to get service metadata with exception {0}</value>
   </data>
-	<data name="UnableToInsertServiceMetadata" xml:space="preserve">
+  <data name="UnableToInsertServiceMetadata" xml:space="preserve">
     <value>Unable to insert service metadata with exception {0}</value>
   </data>
-	<data name="UnableToUpdateServiceMetadata" xml:space="preserve">
+  <data name="UnableToUpdateServiceMetadata" xml:space="preserve">
     <value>Unable to update service metadata with exception {0}</value>
   </data>
-	<data name="UnableToDeleteServiceMetadata" xml:space="preserve">
+  <data name="UnableToDeleteServiceMetadata" xml:space="preserve">
     <value>Unable to delete service metadata with exception {0}</value>
   </data>
-	<data name="UnableToGetServiceMetadata" xml:space="preserve">
+  <data name="UnableToGetServiceMetadata" xml:space="preserve">
     <value>Unable to get service metadata with exception {0}</value>
   </data>
-	<data name="UnableToInsertViewMetadata" xml:space="preserve">
+  <data name="UnableToInsertViewMetadata" xml:space="preserve">
     <value>Unable to insert view metadata with exception {0}</value>
   </data>
-	<data name="UnableToUpdateViewMetadata" xml:space="preserve">
+  <data name="UnableToUpdateViewMetadata" xml:space="preserve">
     <value>Unable to update view metadata with exception {0}</value>
   </data>
-	<data name="UnableToDeleteViewMetadaa" xml:space="preserve">
+  <data name="UnableToDeleteViewMetadaa" xml:space="preserve">
     <value>Unable to delete view metadata with exception {0}</value>
   </data>
-	<data name="UnableToGetViewMetadata" xml:space="preserve">
+  <data name="UnableToGetViewMetadata" xml:space="preserve">
     <value>Unable to get view metadata with exception {0}</value>
   </data>
-	<data name="UnableToInsertPrintViewMetadata" xml:space="preserve">
+  <data name="UnableToInsertPrintViewMetadata" xml:space="preserve">
     <value>Unable to insert print view metadata with exception {0}</value>
   </data>
-	<data name="UnableToUpdatePrintViewMetaata" xml:space="preserve">
+  <data name="UnableToUpdatePrintViewMetaata" xml:space="preserve">
     <value>Unable to update printview metadata with exception {0}</value>
   </data>
-	<data name="UnableToDeletePrintViewMetadata" xml:space="preserve">
+  <data name="UnableToDeletePrintViewMetadata" xml:space="preserve">
     <value>Unable to delete print view metadata with exception {0}</value>
   </data>
-	<data name="UnableToGetPrintViewMetadata" xml:space="preserve">
+  <data name="UnableToGetPrintViewMetadata" xml:space="preserve">
     <value>Unable to get print view metadata with exception {0}</value>
   </data>
-	<data name="UnableToGetAssemblyMetadata" xml:space="preserve">
+  <data name="UnableToGetAssemblyMetadata" xml:space="preserve">
     <value>Unable to get assembly metadata with exception {0}</value>
   </data>
-	<data name="UnableToUpdateSolutionMetadata" xml:space="preserve">
+  <data name="UnableToUpdateSolutionMetadata" xml:space="preserve">
     <value>Unable to update solution metadata with exception {0}</value>
+  </data>
+  <data name="CannotProcessPostRequest" xml:space="preserve">
+    <value>Cannot process POST-request. StatusCode: '{0}', Content: '{1}'.</value>
   </data>
 </root>

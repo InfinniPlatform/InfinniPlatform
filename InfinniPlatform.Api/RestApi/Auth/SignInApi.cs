@@ -27,6 +27,7 @@ namespace InfinniPlatform.Api.RestApi.Auth
 	///     API для входа и выхода из системы
 	///     Вызывается только с клиента
 	/// </summary>
+	[Obsolete]
 	public sealed class SignInApi
 	{
 		/* Вообще, если даже не брать во внимание всю абсурдность этого функционала, которая
