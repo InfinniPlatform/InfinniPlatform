@@ -233,7 +233,6 @@
     <Compile Include="RestApi\Public\FileApi.cs" />
     <Compile Include="RestApi\Public\PrintViewApi.cs" />
     <Compile Include="RestApi\Public\RegisterApi.cs" />
-    <Compile Include="RestApi\Public\SignInApi.cs" />
     <Compile Include="RestQuery\EventObjects\EventSerializerExtensions.cs" />
     <Compile Include="SearchOptions\Builders\SortingBuilder.cs" />
     <Compile Include="RestApi\DataApi\PrintViewApi.cs" />
