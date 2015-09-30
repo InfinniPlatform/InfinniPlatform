@@ -8,7 +8,7 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
     /// <summary>
     ///     Получить пользователя системы
     /// </summary>
-    public sealed class ActionUnitGetUser
+    public sealed class ActionUnitWrapGetUser
     {
         public void Action(IApplyContext target)
         {
