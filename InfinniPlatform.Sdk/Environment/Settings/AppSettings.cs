@@ -69,7 +69,7 @@ namespace InfinniPlatform.Sdk.Environment.Settings
 
 			if (string.IsNullOrEmpty(value) == false)
 			{
-				var items = value.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+				var items = value.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
 
 				if (items.Length > 0)
 				{
