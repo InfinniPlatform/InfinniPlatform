@@ -1,6 +1,5 @@
 ﻿using System;
 using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
@@ -46,12 +45,6 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                     target.Item.Document = AdjustDocumentContent(version, target.Item.Document, documentSchema,
                                                                  allowNonSchemaProperties);
 
-                    target.Context.GetComponent<ILogComponent>().GetLog().Info(
-                        "document \"{0}\" save completed to \"{1}\", type {2}",
-                        target.Item.Configuration,
-                        target.Item.Document.ToString(),
-                        target.Item.Metadata ?? "indexobject");
-
                     instanceId = target.Item.Document.Id;
                 }
                 else if (target.Item.Documents != null)
@@ -62,20 +55,9 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                     {
                         adjustedDocs.Add(AdjustDocumentContent(version, document, documentSchema,
                                                                allowNonSchemaProperties));
-
-                        target.Context.GetComponent<ILogComponent>().GetLog().Info(
-                            "document \"{0}\" save completed to \"{1}\", type {2}",
-                            target.Item.Configuration,
-                            document.ToString(),
-                            target.Item.Metadata ?? "indexobject");
                     }
 
                     target.Item.Documents = adjustedDocs.ToArray();
-
-                    target.Context.GetComponent<ILogComponent>()
-                          .GetLog()
-                          .Info("documents save completed to \"{0}\", type {1}", target.Item.Configuration,
-                                target.Item.Metadata);
                 }
                 target.Result = new DynamicWrapper();
 
