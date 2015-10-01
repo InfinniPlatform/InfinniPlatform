@@ -1,36 +1,36 @@
 ﻿using System.Collections.Generic;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Validations;
 
 namespace InfinniPlatform.Api.Validation.BooleanValidators
 {
-	/// <summary>
-	/// Базовый класс композитных операторов для проверки объекта.
-	/// </summary>
-	public abstract class CompositeValidator : IValidationOperator
-	{
-		public string Property { get; set; }
+    /// <summary>
+    ///     Базовый класс композитных операторов для проверки объекта.
+    /// </summary>
+    public abstract class CompositeValidator : IValidationOperator
+    {
+        public string Property { get; set; }
+        public ICollection<IValidationOperator> Operators { get; set; }
 
-		public ICollection<IValidationOperator> Operators { get; set; }
+        public abstract bool Validate(object validationObject, ValidationResult validationResult = null,
+            string parentProperty = null);
 
+        public void Add(IValidationOperator validationOperator)
+        {
+            if (Operators == null)
+            {
+                Operators = new List<IValidationOperator>();
+            }
 
-		public void Add(IValidationOperator validationOperator)
-		{
-			if (Operators == null)
-			{
-				Operators = new List<IValidationOperator>();
-			}
+            Operators.Add(validationOperator);
+        }
 
-			Operators.Add(validationOperator);
-		}
-
-		public void Remove(IValidationOperator validationOperator)
-		{
-			if (Operators != null)
-			{
-				Operators.Remove(validationOperator);
-			}
-		}
-
-
-		public abstract bool Validate(object validationObject, ValidationResult validationResult = null, string parentProperty = null);
-	}
+        public void Remove(IValidationOperator validationOperator)
+        {
+            if (Operators != null)
+            {
+                Operators.Remove(validationOperator);
+            }
+        }
+    }
 }

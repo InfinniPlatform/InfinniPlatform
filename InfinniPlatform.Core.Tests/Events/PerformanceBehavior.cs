@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.Events;
 using InfinniPlatform.Api.RestQuery.EventObjects;
 using InfinniPlatform.Core.Tests.Events.Builders;
 using InfinniPlatform.Json;
 using InfinniPlatform.Json.EventBuilders;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Events;
 using NUnit.Framework;
 using Newtonsoft.Json;
 

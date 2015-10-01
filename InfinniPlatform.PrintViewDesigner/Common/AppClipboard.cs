@@ -2,40 +2,38 @@
 
 namespace InfinniPlatform.PrintViewDesigner.Common
 {
-	class AppClipboard
-	{
-		public static readonly AppClipboard Default = new AppClipboard();
+    internal class AppClipboard
+    {
+        public static readonly AppClipboard Default = new AppClipboard();
 
+        private readonly Dictionary<string, AppClipboardEntry> _buffer
+            = new Dictionary<string, AppClipboardEntry>();
 
-		private readonly Dictionary<string, AppClipboardEntry> _buffer
-			= new Dictionary<string, AppClipboardEntry>();
+        public bool ContainsData<T>()
+        {
+            return _buffer.ContainsKey(GetEntryKey<T>());
+        }
 
+        public AppClipboardEntry GetData<T>()
+        {
+            AppClipboardEntry entry;
 
-		public bool ContainsData<T>()
-		{
-			return _buffer.ContainsKey(GetEntryKey<T>());
-		}
+            _buffer.TryGetValue(GetEntryKey<T>(), out entry);
 
-		public AppClipboardEntry GetData<T>()
-		{
-			AppClipboardEntry entry;
+            return entry;
+        }
 
-			_buffer.TryGetValue(GetEntryKey<T>(), out entry);
+        public void SetData<T>(T data, bool copy)
+        {
+            if (!ReferenceEquals(data, null))
+            {
+                _buffer[GetEntryKey<T>()] = new AppClipboardEntry(data, copy);
+            }
+        }
 
-			return entry;
-		}
-
-		public void SetData<T>(T data, bool copy)
-		{
-			if (!ReferenceEquals(data, null))
-			{
-				_buffer[GetEntryKey<T>()] = new AppClipboardEntry(data, copy);
-			}
-		}
-
-		private static string GetEntryKey<T>()
-		{
-			return typeof(T).FullName;
-		}
-	}
+        private static string GetEntryKey<T>()
+        {
+            return typeof (T).FullName;
+        }
+    }
 }

@@ -1,15 +1,15 @@
-﻿using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.Index;
+﻿using InfinniPlatform.Api.Index;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeSelectors;
-
+using InfinniPlatform.Sdk.Environment.Index;
 using Nest;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PropertyMapping = InfinniPlatform.Api.Index.PropertyMapping;
+using InfinniPlatform.Sdk.Dynamic;
+using PropertyMapping = InfinniPlatform.Sdk.Environment.Index.PropertyMapping;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 {
@@ -21,7 +21,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         private readonly string _indexName;
         private readonly string _typeName;
         private readonly string _tenantId;
-        private readonly ElasticConnection _elasticConnection;
+	    private readonly string _version;
+	    private readonly ElasticConnection _elasticConnection;
 
         private IEnumerable<IndexToTypeAccordance> _derivedTypeNames;
 
@@ -31,7 +32,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         /// <param name="indexName">Наименование индекса</param>
         /// <param name="typeName">Тип объекта для получения данных из индекса</param>
         /// <param name="tenantId">Идентификатор организации-клиента для получения данных</param>
-        public ElasticSearchProvider(string indexName, string typeName, string tenantId)
+	    /// <param name="version">Версия документа</param>
+	    public ElasticSearchProvider(string indexName, string typeName, string tenantId, string version = null)
         {
             if (string.IsNullOrEmpty(indexName))
             {
@@ -50,9 +52,10 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
             _indexName = indexName.ToLowerInvariant();
             _typeName = typeName.ToLowerInvariant();
-            _tenantId = tenantId;
+            _tenantId = string.IsNullOrEmpty(tenantId) ? "" : tenantId.ToLowerInvariant();
+	        _version = version;
 
-            _elasticConnection = new ElasticConnection();
+	        _elasticConnection = new ElasticConnection();
 
             //все версии типа в индексе
             RefreshMapping();
@@ -201,6 +204,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
             IndexObject objectToIndex = PrepareObjectToIndex(item, _tenantId);
 
+
             BaseResponse response;
 
             dynamic existingItem = null;
@@ -279,12 +283,15 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
                 throw new ArgumentException(response.ConnectionStatus.OriginalException.Message);
             }
 
-            // Если и эластик не вернул внятного сообщения, выводим достаточно общее сообщение
-            // (ничего более конкретного сказать не можем)
-            throw new ArgumentException("Incorrect request for index data");
+
+			    throw new ArgumentException(string.Format("Index type mapping does not according actual document scheme.\r\nDocument: {0},\r\nIndexName: {1},\r\nTypeName: {2},\r\nActualMapping: {3}",
+                    item.ToString(),
+                    _indexName,
+                    _typeName,
+                    currentMapping));
         }
 
-        private static IndexObject PrepareObjectToIndex(dynamic item, string tenantId)
+        private IndexObject PrepareObjectToIndex(dynamic item, string tenantId)
         {
             dynamic jInstance = ((object) item).ToDynamic();
 
@@ -306,8 +313,10 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
                 Id = jInstance["Id"].ToString().ToLowerInvariant(),
                 TimeStamp = DateTime.Now,
                 Values = jInstance,
-                TenantId = tenantId,
-                Status = IndexObjectStatus.Valid
+                TenantId = tenantId.ToLowerInvariant(),
+                Status = IndexObjectStatus.Valid,
+                Version = _version
+
             };
             return objectToIndex;
         }
@@ -355,6 +364,18 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         }
 
         /// <summary>
+	    ///   Удалить объекты с идентификаторами из списка
+	    /// </summary>
+	    /// <param name="ids">Список идентификаторов</param>
+	    public void RemoveItems(IEnumerable<string> ids)
+	    {
+	        foreach (var id in ids)
+	        {
+	            Remove(id);
+	        }
+	    }
+
+	    /// <summary>
         ///   Получить объект по идентификатору
         /// </summary>
         /// <param name="key">Идентификатор индексируемого объекта</param>

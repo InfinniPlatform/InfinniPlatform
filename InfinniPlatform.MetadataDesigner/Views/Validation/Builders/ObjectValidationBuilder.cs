@@ -4,6 +4,8 @@ using InfinniPlatform.Api.Validation.BooleanValidators;
 
 using System;
 using InfinniPlatform.Api.Validation.ObjectValidators;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Validations;
 
 namespace InfinniPlatform.MetadataDesigner.Views.Validation.Builders
 {

@@ -1,0 +1,38 @@
+{
+  "Id": "789eb27c-36df-41c6-866f-f4cf9fc9876e",
+  "Caption": "DeleteUser",
+  "Type": {
+    "Name": "applyjson",
+    "WorkflowExtensionPoints": [
+      {
+        "Name": "FilterEvents",
+        "ContextType": 4,
+        "Caption": "Document filter events context"
+      },
+      {
+        "Name": "Move",
+        "ContextType": 2,
+        "Caption": "Document move context"
+      },
+      {
+        "Name": "GetResult",
+        "ContextType": 8,
+        "Caption": "Document move result context"
+      }
+    ]
+  },
+  "Name": "DeleteUser",
+  "ExtensionPoints": [
+    {
+      "TypeName": {
+        "Name": "Move",
+        "ContextType": 2,
+        "Caption": "Document move context"
+      },
+      "ScenarioId": "DeleteUser"
+    }
+  ],
+  "ParentId": "30700424-13b6-450b-8b91-53821c143cdc",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "servicemetadata"
+}

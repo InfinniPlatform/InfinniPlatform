@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
-using System.Threading;
 using System.Web.Http;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.Index;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestQuery;
-using InfinniPlatform.Factories;
-using InfinniPlatform.Hosting;
-using InfinniPlatform.Logging;
+using InfinniPlatform.Api.Versioning;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.WebApi.ConfigRequestProviders;
-using InfinniPlatform.WebApi.WebApi;
 using Newtonsoft.Json;
 
 namespace InfinniPlatform.WebApi.Controllers
@@ -27,6 +24,7 @@ namespace InfinniPlatform.WebApi.Controllers
 	    private readonly IIndexFactory _indexFactory;
 	    private readonly IHttpResultHandlerFactory _httpResultHandlerFactory;
 
+
 	    public StandardApiController(IApiControllerFactory apiControllerFactory, IIndexFactory indexFactory, IHttpResultHandlerFactory httpResultHandlerFactory)
         {
             _apiControllerFactory = apiControllerFactory;
@@ -36,9 +34,9 @@ namespace InfinniPlatform.WebApi.Controllers
 
 	    private IRestVerbsContainer GetMetadata()
         {
-            var metadata =  Request.GetRouteData().Values.ContainsKey("metadata") ? _apiControllerFactory.GetTemplate(
-				(string)Request.GetRouteData().Values["configuration"],
-				(string)Request.GetRouteData().Values["metadata"]) : null;
+            var metadata = Request.GetRouteData().Values.ContainsKey("metadata") ? _apiControllerFactory.GetTemplate((string)Request.GetRouteData().Values["configuration"],
+				(string)Request.GetRouteData().Values["metadata"],
+                GetUserName()) : null;
 			if (metadata == null)
 			{
 				throw new ArgumentException(string.Format("Не найдены метаданные для {0}", Request.GetRouteData().Values["metadata"]));
@@ -103,15 +101,25 @@ namespace InfinniPlatform.WebApi.Controllers
 		    return null;
 		}
 
+        private string GetUserName()
+        {
+            return (User != null && !string.IsNullOrEmpty(User.Identity.Name))
+                       ? User.Identity.Name
+                       : GetServiceName().ToLowerInvariant() == "signin"
+                             ? AuthorizationStorageExtensions.AnonimousUser
+                             : AuthorizationStorageExtensions.UnknownUser;
+        }
+
 		private void SetContext(TargetDelegate invokationInfo)
 		{		
             var prop = invokationInfo.Target.GetType().GetProperties().FirstOrDefault(p => p.PropertyType.IsAssignableFrom(typeof(IConfigRequestProvider)));
             if (prop != null)
             {
+                var requestData = Request.GetRouteData();
                 prop.SetValue(invokationInfo.Target, new ConfigRequestProvider()
                 {
-                    RequestData = Request.GetRouteData(),
-					UserName = (User != null && !string.IsNullOrEmpty(User.Identity.Name)) ? User.Identity.Name : GetServiceName().ToLowerInvariant() == "signin" ? AuthorizationStorageExtensions.AnonimousUser :  AuthorizationStorageExtensions.UnknownUser
+                    RequestData = requestData,
+					UserName = GetUserName()
                 });				
             }
         }

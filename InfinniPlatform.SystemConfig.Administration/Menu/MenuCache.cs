@@ -3,112 +3,106 @@ using System.Threading;
 
 namespace InfinniPlatform.SystemConfig.Administration.Menu
 {
-	static class MenuCache
-	{
-		static MenuCache()
-		{
-			Lock = new ReaderWriterLockSlim();
+    internal static class MenuCache
+    {
+        private static readonly ReaderWriterLockSlim Lock;
+        private static volatile bool _initialized;
+        private static readonly Dictionary<string, object> Items;
+        private static readonly Dictionary<string, List<object>> Relations;
 
-			_initialized = false;
+        static MenuCache()
+        {
+            Lock = new ReaderWriterLockSlim();
 
-			Items = new Dictionary<string, object>();
-			Relations = new Dictionary<string, List<object>>();
-		}
+            _initialized = false;
 
+            Items = new Dictionary<string, object>();
+            Relations = new Dictionary<string, List<object>>();
+        }
 
-		private static readonly ReaderWriterLockSlim Lock;
+        public static void EnterRead()
+        {
+            Lock.EnterReadLock();
+        }
 
-		private static volatile bool _initialized;
+        public static void ExitRead()
+        {
+            Lock.ExitReadLock();
+        }
 
-		private static readonly Dictionary<string, object> Items;
-		private static readonly Dictionary<string, List<object>> Relations;
+        public static void EnterWrite()
+        {
+            Lock.EnterWriteLock();
 
+            _initialized = false;
+        }
 
-		public static void EnterRead()
-		{
-			Lock.EnterReadLock();
-		}
+        public static void ExitWrite(bool success)
+        {
+            if (!success)
+            {
+                Clear();
+            }
 
-		public static void ExitRead()
-		{
-			Lock.ExitReadLock();
-		}
+            _initialized = success;
 
+            Lock.ExitWriteLock();
+        }
 
-		public static void EnterWrite()
-		{
-			Lock.EnterWriteLock();
+        public static void AddMenuItem(string id, string parentId, object menuItem)
+        {
+            if (!Items.ContainsKey(id))
+            {
+                Items.Add(id, menuItem);
 
-			_initialized = false;
-		}
+                List<object> children;
+                parentId = parentId ?? string.Empty;
 
-		public static void ExitWrite(bool success)
-		{
-			if (!success)
-			{
-				Clear();
-			}
+                if (!Relations.TryGetValue(parentId, out children))
+                {
+                    children = new List<object>();
+                    Relations.Add(parentId, children);
+                }
 
-			_initialized = success;
+                children.Add(menuItem);
+            }
+        }
 
-			Lock.ExitWriteLock();
-		}
+        public static bool TryGetMenuItems(string parentId, out IEnumerable<object> menuItems)
+        {
+            Lock.EnterReadLock();
 
+            try
+            {
+                if (_initialized)
+                {
+                    if (string.IsNullOrEmpty(parentId))
+                    {
+                        menuItems = Items.Values;
+                    }
+                    else
+                    {
+                        List<object> children;
+                        Relations.TryGetValue(parentId, out children);
+                        menuItems = children;
+                    }
 
-		public static void AddMenuItem(string id, string parentId, object menuItem)
-		{
-			if (!Items.ContainsKey(id))
-			{
-				Items.Add(id, menuItem);
+                    return true;
+                }
 
-				List<object> children;
-				parentId = parentId ?? string.Empty;
+                menuItems = null;
+                return false;
+            }
+            finally
+            {
+                Lock.ExitReadLock();
+            }
+        }
 
-				if (!Relations.TryGetValue(parentId, out children))
-				{
-					children = new List<object>();
-					Relations.Add(parentId, children);
-				}
-
-				children.Add(menuItem);
-			}
-		}
-
-		public static bool TryGetMenuItems(string parentId, out IEnumerable<object> menuItems)
-		{
-			Lock.EnterReadLock();
-
-			try
-			{
-				if (_initialized)
-				{
-					if (string.IsNullOrEmpty(parentId))
-					{
-						menuItems = Items.Values;
-					}
-					else
-					{
-						List<object> children;
-						Relations.TryGetValue(parentId, out children);
-						menuItems = children;
-					}
-
-					return true;
-				}
-
-				menuItems = null;
-				return false;
-			}
-			finally
-			{
-				Lock.ExitReadLock();
-			}
-		}
-
-		private static void Clear()
-		{
-			Items.Clear();
-			Relations.Clear();
-		}
-	}
+        private static void Clear()
+        {
+            Items.Clear();
+            Relations.Clear();
+        }
+    }
 }

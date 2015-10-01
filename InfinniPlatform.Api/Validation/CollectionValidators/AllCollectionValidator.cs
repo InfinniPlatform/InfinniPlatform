@@ -1,39 +1,44 @@
 ﻿using System.Globalization;
 using System.Linq;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Validations;
 
 namespace InfinniPlatform.Api.Validation.CollectionValidators
 {
-	/// <summary>
-	/// Все элементы коллекции удовлетворяют заданному условию.
-	/// </summary>
-	public sealed class AllCollectionValidator : IValidationOperator
-	{
-		public IValidationOperator Operator { get; set; }
+    /// <summary>
+    ///     Все элементы коллекции удовлетворяют заданному условию.
+    /// </summary>
+    public sealed class AllCollectionValidator : IValidationOperator
+    {
+        public IValidationOperator Operator { get; set; }
 
-		public bool Validate(object validationObject, ValidationResult validationResult = null, string parentProperty = null)
-		{
-			var isValid = true;
-			var collection = validationObject.TryCastToEnumerable();
+        public bool Validate(object validationObject, ValidationResult validationResult = null,
+            string parentProperty = null)
+        {
+            var isValid = true;
+            var collection = validationObject.TryCastToEnumerable();
 
-			ValidationResult itemValidationResult = null;
+            ValidationResult itemValidationResult = null;
 
-			if (collection != null && collection.Any())
-			{
-				itemValidationResult = new ValidationResult();
+            if (collection != null && collection.Any())
+            {
+                itemValidationResult = new ValidationResult();
 
-				var itemIndex = 0;
+                var itemIndex = 0;
 
-				foreach (var item in collection)
-				{
-					isValid &= Operator.Validate(item, itemValidationResult, ValidationExtensions.CombineProperties(parentProperty, itemIndex.ToString(CultureInfo.InvariantCulture)));
+                foreach (var item in collection)
+                {
+                    isValid &= Operator.Validate(item, itemValidationResult,
+                        ValidationExtensions.CombineProperties(parentProperty,
+                            itemIndex.ToString(CultureInfo.InvariantCulture)));
 
-					++itemIndex;
-				}
-			}
+                    ++itemIndex;
+                }
+            }
 
-			validationResult.SetValidationResult(isValid, itemValidationResult);
+            validationResult.SetValidationResult(isValid, itemValidationResult);
 
-			return isValid;
-		}
-	}
+            return isValid;
+        }
+    }
 }

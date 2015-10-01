@@ -1,136 +1,121 @@
 ﻿using System.Windows;
-
 using InfinniPlatform.UserInterface.ViewBuilders.Elements;
 using InfinniPlatform.UserInterface.ViewBuilders.Scripts;
 using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.DataElements.ToggleButton
 {
-	/// <summary>
-	/// Элемент представления для отображения и редактирования логического значения в виде переключателя.
-	/// </summary>
-	public sealed class ToggleButtonElement : BaseElement<ToggleButtonControl>
-	{
-		public ToggleButtonElement(View view)
-			: base(view)
-		{
-			Control.OnEditValueChanged += OnEditValueChangedHandler;
-		}
+    /// <summary>
+    ///     Элемент представления для отображения и редактирования логического значения в виде переключателя.
+    /// </summary>
+    public sealed class ToggleButtonElement : BaseElement<ToggleButtonControl>
+    {
+        // ReadOnly
 
-		private void OnEditValueChangedHandler(object sender, RoutedEventArgs routedEventArgs)
-		{
-			_value = Control.EditValue;
+        private bool _readOnly;
+        // TextOff
 
-			this.InvokeScript(OnValueChanged, args =>
-											  {
-												  args.Value = Control.EditValue;
-											  });
-		}
+        private string _textOff;
+        // TextOn
 
+        private string _textOn;
+        // Value
 
-		// TextOn
+        private object _value;
 
-		private string _textOn;
+        public ToggleButtonElement(View view)
+            : base(view)
+        {
+            Control.OnEditValueChanged += OnEditValueChangedHandler;
+        }
 
-		/// <summary>
-		/// Возвращает текст на включенное состояние.
-		/// </summary>
-		public string GetTextOn()
-		{
-			return _textOn;
-		}
+        // Events
 
-		/// <summary>
-		/// Устанавливает текст на включенное состояние.
-		/// </summary>
-		public void SetTextOn(string value)
-		{
-			_textOn = value;
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события изменения значения.
+        /// </summary>
+        public ScriptDelegate OnValueChanged { get; set; }
 
-			Control.TextOn = value;
-		}
+        private void OnEditValueChangedHandler(object sender, RoutedEventArgs routedEventArgs)
+        {
+            _value = Control.EditValue;
 
+            this.InvokeScript(OnValueChanged, args => { args.Value = Control.EditValue; });
+        }
 
-		// TextOff
+        /// <summary>
+        ///     Возвращает текст на включенное состояние.
+        /// </summary>
+        public string GetTextOn()
+        {
+            return _textOn;
+        }
 
-		private string _textOff;
+        /// <summary>
+        ///     Устанавливает текст на включенное состояние.
+        /// </summary>
+        public void SetTextOn(string value)
+        {
+            _textOn = value;
 
-		/// <summary>
-		/// Возвращает текст на выключенное состояние.
-		/// </summary>
-		public string GetTextOff()
-		{
-			return _textOff;
-		}
+            Control.TextOn = value;
+        }
 
-		/// <summary>
-		/// Устанавливает текст на выключенное состояние.
-		/// </summary>
-		public void SetTextOff(string value)
-		{
-			_textOff = value;
+        /// <summary>
+        ///     Возвращает текст на выключенное состояние.
+        /// </summary>
+        public string GetTextOff()
+        {
+            return _textOff;
+        }
 
-			Control.TextOff = value;
-		}
+        /// <summary>
+        ///     Устанавливает текст на выключенное состояние.
+        /// </summary>
+        public void SetTextOff(string value)
+        {
+            _textOff = value;
 
+            Control.TextOff = value;
+        }
 
-		// ReadOnly
+        /// <summary>
+        ///     Возвращает значение, определяющее, запрещено ли редактирование значения.
+        /// </summary>
+        public bool GetReadOnly()
+        {
+            return _readOnly;
+        }
 
-		private bool _readOnly;
+        /// <summary>
+        ///     Устанавливает значение, определяющее, запрещено ли редактирование значения.
+        /// </summary>
+        public void SetReadOnly(bool value)
+        {
+            if (_readOnly != value)
+            {
+                _readOnly = value;
 
-		/// <summary>
-		/// Возвращает значение, определяющее, запрещено ли редактирование значения.
-		/// </summary>
-		public bool GetReadOnly()
-		{
-			return _readOnly;
-		}
+                Control.IsReadOnly = value;
+            }
+        }
 
-		/// <summary>
-		/// Устанавливает значение, определяющее, запрещено ли редактирование значения.
-		/// </summary>
-		public void SetReadOnly(bool value)
-		{
-			if (_readOnly != value)
-			{
-				_readOnly = value;
+        /// <summary>
+        ///     Возвращает значение.
+        /// </summary>
+        public object GetValue()
+        {
+            return _value;
+        }
 
-				Control.IsReadOnly = value;
-			}
-		}
+        /// <summary>
+        ///     Устанавливает значение.
+        /// </summary>
+        public void SetValue(object value)
+        {
+            _value = value;
 
-
-		// Value
-
-		private object _value;
-
-		/// <summary>
-		/// Возвращает значение.
-		/// </summary>
-		public object GetValue()
-		{
-			return _value;
-		}
-
-		/// <summary>
-		/// Устанавливает значение.
-		/// </summary>
-		public void SetValue(object value)
-		{
-			_value = value;
-
-			Control.InvokeControl(() =>
-								  {
-									  Control.EditValue = value;
-								  });
-		}
-
-
-		// Events
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события изменения значения.
-		/// </summary>
-		public ScriptDelegate OnValueChanged { get; set; }
-	}
+            Control.InvokeControl(() => { Control.EditValue = value; });
+        }
+    }
 }

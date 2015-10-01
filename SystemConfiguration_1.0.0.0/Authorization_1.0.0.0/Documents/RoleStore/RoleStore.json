@@ -1,0 +1,52 @@
+{
+  "Id": "483b57aa-182c-4d3e-8a6d-0b22c3892332",
+  "Secured": true,
+  "Name": "RoleStore",
+  "Caption": "RoleStore",
+  "Description": "Хранилище ролей пользователей",
+  "Versioning": 2,
+  "MetadataIndex": "RoleStore",
+  "Services": [],
+  "Processes": [],
+  "Scenarios": [],
+  "Generators": [],
+  "Views": [
+    {
+      "Id": "dd567df5-e1df-42ac-aa71-aca7e54f5c79",
+      "Name": "ListView",
+      "Caption": "Журнал ролей пользователей",
+      "Description": ""
+    },
+    {
+      "Id": "526b3ef8-4714-4501-8258-28172fc19f81",
+      "Name": "EditView",
+      "Caption": "Форма редактирования ролей пользователей",
+      "Description": ""
+    }
+  ],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "DocumentStatuses": [],
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "Name": {
+        "Caption": "Наименование роли",
+        "Type": "String"
+      },
+      "Caption": {
+        "Caption": "Заголовок роли",
+        "Type": "String"
+      },
+      "Description": {
+        "Caption": "Описание",
+        "Type": "String"
+      }
+    }
+  },
+  "ParentId": "980b279b-26a5-4a5d-9e78-bef695322a6f",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "documentmetadata",
+  "Version": "1.0.0.0"
+}

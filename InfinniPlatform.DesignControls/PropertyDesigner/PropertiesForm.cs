@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -11,22 +10,38 @@ using DevExpress.XtraEditors.ViewInfo;
 using DevExpress.XtraVerticalGrid.Events;
 using DevExpress.XtraVerticalGrid.Rows;
 using DevExpress.XtraVerticalGrid.ViewInfo;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.Validation;
 using InfinniPlatform.DesignControls.PropertyEditors;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Validations;
 
 namespace InfinniPlatform.DesignControls.PropertyDesigner
 {
     public partial class PropertiesForm : Form
     {
+        private Dictionary<string, CollectionProperty> _collectionProperties;
+        private Dictionary<string, IControlProperty> _simpleProperties;
+        private Dictionary<string, Func<Func<string, dynamic>, ValidationResult>> _validationRules;
+        private readonly List<CollectionEditor> _collectionEditors = new List<CollectionEditor>();
+        private readonly Dictionary<string, BaseRow> _hideProperties = new Dictionary<string, BaseRow>();
         private readonly EditorRepository _repository;
+        private readonly Dictionary<string, dynamic> _snapshotCollectionProperties = new Dictionary<string, dynamic>();
+        private readonly Dictionary<string, dynamic> _snapshotSimpleProperties = new Dictionary<string, dynamic>();
 
         public PropertiesForm()
         {
             _repository = new EditorRepository(GetItemProperty);
 
             InitializeComponent();
+        }
+
+        public string ParentProperty { get; set; }
+
+        public Dictionary<string, BaseRow> HideProperties
+        {
+            get { return _hideProperties; }
         }
 
         protected dynamic GetItemProperty(string propertyName)
@@ -37,11 +52,10 @@ namespace InfinniPlatform.DesignControls.PropertyDesigner
                 .FirstOrDefault();
         }
 
-
         public void SetSimpleProperties(Dictionary<string, IControlProperty> properties)
         {
             _simpleProperties = properties;
-			_snapshotSimpleProperties.Clear();
+            _snapshotSimpleProperties.Clear();
 
             SimplePropertiesGrid.Rows.Clear();
             SimplePropertiesGrid.RowHeaderWidth = 300;
@@ -54,23 +68,26 @@ namespace InfinniPlatform.DesignControls.PropertyDesigner
                 var propertyObjectValue = property.Value as ObjectProperty;
                 if (propertyObjectValue != null)
                 {
-                    editorRow.Properties.RowEdit = DesignerExtensions.CreateRepositoryItem(repositoryItemButtonEdit_ButtonClick);
+                    editorRow.Properties.RowEdit =
+                        DesignerExtensions.CreateRepositoryItem(repositoryItemButtonEdit_ButtonClick);
                     editorRow.Properties.RowEdit.Tag = propertyObjectValue;
                     editorRow.Properties.Value = propertyObjectValue.Value;
 
-					_snapshotSimpleProperties.Add(property.Key, propertyObjectValue.Value);
+                    _snapshotSimpleProperties.Add(property.Key, propertyObjectValue.Value);
                 }
                 else
                 {
                     editorRow.Properties.RowEdit = _repository.GetRepositoryItem(property.Key, property.Value) ??
-                        (!string.IsNullOrEmpty(ParentProperty) ? _repository.GetRepositoryItem(ParentProperty + "." + property.Key, property.Value) : null);
+                                                   (!string.IsNullOrEmpty(ParentProperty)
+                                                       ? _repository.GetRepositoryItem(
+                                                           ParentProperty + "." + property.Key, property.Value)
+                                                       : null);
 
                     editorRow.Properties.Value = property.Value.Value;
-					_snapshotSimpleProperties.Add(property.Key, property.Value.Value);
+                    _snapshotSimpleProperties.Add(property.Key, property.Value.Value);
                 }
 
                 SimplePropertiesGrid.Rows.Add(editorRow);
-
             }
         }
 
@@ -83,7 +100,6 @@ namespace InfinniPlatform.DesignControls.PropertyDesigner
 
                 if (editorRow != null)
                 {
-
                     if (_simpleProperties[editorRow.Properties.Caption] is SimpleProperty)
                     {
                         _simpleProperties[editorRow.Properties.Caption].Value = editorRow.Properties.Value;
@@ -95,7 +111,6 @@ namespace InfinniPlatform.DesignControls.PropertyDesigner
                     }
                 }
             }
-
         }
 
         public void FillCollectionProperties()
@@ -107,32 +122,24 @@ namespace InfinniPlatform.DesignControls.PropertyDesigner
             }
         }
 
-        private readonly List<CollectionEditor> _collectionEditors = new List<CollectionEditor>();
-        private Dictionary<string, IControlProperty> _simpleProperties;
-        private Dictionary<string, CollectionProperty> _collectionProperties;
-        private Dictionary<string, Func<Func<string, dynamic>, ValidationResult>> _validationRules;
+        public void RevertChanges()
+        {
+            foreach (var snapshotObjectProperty in _snapshotSimpleProperties)
+            {
+                _simpleProperties[snapshotObjectProperty.Key].Value = snapshotObjectProperty.Value;
+            }
 
-		private Dictionary<string,dynamic> _snapshotCollectionProperties = new Dictionary<string, dynamic>(); 
-		private Dictionary<string,dynamic> _snapshotSimpleProperties = new Dictionary<string, dynamic>(); 
-
-		public void RevertChanges()
-		{
-			foreach (KeyValuePair<string, dynamic> snapshotObjectProperty in _snapshotSimpleProperties)
-			{
-				_simpleProperties[snapshotObjectProperty.Key].Value = snapshotObjectProperty.Value;
-			}
-
-			foreach (KeyValuePair<string, dynamic> snapshotCollectionProperty in _snapshotCollectionProperties)
-			{
-				_collectionProperties[snapshotCollectionProperty.Key] = snapshotCollectionProperty.Value;
-			}			
-		}
+            foreach (var snapshotCollectionProperty in _snapshotCollectionProperties)
+            {
+                _collectionProperties[snapshotCollectionProperty.Key] = snapshotCollectionProperty.Value;
+            }
+        }
 
         public void SetCollectionProperties(Dictionary<string, CollectionProperty> properties)
         {
             _collectionProperties = properties;
             _collectionEditors.Clear();
-			_snapshotCollectionProperties.Clear();
+            _snapshotCollectionProperties.Clear();
 
             foreach (var collectionProperty in properties)
             {
@@ -146,16 +153,13 @@ namespace InfinniPlatform.DesignControls.PropertyDesigner
                 collectionEditor.PropertyName = collectionProperty.Key;
                 collectionEditor.CollectionProperty = collectionProperty.Value;
 
-				_snapshotCollectionProperties.Add(collectionProperty.Key, collectionProperty.Value);
+                _snapshotCollectionProperties.Add(collectionProperty.Key, collectionProperty.Value);
 
                 addedPage.Controls.Add(collectionEditor);
 
                 _collectionEditors.Add(collectionEditor);
             }
         }
-
-        private readonly Dictionary<string, BaseRow> _hideProperties = new Dictionary<string, BaseRow>();
-
 
         private void repositoryItemButtonEdit_RemoveClick(object sender, ButtonPressedEventArgs e)
         {
@@ -164,11 +168,11 @@ namespace InfinniPlatform.DesignControls.PropertyDesigner
                 var propertyName = SimplePropertiesGrid.FocusedRow.Name;
                 var rowEdit =
                     SimplePropertiesGrid.Rows.Cast<BaseRow>()
-                                        .FirstOrDefault(r => r.Name == propertyName);
+                        .FirstOrDefault(r => r.Name == propertyName);
                 SimplePropertiesGrid.HideEditor();
 
                 if (MessageBox.Show(string.Format("Remove property: {0} ?", propertyName), Resources.NeedConfirm,
-                                    MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+                    MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
                 {
                     RemoveEditor(rowEdit, propertyName);
                 }
@@ -182,16 +186,15 @@ namespace InfinniPlatform.DesignControls.PropertyDesigner
             HideProperties.Add(propertyName, rowEdit);
         }
 
-
         private void repositoryItemButtonEdit_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
             if (e.Button.Kind == ButtonPredefines.Delete)
             {
-                ((BaseEdit)sender).EditValue = new DynamicWrapper();
+                ((BaseEdit) sender).EditValue = new DynamicWrapper();
             }
             else if (e.Button.Kind == ButtonPredefines.Glyph && e.Button.Tag == null)
             {
-                var value = ((BaseEdit)sender).EditValue;
+                var value = ((BaseEdit) sender).EditValue;
                 var form = new ValueEdit();
                 form.ReadOnly = true;
                 form.Value = value != null ? value.ToString() : string.Empty;
@@ -199,7 +202,7 @@ namespace InfinniPlatform.DesignControls.PropertyDesigner
             }
             else if (e.Button.Kind == ButtonPredefines.Ellipsis)
             {
-                var properties = (ObjectProperty)((RepositoryItemButtonEdit)((ButtonEdit)sender).Tag).Tag;
+                var properties = (ObjectProperty) ((RepositoryItemButtonEdit) ((ButtonEdit) sender).Tag).Tag;
 
                 var propertiesForm = new PropertiesForm();
 
@@ -214,27 +217,19 @@ namespace InfinniPlatform.DesignControls.PropertyDesigner
                 propertiesForm.SetCollectionProperties(properties.CollectionProperties);
                 if (propertiesForm.ShowDialog() == DialogResult.OK)
                 {
+                    dynamic instance = ((ButtonEdit) sender).EditValue;
 
-	                dynamic instance = ((ButtonEdit) sender).EditValue;
-
-	                DesignerExtensions.SetSimplePropertiesToInstance(properties.SimpleProperties, instance);
-	                DesignerExtensions.SetCollectionPropertiesToInstance(properties.CollectionProperties, instance);
+                    DesignerExtensions.SetSimplePropertiesToInstance(properties.SimpleProperties, instance);
+                    DesignerExtensions.SetCollectionPropertiesToInstance(properties.CollectionProperties, instance);
 
 
-	                ((ButtonEdit) sender).Refresh();
+                    ((ButtonEdit) sender).Refresh();
                 }
                 else
                 {
-	                propertiesForm.RevertChanges();
+                    propertiesForm.RevertChanges();
                 }
             }
-        }
-
-        public string ParentProperty { get; set; }
-
-        public Dictionary<string, BaseRow> HideProperties
-        {
-            get { return _hideProperties; }
         }
 
         private void ButtonOK_Click(object sender, EventArgs e)
@@ -244,23 +239,22 @@ namespace InfinniPlatform.DesignControls.PropertyDesigner
             if (!CheckRowInfo())
             {
                 MessageBox.Show("See validation errors. Can't apply properties for control.", "Fail to apply properties",
-                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             DialogResult = DialogResult.OK;
-
         }
 
         private bool CheckRowInfo()
         {
-            var rows = (SimplePropertiesGrid.Rows as IEnumerable).OfType<EditorRow>().ToList();
+            var rows = SimplePropertiesGrid.Rows.OfType<EditorRow>().ToList();
             foreach (var editorRow in rows)
             {
-                BaseRowViewInfo rowInfo = GetRowInfo(editorRow);
+                var rowInfo = GetRowInfo(editorRow);
                 if (rowInfo != null)
                 {
-                    BaseEditViewInfo editViewInfo = rowInfo.ValuesInfo[0].EditorViewInfo;
+                    var editViewInfo = rowInfo.ValuesInfo[0].EditorViewInfo;
                     if (editViewInfo.ShowErrorIcon)
                     {
                         return false;
@@ -283,13 +277,18 @@ namespace InfinniPlatform.DesignControls.PropertyDesigner
             _validationRules = validationRules;
         }
 
-
         private void SimplePropertiesGrid_CustomDrawRowValueCell(object sender, CustomDrawRowValueCellEventArgs e)
         {
             var propertyName = e.Row.Name;
             var validationMessage = string.Empty;
 
-            var rule = _validationRules.Where(v => v.Key == propertyName || (ParentProperty != null && ParentProperty + "." + propertyName == v.Key)).Select(r => r.Value).FirstOrDefault();
+            var rule =
+                _validationRules.Where(
+                    v =>
+                        v.Key == propertyName ||
+                        (ParentProperty != null && ParentProperty + "." + propertyName == v.Key))
+                    .Select(r => r.Value)
+                    .FirstOrDefault();
             if (rule != null)
             {
                 try
@@ -315,8 +314,8 @@ namespace InfinniPlatform.DesignControls.PropertyDesigner
                 return;
             }
 
-            BaseRowViewInfo rowInfo = GetRowInfo(e.Row);
-            BaseEditViewInfo editViewInfo = GetEditorViewInfo(rowInfo, e);
+            var rowInfo = GetRowInfo(e.Row);
+            var editViewInfo = GetEditorViewInfo(rowInfo, e);
             editViewInfo.ErrorIconText = validationMessage;
             editViewInfo.ShowErrorIcon = true;
             editViewInfo.FillBackground = true;
@@ -326,10 +325,10 @@ namespace InfinniPlatform.DesignControls.PropertyDesigner
 
         private BaseRowViewInfo GetRowInfo(BaseRow row)
         {
-            RowViewInfoReadOnlyCollection rowsViewInfo = SimplePropertiesGrid.ViewInfo.RowsViewInfo;
-            for (int i = 0; i < rowsViewInfo.Count; i++)
+            var rowsViewInfo = SimplePropertiesGrid.ViewInfo.RowsViewInfo;
+            for (var i = 0; i < rowsViewInfo.Count; i++)
             {
-                BaseRowViewInfo info = rowsViewInfo[i];
+                var info = rowsViewInfo[i];
                 if (info.Row == row)
                     return info;
             }
@@ -339,15 +338,13 @@ namespace InfinniPlatform.DesignControls.PropertyDesigner
         public BaseEditViewInfo GetEditorViewInfo(BaseRowViewInfo rowInfo, CustomDrawRowValueCellEventArgs e)
         {
             if (rowInfo == null) return null;
-            for (int i = 0; i < rowInfo.ValuesInfo.Count; i++)
+            for (var i = 0; i < rowInfo.ValuesInfo.Count; i++)
             {
-                RowValueInfo valuesInfo = rowInfo.ValuesInfo[i];
+                var valuesInfo = rowInfo.ValuesInfo[i];
                 if (valuesInfo.RecordIndex == e.RecordIndex && valuesInfo.RowCellIndex == e.CellIndex)
                     return valuesInfo.EditorViewInfo;
             }
             return null;
         }
-
-
     }
 }

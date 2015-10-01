@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Metadata;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.SystemConfig.Configurator
 {
-	public sealed class ActionUnitRunMigration
-	{
+    public sealed class ActionUnitRunMigration
+    {
         // Пока имя сборки с классами миграций прописано жестко.
         // Возможно, необходимо вынести это в настройки
         private const string AssemblyName = "InfinniPlatform.MigrationsAndVerifications.dll";
@@ -28,15 +28,15 @@ namespace InfinniPlatform.SystemConfig.Configurator
                 }
             }
 
-            var assembly = Assembly.Load(
+            Assembly assembly = Assembly.Load(
                 new AssemblyName
-                {
-                    CodeBase = AssemblyName
-                });
+                    {
+                        CodeBase = AssemblyName
+                    });
 
-            var migrationClass = assembly.GetTypes().Where(
-                t => typeof(IConfigurationMigration).IsAssignableFrom(t))
-                .FirstOrDefault(t => t.Name == migrationName);
+            Type migrationClass = assembly.GetTypes().Where(
+                t => typeof (IConfigurationMigration).IsAssignableFrom(t))
+                                          .FirstOrDefault(t => t.Name == migrationName);
 
             if (migrationClass == null)
             {
@@ -47,7 +47,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
                 var migration =
                     (IConfigurationMigration) Activator.CreateInstance(migrationClass);
 
-                migration.AssignActiveConfiguration(configurationName, target.Context);
+                migration.AssignActiveConfiguration(target.Context.GetVersion(configurationName, target.UserName), configurationName, target.Context);
 
                 string message;
 
@@ -55,6 +55,6 @@ namespace InfinniPlatform.SystemConfig.Configurator
 
                 target.Result = message;
             }
-		}
-	}
+        }
+    }
 }

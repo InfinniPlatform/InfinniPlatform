@@ -1,14 +1,14 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
+﻿using System.Linq;
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
-using InfinniPlatform.Api.Factories;
 using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Runtime;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Global;
 
 namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
 {
     /// <summary>
-    ///   Обработчик занесения данных документа в регистр после успешного сохранения документа (при стандартном сохранении документа)
+    ///     Обработчик занесения данных документа в регистр после успешного сохранения документа (при стандартном сохранении документа)
     /// </summary>
     public sealed class ActionUnitRegisterSetDocument
     {
@@ -22,13 +22,15 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                 target.Item.Configuration.ToLowerInvariant() != "restfulapi")
             {
                 //ищем метаданные бизнес-процесса по умолчанию документа 
-				defaultBusinessProcess = target.Context.GetComponent<IMetadataComponent>().GetMetadata(target.Item.Configuration, target.Item.Metadata, MetadataType.Process, "Default");
-			}
+                defaultBusinessProcess =
+                    target.Context.GetComponent<IMetadataComponent>()
+                          .GetMetadata(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration, target.Item.Metadata,
+                                       MetadataType.Process, "Default");
+            }
             else
             {
                 return;
             }
-
 
 
             if (defaultBusinessProcess != null && defaultBusinessProcess.Transitions[0].RegisterPoint != null)
@@ -38,10 +40,26 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                 scriptArguments.Item = target.Item.Document;
                 scriptArguments.Item.Configuration = target.Item.Configuration;
                 scriptArguments.Item.Metadata = target.Item.Metadata;
-                scriptArguments.Context = target.Context;
+                scriptArguments.Context = target.Context.GetComponent<ICustomServiceGlobalContext>();
 
-				target.Context.GetComponent<IScriptRunnerComponent>().GetScriptRunner(target.Item.Configuration).InvokeScript(
-                    defaultBusinessProcess.Transitions[0].RegisterPoint.ScenarioId, scriptArguments);
+                target.Context.GetComponent<IScriptRunnerComponent>()
+                      .GetScriptRunner(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration)
+                      .InvokeScript(
+                          defaultBusinessProcess.Transitions[0].RegisterPoint.ScenarioId, scriptArguments);
+
+                if (target.Item.Document != null && target.Item.Document.Id != null)
+                {
+                    var attached = target.Context.GetComponent<ITransactionComponent>()
+                        .GetTransactionManager()
+                        .GetTransaction(target.TransactionMarker)
+                        .GetTransactionItems()
+                        .FirstOrDefault(d => d.ContainsInstance(target.Item.Document.Id));
+
+                    if (attached != null)
+                    {
+                        attached.UpdateDocument(target.Item.Document.Id, scriptArguments.Item);
+                    }
+                }
             }
         }
     }

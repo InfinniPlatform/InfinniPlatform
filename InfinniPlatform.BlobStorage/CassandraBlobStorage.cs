@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
-using InfinniPlatform.Api.Factories;
 using InfinniPlatform.Cassandra;
 using InfinniPlatform.Cassandra.DataAdapter;
 using InfinniPlatform.Cassandra.Repository;
 using InfinniPlatform.Cassandra.Storage;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Binary;
 
 namespace InfinniPlatform.BlobStorage
 {

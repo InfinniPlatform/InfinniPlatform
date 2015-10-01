@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Api.RestApi.AuthApi;
+﻿using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Factories;
 
 namespace InfinniPlatform.SystemConfig.Multitenancy
@@ -12,12 +12,12 @@ namespace InfinniPlatform.SystemConfig.Multitenancy
         /// <param name="indexName">Индекс для формирования идентификатора рганизации-клиента</param>
         /// <param name="indexType">Тип в индексе для формирования идентификатора организации-клиента</param>
         /// <returns>Строка роутинга для запросов к индексу</returns>
-        public string GetTenantId(string tenantId, string indexName, string indexType)
+        public string GetTenantId(string tenantId, string indexName = null, string indexType = null)
 		{
-			if (indexName.ToLowerInvariant() == "systemconfig" || 
+			if (indexName != null && (indexName.ToLowerInvariant() == "systemconfig" || 
                 indexName.ToLowerInvariant() == "authorization" || 
                 indexName.ToLowerInvariant() == "restfulapi" || 
-                indexName.ToLowerInvariant() == "update")
+                indexName.ToLowerInvariant() == "update"))
 			{
 				return MultitenancyExtensions.SystemTenant;
 			}

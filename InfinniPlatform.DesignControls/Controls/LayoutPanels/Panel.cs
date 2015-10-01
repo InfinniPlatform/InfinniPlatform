@@ -1,24 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Validation;
 using InfinniPlatform.DesignControls.Controls.Properties;
 using InfinniPlatform.DesignControls.Layout;
 using InfinniPlatform.DesignControls.ObjectInspector;
 using InfinniPlatform.DesignControls.PropertyDesigner;
 using InfinniPlatform.DesignControls.PropertyEditors;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Validations;
 
 namespace InfinniPlatform.DesignControls.Controls.LayoutPanels
 {
-    public partial class Panel : UserControl, IPropertiesProvider, ILayoutProvider, ILayoutContainer, IAlignment, IControlHost, IInspectedItem
+    public partial class Panel : UserControl, IPropertiesProvider, ILayoutProvider, ILayoutContainer, IAlignment,
+        IControlHost, IInspectedItem
     {
+        private readonly CompositPanel _compositPanel;
+        private readonly Dictionary<string, IControlProperty> _properties = new Dictionary<string, IControlProperty>();
+
         public Panel()
         {
             InitializeComponent();
@@ -28,27 +28,62 @@ namespace InfinniPlatform.DesignControls.Controls.LayoutPanels
             Controls.Add(_compositPanel);
 
             InitProperties();
-
         }
 
-
-
-        private readonly Dictionary<string, IControlProperty> _properties = new Dictionary<string, IControlProperty>();
-        private readonly CompositPanel _compositPanel;
-
-        private void InitProperties()
+        public void AlignControls()
         {
-            _properties.InheritBaseElementSimpleProperties();
+            _compositPanel.Height = Height - Padding.Top - Padding.Bottom;
+            _compositPanel.AlignControls();
+        }
+
+        public CompositPanel GetHost()
+        {
+            return _compositPanel;
+        }
+
+        public ObjectInspectorTree ObjectInspector
+        {
+            get { return _compositPanel.ObjectInspector; }
+            set { _compositPanel.ObjectInspector = value; }
+        }
+
+        public void InsertLayout(dynamic layout)
+        {
+            _compositPanel.InsertLayout(layout);
+        }
+
+        public dynamic GetLayout()
+        {
+            dynamic instanceLayout = new DynamicWrapper();
+
+            DesignerExtensions.SetSimplePropertiesToInstance(this, instanceLayout);
+
+            instanceLayout.Items = new List<dynamic>();
+            foreach (var layoutProvider in _compositPanel.GetLayoutControls())
+            {
+                dynamic instanceItem = new DynamicWrapper();
+                instanceLayout.Items.Add(instanceItem);
+                instanceItem[layoutProvider.GetPropertyName()] = layoutProvider.GetLayout();
+            }
+            return instanceLayout;
+        }
+
+        public void SetLayout(dynamic value)
+        {
+            _compositPanel.SetLayout(value.Items);
+        }
+
+        public virtual string GetPropertyName()
+        {
+            return "Panel";
         }
 
         public void ApplySimpleProperties()
         {
-            
         }
 
         public void ApplyCollections()
         {
-            
         }
 
         public Dictionary<string, IControlProperty> GetSimpleProperties()
@@ -66,63 +101,21 @@ namespace InfinniPlatform.DesignControls.Controls.LayoutPanels
             DesignerExtensions.SetSimplePropertiesFromInstance(_properties, value);
         }
 
-		public Dictionary<string, Func<IPropertyEditor>> GetPropertyEditors()
-		{
-			return new Dictionary<string, Func<IPropertyEditor>>().InheritBaseElementPropertyEditors(ObjectInspector);
-		}
-
-	    public Dictionary<string, Func<Func<string, dynamic>, ValidationResult>> GetValidationRules()
-	    {
-		    return new Dictionary<string, Func<Func<string, dynamic>, ValidationResult>>().InheritBaseElementValidators("Panel");
-	    }
-
-
-	    public dynamic GetLayout()
+        public Dictionary<string, Func<IPropertyEditor>> GetPropertyEditors()
         {
-            dynamic instanceLayout = new DynamicWrapper();
-
-            DesignerExtensions.SetSimplePropertiesToInstance(this, instanceLayout);
-
-            instanceLayout.Items = new List<dynamic>();
-            foreach (ILayoutProvider layoutProvider in _compositPanel.GetLayoutControls())
-            {
-                dynamic instanceItem = new DynamicWrapper();
-                instanceLayout.Items.Add(instanceItem);
-                instanceItem[layoutProvider.GetPropertyName()] = layoutProvider.GetLayout();
-            }
-            return instanceLayout;
+            return new Dictionary<string, Func<IPropertyEditor>>().InheritBaseElementPropertyEditors(ObjectInspector);
         }
 
-        public void SetLayout(dynamic value)
+        public Dictionary<string, Func<Func<string, dynamic>, ValidationResult>> GetValidationRules()
         {
-	        _compositPanel.SetLayout(value.Items);
+            return
+                new Dictionary<string, Func<Func<string, dynamic>, ValidationResult>>().InheritBaseElementValidators(
+                    "Panel");
         }
 
-        public virtual string GetPropertyName()
+        private void InitProperties()
         {
-            return "Panel";
+            _properties.InheritBaseElementSimpleProperties();
         }
-
-	    public void InsertLayout(dynamic layout)
-	    {
-		    _compositPanel.InsertLayout(layout);
-	    }
-
-	    public void AlignControls()
-        {
-	        _compositPanel.Height = Height - Padding.Top - Padding.Bottom;
-            _compositPanel.AlignControls();
-        }
-
-	    public CompositPanel GetHost()
-	    {
-		    return _compositPanel;
-	    }
-
-	    public ObjectInspectorTree ObjectInspector
-	    {
-		    get { return _compositPanel.ObjectInspector; }
-			set { _compositPanel.ObjectInspector = value; }
-	    }
     }
 }

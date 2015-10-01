@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.SystemConfig.Properties;
 
 namespace InfinniPlatform.SystemConfig.Configurator
 {
     /// <summary>
-    ///   Удалить конфигурацию
+    ///     Удалить конфигурацию
     /// </summary>
     public sealed class ActionUnitDeleteConfig
     {
@@ -18,16 +18,20 @@ namespace InfinniPlatform.SystemConfig.Configurator
             var config = target.Item.ConfigurationName;
 
             IEnumerable<dynamic> deleteConfig = DynamicWrapperExtensions.ToEnumerable(
-                new DocumentApi().GetDocument("system", "configuration", f => f.AddCriteria(c => c.Property("Id").IsEquals(config)), 0, 1));
+                target.Context.GetComponent<DocumentApi>()
+                      .GetDocument("system", "configuration", f => f.AddCriteria(c => c.Property("Id").IsEquals(config)),
+                                   0, 1));
 
             if (!deleteConfig.Any())
             {
                 target.IsValid = false;
-                target.ValidationMessage = string.Format(Resources.SpecifiedConfigurationNameNotFound,target.Item.ConfigurationName);
+                target.ValidationMessage = string.Format(Resources.SpecifiedConfigurationNameNotFound,
+                                                         target.Item.ConfigurationName);
                 return;
             }
 
-            new DocumentApi().DeleteDocument("system", "configuration", deleteConfig.First().Id);
+            target.Context.GetComponent<DocumentApi>()
+                  .DeleteDocument("system", "configuration", deleteConfig.First().Id);
         }
     }
 }

@@ -1,127 +1,127 @@
 ﻿{
-  "Name": "EditView",
-  "Image": "System/View_16x16",
-  "Text": {
-    "PropertyBinding": {
-      "DataSource": "MainDataSource",
-      "Property": "Name"
-    }
-  },
-  "DataSources": [
-    {
-      "MetadataDataSource": {
-        "Name": "MainDataSource",
-        "FillCreatedItem": true,
-        "MetadataType": "View"
-      }
-    }
-  ],
-  "LayoutPanel": {
-    "StackPanel": {
-      "Name": "MetadataPagePanel",
-      "Items": [
-        {
-          "ViewPropertyEditor": {
-            "Editors": [
-              {
-                "Text": "Method",
-                "Image": "Elements/Script_16x16",
-                "Property": "Scripts",
-                "PropertyType": "Array",
-                "EditView": {
-                  "ExistsView": {
-                    "ConfigId": "Designer",
-                    "DocumentId": "View",
-                    "ViewId": "ScriptEdit",
-                    "OpenMode": "Dialog"
-                  }
-                }
-              },
-              {
-                "Text": "Parameter",
-                "Image": "Elements/Parameter_16x16",
-                "Property": "Parameters",
-                "PropertyType": "Array",
-                "EditView": {
-                  "ExistsView": {
-                    "ConfigId": "Designer",
-                    "DocumentId": "View",
-                    "ViewId": "ParameterEdit",
-                    "OpenMode": "Dialog"
-                  }
-                }
-              },
-              {
-                "Text": "DocumentDataSource",
-                "Image": "Elements/DataSource_16x16",
-                "Property": "DataSources",
-                "PropertyType": "Array",
-                "PropertyValueType": "DocumentDataSource",
-                "EditView": {
-                  "ExistsView": {
-                    "ConfigId": "Designer",
-                    "DocumentId": "View",
-                    "ViewId": "DocumentDataSourceEdit",
-                    "OpenMode": "Dialog"
-                  }
-                }
-              }
-            ],
-            "Value": {
-              "PropertyBinding": {
-                "DataSource": "MainDataSource",
-                "Property": "{this}"
-              }
-            }
-          }
-        },
-        {
-          "CodeEditor": {
-            "Name": "ViewEditor",
-            "Syntax": "JavaScript",
-            "Formatter": "ViewJsonObjectFormatter",
-            "Value": {
-              "PropertyBinding": {
-                "DataSource": "MainDataSource",
-                "Property": "{this}"
-              }
-            }
-          }
-        },
-        {
-          "ToolBar": {
-            "Name": "MetadataToolBar",
-            "Items": [
-              {
-                "ToolBarButton": {
-                  "Name": "MetadataSaveButton",
-                  "Text": "Save",
-                  "Image": "Actions/Save_16x16",
-                  "Hotkey": "Ctrl+S",
-                  "Action": {
-                    "SaveAction": {
-                      "CanClose": false,
-                      "DataSource": "MainDataSource"
-                    }
-                  }
-                }
-              },
-              {
-                "ToolBarButton": {
-                  "Name": "MetadataCancelButton",
-                  "Text": "Cancel",
-                  "Image": "Actions/Cancel_16x16",
-                  "Action": {
-                    "CancelAction": {
-                      "DataSource": "MainDataSource"
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        }
-      ]
-    }
-  }
+	"Name": "EditView",
+	"Image": "System/View_16x16",
+	"Text": {
+		"PropertyBinding": {
+			"DataSource": "MainDataSource",
+			"Property": "Name"
+		}
+	},
+	"DataSources": [
+		{
+			"MetadataDataSource": {
+				"Name": "MainDataSource",
+				"FillCreatedItem": true,
+				"MetadataType": "View"
+			}
+		}
+	],
+	"LayoutPanel": {
+		"StackPanel": {
+			"Name": "MetadataPagePanel",
+			"Items": [
+				{
+					"ViewPropertyEditor": {
+						"Editors": [
+							{
+								"Text": "Method",
+								"Image": "Elements/Script_16x16",
+								"Property": "Scripts",
+								"PropertyType": "Array",
+								"EditView": {
+									"ExistsView": {
+										"ConfigId": "Designer",
+										"DocumentId": "View",
+										"ViewId": "ScriptEdit",
+										"OpenMode": "Dialog"
+									}
+								}
+							},
+							{
+								"Text": "Parameter",
+								"Image": "Elements/Parameter_16x16",
+								"Property": "Parameters",
+								"PropertyType": "Array",
+								"EditView": {
+									"ExistsView": {
+										"ConfigId": "Designer",
+										"DocumentId": "View",
+										"ViewId": "ParameterEdit",
+										"OpenMode": "Dialog"
+									}
+								}
+							},
+							{
+								"Text": "DocumentDataSource",
+								"Image": "Elements/DataSource_16x16",
+								"Property": "DataSources",
+								"PropertyType": "Array",
+								"PropertyValueType": "DocumentDataSource",
+								"EditView": {
+									"ExistsView": {
+										"ConfigId": "Designer",
+										"DocumentId": "View",
+										"ViewId": "DocumentDataSourceEdit",
+										"OpenMode": "Dialog"
+									}
+								}
+							}
+						],
+						"Value": {
+							"PropertyBinding": {
+								"DataSource": "MainDataSource",
+								"Property": "{this}"
+							}
+						}
+					}
+				},
+				{
+					"CodeEditor": {
+						"Name": "ViewEditor",
+						"Syntax": "JavaScript",
+						"Formatter": "ViewJsonObjectFormatter",
+						"Value": {
+							"PropertyBinding": {
+								"DataSource": "MainDataSource",
+								"Property": "{this}"
+							}
+						}
+					}
+				},
+				{
+					"ToolBar": {
+						"Name": "MetadataToolBar",
+						"Items": [
+							{
+								"ToolBarButton": {
+									"Name": "MetadataSaveButton",
+									"Text": "Save",
+									"Image": "Actions/Save_16x16",
+									"Hotkey": "Ctrl+S",
+									"Action": {
+										"SaveAction": {
+											"CanClose": false,
+											"DataSource": "MainDataSource"
+										}
+									}
+								}
+							},
+							{
+								"ToolBarButton": {
+									"Name": "MetadataCancelButton",
+									"Text": "Cancel",
+									"Image": "Actions/Cancel_16x16",
+									"Action": {
+										"CancelAction": {
+											"DataSource": "MainDataSource"
+										}
+									}
+								}
+							}
+						]
+					}
+				}
+			]
+		}
+	}
 }

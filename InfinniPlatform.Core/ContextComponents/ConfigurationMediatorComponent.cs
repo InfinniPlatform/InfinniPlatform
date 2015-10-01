@@ -1,39 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Metadata;
+﻿using InfinniPlatform.Api.Metadata;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.ContextComponents
 {
-	public sealed class ConfigurationMediatorComponent : IConfigurationMediatorComponent
-	{
-		private readonly IMetadataConfigurationProvider _metadataConfigurationProvider;
-		private readonly IConfigurationObjectBuilder _configurationObjectBuilder;
+    public sealed class ConfigurationMediatorComponent : IConfigurationMediatorComponent
+    {
+        private readonly IConfigurationObjectBuilder _configurationObjectBuilder;
 
-		public ConfigurationMediatorComponent(IConfigurationObjectBuilder configurationObjectBuilder, IMetadataConfigurationProvider metadataConfigurationProvider)
-		{
-			_metadataConfigurationProvider = metadataConfigurationProvider;
-			_configurationObjectBuilder = configurationObjectBuilder;
-		}
+        public ConfigurationMediatorComponent(IConfigurationObjectBuilder configurationObjectBuilder)
+        {
+            _configurationObjectBuilder = configurationObjectBuilder;
+        }
 
+        public IConfigurationObject GetConfiguration(string version, string configurationId)
+        {
+            return _configurationObjectBuilder.GetConfigurationObject(version, configurationId);
+        }
 
-		public IConfigurationObject GetConfiguration(IConfigRequestProvider configRequestProvider)
-		{
-			var metadataConfig = _metadataConfigurationProvider
-					.GetMetadataConfiguration(configRequestProvider.GetConfiguration());
-
-			return _configurationObjectBuilder.GetConfigurationObject(configRequestProvider.GetConfiguration());
-
-		}
-
-		public IConfigurationObjectBuilder ConfigurationBuilder
-		{
-			get { return _configurationObjectBuilder; }
-		}
-	}
+        public IConfigurationObjectBuilder ConfigurationBuilder
+        {
+            get { return _configurationObjectBuilder; }
+        }
+    }
 }

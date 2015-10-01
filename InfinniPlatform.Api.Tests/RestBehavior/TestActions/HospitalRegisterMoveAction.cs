@@ -1,32 +1,39 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Registers;
+﻿using InfinniPlatform.Api.Registers;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Environment.Register;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
 {
-	public sealed class HospitalRegisterMoveAction
-	{
-		public void Action(IApplyContext target)
-		{
-		    dynamic incomeEntry = null;
-		    dynamic consumptionEntry = null;
+    public sealed class HospitalRegisterMoveAction
+    {
+        public void Action(IApplyContext target)
+        {
+            dynamic incomeEntry = null;
+            dynamic consumptionEntry = null;
 
             if (target.Item.OldRoom != null &&
-		        target.Item.OldBed != null)
-		    {
-				incomeEntry = target.Context.GetComponent<IRegistryComponent>().CreateAccumulationRegisterEntry(target.Item.Configuration, "availablebeds", target.Item.Metadata, target.Item, target.Item.Date);
+                target.Item.OldBed != null)
+            {
+                incomeEntry =
+                    target.Context.GetComponent<IRegistryComponent>()
+                          .CreateAccumulationRegisterEntry(target.Item.Configuration, "availablebeds",
+                                                           target.Item.Metadata, target.Item, target.Item.Date);
                 incomeEntry.Value = 1; // Изменение количества на единицу
 
                 // Койка освободилась - income
                 incomeEntry.EntryType = RegisterEntryType.Income;
-		        incomeEntry.Room = target.Item.OldRoom;
+                incomeEntry.Room = target.Item.OldRoom;
                 incomeEntry.Bed = target.Item.OldBed;
-		    }
+            }
 
             if (target.Item.NewRoom != null &&
                 target.Item.NewBed != null)
             {
-                consumptionEntry = target.Context.GetComponent<IRegistryComponent>().CreateAccumulationRegisterEntry(target.Item.Configuration, "availablebeds", target.Item.Metadata, target.Item, target.Item.Date);
+                consumptionEntry =
+                    target.Context.GetComponent<IRegistryComponent>()
+                          .CreateAccumulationRegisterEntry(target.Item.Configuration, "availablebeds",
+                                                           target.Item.Metadata, target.Item, target.Item.Date);
                 consumptionEntry.Value = 1; // Изменение количества на единицу
 
                 // Койку заняли - consumption
@@ -35,15 +42,17 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
                 consumptionEntry.Bed = target.Item.NewBed;
             }
 
-		    if (incomeEntry != null)
-		    {
-				target.Context.GetComponent<IRegistryComponent>().PostRegisterEntries(target.Item.Configuration, "availablebeds", new[] { incomeEntry });
-		    }
+            if (incomeEntry != null)
+            {
+                target.Context.GetComponent<IRegistryComponent>()
+                      .PostRegisterEntries(target.Item.Configuration, "availablebeds", new[] {incomeEntry});
+            }
 
-		    if (consumptionEntry != null)
-		    {
-				target.Context.GetComponent<IRegistryComponent>().PostRegisterEntries(target.Item.Configuration, "availablebeds", new[] { consumptionEntry });
-		    }
-		}
-	}
+            if (consumptionEntry != null)
+            {
+                target.Context.GetComponent<IRegistryComponent>()
+                      .PostRegisterEntries(target.Item.Configuration, "availablebeds", new[] {consumptionEntry});
+            }
+        }
+    }
 }

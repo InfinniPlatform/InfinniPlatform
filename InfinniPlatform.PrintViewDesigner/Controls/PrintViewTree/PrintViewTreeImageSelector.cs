@@ -1,30 +1,28 @@
 ﻿using System.Windows.Media;
-
 using DevExpress.Xpf.Grid;
 using DevExpress.Xpf.Grid.TreeList;
-
 using InfinniPlatform.PrintViewDesigner.Images;
 
 namespace InfinniPlatform.PrintViewDesigner.Controls.PrintViewTree
 {
-	sealed class PrintViewTreeImageSelector : TreeListNodeImageSelector
-	{
-		private PrintViewTreeImageSelector()
-		{
-		}
+    internal sealed class PrintViewTreeImageSelector : TreeListNodeImageSelector
+    {
+        public static readonly PrintViewTreeImageSelector Instance = new PrintViewTreeImageSelector();
 
-		public override ImageSource Select(TreeListRowData rowData)
-		{
-			var row = rowData.Row as PrintElementNode;
+        private PrintViewTreeImageSelector()
+        {
+        }
 
-			if (row != null)
-			{
-				return ImageRepository.GetImage(row.ElementType);
-			}
+        public override ImageSource Select(TreeListRowData rowData)
+        {
+            var row = rowData.Row as PrintElementNode;
 
-			return null;
-		}
+            if (row != null)
+            {
+                return ImageRepository.GetImage(row.ElementType);
+            }
 
-		public static readonly PrintViewTreeImageSelector Instance = new PrintViewTreeImageSelector();
-	}
+            return null;
+        }
+    }
 }

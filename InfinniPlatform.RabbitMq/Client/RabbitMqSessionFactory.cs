@@ -1,6 +1,6 @@
-﻿using InfinniPlatform.Api.Settings;
+﻿
 
-
+using InfinniPlatform.Sdk.Environment.Settings;
 using RabbitMQ.Client;
 
 namespace InfinniPlatform.RabbitMq.Client

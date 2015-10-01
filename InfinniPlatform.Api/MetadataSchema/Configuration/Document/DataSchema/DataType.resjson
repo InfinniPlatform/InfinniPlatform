@@ -1,15 +1,15 @@
 ﻿{
-  "id": "DataType",
-  "description": "Базовые типы данных",
-  "enum": [
-    "Bool",
-    "Integer",
-    "Float",
-    "String",
-    "DateTime",
-    "Uuid",
-    "Binary",
-    "Object",
-    "Array"
-  ]
+	"id": "DataType",
+	"description": "Базовые типы данных",
+	"enum": [
+		"Bool",
+		"Integer",
+		"Float",
+		"String",
+		"DateTime",
+		"Uuid",
+		"Binary",
+		"Object",
+		"Array"
+	]
 }

@@ -1,172 +1,161 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
-
-using InfinniPlatform.Api.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.PrintViewDesigner.Controls.PropertyGrid
 {
-	/// <summary>
-	/// Регистр свойств.
-	/// </summary>
-	public sealed class PropertyRegister
-	{
-		public PropertyRegister(UIElement editValueControl, RoutedEvent editValueChangedRoutedEvent)
-		{
-			if (editValueControl == null)
-			{
-				throw new ArgumentNullException("editValueControl");
-			}
+    /// <summary>
+    ///     Регистр свойств.
+    /// </summary>
+    public sealed class PropertyRegister
+    {
+        private object _editValue;
+        // Handlers
 
-			if (editValueChangedRoutedEvent == null)
-			{
-				throw new ArgumentNullException("editValueChangedRoutedEvent");
-			}
+        private bool _handleEvent;
+        private readonly RoutedEvent _editValueChangedRoutedEvent;
+        private readonly UIElement _editValueControl;
 
-			_editValueControl = editValueControl;
-			_editValueChangedRoutedEvent = editValueChangedRoutedEvent;
-		}
+        private readonly List<PropertyDefinition> _properties
+            = new List<PropertyDefinition>();
 
+        public PropertyRegister(UIElement editValueControl, RoutedEvent editValueChangedRoutedEvent)
+        {
+            if (editValueControl == null)
+            {
+                throw new ArgumentNullException("editValueControl");
+            }
 
-		private readonly UIElement _editValueControl;
-		private readonly RoutedEvent _editValueChangedRoutedEvent;
+            if (editValueChangedRoutedEvent == null)
+            {
+                throw new ArgumentNullException("editValueChangedRoutedEvent");
+            }
 
+            _editValueControl = editValueControl;
+            _editValueChangedRoutedEvent = editValueChangedRoutedEvent;
+        }
 
-		private object _editValue;
+        /// <summary>
+        ///     Редактируеме значение.
+        /// </summary>
+        public object EditValue
+        {
+            get { return _editValue; }
+            set
+            {
+                var oldValue = _editValue;
 
-		/// <summary>
-		/// Редактируеме значение.
-		/// </summary>
-		public object EditValue
-		{
-			get
-			{
-				return _editValue;
-			}
-			set
-			{
-				var oldValue = _editValue;
+                if (!Equals(oldValue, value))
+                {
+                    _editValue = value;
 
-				if (!Equals(oldValue, value))
-				{
-					_editValue = value;
+                    OnSetEditValueHandler(oldValue, value);
+                }
+            }
+        }
 
-					OnSetEditValueHandler(oldValue, value);
-				}
-			}
-		}
+        /// <summary>
+        ///     Добавляет свойство в регистр.
+        /// </summary>
+        public void Register(PropertyDefinition property)
+        {
+            if (!_properties.Contains(property))
+            {
+                _properties.Add(property);
 
+                if (property.Editor != null)
+                {
+                    property.Editor.EditValueChanged += OnSetPropertyValueHandler;
+                }
+            }
+        }
 
-		private readonly List<PropertyDefinition> _properties
-			= new List<PropertyDefinition>();
+        /// <summary>
+        ///     Удаляет свойство из регистра.
+        /// </summary>
+        public void Unregister(PropertyDefinition property)
+        {
+            if (_properties.Remove(property))
+            {
+                if (property.Editor != null)
+                {
+                    property.Editor.EditValueChanged -= OnSetPropertyValueHandler;
 
+                    if (property.Editor.Properties != null)
+                    {
+                        property.Editor.Properties.Clear();
+                    }
+                }
+            }
+        }
 
-		/// <summary>
-		/// Добавляет свойство в регистр.
-		/// </summary>
-		public void Register(PropertyDefinition property)
-		{
-			if (!_properties.Contains(property))
-			{
-				_properties.Add(property);
+        private void OnSetEditValueHandler(object oldValue, object newValue)
+        {
+            if (!_handleEvent)
+            {
+                _handleEvent = true;
 
-				if (property.Editor != null)
-				{
-					property.Editor.EditValueChanged += OnSetPropertyValueHandler;
-				}
-			}
-		}
+                try
+                {
+                    foreach (var property in _properties)
+                    {
+                        if (property.Editor != null)
+                        {
+                            var propertyValue = EditValue.GetProperty(property.Name);
 
+                            property.Editor.EditValue = propertyValue;
+                        }
+                    }
 
-		/// <summary>
-		/// Удаляет свойство из регистра.
-		/// </summary>
-		public void Unregister(PropertyDefinition property)
-		{
-			if (_properties.Remove(property))
-			{
-				if (property.Editor != null)
-				{
-					property.Editor.EditValueChanged -= OnSetPropertyValueHandler;
+                    OnEditValueChanged(null, oldValue, newValue);
+                }
+                finally
+                {
+                    _handleEvent = false;
+                }
+            }
+        }
 
-					if (property.Editor.Properties != null)
-					{
-						property.Editor.Properties.Clear();
-					}
-				}
-			}
-		}
+        private void OnSetPropertyValueHandler(object sender, PropertyValueChangedEventArgs e)
+        {
+            if (!_handleEvent)
+            {
+                _handleEvent = true;
 
+                try
+                {
+                    if (EditValue != null)
+                    {
+                        EditValue.SetProperty(e.Property, e.NewValue);
 
-		// Handlers
+                        foreach (var property in _properties)
+                        {
+                            if (property.Editor != null)
+                            {
+                                if (property.Name == e.Property || property.Name.StartsWith(e.Property + "."))
+                                {
+                                    var propertyValue = EditValue.GetProperty(property.Name);
 
-		private bool _handleEvent;
+                                    property.Editor.EditValue = propertyValue;
+                                }
+                            }
+                        }
 
-		private void OnSetEditValueHandler(object oldValue, object newValue)
-		{
-			if (!_handleEvent)
-			{
-				_handleEvent = true;
+                        OnEditValueChanged(e.Property, e.OldValue, e.NewValue);
+                    }
+                }
+                finally
+                {
+                    _handleEvent = false;
+                }
+            }
+        }
 
-				try
-				{
-					foreach (var property in _properties)
-					{
-						if (property.Editor != null)
-						{
-							var propertyValue = EditValue.GetProperty(property.Name);
-
-							property.Editor.EditValue = propertyValue;
-						}
-					}
-
-					OnEditValueChanged(null, oldValue, newValue);
-				}
-				finally
-				{
-					_handleEvent = false;
-				}
-			}
-		}
-
-		private void OnSetPropertyValueHandler(object sender, PropertyValueChangedEventArgs e)
-		{
-			if (!_handleEvent)
-			{
-				_handleEvent = true;
-
-				try
-				{
-					if (EditValue != null)
-					{
-						EditValue.SetProperty(e.Property, e.NewValue);
-
-						foreach (var property in _properties)
-						{
-							if (property.Editor != null)
-							{
-								if (property.Name == e.Property || property.Name.StartsWith(e.Property + "."))
-								{
-									var propertyValue = EditValue.GetProperty(property.Name);
-
-									property.Editor.EditValue = propertyValue;
-								}
-							}
-						}
-
-						OnEditValueChanged(e.Property, e.OldValue, e.NewValue);
-					}
-				}
-				finally
-				{
-					_handleEvent = false;
-				}
-			}
-		}
-
-		private void OnEditValueChanged(string property, object oldValue, object newValue)
-		{
-			_editValueControl.RaiseEvent(new PropertyValueChangedEventArgs(_editValueChangedRoutedEvent, property, oldValue, newValue));
-		}
-	}
+        private void OnEditValueChanged(string property, object oldValue, object newValue)
+        {
+            _editValueControl.RaiseEvent(new PropertyValueChangedEventArgs(_editValueChangedRoutedEvent, property,
+                oldValue, newValue));
+        }
+    }
 }

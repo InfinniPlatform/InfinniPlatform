@@ -1,8 +1,4 @@
-﻿using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.Index;
-using InfinniPlatform.Api.Index.SearchOptions;
-using InfinniPlatform.Api.SearchOptions;
-using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
+﻿using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeSelectors;
 
 using Nest;
@@ -11,7 +7,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters.NestFilters;
-using IFilter = InfinniPlatform.Api.Index.SearchOptions.IFilter;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Index;
+using IFilter = InfinniPlatform.Sdk.Environment.Index.IFilter;
+
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 {
@@ -524,7 +523,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             var points = new List<T>();
             foreach (string strPoint in criteria.Value.ToString().Split('\n'))
             {
-                var convertedValue = converter.ConvertFromString(strPoint.Replace(".", ","));
+                var convertedValue = converter.ConvertFromInvariantString(strPoint.Replace(',', '.'));
                 if (convertedValue != null)
                 {
                     points.Add((T)convertedValue);

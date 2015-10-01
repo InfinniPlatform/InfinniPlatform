@@ -69,6 +69,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
 	    {
 		    _typeNames.Add(schemaTypeVersion,mapping);
 	    }
+
+
     }
 
     public static class IndexToTypeAccordanceExtensions

@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{103879A1-30AE-4527-A0FF-F79BC3A01904}</ProjectGuid>
+    <ProjectGuid>{2322469D-7D54-4C76-97E2-EF40F15645F5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>InfinniPlatform.Sdk</RootNamespace>
     <AssemblyName>InfinniPlatform.Sdk</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -19,7 +20,7 @@
     <OutputPath>..\Assemblies\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>2</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,27 +30,179 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release_TeamCity|AnyCPU'">
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp, Version=104.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net45\RestSharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiContracts\IAuthApi.cs" />
+    <Compile Include="ApiContracts\ICustomServiceApi.cs" />
+    <Compile Include="ApiContracts\IDocumentApi.cs" />
+    <Compile Include="ApiContracts\IPrintViewApi.cs" />
+    <Compile Include="ApiContracts\IRegisterApi.cs" />
+    <Compile Include="ApiContracts\IFileApi.cs" />
+    <Compile Include="ApiContracts\ISignInApi.cs" />
+    <Compile Include="Api\BaseApi.cs" />
+    <Compile Include="Api\HostingConfig.cs" />
+    <Compile Include="Api\InfinniAuthApi.cs" />
+    <Compile Include="Api\InfinniCustomServiceApi.cs" />
+    <Compile Include="Api\InfinniMetadataApi.cs" />
+    <Compile Include="Api\InfinniRegisterApi.cs" />
+    <Compile Include="Api\InfinniSignInApi.cs" />
+    <Compile Include="Api\InfinniVersionApi.cs" />
+    <Compile Include="Api\InfinniPrintViewApi.cs" />
+    <Compile Include="AttachedInstance.cs" />
+    <Compile Include="ContextComponents\IApplicationUserManager.cs" />
+    <Compile Include="ContextComponents\ISharedCacheComponent.cs" />
+    <Compile Include="Environment\Actions\IActionOperator.cs" />
+    <Compile Include="Environment\Actions\IActionOperatorBuilder.cs" />
+    <Compile Include="Environment\Register\RegisterConstants.cs" />
+    <Compile Include="Environment\Register\RegisterEntryType.cs" />
+    <Compile Include="Environment\Settings\AppSettings.cs" />
+    <Compile Include="Environment\Settings\ConnectionStrings.cs" />
+    <Compile Include="Environment\Transactions\AttachedInstance.cs" />
+    <Compile Include="Environment\Binary\BlobData.cs" />
+    <Compile Include="Environment\Binary\BlobInfo.cs" />
+    <Compile Include="Environment\Hosting\ContextTypeKind.cs" />
+    <Compile Include="Environment\Hosting\ExtensionPointValue.cs" />
+    <Compile Include="Environment\Hosting\HttpResultHandlerType.cs" />
+    <Compile Include="Environment\Hosting\IExtensionPointHandler.cs" />
+    <Compile Include="Environment\Hosting\IExtensionPointHandlerConfig.cs" />
+    <Compile Include="Environment\Hosting\IExtensionPointHandlerInstance.cs" />
+    <Compile Include="Environment\Hosting\IQueryHandler.cs" />
+    <Compile Include="Environment\Hosting\IServiceRegistration.cs" />
+    <Compile Include="Environment\Hosting\IServiceTemplate.cs" />
+    <Compile Include="Environment\Hosting\VerbType.cs" />
+    <Compile Include="Environment\Binary\IBlobStorage.cs" />
+    <Compile Include="ContextComponents\IBlobStorageComponent.cs" />
+    <Compile Include="ContextComponents\IComponentContainer.cs" />
+    <Compile Include="ContextComponents\IConfigurationMediatorComponent.cs" />
+    <Compile Include="ContextComponents\ICrossConfigSearchComponent.cs" />
+    <Compile Include="ContextComponents\IDependencyContainerComponent.cs" />
+    <Compile Include="ContextComponents\IEventStorageComponent.cs" />
+    <Compile Include="ContextComponents\IIndexComponent.cs" />
+    <Compile Include="ContextComponents\ILogComponent.cs" />
+    <Compile Include="ContextComponents\IMetadataComponent.cs" />
+    <Compile Include="ContextComponents\IMetadataConfigurationProvider.cs" />
+    <Compile Include="ContextComponents\IPasswordVerifierComponent.cs" />
+    <Compile Include="ContextComponents\IPrintViewComponent.cs" />
+    <Compile Include="ContextComponents\IProfilerComponent.cs" />
+    <Compile Include="ContextComponents\IReferenceResolver.cs" />
+    <Compile Include="ContextComponents\IRegistryComponent.cs" />
+    <Compile Include="ContextComponents\IScriptRunnerComponent.cs" />
+    <Compile Include="ContextComponents\ISecurityComponent.cs" />
+    <Compile Include="ContextComponents\ISystemComponent.cs" />
+    <Compile Include="ContextComponents\ITransactionComponent.cs" />
+    <Compile Include="ContextComponents\IWebClientNotificationComponent.cs" />
+    <Compile Include="Contracts\IApplyContext.cs" />
+    <Compile Include="Contracts\IApplyResultContext.cs" />
+    <Compile Include="Contracts\ICommonContext.cs" />
+    <Compile Include="Contracts\IGlobalContext.cs" />
+    <Compile Include="Contracts\IPlatformComponentsPack.cs" />
+    <Compile Include="Contracts\IProcessEventContext.cs" />
+    <Compile Include="Contracts\ISearchContext.cs" />
+    <Compile Include="Contracts\IUploadContext.cs" />
+    <Compile Include="Contracts\IUrlEncodedDataContext.cs" />
+    <Compile Include="Contracts\IVersionStrategy.cs" />
+    <Compile Include="Dynamic\DynamicWrapper.cs" />
+    <Compile Include="Dynamic\DynamicWrapperExtensions.cs" />
+    <Compile Include="Dynamic\DynamicWrapperJsonConverter.cs" />
+    <Compile Include="Dynamic\DynamicWrapperMetaObject.cs" />
+    <Compile Include="Dynamic\DynamicWrapperPropertyDescriptor.cs" />
+    <Compile Include="Dynamic\ObjectHelper.cs" />
+    <Compile Include="Environment\Metadata\IConfigurationObject.cs" />
+    <Compile Include="Environment\Metadata\IConfigurationObjectBuilder.cs" />
+    <Compile Include="Environment\ICrossConfigSearcher.cs" />
+    <Compile Include="Environment\Binary\IEventStorage.cs" />
+    <Compile Include="Environment\Log\ILog.cs" />
+    <Compile Include="Environment\Metadata\IManagerIdentifiers.cs" />
+    <Compile Include="Environment\Metadata\IMetadataConfiguration.cs" />
+    <Compile Include="Environment\Metadata\IModule.cs" />
+    <Compile Include="Environment\Index\AggregationResult.cs" />
+    <Compile Include="Environment\Index\AggregationType.cs" />
+    <Compile Include="Environment\Index\CriteriaType.cs" />
+    <Compile Include="Environment\Index\IAggregationProvider.cs" />
+    <Compile Include="Environment\Index\IAllIndexesOperationProvider.cs" />
+    <Compile Include="Environment\Index\ICalculatedField.cs" />
+    <Compile Include="Environment\Index\ICrudOperationProvider.cs" />
+    <Compile Include="Environment\Index\IDocumentProvider.cs" />
+    <Compile Include="Environment\Index\IFilter.cs" />
+    <Compile Include="Environment\Index\IFilterBuilder.cs" />
+    <Compile Include="Environment\Index\IIndexFactory.cs" />
+    <Compile Include="Environment\Index\IIndexQueryExecutor.cs" />
+    <Compile Include="Environment\Index\IIndexStateProvider.cs" />
+    <Compile Include="Environment\Index\IIndexTypeMapping.cs" />
+    <Compile Include="Environment\Index\IndexItemStrategy.cs" />
+    <Compile Include="Environment\Index\IndexStatus.cs" />
+    <Compile Include="Environment\Index\IVersionBuilder.cs" />
+    <Compile Include="Environment\Index\IVersionProvider.cs" />
+    <Compile Include="Environment\Index\PropertyMapping.cs" />
+    <Compile Include="Environment\Index\SearchAbilityType.cs" />
+    <Compile Include="Environment\Index\SearchModel.cs" />
+    <Compile Include="Environment\Index\SearchViewModel.cs" />
+    <Compile Include="Environment\Index\SortOption.cs" />
+    <Compile Include="Environment\Index\SortOrder.cs" />
+    <Compile Include="Environment\Profiling\IOperationProfiler.cs" />
+    <Compile Include="Environment\Scripts\IScriptConfiguration.cs" />
+    <Compile Include="Environment\Scripts\IScriptProcessor.cs" />
+    <Compile Include="Environment\Hosting\IServiceRegistrationContainer.cs" />
+    <Compile Include="Environment\Hosting\IServiceTemplateConfiguration.cs" />
+    <Compile Include="Environment\Transactions\ITransaction.cs" />
+    <Compile Include="Environment\Transactions\ITransactionManager.cs" />
+    <Compile Include="Environment\Validations\IValidationOperator.cs" />
+    <Compile Include="Environment\Validations\IValidationUnitBuilder.cs" />
+    <Compile Include="Environment\PrintViewFileFormat.cs" />
+    <Compile Include="Environment\Transactions\FileDescription.cs" />
+    <Compile Include="Environment\Validations\ValidationResult.cs" />
+    <Compile Include="Environment\Worklow\IStateTransitionCondition.cs" />
+    <Compile Include="Environment\Worklow\IStateTransitionConfig.cs" />
+    <Compile Include="Environment\Worklow\IStateWorkflow.cs" />
+    <Compile Include="Environment\Worklow\IStateWorkflowConfig.cs" />
+    <Compile Include="Environment\Worklow\IStateWorkflowRegister.cs" />
+    <Compile Include="Environment\Worklow\IStateWorkflowStartingPointConfig.cs" />
+    <Compile Include="Events\EventDefinition.cs" />
+    <Compile Include="Events\EventType.cs" />
+    <Compile Include="Extensions\ReflectionCache.cs" />
+    <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="FilterBuilder.cs" />
-    <Compile Include="InfinniDocumentApi.cs" />
-    <Compile Include="InfinniSession.cs" />
+    <Compile Include="Api\InfinniDocumentApi.cs" />
+    <Compile Include="Api\InfinniFileApi.cs" />
+    <Compile Include="Global\CustomServiceGlobalContext.cs" />
+    <Compile Include="Global\ICustomServiceGlobalContext.cs" />
+    <Compile Include="Global\ScriptContext.cs" />
+    <Compile Include="Metadata\DocumentMetadata.cs" />
+    <Compile Include="Metadata\PrintViewMetadata.cs" />
+    <Compile Include="Metadata\ProcessMetadata.cs" />
+    <Compile Include="Metadata\RegisterMetadata.cs" />
+    <Compile Include="Metadata\AssemblyMetadata.cs" />
+    <Compile Include="Metadata\ConfigurationMetadata.cs" />
+    <Compile Include="Metadata\MenuMetadata.cs" />
+    <Compile Include="Metadata\ScenarioMetadata.cs" />
+    <Compile Include="Metadata\ServiceMetadata.cs" />
+    <Compile Include="Metadata\SolutionMetadata.cs" />
+    <Compile Include="Metadata\ViewMetadata.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -66,6 +219,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

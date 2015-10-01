@@ -1,0 +1,22 @@
+{
+  "Id": "236b18a4-60b8-4877-8c9d-1c39df557011",
+  "Secured": true,
+  "Name": "TestConfig_Registers",
+  "Caption": "Registers common options",
+  "Description": "Storage for register's common information (e.g. actual date)",
+  "Versioning": 4,
+  "Version": "1.0.4.0",
+  "MetadataIndex": "TestConfig_Registers",
+  "Services": [],
+  "Processes": [],
+  "Scenarios": [],
+  "Generators": [],
+  "Views": [],
+  "PrintViews": [],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "SearchAbility": 0,
+  "ParentId": "6c80e623-2e66-4ff1-bf54-0b899a19abf1",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "documentmetadata"
+}

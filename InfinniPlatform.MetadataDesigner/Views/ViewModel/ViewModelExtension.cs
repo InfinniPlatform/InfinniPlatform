@@ -4,7 +4,6 @@ using DevExpress.XtraEditors.Controls;
 
 using InfinniPlatform.Api.Context;
 using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
@@ -16,12 +15,14 @@ using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
 
 using InfinniPlatform.MetadataDesigner.Views.Exchange;
 using InfinniPlatform.MetadataDesigner.Views.Status;
-
+using InfinniPlatform.Sdk.Environment.Hosting;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Register;
 
 namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 {
@@ -85,35 +86,9 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 			return result.ToDataTable();
 		}
 
-		public static void UpdateConfigurationAssemblies(string configurationId, IEnumerable<SourceAssemblyInfo> assemblies)
+		public static IEnumerable<dynamic> LoadAssemblies(string version, string configurationId)
 		{
-			var reader = ManagerFactoryConfiguration.BuildConfigurationMetadataReader();
-			var manager = ManagerFactoryConfiguration.BuildConfigurationManager();
-
-
-			var config = reader.GetItem(configurationId);
-
-			if (config.Assemblies != null)
-			{
-				var removeItem = new RemoveCollectionItem("Assemblies");
-				manager.ApplyMetadataChanges(configurationId, new[] { removeItem });
-			}
-			config.Assemblies = new List<dynamic>();
-			foreach (var assembly in assemblies)
-			{
-				dynamic instance = new DynamicWrapper();
-				instance.Id = Guid.NewGuid().ToString();
-				instance.Name = assembly.Name;
-				config.Assemblies.Add(instance);
-			}
-
-
-			manager.MergeItem(config);
-		}
-
-		public static IEnumerable<dynamic> LoadAssemblies(string configurationId)
-		{
-			var reader = ManagerFactoryConfiguration.BuildConfigurationMetadataReader();
+			var reader = ManagerFactoryConfiguration.BuildConfigurationMetadataReader(version);
 
 			var config = reader.GetItem(configurationId);
 			return DynamicWrapperExtensions.ToEnumerable(config.Assemblies);
@@ -337,27 +312,27 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 		}
 
 
-		public static DataTable BuildDocumentScenarios(string configurationId, string documentId)
+		public static DataTable BuildDocumentScenarios(string version, string configurationId, string documentId)
 		{
-			var scenarios = GetDocumentScenarios(configurationId, documentId);
+			var scenarios = GetDocumentScenarios(version, configurationId, documentId);
 			return ToDataTable(scenarios);
 		}
 
-		private static IEnumerable<dynamic> GetDocumentScenarios(string configurationId, string documentId)
+		private static IEnumerable<dynamic> GetDocumentScenarios(string version, string configurationId, string documentId)
 		{
-			var reader = new ManagerFactoryDocument(configurationId, documentId).BuildScenarioMetadataReader();
+			var reader = new ManagerFactoryDocument(version, configurationId, documentId).BuildScenarioMetadataReader();
 			IEnumerable<dynamic> scenarios =
 				DynamicWrapperExtensions.ToEnumerable(reader.GetItems());
 			return scenarios;
 		}
 
-		public static DataTable BuildDocumentServices(string configurationId, string documentId)
+		public static DataTable BuildDocumentServices(string version, string configurationId, string documentId)
 		{
-			var reader = new ManagerFactoryConfiguration(configurationId).BuildDocumentMetadataReader();
+			var reader = new ManagerFactoryConfiguration(version, configurationId).BuildDocumentMetadataReader();
 			IEnumerable<dynamic> services = DynamicWrapperExtensions.ToEnumerable(reader.GetItem(documentId).Services);
 
 			var serviceInstances = new List<DynamicWrapper>();
-			var serviceManager = new ManagerFactoryDocument(configurationId, documentId).BuildServiceMetadataReader();
+			var serviceManager = new ManagerFactoryDocument(version,configurationId, documentId).BuildServiceMetadataReader();
 			foreach (var service in services)
 			{
 				dynamic serviceFull = serviceManager.GetItem(service.Name);
@@ -376,17 +351,17 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 			return ToDataTable(serviceInstances);
 		}
 
-		public static object GetDocumentProcessByName(string configurationId, string documentId, string processName)
+		public static object GetDocumentProcessByName(string version, string configurationId, string documentId, string processName)
 		{
-			var managerProcess = new ManagerFactoryDocument(configurationId, documentId).BuildProcessMetadataReader();
+			var managerProcess = new ManagerFactoryDocument(version, configurationId, documentId).BuildProcessMetadataReader();
 
 			return managerProcess.GetItem(processName);
 		}
 
 
-		public static IEnumerable<ProcessDescription> GetDocumentProcessesList(string configurationId, string documentId)
+		public static IEnumerable<ProcessDescription> GetDocumentProcessesList(string version, string configurationId, string documentId)
 		{
-			var managerProcess = new ManagerFactoryDocument(configurationId, documentId).BuildProcessMetadataReader();
+			var managerProcess = new ManagerFactoryDocument(version, configurationId, documentId).BuildProcessMetadataReader();
 
 			IEnumerable<dynamic> processes = managerProcess.GetItems();
 
@@ -402,9 +377,9 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 			return processesViewModel;
 		}
 
-		public static IEnumerable<GeneratorDescription> GetGenerators(string configurationId, string documentId)
+		public static IEnumerable<GeneratorDescription> GetGenerators(string version, string configurationId, string documentId)
 		{
-			var reader = new ManagerFactoryDocument(configurationId, documentId).BuildGeneratorMetadataReader();
+			var reader = new ManagerFactoryDocument(version, configurationId, documentId).BuildGeneratorMetadataReader();
 			var managerGenerators = reader.GetItems();
 
 			var fullGeneratorMetadata = new List<dynamic>();
@@ -430,14 +405,14 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 			return generatorList;
 		}
 
-		public static string CheckGetView(string configId, string documentId, string viewName, string viewType, string jsonBody)
+		public static string CheckGetView(string version, string configId, string documentId, string viewName, string viewType, string jsonBody)
 		{
 			var bodyMetadata = new
 			{
 				Configuration = configId,
 				MetadataObject = documentId,
 				MetadataType = viewType,
-				MetadataName = viewName
+				MetadataName = viewName,
 			};
 
 			dynamic dynamicBody = bodyMetadata.ToDynamic();
@@ -463,28 +438,28 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 			string result = string.Empty;
 			process.StartOperation(() =>
 			{
-				result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getmanagedmetadata", null, dynamicBody,false).Content;
+				result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getmanagedmetadata", null, dynamicBody).Content;
 			});
 			process.EndOperation();
 			return result;
 		}
 
-		public static IEnumerable<string> BuildValidationRuleWarningDescriptions(string configId, string documentId)
+		public static IEnumerable<string> BuildValidationRuleWarningDescriptions(string version, string configId, string documentId)
 		{
-			IEnumerable<dynamic> warnings = new MetadataApi().GetMetadataList(configId, documentId, MetadataType.ValidationWarning);
+			IEnumerable<dynamic> warnings = new MetadataApi().GetMetadataList(version: version, configuration: configId, metadata: documentId, metadataType: MetadataType.ValidationWarning);
 			return warnings.Select(w => w.Name).Cast<string>().ToList();
 		}
 
-		public static IEnumerable<string> BuildValidationRuleErrorDescriptions(string configId, string documentId)
+		public static IEnumerable<string> BuildValidationRuleErrorDescriptions(string version, string configId, string documentId)
 		{
-			IEnumerable<dynamic> objects = new MetadataApi().GetMetadataList(configId, documentId, MetadataType.ValidationError); ;
+			IEnumerable<dynamic> objects = new MetadataApi().GetMetadataList(version: version, configuration: configId, metadata: documentId, metadataType: MetadataType.ValidationError); ;
 			return objects.Select(w => w.Name).Cast<string>().ToList();
 		}
 
 
-		public static IEnumerable<HandlerDescription> BuildValidationHandlerDescriptions(string configId, string documentId)
+		public static IEnumerable<HandlerDescription> BuildValidationHandlerDescriptions(string version, string configId, string documentId)
 		{
-			IEnumerable<dynamic> scenarios = new MetadataApi().GetMetadataList(configId, documentId, MetadataType.Scenario);
+			IEnumerable<dynamic> scenarios = new MetadataApi().GetMetadataList(version:version, configuration: configId, metadata: documentId, metadataType: MetadataType.Scenario);
 
 			var result = new List<HandlerDescription>();
 
@@ -509,9 +484,9 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 			return result;
 		}
 
-		public static IEnumerable<HandlerDescription> BuildActionHandlerDescriptions(string configId, string documentId)
+		public static IEnumerable<HandlerDescription> BuildActionHandlerDescriptions(string version, string configId, string documentId)
 		{
-			IEnumerable<dynamic> scenarios = new MetadataApi().GetMetadataList(configId, documentId, MetadataType.Scenario);
+			IEnumerable<dynamic> scenarios = new MetadataApi().GetMetadataList(version: version, configuration: configId, metadata: documentId, metadataType: MetadataType.Scenario);
 
 			var result = new List<HandlerDescription>();
 			//var scenarioManager = new ManagerFactoryDocument(configId, documentId).BuildScenarioMetadataReader();
@@ -537,22 +512,22 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 			return result;
 		}
 
-        public static IEnumerable<string> BuildMigrations(string configurationId, string configVersion)
+        public static IEnumerable<string> BuildMigrations(string version, string configurationId)
         {
             var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getmigrations", null, null);
             
             return result.ToDynamicList()
                 .Where(m => (m.ConfigurationId == configurationId || string.IsNullOrEmpty(m.ConfigurationId)))
-                .Where(m => (m.ConfigVersion == configVersion || string.IsNullOrEmpty(m.ConfigVersion)))
+                .Where(m => (m.ConfigVersion == version || string.IsNullOrEmpty(m.ConfigVersion)))
                 .Select(m => m.Name.ToString()).Cast<string>().ToList();
         }
 
-        public static dynamic BuildMigrationDetails(string configId, string migrationName)
+        public static dynamic BuildMigrationDetails(string version, string configurationId, string migrationName)
         {
             var body = new
             {
                 MigrationName = migrationName,
-                ConfigurationName = configId,
+                ConfigurationName = configurationId
             };
 
             var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getmigrationdetails", null, body);
@@ -560,9 +535,9 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
             return result.ToDynamic();
         }
 
-        public static string RunMigration(string configId, string migrationName, object[] parameters)
+        public static string RunMigration(string version, string configId, string migrationName, object[] parameters)
         {
-            RestQueryApi.QueryPostNotify(configId);
+            RestQueryApi.QueryPostNotify(version, configId);
 
 			var body = new
 			{
@@ -575,15 +550,15 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
             return result.Content;
         }
 
-        public static string RevertMigration(string configId, string migrationName, object[] parameters)
+        public static string RevertMigration(string version, string configId, string migrationName, object[] parameters)
         {
-            RestQueryApi.QueryPostNotify(configId);
+            RestQueryApi.QueryPostNotify(version, configId);
 
 			var body = new
 			{
 				MigrationName = migrationName,
 				ConfigurationName = configId,
-                Parameters = parameters
+                Parameters = parameters                
 			};
 
 			var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "revertmigration", null, body);
@@ -608,9 +583,9 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
             return result.ToDynamicList().FirstOrDefault(verification => verification.Name.ToString() == verifiecationName);
         }
 
-        public static string RunVerification(string configId, string verificationName)
+        public static string RunVerification(string version, string configId, string verificationName)
         {
-            RestQueryApi.QueryPostNotify(configId);
+            RestQueryApi.QueryPostNotify(version, configId);
 
 			var body = new
 			{
@@ -621,33 +596,6 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 			var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "runverification", null, body);
 
             return result.Content;
-        }
-
-        public static IEnumerable<string> BuildStatuses(string configId, string documentId)
-		{
-            var reader = new ManagerFactoryDocument(configId, documentId).BuildStatusMetadataReader();
-
-            return reader.GetItems().Select(documentStatus => documentStatus.Name).Cast<string>().ToList();
-		}
-
-        public static object BuildStatusByName(string configId, string documentId, string statusName)
-        {
-            var reader = new ManagerFactoryDocument(configId, documentId).BuildStatusMetadataReader();
-
-            var rawStatus = reader.GetItems().FirstOrDefault(status => status.Name == statusName);
-            
-            if (rawStatus != null)
-            {
-                return new
-                {
-                    rawStatus.Id, 
-                    rawStatus.Name, 
-                    rawStatus.Caption, 
-                    rawStatus.Description
-                }.ToDynamic();
-            }
-
-            return null;
         }
 
 		public static IEnumerable<string> BuildViewTypes()
@@ -754,9 +702,9 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
             return instance;
         }
 
-	    public static string CreateRegisterDocuments(string configId, string registerName)
+	    public static string CreateRegisterDocuments(string version, string configId, string registerName)
 	    {
-	        var managerDocument = new ManagerFactoryConfiguration(configId).BuildDocumentManager();
+	        var managerDocument = new ManagerFactoryConfiguration(version, configId).BuildDocumentManager();
 
             dynamic documentMetadata = managerDocument.CreateItem(RegisterConstants.RegisterNamePrefix + registerName);
 	        documentMetadata.Id = Guid.NewGuid().ToString();
@@ -828,14 +776,14 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
             new DocumentApi().SetDocument(configId, configId + RegisterConstants.RegistersCommonInfo, registerInfoDocument);
 
-            UpdateApi.ForceReload(configId);
+            new UpdateApi(version).ForceReload(configId);
 
             return RegisterConstants.RegisterNamePrefix + registerName;
 	    }
 
-	    public static dynamic GetRegisterDocumentSchema(string configId, string registerName)
+	    public static dynamic GetRegisterDocumentSchema(string version, string configId, string registerName)
         {
-            var managerDocument = new ManagerFactoryConfiguration(configId).BuildDocumentManager();
+            var managerDocument = new ManagerFactoryConfiguration(version, configId).BuildDocumentManager();
             var registerDocument = managerDocument.MetadataReader.GetItem(RegisterConstants.RegisterNamePrefix + registerName);
 
             if (registerDocument != null)
@@ -846,9 +794,9 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
             return null;
         }
 
-        public static void UpdateRegisterDocumentSchema(string configId, string registerName, dynamic documentSchema)
+        public static void UpdateRegisterDocumentSchema(string version, string configId, string registerName, dynamic documentSchema)
         {
-            var managerDocument = new ManagerFactoryConfiguration(configId).BuildDocumentManager();
+            var managerDocument = new ManagerFactoryConfiguration(version, configId).BuildDocumentManager();
             var registerDocument = managerDocument.MetadataReader.GetItem(RegisterConstants.RegisterNamePrefix + registerName);
 
             registerDocument.Schema = documentSchema;
@@ -858,9 +806,9 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
             // UpdateApi.ForceReload(configId);
         }
 
-        public static dynamic GetRegisterDocumentTotalSchema(string configId, string registerName)
+        public static dynamic GetRegisterDocumentTotalSchema(string version, string configId, string registerName)
         {
-            var managerDocument = new ManagerFactoryConfiguration(configId).BuildDocumentManager();
+            var managerDocument = new ManagerFactoryConfiguration(version, configId).BuildDocumentManager();
             var registerDocumentTotal = managerDocument.MetadataReader.GetItem(RegisterConstants.RegisterTotalNamePrefix + registerName);
 
             if (registerDocumentTotal != null)
@@ -871,9 +819,9 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
             return null;
         }
 
-        public static void UpdateRegisterDocumentTotalSchema(string configId, string registerName, dynamic documentSchema)
+        public static void UpdateRegisterDocumentTotalSchema(string version, string configId, string registerName, dynamic documentSchema)
         {
-            var managerDocument = new ManagerFactoryConfiguration(configId).BuildDocumentManager();
+            var managerDocument = new ManagerFactoryConfiguration(version, configId).BuildDocumentManager();
             var registerDocumentTotal = managerDocument.MetadataReader.GetItem(RegisterConstants.RegisterTotalNamePrefix + registerName);
 
             registerDocumentTotal.Schema = documentSchema;

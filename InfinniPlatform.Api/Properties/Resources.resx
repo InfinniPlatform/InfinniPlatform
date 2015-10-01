@@ -396,7 +396,89 @@
   <data name="UnsatisfiedVersionNumber" xml:space="preserve">
     <value>UnsatifiedAppVersion</value>
   </data>
+  <data name="DocumentNotFound" xml:space="preserve">
+    <value>Document with identifier "{0}" not found.</value>
+      </data>
+
   <data name="BinaryContentMaxSizeIsExceed" xml:space="preserve">
     <value>Binary content max size {0} is exceed.</value>
+  </data>
+  <data name="DocumentDeletedSuccessfully" xml:space="preserve">
+    <value>Document with identifier "{0}" deleted successfully</value>
+  </data>
+  <data name="DocumentProviderTypeNotFound" xml:space="preserve">
+    <value>document provider for type "{0}" not found.</value>
+  </data>
+  <data name="LogDocumentDeleted" xml:space="preserve">
+    <value>document "{0}" deleted</value>
+  </data>
+  <data name="SessionCreatedSuccessfully" xml:space="preserve">
+    <value>Session created successfully</value>
+  </data>
+  <data name="DocumentAttachedSuccessfully" xml:space="preserve">
+    <value>Document attached successfully.</value>
+  </data>
+  <data name="SessionIdAndDocumentShouldntBeEmpty" xml:space="preserve">
+    <value>SessionId and Document should'nt be empty.</value>
+  </data>
+  <data name="BatchCompletedSuccessfully" xml:space="preserve">
+    <value>Batch completed successfully</value>
+  </data>
+  <data name="DeletedDocumentsIdentifiersShouldNotBeNull" xml:space="preserve">
+    <value>Deleted documents identifiers list must be not null.</value>
+  </data>
+  <data name="NotAllRequestParamsAreSpecified" xml:space="preserve">
+    <value>Not all request params are specified.</value>
+  </data>
+  <data name="IncorrectDownloadRequest" xml:space="preserve">
+    <value>Incorrect file download request.</value>
+  </data>
+  <data name="InstanceNotFoundToAttachFile" xml:space="preserve">
+    <value>Instance not found to attach file. InstanceId: {0}</value>
+  </data>
+  <data name="FileAttachedSuccessfully" xml:space="preserve">
+    <value>File attached successfully.</value>
+  </data>
+  <data name="NotAllRequestParamsAreFiled" xml:space="preserve">
+    <value>Not all request parameters are filed.</value>
+  </data>
+  <data name="UserCreatedSuccessfully" xml:space="preserve">
+    <value>User created successfully</value>
+  </data>
+  <data name="UnableToFindUser" xml:space="preserve">
+    <value>Unable to find user with user name: {0}</value>
+  </data>
+  <data name="UnknownRouteSection" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="ClaimRemovedSuccessfully" xml:space="preserve">
+    <value>Claim removed successfully</value>
+  </data>
+  <data name="UserToRemoveClaimNotFound" xml:space="preserve">
+    <value>User "{0}" not found.</value>
+  </data>
+  <data name="CantGetSpecificConfigurationWithoutVersion" xml:space="preserve">
+    <value>Can't get specific configuration without specification of configuration version</value>
+  </data>
+  <data name="SolutionNotFound" xml:space="preserve">
+    <value>Solution with name "{0}" and version "{1} not found".</value>
+  </data>
+  <data name="SolutionAssembliesSuccessfullyUploaded" xml:space="preserve">
+    <value>Solution assemblies successfully updated.</value>
+  </data>
+  <data name="DoesNotAllowedToSetVersion" xml:space="preserve">
+    <value>Does not allowed to set relevant version to user {0}.</value>
+  </data>
+  <data name="FailToGetIrrelevantVersions" xml:space="preserve">
+    <value>Fail to get irrelevant versions for user: "{0}"</value>
+  </data>
+  <data name="ApplicationNotFound" xml:space="preserve">
+    <value>Application with name {0} and version {1} not found. </value>
+  </data>
+  <data name="MetadataElementNotFound" xml:space="preserve">
+    <value>Metadata element with identifier {0} and version {1} not found.</value>
+  </data>
+	<data name="FailToConvertFilterValueToDateTime" xml:space="preserve">
+    <value>Fail to convert value to datetime format: {0}</value>
   </data>
 </root>

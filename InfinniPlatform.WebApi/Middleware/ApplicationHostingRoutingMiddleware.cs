@@ -1,106 +1,82 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.IO;
-using System.Security.Policy;
-using System.Web;
-using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Api.SearchOptions.Converters;
-using InfinniPlatform.Owin.Middleware;
+﻿using InfinniPlatform.Owin.Middleware;
+using InfinniPlatform.WebApi.Middleware.Metadata;
+using InfinniPlatform.WebApi.Middleware.Metadata.Configuration;
+using InfinniPlatform.WebApi.Middleware.Metadata.ConfigurationElements;
+using InfinniPlatform.WebApi.Middleware.Metadata.DocumentElements;
+using InfinniPlatform.WebApi.Middleware.Metadata.Solution;
+using InfinniPlatform.WebApi.Middleware.RoleAuthHandlers;
+using InfinniPlatform.WebApi.Middleware.SessionHandlers;
+using InfinniPlatform.WebApi.Middleware.StandardHandlers;
+using InfinniPlatform.WebApi.Middleware.UserAuthHandlers;
+using InfinniPlatform.WebApi.Middleware.VersionHandlers;
 using Microsoft.Owin;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.WebApi.Middleware
 {
-	/// <summary>
-	///   Модуль хостинга приложений на платформе
-	/// </summary>
-	public sealed class ApplicationHostingRoutingMiddleware : RoutingOwinMiddleware
-	{
-		public ApplicationHostingRoutingMiddleware(OwinMiddleware next) : base(next)
-		{
-			//порядок регистрации обработчиков на текущий момент определяет приоритет применения роутинга в случае совпадения пути, сформированного
-			//в результате обработки шаблона
-			RegisterPostRequestHandler(GetRestTemplatePath, InvokeCustomService);
-			RegisterGetRequestHandler(GetRestTemplateDocumentPath, InvokeGetDocumentService);
-			RegisterPostRequestHandler(GetRestTemplateDocumentPath, InvokePostDocumentService);
-			RegisterPutRequestHandler(GetRestTemplateDocumentPath, InvokePutDocumentService);
-			RegisterDeleteRequestHandler(GetRestTemplateDocumentPath, InvokeDeleteDocumentService);
-		}
+    /// <summary>
+    ///   Модуль хостинга приложений на платформе
+    /// </summary>
+    public sealed class ApplicationHostingRoutingMiddleware : RoutingOwinMiddleware
+    {
+        public ApplicationHostingRoutingMiddleware(OwinMiddleware next)
+            : base(next)
+        {
+            RegisterHandler(new GetDocumentByIdHandlerRegistration());
+            RegisterHandler(new GetDocumentHandlerRegistration());
+            RegisterHandler(new GetDocumentCountHandlerRegistration());
+            RegisterHandler(new DeleteDocumentHandlerRegistration());
+            RegisterHandler(new ChangePasswordHandlerRegistration());
+            RegisterHandler(new CustomServiceRegistrationHandler());
+            RegisterHandler(new DenyAccessHandlerRegistration());
+            RegisterHandler(new FileDownloadHandlerRegistration());
+            RegisterHandler(new FileUploadHandlerRegistration());
+            RegisterHandler(new GrantAccessHandlerRegistration());
+            RegisterHandler(new SetDocumentHandlerRegistration());
+            RegisterHandler(new SetDocumentsHandlerRegistration());
+            RegisterHandler(new SignInRegistrationHandler());
+            RegisterHandler(new SignOutRegistrationHandler());
+            RegisterHandler(new UpdateDocumentHandlerRegistration());
+            RegisterHandler(new AttachDocumentHandlerRegistration());
+            RegisterHandler(new CreateSessionHandlerRegistration());
+            RegisterHandler(new DetachDocumentHandlerRegistration());
+            RegisterHandler(new FileAttachHandlerRegistration());
+            RegisterHandler(new FileDetachHandlerRegistration());
+            RegisterHandler(new GetSessionByIdHandlerRegistration());
+            RegisterHandler(new SessionCommitHandlerRegistration());
+            RegisterHandler(new SessionRemoveHandlerRegistration());
+            RegisterHandler(new AddUserClaimHandlerRegistration());
+            RegisterHandler(new AddUserHandlerRegistration());
+            RegisterHandler(new AddUserRoleHandlerRegistration());
+            RegisterHandler(new DeleteUserHandlerRegistration());
+            RegisterHandler(new DeleteUserRoleHandlerRegistration());
+            RegisterHandler(new AddRoleHandlerRegistration());
+            RegisterHandler(new DeleteRoleHandlerRegistration());
+            RegisterHandler(new GetUserClaimHandlerRegistration());
+            RegisterHandler(new GetUserHandlerRegistration());
+            RegisterHandler(new RemoveUserClaimHandlerRegistration());
+            RegisterHandler(new GetIrrelevantVersionHandlerRegistration());
+            RegisterHandler(new SetRelevantVersionHandlerRegistration());
+            
+            RegisterHandler(new InsertSolutionHandlerRegistration());
+            RegisterHandler(new UpdateSolutionHandlerRegistration());
+            RegisterHandler(new DeleteSolutionHandlerRegistration());
+            RegisterHandler(new GetSolutionHandlerRegistration());
 
-		private PathString GetBaseApplicationPath()
-		{
-			return new PathString("/_version_/_application_");
-		}
+            RegisterHandler(new InsertConfigHandlerRegistration());
+            RegisterHandler(new UpdateConfigHandlerRegistration());
+            RegisterHandler(new DeleteConfigHandlerRegistration());
+            RegisterHandler(new GetConfigHandlerRegistration());
 
-		private PathString GetRestTemplatePath(IOwinContext context)
-		{
-			return context.FormatRoutePath(new PathString(GetBaseApplicationPath() + "/_documentType_/_service_"));
-		}
+            RegisterHandler(new InsertConfigElementHandlerRegistration());
+            RegisterHandler(new UpdateConfigElementHandlerRegistration());
+            RegisterHandler(new GetConfigElementHandlerRegistration());
+            RegisterHandler(new DeleteConfigElementHandlerRegistration());
 
-		private PathString GetRestTemplateDocumentPath(IOwinContext context)
-		{
-			return context.FormatRoutePath(new PathString(GetBaseApplicationPath() + "/_documentType_"));
-		}
+            RegisterHandler(new InsertDocumentElementHandlerRegistration());
+            RegisterHandler(new UpdateDocumentElementHandlerRegistration());
+            RegisterHandler(new GetDocumentElementHandlerRegistration());
+            RegisterHandler(new DeleteDocumentElementHandlerRegistration());
 
-
-		private static IRequestHandlerResult InvokeCustomService(IOwinContext context)
-		{
-			throw new NotImplementedException();
-		}
-
-		private static IRequestHandlerResult InvokeGetDocumentService(IOwinContext context)
-		{
-		    NameValueCollection nameValueCollection = new NameValueCollection();
-		    if (context.Request.QueryString.HasValue)
-		    {
-                nameValueCollection = HttpUtility.ParseQueryString(HttpUtility.UrlDecode(context.Request.QueryString.Value));
-		    }
-
-		    var filter = nameValueCollection.Get("filter");
-		    IEnumerable<dynamic> criteriaList = new List<dynamic>();
-		    if (filter != null)
-		    {
-		        criteriaList = new FilterConverter().Convert(filter);
-		    }
-
-		    var sorting = nameValueCollection.Get("sorting");
-		    IEnumerable<dynamic> sortingList = new List<dynamic>();
-		    if (sorting != null)
-		    {
-		        sortingList = new SortingConverter().Convert(sorting);
-		    }
-
-
-		    var routeDictionary = context.GetRouteDictionary();
-
-		    IEnumerable<dynamic> result = new DocumentApi().GetDocument(routeDictionary["application"], routeDictionary["documentType"], criteriaList,
-		        Convert.ToInt32(nameValueCollection["pagenumber"]), Convert.ToInt32(nameValueCollection["pageSize"]),null, sortingList);
-
-            return new ValueRequestHandlerResult(result);
-		}
-
-		private static IRequestHandlerResult InvokePostDocumentService(IOwinContext context)
-		{
-			throw new NotImplementedException();
-		}
-
-		private static IRequestHandlerResult InvokePutDocumentService(IOwinContext context)
-		{		   
-            var body = JObject.Parse(ReadRequestBody(context).ToString());
-
-            var routeDictionary = context.GetRouteDictionary();
-
-		    return new ValueRequestHandlerResult(new DocumentApi().SetDocument(routeDictionary["application"], routeDictionary["documentType"], body));
-		}
-
-		private static IRequestHandlerResult InvokeDeleteDocumentService(IOwinContext context)
-		{
-			throw new NotImplementedException();
-		}
-
-	}
+        }
+    }
 }

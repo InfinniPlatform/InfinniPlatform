@@ -2,141 +2,124 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
-
 using InfinniPlatform.FastReport.Templates.Data;
 
 namespace InfinniPlatform.ReportDesigner.Views.Parameters
 {
-	/// <summary>
-	/// Представление для указания значений параметров отчета.
-	/// </summary>
-	sealed partial class ParameterValuesView : UserControl
-	{
-		public ParameterValuesView()
-		{
-			InitializeComponent();
+    /// <summary>
+    ///     Представление для указания значений параметров отчета.
+    /// </summary>
+    sealed partial class ParameterValuesView : UserControl
+    {
+        private IEnumerable<DataSourceInfo> _dataSources;
 
-			ShowLabel = true;
-		}
+        private readonly ParameterConstantValuesView _constantValuesView
+            = new ParameterConstantValuesView {Dock = DockStyle.Fill};
 
+        private readonly ParameterDataSourceValuesView _dataSourceValuesView
+            = new ParameterDataSourceValuesView {Dock = DockStyle.Fill};
 
-		/// <summary>
-		/// Отображать наименование значения.
-		/// </summary>
-		[DefaultValue(true)]
-		public bool ShowLabel { get; set; }
+        public ParameterValuesView()
+        {
+            InitializeComponent();
 
+            ShowLabel = true;
+        }
 
-		private IEnumerable<DataSourceInfo> _dataSources;
+        /// <summary>
+        ///     Отображать наименование значения.
+        /// </summary>
+        [DefaultValue(true)]
+        public bool ShowLabel { get; set; }
 
-		/// <summary>
-		/// Список источников данных.
-		/// </summary>
-		[Browsable(false)]
-		[DefaultValue(null)]
-		public IEnumerable<DataSourceInfo> DataSources
-		{
-			get
-			{
-				return _dataSources;
-			}
-			set
-			{
-				_dataSources = value;
+        /// <summary>
+        ///     Список источников данных.
+        /// </summary>
+        [Browsable(false)]
+        [DefaultValue(null)]
+        public IEnumerable<DataSourceInfo> DataSources
+        {
+            get { return _dataSources; }
+            set
+            {
+                _dataSources = value;
 
-				_dataSourceValuesView.DataSources = value;
-			}
-		}
+                _dataSourceValuesView.DataSources = value;
+            }
+        }
 
+        /// <summary>
+        ///     Значения параметров отчета.
+        /// </summary>
+        [Browsable(false)]
+        [DefaultValue(null)]
+        public IParameterValueProviderInfo ParameterValues
+        {
+            get { return GetParameterValues(); }
+            set { SetParameterValues(value); }
+        }
 
-		/// <summary>
-		/// Значения параметров отчета.
-		/// </summary>
-		[Browsable(false)]
-		[DefaultValue(null)]
-		public IParameterValueProviderInfo ParameterValues
-		{
-			get
-			{
-				return GetParameterValues();
-			}
-			set
-			{
-				SetParameterValues(value);
-			}
-		}
+        private IParameterValueProviderInfo GetParameterValues()
+        {
+            if (ConstantValuesRadioButton.Checked)
+            {
+                return _constantValuesView.ParameterValues;
+            }
 
+            if (DataSourceValuesRadioButton.Checked)
+            {
+                return _dataSourceValuesView.ParameterValues;
+            }
 
-		private readonly ParameterConstantValuesView _constantValuesView
-			= new ParameterConstantValuesView { Dock = DockStyle.Fill };
+            return null;
+        }
 
-		private readonly ParameterDataSourceValuesView _dataSourceValuesView
-			= new ParameterDataSourceValuesView { Dock = DockStyle.Fill };
+        private void SetParameterValues(IParameterValueProviderInfo parameterValues)
+        {
+            _constantValuesView.ParameterValues = null;
+            _dataSourceValuesView.ParameterValues = null;
 
+            if (parameterValues == null)
+            {
+                NoneValuesRadioButton.Checked = true;
+            }
+            else if (parameterValues is ParameterConstantValueProviderInfo)
+            {
+                ConstantValuesRadioButton.Checked = true;
 
-		private IParameterValueProviderInfo GetParameterValues()
-		{
-			if (ConstantValuesRadioButton.Checked)
-			{
-				return _constantValuesView.ParameterValues;
-			}
+                _constantValuesView.ParameterValues = (ParameterConstantValueProviderInfo) parameterValues;
+            }
+            else if (parameterValues is ParameterDataSourceValueProviderInfo)
+            {
+                DataSourceValuesRadioButton.Checked = true;
 
-			if (DataSourceValuesRadioButton.Checked)
-			{
-				return _dataSourceValuesView.ParameterValues;
-			}
+                _dataSourceValuesView.ParameterValues = (ParameterDataSourceValueProviderInfo) parameterValues;
+            }
+        }
 
-			return null;
-		}
+        private void OnSelectParameterValues(object sender, EventArgs e)
+        {
+            ValuesPanel.Controls.Clear();
 
-		private void SetParameterValues(IParameterValueProviderInfo parameterValues)
-		{
-			_constantValuesView.ParameterValues = null;
-			_dataSourceValuesView.ParameterValues = null;
+            if (ConstantValuesRadioButton.Checked)
+            {
+                _constantValuesView.ShowLabel = ShowLabel;
 
-			if (parameterValues == null)
-			{
-				NoneValuesRadioButton.Checked = true;
-			}
-			else if (parameterValues is ParameterConstantValueProviderInfo)
-			{
-				ConstantValuesRadioButton.Checked = true;
+                ValuesPanel.Controls.Add(_constantValuesView);
+            }
+            else if (DataSourceValuesRadioButton.Checked)
+            {
+                _dataSourceValuesView.ShowLabel = ShowLabel;
 
-				_constantValuesView.ParameterValues = (ParameterConstantValueProviderInfo)parameterValues;
-			}
-			else if (parameterValues is ParameterDataSourceValueProviderInfo)
-			{
-				DataSourceValuesRadioButton.Checked = true;
+                ValuesPanel.Controls.Add(_dataSourceValuesView);
+            }
+        }
 
-				_dataSourceValuesView.ParameterValues = (ParameterDataSourceValueProviderInfo)parameterValues;
-			}
-		}
-
-
-		private void OnSelectParameterValues(object sender, EventArgs e)
-		{
-			ValuesPanel.Controls.Clear();
-
-			if (ConstantValuesRadioButton.Checked)
-			{
-				_constantValuesView.ShowLabel = ShowLabel;
-
-				ValuesPanel.Controls.Add(_constantValuesView);
-			}
-			else if (DataSourceValuesRadioButton.Checked)
-			{
-				_dataSourceValuesView.ShowLabel = ShowLabel;
-
-				ValuesPanel.Controls.Add(_dataSourceValuesView);
-			}
-		}
-
-
-		public override bool ValidateChildren()
-		{
-			return NoneValuesRadioButton.Checked
-				   || (ConstantValuesRadioButton.Checked && _constantValuesView.ValidateChildren())
-				   || (DataSourceValuesRadioButton.Checked && _dataSourceValuesView.ValidateChildren());
-		}
-	}
+        public override bool ValidateChildren()
+        {
+            return NoneValuesRadioButton.Checked
+                   || (ConstantValuesRadioButton.Checked && _constantValuesView.ValidateChildren())
+                   || (DataSourceValuesRadioButton.Checked && _dataSourceValuesView.ValidateChildren());
+        }
+    }
 }

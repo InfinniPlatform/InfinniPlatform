@@ -1,9 +1,10 @@
 ﻿using System;
-using InfinniPlatform.Api.Factories;
 using InfinniPlatform.BlobStorage;
 using InfinniPlatform.Factories;
 using InfinniPlatform.FastReport.Serialization;
 using InfinniPlatform.FastReport.Templates.Reports;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Binary;
 
 namespace InfinniPlatform.Reporting.Services
 {

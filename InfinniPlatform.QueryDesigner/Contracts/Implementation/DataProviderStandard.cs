@@ -35,7 +35,7 @@ namespace InfinniPlatform.QueryDesigner.Contracts.Implementation
 
 		public IEnumerable<SchemaObject> GetPropertyPaths(string configuration, string document, string alias, PathResolveType pathResolveType)
 		{
-			return new PropertiesFiller().FillProperties(configuration, document, alias, pathResolveType);
+			return new PropertiesFiller().FillProperties(TODO, configuration, document, alias, pathResolveType);
 		}
 
 
@@ -128,7 +128,7 @@ namespace InfinniPlatform.QueryDesigner.Contracts.Implementation
 			managerDocument.MergeItem(documentMetadata2);
             managerDocument.MergeItem(documentMetadata3);
 
-			RestQueryApi.QueryPostNotify(configurationId);
+			RestQueryApi.QueryPostNotify(configurationId, TODO);
 
 			var addressId = Guid.NewGuid().ToString();
 			var policy1Id = Guid.NewGuid().ToString();

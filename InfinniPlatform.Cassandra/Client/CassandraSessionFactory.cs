@@ -1,7 +1,8 @@
 ﻿using System;
 
 using Cassandra;
-using InfinniPlatform.Api.Settings;
+
+using InfinniPlatform.Sdk.Environment.Settings;
 
 namespace InfinniPlatform.Cassandra.Client
 {

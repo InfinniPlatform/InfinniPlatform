@@ -1,180 +1,179 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
 using InfinniPlatform.Expressions.BuiltInTypes;
 using InfinniPlatform.Expressions.Properties;
 
 namespace InfinniPlatform.Expressions.Parser
 {
-	static class ParserHelpers
-	{
-		public static Type ParseType(object value, bool throwOnError = true)
-		{
-			var type = (value as Type);
+    internal static class ParserHelpers
+    {
+        private static readonly Dictionary<string, Type> BuiltInTypes
+            = new Dictionary<string, Type>
+            {
+                {"bool", typeof (bool)},
+                {"byte", typeof (byte)},
+                {"sbyte", typeof (sbyte)},
+                {"char", typeof (char)},
+                {"decimal", typeof (decimal)},
+                {"double", typeof (double)},
+                {"float", typeof (float)},
+                {"int", typeof (int)},
+                {"uint", typeof (uint)},
+                {"long", typeof (long)},
+                {"ulong", typeof (ulong)},
+                {"object", typeof (object)},
+                {"short", typeof (short)},
+                {"ushort", typeof (ushort)},
+                {"string", typeof (string)},
+                {"Math", typeof (MathFunctions)},
+                {"Text", typeof (TextFunctions)},
+                {"DateTime", typeof (DateTimeFunctions)},
+                {"TimeSpan", typeof (TimeSpanFunctions)},
+                {"Condition", typeof (ConditionFunctions)},
+                {"Enumerable", typeof (EnumerableFunctions)}
+            };
 
-			if (type == null && value is string)
-			{
-				var typeName = (value as string).Trim();
+        public static Type ParseType(object value, bool throwOnError = true)
+        {
+            var type = (value as Type);
 
-				if (!BuiltInTypes.TryGetValue(typeName, out type))
-				{
-					typeName = GetQualifiedTypeName(typeName);
-					type = Type.GetType(typeName);
-				}
-			}
+            if (type == null && value is string)
+            {
+                var typeName = (value as string).Trim();
 
-			if (type == null && throwOnError)
-			{
-				throw new ArgumentException(string.Format(Resources.UnknownType, value), "value");
-			}
+                if (!BuiltInTypes.TryGetValue(typeName, out type))
+                {
+                    typeName = GetQualifiedTypeName(typeName);
+                    type = Type.GetType(typeName);
+                }
+            }
 
-			return type;
-		}
+            if (type == null && throwOnError)
+            {
+                throw new ArgumentException(string.Format(Resources.UnknownType, value), "value");
+            }
 
-		private static string GetQualifiedTypeName(string value)
-		{
-			string result = null;
+            return type;
+        }
 
-			if (!string.IsNullOrEmpty(value))
-			{
-				value = value.Trim();
+        private static string GetQualifiedTypeName(string value)
+        {
+            string result = null;
 
-				if (!string.IsNullOrEmpty(value))
-				{
-					var name = new StringBuilder();
-					var types = new Stack<Tuple<string, List<string>>>();
+            if (!string.IsNullOrEmpty(value))
+            {
+                value = value.Trim();
 
-					foreach (var c in value)
-					{
-						switch (c)
-						{
-							// Начало параметров generic-типа
-							case '<':
-								{
-									var typeName = name.ToString();
-									var genericTypes = new List<string>();
-									types.Push(new Tuple<string, List<string>>(typeName, genericTypes));
-									name.Clear();
-								}
-								break;
-							// Очередной параметр generic-типа
-							case ',':
-								{
-									// Добавление параметра родительскому типу
-									if (types.Count > 0 && name.Length > 0)
-									{
-										var parentType = types.Peek();
-										var typeName = name.ToString();
-										var genericTypes = parentType.Item2;
-										genericTypes.Add(typeName);
-									}
+                if (!string.IsNullOrEmpty(value))
+                {
+                    var name = new StringBuilder();
+                    var types = new Stack<Tuple<string, List<string>>>();
 
-									name.Clear();
-								}
-								break;
-							// Окончание параметров generic-типа
-							case '>':
-								{
-									if (types.Count > 0)
-									{
-										// Добавление параметра родительскому типу
+                    foreach (var c in value)
+                    {
+                        switch (c)
+                        {
+                            // Начало параметров generic-типа
+                            case '<':
+                            {
+                                var typeName = name.ToString();
+                                var genericTypes = new List<string>();
+                                types.Push(new Tuple<string, List<string>>(typeName, genericTypes));
+                                name.Clear();
+                            }
+                                break;
+                            // Очередной параметр generic-типа
+                            case ',':
+                            {
+                                // Добавление параметра родительскому типу
+                                if (types.Count > 0 && name.Length > 0)
+                                {
+                                    var parentType = types.Peek();
+                                    var typeName = name.ToString();
+                                    var genericTypes = parentType.Item2;
+                                    genericTypes.Add(typeName);
+                                }
 
-										var parentType = types.Pop();
-										var genericTypes = parentType.Item2;
+                                name.Clear();
+                            }
+                                break;
+                            // Окончание параметров generic-типа
+                            case '>':
+                            {
+                                if (types.Count > 0)
+                                {
+                                    // Добавление параметра родительскому типу
 
-										if (name.Length > 0)
-										{
-											var typeName = name.ToString();
-											genericTypes.Add(typeName);
-											name.Clear();
-										}
+                                    var parentType = types.Pop();
+                                    var genericTypes = parentType.Item2;
 
-										// Формирование полного имени родительского типа
+                                    if (name.Length > 0)
+                                    {
+                                        var typeName = name.ToString();
+                                        genericTypes.Add(typeName);
+                                        name.Clear();
+                                    }
 
-										name.Append(parentType.Item1);
+                                    // Формирование полного имени родительского типа
 
-										if (genericTypes.Count > 0)
-										{
-											name.Append('`').Append(genericTypes.Count).Append('[');
+                                    name.Append(parentType.Item1);
 
-											foreach (var t in genericTypes)
-											{
-												var gt = ResolveBuiltInType(t);
-												name.Append(gt).Append(',');
-											}
+                                    if (genericTypes.Count > 0)
+                                    {
+                                        name.Append('`').Append(genericTypes.Count).Append('[');
 
-											name.Remove(name.Length - 1, 1);
-											name.Append(']');
-										}
+                                        foreach (var t in genericTypes)
+                                        {
+                                            var gt = ResolveBuiltInType(t);
+                                            name.Append(gt).Append(',');
+                                        }
 
-										// Добавление параметра родительскому типу
+                                        name.Remove(name.Length - 1, 1);
+                                        name.Append(']');
+                                    }
 
-										if (types.Count > 0)
-										{
-											parentType = types.Peek();
-											genericTypes = parentType.Item2;
+                                    // Добавление параметра родительскому типу
 
-											var typeName = name.ToString();
-											genericTypes.Add(typeName);
-											name.Clear();
-										}
-									}
-								}
-								break;
-							// Пропуск незначимых символов
-							case ' ':
-							case '\t':
-							case '\r':
-							case '\n':
-								break;
-							// Формирование имени типа
-							default:
-								{
-									name.Append(c);
-								}
-								break;
-						}
-					}
+                                    if (types.Count > 0)
+                                    {
+                                        parentType = types.Peek();
+                                        genericTypes = parentType.Item2;
 
-					result = name.ToString();
-				}
-			}
+                                        var typeName = name.ToString();
+                                        genericTypes.Add(typeName);
+                                        name.Clear();
+                                    }
+                                }
+                            }
+                                break;
+                            // Пропуск незначимых символов
+                            case ' ':
+                            case '\t':
+                            case '\r':
+                            case '\n':
+                                break;
+                            // Формирование имени типа
+                            default:
+                            {
+                                name.Append(c);
+                            }
+                                break;
+                        }
+                    }
 
-			return result;
-		}
+                    result = name.ToString();
+                }
+            }
 
-		private static string ResolveBuiltInType(string value)
-		{
-			Type type;
+            return result;
+        }
 
-			return BuiltInTypes.TryGetValue(value, out type) ? type.FullName : value;
-		}
+        private static string ResolveBuiltInType(string value)
+        {
+            Type type;
 
-		private static readonly Dictionary<string, Type> BuiltInTypes
-			= new Dictionary<string, Type>
-			  {
-				  { "bool", typeof(bool) },
-				  { "byte", typeof(byte) },
-				  { "sbyte", typeof(sbyte) },
-				  { "char", typeof(char) },
-				  { "decimal", typeof(decimal) },
-				  { "double", typeof(double) },
-				  { "float", typeof(float) },
-				  { "int", typeof(int) },
-				  { "uint", typeof(uint) },
-				  { "long", typeof(long) },
-				  { "ulong", typeof(ulong) },
-				  { "object", typeof(object) },
-				  { "short", typeof(short) },
-				  { "ushort", typeof(ushort) },
-				  { "string", typeof(string) },
-				  { "Math", typeof(MathFunctions) },
-				  { "Text", typeof(TextFunctions) },
-				  { "DateTime", typeof(DateTimeFunctions) },
-				  { "TimeSpan", typeof(TimeSpanFunctions) },
-				  { "Condition", typeof(ConditionFunctions) },
-				  { "Enumerable", typeof(EnumerableFunctions) }
-			  };
-	}
+            return BuiltInTypes.TryGetValue(value, out type) ? type.FullName : value;
+        }
+    }
 }

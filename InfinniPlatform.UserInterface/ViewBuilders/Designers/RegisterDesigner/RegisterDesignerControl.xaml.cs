@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Windows.Controls;
 
-
 namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.RegisterDesigner
 {
     /// <summary>
-    /// Interaction logic for RegisterDesignerControl.xaml
+    ///     Interaction logic for RegisterDesignerControl.xaml
     /// </summary>
     public partial class RegisterDesignerControl : UserControl
     {
@@ -15,15 +14,6 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.RegisterDesigner
 
             Designer.OnValueChanged += OnValueChangedHandler;
         }
-
-        private void OnValueChangedHandler(object sender, EventArgs e)
-        {
-            if (OnValueChanged != null)
-            {
-                OnValueChanged(sender, e);
-            }
-        }
-
 
         public Func<string> ConfigId
         {
@@ -37,12 +27,25 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.RegisterDesigner
             set { Designer.DocumentId = value; }
         }
 
+        public Func<string> Version
+        {
+            get { return Designer.Version; }
+            set { Designer.Version = value; }
+        }
+
         public object Value
         {
             get { return Designer.Value; }
             set { Designer.Value = value; }
         }
 
+        private void OnValueChangedHandler(object sender, EventArgs e)
+        {
+            if (OnValueChanged != null)
+            {
+                OnValueChanged(sender, e);
+            }
+        }
 
         public event EventHandler OnValueChanged;
     }

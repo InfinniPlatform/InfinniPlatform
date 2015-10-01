@@ -1,74 +1,59 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-
+using InfinniPlatform.Sdk.Api;
 using InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Factories;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Controls
 {
-	static class ConfigTreeBuilder
-	{
-		static ConfigTreeBuilder()
-		{
-			ElementNodeBuilder = new ConfigElementNodeBuilder();
+    internal static class ConfigTreeBuilder
+    {
+        private static readonly ConfigElementNodeBuilder ElementNodeBuilder;
 
-			ElementNodeBuilder.Register(ConfigContainerNodeFactory.ElementType, new ConfigContainerNodeFactory());
-			ElementNodeBuilder.Register(ConfigElementNodeFactory.ElementType, new ConfigElementNodeFactory());
+        static ConfigTreeBuilder()
+        {
+            //TODO Необходимо придумать способ передачи параметров сервера в билдер
+            ElementNodeBuilder = new ConfigElementNodeBuilder(HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort, null, "1");
 
-			ElementNodeBuilder.Register(MenuContainerNodeFactory.ElementType, new MenuContainerNodeFactory());
-			ElementNodeBuilder.Register(MenuElementNodeFactory.ElementType, new MenuElementNodeFactory());
+            ElementNodeBuilder.Register(ConfigContainerNodeFactory.ElementType, new ConfigContainerNodeFactory());
+            ElementNodeBuilder.Register(ConfigElementNodeFactory.ElementType, new ConfigElementNodeFactory());
 
-			ElementNodeBuilder.Register(DocumentContainerNodeFactory.ElementType, new DocumentContainerNodeFactory());
-			ElementNodeBuilder.Register(DocumentElementNodeFactory.ElementType, new DocumentElementNodeFactory());
+            ElementNodeBuilder.Register(MenuContainerNodeFactory.ElementType, new MenuContainerNodeFactory());
+            ElementNodeBuilder.Register(MenuElementNodeFactory.ElementType, new MenuElementNodeFactory());
 
-			ElementNodeBuilder.Register(AssemblyContainerNodeFactory.ElementType, new AssemblyContainerNodeFactory());
-			ElementNodeBuilder.Register(AssemblyElementNodeFactory.ElementType, new AssemblyElementNodeFactory());
+            ElementNodeBuilder.Register(DocumentContainerNodeFactory.ElementType, new DocumentContainerNodeFactory());
+            ElementNodeBuilder.Register(DocumentElementNodeFactory.ElementType, new DocumentElementNodeFactory());
 
-			ElementNodeBuilder.Register(RegisterContainerNodeFactory.ElementType, new RegisterContainerNodeFactory());
-			ElementNodeBuilder.Register(RegisterElementNodeFactory.ElementType, new RegisterElementNodeFactory());
+            ElementNodeBuilder.Register(AssemblyContainerNodeFactory.ElementType, new AssemblyContainerNodeFactory());
+            ElementNodeBuilder.Register(AssemblyElementNodeFactory.ElementType, new AssemblyElementNodeFactory());
 
-			ElementNodeBuilder.Register(ReportContainerNodeFactory.ElementType, new ReportContainerNodeFactory());
-			ElementNodeBuilder.Register(ReportElementNodeFactory.ElementType, new ReportElementNodeFactory());
+            ElementNodeBuilder.Register(RegisterContainerNodeFactory.ElementType, new RegisterContainerNodeFactory());
+            ElementNodeBuilder.Register(RegisterElementNodeFactory.ElementType, new RegisterElementNodeFactory());
 
-			ElementNodeBuilder.Register(ViewContainerNodeFactory.ElementType, new ViewContainerNodeFactory());
-			ElementNodeBuilder.Register(ViewElementNodeFactory.ElementType, new ViewElementNodeFactory());
+            ElementNodeBuilder.Register(ViewContainerNodeFactory.ElementType, new ViewContainerNodeFactory());
+            ElementNodeBuilder.Register(ViewElementNodeFactory.ElementType, new ViewElementNodeFactory());
 
-			ElementNodeBuilder.Register(PrintViewContainerNodeFactory.ElementType, new PrintViewContainerNodeFactory());
-			ElementNodeBuilder.Register(PrintViewElementNodeFactory.ElementType, new PrintViewElementNodeFactory());
+            ElementNodeBuilder.Register(PrintViewContainerNodeFactory.ElementType, new PrintViewContainerNodeFactory());
+            ElementNodeBuilder.Register(PrintViewElementNodeFactory.ElementType, new PrintViewElementNodeFactory());
 
-			ElementNodeBuilder.Register(ValidationErrorContainerNodeFactory.ElementType, new ValidationErrorContainerNodeFactory());
-			ElementNodeBuilder.Register(ValidationErrorElementNodeFactory.ElementType, new ValidationErrorElementNodeFactory());
+            ElementNodeBuilder.Register(ScenarioContainerNodeFactory.ElementType, new ScenarioContainerNodeFactory());
+            ElementNodeBuilder.Register(ScenarioElementNodeFactory.ElementType, new ScenarioElementNodeFactory());
 
-			ElementNodeBuilder.Register(ValidationWarningContainerNodeFactory.ElementType, new ValidationWarningContainerNodeFactory());
-			ElementNodeBuilder.Register(ValidationWarningElementNodeFactory.ElementType, new ValidationWarningElementNodeFactory());
+            ElementNodeBuilder.Register(ProcessContainerNodeFactory.ElementType, new ProcessContainerNodeFactory());
+            ElementNodeBuilder.Register(ProcessElementNodeFactory.ElementType, new ProcessElementNodeFactory());
 
-			ElementNodeBuilder.Register(ScenarioContainerNodeFactory.ElementType, new ScenarioContainerNodeFactory());
-			ElementNodeBuilder.Register(ScenarioElementNodeFactory.ElementType, new ScenarioElementNodeFactory());
+            ElementNodeBuilder.Register(ServiceContainerNodeFactory.ElementType, new ServiceContainerNodeFactory());
+            ElementNodeBuilder.Register(ServiceElementNodeFactory.ElementType, new ServiceElementNodeFactory());
 
-			ElementNodeBuilder.Register(ProcessContainerNodeFactory.ElementType, new ProcessContainerNodeFactory());
-			ElementNodeBuilder.Register(ProcessElementNodeFactory.ElementType, new ProcessElementNodeFactory());
+        }
 
-			ElementNodeBuilder.Register(ServiceContainerNodeFactory.ElementType, new ServiceContainerNodeFactory());
-			ElementNodeBuilder.Register(ServiceElementNodeFactory.ElementType, new ServiceElementNodeFactory());
+        public static IEnumerable<ConfigElementNode> Build(IConfigElementEditPanel editPanel)
+        {
+            var configTree = new ObservableCollection<ConfigElementNode>();
 
-			ElementNodeBuilder.Register(GeneratorContainerNodeFactory.ElementType, new GeneratorContainerNodeFactory());
-			ElementNodeBuilder.Register(GeneratorElementNodeFactory.ElementType, new GeneratorElementNodeFactory());
+            ElementNodeBuilder.EditPanel = editPanel;
+            ElementNodeBuilder.BuildElement(configTree, null, new object(), ConfigContainerNodeFactory.ElementType);
 
-			ElementNodeBuilder.Register(StatusContainerNodeFactory.ElementType, new StatusContainerNodeFactory());
-			ElementNodeBuilder.Register(StatusElementNodeFactory.ElementType, new StatusElementNodeFactory());
-		}
-
-
-		private static readonly ConfigElementNodeBuilder ElementNodeBuilder;
-
-
-		public static IEnumerable<ConfigElementNode> Build(IConfigElementEditPanel editPanel)
-		{
-			var configTree = new ObservableCollection<ConfigElementNode>();
-
-			ElementNodeBuilder.EditPanel = editPanel;
-			ElementNodeBuilder.BuildElement(configTree, null, new object(), ConfigContainerNodeFactory.ElementType);
-
-			return configTree;
-		}
-	}
+            return configTree;
+        }
+    }
 }

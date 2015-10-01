@@ -1,63 +1,73 @@
 ﻿using System.Collections.Generic;
-
 using InfinniPlatform.UserInterface.ViewBuilders.Data;
 using InfinniPlatform.UserInterface.ViewBuilders.Elements;
 using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigDesigner
 {
-	sealed class ConfigDesignerElementBuilder : IObjectBuilder
-	{
-		public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
-		{
-			var configDesigner = new ConfigDesignerElement(parent);
-			configDesigner.ApplyElementMeatadata((object)metadata);
+    internal sealed class ConfigDesignerElementBuilder : IObjectBuilder
+    {
+        private readonly string _server;
+        private readonly int _port;
+        private readonly string _routeVersion;
 
-			// Редакторы элементов метаданных
+        public ConfigDesignerElementBuilder(string server, int port, string routeVersion)
+        {
+            _server = server;
+            _port = port;
+            _routeVersion = routeVersion;
+        }
 
-			if (metadata.Editors != null)
-			{
-				var editors = new List<ItemEditor>();
+        public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
+        {
+            var configDesigner = new ConfigDesignerElement(parent, _server, _port, _routeVersion);
+            configDesigner.ApplyElementMeatadata((object) metadata);
 
-				foreach (var editor in metadata.Editors)
-				{
-					editors.Add(new ItemEditor
-								{
-									Text = editor.Text,
-									Image = editor.Image,
-									Container = editor.Container,
-									MetadataType = editor.MetadataType,
-									LinkView = context.Build(parent, editor.LinkView)
-								});
-				}
+            // Редакторы элементов метаданных
 
-				configDesigner.SetEditors(editors);
-			}
+            if (metadata.Editors != null)
+            {
+                var editors = new List<ItemEditor>();
 
-			// Привязка к источнику данных представления
+                foreach (var editor in metadata.Editors)
+                {
+                    editors.Add(new ItemEditor
+                    {
+                        Text = editor.Text,
+                        Image = editor.Image,
+                        Container = editor.Container,
+                        MetadataType = editor.MetadataType,
+                        LinkView = context.Build(parent, editor.LinkView)
+                    });
+                }
 
-			IElementDataBinding itemsDataBinding = context.Build(parent, metadata.Items);
+                configDesigner.SetEditors(editors);
+            }
 
-			if (itemsDataBinding != null)
-			{
-				itemsDataBinding.OnPropertyValueChanged += (c, a) => configDesigner.SetItems(a.Value);
+            // Привязка к источнику данных представления
 
-				var sourceItemsDataBinding = itemsDataBinding as ISourceDataBinding;
+            IElementDataBinding itemsDataBinding = context.Build(parent, metadata.Items);
 
-				if (sourceItemsDataBinding != null)
-				{
-					var dataSourceName = sourceItemsDataBinding.GetDataSource();
+            if (itemsDataBinding != null)
+            {
+                itemsDataBinding.OnPropertyValueChanged += (c, a) => configDesigner.SetItems(a.Value);
 
-					// Оповещение источника об изменениях в редакторе
-					configDesigner.NotifyWhenEventAsync(i => i.OnUpdateItems, arguments =>
-					                                                          {
-						                                                          arguments.DataSource = dataSourceName;
-						                                                          return true;
-					                                                          });
-				}
-			}
+                var sourceItemsDataBinding = itemsDataBinding as ISourceDataBinding;
 
-			return configDesigner;
-		}
-	}
+                if (sourceItemsDataBinding != null)
+                {
+                    var dataSourceName = sourceItemsDataBinding.GetDataSource();
+
+                    // Оповещение источника об изменениях в редакторе
+                    configDesigner.NotifyWhenEventAsync(i => i.OnUpdateItems, arguments =>
+                    {
+                        arguments.DataSource = dataSourceName;
+                        return true;
+                    });
+                }
+            }
+
+            return configDesigner;
+        }
+    }
 }

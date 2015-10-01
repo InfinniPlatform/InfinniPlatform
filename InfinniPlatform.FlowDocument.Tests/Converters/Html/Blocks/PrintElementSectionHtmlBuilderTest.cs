@@ -27,7 +27,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Converters.Html.Blocks
 
             var section = new PrintElementSection();
             section.Blocks.Add(par);
-            section.Border = new PrintElementBorder()
+            section.Border = new PrintElementBorder
             {
                 Color = "blue",
                 Thickness = new PrintElementThickness(5)
@@ -37,7 +37,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Converters.Html.Blocks
             section.Background = "yellow";
 
             element.Blocks.Add(section);
-            element.Border = new PrintElementBorder()
+            element.Border = new PrintElementBorder
             {
                 Color = PrintElementColors.Red,
                 Thickness = new PrintElementThickness(5)

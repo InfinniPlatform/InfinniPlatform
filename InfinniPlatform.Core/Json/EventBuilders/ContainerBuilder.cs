@@ -1,29 +1,29 @@
 ﻿using System;
 using System.Linq;
-using InfinniPlatform.Api.Events;
+using InfinniPlatform.Sdk.Events;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Json.EventBuilders
 {
-	public class ContainerBuilder : IJsonObjectBuilder
-	{
-		public void BuildJObject(JToken backboneObject, EventDefinition eventDefinition)
-		{
-			if (backboneObject == null)
-			{
-				throw new ArgumentException("object to apply event is not defined");
-			}
+    public class ContainerBuilder : IJsonObjectBuilder
+    {
+        public void BuildJObject(JToken backboneObject, EventDefinition eventDefinition)
+        {
+            if (backboneObject == null)
+            {
+                throw new ArgumentException("object to apply event is not defined");
+            }
 
             backboneObject = GetParent(backboneObject, eventDefinition);
 
-			var parentObject = backboneObject is JObject ? backboneObject as JObject : backboneObject.First() as JObject;
-			if (parentObject == null)
-			{
-				throw new ArgumentException("object to add component is not an object.");
-			}
+            var parentObject = backboneObject is JObject ? backboneObject as JObject : backboneObject.First() as JObject;
+            if (parentObject == null)
+            {
+                throw new ArgumentException("object to add component is not an object.");
+            }
 
-            UpdateProperty(GetPropertyName(eventDefinition.Property),parentObject);            
-		}
+            UpdateProperty(GetPropertyName(eventDefinition.Property), parentObject);
+        }
 
         private void UpdateProperty(string propertyName, JObject parentObject)
         {
@@ -38,20 +38,21 @@ namespace InfinniPlatform.Json.EventBuilders
             }
         }
 
-
-		private string GetPropertyName(string property)
-		{
-			return property.Split('.').LastOrDefault();
-		}
+        private string GetPropertyName(string property)
+        {
+            return property.Split('.').LastOrDefault();
+        }
 
         private JToken GetParent(JToken startObject, dynamic eventDefinition)
         {
-            var path = ((string)eventDefinition.Property).Split('.');
+            var path = ((string) eventDefinition.Property).Split('.');
             if (path.Count() == 1)
             {
                 return startObject;
             }
-            return new JsonParser().FindJsonToken(startObject, string.Join(".", path.Take(path.Count() - 1))).FirstOrDefault();
+            return
+                new JsonParser().FindJsonToken(startObject, string.Join(".", path.Take(path.Count() - 1)))
+                    .FirstOrDefault();
         }
-	}
+    }
 }

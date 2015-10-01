@@ -1,55 +1,54 @@
 ﻿using System;
-
 using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.DisplayFormats
 {
-	sealed class NumberFormatBuilder : IObjectBuilder
-	{
-		public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
-		{
-			return new DataFormat(FormatFunc(metadata.Format));
-		}
+    internal sealed class NumberFormatBuilder : IObjectBuilder
+    {
+        public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
+        {
+            return new DataFormat(FormatFunc(metadata.Format));
+        }
 
-		private static Func<object, string> FormatFunc(object format)
-		{
-			var formatString = format as string;
+        private static Func<object, string> FormatFunc(object format)
+        {
+            var formatString = format as string;
 
-			if (string.IsNullOrEmpty(formatString))
-			{
-				formatString = "n";
-			}
+            if (string.IsNullOrEmpty(formatString))
+            {
+                formatString = "n";
+            }
 
-			return value =>
-				   {
-					   double valueDouble;
+            return value =>
+            {
+                double valueDouble;
 
-					   if (TryToDouble(value, out valueDouble))
-					   {
-						   return valueDouble.ToString(formatString);
-					   }
+                if (TryToDouble(value, out valueDouble))
+                {
+                    return valueDouble.ToString(formatString);
+                }
 
-					   return null;
-				   };
-		}
+                return null;
+            };
+        }
 
-		private static bool TryToDouble(object value, out double result)
-		{
-			result = default(double);
+        private static bool TryToDouble(object value, out double result)
+        {
+            result = default(double);
 
-			if (value != null)
-			{
-				try
-				{
-					result = Convert.ToDouble(value);
-					return true;
-				}
-				catch
-				{
-				}
-			}
+            if (value != null)
+            {
+                try
+                {
+                    result = Convert.ToDouble(value);
+                    return true;
+                }
+                catch
+                {
+                }
+            }
 
-			return false;
-		}
-	}
+            return false;
+        }
+    }
 }

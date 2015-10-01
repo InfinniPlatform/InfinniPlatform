@@ -1,15 +1,18 @@
-﻿namespace InfinniPlatform.Api.Validation.BooleanValidators
-{
-	/// <summary>
-	/// Объект не должен удовлетворять заданному условию.
-	/// </summary>
-	public sealed class NotValidator : BaseValidationOperator
-	{
-		public IValidationOperator Operator { get; set; }
+﻿using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Validations;
 
-		protected override bool ValidateObject(object validationObject)
-		{
-			return (Operator == null) || (Operator.Validate(validationObject) == false);
-		}
-	}
+namespace InfinniPlatform.Api.Validation.BooleanValidators
+{
+    /// <summary>
+    ///     Объект не должен удовлетворять заданному условию.
+    /// </summary>
+    public sealed class NotValidator : BaseValidationOperator
+    {
+        public IValidationOperator Operator { get; set; }
+
+        protected override bool ValidateObject(object validationObject)
+        {
+            return (Operator == null) || (Operator.Validate(validationObject) == false);
+        }
+    }
 }

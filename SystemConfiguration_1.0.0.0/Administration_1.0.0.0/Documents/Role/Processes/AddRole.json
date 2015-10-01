@@ -1,0 +1,20 @@
+{
+  "Id": "4ad3e87c-7f78-4e68-85b5-efbd359b7754",
+  "Name": "AddRole",
+  "Caption": "AddRole",
+  "Type": 2,
+  "Transitions": [
+    {
+      "Id": "13665278-071b-4e34-b1d7-67e42ca8b3c5",
+      "Name": "AddRole",
+      "ActionPoint": {
+        "TypeName": "Action",
+        "ScenarioId": "7a9894d4-7799-4efe-ab08-8e8648efdecd"
+      }
+    }
+  ],
+  "SettingsType": "Custom",
+  "ParentId": "73746851-7217-44da-b5cb-5d54c3a6171a",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "processmetadata"
+}

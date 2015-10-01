@@ -7,11 +7,11 @@ using System.Web.Http;
 using System.Web.Http.Dispatcher;
 
 using Autofac;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Logging;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.WebApi.Controllers;
 using InfinniPlatform.WebApi.Logging;
 
@@ -26,13 +26,6 @@ namespace InfinniPlatform.WebApi.WebApi
 		{
 		    _hostConfiguration = new HttpConfiguration();
 		    _hostConfiguration.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
-             //_hostConfiguration.MaxReceivedMessageSize = 100 * 1024 * 1024, // 100 Mb ????
-		     //_hostConfiguration.TransferMode = TransferMode.StreamedRequest
-                                     //{
-                                     //    IncludeErrorDetailPolicy = 
-                                     //    MaxReceivedMessageSize = 100 * 1024 * 1024, // 100 Mb
-                                     //    TransferMode = TransferMode.StreamedRequest
-                                     //};
 			_hostConfiguration.Services.Replace(typeof(IHttpControllerSelector), new HttpControllerSelector(_hostConfiguration));
 
 			_modules = modules;
@@ -43,10 +36,8 @@ namespace InfinniPlatform.WebApi.WebApi
 
 
 			_containerBuilder.RegisterType<StandardApiController>().AsSelf();
-			_containerBuilder.RegisterType<FileController>().AsSelf();
 		    _containerBuilder.RegisterType<UploadController>().AsSelf();
 			_containerBuilder.RegisterType<UrlEncodedDataController>().AsSelf();
-			_containerBuilder.RegisterType<StandardStreamedApiController>().AsSelf();
 
 
 			RemoveXmlFormatter();
@@ -195,9 +186,9 @@ namespace InfinniPlatform.WebApi.WebApi
 		/// <summary>
 		/// Создать шаблон REST-сервиса.
 		/// </summary>
-		public IRestVerbsRegistrator CreateTemplate(string metadataConfigurationId, string apiControllerName)
+		public IRestVerbsRegistrator CreateTemplate(string version, string metadataConfigurationId, string apiControllerName)
 		{
-			return ApiControllerFactory.CreateTemplate(metadataConfigurationId, apiControllerName);
+			return ApiControllerFactory.CreateTemplate(version, metadataConfigurationId, apiControllerName);
 		}
 
 		/// <summary>
@@ -220,13 +211,14 @@ namespace InfinniPlatform.WebApi.WebApi
 	        }
 	    }
 
-		/// <summary>
-		///   Удаление регистрации сервисов
-		/// </summary>
-		/// <param name="metadataConfigurationId">Идентификатор конфигурации, для которой выполянем удаление регистраций</param>
-		public void RemoveTemplates(string metadataConfigurationId)
+	    /// <summary>
+	    ///   Удаление регистрации сервисов
+	    /// </summary>
+	    /// <param name="version">Версия конфигурации</param>
+	    /// <param name="metadataConfigurationId">Идентификатор конфигурации, для которой выполянем удаление регистраций</param>
+	    public void RemoveTemplates(string version, string metadataConfigurationId)
 		{
-			ApiControllerFactory.RemoveTemplates(metadataConfigurationId);
+			ApiControllerFactory.RemoveTemplates(version, metadataConfigurationId);
 		}
 	}
 }

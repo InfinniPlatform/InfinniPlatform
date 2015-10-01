@@ -1,14 +1,13 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.ContextTypes.ContextImpl;
-using InfinniPlatform.Api.Factories;
+﻿using InfinniPlatform.Api.ContextTypes.ContextImpl;
 using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Runtime;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Global;
 
 namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
 {
     /// <summary>
-    ///   Обработчик ошибки сохранения документа (при стандартном сохранении документа)
+    ///     Обработчик ошибки сохранения документа (при стандартном сохранении документа)
     /// </summary>
     public sealed class ActionUnitFailSetDocument
     {
@@ -23,7 +22,10 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
             {
                 //ищем метаданные бизнес-процесса по умолчанию документа 
 
-				defaultBusinessProcess = target.Context.GetComponent<IMetadataComponent>().GetMetadata(target.Item.Configuration, target.Item.Metadata, MetadataType.Process, "Default");
+                defaultBusinessProcess =
+                    target.Context.GetComponent<IMetadataComponent>()
+                          .GetMetadata(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration, target.Item.Metadata,
+                                       MetadataType.Process, "Default");
             }
             else
             {
@@ -37,10 +39,12 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                 scriptArguments.Item = target.Item.Document;
                 scriptArguments.Item.Configuration = target.Item.Configuration;
                 scriptArguments.Item.Metadata = target.Item.Metadata;
+                scriptArguments.Context = target.Context.GetComponent<ICustomServiceGlobalContext>();
 
-				target.Context.GetComponent<IScriptRunnerComponent>().GetScriptRunner(target.Item.Configuration).InvokeScript(defaultBusinessProcess.Transitions[0].FailPoint.ScenarioId, scriptArguments);
+                target.Context.GetComponent<IScriptRunnerComponent>()
+                      .GetScriptRunner(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration)
+                      .InvokeScript(defaultBusinessProcess.Transitions[0].FailPoint.ScenarioId, scriptArguments);
             }
-
         }
     }
 }

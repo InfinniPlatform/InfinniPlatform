@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataReaders;
 using InfinniPlatform.Api.RestApi.CommonApi;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.SystemConfig.Configurator.ActionUnitsMetadataDataSource
 {
@@ -11,9 +11,11 @@ namespace InfinniPlatform.SystemConfig.Configurator.ActionUnitsMetadataDataSourc
     {
         public void Action(IApplyResultContext target)
         {
-            dynamic bodyQuery = DynamicWrapperExtensions.ToDynamic((string)QueryMetadata.GetConfigurationMetadataShortListIql(target.Item.ConfigId, target.Item.MetadataType));
+            dynamic bodyQuery =
+                DynamicWrapperExtensions.ToDynamic(
+                    QueryMetadata.GetConfigurationMetadataShortListIql(target.Item.Version, target.Item.ConfigId, target.Item.MetadataType));
 
-            var response = RestQueryApi.QueryPostJsonRaw("systemconfig", "metadata", "getmetadata", null, bodyQuery);
+            dynamic response = RestQueryApi.QueryPostJsonRaw("systemconfig", "metadata", "getmetadata", null, bodyQuery);
             IEnumerable<dynamic> queryResult = DynamicWrapperExtensions.ToEnumerable(response.ToDynamic().QueryResult);
 
             if (queryResult.Any())
@@ -24,7 +26,6 @@ namespace InfinniPlatform.SystemConfig.Configurator.ActionUnitsMetadataDataSourc
             {
                 target.Result = new List<dynamic>();
             }
-
         }
     }
 }

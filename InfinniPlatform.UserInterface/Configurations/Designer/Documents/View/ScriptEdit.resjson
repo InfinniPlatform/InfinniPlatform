@@ -1,76 +1,76 @@
 ﻿{
-  "Name": "ScriptEdit",
-  "Text": "Method",
-  "DataSources": [
-    {
-      "ObjectDataSource": {
-        "Name": "MainDataSource"
-      }
-    }
-  ],
-  "LayoutPanel": {
-    "StackPanel": {
-      "Name": "GeneralPagePanel",
-      "Items": [
-        {
-          "TextBox": {
-            "Name": "TextEditor",
-            "LineCount": 1,
-            "Placeholder": "Name",
-            "Value": {
-              "PropertyBinding": {
-                "DataSource": "MainDataSource",
-                "Property": "Name"
-              }
-            }
-          }
-        },
-        {
-          "CodeEditor": {
-            "Name": "ActionEditor",
-            "Syntax": "JavaScript",
-            "Formatter": "TextObjectFormatter",
-            "Value": {
-              "PropertyBinding": {
-                "DataSource": "MainDataSource",
-                "Property": "Body"
-              }
-            }
-          }
-        },
-        {
-          "ToolBar": {
-            "Name": "GeneralToolBar",
-            "Items": [
-              {
-                "ToolBarButton": {
-                  "Name": "GeneralSaveButton",
-                  "Text": "OK",
-                  "Image": "Actions/Apply_16x16",
-                  "Hotkey": "Ctrl+S",
-                  "Action": {
-                    "SaveItemAction": {
-                      "DataSource": "MainDataSource"
-                    }
-                  }
-                }
-              },
-              {
-                "ToolBarButton": {
-                  "Name": "GeneralCancelButton",
-                  "Text": "Cancel",
-                  "Image": "Actions/Cancel_16x16",
-                  "Action": {
-                    "CancelAction": {
-                      "DataSource": "MainDataSource"
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        }
-      ]
-    }
-  }
+	"Name": "ScriptEdit",
+	"Text": "Method",
+	"DataSources": [
+		{
+			"ObjectDataSource": {
+				"Name": "MainDataSource"
+			}
+		}
+	],
+	"LayoutPanel": {
+		"StackPanel": {
+			"Name": "GeneralPagePanel",
+			"Items": [
+				{
+					"TextBox": {
+						"Name": "TextEditor",
+						"LineCount": 1,
+						"Placeholder": "Name",
+						"Value": {
+							"PropertyBinding": {
+								"DataSource": "MainDataSource",
+								"Property": "Name"
+							}
+						}
+					}
+				},
+				{
+					"CodeEditor": {
+						"Name": "ActionEditor",
+						"Syntax": "JavaScript",
+						"Formatter": "TextObjectFormatter",
+						"Value": {
+							"PropertyBinding": {
+								"DataSource": "MainDataSource",
+								"Property": "Body"
+							}
+						}
+					}
+				},
+				{
+					"ToolBar": {
+						"Name": "GeneralToolBar",
+						"Items": [
+							{
+								"ToolBarButton": {
+									"Name": "GeneralSaveButton",
+									"Text": "OK",
+									"Image": "Actions/Apply_16x16",
+									"Hotkey": "Ctrl+S",
+									"Action": {
+										"SaveItemAction": {
+											"DataSource": "MainDataSource"
+										}
+									}
+								}
+							},
+							{
+								"ToolBarButton": {
+									"Name": "GeneralCancelButton",
+									"Text": "Cancel",
+									"Image": "Actions/Cancel_16x16",
+									"Action": {
+										"CancelAction": {
+											"DataSource": "MainDataSource"
+										}
+									}
+								}
+							}
+						]
+					}
+				}
+			]
+		}
+	}
 }

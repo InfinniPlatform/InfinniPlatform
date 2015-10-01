@@ -16,7 +16,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Converters.Html.Inlines
             var element = new PrintElementBold();
             var result = new TextWriterWrapper();
 
-            var run = new PrintElementRun { Text = "Bold Text." };
+            var run = new PrintElementRun {Text = "Bold Text."};
 
             //When
             element.Inlines.Add(run);

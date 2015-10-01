@@ -1,85 +1,78 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.QueryDesigner.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.QueryDesigner.Views
 {
-	public partial class QueryConstructorFromConfig : UserControl, IQueryBlockProvider
-	{
-		public QueryConstructorFromConfig()
-		{
-			InitializeComponent();
-		}
+    public partial class QueryConstructorFromConfig : UserControl, IQueryBlockProvider
+    {
+        public QueryConstructorFromConfig()
+        {
+            InitializeComponent();
+        }
 
-		public ConstructOrder GetConstructOrder()
-		{
-			return ConstructOrder.ConstructFrom;			
-		}
+        public Action<string> OnDocumentValueChanged
+        {
+            get { return IndexConfigPart.OnDocumentValueChanged; }
+            set { IndexConfigPart.OnDocumentValueChanged = value; }
+        }
 
-		public void ProcessQuery(dynamic query)
-		{
-			if (IndexConfigPart.Configuration != null && IndexConfigPart.Document != null)
-			{
-				query.From = new DynamicWrapper();
-				query.From.Index = IndexConfigPart.Configuration;
-				query.From.Type = IndexConfigPart.Document;
-				if (!string.IsNullOrEmpty(IndexConfigPart.Alias))
-				{
-					query.From.Alias = IndexConfigPart.Alias;
-				}
-			}
-		}
+        public Action<string> OnConfigurationValueChanged
+        {
+            get { return IndexConfigPart.OnConfigurationValueChanged; }
+            set { IndexConfigPart.OnConfigurationValueChanged = value; }
+        }
 
-		public bool DefinitionCompleted()
-		{
-			return !string.IsNullOrEmpty(Configuration) && !string.IsNullOrEmpty(Document);
-		}
+        public string Configuration
+        {
+            get { return IndexConfigPart.Configuration; }
+        }
 
-		public string GetErrorMessage()
-		{
-			return "Some required field in block 'FROM' unsettled.";
-		}
+        public string Document
+        {
+            get { return IndexConfigPart.Document; }
+        }
 
-		public Action<string> OnDocumentValueChanged
-		{
-			get { return IndexConfigPart.OnDocumentValueChanged; }
-			set { IndexConfigPart.OnDocumentValueChanged = value; }
-		}
+        public Action<string> OnAliasValueChanged
+        {
+            get { return IndexConfigPart.OnAliasValueChanged; }
+            set { IndexConfigPart.OnAliasValueChanged = value; }
+        }
 
-		public Action<string> OnConfigurationValueChanged
-		{
-			get { return IndexConfigPart.OnConfigurationValueChanged; }
-			set { IndexConfigPart.OnConfigurationValueChanged = value; }
-		}
+        public bool ShowAlias
+        {
+            get { return IndexConfigPart.ShowAlias; }
+            set { IndexConfigPart.ShowAlias = value; }
+        }
 
-		public string Configuration
-		{
-			get { return IndexConfigPart.Configuration; }
-		}
+        public ConstructOrder GetConstructOrder()
+        {
+            return ConstructOrder.ConstructFrom;
+        }
 
-		public string Document
-		{
-			get { return IndexConfigPart.Document; }
-		}
+        public void ProcessQuery(dynamic query)
+        {
+            if (IndexConfigPart.Configuration != null && IndexConfigPart.Document != null)
+            {
+                query.From = new DynamicWrapper();
+                query.From.Index = IndexConfigPart.Configuration;
+                query.From.Type = IndexConfigPart.Document;
+                if (!string.IsNullOrEmpty(IndexConfigPart.Alias))
+                {
+                    query.From.Alias = IndexConfigPart.Alias;
+                }
+            }
+        }
 
-	    public Action<string> OnAliasValueChanged
-	    {
-	        get { return IndexConfigPart.OnAliasValueChanged; }
-	        set { IndexConfigPart.OnAliasValueChanged = value; }
-	    }
+        public bool DefinitionCompleted()
+        {
+            return !string.IsNullOrEmpty(Configuration) && !string.IsNullOrEmpty(Document);
+        }
 
-	    public bool ShowAlias
-	    {
-	        get { return IndexConfigPart.ShowAlias; }
-	        set { IndexConfigPart.ShowAlias = value; }
-	    }
-	}
+        public string GetErrorMessage()
+        {
+            return "Some required field in block 'FROM' unsettled.";
+        }
+    }
 }

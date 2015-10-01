@@ -29,6 +29,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release_TeamCity|AnyCPU'">
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -44,9 +53,6 @@
     <Compile Include="Common\StringHasher.cs" />
     <Compile Include="MenuPermission\ActionUnitDeleteMenuPermission.cs" />
     <Compile Include="MenuPermission\ActionUnitSaveMenuPermission.cs" />
-    <Compile Include="Menu\ActionUnits\ActionUnitDeleteMenu.cs" />
-    <Compile Include="Menu\ActionUnits\ActionUnitSaveMenu.cs" />
-    <Compile Include="Menu\ActionUnits\ActionUnitGetMenu.cs" />
     <Compile Include="Menu\MenuCache.cs" />
     <Compile Include="Menu\MenuHelper.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -60,13 +66,21 @@
     <Compile Include="UserRoleStore\ActionUnits\ActionUnitGetFilteredUserRoles.cs" />
     <Compile Include="User\ActionUnits\ActionUnitAddRole.cs" />
     <Compile Include="User\ActionUnits\ActionUnitAddUser.cs" />
-    <Compile Include="User\ActionUnits\ActionUnitChangePassword.cs" />
+    <Compile Include="User\ActionUnits\ActionUnitWrapAddUserRole.cs" />
+    <Compile Include="User\ActionUnits\ActionUnitWrapChangePassword.cs" />
+    <Compile Include="User\ActionUnits\ActionUnitDeleteRole.cs" />
     <Compile Include="User\ActionUnits\ActionUnitDeleteUser.cs" />
+    <Compile Include="User\ActionUnits\ActionUnitDeleteUserRole.cs" />
+    <Compile Include="User\ActionUnits\ActionUnitWrapGetUser.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
       <Project>{7ca0f96c-7ff4-44b2-9d44-851984df4532}</Project>
       <Name>InfinniPlatform.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
+      <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
+      <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

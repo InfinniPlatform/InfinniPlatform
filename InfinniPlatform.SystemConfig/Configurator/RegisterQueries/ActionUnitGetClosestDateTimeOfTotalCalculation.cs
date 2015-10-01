@@ -1,14 +1,14 @@
-﻿using InfinniPlatform.Api.ContextTypes;
+﻿using System;
+using System.Linq;
 using InfinniPlatform.Api.Registers;
 using InfinniPlatform.Api.RestApi.DataApi;
-
-using System;
-using System.Linq;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Environment.Register;
 
 namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
 {
     /// <summary>
-    /// Получение даты последнего подсчета итогов для регистра накоплений, ближайшей к заданной
+    ///     Получение даты последнего подсчета итогов для регистра накоплений, ближайшей к заданной
     /// </summary>
     public sealed class ActionUnitGetClosestDateTimeOfTotalCalculation
     {
@@ -21,15 +21,15 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
             // В таблице итогов нужно найти итог, ближайший к requestDate
             var dateToReturn = new DateTime();
 
-            var min = long.MaxValue;
-            var isDateFound = false;
+            long min = long.MaxValue;
+            bool isDateFound = false;
 
-            var page = 0;
+            int page = 0;
 
             while (true)
             {
                 // Постранично считываем данные и таблицы итогов и ищем итоги с датой, ближайшей к заданной
-                var totals = new DocumentApi().GetDocument(
+                var totals = target.Context.GetComponent<DocumentApi>().GetDocument(
                     configurationId,
                     RegisterConstants.RegisterTotalNamePrefix + registerId,
                     f => f.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty).IsLessThan(requestDate)),

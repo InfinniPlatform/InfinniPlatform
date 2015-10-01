@@ -1,16 +1,16 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
+﻿using System;
 using InfinniPlatform.Api.RestApi.DataApi;
-using System;
-using System.Collections.Generic;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
 using System.Linq;
+using System.Collections.Generic;
 using InfinniPlatform.Api.SearchOptions.Builders;
 
 namespace InfinniPlatform.RestfulApi.Binary
 {
 	/// <summary>
-	///   Модуль загрузки двоичного контекта
+    ///     Модуль загрузки двоичного контекта
 	/// </summary>
 	public sealed class ActionUnitDownloadBinaryContent
 	{
@@ -22,7 +22,7 @@ namespace InfinniPlatform.RestfulApi.Binary
 		    }
 		    else
 		    {
-		        target.Result = FillContentByDocumentId(target.Context.GetComponent<IBlobStorageComponent>(), target.FormData);
+                target.Result = FillContentByDocumentId(target.Context.GetComponent<IBlobStorageComponent>(), target.FormData);
 		    }
 		}
 
@@ -39,16 +39,16 @@ namespace InfinniPlatform.RestfulApi.Binary
             IEnumerable<dynamic> documents = new DocumentApi().GetDocument(formData.Configuration, formData.Metadata, builder, 0, 1);
             dynamic document = documents.FirstOrDefault();
 
-            if (document != null)
-            {
+			if (document != null)
+			{
                 var linkValue = ObjectHelper.GetProperty(document, formData.FieldName);
-                if (linkValue != null)
-                {
+				if (linkValue != null)
+				{
                     return LoadBlobData(blobStorageComponent, linkValue.Info.ContentId);
-                }
+			}
                 return null;
-            }
+			}
 	        return null;
-	    }
+		}
 	}
 }

@@ -18,11 +18,11 @@ namespace InfinniPlatform.FlowDocument.Tests.Converters.Html.Blocks
             var element = new PrintElementTable();
             var result = new TextWriterWrapper();
 
-            var text1 = new PrintElementRun { Text = "Text11, colspan = 2" };
+            var text1 = new PrintElementRun {Text = "Text11, colspan = 2"};
             var cell1 = new PrintElementTableCell
             {
                 ColumnSpan = 2,
-                Border = new PrintElementBorder()
+                Border = new PrintElementBorder
                 {
                     Thickness = new PrintElementThickness(1),
                     Color = "black"
@@ -34,14 +34,14 @@ namespace InfinniPlatform.FlowDocument.Tests.Converters.Html.Blocks
             var row1 = new PrintElementTableRow();
             row1.Cells.Add(cell1);
 
-            var text21 = new PrintElementRun { Text = "Text21" };
+            var text21 = new PrintElementRun {Text = "Text21"};
             var cell21 = new PrintElementTableCell
             {
-                Border = new PrintElementBorder()
-                    {
-                        Thickness = new PrintElementThickness(1),
-                        Color = "black"
-                    }
+                Border = new PrintElementBorder
+                {
+                    Thickness = new PrintElementThickness(1),
+                    Color = "black"
+                }
             };
             var par21 = new PrintElementParagraph();
             par21.Inlines.Add(text21);
@@ -49,22 +49,22 @@ namespace InfinniPlatform.FlowDocument.Tests.Converters.Html.Blocks
             var row2 = new PrintElementTableRow();
             row2.Cells.Add(cell21);
 
-            var text22 = new PrintElementRun { Text = "Text22" };
+            var text22 = new PrintElementRun {Text = "Text22"};
             var cell22 = new PrintElementTableCell
             {
-                Border = new PrintElementBorder()
-                    {
-                        Thickness = new PrintElementThickness(1),
-                        Color = "black"
-                    }
+                Border = new PrintElementBorder
+                {
+                    Thickness = new PrintElementThickness(1),
+                    Color = "black"
+                }
             };
             var par22 = new PrintElementParagraph();
             par22.Inlines.Add(text22);
             cell22.Block = par22;
             row2.Cells.Add(cell22);
 
-            var column1 = new PrintElementTableColumn { Size = 100 };
-            var column2 = new PrintElementTableColumn { Size = 200 };
+            var column1 = new PrintElementTableColumn {Size = 100};
+            var column2 = new PrintElementTableColumn {Size = 200};
 
             element.Columns.Add(column1);
             element.Columns.Add(column2);

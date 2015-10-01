@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -11,6 +11,7 @@
     <AssemblyName>InfinniPlatform.MetadataDesigner</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,6 +30,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release_TeamCity|AnyCPU'">
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevExpress.Data.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -38,18 +48,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DevExpressWinForms.13.2.5\lib\DevExpress.Utils.v13.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraBars.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DevExpressWinForms.13.2.5\lib\DevExpress.XtraBars.v13.2.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraCharts.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DevExpressWinForms.13.2.5\lib\DevExpress.XtraCharts.v13.2.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraCharts.v13.2.UI, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DevExpressWinForms.13.2.5\lib\DevExpress.XtraCharts.v13.2.UI.dll</HintPath>
-    </Reference>
     <Reference Include="DevExpress.XtraEditors.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DevExpressWinForms.13.2.5\lib\DevExpress.XtraEditors.v13.2.dll</HintPath>
@@ -58,37 +56,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DevExpressWinForms.13.2.5\lib\DevExpress.XtraGrid.v13.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraLayout.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DevExpressWinForms.13.2.5\lib\DevExpress.XtraLayout.v13.2.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraNavBar.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DevExpressWinForms.13.2.5\lib\DevExpress.XtraNavBar.v13.2.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraPivotGrid.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DevExpressWinForms.13.2.5\lib\DevExpress.XtraPivotGrid.v13.2.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraRichEdit.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DevExpressWinForms.13.2.5\lib\DevExpress.XtraRichEdit.v13.2.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraScheduler.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DevExpressWinForms.13.2.5\lib\DevExpress.XtraScheduler.v13.2.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraTreeList.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DevExpressWinForms.13.2.5\lib\DevExpress.XtraTreeList.v13.2.dll</HintPath>
-    </Reference>
     <Reference Include="DevExpress.XtraVerticalGrid.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DevExpressWinForms.13.2.5\lib\DevExpress.XtraVerticalGrid.v13.2.dll</HintPath>
     </Reference>
     <Reference Include="FastReport, Version=2013.4.6.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="FastReport.Bars, Version=2013.4.6.0, Culture=neutral, PublicKeyToken=null" />
-    <Reference Include="FirebirdSql.Data.FirebirdClient, Version=4.5.0.0, Culture=neutral, PublicKeyToken=3750abcc3150b00c" />
     <Reference Include="InfinniPlatform.FastReport, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="InfinniPlatform.QueryDesigner, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="InfinniPlatform.Reporting, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
@@ -97,7 +70,6 @@
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
@@ -118,6 +90,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Exchange\ExchangeDirectorSolution.cs" />
     <Compile Include="Views\RegisterDesignerView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -378,9 +351,9 @@
       <Project>{9e7fd106-8434-41ed-8db1-10761c25a25c}</Project>
       <Name>InfinniPlatform.DesignControls</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.ReportDesigner\InfinniPlatform.ReportDesigner.csproj">
-      <Project>{65734184-a04c-4509-bf68-6f07ca324104}</Project>
-      <Name>InfinniPlatform.ReportDesigner</Name>
+    <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
+      <Project>{2322469d-7d54-4c76-97e2-ef40f15645f5}</Project>
+      <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -1,78 +1,69 @@
 ﻿using System;
-using System.Configuration;
 using System.IO;
 using System.Linq;
+using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Utils.Exchange;
 
-using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.MetadataDesigner.Views.Exchange;
-using InfinniPlatform.MetadataDesigner.Views.Update;
+using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Utils
 {
 	public class ConfigManager
 	{
-		public void Upload(string config, bool uploadMetadata)
+		public void Upload(string solutionDir, bool uploadMetadata, bool skipPromt = false)
 		{
 			Console.WriteLine("ServiceHost should be executed for this operation.");
 			Console.WriteLine("All metadata will be DESTROYED!!! Are you sure?");
-			if (uploadMetadata && Console.ReadKey().KeyChar != 'y')
+		    if (!skipPromt &&
+                uploadMetadata && Console.ReadKey().KeyChar != 'y')
+		    {
+		        Console.WriteLine("Cancel upload");
+		        return;
+		    }
+
+		    ProcessSolution(solutionDir, solution =>
 			{
-				Console.WriteLine("Cancel upload");
-				return;
-			}
+				Console.WriteLine("Uploading solution '{0}' started", solution.Name);
 
-			ProcessConfigurations(config, configuration =>
-			{
-				Console.WriteLine("Uploading configuration '{0}' started", configuration.Name);
+				ExchangeDirectorSolution exchangeDirector = CreateExchangeDirector(solution.Name.ToString(), solution.Version.ToString());
 
-				var exchangeDirector = CreateExchangeDirector(AdjustConfigName(configuration.Name));
-
+				dynamic solutionData = null;
 				if (uploadMetadata)
-					exchangeDirector.UpdateConfigurationMetadataFromDirectory(configuration.Path);
+				{
+					exchangeDirector.UpdateSolutionMetadataFromDirectory(solutionDir);
+				}
 
-				exchangeDirector.UpdateConfigurationAppliedAssemblies(configuration.Name);
+				exchangeDirector.UpdateConfigurationAppliedAssemblies(solution);
 
-				Console.WriteLine("Uploading configuration '{0}' done", configuration.Name);
+				Console.WriteLine("Uploading solution '{0}' done", solution.Name);
 			});
 		}
 
-		private static string AdjustConfigName(string name)
+		public void Download(string solutionDir, string solution, string version, string newVersion)
 		{
-			return name.Split('.').Last();
+			Console.WriteLine("Downloading solution '{0}' started", solution);
+            var exchangeDirector = CreateExchangeDirector(solution,version);
+			exchangeDirector.ExportJsonSolutionToDirectory(solutionDir, version, newVersion);
+
+			Console.WriteLine("Downloading solution '{0}' done", solution);
 		}
 
-		public void Download(string config)
+        private static void ProcessSolution(string solutionDir, Action<dynamic> action)
 		{
-			ProcessConfigurations(config, configuration =>
+			var solutionFile = Directory.GetFiles(solutionDir)
+					 .FirstOrDefault(file => file.ToLowerInvariant().Contains("solution.json"));
+
+			if (solutionFile != null)
 			{
-				Console.WriteLine("Downloading configuration '{0}' started", configuration.Name);
-
-				var exchangeDirector = CreateExchangeDirector(configuration.Name);
-				exchangeDirector.ExportJsonConfigToDirectory(configuration.Path);
-
-				Console.WriteLine("Downloading configuration '{0}' done", configuration.Name);
-			});
-		}
-
-		private static void ProcessConfigurations(string config, Action<Configuration> action)
-		{
-			var neededConfigs = config == null ? new string[0] : config.ToLower().Split(',');
-			var configurations = Directory
-				.GetDirectories(ConfigurationManager.AppSettings["ConfigurationsDir"])
-				.Where(dir => dir.Contains(".Configuration"))
-				.Select(dir => new Configuration(dir))
-				.Where(c => !neededConfigs.Any() || neededConfigs.Contains(c.Name.ToLower()));
-
-			foreach (var configuration in configurations)
-			{
-				action(configuration);
+				var jsonSolution = JObject.Parse(File.ReadAllText(solutionFile));
+				action(jsonSolution);
 			}
 		}
 
-		private static ExchangeDirector CreateExchangeDirector(string configName)
+        private static ExchangeDirectorSolution CreateExchangeDirector(string configName, string version)
 		{
-			var remoteHost = new ExchangeRemoteHost(new HostingConfig(), "hz");
-			return new ExchangeDirector(remoteHost, configName);
+			var remoteHost = new ExchangeRemoteHost(new HostingConfig(), version);
+			return new ExchangeDirectorSolution(remoteHost, configName);
 		}
 	}
 }

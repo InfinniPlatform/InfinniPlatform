@@ -1,46 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.RestApi.AuthApi;
+﻿using System.Linq;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 {
-	/// <summary>
-	///   Добавление новой роли в конфигурации администрирования
-	/// </summary>
-	public sealed class ActionUnitAddRole
-	{
-		public void Action(IApplyContext target)
-		{
-			var aclApi = target.Context.GetComponent<AclApi>();
+    /// <summary>
+    ///     Добавление новой роли в конфигурации администрирования
+    /// </summary>
+    public sealed class ActionUnitAddRole
+    {
+        public void Action(IApplyContext target)
+        {
+            var aclApi = target.Context.GetComponent<AuthApi>();
 
-			var role = target.Item.Document;
+            var role = target.Item.Document ?? target.Item;
 
-			if (role == null || string.IsNullOrEmpty(role.Name))
-			{
-				target.IsValid = false;
-				target.ValidationMessage = "Role name is not specified";
-				return;
-			}
+            target.Result = new DynamicWrapper();
 
-			var roleFound = aclApi.GetRoles().FirstOrDefault(r => r.Name.ToLowerInvariant() == role.Name.ToLowerInvariant());
+            if (role == null || string.IsNullOrEmpty(role.Name))
+            {
+                target.Result.IsValid = false;
+                target.Result.ValidationMessage = "Role name is not specified";
+                return;
+            }
 
-			if (roleFound != null)
-			{
-				target.IsValid = false;
-				target.ValidationMessage = "Role with name " + role.Name + " already exists.";
-				return;
-			}
+            var roleFound =
+                aclApi.GetRoles().FirstOrDefault(r => r.Name.ToLowerInvariant() == role.Name.ToLowerInvariant());
 
-			aclApi.AddRole(role.Name, role.Name, role.Name);
+            if (roleFound != null)
+            {
+                target.Result.IsValid = false;
+                target.Result.ValidationMessage = "Role with name " + role.Name + " already exists.";
+                return;
+            }
 
-			target.Context.GetComponent<DocumentApi>()
-				.SetDocument(AuthorizationStorageExtensions.AdministrationConfigId, "Role",
-				   target.Item.Document);
-		}
-	}
+            aclApi.AddRole(role.Name, role.Name, role.Name);
+
+            target.Context.GetComponent<DocumentApi>()
+                .SetDocument(AuthorizationStorageExtensions.AdministrationConfigId, "Role",
+                    role);
+
+
+            target.Result.IsValid = true;
+            target.Result.ValidationMessage = "Role added.";
+        }
+    }
 }

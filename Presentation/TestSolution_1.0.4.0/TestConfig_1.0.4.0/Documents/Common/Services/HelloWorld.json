@@ -1,0 +1,40 @@
+{
+  "Id": "3d7065a8-0c62-452e-b95a-fdbb7dfed791",
+  "Secured": true,
+  "Name": "HelloWorld",
+  "Type": {
+    "Name": "applyjson",
+    "WorkflowExtensionPoints": [
+      {
+        "Name": "FilterEvents",
+        "ContextType": 4,
+        "Caption": "Document filter events context"
+      },
+      {
+        "Name": "Move",
+        "ContextType": 2,
+        "Caption": "Document move context"
+      },
+      {
+        "Name": "GetResult",
+        "ContextType": 8,
+        "Caption": "Document move result context"
+      }
+    ]
+  },
+  "Caption": "HelloWorld",
+  "ExtensionPoints": [
+    {
+      "TypeName": {
+        "Name": "Move",
+        "ContextType": 2,
+        "Caption": "Document move context"
+      },
+      "ScenarioId": "HelloWorld"
+    }
+  ],
+  "ParentId": "cc673103-2d8c-4dcd-b27c-d208b2ac33b1",
+  "Version": "1.0.4.0",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "servicemetadata"
+}

@@ -1,9 +1,9 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
+﻿using System.Collections.Generic;
 using InfinniPlatform.Api.Index.SearchOptions;
 using InfinniPlatform.ContextComponents;
-using System.Collections.Generic;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.RestfulApi.ActionUnits
 {
@@ -30,13 +30,13 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             string userName = target.UserName;
             IEnumerable<dynamic> filter = target.Item.Filter;
 
-            var documentProvider = _documentComponent.GetDocumentProvider(configId, documentId, userName);
+            var documentProvider = _documentComponent.GetDocumentProvider(target.Context.GetVersion(target.Item.Configuration, target.UserName), configId, documentId, userName);
 
             if (documentProvider != null)
             {
                 var metadataConfiguration =
                     _configurationMediatorComponent
-                          .ConfigurationBuilder.GetConfigurationObject(configId)
+                          .ConfigurationBuilder.GetConfigurationObject(target.Context.GetVersion(target.Item.Configuration, target.UserName), configId)
                           .MetadataConfiguration;
 
                 if (metadataConfiguration == null)
@@ -49,8 +49,8 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                 
                 var profiler = _profilerComponent.GetOperationProfiler("VersionProvider.GetNumberOfDocuments", null);
                 profiler.Reset();
-                
-                var queryAnalyzer = new QueryCriteriaAnalyzer(_metadataComponent, schema);
+
+                var queryAnalyzer = new QueryCriteriaAnalyzer(_metadataComponent, target.Context.GetVersion(target.Item.Configuration, target.UserName), schema);
 
                 returnResult.NumberOfDocuments = documentProvider.GetNumberOfDocuments(queryAnalyzer.GetBeforeResolveCriteriaList(filter));
                 

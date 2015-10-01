@@ -1,0 +1,20 @@
+{
+  "Id": "c37554a3-3b89-4adb-98c6-8077a00013d7",
+  "SettingsType": "Custom",
+  "Transitions": [
+    {
+      "Id": "2170813f-6b59-4325-846e-78d9add6634d",
+      "Name": "RemoveSession",
+      "ActionPoint": {
+        "TypeName": "Action",
+        "ScenarioId": "91eec078-261d-4535-90a9-af0452362141"
+      }
+    }
+  ],
+  "Type": 2,
+  "Caption": "RemoveSession",
+  "Name": "RemoveSession",
+  "ParentId": "5d6656d6-9523-4e7d-9e09-be46773046a7",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "processmetadata"
+}

@@ -1,5 +1,6 @@
 ﻿using InfinniPlatform.Api.Index.SearchOptions;
 using InfinniPlatform.Api.Properties;
+using InfinniPlatform.Sdk.Environment.Index;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,11 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.Filters.NestFilters
 		public IFilter Get(string field, object value)
 		{
 			IEnumerable<string> values;
+
+		    if (value == null || string.IsNullOrEmpty(value.ToString()))
+		    {
+                return new NestFilter(Nest.Filter<dynamic>.Ids(new string[0]));
+		    } 
 
 			try
 			{

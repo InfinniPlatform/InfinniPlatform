@@ -3,153 +3,147 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-
 using InfinniPlatform.UserInterface.ViewBuilders.Elements;
 using InfinniPlatform.UserInterface.ViewBuilders.Scripts;
 using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.ActionElements.ContextMenu
 {
-	/// <summary>
-	/// Элемент представления для контекстного меню.
-	/// </summary>
-	public sealed class ContextMenuElement : BaseElement<System.Windows.Controls.ContextMenu>
-	{
-		public ContextMenuElement(View view)
-			: base(view)
-		{
-			_items = new ObservableCollection<FrameworkElement>();
+    /// <summary>
+    ///     Элемент представления для контекстного меню.
+    /// </summary>
+    public sealed class ContextMenuElement : BaseElement<System.Windows.Controls.ContextMenu>
+    {
+        // Items
 
-			Control.ItemsSource = _items;
+        private readonly ObservableCollection<FrameworkElement> _items;
 
-			Control.ContextMenuOpening += OnOpeningHandler;
-			Control.Opened += OnOpenedHandler;
+        public ContextMenuElement(View view)
+            : base(view)
+        {
+            _items = new ObservableCollection<FrameworkElement>();
 
-			Control.ContextMenuClosing += OnClosingHandler;
-			Control.Closed += OnClosedHandler;
-		}
+            Control.ItemsSource = _items;
 
+            Control.ContextMenuOpening += OnOpeningHandler;
+            Control.Opened += OnOpenedHandler;
 
-		private void OnOpeningHandler(object sender, ContextMenuEventArgs e)
-		{
-			dynamic arguments = null;
+            Control.ContextMenuClosing += OnClosingHandler;
+            Control.Closed += OnClosedHandler;
+        }
 
-			this.InvokeScript(OnOpening, a => arguments = a);
+        // Events
 
-			if (arguments != null && arguments.IsCancel == true)
-			{
-				e.Handled = true;
-			}
-		}
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события попытки открытия контекстного меню.
+        /// </summary>
+        public ScriptDelegate OnOpening { get; set; }
 
-		private void OnOpenedHandler(object sender, RoutedEventArgs e)
-		{
-			this.InvokeScript(OnOpened);
-		}
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события открытия контекстного меню.
+        /// </summary>
+        public ScriptDelegate OnOpened { get; set; }
 
-		private void OnClosingHandler(object sender, ContextMenuEventArgs e)
-		{
-			dynamic arguments = null;
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события попытки закрытия контекстного меню.
+        /// </summary>
+        public ScriptDelegate OnClosing { get; set; }
 
-			this.InvokeScript(OnClosing, a => arguments = a);
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события закрытия контекстного меню.
+        /// </summary>
+        public ScriptDelegate OnClosed { get; set; }
 
-			if (arguments != null && arguments.IsCancel == true)
-			{
-				e.Handled = true;
-			}
-		}
+        private void OnOpeningHandler(object sender, ContextMenuEventArgs e)
+        {
+            dynamic arguments = null;
 
-		private void OnClosedHandler(object sender, RoutedEventArgs e)
-		{
-			this.InvokeScript(OnClosed);
-		}
+            this.InvokeScript(OnOpening, a => arguments = a);
 
+            if (arguments != null && arguments.IsCancel == true)
+            {
+                e.Handled = true;
+            }
+        }
 
-		// Items
+        private void OnOpenedHandler(object sender, RoutedEventArgs e)
+        {
+            this.InvokeScript(OnOpened);
+        }
 
-		private readonly ObservableCollection<FrameworkElement> _items;
+        private void OnClosingHandler(object sender, ContextMenuEventArgs e)
+        {
+            dynamic arguments = null;
 
-		/// <summary>
-		/// Добавляет элемент в список.
-		/// </summary>
-		public void AddItem(IContextMenuItem item)
-		{
-			_items.Add(item.GetControl<FrameworkElement>());
-		}
+            this.InvokeScript(OnClosing, a => arguments = a);
 
-		/// <summary>
-		/// Удаляет элемент из списка.
-		/// </summary>
-		public void RemoveItem(IContextMenuItem item)
-		{
-			_items.Remove(item.GetControl<FrameworkElement>());
-		}
+            if (arguments != null && arguments.IsCancel == true)
+            {
+                e.Handled = true;
+            }
+        }
 
-		/// <summary>
-		/// Возвращает элемент по имени.
-		/// </summary>
-		public IContextMenuItem GetItem(string name)
-		{
-			var itemControl = _items.FirstOrDefault(i => i.Name == name);
+        private void OnClosedHandler(object sender, RoutedEventArgs e)
+        {
+            this.InvokeScript(OnClosed);
+        }
 
-			return (itemControl != null) ? GetMenuItem(itemControl) : null;
-		}
+        /// <summary>
+        ///     Добавляет элемент в список.
+        /// </summary>
+        public void AddItem(IContextMenuItem item)
+        {
+            _items.Add(item.GetControl<FrameworkElement>());
+        }
 
-		/// <summary>
-		/// Возвращает список элементов.
-		/// </summary>
-		public IEnumerable<IContextMenuItem> GetItems()
-		{
-			return _items.Select(GetMenuItem).ToArray();
-		}
+        /// <summary>
+        ///     Удаляет элемент из списка.
+        /// </summary>
+        public void RemoveItem(IContextMenuItem item)
+        {
+            _items.Remove(item.GetControl<FrameworkElement>());
+        }
 
+        /// <summary>
+        ///     Возвращает элемент по имени.
+        /// </summary>
+        public IContextMenuItem GetItem(string name)
+        {
+            var itemControl = _items.FirstOrDefault(i => i.Name == name);
 
-		// Methods
+            return (itemControl != null) ? GetMenuItem(itemControl) : null;
+        }
 
-		public void Open()
-		{
-			Control.IsOpen = true;
-		}
+        /// <summary>
+        ///     Возвращает список элементов.
+        /// </summary>
+        public IEnumerable<IContextMenuItem> GetItems()
+        {
+            return _items.Select(GetMenuItem).ToArray();
+        }
 
-		public void Close()
-		{
-			Control.IsOpen = false;
-		}
+        // Methods
 
+        public void Open()
+        {
+            Control.IsOpen = true;
+        }
 
-		// Events
+        public void Close()
+        {
+            Control.IsOpen = false;
+        }
 
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события попытки открытия контекстного меню.
-		/// </summary>
-		public ScriptDelegate OnOpening { get; set; }
+        // Elements
 
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события открытия контекстного меню.
-		/// </summary>
-		public ScriptDelegate OnOpened { get; set; }
+        public static IContextMenuItem GetMenuItem(FrameworkElement control)
+        {
+            return control.Tag as IContextMenuItem;
+        }
 
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события попытки закрытия контекстного меню.
-		/// </summary>
-		public ScriptDelegate OnClosing { get; set; }
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события закрытия контекстного меню.
-		/// </summary>
-		public ScriptDelegate OnClosed { get; set; }
-
-
-		// Elements
-
-		public static IContextMenuItem GetMenuItem(FrameworkElement control)
-		{
-			return control.Tag as IContextMenuItem;
-		}
-
-		public override IEnumerable<IElement> GetChildElements()
-		{
-			return GetItems();
-		}
-	}
+        public override IEnumerable<IElement> GetChildElements()
+        {
+            return GetItems();
+        }
+    }
 }

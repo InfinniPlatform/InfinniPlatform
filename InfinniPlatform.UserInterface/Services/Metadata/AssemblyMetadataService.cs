@@ -1,33 +1,59 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
-
+using InfinniPlatform.Api.Deprecated;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
+using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.Metadata;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {
-	/// <summary>
-	/// Сервис для работы с метаданными сборок.
-	/// </summary>
-	sealed class AssemblyMetadataService : BaseMetadataService
-	{
-		public AssemblyMetadataService(string configId)
-		{
-			_factory = new Lazy<ManagerFactoryConfiguration>(() => new ManagerFactoryConfiguration(configId), LazyThreadSafetyMode.ExecutionAndPublication);
-		}
+    /// <summary>
+    ///     Сервис для работы с метаданными сборок.
+    /// </summary>
+    internal sealed class AssemblyMetadataService : BaseMetadataService
+    {
+        private readonly string _configId;
+        private InfinniMetadataApi _metadataApi;
+
+        public AssemblyMetadataService(string version, string configId, string server, int port, string route)
+            : base(version, server, port, route)
+        {
+            _configId = configId;
+            _metadataApi = new InfinniMetadataApi(server, port.ToString(),route);
+        }
+
+        public string ConfigId
+        {
+            get { return _configId; }
+        }
 
 
-		private readonly Lazy<ManagerFactoryConfiguration> _factory;
+        public override object CreateItem()
+        {
+            return _metadataApi.CreateAssembly(Version, ConfigId);
+        }
 
+        public override void ReplaceItem(dynamic item)
+        {
+            _metadataApi.UpdateAssembly(item,Version,ConfigId);
+        }
 
-		protected override IDataReader CreateDataReader()
-		{
-			return _factory.Value.BuildAssemblyMetadataReader();
-		}
+        public override void DeleteItem(string itemId)
+        {
+            _metadataApi.DeleteAssembly(Version, ConfigId, itemId);
+        }
 
-		protected override IDataManager CreateDataManager()
-		{
-			return _factory.Value.BuildAssemblyManager();
-		}
-	}
+        public override object GetItem(string itemId)
+        {
+            return _metadataApi.GetAssembly(Version, ConfigId, itemId);
+        }
+
+        public override IEnumerable<object> GetItems()
+        {
+            return _metadataApi.GetAssemblyList(Version, ConfigId);
+        }
+    }
 }

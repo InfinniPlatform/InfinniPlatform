@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using InfinniPlatform.Sdk.Dynamic;
 
-using InfinniPlatform.Api.Dynamic;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.Filters.Extensions
 {

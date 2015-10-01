@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using InfinniPlatform.Api.Hosting;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Hosting;
 using Owin;
 
 using InfinniPlatform.Api.LocalRouting;
@@ -43,7 +45,7 @@ namespace InfinniPlatform.WebApi
 				RestQueryApi.Log = new Log4NetLogFactory().CreateLog();
 			}
 
-			HostServer.Build();
+			HostServer.Build(context);
 			builder.UseWebApi(HostServer.HttpConfiguration);
 		}
 

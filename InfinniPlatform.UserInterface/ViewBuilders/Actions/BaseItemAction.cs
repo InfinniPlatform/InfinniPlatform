@@ -1,128 +1,123 @@
 ﻿using System.Collections.Generic;
-
-using InfinniPlatform.Api.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.UserInterface.ViewBuilders.Elements;
 using InfinniPlatform.UserInterface.ViewBuilders.Scripts;
 using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Actions
 {
-	/// <summary>
-	/// Действие для редактирования списка.
-	/// </summary>
-	public sealed class BaseItemAction : BaseAction
-	{
-		public BaseItemAction(View view)
-			: base(view)
-		{
-		}
+    /// <summary>
+    ///     Действие для редактирования списка.
+    /// </summary>
+    public sealed class BaseItemAction : BaseAction
+    {
+        // Items
 
+        private object _items;
+        // SelectedItem
 
-		// SelectedItem
+        private object _selectedItem;
 
-		private object _selectedItem;
+        public BaseItemAction(View view)
+            : base(view)
+        {
+        }
 
-		/// <summary>
-		/// Возвращает текущий элемент в списке.
-		/// </summary>
-		public object GetSelectedItem()
-		{
-			return _selectedItem;
-		}
+        // Events
 
-		/// <summary>
-		/// Устанавливает текущий элемент в списке.
-		/// </summary>
-		public void SetSelectedItem(object value)
-		{
-			if (Equals(_selectedItem, value) == false)
-			{
-				_selectedItem = value;
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события изменения значения.
+        /// </summary>
+        public ScriptDelegate OnValueChanged { get; set; }
 
-				InvokeEventHandler(OnSetSelectedItem, value);
-			}
-		}
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события запроса на выделение элемента в списке.
+        /// </summary>
+        public ScriptDelegate OnSetSelectedItem { get; set; }
 
+        /// <summary>
+        ///     Возвращает текущий элемент в списке.
+        /// </summary>
+        public object GetSelectedItem()
+        {
+            return _selectedItem;
+        }
 
-		// Items
+        /// <summary>
+        ///     Устанавливает текущий элемент в списке.
+        /// </summary>
+        public void SetSelectedItem(object value)
+        {
+            if (Equals(_selectedItem, value) == false)
+            {
+                _selectedItem = value;
 
-		private object _items;
+                InvokeEventHandler(OnSetSelectedItem, value);
+            }
+        }
 
-		/// <summary>
-		/// Возвращает список элементов.
-		/// </summary>
-		public object GetItems()
-		{
-			return _items;
-		}
+        /// <summary>
+        ///     Возвращает список элементов.
+        /// </summary>
+        public object GetItems()
+        {
+            return _items;
+        }
 
-		/// <summary>
-		/// Устанавливает список элементов.
-		/// </summary>
-		public void SetItems(object value)
-		{
-			_items = value;
-		}
+        /// <summary>
+        ///     Устанавливает список элементов.
+        /// </summary>
+        public void SetItems(object value)
+        {
+            _items = value;
+        }
 
-		/// <summary>
-		/// Добавляет элемент в список.
-		/// </summary>
-		public void AddItem(object item)
-		{
-			if (_items == null)
-			{
-				_items = new List<object>();
-			}
+        /// <summary>
+        ///     Добавляет элемент в список.
+        /// </summary>
+        public void AddItem(object item)
+        {
+            if (_items == null)
+            {
+                _items = new List<object>();
+            }
 
-			_items.AddItem(item);
+            _items.AddItem(item);
 
-			InvokeEventHandler(OnValueChanged, _items);
-		}
+            InvokeEventHandler(OnValueChanged, _items);
+        }
 
-		/// <summary>
-		/// Заменяет элемент в списке.
-		/// </summary>
-		public void ReplaceItem(object item, object newItem)
-		{
-			if (_items == null)
-			{
-				_items = new List<object>();
-			}
+        /// <summary>
+        ///     Заменяет элемент в списке.
+        /// </summary>
+        public void ReplaceItem(object item, object newItem)
+        {
+            if (_items == null)
+            {
+                _items = new List<object>();
+            }
 
-			_items.ReplaceItem(item, newItem);
+            _items.ReplaceItem(item, newItem);
 
-			InvokeEventHandler(OnValueChanged, _items);
-		}
+            InvokeEventHandler(OnValueChanged, _items);
+        }
 
-		/// <summary>
-		/// Удаляет элемент из списка.
-		/// </summary>
-		public void RemoveItem(object item)
-		{
-			if (_items != null)
-			{
-				_items.RemoveItem(item);
+        /// <summary>
+        ///     Удаляет элемент из списка.
+        /// </summary>
+        public void RemoveItem(object item)
+        {
+            if (_items != null)
+            {
+                _items.RemoveItem(item);
 
-				InvokeEventHandler(OnValueChanged, _items);
-			}
-		}
+                InvokeEventHandler(OnValueChanged, _items);
+            }
+        }
 
-
-		// Events
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события изменения значения.
-		/// </summary>
-		public ScriptDelegate OnValueChanged { get; set; }
-
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события запроса на выделение элемента в списке.
-		/// </summary>
-		public ScriptDelegate OnSetSelectedItem { get; set; }
-
-		private void InvokeEventHandler(ScriptDelegate handler, object value)
-		{
-			this.InvokeScript(handler, args => { args.Value = value; });
-		}
-	}
+        private void InvokeEventHandler(ScriptDelegate handler, object value)
+        {
+            this.InvokeScript(handler, args => { args.Value = value; });
+        }
+    }
 }

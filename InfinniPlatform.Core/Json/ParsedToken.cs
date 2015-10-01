@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.Events;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Json
 {
-
     public sealed class ParsedToken
     {
-        private readonly string _tokenName;
         private readonly JToken _jToken;
+        private readonly string _tokenName;
 
         public ParsedToken(string tokenName, JToken jToken)
         {
@@ -30,7 +23,4 @@ namespace InfinniPlatform.Json
             get { return _jToken; }
         }
     }
-
-
-
 }

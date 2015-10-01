@@ -2,6 +2,7 @@
 using System.Globalization;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters.Extensions;
+using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.Filters
 {

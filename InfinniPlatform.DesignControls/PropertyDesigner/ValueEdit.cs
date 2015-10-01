@@ -15,10 +15,10 @@ namespace InfinniPlatform.DesignControls.PropertyDesigner
             set { ScriptEditor.Script = value; }
         }
 
-	    public bool ReadOnly
-	    {
-		    get { return ScriptEditor.ReadOnly; }
-		    set { ScriptEditor.ReadOnly = value; }
-	    }
+        public bool ReadOnly
+        {
+            get { return ScriptEditor.ReadOnly; }
+            set { ScriptEditor.ReadOnly = value; }
+        }
     }
 }

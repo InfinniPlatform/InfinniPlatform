@@ -5,11 +5,10 @@ using System.Data.Common;
 using System.Data.SqlClient;
 
 using FirebirdSql.Data.FirebirdClient;
-using InfinniPlatform.Api.Settings;
 using InfinniPlatform.FastReport.Templates.Data;
 using InfinniPlatform.Reporting.DataProviders;
 using InfinniPlatform.Reporting.Properties;
-
+using InfinniPlatform.Sdk.Environment.Settings;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Reporting.DataSources

@@ -9,227 +9,214 @@ using System.Windows.Forms;
 
 namespace InfinniPlatform.ReportDesigner.Views.Controls
 {
-	/// <summary>
-	/// Выпадающий список с возможностью форматирования элементов.
-	/// </summary>
-	sealed partial class FormattedComboBox : UserControl
-	{
-		public FormattedComboBox()
-		{
-			InitializeComponent();
-		}
+    /// <summary>
+    ///     Выпадающий список с возможностью форматирования элементов.
+    /// </summary>
+    sealed partial class FormattedComboBox : UserControl
+    {
+        private string _itemFormatString;
+        private IEnumerable<object> _items;
 
+        public FormattedComboBox()
+        {
+            InitializeComponent();
+        }
 
-		/// <summary>
-		/// Выбранный элемент.
-		/// </summary>
-		[Browsable(false)]
-		[DefaultValue(null)]
-		[EditorBrowsable(EditorBrowsableState.Never)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public object SelectedItem
-		{
-			get
-			{
-				var selectedItemMetadata = ComboBoxEdit.SelectedItem as ItemMetadata;
-				return (selectedItemMetadata != null) ? selectedItemMetadata.Value : null;
-			}
-			set
-			{
-				var selectedItemMetadata = ComboBoxEdit.Items.Cast<ItemMetadata>().FirstOrDefault(i => Equals(i.Value, value));
-				ComboBoxEdit.SelectedItem = selectedItemMetadata;
-			}
-		}
+        /// <summary>
+        ///     Выбранный элемент.
+        /// </summary>
+        [Browsable(false)]
+        [DefaultValue(null)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public object SelectedItem
+        {
+            get
+            {
+                var selectedItemMetadata = ComboBoxEdit.SelectedItem as ItemMetadata;
+                return (selectedItemMetadata != null) ? selectedItemMetadata.Value : null;
+            }
+            set
+            {
+                var selectedItemMetadata =
+                    ComboBoxEdit.Items.Cast<ItemMetadata>().FirstOrDefault(i => Equals(i.Value, value));
+                ComboBoxEdit.SelectedItem = selectedItemMetadata;
+            }
+        }
 
+        /// <summary>
+        ///     Список элементов для выбора.
+        /// </summary>
+        [Browsable(false)]
+        [DefaultValue(null)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public IEnumerable Items
+        {
+            get { return _items; }
+            set
+            {
+                _items = (value != null) ? value.Cast<object>() : null;
 
-		private IEnumerable<object> _items;
+                UpdateItems();
+            }
+        }
 
-		/// <summary>
-		/// Список элементов для выбора.
-		/// </summary>
-		[Browsable(false)]
-		[DefaultValue(null)]
-		[EditorBrowsable(EditorBrowsableState.Never)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public IEnumerable Items
-		{
-			get
-			{
-				return _items;
-			}
-			set
-			{
-				_items = (value != null) ? value.Cast<object>() : null;
+        /// <summary>
+        ///     Строка форматирования элемента.
+        /// </summary>
+        public string ItemFormatString
+        {
+            get { return _itemFormatString; }
+            set
+            {
+                _itemFormatString = value;
 
-				UpdateItems();
-			}
-		}
+                UpdateItems();
+            }
+        }
 
+        /// <summary>
+        ///     Событие на выбор элемента.
+        /// </summary>
+        public event EventHandler SelectedIndexChanged;
 
-		private string _itemFormatString;
+        private void OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (SelectedIndexChanged != null)
+            {
+                SelectedIndexChanged(sender, e);
+            }
+        }
 
-		/// <summary>
-		/// Строка форматирования элемента.
-		/// </summary>
-		public string ItemFormatString
-		{
-			get
-			{
-				return _itemFormatString;
-			}
-			set
-			{
-				_itemFormatString = value;
+        private void UpdateItems()
+        {
+            var selectedItem = SelectedItem;
 
-				UpdateItems();
-			}
-		}
+            ComboBoxEdit.Items.Clear();
 
+            if (_items != null)
+            {
+                var propertyNames = GetPropertyNames(ItemFormatString);
+                var formatString = GetFormatString(ItemFormatString, propertyNames);
 
-		/// <summary>
-		/// Событие на выбор элемента.
-		/// </summary>
-		public event EventHandler SelectedIndexChanged;
+                foreach (var item in _items)
+                {
+                    ComboBoxEdit.Items.Add(new ItemMetadata
+                    {
+                        Value = item,
+                        Name = FormatItemName(item, formatString, propertyNames)
+                    });
+                }
 
-		private void OnSelectedIndexChanged(object sender, EventArgs e)
-		{
-			if (SelectedIndexChanged != null)
-			{
-				SelectedIndexChanged(sender, e);
-			}
-		}
+                SelectedItem = selectedItem;
+            }
+        }
 
+        private static IList<string> GetPropertyNames(string itemFormatString)
+        {
+            var propertyNames = new List<string>();
 
-		private void UpdateItems()
-		{
-			var selectedItem = SelectedItem;
+            if (string.IsNullOrEmpty(itemFormatString) == false)
+            {
+                var propertyMatches = Regex.Matches(itemFormatString, @"\{.*?\}", RegexOptions.Compiled);
 
-			ComboBoxEdit.Items.Clear();
+                foreach (Match propertyMatch in propertyMatches)
+                {
+                    propertyNames.Add(propertyMatch.Value.Trim('{', '}'));
+                }
+            }
 
-			if (_items != null)
-			{
-				var propertyNames = GetPropertyNames(ItemFormatString);
-				var formatString = GetFormatString(ItemFormatString, propertyNames);
+            return propertyNames;
+        }
 
-				foreach (var item in _items)
-				{
-					ComboBoxEdit.Items.Add(new ItemMetadata
-											   {
-												   Value = item,
-												   Name = FormatItemName(item, formatString, propertyNames)
-											   });
-				}
+        private static string GetFormatString(string itemFormatString, IList<string> propertyNames)
+        {
+            var formatString = new StringBuilder(itemFormatString);
 
-				SelectedItem = selectedItem;
-			}
-		}
+            if (propertyNames != null)
+            {
+                var propertyCount = propertyNames.Count;
 
-		private static IList<string> GetPropertyNames(string itemFormatString)
-		{
-			var propertyNames = new List<string>();
+                for (var i = 0; i < propertyCount; ++i)
+                {
+                    formatString = formatString.Replace("{" + propertyNames[i] + "}", "{" + i + "}");
+                }
+            }
 
-			if (string.IsNullOrEmpty(itemFormatString) == false)
-			{
-				var propertyMatches = Regex.Matches(itemFormatString, @"\{.*?\}", RegexOptions.Compiled);
+            return formatString.ToString();
+        }
 
-				foreach (Match propertyMatch in propertyMatches)
-				{
-					propertyNames.Add(propertyMatch.Value.Trim('{', '}'));
-				}
-			}
+        private static string FormatItemName(object item, string formatString, IList<string> propertyNames)
+        {
+            string name = null;
 
-			return propertyNames;
-		}
+            if (item != null)
+            {
+                if (string.IsNullOrEmpty(formatString) == false)
+                {
+                    if (propertyNames != null)
+                    {
+                        var propertyCount = propertyNames.Count;
+                        var propertyValues = new object[propertyCount];
 
-		private static string GetFormatString(string itemFormatString, IList<string> propertyNames)
-		{
-			var formatString = new StringBuilder(itemFormatString);
+                        for (var i = 0; i < propertyCount; ++i)
+                        {
+                            propertyValues[i] = GerPropertyValue(item, propertyNames[i]);
+                        }
 
-			if (propertyNames != null)
-			{
-				var propertyCount = propertyNames.Count;
+                        name = string.Format(formatString, propertyValues);
+                    }
+                    else
+                    {
+                        name = formatString;
+                    }
+                }
+                else
+                {
+                    name = item.ToString();
+                }
+            }
 
-				for (var i = 0; i < propertyCount; ++i)
-				{
-					formatString = formatString.Replace("{" + propertyNames[i] + "}", "{" + i + "}");
-				}
-			}
+            return name;
+        }
 
-			return formatString.ToString();
-		}
+        private static object GerPropertyValue(object item, string propertyPath)
+        {
+            var propertyValue = item;
 
-		private static string FormatItemName(object item, string formatString, IList<string> propertyNames)
-		{
-			string name = null;
+            if (string.IsNullOrEmpty(propertyPath) == false)
+            {
+                var propertyNames = propertyPath.Split('.');
 
-			if (item != null)
-			{
-				if (string.IsNullOrEmpty(formatString) == false)
-				{
-					if (propertyNames != null)
-					{
-						var propertyCount = propertyNames.Count;
-						var propertyValues = new object[propertyCount];
+                foreach (var propertyName in propertyNames)
+                {
+                    if (propertyValue != null)
+                    {
+                        var type = propertyValue.GetType();
+                        var property = type.GetProperty(propertyName);
 
-						for (var i = 0; i < propertyCount; ++i)
-						{
-							propertyValues[i] = GerPropertyValue(item, propertyNames[i]);
-						}
+                        propertyValue = (property != null) ? property.GetValue(propertyValue) : null;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
 
-						name = string.Format(formatString, propertyValues);
-					}
-					else
-					{
-						name = formatString;
-					}
-				}
-				else
-				{
-					name = item.ToString();
-				}
-			}
+            return propertyValue;
+        }
 
-			return name;
-		}
+        private class ItemMetadata
+        {
+            public string Name;
+            public object Value;
 
-		private static object GerPropertyValue(object item, string propertyPath)
-		{
-			var propertyValue = item;
-
-			if (string.IsNullOrEmpty(propertyPath) == false)
-			{
-				var propertyNames = propertyPath.Split('.');
-
-				foreach (var propertyName in propertyNames)
-				{
-					if (propertyValue != null)
-					{
-						var type = propertyValue.GetType();
-						var property = type.GetProperty(propertyName);
-
-						propertyValue = (property != null) ? property.GetValue(propertyValue) : null;
-					}
-					else
-					{
-						break;
-					}
-				}
-			}
-
-			return propertyValue;
-		}
-
-
-		class ItemMetadata
-		{
-			public object Value;
-
-			public string Name;
-
-			public override string ToString()
-			{
-				return Name;
-			}
-		}
-	}
+            public override string ToString()
+            {
+                return Name;
+            }
+        }
+    }
 }

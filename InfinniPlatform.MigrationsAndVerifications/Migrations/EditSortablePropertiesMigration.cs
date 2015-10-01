@@ -1,33 +1,37 @@
-﻿using InfinniPlatform.Api.Context;
-using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Api.RestApi.CommonApi;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using InfinniPlatform.Api.Metadata;
+using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
+using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
+using InfinniPlatform.Api.RestApi.CommonApi;
+using InfinniPlatform.Api.RestQuery;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 {
     /// <summary>
-    /// Миграция позволяет указать по каким полям документа можно выполнять сортировку
+    ///     Миграция позволяет указать по каким полям документа можно выполнять сортировку
     /// </summary>
     public sealed class EditSortablePropertiesMigration : IConfigurationMigration
     {
+        private readonly List<MigrationParameter> _parameters = new List<MigrationParameter>();
+
         /// <summary>
-        /// Конфигурация, к которой применяется миграция
+        ///     Конфигурация, к которой применяется миграция
         /// </summary>
         private string _activeConfiguration;
 
         private IMetadataConfiguration _metadataConfiguration;
 
-        readonly List<MigrationParameter> _parameters = new List<MigrationParameter>();
-        
+        private string _version;
+
 
         /// <summary>
-        /// Текстовое описание миграции
+        ///     Текстовое описание миграции
         /// </summary>
         public string Description
         {
@@ -35,9 +39,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        /// Идентификатор конфигурации, к которой применима миграция.
-        /// В том случае, если идентификатор не указан (null or empty string), 
-        /// миграция применима ко всем конфигурациям
+        ///     Идентификатор конфигурации, к которой применима миграция.
+        ///     В том случае, если идентификатор не указан (null or empty string),
+        ///     миграция применима ко всем конфигурациям
         /// </summary>
         public string ConfigurationId
         {
@@ -45,9 +49,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        /// Версия конфигурации, к которой применима миграция.
-        /// В том случае, если версия не указана (null or empty string), 
-        /// миграция применима к любой версии конфигурации
+        ///     Версия конфигурации, к которой применима миграция.
+        ///     В том случае, если версия не указана (null or empty string),
+        ///     миграция применима к любой версии конфигурации
         /// </summary>
         public string ConfigVersion
         {
@@ -55,7 +59,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        /// Признак того, что миграцию можно откатить
+        ///     Признак того, что миграцию можно откатить
         /// </summary>
         public bool IsUndoable
         {
@@ -63,52 +67,57 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        /// Выполнить миграцию
+        ///     Выполнить миграцию
         /// </summary>
         /// <param name="message">Информативное сообщение с результатом выполнения действия</param>
         /// <param name="parameters"></param>
         public void Up(out string message, object[] parameters)
         {
             var resultMessage = new StringBuilder();
-           
-            var managerDocument = new ManagerFactoryConfiguration(_activeConfiguration).BuildDocumentManager();
+
+            MetadataManagerDocument managerDocument =
+                new ManagerFactoryConfiguration(_version, _activeConfiguration).BuildDocumentManager();
 
             if (_metadataConfiguration != null)
             {
-                var containers = _metadataConfiguration.Containers;
+                IEnumerable<string> containers = _metadataConfiguration.Containers;
 
                 int propertyIndex = 0;
 
-                foreach (var containerId in containers)
+                foreach (string containerId in containers)
                 {
-                    var schema = _metadataConfiguration.GetSchemaVersion(containerId);
+                    dynamic schema = _metadataConfiguration.GetSchemaVersion(containerId);
 
                     if (schema != null)
                     {
                         propertyIndex = AssignSortableProperty(schema.Properties, parameters, propertyIndex);
-                        
-                        var document = managerDocument.MetadataReader.GetItem(containerId);
+
+                        dynamic document = managerDocument.MetadataReader.GetItem(containerId);
                         document.Schema = schema;
                         managerDocument.MergeItem(document);
                     }
                 }
-                
-                UpdateApi.ForceReload(_activeConfiguration);
-                
-                var responce = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "runmigration", null,
-                    new
-                    {
-                        MigrationName = "UpdateStoreMigration",
-                        ConfigurationName = _activeConfiguration
-                    });
 
-                var updateStoreMigrationLines = responce.Content
-                    .Replace("\\r", "\r")
-                    .Replace("\\n", "\n")
-                    .Replace("\"", "")
-                    .Split(new[] {"\r\n", "\n"}, StringSplitOptions.RemoveEmptyEntries);
+                new UpdateApi(_version).ForceReload(_activeConfiguration);
 
-                foreach (var line in updateStoreMigrationLines)
+                RestQueryResponse responce = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "runmigration",
+                                                                           null,
+                                                                           new
+                                                                               {
+                                                                                   MigrationName =
+                                                                               "UpdateStoreMigration",
+                                                                                   ConfigurationName =
+                                                                               _activeConfiguration
+                                                                               });
+
+                string[] updateStoreMigrationLines = responce.Content
+                                                             .Replace("\\r", "\r")
+                                                             .Replace("\\n", "\n")
+                                                             .Replace("\"", "")
+                                                             .Split(new[] {"\r\n", "\n"},
+                                                                    StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (string line in updateStoreMigrationLines)
                 {
                     resultMessage.AppendLine(line);
                 }
@@ -118,7 +127,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        /// Отменить миграцию
+        ///     Отменить миграцию
         /// </summary>
         /// <param name="message">Информативное сообщение с результатом выполнения действия</param>
         /// <param name="parameters">Параметры миграции</param>
@@ -131,26 +140,36 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        /// Устанавливает активную конфигурацию для миграции
+        ///     Возвращает параметры миграции
         /// </summary>
-        public void AssignActiveConfiguration(string configurationId, IGlobalContext context)
+        public IEnumerable<MigrationParameter> Parameters
         {
+            get { return _parameters; }
+        }
+
+        /// <summary>
+        ///     Устанавливает активную конфигурацию для миграции
+        /// </summary>
+        public void AssignActiveConfiguration(string version, string configurationId, IGlobalContext context)
+        {
+            _version = version;
+
             _activeConfiguration = configurationId;
-			var configObject =
-				context.GetComponent<IConfigurationMediatorComponent>()
-					   .ConfigurationBuilder.GetConfigurationObject(_activeConfiguration);
-            
-			if (configObject != null)
-			{
-				_metadataConfiguration = configObject.MetadataConfiguration;
-			}
+            var configObject =
+                context.GetComponent<IConfigurationMediatorComponent>()
+                       .ConfigurationBuilder.GetConfigurationObject(_version, _activeConfiguration);
+
+            if (configObject != null)
+            {
+                _metadataConfiguration = configObject.MetadataConfiguration;
+            }
 
             if (_metadataConfiguration != null)
             {
-                var containers = _metadataConfiguration.Containers;
-                foreach (var containerId in containers)
+                IEnumerable<string> containers = _metadataConfiguration.Containers;
+                foreach (string containerId in containers)
                 {
-                    var schema = _metadataConfiguration.GetSchemaVersion(containerId);
+                    dynamic schema = _metadataConfiguration.GetSchemaVersion(containerId);
 
                     if (schema != null)
                     {
@@ -160,34 +179,36 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
             }
         }
 
-        private static IEnumerable<MigrationParameter> ExtractObjectChildProperties(string rootName, dynamic properties, string documentName)
+        private static IEnumerable<MigrationParameter> ExtractObjectChildProperties(string rootName, dynamic properties,
+                                                                                    string documentName)
         {
             var parameters = new List<MigrationParameter>();
 
             if (properties != null)
             {
-                foreach (var propertyMapping in properties)
+                foreach (dynamic propertyMapping in properties)
                 {
                     string formattedPropertyName = string.IsNullOrEmpty(rootName)
-                        ? string.Format("{0}", propertyMapping.Key)
-                        : string.Format("{0}.{1}", rootName, propertyMapping.Key);
+                                                       ? string.Format("{0}", propertyMapping.Key)
+                                                       : string.Format("{0}.{1}", rootName, propertyMapping.Key);
 
                     if (propertyMapping.Value.Type.ToString() == DataType.Object.ToString())
                     {
                         parameters.AddRange(ExtractObjectChildProperties(formattedPropertyName,
-                            propertyMapping.Value.Properties, documentName));
+                                                                         propertyMapping.Value.Properties, documentName));
                     }
                     else if (propertyMapping.Value.Type.ToString() == DataType.Array.ToString())
                     {
                         if (propertyMapping.Value.Items != null)
                         {
                             parameters.AddRange(ExtractObjectChildProperties(formattedPropertyName,
-                                propertyMapping.Value.Items.Properties, documentName));
+                                                                             propertyMapping.Value.Items.Properties,
+                                                                             documentName));
                         }
                     }
                     else
                     {
-                        var isSortingField = false;
+                        bool isSortingField = false;
 
                         if (propertyMapping.Value.Sortable != null)
                         {
@@ -195,10 +216,10 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                         }
 
                         parameters.Add(new MigrationParameter
-                        {
-                            Caption = string.Format("{0}: {1}", documentName, formattedPropertyName),
-                            InitialValue = isSortingField
-                        });
+                            {
+                                Caption = string.Format("{0}: {1}", documentName, formattedPropertyName),
+                                InitialValue = isSortingField
+                            });
                     }
                 }
             }
@@ -208,14 +229,14 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 
         private static int AssignSortableProperty(dynamic properties, IList<object> isSortable, int currentIndex)
         {
-            var propertyIndex = currentIndex;
+            int propertyIndex = currentIndex;
 
             if (properties == null)
             {
                 return propertyIndex;
             }
 
-            foreach (var propertyMapping in properties)
+            foreach (dynamic propertyMapping in properties)
             {
                 if (propertyMapping.Value.Type.ToString() == DataType.Object.ToString())
                 {
@@ -226,7 +247,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                     if (propertyMapping.Value.Items != null)
                     {
                         propertyIndex = AssignSortableProperty(propertyMapping.Value.Items.Properties, isSortable,
-                            propertyIndex);
+                                                               propertyIndex);
                     }
                 }
                 else
@@ -236,14 +257,6 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
             }
 
             return propertyIndex;
-        }
-
-        /// <summary>
-        /// Возвращает параметры миграции
-        /// </summary>
-        public IEnumerable<MigrationParameter> Parameters
-        {
-            get { return _parameters; }
         }
     }
 }

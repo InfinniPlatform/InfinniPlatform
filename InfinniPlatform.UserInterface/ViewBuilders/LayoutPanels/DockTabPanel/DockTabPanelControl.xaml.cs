@@ -1,171 +1,154 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Controls;
-
 using DevExpress.Xpf.Docking;
 using DevExpress.Xpf.Docking.Base;
 using DevExpress.Xpf.Layout.Core;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.LayoutPanels.DockTabPanel
 {
-	public sealed partial class DockTabPanelControl : UserControl
-	{
-		public DockTabPanelControl()
-		{
-			InitializeComponent();
-		}
+    public sealed partial class DockTabPanelControl : UserControl
+    {
+        // HeaderLocation
 
+        private CaptionLocation _headerLocation;
+        // HeaderOrientation
 
-		// Events
+        private Orientation _headerOrientation;
+        // Pages
 
-		public event DockItemActivatedEventHandler SelectedPageChanged
-		{
-			add { TabContainer.AddHandler(DockLayoutManager.DockItemActivatedEvent, value); }
-			remove { TabContainer.RemoveHandler(DockLayoutManager.DockItemActivatedEvent, value); }
-		}
+        private readonly List<BaseLayoutItem> _pages
+            = new List<BaseLayoutItem>();
 
-		public event DockItemCancelEventHandler PageClosing
-		{
-			add { TabContainer.AddHandler(DockLayoutManager.DockItemClosingEvent, value); }
-			remove { TabContainer.RemoveHandler(DockLayoutManager.DockItemClosingEvent, value); }
-		}
+        public DockTabPanelControl()
+        {
+            InitializeComponent();
+        }
 
+        public CaptionLocation HeaderLocation
+        {
+            get { return _headerLocation; }
+            set
+            {
+                if (!Equals(_headerLocation, value))
+                {
+                    _headerLocation = value;
 
-		// HeaderLocation
+                    if (TabContainer.LayoutRoot.Items.Count == 1)
+                    {
+                        var group = TabContainer.LayoutRoot.Items[0] as DocumentGroup;
 
-		private CaptionLocation _headerLocation;
+                        if (group != null)
+                        {
+                            group.CaptionLocation = value;
+                        }
+                    }
+                }
+            }
+        }
 
-		public CaptionLocation HeaderLocation
-		{
-			get
-			{
-				return _headerLocation;
-			}
-			set
-			{
-				if (!Equals(_headerLocation, value))
-				{
-					_headerLocation = value;
+        public Orientation HeaderOrientation
+        {
+            get { return _headerOrientation; }
+            set
+            {
+                if (!Equals(_headerOrientation, value))
+                {
+                    _headerOrientation = value;
 
-					if (TabContainer.LayoutRoot.Items.Count == 1)
-					{
-						var group = TabContainer.LayoutRoot.Items[0] as DocumentGroup;
+                    if (TabContainer.LayoutRoot.Items.Count == 1)
+                    {
+                        var group = TabContainer.LayoutRoot.Items[0] as DocumentGroup;
 
-						if (group != null)
-						{
-							group.CaptionLocation = value;
-						}
-					}
-				}
-			}
-		}
+                        if (group != null)
+                        {
+                            group.CaptionOrientation = value;
+                        }
+                    }
+                }
+            }
+        }
 
+        // SelectedPage
 
-		// HeaderOrientation
+        public BaseLayoutItem SelectedPage
+        {
+            get
+            {
+                BaseLayoutItem selectedPage = null;
 
-		private Orientation _headerOrientation;
+                if (TabContainer.LayoutRoot.Items.Count == 1)
+                {
+                    var group = TabContainer.LayoutRoot.Items[0] as DocumentGroup;
 
-		public Orientation HeaderOrientation
-		{
-			get
-			{
-				return _headerOrientation;
-			}
-			set
-			{
-				if (!Equals(_headerOrientation, value))
-				{
-					_headerOrientation = value;
+                    if (group != null)
+                    {
+                        selectedPage = group.SelectedItem;
+                    }
+                }
 
-					if (TabContainer.LayoutRoot.Items.Count == 1)
-					{
-						var group = TabContainer.LayoutRoot.Items[0] as DocumentGroup;
+                if (selectedPage == null)
+                {
+                    selectedPage = TabContainer.ActiveDockItem;
+                }
 
-						if (group != null)
-						{
-							group.CaptionOrientation = value;
-						}
-					}
-				}
-			}
-		}
+                if (!_pages.Contains(selectedPage))
+                {
+                    selectedPage = null;
+                }
 
+                return selectedPage;
+            }
+            set { TabContainer.ActiveDockItem = value; }
+        }
 
-		// SelectedPage
+        // Events
 
-		public BaseLayoutItem SelectedPage
-		{
-			get
-			{
-				BaseLayoutItem selectedPage = null;
+        public event DockItemActivatedEventHandler SelectedPageChanged
+        {
+            add { TabContainer.AddHandler(DockLayoutManager.DockItemActivatedEvent, value); }
+            remove { TabContainer.RemoveHandler(DockLayoutManager.DockItemActivatedEvent, value); }
+        }
 
-				if (TabContainer.LayoutRoot.Items.Count == 1)
-				{
-					var group = TabContainer.LayoutRoot.Items[0] as DocumentGroup;
+        public event DockItemCancelEventHandler PageClosing
+        {
+            add { TabContainer.AddHandler(DockLayoutManager.DockItemClosingEvent, value); }
+            remove { TabContainer.RemoveHandler(DockLayoutManager.DockItemClosingEvent, value); }
+        }
 
-					if (group != null)
-					{
-						selectedPage = group.SelectedItem;
-					}
-				}
+        public void AddPage(BaseLayoutItem page)
+        {
+            if (!_pages.Contains(page))
+            {
+                page.AllowHide = false;
 
-				if (selectedPage == null)
-				{
-					selectedPage = TabContainer.ActiveDockItem;
-				}
+                if (TabContainer.LayoutRoot.Items.Count <= 0)
+                {
+                    TabContainer.LayoutRoot.Items.Add(new DocumentGroup
+                    {
+                        MDIStyle = MDIStyle.Tabbed,
+                        ClosePageButtonShowMode = ClosePageButtonShowMode.InAllTabPageHeaders,
+                        CaptionLocation = _headerLocation,
+                        CaptionOrientation = _headerOrientation
+                    });
+                }
 
-				if (!_pages.Contains(selectedPage))
-				{
-					selectedPage = null;
-				}
+                _pages.Add(page);
 
-				return selectedPage;
-			}
-			set
-			{
-				TabContainer.ActiveDockItem = value;
-			}
-		}
+                TabContainer.DockController.AddItem(page, TabContainer.LayoutRoot.Items[0], DockType.Fill);
+            }
+        }
 
+        public void RemovePage(BaseLayoutItem page)
+        {
+            if (_pages.Remove(page))
+            {
+                TabContainer.DockController.RemoveItem(page);
+            }
+        }
 
-		// Pages
-
-		private readonly List<BaseLayoutItem> _pages
-			= new List<BaseLayoutItem>();
-
-		public void AddPage(BaseLayoutItem page)
-		{
-			if (!_pages.Contains(page))
-			{
-				page.AllowHide = false;
-
-				if (TabContainer.LayoutRoot.Items.Count <= 0)
-				{
-					TabContainer.LayoutRoot.Items.Add(new DocumentGroup
-													  {
-														  MDIStyle = MDIStyle.Tabbed,
-														  ClosePageButtonShowMode = ClosePageButtonShowMode.InAllTabPageHeaders,
-														  CaptionLocation = _headerLocation,
-														  CaptionOrientation = _headerOrientation,
-													  });
-				}
-
-				_pages.Add(page);
-
-				TabContainer.DockController.AddItem(page, TabContainer.LayoutRoot.Items[0], DockType.Fill);
-			}
-		}
-
-		public void RemovePage(BaseLayoutItem page)
-		{
-			if (_pages.Remove(page))
-			{
-				TabContainer.DockController.RemoveItem(page);
-			}
-		}
-
-		public IEnumerable<BaseLayoutItem> GetPages()
-		{
-			return _pages.AsReadOnly();
-		}
-	}
+        public IEnumerable<BaseLayoutItem> GetPages()
+        {
+            return _pages.AsReadOnly();
+        }
+    }
 }

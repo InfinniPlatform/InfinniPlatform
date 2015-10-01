@@ -1,26 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.Factories;
-using InfinniPlatform.BlobStorage;
+﻿using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Binary;
 
 namespace InfinniPlatform.ContextComponents
 {
-	public sealed class BlobStorageComponent : IBlobStorageComponent
-	{
-		private readonly IBlobStorage _blobStorage;
+    public sealed class BlobStorageComponent : IBlobStorageComponent
+    {
+        private readonly IBlobStorage _blobStorage;
 
-		public BlobStorageComponent(IBlobStorage blobStorage)
-		{
-			_blobStorage = blobStorage;
-		}
+        public BlobStorageComponent(IBlobStorage blobStorage)
+        {
+            _blobStorage = blobStorage;
+        }
 
-		public IBlobStorage GetBlobStorage()
-		{
-			return _blobStorage;
-		}
-	}
+        public IBlobStorage GetBlobStorage()
+        {
+            return _blobStorage;
+        }
+    }
 }

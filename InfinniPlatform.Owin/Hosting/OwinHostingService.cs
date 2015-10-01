@@ -1,211 +1,203 @@
 ﻿using System;
 using System.Collections.Generic;
-
-using Microsoft.Owin.Hosting;
-
-using Owin;
-
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Owin.Properties;
+using Microsoft.Owin.Hosting;
+using Owin;
 
 namespace InfinniPlatform.Owin.Hosting
 {
-	/// <summary>
-	/// Сервис хостинга на базе OWIN (Open Web Interface for .NET).
-	/// </summary>
-	public sealed class OwinHostingService : IHostingService
-	{
-		/// <summary>
-		/// Конструктор.
-		/// </summary>
-		/// <param name="contextConfig">Функция настройки контекста подсистемы хостинга.</param>
-		/// <exception cref="ArgumentNullException"></exception>
-		/// <exception cref="ArgumentOutOfRangeException"></exception>
-		public OwinHostingService(Action<HostingContextBuilder> contextConfig)
-		{
-			// Настройка контекста
+    /// <summary>
+    ///     Сервис хостинга на базе OWIN (Open Web Interface for .NET).
+    /// </summary>
+    public sealed class OwinHostingService : IHostingService
+    {
+        private volatile IDisposable _host;
+        private readonly string _baseAddress;
+        private readonly HostingContextBuilder _contextBuilder;
+        private readonly List<OwinHostingModule> _hostingModules;
+        private readonly object _hostSync = new object();
 
-			_contextBuilder = new HostingContextBuilder();
+        /// <summary>
+        ///     Конструктор.
+        /// </summary>
+        /// <param name="contextConfig">Функция настройки контекста подсистемы хостинга.</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public OwinHostingService(Action<HostingContextBuilder> contextConfig)
+        {
+            // Настройка контекста
 
-			if (contextConfig != null)
-			{
-				contextConfig(_contextBuilder);
-			}
+            _contextBuilder = new HostingContextBuilder();
 
-			// Проверка наличия конфигурации
+            if (contextConfig != null)
+            {
+                contextConfig(_contextBuilder);
+            }
 
-			if (_contextBuilder.Context.Configuration == null)
-			{
-				throw new ArgumentNullException(Resources.ServerConfigurationCannotBeNull);
-			}
+            // Проверка наличия конфигурации
 
-			// Имя схемы протокола сервера
+            if (_contextBuilder.Context.Configuration == null)
+            {
+                throw new ArgumentNullException(Resources.ServerConfigurationCannotBeNull);
+            }
 
-			var scheme = _contextBuilder.Context.Configuration.ServerScheme;
+            // Имя схемы протокола сервера
 
-			if (string.IsNullOrWhiteSpace(scheme))
-			{
-				throw new ArgumentNullException(Resources.ServerSchemeCannotBeNullOrWhiteSpace);
-			}
+            var scheme = _contextBuilder.Context.Configuration.ServerScheme;
 
-			if (!Uri.UriSchemeHttp.Equals(scheme, StringComparison.OrdinalIgnoreCase) && !Uri.UriSchemeHttps.Equals(scheme, StringComparison.OrdinalIgnoreCase))
-			{
-				throw new ArgumentOutOfRangeException(string.Format(Resources.ServerSchemeIsNotSupported, scheme));
-			}
+            if (string.IsNullOrWhiteSpace(scheme))
+            {
+                throw new ArgumentNullException(Resources.ServerSchemeCannotBeNullOrWhiteSpace);
+            }
 
-			// Адрес или имя сервера
+            if (!Uri.UriSchemeHttp.Equals(scheme, StringComparison.OrdinalIgnoreCase) &&
+                !Uri.UriSchemeHttps.Equals(scheme, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new ArgumentOutOfRangeException(string.Format(Resources.ServerSchemeIsNotSupported, scheme));
+            }
 
-			var server = _contextBuilder.Context.Configuration.ServerName;
+            // Адрес или имя сервера
 
-			if (string.IsNullOrWhiteSpace(server))
-			{
-				throw new ArgumentNullException(Resources.ServerNameCannotBeNullOrWhiteSpace);
-			}
+            var server = _contextBuilder.Context.Configuration.ServerName;
 
-			if (!server.IsLocalAddress(out server))
-			{
-				throw new ArgumentOutOfRangeException(string.Format(Resources.ServerNameIsNotLocal, server));
-			}
+            if (string.IsNullOrWhiteSpace(server))
+            {
+                throw new ArgumentNullException(Resources.ServerNameCannotBeNullOrWhiteSpace);
+            }
 
-			// Номер порта сервера
+            if (!server.IsLocalAddress(out server))
+            {
+                throw new ArgumentOutOfRangeException(string.Format(Resources.ServerNameIsNotLocal, server));
+            }
 
-			var port = _contextBuilder.Context.Configuration.ServerPort;
+            // Номер порта сервера
 
-			if (port <= 0)
-			{
-				throw new ArgumentOutOfRangeException(string.Format(Resources.ServerPortIsIncorrect, port));
-			}
+            var port = _contextBuilder.Context.Configuration.ServerPort;
 
-			// Отпечаток сертификата
+            if (port <= 0)
+            {
+                throw new ArgumentOutOfRangeException(string.Format(Resources.ServerPortIsIncorrect, port));
+            }
 
-			var certificate = _contextBuilder.Context.Configuration.ServerCertificate;
+            // Отпечаток сертификата
 
-			if (Uri.UriSchemeHttps.Equals(scheme, StringComparison.OrdinalIgnoreCase) && string.IsNullOrWhiteSpace(certificate))
-			{
-				throw new ArgumentNullException(Resources.ServerCertificateCannotBeNullOrWhiteSpace);
-			}
+            var certificate = _contextBuilder.Context.Configuration.ServerCertificate;
 
-
-			Context = _contextBuilder.Context;			
-
-			_baseAddress = string.Format("{0}://{1}:{2}/", scheme, server, port);
-			_hostingModules = new List<OwinHostingModule>();
-		}
-
-
-		private readonly string _baseAddress;
-		private readonly List<OwinHostingModule> _hostingModules;
+            if (Uri.UriSchemeHttps.Equals(scheme, StringComparison.OrdinalIgnoreCase) &&
+                string.IsNullOrWhiteSpace(certificate))
+            {
+                throw new ArgumentNullException(Resources.ServerCertificateCannotBeNullOrWhiteSpace);
+            }
 
 
-		/// <summary>
-		/// Контекст подсистемы хостинга.
-		/// </summary>
-		public IHostingContext Context { get; private set; }
+            Context = _contextBuilder.Context;
 
+            _baseAddress = string.Format("{0}://{1}:{2}/", scheme, server, port);
+            _hostingModules = new List<OwinHostingModule>();
+        }
 
-		/// <summary>
-		/// Зарегистрировать модуль хостинга.
-		/// </summary>
-		/// <param name="module">Модуль хостинга.</param>
-		/// <exception cref="ArgumentNullException"></exception>
-		public void RegisterModule(OwinHostingModule module)
-		{
-			if (module == null)
-			{
-				throw new ArgumentNullException("module");
-			}
+        /// <summary>
+        ///     Контекст подсистемы хостинга.
+        /// </summary>
+        public IHostingContext Context { get; private set; }
 
-			_hostingModules.Add(module);
-		}
+        /// <summary>
+        ///     Запустить хостинг.
+        /// </summary>
+        public void Start()
+        {
+            if (_host == null)
+            {
+                lock (_hostSync)
+                {
+                    if (_host == null)
+                    {
+                        BindCertificate();
 
+                        _host = WebApp.Start(_baseAddress, Startup);
 
-		private volatile IDisposable _host;
-		private readonly object _hostSync = new object();
-		private readonly HostingContextBuilder _contextBuilder;
+                        foreach (var module in _hostingModules)
+                        {
+                            if (module.OnStart != null)
+                            {
+                                module.OnStart(_contextBuilder, Context);
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
+        /// <summary>
+        ///     Остановить хостинг.
+        /// </summary>
+        public void Stop()
+        {
+            if (_host != null)
+            {
+                lock (_hostSync)
+                {
+                    if (_host != null)
+                    {
+                        try
+                        {
+                            foreach (var module in _hostingModules)
+                            {
+                                if (module.OnStop != null)
+                                {
+                                    module.OnStop(Context);
+                                }
+                            }
 
-		/// <summary>
-		/// Запустить хостинг.
-		/// </summary>
-		public void Start()
-		{
-			if (_host == null)
-			{
-				lock (_hostSync)
-				{
-					if (_host == null)
-					{
-						BindCertificate();
+                            _host.Dispose();
+                        }
+                        finally
+                        {
+                            _host = null;
+                        }
+                    }
+                }
+            }
+        }
 
-						_host = WebApp.Start(_baseAddress, Startup);
+        /// <summary>
+        ///     Зарегистрировать модуль хостинга.
+        /// </summary>
+        /// <param name="module">Модуль хостинга.</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public void RegisterModule(OwinHostingModule module)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException("module");
+            }
 
-						foreach (var module in _hostingModules)
-						{
-							if (module.OnStart != null)
-							{
-								module.OnStart(_contextBuilder, Context);
-							}
-						}
-					}
-				}
-			}
-		}
+            _hostingModules.Add(module);
+        }
 
-		/// <summary>
-		/// Остановить хостинг.
-		/// </summary>
-		public void Stop()
-		{
-			if (_host != null)
-			{
-				lock (_hostSync)
-				{
-					if (_host != null)
-					{
-						try
-						{
-							foreach (var module in _hostingModules)
-							{
-								if (module.OnStop != null)
-								{
-									module.OnStop(Context);
-								}
-							}
+        private void Startup(IAppBuilder builder)
+        {
+            foreach (var module in _hostingModules)
+            {
+                module.Configure(builder, Context);
+            }
+        }
 
-							_host.Dispose();
-						}
-						finally
-						{
-							_host = null;
-						}
-					}
-				}
-			}
-		}
+        private void BindCertificate()
+        {
+            var config = Context.Configuration;
 
+            if (Uri.UriSchemeHttps.Equals(config.ServerScheme, StringComparison.OrdinalIgnoreCase))
+            {
+                if (string.IsNullOrWhiteSpace(config.ServerCertificate))
+                {
+                    throw new ArgumentNullException(Resources.ServerCertificateCannotBeNullOrWhiteSpace);
+                }
 
-		private void Startup(IAppBuilder builder)
-		{
-			foreach (var module in _hostingModules)
-			{
-				module.Configure(builder, Context);
-			}
-		}
-
-		private void BindCertificate()
-		{
-			var config = Context.Configuration;
-
-			if (Uri.UriSchemeHttps.Equals(config.ServerScheme, StringComparison.OrdinalIgnoreCase))
-			{
-				if (string.IsNullOrWhiteSpace(config.ServerCertificate))
-				{
-					throw new ArgumentNullException(Resources.ServerCertificateCannotBeNullOrWhiteSpace);
-				}
-
-				OwinExtensions.BindCertificate(config.ServerPort, config.ServerCertificate);
-			}
-		}
-	}
+                OwinExtensions.BindCertificate(config.ServerPort, config.ServerCertificate);
+            }
+        }
+    }
 }

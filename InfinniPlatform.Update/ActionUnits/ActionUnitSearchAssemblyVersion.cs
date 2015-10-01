@@ -1,6 +1,7 @@
 ﻿using System;
-using InfinniPlatform.Api.ContextComponents;
 using InfinniPlatform.Api.ContextTypes;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.Update.ActionUnits
 {

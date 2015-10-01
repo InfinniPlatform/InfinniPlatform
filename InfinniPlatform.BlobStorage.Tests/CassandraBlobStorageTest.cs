@@ -1,7 +1,7 @@
 ﻿using System;
-using InfinniPlatform.Api.Factories;
 using InfinniPlatform.Cassandra.Client;
-
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Binary;
 using NUnit.Framework;
 
 namespace InfinniPlatform.BlobStorage.Tests

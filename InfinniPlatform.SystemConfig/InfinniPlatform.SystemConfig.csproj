@@ -11,6 +11,7 @@
     <AssemblyName>InfinniPlatform.SystemConfig</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,6 +30,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release_TeamCity|AnyCPU'">
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -38,19 +48,18 @@
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Http, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.2\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configurator\ActionUnitGetIrrelevantVersions.cs" />
     <Compile Include="Configurator\ActionUnitGetPrintView.cs" />
     <Compile Include="Configurator\ActionUnitClearControllersCache.cs" />
+    <Compile Include="Configurator\ActionUnitSetRelevantVersion.cs" />
+    <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetSolutionList.cs" />
+    <Compile Include="Configurator\ActionUnitUpdateSolutionFromJson.cs" />
     <Compile Include="Initializers\UserStorageInitializer.cs" />
     <Compile Include="Configurator\ActionUnitDeleteConfig.cs" />
     <Compile Include="Configurator\ActionUnitDeleteMetadata.cs" />
@@ -69,7 +78,6 @@
     <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetDocumentElementListMetadata.cs" />
     <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetDocumentElementMetadata.cs" />
     <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetDocumentListMetadata.cs" />
-    <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetDocumentMetadata.cs" />
     <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetMenuListMetadata.cs" />
     <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetValidationErrorMetadata.cs" />
     <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetValidationWarningMetadata.cs" />
@@ -165,6 +173,10 @@
     <ProjectReference Include="..\InfinniPlatform.Reporting\InfinniPlatform.Reporting.csproj">
       <Project>{CDF6744F-CDDE-4A4F-90EA-64286D86695D}</Project>
       <Name>InfinniPlatform.Reporting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
+      <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
+      <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.WebApi\InfinniPlatform.WebApi.csproj">
       <Project>{86AB4502-9B73-43B5-8A20-F01AADE0EDA4}</Project>

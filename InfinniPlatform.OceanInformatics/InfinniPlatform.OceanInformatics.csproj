@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -12,6 +12,8 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>false</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,6 +35,15 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release_TeamCity|AnyCPU'">
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ArchetypeBuilder, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -42,10 +53,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\ArtefactBuilders.dll</HintPath>
     </Reference>
-    <Reference Include="DesignByContract, Version=1.0.2746.28005, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\DesignByContract.dll</HintPath>
-    </Reference>
     <Reference Include="EhrReaders, Version=1.5.2915.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\EhrReaders.dll</HintPath>
@@ -53,14 +60,6 @@
     <Reference Include="EiffelSoftware.Runtime, Version=6.2.7.1629, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\EiffelSoftware.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="OceanEhr.Common, Version=1.5.4059.31483, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\OceanEhr.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="OceanEhr.OpenEhrV1, Version=1.5.3209.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\OceanArchetypesAndTemplatesLoader.2.6.1213.3\lib\net45\OceanEhr.OpenEhrV1.dll</HintPath>
     </Reference>
     <Reference Include="OceanInformatics.AdlParser, Version=1.4.0.1287, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

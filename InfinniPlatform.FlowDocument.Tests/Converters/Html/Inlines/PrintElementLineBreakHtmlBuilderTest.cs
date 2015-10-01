@@ -14,11 +14,11 @@ namespace InfinniPlatform.FlowDocument.Tests.Converters.Html.Inlines
         {
             //Given
             var context = HtmlBuilderTestHelper.CreateHtmlBuilderContext();
-            var element = new PrintElementParagraph() { IndentSize = 30 };
+            var element = new PrintElementParagraph {IndentSize = 30};
             var result = new TextWriterWrapper();
 
-            var run1 = new PrintElementRun() { Text = "Before Line Break." };
-            var run2 = new PrintElementRun() { Text = "After Line Break." };
+            var run1 = new PrintElementRun {Text = "Before Line Break."};
+            var run2 = new PrintElementRun {Text = "After Line Break."};
 
             element.Inlines.Add(run1);
             element.Inlines.Add(new PrintElementLineBreak());

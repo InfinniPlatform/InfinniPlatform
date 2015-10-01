@@ -1,88 +1,81 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Forms;
-
 using InfinniPlatform.ReportDesigner.Properties;
 
 namespace InfinniPlatform.ReportDesigner.Views.Preview
 {
-	/// <summary>
-	/// Представление для выбора значения из списка.
-	/// </summary>
-	sealed partial class SelectSingleValueView : UserControl
-	{
-		public SelectSingleValueView()
-		{
-			InitializeComponent();
+    /// <summary>
+    ///     Представление для выбора значения из списка.
+    /// </summary>
+    sealed partial class SelectSingleValueView : UserControl
+    {
+        private IDictionary<string, object> _availableValues;
 
-			Text = Resources.SelectSingleValueView;
-		}
+        public SelectSingleValueView()
+        {
+            InitializeComponent();
 
+            Text = Resources.SelectSingleValueView;
+        }
 
-		private IDictionary<string, object> _availableValues;
+        /// <summary>
+        ///     Список значений.
+        /// </summary>
+        public IDictionary<string, object> AvailableValues
+        {
+            get { return _availableValues; }
+            set
+            {
+                _availableValues = value;
 
-		/// <summary>
-		/// Список значений.
-		/// </summary>
-		public IDictionary<string, object> AvailableValues
-		{
-			get
-			{
-				return _availableValues;
-			}
-			set
-			{
-				_availableValues = value;
+                ItemsEdit.Items.Clear();
 
-				ItemsEdit.Items.Clear();
+                if (value != null)
+                {
+                    foreach (var item in value)
+                    {
+                        ItemsEdit.Items.Add(new ParameterValue(item.Value, item.Key));
+                    }
+                }
 
-				if (value != null)
-				{
-					foreach (var item in value)
-					{
-						ItemsEdit.Items.Add(new ParameterValue(item.Value, item.Key));
-					}
-				}
+                ResetSelection();
+            }
+        }
 
-				ResetSelection();
-			}
-		}
+        /// <summary>
+        ///     Выбранное значение.
+        /// </summary>
+        public object SelectedValue
+        {
+            get
+            {
+                var selectedItem = ItemsEdit.SelectedItem as ParameterValue;
 
+                return (selectedItem != null) ? selectedItem.Value : null;
+            }
+            set
+            {
+                var index = 0;
+                var selectedIndex = -1;
 
-		/// <summary>
-		/// Выбранное значение.
-		/// </summary>
-		public object SelectedValue
-		{
-			get
-			{
-				var selectedItem = ItemsEdit.SelectedItem as ParameterValue;
+                foreach (ParameterValue item in ItemsEdit.Items)
+                {
+                    if (Equals(item.Value, value))
+                    {
+                        selectedIndex = index;
+                        break;
+                    }
 
-				return (selectedItem != null) ? selectedItem.Value : null;
-			}
-			set
-			{
-				var index = 0;
-				var selectedIndex = -1;
+                    index++;
+                }
 
-				foreach (ParameterValue item in ItemsEdit.Items)
-				{
-					if (Equals(item.Value, value))
-					{
-						selectedIndex = index;
-						break;
-					}
+                ItemsEdit.SelectedIndex = selectedIndex;
+            }
+        }
 
-					index++;
-				}
-
-				ItemsEdit.SelectedIndex = selectedIndex;
-			}
-		}
-
-
-		private void ResetSelection()
-		{
-			ItemsEdit.SelectedIndex = -1;
-		}
-	}
+        private void ResetSelection()
+        {
+            ItemsEdit.SelectedIndex = -1;
+        }
+    }
 }

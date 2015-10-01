@@ -1,0 +1,36 @@
+{
+  "Id": "5bc338e6-cfa1-4951-8712-1e8e28bd489c",
+  "Secured": true,
+  "Name": "GameInfo",
+  "Caption": "Дополнительная информация о игре",
+  "Description": "",
+  "Versioning": 2,
+  "Version": "1.0.0.0",
+  "MetadataIndex": "GameInfo",
+  "Services": [],
+  "Processes": [],
+  "Scenarios": [],
+  "Generators": [],
+  "Views": [],
+  "PrintViews": [],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "DocumentStatuses": [],
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "InfoSection": {
+        "Caption": "Вид информации",
+        "Type": "String"
+      },
+      "InfoContent": {
+        "Caption": "Содержимое информационной секции",
+        "Type": "String"
+      }
+    }
+  },
+  "ParentId": "f17a31e9-3872-419e-882f-b9cdc3a29e76",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "documentmetadata"
+}

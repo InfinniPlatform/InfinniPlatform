@@ -1,21 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Registers;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Api.SearchOptions.Builders;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Register;
 using InfinniPlatform.SystemConfig.Properties;
 
 namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
 {
     /// <summary>
-    /// Получение значений ресурсов на указанную дату
+    ///     Получение значений ресурсов на указанную дату
     /// </summary>
     public sealed class ActionUnitGetRegisterValuesByDate
     {
@@ -26,7 +27,10 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
             string registerId = target.Item.Register.ToString();
             var specifiedDimensions = target.Item.Dimensions;
 
-            var registerObject = target.Context.GetComponent<IMetadataComponent>().GetMetadataList(configurationId, registerId,MetadataType.Register).FirstOrDefault();
+            var registerObject =
+                target.Context.GetComponent<IMetadataComponent>()
+                      .GetMetadataList(target.Context.GetVersion(configurationId, target.UserName), configurationId, registerId, MetadataType.Register)
+                      .FirstOrDefault();
 
             if (registerObject == null)
             {
@@ -34,18 +38,20 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
                 target.Result.ValidationMessage = string.Format(Resources.RegisterNotFound, registerId);
                 return;
             }
-            
+
             // Сначала необходимо извлечь значения из регистра итогов
-            var closestDate =
-                RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetClosestDateTimeOfTotalCalculation", null, new
-                {
-                    Configuration = configurationId,
-                    Register = registerId,
-                    Date = aggregationDate
-                }).ToDynamic();
+            dynamic closestDate =
+                RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetClosestDateTimeOfTotalCalculation", null,
+                                              new
+                                                  {
+                                                      Configuration = configurationId,
+                                                      Register = registerId,
+                                                      Date = aggregationDate
+                                                  }).ToDynamic();
 
             var filetrBuilder = new FilterBuilder();
-            filetrBuilder.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty).IsLessThanOrEquals(aggregationDate));
+            filetrBuilder.AddCriteria(
+                c => c.Property(RegisterConstants.DocumentDateProperty).IsLessThanOrEquals(aggregationDate));
 
             IEnumerable<dynamic> aggregatedTotals = null;
 
@@ -57,17 +63,18 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
                     f => f.AddCriteria(
                         c => c.Property(RegisterConstants.DocumentDateProperty).IsEquals(closestDate.Date)), 0, 10000);
 
-                filetrBuilder.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty).IsMoreThan(closestDate.Date));
+                filetrBuilder.AddCriteria(
+                    c => c.Property(RegisterConstants.DocumentDateProperty).IsMoreThan(closestDate.Date));
             }
 
-            IEnumerable<dynamic> dimensions = specifiedDimensions == null ?
-                AggregationUtils.BuildDimensionsFromRegisterMetadata(registerObject) :
-                AggregationUtils.BuildDimensionsFromProperties(specifiedDimensions);
+            IEnumerable<dynamic> dimensions = specifiedDimensions == null
+                                                  ? AggregationUtils.BuildDimensionsFromRegisterMetadata(registerObject)
+                                                  : AggregationUtils.BuildDimensionsFromProperties(specifiedDimensions);
 
             var valueProperties = target.Item.ValueProperties ??
-                AggregationUtils.BuildValuePropertyFromRegisterMetadata(registerObject);
+                                  AggregationUtils.BuildValuePropertyFromRegisterMetadata(registerObject);
 
-            var valuePropertiesCount = 0;
+            int valuePropertiesCount = 0;
             var values = new List<string>();
 
             foreach (var valueProperty in valueProperties)
@@ -91,9 +98,10 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
             if (target.Item.ValueAggregationTypes != null)
             {
                 aggregationTypes = new List<AggregationType>();
-                foreach (var aggregationType in DynamicWrapperExtensions.ToEnumerable(target.Item.ValueAggregationTypes))
+                foreach (var aggregationType in DynamicWrapperExtensions.ToEnumerable(target.Item.ValueAggregationTypes)
+                    )
                 {
-                    (aggregationTypes as List<AggregationType>).Add((AggregationType)aggregationType);
+                    (aggregationTypes as List<AggregationType>).Add((AggregationType) aggregationType);
                 }
             }
             else
@@ -114,17 +122,18 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
                 values,
                 0,
                 10000)
-                .ToDynamicList();
+                                                                 .ToDynamicList();
 
-            var dimensionNames = dimensions.Select(d => (string) d.FieldName).ToArray();
+            string[] dimensionNames = dimensions.Select(d => (string) d.FieldName).ToArray();
 
             // Выполняем обработку результата агрегации, чтобы представить полученные данные в табличном виде
-            var denormalizedResult = AggregationUtils.ProcessBuckets(dimensionNames, values.ToArray(), aggregationResult);
+            IEnumerable<dynamic> denormalizedResult = AggregationUtils.ProcessBuckets(dimensionNames, values.ToArray(),
+                                                                                      aggregationResult);
 
             if (aggregatedTotals != null)
             {
                 target.Result = AggregationUtils.MergeAggregaionResults(dimensionNames, valueProperties,
-                    denormalizedResult, aggregatedTotals);
+                                                                        denormalizedResult, aggregatedTotals);
             }
             else
             {

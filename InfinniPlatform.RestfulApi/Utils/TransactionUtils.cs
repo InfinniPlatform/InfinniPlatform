@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.RestApi.AuthApi;
-using InfinniPlatform.Api.Transactions;
-using InfinniPlatform.Metadata;
+﻿using InfinniPlatform.Api.RestApi.Auth;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.RestfulApi.Utils
 {
@@ -15,25 +8,26 @@ namespace InfinniPlatform.RestfulApi.Utils
 	{
 		public static void ApplyTransactionMarker(IApplyContext target)
 		{
-			if (!string.IsNullOrEmpty(target.TransactionMarker))
-			{
-				if (target.Item.Document != null || target.Item.Documents != null)
-				{
-					target.Context.GetComponent<ITransactionComponent>().GetTransactionManager().Attach(target.TransactionMarker, CreateAttachedInstance(target));
-				}
-			}
+            if (!string.IsNullOrEmpty(target.TransactionMarker))
+            {
+                dynamic docs = (target.Item.Document != null ? new[] { target.Item.Document } : null) ??
+                               target.Item.Documents;
 
+                if (docs != null)
+                {
+                    target.Context.GetComponent<ITransactionComponent>().GetTransactionManager()
+                          .GetTransaction(target.TransactionMarker)
+                          .Attach(target.Item.Configuration,
+                                  target.Item.Metadata,
+                                  target.Context.GetVersion(target.Item.Configuration, target.UserName),
+                                  docs,
+                                  target.Context.GetComponent<ISecurityComponent>()
+                                        .GetClaim(AuthorizationStorageExtensions.OrganizationClaim, target.UserName) ??
+                                  AuthorizationStorageExtensions.AnonimousUser);
+                }
+            }
 		}
 
-		private static dynamic CreateAttachedInstance(IApplyContext target)
-		{
-			var attachedInstance = new AttachedInstance();
-			attachedInstance.Version = target.Version;
-			attachedInstance.Instance = target.Item;
-			attachedInstance.TenantId = target.Context.GetComponent<ISecurityComponent>()
-			                                 .GetClaim(AuthorizationStorageExtensions.OrganizationClaim, target.UserName);
-			
-			return attachedInstance;
-		}
+
 	}
 }

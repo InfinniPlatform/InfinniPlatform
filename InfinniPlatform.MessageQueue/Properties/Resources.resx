@@ -121,7 +121,7 @@
     <value>Address cannot be null or white space.</value>
   </data>
   <data name="AddressShouldBeAbsoluteUriToHttpOrHttpsService" xml:space="preserve">
-    <value>Address should be absolute URI to HTTP or HTTPS service.</value>
+    <value>Address should be absolute URI to HTTP or HTTPS process.</value>
   </data>
   <data name="ConsumerIdCannotBeNullOrWhiteSpace" xml:space="preserve">
     <value>Consumer identifier cannot be null or white space.</value>

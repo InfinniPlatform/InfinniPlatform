@@ -1,12 +1,12 @@
-﻿using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
+﻿using System;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.ContextComponents;
-using InfinniPlatform.RestfulApi.Utils;
-using System;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
 using System.Collections.Generic;
 using System.Linq;
+using InfinniPlatform.RestfulApi.Utils;
 
 namespace InfinniPlatform.RestfulApi.ActionUnits
 {
@@ -16,9 +16,12 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
         public void Action(IApplyContext target)
         {
+            var version = target.Context.GetVersion(target.Item.Configuration, target.UserName);
+
             dynamic documentProvider =
                 target.Context.GetComponent<InprocessDocumentComponent>()
-                    .GetDocumentProvider(target.Item.Configuration, target.Item.Metadata, target.UserName);
+                      .GetDocumentProvider(version, target.Item.Configuration, target.Item.Metadata,
+                                           target.UserName);
 
             dynamic instanceId = null;
             if (documentProvider != null)
@@ -27,25 +30,20 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
                 _metadataComponent = target.Context.GetComponent<IMetadataComponent>();
 
-                IEnumerable<dynamic> result = _metadataComponent.GetMetadataList(target.Item.Configuration,
-                    target.Item.Metadata,
-                    MetadataType.Schema);
+                IEnumerable<dynamic> result = _metadataComponent.GetMetadataList(version,
+                                                                                 target.Item.Configuration,
+                                                                                 target.Item.Metadata,
+                                                                                 MetadataType.Schema);
 
-                var documentSchema = result.FirstOrDefault();
+                dynamic documentSchema = result.FirstOrDefault();
 
-                var allowNonSchemaProperties = target.Item.AllowNonSchemaProperties != null &&
-                                               target.Item.AllowNonSchemaProperties == true;
+                bool allowNonSchemaProperties = target.Item.AllowNonSchemaProperties != null &&
+                                                target.Item.AllowNonSchemaProperties == true;
 
                 if (target.Item.Document != null)
                 {
-                    target.Item.Document = AdjustDocumentContent(target.Item.Document, documentSchema,
-                        allowNonSchemaProperties);
-
-                    target.Context.GetComponent<ILogComponent>().GetLog().Info(
-                        "document \"{0}\" save completed to \"{1}\", type {2}",
-                        target.Item.Configuration,
-                        target.Item.Document.ToString(),
-                        target.Item.Metadata ?? "indexobject");
+                    target.Item.Document = AdjustDocumentContent(version, target.Item.Document, documentSchema,
+                                                                 allowNonSchemaProperties);
 
                     instanceId = target.Item.Document.Id;
                 }
@@ -55,51 +53,37 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
                     foreach (var document in target.Item.Documents)
                     {
-                        adjustedDocs.Add(AdjustDocumentContent(document, documentSchema, allowNonSchemaProperties));
-
-                        target.Context.GetComponent<ILogComponent>().GetLog().Info(
-                            "document \"{0}\" save completed to \"{1}\", type {2}",
-                            target.Item.Configuration,
-                            document.ToString(),
-                            target.Item.Metadata ?? "indexobject");
+                        adjustedDocs.Add(AdjustDocumentContent(version, document, documentSchema,
+                                                               allowNonSchemaProperties));
                     }
 
                     target.Item.Documents = adjustedDocs.ToArray();
-
-                    target.Context.GetComponent<ILogComponent>()
-                        .GetLog()
-                        .Info("documents save completed to \"{0}\", type {1}", target.Item.Configuration,
-                            target.Item.Metadata);
                 }
                 target.Result = new DynamicWrapper();
 
                 target.Result.IsValid = true;
                 target.Result.ValidationMessage = string.Empty;
 
-                target.Result.ConfigId = target.Item.Configuration;
-                target.Result.DocumentId = target.Item.Metadata;
-                target.Result.ActionId = "SetDocument";
-
                 if (instanceId != null)
                 {
-                    target.Result.InstanceId = instanceId;
+                    target.Result.Id = instanceId;
                 }
 
                 return;
             }
             target.Context.GetComponent<ILogComponent>()
-                .GetLog()
-                .Error("document \"{0}\" type \"{1}\" not exists", target.Item.Configuration, target.Item.Metadata);
+                  .GetLog()
+                  .Error("document \"{0}\" type \"{1}\" not exists", target.Item.Configuration, target.Item.Metadata);
             // throw new ArgumentException(string.Format("document \"{0}\" type \"{1}\" not exists", target.Item.Configuration, target.Item.Metadata));
         }
 
         /// <summary>
-        /// Перед сохранением документа его нужно подготовить:
-        /// 1. Добавление поля Id (если его нет)
-        /// 2. Удаление полей, несоответствующих схеме документа
+        ///     Перед сохранением документа его нужно подготовить:
+        ///     1. Добавление поля Id (если его нет)
+        ///     2. Удаление полей, несоответствующих схеме документа
         /// </summary>
-        private static dynamic AdjustDocumentContent(dynamic document, dynamic documentSchema,
-            bool allowNonSchemaProperties)
+        private static dynamic AdjustDocumentContent(string version, dynamic document, dynamic documentSchema,
+                                                     bool allowNonSchemaProperties)
         {
             if (document.Id == null)
             {
@@ -108,16 +92,16 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
             if (documentSchema != null && !allowNonSchemaProperties)
             {
-                return RemoveInappropriateProperties(document, documentSchema);
+                return RemoveInappropriateProperties(version, document, documentSchema);
             }
 
             return document;
         }
 
         /// <summary>
-        /// Удаление свойств, несоответствующих схеме документа
+        ///     Удаление свойств, несоответствующих схеме документа
         /// </summary>
-        private static dynamic RemoveInappropriateProperties(dynamic document, dynamic schema)
+        private static dynamic RemoveInappropriateProperties(string version, dynamic document, dynamic schema)
         {
             if (document == null)
                 return null;
@@ -125,9 +109,9 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             var propertyNamesToRemove = new List<string>();
             var propertiesToModify = new Dictionary<string, dynamic>();
 
-            var documentClone = document.Clone();
+            dynamic documentClone = document.Clone();
 
-            foreach (var documentProperty in documentClone)
+            foreach (dynamic documentProperty in documentClone)
             {
                 // Данные поля могут присутствовать в документе, даже если их нет в схеме
                 if (documentProperty.Key == "Id" || documentProperty.Key == "DisplayName")
@@ -135,7 +119,9 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                     continue;
                 }
 
-                var propertyMetadata = schema.Properties[documentProperty.Key];
+                dynamic propertyMetadata = schema.Properties[documentProperty.Key];
+ 
+
 
                 if (propertyMetadata == null)
                 {
@@ -145,9 +131,12 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                 {
                     if (propertyMetadata.Type == "Object")
                     {
-                        propertiesToModify.Add(
+                    propertiesToModify.Add(
                             documentProperty.Key,
-                            ProcessInnerObjectProperties(propertyMetadata.TypeInfo, documentProperty));
+                            ProcessInnerObjectProperties(version,propertyMetadata.TypeInfo, documentProperty));
+
+
+
                     }
                     else if (propertyMetadata.Type == "Array")
                     {
@@ -158,7 +147,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
                         propertiesToModify.Add(
                             documentProperty.Key,
-                            ProcessInnerArrayProperties(propertyMetadata.Items.TypeInfo, documentProperty));
+                            ProcessInnerArrayProperties(version, propertyMetadata.Items.TypeInfo, documentProperty));
 
                     }
                 }
@@ -178,9 +167,10 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
         }
 
         /// <summary>
-        /// Обработка вложенных свойств объектов
+        ///     Обработка вложенных свойств объектов
         /// </summary>
-        private static dynamic ProcessInnerObjectProperties(dynamic propertyTypeInfo, dynamic documentProperty)
+        private static dynamic ProcessInnerObjectProperties(string version, dynamic propertyTypeInfo, dynamic documentProperty)
+                                                       
         {
             dynamic result = documentProperty.Value;
 
@@ -197,17 +187,17 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                     if (propertyTypeInfo.DocumentLink.ConfigId != null &&
                         propertyTypeInfo.DocumentLink.DocumentId != null)
                     {
-                        IEnumerable<dynamic> metadataList = _metadataComponent.GetMetadataList(
+                    IEnumerable<dynamic> metadataList = _metadataComponent.GetMetadataList(version,
                             propertyTypeInfo.DocumentLink.ConfigId,
                             propertyTypeInfo.DocumentLink.DocumentId,
-                            MetadataType.Schema);
+                              MetadataType.Schema);
 
                         documentSchema = metadataList.FirstOrDefault();
                     }
 
                     if (documentSchema != null)
                     {
-                        result = RemoveInappropriateProperties(documentProperty.Value, documentSchema);
+                        result = RemoveInappropriateProperties(version, documentProperty.Value, documentSchema);
                     }
                 }
                 else
@@ -227,16 +217,16 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             }
             else
             {
-                result = RemoveInappropriateProperties(documentProperty.Value, propertyTypeInfo);
+                result = RemoveInappropriateProperties(version, documentProperty.Value, propertyTypeInfo);
             }
 
             return result;
         }
 
         /// <summary>
-        /// Обработка вложенных свойств массивов
+        ///     Обработка вложенных свойств массивов
         /// </summary>
-        private static IEnumerable<dynamic> ProcessInnerArrayProperties(dynamic propertyTypeInfo,
+        private static IEnumerable<dynamic> ProcessInnerArrayProperties(string version, dynamic propertyTypeInfo,
             dynamic documentProperty)
         {
             var handledItems = new List<dynamic>();
@@ -254,10 +244,11 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                     if (propertyTypeInfo.DocumentLink.ConfigId != null &&
                         propertyTypeInfo.DocumentLink.DocumentId != null)
                     {
-                        IEnumerable<dynamic> metadataList = _metadataComponent.GetMetadataList(
+                        IEnumerable<dynamic> metadataList = _metadataComponent.GetMetadataList(version,
                             propertyTypeInfo.DocumentLink.ConfigId,
                             propertyTypeInfo.DocumentLink.DocumentId,
                             MetadataType.Schema);
+
 
                         documentSchema = metadataList.FirstOrDefault();
                     }
@@ -267,7 +258,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                     {
                         foreach (var documentValue in DynamicWrapperExtensions.ToEnumerable(documentProperty.Value))
                         {
-                            handledItems.Add(RemoveInappropriateProperties(documentValue, documentSchema));
+                            handledItems.Add(RemoveInappropriateProperties(version, documentValue, documentSchema));
                         }
                     }
                 }
@@ -289,7 +280,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             {
                 foreach (var documentValue in DynamicWrapperExtensions.ToEnumerable(documentProperty.Value))
                 {
-                    handledItems.Add(RemoveInappropriateProperties(documentValue, propertyTypeInfo));
+                    handledItems.Add(RemoveInappropriateProperties(version, documentValue, propertyTypeInfo));
                 }
             }
 
@@ -300,7 +291,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
         {
             var propertyNames = new List<string>();
 
-            foreach (var documentProp in instanceToHandle)
+            foreach (dynamic documentProp in instanceToHandle)
             {
                 if (documentProp.Key != "Id" &&
                     documentProp.Key != "DisplayName")
@@ -314,6 +305,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                 instanceToHandle[propertyName] = null;
             }
         }
+
 
     }
 }

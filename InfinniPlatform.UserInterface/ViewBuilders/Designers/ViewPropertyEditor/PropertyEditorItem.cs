@@ -4,118 +4,97 @@ using System.Windows.Media;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ViewPropertyEditor
 {
-	sealed class PropertyEditorItem : INotifyPropertyChanged
-	{
-		private PropertyEditor _editor;
+    internal sealed class PropertyEditorItem : INotifyPropertyChanged
+    {
+        private PropertyEditor _editor;
+        private ImageSource _image;
+        private object _item;
+        private string _name;
 
-		public PropertyEditor Editor
-		{
-			get
-			{
-				return _editor;
-			}
-			set
-			{
-				if (!Equals(_editor, value))
-				{
-					_editor = value;
+        public PropertyEditor Editor
+        {
+            get { return _editor; }
+            set
+            {
+                if (!Equals(_editor, value))
+                {
+                    _editor = value;
 
-					OnPropertyChanged("Editor");
-				}
-			}
-		}
+                    OnPropertyChanged("Editor");
+                }
+            }
+        }
 
+        public ImageSource Image
+        {
+            get { return _image; }
+            set
+            {
+                if (!Equals(_image, value))
+                {
+                    _image = value;
 
-		private ImageSource _image;
+                    OnPropertyChanged("Image");
+                }
+            }
+        }
 
-		public ImageSource Image
-		{
-			get
-			{
-				return _image;
-			}
-			set
-			{
-				if (!Equals(_image, value))
-				{
-					_image = value;
+        public string Name
+        {
+            get { return _name; }
+            set
+            {
+                if (!Equals(_name, value))
+                {
+                    _name = value;
 
-					OnPropertyChanged("Image");
-				}
-			}
-		}
+                    OnPropertyChanged("Name");
+                }
+            }
+        }
 
+        public object Item
+        {
+            get { return _item; }
+            set
+            {
+                if (!Equals(_item, value))
+                {
+                    _item = value;
 
-		private string _name;
+                    OnPropertyChanged("Item");
+                }
+            }
+        }
 
-		public string Name
-		{
-			get
-			{
-				return _name;
-			}
-			set
-			{
-				if (!Equals(_name, value))
-				{
-					_name = value;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-					OnPropertyChanged("Name");
-				}
-			}
-		}
+        private void OnPropertyChanged(string propertyName)
+        {
+            var handler = PropertyChanged;
 
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
 
-		private object _item;
+        public PropertyEditorItem Clone()
+        {
+            var item = (Item is ICloneable) ? ((ICloneable) Item).Clone() : Item;
 
-		public object Item
-		{
-			get
-			{
-				return _item;
-			}
-			set
-			{
-				if (!Equals(_item, value))
-				{
-					_item = value;
+            return new PropertyEditorItem
+            {
+                Editor = Editor,
+                Image = Image,
+                Name = Name,
+                Item = item
+            };
+        }
 
-					OnPropertyChanged("Item");
-				}
-			}
-		}
-
-
-		public event PropertyChangedEventHandler PropertyChanged;
-
-		private void OnPropertyChanged(string propertyName)
-		{
-			var handler = PropertyChanged;
-
-			if (handler != null)
-			{
-				handler(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-
-
-		public PropertyEditorItem Clone()
-		{
-			var item = (Item is ICloneable) ? ((ICloneable)Item).Clone() : Item;
-
-			return new PropertyEditorItem
-				   {
-					   Editor = Editor,
-					   Image = Image,
-					   Name = Name,
-					   Item = item
-				   };
-		}
-
-
-		public override string ToString()
-		{
-			return Name;
-		}
-	}
+        public override string ToString()
+        {
+            return Name;
+        }
+    }
 }

@@ -29,6 +29,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release_TeamCity|AnyCPU'">
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Elasticsearch.Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -43,9 +52,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp, Version=104.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net45\RestSharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -55,9 +64,12 @@
     <Compile Include="Implementation\ElasticProviders\ElasticConnection.cs" />
     <Compile Include="Implementation\ElasticProviders\ElasticConstants.cs" />
     <Compile Include="Factories\ElasticFactory.cs" />
+    <Compile Include="Implementation\ElasticProviders\ElasticSearchProviderAllIndexes.cs" />
     <Compile Include="Implementation\ElasticProviders\ElasticSearchProviderInfo.cs" />
+    <Compile Include="Implementation\ElasticProviders\IndexToTypeAccordanceProvider.cs" />
     <Compile Include="Implementation\ElasticProviders\SchemaIndexVersion\ElasticMappingExtension.cs" />
     <Compile Include="Implementation\ElasticProviders\SchemaIndexVersion\IndexToTypeAccordance.cs" />
+    <Compile Include="Implementation\ElasticProviders\SchemaIndexVersion\IndexToTypeAccordanceSettings.cs" />
     <Compile Include="Implementation\ElasticProviders\SchemaIndexVersion\IndexTypeMapping.cs" />
     <Compile Include="Implementation\ElasticSearchModels\ElasticCountQueryBuilder.cs" />
     <Compile Include="Implementation\ElasticSearchModels\CountModelFilterDescriptor.cs" />
@@ -150,6 +162,10 @@
     <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
       <Project>{ebc684b7-b72a-475f-bbc1-b6293b607b9b}</Project>
       <Name>InfinniPlatform.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
+      <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
+      <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

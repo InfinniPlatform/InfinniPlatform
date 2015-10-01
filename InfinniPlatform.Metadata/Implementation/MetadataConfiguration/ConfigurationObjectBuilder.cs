@@ -1,57 +1,66 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Factories;
 using InfinniPlatform.Logging;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 {
-	/// <summary>
-	///   Конструктор объекта конфигурации предметной области.
-	///   Предоставляет функционал для создания объектов конфигурации,
-	///   используемых на уровне прикладных скриптов
-	/// </summary>
-	public sealed class ConfigurationObjectBuilder : IConfigurationObjectBuilder
-	{
-		private readonly IIndexFactory _indexFactory;
-	    private readonly IBlobStorageFactory _blobStorageFactory;
-	    private readonly IMetadataConfigurationProvider _metadataConfigurationProvider;
+    /// <summary>
+    ///     Конструктор объекта конфигурации предметной области.
+    ///     Предоставляет функционал для создания объектов конфигурации,
+    ///     используемых на уровне прикладных скриптов
+    /// </summary>
+    public sealed class ConfigurationObjectBuilder : IConfigurationObjectBuilder
+    {
+        private readonly IBlobStorageFactory _blobStorageFactory;
+        private readonly IIndexFactory _indexFactory;
+        private readonly IMetadataConfigurationProvider _metadataConfigurationProvider;
 
-	    public ConfigurationObjectBuilder(IIndexFactory indexFactory, IBlobStorageFactory blobStorageFactory, IMetadataConfigurationProvider metadataConfigurationProvider)
-		{
-			_indexFactory = indexFactory;
-		    _blobStorageFactory = blobStorageFactory;
-		    _metadataConfigurationProvider = metadataConfigurationProvider;
-		}
+        public ConfigurationObjectBuilder(IIndexFactory indexFactory, IBlobStorageFactory blobStorageFactory,
+            IMetadataConfigurationProvider metadataConfigurationProvider)
+        {
+            _indexFactory = indexFactory;
+            _blobStorageFactory = blobStorageFactory;
+            _metadataConfigurationProvider = metadataConfigurationProvider;
+        }
 
         /// <summary>
-        ///   Получить объект конфигурации метаданных для указанного идентификатора
+        ///     Получить объект конфигурации метаданных для указанного идентификатора
         /// </summary>
+        /// <param name="version">Версия конфигурации</param>
         /// <param name="metadataIdentifier">Идентификатор метаданных</param>
         /// <returns>Объект конфигурации метаданных</returns>
-        public IConfigurationObject GetConfigurationObject(string metadataIdentifier)
+        public IConfigurationObject GetConfigurationObject(string version, string metadataIdentifier)
         {
-            var metadataConfiguration = _metadataConfigurationProvider.GetMetadataConfiguration(metadataIdentifier);
+            var metadataConfiguration = _metadataConfigurationProvider.GetMetadataConfiguration(version, metadataIdentifier);
             if (metadataConfiguration == null)
             {
                 Logger.Log.Error(string.Format("Metadata configuration not registered: \"{0}\"",
-                                                          metadataIdentifier));
-	            return null;
+                    metadataIdentifier));
+                return null;
             }
             return new ConfigurationObject(metadataConfiguration, _indexFactory, _blobStorageFactory);
-           
         }
 
-		/// <summary>
-		///   Получить список зарегистрированных конфигураций
-		/// </summary>
-		/// <returns></returns>
-		public IEnumerable<IMetadataConfiguration> GetConfigurationList()
-		{
-			return _metadataConfigurationProvider.Configurations;
-		} 
+        /// <summary>
+        ///     Получить список зарегистрированных конфигураций
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<IMetadataConfiguration> GetConfigurationList()
+        {
+            return _metadataConfigurationProvider.Configurations;
+        }
 
-	}
+        public IEnumerable<Tuple<string, string>> GetConfigurationVersions()
+        {
+            return _metadataConfigurationProvider.ConfigurationVersions;
+        }
+    }
 }

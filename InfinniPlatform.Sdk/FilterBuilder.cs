@@ -75,42 +75,42 @@ namespace InfinniPlatform.Sdk
 
             public CriteriaBuilder IsEquals(object value)
             {
-                _value = value;
+                _value =  Convert(value);
                 _criteriaType = "IsEquals";
                 return this;
             }
 
             public CriteriaBuilder IsNotEquals(object value)
             {
-                _value = value;
+                _value =  Convert(value);
                 _criteriaType = "IsNotEquals";
                 return this;
             }
 
             public CriteriaBuilder IsMoreThan(object value)
             {
-                _value = value;
+                _value = Convert(value);
                 _criteriaType = "IsMoreThan";
                 return this;
             }
 
             public CriteriaBuilder IsLessThan(object value)
             {
-                _value = value;
+                _value =  Convert(value);
                 _criteriaType = "IsLessThan";
                 return this;
             }
 
             public CriteriaBuilder IsMoreThanOrEquals(object value)
             {
-                _value = value;
+                _value =  Convert(value);
                 _criteriaType = "IsMoreThanOrEquals";
                 return this;
             }
 
             public CriteriaBuilder IsLessThanOrEquals(object value)
             {
-                _value = value;
+                _value =  Convert(value);
                 _criteriaType = "IsLessThanOrEquals";
                 return this;
             }
@@ -188,23 +188,30 @@ namespace InfinniPlatform.Sdk
             public CriteriaBuilder IsIn(params object[] values)
             {
                 _value = string.Join("\n", values.Select(v => v.ToString()));
-                _criteriaType = "IsIn";
+                _criteriaType = "ValueSet";
                 return this;
             }
 
             public CriteriaBuilder IsIdIn(List<string> idList)
             {
-                _value = idList;
+                _value = string.Join("[,]",idList);
                 _criteriaType = "IsIdIn";
                 return this;
             }
 
             internal string GetCriteria()
             {
-                return string.Format("{0} {1} {2}", _property, _criteriaType, _value);
+                return string.Format("{0} {1} {2}", _property, _criteriaType, _value ?? "null");
             }
 
-
+            private object Convert(object value)
+            {
+                if (value is DateTime)
+                {
+                    return string.Format("datetime'{0}'", ((DateTime)value).ToString("O"));
+                }
+                return value;
+            }
         }
     }
 }

@@ -3,28 +3,28 @@ using System.Collections.Generic;
 
 namespace InfinniPlatform.Expressions.BuiltInTypes
 {
-	sealed class PredicateEqualityComparer : IEqualityComparer<object>
-	{
-		private readonly Func<object, object, bool> _comparer;
+    internal sealed class PredicateEqualityComparer : IEqualityComparer<object>
+    {
+        private readonly Func<object, object, bool> _comparer;
 
-		public PredicateEqualityComparer(Func<object, object, bool> comparer)
-		{
-			_comparer = comparer;
-		}
+        public PredicateEqualityComparer(Func<object, object, bool> comparer)
+        {
+            _comparer = comparer;
+        }
 
-		bool IEqualityComparer<object>.Equals(object x, object y)
-		{
-			if (!ReferenceEquals(x, y) && !object.Equals(x, y))
-			{
-				return _comparer(x, y);
-			}
+        bool IEqualityComparer<object>.Equals(object x, object y)
+        {
+            if (!ReferenceEquals(x, y) && !Equals(x, y))
+            {
+                return _comparer(x, y);
+            }
 
-			return true;
-		}
+            return true;
+        }
 
-		int IEqualityComparer<object>.GetHashCode(object obj)
-		{
-			return 0;
-		}
-	}
+        int IEqualityComparer<object>.GetHashCode(object obj)
+        {
+            return 0;
+        }
+    }
 }

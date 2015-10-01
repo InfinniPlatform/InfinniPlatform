@@ -1,12 +1,14 @@
 ﻿using System;
 using InfinniPlatform.Api.Index.SearchOptions;
+using InfinniPlatform.Sdk.Environment.Index;
 using Nest;
-using IFilter = InfinniPlatform.Api.Index.SearchOptions.IFilter;
+using IFilter = InfinniPlatform.Sdk.Environment.Index.IFilter;
+
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.Filters.NestQueries
 {
     /// <summary>
-    /// Реализация интерфейса <see cref="IQuery"/> для использования с Nest
+    /// Реализация интерфейса <see cref="Nest.IQuery"/> для использования с Nest
     /// </summary>
     sealed class NestQuery : IFilter<QueryContainer>
     {

@@ -27,20 +27,22 @@ namespace InfinniPlatform.Authentication.Middleware
 			: base(next)
 		{
 			// Методы, связанные с учетной записью пользователя
-			RegisterGetRequestHandler(GetCurrentUserPath, GetCurrentUser);
-			RegisterPostRequestHandler(ChangePasswordPath, ChangePassword);
-			RegisterPostRequestHandler(ChangeProfilePath, ChangeProfile);
-			RegisterPostRequestHandler(ChangeActiveRolePath, ChangeActiveRole);
+			RegisterHandler(new RegistrationHandlerBase("GET", GetCurrentUserPath, GetCurrentUser));
+			RegisterHandler(new RegistrationHandlerBase("POST", ChangePasswordPath, ChangePassword));
+			RegisterHandler(new RegistrationHandlerBase("POST", ChangeProfilePath, ChangeProfile));
+			RegisterHandler(new RegistrationHandlerBase("POST", ChangeActiveRolePath, ChangeActiveRole));
 
 			// Методы, связанные с входом пользователя в систему
-			RegisterGetRequestHandler(GetExternalProvidersPath, GetExternalProviders);
-			RegisterPostRequestHandler(SignInInternalPath, SignInInternal);
-			RegisterPostRequestHandler(SignInExternalPath, SignInExternal);
-			RegisterGetRequestHandler(SignInExternalCallbackPath, SignInExternalCallback);
-			RegisterPostRequestHandler(LinkExternalLoginPath, LinkExternalLogin);
-			RegisterGetRequestHandler(LinkExternalLoginCallbackPath, LinkExternalLoginCallback);
-			RegisterPostRequestHandler(UnlinkExternalLoginPath, UnlinkExternalLogin);
-			RegisterPostRequestHandler(SignOutPath, SignOut);
+			RegisterHandler(new RegistrationHandlerBase("GET", GetExternalProvidersPath, GetExternalProviders));
+			RegisterHandler(new RegistrationHandlerBase("POST", GetExternalProvidersPath, GetExternalProviders));
+			RegisterHandler(new RegistrationHandlerBase("POST", SignInInternalPath, SignInInternal));
+			RegisterHandler(new RegistrationHandlerBase("POST", SignInExternalPath, SignInExternal));
+
+			RegisterHandler(new RegistrationHandlerBase("GET", SignInExternalCallbackPath, SignInExternalCallback));
+			RegisterHandler(new RegistrationHandlerBase("POST", LinkExternalLoginPath, LinkExternalLogin));
+			RegisterHandler(new RegistrationHandlerBase("GET", LinkExternalLoginCallbackPath, LinkExternalLoginCallback));
+			RegisterHandler(new RegistrationHandlerBase("POST", UnlinkExternalLoginPath, UnlinkExternalLogin));
+			RegisterHandler(new RegistrationHandlerBase("POST", SignOutPath, SignOut));
 		}
 
 
@@ -236,14 +238,7 @@ namespace InfinniPlatform.Authentication.Middleware
 																  if (user == null)
 																  {
 																	  // Создание записи о пользователе
-
-																	  user = new IdentityApplicationUser
-																			 {
-																				 UserName = loginInfo.DefaultUserName,
-																				 Email = loginInfo.Email,
-																				 EmailConfirmed = !string.IsNullOrWhiteSpace(loginInfo.Email)
-																			 };
-
+																	  user = CreateUserByLoginInfo(loginInfo);
 																	  var createUserTask = userManager.CreateAsync(user);
 																	  ThrowIfError(createUserTask);
 
@@ -393,7 +388,7 @@ namespace InfinniPlatform.Authentication.Middleware
 				userIdentity = GetIdentity(context);
 			}
 
-			var claims = GetCurrentUserClaims(context, user);
+			var claims = GetCurrentUserClaims(user, userIdentity);
 			var activeRole = userIdentity.FindFirstClaim(ApplicationClaimTypes.ActiveRole);
 			var defaultRole = userIdentity.FindFirstClaim(ApplicationClaimTypes.DefaultRole);
 
@@ -541,37 +536,69 @@ namespace InfinniPlatform.Authentication.Middleware
 			throw new InvalidOperationException(Resources.UserNotFound);
 		}
 
-		private static IEnumerable<ApplicationUserClaim> GetCurrentUserClaims(IOwinContext context, IdentityApplicationUser user)
+		private static IdentityApplicationUser CreateUserByLoginInfo(ExternalLoginInfo loginInfo)
+		{
+			var userName = loginInfo.DefaultUserName;
+
+			if (loginInfo.Login != null)
+			{
+				userName = string.Format("{0}{1}", loginInfo.Login.LoginProvider, loginInfo.Login.ProviderKey).Replace(" ", "");
+			}
+
+			var user = new IdentityApplicationUser
+					   {
+						   Id = Guid.NewGuid().ToString(),
+						   UserName = userName,
+						   Email = loginInfo.Email,
+						   EmailConfirmed = !string.IsNullOrWhiteSpace(loginInfo.Email)
+					   };
+
+			if (loginInfo.ExternalIdentity != null && loginInfo.ExternalIdentity.Claims != null)
+			{
+				user.Claims = loginInfo.ExternalIdentity.Claims.Select(CreateApplicationUserClaim);
+			}
+
+			return user;
+		}
+
+		private static IEnumerable<ApplicationUserClaim> GetCurrentUserClaims(IdentityApplicationUser user, IIdentity userIdentity)
 		{
 			var result = new List<ApplicationUserClaim>();
-
-			var identity = GetIdentity(context) as ClaimsIdentity;
-
-			if (identity != null && identity.Claims != null)
-			{
-				foreach (var claim in identity.Claims)
-				{
-					result.Add(new ApplicationUserClaim
-					{
-						Type = new ForeignKey { Id = claim.Type },
-						Value = claim.Value
-					});
-				}
-			}
 
 			if (user != null && user.Claims != null)
 			{
 				foreach (var claim in user.Claims)
 				{
-					if (claim.Type != null && !result.Exists(c => string.Equals(c.Type.Id, claim.Type.Id, StringComparison.OrdinalIgnoreCase)
-																  && string.Equals(c.Value, claim.Value, StringComparison.Ordinal)))
+					if (claim.Type != null && claim.Value != null)
 					{
 						result.Add(claim);
 					}
 				}
 			}
 
+			var identity = userIdentity as ClaimsIdentity;
+
+			if (identity != null && identity.Claims != null)
+			{
+				foreach (var claim in identity.Claims)
+				{
+					if (claim.Type != null && !result.Exists(c => string.Equals(c.Type.Id, claim.Type, StringComparison.OrdinalIgnoreCase) && string.Equals(c.Value, claim.Value, StringComparison.Ordinal)))
+					{
+						result.Add(CreateApplicationUserClaim(claim));
+					}
+				}
+			}
+
 			return result;
+		}
+
+		private static ApplicationUserClaim CreateApplicationUserClaim(Claim claim)
+		{
+			return new ApplicationUserClaim
+				   {
+					   Type = new ForeignKey { Id = claim.Type },
+					   Value = claim.Value
+				   };
 		}
 
 		private static IIdentity GetIdentity(IOwinContext context)

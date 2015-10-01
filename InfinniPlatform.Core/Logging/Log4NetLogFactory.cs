@@ -1,22 +1,29 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Web.Hosting;
-using InfinniPlatform.Api.Profiling;
-using InfinniPlatform.Api.Settings;
+
+using InfinniPlatform.Sdk.Environment.Settings;
 
 using log4net;
 using log4net.Config;
-using ILog = InfinniPlatform.Api.Profiling.ILog;
+
+using ILog = InfinniPlatform.Sdk.Environment.Log.ILog;
 
 namespace InfinniPlatform.Logging
 {
 	/// <summary>
-	/// Фабрика для создания <see cref="ILog"/> на базе log4net.
+	/// Фабрика для создания <see cref="Sdk.Environment.Log.ILog" /> на базе log4net.
 	/// </summary>
 	public sealed class Log4NetLogFactory : ILogFactory
 	{
+		static Log4NetLogFactory()
+		{
+			GlobalContext.Properties["pid"] = Process.GetCurrentProcess().Id;
+		}
+
 		/// <summary>
-		/// Создает <see cref="ILog"/>.
+		/// Создает <see cref="Sdk.Environment.Log.ILog" />.
 		/// </summary>
 		public ILog CreateLog()
 		{
@@ -33,7 +40,6 @@ namespace InfinniPlatform.Logging
 
 			return new Log4NetLog(LogManager.GetLogger("Log4Net"));
 		}
-
 
 		/// <summary>
 		/// Получить конфигурационный файл для настройки сервиса журналирования.
@@ -55,7 +61,7 @@ namespace InfinniPlatform.Logging
 		}
 
 		/// <summary>
-		/// Получить абсолютный путь к файлу для Web-приложения.
+		///     Получить абсолютный путь к файлу для Web-приложения.
 		/// </summary>
 		private static string GetFullPathForWeb(string relativePath)
 		{

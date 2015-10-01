@@ -1,15 +1,24 @@
 ﻿namespace InfinniPlatform.Runtime
 {
 	/// <summary>
-	///   Загрузчик версий в кэш объектов
+	/// Загрузчик версий прикладных скриптов.
 	/// </summary>
 	public interface IVersionLoader
 	{
 		/// <summary>
-		///  Загрузить список версий в кэш объектов
+		/// Конструирует кэш прикладных скриптов для заданной версии указанной конфигурации.
 		/// </summary>
-		/// <param name="metadataConfigurationId"></param>
-		/// <returns>Список загруженных кэшей</returns>
-		MethodInvokationCacheList ConstructInvokationCache(string metadataConfigurationId);
+		/// <param name="version">Версия конфигурации.</param>
+		/// <param name="metadataConfigurationId">Идентификатор конфигурации.</param>
+		/// <returns>Список кэшей прикладный скриптов конфигурации для вызова точек расширения бизнес-логики.</returns>
+		IMethodInvokationCacheList ConstructInvokationCache(string version, string metadataConfigurationId);
+
+		/// <summary>
+		/// Обновляет кэш прикладных скриптов для заданной версии указанной конфигурации.
+		/// </summary>
+		/// <param name="version">Версия конфигурации.</param>
+		/// <param name="metadataConfigurationId">Идентификатор конфигурации.</param>
+		/// <param name="versionCacheList">Список кэшей прикладный скриптов конфигурации для вызова точек расширения бизнес-логики.</param>
+		void UpdateInvokationCache(string version, string metadataConfigurationId, IMethodInvokationCacheList versionCacheList);
 	}
 }

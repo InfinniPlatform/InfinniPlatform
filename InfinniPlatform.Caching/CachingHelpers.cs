@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-using InfinniPlatform.Api.Settings;
+using InfinniPlatform.Sdk.Environment.Settings;
 
 namespace InfinniPlatform.Caching
 {

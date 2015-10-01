@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Api.ContextTypes;
+﻿using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.SystemConfig.AdministrationCustomization.ActionUnits
 {

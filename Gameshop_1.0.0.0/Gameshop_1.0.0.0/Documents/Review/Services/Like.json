@@ -1,0 +1,41 @@
+{
+  "Id": "6bd4e21d-fe4c-474f-80a5-628404c02fcd",
+  "Secured": true,
+  "Name": "Like",
+  "Type": {
+    "Name": "apiapplyjson",
+    "WorkflowExtensionPoints": [
+      {
+        "Name": "FilterEvents",
+        "ContextType": 4,
+        "Caption": "Document filter events context"
+      },
+      {
+        "Name": "Move",
+        "ContextType": 2,
+        "Caption": "Document move context"
+      },
+      {
+        "Name": "GetResult",
+        "ContextType": 8,
+        "Caption": "Document move result context"
+      }
+    ]
+  },
+  "Caption": "Поставить лайк",
+  "ExtensionPoints": [
+    {
+      "TypeName": {
+        "Name": "Move",
+        "ContextType": 2,
+        "Caption": "Document move context"
+      },
+      "ScenarioId": "Like"
+    },
+    {}
+  ],
+  "ParentId": "d9a54b22-5d8b-4a1b-a1a6-6ce0ad5b1f3c",
+  "Version": "1.0.0.0",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "servicemetadata"
+}

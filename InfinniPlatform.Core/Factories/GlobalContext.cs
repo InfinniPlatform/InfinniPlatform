@@ -1,159 +1,78 @@
-﻿using System;
-using System.Collections.Generic;
-
-using InfinniPlatform.Api.Context;
-using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.Factories;
+﻿using System.Collections.Generic;
+using System.Linq;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.RestApi.AuthApi;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.Security;
 using InfinniPlatform.Api.Transactions;
+using InfinniPlatform.Api.Versioning;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Metadata;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Metadata;
+using InfinniPlatform.Sdk.Global;
 
 namespace InfinniPlatform.Factories
 {
-	public class GlobalContext : IGlobalContext, IComponentContainer
-	{
-		private static readonly ISystemComponent SystemComponent = new SystemComponent();
+    /// <summary>
+    ///  Реализация контекста компонентов платформы
+    /// </summary>
+    public class GlobalContext : IGlobalContext, IComponentContainer
+    {
+        
+        private readonly IList<ContextRegistration> _components = new List<ContextRegistration>();
+        private readonly IPlatformComponentsPack _platformComponentsPack;
 
-		private readonly Dictionary<Type, Lazy<object>> _components = new Dictionary<Type, Lazy<object>>();
+        public GlobalContext(IDependencyContainerComponent dependencyContainerComponent)
+        {
+            _platformComponentsPack = new PlatformComponentsPack(dependencyContainerComponent);
 
-		private void RegisterComponent<T>(Func<T> componentFactory) where T : class
-		{
-			// Компоненты регистрируются в виде ленивых зависимостей
+            _components.Add(new ContextRegistration(typeof(ICustomServiceGlobalContext), dependencyContainerComponent.ResolveDependency<ICustomServiceGlobalContext>));
+            _components.Add(new ContextRegistration(typeof (DocumentApi), () => new DocumentApi()));
+            _components.Add(new ContextRegistration(typeof (DocumentApiUnsecured),
+                () => new DocumentApiUnsecured()));
+            _components.Add(new ContextRegistration(typeof (PrintViewApi), () => new PrintViewApi()));
+            _components.Add(new ContextRegistration(typeof (RegisterApi), () => new RegisterApi()));
+            _components.Add(new ContextRegistration(typeof (ReportApi), () => new ReportApi()));
+            _components.Add(new ContextRegistration(typeof (UploadApi), () => new UploadApi()));
+            _components.Add(new ContextRegistration(typeof (MetadataApi), () => new MetadataApi()));
+            _components.Add(new ContextRegistration(typeof (AuthApi), () => new AuthApi()));
+            _components.Add(new ContextRegistration(typeof (SignInApi), () => new SignInApi()));
+            _components.Add(new ContextRegistration(typeof (PasswordVerifierComponent),
+                () => new PasswordVerifierComponent(this)));
+            _components.Add(new ContextRegistration(typeof (InprocessDocumentComponent),
+                () => new InprocessDocumentComponent(new ConfigurationMediatorComponent(
+                    dependencyContainerComponent.ResolveDependency<IConfigurationObjectBuilder>()
+                    ),
+                    new CachedSecurityComponent(dependencyContainerComponent.ResolveDependency<ISharedCacheComponent>()),
+                    dependencyContainerComponent.ResolveDependency<IIndexFactory>())));
+	        _components.Add(new ContextRegistration(typeof(IApplicationUserManager), () =>
+	                                                                                 {
+		                                                                                 // Должен быть зарегистрирован при старте системы
+		                                                                                 var hostingContext = dependencyContainerComponent.ResolveDependency<IHostingContext>();
 
-			var component = new Lazy<object>(componentFactory);
+		                                                                                 return hostingContext.Get<IApplicationUserManager>();
+	                                                                                 }));
+        }
 
-			_components[typeof(T)] = component;
-		}
+        public T GetComponent<T>() where T : class
+        {
+            //ищем среди зарегистрированных компонентов платформы, если не находим, обращаемся к контексту компонентов ядра платформы
+            return
+                _platformComponentsPack.GetComponent<T>() ??
+                _components.Where(c => c.IsTypeOf(typeof (T))).Select(c => c.GetInstance()).FirstOrDefault() as T;
+        }
 
-		public T GetComponent<T>() where T : class
-		{
-			Lazy<object> component;
-
-			if (_components.TryGetValue(typeof(T), out component))
-			{
-				return component.Value as T;
-			}
-
-			return default(T);
-		}
-
-
-		public GlobalContext(IDependencyContainerComponent container)
-		{
-			RegisterComponent(() => container);
-			RegisterComponent(() => SystemComponent);
-
-			RegisterComponent<IBlobStorageComponent>(() =>
-			{
-				var blobStorage = container.ResolveDependency<IBlobStorageFactory>().CreateBlobStorage();
-				return new BlobStorageComponent(blobStorage);
-			});
-
-			RegisterComponent<IEventStorageComponent>(() =>
-			{
-				var eventStorage = container.ResolveDependency<IEventStorageFactory>().CreateEventStorage();
-				return new EventStorageComponent(eventStorage);
-			});
-
-			RegisterComponent<IIndexComponent>(() =>
-			{
-				var indexFactory = container.ResolveDependency<IIndexFactory>();
-				return new IndexComponent(indexFactory);
-			});
-
-			RegisterComponent<ILogComponent>(() =>
-			{
-				var logger = container.ResolveDependency<ILogFactory>().CreateLog();
-				return new LogComponent(logger);
-			});
-
-			RegisterComponent<IMetadataComponent>(() =>
-			{
-				var metadataConfigurationProvider = container.ResolveDependency<IMetadataConfigurationProvider>();
-				return new MetadataComponent(metadataConfigurationProvider);
-			});
-
-			RegisterComponent<ICrossConfigSearchComponent>(() =>
-			{
-				var crossConfigSearcher = container.ResolveDependency<ICrossConfigSearcher>();
-				return new CrossConfigSearchComponent(crossConfigSearcher);
-			});
-
-			RegisterComponent<IPrintViewComponent>(() =>
-			{
-				var printViewBuilder = container.ResolveDependency<IPrintViewBuilderFactory>().CreatePrintViewBuilder();
-				return new PrintViewComponent(printViewBuilder);
-			});
-
-			RegisterComponent<IProfilerComponent>(() =>
-			{
-				var logger = container.ResolveDependency<ILogFactory>().CreateLog();
-				return new ProfilerComponent(logger);
-			});
-
-			RegisterComponent<IRegistryComponent>(() => new RegistryComponent());
-
-			RegisterComponent<IScriptRunnerComponent>(() =>
-			{
-				var metadataConfigurationProvider = container.ResolveDependency<IMetadataConfigurationProvider>();
-				return new ScriptRunnerComponent(metadataConfigurationProvider);
-			});
-
-			RegisterComponent<ISecurityComponent>(() => new SecurityComponent());
-
-			RegisterComponent<ITransactionComponent>(() =>
-			{
-				var transactionManager = container.ResolveDependency<ITransactionManager>();
-				return new TransactionComponent(transactionManager);
-			});
-
-			RegisterComponent<IWebClientNotificationComponent>(() =>
-			{
-				var webClientNotificationServiceFactory = container.ResolveDependency<IWebClientNotificationServiceFactory>();
-				return new WebClientNotificationComponent(webClientNotificationServiceFactory);
-			});
-
-			RegisterComponent<IConfigurationMediatorComponent>(() =>
-			{
-				var configurationObjectBuilder = container.ResolveDependency<IConfigurationObjectBuilder>();
-				var metadataConfigurationProvider = container.ResolveDependency<IMetadataConfigurationProvider>();
-				return new ConfigurationMediatorComponent(configurationObjectBuilder, metadataConfigurationProvider);
-			});
-
-			RegisterComponent(() => new DocumentApi());
-			RegisterComponent(() => new DocumentApiUnsecured());
-			RegisterComponent(() => new PrintViewApi());
-			RegisterComponent(() => new RegisterApi());
-			RegisterComponent(() => new ReportApi());
-			RegisterComponent(() => new UploadApi());
-			RegisterComponent(() => new MetadataApi());
-			RegisterComponent(() => new AclApi());
-			RegisterComponent(() => new SignInApi());
-
-			RegisterComponent<IPasswordVerifierComponent>(() => new PasswordVerifierComponent(this));
-
-			RegisterComponent(() =>
-			{
-				var configurationObjectBuilder = container.ResolveDependency<IConfigurationObjectBuilder>();
-				var metadataConfigurationProvider = container.ResolveDependency<IMetadataConfigurationProvider>();
-				var configurationMediatorComponent = new ConfigurationMediatorComponent(configurationObjectBuilder, metadataConfigurationProvider);
-				return new InprocessDocumentComponent(configurationMediatorComponent, new SecurityComponent());
-			});
-
-			RegisterComponent(() =>
-							  {
-								  // Должен быть зарегистрирован при старте системы
-								  var hostingContext = container.ResolveDependency<IHostingContext>();
-
-								  return hostingContext.Get<IApplicationUserManager>();
-							  });
-		}
-	}
+        public string GetVersion(string configuration, string userName)
+        {
+            var configVersions = GetComponent<IMetadataConfigurationProvider>().ConfigurationVersions;
+            return GetComponent<IVersionStrategy>().GetActualVersion(configuration, configVersions, userName);
+        }
+    }
 }

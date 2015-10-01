@@ -1,33 +1,59 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
-
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
+using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.Metadata;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {
-	/// <summary>
-	/// Сервис для работы с метаданными бизнес-сервисов.
-	/// </summary>
-	sealed class ServiceMetadataService : BaseMetadataService
-	{
-		public ServiceMetadataService(string configId, string documentId)
-		{
-			_factory = new Lazy<ManagerFactoryDocument>(() => new ManagerFactoryDocument(configId, documentId), LazyThreadSafetyMode.ExecutionAndPublication);
-		}
+    /// <summary>
+    ///     Сервис для работы с метаданными бизнес-сервисов.
+    /// </summary>
+    internal sealed class ServiceMetadataService : BaseMetadataService
+    {
+        private readonly string _configId;
+        private string _documentId;
+        private InfinniMetadataApi _metadataApi;
+
+        public ServiceMetadataService(string version, string configId, string documentId, string server, int port, string route)
+            : base(version, server, port, route)
+        {
+            _configId = configId;
+            _documentId = documentId;
+            _metadataApi = new InfinniMetadataApi(server, port.ToString(), route);
+        }
+
+        public string ConfigId
+        {
+            get { return _configId; }
+        }
 
 
-		private readonly Lazy<ManagerFactoryDocument> _factory;
+        public override object CreateItem()
+        {
+            return _metadataApi.CreateService(Version, ConfigId, _documentId);
+        }
 
+        public override void ReplaceItem(dynamic item)
+        {
+            _metadataApi.UpdateService(item, Version, ConfigId, _documentId);
+        }
 
-		protected override IDataReader CreateDataReader()
-		{
-			return _factory.Value.BuildServiceMetadataReader();
-		}
+        public override void DeleteItem(string itemId)
+        {
+            _metadataApi.DeleteService(Version, ConfigId, _documentId, itemId);
+        }
 
-		protected override IDataManager CreateDataManager()
-		{
-			return _factory.Value.BuildServiceManager();
-		}
-	}
+        public override object GetItem(string itemId)
+        {
+            return _metadataApi.GetService(Version, ConfigId, _documentId, itemId);
+        }
+
+        public override IEnumerable<object> GetItems()
+        {
+            return _metadataApi.GetServiceItems(Version, ConfigId, _documentId);
+        }
+    }
 }

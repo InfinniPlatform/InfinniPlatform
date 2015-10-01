@@ -1,48 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.RestApi.AuthApi;
+﻿using System.Collections.Generic;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.ContextComponents;
-using InfinniPlatform.RestfulApi.ActionUnits;
-
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.RestfulApi.Auth
 {
-	public sealed class ActionUnitGetUsers
-	{
-		public void Action(IApplyContext target)
-		{
-			if (IndexApi.IndexExists(AuthorizationStorageExtensions.AuthorizationConfigId,
-									 AuthorizationStorageExtensions.UserStore))
-			{
-				target.Item.Configuration = AuthorizationStorageExtensions.AuthorizationConfigId;
-				target.Item.Metadata = AuthorizationStorageExtensions.UserStore;
+    public sealed class ActionUnitGetUsers
+    {
+        public void Action(IApplyContext target)
+        {
+            if (target.Item.FromCache)
+            {
+                target.Result = target.Context.GetComponent<ISecurityComponent>().Users;
+            }
 
-				var documentProvider = target.Context.GetComponent<InprocessDocumentComponent>()
-						  .GetDocumentProvider(target.Item.Configuration, target.Item.Metadata, target.UserName);
+            else if (new IndexApi().IndexExists(AuthorizationStorageExtensions.AuthorizationConfigId,
+                                                AuthorizationStorageExtensions.UserStore))
+            {
+                target.Item.Configuration = AuthorizationStorageExtensions.AuthorizationConfigId;
+                target.Item.Metadata = AuthorizationStorageExtensions.UserStore;
+
+                var documentProvider = target.Context.GetComponent<InprocessDocumentComponent>()
+                                             .GetDocumentProvider(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration,
+                                                                  target.Item.Metadata, target.UserName);
 
 
-				if (documentProvider != null)
-				{
-					target.Result =
-						documentProvider.GetDocument(
-							null,
-							0,
-							1000000);
-				}
-				else
-				{
-					target.Result = new List<dynamic>();
-				}
-			}
-			else
-			{
-				target.Result = new List<dynamic>();
-			}
-		}
-	}
+                if (documentProvider != null)
+                {
+                    target.Result =
+                        documentProvider.GetDocument(
+                            null,
+                            0,
+                            1000000);
+                }
+                else
+                {
+                    target.Result = new List<dynamic>();
+                }
+            }
+            else
+            {
+                target.Result = new List<dynamic>();
+            }
+        }
+    }
 }

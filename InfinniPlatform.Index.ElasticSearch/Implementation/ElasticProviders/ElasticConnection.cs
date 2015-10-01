@@ -1,13 +1,13 @@
 ﻿using Elasticsearch.Net.ConnectionPool;
-using InfinniPlatform.Api.Settings;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.Index.ElasticSearch.Properties;
-using Nest;
 using Nest.Resolvers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using PropertyMapping = InfinniPlatform.Api.Index.PropertyMapping;
+using InfinniPlatform.Sdk.Environment.Settings;
+using Nest;
+
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 {
@@ -84,13 +84,13 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         /// <summary>
         /// Получение актуальной схемы для документов, хранимых в типе
         /// </summary>
-        public IList<PropertyMapping> GetIndexTypeMapping(string indexName, string typeName)
+        public IList<Sdk.Environment.Index.PropertyMapping> GetIndexTypeMapping(string indexName, string typeName)
         {
             var schemaTypes = GetAllTypes(new[] {indexName}, new[] {typeName});
 
             if (schemaTypes == null || !schemaTypes.Any())
             {
-                return new PropertyMapping[0];
+                return new Sdk.Environment.Index.PropertyMapping[0];
             }
 
             var actualType = schemaTypes.GetActualTypeName(typeName);

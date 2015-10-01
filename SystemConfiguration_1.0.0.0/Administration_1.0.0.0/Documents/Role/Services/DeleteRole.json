@@ -1,0 +1,40 @@
+{
+  "Id": "599653c9-d735-49dc-a1e8-e85ba8991304",
+  "Secured": true,
+  "Name": "DeleteRole",
+  "Type": {
+    "Name": "applyjson",
+    "WorkflowExtensionPoints": [
+      {
+        "Name": "FilterEvents",
+        "ContextType": 4,
+        "Caption": "Document filter events context"
+      },
+      {
+        "Name": "Move",
+        "ContextType": 2,
+        "Caption": "Document move context"
+      },
+      {
+        "Name": "GetResult",
+        "ContextType": 8,
+        "Caption": "Document move result context"
+      }
+    ]
+  },
+  "Caption": "DeleteRole",
+  "ExtensionPoints": [
+    {
+      "TypeName": {
+        "Name": "Move",
+        "ContextType": 2,
+        "Caption": "Document move context"
+      },
+      "ScenarioId": "DeleteRole"
+    },
+    {}
+  ],
+  "ParentId": "73746851-7217-44da-b5cb-5d54c3a6171a",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "servicemetadata"
+}

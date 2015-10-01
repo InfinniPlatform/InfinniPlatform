@@ -6,106 +6,97 @@ using System.Windows.Forms;
 
 namespace InfinniPlatform.ReportDesigner.Views.Editors
 {
-	abstract class EditorBase : Control
-	{
-		protected EditorBase(Type valueType, string valueFormat = "", object defaultValue = null)
-		{
-			_valueType = valueType;
-			_defaultValue = defaultValue;
-			_valueFormatString = string.IsNullOrEmpty(valueFormat) ? "{0}" : "{0:" + valueFormat + "}";
-		}
+    internal abstract class EditorBase : Control
+    {
+        private Control _editor;
+        private readonly object _defaultValue;
+        private readonly string _valueFormatString;
+        private readonly Type _valueType;
 
+        protected EditorBase(Type valueType, string valueFormat = "", object defaultValue = null)
+        {
+            _valueType = valueType;
+            _defaultValue = defaultValue;
+            _valueFormatString = string.IsNullOrEmpty(valueFormat) ? "{0}" : "{0:" + valueFormat + "}";
+        }
 
-		private Control _editor;
-		private readonly Type _valueType;
-		private readonly object _defaultValue;
-		private readonly string _valueFormatString;
+        public abstract object Value { get; set; }
 
+        public override string Text
+        {
+            get { return _editor.Text; }
+            set { _editor.Text = value; }
+        }
 
-		public abstract object Value
-		{
-			get;
-			set;
-		}
+        protected TEdit CreateEdit<TEdit>() where TEdit : Control, new()
+        {
+            var edit = new TEdit {Dock = DockStyle.Fill};
+            edit.KeyDown += (s, e) => OnKeyDown(e);
+            GotFocus += (s, e) => edit.Focus();
+            Controls.Add(edit);
 
-		public override string Text
-		{
-			get { return _editor.Text; }
-			set { _editor.Text = value; }
-		}
+            _editor = edit;
 
+            return edit;
+        }
 
-		protected TEdit CreateEdit<TEdit>() where TEdit : Control, new()
-		{
-			var edit = new TEdit { Dock = DockStyle.Fill };
-			edit.KeyDown += (s, e) => OnKeyDown(e);
-			GotFocus += (s, e) => edit.Focus();
-			Controls.Add(edit);
+        public object CastObjectValue(object value)
+        {
+            if (value != null)
+            {
+                try
+                {
+                    return Convert.ChangeType(value, _valueType);
+                }
+                catch
+                {
+                }
+            }
 
-			_editor = edit;
+            return _defaultValue;
+        }
 
-			return edit;
-		}
+        public IEnumerable CastArrayValue(IEnumerable value)
+        {
+            if (value != null)
+            {
+                var castArray = new List<object>();
 
+                foreach (var item in value)
+                {
+                    var castItem = CastObjectValue(item);
 
-		public object CastObjectValue(object value)
-		{
-			if (value != null)
-			{
-				try
-				{
-					return Convert.ChangeType(value, _valueType);
-				}
-				catch
-				{
-				}
-			}
+                    castArray.Add(castItem);
+                }
 
-			return _defaultValue;
-		}
+                return castArray;
+            }
 
-		public IEnumerable CastArrayValue(IEnumerable value)
-		{
-			if (value != null)
-			{
-				var castArray = new List<object>();
+            return null;
+        }
 
-				foreach (var item in value)
-				{
-					var castItem = CastObjectValue(item);
+        public string FormatObjectValue(object value, bool cast = true)
+        {
+            var castValue = cast ? CastObjectValue(value) : value;
 
-					castArray.Add(castItem);
-				}
+            if (castValue != null)
+            {
+                return string.Format(_valueFormatString, castValue);
+            }
 
-				return castArray;
-			}
+            return null;
+        }
 
-			return null;
-		}
+        public string FormatArrayValue(IEnumerable value, bool cast = true)
+        {
+            var castArray = cast ? CastArrayValue(value) : value;
 
+            if (castArray != null)
+            {
+                return string.Join("; ", castArray.Cast<object>().Select(i => string.Format(_valueFormatString, i)));
+            }
 
-		public string FormatObjectValue(object value, bool cast = true)
-		{
-			var castValue = cast ? CastObjectValue(value) : value;
-
-			if (castValue != null)
-			{
-				return string.Format(_valueFormatString, castValue);
-			}
-
-			return null;
-		}
-
-		public string FormatArrayValue(IEnumerable value, bool cast = true)
-		{
-			var castArray = cast ? CastArrayValue(value) : value;
-
-			if (castArray != null)
-			{
-				return string.Join("; ", castArray.Cast<object>().Select(i => string.Format(_valueFormatString, i)));
-			}
-
-			return null;
-		}
-	}
+            return null;
+        }
+    }
 }

@@ -2,10 +2,10 @@
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.LayoutPanels
 {
-	/// <summary>
-	/// Контейнер элементов представления.
-	/// </summary>
-	public interface ILayoutPanel : IElement
-	{
-	}
+    /// <summary>
+    ///     Контейнер элементов представления.
+    /// </summary>
+    public interface ILayoutPanel : IElement
+    {
+    }
 }

@@ -7,12 +7,25 @@ using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigSelector
 {
-	sealed class ConfigSelectorElementBuilder : IObjectBuilder
+	internal sealed class ConfigSelectorElementBuilder : IObjectBuilder
 	{
+		public ConfigSelectorElementBuilder(string server, int port, string routeVersion)
+		{
+			_server = server;
+			_port = port;
+			_routeVersion = routeVersion;
+		}
+
+		private readonly int _port;
+		private readonly string _routeVersion;
+		private readonly string _server;
+		private dynamic _version;
+
 		public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
 		{
 			var element = new ConfigSelectorElement(parent);
 			element.ApplyElementMeatadata((object)metadata);
+			_version = context.AppView.GetContext().Version;
 			element.SetConfigurationsFunc(GetConfigurations);
 
 			// Привязка к источнику данных
@@ -28,10 +41,9 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigSelector
 			return element;
 		}
 
-
-		private static IEnumerable GetConfigurations()
+		IEnumerable GetConfigurations()
 		{
-			return ConfigurationMetadataService.Instance.GetItems();
+			return new ConfigurationMetadataService(_version, _server, _port, _routeVersion).GetItems();
 		}
 	}
 }

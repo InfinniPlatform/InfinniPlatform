@@ -5,6 +5,8 @@ using System.Reflection;
 using Autofac;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Modules;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.WebApi.Factories
 {

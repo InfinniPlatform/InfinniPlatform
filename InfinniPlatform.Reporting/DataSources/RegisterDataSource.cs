@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.FastReport.Templates.Data;
-
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Reporting.DataSources
@@ -38,7 +36,7 @@ namespace InfinniPlatform.Reporting.DataSources
 				}
 			}
 
-			IEnumerable<dynamic> result = new DocumentApi().GetDocumentByQuery(requestBody);
+            IEnumerable<dynamic> result = new DocumentApi().GetDocumentByQuery(requestBody);
 
 		    return JArray.FromObject(result.Select(r => r.Result));
 		}

@@ -1,21 +1,20 @@
 ﻿namespace InfinniPlatform.Runtime
 {
 	/// <summary>
-	///   Провайдер метаданных скриптов
+	/// Провайдер метаданных прикладных скриптов.
 	/// </summary>
 	public interface IScriptMetadataProvider
 	{
 		/// <summary>
-		///   Получить метаданные скриптов 
+		/// Возвращает метаданные прикладного скрипта.
 		/// </summary>
-		/// <param name="scriptIdentifier">Идентификатор метаданных скрипта</param>
-		/// <returns>Метаданные скрипта</returns>
+		/// <param name="scriptIdentifier">Идентификатор прикладного скрипта.</param>
 		ScriptMetadata GetScriptMetadata(string scriptIdentifier);
 
 		/// <summary>
-		///   Добавить метаданные скрипта
+		/// Устанавливает метаданные прикладного скрипта.
 		/// </summary>
-		/// <param name="scriptMetadata">Метаданные скрипта</param>
+		/// <param name="scriptMetadata">Метаданные прикладного скрипта.</param>
 		void SetScriptMetadata(ScriptMetadata scriptMetadata);
 	}
 }

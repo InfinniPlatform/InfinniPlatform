@@ -1,6 +1,6 @@
-﻿using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.RestApi.DataApi;
+﻿using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
 {

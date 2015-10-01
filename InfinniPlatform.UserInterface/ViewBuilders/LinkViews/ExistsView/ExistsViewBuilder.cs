@@ -6,59 +6,71 @@ using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.LinkViews.ExistsView
 {
-	sealed class ExistsViewBuilder : IObjectBuilder
-	{
-		public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
-		{
-			var linkView = new LinkView(context.AppView, parent, () => CreateView(context, parent, metadata));
-			linkView.SetOpenMode((metadata.OpenMode as string).ToEnum(OpenMode.TabPage));
+    internal sealed class ExistsViewBuilder : IObjectBuilder
+    {
+        private readonly string _server;
+        private readonly int _port;
+        private readonly string _routeVersion;
 
-			return linkView;
-		}
+        public ExistsViewBuilder(string server, int port, string routeVersion)
+        {
+            _server = server;
+            _port = port;
+            _routeVersion = routeVersion;
+        }
 
-		private static View CreateView(ObjectBuilderContext context, View parent, dynamic metadata)
-		{
-			View view = null;
+        public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
+        {
+            var linkView = new LinkView(context.AppView, parent, () => CreateView(context, parent, metadata));
+            linkView.SetOpenMode((metadata.OpenMode as string).ToEnum(OpenMode.TabPage));
 
-			// Получение метаданных представления
-			var viewMetadataService = new ViewMetadataService(metadata.ConfigId, metadata.DocumentId);
-			var viewMetadata = viewMetadataService.GetItem(metadata.ViewId);
+            return linkView;
+        }
 
-			if (viewMetadata != null)
-			{
-				// Создание представления по метаданным
-				view = context.BuildView(parent, (object)viewMetadata);
+        private View CreateView(ObjectBuilderContext context, View parent, dynamic metadata)
+        {
+            View view = null;
 
-				if (view != null)
-				{
-					// Передача параметров в дочернее представление
-					BindParameters(context, parent, view, metadata.Parameters);
-				}
-			}
+            // Получение метаданных представления
+            var viewMetadataService = new ViewMetadataService(null, metadata.ConfigId, metadata.DocumentId, _server, _port, _routeVersion);
+            var viewMetadata = viewMetadataService.GetItem(metadata.ViewId);
 
-			return view;
-		}
+            if (viewMetadata != null)
+            {
+                // Создание представления по метаданным
+                view = context.BuildView(parent, (object) viewMetadata);
 
-		private static void BindParameters(ObjectBuilderContext context, View parentView, View childView, dynamic parameters)
-		{
-			if (parameters != null)
-			{
-				foreach (var parameterLink in parameters)
-				{
-					ParameterElement parameter = childView.GetParameter(parameterLink.Name);
+                if (view != null)
+                {
+                    // Передача параметров в дочернее представление
+                    BindParameters(context, parent, view, metadata.Parameters);
+                }
+            }
 
-					if (parameter != null)
-					{
-						IElementDataBinding parameterValueBinding = context.Build(parentView, parameterLink.Value);
+            return view;
+        }
 
-						if (parameterValueBinding != null)
-						{
-							parameterValueBinding.OnPropertyValueChanged += (c, a) => parameter.SetValue(a.Value);
-							parameter.OnValueChanged += (c, a) => parameterValueBinding.SetPropertyValue(a.Value);
-						}
-					}
-				}
-			}
-		}
-	}
+        private static void BindParameters(ObjectBuilderContext context, View parentView, View childView,
+            dynamic parameters)
+        {
+            if (parameters != null)
+            {
+                foreach (var parameterLink in parameters)
+                {
+                    ParameterElement parameter = childView.GetParameter(parameterLink.Name);
+
+                    if (parameter != null)
+                    {
+                        IElementDataBinding parameterValueBinding = context.Build(parentView, parameterLink.Value);
+
+                        if (parameterValueBinding != null)
+                        {
+                            parameterValueBinding.OnPropertyValueChanged += (c, a) => parameter.SetValue(a.Value);
+                            parameter.OnValueChanged += (c, a) => parameterValueBinding.SetPropertyValue(a.Value);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Metadata;
-
-namespace InfinniPlatform.Factories
+﻿namespace InfinniPlatform.Factories
 {
 	/// <summary>
-	///   Конструктор фабрик прикладных скриптов
+	/// Конструктор фабрик для создания классов по работе с прикладными скриптами.
 	/// </summary>
 	public interface IScriptFactoryBuilder
 	{
-	    /// <summary>
-	    ///   Создать фабрику прикладных скриптов для указанной версии конфигурации
-	    /// </summary>
-	    /// <returns>Фабрика скриптов</returns>
-        IScriptFactory BuildScriptFactory(string metadataConfigurationId);
+		/// <summary>
+		/// Создает фабрику для создания классов по работе с прикладными скриптами.
+		/// </summary>
+		IScriptFactory BuildScriptFactory(string metadataConfigurationId, string version);
 	}
 }

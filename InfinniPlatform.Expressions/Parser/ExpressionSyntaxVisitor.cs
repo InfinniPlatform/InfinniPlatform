@@ -2,23 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Api.Extensions;
-using InfinniPlatform.Expressions.CompiledExpressions;
-using InfinniPlatform.Expressions.Properties;
-
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-using ConditionalExpression = InfinniPlatform.Expressions.CompiledExpressions.ConditionalExpression;
-using ConstantExpression = InfinniPlatform.Expressions.CompiledExpressions.ConstantExpression;
-using InvocationExpression = InfinniPlatform.Expressions.CompiledExpressions.InvocationExpression;
-using LambdaExpression = InfinniPlatform.Expressions.CompiledExpressions.LambdaExpression;
-using SwitchExpression = InfinniPlatform.Expressions.CompiledExpressions.SwitchExpression;
+using InfinniPlatform.Expressions.CompiledExpressions;
+using InfinniPlatform.Expressions.Properties;
+using InfinniPlatform.Sdk.Extensions;
 
 namespace InfinniPlatform.Expressions.Parser
 {
-	sealed class ExpressionSyntaxVisitor : CSharpSyntaxVisitor<ICompiledExpression>
+	internal sealed class ExpressionSyntaxVisitor : CSharpSyntaxVisitor<ICompiledExpression>
 	{
 		private static string GetIdentifierValue(SimpleNameSyntax node)
 		{
@@ -40,7 +34,6 @@ namespace InfinniPlatform.Expressions.Parser
 			return new NotSupportedException(string.Format(Resources.IllegalExpression, node.ToFullString()));
 		}
 
-
 		public override ICompiledExpression Visit(SyntaxNode node)
 		{
 			if (node != null)
@@ -57,7 +50,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a IdentifierNameSyntax node.
+		///     Called when the visitor visits a IdentifierNameSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitIdentifierName(IdentifierNameSyntax node)
 		{
@@ -72,7 +65,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a QualifiedNameSyntax node.
+		///     Called when the visitor visits a QualifiedNameSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitQualifiedName(QualifiedNameSyntax node)
 		{
@@ -81,7 +74,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a GenericNameSyntax node.
+		///     Called when the visitor visits a GenericNameSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitGenericName(GenericNameSyntax node)
 		{
@@ -89,7 +82,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a TypeArgumentListSyntax node.
+		///     Called when the visitor visits a TypeArgumentListSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitTypeArgumentList(TypeArgumentListSyntax node)
 		{
@@ -97,7 +90,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a AliasQualifiedNameSyntax node.
+		///     Called when the visitor visits a AliasQualifiedNameSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitAliasQualifiedName(AliasQualifiedNameSyntax node)
 		{
@@ -106,7 +99,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a PredefinedTypeSyntax node.
+		///     Called when the visitor visits a PredefinedTypeSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitPredefinedType(PredefinedTypeSyntax node)
 		{
@@ -115,7 +108,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ArrayTypeSyntax node.
+		///     Called when the visitor visits a ArrayTypeSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitArrayType(ArrayTypeSyntax node)
 		{
@@ -123,7 +116,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ArrayRankSpecifierSyntax node.
+		///     Called when the visitor visits a ArrayRankSpecifierSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitArrayRankSpecifier(ArrayRankSpecifierSyntax node)
 		{
@@ -131,7 +124,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a PointerTypeSyntax node.
+		///     Called when the visitor visits a PointerTypeSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitPointerType(PointerTypeSyntax node)
 		{
@@ -139,7 +132,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a NullableTypeSyntax node.
+		///     Called when the visitor visits a NullableTypeSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitNullableType(NullableTypeSyntax node)
 		{
@@ -147,7 +140,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a OmittedTypeArgumentSyntax node.
+		///     Called when the visitor visits a OmittedTypeArgumentSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitOmittedTypeArgument(OmittedTypeArgumentSyntax node)
 		{
@@ -155,7 +148,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ParenthesizedExpressionSyntax node.
+		///     Called when the visitor visits a ParenthesizedExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitParenthesizedExpression(ParenthesizedExpressionSyntax node)
 		{
@@ -163,12 +156,12 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a PrefixUnaryExpressionSyntax node.
+		///     Called when the visitor visits a PrefixUnaryExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitPrefixUnaryExpression(PrefixUnaryExpressionSyntax node)
 		{
 			var operand = Visit(node.Operand);
-			var operationKind = node.CSharpKind();
+			var operationKind = node.Kind();
 
 			switch (operationKind)
 			{
@@ -184,7 +177,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a AwaitExpressionSyntax node.
+		///     Called when the visitor visits a AwaitExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitAwaitExpression(AwaitExpressionSyntax node)
 		{
@@ -192,7 +185,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a PostfixUnaryExpressionSyntax node.
+		///     Called when the visitor visits a PostfixUnaryExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitPostfixUnaryExpression(PostfixUnaryExpressionSyntax node)
 		{
@@ -200,11 +193,10 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a MemberAccessExpressionSyntax node.
+		///     Called when the visitor visits a MemberAccessExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitMemberAccessExpression(MemberAccessExpressionSyntax node)
 		{
-
 			if (IsIdentifierExpression(node))
 			{
 				var type = GetTypeValue(node, false);
@@ -247,7 +239,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ConditionalAccessExpressionSyntax node.
+		///     Called when the visitor visits a ConditionalAccessExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitConditionalAccessExpression(ConditionalAccessExpressionSyntax node)
 		{
@@ -255,7 +247,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a MemberBindingExpressionSyntax node.
+		///     Called when the visitor visits a MemberBindingExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitMemberBindingExpression(MemberBindingExpressionSyntax node)
 		{
@@ -263,7 +255,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ElementBindingExpressionSyntax node.
+		///     Called when the visitor visits a ElementBindingExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitElementBindingExpression(ElementBindingExpressionSyntax node)
 		{
@@ -271,7 +263,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ImplicitElementAccessSyntax node.
+		///     Called when the visitor visits a ImplicitElementAccessSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitImplicitElementAccess(ImplicitElementAccessSyntax node)
 		{
@@ -279,13 +271,13 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a BinaryExpressionSyntax node.
+		///     Called when the visitor visits a BinaryExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitBinaryExpression(BinaryExpressionSyntax node)
 		{
 			var left = Visit(node.Left);
 			var rigth = Visit(node.Right);
-			var operationKind = node.CSharpKind();
+			var operationKind = node.Kind();
 
 			switch (operationKind)
 			{
@@ -337,7 +329,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a AssignmentExpressionSyntax node.
+		///     Called when the visitor visits a AssignmentExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitAssignmentExpression(AssignmentExpressionSyntax node)
 		{
@@ -345,7 +337,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ConditionalExpressionSyntax node.
+		///     Called when the visitor visits a ConditionalExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitConditionalExpression(ConditionalExpressionSyntax node)
 		{
@@ -357,7 +349,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ThisExpressionSyntax node.
+		///     Called when the visitor visits a ThisExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitThisExpression(ThisExpressionSyntax node)
 		{
@@ -365,7 +357,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a BaseExpressionSyntax node.
+		///     Called when the visitor visits a BaseExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitBaseExpression(BaseExpressionSyntax node)
 		{
@@ -373,7 +365,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a LiteralExpressionSyntax node.
+		///     Called when the visitor visits a LiteralExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitLiteralExpression(LiteralExpressionSyntax node)
 		{
@@ -381,7 +373,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a MakeRefExpressionSyntax node.
+		///     Called when the visitor visits a MakeRefExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitMakeRefExpression(MakeRefExpressionSyntax node)
 		{
@@ -389,7 +381,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a RefTypeExpressionSyntax node.
+		///     Called when the visitor visits a RefTypeExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitRefTypeExpression(RefTypeExpressionSyntax node)
 		{
@@ -397,7 +389,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a RefValueExpressionSyntax node.
+		///     Called when the visitor visits a RefValueExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitRefValueExpression(RefValueExpressionSyntax node)
 		{
@@ -405,7 +397,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a CheckedExpressionSyntax node.
+		///     Called when the visitor visits a CheckedExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitCheckedExpression(CheckedExpressionSyntax node)
 		{
@@ -426,7 +418,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a TypeOfExpressionSyntax node.
+		///     Called when the visitor visits a TypeOfExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitTypeOfExpression(TypeOfExpressionSyntax node)
 		{
@@ -441,7 +433,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a SizeOfExpressionSyntax node.
+		///     Called when the visitor visits a SizeOfExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitSizeOfExpression(SizeOfExpressionSyntax node)
 		{
@@ -456,7 +448,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a InvocationExpressionSyntax node.
+		///     Called when the visitor visits a InvocationExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitInvocationExpression(InvocationExpressionSyntax node)
 		{
@@ -500,7 +492,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ArgumentListSyntax node.
+		///     Called when the visitor visits a ArgumentListSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitArgumentList(ArgumentListSyntax node)
 		{
@@ -508,7 +500,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a BracketedArgumentListSyntax node.
+		///     Called when the visitor visits a BracketedArgumentListSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitBracketedArgumentList(BracketedArgumentListSyntax node)
 		{
@@ -516,7 +508,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ArgumentSyntax node.
+		///     Called when the visitor visits a ArgumentSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitArgument(ArgumentSyntax node)
 		{
@@ -524,7 +516,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a NameColonSyntax node.
+		///     Called when the visitor visits a NameColonSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitNameColon(NameColonSyntax node)
 		{
@@ -532,7 +524,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a CastExpressionSyntax node.
+		///     Called when the visitor visits a CastExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitCastExpression(CastExpressionSyntax node)
 		{
@@ -548,7 +540,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a AnonymousMethodExpressionSyntax node.
+		///     Called when the visitor visits a AnonymousMethodExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitAnonymousMethodExpression(AnonymousMethodExpressionSyntax node)
 		{
@@ -570,7 +562,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a SimpleLambdaExpressionSyntax node.
+		///     Called when the visitor visits a SimpleLambdaExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitSimpleLambdaExpression(SimpleLambdaExpressionSyntax node)
 		{
@@ -588,7 +580,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ParenthesizedLambdaExpressionSyntax node.
+		///     Called when the visitor visits a ParenthesizedLambdaExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitParenthesizedLambdaExpression(ParenthesizedLambdaExpressionSyntax node)
 		{
@@ -615,20 +607,22 @@ namespace InfinniPlatform.Expressions.Parser
 			return new KeyValuePair<string, Type>(parameterName, typeof(object));
 		}
 
-
 		/// <summary>
-		/// Called when the visitor visits a InitializerExpressionSyntax node.
+		///     Called when the visitor visits a InitializerExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitInitializerExpression(InitializerExpressionSyntax node)
 		{
-			var initializerKind = node.CSharpKind();
+			var initializerKind = node.Kind();
 
 			switch (initializerKind)
 			{
 				case SyntaxKind.ComplexElementInitializerExpression:
 					{
 						var items = node.Expressions.Select(Visit).ToArray();
-						return new FunctionExpression((dataContext, scope) => items.Select(i => (i != null) ? i.Execute(dataContext, scope) : null).ToArray());
+						return
+							new FunctionExpression(
+								(dataContext, scope) =>
+									items.Select(i => (i != null) ? i.Execute(dataContext, scope) : null).ToArray());
 					}
 			}
 
@@ -636,7 +630,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ObjectCreationExpressionSyntax node.
+		///     Called when the visitor visits a ObjectCreationExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitObjectCreationExpression(ObjectCreationExpressionSyntax node)
 		{
@@ -655,7 +649,7 @@ namespace InfinniPlatform.Expressions.Parser
 
 				if (node.Initializer != null)
 				{
-					var initializerKind = node.Initializer.CSharpKind();
+					var initializerKind = node.Initializer.Kind();
 
 					switch (initializerKind)
 					{
@@ -669,7 +663,8 @@ namespace InfinniPlatform.Expressions.Parser
 
 									if (assignmentExpression != null)
 									{
-										var propertyName = GetIdentifierValue((IdentifierNameSyntax)assignmentExpression.Left);
+										var propertyName =
+											GetIdentifierValue((IdentifierNameSyntax)assignmentExpression.Left);
 										var propertyValue = Visit(assignmentExpression.Right);
 
 										properties[propertyName] = propertyValue;
@@ -696,17 +691,19 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a AnonymousObjectMemberDeclaratorSyntax node.
+		///     Called when the visitor visits a AnonymousObjectMemberDeclaratorSyntax node.
 		/// </summary>
-		public override ICompiledExpression VisitAnonymousObjectMemberDeclarator(AnonymousObjectMemberDeclaratorSyntax node)
+		public override ICompiledExpression VisitAnonymousObjectMemberDeclarator(
+			AnonymousObjectMemberDeclaratorSyntax node)
 		{
 			return base.VisitAnonymousObjectMemberDeclarator(node);
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a AnonymousObjectCreationExpressionSyntax node.
+		///     Called when the visitor visits a AnonymousObjectCreationExpressionSyntax node.
 		/// </summary>
-		public override ICompiledExpression VisitAnonymousObjectCreationExpression(AnonymousObjectCreationExpressionSyntax node)
+		public override ICompiledExpression VisitAnonymousObjectCreationExpression(
+			AnonymousObjectCreationExpressionSyntax node)
 		{
 			var properties = new Dictionary<string, ICompiledExpression>();
 
@@ -721,11 +718,11 @@ namespace InfinniPlatform.Expressions.Parser
 			return new AnonymousObjectCreationExpression(new ObjectInitializer(properties));
 		}
 
-
 		/// <summary>
-		/// Called when the visitor visits a ImplicitArrayCreationExpressionSyntax node.
+		///     Called when the visitor visits a ImplicitArrayCreationExpressionSyntax node.
 		/// </summary>
-		public override ICompiledExpression VisitImplicitArrayCreationExpression(ImplicitArrayCreationExpressionSyntax node)
+		public override ICompiledExpression VisitImplicitArrayCreationExpression(
+			ImplicitArrayCreationExpressionSyntax node)
 		{
 			Dictionary<int[], ICompiledExpression> initializers = null;
 
@@ -739,7 +736,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ArrayCreationExpressionSyntax node.
+		///     Called when the visitor visits a ArrayCreationExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitArrayCreationExpression(ArrayCreationExpressionSyntax node)
 		{
@@ -770,7 +767,8 @@ namespace InfinniPlatform.Expressions.Parser
 			return new ArrayCreationExpression(elementType, rankSpecifiers, initializers);
 		}
 
-		private void GetArrayElementInitializer(IDictionary<int[], ICompiledExpression> initializers, List<int> elementIndexes, ExpressionSyntax elementExpression)
+		private void GetArrayElementInitializer(IDictionary<int[], ICompiledExpression> initializers,
+			List<int> elementIndexes, ExpressionSyntax elementExpression)
 		{
 			var elementInitializer = elementExpression as InitializerExpressionSyntax;
 
@@ -792,15 +790,16 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a StackAllocArrayCreationExpressionSyntax node.
+		///     Called when the visitor visits a StackAllocArrayCreationExpressionSyntax node.
 		/// </summary>
-		public override ICompiledExpression VisitStackAllocArrayCreationExpression(StackAllocArrayCreationExpressionSyntax node)
+		public override ICompiledExpression VisitStackAllocArrayCreationExpression(
+			StackAllocArrayCreationExpressionSyntax node)
 		{
 			return base.VisitStackAllocArrayCreationExpression(node);
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a QueryExpressionSyntax node.
+		///     Called when the visitor visits a QueryExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitQueryExpression(QueryExpressionSyntax node)
 		{
@@ -808,7 +807,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a QueryBodySyntax node.
+		///     Called when the visitor visits a QueryBodySyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitQueryBody(QueryBodySyntax node)
 		{
@@ -816,7 +815,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a FromClauseSyntax node.
+		///     Called when the visitor visits a FromClauseSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitFromClause(FromClauseSyntax node)
 		{
@@ -824,7 +823,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a LetClauseSyntax node.
+		///     Called when the visitor visits a LetClauseSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitLetClause(LetClauseSyntax node)
 		{
@@ -832,7 +831,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a JoinClauseSyntax node.
+		///     Called when the visitor visits a JoinClauseSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitJoinClause(JoinClauseSyntax node)
 		{
@@ -840,7 +839,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a JoinIntoClauseSyntax node.
+		///     Called when the visitor visits a JoinIntoClauseSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitJoinIntoClause(JoinIntoClauseSyntax node)
 		{
@@ -848,7 +847,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a WhereClauseSyntax node.
+		///     Called when the visitor visits a WhereClauseSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitWhereClause(WhereClauseSyntax node)
 		{
@@ -856,7 +855,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a OrderByClauseSyntax node.
+		///     Called when the visitor visits a OrderByClauseSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitOrderByClause(OrderByClauseSyntax node)
 		{
@@ -864,7 +863,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a OrderingSyntax node.
+		///     Called when the visitor visits a OrderingSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitOrdering(OrderingSyntax node)
 		{
@@ -872,7 +871,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a SelectClauseSyntax node.
+		///     Called when the visitor visits a SelectClauseSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitSelectClause(SelectClauseSyntax node)
 		{
@@ -880,7 +879,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a GroupClauseSyntax node.
+		///     Called when the visitor visits a GroupClauseSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitGroupClause(GroupClauseSyntax node)
 		{
@@ -888,7 +887,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a QueryContinuationSyntax node.
+		///     Called when the visitor visits a QueryContinuationSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitQueryContinuation(QueryContinuationSyntax node)
 		{
@@ -896,7 +895,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a OmittedArraySizeExpressionSyntax node.
+		///     Called when the visitor visits a OmittedArraySizeExpressionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitOmittedArraySizeExpression(OmittedArraySizeExpressionSyntax node)
 		{
@@ -904,7 +903,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a GlobalStatementSyntax node.
+		///     Called when the visitor visits a GlobalStatementSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitGlobalStatement(GlobalStatementSyntax node)
 		{
@@ -912,7 +911,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a BlockSyntax node.
+		///     Called when the visitor visits a BlockSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitBlock(BlockSyntax node)
 		{
@@ -925,7 +924,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a LocalDeclarationStatementSyntax node.
+		///     Called when the visitor visits a LocalDeclarationStatementSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitLocalDeclarationStatement(LocalDeclarationStatementSyntax node)
 		{
@@ -933,7 +932,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a VariableDeclarationSyntax node.
+		///     Called when the visitor visits a VariableDeclarationSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitVariableDeclaration(VariableDeclarationSyntax node)
 		{
@@ -941,7 +940,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a VariableDeclaratorSyntax node.
+		///     Called when the visitor visits a VariableDeclaratorSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitVariableDeclarator(VariableDeclaratorSyntax node)
 		{
@@ -949,7 +948,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a EqualsValueClauseSyntax node.
+		///     Called when the visitor visits a EqualsValueClauseSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitEqualsValueClause(EqualsValueClauseSyntax node)
 		{
@@ -957,7 +956,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ExpressionStatementSyntax node.
+		///     Called when the visitor visits a ExpressionStatementSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitExpressionStatement(ExpressionStatementSyntax node)
 		{
@@ -965,7 +964,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a EmptyStatementSyntax node.
+		///     Called when the visitor visits a EmptyStatementSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitEmptyStatement(EmptyStatementSyntax node)
 		{
@@ -973,7 +972,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a LabeledStatementSyntax node.
+		///     Called when the visitor visits a LabeledStatementSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitLabeledStatement(LabeledStatementSyntax node)
 		{
@@ -981,7 +980,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a GotoStatementSyntax node.
+		///     Called when the visitor visits a GotoStatementSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitGotoStatement(GotoStatementSyntax node)
 		{
@@ -989,7 +988,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a BreakStatementSyntax node.
+		///     Called when the visitor visits a BreakStatementSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitBreakStatement(BreakStatementSyntax node)
 		{
@@ -997,7 +996,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ContinueStatementSyntax node.
+		///     Called when the visitor visits a ContinueStatementSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitContinueStatement(ContinueStatementSyntax node)
 		{
@@ -1005,7 +1004,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ReturnStatementSyntax node.
+		///     Called when the visitor visits a ReturnStatementSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitReturnStatement(ReturnStatementSyntax node)
 		{
@@ -1013,7 +1012,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ThrowStatementSyntax node.
+		///     Called when the visitor visits a ThrowStatementSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitThrowStatement(ThrowStatementSyntax node)
 		{
@@ -1021,7 +1020,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a YieldStatementSyntax node.
+		///     Called when the visitor visits a YieldStatementSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitYieldStatement(YieldStatementSyntax node)
 		{
@@ -1029,7 +1028,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a WhileStatementSyntax node.
+		///     Called when the visitor visits a WhileStatementSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitWhileStatement(WhileStatementSyntax node)
 		{
@@ -1037,7 +1036,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a DoStatementSyntax node.
+		///     Called when the visitor visits a DoStatementSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitDoStatement(DoStatementSyntax node)
 		{
@@ -1045,7 +1044,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ForStatementSyntax node.
+		///     Called when the visitor visits a ForStatementSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitForStatement(ForStatementSyntax node)
 		{
@@ -1053,7 +1052,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ForEachStatementSyntax node.
+		///     Called when the visitor visits a ForEachStatementSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitForEachStatement(ForEachStatementSyntax node)
 		{
@@ -1061,7 +1060,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a UsingStatementSyntax node.
+		///     Called when the visitor visits a UsingStatementSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitUsingStatement(UsingStatementSyntax node)
 		{
@@ -1069,7 +1068,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a FixedStatementSyntax node.
+		///     Called when the visitor visits a FixedStatementSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitFixedStatement(FixedStatementSyntax node)
 		{
@@ -1077,7 +1076,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a CheckedStatementSyntax node.
+		///     Called when the visitor visits a CheckedStatementSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitCheckedStatement(CheckedStatementSyntax node)
 		{
@@ -1085,7 +1084,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a UnsafeStatementSyntax node.
+		///     Called when the visitor visits a UnsafeStatementSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitUnsafeStatement(UnsafeStatementSyntax node)
 		{
@@ -1093,7 +1092,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a LockStatementSyntax node.
+		///     Called when the visitor visits a LockStatementSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitLockStatement(LockStatementSyntax node)
 		{
@@ -1101,7 +1100,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a IfStatementSyntax node.
+		///     Called when the visitor visits a IfStatementSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitIfStatement(IfStatementSyntax node)
 		{
@@ -1113,7 +1112,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ElseClauseSyntax node.
+		///     Called when the visitor visits a ElseClauseSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitElseClause(ElseClauseSyntax node)
 		{
@@ -1121,7 +1120,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a SwitchStatementSyntax node.
+		///     Called when the visitor visits a SwitchStatementSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitSwitchStatement(SwitchStatementSyntax node)
 		{
@@ -1142,7 +1141,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a SwitchSectionSyntax node.
+		///     Called when the visitor visits a SwitchSectionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitSwitchSection(SwitchSectionSyntax node)
 		{
@@ -1150,7 +1149,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a CaseSwitchLabelSyntax node.
+		///     Called when the visitor visits a CaseSwitchLabelSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitCaseSwitchLabel(CaseSwitchLabelSyntax node)
 		{
@@ -1158,7 +1157,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a DefaultSwitchLabelSyntax node.
+		///     Called when the visitor visits a DefaultSwitchLabelSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitDefaultSwitchLabel(DefaultSwitchLabelSyntax node)
 		{
@@ -1166,7 +1165,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a TryStatementSyntax node.
+		///     Called when the visitor visits a TryStatementSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitTryStatement(TryStatementSyntax node)
 		{
@@ -1174,7 +1173,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a CatchClauseSyntax node.
+		///     Called when the visitor visits a CatchClauseSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitCatchClause(CatchClauseSyntax node)
 		{
@@ -1182,7 +1181,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a CatchDeclarationSyntax node.
+		///     Called when the visitor visits a CatchDeclarationSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitCatchDeclaration(CatchDeclarationSyntax node)
 		{
@@ -1190,7 +1189,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a CatchFilterClauseSyntax node.
+		///     Called when the visitor visits a CatchFilterClauseSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitCatchFilterClause(CatchFilterClauseSyntax node)
 		{
@@ -1198,7 +1197,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a FinallyClauseSyntax node.
+		///     Called when the visitor visits a FinallyClauseSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitFinallyClause(FinallyClauseSyntax node)
 		{
@@ -1206,7 +1205,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a CompilationUnitSyntax node.
+		///     Called when the visitor visits a CompilationUnitSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitCompilationUnit(CompilationUnitSyntax node)
 		{
@@ -1214,7 +1213,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ExternAliasDirectiveSyntax node.
+		///     Called when the visitor visits a ExternAliasDirectiveSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitExternAliasDirective(ExternAliasDirectiveSyntax node)
 		{
@@ -1222,7 +1221,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a UsingDirectiveSyntax node.
+		///     Called when the visitor visits a UsingDirectiveSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitUsingDirective(UsingDirectiveSyntax node)
 		{
@@ -1230,7 +1229,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a NamespaceDeclarationSyntax node.
+		///     Called when the visitor visits a NamespaceDeclarationSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
 		{
@@ -1238,7 +1237,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a AttributeListSyntax node.
+		///     Called when the visitor visits a AttributeListSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitAttributeList(AttributeListSyntax node)
 		{
@@ -1246,7 +1245,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a AttributeTargetSpecifierSyntax node.
+		///     Called when the visitor visits a AttributeTargetSpecifierSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitAttributeTargetSpecifier(AttributeTargetSpecifierSyntax node)
 		{
@@ -1254,7 +1253,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a AttributeSyntax node.
+		///     Called when the visitor visits a AttributeSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitAttribute(AttributeSyntax node)
 		{
@@ -1262,7 +1261,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a AttributeArgumentListSyntax node.
+		///     Called when the visitor visits a AttributeArgumentListSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitAttributeArgumentList(AttributeArgumentListSyntax node)
 		{
@@ -1270,7 +1269,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a AttributeArgumentSyntax node.
+		///     Called when the visitor visits a AttributeArgumentSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitAttributeArgument(AttributeArgumentSyntax node)
 		{
@@ -1278,7 +1277,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a NameEqualsSyntax node.
+		///     Called when the visitor visits a NameEqualsSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitNameEquals(NameEqualsSyntax node)
 		{
@@ -1286,7 +1285,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a TypeParameterListSyntax node.
+		///     Called when the visitor visits a TypeParameterListSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitTypeParameterList(TypeParameterListSyntax node)
 		{
@@ -1294,7 +1293,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a TypeParameterSyntax node.
+		///     Called when the visitor visits a TypeParameterSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitTypeParameter(TypeParameterSyntax node)
 		{
@@ -1302,7 +1301,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ClassDeclarationSyntax node.
+		///     Called when the visitor visits a ClassDeclarationSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitClassDeclaration(ClassDeclarationSyntax node)
 		{
@@ -1310,7 +1309,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a StructDeclarationSyntax node.
+		///     Called when the visitor visits a StructDeclarationSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitStructDeclaration(StructDeclarationSyntax node)
 		{
@@ -1318,7 +1317,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a InterfaceDeclarationSyntax node.
+		///     Called when the visitor visits a InterfaceDeclarationSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitInterfaceDeclaration(InterfaceDeclarationSyntax node)
 		{
@@ -1326,7 +1325,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a EnumDeclarationSyntax node.
+		///     Called when the visitor visits a EnumDeclarationSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitEnumDeclaration(EnumDeclarationSyntax node)
 		{
@@ -1334,7 +1333,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a DelegateDeclarationSyntax node.
+		///     Called when the visitor visits a DelegateDeclarationSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitDelegateDeclaration(DelegateDeclarationSyntax node)
 		{
@@ -1342,7 +1341,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a EnumMemberDeclarationSyntax node.
+		///     Called when the visitor visits a EnumMemberDeclarationSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitEnumMemberDeclaration(EnumMemberDeclarationSyntax node)
 		{
@@ -1350,7 +1349,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a BaseListSyntax node.
+		///     Called when the visitor visits a BaseListSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitBaseList(BaseListSyntax node)
 		{
@@ -1358,7 +1357,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a SimpleBaseTypeSyntax node.
+		///     Called when the visitor visits a SimpleBaseTypeSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitSimpleBaseType(SimpleBaseTypeSyntax node)
 		{
@@ -1366,7 +1365,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a TypeParameterConstraintClauseSyntax node.
+		///     Called when the visitor visits a TypeParameterConstraintClauseSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitTypeParameterConstraintClause(TypeParameterConstraintClauseSyntax node)
 		{
@@ -1374,7 +1373,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ConstructorConstraintSyntax node.
+		///     Called when the visitor visits a ConstructorConstraintSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitConstructorConstraint(ConstructorConstraintSyntax node)
 		{
@@ -1382,7 +1381,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ClassOrStructConstraintSyntax node.
+		///     Called when the visitor visits a ClassOrStructConstraintSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitClassOrStructConstraint(ClassOrStructConstraintSyntax node)
 		{
@@ -1390,7 +1389,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a TypeConstraintSyntax node.
+		///     Called when the visitor visits a TypeConstraintSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitTypeConstraint(TypeConstraintSyntax node)
 		{
@@ -1398,7 +1397,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a FieldDeclarationSyntax node.
+		///     Called when the visitor visits a FieldDeclarationSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitFieldDeclaration(FieldDeclarationSyntax node)
 		{
@@ -1406,7 +1405,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a EventFieldDeclarationSyntax node.
+		///     Called when the visitor visits a EventFieldDeclarationSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitEventFieldDeclaration(EventFieldDeclarationSyntax node)
 		{
@@ -1414,7 +1413,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ExplicitInterfaceSpecifierSyntax node.
+		///     Called when the visitor visits a ExplicitInterfaceSpecifierSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitExplicitInterfaceSpecifier(ExplicitInterfaceSpecifierSyntax node)
 		{
@@ -1422,7 +1421,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a MethodDeclarationSyntax node.
+		///     Called when the visitor visits a MethodDeclarationSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitMethodDeclaration(MethodDeclarationSyntax node)
 		{
@@ -1430,7 +1429,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a OperatorDeclarationSyntax node.
+		///     Called when the visitor visits a OperatorDeclarationSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitOperatorDeclaration(OperatorDeclarationSyntax node)
 		{
@@ -1438,7 +1437,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ConversionOperatorDeclarationSyntax node.
+		///     Called when the visitor visits a ConversionOperatorDeclarationSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitConversionOperatorDeclaration(ConversionOperatorDeclarationSyntax node)
 		{
@@ -1446,7 +1445,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ConstructorDeclarationSyntax node.
+		///     Called when the visitor visits a ConstructorDeclarationSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitConstructorDeclaration(ConstructorDeclarationSyntax node)
 		{
@@ -1454,7 +1453,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ConstructorInitializerSyntax node.
+		///     Called when the visitor visits a ConstructorInitializerSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitConstructorInitializer(ConstructorInitializerSyntax node)
 		{
@@ -1462,7 +1461,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a DestructorDeclarationSyntax node.
+		///     Called when the visitor visits a DestructorDeclarationSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitDestructorDeclaration(DestructorDeclarationSyntax node)
 		{
@@ -1470,7 +1469,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a PropertyDeclarationSyntax node.
+		///     Called when the visitor visits a PropertyDeclarationSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitPropertyDeclaration(PropertyDeclarationSyntax node)
 		{
@@ -1478,7 +1477,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ArrowExpressionClauseSyntax node.
+		///     Called when the visitor visits a ArrowExpressionClauseSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitArrowExpressionClause(ArrowExpressionClauseSyntax node)
 		{
@@ -1486,7 +1485,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a EventDeclarationSyntax node.
+		///     Called when the visitor visits a EventDeclarationSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitEventDeclaration(EventDeclarationSyntax node)
 		{
@@ -1494,7 +1493,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a IndexerDeclarationSyntax node.
+		///     Called when the visitor visits a IndexerDeclarationSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitIndexerDeclaration(IndexerDeclarationSyntax node)
 		{
@@ -1502,7 +1501,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a AccessorListSyntax node.
+		///     Called when the visitor visits a AccessorListSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitAccessorList(AccessorListSyntax node)
 		{
@@ -1510,7 +1509,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a AccessorDeclarationSyntax node.
+		///     Called when the visitor visits a AccessorDeclarationSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitAccessorDeclaration(AccessorDeclarationSyntax node)
 		{
@@ -1518,7 +1517,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ParameterListSyntax node.
+		///     Called when the visitor visits a ParameterListSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitParameterList(ParameterListSyntax node)
 		{
@@ -1526,7 +1525,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a BracketedParameterListSyntax node.
+		///     Called when the visitor visits a BracketedParameterListSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitBracketedParameterList(BracketedParameterListSyntax node)
 		{
@@ -1534,7 +1533,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ParameterSyntax node.
+		///     Called when the visitor visits a ParameterSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitParameter(ParameterSyntax node)
 		{
@@ -1542,7 +1541,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a IncompleteMemberSyntax node.
+		///     Called when the visitor visits a IncompleteMemberSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitIncompleteMember(IncompleteMemberSyntax node)
 		{
@@ -1550,7 +1549,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a SkippedTokensTriviaSyntax node.
+		///     Called when the visitor visits a SkippedTokensTriviaSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitSkippedTokensTrivia(SkippedTokensTriviaSyntax node)
 		{
@@ -1558,7 +1557,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a DocumentationCommentTriviaSyntax node.
+		///     Called when the visitor visits a DocumentationCommentTriviaSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitDocumentationCommentTrivia(DocumentationCommentTriviaSyntax node)
 		{
@@ -1566,7 +1565,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a TypeCrefSyntax node.
+		///     Called when the visitor visits a TypeCrefSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitTypeCref(TypeCrefSyntax node)
 		{
@@ -1574,7 +1573,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a QualifiedCrefSyntax node.
+		///     Called when the visitor visits a QualifiedCrefSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitQualifiedCref(QualifiedCrefSyntax node)
 		{
@@ -1582,7 +1581,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a NameMemberCrefSyntax node.
+		///     Called when the visitor visits a NameMemberCrefSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitNameMemberCref(NameMemberCrefSyntax node)
 		{
@@ -1590,7 +1589,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a IndexerMemberCrefSyntax node.
+		///     Called when the visitor visits a IndexerMemberCrefSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitIndexerMemberCref(IndexerMemberCrefSyntax node)
 		{
@@ -1598,7 +1597,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a OperatorMemberCrefSyntax node.
+		///     Called when the visitor visits a OperatorMemberCrefSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitOperatorMemberCref(OperatorMemberCrefSyntax node)
 		{
@@ -1606,7 +1605,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ConversionOperatorMemberCrefSyntax node.
+		///     Called when the visitor visits a ConversionOperatorMemberCrefSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitConversionOperatorMemberCref(ConversionOperatorMemberCrefSyntax node)
 		{
@@ -1614,7 +1613,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a CrefParameterListSyntax node.
+		///     Called when the visitor visits a CrefParameterListSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitCrefParameterList(CrefParameterListSyntax node)
 		{
@@ -1622,7 +1621,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a CrefBracketedParameterListSyntax node.
+		///     Called when the visitor visits a CrefBracketedParameterListSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitCrefBracketedParameterList(CrefBracketedParameterListSyntax node)
 		{
@@ -1630,7 +1629,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a CrefParameterSyntax node.
+		///     Called when the visitor visits a CrefParameterSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitCrefParameter(CrefParameterSyntax node)
 		{
@@ -1638,7 +1637,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a XmlElementSyntax node.
+		///     Called when the visitor visits a XmlElementSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitXmlElement(XmlElementSyntax node)
 		{
@@ -1646,7 +1645,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a XmlElementStartTagSyntax node.
+		///     Called when the visitor visits a XmlElementStartTagSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitXmlElementStartTag(XmlElementStartTagSyntax node)
 		{
@@ -1654,7 +1653,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a XmlElementEndTagSyntax node.
+		///     Called when the visitor visits a XmlElementEndTagSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitXmlElementEndTag(XmlElementEndTagSyntax node)
 		{
@@ -1662,7 +1661,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a XmlEmptyElementSyntax node.
+		///     Called when the visitor visits a XmlEmptyElementSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitXmlEmptyElement(XmlEmptyElementSyntax node)
 		{
@@ -1670,7 +1669,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a XmlNameSyntax node.
+		///     Called when the visitor visits a XmlNameSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitXmlName(XmlNameSyntax node)
 		{
@@ -1678,7 +1677,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a XmlPrefixSyntax node.
+		///     Called when the visitor visits a XmlPrefixSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitXmlPrefix(XmlPrefixSyntax node)
 		{
@@ -1686,7 +1685,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a XmlTextAttributeSyntax node.
+		///     Called when the visitor visits a XmlTextAttributeSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitXmlTextAttribute(XmlTextAttributeSyntax node)
 		{
@@ -1694,7 +1693,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a XmlCrefAttributeSyntax node.
+		///     Called when the visitor visits a XmlCrefAttributeSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitXmlCrefAttribute(XmlCrefAttributeSyntax node)
 		{
@@ -1702,7 +1701,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a XmlNameAttributeSyntax node.
+		///     Called when the visitor visits a XmlNameAttributeSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitXmlNameAttribute(XmlNameAttributeSyntax node)
 		{
@@ -1710,7 +1709,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a XmlTextSyntax node.
+		///     Called when the visitor visits a XmlTextSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitXmlText(XmlTextSyntax node)
 		{
@@ -1718,7 +1717,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a XmlCDataSectionSyntax node.
+		///     Called when the visitor visits a XmlCDataSectionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitXmlCDataSection(XmlCDataSectionSyntax node)
 		{
@@ -1726,7 +1725,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a XmlProcessingInstructionSyntax node.
+		///     Called when the visitor visits a XmlProcessingInstructionSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitXmlProcessingInstruction(XmlProcessingInstructionSyntax node)
 		{
@@ -1734,7 +1733,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a XmlCommentSyntax node.
+		///     Called when the visitor visits a XmlCommentSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitXmlComment(XmlCommentSyntax node)
 		{
@@ -1742,7 +1741,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a IfDirectiveTriviaSyntax node.
+		///     Called when the visitor visits a IfDirectiveTriviaSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitIfDirectiveTrivia(IfDirectiveTriviaSyntax node)
 		{
@@ -1750,7 +1749,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ElifDirectiveTriviaSyntax node.
+		///     Called when the visitor visits a ElifDirectiveTriviaSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitElifDirectiveTrivia(ElifDirectiveTriviaSyntax node)
 		{
@@ -1758,7 +1757,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ElseDirectiveTriviaSyntax node.
+		///     Called when the visitor visits a ElseDirectiveTriviaSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitElseDirectiveTrivia(ElseDirectiveTriviaSyntax node)
 		{
@@ -1766,7 +1765,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a EndIfDirectiveTriviaSyntax node.
+		///     Called when the visitor visits a EndIfDirectiveTriviaSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitEndIfDirectiveTrivia(EndIfDirectiveTriviaSyntax node)
 		{
@@ -1774,7 +1773,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a RegionDirectiveTriviaSyntax node.
+		///     Called when the visitor visits a RegionDirectiveTriviaSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitRegionDirectiveTrivia(RegionDirectiveTriviaSyntax node)
 		{
@@ -1782,7 +1781,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a EndRegionDirectiveTriviaSyntax node.
+		///     Called when the visitor visits a EndRegionDirectiveTriviaSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitEndRegionDirectiveTrivia(EndRegionDirectiveTriviaSyntax node)
 		{
@@ -1790,7 +1789,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ErrorDirectiveTriviaSyntax node.
+		///     Called when the visitor visits a ErrorDirectiveTriviaSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitErrorDirectiveTrivia(ErrorDirectiveTriviaSyntax node)
 		{
@@ -1798,7 +1797,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a WarningDirectiveTriviaSyntax node.
+		///     Called when the visitor visits a WarningDirectiveTriviaSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitWarningDirectiveTrivia(WarningDirectiveTriviaSyntax node)
 		{
@@ -1806,7 +1805,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a BadDirectiveTriviaSyntax node.
+		///     Called when the visitor visits a BadDirectiveTriviaSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitBadDirectiveTrivia(BadDirectiveTriviaSyntax node)
 		{
@@ -1814,7 +1813,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a DefineDirectiveTriviaSyntax node.
+		///     Called when the visitor visits a DefineDirectiveTriviaSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitDefineDirectiveTrivia(DefineDirectiveTriviaSyntax node)
 		{
@@ -1822,7 +1821,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a UndefDirectiveTriviaSyntax node.
+		///     Called when the visitor visits a UndefDirectiveTriviaSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitUndefDirectiveTrivia(UndefDirectiveTriviaSyntax node)
 		{
@@ -1830,7 +1829,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a LineDirectiveTriviaSyntax node.
+		///     Called when the visitor visits a LineDirectiveTriviaSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitLineDirectiveTrivia(LineDirectiveTriviaSyntax node)
 		{
@@ -1838,7 +1837,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a PragmaWarningDirectiveTriviaSyntax node.
+		///     Called when the visitor visits a PragmaWarningDirectiveTriviaSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitPragmaWarningDirectiveTrivia(PragmaWarningDirectiveTriviaSyntax node)
 		{
@@ -1846,7 +1845,7 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a PragmaChecksumDirectiveTriviaSyntax node.
+		///     Called when the visitor visits a PragmaChecksumDirectiveTriviaSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitPragmaChecksumDirectiveTrivia(PragmaChecksumDirectiveTriviaSyntax node)
 		{
@@ -1854,35 +1853,36 @@ namespace InfinniPlatform.Expressions.Parser
 		}
 
 		/// <summary>
-		/// Called when the visitor visits a ReferenceDirectiveTriviaSyntax node.
+		///     Called when the visitor visits a ReferenceDirectiveTriviaSyntax node.
 		/// </summary>
 		public override ICompiledExpression VisitReferenceDirectiveTrivia(ReferenceDirectiveTriviaSyntax node)
 		{
 			return base.VisitReferenceDirectiveTrivia(node);
 		}
 
-		///// <summary>
-		///// Called when the visitor visits a NameOfExpressionSyntax node.
-		///// </summary>
-		//public override ICompiledExpression VisitNameOfExpression(NameOfExpressionSyntax node)
-		//{
-		//	return base.VisitNameOfExpression(node);
-		//}
-
-		/// <summary>
-		/// Called when the visitor visits a InterpolatedStringSyntax node.
-		/// </summary>
-		public override ICompiledExpression VisitInterpolatedString(InterpolatedStringSyntax node)
+		public override ICompiledExpression VisitInterpolatedStringText(InterpolatedStringTextSyntax node)
 		{
-			return base.VisitInterpolatedString(node);
+			return base.VisitInterpolatedStringText(node);
 		}
 
-		/// <summary>
-		/// Called when the visitor visits a InterpolatedStringInsertSyntax node.
-		/// </summary>
-		public override ICompiledExpression VisitInterpolatedStringInsert(InterpolatedStringInsertSyntax node)
+		public override ICompiledExpression VisitInterpolatedStringExpression(InterpolatedStringExpressionSyntax node)
 		{
-			return base.VisitInterpolatedStringInsert(node);
+			return base.VisitInterpolatedStringExpression(node);
+		}
+
+		public override ICompiledExpression VisitInterpolationAlignmentClause(InterpolationAlignmentClauseSyntax node)
+		{
+			return base.VisitInterpolationAlignmentClause(node);
+		}
+
+		public override ICompiledExpression VisitInterpolationFormatClause(InterpolationFormatClauseSyntax node)
+		{
+			return base.VisitInterpolationFormatClause(node);
+		}
+
+		public override ICompiledExpression VisitInterpolation(InterpolationSyntax node)
+		{
+			return base.VisitInterpolation(node);
 		}
 	}
 }

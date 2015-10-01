@@ -1,40 +1,38 @@
 ﻿using System.Windows.Media;
-
 using DevExpress.Xpf.Grid;
 using DevExpress.Xpf.Grid.TreeList;
-
 using InfinniPlatform.UserInterface.ViewBuilders.Images;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Controls
 {
-	sealed class ConfigTreeControlImageSelector : TreeListNodeImageSelector
-	{
-		private ConfigTreeControlImageSelector()
-		{
-		}
+    internal sealed class ConfigTreeControlImageSelector : TreeListNodeImageSelector
+    {
+        public static readonly ConfigTreeControlImageSelector Instance = new ConfigTreeControlImageSelector();
 
-		public override ImageSource Select(TreeListRowData rowData)
-		{
-			ImageSource result = null;
+        private ConfigTreeControlImageSelector()
+        {
+        }
 
-			var row = rowData.Row as ConfigElementNode;
+        public override ImageSource Select(TreeListRowData rowData)
+        {
+            ImageSource result = null;
 
-			if (row != null)
-			{
-				if (!string.IsNullOrEmpty(row.ElementType))
-				{
-					result = ImageRepository.GetImage("System/" + row.ElementType);
-				}
-			}
+            var row = rowData.Row as ConfigElementNode;
 
-			if (result == null)
-			{
-				result = ImageRepository.GetImage(rowData.Node.IsExpanded ? "System/FolderOpen" : "System/FolderClosed");
-			}
+            if (row != null)
+            {
+                if (!string.IsNullOrEmpty(row.ElementType))
+                {
+                    result = ImageRepository.GetImage("System/" + row.ElementType);
+                }
+            }
 
-			return result;
-		}
+            if (result == null)
+            {
+                result = ImageRepository.GetImage(rowData.Node.IsExpanded ? "System/FolderOpen" : "System/FolderClosed");
+            }
 
-		public static readonly ConfigTreeControlImageSelector Instance = new ConfigTreeControlImageSelector();
-	}
+            return result;
+        }
+    }
 }

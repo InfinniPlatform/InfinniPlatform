@@ -11,6 +11,7 @@
     <AssemblyName>InfinniPlatform.WebApi</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,6 +30,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release_TeamCity|AnyCPU'">
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -42,10 +52,12 @@
       <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Owin.Host.HttpListener">
+    <Reference Include="Microsoft.Owin.Host.HttpListener, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.Owin.Host.HttpListener.3.0.0\lib\net45\Microsoft.Owin.Host.HttpListener.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Hosting">
+    <Reference Include="Microsoft.Owin.Hosting, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.Owin.Hosting.3.0.0\lib\net45\Microsoft.Owin.Hosting.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -62,7 +74,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
-    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Http, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -71,12 +82,10 @@
     <Reference Include="System.Web.Http.Owin">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.2\lib\net45\System.Web.Http.Owin.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Http.SelfHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationHostingModule.cs" />
     <Compile Include="HttpResultHandlers\HttpResultHandlerSignIn.cs" />
-    <Compile Include="Middleware\ApplicationHostingModuleExtension.cs" />
     <Compile Include="Middleware\ApplicationHostingRoutingMiddleware.cs" />
     <Compile Include="ConfigRequestProviders\ConfigRequestProvider.cs" />
     <Compile Include="Controllers\UploadController.cs" />
@@ -92,6 +101,80 @@
     <Compile Include="IHttpResultHandlerFactory.cs" />
     <Compile Include="Logging\LogExceptionFilterAttribute.cs" />
     <Compile Include="Logging\LogExtensions.cs" />
+    <Compile Include="Middleware\HandlerRegistration.cs" />
+    <Compile Include="Middleware\IRouteFormatter.cs" />
+    <Compile Include="Middleware\Metadata\Configuration\DeleteConfigHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\Configuration\GetConfigHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\Configuration\InsertConfigHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\Configuration\ConfigHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\Configuration\UpdateConfigHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\ConfigurationElements\ConfigElementHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\ConfigurationElements\DeleteConfigElementHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\ConfigurationElements\GetConfigElementHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\ConfigurationElements\InsertConfigElementHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\ConfigurationElements\UpdateConfigElementHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\DocumentElements\DeleteConfigElementHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\DocumentElements\GetDocumentElementHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\DocumentElements\InsertDocumentElementHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\DocumentElements\DocumentElementHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\DocumentElements\UpdateConfigElementHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\Solution\DeleteSolutionHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\Solution\GetSolutionHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\Solution\InsertSolutionHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\Solution\SolutionHandlerRegistration.cs" />
+    <Compile Include="Middleware\Metadata\Solution\UpdateSolutionHandlerRegistration.cs" />
+    <Compile Include="Middleware\MultipartFormData\BinaryStreamStack.cs" />
+    <Compile Include="Middleware\MultipartFormData\FilePart.cs" />
+    <Compile Include="Middleware\MultipartFormData\MultipartFormDataParser.cs" />
+    <Compile Include="Middleware\MultipartFormData\MultipartParseException.cs" />
+    <Compile Include="Middleware\MultipartFormData\ParameterPart.cs" />
+    <Compile Include="Middleware\MultipartFormData\RebufferableBinaryReader.cs" />
+    <Compile Include="Middleware\MultipartFormData\StreamingMultipartFormDataParser.cs" />
+    <Compile Include="Middleware\MultipartFormData\SubsequenceFinder.cs" />
+    <Compile Include="Middleware\RequestPathConstructor.cs" />
+    <Compile Include="Middleware\RoleAuthHandlers\AddRoleHandlerRegistration.cs" />
+    <Compile Include="Middleware\RoleAuthHandlers\DeleteRoleHandlerRegistration.cs" />
+    <Compile Include="Middleware\RouteFormatters\RouteFormatterMetadataDocumentElement.cs" />
+    <Compile Include="Middleware\RouteFormatters\RouteFormatterMetadataConfigElement.cs" />
+    <Compile Include="Middleware\RouteFormatters\RouteFormatterAuthRole.cs" />
+    <Compile Include="Middleware\RouteFormatters\RouteFormatterAuthUser.cs" />
+    <Compile Include="Middleware\RouteFormatters\RouteFormatterMetadata.cs" />
+    <Compile Include="Middleware\RouteFormatters\RouteFormatterSession.cs" />
+    <Compile Include="Middleware\RouteFormatters\RouteFormatterCustomService.cs" />
+    <Compile Include="Middleware\RouteFormatters\RouteFormatterStandard.cs" />
+    <Compile Include="Middleware\SessionHandlers\AttachDocumentHandlerRegistration.cs" />
+    <Compile Include="Middleware\SessionHandlers\CreateSessionHandlerRegistration.cs" />
+    <Compile Include="Middleware\SessionHandlers\DetachDocumentHandlerRegistration.cs" />
+    <Compile Include="Middleware\SessionHandlers\FileAttachHandlerRegistration.cs" />
+    <Compile Include="Middleware\SessionHandlers\FileDetachHandlerRegistration.cs" />
+    <Compile Include="Middleware\SessionHandlers\GetSessionByIdHandlerRegistration.cs" />
+    <Compile Include="Middleware\SessionHandlers\SessionRemoveHandlerRegistration.cs" />
+    <Compile Include="Middleware\SessionHandlers\SessionCommitHandlerRegistration.cs" />
+    <Compile Include="Middleware\StandardHandlers\ChangePasswordHandlerRegistration.cs" />
+    <Compile Include="Middleware\StandardHandlers\CustomServiceRegistrationHandler.cs" />
+    <Compile Include="Middleware\StandardHandlers\DeleteDocumentHandlerRegistration.cs" />
+    <Compile Include="Middleware\StandardHandlers\DenyAccessHandlerRegistration.cs" />
+    <Compile Include="Middleware\StandardHandlers\FileDownloadHandlerRegistration.cs" />
+    <Compile Include="Middleware\StandardHandlers\FileUploadHandlerRegistration.cs" />
+    <Compile Include="Middleware\StandardHandlers\GetDocumentByIdHandlerRegistration.cs" />
+    <Compile Include="Middleware\StandardHandlers\GetDocumentCountHandlerRegistration.cs" />
+    <Compile Include="Middleware\StandardHandlers\GetDocumentHandlerRegistration.cs" />
+    <Compile Include="Middleware\StandardHandlers\GrantAccessHandlerRegistration.cs" />
+    <Compile Include="Middleware\StandardHandlers\SetDocumentHandlerRegistration.cs" />
+    <Compile Include="Middleware\StandardHandlers\SetDocumentsHandlerRegistration.cs" />
+    <Compile Include="Middleware\StandardHandlers\SignInRegistrationHandler.cs" />
+    <Compile Include="Middleware\StandardHandlers\SignOutRegistrationHandler.cs" />
+    <Compile Include="Middleware\StandardHandlers\UpdateDocumentHandlerRegistration.cs" />
+    <Compile Include="Middleware\UserAuthHandlers\AddUserClaimHandlerRegistration.cs" />
+    <Compile Include="Middleware\UserAuthHandlers\AddUserHandlerRegistration.cs" />
+    <Compile Include="Middleware\UserAuthHandlers\AddUserRoleHandlerRegistration.cs" />
+    <Compile Include="Middleware\UserAuthHandlers\DeleteUserHandlerRegistration.cs" />
+    <Compile Include="Middleware\UserAuthHandlers\DeleteUserRoleHandlerRegistration.cs" />
+    <Compile Include="Middleware\UserAuthHandlers\GetUserClaimHandlerRegistration.cs" />
+    <Compile Include="Middleware\UserAuthHandlers\GetUserHandlerRegistration.cs" />
+    <Compile Include="Middleware\UserAuthHandlers\RemoveUserClaimHandlerRegistration.cs" />
+    <Compile Include="Middleware\VersionHandlers\SetRelevantVersionHandlerRegistration.cs" />
+    <Compile Include="Middleware\VersionHandlers\GetIrrelevantVersionHandlerRegistration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -108,9 +191,7 @@
     <Compile Include="WebApi\ApiControllerFactoryBuilder.cs" />
     <Compile Include="WebApi\AutofacWebApiDependencyResolver.cs" />
     <Compile Include="WebApi\AutofacWebApiDependencyScope.cs" />
-    <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\StandardApiController.cs" />
-    <Compile Include="Controllers\StandardStreamedApiController.cs" />
     <Compile Include="WebApi\HttpControllerSelector.cs" />
     <Compile Include="WebApi\IRestVerbsRegistrator.cs" />
     <Compile Include="WebApi\RestVerbsContainer.cs" />
@@ -138,6 +219,10 @@
     <ProjectReference Include="..\InfinniPlatform.Owin\InfinniPlatform.Owin.csproj">
       <Project>{deadc17e-4c51-48d7-9aea-f8dae3090c74}</Project>
       <Name>InfinniPlatform.Owin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
+      <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
+      <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

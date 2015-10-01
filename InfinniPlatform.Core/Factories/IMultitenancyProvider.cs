@@ -13,6 +13,6 @@ namespace InfinniPlatform.Factories
 		/// <param name="indexName">Индекс для формирования роутинга</param>
 		/// <param name="indexType">Тип в индексе для формирования роутинга</param>
 		/// <returns>Строка роутинга для запросов к индексу</returns>
-        string GetTenantId(string tenantId, string indexName, string indexType);
+        string GetTenantId(string tenantId, string indexName = null, string indexType = null);
 	}
 }

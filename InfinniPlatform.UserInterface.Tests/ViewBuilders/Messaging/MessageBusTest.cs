@@ -1,292 +1,298 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-
 using InfinniPlatform.UserInterface.ViewBuilders.Messaging;
-
 using NUnit.Framework;
 
 namespace InfinniPlatform.UserInterface.Tests.ViewBuilders.Messaging
 {
-	[TestFixture]
-	[Category(TestCategories.UnitTest)]
-	public sealed class MessageBusTest
-	{
-		private const int MaxTimeout = 10000;
-		private const string Exchange1 = "Exchange1";
-		private const string Exchange2 = "Exchange2";
-		private const string MessageType1 = "MessageType1";
-		private const string MessageType2 = "MessageType2";
+    [TestFixture]
+    [Category(TestCategories.UnitTest)]
+    public sealed class MessageBusTest
+    {
+        private const int MaxTimeout = 10000;
+        private const string Exchange1 = "Exchange1";
+        private const string Exchange2 = "Exchange2";
+        private const string MessageType1 = "MessageType1";
+        private const string MessageType2 = "MessageType2";
+
+        private class MessageHandler
+        {
+            public int Count { get; private set; }
+            public object Message { get; private set; }
+
+            public void SuccessHandle(dynamic message)
+            {
+                Count++;
+                Message = message;
+            }
+
+            public void ErrorHandle(dynamic message)
+            {
+                Count++;
+                Message = message;
+                throw new Exception();
+            }
+        }
 
 
-		[Test]
-		public void ShouldSendSync()
-		{
-			// Given
-			var messageBus = new MessageBus();
-			var messageExchange = messageBus.GetExchange(Exchange1);
-			var completeHandle = new CountdownEvent(3);
+        [Test]
+        public void ShouldDeliverMessageToValidSubscribers()
+        {
+            // Given
 
-			messageExchange.Subscribe(MessageType1, m => { Task.Delay(500); completeHandle.Signal(); });
-			messageExchange.Subscribe(MessageType1, m => { Task.Delay(500); completeHandle.Signal(); });
-			messageExchange.Subscribe(MessageType1, m => { Task.Delay(500); completeHandle.Signal(); });
+            var messageBus = new MessageBus();
+            IMessageExchange messageExchange = messageBus.GetExchange(Exchange1);
 
-			// When
-			messageExchange.Send(MessageType1, new object());
-			var isComplete = completeHandle.Wait(0);
+            var messageOfType1 = new object();
+            var messageOfType2 = new object();
 
-			// Then
-			Assert.IsTrue(isComplete);
-		}
+            var handlerForType1 = new MessageHandler();
+            messageExchange.Subscribe(MessageType1, handlerForType1.SuccessHandle);
 
-		[Test]
-		public void ShouldSendSyncWhenNoSubscribers()
-		{
-			// Given
-			var message = new object();
-			var messageBus = new MessageBus();
-			var messageExchange = messageBus.GetExchange(Exchange1);
+            var handlerForType2 = new MessageHandler();
+            messageExchange.Subscribe(MessageType2, handlerForType2.SuccessHandle);
 
-			// When
-			messageExchange.Send(MessageType1, message);
-		}
+            // When
+            Task sendMessageOfType1Task = messageExchange.SendAsync(MessageType1, messageOfType1);
+            Task sendMessageOfType2Task = messageExchange.SendAsync(MessageType2, messageOfType2);
+            bool sendMessageOfType1Result = sendMessageOfType1Task.Wait(MaxTimeout);
+            bool sendMessageOfType2Result = sendMessageOfType2Task.Wait(MaxTimeout);
 
-		[Test]
-		public void ShouldSendAsyncWhenNoSubscribers()
-		{
-			// Given
-			var message = new object();
-			var messageBus = new MessageBus();
-			var messageExchange = messageBus.GetExchange(Exchange1);
+            // Then
+            Assert.IsTrue(sendMessageOfType1Result);
+            Assert.IsTrue(sendMessageOfType2Result);
+            Assert.AreEqual(1, handlerForType1.Count);
+            Assert.AreEqual(messageOfType1, handlerForType1.Message);
+            Assert.AreEqual(1, handlerForType2.Count);
+            Assert.AreEqual(messageOfType2, handlerForType2.Message);
+        }
 
-			// When
-			var sendTask = messageExchange.SendAsync(MessageType1, message);
-			var sendResult = sendTask.Wait(MaxTimeout);
+        [Test]
+        public void ShouldDisposeBus()
+        {
+            // Given
+            var messageBus = new MessageBus();
 
-			// Then
-			Assert.IsTrue(sendResult);
-		}
+            // When
+            TestDelegate disposeBus = messageBus.Dispose;
 
+            // Then
+            Assert.DoesNotThrow(disposeBus);
+        }
 
-		[Test]
-		public void ShouldSendSyncWhenOneSubscribers()
-		{
-			// Given
-			var message = new object();
-			var messageBus = new MessageBus();
-			var messageExchange = messageBus.GetExchange(Exchange1);
+        [Test]
+        public void ShouldIgnoreHandlerErrors()
+        {
+            // Given
+            var message = new object();
+            var messageBus = new MessageBus();
+            IMessageExchange messageExchange = messageBus.GetExchange(Exchange1);
 
-			var handler1 = new MessageHandler();
-			messageExchange.Subscribe(MessageType1, handler1.SuccessHandle);
+            var handler1 = new MessageHandler();
+            messageExchange.Subscribe(MessageType1, handler1.ErrorHandle);
 
-			// When
-			messageExchange.Send(MessageType1, message);
+            var handler2 = new MessageHandler();
+            messageExchange.Subscribe(MessageType1, handler2.SuccessHandle);
 
-			// Then
-			Assert.AreEqual(1, handler1.Count);
-			Assert.AreEqual(message, handler1.Message);
-		}
+            // When
+            Task sendTask = messageExchange.SendAsync(MessageType1, message);
+            Assert.Throws<AggregateException>(() => sendTask.Wait(MaxTimeout));
 
-		[Test]
-		public void ShouldSendAsyncWhenOneSubscribers()
-		{
-			// Given
-			var message = new object();
-			var messageBus = new MessageBus();
-			var messageExchange = messageBus.GetExchange(Exchange1);
+            // Then
+            Assert.AreEqual(1, handler1.Count);
+            Assert.AreEqual(message, handler1.Message);
+            Assert.AreEqual(1, handler2.Count);
+            Assert.AreEqual(message, handler2.Message);
+        }
 
-			var handler1 = new MessageHandler();
-			messageExchange.Subscribe(MessageType1, handler1.SuccessHandle);
+        [Test]
+        public void ShouldIsolateExchanges()
+        {
+            // Given
+            var message1 = new object();
+            var message2 = new object();
+            var messageBus = new MessageBus();
+            IMessageExchange messageExchange1 = messageBus.GetExchange(Exchange1);
+            IMessageExchange messageExchange2 = messageBus.GetExchange(Exchange2);
 
-			// When
-			var sendTask = messageExchange.SendAsync(MessageType1, message);
-			var sendResult = sendTask.Wait(MaxTimeout);
+            var handler1OfExchange1 = new MessageHandler();
+            messageExchange1.Subscribe(MessageType1, handler1OfExchange1.SuccessHandle);
 
-			// Then
-			Assert.IsTrue(sendResult);
-			Assert.AreEqual(1, handler1.Count);
-			Assert.AreEqual(message, handler1.Message);
-		}
+            var handler1OfExchange2 = new MessageHandler();
+            messageExchange2.Subscribe(MessageType1, handler1OfExchange2.SuccessHandle);
 
+            // When
+            Task sendExchange1Task = messageExchange1.SendAsync(MessageType1, message1);
+            Task sendExchange2Task = messageExchange2.SendAsync(MessageType1, message2);
+            bool sendResult = Task.WaitAll(new[] {sendExchange1Task, sendExchange2Task}, MaxTimeout);
 
-		[Test]
-		public void ShouldSendSyncWhenMultipleSubscribers()
-		{
-			// Given
-			var message = new object();
-			var messageBus = new MessageBus();
-			var messageExchange = messageBus.GetExchange(Exchange1);
+            // Then
+            Assert.IsTrue(sendResult);
+            Assert.AreEqual(1, handler1OfExchange1.Count);
+            Assert.AreEqual(message1, handler1OfExchange1.Message);
+            Assert.AreEqual(1, handler1OfExchange2.Count);
+            Assert.AreEqual(message2, handler1OfExchange2.Message);
+        }
 
-			var handler1 = new MessageHandler();
-			messageExchange.Subscribe(MessageType1, handler1.SuccessHandle);
+        [Test]
+        public void ShouldSendAsyncWhenMultipleSubscribers()
+        {
+            // Given
+            var message = new object();
+            var messageBus = new MessageBus();
+            IMessageExchange messageExchange = messageBus.GetExchange(Exchange1);
 
-			var handler2 = new MessageHandler();
-			messageExchange.Subscribe(MessageType1, handler2.SuccessHandle);
+            var handler1 = new MessageHandler();
+            messageExchange.Subscribe(MessageType1, handler1.SuccessHandle);
 
-			var handler3 = new MessageHandler();
-			messageExchange.Subscribe(MessageType1, handler3.SuccessHandle);
+            var handler2 = new MessageHandler();
+            messageExchange.Subscribe(MessageType1, handler2.SuccessHandle);
 
-			// When
-			messageExchange.Send(MessageType1, message);
+            var handler3 = new MessageHandler();
+            messageExchange.Subscribe(MessageType1, handler3.SuccessHandle);
 
-			// Then
-			Assert.AreEqual(1, handler1.Count);
-			Assert.AreEqual(message, handler1.Message);
-			Assert.AreEqual(1, handler2.Count);
-			Assert.AreEqual(message, handler2.Message);
-			Assert.AreEqual(1, handler3.Count);
-			Assert.AreEqual(message, handler3.Message);
-		}
+            // When
+            Task sendTask = messageExchange.SendAsync(MessageType1, message);
+            bool sendResult = sendTask.Wait(MaxTimeout);
 
-		[Test]
-		public void ShouldSendAsyncWhenMultipleSubscribers()
-		{
-			// Given
-			var message = new object();
-			var messageBus = new MessageBus();
-			var messageExchange = messageBus.GetExchange(Exchange1);
+            // Then
+            Assert.IsTrue(sendResult);
+            Assert.AreEqual(1, handler1.Count);
+            Assert.AreEqual(message, handler1.Message);
+            Assert.AreEqual(1, handler2.Count);
+            Assert.AreEqual(message, handler2.Message);
+            Assert.AreEqual(1, handler3.Count);
+            Assert.AreEqual(message, handler3.Message);
+        }
 
-			var handler1 = new MessageHandler();
-			messageExchange.Subscribe(MessageType1, handler1.SuccessHandle);
+        [Test]
+        public void ShouldSendAsyncWhenNoSubscribers()
+        {
+            // Given
+            var message = new object();
+            var messageBus = new MessageBus();
+            IMessageExchange messageExchange = messageBus.GetExchange(Exchange1);
 
-			var handler2 = new MessageHandler();
-			messageExchange.Subscribe(MessageType1, handler2.SuccessHandle);
+            // When
+            Task sendTask = messageExchange.SendAsync(MessageType1, message);
+            bool sendResult = sendTask.Wait(MaxTimeout);
 
-			var handler3 = new MessageHandler();
-			messageExchange.Subscribe(MessageType1, handler3.SuccessHandle);
+            // Then
+            Assert.IsTrue(sendResult);
+        }
 
-			// When
-			var sendTask = messageExchange.SendAsync(MessageType1, message);
-			var sendResult = sendTask.Wait(MaxTimeout);
+        [Test]
+        public void ShouldSendAsyncWhenOneSubscribers()
+        {
+            // Given
+            var message = new object();
+            var messageBus = new MessageBus();
+            IMessageExchange messageExchange = messageBus.GetExchange(Exchange1);
 
-			// Then
-			Assert.IsTrue(sendResult);
-			Assert.AreEqual(1, handler1.Count);
-			Assert.AreEqual(message, handler1.Message);
-			Assert.AreEqual(1, handler2.Count);
-			Assert.AreEqual(message, handler2.Message);
-			Assert.AreEqual(1, handler3.Count);
-			Assert.AreEqual(message, handler3.Message);
-		}
+            var handler1 = new MessageHandler();
+            messageExchange.Subscribe(MessageType1, handler1.SuccessHandle);
 
+            // When
+            Task sendTask = messageExchange.SendAsync(MessageType1, message);
+            bool sendResult = sendTask.Wait(MaxTimeout);
 
-		[Test]
-		public void ShouldDeliverMessageToValidSubscribers()
-		{
-			// Given
+            // Then
+            Assert.IsTrue(sendResult);
+            Assert.AreEqual(1, handler1.Count);
+            Assert.AreEqual(message, handler1.Message);
+        }
 
-			var messageBus = new MessageBus();
-			var messageExchange = messageBus.GetExchange(Exchange1);
+        [Test]
+        public void ShouldSendSync()
+        {
+            // Given
+            var messageBus = new MessageBus();
+            IMessageExchange messageExchange = messageBus.GetExchange(Exchange1);
+            var completeHandle = new CountdownEvent(3);
 
-			var messageOfType1 = new object();
-			var messageOfType2 = new object();
+            messageExchange.Subscribe(MessageType1, m =>
+                {
+                    Task.Delay(500);
+                    completeHandle.Signal();
+                });
+            messageExchange.Subscribe(MessageType1, m =>
+                {
+                    Task.Delay(500);
+                    completeHandle.Signal();
+                });
+            messageExchange.Subscribe(MessageType1, m =>
+                {
+                    Task.Delay(500);
+                    completeHandle.Signal();
+                });
 
-			var handlerForType1 = new MessageHandler();
-			messageExchange.Subscribe(MessageType1, handlerForType1.SuccessHandle);
+            // When
+            messageExchange.Send(MessageType1, new object());
+            bool isComplete = completeHandle.Wait(0);
 
-			var handlerForType2 = new MessageHandler();
-			messageExchange.Subscribe(MessageType2, handlerForType2.SuccessHandle);
+            // Then
+            Assert.IsTrue(isComplete);
+        }
 
-			// When
-			var sendMessageOfType1Task = messageExchange.SendAsync(MessageType1, messageOfType1);
-			var sendMessageOfType2Task = messageExchange.SendAsync(MessageType2, messageOfType2);
-			var sendMessageOfType1Result = sendMessageOfType1Task.Wait(MaxTimeout);
-			var sendMessageOfType2Result = sendMessageOfType2Task.Wait(MaxTimeout);
+        [Test]
+        public void ShouldSendSyncWhenMultipleSubscribers()
+        {
+            // Given
+            var message = new object();
+            var messageBus = new MessageBus();
+            IMessageExchange messageExchange = messageBus.GetExchange(Exchange1);
 
-			// Then
-			Assert.IsTrue(sendMessageOfType1Result);
-			Assert.IsTrue(sendMessageOfType2Result);
-			Assert.AreEqual(1, handlerForType1.Count);
-			Assert.AreEqual(messageOfType1, handlerForType1.Message);
-			Assert.AreEqual(1, handlerForType2.Count);
-			Assert.AreEqual(messageOfType2, handlerForType2.Message);
-		}
+            var handler1 = new MessageHandler();
+            messageExchange.Subscribe(MessageType1, handler1.SuccessHandle);
 
-		[Test]
-		public void ShouldIgnoreHandlerErrors()
-		{
-			// Given
-			var message = new object();
-			var messageBus = new MessageBus();
-			var messageExchange = messageBus.GetExchange(Exchange1);
+            var handler2 = new MessageHandler();
+            messageExchange.Subscribe(MessageType1, handler2.SuccessHandle);
 
-			var handler1 = new MessageHandler();
-			messageExchange.Subscribe(MessageType1, handler1.ErrorHandle);
+            var handler3 = new MessageHandler();
+            messageExchange.Subscribe(MessageType1, handler3.SuccessHandle);
 
-			var handler2 = new MessageHandler();
-			messageExchange.Subscribe(MessageType1, handler2.SuccessHandle);
+            // When
+            messageExchange.Send(MessageType1, message);
 
-			// When
-			var sendTask = messageExchange.SendAsync(MessageType1, message);
-			Assert.Throws<AggregateException>(() => sendTask.Wait(MaxTimeout));
+            // Then
+            Assert.AreEqual(1, handler1.Count);
+            Assert.AreEqual(message, handler1.Message);
+            Assert.AreEqual(1, handler2.Count);
+            Assert.AreEqual(message, handler2.Message);
+            Assert.AreEqual(1, handler3.Count);
+            Assert.AreEqual(message, handler3.Message);
+        }
 
-			// Then
-			Assert.AreEqual(1, handler1.Count);
-			Assert.AreEqual(message, handler1.Message);
-			Assert.AreEqual(1, handler2.Count);
-			Assert.AreEqual(message, handler2.Message);
-		}
+        [Test]
+        public void ShouldSendSyncWhenNoSubscribers()
+        {
+            // Given
+            var message = new object();
+            var messageBus = new MessageBus();
+            IMessageExchange messageExchange = messageBus.GetExchange(Exchange1);
 
-		[Test]
-		public void ShouldDisposeBus()
-		{
-			// Given
-			var messageBus = new MessageBus();
+            // When
+            messageExchange.Send(MessageType1, message);
+        }
 
-			// When
-			TestDelegate disposeBus = messageBus.Dispose;
+        [Test]
+        public void ShouldSendSyncWhenOneSubscribers()
+        {
+            // Given
+            var message = new object();
+            var messageBus = new MessageBus();
+            IMessageExchange messageExchange = messageBus.GetExchange(Exchange1);
 
-			// Then
-			Assert.DoesNotThrow(disposeBus);
-		}
+            var handler1 = new MessageHandler();
+            messageExchange.Subscribe(MessageType1, handler1.SuccessHandle);
 
-		[Test]
-		public void ShouldIsolateExchanges()
-		{
-			// Given
-			var message1 = new object();
-			var message2 = new object();
-			var messageBus = new MessageBus();
-			var messageExchange1 = messageBus.GetExchange(Exchange1);
-			var messageExchange2 = messageBus.GetExchange(Exchange2);
+            // When
+            messageExchange.Send(MessageType1, message);
 
-			var handler1OfExchange1 = new MessageHandler();
-			messageExchange1.Subscribe(MessageType1, handler1OfExchange1.SuccessHandle);
-
-			var handler1OfExchange2 = new MessageHandler();
-			messageExchange2.Subscribe(MessageType1, handler1OfExchange2.SuccessHandle);
-
-			// When
-			var sendExchange1Task = messageExchange1.SendAsync(MessageType1, message1);
-			var sendExchange2Task = messageExchange2.SendAsync(MessageType1, message2);
-			var sendResult = Task.WaitAll(new[] { sendExchange1Task, sendExchange2Task }, MaxTimeout);
-
-			// Then
-			Assert.IsTrue(sendResult);
-			Assert.AreEqual(1, handler1OfExchange1.Count);
-			Assert.AreEqual(message1, handler1OfExchange1.Message);
-			Assert.AreEqual(1, handler1OfExchange2.Count);
-			Assert.AreEqual(message2, handler1OfExchange2.Message);
-		}
-
-
-		class MessageHandler
-		{
-			public int Count { get; private set; }
-			public object Message { get; private set; }
-
-			public void SuccessHandle(dynamic message)
-			{
-				Count++;
-				Message = message;
-			}
-
-			public void ErrorHandle(dynamic message)
-			{
-				Count++;
-				Message = message;
-				throw new Exception();
-			}
-		}
-	}
+            // Then
+            Assert.AreEqual(1, handler1.Count);
+            Assert.AreEqual(message, handler1.Message);
+        }
+    }
 }

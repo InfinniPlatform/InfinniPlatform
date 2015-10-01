@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Api.Security;
 using InfinniPlatform.Authentication.Properties;
+using InfinniPlatform.Sdk.ContextComponents;
 
 using Microsoft.AspNet.Identity;
 
@@ -30,7 +31,7 @@ namespace InfinniPlatform.Authentication.Modules
 		}
 
 
-		public ApplicationUser GetCurrentUser()
+		public object GetCurrentUser()
 		{
 			return InvokeUserManager((m, userId) => m.FindByIdAsync(userId));
 		}

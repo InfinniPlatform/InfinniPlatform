@@ -5,7 +5,7 @@ namespace InfinniPlatform.Api.SelfDocumentation
     public interface IDocumentationFormatter
     {
         /// <summary>
-        /// Завершить форматирование целостного документа
+        ///     Завершить форматирование целостного документа
         /// </summary>
         /// <param name="configuration">Имя конфигурации</param>
         /// <param name="content">Содержимое, которое необходимо оформить в виде документа</param>
@@ -13,7 +13,7 @@ namespace InfinniPlatform.Api.SelfDocumentation
         string CompleteDocumentFormatting(string configuration, string content);
 
         /// <summary>
-        /// Отформатировать серию запросов, объединенных общим заголовком
+        ///     Отформатировать серию запросов, объединенных общим заголовком
         /// </summary>
         /// <param name="header">Заголовок для блока справочной информации</param>
         /// <param name="info">Непосредственно запросы для форматирования</param>

@@ -10,12 +10,12 @@ namespace InfinniPlatform.Api.Metadata
         public const string HomePage = "HomePage";
         public const string Menu = "Menu";
 
-	    public static IEnumerable<string> GetViewTypes()
-	    {
-	        return new[]
-	        {
-	            ListView, EditView, SelectView, HomePage, Menu
-	        };
-	    } 
+        public static IEnumerable<string> GetViewTypes()
+        {
+            return new[]
+            {
+                ListView, EditView, SelectView, HomePage, Menu
+            };
+        }
     }
 }

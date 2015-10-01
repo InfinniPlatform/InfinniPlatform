@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-
 using DevExpress.Xpf.Bars;
 using DevExpress.Xpf.Mvvm;
-
 using InfinniPlatform.UserInterface.ViewBuilders.Actions;
 using InfinniPlatform.UserInterface.ViewBuilders.Elements;
 using InfinniPlatform.UserInterface.ViewBuilders.Images;
@@ -11,152 +9,144 @@ using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.ActionElements.ToolBar
 {
-	/// <summary>
-	/// Элемент панели инструментов в виде кнопки со всплывающим окном.
-	/// </summary>
-	public sealed class ToolBarPopupButtonItem : ToolBarItem<BarSubItem>
-	{
-		public ToolBarPopupButtonItem(View view)
-			: base(view)
-		{
-			_items = new ToolBarItemCollection(Control);
+    /// <summary>
+    ///     Элемент панели инструментов в виде кнопки со всплывающим окном.
+    /// </summary>
+    public sealed class ToolBarPopupButtonItem : ToolBarItem<BarSubItem>
+    {
+        // Action
 
-			Control.Command = new DelegateCommand(OnClickToolBarButton);
-		}
+        private BaseAction _action;
+        // Image
 
-		private void OnClickToolBarButton()
-		{
-			if (Control.Links != null && Control.Links.Count > 0)
-			{
-				var link = Control.Links[0] as BarSubItemLink;
+        private string _image;
+        // Items
 
-				if (link != null)
-				{
-					var linkControl = link.LinkControl as BarSubItemLinkControl;
+        private readonly ToolBarItemCollection _items;
 
-					if (linkControl != null)
-					{
-						linkControl.ShowPopup();
-					}
-				}
-			}
+        public ToolBarPopupButtonItem(View view)
+            : base(view)
+        {
+            _items = new ToolBarItemCollection(Control);
 
-			this.InvokeScript(OnClick);
+            Control.Command = new DelegateCommand(OnClickToolBarButton);
+        }
 
-			var action = GetAction();
+        // OnClick
 
-			if (action != null)
-			{
-				action.Execute();
-			}
-		}
+        /// <summary>
+        ///     Возвращает или устанавливает обработчик события нажатия на кнопку.
+        /// </summary>
+        public ScriptDelegate OnClick { get; set; }
 
+        private void OnClickToolBarButton()
+        {
+            if (Control.Links != null && Control.Links.Count > 0)
+            {
+                var link = Control.Links[0] as BarSubItemLink;
 
-		// Image
+                if (link != null)
+                {
+                    var linkControl = link.LinkControl as BarSubItemLinkControl;
 
-		private string _image;
+                    if (linkControl != null)
+                    {
+                        linkControl.ShowPopup();
+                    }
+                }
+            }
 
-		/// <summary>
-		/// Возвращает изображение кнопки.
-		/// </summary>
-		public string GetImage()
-		{
-			return _image;
-		}
+            this.InvokeScript(OnClick);
 
-		/// <summary>
-		/// Устанавливает изображение кнопки.
-		/// </summary>
-		public void SetImage(string value)
-		{
-			_image = value;
+            var action = GetAction();
 
-			Control.Glyph = ImageRepository.GetImage(value);
-		}
+            if (action != null)
+            {
+                action.Execute();
+            }
+        }
 
+        /// <summary>
+        ///     Возвращает изображение кнопки.
+        /// </summary>
+        public string GetImage()
+        {
+            return _image;
+        }
 
-		// Action
+        /// <summary>
+        ///     Устанавливает изображение кнопки.
+        /// </summary>
+        public void SetImage(string value)
+        {
+            _image = value;
 
-		private BaseAction _action;
+            Control.Glyph = ImageRepository.GetImage(value);
+        }
 
-		/// <summary>
-		/// Возвращает действие при нажатии на кнопку.
-		/// </summary>
-		public BaseAction GetAction()
-		{
-			return _action;
-		}
+        /// <summary>
+        ///     Возвращает действие при нажатии на кнопку.
+        /// </summary>
+        public BaseAction GetAction()
+        {
+            return _action;
+        }
 
-		/// <summary>
-		/// Устанавливает действие при нажатии на кнопку.
-		/// </summary>
-		public void SetAction(BaseAction value)
-		{
-			_action = value;
-		}
+        /// <summary>
+        ///     Устанавливает действие при нажатии на кнопку.
+        /// </summary>
+        public void SetAction(BaseAction value)
+        {
+            _action = value;
+        }
 
+        /// <summary>
+        ///     Добавляет элемент в список.
+        /// </summary>
+        public void AddItem(IToolBarItem item)
+        {
+            _items.AddItem(item);
+        }
 
-		// OnClick
+        /// <summary>
+        ///     Удаляет элемент из списка.
+        /// </summary>
+        public void RemoveItem(IToolBarItem item)
+        {
+            _items.RemoveItem(item);
+        }
 
-		/// <summary>
-		/// Возвращает или устанавливает обработчик события нажатия на кнопку.
-		/// </summary>
-		public ScriptDelegate OnClick { get; set; }
+        /// <summary>
+        ///     Возвращает элемент по имени.
+        /// </summary>
+        public IToolBarItem GetItem(string name)
+        {
+            return _items.GetItem(name);
+        }
 
+        /// <summary>
+        ///     Возвращает список элементов.
+        /// </summary>
+        public IEnumerable<IToolBarItem> GetItems()
+        {
+            return _items.GetItems();
+        }
 
-		// Items
+        // Click
 
-		private readonly ToolBarItemCollection _items;
+        /// <summary>
+        ///     Осуществляет программное нажатие на кнопку.
+        /// </summary>
+        public void Click()
+        {
+            Control.PerformClick();
+        }
 
-		/// <summary>
-		/// Добавляет элемент в список.
-		/// </summary>
-		public void AddItem(IToolBarItem item)
-		{
-			_items.AddItem(item);
-		}
+        // Elements
 
-		/// <summary>
-		/// Удаляет элемент из списка.
-		/// </summary>
-		public void RemoveItem(IToolBarItem item)
-		{
-			_items.RemoveItem(item);
-		}
-
-		/// <summary>
-		/// Возвращает элемент по имени.
-		/// </summary>
-		public IToolBarItem GetItem(string name)
-		{
-			return _items.GetItem(name);
-		}
-
-		/// <summary>
-		/// Возвращает список элементов.
-		/// </summary>
-		public IEnumerable<IToolBarItem> GetItems()
-		{
-			return _items.GetItems();
-		}
-
-
-		// Click
-
-		/// <summary>
-		/// Осуществляет программное нажатие на кнопку.
-		/// </summary>
-		public void Click()
-		{
-			Control.PerformClick();
-		}
-
-
-		// Elements
-
-		public override IEnumerable<IElement> GetChildElements()
-		{
-			return GetItems();
-		}
-	}
+        public override IEnumerable<IElement> GetChildElements()
+        {
+            return GetItems();
+        }
+    }
 }

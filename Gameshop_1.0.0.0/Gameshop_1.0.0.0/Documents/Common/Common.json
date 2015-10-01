@@ -1,0 +1,22 @@
+{
+  "Id": "3a9c0b4e-f760-442e-9107-950c33f63e2d",
+  "Secured": true,
+  "Name": "Common",
+  "Caption": "Common options",
+  "Description": "Common options",
+  "Versioning": 2,
+  "Version": "1.0.0.0",
+  "MetadataIndex": "Common",
+  "Services": [],
+  "Processes": [],
+  "Scenarios": [],
+  "Generators": [],
+  "Views": [],
+  "PrintViews": [],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "DocumentStatuses": [],
+  "ParentId": "f17a31e9-3872-419e-882f-b9cdc3a29e76",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "documentmetadata"
+}

@@ -18,17 +18,17 @@
 
 	<Target Name="TransformOnBuild" AfterTargets="BeforeBuild">
 
-		<Error Text="Failed to find TextTransform.exe tool at '$(_TransformExe)."
+		<Warning Text="Failed to find TextTransform.exe tool at '$(_TransformExe)."
                 Condition="!Exists('$(_TransformExe)')"/>
 
 		<ItemGroup>
 			<_TextTransform Include="@(None)"
-                            Condition="'%(None.Generator)' == 'TextTemplatingFileGenerator'" />
+                            Condition="'%(None.Generator)' == 'TextTemplatingFileGenerator' And Exists('$(_TransformExe)')" />
 		</ItemGroup>
 
 		<!-- Perform task batching for each file -->
 		<Exec Command="&quot;$(_TransformExe)&quot; &quot;%(_TextTransform.FullPath)&quot;"
-              Condition="'%(_TextTransform.Identity)' != ''"/>
+              Condition="'%(_TextTransform.Identity)' != '' And Exists('$(_TransformExe)')"/>
 
 	</Target>
 

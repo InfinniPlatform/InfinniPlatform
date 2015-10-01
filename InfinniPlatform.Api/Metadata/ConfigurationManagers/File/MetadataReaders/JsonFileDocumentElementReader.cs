@@ -46,13 +46,11 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.File.MetadataReader
             {
                 IEnumerable<dynamic> processes = _document.Processes;
                 return processes.FirstOrDefault(sc => sc.Name == metadataName);
-
             }
             if (_metadataType == MetadataType.Service)
             {
                 IEnumerable<dynamic> services = _document.Services;
                 return services.FirstOrDefault(sc => sc.Name == metadataName);
-
             }
             if (_metadataType == MetadataType.Generator)
             {

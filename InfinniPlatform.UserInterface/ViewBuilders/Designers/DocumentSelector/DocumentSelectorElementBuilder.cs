@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-
 using InfinniPlatform.UserInterface.Services.Metadata;
 using InfinniPlatform.UserInterface.ViewBuilders.Data;
 using InfinniPlatform.UserInterface.ViewBuilders.Elements;
@@ -7,43 +6,54 @@ using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.DocumentSelector
 {
-	sealed class DocumentSelectorElementBuilder : IObjectBuilder
-	{
-		public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
-		{
-			var element = new DocumentSelectorElement(parent);
-			element.ApplyElementMeatadata((object)metadata);
-			element.SetDocumentsFunc(GetDocuments);
+    internal sealed class DocumentSelectorElementBuilder : IObjectBuilder
+    {
+        private readonly string _server;
+        private readonly int _port;
+        private readonly string _routeVersion;
 
-			// Привязка к источнику данных
+        public DocumentSelectorElementBuilder(string server, int port, string routeVersion)
+        {
+            _server = server;
+            _port = port;
+            _routeVersion = routeVersion;
+        }
 
-			IElementDataBinding configIdBinding = context.Build(parent, metadata.ConfigId);
+        public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
+        {
+            var element = new DocumentSelectorElement(parent);
+            element.ApplyElementMeatadata((object) metadata);
+            element.SetDocumentsFunc((version, configId) => GetDocuments(version, configId));
 
-			if (configIdBinding != null)
-			{
-				configIdBinding.OnPropertyValueChanged += (c, a) => element.SetConfigId(a.Value);
-			}
+            // Привязка к источнику данных
 
-			IElementDataBinding valueBinding = context.Build(parent, metadata.Value);
+            IElementDataBinding configIdBinding = context.Build(parent, metadata.ConfigId);
 
-			if (valueBinding != null)
-			{
-				valueBinding.OnPropertyValueChanged += (c, a) => element.SetValue(a.Value);
-				element.OnValueChanged += (c, a) => valueBinding.SetPropertyValue(a.Value);
-			}
+            if (configIdBinding != null)
+            {
+                configIdBinding.OnPropertyValueChanged += (c, a) => element.SetConfigId(a.Value);
+            }
 
-			return element;
-		}
+            IElementDataBinding valueBinding = context.Build(parent, metadata.Value);
 
-		private static IEnumerable GetDocuments(string configId)
-		{
-			if (!string.IsNullOrWhiteSpace(configId))
-			{
-				var documentService = new DocumentMetadataService(configId);
-				return documentService.GetItems();
-			}
+            if (valueBinding != null)
+            {
+                valueBinding.OnPropertyValueChanged += (c, a) => element.SetValue(a.Value);
+                element.OnValueChanged += (c, a) => valueBinding.SetPropertyValue(a.Value);
+            }
 
-			return null;
-		}
-	}
+            return element;
+        }
+
+        private IEnumerable GetDocuments(string version, string configId)
+        {
+            if (!string.IsNullOrWhiteSpace(configId))
+            {
+                var documentService = new DocumentMetadataService(version, configId, _server, _port, _routeVersion);
+                return documentService.GetItems();
+            }
+
+            return null;
+        }
+    }
 }

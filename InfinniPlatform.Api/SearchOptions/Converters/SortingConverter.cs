@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.Dynamic;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Api.SearchOptions.Converters
 {
     /// <summary>
-    ///   Конвертер критериев сортировки
+    ///     Конвертер критериев сортировки
     /// </summary>
     public sealed class SortingConverter
     {
-        private Dictionary<string,SortOrder> _sortOrders = new Dictionary<string, SortOrder>()
+        private readonly Dictionary<string, SortOrder> _sortOrders = new Dictionary<string, SortOrder>
         {
-            {"ascending",SortOrder.Ascending},
-            {"descending",SortOrder.Descending}
-        }; 
+            {"ascending", SortOrder.Ascending},
+            {"descending", SortOrder.Descending}
+        };
 
         private dynamic ConstructCriteria(string criteria)
         {
@@ -42,14 +41,26 @@ namespace InfinniPlatform.Api.SearchOptions.Converters
         }
 
         /// <summary>
-        ///   Получить список объекто критериев сортировки из строки
+        ///     Получить список объекто критериев сортировки из строки
         /// </summary>
         /// <param name="sorting"></param>
         /// <returns></returns>
         public IEnumerable<dynamic> Convert(string sorting)
         {
-            var criteriaList = sorting.Split(new string[] { " and " }, StringSplitOptions.RemoveEmptyEntries);
+            var criteriaList = sorting.Split(new[] {" and "}, StringSplitOptions.RemoveEmptyEntries);
             return criteriaList.Select(c => ConstructCriteria(c.Trim())).ToList();
-        } 
+        }
+
+        public IEnumerable<dynamic> ConvertToInternal(Action<Sdk.SortingBuilder> sorting)
+        {
+            var sortingBuilder = new Sdk.SortingBuilder();
+            if (sorting != null)
+            {
+                sorting.Invoke(sortingBuilder);
+                var filterCriteriaStrings = sortingBuilder.GetSorting();
+                return filterCriteriaStrings.Select(c => ConstructCriteria(c.Trim())).ToList();
+            }
+            return null;
+        }
     }
 }

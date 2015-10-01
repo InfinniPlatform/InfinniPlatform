@@ -7,11 +7,11 @@
       instance-scope="single-instance"/>
     <component
       type = "InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.IndexQueryExecutor, InfinniPlatform.Index.ElasticSearch"
-      service="InfinniPlatform.Api.Index.IIndexQueryExecutor, InfinniPlatform.Api"
+      service="InfinniPlatform.Sdk.Environment.Index.IIndexQueryExecutor, InfinniPlatform.Sdk"
       instance-scope="per-dependency"/>
     <component
       type = "InfinniPlatform.Index.ElasticSearch.Factories.ElasticFactory, InfinniPlatform.Index.ElasticSearch"
-      service="InfinniPlatform.Api.Index.IIndexFactory, InfinniPlatform.Api"
+      service="InfinniPlatform.Sdk.Environment.Index.IIndexFactory, InfinniPlatform.Sdk"
       instance-scope="single-instance"/>
     <component
       type = "InfinniPlatform.SystemConfig.Multitenancy.MultitenancyProvider, InfinniPlatform.SystemConfig"
@@ -31,12 +31,24 @@
       instance-scope="single-instance"/>
     <component
       type = "InfinniPlatform.Transactions.TransactionManager, InfinniPlatform.Core"
-      service="InfinniPlatform.Api.Transactions.ITransactionManager, InfinniPlatform.Api"
+      service="InfinniPlatform.Sdk.Environment.Transactions.ITransactionManager, InfinniPlatform.Sdk"
       instance-scope="single-instance"/>
+	<component
+		type = "InfinniPlatform.ContextComponents.SharedCacheComponent, InfinniPlatform.Core"
+		service="InfinniPlatform.Sdk.ContextComponents.ISharedCacheComponent, InfinniPlatform.Sdk"
+		instance-scope="single-instance"/>	  
+	<component
+		type = "InfinniPlatform.ContextComponents.CachedSecurityComponent, InfinniPlatform.Core"
+		service="InfinniPlatform.Sdk.ContextComponents.ISecurityComponent, InfinniPlatform.Sdk"
+		instance-scope="single-instance"/>	  	  
     <component
       type = "InfinniPlatform.BlobStorage.CassandraBlobStorageFactory, InfinniPlatform.BlobStorage"
       service="InfinniPlatform.Factories.IBlobStorageFactory, InfinniPlatform.Core"
       instance-scope="single-instance"/>
+    <component
+      type = "InfinniPlatform.Api.Versioning.VersionStrategy, InfinniPlatform.Api"
+      service="InfinniPlatform.Sdk.Contracts.IVersionStrategy, InfinniPlatform.Sdk"
+      instance-scope="single-instance"/>    
     <component
       type = "InfinniPlatform.Reporting.PrintView.FlowDocumentPrintViewBuilderFactory, InfinniPlatform.Reporting"
       service="InfinniPlatform.Factories.IPrintViewBuilderFactory, InfinniPlatform.Core"
@@ -47,7 +59,15 @@
       instance-scope="single-instance"/>
     <component
       type = "InfinniPlatform.Factories.GlobalContext, InfinniPlatform.Core"
-      service="InfinniPlatform.Api.Context.IGlobalContext, InfinniPlatform.Api"
+      service="InfinniPlatform.Sdk.Contracts.IGlobalContext, InfinniPlatform.Sdk"
+      instance-scope="per-dependency"/>
+    <component
+      type = "InfinniPlatform.ContextComponents.PlatformComponentsPack, InfinniPlatform.Core"
+      service="InfinniPlatform.Sdk.Contracts.IPlatformComponentsPack, InfinniPlatform.Sdk"
+      instance-scope="per-dependency"/>
+    <component
+      type = "InfinniPlatform.Sdk.Global.CustomServiceGlobalContext, InfinniPlatform.Sdk"
+      service="InfinniPlatform.Sdk.Global.ICustomServiceGlobalContext, InfinniPlatform.Sdk"
       instance-scope="per-dependency"/>
     <component
       type = "InfinniPlatform.Runtime.Factories.ScriptFactoryBuilder, InfinniPlatform.Runtime"
@@ -67,23 +87,19 @@
       instance-scope="single-instance"/>
     <component
       type = "InfinniPlatform.Metadata.Implementation.MetadataConfiguration.MetadataConfigurationProvider, InfinniPlatform.Metadata"
-      service="InfinniPlatform.Metadata.IMetadataConfigurationProvider, InfinniPlatform.Core"
+      service="InfinniPlatform.Sdk.ContextComponents.IMetadataConfigurationProvider, InfinniPlatform.Sdk"
       instance-scope="single-instance"/>
     <component
-      type = "InfinniPlatform.Factories.AggregateProvider, InfinniPlatform.Core"
-      service="InfinniPlatform.Factories.IAggregateProvider, InfinniPlatform.Core"
-      instance-scope="per-dependency"/>
-    <component
       type = "InfinniPlatform.Metadata.Implementation.MetadataConfiguration.ConfigurationObjectBuilder, InfinniPlatform.Metadata"
-      service="InfinniPlatform.Api.Metadata.IConfigurationObjectBuilder, InfinniPlatform.Api"
+      service="InfinniPlatform.Sdk.Environment.Metadata.IConfigurationObjectBuilder, InfinniPlatform.Sdk"
       instance-scope="single-instance"/>
     <component
       type = "InfinniPlatform.Metadata.Implementation.MetadataConfiguration.CrossConfigSearcher, InfinniPlatform.Metadata"
-      service="InfinniPlatform.Api.Factories.ICrossConfigSearcher, InfinniPlatform.Api"
+      service="InfinniPlatform.Sdk.Environment.ICrossConfigSearcher, InfinniPlatform.Sdk"
       instance-scope="single-instance"/>
     <component
       type = "InfinniPlatform.Metadata.Implementation.MetadataConfiguration.ScriptConfiguration, InfinniPlatform.Metadata"
-      service="InfinniPlatform.Api.Actions.IScriptConfiguration, InfinniPlatform.Api"
+      service="InfinniPlatform.Sdk.Environment.Scripts.IScriptConfiguration, InfinniPlatform.Sdk"
       instance-scope="per-dependency"/>
     <component
       type = "InfinniPlatform.Compression.GZipDataCompressor, InfinniPlatform.Core"

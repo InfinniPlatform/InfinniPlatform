@@ -4,71 +4,62 @@ using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Data.DataBindings
 {
-	/// <summary>
-	/// Описывает связь между элементом представления и произвольным объектом.
-	/// </summary>
-	public sealed class ObjectBinding : IElementDataBinding
-	{
-		public ObjectBinding(View view, object value)
-		{
-			_view = view;
-			_value = value;
-		}
+    /// <summary>
+    ///     Описывает связь между элементом представления и произвольным объектом.
+    /// </summary>
+    public sealed class ObjectBinding : IElementDataBinding
+    {
+        // OnPropertyValueChanged
 
+        private ScriptDelegate _onPropertyValueChanged;
+        // SetPropertyValue
 
-		// View
+        private object _value;
+        // View
 
-		private readonly View _view;
+        private readonly View _view;
 
-		public View GetView()
-		{
-			return _view;
-		}
+        public ObjectBinding(View view, object value)
+        {
+            _view = view;
+            _value = value;
+        }
 
+        public View GetView()
+        {
+            return _view;
+        }
 
-		// SetPropertyValue
+        public void SetPropertyValue(object value, bool force = false)
+        {
+            if (force || !Equals(_value, value))
+            {
+                _value = value;
 
-		private object _value;
+                RaiseOnPropertyValueChanged(force);
+            }
+        }
 
-		public void SetPropertyValue(object value, bool force = false)
-		{
-			if (force || !Equals(_value, value))
-			{
-				_value = value;
+        public ScriptDelegate OnPropertyValueChanged
+        {
+            get { return _onPropertyValueChanged; }
+            set
+            {
+                _onPropertyValueChanged = value;
 
-				RaiseOnPropertyValueChanged(force);
-			}
-		}
+                // Подписчик оповещается сразу, поскольку значение уже известно
 
+                RaiseOnPropertyValueChanged(false);
+            }
+        }
 
-		// OnPropertyValueChanged
-
-		private ScriptDelegate _onPropertyValueChanged;
-
-		public ScriptDelegate OnPropertyValueChanged
-		{
-			get
-			{
-				return _onPropertyValueChanged;
-			}
-			set
-			{
-				_onPropertyValueChanged = value;
-
-				// Подписчик оповещается сразу, поскольку значение уже известно
-
-				RaiseOnPropertyValueChanged(false);
-			}
-		}
-
-
-		private void RaiseOnPropertyValueChanged(bool force)
-		{
-			this.InvokeScript(OnPropertyValueChanged, args =>
-													  {
-														  args.Value = _value;
-														  args.Force = force;
-													  });
-		}
-	}
+        private void RaiseOnPropertyValueChanged(bool force)
+        {
+            this.InvokeScript(OnPropertyValueChanged, args =>
+            {
+                args.Value = _value;
+                args.Force = force;
+            });
+        }
+    }
 }

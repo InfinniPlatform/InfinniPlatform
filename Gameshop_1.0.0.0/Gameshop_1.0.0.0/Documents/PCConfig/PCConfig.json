@@ -1,0 +1,40 @@
+{
+  "Id": "fe981144-0591-4ffe-b5bc-1745dbc8b69b",
+  "Secured": true,
+  "Name": "PCConfig",
+  "Caption": "Конфигурация компьютера",
+  "Description": "",
+  "Versioning": 2,
+  "Version": "1.0.0.0",
+  "MetadataIndex": "PCConfig",
+  "Services": [],
+  "Processes": [],
+  "Scenarios": [],
+  "Generators": [],
+  "Views": [],
+  "PrintViews": [],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "DocumentStatuses": [],
+  "ParentId": "f17a31e9-3872-419e-882f-b9cdc3a29e76",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "documentmetadata",
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "Processor": {
+        "Caption": "Процессор",
+        "Type": "String"
+      },
+      "Memory": {
+        "Caption": "Оперативная память",
+        "Type": "String"
+      },
+      "Videocard": {
+        "Caption": "Видеокарта",
+        "Type": "String"
+      }
+    }
+  }
+}

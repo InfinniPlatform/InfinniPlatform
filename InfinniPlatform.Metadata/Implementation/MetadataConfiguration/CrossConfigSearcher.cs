@@ -1,7 +1,7 @@
-﻿using InfinniPlatform.Api.Factories;
+﻿using System.Collections.Generic;
 using InfinniPlatform.Api.Index;
-using InfinniPlatform.Factories;
-using System.Collections.Generic;
+using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 {
@@ -15,8 +15,8 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
         }
 
         /// <summary>
-        /// Выполнить запрос для поиска документа по определенным критериям 
-        /// по всем имеющимся конфигурациям
+        ///     Выполнить запрос для поиска документа по определенным критериям
+        ///     по всем имеющимся конфигурациям
         /// </summary>
         /// <param name="filterObject">Фильтр</param>
         /// <param name="pageNumber">Номер страницы</param>
@@ -26,7 +26,8 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
         /// <param name="configs">Наименования конфигураций, по которым будет производиться поиск</param>
         /// <param name="documents">Типы документов, по которым будет производиться поиск</param>
         /// <returns>Найденные документы</returns>
-        public dynamic GetDocuments(IEnumerable<object> filterObject, int pageNumber, int pageSize, string tenantId, IEnumerable<object> sorting, IEnumerable<string> configs = null, IEnumerable<string> documents = null)
+
+          public dynamic GetDocuments(IEnumerable<object> filterObject, int pageNumber, int pageSize, string tenantId, IEnumerable<object> sorting, IEnumerable<string> configs = null, IEnumerable<string> documents = null)
         {
             var elasticProvider = _indexFactory.BuildMultiIndexDocumentProvider(tenantId, configs, documents);
             return elasticProvider.GetDocument(filterObject, pageNumber, pageSize, sorting);

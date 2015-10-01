@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.Dynamic;
+﻿using System.Linq;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.DesignControls.Layout
@@ -55,18 +50,17 @@ namespace InfinniPlatform.DesignControls.Layout
             {
                 instance.Remove();
             }
-
         }
 
         private static bool NeedRemoveEntry(JToken entry)
         {
-            if (entry.GetType() == typeof(JProperty))
+            if (entry.GetType() == typeof (JProperty))
             {
-                return NeedRemoveEntry(((JProperty)entry).Value);
+                return NeedRemoveEntry(((JProperty) entry).Value);
             }
-            if (entry.GetType() == typeof(JObject))
+            if (entry.GetType() == typeof (JObject))
             {
-                var jobject = ((JObject)entry);
+                var jobject = ((JObject) entry);
                 if (!jobject.Properties().Any())
                 {
                     return true;
@@ -79,14 +73,12 @@ namespace InfinniPlatform.DesignControls.Layout
                     result = result && NeedRemoveEntry(property);
                 }
                 return result;
-
             }
-            if (entry.GetType() == typeof(JValue))
+            if (entry.GetType() == typeof (JValue))
             {
-                return ((JValue)entry).Value == null;
+                return ((JValue) entry).Value == null;
             }
             return false;
         }
-
     }
 }

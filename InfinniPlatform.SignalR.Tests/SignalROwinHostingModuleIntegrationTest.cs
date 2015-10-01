@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 
-using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Owin.Hosting;
-
+using InfinniPlatform.Sdk.Api;
 using Microsoft.AspNet.SignalR.Client;
 
 using NUnit.Framework;

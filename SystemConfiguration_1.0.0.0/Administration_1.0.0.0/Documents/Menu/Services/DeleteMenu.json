@@ -1,0 +1,38 @@
+{
+  "Id": "e552939e-3a1e-4342-a1f8-3022a9ec3205",
+  "ExtensionPoints": [
+    {
+      "TypeName": {
+        "Name": "Move",
+        "ContextType": 2,
+        "Caption": "Document move context"
+      },
+      "ScenarioId": "DeleteMenu"
+    }
+  ],
+  "Caption": "DeleteMenu",
+  "Type": {
+    "Name": "applyjson",
+    "WorkflowExtensionPoints": [
+      {
+        "Name": "FilterEvents",
+        "ContextType": 4,
+        "Caption": "Document filter events context"
+      },
+      {
+        "Name": "Move",
+        "ContextType": 2,
+        "Caption": "Document move context"
+      },
+      {
+        "Name": "GetResult",
+        "ContextType": 8,
+        "Caption": "Document move result context"
+      }
+    ]
+  },
+  "Name": "DeleteMenu",
+  "ParentId": "d2da06bc-80c7-40a9-b882-6276210eb229",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "servicemetadata"
+}

@@ -5,37 +5,37 @@ using InfinniPlatform.UserInterface.ViewBuilders.Views;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ValidationErrorsDesigner
 {
-	sealed class ValidationErrorDesignerElementBuilder : IObjectBuilder
-	{
-		public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
-		{
-			var editor = new ValidationWarningDesignerElement(parent);
-			editor.ApplyElementMeatadata((object)metadata);
+    internal sealed class ValidationErrorDesignerElementBuilder : IObjectBuilder
+    {
+        public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
+        {
+            var editor = new ValidationWarningDesignerElement(parent);
+            editor.ApplyElementMeatadata((object) metadata);
 
-			// Привязка к источнику данных
+            // Привязка к источнику данных
 
-			IElementDataBinding valueBinding = context.Build(parent, metadata.Value);
+            IElementDataBinding valueBinding = context.Build(parent, metadata.Value);
 
-			if (valueBinding != null)
-			{
-				valueBinding.OnPropertyValueChanged += (c, a) => editor.SetValue(a.Value);
-				editor.OnValueChanged += (c, a) => valueBinding.SetPropertyValue(a.Value);
+            if (valueBinding != null)
+            {
+                valueBinding.OnPropertyValueChanged += (c, a) => editor.SetValue(a.Value);
+                editor.OnValueChanged += (c, a) => valueBinding.SetPropertyValue(a.Value);
 
-				var sourceValueBinding = valueBinding as ISourceDataBinding;
+                var sourceValueBinding = valueBinding as ISourceDataBinding;
 
-				if (sourceValueBinding != null)
-				{
-					// Передача контекста редактору
+                if (sourceValueBinding != null)
+                {
+                    // Передача контекста редактору
 
-					var dataSourceName = sourceValueBinding.GetDataSource();
-					var dataSource = parent.GetDataSource(dataSourceName);
+                    var dataSourceName = sourceValueBinding.GetDataSource();
+                    var dataSource = parent.GetDataSource(dataSourceName);
 
-					editor.SetConfigId(dataSource.GetConfigId);
-					editor.SetDocumentId(dataSource.GetDocumentId);
-				}
-			}
+                    editor.SetConfigId(dataSource.GetConfigId);
+                    editor.SetDocumentId(dataSource.GetDocumentId);
+                }
+            }
 
-			return editor;
-		}
-	}
+            return editor;
+        }
+    }
 }

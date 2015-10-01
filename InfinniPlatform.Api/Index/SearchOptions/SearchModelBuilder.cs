@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using InfinniPlatform.Api.SearchOptions;
+using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Api.Index.SearchOptions
 {
     public class SearchModelBuilder
     {
         private readonly IFilterBuilder _filterFactory;
-
         private readonly IList<Action<SearchModel>> _modelActions = new List<Action<SearchModel>>();
 
         public SearchModelBuilder(IFilterBuilder filterFactory)
@@ -56,7 +56,6 @@ namespace InfinniPlatform.Api.Index.SearchOptions
             _modelActions.Add(model => model.SetSkip(skip));
             return this;
         }
-
 
         public SearchModel BuildQuery()
         {

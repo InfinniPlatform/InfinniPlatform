@@ -1,21 +1,21 @@
-﻿using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Metadata;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using InfinniPlatform.Api.Metadata;
+using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.SystemConfig.Configurator
 {
-	public sealed class ActionUnitRevertMigration
-	{
+    public sealed class ActionUnitRevertMigration
+    {
         // Пока имя сборки с классами миграций прописано жестко.
         // Возможно, необходимо вынести это в настройки
         private const string AssemblyName = "InfinniPlatform.MigrationsAndVerifications.dll";
 
         public void Action(IApplyContext target)
-		{
-		    string migrationName = target.Item.MigrationName.ToString();
+        {
+            string migrationName = target.Item.MigrationName.ToString();
             string configurationName = target.Item.ConfigurationName.ToString();
 
             // Подготовка параметров миграции
@@ -27,16 +27,16 @@ namespace InfinniPlatform.SystemConfig.Configurator
                     parameters.Add(parameter);
                 }
             }
-            
-            var assembly = Assembly.Load(
-                new AssemblyName
-                {
-                    CodeBase = AssemblyName
-                });
 
-            var migrationClass = assembly.GetTypes().Where(
-                t => typeof(IConfigurationMigration).IsAssignableFrom(t))
-                .FirstOrDefault(t => t.Name == migrationName);
+            Assembly assembly = Assembly.Load(
+                new AssemblyName
+                    {
+                        CodeBase = AssemblyName
+                    });
+
+            Type migrationClass = assembly.GetTypes().Where(
+                t => typeof (IConfigurationMigration).IsAssignableFrom(t))
+                                          .FirstOrDefault(t => t.Name == migrationName);
 
             if (migrationClass == null)
             {
@@ -46,13 +46,13 @@ namespace InfinniPlatform.SystemConfig.Configurator
             {
                 var migration = (IConfigurationMigration) Activator.CreateInstance(migrationClass);
 
-                migration.AssignActiveConfiguration(configurationName, target.Context);
+                migration.AssignActiveConfiguration(target.Context.GetVersion(configurationName, target.UserName), configurationName, target.Context);
 
                 string message;
 
                 migration.Down(out message, parameters.ToArray());
                 target.Result = message;
             }
-		}
-	}
+        }
+    }
 }

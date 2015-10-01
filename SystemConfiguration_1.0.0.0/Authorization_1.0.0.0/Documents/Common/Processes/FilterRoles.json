@@ -1,0 +1,20 @@
+{
+  "Id": "eb139430-0fe5-4fc9-83d8-66c80a4b2bd2",
+  "SettingsType": "Custom",
+  "Transitions": [
+    {
+      "Id": "da106079-ae53-41ce-aa47-1b52fc74abc3",
+      "Name": "FilterRoles",
+      "ActionPoint": {
+        "TypeName": "Action",
+        "ScenarioId": "79f6bfe5-9bbd-4e51-a449-e9aa02eb228e"
+      }
+    }
+  ],
+  "Type": 2,
+  "Caption": "FilterRoles",
+  "Name": "FilterRoles",
+  "ParentId": "0c23fc63-c756-4822-adb1-0a1deb00524f",
+  "__ConfigId": "systemconfig",
+  "__DocumentId": "processmetadata"
+}

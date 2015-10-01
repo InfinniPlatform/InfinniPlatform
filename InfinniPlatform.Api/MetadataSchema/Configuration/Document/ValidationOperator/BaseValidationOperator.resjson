@@ -1,6 +1,6 @@
 ﻿{
-  "id": "BaseValidationOperator",
-  "description": "Базовый тип оператора для проверки объекта",
-  "type": "object",
-  "properties": {}
+	"id": "BaseValidationOperator",
+	"description": "Базовый тип оператора для проверки объекта",
+	"type": "object",
+	"properties": {}
 }

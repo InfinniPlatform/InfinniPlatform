@@ -13,29 +13,25 @@ namespace InfinniPlatform.FlowDocument.Tests.Converters.Html
         {
             return new HtmlBuilderContext()
 
-            //Blocks
+                //Blocks
+                .Register<PrintElementLine, PrintElementLineHtmlBuilder>()
+                .Register<PrintElementList, PrintElementListHtmlBuilder>()
+                .Register<PrintElementPageBreak, PrintElementPageBreakHtmlBuilder>()
+                .Register<PrintElementParagraph, PrintElementParagraphHtmlBuilder>()
+                .Register<PrintElementSection, PrintElementSectionHtmlBuilder>()
+                .Register<PrintElementTable, PrintElementTableHtmlBuilder>()
 
-            .Register<PrintElementLine,         PrintElementLineHtmlBuilder>()
-            .Register<PrintElementList,         PrintElementListHtmlBuilder>()
-            .Register<PrintElementPageBreak,    PrintElementPageBreakHtmlBuilder>()
-            .Register<PrintElementParagraph,    PrintElementParagraphHtmlBuilder>()
-            .Register<PrintElementSection,      PrintElementSectionHtmlBuilder>()
-            .Register<PrintElementTable,        PrintElementTableHtmlBuilder>()
-
-            //Inlines
-
-            .Register<PrintElementBold,         PrintElementBoldHtmlBuilder>()
-            .Register<PrintElementHyperlink,    PrintElementHyperlinkHtmlBuilder>()
-            .Register<PrintElementImage,        PrintElementImageHtmlBuilder>()
-            .Register<PrintElementItalic,       PrintElementItalicHtmlBuilder>()
-            .Register<PrintElementLineBreak,    PrintElementLineBreakHtmlBuilder>()
-            .Register<PrintElementRun,          PrintElementRunHtmlBuilder>()
-            .Register<PrintElementSpan,         PrintElementSpanHtmlBuilder>()
-            .Register<PrintElementUnderline,    PrintElementUnderlineHtmlBuilder>()
-
-            .Register<PrintViewDocument,        PrintViewDocumentHtmlBuilder>()
-
-            ;
+                //Inlines
+                .Register<PrintElementBold, PrintElementBoldHtmlBuilder>()
+                .Register<PrintElementHyperlink, PrintElementHyperlinkHtmlBuilder>()
+                .Register<PrintElementImage, PrintElementImageHtmlBuilder>()
+                .Register<PrintElementItalic, PrintElementItalicHtmlBuilder>()
+                .Register<PrintElementLineBreak, PrintElementLineBreakHtmlBuilder>()
+                .Register<PrintElementRun, PrintElementRunHtmlBuilder>()
+                .Register<PrintElementSpan, PrintElementSpanHtmlBuilder>()
+                .Register<PrintElementUnderline, PrintElementUnderlineHtmlBuilder>()
+                .Register<PrintViewDocument, PrintViewDocumentHtmlBuilder>()
+                ;
         }
     }
 }

@@ -2,15 +2,15 @@
 
 namespace InfinniPlatform.ReportDesigner.Views.Events
 {
-	sealed class ChangedEventArgs<T> : EventArgs
-	{
-		public ChangedEventArgs(T oldValue, T newValue)
-		{
-			OldValue = oldValue;
-			NewValue = newValue;
-		}
+    internal sealed class ChangedEventArgs<T> : EventArgs
+    {
+        public readonly T NewValue;
+        public readonly T OldValue;
 
-		public readonly T OldValue;
-		public readonly T NewValue;
-	}
+        public ChangedEventArgs(T oldValue, T newValue)
+        {
+            OldValue = oldValue;
+            NewValue = newValue;
+        }
+    }
 }

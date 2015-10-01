@@ -4,14 +4,14 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.Builders
 {
     public class TestPerson
     {
-		//[ElasticProperty(AddSortField = true, Type = FieldIndexOption.not_analyzed)]
+        //[ElasticProperty(AddSortField = true, Type = FieldIndexOption.not_analyzed)]
         public string Id { get; set; }
 
         //[ElasticProperty(AddSortField = true, Type = FieldIndexOption.not_analyzed)]
         public string FirstName { get; set; }
 
-		//[ElasticProperty(AddSortField = true, Type = FieldIndexOption.not_analyzed)]
-		public string LastNameSort { get; set; }
+        //[ElasticProperty(AddSortField = true, Type = FieldIndexOption.not_analyzed)]
+        public string LastNameSort { get; set; }
 
         //[ElasticProperty(AddSortField = true, Type = FieldIndexOption.not_analyzed)]
         public string Patronimic { get; set; }
@@ -22,8 +22,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.Builders
         //[ElasticProperty(Type = FieldType.nested)]
         public NestedObj NestedObj { get; set; }
 
-		//[ElasticProperty(AddSortField = true, Type = FieldIndexOption.not_analyzed)]
-		public string HospitalId { get; set; }
+        //[ElasticProperty(AddSortField = true, Type = FieldIndexOption.not_analyzed)]
+        public string HospitalId { get; set; }
 
         public string Another { get; set; }
     }
@@ -38,5 +38,4 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.Builders
 
         public int Count { get; set; }
     }
-
 }

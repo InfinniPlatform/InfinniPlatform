@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
-using InfinniPlatform.Api.ContextComponents;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
-using InfinniPlatform.Api.RestApi.AuthApi;
 using InfinniPlatform.Api.SearchOptions;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Update.Properties;
 
 namespace InfinniPlatform.Update.ActionUnits
@@ -17,17 +17,11 @@ namespace InfinniPlatform.Update.ActionUnits
 			var configBuilder = target.Context.GetComponent<IConfigurationMediatorComponent>().ConfigurationBuilder;
 
 			// получаем конфигурацию обновления
-			var config = configBuilder.GetConfigurationObject("update");
+			var config = configBuilder.GetConfigurationObject(null, "update");
 
 			string version = target.Item.Version;
 
-			if (string.IsNullOrEmpty(version))
-			{
-				throw new ArgumentException(Resources.InstalledPackageVersionShouldBeSpecified);
-			}
-
-
-			var documentProvider = config.GetDocumentProvider("package","system");
+			var documentProvider = config.GetDocumentProvider("package",version,"system");
 
 			// публикуем прикладную сборку
 
