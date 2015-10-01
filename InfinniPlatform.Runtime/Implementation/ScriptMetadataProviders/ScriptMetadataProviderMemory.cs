@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 
 namespace InfinniPlatform.Runtime.Implementation.ScriptMetadataProviders
 {
@@ -8,7 +8,8 @@ namespace InfinniPlatform.Runtime.Implementation.ScriptMetadataProviders
 	/// </summary>
 	public sealed class ScriptMetadataProviderMemory : IScriptMetadataProvider
 	{
-		private readonly IList<ScriptMetadata> _scriptMetadataList = new List<ScriptMetadata>();
+		private readonly Dictionary<string, ScriptMetadata> _scriptMetadataList
+			= new Dictionary<string, ScriptMetadata>(StringComparer.OrdinalIgnoreCase);
 
 		/// <summary>
 		///   Получить метаданные скриптов 
@@ -17,7 +18,11 @@ namespace InfinniPlatform.Runtime.Implementation.ScriptMetadataProviders
 		/// <returns>Метаданные скрипта</returns>
 		public ScriptMetadata GetScriptMetadata(string scriptIdentifier)
 		{
-			return _scriptMetadataList.FirstOrDefault(sc => sc.Identifier.ToLowerInvariant() == scriptIdentifier.ToLowerInvariant());
+			ScriptMetadata scriptMetadata;
+
+			_scriptMetadataList.TryGetValue(scriptIdentifier, out scriptMetadata);
+
+			return scriptMetadata;
 		}
 
 		/// <summary>
@@ -26,7 +31,9 @@ namespace InfinniPlatform.Runtime.Implementation.ScriptMetadataProviders
 		/// <param name="scriptMetadata">Метаданные скрипта</param>
 		public void SetScriptMetadata(ScriptMetadata scriptMetadata)
 		{
-			_scriptMetadataList.Add(scriptMetadata);
+			var scriptIdentifier = scriptMetadata.Identifier;
+
+			_scriptMetadataList[scriptIdentifier] = scriptMetadata;
 		}
 	}
 }

@@ -4,7 +4,7 @@ using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 {
-    public sealed class ActionUnitChangePassword
+    public sealed class ActionUnitWrapChangePassword
     {
         public void Action(IApplyContext target)
         {

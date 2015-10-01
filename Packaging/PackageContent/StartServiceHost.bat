@@ -1,0 +1,2 @@
+cd..
+InfinniPlatform.ServiceHost.exe

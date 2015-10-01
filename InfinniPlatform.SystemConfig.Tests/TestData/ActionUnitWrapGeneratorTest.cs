@@ -3,7 +3,7 @@ using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.SystemConfig.Tests.TestData
 {
-    public sealed class ActionUnitGeneratorTest
+    public sealed class ActionUnitWrapGeneratorTest
     {
         public void Action(IApplyContext target)
         {

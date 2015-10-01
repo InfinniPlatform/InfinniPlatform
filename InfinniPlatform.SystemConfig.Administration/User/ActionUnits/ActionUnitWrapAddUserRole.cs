@@ -9,7 +9,7 @@ using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 {
-    public sealed class ActionUnitAddUserRole
+    public sealed class ActionUnitWrapAddUserRole
     {
         public void Action(IApplyContext target)
         {

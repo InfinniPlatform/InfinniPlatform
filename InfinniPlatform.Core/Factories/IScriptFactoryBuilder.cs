@@ -1,14 +1,13 @@
 ﻿namespace InfinniPlatform.Factories
 {
-    /// <summary>
-    ///     Конструктор фабрик прикладных скриптов
-    /// </summary>
-    public interface IScriptFactoryBuilder
-    {
-        /// <summary>
-        ///     Создать фабрику прикладных скриптов для указанной версии конфигурации
-        /// </summary>
-        /// <returns>Фабрика скриптов</returns>
-        IScriptFactory BuildScriptFactory(string metadataConfigurationId, string version);
-    }
+	/// <summary>
+	/// Конструктор фабрик для создания классов по работе с прикладными скриптами.
+	/// </summary>
+	public interface IScriptFactoryBuilder
+	{
+		/// <summary>
+		/// Создает фабрику для создания классов по работе с прикладными скриптами.
+		/// </summary>
+		IScriptFactory BuildScriptFactory(string metadataConfigurationId, string version);
+	}
 }

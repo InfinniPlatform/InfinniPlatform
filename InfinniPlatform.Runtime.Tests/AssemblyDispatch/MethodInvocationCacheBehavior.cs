@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
+using InfinniPlatform.Runtime.Implementation.AssemblyDispatch;
+
 using NUnit.Framework;
 
 namespace InfinniPlatform.Runtime.Tests.AssemblyDispatch
@@ -42,28 +44,6 @@ namespace InfinniPlatform.Runtime.Tests.AssemblyDispatch
 			var info = methodInvokationCache.FindMethodInfo("ActionUnitCreateDocument", "Action");
 
 			Assert.IsNotNull(info);
-		}
-
-		[Test]
-		[Ignore("Отключено кэширование таблицы методов")]
-		public void ShouldClearCache()
-		{
-			var assembly = Assembly.LoadFrom(_assemblyLocation);
-
-			var methodInvokationCache = new MethodInvokationCache("versio1", DateTime.Now, new List<Assembly> { assembly });
-
-			var info = methodInvokationCache.FindMethodInfo("ActionUnitCreateDocument", "Action");
-
-			Assert.AreEqual(1, methodInvokationCache.MethodCache.Count());
-
-			methodInvokationCache.ClearCache(assembly);
-
-			Assert.AreEqual(0, methodInvokationCache.MethodCache.Count());
-
-			var refreshedInfo = methodInvokationCache.FindMethodInfo("ActionUnitCreateDocument", "Action");
-
-			Assert.IsNotNull(info);
-			Assert.IsNotNull(refreshedInfo);
 		}
 	}
 }
