@@ -185,9 +185,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Files\Configuration\App.config">
+    <None Include="..\Files\Platform\App.config">
       <Link>App.config</Link>
-      <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
