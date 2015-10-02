@@ -64,8 +64,8 @@
     <Compile Include="RolePermissions\ActionUnits\ActionUnitDenySection.cs" />
     <Compile Include="RolePermissions\ActionUnits\ActionUnitEnableSection.cs" />
     <Compile Include="UserRoleStore\ActionUnits\ActionUnitGetFilteredUserRoles.cs" />
-    <Compile Include="User\ActionUnits\ActionUnitAddRole.cs" />
-    <Compile Include="User\ActionUnits\ActionUnitAddUser.cs" />
+    <Compile Include="User\ActionUnits\ActionUnitWrapAddRole.cs" />
+    <Compile Include="User\ActionUnits\ActionUnitWrapAddUser.cs" />
     <Compile Include="User\ActionUnits\ActionUnitWrapAddUserRole.cs" />
     <Compile Include="User\ActionUnits\ActionUnitWrapChangePassword.cs" />
     <Compile Include="User\ActionUnits\ActionUnitDeleteRole.cs" />
