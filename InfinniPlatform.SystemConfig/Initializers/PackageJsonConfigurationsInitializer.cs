@@ -6,11 +6,9 @@ using System.Linq;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Hosting.Implementation.Modules;
-using InfinniPlatform.Runtime;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
-using InfinniPlatform.Sdk.Environment.Metadata;
 using InfinniPlatform.SystemConfig.Multitenancy;
 using InfinniPlatform.WebApi.Factories;
 
@@ -18,22 +16,15 @@ namespace InfinniPlatform.SystemConfig.Initializers
 {
 	public sealed class PackageJsonConfigurationsInitializer : IStartupInitializer
 	{
-		public PackageJsonConfigurationsInitializer(IChangeListener changeListener,
-													IIndexFactory indexFactory,
-													ISecurityComponent securityComponent,
-													IMetadataConfigurationProvider metadataConfigurationProvider)
+		public PackageJsonConfigurationsInitializer(IIndexFactory indexFactory, ISecurityComponent securityComponent)
 		{
-			_changeListener = changeListener;
 			_indexFactory = indexFactory;
 			_securityComponent = securityComponent;
-			_metadataConfigurationProvider = metadataConfigurationProvider;
 		}
 
 
-		private readonly IChangeListener _changeListener;
 		private readonly IIndexFactory _indexFactory;
 		private readonly ISecurityComponent _securityComponent;
-		private readonly IMetadataConfigurationProvider _metadataConfigurationProvider;
 
 
 		public void OnStart(HostingContextBuilder contextBuilder)
@@ -46,9 +37,6 @@ namespace InfinniPlatform.SystemConfig.Initializers
 			{
 				InstallConfiguration(configuration.Version, configuration.Name);
 			}
-
-			// Регистрация обработчика для сброса кэша метаданных конфигураций
-			_changeListener.RegisterOnChange("JsonConfig", OnChangeModules, Order.NoMatter);
 		}
 
 
@@ -118,44 +106,12 @@ namespace InfinniPlatform.SystemConfig.Initializers
 		}
 
 
-
-		/// <summary>
-		///     Обновление конфигурации при получении события обновления сборок
-		///     Пока атомарность обновления не обеспечивается - в момент обновления обращающиеся к серверу запросы получат отлуп
-		/// </summary>
-		/// <param name="version">Версия измененяемого модуля</param>
-		/// <param name="configurationId">Идентификатор конфигурации</param>
-		private void OnChangeModules(string version, string configurationId)
-		{
-			//если конфигурация уже установлена - перезагружаем метаданные конфигурации и прикладные сборки
-			IMetadataConfiguration config = _metadataConfigurationProvider.GetMetadataConfiguration(version,
-																									configurationId);
-
-			//если обновляется несистемная конфигурация (не встроенная конфигурация), то чистим метаданные загруженной конфигурации
-			if (config != null && !config.IsEmbeddedConfiguration)
-			{
-				InfinniPlatformHostServer.Instance.RemoveConfiguration(version, configurationId);
-				InfinniPlatformHostServer.Instance.UninstallServices(version, configurationId);
-			}
-
-			//если конфигурация еще не загружена или это не системная (встроенная) конфигурация, то устанавливаем конфигурацию
-			if (config == null || !config.IsEmbeddedConfiguration)
-			{
-				InstallConfiguration(version, configurationId);
-			}
-		}
-
-
-
-
-
 		private static IEnumerable<dynamic> GetConfigurations()
 		{
 			var managerApi = ManagerFactoryConfiguration.BuildConfigurationMetadataReader(null, true);
 			var configurations = managerApi.GetItems();
 			return configurations;
 		}
-
 
 
 		public IEnumerable<dynamic> GetConfigurationsMetadata(string version)
