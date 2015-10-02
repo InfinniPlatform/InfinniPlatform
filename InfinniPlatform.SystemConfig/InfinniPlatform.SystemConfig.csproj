@@ -60,6 +60,7 @@
     <Compile Include="Configurator\ActionUnitSetRelevantVersion.cs" />
     <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetSolutionList.cs" />
     <Compile Include="Configurator\ActionUnitUpdateSolutionFromJson.cs" />
+    <Compile Include="Initializers\PackageJsonConfigurationsInitializer.cs" />
     <Compile Include="Initializers\UserStorageInitializer.cs" />
     <Compile Include="Configurator\ActionUnitDeleteConfig.cs" />
     <Compile Include="Configurator\ActionUnitDeleteMetadata.cs" />

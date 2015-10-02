@@ -1,9 +1,9 @@
 ﻿// 1
 // 0
 // 0
-// 3
+// 4
 // 64b7a5bd-4adb-4e6f-8b88-2395189e6466
-// BC319825C48A8720F18FCBBB711A5ED4
+// D388DB8F8EBFF93ACF81152458D38A35
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -17,7 +17,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: Guid("64b7a5bd-4adb-4e6f-8b88-2395189e6466")]
-[assembly: AssemblyVersion("1.0.0.3")]
-[assembly: AssemblyFileVersion("1.0.0.3")]
+[assembly: AssemblyVersion("1.0.0.4")]
+[assembly: AssemblyFileVersion("1.0.0.4")]
 [assembly: InternalsVisibleTo("InfinniPlatform.ReportDesigner.Tests")]
 [assembly: AssemblyDescription("InfinniPlatform.ReportDesigner")]
