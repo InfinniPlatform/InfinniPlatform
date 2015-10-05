@@ -44,7 +44,7 @@ namespace InfinniPlatform.RestfulApi
             factory.InfinniPlatformHostServer.RegisterServerInitializer<SystemConfigurationsInitializer>();
             //устанавливаем конфигурации из JSON-описаний
 
-            factory.InfinniPlatformHostServer.RegisterServerInitializer<JsonConfigurationsInitializer>();
+            factory.InfinniPlatformHostServer.RegisterServerInitializer<PackageJsonConfigurationsInitializer>();
 
             //пользовательские обработчики бизнес-логики старта сервера
             factory.InfinniPlatformHostServer.RegisterServerInitializer<UserLogicInitializer>();

@@ -120,7 +120,7 @@ namespace InfinniPlatform.NodeServiceHost
 			// Устанавливаем системные конфигурации
 			factory.InfinniPlatformHostServer.RegisterServerInitializer<SystemConfigurationsInitializer>();
 			// Устанавливаем конфигурации из JSON-описаний
-			factory.InfinniPlatformHostServer.RegisterServerInitializer<JsonConfigurationsInitializer>();
+			factory.InfinniPlatformHostServer.RegisterServerInitializer<PackageJsonConfigurationsInitializer>();
 			// Пользовательские обработчики бизнес-логики старта сервера
 			factory.InfinniPlatformHostServer.RegisterServerInitializer<UserLogicInitializer>();
 			// Обработчик настройки хранилища пользователей

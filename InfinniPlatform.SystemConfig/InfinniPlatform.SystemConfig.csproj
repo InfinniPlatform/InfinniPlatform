@@ -60,6 +60,7 @@
     <Compile Include="Configurator\ActionUnitSetRelevantVersion.cs" />
     <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetSolutionList.cs" />
     <Compile Include="Configurator\ActionUnitUpdateSolutionFromJson.cs" />
+    <Compile Include="Initializers\PackageJsonConfigurationInstaller.cs" />
     <Compile Include="Initializers\PackageJsonConfigurationsInitializer.cs" />
     <Compile Include="Initializers\UserStorageInitializer.cs" />
     <Compile Include="Configurator\ActionUnitDeleteConfig.cs" />
@@ -114,7 +115,6 @@
     <Compile Include="Configurator\RegisterQueries\ActionUnitGetRegisterValuesByPeriods.cs" />
     <Compile Include="HelpSystem\ActionUnitGenerateHelpConfiguration.cs" />
     <Compile Include="HelpSystem\ActionUnitHelpConfiguration.cs" />
-    <Compile Include="Initializers\JsonConfigurationsInitializer.cs" />
     <Compile Include="Initializers\GlobalContextInitializer.cs" />
     <Compile Include="Installers\ActionUnitsEntryList.cs" />
     <Compile Include="Installers\SystemConfigInstaller.cs" />
