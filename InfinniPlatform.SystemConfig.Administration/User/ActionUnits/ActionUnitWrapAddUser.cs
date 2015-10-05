@@ -8,7 +8,7 @@ using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 {
-    public sealed class ActionUnitAddUser
+    public sealed class ActionUnitWrapAddUser
     {
         public void Action(IApplyContext target)
         {

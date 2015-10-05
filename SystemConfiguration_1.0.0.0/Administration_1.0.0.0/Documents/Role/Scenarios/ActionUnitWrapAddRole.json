@@ -1,9 +1,9 @@
 {
   "Id": "7a9894d4-7799-4efe-ab08-8e8648efdecd",
-  "Name": "ActionUnitAddRole",
-  "Caption": "ActionUnitAddRole",
+  "Name": "ActionUnitWrapAddRole",
+  "Caption": "ActionUnitWrapAddRole",
   "Description": "",
-  "ScenarioId": "ActionUnitAddRole",
+  "ScenarioId": "ActionUnitWrapAddRole",
   "ContextType": 2,
   "ScriptUnitType": 1,
   "ParentId": "73746851-7217-44da-b5cb-5d54c3a6171a",

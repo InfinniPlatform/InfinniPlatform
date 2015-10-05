@@ -9,7 +9,7 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
     /// <summary>
     ///     Добавление новой роли в конфигурации администрирования
     /// </summary>
-    public sealed class ActionUnitAddRole
+    public sealed class ActionUnitWrapAddRole
     {
         public void Action(IApplyContext target)
         {

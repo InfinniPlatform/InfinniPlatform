@@ -1,0 +1,1 @@
+call Assemblies\InfinniPlatform.ServiceHost.exe
