@@ -17,7 +17,6 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
         {
             string indexName = string.Format("{0}_{1}", target.Item.Configuration, target.Item.Metadata);
 
-
             //получаем провайдер версий документов
             dynamic documentProvider =
                 target.Context.GetComponent<InprocessDocumentComponent>()

@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.Index;
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.RestApi.Auth;
+
 using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Api.Transactions;
-using InfinniPlatform.Api.Versioning;
 using InfinniPlatform.Factories;
 using InfinniPlatform.Logging;
-using InfinniPlatform.Metadata;
 using InfinniPlatform.Sdk.ApiContracts;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
@@ -88,6 +80,7 @@ namespace InfinniPlatform.ContextComponents
                 () => metadataConfigurationProvider));
 
             _components.Add(new ContextRegistration(typeof(IDocumentApi), () => new Api.RestApi.Public.DocumentApi()));
+			_components.Add(new ContextRegistration(typeof(DocumentApiUnsecured), () => new DocumentApiUnsecured()));
             _components.Add(new ContextRegistration(typeof(IPrintViewApi), () => new Api.RestApi.Public.PrintViewApi()));
             _components.Add(new ContextRegistration(typeof(IRegisterApi), () => new Api.RestApi.Public.RegisterApi()));
             _components.Add(new ContextRegistration(typeof(IFileApi), () => new Api.RestApi.Public.FileApi()));

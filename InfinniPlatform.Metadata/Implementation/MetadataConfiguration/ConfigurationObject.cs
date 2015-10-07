@@ -43,14 +43,20 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
         /// <returns>Провайдер версий документа</returns>
         public IVersionProvider GetDocumentProvider(string metadata, string version, string tenantId)
         {
-            if (
-                _indexStateProvider.GetIndexStatus(MetadataConfiguration.ConfigurationId,
-                    MetadataConfiguration.GetMetadataIndexType(metadata)) != IndexStatus.NotExists)
-            {
-				return _indexFactory.BuildVersionProvider(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata), tenantId, version);
-            }
-            return null;
-        }
+			//if (_indexStateProvider.GetIndexStatus(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata)) != IndexStatus.NotExists)
+			//{
+			//	return _indexFactory.BuildVersionProvider(MetadataConfiguration.ConfigurationId, MetadataConfiguration.GetMetadataIndexType(metadata), tenantId, version);
+			//}
+			//return null;
+	        string indexName = MetadataConfiguration.ConfigurationId;
+	        string typeName = MetadataConfiguration.GetMetadataIndexType(metadata);
+			if (_indexStateProvider.GetIndexStatus(indexName, typeName) == IndexStatus.NotExists)
+			{
+				// Для тестов %) т.к. теперь метаданные загружаются только с диска
+				_indexStateProvider.CreateIndexType(indexName, typeName);
+			}
+			return _indexFactory.BuildVersionProvider(indexName, typeName, tenantId, version);
+		}
 
         /// <summary>
         ///     Получить конструктор версий индекса
