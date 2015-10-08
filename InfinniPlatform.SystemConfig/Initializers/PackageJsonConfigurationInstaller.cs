@@ -147,13 +147,16 @@ namespace InfinniPlatform.SystemConfig.Initializers
 			Action<IExtensionPointHandlerInstance> instanceAction
 				= extensionPointHandlerInstance =>
 				{
-					foreach (var extensionPoint in serviceExtensionPoints)
+					if (serviceExtensionPoints != null)
 					{
-						if (extensionPoint.TypeName != null)
+						foreach (var extensionPoint in serviceExtensionPoints)
 						{
-							string extensionPointType = extensionPoint.TypeName.Name;
-							string extensionPointScenarioId = extensionPoint.ScenarioId;
-							extensionPointHandlerInstance.RegisterExtensionPoint(extensionPointType, extensionPointScenarioId);
+							if (extensionPoint.TypeName != null)
+							{
+								string extensionPointType = extensionPoint.TypeName.Name;
+								string extensionPointScenarioId = extensionPoint.ScenarioId;
+								extensionPointHandlerInstance.RegisterExtensionPoint(extensionPointType, extensionPointScenarioId);
+							}
 						}
 					}
 				};
