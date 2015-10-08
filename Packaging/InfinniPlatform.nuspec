@@ -13,12 +13,8 @@
         <file src="..\Assemblies\*.dll" target="lib\net45"/>
         <file src="..\Assemblies\*.pdb" target="lib\net45"/>
         <file src="..\Assemblies\*.config" target="lib\net45"/>
-        <file src="..\Assemblies\*.xml" target="lib\net45"/>
         <file src="..\Assemblies\*.exe" target="lib\net45"/>
-        <file src="..\SystemConfiguration_1.0.0.0\Administration_1.0.0.0\**" target="content\metadata\Administration_1.0.0.0"/>
-        <file src="..\SystemConfiguration_1.0.0.0\AdministrationCustomization_1.0.0.0\**" target="content\metadata\AdministrationCustomization_1.0.0.0"/>
-        <file src="..\SystemConfiguration_1.0.0.0\Authorization_1.0.0.0\**" target="content\metadata\Authorization_1.0.0.0"/>
-        <file src="..\SystemConfiguration_1.0.0.0\Solution.json" target="content\metadata\Solution.json"/>
+        <file src="..\InfinniPlatform.SystemConfig\.metadata\**\*.*" target="content\metadata" exclude=""/>
         <file src="PackageContent\Install.bat" target="Install.bat"/>
     </files>
 </package>
