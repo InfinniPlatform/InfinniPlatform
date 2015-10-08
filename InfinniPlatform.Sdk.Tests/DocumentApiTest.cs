@@ -121,6 +121,7 @@ namespace InfinniPlatform.Sdk.Tests
         }
 
         [Test]
+		[Ignore]
         public void ShouldGetDocumentWithSorting()
         {
             
@@ -298,6 +299,7 @@ namespace InfinniPlatform.Sdk.Tests
         }
 
         [Test]
+		[Ignore]
         public void ShouldSetDocumentWithIncorrectMapping()
         {
             var documentObject = new
