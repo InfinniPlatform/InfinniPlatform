@@ -40,9 +40,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
@@ -70,6 +70,24 @@
     <Compile Include="VersionApiTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".metadata\Gameshop_1.0.0.0\Configuration.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Catalogue\Catalogue.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Comment\Comment.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Comment\Processes\Default.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Comment\Scenarios\ActionUnitOnSaveComment.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Comment\Services\OnSaveComment.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Common\Common.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\GameInfo\GameInfo.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\GameRating\GameRating.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Gameshop_Registers\Gameshop_Registers.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Lottery\Lottery.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\PCConfig\PCConfig.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Review\Processes\Like.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Review\Review.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Review\Scenarios\ActionUnitLike.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Review\Services\Like.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\UserProfile\UserProfile.json" />
+    <None Include=".metadata\Solution.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -92,6 +110,12 @@
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <MetadataFiles Include=".metadata\**\*.*" />
+  </ItemGroup>
+  <Target Name="AfterBuild">
+    <Copy SourceFiles="@(MetadataFiles)" DestinationFolder="$(OutDir)content\$(SolutionName)\metadata\%(RecursiveDir)" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

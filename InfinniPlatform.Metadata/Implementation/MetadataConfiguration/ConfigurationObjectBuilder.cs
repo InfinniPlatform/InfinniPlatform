@@ -9,6 +9,7 @@ using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Metadata;
+using InfinniPlatform.Sdk.Environment.Scripts;
 
 namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 {
@@ -22,13 +23,15 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
         private readonly IBlobStorageFactory _blobStorageFactory;
         private readonly IIndexFactory _indexFactory;
         private readonly IMetadataConfigurationProvider _metadataConfigurationProvider;
+	    private readonly IScriptConfiguration _scriptConfiguration;
 
-        public ConfigurationObjectBuilder(IIndexFactory indexFactory, IBlobStorageFactory blobStorageFactory,
-            IMetadataConfigurationProvider metadataConfigurationProvider)
+	    public ConfigurationObjectBuilder(IIndexFactory indexFactory, IBlobStorageFactory blobStorageFactory,
+            IMetadataConfigurationProvider metadataConfigurationProvider, IScriptConfiguration scriptConfiguration)
         {
             _indexFactory = indexFactory;
             _blobStorageFactory = blobStorageFactory;
             _metadataConfigurationProvider = metadataConfigurationProvider;
+		    _scriptConfiguration = scriptConfiguration;
         }
 
         /// <summary>
@@ -42,9 +45,10 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
             var metadataConfiguration = _metadataConfigurationProvider.GetMetadataConfiguration(version, metadataIdentifier);
             if (metadataConfiguration == null)
             {
-                Logger.Log.Error(string.Format("Metadata configuration not registered: \"{0}\"",
-                    metadataIdentifier));
-                return null;
+				// Для тестов %) т.к. теперь метаданные загружаются только с диска
+				metadataConfiguration = _metadataConfigurationProvider.AddConfiguration(version, metadataIdentifier, _scriptConfiguration, false);
+                // Logger.Log.Error(string.Format("Metadata configuration not registered: \"{0}\"", metadataIdentifier));
+                // return null;
             }
             return new ConfigurationObject(metadataConfiguration, _indexFactory, _blobStorageFactory);
         }

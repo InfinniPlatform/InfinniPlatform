@@ -91,7 +91,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             var actualTypeName = ActualTypeName;
             if (string.IsNullOrEmpty(actualTypeName))
             {
-                throw new ArgumentException("actual index type not found.");
+				throw new ArgumentException(string.Format("Actual index type not found. Type: '{0}'.", _typeName));
             }
 
             var objectsToIndex =
@@ -199,7 +199,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             var actualTypeName = ActualTypeName;
             if (string.IsNullOrEmpty(actualTypeName))
             {
-                throw new ArgumentException("actual index type not found.");
+				throw new ArgumentException(string.Format("Actual index type not found. Type: '{0}'.", _typeName));
             }
 
             IndexObject objectToIndex = PrepareObjectToIndex(item, _tenantId);

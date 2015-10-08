@@ -132,6 +132,8 @@ namespace InfinniPlatform.Api.TestEnvironment
 
         private static void AttachToTestServer()
         {
+			return;
+
 #if DEBUG
             var repeats = 0;
 

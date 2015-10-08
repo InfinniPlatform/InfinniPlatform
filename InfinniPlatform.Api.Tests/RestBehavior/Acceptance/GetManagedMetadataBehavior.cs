@@ -18,7 +18,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 {
     [TestFixture]
     [Category(TestCategories.AcceptanceTest)]
-    public sealed class GeneratorBehavior
+	[Ignore("Необходимо создать конфигурацию метаданных на диске, т.к. теперь метаданные загружаются только с диска")]
+	public sealed class GeneratorBehavior
     {
         private const string LayoutPanel =
             "{\r\n  \"GridPanel\": {\r\n    \"Rows\": [\r\n      {\r\n        \"Cells\": [\r\n          {\r\n            \"ColumnSpan\": 6,\r\n            \"Items\": [\r\n              {\r\n                \"Panel\": {\r\n                  \"Text\": \"Главное меню\",\r\n                  \"Name\": \"MainMenuPanel\",\r\n                  \"Items\": [\r\n                    {\r\n                      \"MenuBar\": {\r\n                        \"Name\": \"HomePage\",\r\n                        \"LayoutPanel\": {\r\n                          \"StackPanel\": {\r\n                            \"Name\": \"MainStackPanel\",\r\n                            \"Items\": [\r\n                              {\r\n                                \"MenuBar\": {\r\n                                  \"Name\": \"MainMenu\",\r\n                                  \"ConfigId\": \"VeteransHospital\"\r\n                                }\r\n                              }\r\n                            ]\r\n                          }\r\n                        }\r\n                      }\r\n                    }\r\n                  ]\r\n                }\r\n              }\r\n            ]\r\n          },\r\n          {\r\n            \"ColumnSpan\": 6,\r\n            \"Items\": [\r\n              {\r\n                \"Panel\": {\r\n                  \"Text\": \"Какой-нибудь виджет\",\r\n                  \"Name\": \"Widget1Panel\",\r\n                  \"Items\": []\r\n                }\r\n              }\r\n            ]\r\n          }\r\n        ]\r\n      },\r\n      {\r\n        \"Cells\": [\r\n          {\r\n            \"ColumnSpan\": 12,\r\n            \"Items\": [\r\n              {\r\n                \"Panel\": {\r\n                  \"Text\": \"И тут еще виджет\",\r\n                  \"Name\": \"Widget2Panel\",\r\n                  \"Items\": []\r\n                }\r\n              }\r\n            ]\r\n          }\r\n        ]\r\n      }\r\n    ]\r\n  }\r\n}";
@@ -28,7 +29,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
         private IDisposable _server;
 
-        [TestFixtureSetUp]
+        //[TestFixtureSetUp]
         public void FixtureSetup()
         {
             _server = TestApi.StartServer(c => c.SetHostingConfig(TestSettings.DefaultHostingConfig));
@@ -36,7 +37,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             TestApi.InitClientRouting(TestSettings.DefaultHostingConfig);
         }
 
-        [TestFixtureTearDown]
+        //[TestFixtureTearDown]
         public void TearDownFixture()
         {
             _server.Dispose();
