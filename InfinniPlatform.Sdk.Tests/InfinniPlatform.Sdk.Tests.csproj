@@ -70,6 +70,24 @@
     <Compile Include="VersionApiTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".metadata\Gameshop_1.0.0.0\Configuration.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Catalogue\Catalogue.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Comment\Comment.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Comment\Processes\Default.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Comment\Scenarios\ActionUnitOnSaveComment.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Comment\Services\OnSaveComment.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Common\Common.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\GameInfo\GameInfo.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\GameRating\GameRating.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Gameshop_Registers\Gameshop_Registers.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Lottery\Lottery.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\PCConfig\PCConfig.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Review\Processes\Like.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Review\Review.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Review\Scenarios\ActionUnitLike.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Review\Services\Like.json" />
+    <None Include=".metadata\Gameshop_1.0.0.0\Documents\UserProfile\UserProfile.json" />
+    <None Include=".metadata\Solution.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -92,6 +110,9 @@
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(ProjectDir).metadata" "$(OutDir)content\$(SolutionName)\metadata" /S /E /Y /Q /I</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
