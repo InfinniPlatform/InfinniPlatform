@@ -122,10 +122,6 @@ namespace InfinniPlatform.WebApi.WebApi
             {
                 throw new ArgumentException(Api.Properties.Resources.ServiceNotFoundError);
             }
-            if (invokationInfo.Count > 1)
-            {
-                throw new ArgumentException(Api.Properties.Resources.AmbiguousServiceDefinitionError);
-            }
 
 	        var instance = _container.Invoke().Resolve(invokationInfo.First().TargetType.QueryHandlerType);
             TargetDelegate verb = invokationInfo.First().ConstructDelegate(verbArguments, instance, invokationInfo.First().TargetType.HttpResultHandlerType);
