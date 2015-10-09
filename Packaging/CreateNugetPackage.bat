@@ -16,9 +16,5 @@ popd
 ::Build project
 msbuild ..\InfinniPlatform.sln /p:Configuration=Debug /m /v:q
 
-::Copy modified config to Assemblies
-xcopy PackageContent\InfinniPlatform.config ..\Assemblies\ /y
-xcopy PackageContent\InfinniPlatform.Utils.exe.config ..\Assemblies\ /y
-
 ::Create package
-nuget Pack InfinniPlatform.nuspec -NoDefaultExcludes
+nuget Pack InfinniPlatform.%1.nuspec -NoDefaultExcludes
