@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using InfinniPlatform.Sdk.Api;
-using Newtonsoft.Json;
+
 using NUnit.Framework;
 
 namespace InfinniPlatform.Sdk.Tests
 {
     [TestFixture]
 	[Category(TestCategories.IntegrationTest)]
-	[Ignore]
 	public class AuthApiTest
     {
         private const string InfinniSessionPort = "9900";

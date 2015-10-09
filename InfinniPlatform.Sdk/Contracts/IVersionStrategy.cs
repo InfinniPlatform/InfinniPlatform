@@ -6,7 +6,8 @@ namespace InfinniPlatform.Sdk.Contracts
     /// <summary>
     ///   Стратегия версионирования запросов к сервисам
     /// </summary>
-    public interface IVersionStrategy
+	[Obsolete("Not actual!")]
+	public interface IVersionStrategy
     {
         /// <summary>
         /// Получить актуальную минорную версию конфигурации для указанного идентификатора версии

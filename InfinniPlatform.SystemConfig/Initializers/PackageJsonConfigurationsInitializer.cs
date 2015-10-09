@@ -35,7 +35,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
 			foreach (dynamic configuration in configurations)
 			{
 				string configId = configuration.Name;
-				string configVersion = configuration.Version ?? "1.0.0.0";
+				string configVersion = configuration.Version;
 
 				InstallConfiguration(configId, configVersion, configuration);
 			}
@@ -119,6 +119,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
 
 			object configId = configuration.Name;
 
+			configuration.Version = null;
 			configuration.Menu = LoadItemsMetadata(configDirectory, "Menu", configId);
 			configuration.Registers = LoadItemsMetadata(configDirectory, "Registers", configId);
 			configuration.Documents = LoadDocumentsMetadata(configDirectory, configId);
