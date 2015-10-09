@@ -115,7 +115,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <MetadataFiles Include=".metadata\**\*.*" />
+    <MetadataFiles Include=".metadata\**\*.*">
+      <Visible>false</Visible>
+    </MetadataFiles>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
