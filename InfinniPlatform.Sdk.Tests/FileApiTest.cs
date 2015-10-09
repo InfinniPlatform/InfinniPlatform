@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using InfinniPlatform.Sdk.Api;
-using Newtonsoft.Json;
+using InfinniPlatform.Sdk.Tests.Properties;
+
 using NUnit.Framework;
 
 namespace InfinniPlatform.Sdk.Tests
@@ -39,9 +36,9 @@ namespace InfinniPlatform.Sdk.Tests
 
             var profileId = _documentApi.SetDocument("Gameshop", "UserProfile", document).Id.ToString();
 
-            using (var fileStream = new FileStream(@"TestData\avatar.gif", FileMode.Open))
+            using (var fileStream = new MemoryStream(Resources.Avatar))
             {
-                _fileApi.UploadFile("Gameshop", "UserProfile", profileId, "Avatar", "avatar.gif", fileStream);
+                _fileApi.UploadFile("Gameshop", "UserProfile", profileId, "Avatar", "Avatar.gif", fileStream);
             }
 
             var documentSaved = _documentApi.GetDocumentById("Gameshop", "UserProfile",profileId);
@@ -66,9 +63,9 @@ namespace InfinniPlatform.Sdk.Tests
             var instanceId = _documentApi.Attach(sessionId, "Gameshop", "UserProfile", Guid.NewGuid().ToString(), document).Id.ToString();
 
 
-            using (var fileStream = new FileStream(@"TestData\avatar.gif", FileMode.Open))
+            using (var fileStream = new MemoryStream(Resources.Avatar))
             {
-                _documentApi.AttachFile(sessionId, "Gameshop", "UserProfile", instanceId, "Avatar", "avatar.gif", fileStream);
+                _documentApi.AttachFile(sessionId, "Gameshop", "UserProfile", instanceId, "Avatar", "Avatar.gif", fileStream);
             }
 
             _documentApi.SaveSession(sessionId);
@@ -96,9 +93,9 @@ namespace InfinniPlatform.Sdk.Tests
             var instanceId = _documentApi.Attach(sessionId, "Gameshop", "UserProfile", Guid.NewGuid().ToString(), document).Id.ToString();
 
 
-            using (var fileStream = new FileStream(@"TestData\avatar.gif", FileMode.Open))
+            using (var fileStream = new MemoryStream(Resources.Avatar))
             {
-                _documentApi.AttachFile(sessionId, "Gameshop", "UserProfile", instanceId, "Avatar", "avatar.gif", fileStream);
+                _documentApi.AttachFile(sessionId, "Gameshop", "UserProfile", instanceId, "Avatar", "Avatar.gif", fileStream);
             }
 
             _documentApi.DetachFile(sessionId, instanceId, "Avatar");

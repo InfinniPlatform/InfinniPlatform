@@ -63,7 +63,7 @@ namespace InfinniPlatform.WebApi.Tests.Builders
     {
         public object ProcessStreamPostVerb(object linkedData, Stream uploadStream)
         {
-			using (Stream file = File.Create(@"TestData" + Path.DirectorySeparatorChar + "CheckInput.txt"))
+			using (var file = new MemoryStream())
             {
                 CopyStream(uploadStream, file);
             }

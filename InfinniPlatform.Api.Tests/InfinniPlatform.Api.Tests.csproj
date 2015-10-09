@@ -70,6 +70,11 @@
     <Compile Include="Packages\ConfigExporterBehavior.cs" />
     <Compile Include="Help\SelfDocumentationBehavior.cs" />
     <Compile Include="Packages\SolutionExporterBehavior.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="RestBehavior\Acceptance\AfterDocumentSaveEventsBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\ActionUnitExceptionHandlingBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\ContentUploadBehavior.cs" />
@@ -144,7 +149,6 @@
     <Compile Include="Validation\PredicateValidationOperator.cs" />
     <Compile Include="Validation\Serialization\ValidationOperatorSerializerTest.cs" />
     <Compile Include="Validation\TrueValidationOperator.cs" />
-    <Compile Include="Zip\ZipLoaderBehavior.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
@@ -174,6 +178,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="TestData\UploadBinaryContent.zip" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="RestBehavior\DataSources\" />
@@ -185,6 +190,12 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AssemblyInfo.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

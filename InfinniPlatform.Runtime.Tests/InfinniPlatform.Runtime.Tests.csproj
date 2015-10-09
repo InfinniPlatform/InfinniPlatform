@@ -79,9 +79,6 @@
       <Link>App.config</Link>
     </None>
     <None Include="packages.config" />
-    <None Include="TestAssemblies\TestArchive.zip">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="ProjectConverter\projExamples\example1.xml" />
