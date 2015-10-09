@@ -57,7 +57,6 @@
     <Compile Include="Compression\GZipDataCompressorMemoryTest.cs" />
     <Compile Include="Compression\GZipDataCompressorPerformanceTest.cs" />
     <Compile Include="Compression\GZipDataCompressorTest.cs" />
-    <Compile Include="Compression\ZipArchiveTest.cs" />
     <Compile Include="Events\EventBuildersTests.cs" />
     <Compile Include="Events\AggregateBehavior.cs" />
     <Compile Include="Events\Builders\Entities\FieldMetadataRecord.cs" />
@@ -120,29 +119,6 @@
       <Link>App.config</Link>
     </None>
     <None Include="packages.config" />
-    <None Include="TestData\Assemblies.zip">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Events\GenerateDeletedMetadataCollectionItem.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Events\GenerateDeletedMetadataContainer.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Events\GenerateDeletedMetadataProperty.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Events\GenerateUpdatedMetadata.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\Files\Build\TransformOnBuild.targets" />

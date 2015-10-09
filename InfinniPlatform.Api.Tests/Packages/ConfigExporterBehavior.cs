@@ -15,6 +15,7 @@ namespace InfinniPlatform.Api.Tests.Packages
 {
     [TestFixture]
     [Category(TestCategories.IntegrationTest)]
+	[Ignore("Manual")]
     public class ConfigExporterBehavior
     {
         private IDisposable _server;

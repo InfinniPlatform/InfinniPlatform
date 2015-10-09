@@ -20,6 +20,7 @@ x86/
 [Bb]in/
 [Oo]bj/
 [Aa]ssemblies/
+[Dd]esigner[Bb]in/
 [Ll]ogs/
 
 # Visual Studo 2015 cache/options directory
@@ -136,12 +137,13 @@ publish/
 
 # NuGet Packages
 *.nupkg
+InfinniPlatform.*.nuspec
 # The packages folder can be ignored because of Package Restore
 /packages/*
 # except build/, which is used as an MSBuild target.
 !**/packages/build/
 # Uncomment if necessary however generally it will be regenerated when needed
-!**/packages/repositories.config
+# !**/packages/repositories.config
 
 # Windows Azure Build Output
 csx/

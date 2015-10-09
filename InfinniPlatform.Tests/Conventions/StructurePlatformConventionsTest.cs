@@ -89,17 +89,18 @@ namespace InfinniPlatform.Conventions
 		public void ProjectShouldHaveCommonOutputPath(string project)
 		{
 			// Given
-			var outputPath = ".." + Path.DirectorySeparatorChar + "Assemblies" + Path.DirectorySeparatorChar;
+			var coreOutPath = ".." + Path.DirectorySeparatorChar + "Assemblies" + Path.DirectorySeparatorChar;
+			var designerOutPath = ".." + Path.DirectorySeparatorChar + "DesignerBin" + Path.DirectorySeparatorChar;
 
 			// When
 			var result = LoadProject(project)
 				.Elements(ProjectNamespace + "PropertyGroup")
 				.Where(i => i.Attribute("Condition") != null)
 				.Select(i => i.Element(ProjectNamespace + "OutputPath"))
-				.All(i => i.Value == outputPath);
+				.All(i => i.Value == coreOutPath || i.Value == designerOutPath);
 
 			// Then
-			Assert.IsTrue(result, @"Проект ""{0}"" должен компилироваться в один каталог ""{1}"" (в Debug и Release)", project, outputPath);
+			Assert.IsTrue(result, @"Проект ""{0}"" должен компилироваться в один каталог ""{1}"" (в Debug и Release)", project, coreOutPath);
 		}
 
 		[Test]

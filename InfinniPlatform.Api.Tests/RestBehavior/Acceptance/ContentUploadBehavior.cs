@@ -1,13 +1,16 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
-using InfinniPlatform.Api.Hosting;
+
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.TestEnvironment;
+using InfinniPlatform.Api.Tests.Properties;
 using InfinniPlatform.Sdk.Api;
 using InfinniPlatform.Sdk.Dynamic;
+
 using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
@@ -66,6 +69,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 		{
 			CreateTestConfig();
 
+			var content = new MemoryStream(Resources.UploadBinaryContent);
+			
 			dynamic testDocument = new DynamicWrapper();
 			testDocument.Id = Guid.NewGuid().ToString();
 			testDocument.ContentField = new DynamicWrapper();
@@ -80,7 +85,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             Assert.AreNotEqual(result.IsValid, false);
 
             dynamic uploadResult = new UploadApi().UploadBinaryContent(_configurationId, _documentId, testDocument.Id, "ContentField",
-			                                    @"TestData\Configurations\Authorization.zip");
+			                                    @"Authorization.zip", content);
 
             Assert.AreNotEqual(uploadResult.IsValid, false);
 
