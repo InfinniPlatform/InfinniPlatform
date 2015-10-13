@@ -343,7 +343,9 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <MetadataFiles Include=".metadata\**\*.*" />
+    <MetadataFiles Include=".metadata\**\*.*">
+      <Visible>false</Visible>
+    </MetadataFiles>
   </ItemGroup>
   <Target Name="AfterBuild">
     <Copy SourceFiles="@(MetadataFiles)" DestinationFolder="$(OutDir)content\$(SolutionName)\metadata\%(RecursiveDir)" />
