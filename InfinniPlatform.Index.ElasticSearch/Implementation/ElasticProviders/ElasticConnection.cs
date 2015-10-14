@@ -1,59 +1,60 @@
-﻿using Elasticsearch.Net.ConnectionPool;
-using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
-using InfinniPlatform.Index.ElasticSearch.Properties;
-using Nest.Resolvers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Sdk.Environment.Settings;
-using Nest;
 
+using Elasticsearch.Net.ConnectionPool;
+
+using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
+using InfinniPlatform.Sdk.Environment.Settings;
+
+using Nest;
+using Nest.Resolvers;
+
+using PropertyMapping = InfinniPlatform.Sdk.Environment.Index.PropertyMapping;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 {
 	/// <summary>
-	///   Соединение с ElasticSearch
+	/// Соединение с ElasticSearch.
 	/// </summary>
 	public sealed class ElasticConnection
 	{
-		private readonly ConnectionSettings _elasticSettings;
+		private static readonly NodePool NodePool;
+
+
+		static ElasticConnection()
+		{
+			var nodeAddresses = AppSettings.GetValues<string>("ElasticSearchNodes").Select(url => new Uri(url.Trim()));
+
+			NodePool = new NodePool(nodeAddresses);
+		}
+
+		public ElasticConnection()
+		{
+			var nodeAddresses = NodePool.GetActualNodes();
+			var connectionPool = new SniffingConnectionPool(nodeAddresses);
+			var connectionSettings = new ConnectionSettings(connectionPool);
+			connectionSettings.SetDefaultPropertyNameInferrer(i => i);
+			connectionSettings.SetJsonSerializerSettingsModifier(m => m.ContractResolver = new ElasticContractResolver(connectionSettings));
+
+			_client = new ElasticClient(connectionSettings);
+		}
+
 
 		private readonly ElasticClient _client;
 
-        private readonly Uri _firstNodeUrl;
 
-		/// <summary>
-		///   constructor base
-		/// </summary>
-		public ElasticConnection()
-		{
-            var urls = AppSettings.GetValues<string>("ElasticSearchNodes");
-
-		    var nodeUrls = urls.Select(url => new Uri(url.Trim())).ToList();
-
-		    _firstNodeUrl = nodeUrls.First();
-
-		    _elasticSettings = new ConnectionSettings(new SniffingConnectionPool(nodeUrls));
-            
-		    _elasticSettings.SetDefaultPropertyNameInferrer(i => i);
-            _elasticSettings.SetJsonSerializerSettingsModifier(
-                m => m.ContractResolver = new ElasticContractResolver(_elasticSettings));
-
-			_client = new ElasticClient(_elasticSettings);
-		}
-        
 		public void ConnectIndex()
 		{
-            if (!_client.Connection.HeadSync(_firstNodeUrl).Success)
-			{
-				throw new Exception(Resources.CantConnectElasticSearch);
-			}
+			//if (!_client.Connection.HeadSync(_firstNodeUrl).Success)
+			//{
+			//	throw new Exception(Resources.CantConnectElasticSearch);
+			//}
 		}
 
 
 		/// <summary>
-		/// Возвращает клиента, специально подготовленного для добавления 
-		/// новых документов в индекс
+		/// Возвращает клиента для работы с индексом.
 		/// </summary>
 		public ElasticClient Client
 		{
@@ -61,13 +62,15 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 		}
 
 		/// <summary>
-		///   Получить все типы, являющиеся версиями указанного типа в индексе
-		///  (например product_schema_0, product_schema_1 являются версиями типа product и искать данные можно по всем этим типам)
+		/// Возвращает все типы, являющиеся версиями указанного типа в индексе
 		/// </summary>
-		/// <param name="indexBaseNames">Наименования индексов, по которым выполняем поиск</param>
-		/// <param name="typeNames">Типы данных, для которого получаем все версии типов в индексе</param>
-		/// <returns>Список всех версий типов данных в указанных индексах</returns>
-		public IEnumerable<IndexToTypeAccordance> GetAllTypes(IEnumerable<string> indexBaseNames, IEnumerable<string> typeNames)
+		/// <param name="indexNames">Наименования индексов, по которым выполняем поиск.</param>
+		/// <param name="typeNames">Типы данных, для которого получаем все версии типов в индексе.</param>
+		/// <returns>Список всех версий типов данных в указанных индексах.</returns>
+		/// <remarks>
+		/// Например product_schema_0, product_schema_1 являются версиями типа product и искать данные можно по всем этим типам.
+		/// </remarks>
+		public IEnumerable<IndexToTypeAccordance> GetAllTypes(IEnumerable<string> indexNames, IEnumerable<string> typeNames)
 		{
 			if (typeNames == null || !typeNames.Any())
 			{
@@ -75,52 +78,56 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 			}
 
 
-			//ищем все маппинги для указанных типов (используем низкоуровневый вызов GetMapping)
-			//ищем по всем типам и всем указанным индексам
-            return GetTypeVersions(typeNames, indexBaseNames);
-
+			// Ищем все маппинги для указанных типов (используем низкоуровневый вызов GetMapping).
+			// Ищем по всем типам и всем указанным индексам.
+			return GetTypeVersions(indexNames, typeNames);
 		}
 
-        /// <summary>
-        /// Получение актуальной схемы для документов, хранимых в типе
-        /// </summary>
-        public IList<Sdk.Environment.Index.PropertyMapping> GetIndexTypeMapping(string indexName, string typeName)
-        {
-            var schemaTypes = GetAllTypes(new[] {indexName}, new[] {typeName});
+		/// <summary>
+		/// Возвращает актуальную схему для документов, хранимых в типе.
+		/// </summary>
+		public IList<PropertyMapping> GetIndexTypeMapping(string indexName, string typeName)
+		{
+			var schemaTypes = GetAllTypes(new[] { indexName }, new[] { typeName });
 
-            if (schemaTypes == null || !schemaTypes.Any())
-            {
-                return new Sdk.Environment.Index.PropertyMapping[0];
-            }
+			if (schemaTypes == null || !schemaTypes.Any())
+			{
+				return new PropertyMapping[] { };
+			}
 
-            var actualType = schemaTypes.GetActualTypeName(typeName);
+			var actualType = schemaTypes.GetActualTypeName(typeName);
 
-            return ElasticMappingExtension.GetIndexTypeMapping(_firstNodeUrl.Host, _firstNodeUrl.Port, indexName, actualType);
-        }
-
-        /// <summary>
-        /// Получение статуса кластера
-        /// </summary>
-        public string GetStatus()
-        {
-            var health = _client.ClusterHealth();
-            return string.Format("cluster name - {0}, status - {1}, number of nodes: {2}, configured nodes: {3}", health.ClusterName, health.Status, health.NumberOfNodes, AppSettings.GetValue("ElasticSearchNodes"));
-        }
+			return ElasticMappingExtension.GetIndexTypeMapping(NodePool, indexName, actualType);
+		}
 
 		/// <summary>
-		///   Возвращает список версий указанных типов в указанных индексах
+		/// Получение статуса кластера.
 		/// </summary>
-		/// <param name="typeNames">Список типов, для которых ищем версии схем</param>
-		/// <param name="searchingIndeces">Список индексов для поиска</param>
-		/// <returns>Список версий схем</returns>
-		private IEnumerable<IndexToTypeAccordance> GetTypeVersions(IEnumerable<string> typeNames, IEnumerable<string> searchingIndeces)
+		public string GetStatus()
 		{
-			//собираем маппинги по всем индексам и типам
-            var mappings = ElasticMappingExtension.FillIndexMappings(_firstNodeUrl.Host, _firstNodeUrl.Port, typeNames, searchingIndeces);
+			var health = _client.ClusterHealth();
+			var nodeAddresses = string.Join("; ", NodePool.GetActualNodes().Select(i => i.ToString()));
+
+			return string.Format("cluster name - {0}, status - {1}, number of nodes: {2}, configured nodes: {3}", health.ClusterName, health.Status, health.NumberOfNodes, nodeAddresses);
+		}
+
+		/// <summary>
+		/// Возвращает список версий указанных типов в указанных индексах.
+		/// </summary>
+		/// <param name="indexNames">Список индексов для поиска</param>
+		/// <param name="typeNames">Список типов, для которых ищем версии схем</param>
+		/// <returns>Список версий схем</returns>
+		private static IEnumerable<IndexToTypeAccordance> GetTypeVersions(IEnumerable<string> indexNames, IEnumerable<string> typeNames)
+		{
+			// собираем маппинги по всем индексам и типам
+			var mappings = ElasticMappingExtension.FillIndexMappings(NodePool, indexNames, typeNames);
 			typeNames = typeNames.Select(t => t.ToLowerInvariant()).ToList();
-			searchingIndeces = searchingIndeces.Select(s => s.ToLowerInvariant()).ToList();
-			return
-				mappings.Where(m => searchingIndeces.Contains(m.IndexName) && typeNames.Contains(m.BaseTypeName)).OrderBy(m => m.IndexName).ThenBy(m => m.BaseTypeName).ToList();
+			indexNames = indexNames.Select(s => s.ToLowerInvariant()).ToList();
+
+			return mappings.Where(m => indexNames.Contains(m.IndexName) && typeNames.Contains(m.BaseTypeName))
+						   .OrderBy(m => m.IndexName)
+						   .ThenBy(m => m.BaseTypeName)
+						   .ToList();
 		}
 	}
 }

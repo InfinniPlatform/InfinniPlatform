@@ -139,6 +139,7 @@
     <Compile Include="Multitenancy\MultitenancyProvider.cs" />
     <Compile Include="UserStorage\AdminApi.cs" />
     <Compile Include="UserStorage\ApplicationUserStorePersistentStorage.cs" />
+    <Compile Include="UserStorage\ApplicationUserStorePersistentStorageExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

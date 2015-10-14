@@ -141,9 +141,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             //создаем новую версию маппинга для elasticcrudbehavior, testtype
             indexProvider.CreateIndexType("elasticcrudbehavior", "testtype");
 
-            //обновляем сведения о маппингах эластика в провайдере
-            elasticProvider1.RefreshMapping();
-
             //успешно добавляем в него инстанс, который ранее выдавал ошибку маппинга
             elasticProvider1.Set(failInstance);
             elasticProvider1.Refresh();

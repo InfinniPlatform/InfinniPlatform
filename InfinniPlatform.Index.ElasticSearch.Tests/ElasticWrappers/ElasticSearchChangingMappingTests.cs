@@ -223,8 +223,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             dynamic dynObject2 = expando2 as ExpandoObject;
             dynObject2.Id = Guid.NewGuid().ToString().ToLowerInvariant();
 
-            elasticSearchProvider.RefreshMapping();
-            // Вызов метода не должен привести к исключению
+			elasticSearchProvider = new ElasticFactory(new MultitenancyProvider()).BuildCrudOperationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser);
+			// Вызов метода не должен привести к исключению
             elasticSearchProvider.Set(dynObject2);
             elasticSearchProvider.Refresh();
 
@@ -607,7 +607,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             dynamic dynObject2 = expando2 as ExpandoObject;
             dynObject2.Id = Guid.NewGuid().ToString().ToLowerInvariant();
 
-            elasticSearchProvider.RefreshMapping();
+			elasticSearchProvider = new ElasticFactory(new MultitenancyProvider()).BuildCrudOperationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser);
             // Вызов метода не должен привести к исключению
             elasticSearchProvider.Set(dynObject2);
 

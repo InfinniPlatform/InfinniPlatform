@@ -67,6 +67,7 @@
     <Compile Include="Implementation\ElasticProviders\ElasticSearchProviderAllIndexes.cs" />
     <Compile Include="Implementation\ElasticProviders\ElasticSearchProviderInfo.cs" />
     <Compile Include="Implementation\ElasticProviders\IndexToTypeAccordanceProvider.cs" />
+    <Compile Include="Implementation\ElasticProviders\NodePool.cs" />
     <Compile Include="Implementation\ElasticProviders\SchemaIndexVersion\ElasticMappingExtension.cs" />
     <Compile Include="Implementation\ElasticProviders\SchemaIndexVersion\IndexToTypeAccordance.cs" />
     <Compile Include="Implementation\ElasticProviders\SchemaIndexVersion\IndexToTypeAccordanceSettings.cs" />

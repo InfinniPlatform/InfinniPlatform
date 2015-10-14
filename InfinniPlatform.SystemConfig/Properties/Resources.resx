@@ -118,25 +118,25 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="SpecifiedConfigurationNameNotFound" xml:space="preserve">
-    <value>Configuration with specified name not found: "{0}"</value>
+    <value>Configuration with specified name not found: '{0}'.</value>
   </data>
   <data name="MetadataObjectSuccessfullyUpdated" xml:space="preserve">
     <value>metadata object successfully updated</value>
   </data>
   <data name="ConfigurationVersionNotFound" xml:space="preserve">
-    <value>configuration version not found in repository: "{0}"</value>
+    <value>configuration version not found in repository: '{0}'.</value>
   </data>
   <data name="MetadataObjectDeleted" xml:space="preserve">
     <value>Metadata object successfully deleted.</value>
   </data>
   <data name="ConfigurationVersionShouldSpecified" xml:space="preserve">
-    <value>Configuration version for update should be specified!</value>
+    <value>Configuration version for update should be specified.</value>
   </data>
   <data name="ErrorParsingJsonConfiguration" xml:space="preserve">
-    <value>Error in parsing JSON configuration</value>
+    <value>Error in parsing JSON configuration.</value>
   </data>
   <data name="ConfigurationIdNotFound" xml:space="preserve">
-    <value>Need to specify ConfigurationId to set configuration from JSON</value>
+    <value>Need to specify ConfigurationId to set configuration from JSON.</value>
   </data>
   <data name="ErrorConfigurationNameNotFound" xml:space="preserve">
     <value>Configuration name not found.</value>
@@ -145,7 +145,7 @@
     <value>Source metadata for generator not specified.</value>
   </data>
   <data name="GeneratorMetadataNotFound" xml:space="preserve">
-    <value>Metadata for generator "{0}" not found.</value>
+    <value>Metadata for generator '{0}' not found.</value>
   </data>
   <data name="ErrorActionUnitNotSpecified" xml:space="preserve">
     <value>Action unit for generator not specified.</value>
@@ -169,15 +169,33 @@
     <value>Name of document metadata element not specified.</value>
   </data>
   <data name="GeneratorMetadataNotRegistered" xml:space="preserve">
-    <value>generator metadata with name "{0}" not registered</value>
+    <value>generator metadata with name '{0}' not registered.</value>
   </data>
   <data name="RegisterNotFound" xml:space="preserve">
-    <value>Specified register {0} not found</value>
+    <value>Specified register '{0}' not found</value>
   </data>
   <data name="SpecifiedIntervalIsInvalidSupportedIntervals" xml:space="preserve">
-    <value>Specified interval {0} is invalid. Supported intervals: year, quarter, month, week, day, hour, minute, second</value>
+    <value>Specified interval '{0}' is invalid. Supported intervals: year, quarter, month, week, day, hour, minute, second.</value>
   </data>
   <data name="SpecifiedTimezoneIsInvalid" xml:space="preserve">
-    <value>Specified timezone {0} is invalid. Valid timezone example: "+05:00"</value>
+    <value>Specified timezone {0} is invalid. Valid timezone example: '+05:00'.</value>
+  </data>
+  <data name="CantAddUnsavedUserToRole" xml:space="preserve">
+    <value>Can't add unsaved user to role.</value>
+  </data>
+  <data name="RoleNotFound" xml:space="preserve">
+    <value>Role with name '{0}' not found.</value>
+  </data>
+  <data name="CantRemoveUnsavedUserFromRole" xml:space="preserve">
+    <value>Can't remove unsaved user from role.</value>
+  </data>
+  <data name="ClaimIsUsed" xml:space="preserve">
+    <value>Claim with type '{0}' has user linked and should not be deleted.</value>
+  </data>
+  <data name="ClaimNotFound" xml:space="preserve">
+    <value>User claim not found: '{0}'.</value>
+  </data>
+  <data name="RoleIsUsed" xml:space="preserve">
+    <value>Role with name '{0}' has user linked and should not be deleted.</value>
   </data>
 </root>

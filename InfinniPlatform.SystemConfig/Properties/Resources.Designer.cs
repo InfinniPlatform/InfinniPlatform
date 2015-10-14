@@ -61,7 +61,43 @@ namespace InfinniPlatform.SystemConfig.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Need to specify ConfigurationId to set configuration from JSON.
+        ///   Looks up a localized string similar to Can&apos;t add unsaved user to role..
+        /// </summary>
+        internal static string CantAddUnsavedUserToRole {
+            get {
+                return ResourceManager.GetString("CantAddUnsavedUserToRole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t remove unsaved user from role..
+        /// </summary>
+        internal static string CantRemoveUnsavedUserFromRole {
+            get {
+                return ResourceManager.GetString("CantRemoveUnsavedUserFromRole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Claim with type &apos;{0}&apos; has user linked and should not be deleted..
+        /// </summary>
+        internal static string ClaimIsUsed {
+            get {
+                return ResourceManager.GetString("ClaimIsUsed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User claim not found: &apos;{0}&apos;..
+        /// </summary>
+        internal static string ClaimNotFound {
+            get {
+                return ResourceManager.GetString("ClaimNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Need to specify ConfigurationId to set configuration from JSON..
         /// </summary>
         internal static string ConfigurationIdNotFound {
             get {
@@ -70,7 +106,7 @@ namespace InfinniPlatform.SystemConfig.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to configuration version not found in repository: &quot;{0}&quot;.
+        ///   Looks up a localized string similar to configuration version not found in repository: &apos;{0}&apos;..
         /// </summary>
         internal static string ConfigurationVersionNotFound {
             get {
@@ -79,7 +115,7 @@ namespace InfinniPlatform.SystemConfig.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Configuration version for update should be specified!.
+        ///   Looks up a localized string similar to Configuration version for update should be specified..
         /// </summary>
         internal static string ConfigurationVersionShouldSpecified {
             get {
@@ -169,7 +205,7 @@ namespace InfinniPlatform.SystemConfig.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error in parsing JSON configuration.
+        ///   Looks up a localized string similar to Error in parsing JSON configuration..
         /// </summary>
         internal static string ErrorParsingJsonConfiguration {
             get {
@@ -178,7 +214,7 @@ namespace InfinniPlatform.SystemConfig.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Metadata for generator &quot;{0}&quot; not found..
+        ///   Looks up a localized string similar to Metadata for generator &apos;{0}&apos; not found..
         /// </summary>
         internal static string GeneratorMetadataNotFound {
             get {
@@ -187,7 +223,7 @@ namespace InfinniPlatform.SystemConfig.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to generator metadata with name &quot;{0}&quot; not registered.
+        ///   Looks up a localized string similar to generator metadata with name &apos;{0}&apos; not registered..
         /// </summary>
         internal static string GeneratorMetadataNotRegistered {
             get {
@@ -214,7 +250,7 @@ namespace InfinniPlatform.SystemConfig.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Specified register {0} not found.
+        ///   Looks up a localized string similar to Specified register &apos;{0}&apos; not found.
         /// </summary>
         internal static string RegisterNotFound {
             get {
@@ -223,7 +259,25 @@ namespace InfinniPlatform.SystemConfig.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Configuration with specified name not found: &quot;{0}&quot;.
+        ///   Looks up a localized string similar to Role with name &apos;{0}&apos; has user linked and should not be deleted..
+        /// </summary>
+        internal static string RoleIsUsed {
+            get {
+                return ResourceManager.GetString("RoleIsUsed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Role with name &apos;{0}&apos; not found..
+        /// </summary>
+        internal static string RoleNotFound {
+            get {
+                return ResourceManager.GetString("RoleNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration with specified name not found: &apos;{0}&apos;..
         /// </summary>
         internal static string SpecifiedConfigurationNameNotFound {
             get {
@@ -232,7 +286,7 @@ namespace InfinniPlatform.SystemConfig.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Specified interval {0} is invalid. Supported intervals: year, quarter, month, week, day, hour, minute, second.
+        ///   Looks up a localized string similar to Specified interval &apos;{0}&apos; is invalid. Supported intervals: year, quarter, month, week, day, hour, minute, second..
         /// </summary>
         internal static string SpecifiedIntervalIsInvalidSupportedIntervals {
             get {
@@ -241,7 +295,7 @@ namespace InfinniPlatform.SystemConfig.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Specified timezone {0} is invalid. Valid timezone example: &quot;+05:00&quot;.
+        ///   Looks up a localized string similar to Specified timezone {0} is invalid. Valid timezone example: &apos;+05:00&apos;..
         /// </summary>
         internal static string SpecifiedTimezoneIsInvalid {
             get {
