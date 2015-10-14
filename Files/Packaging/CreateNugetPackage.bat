@@ -9,12 +9,12 @@ IF [%1] == [] (
 powershell -NoProfile -ExecutionPolicy Bypass -Command ".\SetVersion.ps1 %1"
 
 ::Clear build artifacts
-pushd ..
+pushd ..\..
 rd /S /Q Assemblies
 popd
 
 ::Build project
-msbuild ..\InfinniPlatform.sln /p:Configuration=Debug /m /v:q
+msbuild ..\..\InfinniPlatform.sln /p:Configuration=Debug /m /v:q
 
 ::Create package
 nuget Pack InfinniPlatform.%1.nuspec -NoDefaultExcludes
