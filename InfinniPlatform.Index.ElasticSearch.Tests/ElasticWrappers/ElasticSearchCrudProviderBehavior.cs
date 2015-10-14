@@ -142,7 +142,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             indexProvider.CreateIndexType("elasticcrudbehavior", "testtype");
 
             //успешно добавляем в него инстанс, который ранее выдавал ошибку маппинга
-            elasticProvider1.Set(failInstance);
+			elasticProvider1 = new ElasticSearchProvider("elasticcrudbehavior", "testtype",
+															 AuthorizationStorageExtensions.AnonimousUser);
+			elasticProvider1.Set(failInstance);
             elasticProvider1.Refresh();
 
             //проверяем, что выборка содержит данные и из старой, и из новой версии маппинга
