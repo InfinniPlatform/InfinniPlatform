@@ -17,4 +17,4 @@ popd
 msbuild ..\..\InfinniPlatform.sln /p:Configuration=Debug /m /v:q
 
 ::Create package
-nuget Pack InfinniPlatform.%1.nuspec -NoDefaultExcludes
+nuget Pack InfinniPlatform.nuspec -NoDefaultExcludes
