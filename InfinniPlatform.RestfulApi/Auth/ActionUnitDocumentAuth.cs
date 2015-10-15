@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.Auth;
@@ -31,7 +33,7 @@ namespace InfinniPlatform.RestfulApi.Auth
                                                                                ? target.Item.Document.Id
                                                                                : null);
                 target.IsValid = result.IsValid;
-                target.ValidationMessage = string.Join(",", result.Items);
+				target.ValidationMessage = string.Join(",", (result.Items != null) ? result.Items.Select(i => i.ToString()) : Enumerable.Empty<string>());
             }
             else
             {

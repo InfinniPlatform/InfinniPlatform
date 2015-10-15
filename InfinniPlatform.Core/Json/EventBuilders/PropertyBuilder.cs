@@ -30,16 +30,16 @@ namespace InfinniPlatform.Json.EventBuilders
             return property.Split('.').LastOrDefault();
         }
 
-        private void UpdateProperty(string propertyName, JObject parentObject, dynamic value)
+        private void UpdateProperty(string propertyName, JObject parentObject, object value)
         {
             var prop = parentObject.Properties().FirstOrDefault(p => p.Name == propertyName);
             if (prop != null)
             {
-                prop.Value = value is JValue ? ((JValue) value).Value : value;
+				prop.Value = (JToken)((value is JValue) ? ((JValue)value).Value : value);
             }
             else
             {
-                parentObject.Add(propertyName, value);
+                parentObject.Add(propertyName, (JToken)value);
             }
         }
 
