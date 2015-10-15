@@ -9,6 +9,7 @@ using System.Web.Http;
 using InfinniPlatform.Api.Schema;
 using InfinniPlatform.FastReport.TemplatesFluent.Reports;
 using InfinniPlatform.Reporting.DataSources;
+using InfinniPlatform.Sdk.Api;
 
 using Newtonsoft.Json.Linq;
 
@@ -23,7 +24,7 @@ namespace InfinniPlatform.Reporting.Tests.DataSources
 	[Ignore("Manual")]
 	public sealed class RestDataSourceTest
 	{
-		private static readonly string BaseAddress = string.Format("{0}://{1}:{2}/", TestSettings.DefaultHostingConfig.ServerScheme, TestSettings.DefaultHostingConfig.ServerName, TestSettings.DefaultHostingConfig.ServerPort);
+		private static readonly string BaseAddress = string.Format("{0}://{1}:{2}/", HostingConfig.Default.ServerScheme, HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort);
 
 
 		[Test]

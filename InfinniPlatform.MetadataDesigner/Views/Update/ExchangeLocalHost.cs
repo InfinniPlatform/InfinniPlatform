@@ -1,5 +1,4 @@
-﻿using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Api.TestEnvironment;
+﻿using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Sdk.Api;
 
 namespace InfinniPlatform.MetadataDesigner.Views.Update
@@ -15,7 +14,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.Update
 			HostingConfig = HostingConfig.Default;
 			Version = "TestVersion";
 
-			TestApi.InitClientRouting(HostingConfig.Default);
+			ControllerRoutingFactory.Instance = new ControllerRoutingFactory(HostingConfig.Default);
 
 			return true;
 		}

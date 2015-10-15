@@ -6,9 +6,9 @@ using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataReaders;
-using InfinniPlatform.Api.TestEnvironment;
 using InfinniPlatform.Api.Tests.Builders;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
+using InfinniPlatform.NodeServiceHost;
 using InfinniPlatform.Sdk.Dynamic;
 using NUnit.Framework;
 
@@ -107,10 +107,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
 			var indexProvider = new IndexStateProvider();
 			indexProvider.DeleteIndex("_all");
 
-            _server = TestApi.StartServer(c => c.SetHostingConfig(TestSettings.DefaultHostingConfig));
-
-            TestApi.InitClientRouting(TestSettings.DefaultHostingConfig);
-        }
+			_server = InfinniPlatformInprocessHost.Start();
+		}
 
         [TestFixtureTearDown]
         public void FixtureTearDown()

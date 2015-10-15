@@ -1,6 +1,4 @@
-﻿using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Owin;
-using InfinniPlatform.Owin.Hosting;
+﻿using InfinniPlatform.Owin.Hosting;
 using InfinniPlatform.Sdk.Api;
 using InfinniPlatform.SignalR;
 
@@ -12,15 +10,12 @@ namespace InfinniPlatform.ClientNotification.Tests
 	[Category(TestCategories.IntegrationTest)]
 	public sealed class SignalRWebClientNotificationServiceIntegrationTest
 	{
-		private static readonly HostingConfig HostingConfig = TestSettings.DefaultHostingConfig;
-
-
 		[Test]
 		public void ShouldNotifyClients()
 		{
 			// Given
 
-			var hosting = new OwinHostingService(config => config.Configuration(HostingConfig));
+			var hosting = new OwinHostingService(config => config.Configuration(HostingConfig.Default));
 			hosting.RegisterModule(new SignalROwinHostingModule());
 
 			var notificationServiceFactory = new SignalRWebClientNotificationServiceFactory();

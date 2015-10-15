@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows.Forms;
-using InfinniPlatform.Api.TestEnvironment;
 
 namespace InfinniPlatform.DesignControls
 {
@@ -13,18 +11,6 @@ namespace InfinniPlatform.DesignControls
         [STAThread]
         private static void Main()
         {
-#if DEBUG
-            if (Debugger.IsAttached)
-            {
-                var hostProcesses = Process.GetProcessesByName("InfinniPlatform.RestfulApi");
-
-                if (hostProcesses.Length == 0)
-                {
-                    TestApi.StartServer(p => { });
-                }
-            }
-#endif
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 

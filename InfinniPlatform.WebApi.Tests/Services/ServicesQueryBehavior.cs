@@ -1,20 +1,21 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Reflection;
-using InfinniPlatform.Api.Hosting;
+
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Hosting.Implementation.ExtensionPointHandling;
 using InfinniPlatform.Hosting.Implementation.ServiceRegistration;
 using InfinniPlatform.Hosting.Implementation.ServiceTemplates;
 using InfinniPlatform.Metadata.Implementation.HostServerConfiguration;
-using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Api;
 using InfinniPlatform.Sdk.Environment.Hosting;
 using InfinniPlatform.WebApi.Tests.Builders;
 using InfinniPlatform.WebApi.Tests.Properties;
 
-using NUnit.Framework;
 using Newtonsoft.Json;
+
+using NUnit.Framework;
+
 using RestSharp;
 
 namespace InfinniPlatform.WebApi.Tests.Services
@@ -87,9 +88,9 @@ namespace InfinniPlatform.WebApi.Tests.Services
         {
             var restClient =
                 new RestClient(string.Format("{0}://{1}:{2}/DrugsVidal/StandardApi/REF_TEST/{3}",
-                                             TestSettings.DefaultHostingConfig.ServerScheme,
-                                             TestSettings.DefaultHostingConfig.ServerName,
-                                             TestSettings.DefaultHostingConfig.ServerPort, handlerName));
+											 HostingConfig.Default.ServerScheme,
+											 HostingConfig.Default.ServerName,
+											 HostingConfig.Default.ServerPort, handlerName));
 
             IRestResponse restResponse =
                 restClient.Get(new RestRequest("?query={argument}") {RequestFormat = DataFormat.Json}
@@ -107,9 +108,9 @@ namespace InfinniPlatform.WebApi.Tests.Services
         {
             var restClient =
                 new RestClient(string.Format("{0}://{1}:{2}/DrugsVidal/StandardApi/REF_TEST/{3}",
-                                             TestSettings.DefaultHostingConfig.ServerScheme,
-                                             TestSettings.DefaultHostingConfig.ServerName,
-                                             TestSettings.DefaultHostingConfig.ServerPort, handlerName));
+											 HostingConfig.Default.ServerScheme,
+											 HostingConfig.Default.ServerName,
+											 HostingConfig.Default.ServerPort, handlerName));
 
             IRestResponse restResponse = restClient.Post(new RestRequest {RequestFormat = DataFormat.Json}
                                                              .AddBody(
@@ -125,9 +126,9 @@ namespace InfinniPlatform.WebApi.Tests.Services
         {
             var restClient =
                 new RestClient(string.Format("{0}://{1}:{2}/DrugsVidal/Upload/REF_TEST/{3}/",
-                                             TestSettings.DefaultHostingConfig.ServerScheme,
-                                             TestSettings.DefaultHostingConfig.ServerName,
-                                             TestSettings.DefaultHostingConfig.ServerPort, handlerName));
+											 HostingConfig.Default.ServerScheme,
+											 HostingConfig.Default.ServerName,
+											 HostingConfig.Default.ServerPort, handlerName));
 
             IRestResponse restResponse =
                 restClient.Post(new RestRequest("?linkedData={argument}") {RequestFormat = DataFormat.Json}
@@ -158,9 +159,9 @@ namespace InfinniPlatform.WebApi.Tests.Services
 
             var restClient =
                 new RestClient(string.Format("{0}://{1}:{2}/DrugsVidal/Upload/REF_TEST/{3}/",
-                                             TestSettings.DefaultHostingConfig.ServerScheme,
-                                             TestSettings.DefaultHostingConfig.ServerName,
-                                             TestSettings.DefaultHostingConfig.ServerPort, handlerName));
+											 HostingConfig.Default.ServerScheme,
+											 HostingConfig.Default.ServerName,
+											 HostingConfig.Default.ServerPort, handlerName));
 
             IRestResponse restResponse =
                 restClient.Post(new RestRequest("?linkedData={argument}") {RequestFormat = DataFormat.Json}
@@ -179,9 +180,9 @@ namespace InfinniPlatform.WebApi.Tests.Services
         {
             var restClient =
                 new RestClient(string.Format("{0}://{1}:{2}/DrugsVidal/StandardApi/REF_TEST/testdeletehandler",
-                                             TestSettings.DefaultHostingConfig.ServerScheme,
-                                             TestSettings.DefaultHostingConfig.ServerName,
-                                             TestSettings.DefaultHostingConfig.ServerPort));
+											 HostingConfig.Default.ServerScheme,
+											 HostingConfig.Default.ServerName,
+											 HostingConfig.Default.ServerPort));
 
             IRestResponse restResponse =
                 restClient.Delete(new RestRequest("&IdList={IdList}") {RequestFormat = DataFormat.Json}

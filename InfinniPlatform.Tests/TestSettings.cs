@@ -8,9 +8,5 @@ namespace InfinniPlatform
 	/// </summary>
 	public static class TestSettings
 	{
-		/// <summary>
-		/// Настройки подсистемы хостинга.
-		/// </summary>
-		public static readonly HostingConfig DefaultHostingConfig = new HostingConfig();
 	}
 }

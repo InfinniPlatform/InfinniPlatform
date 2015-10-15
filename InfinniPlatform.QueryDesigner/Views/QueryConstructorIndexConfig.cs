@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
-using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Api.TestEnvironment;
+
+using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.QueryDesigner.Contracts;
 using InfinniPlatform.Sdk.Api;
 
@@ -73,7 +74,7 @@ namespace InfinniPlatform.QueryDesigner.Views
 
         public void InitRouting(HostingConfig hostingConfig)
         {
-            TestApi.InitClientRouting(hostingConfig);
+			ControllerRoutingFactory.Instance = new ControllerRoutingFactory(HostingConfig.Default);
         }
 
         private void ComboBoxConfigurationEditValueChanged(object sender, EventArgs e)

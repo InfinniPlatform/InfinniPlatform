@@ -1,17 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
-using InfinniPlatform.Api.Hosting;
+
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Hosting.Implementation.ExtensionPointHandling;
 using InfinniPlatform.Hosting.Implementation.ServiceRegistration;
 using InfinniPlatform.Hosting.Implementation.ServiceTemplates;
 using InfinniPlatform.Metadata.Implementation.HostServerConfiguration;
-using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Api;
 using InfinniPlatform.Sdk.Environment.Hosting;
 using InfinniPlatform.WebApi.Tests.Builders;
-using NUnit.Framework;
+
 using Newtonsoft.Json;
+
+using NUnit.Framework;
+
 using RestSharp;
 
 namespace InfinniPlatform.WebApi.Tests.Services
@@ -53,9 +56,9 @@ namespace InfinniPlatform.WebApi.Tests.Services
             {
                 var restClient =
                     new RestClient(string.Format("{0}://{1}:{2}/DrugsVidal/StandardApi/REF_TEST/testgetinstance",
-                                                 TestSettings.DefaultHostingConfig.ServerScheme,
-                                                 TestSettings.DefaultHostingConfig.ServerName,
-                                                 TestSettings.DefaultHostingConfig.ServerPort));
+												 HostingConfig.Default.ServerScheme,
+												 HostingConfig.Default.ServerName,
+												 HostingConfig.Default.ServerPort));
                 Stopwatch watch = Stopwatch.StartNew();
 
                 for (int i = 0; i < 10; i++)

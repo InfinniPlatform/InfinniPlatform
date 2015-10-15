@@ -8,7 +8,9 @@ using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Packages;
 using InfinniPlatform.Api.Packages.ConfigStructure;
-using InfinniPlatform.Api.TestEnvironment;
+using InfinniPlatform.NodeServiceHost;
+using InfinniPlatform.Sdk.Api;
+
 using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.Packages
@@ -24,10 +26,8 @@ namespace InfinniPlatform.Api.Tests.Packages
         //[TestFixtureSetUp]
         public void FixtureSetup()
         {
-            _server = TestApi.StartServer(c => c.SetHostingConfig(TestSettings.DefaultHostingConfig));
-
-            TestApi.InitClientRouting(TestSettings.DefaultHostingConfig);
-        }
+			_server = InfinniPlatformInprocessHost.Start();
+		}
 
         //[TestFixtureTearDown]
         public void FixtureTearDown()

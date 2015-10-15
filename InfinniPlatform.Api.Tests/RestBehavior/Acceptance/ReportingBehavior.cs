@@ -5,7 +5,7 @@ using InfinniPlatform.Api.Reporting;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Api.SearchOptions.Builders;
-using InfinniPlatform.Api.TestEnvironment;
+using InfinniPlatform.NodeServiceHost;
 using InfinniPlatform.Sdk.Api;
 using InfinniPlatform.Sdk.Dynamic;
 using NUnit.Framework;
@@ -22,15 +22,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-            var hostingConfig = new HostingConfig
-                {
-                    ServerName = "localhost"
-                };
-
-            _server = TestApi.StartServer(c => c.SetHostingConfig(hostingConfig));
-
-            TestApi.InitClientRouting(hostingConfig);
-        }
+			_server = InfinniPlatformInprocessHost.Start();
+		}
 
         [TestFixtureTearDown]
         public void FixtureTearDown()

@@ -1,6 +1,5 @@
 ﻿using System;
 
-using InfinniPlatform.Api.TestEnvironment;
 using InfinniPlatform.Sdk.Api;
 using InfinniPlatform.Utils.Update;
 
@@ -36,7 +35,7 @@ namespace InfinniPlatform.Utils.Exchange
 				HostingConfig = HostingConfig.Default;
 			}
 
-			TestApi.InitClientRouting(HostingConfig);
+			Api.RestQuery.ControllerRoutingFactory.Instance = new Api.RestQuery.ControllerRoutingFactory(HostingConfig);
 
 			return true;
 		}

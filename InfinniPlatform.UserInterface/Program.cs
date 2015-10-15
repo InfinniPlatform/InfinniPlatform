@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using System.Windows.Forms;
-using InfinniPlatform.Api.Hosting;
+
 using InfinniPlatform.Api.RestApi.Auth;
-using InfinniPlatform.Api.TestEnvironment;
 using InfinniPlatform.Sdk.Api;
 using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.UserInterface.AppHost;
@@ -17,17 +15,6 @@ namespace InfinniPlatform.UserInterface
         [STAThread]
         private static void Main()
         {
-#if DEBUG
-            if (Debugger.IsAttached)
-            {
-                var hostProcesses = Process.GetProcessesByName("InfinniPlatform.RestfulApi");
-
-                if (hostProcesses.Length == 0)
-                {
-                    TestApi.StartServer(p => p.SetHostingConfig(HostingConfig.Default));
-                }
-            }
-#endif
             try
             {
                 new SignInApi().SignInInternal(AuthorizationStorageExtensions.AdminUser,

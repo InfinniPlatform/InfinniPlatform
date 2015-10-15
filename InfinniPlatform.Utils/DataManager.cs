@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using InfinniPlatform.Api.Hosting;
+
 using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Api.TestEnvironment;
+using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Sdk.Api;
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -12,7 +12,7 @@ namespace InfinniPlatform.Utils
     {
         public void Import(string pathToFolder)
         {
-            TestApi.InitClientRouting(new HostingConfig());
+            ControllerRoutingFactory.Instance = new ControllerRoutingFactory(HostingConfig.Default);
 
             if (!Directory.Exists(pathToFolder))
             {

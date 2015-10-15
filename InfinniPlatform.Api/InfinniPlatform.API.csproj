@@ -50,19 +50,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Autofac.Configuration, Version=3.3.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.Configuration.3.3.0\lib\net40\Autofac.Configuration.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="envdte, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>C:\Program Files (x86)\Common Files\microsoft shared\MSEnv\PublicAssemblies\envdte.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -283,15 +270,6 @@
     <Compile Include="Serialization\KnownTypesJsonConverter.cs" />
     <Compile Include="SystemExtensions\InstallerInfo.cs" />
     <Compile Include="SystemExtensions\InstallExtension.cs" />
-    <Compile Include="TestEnvironment\ConfigurationInfo.cs" />
-    <Compile Include="TestEnvironment\TestApi.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="TestEnvironment\TestServerParameters.cs" />
-    <Compile Include="TestEnvironment\TestServer.cs" />
-    <Compile Include="TestEnvironment\TestServerTracker.cs" />
-    <Compile Include="TestEnvironment\TestServerInfo.cs" />
-    <Compile Include="TestEnvironment\TestServerParametersBuilder.cs" />
     <Compile Include="RestQuery\EventObjects\EventSerializers\AddCollectionItem.cs" />
     <Compile Include="RestQuery\EventObjects\EventSerializers\ChangeIndexCollectionItem.cs" />
     <Compile Include="RestQuery\EventObjects\EventSerializers\ObjectToEventSerializerStandard.cs" />

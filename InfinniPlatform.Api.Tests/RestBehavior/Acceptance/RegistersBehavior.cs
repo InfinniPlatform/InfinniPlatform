@@ -11,7 +11,7 @@ using InfinniPlatform.Api.Packages;
 using InfinniPlatform.Api.Registers;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Api.TestEnvironment;
+using InfinniPlatform.NodeServiceHost;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Hosting;
 using InfinniPlatform.Sdk.Environment.Register;
@@ -43,9 +43,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         //[TestFixtureSetUp]
         public void FixtureSetup()
         {
-            _server = TestApi.StartServer(c => c.SetHostingConfig(TestSettings.DefaultHostingConfig));
-
-            TestApi.InitClientRouting(TestSettings.DefaultHostingConfig);
+			_server = InfinniPlatformInprocessHost.Start();
 
             _sw.Restart();
 

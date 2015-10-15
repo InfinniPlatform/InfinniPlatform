@@ -2,57 +2,54 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Web.Http;
-using InfinniPlatform.Api.Hosting;
+
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Hosting.Implementation.ServiceRegistration;
 using InfinniPlatform.Hosting.Implementation.ServiceTemplates;
 using InfinniPlatform.Owin.Hosting;
 using InfinniPlatform.Sdk.Api;
+
 using NUnit.Framework;
 
 namespace InfinniPlatform.WebApi.Tests.Hosting
 {
-    [Ignore]
-    [TestFixture]
-    [Category(TestCategories.IntegrationTest)]
-    public sealed class WebApiOwinHostingModuleIntegrationTest
-    {
-        private static readonly HostingConfig HostingConfig = TestSettings.DefaultHostingConfig;
+	[Ignore]
+	[TestFixture]
+	[Category(TestCategories.IntegrationTest)]
+	public sealed class WebApiOwinHostingModuleIntegrationTest
+	{
+		[Test]
+		public void ShouldHostWebApi()
+		{
+			// Given
 
+			var requestUri =
+				new Uri(string.Format("{0}://{1}:{2}/api/Test/123", HostingConfig.Default.ServerScheme, HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort));
 
-        [Test]
-        public void ShouldHostWebApi()
-        {
-            // Given
+			var hosting = new OwinHostingService(config => config.Configuration(HostingConfig.Default));
 
-            var requestUri =
-                new Uri(string.Format("{0}://{1}:{2}/api/Test/123", HostingConfig.ServerScheme, HostingConfig.ServerName,
-                                      HostingConfig.ServerPort));
+			var templateConfig = new ServiceTemplateConfiguration();
+			var module = new WebApiOwinHostingModule(new List<Assembly>(),
+													 new ServiceRegistrationContainerFactory(templateConfig),
+													 templateConfig);
+			hosting.RegisterModule(module);
 
-            var hosting = new OwinHostingService(config => config.Configuration(HostingConfig));
+			// When
+			hosting.Start();
+			var response = WebRequestHelper.Get(requestUri).AsObject<string>();
+			hosting.Stop();
 
-            var templateConfig = new ServiceTemplateConfiguration();
-            var module = new WebApiOwinHostingModule(new List<Assembly>(),
-                                                     new ServiceRegistrationContainerFactory(templateConfig),
-                                                     templateConfig);
-            hosting.RegisterModule(module);
+			// Then
+			Assert.AreEqual("123", response);
+		}
+	}
 
-            // When
-            hosting.Start();
-            var response = WebRequestHelper.Get(requestUri).AsObject<string>();
-            hosting.Stop();
-
-            // Then
-            Assert.AreEqual("123", response);
-        }
-    }
-
-    public sealed class TestController : ApiController
-    {
-        [ActionName("123")]
-        public string Get(string id)
-        {
-            return id;
-        }
-    }
+	public sealed class TestController : ApiController
+	{
+		[ActionName("123")]
+		public string Get(string id)
+		{
+			return id;
+		}
+	}
 }

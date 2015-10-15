@@ -1,58 +1,62 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using InfinniPlatform.NodeServiceHost;
 using InfinniPlatform.Sdk.Api;
-using InfinniPlatform.Sdk.Dynamic;
+
 using NUnit.Framework;
 
 namespace InfinniPlatform.Sdk.Tests
 {
-    [TestFixture]
+	[TestFixture]
 	[Category(TestCategories.IntegrationTest)]
-    public sealed class CustomServiceApiTest
-    {
-        private const string InfinniSessionPort = "9900";
-        private const string InfinniSessionServer = "localhost";
-        private const string Route = "1";
+	public sealed class CustomServiceApiTest
+	{
+		private const string Route = "1";
 
-        private InfinniCustomServiceApi _customServiceApi;
-        private InfinniDocumentApi _documentApi;
+		private IDisposable _server;
+		private InfinniCustomServiceApi _customServiceApi;
+		private InfinniDocumentApi _documentApi;
 
-        [TestFixtureSetUp]
-        public void SetupApi()
-        {
-            _customServiceApi = new InfinniCustomServiceApi(InfinniSessionServer, InfinniSessionPort,Route);
-            _documentApi = new InfinniDocumentApi(InfinniSessionServer, InfinniSessionPort,Route);
-        }
+		[TestFixtureSetUp]
+		public void SetUp()
+		{
+			_server = InfinniPlatformInprocessHost.Start();
+			_customServiceApi = new InfinniCustomServiceApi(HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort.ToString(), Route);
+			_documentApi = new InfinniDocumentApi(HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort.ToString(), Route);
+		}
 
-        [Test]
-        public void ShouldInvokeCustomService()
-        {
-            //Given
-            dynamic review = new
-            {
-                Game = new
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    DisplayName = "X-Com:Enemy Within"
-                },
-                Likes = 0
-            };
+		[TestFixtureTearDown]
+		public void TearDown()
+		{
+			_server.Dispose();
+		}
 
-            string docId = _documentApi.SetDocument("Gameshop", "review", review).Id.ToString();
+		[Test]
+		public void ShouldInvokeCustomService()
+		{
+			//Given
+			dynamic review = new
+			{
+				Game = new
+				{
+					Id = Guid.NewGuid().ToString(),
+					DisplayName = "X-Com:Enemy Within"
+				},
+				Likes = 0
+			};
 
-            //When
-            _customServiceApi.ExecuteAction("Gameshop", "Review", "Like", new
-            {
-                DocumentId = docId
-            });
+			string docId = _documentApi.SetDocument("Gameshop", "review", review).Id.ToString();
 
-            //Then
-            dynamic documentResult = _documentApi.GetDocumentById("Gameshop", "review", docId);
-            Assert.AreEqual(documentResult.Likes,1);
-        }
+			//When
+			_customServiceApi.ExecuteAction("Gameshop", "Review", "Like", new
+			{
+				DocumentId = docId
+			});
 
-    }
+			//Then
+			dynamic documentResult = _documentApi.GetDocumentById("Gameshop", "review", docId);
+			Assert.AreEqual(documentResult.Likes, 1);
+		}
+
+	}
 }

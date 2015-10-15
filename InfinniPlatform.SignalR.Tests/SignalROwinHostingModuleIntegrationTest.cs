@@ -13,15 +13,12 @@ namespace InfinniPlatform.SignalR.Tests
 	[Category(TestCategories.IntegrationTest)]
 	public sealed class SignalROwinHostingModuleIntegrationTest
 	{
-		private static readonly HostingConfig HostingConfig = TestSettings.DefaultHostingConfig;
-
-
 		[Test]
 		public void ServerProxyShouldSendNotificationToAllClients()
 		{
 			// Given
 
-			var hosting = new OwinHostingService(config => config.Configuration(HostingConfig));
+			var hosting = new OwinHostingService(config => config.Configuration(HostingConfig.Default));
 			hosting.RegisterModule(new SignalROwinHostingModule());
 
 			var serverProxy = new WebClientNotificationProxy();
@@ -54,7 +51,7 @@ namespace InfinniPlatform.SignalR.Tests
 		{
 			// Given
 
-			var hosting = new OwinHostingService(config => config.Configuration(HostingConfig));
+			var hosting = new OwinHostingService(config => config.Configuration(HostingConfig.Default));
 			hosting.RegisterModule(new SignalROwinHostingModule());
 
 			var serverProxy = new WebClientNotificationProxy();
@@ -93,7 +90,7 @@ namespace InfinniPlatform.SignalR.Tests
 		{
 			// Given
 
-			var hosting = new OwinHostingService(config => config.Configuration(HostingConfig));
+			var hosting = new OwinHostingService(config => config.Configuration(HostingConfig.Default));
 			hosting.RegisterModule(new SignalROwinHostingModule());
 
 			var receiveEventWebClient1 = new CountdownEvent(1);
@@ -125,7 +122,7 @@ namespace InfinniPlatform.SignalR.Tests
 		{
 			public WebClientNotification(CountdownEvent receiveEvent, string routingKey)
 			{
-				var hubConnection = new HubConnection(string.Format("{0}://{1}:{2}/", HostingConfig.ServerScheme, HostingConfig.ServerName, HostingConfig.ServerPort));
+				var hubConnection = new HubConnection(string.Format("{0}://{1}:{2}/", HostingConfig.Default.ServerScheme, HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort));
 				var hubProxy = hubConnection.CreateHubProxy("WebClientNotificationHub");
 				hubProxy.On<object>(routingKey, OnReceive);
 				hubConnection.Start().Wait();

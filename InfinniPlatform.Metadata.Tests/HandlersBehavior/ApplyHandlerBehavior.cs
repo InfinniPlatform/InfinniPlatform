@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Api.TestEnvironment;
+using InfinniPlatform.NodeServiceHost;
+
 using NUnit.Framework;
 
 namespace InfinniPlatform.Metadata.Tests.HandlersBehavior
@@ -16,8 +17,7 @@ namespace InfinniPlatform.Metadata.Tests.HandlersBehavior
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-            _server = TestApi.StartServer(c => c.SetHostingConfig(TestSettings.DefaultHostingConfig)
-                                                .AddConfigurationFromAssembly("InfinniPlatform.Metadata.Tests"));
+            _server = InfinniPlatformInprocessHost.Start();
 
             new UpdateApi(null).ForceReload("Handlers");
             new UpdateApi(null).UpdateStore("Handlers");

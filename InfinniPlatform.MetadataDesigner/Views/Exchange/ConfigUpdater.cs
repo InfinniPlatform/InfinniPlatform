@@ -6,7 +6,6 @@ using System.Windows.Forms;
 using InfinniPlatform.Api.Packages;
 using InfinniPlatform.Api.Packages.ConfigStructure;
 using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Api.TestEnvironment;
 
 namespace InfinniPlatform.MetadataDesigner.Views.Exchange
 {
@@ -60,14 +59,10 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
                         "Не найдены прикладные сборки для обновления конфигурации. Сборки: {0}", failedAssemblies));
                 }
 
-                var instance = new ConfigurationInfo();
-                var appliedAssemblies = new List<string>();
-                instance.AppliedAssemblyList = appliedAssemblies;
-
-                appliedAssemblies.AddRange(SourceAssemblyList.Select(updatePackageAssembly => updatePackageAssembly.AssemblyFileName));
+                var appliedAssemblies = SourceAssemblyList.Select(updatePackageAssembly => updatePackageAssembly.AssemblyFileName);
 
                 var packageBuilder = new PackageBuilder();
-                foreach (var appliedAssembly in instance.AppliedAssemblyList)
+				foreach (var appliedAssembly in appliedAssemblies)
                 {
                     var package = packageBuilder.BuildPackage(configuration, VersionName, appliedAssembly);
                     new UpdateApi(VersionName).InstallPackages(new[] { package });

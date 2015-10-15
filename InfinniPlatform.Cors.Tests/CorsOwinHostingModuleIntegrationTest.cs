@@ -23,17 +23,14 @@ namespace InfinniPlatform.Cors.Tests
 	[Category(TestCategories.IntegrationTest)]
 	public sealed class CorsOwinHostingModuleIntegrationTest
 	{
-		private static readonly HostingConfig HostingConfig = TestSettings.DefaultHostingConfig;
-
-
 		[Test]
 		public void ServerReplyShouldContainsAccessControlAllowOrigin()
 		{
 			// Given
 
-			var requestUri = new Uri(string.Format("{0}://{1}:{2}/some/resource", HostingConfig.ServerScheme, HostingConfig.ServerName, HostingConfig.ServerPort));
+			var requestUri = new Uri(string.Format("{0}://{1}:{2}/some/resource", HostingConfig.Default.ServerScheme, HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort));
 
-			var hosting = new OwinHostingService(config => config.Configuration(HostingConfig));
+			var hosting = new OwinHostingService(config => config.Configuration(HostingConfig.Default));
 
 			hosting.RegisterModule(new CorsOwinHostingModule());
 			hosting.RegisterModule(new FakeOwinHostingModule());

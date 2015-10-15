@@ -4,7 +4,7 @@
 		<id>InfinniPlatform.Api</id>
 		<title>InfinniPlatform.Api</title>
 		<description>InfinniPlatform SDK for .NET</description>
-		<version>1.0.0.78</version>
+		<version>1.0.0.85</version>
 		<authors>Infinnity Solutions</authors>
 		<licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -12,8 +12,6 @@
 		<tags>InfinniPlatform</tags>
 		<projectUrl>http://infinnity.ru/</projectUrl>
 		<dependencies>
-			<dependency id="Autofac" version="3.5.2" />
-			<dependency id="Autofac.Configuration" version="3.3.0" />
 			<dependency id="Newtonsoft.Json" version="7.0.1" />
 			<dependency id="NUnit" version="2.6.4" />
 			<dependency id="RestSharp" version="105.2.3" />

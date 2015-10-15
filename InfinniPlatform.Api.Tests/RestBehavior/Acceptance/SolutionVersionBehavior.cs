@@ -11,7 +11,7 @@ using InfinniPlatform.Api.Packages;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Api.TestEnvironment;
+using InfinniPlatform.NodeServiceHost;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Hosting;
 using NUnit.Framework;
@@ -42,15 +42,13 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         //[SetUp]
         public void TestSetup()
         {
-            _server = TestApi.StartServer(c => c.SetHostingConfig(TestSettings.DefaultHostingConfig));
-
-            TestApi.InitClientRouting(TestSettings.DefaultHostingConfig);
+            _server = InfinniPlatformInprocessHost.Start();
 
             DeleteConfigVersion();
 
             _server.Dispose();
 
-            _server = TestApi.StartServer(c => c.SetHostingConfig(TestSettings.DefaultHostingConfig));
+            _server = InfinniPlatformInprocessHost.Start();
         }
 
         //[TearDown]

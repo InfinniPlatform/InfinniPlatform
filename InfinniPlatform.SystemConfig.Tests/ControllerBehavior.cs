@@ -2,7 +2,8 @@
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
-using InfinniPlatform.Api.TestEnvironment;
+using InfinniPlatform.NodeServiceHost;
+
 using NUnit.Framework;
 
 namespace InfinniPlatform.SystemConfig.Tests
@@ -16,10 +17,8 @@ namespace InfinniPlatform.SystemConfig.Tests
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-            _server = TestApi.StartServer(c => c.SetHostingConfig(TestSettings.DefaultHostingConfig));
-
-            TestApi.InitClientRouting(TestSettings.DefaultHostingConfig);
-        }
+			_server = InfinniPlatformInprocessHost.Start();
+		}
 
         [TestFixtureTearDown]
         public void FixtureTearDown()

@@ -8,7 +8,7 @@ using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManage
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.SearchOptions;
-using InfinniPlatform.Api.TestEnvironment;
+using InfinniPlatform.NodeServiceHost;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
 using NUnit.Framework;
@@ -40,9 +40,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         //[TestFixtureSetUp]
         public void FixtureSetup()
         {
-            _server = TestApi.StartServer(c => c.SetHostingConfig(TestSettings.DefaultHostingConfig));
-
-            TestApi.InitClientRouting(TestSettings.DefaultHostingConfig);
+			_server = InfinniPlatformInprocessHost.Start();
 
             _sw.Restart();
 

@@ -159,6 +159,10 @@
       <Project>{2B2F3FA6-F434-4FCF-A4C7-323FFC602F0C}</Project>
       <Name>InfinniPlatform.Index.ElasticSearch</Name>
     </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.NodeServiceHost\InfinniPlatform.NodeServiceHost.csproj">
+      <Project>{DCB067DB-E581-4F90-85DF-ACF9C6B42AD4}</Project>
+      <Name>InfinniPlatform.NodeServiceHost</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
       <Name>InfinniPlatform.Sdk</Name>

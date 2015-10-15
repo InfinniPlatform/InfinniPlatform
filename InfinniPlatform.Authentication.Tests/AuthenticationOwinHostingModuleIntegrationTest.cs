@@ -27,9 +27,6 @@ namespace InfinniPlatform.Authentication.Tests
 	[Category(TestCategories.IntegrationTest)]
 	public sealed class AuthenticationOwinHostingModuleIntegrationTest
 	{
-		private static readonly HostingConfig HostingConfig = TestSettings.DefaultHostingConfig;
-
-
 		[Test]
 		[TestCase(false)]
 		[TestCase(true)]
@@ -39,7 +36,7 @@ namespace InfinniPlatform.Authentication.Tests
 
 			var requests = new List<IPrincipal>();
 
-			var hosting = new OwinHostingService(config => config.Configuration(HostingConfig));
+			var hosting = new OwinHostingService(config => config.Configuration(HostingConfig.Default));
 
 			var userStore = new MemoryApplicationUserStore();
 			var passwordHasher = new FakeApplicationUserPasswordHasher();
@@ -100,7 +97,7 @@ namespace InfinniPlatform.Authentication.Tests
 		private static void SignInInternal(HttpClient client, string userName, string password, bool remember)
 		{
 			var signInForm = string.Format(@"{{ 'UserName': '{0}', 'Password': '{1}', 'Remember': {2} }}", userName, password, remember.ToString().ToLower());
-			var signInInternalUri = new Uri(string.Format("{0}://{1}:{2}/Auth/SignInInternal", HostingConfig.ServerScheme, HostingConfig.ServerName, HostingConfig.ServerPort));
+			var signInInternalUri = new Uri(string.Format("{0}://{1}:{2}/Auth/SignInInternal", HostingConfig.Default.ServerScheme, HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort));
 			var response = client.PostAsync(signInInternalUri, new StringContent(signInForm, Encoding.UTF8, "application/json")).Result;
 			Console.WriteLine(@"SignInInternal: {0}, {1}", response.StatusCode, response.Content.ReadAsStringAsync().Result);
 			Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -108,7 +105,7 @@ namespace InfinniPlatform.Authentication.Tests
 
 		private static void SignOut(HttpClient client)
 		{
-			var signOutUri = new Uri(string.Format("{0}://{1}:{2}/Auth/SignOut", HostingConfig.ServerScheme, HostingConfig.ServerName, HostingConfig.ServerPort));
+			var signOutUri = new Uri(string.Format("{0}://{1}:{2}/Auth/SignOut", HostingConfig.Default.ServerScheme, HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort));
 			var response = client.PostAsync(signOutUri, new StringContent("")).Result;
 			Console.WriteLine(@"SignOut: {0}, {1}", response.StatusCode, response.Content.ReadAsStringAsync().Result);
 			Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -116,7 +113,7 @@ namespace InfinniPlatform.Authentication.Tests
 
 		private static void SomePostRequest(HttpClient client)
 		{
-			var somePostActionUri = new Uri(string.Format("{0}://{1}:{2}/Some/Post/Action", HostingConfig.ServerScheme, HostingConfig.ServerName, HostingConfig.ServerPort));
+			var somePostActionUri = new Uri(string.Format("{0}://{1}:{2}/Some/Post/Action", HostingConfig.Default.ServerScheme, HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort));
 			var response = client.PostAsync(somePostActionUri, new StringContent("")).Result;
 			Console.WriteLine(@"Some HTTP POST: {0}, {1}", response.StatusCode, response.Content.ReadAsStringAsync().Result);
 			Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -124,7 +121,7 @@ namespace InfinniPlatform.Authentication.Tests
 
 		private static void SomeGetRequest(HttpClient client)
 		{
-			var someGetActionUri = new Uri(string.Format("{0}://{1}:{2}/Some/Get/Action", HostingConfig.ServerScheme, HostingConfig.ServerName, HostingConfig.ServerPort));
+			var someGetActionUri = new Uri(string.Format("{0}://{1}:{2}/Some/Get/Action", HostingConfig.Default.ServerScheme, HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort));
 			var response = client.GetAsync(someGetActionUri).Result;
 			Console.WriteLine(@"Some HTTP GET: {0}, {1}", response.StatusCode, response.Content.ReadAsStringAsync().Result);
 			Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
