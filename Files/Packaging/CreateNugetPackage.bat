@@ -18,3 +18,6 @@ msbuild ..\..\InfinniPlatform.sln /p:Configuration=Debug /m /v:q
 
 ::Create package
 nuget Pack InfinniPlatform.nuspec -NoDefaultExcludes
+
+::Clean up
+del InfinniPlatform.nuspec /Q /F
