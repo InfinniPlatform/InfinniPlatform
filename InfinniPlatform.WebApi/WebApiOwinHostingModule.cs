@@ -1,9 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Sdk.Environment;
-using InfinniPlatform.Sdk.Environment.Hosting;
-using Owin;
 
 using InfinniPlatform.Api.LocalRouting;
 using InfinniPlatform.Api.Profiling;
@@ -12,7 +8,10 @@ using InfinniPlatform.Factories;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Owin.Modules;
+using InfinniPlatform.Sdk.Environment.Hosting;
 using InfinniPlatform.WebApi.Factories;
+
+using Owin;
 
 namespace InfinniPlatform.WebApi
 {
@@ -42,7 +41,7 @@ namespace InfinniPlatform.WebApi
 			if (context.Configuration.ServerProfileQuery)
 			{
 				RestQueryApi.SetProfilingType(ProfilingType.ProfileWatch);
-				RestQueryApi.Log = new Log4NetLogFactory().CreateLog();
+				RestQueryApi.Log = Logger.Log;
 			}
 
 			HostServer.Build(context);
