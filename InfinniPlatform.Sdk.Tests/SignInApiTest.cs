@@ -1,26 +1,32 @@
 ﻿using System;
 
+using InfinniPlatform.NodeServiceHost;
 using InfinniPlatform.Sdk.Api;
 
 using NUnit.Framework;
 
 namespace InfinniPlatform.Sdk.Tests
 {
-	//[Ignore("Тесты SDK не выполняют запуск сервера InfinniPlatform. Необходимо существование уже запущенного сервера на localhost : 9900")]
 	[TestFixture]
 	[Category(TestCategories.IntegrationTest)]
 	public sealed class SignInApiTest
 	{
-		private const string InfinniSessionPort = "9900";
-		private const string InfinniSessionServer = "localhost";
 		private const string Route = "1";
 
+		private IDisposable _server;
 		private InfinniSignInApi _signInApi;
 
 		[TestFixtureSetUp]
-		public void SetupApi()
+		public void SetUp()
 		{
-			_signInApi = new InfinniSignInApi(InfinniSessionServer, InfinniSessionPort, Route);
+			_server = InfinniPlatformInprocessHost.Start();
+			_signInApi = new InfinniSignInApi(HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort.ToString(), Route);
+		}
+
+		[TestFixtureTearDown]
+		public void TearDown()
+		{
+			_server.Dispose();
 		}
 
 		[Test]

@@ -1,52 +1,60 @@
-﻿using InfinniPlatform.Sdk.Api;
+﻿using System;
+
+using InfinniPlatform.NodeServiceHost;
+using InfinniPlatform.Sdk.Api;
+
 using NUnit.Framework;
 
 namespace InfinniPlatform.Sdk.Tests
 {
-    //[Ignore("Тесты SDK не выполняют запуск сервера InfinniPlatform. Необходимо существование уже запущенного сервера на localhost : 9900")]
-    [TestFixture]
+	[TestFixture]
 	[Category(TestCategories.IntegrationTest)]
-	//[Ignore]
 	public sealed class VersionApiTest
-    {
-        private const string InfinniSessionPort = "9900";
-        private const string InfinniSessionServer = "localhost";
-        private const string Route = "1";
+	{
+		private const string Route = "1";
 
-        private InfinniVersionApi _versionApi;
-        private InfinniSignInApi _signInApi;
+		private IDisposable _server;
+		private InfinniVersionApi _versionApi;
+		private InfinniSignInApi _signInApi;
 
-        [TestFixtureSetUp]
-        public void SetupApi()
-        {
-            _versionApi = new InfinniVersionApi(InfinniSessionServer, InfinniSessionPort,Route);
-            _signInApi = new InfinniSignInApi(InfinniSessionServer, InfinniSessionPort,Route);
-        }
+		[TestFixtureSetUp]
+		public void SetUp()
+		{
+			_server = InfinniPlatformInprocessHost.Start();
+			_versionApi = new InfinniVersionApi(HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort.ToString(), Route);
+			_signInApi = new InfinniSignInApi(HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort.ToString(), Route);
+		}
 
-        [Test]
-        public void ShouldGetIrrelevantVersions()
-        {
-            _signInApi.SignInInternal("Admin", "Admin", false);
+		[TestFixtureTearDown]
+		public void TearDown()
+		{
+			_server.Dispose();
+		}
 
-            dynamic result = _versionApi.GetIrrelevantVersions("Admin");
-        }
+		[Test]
+		public void ShouldGetIrrelevantVersions()
+		{
+			_signInApi.SignInInternal("Admin", "Admin", false);
 
-        [Test]
-        public void ShouldSetRelevantVersions()
-        {
-            _signInApi.SignInInternal("Admin", "Admin", false);
+			dynamic result = _versionApi.GetIrrelevantVersions("Admin");
+		}
 
-            var version =
-                new
-                    {
-                        ConfigurationId = "TestConfig",
-                        Version = "4.1"
-                    };
-                
+		[Test]
+		public void ShouldSetRelevantVersions()
+		{
+			_signInApi.SignInInternal("Admin", "Admin", false);
 
-            dynamic result = _versionApi.SetRelevantVersion("Admin",version);
+			var version =
+				new
+				{
+					ConfigurationId = "TestConfig",
+					Version = "4.1"
+				};
 
-            Assert.AreEqual(true,result.IsValid);
-        }
-    }
+
+			dynamic result = _versionApi.SetRelevantVersion("Admin", version);
+
+			Assert.AreEqual(true, result.IsValid);
+		}
+	}
 }
