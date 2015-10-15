@@ -228,11 +228,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Autofac.xml">
-      <SubType>Designer</SubType>
-    </None>
+    <Content Include="Autofac.xml">
+    </Content>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\Files\Build\TransformOnBuild.targets" />
   <ItemGroup>
@@ -241,9 +239,14 @@
       <LastGenOutput>AssemblyInfo.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <PropertyGroup>
-    <PostBuildEvent>xcopy "$(ProjectDir)Autofac.xml" "$(TargetDir)" /Y</PostBuildEvent>
-  </PropertyGroup>
+  <ItemGroup>
+    <AutofacFiles Include="Autofac.xml">
+      <Visible>false</Visible>
+    </AutofacFiles>
+  </ItemGroup>
+  <Target Name="AfterBuild">
+    <Copy SourceFiles="@(AutofacFiles)" DestinationFolder="$(OutDir)" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
