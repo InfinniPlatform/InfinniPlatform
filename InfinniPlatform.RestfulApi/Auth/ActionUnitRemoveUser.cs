@@ -13,7 +13,7 @@ namespace InfinniPlatform.RestfulApi.Auth
     {
         public void Action(IApplyContext target)
         {
-            var storage = new ApplicationUserStorePersistentStorage();
+            var storage = ApplicationUserStorePersistentStorage.Instance;
             ApplicationUser user = storage.FindUserByName(target.Item.UserName);
             if (user != null)
             {
