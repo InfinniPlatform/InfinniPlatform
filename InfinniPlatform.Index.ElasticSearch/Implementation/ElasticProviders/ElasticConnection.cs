@@ -24,7 +24,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
 		static ElasticConnection()
 		{
-			var nodeAddresses = AppSettings.GetValues<string>("ElasticSearchNodes").Select(url => new Uri(url.Trim()));
+			var nodeAddresses = AppSettings.GetValues("ElasticSearchNodes", "http://localhost:9200").Select(url => new Uri(url.Trim()));
 
 			NodePool = new NodePool(nodeAddresses);
 		}

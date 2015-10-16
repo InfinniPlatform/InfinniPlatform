@@ -39,7 +39,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 
 			if (users.FirstOrDefault(u => u.UserName == AuthorizationStorageExtensions.AdminUser) == null)
 			{
-				aclApi.AddUser(AuthorizationStorageExtensions.AdminUser, AppSettings.GetValue("AdminPassword", "Admin"));
+				aclApi.AddUser(AuthorizationStorageExtensions.AdminUser, "Admin");
 
 				// Проверяем, удалось ли добавить пользователя
 				users = aclApi.GetUsers(false);

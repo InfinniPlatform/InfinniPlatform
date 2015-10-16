@@ -9,7 +9,6 @@ using InfinniPlatform.Runtime.Properties;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Metadata;
-using InfinniPlatform.Sdk.Environment.Settings;
 
 namespace InfinniPlatform.Runtime.Implementation.AssemblyDispatch
 {
@@ -116,12 +115,7 @@ namespace InfinniPlatform.Runtime.Implementation.AssemblyDispatch
 
 		private IMethodInvokationCacheList RefreshInvokationCache(string version, string metadataConfigurationId, IMethodInvokationCacheList invokationCacheList)
 		{
-			var assemblyVersionPath = AppSettings.GetValue("AssemblyVersionPath");
-
-			if (string.IsNullOrEmpty(assemblyVersionPath))
-			{
-				throw new ArgumentException(Resources.AssemblyVersionRepositoryNotSpecified);
-			}
+			const string assemblyVersionPath = "AssemblyVersion";
 
 			var versionAssemblies = LoadVersions(version, metadataConfigurationId).ToList();
 

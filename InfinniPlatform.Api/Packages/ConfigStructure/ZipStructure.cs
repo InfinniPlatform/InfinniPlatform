@@ -28,7 +28,7 @@ namespace InfinniPlatform.Api.Packages.ConfigStructure
             {
                 File.Delete(_archivePath);
             }
-            _assemblyVersionPath = AppSettings.GetValue("AssemblyVersionPath") ?? Directory.GetCurrentDirectory();
+            _assemblyVersionPath = "AssemblyVersion";
             _toWrite = true;
         }
 
@@ -38,14 +38,14 @@ namespace InfinniPlatform.Api.Packages.ConfigStructure
             _folderToUnzip = folderToUnzip;
             _rootPath = rootPath;
             _doNotReadArchiveFromFile = true;
-            _assemblyVersionPath = AppSettings.GetValue("AssemblyVersionPath") ?? Directory.GetCurrentDirectory();
+            _assemblyVersionPath = "AssemblyVersion";
         }
 
         public ZipStructure(string archivePath, string folderToUnzip)
         {
             _archivePath = archivePath;
             _folderToUnzip = folderToUnzip;
-            _assemblyVersionPath = AppSettings.GetValue("AssemblyVersionPath") ?? Directory.GetCurrentDirectory();
+            _assemblyVersionPath = "AssemblyVersion";
         }
 
         public void Start()

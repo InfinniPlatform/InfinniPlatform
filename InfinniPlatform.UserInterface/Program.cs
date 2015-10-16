@@ -5,7 +5,6 @@ using System.Windows.Forms;
 
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Sdk.Api;
-using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.UserInterface.AppHost;
 
 namespace InfinniPlatform.UserInterface
@@ -17,8 +16,7 @@ namespace InfinniPlatform.UserInterface
         {
             try
             {
-                new SignInApi().SignInInternal(AuthorizationStorageExtensions.AdminUser,
-                    AppSettings.GetValue("AdminPassword", "Admin"), true);
+                new SignInApi().SignInInternal(AuthorizationStorageExtensions.AdminUser, "Admin", true);
             }
             catch
             {
