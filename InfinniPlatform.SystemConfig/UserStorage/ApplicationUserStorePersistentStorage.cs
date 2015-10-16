@@ -26,6 +26,11 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 
         public void CreateUser(ApplicationUser user)
         {
+            if (string.IsNullOrEmpty(user.Id))
+            {
+                user.Id = CreateUnique();
+            }
+
             InsertUser(user);
             UpdateUserInCache(user);
         }
@@ -39,7 +44,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 
         private static void InsertUser(ApplicationUser user)
         {
-            user.SecurityStamp = Guid.NewGuid().ToString();
+            user.SecurityStamp = CreateUnique();
             SetDocument(AuthorizationStorageExtensions.UserStore, ConvertToDynamic(user));
         }
 
@@ -355,6 +360,12 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             }
 
             return user;
+        }
+
+
+        private static string CreateUnique()
+        {
+            return Guid.NewGuid().ToString();
         }
     }
 }
