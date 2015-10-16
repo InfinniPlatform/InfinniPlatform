@@ -23,7 +23,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
 
         public void OnStart(HostingContextBuilder contextBuilder)
         {
-            var applicationUserStore = new ApplicationUserStorePersistentStorage();
+            var applicationUserStore = ApplicationUserStorePersistentStorage.Instance;
             var applicationUserPasswordHasher = new CustomApplicationUserPasswordHasher(_globalContext);
 
             contextBuilder.SetEnvironment<IApplicationUserStore>(applicationUserStore);

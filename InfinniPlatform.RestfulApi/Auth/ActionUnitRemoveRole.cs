@@ -12,7 +12,7 @@ namespace InfinniPlatform.RestfulApi.Auth
     {
         public void Action(IApplyContext target)
         {
-            var storage = new ApplicationUserStorePersistentStorage();
+            var storage = ApplicationUserStorePersistentStorage.Instance;
             storage.RemoveRole(target.Item.RoleName);
             target.Context.GetComponent<CachedSecurityComponent>().UpdateAcl();
             target.Context.GetComponent<CachedSecurityComponent>().UpdateRoles();

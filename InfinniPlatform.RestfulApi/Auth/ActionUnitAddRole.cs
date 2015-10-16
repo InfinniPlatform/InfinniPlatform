@@ -12,7 +12,7 @@ namespace InfinniPlatform.RestfulApi.Auth
     {
         public void Action(IApplyContext target)
         {
-            var storage = new ApplicationUserStorePersistentStorage();
+            var storage = ApplicationUserStorePersistentStorage.Instance;
 
             dynamic roleParams = target.Item;
             if (target.Item.Document != null)

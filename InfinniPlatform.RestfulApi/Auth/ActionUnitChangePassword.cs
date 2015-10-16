@@ -15,7 +15,7 @@ namespace InfinniPlatform.RestfulApi.Auth
     {
         public void Action(IApplyContext target)
         {
-            var storage = new ApplicationUserStorePersistentStorage();
+            var storage = ApplicationUserStorePersistentStorage.Instance;
 
             if (string.IsNullOrEmpty(target.Item.UserName))
             {
