@@ -36,12 +36,12 @@ namespace InfinniPlatform.Sdk.Environment.Metadata
         /// <summary>
         ///     Выполнить указанный поток работы для указанных метаданных
         /// </summary>
-        /// <param name="containerId">Метаданные контейнера</param>
+        /// <param name="documentId">Метаданные контейнера</param>
         /// <param name="workflowId">Идентификатор потока</param>
         /// <param name="target">Объект, над которым выполняется переход</param>
         /// <param name="state">Состояние, в которое выполняется перевод</param>
         /// <returns>Результат выполнения потока</returns>
-        dynamic MoveWorkflow(string containerId, string workflowId, dynamic target, object state = null);
+        dynamic MoveWorkflow(string documentId, string workflowId, dynamic target, object state = null);
 
         /// <summary>
         ///     Получить идентификатор точки расширения для указанных метаданных
@@ -55,24 +55,24 @@ namespace InfinniPlatform.Sdk.Environment.Metadata
         /// <summary>
         ///     Получить для указанного контейнера допустимый тип поиска
         /// </summary>
-        /// <param name="containerId">Идентификатор контейнера метаданных</param>
+        /// <param name="documentId">Идентификатор контейнера метаданных</param>
         /// <returns>Возможности поиска по контейнеру</returns>
-        SearchAbilityType GetSearchAbilityType(string containerId);
+        SearchAbilityType GetSearchAbilityType(string documentId);
 
         /// <summary>
         ///     Установить доступный тип поиска для провайдера
         /// </summary>
-        /// <param name="containerId">Идентификатор контейнера</param>
+        /// <param name="documentId">Идентификатор контейнера</param>
         /// <param name="searchAbility">Возможности поиска по контейнеру</param>
-        void SetSearchAbilityType(string containerId, SearchAbilityType searchAbility);
+        void SetSearchAbilityType(string documentId, SearchAbilityType searchAbility);
 
         /// <summary>
         ///     Зарегистрировать поток выполнения
         /// </summary>
-        /// <param name="containerId">Идентификатор контейнера метаданных</param>
+        /// <param name="documentId">Идентификатор контейнера метаданных</param>
         /// <param name="workflowId">Идентификатор потока работы</param>
         /// <param name="actionConfiguration">Конфигурация выполняемых действий</param>
-        void RegisterWorkflow(string containerId, string workflowId,
+        void RegisterWorkflow(string documentId, string workflowId,
             Action<IStateWorkflowStartingPointConfig> actionConfiguration);
 
         /// <summary>
@@ -84,8 +84,8 @@ namespace InfinniPlatform.Sdk.Environment.Metadata
         /// <summary>
         ///     Зарегистрирвоать документ
         /// </summary>
-        /// <param name="containerId">Идентификатор документа</param>
-        void RegisterDocument(string containerId);
+        /// <param name="documentId">Идентификатор документа</param>
+        void RegisterDocument(string documentId);
 
         /// <summary>
         ///     Получить список меню для конфигурации
@@ -99,93 +99,93 @@ namespace InfinniPlatform.Sdk.Environment.Metadata
         /// <summary>
         ///     Возвращает тип документа для индекса
         /// </summary>
-        /// <param name="containerId">Идентификатор объекта метаданных</param>
+        /// <param name="documentId">Идентификатор объекта метаданных</param>
         /// <returns>Тип для данных индекса</returns>
-        string GetMetadataIndexType(string containerId);
+        string GetMetadataIndexType(string documentId);
 
         /// <summary>
         ///     Установить тип документа для индекса
         /// </summary>
-        /// <param name="containerId">Идентификатор объекта метаданных</param>
+        /// <param name="documentId">Идентификатор объекта метаданных</param>
         /// <param name="indexType">Тип в индексе</param>
-        void SetMetadataIndexType(string containerId, string indexType);
+        void SetMetadataIndexType(string documentId, string indexType);
 
         /// <summary>
         ///     Установить схему данных для указанного документа
         /// </summary>
-        /// <param name="containerId">Идентификатор объекта метаданных</param>
+        /// <param name="documentId">Идентификатор объекта метаданных</param>
         /// <param name="schema">Модель данных документа</param>
-        void SetSchemaVersion(string containerId, dynamic schema);
+        void SetSchemaVersion(string documentId, dynamic schema);
 
         /// <summary>
         ///     Получить схему данных для указанного документа
         /// </summary>
-        /// <param name="containerId">Идентификатор объекта метаданных</param>
+        /// <param name="documentId">Идентификатор объекта метаданных</param>
         /// <returns>Модель данных</returns>
-        dynamic GetSchemaVersion(string containerId);
+        dynamic GetSchemaVersion(string documentId);
 
         /// <summary>
         ///     Зарегистрировать объект метаданных бизнес-процесса
         /// </summary>
-        /// <param name="containerId"></param>
+        /// <param name="documentId"></param>
         /// <param name="process"></param>
-        void RegisterProcess(string containerId, dynamic process);
+        void RegisterProcess(string documentId, dynamic process);
 
         /// <summary>
         ///     Регистрация метаданных сервиса
         /// </summary>
-        /// <param name="containerId"></param>
+        /// <param name="documentId"></param>
         /// <param name="service"></param>
-        void RegisterService(string containerId, dynamic service);
+        void RegisterService(string documentId, dynamic service);
 
         /// <summary>
         ///     Регистрация метаданных сценария
         /// </summary>
-        /// <param name="containerId"></param>
+        /// <param name="documentId"></param>
         /// <param name="scenario"></param>
-        void RegisterScenario(string containerId, dynamic scenario);
+        void RegisterScenario(string documentId, dynamic scenario);
 
         /// <summary>
         ///     Регистрация генератора представлений
         /// </summary>
-        /// <param name="containerId">Идентификатор контейнера метаданных</param>
+        /// <param name="documentId">Идентификатор контейнера метаданных</param>
         /// <param name="generator">Метаданные генератора</param>
-        void RegisterGenerator(string containerId, dynamic generator);
+        void RegisterGenerator(string documentId, dynamic generator);
 
         /// <summary>
         ///     Регистрация метаданных представления
         /// </summary>
-        /// <param name="containerId">Идентификатор контейнера метаданных</param>
+        /// <param name="documentId">Идентификатор контейнера метаданных</param>
         /// <param name="view">Метаданные генератора</param>
-        void RegisterView(string containerId, dynamic view);
+        void RegisterView(string documentId, dynamic view);
 
         /// <summary>
         ///     Регистрация метаданных печатного представления.
         /// </summary>
-        /// <param name="containerId">Идентификатор контейнера метаданных.</param>
+        /// <param name="documentId">Идентификатор контейнера метаданных.</param>
         /// <param name="printView">Метаданные печатного представления.</param>
-        void RegisterPrintView(string containerId, dynamic printView);
+        void RegisterPrintView(string documentId, dynamic printView);
 
         /// <summary>
         ///     Регистрация метаданных предупреждений валидации
         /// </summary>
-        /// <param name="containerId">Идентификатор контейнера метаданных</param>
+        /// <param name="documentId">Идентификатор контейнера метаданных</param>
         /// <param name="warning">Метаданные генератора</param>
-        void RegisterValidationWarning(string containerId, dynamic warning);
+        void RegisterValidationWarning(string documentId, dynamic warning);
 
         /// <summary>
         ///     Регистрация метаданных ошибок валидации
         /// </summary>
-        /// <param name="containerId">Идентификатор контейнера метаданных</param>
+        /// <param name="documentId">Идентификатор контейнера метаданных</param>
         /// <param name="error">Метаданные генератора</param>
-        void RegisterValidationError(string containerId, dynamic error);
+        void RegisterValidationError(string documentId, dynamic error);
 
         /// <summary>
         ///     Регистрация метаданных статусов
         /// </summary>
-        /// <param name="containerId">Идентификатор контейнера метаданных</param>
+        /// <param name="documentId">Идентификатор контейнера метаданных</param>
         /// <param name="status">Метаданные генератора</param>
-        void RegisterStatus(string containerId, dynamic status);
+        void RegisterStatus(string documentId, dynamic status);
 
         /// <summary>
         ///     Регистрация регистра (регистр представляет собой особый тип документа, хранящий
@@ -196,65 +196,65 @@ namespace InfinniPlatform.Sdk.Environment.Metadata
         /// <summary>
         ///     Удалить объект метаданных бизнес-процесса
         /// </summary>
-        /// <param name="containerId"></param>
+        /// <param name="documentId"></param>
         /// <param name="processName"></param>
-        void UnregisterProcess(string containerId, string processName);
+        void UnregisterProcess(string documentId, string processName);
 
         /// <summary>
         ///     Удалить метаданные сервиса
         /// </summary>
-        /// <param name="containerId"></param>
+        /// <param name="documentId"></param>
         /// <param name="serviceName"></param>
-        void UnregisterService(string containerId, string serviceName);
+        void UnregisterService(string documentId, string serviceName);
 
         /// <summary>
         ///     Удалить метаданные сценария
         /// </summary>
-        /// <param name="containerId"></param>
+        /// <param name="documentId"></param>
         /// <param name="scenarioName"></param>
-        void UnregisterScenario(string containerId, string scenarioName);
+        void UnregisterScenario(string documentId, string scenarioName);
 
         /// <summary>
         ///     Удалить генератор представлений
         /// </summary>
-        /// <param name="containerId">Идентификатор контейнера метаданных</param>
+        /// <param name="documentId">Идентификатор контейнера метаданных</param>
         /// <param name="generatorName">Метаданные генератора</param>
-        void UnregisterGenerator(string containerId, string generatorName);
+        void UnregisterGenerator(string documentId, string generatorName);
 
         /// <summary>
         ///     Удалить метаданные представления
         /// </summary>
-        /// <param name="containerId">Идентификатор контейнера метаданных</param>
+        /// <param name="documentId">Идентификатор контейнера метаданных</param>
         /// <param name="viewName">Метаданные генератора</param>
-        void UnregisterView(string containerId, string viewName);
+        void UnregisterView(string documentId, string viewName);
 
         /// <summary>
         ///     Удалить метаданные печатного представления.
         /// </summary>
-        /// <param name="containerId">Идентификатор контейнера метаданных.</param>
+        /// <param name="documentId">Идентификатор контейнера метаданных.</param>
         /// <param name="printViewName">Метаданные печатного представления.</param>
-        void UnregisterPrintView(string containerId, string printViewName);
+        void UnregisterPrintView(string documentId, string printViewName);
 
         /// <summary>
         ///     Удалить метаданные предупреждений валидации
         /// </summary>
-        /// <param name="containerId">Идентификатор контейнера метаданных</param>
+        /// <param name="documentId">Идентификатор контейнера метаданных</param>
         /// <param name="warningName">Метаданные генератора</param>
-        void UnregisterValidationWarning(string containerId, string warningName);
+        void UnregisterValidationWarning(string documentId, string warningName);
 
         /// <summary>
         ///     Удалить метаданные ошибок валидации
         /// </summary>
-        /// <param name="containerId">Идентификатор контейнера метаданных</param>
+        /// <param name="documentId">Идентификатор контейнера метаданных</param>
         /// <param name="errorName">Метаданные генератора</param>
-        void UnregisterValidationError(string containerId, string errorName);
+        void UnregisterValidationError(string documentId, string errorName);
 
         /// <summary>
         ///     Удалить метаданные статусов
         /// </summary>
-        /// <param name="containerId">Идентификатор контейнера метаданных</param>
+        /// <param name="documentId">Идентификатор контейнера метаданных</param>
         /// <param name="statusName">Метаданные генератора</param>
-        void UnregisterStatus(string containerId, string statusName);
+        void UnregisterStatus(string documentId, string statusName);
 
         /// <summary>
         ///     Удалить регистр (регистр представляет собой особый тип документа, хранящий
@@ -262,20 +262,20 @@ namespace InfinniPlatform.Sdk.Environment.Metadata
         /// </summary>
         void UnregisterRegister(string registerName);
 
-        dynamic GetProcess(string containerId, string processName);
-        dynamic GetService(string containerId, string serviceName);
-        dynamic GetScenario(string containerId, string scenarioName);
-        dynamic GetValidationError(string containerId, string errorName);
-        dynamic GetValidationWarning(string containerId, string warningName);
-        dynamic GetStatus(string containerId, string statusName);
+        dynamic GetProcess(string documentId, string processName);
+        dynamic GetService(string documentId, string serviceName);
+        dynamic GetScenario(string documentId, string scenarioName);
+        dynamic GetValidationError(string documentId, string errorName);
+        dynamic GetValidationWarning(string documentId, string warningName);
+        dynamic GetStatus(string documentId, string statusName);
         dynamic GetGenerator(string documentId, Func<dynamic, bool> generatorSelector);
-        dynamic GetView(string containerId, Func<dynamic, bool> viewSelector);
-        dynamic GetPrintView(string containerId, Func<dynamic, bool> selector);
-        dynamic GetScenario(string containerId, Func<object, bool> scenarioSelector);
-        dynamic GetService(string containerId, Func<object, bool> serviceSelector);
-        dynamic GetProcess(string containerId, Func<object, bool> processSelector);
-        dynamic GetValidationError(string containerId, Func<object, bool> validationErrorSelector);
-        dynamic GetValidationWarning(string containerId, Func<object, bool> validationWarningSelector);
+        dynamic GetView(string documentId, Func<dynamic, bool> viewSelector);
+        dynamic GetPrintView(string documentId, Func<dynamic, bool> selector);
+        dynamic GetScenario(string documentId, Func<object, bool> scenarioSelector);
+        dynamic GetService(string documentId, Func<object, bool> serviceSelector);
+        dynamic GetProcess(string documentId, Func<object, bool> processSelector);
+        dynamic GetValidationError(string documentId, Func<object, bool> validationErrorSelector);
+        dynamic GetValidationWarning(string documentId, Func<object, bool> validationWarningSelector);
         IEnumerable<dynamic> GetRegisterList();
 
         /// <summary>
@@ -284,13 +284,13 @@ namespace InfinniPlatform.Sdk.Environment.Metadata
         /// </summary>
         dynamic GetRegister(string registerName);
 
-        IEnumerable<dynamic> GetViews(string containerId);
-        IEnumerable<dynamic> GetPrintViews(string containerId);
-        IEnumerable<dynamic> GetGenerators(string containerId);
-        IEnumerable<dynamic> GetScenarios(string containerId);
-        IEnumerable<dynamic> GetProcesses(string containerId);
-        IEnumerable<dynamic> GetServices(string containerId);
-        IEnumerable<dynamic> GetValidationErrors(string containerId);
-        IEnumerable<dynamic> GetValidationWarnings(string containerId);
+        IEnumerable<dynamic> GetViews(string documentId);
+        IEnumerable<dynamic> GetPrintViews(string documentId);
+        IEnumerable<dynamic> GetGenerators(string documentId);
+        IEnumerable<dynamic> GetScenarios(string documentId);
+        IEnumerable<dynamic> GetProcesses(string documentId);
+        IEnumerable<dynamic> GetServices(string documentId);
+        IEnumerable<dynamic> GetValidationErrors(string documentId);
+        IEnumerable<dynamic> GetValidationWarnings(string documentId);
     }
 }

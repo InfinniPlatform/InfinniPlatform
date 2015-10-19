@@ -14,11 +14,11 @@ namespace InfinniPlatform.Sdk.Environment.Metadata
         ///     Предоставить провайдер версий документа для работы в прикладных скриптах
         ///     Создает провайдер, возвращающий версии документов всех существующих в индексе типов
         /// </summary>
-        /// <param name="metadata">метаданные объекта</param>
+        /// <param name="documentId">метаданные объекта</param>
         /// <param name="version"></param>
         /// <param name="tenantId"></param>
         /// <returns>Провайдер версий документа</returns>
-        IVersionProvider GetDocumentProvider(string metadata, string version, string tenantId);
+        IVersionProvider GetDocumentProvider(string documentId, string version, string tenantId);
 
         /// <summary>
         ///     Получить хранилище бинарных данных
@@ -35,9 +35,9 @@ namespace InfinniPlatform.Sdk.Environment.Metadata
         /// <summary>
         ///     Получить конструктор версий индекса
         /// </summary>
-        /// <param name="metadata">Метаданные</param>
+        /// <param name="documentId">Метаданные</param>
         /// <returns>Конструктор версий</returns>
-        IVersionBuilder GetVersionBuilder(string metadata);
+        IVersionBuilder GetVersionBuilder(string documentId);
 
         /// <summary>
         ///     Получить идентификатор конфигурации метаданных
