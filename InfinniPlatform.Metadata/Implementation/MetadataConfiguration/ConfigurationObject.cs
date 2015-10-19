@@ -1,98 +1,114 @@
-﻿using InfinniPlatform.Factories;
-using InfinniPlatform.Logging;
+﻿using System.Collections.Concurrent;
+
+using InfinniPlatform.Factories;
 using InfinniPlatform.Sdk.Environment.Binary;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 {
-	/// <summary>
-	///     Прикладной объект конфигурации предметной области
-	/// </summary>
-	public sealed class ConfigurationObject : IConfigurationObject
-	{
-		private readonly IBlobStorageFactory _blobStorageFactory;
-		private readonly IIndexFactory _indexFactory;
-		private readonly IIndexStateProvider _indexStateProvider;
-		private readonly IMetadataConfiguration _metadataConfiguration;
+    /// <summary>
+    /// Прикладной объект конфигурации предметной области.
+    /// </summary>
+    public sealed class ConfigurationObject : IConfigurationObject
+    {
 
-		public ConfigurationObject(IMetadataConfiguration metadataConfiguration, IIndexFactory indexFactory,
-								   IBlobStorageFactory blobStorageFactory)
-		{
-			_metadataConfiguration = metadataConfiguration;
-			_indexFactory = indexFactory;
-			_blobStorageFactory = blobStorageFactory;
-			_indexStateProvider = _indexFactory.BuildIndexStateProvider();
-		}
+        public ConfigurationObject(IMetadataConfiguration metadataConfiguration, IIndexFactory indexFactory, IBlobStorageFactory blobStorageFactory)
+        {
+            _metadataConfiguration = metadataConfiguration;
+            _indexFactory = indexFactory;
+            _blobStorageFactory = blobStorageFactory;
 
-		public IMetadataConfiguration MetadataConfiguration
-		{
-			get { return _metadataConfiguration; }
-		}
+            _indexStateProvider = _indexFactory.BuildIndexStateProvider();
+            _versionProviderCache = new ConcurrentDictionary<string, IVersionProvider>();
+        }
 
-		/// <summary>
-		///     Предоставить провайдер версий документа для работы в прикладных скриптах
-		///     Создает провайдер, возвращающий версии документов всех существующих в индексе типов для указанной версии
-		///     конфигурации
-		/// </summary>
-		/// <param name="metadata">метаданные объекта</param>
-		/// <param name="version"></param>
-		/// <param name="tenantId">Идентификатор организации-клиента для выполнения запросов</param>
-		/// <returns>Провайдер версий документа</returns>
-		public IVersionProvider GetDocumentProvider(string metadata, string version, string tenantId)
-		{
-			var indexName = MetadataConfiguration.ConfigurationId;
-			var typeName = MetadataConfiguration.GetMetadataIndexType(metadata);
 
-			if (_indexStateProvider.GetIndexStatus(indexName, typeName) == IndexStatus.NotExists)
-			{
-				// Для тестов %) т.к. теперь метаданные загружаются только с диска
-				_indexStateProvider.CreateIndexType(indexName, typeName);
+        private readonly IMetadataConfiguration _metadataConfiguration;
+        private readonly IIndexFactory _indexFactory;
+        private readonly IBlobStorageFactory _blobStorageFactory;
 
-				Logger.Log.Warn("Create new index. IndexName: '{0}', TypeName: '{1}'.", indexName, typeName);
-			}
+        private readonly IIndexStateProvider _indexStateProvider;
+        private readonly ConcurrentDictionary<string, IVersionProvider> _versionProviderCache;
 
-			return _indexFactory.BuildVersionProvider(indexName, typeName, tenantId, version);
-		}
 
-		/// <summary>
-		///     Получить конструктор версий индекса
-		/// </summary>
-		/// <param name="metadata">Метаданные</param>
-		/// <returns>Конструктор версий</returns>
-		public IVersionBuilder GetVersionBuilder(string metadata)
-		{
-			return _indexFactory.BuildVersionBuilder(
-				MetadataConfiguration.ConfigurationId,
-				MetadataConfiguration.GetMetadataIndexType(metadata),
-				MetadataConfiguration.GetSearchAbilityType(metadata));
-		}
+        public IMetadataConfiguration MetadataConfiguration
+        {
+            get { return _metadataConfiguration; }
+        }
 
-		/// <summary>
-		///     Получить хранилище бинарных данных
-		/// </summary>
-		/// <returns>Хранилище бинарных данных</returns>
-		public IBlobStorage GetBlobStorage()
-		{
-			return _blobStorageFactory.CreateBlobStorage();
-		}
+        /// <summary>
+        /// Возвращает провайдер версий документов.
+        /// </summary>
+        /// <param name="documentId">Имя документа.</param>
+        /// <param name="version">Версия документа.</param>
+        /// <param name="tenantId">Идентификатор организации.</param>
+        /// <remarks>
+        /// Создает провайдер, возвращающий версии документов всех существующих в индексе типов.
+        /// </remarks>
+        public IVersionProvider GetDocumentProvider(string documentId, string version, string tenantId)
+        {
+            IVersionProvider versionProvider;
 
-		/// <summary>
-		///     Получить версию метаданных конфигурации
-		/// </summary>
-		/// <returns>Версия конфигурации</returns>
-		public string GetConfigurationVersion()
-		{
-			return MetadataConfiguration.Version;
-		}
+            var documentIndexName = MetadataConfiguration.ConfigurationId;
+            var documentTypeName = MetadataConfiguration.GetMetadataIndexType(documentId);
 
-		/// <summary>
-		///     Получить идентификатор конфигурации метаданных
-		/// </summary>
-		/// <returns>Идентификатор конфигурации метаданных</returns>
-		public string GetConfigurationIdentifier()
-		{
-			return MetadataConfiguration.ConfigurationId;
-		}
-	}
+            var versionProviderKey = string.Format("{0},{1}", documentIndexName, documentTypeName);
+
+            if (!_versionProviderCache.TryGetValue(versionProviderKey, out versionProvider))
+            {
+                // Проверка наличия индекса занимает очень много времени. На данный момент эту логику можно осуществлять
+                // при старте системы. Не понятно, почему этого нельзя было сделать раньше или, во всяком случае, в другом
+                // месте. Как выяснилось, этот код крайне отрицательно сказывается на производительности системы, поэтому
+                // тут предпринята попытка простейшего кэширования результатов его работы.
+
+                if (_indexStateProvider.GetIndexStatus(documentIndexName, documentTypeName) == IndexStatus.NotExists)
+                {
+                    _indexStateProvider.CreateIndexType(documentIndexName, documentTypeName);
+                }
+
+                versionProvider = _indexFactory.BuildVersionProvider(documentIndexName, documentTypeName, tenantId, version);
+
+                _versionProviderCache[versionProviderKey] = versionProvider;
+            }
+
+            return versionProvider;
+        }
+
+        /// <summary>
+        /// Возвращает конструктор версий индекса.
+        /// </summary>
+        /// <param name="documentId">Имя документа.</param>
+        public IVersionBuilder GetVersionBuilder(string documentId)
+        {
+            return _indexFactory.BuildVersionBuilder(
+                MetadataConfiguration.ConfigurationId,
+                MetadataConfiguration.GetMetadataIndexType(documentId),
+                MetadataConfiguration.GetSearchAbilityType(documentId));
+        }
+
+        /// <summary>
+        /// Возвращает хранилище бинарных данных.
+        /// </summary>
+        public IBlobStorage GetBlobStorage()
+        {
+            return _blobStorageFactory.CreateBlobStorage();
+        }
+
+        /// <summary>
+        /// Возвращает версию метаданных конфигурации.
+        /// </summary>
+        public string GetConfigurationVersion()
+        {
+            return MetadataConfiguration.Version;
+        }
+
+        /// <summary>
+        /// Возвращает идентификатор конфигурации.
+        /// </summary>
+        public string GetConfigurationIdentifier()
+        {
+            return MetadataConfiguration.ConfigurationId;
+        }
+    }
 }
