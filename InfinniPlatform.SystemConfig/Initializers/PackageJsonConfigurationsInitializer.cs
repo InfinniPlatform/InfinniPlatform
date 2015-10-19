@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 using InfinniPlatform.Api.Serialization;
+using InfinniPlatform.FastReport.Templates.Borders;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
@@ -19,6 +21,29 @@ namespace InfinniPlatform.SystemConfig.Initializers
 			_securityComponent = securityComponent;
 
 			_configurations = new Lazy<IEnumerable<object>>(LoadConfigsMetadata);
+
+			var watcher = new FileSystemWatcher(@"C:\Projects\InfinniPlatform\Assemblies\content", "*.json")
+			{
+				IncludeSubdirectories = true
+			};
+
+			watcher.Changed += (s, e) =>
+			{
+				if (FileChannelHistory.IsChanged(e.FullPath))
+				{
+					try
+					{
+						Console.Clear();
+						Console.WriteLine("[{1}] File {0} changed.", e.Name, DateTime.Now.TimeOfDay);
+					}
+					catch (Exception)
+					{
+						// ignored
+					}
+				}
+			};
+
+			watcher.EnableRaisingEvents = true;
 		}
 
 
@@ -191,6 +216,46 @@ namespace InfinniPlatform.SystemConfig.Initializers
 			{
 				return JsonObjectSerializer.Default.Deserialize(reader, typeof(DynamicWrapper));
 			}
+		}
+	}
+
+	internal sealed class FileChannelHistory
+	{
+		readonly static ConcurrentDictionary<string, DateTime> History = new ConcurrentDictionary<string, DateTime>();
+
+		public static bool IsChanged(string filePath)
+		{
+			var lastWriteTime = File.GetLastWriteTime(filePath);
+
+			DateTime lastReadTime;
+
+			if (History.TryGetValue(filePath, out lastReadTime))
+			{
+				if (!EqualsToSeconds(lastWriteTime,lastReadTime))
+				{
+					History.TryUpdate(filePath, lastWriteTime, lastReadTime);
+
+					return true;
+				}
+			}
+			else
+			{
+				History.TryAdd(filePath, lastWriteTime);
+
+				return true;
+			}
+
+			return false;
+		}
+
+		static bool EqualsToSeconds(DateTime left, DateTime right)
+		{
+			return left.Year == right.Year &&
+				   left.Month == right.Month &&
+				   left.Day == right.Day &&
+				   left.Minute == right.Minute &&
+				   left.Second == right.Second;
+
 		}
 	}
 }
