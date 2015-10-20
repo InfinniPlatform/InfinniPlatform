@@ -137,7 +137,7 @@ publish/
 
 # NuGet Packages
 *.nupkg
-InfinniPlatform.*.nuspec
+Files/Packaging/InfinniPlatform.nuspec
 # The packages folder can be ignored because of Package Restore
 /packages/*
 # except build/, which is used as an MSBuild target.
@@ -195,5 +195,3 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
-/AssembliesTest/SystemConfiguration_1.0.0.0
-Files/Packaging/InfinniPlatform.nuspec
