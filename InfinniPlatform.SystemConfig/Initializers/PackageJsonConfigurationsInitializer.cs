@@ -5,6 +5,7 @@ using System.Linq;
 
 using InfinniPlatform.Api.Serialization;
 using InfinniPlatform.Hosting;
+using InfinniPlatform.Logging;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Settings;
@@ -18,12 +19,47 @@ namespace InfinniPlatform.SystemConfig.Initializers
 		{
 			_securityComponent = securityComponent;
 
-			_configurations = new Lazy<IEnumerable<object>>(LoadConfigsMetadata);
+			_configurations = new Lazy<IEnumerable<DynamicWrapper>>(LoadConfigsMetadata);
+
+			var watcher = new FileSystemWatcher(AppSettings.GetValue("ContentDirectory", "content"), "*.json")
+			{
+				IncludeSubdirectories = true
+			};
+
+			watcher.Changed += (sender, args) =>
+			{
+				if (FileHistoryHelper.IsChanged(args.FullPath))
+				{
+					try
+					{
+						Console.WriteLine("[{1}] File {0} changed.", args.Name, DateTime.Now.TimeOfDay);
+
+						foreach (dynamic configuration in _configurations.Value)
+						{
+							RemoveConfiguration(configuration.Name);
+						}
+
+						var updatedConfigurations = LoadConfigsMetadata();
+
+						foreach (dynamic configuration in updatedConfigurations)
+						{
+							InstallConfiguration(configuration, configuration.Name);
+						}
+
+						Console.WriteLine("[{0}] Configurations successfully updated.", DateTime.Now.TimeOfDay);
+					}
+					catch (Exception e)
+					{
+						Logger.Log.Error("Error during metadata update.", e);
+					}
+				}
+			};
+
+			watcher.EnableRaisingEvents = true;
 		}
 
-
 		private readonly ISecurityComponent _securityComponent;
-		private readonly Lazy<IEnumerable<object>> _configurations;
+		private readonly Lazy<IEnumerable<DynamicWrapper>> _configurations;
 
 
 		public void OnStart(HostingContextBuilder contextBuilder)
@@ -34,21 +70,21 @@ namespace InfinniPlatform.SystemConfig.Initializers
 			// Загрузка и кэширование метаданных каждой конфигурации
 			foreach (dynamic configuration in configurations)
 			{
-				string configId = configuration.Name;
-				string configVersion = configuration.Version;
+				string configurationId = configuration.Name;
+				string configurationVersion = configuration.Version;
 
-				InstallConfiguration(configId, configVersion, configuration);
+				InstallConfiguration(configuration, configurationId, configurationVersion);
 			}
 		}
 
 
-		private void InstallConfiguration(string configId, string configVersion, object configuration)
+		private void InstallConfiguration(object configuration, string configId, string configVersion = null)
 		{
 			// Загрузка метеданных конфигурации для кэширования
 			var metadataCacheFiller = LoadConfigurationMetadata(configuration);
 
 			// Создание менеджера кэша метаданных конфигураций
-			var metadataCacheManager = InfinniPlatformHostServer.Instance.CreateConfiguration(configVersion, configId, false);
+			var metadataCacheManager = InfinniPlatformHostServer.Instance.CreateConfiguration(configId, false, configVersion);
 
 			// Загрузка метаданных конфигурации в кэш
 			metadataCacheFiller.InstallConfiguration(metadataCacheManager);
@@ -64,6 +100,16 @@ namespace InfinniPlatform.SystemConfig.Initializers
 			{
 				_securityComponent.WarmUpAcl();
 			}
+		}
+
+
+		static void RemoveConfiguration(string configurationName)
+		{
+			// Удаление сервисов конфигурации
+			InfinniPlatformHostServer.Instance.UninstallServices(configurationName);
+
+			// Удаление метаданных конфигурации из кэша
+			InfinniPlatformHostServer.Instance.RemoveConfiguration(configurationName);
 		}
 
 
@@ -96,7 +142,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
 		}
 
 
-		private static IEnumerable<object> LoadConfigsMetadata()
+		private static IEnumerable<DynamicWrapper> LoadConfigsMetadata()
 		{
 			var contentDirectory = AppSettings.GetValue("ContentDirectory", "content");
 
@@ -111,7 +157,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
 				.ToArray();
 		}
 
-		private static object LoadConfigMetadata(string configDirectory)
+		private static DynamicWrapper LoadConfigMetadata(string configDirectory)
 		{
 			var configFile = Path.Combine(configDirectory, "Configuration.json");
 

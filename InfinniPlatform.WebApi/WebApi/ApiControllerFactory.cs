@@ -35,7 +35,7 @@ namespace InfinniPlatform.WebApi.WebApi
 
         public void RegisterVersion(string metadataConfigurationId, string version)
         {
-            if (!Versions.Any(v => v.Item1.ToLowerInvariant() == metadataConfigurationId.ToLowerInvariant() &&
+            if (!Versions.Any(v => string.Equals(v.Item1, metadataConfigurationId, StringComparison.InvariantCultureIgnoreCase) &&
                  v.Item2 == version))
             {
                 Versions.Add(new Tuple<string, string>(metadataConfigurationId, version));
@@ -44,7 +44,10 @@ namespace InfinniPlatform.WebApi.WebApi
 
         public void UnregisterVersion(string metadataConfigurationId, string version)
         {
-            _versions = Versions.Where(v => !(v.Item1.ToLowerInvariant() == metadataConfigurationId.ToLowerInvariant() && v.Item2 == version)).ToList();
+	        var versions = Versions.Where(v => !(string.Equals(v.Item1, metadataConfigurationId, StringComparison.InvariantCultureIgnoreCase) &&
+												 v.Item2 == version))
+								   .ToList();
+	        _versions = versions;
         }
 
 	    public IRestVerbsRegistrator CreateTemplate(string version, string metadataConfigurationId, string metadataName)

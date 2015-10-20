@@ -127,7 +127,7 @@ namespace InfinniPlatform.WebApi.Factories
             return this;
         }
 
-        public InfinniPlatformHostServer UnregisterVersion(string metadataConfigurationId, string version)
+        public InfinniPlatformHostServer UnregisterVersion(string metadataConfigurationId, string version = null)
         {
             _hostServer.ApiControllerFactory.UnregisterVersion(metadataConfigurationId, version);
             return this;
@@ -136,7 +136,7 @@ namespace InfinniPlatform.WebApi.Factories
 		/// <summary>
 		///   Удаление установленных сервисов (обычно используется для переустановки модуля в режиме runtime)
 		/// </summary>
-		public void UninstallServices(string version, string metadataConfigurationId)
+		public void UninstallServices(string metadataConfigurationId, string version = null)
 		{
             _hostServer.RemoveTemplates(version, metadataConfigurationId);
 		}
@@ -155,7 +155,7 @@ namespace InfinniPlatform.WebApi.Factories
 		/// <summary>
 		///   Регистрация конфигураций метаданных.
 		///   Осуществляет поиск установщиков модулей на сервере и затем регистрирует метаданные для каждого из них 
-		/// </summary>
+		/// </summary
 		/// <returns></returns>
 		private InfinniPlatformHostServer InstallModules()
 		{
@@ -226,14 +226,14 @@ namespace InfinniPlatform.WebApi.Factories
 			_hostServer.BuildServer();
 		}
 
-	    /// <summary>
-	    ///   Создать экземпляр пустой (неинициализированной) конфигурации на сервере
-	    /// </summary>
-	    /// <param name="version">Версия приложения</param>
-	    /// <param name="configurationId">Идентификатор конфигурации</param>
-	    /// <param name="isEmbeddedConfiguration">Признак встроенной конфигурации C#</param>
-	    /// <returns>Конфигурация метаданных</returns>
-	    public IMetadataConfiguration CreateConfiguration(string version, string configurationId, bool isEmbeddedConfiguration)
+		/// <summary>
+		///   Создать экземпляр пустой (неинициализированной) конфигурации на сервере
+		/// </summary>
+		/// <param name="configurationId">Идентификатор конфигурации</param>
+		/// <param name="isEmbeddedConfiguration">Признак встроенной конфигурации C#</param>
+		/// <param name="version">Версия приложения</param>
+		/// <returns>Конфигурация метаданных</returns>
+		public IMetadataConfiguration CreateConfiguration(string configurationId, bool isEmbeddedConfiguration, string version)
 		{
 			var metadataConfigurationProvider = _hostServer.Container().Resolve<IMetadataConfigurationProvider>();
 			var actionConfig = _hostServer.Container().Resolve<IScriptConfiguration>();
@@ -243,15 +243,16 @@ namespace InfinniPlatform.WebApi.Factories
 			return metadataConfigurationProvider.AddConfiguration(version, configurationId, actionConfig, isEmbeddedConfiguration);
 		}
 
-	    /// <summary>
-	    ///   Удалить конфигурацию из списка сервера
-	    /// </summary>
-	    /// <param name="version">Версия приложения</param>
-	    /// <param name="configurationId">Идентификатор конфигурации</param>
-	    public void RemoveConfiguration(string version, string configurationId)
+		/// <summary>
+		///   Удалить конфигурацию из списка сервера
+		/// </summary>
+		/// <param name="configurationId">Идентификатор конфигурации</param>
+		/// <param name="version">Версия приложения</param>
+		public void RemoveConfiguration(string configurationId, string version = null)
 		{
 			var metadataConfigurationProvider = _hostServer.Container().Resolve<IMetadataConfigurationProvider>();
 			metadataConfigurationProvider.RemoveConfiguration(version, configurationId);
+			Instance.UnregisterVersion(configurationId, version);
 		}
 
 		private readonly IList<Type> _startupInitializers = new List<Type>();

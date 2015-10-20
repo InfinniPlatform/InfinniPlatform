@@ -66,6 +66,7 @@
     <Compile Include="Configurator\ActionUnitSetRelevantVersion.cs" />
     <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetSolutionList.cs" />
     <Compile Include="Configurator\ActionUnitUpdateSolutionFromJson.cs" />
+    <Compile Include="Initializers\FileHistoryHelper.cs" />
     <Compile Include="Initializers\PackageJsonConfigurationInstaller.cs" />
     <Compile Include="Initializers\PackageJsonConfigurationsInitializer.cs" />
     <Compile Include="Initializers\UserStorageInitializer.cs" />
