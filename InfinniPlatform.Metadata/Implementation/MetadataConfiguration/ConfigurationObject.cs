@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 
 using InfinniPlatform.Factories;
 using InfinniPlatform.Sdk.Environment.Binary;
@@ -12,24 +13,27 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
     /// </summary>
     public sealed class ConfigurationObject : IConfigurationObject
     {
+        static ConfigurationObject()
+        {
+            VersionProviderCache = new ConcurrentDictionary<string, IVersionProvider>(StringComparer.OrdinalIgnoreCase);
+        }
+
+        private static readonly ConcurrentDictionary<string, IVersionProvider> VersionProviderCache;
+
 
         public ConfigurationObject(IMetadataConfiguration metadataConfiguration, IIndexFactory indexFactory, IBlobStorageFactory blobStorageFactory)
         {
             _metadataConfiguration = metadataConfiguration;
             _indexFactory = indexFactory;
             _blobStorageFactory = blobStorageFactory;
-
             _indexStateProvider = _indexFactory.BuildIndexStateProvider();
-            _versionProviderCache = new ConcurrentDictionary<string, IVersionProvider>();
         }
 
 
         private readonly IMetadataConfiguration _metadataConfiguration;
         private readonly IIndexFactory _indexFactory;
         private readonly IBlobStorageFactory _blobStorageFactory;
-
         private readonly IIndexStateProvider _indexStateProvider;
-        private readonly ConcurrentDictionary<string, IVersionProvider> _versionProviderCache;
 
 
         public IMetadataConfiguration MetadataConfiguration
@@ -55,7 +59,7 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 
             var versionProviderKey = string.Format("{0},{1}", documentIndexName, documentTypeName);
 
-            if (!_versionProviderCache.TryGetValue(versionProviderKey, out versionProvider))
+            if (!VersionProviderCache.TryGetValue(versionProviderKey, out versionProvider))
             {
                 // Проверка наличия индекса занимает очень много времени. На данный момент эту логику можно осуществлять
                 // при старте системы. Не понятно, почему этого нельзя было сделать раньше или, во всяком случае, в другом
@@ -69,7 +73,7 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 
                 versionProvider = _indexFactory.BuildVersionProvider(documentIndexName, documentTypeName, tenantId, version);
 
-                _versionProviderCache[versionProviderKey] = versionProvider;
+                VersionProviderCache[versionProviderKey] = versionProvider;
             }
 
             return versionProvider;
