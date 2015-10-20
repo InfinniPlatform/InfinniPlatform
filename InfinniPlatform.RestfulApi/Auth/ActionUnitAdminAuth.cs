@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Linq;
 
-using InfinniPlatform.Api.Validation;
 using InfinniPlatform.RestfulApi.Utils;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
-using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Validations;
 
 namespace InfinniPlatform.RestfulApi.Auth
@@ -23,7 +21,7 @@ namespace InfinniPlatform.RestfulApi.Auth
                                          target.Item.RecordId);
 
             target.IsValid = authResult.IsValid;
-			target.ValidationMessage = string.Join(Environment.NewLine, (authResult.Items != null) ? authResult.Items.Select(i => i.ToString()) : Enumerable.Empty<string>());
+            target.ValidationMessage = string.Join(Environment.NewLine, (authResult.Items != null) ? authResult.Items.Select(i => (string)i.ToString()) : Enumerable.Empty<string>());
         }
     }
 }

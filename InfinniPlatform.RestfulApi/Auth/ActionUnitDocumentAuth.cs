@@ -33,7 +33,7 @@ namespace InfinniPlatform.RestfulApi.Auth
                                                                                ? target.Item.Document.Id
                                                                                : null);
                 target.IsValid = result.IsValid;
-				target.ValidationMessage = string.Join(",", (result.Items != null) ? result.Items.Select(i => i.ToString()) : Enumerable.Empty<string>());
+                target.ValidationMessage = string.Join(",", (result.Items != null) ? result.Items.Select(i => (string)i.ToString()) : Enumerable.Empty<string>());
             }
             else
             {
@@ -58,7 +58,7 @@ namespace InfinniPlatform.RestfulApi.Auth
                 try
                 {
                     target.Context.GetComponent<IScriptRunnerComponent>()
-                          .GetScriptRunner(target.Context.GetVersion(AuthorizationStorageExtensions.AuthorizationConfigId,target.UserName), AuthorizationStorageExtensions.AuthorizationConfigId)
+                          .GetScriptRunner(target.Context.GetVersion(AuthorizationStorageExtensions.AuthorizationConfigId, target.UserName), AuthorizationStorageExtensions.AuthorizationConfigId)
                           .InvokeScript(roleCheckProcess.Transitions[0].ActionPoint.ScenarioId, scriptArguments);
                 }
                 catch (ArgumentException e)
