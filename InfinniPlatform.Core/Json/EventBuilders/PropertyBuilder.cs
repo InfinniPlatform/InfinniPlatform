@@ -30,31 +30,31 @@ namespace InfinniPlatform.Json.EventBuilders
             return property.Split('.').LastOrDefault();
         }
 
-        private void UpdateProperty(string propertyName, JObject parentObject, dynamic value)
+        private static void UpdateProperty(string propertyName, JObject parentObject, object value)
         {
-            var prop = parentObject.Properties().FirstOrDefault(p => p.Name == propertyName);
-            if (prop != null)
+            var jProperty = parentObject.Property(propertyName);
+            var jValue = (value != null) ? ((value is JToken) ? (JToken)value : JToken.FromObject(value)) : null;
+
+            if (jProperty != null)
             {
-	            prop.Value = value is JValue
-								 ? ((JValue)value).Value
-								 : value;
+                jProperty.Value = jValue;
             }
             else
             {
-                parentObject.Add(propertyName, value);
+                parentObject.Add(propertyName, jValue);
             }
         }
 
-        private JToken GetParent(JToken startObject, EventDefinition eventDefinition)
+        private static JToken GetParent(JToken startObject, EventDefinition eventDefinition)
         {
             var path = eventDefinition.Property.Split('.');
+
             if (path.Count() == 1)
             {
                 return startObject;
             }
-            return
-                new JsonParser().FindJsonToken(startObject, string.Join(".", path.Take(path.Count() - 1)))
-                    .FirstOrDefault();
+
+            return new JsonParser().FindJsonToken(startObject, string.Join(".", path.Take(path.Count() - 1))).FirstOrDefault();
         }
     }
 }
