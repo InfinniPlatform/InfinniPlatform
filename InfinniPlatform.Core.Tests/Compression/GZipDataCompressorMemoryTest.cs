@@ -9,6 +9,7 @@ namespace InfinniPlatform.Core.Tests.Compression
 {
     [TestFixture]
     [Category(TestCategories.MemoryLeakTest)]
+    [Ignore("Manual")]
     public sealed class GZipDataCompressorMemoryTest
     {
         [Test]
