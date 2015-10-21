@@ -1,205 +1,203 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using InfinniPlatform.Api.RestQuery.EventObjects;
 using InfinniPlatform.Json;
 using InfinniPlatform.Json.EventBuilders;
 using InfinniPlatform.Sdk.Events;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+
 using NUnit.Framework;
 
 namespace InfinniPlatform.Core.Tests.Events
 {
-	[TestFixture]
-	[Category(TestCategories.UnitTest)]
-	public class EventBehavior
-	{
-		[Test]
-		public void ShouldParsePropertyDefinition()
-		{
-			var jsonObject = JObject.FromObject(new
-				                 {
-					                 ObjectMetadata = new[]
-						                                  {
-							                                  new
-								                                  {
-									                                  FieldMetadata = new
-										                                                  {
-											                                                  MetadataDataType = new
-												                                                                     {
-													                                                                     MetadataIdentifier = "REF_TEST"
-												                                                                     }
-
-										                                                  }
-								                                  },
-															 new
-																 {
-																	 FieldMetadata = new
-																		                 {
-																			                 MetadataDataType = new
-																				                                    {
-																					                                    MetadataIdentifier = "REF_SECOND"
-																				                                    }
-																		                 }
-																 }
-						                                  }
-				                 });
-			var testProperty = "ObjectMetadata.0.FieldMetadata.MetadataDataType.MetadataIdentifier";
-			var eventParser = new JsonParser();
+    [TestFixture]
+    [Category(TestCategories.UnitTest)]
+    public class EventBehavior
+    {
+        [Test]
+        public void ShouldParsePropertyDefinition()
+        {
+            var jsonObject = JObject.FromObject(new
+                                                {
+                                                    ObjectMetadata = new[]
+                                                                     {
+                                                                         new
+                                                                         {
+                                                                             FieldMetadata = new
+                                                                                             {
+                                                                                                 MetadataDataType = new
+                                                                                                                    {
+                                                                                                                        MetadataIdentifier = "REF_TEST"
+                                                                                                                    }
+                                                                                             }
+                                                                         },
+                                                                         new
+                                                                         {
+                                                                             FieldMetadata = new
+                                                                                             {
+                                                                                                 MetadataDataType = new
+                                                                                                                    {
+                                                                                                                        MetadataIdentifier = "REF_SECOND"
+                                                                                                                    }
+                                                                                             }
+                                                                         }
+                                                                     }
+                                                });
+            var testProperty = "ObjectMetadata.0.FieldMetadata.MetadataDataType.MetadataIdentifier";
+            var eventParser = new JsonParser();
             var resultJson = eventParser.FindJsonToken(jsonObject, testProperty).FirstOrDefault();
-			Assert.IsNotNull(resultJson);
-			Assert.AreEqual(((JProperty)resultJson).Value.ToString(),"REF_TEST");
+            Assert.IsNotNull(resultJson);
+            Assert.AreEqual(((JProperty)resultJson).Value.ToString(), "REF_TEST");
 
-			testProperty = "ObjectMetadata.1.FieldMetadata.MetadataDataType.MetadataIdentifier";
-			eventParser = new JsonParser();
+            testProperty = "ObjectMetadata.1.FieldMetadata.MetadataDataType.MetadataIdentifier";
+            eventParser = new JsonParser();
             resultJson = eventParser.FindJsonToken(jsonObject, testProperty).FirstOrDefault();
-			Assert.IsNotNull(resultJson);
-			Assert.AreEqual(((JProperty)resultJson).Value.ToString(), "REF_SECOND");
+            Assert.IsNotNull(resultJson);
+            Assert.AreEqual(((JProperty)resultJson).Value.ToString(), "REF_SECOND");
+        }
 
-		}
-
-		public void ShouldReturnRootObjectIfNoPath()
-		{
-			
-		}
+        public void ShouldReturnRootObjectIfNoPath()
+        {
+        }
 
 
-		[Test]
-		public void ShouldBuildObjectCollection()
-		{
-			var testProperty = "ObjectMetadata";
-			var jsonObject = new JObject();
+        [Test]
+        public void ShouldBuildObjectCollection()
+        {
+            var testProperty = "ObjectMetadata";
+            var jsonObject = new JObject();
 
-			var eventCreateCollection = new ObjectMetadataHandler().CreateContainerCollection(testProperty);
-			new ContainerCollectionBuilder().BuildJObject(jsonObject, eventCreateCollection);
+            var eventCreateCollection = new ObjectMetadataHandler().CreateContainerCollection(testProperty);
+            new ContainerCollectionBuilder().BuildJObject(jsonObject, eventCreateCollection);
 
-			Assert.AreEqual("{\"ObjectMetadata\":[]}",JsonConvert.SerializeObject(jsonObject));
-		}
+            Assert.AreEqual("{\"ObjectMetadata\":[]}", JsonConvert.SerializeObject(jsonObject));
+        }
 
-		[Test]
-		public void ShouldBuildObject()
-		{
-			var testProperty = "SomeObject";
-			var jsonObject = new JObject();
+        [Test]
+        public void ShouldBuildObject()
+        {
+            var testProperty = "SomeObject";
+            var jsonObject = new JObject();
 
-			var eventCreateContainer = new ObjectMetadataHandler().CreateContainer(testProperty);
-			new ContainerBuilder().BuildJObject(jsonObject, eventCreateContainer);
+            var eventCreateContainer = new ObjectMetadataHandler().CreateContainer(testProperty);
+            new ContainerBuilder().BuildJObject(jsonObject, eventCreateContainer);
 
-			Assert.AreEqual("{\"SomeObject\":{}}", JsonConvert.SerializeObject(jsonObject));
-			
-		}
+            Assert.AreEqual("{\"SomeObject\":{}}", JsonConvert.SerializeObject(jsonObject));
+        }
 
-		[Test]
-		public void ShouldBuildProperty()
-		{
-			var testProperty = "SomeProperty";
-			var testValue = "SomeValue";
-			var jsonObject = new JObject();
+        [Test]
+        public void ShouldBuildProperty()
+        {
+            var testProperty = "SomeProperty";
+            var testValue = "SomeValue";
+            var jsonObject = new JObject();
 
-			var eventCreateProperty = new ObjectMetadataHandler().CreateProperty(testProperty,testValue);
-			new PropertyBuilder().BuildJObject(jsonObject,eventCreateProperty);
+            var eventCreateProperty = new ObjectMetadataHandler().CreateProperty(testProperty, testValue);
+            new PropertyBuilder().BuildJObject(jsonObject, eventCreateProperty);
 
-			Assert.AreEqual("{\"SomeProperty\":\"SomeValue\"}", JsonConvert.SerializeObject(jsonObject));
-		}
+            Assert.AreEqual("{\"SomeProperty\":\"SomeValue\"}", JsonConvert.SerializeObject(jsonObject));
+        }
 
 
-		[Test]
-		public void ShouldThrowIfPathNotFound()
-		{
-			var testProperty = "SomeObject.SomeNestedObject";
-			JObject jsonObject = null;
+        [Test]
+        public void ShouldThrowIfPathNotFound()
+        {
+            var testProperty = "SomeObject.SomeNestedObject";
+            JObject jsonObject = null;
 
-			var eventCreateContainer = new ObjectMetadataHandler().CreateContainer(testProperty);
-			Assert.Throws<ArgumentException>(() => new ContainerBuilder().BuildJObject(jsonObject, eventCreateContainer));
-		}
+            var eventCreateContainer = new ObjectMetadataHandler().CreateContainer(testProperty);
+            Assert.Throws<ArgumentException>(() => new ContainerBuilder().BuildJObject(jsonObject, eventCreateContainer));
+        }
 
-		[Test]
-		public void ShouldFindAndCreateNestedProperty()
-		{
-			var jsonObject = JObject.FromObject(new
-			{
-				ObjectMetadata = new[]
-					                {
-							            new
-								            {
-									            FieldMetadata = new
-										                            {
-											                            MetadataDataType = new
-												                                                {
-													                                                //MetadataIdentifier = "REF_TEST"  <--- this we add on the test
-												                                                }
+        [Test]
+        public void ShouldFindAndCreateNestedProperty()
+        {
+            var jsonObject = JObject.FromObject(new
+                                                {
+                                                    ObjectMetadata = new[]
+                                                                     {
+                                                                         new
+                                                                         {
+                                                                             FieldMetadata = new
+                                                                                             {
+                                                                                                 MetadataDataType = new
+                                                                                                                    {
+                                                                                                                        //MetadataIdentifier = "REF_TEST"  <--- this we add on the test
+                                                                                                                    }
+                                                                                             }
+                                                                         }
+                                                                     }
+                                                });
+            var propertyPath = "ObjectMetadata.0.FieldMetadata.MetadataDataType";
+            var propertyToAdd = "MetadataIdentifier";
+            var propertyValue = "REF_TEST";
 
-										                            }
-								            }
-						            }
-			});
-			var propertyPath = "ObjectMetadata.0.FieldMetadata.MetadataDataType";
-			var propertyToAdd = "MetadataIdentifier";
-			var propertyValue = "REF_TEST";
+            var eventParser = new JsonParser();
+            var resultJson = eventParser.FindJsonToken(jsonObject, propertyPath).FirstOrDefault();
 
-			var eventParser = new JsonParser();
-			var resultJson = eventParser.FindJsonToken(jsonObject, propertyPath).FirstOrDefault();
-		
-			var eventCreateProperty = new ObjectMetadataHandler().CreateProperty(propertyToAdd, propertyValue);
-			new PropertyBuilder().BuildJObject(resultJson, eventCreateProperty);
+            var eventCreateProperty = new ObjectMetadataHandler().CreateProperty(propertyToAdd, propertyValue);
+            new PropertyBuilder().BuildJObject(resultJson, eventCreateProperty);
 
-			Assert.AreEqual("{\"ObjectMetadata\":[{\"FieldMetadata\":{\"MetadataDataType\":{\"MetadataIdentifier\":\"REF_TEST\"}}}]}", JsonConvert.SerializeObject(jsonObject));
-		}
+            Assert.AreEqual("{\"ObjectMetadata\":[{\"FieldMetadata\":{\"MetadataDataType\":{\"MetadataIdentifier\":\"REF_TEST\"}}}]}", JsonConvert.SerializeObject(jsonObject));
+        }
 
-		[Test]
-		public void ShouldFindAndReturnAllCollectionItems()
-		{
-			var jsonObject = JObject.FromObject(new
-			{
-				ObjectMetadata = new[]
-					                {
-							            new
-								            {
-												TestProperty = "Test1"
-								            },
-										new
-											{
-												TestProperty = "Test2"
-											}
-						            }
-			});
-			var propertyPath = "ObjectMetadata.$.TestProperty";
-			
-			var eventParser = new JsonParser();
-			var resultJson = eventParser.FindJsonToken(jsonObject, propertyPath);
-		
-            Assert.AreEqual(resultJson.Count(),2);
-            		
+        [Test]
+        public void ShouldFindAndReturnAllCollectionItems()
+        {
+            var jsonObject = JObject.FromObject(new
+                                                {
+                                                    ObjectMetadata = new[]
+                                                                     {
+                                                                         new
+                                                                         {
+                                                                             TestProperty = "Test1"
+                                                                         },
+                                                                         new
+                                                                         {
+                                                                             TestProperty = "Test2"
+                                                                         }
+                                                                     }
+                                                });
+            var propertyPath = "ObjectMetadata.$.TestProperty";
 
-			Assert.AreEqual(resultJson.First().ToString(), "\"TestProperty\": \"Test1\"");
-            Assert.AreEqual(resultJson.Skip(1).First().ToString(), "\"TestProperty\": \"Test2\"");	
-		}
+            var eventParser = new JsonParser();
+            var resultJson = eventParser.FindJsonToken(jsonObject, propertyPath);
+
+            Assert.AreEqual(resultJson.Count(), 2);
+
+
+            Assert.AreEqual(resultJson.First().ToString(), "\"TestProperty\": \"Test1\"");
+            Assert.AreEqual(resultJson.Skip(1).First().ToString(), "\"TestProperty\": \"Test2\"");
+        }
 
 
         [Test]
         public void ShouldFindAndReturnAllNestedContainerCollectionItems()
         {
             var jsonObject = JObject.FromObject(new
-            {
-                ObjectMetadata = new[]
-					                {
-							            new
-								            {
-												TestContainer = new
-												    {
-												        TestProperty = "Test1",
-												    }
-								            },
-										new
-											{
-												TestContainer = new
-												    {
-												        TestProperty = "Test2"
-												    }
-											}
-						            }
-            });
+                                                {
+                                                    ObjectMetadata = new[]
+                                                                     {
+                                                                         new
+                                                                         {
+                                                                             TestContainer = new
+                                                                                             {
+                                                                                                 TestProperty = "Test1"
+                                                                                             }
+                                                                         },
+                                                                         new
+                                                                         {
+                                                                             TestContainer = new
+                                                                                             {
+                                                                                                 TestProperty = "Test2"
+                                                                                             }
+                                                                         }
+                                                                     }
+                                                });
             var propertyPath = "ObjectMetadata.$.TestContainer.TestProperty";
 
             var eventParser = new JsonParser();
@@ -216,45 +214,45 @@ namespace InfinniPlatform.Core.Tests.Events
         public void ShouldFindAndReturnAllContainerNestedCollectionItems()
         {
             var jsonObject = JObject.FromObject(new
-            {
-                ObjectMetadata = new[]
-					                {
-							            new
-								            {
-												TestContainer = new
-												    {
-												        TestCollection = new[]
-												            {
-												                new
-												                    {
-												                        TestProperty = "Test1"
-												                    },
-                                                                new
-                                                                    {
-                                                                        TestProperty = "Test2"
-                                                                    }
-												            }
-												    }
-								            },
-										new
-											{
-												TestContainer = new
-												    {
-												        TestCollection = new[]
-												            {
-												                new
-												                    {
-												                        TestProperty = "Test3"
-												                    },
-                                                                new
-                                                                    {
-                                                                        TestProperty = "Test4"
-                                                                    }
-												            }
-												    }
-											}
-						            }
-            });
+                                                {
+                                                    ObjectMetadata = new[]
+                                                                     {
+                                                                         new
+                                                                         {
+                                                                             TestContainer = new
+                                                                                             {
+                                                                                                 TestCollection = new[]
+                                                                                                                  {
+                                                                                                                      new
+                                                                                                                      {
+                                                                                                                          TestProperty = "Test1"
+                                                                                                                      },
+                                                                                                                      new
+                                                                                                                      {
+                                                                                                                          TestProperty = "Test2"
+                                                                                                                      }
+                                                                                                                  }
+                                                                                             }
+                                                                         },
+                                                                         new
+                                                                         {
+                                                                             TestContainer = new
+                                                                                             {
+                                                                                                 TestCollection = new[]
+                                                                                                                  {
+                                                                                                                      new
+                                                                                                                      {
+                                                                                                                          TestProperty = "Test3"
+                                                                                                                      },
+                                                                                                                      new
+                                                                                                                      {
+                                                                                                                          TestProperty = "Test4"
+                                                                                                                      }
+                                                                                                                  }
+                                                                                             }
+                                                                         }
+                                                                     }
+                                                });
             var propertyPath = "ObjectMetadata.$.TestContainer.TestCollection.$.TestProperty";
 
             var eventParser = new JsonParser();
@@ -273,45 +271,45 @@ namespace InfinniPlatform.Core.Tests.Events
         public void ShouldFindAndReturnAllContainers()
         {
             var jsonObject = JObject.FromObject(new
-            {
-                ObjectMetadata = new[]
-					                {
-							            new
-								            {
-												TestContainer = new
-												    {
-												        TestCollection = new[]
-												            {
-												                new
-												                    {
-												                        TestProperty = "Test1"
-												                    },
-                                                                new
-                                                                    {
-                                                                        TestProperty = "Test2"
-                                                                    }
-												            }
-												    }
-								            },
-										new
-											{
-												TestContainer = new
-												    {
-												        TestCollection = new[]
-												            {
-												                new
-												                    {
-												                        TestProperty = "Test3"
-												                    },
-                                                                new
-                                                                    {
-                                                                        TestProperty = "Test4"
-                                                                    }
-												            }
-												    }
-											}
-						            }
-            });
+                                                {
+                                                    ObjectMetadata = new[]
+                                                                     {
+                                                                         new
+                                                                         {
+                                                                             TestContainer = new
+                                                                                             {
+                                                                                                 TestCollection = new[]
+                                                                                                                  {
+                                                                                                                      new
+                                                                                                                      {
+                                                                                                                          TestProperty = "Test1"
+                                                                                                                      },
+                                                                                                                      new
+                                                                                                                      {
+                                                                                                                          TestProperty = "Test2"
+                                                                                                                      }
+                                                                                                                  }
+                                                                                             }
+                                                                         },
+                                                                         new
+                                                                         {
+                                                                             TestContainer = new
+                                                                                             {
+                                                                                                 TestCollection = new[]
+                                                                                                                  {
+                                                                                                                      new
+                                                                                                                      {
+                                                                                                                          TestProperty = "Test3"
+                                                                                                                      },
+                                                                                                                      new
+                                                                                                                      {
+                                                                                                                          TestProperty = "Test4"
+                                                                                                                      }
+                                                                                                                  }
+                                                                                             }
+                                                                         }
+                                                                     }
+                                                });
             var propertyPath = "ObjectMetadata.$.TestContainer.TestCollection.$";
 
             var eventParser = new JsonParser();
@@ -327,131 +325,125 @@ namespace InfinniPlatform.Core.Tests.Events
         }
 
 
-		[Test]
-		public void ShouldFindAndCreateNestedContainer()
-		{
-			var jsonObject = JObject.FromObject(new
-			{
-				ObjectMetadata = new[]
-					                {
-							            new
-								            {
-									            FieldMetadata = new
-										                            {
-																		//MetadataDataType = new    <-- this should be added on
-																		//						{
-																		//						}
+        [Test]
+        public void ShouldFindAndCreateNestedContainer()
+        {
+            var jsonObject = JObject.FromObject(new
+                                                {
+                                                    ObjectMetadata = new[]
+                                                                     {
+                                                                         new
+                                                                         {
+                                                                             FieldMetadata = new
+                                                                                             {
+                                                                                                 //MetadataDataType = new    <-- this should be added on
+                                                                                                 //						{
+                                                                                                 //						}
+                                                                                             }
+                                                                         }
+                                                                     }
+                                                });
+            var propertyPath = "ObjectMetadata.0.FieldMetadata";
+            var propertyToAdd = "MetadataDataType";
 
-										                            }
-								            }
-						            }
-			});
-			var propertyPath = "ObjectMetadata.0.FieldMetadata";
-			var propertyToAdd = "MetadataDataType";
-
-			var eventParser = new JsonParser();
+            var eventParser = new JsonParser();
             var resultJson = eventParser.FindJsonToken(jsonObject, propertyPath).FirstOrDefault();
 
-			var eventCreateProperty = new ObjectMetadataHandler().CreateContainer(propertyToAdd);
-			new ContainerBuilder().BuildJObject(resultJson, eventCreateProperty);
+            var eventCreateProperty = new ObjectMetadataHandler().CreateContainer(propertyToAdd);
+            new ContainerBuilder().BuildJObject(resultJson, eventCreateProperty);
 
-			Assert.AreEqual("{\"ObjectMetadata\":[{\"FieldMetadata\":{\"MetadataDataType\":{}}}]}", JsonConvert.SerializeObject(jsonObject));
-		}
+            Assert.AreEqual("{\"ObjectMetadata\":[{\"FieldMetadata\":{\"MetadataDataType\":{}}}]}", JsonConvert.SerializeObject(jsonObject));
+        }
 
 
-		[Test]
-		public void ShouldFindAndCreateCollectionItemProperty()
-		{
-			var jsonObject = JObject.FromObject(new
-			{
-				ObjectMetadata = new[]
-					                {
-							            new
-								            {
+        [Test]
+        public void ShouldFindAndCreateCollectionItemProperty()
+        {
+            var jsonObject = JObject.FromObject(new
+                                                {
+                                                    ObjectMetadata = new[]
+                                                                     {
+                                                                         new
+                                                                         {
+                                                                         }
+                                                                     }
+                                                });
+            var propertyPath = "ObjectMetadata.0";
+            var propertyToAdd = "FieldMetadata";
 
-								            }
-						            }
-			});
-			var propertyPath = "ObjectMetadata.0";
-			var propertyToAdd = "FieldMetadata";
-
-			var eventParser = new JsonParser();
+            var eventParser = new JsonParser();
             var resultJson = eventParser.FindJsonToken(jsonObject, propertyPath).FirstOrDefault();
 
-			var eventCreateProperty = new ObjectMetadataHandler().CreateContainer(propertyToAdd);
-			new ContainerBuilder().BuildJObject(resultJson, eventCreateProperty);
+            var eventCreateProperty = new ObjectMetadataHandler().CreateContainer(propertyToAdd);
+            new ContainerBuilder().BuildJObject(resultJson, eventCreateProperty);
 
-			Assert.AreEqual("{\"ObjectMetadata\":[{\"FieldMetadata\":{}}]}", JsonConvert.SerializeObject(jsonObject));
-		}
+            Assert.AreEqual("{\"ObjectMetadata\":[{\"FieldMetadata\":{}}]}", JsonConvert.SerializeObject(jsonObject));
+        }
 
-		[Test]
-		public void ShouldFindCollectionItemByProperty()
-		{
-			var jsonObject = JObject.FromObject(new
-			{
-				ObjectMetadata = new[]
-					                {
-							            new
-								            {
-												Property1 = "123"
-								            },
+        [Test]
+        public void ShouldFindCollectionItemByProperty()
+        {
+            var jsonObject = JObject.FromObject(new
+                                                {
+                                                    ObjectMetadata = new[]
+                                                                     {
+                                                                         new
+                                                                         {
+                                                                             Property1 = "123"
+                                                                         },
+                                                                         new
+                                                                         {
+                                                                             Property1 = "345"
+                                                                         },
+                                                                         new
+                                                                         {
+                                                                             Property1 = "456"
+                                                                         }
+                                                                     }
+                                                });
+            var propertyPath = "ObjectMetadata.$.Property1:345";
 
-										new
-											{
-												Property1 = "345"
-											},
+            var eventParser = new JsonParser();
+            var resultJson = eventParser.FindJsonToken(jsonObject, propertyPath).FirstOrDefault();
 
-										new
-											{
-												Property1 = "456"
-											}
-						            }
-			});
-			var propertyPath = "ObjectMetadata.$.Property1:345";
+            Assert.AreEqual(string.Format("{{{0}  \"Property1\": \"345\"{0}}}", Environment.NewLine), resultJson.ToString());
+        }
 
-			var eventParser = new JsonParser();
-			var resultJson = eventParser.FindJsonToken(jsonObject, propertyPath).FirstOrDefault();
+        [Test]
+        public void ShouldFindAndCreateCollectionItem()
+        {
+            var jsonObject = JObject.FromObject(new
+                                                {
+                                                    ObjectMetadata = new object[]
+                                                                     {
+                                                                     }
+                                                });
+            var propertyPath = "ObjectMetadata";
 
-			Assert.AreEqual("{\r\n  \"Property1\": \"345\"\r\n}", resultJson.ToString());
-		}
+            var eventCreateProperty = new ObjectMetadataHandler().AddItemToCollection(propertyPath);
 
-		[Test]
-		public void ShouldFindAndCreateCollectionItem()
-		{
-			var jsonObject = JObject.FromObject(new
-			{
-				ObjectMetadata = new object[]
-					                {
 
-						            }
-			});
-			var propertyPath = "ObjectMetadata";
+            new CollectionItemBuilder().BuildJObject(jsonObject, eventCreateProperty);
 
-			var eventCreateProperty = new ObjectMetadataHandler().AddItemToCollection(propertyPath);
+            Assert.AreEqual("{\"ObjectMetadata\":[{}]}", JsonConvert.SerializeObject(jsonObject));
+        }
 
-			
-			new CollectionItemBuilder().BuildJObject(jsonObject, eventCreateProperty);
+        [Test]
+        public void ShouldFindAndCreateRoot()
+        {
+            var jsonObject = JObject.FromObject(new
+                                                {
+                                                });
+            var propertyPath = "ObjectMetadata";
 
-			Assert.AreEqual("{\"ObjectMetadata\":[{}]}", JsonConvert.SerializeObject(jsonObject));
-		}
-
-		[Test]
-		public void ShouldFindAndCreateRoot()
-		{
-			var jsonObject = JObject.FromObject(new
-			{
-
-			});
-			var propertyPath = "ObjectMetadata";
-
-			var eventParser = new JsonParser();
+            var eventParser = new JsonParser();
             var resultJson = eventParser.FindJsonToken(jsonObject, "").FirstOrDefault();
 
-			var eventCreateContainerCollection = new ObjectMetadataHandler().CreateContainerCollection(propertyPath);
-			new ContainerCollectionBuilder().BuildJObject(resultJson, eventCreateContainerCollection);
+            var eventCreateContainerCollection = new ObjectMetadataHandler().CreateContainerCollection(propertyPath);
+            new ContainerCollectionBuilder().BuildJObject(resultJson, eventCreateContainerCollection);
 
-			Assert.AreEqual("{\"ObjectMetadata\":[]}", JsonConvert.SerializeObject(jsonObject));
-		}
+            Assert.AreEqual("{\"ObjectMetadata\":[]}", JsonConvert.SerializeObject(jsonObject));
+        }
 
 
         [Test]
@@ -478,72 +470,65 @@ namespace InfinniPlatform.Core.Tests.Events
             events.Add(formMetadata.CreateProperty("SomeMetadata.SomeBoolProperty", true));
             events.Add(formMetadata.CreateProperty("SomeMetadata.SomeObjectProperty.SomeDoubleProperty", 1.234));
             events.Add(formMetadata.CreateProperty("SomeMetadata.SomeObjectProperty.SomeStringProperty", "SomeString"));
-            events.Add(formMetadata.CreateProperty("SomeMetadata.SomeObjectProperty.SomeDateTimeProperty", new DateTime(2000,1,1)));
+            events.Add(formMetadata.CreateProperty("SomeMetadata.SomeObjectProperty.SomeDateTimeProperty", new DateTime(2000, 1, 1)));
 
             var formRenderer = new ObjectRenderingHandler();
-			var result = JsonConvert.SerializeObject(formRenderer.RenderEvents(new object(), events));
+            var result = JsonConvert.SerializeObject(formRenderer.RenderEvents(new object(), events));
 
-            Assert.AreEqual("{\"SomeMetadata\":{\"SomeObjectProperty\":{\"SomeDoubleProperty\":1.234,\"SomeStringProperty\":\"SomeString\",\"SomeDateTimeProperty\":\"2000-01-01T00:00:00\"},\"SomeIntProperty\":12,\"SomeBoolProperty\":true}}", result);
+            Assert.AreEqual(
+                "{\"SomeMetadata\":{\"SomeObjectProperty\":{\"SomeDoubleProperty\":1.234,\"SomeStringProperty\":\"SomeString\",\"SomeDateTimeProperty\":\"2000-01-01T00:00:00\"},\"SomeIntProperty\":12,\"SomeBoolProperty\":true}}", result);
         }
 
 
-
-
-
-
-
-		[Test]
-		public void ShouldCreatePrimitiveContainers()
-		{
-			var target = new
-				             {
-					             TestData = new[]
-						                        {
-							                        "Тестовая строка1",
-							                        "Тестовая строка2",
-							                        "Тестовая строка3"
-						                        }
-				             };
-			
-			var formMetadata = new ObjectMetadataHandler();
-            IList<EventDefinition> events = new List<EventDefinition>();
-			events.Add(formMetadata.CreateContainer("SomeMetadata"));
-			events.Add(formMetadata.CreateContainerCollection("SomeMetadata.TestData"));
-			events.Add(formMetadata.AddItemToCollection("SomeMetadata.TestData", "Тестовая строка1"));
-			events.Add(formMetadata.AddItemToCollection("SomeMetadata.TestData", "Тестовая строка2"));
-			events.Add(formMetadata.AddItemToCollection("SomeMetadata.TestData", "Тестовая строка3"));
-			var formRenderer = new ObjectRenderingHandler();
-			var result = JsonConvert.SerializeObject(formRenderer.RenderEvents(new object(), events));
-			Assert.AreEqual(result,"{\"SomeMetadata\":{\"TestData\":[\"Тестовая строка1\",\"Тестовая строка2\",\"Тестовая строка3\"]}}");
-		}
-
-
-	    [Test]
-	    public void ShouldFoldedContainersWithSameNamesAppliesCorrect()
-	    {
+        [Test]
+        public void ShouldCreatePrimitiveContainers()
+        {
             var target = new
-                             {
-                                 TestData = new
-                                 {
-                                     TestData = new
-                                                    {
-                                                        TestData = new
-                                                                       {
-                                                                           TestField = true
-                                                                       }                                                                    
-                                                    },
-                                 }
-                             };
-	        var events = target
-	            .ToEventListAsObject()
-	            .GetEvents();
-	        var formRenderer = new ObjectRenderingHandler();
-	        var result = JsonConvert.SerializeObject(formRenderer.RenderEvents(new object(), events));
+                         {
+                             TestData = new[]
+                                        {
+                                            "Тестовая строка1",
+                                            "Тестовая строка2",
+                                            "Тестовая строка3"
+                                        }
+                         };
+
+            var formMetadata = new ObjectMetadataHandler();
+            IList<EventDefinition> events = new List<EventDefinition>();
+            events.Add(formMetadata.CreateContainer("SomeMetadata"));
+            events.Add(formMetadata.CreateContainerCollection("SomeMetadata.TestData"));
+            events.Add(formMetadata.AddItemToCollection("SomeMetadata.TestData", "Тестовая строка1"));
+            events.Add(formMetadata.AddItemToCollection("SomeMetadata.TestData", "Тестовая строка2"));
+            events.Add(formMetadata.AddItemToCollection("SomeMetadata.TestData", "Тестовая строка3"));
+            var formRenderer = new ObjectRenderingHandler();
+            var result = JsonConvert.SerializeObject(formRenderer.RenderEvents(new object(), events));
+            Assert.AreEqual(result, "{\"SomeMetadata\":{\"TestData\":[\"Тестовая строка1\",\"Тестовая строка2\",\"Тестовая строка3\"]}}");
+        }
+
+
+        [Test]
+        public void ShouldFoldedContainersWithSameNamesAppliesCorrect()
+        {
+            var target = new
+                         {
+                             TestData = new
+                                        {
+                                            TestData = new
+                                                       {
+                                                           TestData = new
+                                                                      {
+                                                                          TestField = true
+                                                                      }
+                                                       }
+                                        }
+                         };
+            var events = target
+                .ToEventListAsObject()
+                .GetEvents();
+            var formRenderer = new ObjectRenderingHandler();
+            var result = JsonConvert.SerializeObject(formRenderer.RenderEvents(new object(), events));
 
             Assert.AreEqual(result, "{\"FormMetadata\":{\"TestData\":{\"TestData\":{\"TestData\":{\"TestField\":true}}}}}");
-	    }
-
-
-
-	}
+        }
+    }
 }

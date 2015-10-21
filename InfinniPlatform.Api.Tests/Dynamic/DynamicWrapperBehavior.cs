@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+
 using InfinniPlatform.Sdk.Dynamic;
-using NUnit.Framework;
+
+using Microsoft.CSharp.RuntimeBinder;
+
 using Newtonsoft.Json;
+
+using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.Dynamic
 {
@@ -19,52 +24,24 @@ namespace InfinniPlatform.Api.Tests.Dynamic
         [TestCase(null)]
         public void ShouldSetSimpleValue(object value)
         {
-            dynamic DynamicWrapper = new DynamicWrapper();
-            DynamicWrapper.Property = value;
+            dynamic dynamicWrapper = new DynamicWrapper();
+            dynamicWrapper.Property = value;
 
-            Assert.AreEqual(DynamicWrapper.Property, value);
+            Assert.AreEqual(dynamicWrapper.Property, value);
         }
+
 
         private class TestClass
         {
             public string SomeProperty { get; set; }
         }
 
-        [Test]
-        public void LinqIteratingTest()
-        {
-            dynamic instance = new List<dynamic>();
-
-            instance.Add(1);
-            instance.Add(2);
-            instance.Add(3);
-
-            instance.ToString();
-
-            Stopwatch stopWatch = Stopwatch.StartNew();
-
-            dynamic r1 = instance.ToArray()[0];
-
-            stopWatch.Stop();
-            Console.WriteLine("Вызов First " + stopWatch.ElapsedMilliseconds);
-
-            Assert.AreEqual("1", r1.ToString());
-
-            stopWatch = Stopwatch.StartNew();
-
-            dynamic r2 = instance.ToArray()[1];
-
-            stopWatch.Stop();
-            Console.WriteLine("Вызов Skip " + stopWatch.ElapsedMilliseconds);
-
-            Assert.AreEqual(2, r2);
-        }
 
         [Test]
         public void ShouldAddArrayObjectItems()
         {
-            //given
-            dynamic DynamicWrapper = new List<dynamic>();
+            // Given
+            dynamic dynamicWrapper = new List<dynamic>();
             dynamic i1 = new DynamicWrapper();
             i1.Value = 1;
 
@@ -73,12 +50,12 @@ namespace InfinniPlatform.Api.Tests.Dynamic
 
             dynamic i3 = new DynamicWrapper();
             i3.Value = 3;
-            //when
-            DynamicWrapper.Add(i1);
-            DynamicWrapper.Add(i2);
-            DynamicWrapper.Add(i3);
-            //then
-            IEnumerable<dynamic> items = DynamicWrapperExtensions.ToEnumerable(DynamicWrapper);
+            // When
+            dynamicWrapper.Add(i1);
+            dynamicWrapper.Add(i2);
+            dynamicWrapper.Add(i3);
+            // Then
+            IEnumerable<dynamic> items = DynamicWrapperExtensions.ToEnumerable(dynamicWrapper);
             Assert.AreEqual(3, items.Count());
             Assert.AreEqual(1, items.First().Value);
             Assert.AreEqual(2, items.Skip(1).First().Value);
@@ -88,14 +65,14 @@ namespace InfinniPlatform.Api.Tests.Dynamic
         [Test]
         public void ShouldAddArraySimpleValueItems()
         {
-            //given
-            dynamic DynamicWrapper = new List<dynamic>();
-            //when
-            DynamicWrapper.Add("1");
-            DynamicWrapper.Add("2");
-            DynamicWrapper.Add("3");
-            //then
-            IEnumerable<dynamic> items = DynamicWrapperExtensions.ToEnumerable(DynamicWrapper);
+            // Given
+            dynamic dynamicWrapper = new List<dynamic>();
+            // When
+            dynamicWrapper.Add("1");
+            dynamicWrapper.Add("2");
+            dynamicWrapper.Add("3");
+            // Then
+            IEnumerable<dynamic> items = DynamicWrapperExtensions.ToEnumerable(dynamicWrapper);
             Assert.AreEqual(3, items.Count());
             Assert.AreEqual("1", items.First());
             Assert.AreEqual("2", items.Skip(1).First());
@@ -105,17 +82,17 @@ namespace InfinniPlatform.Api.Tests.Dynamic
         [Test]
         public void ShouldAddArraySimpleValueItemsProperty()
         {
-            //given
-            dynamic DynamicWrapper = new List<dynamic>();
+            // Given
+            dynamic dynamicWrapper = new List<dynamic>();
 
             dynamic someInstance = new DynamicWrapper();
-            someInstance.InnerProperty = DynamicWrapper;
+            someInstance.InnerProperty = dynamicWrapper;
 
-            //when
+            // When
             someInstance.InnerProperty.Add("1");
             someInstance.InnerProperty.Add("2");
             someInstance.InnerProperty.Add("3");
-            //then
+            // Then
             IEnumerable<dynamic> items = DynamicWrapperExtensions.ToEnumerable(someInstance.InnerProperty);
             Assert.AreEqual(3, items.Count());
             Assert.AreEqual("1", items.First());
@@ -126,9 +103,9 @@ namespace InfinniPlatform.Api.Tests.Dynamic
         [Test]
         public void ShouldAddProperty()
         {
-            //given
-            dynamic DynamicWrapper = new DynamicWrapper();
-            //when
+            // Given
+            dynamic dynamicWrapper = new DynamicWrapper();
+            // When
 
             dynamic obj = new DynamicWrapper();
             obj.SomeValue = 2;
@@ -137,23 +114,23 @@ namespace InfinniPlatform.Api.Tests.Dynamic
             arr.Add("3");
 
 
-            DynamicWrapper["SomeValue"] = 1;
-            DynamicWrapper["SomeObject"] = obj;
-            DynamicWrapper.SomeArray = arr;
-            //then
+            dynamicWrapper["SomeValue"] = 1;
+            dynamicWrapper["SomeObject"] = obj;
+            dynamicWrapper.SomeArray = arr;
+            // Then
 
-            Assert.AreEqual(DynamicWrapper.SomeValue, 1);
-            Assert.AreEqual(DynamicWrapper.SomeObject.SomeValue, 2);
-            Assert.AreEqual(DynamicWrapper.SomeArray[0], "3");
+            Assert.AreEqual(dynamicWrapper.SomeValue, 1);
+            Assert.AreEqual(dynamicWrapper.SomeObject.SomeValue, 2);
+            Assert.AreEqual(dynamicWrapper.SomeArray[0], "3");
         }
 
         [Test]
         public void ShouldBindMethodOnDynamicWrapper()
         {
-            dynamic DynamicWrapper = new DynamicWrapper();
-            DynamicWrapper.SomeValue = 1;
+            dynamic dynamicWrapper = new DynamicWrapper();
+            dynamicWrapper.SomeValue = 1;
 
-            Assert.AreEqual(1, DynamicWrapper.SomeValue);
+            Assert.AreEqual(1, dynamicWrapper.SomeValue);
         }
 
         [Test]
@@ -171,9 +148,7 @@ namespace InfinniPlatform.Api.Tests.Dynamic
             dict.Add("2", instance2);
 
             var result = dict.ToDynamic();
-            Assert.AreEqual(
-                "{\r\n  \"1\": {\r\n    \"TestProperty\": 1\r\n  },\r\n  \"2\": {\r\n    \"TestProperty\": 2\r\n  }\r\n}",
-                result.ToString());
+            Assert.AreEqual(string.Format("{{{0}  \"1\": {{{0}    \"TestProperty\": 1{0}  }},{0}  \"2\": {{{0}    \"TestProperty\": 2{0}  }}{0}}}", Environment.NewLine), result.ToString());
         }
 
         [Test]
@@ -194,14 +169,14 @@ namespace InfinniPlatform.Api.Tests.Dynamic
         [Test]
         public void ShouldConvertJObjectToJObject()
         {
-            //given
+            // Given
 
             dynamic obj = new DynamicWrapper();
             obj.SomeValue = 1;
 
-            //when
+            // When
             dynamic result = JsonConvert.SerializeObject(obj);
-            //then
+            // Then
             Assert.AreEqual("{\"SomeValue\":1}", result);
         }
 
@@ -221,29 +196,26 @@ namespace InfinniPlatform.Api.Tests.Dynamic
             dynamic hostInstance = new DynamicWrapper();
 
             hostInstance.Result = ownedArray;
-            Assert.AreEqual(
-                "{\r\n  \"Result\": [\r\n    {\r\n      \"TestProperty\": 1\r\n    },\r\n    {\r\n      \"TestProperty\": 2\r\n    }\r\n  ]\r\n}",
-                hostInstance.ToString());
+            Assert.AreEqual(string.Format("{{{0}  \"Result\": [{0}    {{{0}      \"TestProperty\": 1{0}    }},{0}    {{{0}      \"TestProperty\": 2{0}    }}{0}  ]{0}}}", Environment.NewLine), hostInstance.ToString());
         }
 
         [Test]
         public void ShouldConvertSimpleObjectToJObject()
         {
-            //given
+            // Given
 
-            var obj = new TestClass();
-            obj.SomeProperty = "1";
+            var obj = new TestClass { SomeProperty = "1" };
 
-            //when
-            string result = JsonConvert.SerializeObject(obj);
-            //then
+            // When
+            var result = JsonConvert.SerializeObject(obj);
+            // Then
             Assert.AreEqual("{\"SomeProperty\":\"1\"}", result);
         }
 
         [Test]
         public void ShouldConvertToByteArray()
         {
-            var items = new Byte[] {10, 100, 200, 30}.ToDynamic();
+            var items = new byte[] { 10, 100, 200, 30 }.ToDynamic();
 
             Assert.AreEqual(items.Length, 4);
         }
@@ -251,28 +223,28 @@ namespace InfinniPlatform.Api.Tests.Dynamic
         [Test]
         public void ShouldConvertToJObject()
         {
-            //given
-            dynamic DynamicWrapper = new DynamicWrapper();
+            // Given
+            dynamic dynamicWrapper = new DynamicWrapper();
             dynamic obj = new DynamicWrapper();
             obj.SomeValue = 1;
 
-            dynamic jarray = new[] {"3"};
+            dynamic jarray = new[] { "3" };
 
-            DynamicWrapper.SomeObj = obj;
-            DynamicWrapper.SomeValue = 2;
-            DynamicWrapper.SomeArray = jarray;
+            dynamicWrapper.SomeObj = obj;
+            dynamicWrapper.SomeValue = 2;
+            dynamicWrapper.SomeArray = jarray;
 
-            //when
-            dynamic jobject = JsonConvert.SerializeObject(DynamicWrapper);
+            // When
+            dynamic jobject = JsonConvert.SerializeObject(dynamicWrapper);
 
-            //then
+            // Then
             Assert.AreEqual("{\"SomeObj\":{\"SomeValue\":1},\"SomeValue\":2,\"SomeArray\":[\"3\"]}", jobject);
         }
 
         [Test]
         public void ShouldConvertToStringArray()
         {
-            var stringArray = new List<dynamic> {"f", "a"};
+            var stringArray = new List<dynamic> { "f", "a" };
 
             dynamic i = new DynamicWrapper();
             i.StringArray = stringArray;
@@ -288,15 +260,15 @@ namespace InfinniPlatform.Api.Tests.Dynamic
         public void ShouldCreateInstanceFromAnonimousObject()
         {
             var obj = new
-                {
-                    TestObjectField = new
-                        {
-                            TestProperty = 1
-                        },
-                    TestPropertyField = "1234"
-                };
+                      {
+                          TestObjectField = new
+                                            {
+                                                TestProperty = 1
+                                            },
+                          TestPropertyField = "1234"
+                      };
 
-            dynamic instance = DynamicWrapperExtensions.ToDynamic(obj);
+            dynamic instance = obj.ToDynamic();
 
             Assert.IsNotNull(instance.TestObjectField.TestProperty);
             Assert.IsNotNull(instance.TestPropertyField);
@@ -305,85 +277,69 @@ namespace InfinniPlatform.Api.Tests.Dynamic
         [Test]
         public void ShouldEnumerateDynamicWrapperProperties()
         {
-            dynamic DynamicWrapper = new DynamicWrapper();
-            DynamicWrapper.Property1 = 1;
-            DynamicWrapper.Property2 = "testproperty";
+            dynamic dynamicWrapper = new DynamicWrapper();
+            dynamicWrapper.Property1 = 1;
+            dynamicWrapper.Property2 = "testproperty";
 
             var props = new List<object>();
-            foreach (dynamic property in DynamicWrapper)
+            foreach (var property in dynamicWrapper)
             {
                 props.Add(property);
             }
 
             Assert.AreEqual(2, props.Count);
-            var pair = (KeyValuePair<string, dynamic>) props.ToArray().First();
+            var pair = (KeyValuePair<string, dynamic>)props.ToArray().First();
             Assert.AreEqual(pair.Key, "Property1");
-            pair = (KeyValuePair<string, dynamic>) props.ToArray().Skip(1).First();
+            pair = (KeyValuePair<string, dynamic>)props.ToArray().Skip(1).First();
             Assert.AreEqual(pair.Key, "Property2");
         }
 
 
         [Test]
-        [Ignore]
         public void ShouldFailToAccessNonExistingProperty()
         {
-            dynamic DynamicWrapper = new DynamicWrapper();
+            dynamic dynamicWrapper = new DynamicWrapper();
             dynamic obj = new DynamicWrapper();
             obj.SomeValue = 1;
 
-            DynamicWrapper.SomeObj = obj;
+            dynamicWrapper.SomeObj = obj;
 
-            try
-            {
-                dynamic tryproperty = DynamicWrapper.SomeObj.SomeValue111;
-            }
-            catch
-            {
-                Assert.Pass();
-                return;
-            }
-            Assert.Fail();
+            var result = dynamicWrapper.SomeObj.SomeValue111;
+
+            Assert.IsNull(result);
         }
 
         [Test]
         public void ShouldFailToAccessPropertyForSimpleValue()
         {
-            dynamic DynamicWrapper = new DynamicWrapper();
+            dynamic dynamicWrapper = new DynamicWrapper();
             dynamic obj = new DynamicWrapper();
             obj.SomeValue = 1;
 
-            DynamicWrapper.SomeObj = obj;
+            dynamicWrapper.SomeObj = obj;
 
-            try
-            {
-                dynamic tryproperty = DynamicWrapper.SomeObj.SomeValue.FailedProperty;
-            }
-            catch
-            {
-                Assert.Pass();
-                return;
-            }
-            Assert.Fail();
+            TestDelegate accessPropertyForSimpleValue = () => { var result = dynamicWrapper.SomeObj.SomeValue.FailedProperty; };
+            Assert.Throws<RuntimeBinderException>(accessPropertyForSimpleValue);
         }
 
         [Test]
         public void ShouldFastAsJObjectNative()
         {
-            Stopwatch stopWatch = Stopwatch.StartNew();
+            var stopWatch = Stopwatch.StartNew();
 
-            dynamic DynamicWrapper = new DynamicWrapper();
+            dynamic dynamicWrapper = new DynamicWrapper();
             var attachments = new List<string>
-                {
-                    "1",
-                    "2",
-                    "3"
-                };
+                              {
+                                  "1",
+                                  "2",
+                                  "3"
+                              };
 
-            DynamicWrapper.Attachments = attachments;
+            dynamicWrapper.Attachments = attachments;
 
-            Console.WriteLine(DynamicWrapper.Attachments[0]);
-            Console.WriteLine(DynamicWrapper.Attachments[1]);
-            Console.WriteLine(DynamicWrapper.Attachments[2]);
+            Console.WriteLine(dynamicWrapper.Attachments[0]);
+            Console.WriteLine(dynamicWrapper.Attachments[1]);
+            Console.WriteLine(dynamicWrapper.Attachments[2]);
 
             stopWatch.Stop();
             Console.WriteLine(stopWatch.ElapsedMilliseconds);
@@ -393,11 +349,11 @@ namespace InfinniPlatform.Api.Tests.Dynamic
 
             dynamic jobject = new DynamicWrapper();
             dynamic jattachments = new[]
-                {
-                    "1",
-                    "2",
-                    "3"
-                };
+                                   {
+                                       "1",
+                                       "2",
+                                       "3"
+                                   };
 
             jobject.Attachments = jattachments;
 
@@ -412,35 +368,35 @@ namespace InfinniPlatform.Api.Tests.Dynamic
         [Test]
         public void ShouldGetArraySimpleItem()
         {
-            dynamic DynamicWrapper = new DynamicWrapper();
-            var jarray = new[] {"1", "2", "3"};
+            dynamic dynamicWrapper = new DynamicWrapper();
+            var jarray = new[] { "1", "2", "3" };
 
-            DynamicWrapper.SomeArray = jarray.ToDynamic();
+            dynamicWrapper.SomeArray = jarray.ToDynamic();
 
-            Assert.AreEqual("1", DynamicWrapper.SomeArray[0]);
-            Assert.AreEqual("2", DynamicWrapper.SomeArray[1]);
-            Assert.AreEqual("3", DynamicWrapper.SomeArray[2]);
+            Assert.AreEqual("1", dynamicWrapper.SomeArray[0]);
+            Assert.AreEqual("2", dynamicWrapper.SomeArray[1]);
+            Assert.AreEqual("3", dynamicWrapper.SomeArray[2]);
         }
 
 
         [Test]
         public void ShouldGetPropertiesList()
         {
-            dynamic DynamicWrapper = new DynamicWrapper();
+            dynamic dynamicWrapper = new DynamicWrapper();
             dynamic obj = new DynamicWrapper();
             obj.SomeValue = 1;
 
-            dynamic jarray = new[] {"3"};
+            dynamic jarray = new[] { "3" };
 
 
-            DynamicWrapper.SomeObj = obj;
-            DynamicWrapper.SomeValue = 2;
-            DynamicWrapper.SomeArray = jarray;
+            dynamicWrapper.SomeObj = obj;
+            dynamicWrapper.SomeValue = 2;
+            dynamicWrapper.SomeArray = jarray;
 
-            int propsCount = 0;
+            var propsCount = 0;
             var propList = new List<string>();
 
-            foreach (dynamic instance in DynamicWrapper)
+            foreach (var instance in dynamicWrapper)
             {
                 propsCount++;
                 propList.Add(instance.Key);
@@ -455,36 +411,36 @@ namespace InfinniPlatform.Api.Tests.Dynamic
         [Test]
         public void ShouldGetProperty()
         {
-            //given
-            dynamic DynamicWrapper = new DynamicWrapper();
+            // Given
+            dynamic dynamicWrapper = new DynamicWrapper();
             dynamic obj = new DynamicWrapper();
             obj.SomeValue = 1;
 
             dynamic jarray = new List<dynamic>();
             jarray.Add("3");
 
-            //when
-            DynamicWrapper.SomeObj = obj;
-            DynamicWrapper.SomeValue = 2;
-            DynamicWrapper.SomeArray = DynamicWrapperExtensions.ToDynamic((object) jarray);
+            // When
+            dynamicWrapper.SomeObj = obj;
+            dynamicWrapper.SomeValue = 2;
+            dynamicWrapper.SomeArray = ((object)jarray).ToDynamic();
 
-            //then
-            Assert.AreEqual(1, DynamicWrapper.SomeObj.SomeValue);
-            dynamic arr = DynamicWrapper.SomeArray;
+            // Then
+            Assert.AreEqual(1, dynamicWrapper.SomeObj.SomeValue);
+            dynamic arr = dynamicWrapper.SomeArray;
             Assert.AreEqual("3", arr[0]);
-            Assert.AreEqual(2, DynamicWrapper.SomeValue);
-            Assert.AreEqual(null, DynamicWrapper["NonExistingProperty"]);
+            Assert.AreEqual(2, dynamicWrapper.SomeValue);
+            Assert.AreEqual(null, dynamicWrapper["NonExistingProperty"]);
         }
 
         [Test]
         public void ShouldHasProperty()
         {
-            dynamic DynamicWrapper = new DynamicWrapper();
+            dynamic dynamicWrapper = new DynamicWrapper();
             dynamic obj = new DynamicWrapper();
-            DynamicWrapper.SomeValue = obj;
+            dynamicWrapper.SomeValue = obj;
 
-            dynamic hasProp = DynamicWrapper.SomeValue != null;
-            dynamic notHasProp = DynamicWrapper.NotHasSomeValue != null;
+            dynamic hasProp = dynamicWrapper.SomeValue != null;
+            dynamic notHasProp = dynamicWrapper.NotHasSomeValue != null;
 
             Assert.True(hasProp);
             Assert.False(notHasProp);
@@ -493,8 +449,8 @@ namespace InfinniPlatform.Api.Tests.Dynamic
         [Test]
         public void ShouldInvokeLinqMethodsForObjectsCollections()
         {
-            //given
-            dynamic DynamicWrapper = new DynamicWrapper();
+            // Given
+            dynamic dynamicWrapper = new DynamicWrapper();
 
             dynamic at1 = new DynamicWrapper();
             at1.a = "1";
@@ -506,51 +462,53 @@ namespace InfinniPlatform.Api.Tests.Dynamic
             at3.a = "3";
 
             var attachments = new List<DynamicWrapper>
-                {
-                    at1,
-                    at2,
-                    at3
-                };
-            DynamicWrapper.Attachments = attachments;
-            //when
-            IEnumerable<dynamic> enumerable = DynamicWrapperExtensions.ToEnumerable(DynamicWrapper.Attachments);
-            //then
+                              {
+                                  at1,
+                                  at2,
+                                  at3
+                              };
+            dynamicWrapper.Attachments = attachments;
+            // When
+            IEnumerable<dynamic> enumerable = DynamicWrapperExtensions.ToEnumerable(dynamicWrapper.Attachments);
+            // Then
             Assert.AreEqual(3, enumerable.Count());
             dynamic instance = enumerable.FirstOrDefault(e => e.a == "3");
+
+            Assert.IsNotNull(instance);
             Assert.AreEqual("3", instance.a);
         }
 
         [Test]
         public void ShouldInvokeLinqMethodsForSimpleValues()
         {
-            //given
-            dynamic DynamicWrapper = new DynamicWrapper();
+            // Given
+            dynamic dynamicWrapper = new DynamicWrapper();
             var attachments = new List<string>
-                {
-                    "1",
-                    "2",
-                    "3"
-                };
+                              {
+                                  "1",
+                                  "2",
+                                  "3"
+                              };
 
-            DynamicWrapper.Attachments = attachments;
-            //when
-            IEnumerable<dynamic> enumerable = DynamicWrapperExtensions.ToEnumerable(DynamicWrapper.Attachments);
+            dynamicWrapper.Attachments = attachments;
+            // When
+            IEnumerable<dynamic> enumerable = DynamicWrapperExtensions.ToEnumerable(dynamicWrapper.Attachments);
             dynamic item = enumerable.FirstOrDefault(a => a == "1");
-            //then
+            // Then
             Assert.AreEqual("1", item);
         }
 
         [Test]
         public void ShouldNotThrowOnSetNotExistingProperty()
         {
-            //given
-            dynamic DynamicWrapper = new DynamicWrapper();
+            // Given
+            dynamic dynamicWrapper = new DynamicWrapper();
 
-            //when
+            // When
 
-            DynamicWrapper.SomeValue = 2;
+            dynamicWrapper.SomeValue = 2;
 
-            Assert.AreEqual(DynamicWrapper["SomeValue"], 2);
+            Assert.AreEqual(dynamicWrapper["SomeValue"], 2);
         }
 
 
@@ -562,10 +520,10 @@ namespace InfinniPlatform.Api.Tests.Dynamic
             someInstance.TestProperty2 = 2;
 
             var anonimousObject = new
-                {
-                    TestField = 1,
-                    TestInnerInstance = someInstance
-                };
+                                  {
+                                      TestField = 1,
+                                      TestInnerInstance = someInstance
+                                  };
 
             dynamic jobject = anonimousObject.ToDynamic();
 
@@ -575,8 +533,8 @@ namespace InfinniPlatform.Api.Tests.Dynamic
         [Test]
         public void ShouldRemoveArrayObjectItems()
         {
-            //given
-            dynamic DynamicWrapper = new DynamicWrapper();
+            // Given
+            dynamic dynamicWrapper = new DynamicWrapper();
             dynamic i1 = new DynamicWrapper();
             i1.Value = 1;
 
@@ -587,17 +545,17 @@ namespace InfinniPlatform.Api.Tests.Dynamic
             i3.Value = 3;
 
             dynamic arr = new List<DynamicWrapper>
-                {
-                    i1,
-                    i2,
-                    i3
-                };
+                          {
+                              i1,
+                              i2,
+                              i3
+                          };
 
-            DynamicWrapper.Arr = arr;
-            //when
-            DynamicWrapper.Arr.Remove(i2);
-            //then
-            IEnumerable<dynamic> items = DynamicWrapperExtensions.ToEnumerable(DynamicWrapper.Arr);
+            dynamicWrapper.Arr = arr;
+            // When
+            dynamicWrapper.Arr.Remove(i2);
+            // Then
+            IEnumerable<dynamic> items = DynamicWrapperExtensions.ToEnumerable(dynamicWrapper.Arr);
             Assert.AreEqual(2, items.Count());
             Assert.AreEqual(1, items.First().Value);
             Assert.AreEqual(3, items.Skip(1).First().Value);
@@ -606,18 +564,18 @@ namespace InfinniPlatform.Api.Tests.Dynamic
         [Test]
         public void ShouldRemoveProperty()
         {
-            //given
-            var DynamicWrapper = new DynamicWrapper();
-            DynamicWrapper["SomeValue"] = 1;
+            // Given
+            var dynamicWrapper = new DynamicWrapper();
+            dynamicWrapper["SomeValue"] = 1;
 
-            //when
-            DynamicWrapper["SomeValue"] = null;
-            //then			
-            Assert.AreEqual(null, DynamicWrapper["SomeValue"]);
+            // When
+            dynamicWrapper["SomeValue"] = null;
+            // Then			
+            Assert.AreEqual(null, dynamicWrapper["SomeValue"]);
 
-            bool hasProps = false;
+            var hasProps = false;
 
-            foreach (var elements in DynamicWrapper)
+            foreach (var elements in dynamicWrapper)
             {
                 hasProps = true;
             }
@@ -627,223 +585,222 @@ namespace InfinniPlatform.Api.Tests.Dynamic
         }
 
         [Test]
-        [Ignore]
         public void ShouldReturnsNullAsArrayItem()
         {
-            dynamic DynamicWrapper = new DynamicWrapper();
+            dynamic dynamicWrapper = new DynamicWrapper();
 
-            dynamic arr = new object[] {null};
-            DynamicWrapper.ArrayProperty = arr;
+            dynamic arr = new object[] { null };
+            dynamicWrapper.ArrayProperty = arr;
 
-            Assert.IsNull(DynamicWrapper.ArrayProperty[0]);
+            Assert.IsNull(dynamicWrapper.ArrayProperty[0]);
         }
 
         [Test]
         public void ShouldReturnsNullAsPropertyValue()
         {
-            dynamic DynamicWrapper = new DynamicWrapper();
+            dynamic dynamicWrapper = new DynamicWrapper();
             dynamic obj = new DynamicWrapper();
             obj.SomeValue = null;
 
-            DynamicWrapper.SomeObj = obj;
+            dynamicWrapper.SomeObj = obj;
 
-            Assert.AreEqual(null, DynamicWrapper.SomeObj.SomeValue);
+            Assert.AreEqual(null, dynamicWrapper.SomeObj.SomeValue);
         }
 
         [Test]
         public void ShouldSetArrayObjectItemsAndTrackChanges()
         {
             //проверяем ссылки на один и тот же массив
-            dynamic DynamicWrapper1 = new DynamicWrapper();
-            DynamicWrapper1.ArrayProperty = new List<dynamic>();
+            dynamic dynamicWrapper1 = new DynamicWrapper();
+            dynamicWrapper1.ArrayProperty = new List<dynamic>();
 
-            dynamic DynamicWrapper2 = new DynamicWrapper();
-            DynamicWrapper2.ArrayProperty1 = DynamicWrapper1.ArrayProperty;
+            dynamic dynamicWrapper2 = new DynamicWrapper();
+            dynamicWrapper2.ArrayProperty1 = dynamicWrapper1.ArrayProperty;
 
-            dynamic DynamicWrapper3 = new DynamicWrapper();
-            DynamicWrapper3["ArrayProperty2"] = DynamicWrapper1.ArrayProperty;
+            dynamic dynamicWrapper3 = new DynamicWrapper();
+            dynamicWrapper3["ArrayProperty2"] = dynamicWrapper1.ArrayProperty;
 
             dynamic checkInstance = new DynamicWrapper();
             checkInstance.SimpleField = 1;
 
-            DynamicWrapper1.ArrayProperty.Add(checkInstance);
+            dynamicWrapper1.ArrayProperty.Add(checkInstance);
 
-            Assert.AreEqual(1, DynamicWrapper1.ArrayProperty.Count);
-            Assert.AreEqual(1, DynamicWrapper2.ArrayProperty1.Count);
-            Assert.AreEqual(1, DynamicWrapper3.ArrayProperty2.Count);
+            Assert.AreEqual(1, dynamicWrapper1.ArrayProperty.Count);
+            Assert.AreEqual(1, dynamicWrapper2.ArrayProperty1.Count);
+            Assert.AreEqual(1, dynamicWrapper3.ArrayProperty2.Count);
 
             //проверяем изменение при использовании SetProperty
-            DynamicWrapper3.ArrayProperty2 = new List<dynamic>();
+            dynamicWrapper3.ArrayProperty2 = new List<dynamic>();
 
-            Assert.AreEqual(0, DynamicWrapper3.ArrayProperty2.Count);
+            Assert.AreEqual(0, dynamicWrapper3.ArrayProperty2.Count);
 
             //проверяем, что ссылка удаляется при присвоении другого массива
 
-            DynamicWrapper2.ArrayProperty1 = new List<dynamic>();
+            dynamicWrapper2.ArrayProperty1 = new List<dynamic>();
 
-            Assert.AreEqual(0, DynamicWrapper2.ArrayProperty1.Count);
-            Assert.AreEqual(1, DynamicWrapper1.ArrayProperty.Count);
+            Assert.AreEqual(0, dynamicWrapper2.ArrayProperty1.Count);
+            Assert.AreEqual(1, dynamicWrapper1.ArrayProperty.Count);
 
             //проверяем что после смены ссылки на массив отслеживание изменений прекратилось
             dynamic checkInstance2 = new DynamicWrapper();
             checkInstance2.SimpleField = 2;
 
-            DynamicWrapper1.ArrayProperty.Add(checkInstance2);
+            dynamicWrapper1.ArrayProperty.Add(checkInstance2);
 
-            Assert.AreEqual(2, DynamicWrapper1.ArrayProperty.Count);
-            Assert.AreEqual(1, DynamicWrapper1.ArrayProperty[0].SimpleField);
-            Assert.AreEqual(2, DynamicWrapper1.ArrayProperty[1].SimpleField);
-            Assert.AreEqual(0, DynamicWrapper2.ArrayProperty1.Count);
+            Assert.AreEqual(2, dynamicWrapper1.ArrayProperty.Count);
+            Assert.AreEqual(1, dynamicWrapper1.ArrayProperty[0].SimpleField);
+            Assert.AreEqual(2, dynamicWrapper1.ArrayProperty[1].SimpleField);
+            Assert.AreEqual(0, dynamicWrapper2.ArrayProperty1.Count);
 
             //проверяем что в старом массиве ничего не изменяется при добавлении в новый
             dynamic checkInstance3 = new DynamicWrapper();
             checkInstance3.SimpleField = 3;
 
-            DynamicWrapper2.ArrayProperty1.Add(checkInstance3);
+            dynamicWrapper2.ArrayProperty1.Add(checkInstance3);
 
-            Assert.AreEqual(2, DynamicWrapper1.ArrayProperty.Count);
-            Assert.AreEqual(1, DynamicWrapper2.ArrayProperty1.Count);
+            Assert.AreEqual(2, dynamicWrapper1.ArrayProperty.Count);
+            Assert.AreEqual(1, dynamicWrapper2.ArrayProperty1.Count);
 
-            Assert.AreEqual(3, DynamicWrapper2.ArrayProperty1[0].SimpleField);
+            Assert.AreEqual(3, dynamicWrapper2.ArrayProperty1[0].SimpleField);
 
             //проверяем удаление из массива
-            DynamicWrapper2.ArrayProperty1.Remove(checkInstance3);
-            Assert.AreEqual(2, DynamicWrapper1.ArrayProperty.Count);
-            Assert.AreEqual(0, DynamicWrapper2.ArrayProperty1.Count);
+            dynamicWrapper2.ArrayProperty1.Remove(checkInstance3);
+            Assert.AreEqual(2, dynamicWrapper1.ArrayProperty.Count);
+            Assert.AreEqual(0, dynamicWrapper2.ArrayProperty1.Count);
 
             //проверяем изменение ссылки на существующий массив
-            DynamicWrapper2.ArrayProperty1 = DynamicWrapper1.ArrayProperty;
-            Assert.AreEqual(2, DynamicWrapper2.ArrayProperty1.Count);
-            Assert.AreEqual(2, DynamicWrapper1.ArrayProperty.Count);
+            dynamicWrapper2.ArrayProperty1 = dynamicWrapper1.ArrayProperty;
+            Assert.AreEqual(2, dynamicWrapper2.ArrayProperty1.Count);
+            Assert.AreEqual(2, dynamicWrapper1.ArrayProperty.Count);
         }
 
         [Test]
         public void ShouldSetArrayProperty()
         {
-            dynamic DynamicWrapper = new DynamicWrapper();
+            dynamic dynamicWrapper = new DynamicWrapper();
             dynamic obj = new DynamicWrapper();
             obj.SomeValue = 1;
 
-            dynamic arr = new[] {obj};
-            DynamicWrapper.ArrayProperty = arr;
+            dynamic arr = new[] { obj };
+            dynamicWrapper.ArrayProperty = arr;
 
-            Assert.AreEqual(DynamicWrapper.ArrayProperty[0].SomeValue, 1);
+            Assert.AreEqual(dynamicWrapper.ArrayProperty[0].SomeValue, 1);
         }
 
         [Test]
         public void ShouldSetArrayPropertyWithSomeElements1()
         {
-            dynamic DynamicWrapper = new DynamicWrapper();
+            dynamic dynamicWrapper = new DynamicWrapper();
             dynamic obj1 = new DynamicWrapper();
             obj1.SomeValue = 1;
             dynamic obj2 = new DynamicWrapper();
             obj2.SomeValue = 2;
 
-            dynamic arr = new[] {obj1, obj2};
-            DynamicWrapper.ArrayProperty = arr;
+            dynamic arr = new[] { obj1, obj2 };
+            dynamicWrapper.ArrayProperty = arr;
 
-            Assert.AreEqual(DynamicWrapper.ArrayProperty[1].SomeValue, 2);
+            Assert.AreEqual(dynamicWrapper.ArrayProperty[1].SomeValue, 2);
         }
 
 
         [Test]
         public void ShouldSetArrayPropertyWithSomeElements2()
         {
-            dynamic DynamicWrapper = new DynamicWrapper();
+            dynamic dynamicWrapper = new DynamicWrapper();
             dynamic obj1 = new DynamicWrapper();
             obj1.SomeValue = 1;
             dynamic obj2 = new DynamicWrapper();
             obj2.SomeValue = 2;
 
-            dynamic arr = new[] {obj1, obj2};
-            DynamicWrapper.ArrayProperty = arr;
+            dynamic arr = new[] { obj1, obj2 };
+            dynamicWrapper.ArrayProperty = arr;
 
-            Assert.AreEqual(DynamicWrapper.ArrayProperty[1].SomeValue, 2);
+            Assert.AreEqual(dynamicWrapper.ArrayProperty[1].SomeValue, 2);
         }
 
 
         [Test]
         public void ShouldSetArrayPropertyWithSomeElements3()
         {
-            dynamic DynamicWrapper = new DynamicWrapper();
+            dynamic dynamicWrapper = new DynamicWrapper();
             dynamic obj1 = new DynamicWrapper();
             obj1.SomeValue = 1;
             dynamic obj2 = new DynamicWrapper();
             obj2.SomeValue = 2;
 
-            dynamic arr = new List<DynamicWrapper> {obj1, obj2};
-            DynamicWrapper.ArrayProperty = arr;
+            dynamic arr = new List<DynamicWrapper> { obj1, obj2 };
+            dynamicWrapper.ArrayProperty = arr;
 
-            Assert.AreEqual(DynamicWrapper.ArrayProperty[1].SomeValue, 2);
+            Assert.AreEqual(dynamicWrapper.ArrayProperty[1].SomeValue, 2);
         }
 
         [Test]
         public void ShouldSetArrayValue()
         {
-            dynamic DynamicWrapper = new DynamicWrapper();
+            dynamic dynamicWrapper = new DynamicWrapper();
             var obj = new List<dynamic>();
-            DynamicWrapper.Property = obj;
+            dynamicWrapper.Property = obj;
 
-            Assert.IsNotNull(DynamicWrapper.Property);
+            Assert.IsNotNull(dynamicWrapper.Property);
         }
 
         [Test]
         public void ShouldSetCompositProperty()
         {
-            dynamic DynamicWrapper = new DynamicWrapper();
+            dynamic dynamicWrapper = new DynamicWrapper();
             dynamic obj = new DynamicWrapper();
             obj.SomeValue = 1;
 
-            DynamicWrapper.SomeObj = obj;
+            dynamicWrapper.SomeObj = obj;
 
-            Assert.AreEqual(1, DynamicWrapper.SomeObj.SomeValue);
+            Assert.AreEqual(1, dynamicWrapper.SomeObj.SomeValue);
         }
 
         [Test]
         public void ShouldSetDateTimeValue()
         {
-            dynamic DynamicWrapper = new DynamicWrapper();
-            DynamicWrapper.Property = new DateTime(2011, 01, 01);
+            dynamic dynamicWrapper = new DynamicWrapper();
+            dynamicWrapper.Property = new DateTime(2011, 01, 01);
 
-            Assert.AreEqual(DynamicWrapper.Property, new DateTime(2011, 01, 01));
+            Assert.AreEqual(dynamicWrapper.Property, new DateTime(2011, 01, 01));
         }
 
         [Test]
         public void ShouldSetObjectValue()
         {
-            dynamic DynamicWrapper = new DynamicWrapper();
+            dynamic dynamicWrapper = new DynamicWrapper();
             var obj = new DynamicWrapper();
-            DynamicWrapper.Property = obj;
+            dynamicWrapper.Property = obj;
 
-            Assert.IsNotNull(DynamicWrapper.Property);
+            Assert.IsNotNull(dynamicWrapper.Property);
         }
 
         [Test]
         public void ShouldSetPropertiesWithoutTransformation()
         {
-            //given
-            dynamic DynamicWrapper = new DynamicWrapper();
+            // Given
+            dynamic dynamicWrapper = new DynamicWrapper();
 
-            //when
+            // When
             var attachments = new List<string>
-                {
-                    "1",
-                    "2",
-                    "3"
-                };
+                              {
+                                  "1",
+                                  "2",
+                                  "3"
+                              };
 
-            DynamicWrapper.Attachments = attachments;
-            //then
-            Assert.AreEqual("1", DynamicWrapper.Attachments[0]);
-            Assert.AreEqual("2", DynamicWrapper.Attachments[1]);
-            Assert.AreEqual("3", DynamicWrapper.Attachments[2]);
+            dynamicWrapper.Attachments = attachments;
+            // Then
+            Assert.AreEqual("1", dynamicWrapper.Attachments[0]);
+            Assert.AreEqual("2", dynamicWrapper.Attachments[1]);
+            Assert.AreEqual("3", dynamicWrapper.Attachments[2]);
         }
 
         [Test]
         public void ShouldSetPropertyValue()
         {
-            //given
-            dynamic DynamicWrapper = new DynamicWrapper();
+            // Given
+            dynamic dynamicWrapper = new DynamicWrapper();
 
             dynamic obj = new DynamicWrapper();
             obj.SomeValue = 2;
@@ -851,64 +808,48 @@ namespace InfinniPlatform.Api.Tests.Dynamic
             dynamic arr = new List<dynamic>();
             arr.Add("3");
 
-            DynamicWrapper.SomeValue = 0;
-            DynamicWrapper.SomeObject = null;
-            DynamicWrapper.SomeArray = null;
+            dynamicWrapper.SomeValue = 0;
+            dynamicWrapper.SomeObject = null;
+            dynamicWrapper.SomeArray = null;
 
-            //when
+            // When
 
-            DynamicWrapper.SomeValue = 2;
-            DynamicWrapper.SomeObject = obj;
-            DynamicWrapper.SomeArray = arr;
+            dynamicWrapper.SomeValue = 2;
+            dynamicWrapper.SomeObject = obj;
+            dynamicWrapper.SomeArray = arr;
 
 
-            //then
+            // Then
 
-            Assert.AreEqual(DynamicWrapper.SomeValue, 2);
-            Assert.AreEqual(DynamicWrapper.SomeObject.SomeValue, 2);
-            Assert.AreEqual(DynamicWrapper.SomeArray[0], "3");
+            Assert.AreEqual(dynamicWrapper.SomeValue, 2);
+            Assert.AreEqual(dynamicWrapper.SomeObject.SomeValue, 2);
+            Assert.AreEqual(dynamicWrapper.SomeArray[0], "3");
         }
 
         [Test]
         public void ShouldThrowIfIndexIncorrect()
         {
-            dynamic DynamicWrapper = new DynamicWrapper();
+            dynamic dynamicWrapper = new DynamicWrapper();
             dynamic obj = new DynamicWrapper();
             obj.SomeValue = 1;
 
-            dynamic arr = new[] {obj};
-            DynamicWrapper.ArrayProperty = arr;
+            dynamic arr = new[] { obj };
+            dynamicWrapper.ArrayProperty = arr;
 
-            try
-            {
-                dynamic tryarrayitem = DynamicWrapper.ArrayProperty[1];
-            }
-            catch
-            {
-                Assert.Pass();
-                return;
-            }
-            Assert.Fail();
+            TestDelegate indexIncorrect = () => { var result = dynamicWrapper.ArrayProperty[1]; };
+            Assert.Throws<IndexOutOfRangeException>(indexIncorrect);
         }
 
         [Test]
         public void ShouldThrowOnAccessNonExistingObject()
         {
-            dynamic DynamicWrapper = new DynamicWrapper();
+            dynamic dynamicWrapper = new DynamicWrapper();
 
-            dynamic arr = new object[] {null};
-            DynamicWrapper.ArrayProperty = arr;
+            dynamic arr = new object[] { null };
+            dynamicWrapper.ArrayProperty = arr;
 
-            try
-            {
-                dynamic tryget = DynamicWrapper.ArrayProperty[0].SomeValue;
-            }
-            catch
-            {
-                Assert.Pass();
-                return;
-            }
-            Assert.Fail();
+            TestDelegate accessNonExistingObject = () => { var result = dynamicWrapper.ArrayProperty[0].SomeValue; };
+            Assert.Throws<RuntimeBinderException>(accessNonExistingObject);
         }
     }
 }

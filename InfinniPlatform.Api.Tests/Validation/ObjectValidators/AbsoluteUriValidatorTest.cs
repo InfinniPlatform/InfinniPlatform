@@ -1,7 +1,6 @@
-﻿using InfinniPlatform.Api.Validation;
-using InfinniPlatform.Api.Validation.ObjectValidators;
-using InfinniPlatform.Sdk.Environment;
+﻿using InfinniPlatform.Api.Validation.ObjectValidators;
 using InfinniPlatform.Sdk.Environment.Validations;
+
 using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.Validation.ObjectValidators
@@ -50,7 +49,7 @@ namespace InfinniPlatform.Api.Tests.Validation.ObjectValidators
         public void ShouldValidateRelativeUri()
         {
             // Given
-            const string validationObject = "/display/MC/IsRelativeUri";
+            const string validationObject = "display/MC/IsRelativeUri";
 
             // When
             var result = new ValidationResult();

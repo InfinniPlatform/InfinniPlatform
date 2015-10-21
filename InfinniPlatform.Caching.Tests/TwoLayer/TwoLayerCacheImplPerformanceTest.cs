@@ -9,7 +9,7 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
 {
 	[TestFixture]
 	[Category(TestCategories.PerformanceTest)]
-	[Ignore("Should setup TwoLayer on TeamCity")]
+	[Ignore("Should setup Redis on TeamCity")]
 	public sealed class TwoLayerCacheImplPerformanceTest
 	{
 		private ICache _cache;
