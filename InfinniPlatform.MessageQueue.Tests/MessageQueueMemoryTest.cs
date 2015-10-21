@@ -57,6 +57,8 @@ namespace InfinniPlatform.MessageQueue.Tests
 
 			listener.StopListenAll();
 
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
 			var memoryAfter = GC.GetTotalMemory(true);
 
 			// Then

@@ -89,15 +89,15 @@ namespace InfinniPlatform.Conventions
 		public void ProjectShouldHaveCommonOutputPath(string project)
 		{
 			// Given
-			var coreOutPath = ".." + Path.DirectorySeparatorChar + "Assemblies" + Path.DirectorySeparatorChar;
-			var designerOutPath = ".." + Path.DirectorySeparatorChar + "DesignerBin" + Path.DirectorySeparatorChar;
+			var coreOutPath = @"..\Assemblies\";
+			var designerOutPath = @"..\DesignerBin\";
 
 			// When
 			var result = LoadProject(project)
 				.Elements(ProjectNamespace + "PropertyGroup")
 				.Where(i => i.Attribute("Condition") != null)
-				.Select(i => i.Element(ProjectNamespace + "OutputPath"))
-				.All(i => i.Value == coreOutPath || i.Value == designerOutPath);
+                .Select(i => ToNormPath(i.Element(ProjectNamespace + "OutputPath").Value))
+                .All(i => i == coreOutPath || i == designerOutPath);
 
 			// Then
 			Assert.IsTrue(result, @"Проект ""{0}"" должен компилироваться в один каталог ""{1}"" (в Debug и Release)", project, coreOutPath);
@@ -109,14 +109,14 @@ namespace InfinniPlatform.Conventions
 		public void ProjectShouldReferenceOnlyPackages(string project)
 		{
 			// When
-			var result = LoadProject(project)
+            var result = LoadProject(project)
 				.Elements(ProjectNamespace + "ItemGroup")
 				.Elements(ProjectNamespace + "Reference")
 				.Elements(ProjectNamespace + "HintPath")
 				.All(i => i == null
-						  || string.IsNullOrWhiteSpace(i.Value)
-						  || i.Value.StartsWith(@"C:\Program Files")
-						  || i.Value.StartsWith(PackagesDir));
+                    || string.IsNullOrWhiteSpace(i.Value)
+                    || ToNormPath(i.Value).StartsWith(@"C:\Program Files")
+                    || ToNormPath(i.Value).StartsWith(ToNormPath(PackagesDir)));
 
 			// Then
 			Assert.IsTrue(result, @"Проект ""{0}"" может ссылаться только на ""C:\Program Files"" или ""..\packages\""", project);
@@ -128,15 +128,15 @@ namespace InfinniPlatform.Conventions
 		public void ProjectShouldReferenceOnlySolutionProjects(string project)
 		{
 			// When
-			var result = LoadProject(project)
+            var result = LoadProject(project)
 				.Elements(ProjectNamespace + "ItemGroup")
 				.Elements(ProjectNamespace + "ProjectReference")
 				.Select(i => i.Attribute("Include"))
 				.All(i => i != null
-						  && string.IsNullOrWhiteSpace(i.Value) == false
-						  && i.Value.StartsWith(".." + Path.DirectorySeparatorChar)
-						  && Path.GetFullPath(i.Value.Insert(3, SolutionName + Path.DirectorySeparatorChar))
-								 .StartsWith(SolutionDir));
+                    && string.IsNullOrWhiteSpace(i.Value) == false
+                    && i.Value.StartsWith(@"..\")
+                    && ToNormPath(Path.GetFullPath(i.Value.Insert(3, SolutionName + @"\").Replace('\\', Path.DirectorySeparatorChar)))
+                        .StartsWith(ToNormPath(SolutionDir)));
 
 			// Then
 			Assert.IsTrue(result, @"Проект ""{0}"" может ссылаться только на проекты решения ""{1}""", project, SolutionName);
@@ -179,20 +179,20 @@ namespace InfinniPlatform.Conventions
 		{
 			// Given
 
-			var packageReferences = LoadProject(project)
+            var packageReferences = LoadProject(project)
 				.Elements(ProjectNamespace + "ItemGroup")
 				.Elements(ProjectNamespace + "Reference")
 				.Elements(ProjectNamespace + "HintPath")
 				.Where(i => i != null
-							&& string.IsNullOrWhiteSpace(i.Value) == false
-							&& i.Value.StartsWith(PackagesDir))
+                               && string.IsNullOrWhiteSpace(i.Value) == false
+                               && i.Value.StartsWith(ToNormPath(PackagesDir)))
 				.Select(i => i.Value)
-				.ToArray();
+                .ToArray();
 
 			var packageConfig = LoadPackageConfig(project)
 				.Elements("package")
 				.Where(i => i.Attribute("id").Value.Contains("OwinSelfHost") == false)
-				.Select(i => string.Format(PackagesDir + "{0}.{1}" + Path.DirectorySeparatorChar, i.Attribute("id").Value, i.Attribute("version").Value))
+                .Select(i => ToNormPath(string.Format(PackagesDir + "{0}.{1}" + Path.DirectorySeparatorChar, i.Attribute("id").Value, i.Attribute("version").Value)))
 				.ToArray();
 
 			// When
@@ -311,7 +311,7 @@ namespace InfinniPlatform.Conventions
 		public void TestProjectShouldReferenceOnCommonAppConfig(string project)
 		{
 			// Given
-			var appConfig = Path.Combine("..", "Files", "Tests", "App.config");
+            const string appConfig = @"..\Files\Tests\App.config";
 
 			// When
 			var result = LoadProject(project)
@@ -322,7 +322,7 @@ namespace InfinniPlatform.Conventions
 				.FirstOrDefault() ?? appConfig;
 
 			// Then
-			Assert.AreEqual(appConfig, result, @"Проект ""{0}"" должен ссылаться на общий файл конфигурации для тестов ""{1}""", project, appConfig);
+            Assert.AreEqual(ToNormPath(appConfig), ToNormPath(result), @"Проект ""{0}"" должен ссылаться на общий файл конфигурации для тестов ""{1}""", project, appConfig);
 		}
 
 		[Test]
@@ -344,7 +344,7 @@ namespace InfinniPlatform.Conventions
 			}
 
 			// Given
-			var appConfig = Path.Combine("..", "Files", "Platform", "App.config");
+            const string appConfig = @"..\Files\Platform\App.config";
 
 			// When
 			var result = LoadProject(project)
@@ -355,7 +355,7 @@ namespace InfinniPlatform.Conventions
 				.FirstOrDefault() ?? appConfig;
 
 			// Then
-			Assert.AreEqual(appConfig, result, @"Проект ""{0}"" должен ссылаться на общий файл конфигурации для платформы ""{1}""", project, appConfig);
+            Assert.AreEqual(ToNormPath(appConfig), ToNormPath(result), @"Проект ""{0}"" должен ссылаться на общий файл конфигурации для платформы ""{1}""", project, appConfig);
 		}
 
 
@@ -368,5 +368,11 @@ namespace InfinniPlatform.Conventions
 		{
 			return XDocument.Load(Path.Combine(project, "packages.config")).Root;
 		}
+
+
+        private static string ToNormPath(string path)
+        {
+            return (path != null) ? path.Replace('/', '\\') : null;
+        }
 	}
 }
