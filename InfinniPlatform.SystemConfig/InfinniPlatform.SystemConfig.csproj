@@ -125,7 +125,7 @@
     <Compile Include="Initializers\GlobalContextInitializer.cs" />
     <Compile Include="Installers\ActionUnitsEntryList.cs" />
     <Compile Include="Installers\SystemConfigInstaller.cs" />
-    <Compile Include="Initializers\SystemConfigurationsInitializer.cs" />
+    <Compile Include="Initializers\DocumentIndexTypeInitializer.cs" />
     <Compile Include="Initializers\UserLogicInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <AutoGen>True</AutoGen>

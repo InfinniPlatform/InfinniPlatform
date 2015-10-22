@@ -6,6 +6,7 @@ using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Api.RestApi.CommonApi
 {
+    [Obsolete]
     public sealed class UpdateApi
     {
         private readonly string _version;
@@ -112,13 +113,9 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
         ///     Необходимо переписать на выполнение запросов через высокоуровневый API системы
         /// </summary>
         /// <param name="updatePackages">Список устанавливаемых модулей</param>
+        [Obsolete]
         public void InstallPackages(IEnumerable<dynamic> updatePackages)
         {
-            foreach (var updatePackage in updatePackages)
-            {
-                InstallPackage(updatePackage);
-                ForceReload(updatePackage.ConfigurationName.ToString());
-            }
         }
 
         /// <summary>

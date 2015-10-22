@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Api.RestApi.CommonApi
 {
+    [Obsolete]
     public sealed class SolutionUpdateApi
     {
         private readonly string _solutionId;

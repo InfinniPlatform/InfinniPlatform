@@ -87,8 +87,7 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
         {
             return _indexFactory.BuildVersionBuilder(
                 MetadataConfiguration.ConfigurationId,
-                MetadataConfiguration.GetMetadataIndexType(documentId),
-                MetadataConfiguration.GetSearchAbilityType(documentId));
+                MetadataConfiguration.GetMetadataIndexType(documentId));
         }
 
         /// <summary>

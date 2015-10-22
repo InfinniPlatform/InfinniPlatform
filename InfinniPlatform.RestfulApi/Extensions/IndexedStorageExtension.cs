@@ -12,14 +12,11 @@ namespace InfinniPlatform.RestfulApi.Extensions
 {
     public static class IndexedStorageExtension
     {
-        public static void RebuildIndex(
-            string indexName,
-            string typeName, 
-            SearchAbilityType abilityType = SearchAbilityType.KeywordBasedSearch)
+        public static void RebuildIndex(string indexName, string typeName)
         {
             var elasticFactory = new ElasticFactory(new MultitenancyProvider());
 
-            var indexProvider = elasticFactory.BuildVersionBuilder(indexName, typeName, abilityType);
+            var indexProvider = elasticFactory.BuildVersionBuilder(indexName, typeName);
             
             indexProvider.CreateVersion(true);
 

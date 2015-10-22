@@ -50,10 +50,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 		/// </summary>
 		/// <param name="indexName">Наименование индекса</param>
 		/// <param name="typeName">Наименование типа</param>
-		/// <param name="searchAbilityType">Тип поиска по индексу</param>
-		public IVersionBuilder BuildVersionBuilder(string indexName, string typeName, SearchAbilityType searchAbilityType)
+		public IVersionBuilder BuildVersionBuilder(string indexName, string typeName)
 		{
-			return new VersionBuilder(new IndexStateProvider(), indexName, typeName, searchAbilityType);
+			return new VersionBuilder(new IndexStateProvider(), indexName, typeName);
 		}
 
 		/// <summary>

@@ -107,8 +107,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                 {
                     IVersionBuilder versionBuilder = _indexFactory.BuildVersionBuilder(
                         metadataConfiguration.ConfigurationId,
-                        metadataConfiguration.GetMetadataIndexType(containerId),
-                        metadataConfiguration.GetSearchAbilityType(containerId));
+                        metadataConfiguration.GetMetadataIndexType(containerId));
 
                     dynamic schema = metadataConfiguration.GetSchemaVersion(containerId);
 
@@ -195,8 +194,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                 {
                     IVersionBuilder versionBuilder = _indexFactory.BuildVersionBuilder(
                         metadataConfiguration.ConfigurationId,
-                        metadataConfiguration.GetMetadataIndexType(containerId),
-                        metadataConfiguration.GetSearchAbilityType(containerId));
+                        metadataConfiguration.GetMetadataIndexType(containerId));
 
                     var schema = metadataConfiguration.GetSchemaVersion(containerId);
 

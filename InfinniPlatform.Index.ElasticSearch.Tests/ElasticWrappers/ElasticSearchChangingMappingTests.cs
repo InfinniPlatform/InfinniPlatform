@@ -502,7 +502,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 
             _indexStateProvider.Refresh();
 
-            var vbuilder = new VersionBuilder(_indexStateProvider, IndexName, IndexName, SearchAbilityType.KeywordBasedSearch);
+            var vbuilder = new VersionBuilder(_indexStateProvider, IndexName, IndexName);
 
             Assert.IsTrue(vbuilder.VersionExists(new IndexTypeMapping(initialMapping)));
 
@@ -535,7 +535,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         {
             _indexStateProvider = new ElasticFactory(new MultitenancyProvider()).BuildIndexStateProvider();
 
-            var versionBuilder = new ElasticFactory(new MultitenancyProvider()).BuildVersionBuilder(IndexName, IndexName, SearchAbilityType.KeywordBasedSearch);
+            var versionBuilder = new ElasticFactory(new MultitenancyProvider()).BuildVersionBuilder(IndexName, IndexName);
 
             var initialMapping = new List<PropertyMapping>
             {

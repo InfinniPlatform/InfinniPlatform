@@ -117,10 +117,10 @@ namespace InfinniPlatform.NodeServiceHost
 
 			// Заполняем глобальный контекст исполнения скриптов
 			factory.InfinniPlatformHostServer.RegisterServerInitializer<GlobalContextInitializer>();
-			// Устанавливаем системные конфигурации
-			factory.InfinniPlatformHostServer.RegisterServerInitializer<SystemConfigurationsInitializer>();
 			// Устанавливаем конфигурации из JSON-описаний
 			factory.InfinniPlatformHostServer.RegisterServerInitializer<PackageJsonConfigurationsInitializer>();
+			// Создаем типы индексов для документов конфигураций
+			factory.InfinniPlatformHostServer.RegisterServerInitializer<DocumentIndexTypeInitializer>();
 			// Пользовательские обработчики бизнес-логики старта сервера
 			factory.InfinniPlatformHostServer.RegisterServerInitializer<UserLogicInitializer>();
 			// Обработчик настройки хранилища пользователей

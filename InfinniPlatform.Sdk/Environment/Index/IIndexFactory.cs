@@ -12,8 +12,7 @@ namespace InfinniPlatform.Sdk.Environment.Index
         /// </summary>
         /// <param name="indexName">Наименование индекса</param>
         /// <param name="typeName">Наименование типа</param>
-        /// <param name="searchAbilityType">Тип поиска по индексу</param>
-        IVersionBuilder BuildVersionBuilder(string indexName, string typeName, SearchAbilityType searchAbilityType);
+        IVersionBuilder BuildVersionBuilder(string indexName, string typeName);
 
         /// <summary>
         ///     Создать провайдер данных

@@ -16,11 +16,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.Versioning
 
 	    private readonly ElasticConnection _connection;
 
-	    public VersionBuilder(
-            IIndexStateProvider indexStateProvider, 
-            string indexName, 
-            string typeName,
-            SearchAbilityType searchAbility)
+	    public VersionBuilder(IIndexStateProvider indexStateProvider,  string indexName, string typeName)
 		{
 			_indexStateProvider = indexStateProvider;
 		    _indexName = indexName;
