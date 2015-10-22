@@ -15,10 +15,6 @@
 			service="InfinniPlatform.Sdk.Environment.Index.IIndexFactory, InfinniPlatform.Sdk"
 			instance-scope="single-instance" />
 		<component
-			type="InfinniPlatform.SystemConfig.Multitenancy.MultitenancyProvider, InfinniPlatform.SystemConfig"
-			service="InfinniPlatform.Factories.IMultitenancyProvider, InfinniPlatform.Core"
-			instance-scope="single-instance" />
-		<component
 			type="InfinniPlatform.Logging.Log4NetLogFactory, InfinniPlatform.Core"
 			service="InfinniPlatform.Logging.ILogFactory, InfinniPlatform.Core"
 			instance-scope="single-instance" />
