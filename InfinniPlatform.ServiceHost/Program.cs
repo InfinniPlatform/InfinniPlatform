@@ -16,7 +16,7 @@ namespace InfinniPlatform.ServiceHost
 		{
 			AppDomain.CurrentDomain.SetupLogErrorHandler();
 
-			var consoleMode = AppSettings.GetValue("ConsoleMode", false);
+			var consoleMode = AppSettings.GetValue("ConsoleMode", true);
 			var serviceName = AppSettings.GetValue("ApplicationServiceName", "InfinniPlatform");
 			var serviceDescription = AppSettings.GetValue("ApplicationServiceDescription", "InfinniPlatform");
 
