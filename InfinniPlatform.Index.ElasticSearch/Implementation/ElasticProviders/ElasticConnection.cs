@@ -19,6 +19,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
     /// </summary>
     public sealed class ElasticConnection
     {
+        private const int Timeout = 5000;
         private static readonly NodePool NodePool;
 
         static ElasticConnection()
@@ -35,8 +36,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             var connectionPool = new SniffingConnectionPool(nodeAddresses);
 
             var connectionSettings = new ConnectionSettings(connectionPool);
-            connectionSettings.SetTimeout(1000);
-            connectionSettings.SetPingTimeout(1000);
+            connectionSettings.SetTimeout(Timeout);
+            connectionSettings.SetPingTimeout(Timeout);
+            connectionSettings.SetConnectTimeout(Timeout);
             connectionSettings.SetDefaultPropertyNameInferrer(i => i);
             connectionSettings.SetJsonSerializerSettingsModifier(m => m.ContractResolver = new ElasticContractResolver(connectionSettings));
 
