@@ -20,5 +20,6 @@
         public const string AnonimousUserCredentials = "AnonimousCredentials";
         public const string CurrentUserCredentials = "UserCredentials";
         public const string CustomCredentials = "CustomCredentials";
+        public const string SystemTenant = "system";
     }
 }

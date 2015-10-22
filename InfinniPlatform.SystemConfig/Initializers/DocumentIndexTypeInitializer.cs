@@ -6,7 +6,6 @@ using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment.Index;
-using InfinniPlatform.SystemConfig.Multitenancy;
 
 namespace InfinniPlatform.SystemConfig.Initializers
 {
@@ -18,7 +17,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
         public DocumentIndexTypeInitializer(IMetadataConfigurationProvider metadataProvider)
         {
             _metadataProvider = metadataProvider;
-            _indexFactory = new Lazy<IIndexFactory>(() => new ElasticFactory(new MultitenancyProvider()));
+            _indexFactory = new Lazy<IIndexFactory>(() => new ElasticFactory());
         }
 
 

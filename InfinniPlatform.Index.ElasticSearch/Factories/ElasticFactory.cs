@@ -14,14 +14,12 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 	/// </summary>
 	public sealed class ElasticFactory : IIndexFactory
 	{
-		private readonly IMultitenancyProvider _multitenancyProvider;
 		private readonly IndexToTypeAccordanceProvider _accordanceProvider;
 
 		private readonly ConcurrentDictionary<string, IndexToTypeAccordanceSettings> _settings = new ConcurrentDictionary<string, IndexToTypeAccordanceSettings>();
 
-		public ElasticFactory(IMultitenancyProvider multitenancyProvider)
+		public ElasticFactory()
 		{
-			_multitenancyProvider = multitenancyProvider;
 			_accordanceProvider = new IndexToTypeAccordanceProvider();
 		}
 
@@ -64,10 +62,10 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 		/// <param name="version">Версия данных</param>
 		public IVersionProvider BuildVersionProvider(string indexName, string typeName, string tenantId, string version = null)
 		{
-			var expectedTenantId = _multitenancyProvider.GetTenantId(tenantId, indexName, typeName);
+			var expectedTenantId = MultitenancyProvider.GetTenantId(tenantId, indexName);
 			var elasticSearchProvider = new ElasticSearchProvider(indexName, typeName, expectedTenantId, version);
 			var indexSettings = GetIndexTypeAccordanceSettings(new[] { indexName }, new[] { typeName });
-			var indexQueryExecutor = new IndexQueryExecutor(indexSettings, expectedTenantId);
+			var indexQueryExecutor = new IndexQueryExecutor(indexSettings);
 			var documentProvider = new DocumentProvider(indexQueryExecutor);
 
 			return new VersionProvider(elasticSearchProvider, documentProvider);
@@ -85,7 +83,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 		public IDocumentProvider BuildMultiIndexDocumentProvider(string tenantId, IEnumerable<string> indexNames = null, IEnumerable<string> typeNames = null)
 		{
 			// Создаём универсальный провайдер для выполнения поисковых запросов ко всем документам конфигурации
-			return new DocumentProvider(new IndexQueryExecutor(GetIndexTypeAccordanceSettings(indexNames, typeNames), tenantId));
+			return new DocumentProvider(new IndexQueryExecutor(GetIndexTypeAccordanceSettings(indexNames, typeNames)));
 		}
 
 		private readonly List<ElasticSearchProviderInfo> _providersInfo = new List<ElasticSearchProviderInfo>();
@@ -103,7 +101,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 		/// <returns>Провайдер для поиска данных</returns>
 		public ICrudOperationProvider BuildCrudOperationProvider(string indexName, string typeName, string tenantId, string version = null)
 		{
-			var expectedtenantId = _multitenancyProvider.GetTenantId(tenantId, indexName, typeName);
+			var expectedtenantId = MultitenancyProvider.GetTenantId(tenantId, indexName);
 			var providerInfo = _providersInfo.FindInfo(indexName, typeName);
 			if (providerInfo == null)
 			{
@@ -121,7 +119,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 		/// <returns>Провайдер операций по всем индексам и типам базы</returns>
 		public IAllIndexesOperationProvider BuildAllIndexesOperationProvider(string tenantId)
 		{
-			var expectedTenantId = _multitenancyProvider.GetTenantId(tenantId);
+			var expectedTenantId = MultitenancyProvider.GetTenantId(tenantId);
 			return new ElasticSearchProviderAllIndexes(expectedTenantId);
 		}
 
@@ -149,8 +147,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 		/// <returns></returns>
 		public IIndexQueryExecutor BuildIndexQueryExecutor(string indexName, string typeName, string tenantId)
 		{
-			var expectedtenantId = _multitenancyProvider.GetTenantId(tenantId, indexName, typeName);
-			return new IndexQueryExecutor(GetIndexTypeAccordanceSettings(new[] { indexName }, new[] { typeName }), expectedtenantId);
+			return new IndexQueryExecutor(GetIndexTypeAccordanceSettings(new[] { indexName }, new[] { typeName }));
 		}
 
 		/// <summary>
@@ -164,7 +161,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 		/// <param name="tenantId">Идентификатор организации-клиента выполнения запросов</param>
 		public IAggregationProvider BuildAggregationProvider(string indexName, string typeName, string tenantId)
 		{
-			var expectedTenantId = _multitenancyProvider.GetTenantId(tenantId, indexName, typeName);
+			var expectedTenantId = MultitenancyProvider.GetTenantId(tenantId, indexName);
 			return new ElasticSearchAggregationProvider(indexName, typeName, expectedTenantId);
 		}
 	}

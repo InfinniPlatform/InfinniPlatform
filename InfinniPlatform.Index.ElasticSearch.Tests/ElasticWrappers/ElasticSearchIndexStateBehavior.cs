@@ -1,8 +1,10 @@
 ﻿using System.Linq;
+
+using InfinniPlatform.Factories;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Sdk.Environment.Index;
-using InfinniPlatform.SystemConfig.Multitenancy;
+
 using NUnit.Framework;
 
 namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
@@ -18,7 +20,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 		{
             var connection = new ElasticConnection();
 
-			_indexStateProvider = new ElasticFactory(new MultitenancyProvider()).BuildIndexStateProvider();
+			_indexStateProvider = new ElasticFactory().BuildIndexStateProvider();
 
             _indexStateProvider.DeleteIndex("indexstatebehavior");
             _indexStateProvider.DeleteIndex("indexstatebehavior1");

@@ -83,7 +83,7 @@
     <Compile Include="ContextComponents\WebClientNotificationComponent.cs" />
     <Compile Include="Factories\ContextRegistration.cs" />
     <Compile Include="Factories\IPrintViewBuilderFactory.cs" />
-    <Compile Include="Factories\IMultitenancyProvider.cs" />
+    <Compile Include="Factories\MultitenancyProvider.cs" />
     <Compile Include="Hosting\ExtensionPointHandlerConfig.cs" />
     <Compile Include="Hosting\HostingContext.cs" />
     <Compile Include="Hosting\HostingContextBuilder.cs" />

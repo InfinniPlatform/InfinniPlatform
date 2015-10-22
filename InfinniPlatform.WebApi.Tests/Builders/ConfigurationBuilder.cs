@@ -6,7 +6,6 @@ using InfinniPlatform.Cassandra.Client;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Binary;
-using InfinniPlatform.SystemConfig.Multitenancy;
 
 namespace InfinniPlatform.WebApi.Tests.Builders
 {
@@ -16,7 +15,7 @@ namespace InfinniPlatform.WebApi.Tests.Builders
 		{
 			const string assemblyName = "InfinniPlatform.Metadata.Tests.dll";
 
-			var indexUpdater = new ElasticFactory(new MultitenancyProvider()).BuildIndexStateProvider();
+			var indexUpdater = new ElasticFactory().BuildIndexStateProvider();
 			indexUpdater.RecreateIndex("update_package", "update_package");
 			indexUpdater.RecreateIndex("update_configuration", "update_configuration");
 
@@ -35,11 +34,11 @@ namespace InfinniPlatform.WebApi.Tests.Builders
 			item.Version = "version_federal";
 			item.ContentId = contentId;
 
-			var providerConfig = new ElasticFactory(new MultitenancyProvider()).BuildCrudOperationProvider("update_configuration", "update_configuration", AuthorizationStorageExtensions.AnonimousUser);
+			var providerConfig = new ElasticFactory().BuildCrudOperationProvider("update_configuration", "update_configuration", AuthorizationStorageExtensions.AnonimousUser);
 			providerConfig.Set(itemConfig);
 			providerConfig.Refresh();
 
-			var provider = new ElasticFactory(new MultitenancyProvider()).BuildCrudOperationProvider("update_package", "update_package", AuthorizationStorageExtensions.AnonimousUser);
+			var provider = new ElasticFactory().BuildCrudOperationProvider("update_package", "update_package", AuthorizationStorageExtensions.AnonimousUser);
 			provider.Set(item);
 			provider.Refresh();
 

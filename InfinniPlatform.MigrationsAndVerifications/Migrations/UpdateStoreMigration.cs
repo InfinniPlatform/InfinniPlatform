@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using InfinniPlatform.Api.Index;
+
 using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.MigrationsAndVerifications.Helpers;
-using InfinniPlatform.SystemConfig.Multitenancy;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
-using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Metadata;
 
@@ -26,7 +23,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         public UpdateStoreMigration()
         {
             _updatedContainers = new List<string>();
-			_indexFactory = new ElasticFactory(new MultitenancyProvider());
+			_indexFactory = new ElasticFactory();
         }
 
 

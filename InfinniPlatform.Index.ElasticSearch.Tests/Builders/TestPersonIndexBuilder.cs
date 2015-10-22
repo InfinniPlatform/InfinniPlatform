@@ -5,7 +5,6 @@ using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
-using InfinniPlatform.SystemConfig.Multitenancy;
 
 namespace InfinniPlatform.Index.ElasticSearch.Tests.Builders
 {
@@ -18,7 +17,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.Builders
 
         public void BuildTestPersonIndex(string indexName)
         {
-            var factory = new ElasticFactory(new MultitenancyProvider());
+            var factory = new ElasticFactory();
             _indexStateProvider = factory.BuildIndexStateProvider();
 			_indexStateProvider.RecreateIndex(indexName,indexName);
 

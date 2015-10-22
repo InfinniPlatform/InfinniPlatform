@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Dynamic;
-using System.Globalization;
 using System.Linq;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Index.ElasticSearch.Factories;
@@ -11,7 +10,7 @@ using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Index.ElasticSearch.Tests.Builders;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
-using InfinniPlatform.SystemConfig.Multitenancy;
+
 using NUnit.Framework;
 
 namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
@@ -28,9 +27,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [SetUp]
         public void InitializeElasticSearch()
         {
-            _indexStateProvider = new ElasticFactory(new MultitenancyProvider()).BuildIndexStateProvider();
+            _indexStateProvider = new ElasticFactory().BuildIndexStateProvider();
             _indexStateProvider.CreateIndexType(IndexName, IndexName);
-			_elasticSearchProvider = new ElasticFactory(new MultitenancyProvider()).BuildCrudOperationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser);
+			_elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser);
 
             foreach (var school in SchoolsFactory.CreateSchoolsForFacetsTesting())
             {
@@ -135,12 +134,12 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         {
             const string aggrindex = "aggrperfomancetest";
 
-            var indexStateProvider = new ElasticFactory(new MultitenancyProvider()).BuildIndexStateProvider();
+            var indexStateProvider = new ElasticFactory().BuildIndexStateProvider();
 
             if (indexStateProvider.GetIndexStatus(aggrindex, aggrindex) == IndexStatus.NotExists)
             {
                 indexStateProvider.CreateIndexType(aggrindex, aggrindex, false);
-				var elasticSearchProvider = new ElasticFactory(new MultitenancyProvider()).BuildCrudOperationProvider(aggrindex, aggrindex, AuthorizationStorageExtensions.AnonimousUser);
+				var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider(aggrindex, aggrindex, AuthorizationStorageExtensions.AnonimousUser);
 
                 foreach (var school in SchoolsFactory.CreateRandomSchools(300000))
                 {
@@ -153,7 +152,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             }
 
             var executor = new ElasticSearchAggregationProvider(aggrindex, aggrindex, AuthorizationStorageExtensions.AnonimousUser);
-            var queryWrapper = new IndexQueryExecutor(new IndexToTypeAccordanceProvider().GetIndexTypeAccordances(new[] { aggrindex }, new[] { aggrindex }),AuthorizationStorageExtensions.AnonimousUser);
+            var queryWrapper = new IndexQueryExecutor(new IndexToTypeAccordanceProvider().GetIndexTypeAccordances(new[] { aggrindex }, new[] { aggrindex }));
 
             var r = executor.ExecuteTermAggregation(
                     new string[0],
@@ -261,7 +260,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void SumTest()
         {
-			var target = new ElasticFactory(new MultitenancyProvider()).BuildAggregationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser);
+			var target = new ElasticFactory().BuildAggregationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser);
 
             var sum = target.ExecuteTermAggregation(new[] { "Street" }, AggregationType.Sum, "Rating");
 
@@ -272,7 +271,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void AvgTest()
         {
-			var target = new ElasticFactory(new MultitenancyProvider()).BuildAggregationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser);
+			var target = new ElasticFactory().BuildAggregationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser);
             
             var avg = target.ExecuteTermAggregation(new[] { "Street" }, AggregationType.Avg, "Rating");
 
@@ -283,7 +282,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void CountTest()
         {
-			var target = new ElasticFactory(new MultitenancyProvider()).BuildAggregationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser);
+			var target = new ElasticFactory().BuildAggregationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser);
 
             var count = target.ExecuteTermAggregation(new[] { "Street" }, AggregationType.Count, "");
 
@@ -294,7 +293,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void MaxTest()
         {
-			var target = new ElasticFactory(new MultitenancyProvider()).BuildAggregationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser);
+			var target = new ElasticFactory().BuildAggregationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser);
 
             var max = target.ExecuteTermAggregation(new[] {  "Street"}, AggregationType.Max, "Rating");
 
@@ -305,7 +304,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void MinTest()
         {
-			var target = new ElasticFactory(new MultitenancyProvider()).BuildAggregationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser);
+			var target = new ElasticFactory().BuildAggregationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser);
 
             var min = target.ExecuteTermAggregation(new[] { "Street" }, AggregationType.Min, "Rating");
 
@@ -316,7 +315,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void MutiDimTest()
         {
-			var target = new ElasticFactory(new MultitenancyProvider()).BuildAggregationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser);
+			var target = new ElasticFactory().BuildAggregationProvider(IndexName, IndexName, AuthorizationStorageExtensions.AnonimousUser);
 
 
             var result = target.ExecuteTermAggregation(
