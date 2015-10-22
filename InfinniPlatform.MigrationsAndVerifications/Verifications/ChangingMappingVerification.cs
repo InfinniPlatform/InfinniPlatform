@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using InfinniPlatform.Api.Index;
+
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Index.ElasticSearch.Factories;
@@ -11,7 +11,6 @@ using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
-using InfinniPlatform.SystemConfig.Multitenancy;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Verifications
 {
@@ -24,7 +23,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
 
         public ChangingMappingVerification()
         {
-            _indexFactory = new ElasticFactory(new MultitenancyProvider());
+            _indexFactory = new ElasticFactory();
         }
 
         /// <summary>

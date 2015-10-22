@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Cache;
 using InfinniPlatform.Sdk.ContextComponents;
@@ -14,30 +14,22 @@ namespace InfinniPlatform.ContextComponents
     /// </summary>
     public sealed class CachedSecurityComponent : ISecurityComponent
     {
-        private readonly ISharedCacheComponent _sharedCacheComponent;
-        private const string SecurityKey = "___security";
+        public static readonly CachedSecurityComponent Instance = new CachedSecurityComponent();
 
-        public CachedSecurityComponent(ISharedCacheComponent sharedCacheComponent)
+
+        private readonly SecurityCache _securityCache;
+
+        public CachedSecurityComponent()
         {
-            _sharedCacheComponent = sharedCacheComponent;
-            _sharedCacheComponent.Lock();
-            try
+            if (_securityCache == null)
             {
-                var securityCache = _sharedCacheComponent.Get(SecurityKey);
-                if (securityCache == null)
-                {
-                    _sharedCacheComponent.Set(SecurityKey, new SecurityCache());
-                }
-            }
-            finally
-            {
-                _sharedCacheComponent.Unlock();
+                _securityCache = new SecurityCache();
             }
         }
 
         private SecurityCache SecurityCache
         {
-            get { return (SecurityCache)_sharedCacheComponent.Get(SecurityKey); }
+            get { return _securityCache; }
         }
 
         public IEnumerable<dynamic> Versions

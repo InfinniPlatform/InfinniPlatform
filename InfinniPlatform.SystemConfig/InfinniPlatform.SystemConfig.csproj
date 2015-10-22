@@ -137,8 +137,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Multitenancy\MultitenancyExtensions.cs" />
-    <Compile Include="Multitenancy\MultitenancyProvider.cs" />
     <Compile Include="UserStorage\AdminApi.cs" />
     <Compile Include="UserStorage\ApplicationUserStoreCache.cs" />
     <Compile Include="UserStorage\ApplicationUserStorePersistentStorage.cs" />
