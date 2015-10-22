@@ -1,17 +1,13 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
-using InfinniPlatform.Api.Index;
-using InfinniPlatform.Api.Metadata;
+
 using InfinniPlatform.Api.Packages;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Logging;
-using InfinniPlatform.Metadata;
+
 using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.SystemConfig.Multitenancy;
-using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Metadata;
 
@@ -29,7 +25,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
         {
             _metadataConfigurationProvider = metadataConfigurationProvider;
 
-            _indexFactory = new ElasticFactory(new MultitenancyProvider());
+            _indexFactory = new ElasticFactory();
         }
 
         public void OnStart(HostingContextBuilder contextBuilder)

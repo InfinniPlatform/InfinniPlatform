@@ -43,7 +43,7 @@ namespace InfinniPlatform.Factories
 				() => new InprocessDocumentComponent(new ConfigurationMediatorComponent(
 					dependencyContainerComponent.ResolveDependency<IConfigurationObjectBuilder>()
 					),
-					new CachedSecurityComponent(dependencyContainerComponent.ResolveDependency<ISharedCacheComponent>()),
+					CachedSecurityComponent.Instance,
 					dependencyContainerComponent.ResolveDependency<IIndexFactory>())));
 			_components.Add(new ContextRegistration(typeof(IApplicationUserManager), () =>
 																					 {

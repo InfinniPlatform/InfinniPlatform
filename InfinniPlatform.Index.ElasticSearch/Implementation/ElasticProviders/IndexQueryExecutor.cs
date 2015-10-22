@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using InfinniPlatform.Api.RestApi.Auth;
+using InfinniPlatform.ContextComponents;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticSearchModels;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters.NestFilters;
@@ -20,9 +22,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 	/// </summary>
 	public sealed class IndexQueryExecutor : IIndexQueryExecutor
 	{
-		public IndexQueryExecutor(IndexToTypeAccordanceSettings settings, string tenantId)
+		public IndexQueryExecutor(IndexToTypeAccordanceSettings settings)
 		{
-			_tenantId = string.IsNullOrEmpty(tenantId) ? "" : tenantId.ToLowerInvariant();
 			_elasticConnection = new ElasticConnection();
 			_indexNames = settings.Accordances.Select(i => i.IndexName).ToArray();
 			_typeNames = settings.Accordances.ToArray();
@@ -36,7 +37,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 		private readonly IEnumerable<string> _indexNames;
 		private readonly bool _searchInAllIndeces;
 		private readonly bool _searchInAllTypes;
-		private readonly string _tenantId;
 		private readonly IEnumerable<IndexToTypeAccordance> _typeNames;
 
 		/// <summary>
@@ -63,7 +63,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 		/// <returns>Количество объектов, удовлетворяющих условиям поиска</returns>
 		public long CalculateCountQuery(SearchModel searchModel)
 		{
-			searchModel.AddFilter(new NestQuery(Query<dynamic>.Term(ElasticConstants.TenantIdField, _tenantId)));
+            var tenantId = CachedSecurityComponent.Instance.GetClaim(AuthorizationStorageExtensions.OrganizationClaim, "TestOverlord") ??
+                       AuthorizationStorageExtensions.AnonimousUser;
+            searchModel.AddFilter(new NestQuery(Query<dynamic>.Term(ElasticConstants.TenantIdField, tenantId)));
 			searchModel.AddFilter(new NestQuery(Query<dynamic>.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid)));
 
 			Func<CountDescriptor<dynamic>, CountDescriptor<dynamic>> desc =
@@ -87,7 +89,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 		/// <returns>Результаты поиска</returns>
 		public SearchViewModel QueryOverObject(SearchModel searchModel, Func<dynamic, string, string, object> convert)
 		{
-			searchModel.AddFilter(new NestFilter(Filter<dynamic>.Query(q => q.Term(ElasticConstants.TenantIdField, _tenantId))));
+            var tenantId = CachedSecurityComponent.Instance.GetClaim(AuthorizationStorageExtensions.OrganizationClaim, "TestOverlord") ??
+		               AuthorizationStorageExtensions.AnonimousUser;
+            searchModel.AddFilter(new NestFilter(Filter<dynamic>.Query(q => q.Term(ElasticConstants.TenantIdField, tenantId))));
 			searchModel.AddFilter(new NestFilter(Filter<dynamic>.Query(q => q.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid))));
 
 			Func<SearchDescriptor<dynamic>, SearchDescriptor<dynamic>> desc =

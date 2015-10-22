@@ -4,12 +4,12 @@ using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using InfinniPlatform.Api.RestApi.Auth;
+using InfinniPlatform.Factories;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
-using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Sdk.Environment.Index;
-using InfinniPlatform.SystemConfig.Multitenancy;
+
 using NUnit.Framework;
 
 namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
@@ -21,7 +21,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 		[Test]
 		public void ShouldConnect100Times()
 		{
-			var indexProvider = new ElasticFactory(new MultitenancyProvider()).BuildIndexStateProvider();
+			var indexProvider = new ElasticFactory().BuildIndexStateProvider();
 			indexProvider.RecreateIndex("someindex","someindex");
 			indexProvider.RecreateIndex("testindex","testindex");
 
@@ -50,9 +50,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 		//[TestCase(100000)]
 		public void ShouldWriteToEmptyIndex(int recordCount)
 		{
-			var indexProvider = new ElasticFactory(new MultitenancyProvider()).BuildIndexStateProvider();
+			var indexProvider = new ElasticFactory().BuildIndexStateProvider();
             indexProvider.RecreateIndex("testindex", "testindex");
-			var elasticSearchProvider = new ElasticFactory(new MultitenancyProvider()).BuildCrudOperationProvider("testindex", "testindex", AuthorizationStorageExtensions.AnonimousUser);
+			var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider("testindex", "testindex", AuthorizationStorageExtensions.AnonimousUser);
 
 			dynamic expandoObject = new ExpandoObject();
 
@@ -74,9 +74,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 		[TestCase(10)]
 		public void ShouldUpdateExistingItems(int recordCount)
 		{
-			var indexProvider = new ElasticFactory(new MultitenancyProvider()).BuildIndexStateProvider();
+			var indexProvider = new ElasticFactory().BuildIndexStateProvider();
             indexProvider.RecreateIndex("testindex", "testindex");
-			var elasticSearchProvider = new ElasticFactory(new MultitenancyProvider()).BuildCrudOperationProvider("testindex", "testindex", null);
+			var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider("testindex", "testindex", null);
 
 			dynamic expandoObject = new ExpandoObject();
 			expandoObject.Id = 1;
@@ -98,10 +98,10 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 		[TestCase(1)]		
 		public void ShouldSearchExistingItems(int recordCount)
 		{
-			var indexProvider = new ElasticFactory(new MultitenancyProvider()).BuildIndexStateProvider();
+			var indexProvider = new ElasticFactory().BuildIndexStateProvider();
             indexProvider.RecreateIndex("testindex", "testindex");
-            var queryWrapper = new IndexQueryExecutor(new IndexToTypeAccordanceProvider().GetIndexTypeAccordances(new[] { "testindex" }, new[] { "testindex" }), AuthorizationStorageExtensions.AnonimousUser);
-			var elasticSearchProvider = new ElasticFactory(new MultitenancyProvider()).BuildCrudOperationProvider("testindex", "testindex", AuthorizationStorageExtensions.AnonimousUser);
+            var queryWrapper = new IndexQueryExecutor(new IndexToTypeAccordanceProvider().GetIndexTypeAccordances(new[] { "testindex" }, new[] { "testindex" }));
+			var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider("testindex", "testindex", AuthorizationStorageExtensions.AnonimousUser);
             
 			for (int i = 0; i < recordCount; i++)
 			{
@@ -127,7 +127,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 
 			watch.Stop();
 
-			Console.WriteLine(string.Format("SEARCH {0} records. Elapsed {1} ms.", recordCount, watch.ElapsedMilliseconds));
+			Console.WriteLine("SEARCH {0} records. Elapsed {1} ms.", recordCount, watch.ElapsedMilliseconds);
 		}
 
 	}

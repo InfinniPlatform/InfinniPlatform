@@ -6,7 +6,6 @@ using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
-using InfinniPlatform.SystemConfig.Multitenancy;
 
 namespace InfinniPlatform.RestfulApi.Extensions
 {
@@ -17,7 +16,7 @@ namespace InfinniPlatform.RestfulApi.Extensions
             string typeName, 
             SearchAbilityType abilityType = SearchAbilityType.KeywordBasedSearch)
         {
-            var elasticFactory = new ElasticFactory(new MultitenancyProvider());
+            var elasticFactory = new ElasticFactory();
 
             var indexProvider = elasticFactory.BuildVersionBuilder(indexName, typeName, abilityType);
             
@@ -29,32 +28,32 @@ namespace InfinniPlatform.RestfulApi.Extensions
 
 		public static bool IndexExists(string indexName,string typeName)
 		{
-			var provider = new ElasticFactory(new MultitenancyProvider()).BuildIndexStateProvider();
+			var provider = new ElasticFactory().BuildIndexStateProvider();
 			return provider.GetIndexStatus(indexName, typeName) == IndexStatus.Exists;
 		}
 
         public static dynamic GetDocument(string id, string index, string typeName)
         {
-			var elasticProvider = new ElasticFactory(new MultitenancyProvider()).BuildVersionProvider(index, typeName, AuthorizationStorageExtensions.AnonimousUser);
+			var elasticProvider = new ElasticFactory().BuildVersionProvider(index, typeName, AuthorizationStorageExtensions.AnonimousUser);
             return elasticProvider.GetDocument(id);
         }
 
         public static dynamic GetDocuments(IEnumerable<string> ids, string index, string typeName)
         {
-			var elasticProvider = new ElasticFactory(new MultitenancyProvider()).BuildVersionProvider(index, typeName, AuthorizationStorageExtensions.AnonimousUser);
+			var elasticProvider = new ElasticFactory().BuildVersionProvider(index, typeName, AuthorizationStorageExtensions.AnonimousUser);
             return elasticProvider.GetDocuments(ids);
         }
 
         public static void SetDocument(object item, string indexName, string typeName)
         {
-			var elasticProvider = new ElasticFactory(new MultitenancyProvider()).BuildCrudOperationProvider(indexName, typeName, AuthorizationStorageExtensions.AnonimousUser);
+			var elasticProvider = new ElasticFactory().BuildCrudOperationProvider(indexName, typeName, AuthorizationStorageExtensions.AnonimousUser);
             elasticProvider.Set(item);
             elasticProvider.Refresh();
         }
 
         public static void SetDocuments(IEnumerable<object> items, string indexName, string typeName)
         {
-			var elasticProvider = new ElasticFactory(new MultitenancyProvider()).BuildCrudOperationProvider(indexName, typeName, AuthorizationStorageExtensions.AnonimousUser);
+			var elasticProvider = new ElasticFactory().BuildCrudOperationProvider(indexName, typeName, AuthorizationStorageExtensions.AnonimousUser);
             elasticProvider.Set(items);
             elasticProvider.Refresh();
         }
@@ -82,7 +81,7 @@ namespace InfinniPlatform.RestfulApi.Extensions
             var indexObject = indexObject1;
             indexObject.TimeStamp = timeStamp;
 
-			var elasticProvider = (ElasticSearchProvider)new ElasticFactory(new MultitenancyProvider()).BuildCrudOperationProvider(indexName, typeName, AuthorizationStorageExtensions.AnonimousUser);
+			var elasticProvider = (ElasticSearchProvider)new ElasticFactory().BuildCrudOperationProvider(indexName, typeName, AuthorizationStorageExtensions.AnonimousUser);
 	        var typeNameActual = elasticProvider.ActualTypeName;
 			elasticConnection.Client.Index(indexObject, d=>d.Index(indexName).Type(typeNameActual));
             elasticConnection.Client.Refresh(f=>f.Force());

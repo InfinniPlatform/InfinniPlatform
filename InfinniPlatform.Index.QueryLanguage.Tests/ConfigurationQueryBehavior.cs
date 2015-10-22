@@ -9,7 +9,7 @@ using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Index.QueryLanguage.Implementation;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
-using InfinniPlatform.SystemConfig.Multitenancy;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
@@ -32,7 +32,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 		[TestFixtureSetUp]
 		public void SetupFixture()
 		{
-			_elasticFactory = new ElasticFactory(new MultitenancyProvider());
+			_elasticFactory = new ElasticFactory();
 
 
 		}
@@ -336,7 +336,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 																 }
 												});
 
-			var indexQueryExecutor = new JsonQueryExecutor(new ElasticFactory(new MultitenancyProvider()), _filterFactory, AuthorizationStorageExtensions.AnonimousUser);
+			var indexQueryExecutor = new JsonQueryExecutor(new ElasticFactory(), _filterFactory, AuthorizationStorageExtensions.AnonimousUser);
 			var result = indexQueryExecutor.ExecuteQuery(jquery);
 
 			//[
@@ -428,7 +428,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
                                                                  }
 												});
 
-			var indexQueryExecutor = new JsonQueryExecutor(new ElasticFactory(new MultitenancyProvider()), _filterFactory, AuthorizationStorageExtensions.AnonimousUser);
+			var indexQueryExecutor = new JsonQueryExecutor(new ElasticFactory(), _filterFactory, AuthorizationStorageExtensions.AnonimousUser);
 			var result = indexQueryExecutor.ExecuteQuery(jquery);
 
 
@@ -524,7 +524,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 																 }
 												});
 
-			var indexQueryExecutor = new JsonQueryExecutor(new ElasticFactory(new MultitenancyProvider()), _filterFactory,AuthorizationStorageExtensions.AnonimousUser);
+			var indexQueryExecutor = new JsonQueryExecutor(new ElasticFactory(), _filterFactory,AuthorizationStorageExtensions.AnonimousUser);
 			var result = indexQueryExecutor.ExecuteQuery(jquery);
 
 
@@ -595,7 +595,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 																 }
 												});
 
-			var indexQueryExecutor = new JsonQueryExecutor(new ElasticFactory(new MultitenancyProvider()), _filterFactory, AuthorizationStorageExtensions.AnonimousUser);
+			var indexQueryExecutor = new JsonQueryExecutor(new ElasticFactory(), _filterFactory, AuthorizationStorageExtensions.AnonimousUser);
 			var result = indexQueryExecutor.ExecuteQuery(jquery);
 
 			var compareResult = JArray.FromObject(new[]
@@ -637,7 +637,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 																 }
 												});
 
-			var indexQueryExecutor = new JsonQueryExecutor(new ElasticFactory(new MultitenancyProvider()), _filterFactory, AuthorizationStorageExtensions.AnonimousUser);
+			var indexQueryExecutor = new JsonQueryExecutor(new ElasticFactory(), _filterFactory, AuthorizationStorageExtensions.AnonimousUser);
 			var result = indexQueryExecutor.ExecuteQuery(jquery);
 
 			var compareResult = JArray.FromObject(new[]
@@ -665,7 +665,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 															   },
 												});
 
-			var indexQueryExecutor = new JsonQueryExecutor(new ElasticFactory(new MultitenancyProvider()), _filterFactory, AuthorizationStorageExtensions.AnonimousUser);
+			var indexQueryExecutor = new JsonQueryExecutor(new ElasticFactory(), _filterFactory, AuthorizationStorageExtensions.AnonimousUser);
 			var result = indexQueryExecutor.ExecuteQuery(jquery);
 
 			var compareResult = JArray.FromObject(new[]
@@ -693,7 +693,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 																 }
 												});
 
-			var indexQueryExecutor = new JsonQueryExecutor(new ElasticFactory(new MultitenancyProvider()), _filterFactory, AuthorizationStorageExtensions.AnonimousUser);
+			var indexQueryExecutor = new JsonQueryExecutor(new ElasticFactory(), _filterFactory, AuthorizationStorageExtensions.AnonimousUser);
 			var result = indexQueryExecutor.ExecuteQuery(jquery);
 
 			var compareResult = JArray.FromObject(new[]
@@ -1455,7 +1455,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 					Select = select
 				});
 
-				var indexQueryExecutor = new JsonQueryExecutor(new ElasticFactory(new MultitenancyProvider()), _filterFactory, AuthorizationStorageExtensions.AnonimousUser);
+				var indexQueryExecutor = new JsonQueryExecutor(new ElasticFactory(), _filterFactory, AuthorizationStorageExtensions.AnonimousUser);
 				var result = indexQueryExecutor.ExecuteQuery(query);
 
 				if (result.ToString() != clause.Item3.ToString())
