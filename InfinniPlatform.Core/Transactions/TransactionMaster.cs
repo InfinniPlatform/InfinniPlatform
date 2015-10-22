@@ -2,35 +2,28 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using InfinniPlatform.Api.Index;
+
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.Transactions;
 using InfinniPlatform.Factories;
-using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Transactions;
 
 namespace InfinniPlatform.Transactions
 {
     /// <summary>
-    ///     Мастер-транзакция, отвечающая за сохранение данных по завершении
+    /// Мастер-транзакция, отвечающая за сохранение данных по завершении
     /// </summary>
     public sealed class TransactionMaster : ITransaction
     {
-        private readonly IBlobStorageFactory _blobStorageFactory;
-        private readonly IIndexFactory _indexFactory;
-        private readonly List<AttachedInstance> _itemsList;
-        private readonly string _transactionMarker;
-
         /// <summary>
-        ///     Конструктор мастер-транзакции
+        /// Конструктор мастер-транзакции
         /// </summary>
         /// <param name="indexFactory">Фабрика для работы с индексами</param>
         /// <param name="blobStorageFactory">Фабрика хранилища бинарных данных</param>
         /// <param name="transactionMarker">Идентификатор создаваемой транзакции</param>
         /// <param name="itemsList">Разделяемый между различными экземплярами ITransaction список присоединенных элементов</param>
-        public TransactionMaster(IIndexFactory indexFactory, IBlobStorageFactory blobStorageFactory,
-            string transactionMarker, List<AttachedInstance> itemsList)
+        public TransactionMaster(IIndexFactory indexFactory, IBlobStorageFactory blobStorageFactory, string transactionMarker, List<AttachedInstance> itemsList)
         {
             _indexFactory = indexFactory;
             _blobStorageFactory = blobStorageFactory;
@@ -38,30 +31,44 @@ namespace InfinniPlatform.Transactions
             _itemsList = itemsList;
         }
 
+
+        private readonly IBlobStorageFactory _blobStorageFactory;
+        private readonly IIndexFactory _indexFactory;
+        private readonly List<AttachedInstance> _itemsList;
+        private readonly string _transactionMarker;
+
+
         public Action<ITransaction> OnCommit { get; set; }
 
+
         /// <summary>
-        ///     Зафиксировать транзакцию
+        /// Зафиксировать транзакцию
         /// </summary>
         public void CommitTransaction()
         {
             try
             {
-                var binaryManager = new BinaryManager(_blobStorageFactory.CreateBlobStorage());
-                foreach (var item in _itemsList.Where(i => !i.Detached).ToList())
+                // Насколько я понял, внутри этой велосипедной транзакции накапливаются документы, которые нужно сохранить.
+                // Сначала эти документы сохраняются в базу ElasticSearch, затем, если документы ссылаются на какие-то BLOB,
+                // происходит последовательное сохранение этих BLOB.
+
+                foreach (var item in _itemsList.Where(i => !i.Detached))
                 {
-                    var versionProvider = _indexFactory.BuildVersionProvider(item.ConfigId, item.DocumentId,
-                        item.Routing, item.Version);
+                    var versionProvider = _indexFactory.BuildVersionProvider(item.ConfigId, item.DocumentId, item.Routing, item.Version);
 
                     versionProvider.SetDocuments(item.Documents);
 
-                    foreach (var fileDescription in item.Files)
+                    if (item.Files != null && item.Files.Count > 0)
                     {
-                        binaryManager.SaveBinary(item.Documents, item.ConfigId, item.Version, item.DocumentId,
-                            fileDescription.FieldName, fileDescription.Bytes);
+                        var blobStorage = _blobStorageFactory.CreateBlobStorage();
+                        var binaryManager = new BinaryManager(blobStorage);
+
+                        foreach (var fileDescription in item.Files)
+                        {
+                            binaryManager.SaveBinary(item.Documents, item.ConfigId, item.Version, item.DocumentId, fileDescription.FieldName, fileDescription.Bytes);
+                        }
                     }
                 }
-
 
                 if (OnCommit != null)
                 {
@@ -70,12 +77,12 @@ namespace InfinniPlatform.Transactions
             }
             catch (Exception e)
             {
-                throw new ArgumentException("Fail to commit transaction: " + e.Message);
+                throw new ArgumentException("Fail to commit transaction", e);
             }
         }
 
         /// <summary>
-        ///     Отсоединить документ от транзакции
+        /// Отсоединить документ от транзакции
         /// </summary>
         /// <param name="instanceId">Идентификатор отсоединяемого документа</param>
         public void Detach(string instanceId)
@@ -88,8 +95,8 @@ namespace InfinniPlatform.Transactions
         }
 
         /// <summary>
-        ///     Присоединить файл к участнику транзакции, ссылающемуся на документ
-        ///     с указанным идентификатором
+        /// Присоединить файл к участнику транзакции, ссылающемуся на документ
+        /// с указанным идентификатором
         /// </summary>
         /// <param name="instanceId">Идентификатор документа</param>
         /// <param name="fieldName">Поле ссылки в документе</param>
@@ -109,8 +116,8 @@ namespace InfinniPlatform.Transactions
         }
 
         /// <summary>
-        ///     Отсоединить файл от участника транзакции, ссылающегося на документ
-        ///     с указанным идентификатором
+        /// Отсоединить файл от участника транзакции, ссылающегося на документ
+        /// с указанным идентификатором
         /// </summary>
         /// <param name="instanceId">Идентификатор документа</param>
         /// <param name="fieldName">Наименование поля бинарных данных в схеме документа</param>
@@ -124,7 +131,7 @@ namespace InfinniPlatform.Transactions
         }
 
         /// <summary>
-        ///     Присоединить документ к транзакции
+        /// Присоединить документ к транзакции
         /// </summary>
         /// <param name="configId">Идентификатор конфигурации</param>
         /// <param name="documentId">Идентификатор типа документа</param>
@@ -132,20 +139,20 @@ namespace InfinniPlatform.Transactions
         /// <param name="document">Присоединяемые документы</param>
         /// <param name="routing">Роутинг сохранения</param>
         public void Attach(string configId, string documentId, string version, IEnumerable<dynamic> document,
-            string routing)
+                           string routing)
         {
             _itemsList.Add(new AttachedInstance
-            {
-                Documents = document,
-                ConfigId = configId,
-                DocumentId = documentId,
-                Version = version,
-                Routing = routing
-            });
+                           {
+                               Documents = document,
+                               ConfigId = configId,
+                               DocumentId = documentId,
+                               Version = version,
+                               Routing = routing
+                           });
         }
 
         /// <summary>
-        ///     Главная транзакция
+        /// Главная транзакция
         /// </summary>
         public ITransaction MasterTransaction
         {
@@ -153,7 +160,7 @@ namespace InfinniPlatform.Transactions
         }
 
         /// <summary>
-        ///     Получить идентификатор транзакции
+        /// Получить идентификатор транзакции
         /// </summary>
         /// <returns></returns>
         public string GetTransactionMarker()
@@ -162,7 +169,7 @@ namespace InfinniPlatform.Transactions
         }
 
         /// <summary>
-        ///     Получить список документов транзакции
+        /// Получить список документов транзакции
         /// </summary>
         /// <returns>Список документов транзакции</returns>
         public List<AttachedInstance> GetTransactionItems()

@@ -10,7 +10,7 @@ namespace InfinniPlatform.Sdk.Environment.Transactions
     /// </summary>
     public sealed class AttachedInstance
     {
-        private readonly IList<FileDescription> _files = new List<FileDescription>();
+        private readonly List<FileDescription> _files = new List<FileDescription>();
 
         /// <summary>
         ///     Идентификатор конфигурации
@@ -30,7 +30,7 @@ namespace InfinniPlatform.Sdk.Environment.Transactions
         /// <summary>
         ///     Связанные с документами файлы
         /// </summary>
-        public IEnumerable<FileDescription> Files
+        public List<FileDescription> Files
         {
             get { return _files; }
         }
