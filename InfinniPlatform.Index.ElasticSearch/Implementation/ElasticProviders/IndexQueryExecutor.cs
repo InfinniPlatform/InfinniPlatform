@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.ContextComponents;
+using InfinniPlatform.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticSearchModels;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters.NestFilters;
@@ -89,8 +91,20 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 		/// <returns>Результаты поиска</returns>
 		public SearchViewModel QueryOverObject(SearchModel searchModel, Func<dynamic, string, string, object> convert)
 		{
-            var tenantId = CachedSecurityComponent.Instance.GetClaim(AuthorizationStorageExtensions.OrganizationClaim, "TestOverlord") ??
-		               AuthorizationStorageExtensions.AnonimousUser;
+			var userName = string.Empty;
+
+			try
+			{
+				userName = Thread.CurrentPrincipal.Identity.Name;
+			}
+			catch (Exception)
+			{
+				//ignored
+			}
+
+			var tenantId = CachedSecurityComponent.Instance.GetClaim(AuthorizationStorageExtensions.OrganizationClaim, userName) ??
+						   MultitenancyProvider.GetTenantId(null, _indexNames.FirstOrDefault());
+			
             searchModel.AddFilter(new NestFilter(Filter<dynamic>.Query(q => q.Term(ElasticConstants.TenantIdField, tenantId))));
 			searchModel.AddFilter(new NestFilter(Filter<dynamic>.Query(q => q.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid))));
 

@@ -63,7 +63,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 		/// <param name="version">Версия данных</param>
 		public IVersionProvider BuildVersionProvider(string indexName, string typeName, string tenantId, string version = null)
 		{
-			var expectedTenantId = MultitenancyProvider.GetTenantId(tenantId, indexName, typeName);
+			var expectedTenantId = MultitenancyProvider.GetTenantId(tenantId, indexName);
 			var elasticSearchProvider = new ElasticSearchProvider(indexName, typeName, expectedTenantId, version);
 			var indexSettings = GetIndexTypeAccordanceSettings(new[] { indexName }, new[] { typeName });
 			var indexQueryExecutor = new IndexQueryExecutor(indexSettings);
@@ -102,7 +102,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 		/// <returns>Провайдер для поиска данных</returns>
 		public ICrudOperationProvider BuildCrudOperationProvider(string indexName, string typeName, string tenantId, string version = null)
 		{
-			var expectedtenantId = MultitenancyProvider.GetTenantId(tenantId, indexName, typeName);
+			var expectedtenantId = MultitenancyProvider.GetTenantId(tenantId, indexName);
 			var providerInfo = _providersInfo.FindInfo(indexName, typeName);
 			if (providerInfo == null)
 			{
@@ -162,7 +162,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 		/// <param name="tenantId">Идентификатор организации-клиента выполнения запросов</param>
 		public IAggregationProvider BuildAggregationProvider(string indexName, string typeName, string tenantId)
 		{
-			var expectedTenantId = MultitenancyProvider.GetTenantId(tenantId, indexName, typeName);
+			var expectedTenantId = MultitenancyProvider.GetTenantId(tenantId, indexName);
 			return new ElasticSearchAggregationProvider(indexName, typeName, expectedTenantId);
 		}
 	}

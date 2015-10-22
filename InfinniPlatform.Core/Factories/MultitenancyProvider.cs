@@ -7,14 +7,13 @@ namespace InfinniPlatform.Factories
     /// </summary>
     public static class MultitenancyProvider
     {
-        /// <summary>
-        ///     Получить идентификатор организации-клиента в зависимости от индекса, к которому происходит обращение
-        /// </summary>
-        /// <param name="tenantId">Идентификатор, предоставленный пользователем</param>
-        /// <param name="indexName">Индекс для формирования идентификатора рганизации-клиента</param>
-        /// <param name="indexType">Тип в индексе для формирования идентификатора организации-клиента</param>
-        /// <returns>Строка роутинга для запросов к индексу</returns>
-        public static string GetTenantId(string tenantId, string indexName = null, string indexType = null)
+	    /// <summary>
+	    ///     Получить идентификатор организации-клиента в зависимости от индекса, к которому происходит обращение
+	    /// </summary>
+	    /// <param name="tenantId">Идентификатор, предоставленный пользователем</param>
+	    /// <param name="indexName">Индекс для формирования идентификатора рганизации-клиента</param>
+	    /// <returns>Строка роутинга для запросов к индексу</returns>
+	    public static string GetTenantId(string tenantId, string indexName = null)
         {
             if (indexName != null && (indexName.ToLowerInvariant() == "systemconfig" ||
                                       indexName.ToLowerInvariant() == "authorization" ||
