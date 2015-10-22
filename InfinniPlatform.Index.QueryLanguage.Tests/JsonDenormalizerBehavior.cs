@@ -12,25 +12,6 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
     public sealed class JsonDenormalizerBehavior
     {
         [Test]
-        public void DenormalizationPerformance()
-        {
-            JArray testData = JArray.Parse(File.ReadAllText("IqlResult.json"));
-
-            Stopwatch stopWatch = Stopwatch.StartNew();
-
-            for (int i = 0; i < 10; i++)
-            {
-                new JsonDenormalizer().ProcessIqlResult(testData);
-            }
-
-            stopWatch.Stop();
-
-            Console.WriteLine("Denormalization time: " + stopWatch.ElapsedMilliseconds/10);
-
-            Assert.Less(stopWatch.ElapsedMilliseconds/10, 5, "Время денормализации должно быть не больше 5 мс");
-        }
-
-        [Test]
         public void ShouldPerformDenormalization()
         {
             JArray testData = JArray.Parse(File.ReadAllText("IqlResult.json"));
