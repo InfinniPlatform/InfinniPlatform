@@ -77,7 +77,7 @@ namespace InfinniPlatform.Transactions
             }
             catch (Exception e)
             {
-                throw new ArgumentException("Fail to commit transaction", e);
+                throw new ArgumentException("Fail to commit transaction: " + e, e);
             }
         }
 
