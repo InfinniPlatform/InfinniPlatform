@@ -24,8 +24,6 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-            _server = InfinniPlatformInprocessHost.Start();
-
             try
             {
                 // TODO Тест работает только на чистой базе.
@@ -36,6 +34,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
             {
                 Console.WriteLine(error.ToString());
             }
+
+            _server = InfinniPlatformInprocessHost.Start();
         }
 
         [TestFixtureTearDown]
