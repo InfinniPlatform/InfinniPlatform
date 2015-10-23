@@ -59,8 +59,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
 			//все версии типа в индексе
 			_derivedTypeNames = new Lazy<IEnumerable<IndexToTypeAccordance>>(() => _elasticConnection.GetAllTypes(new[] { _indexName }, new[] { _typeName }));
-
-			_elasticConnection.ConnectIndex();
 		}
 
 		/// <summary>

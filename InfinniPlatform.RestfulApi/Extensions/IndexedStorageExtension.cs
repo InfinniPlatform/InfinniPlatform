@@ -63,7 +63,6 @@ namespace InfinniPlatform.RestfulApi.Extensions
         public static void IndexWithTimestamp(object item, string indexName, string typeName, DateTime timeStamp, string userClaim)
         {
             var elasticConnection = new ElasticConnection();
-            elasticConnection.ConnectIndex();
             dynamic jInstance = item.ToDynamic();
             
             jInstance["Id"] = jInstance["Id"].ToString().ToLowerInvariant();

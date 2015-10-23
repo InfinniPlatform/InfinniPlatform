@@ -27,9 +27,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 	        _tenantId = tenantId;
 	        _indexName = indexName.ToLowerInvariant();
             _elasticConnection = new ElasticConnection();
-
-            _elasticConnection.ConnectIndex();
-
             _typeName = _elasticConnection.GetAllTypes(new[] {_indexName}, new[] {typeName.ToLowerInvariant()});
         }
 

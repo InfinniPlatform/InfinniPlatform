@@ -21,17 +21,33 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
     {
         private const int Timeout = 5000;
         private static readonly NodePool NodePool;
+        private static readonly Lazy<ElasticClient> ElasticClient;
+
 
         static ElasticConnection()
         {
-            var nodeAddresses = AppSettings.GetValues("ElasticSearchNodes", "http://localhost:9200").Select(url => new Uri(url.Trim()));
+            /* Remember: The client is thread-safe, so you can use a single client, in which case, passing a per request configuration
+             * is the only way to pass state local to the request. Instantiating a client each time is also supported. In this case each
+             * client instance could hold a different ConnectionSettings object with their own set of basic authorization credentials.
+             * Do note that if you new a client each time (or your IoC does), they all should use the same IConnectionPool instance.
+             * https://www.elastic.co/blog/nest-and-elasticsearch-net-1-3
+             */
 
-            NodePool = new NodePool(nodeAddresses);
+            NodePool = CreateNodePool();
+            ElasticClient = new Lazy<ElasticClient>(() => CreatElasticClient(NodePool));
         }
 
-        public ElasticConnection()
+
+        private static NodePool CreateNodePool()
         {
-            var nodeAddresses = NodePool.GetActualNodes();
+            var nodeAddresses = AppSettings.GetValues("ElasticSearchNodes", "http://localhost:9200").Select(url => new Uri(url.Trim()));
+
+            return new NodePool(nodeAddresses);
+        }
+
+        private static ElasticClient CreatElasticClient(NodePool nodePool)
+        {
+            var nodeAddresses = nodePool.GetActualNodes();
 
             var connectionPool = new SniffingConnectionPool(nodeAddresses);
 
@@ -42,26 +58,18 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             connectionSettings.SetDefaultPropertyNameInferrer(i => i);
             connectionSettings.SetJsonSerializerSettingsModifier(m => m.ContractResolver = new ElasticContractResolver(connectionSettings));
 
-            _client = new ElasticClient(connectionSettings);
+            return new ElasticClient(connectionSettings);
         }
 
-        private readonly ElasticClient _client;
 
         /// <summary>
         /// Возвращает клиента для работы с индексом.
         /// </summary>
         public ElasticClient Client
         {
-            get { return _client; }
+            get { return ElasticClient.Value; }
         }
 
-        public void ConnectIndex()
-        {
-            //if (!_client.Connection.HeadSync(_firstNodeUrl).Success)
-            //{
-            //	throw new Exception(Resources.CantConnectElasticSearch);
-            //}
-        }
 
         /// <summary>
         /// Возвращает все типы, являющиеся версиями указанного типа в индексе
@@ -107,7 +115,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         /// </summary>
         public string GetStatus()
         {
-            var health = _client.ClusterHealth();
+            var health = ElasticClient.Value.ClusterHealth();
             var nodeAddresses = string.Join("; ", NodePool.GetActualNodes().Select(i => i.ToString()));
 
             return string.Format("cluster name - {0}, status - {1}, number of nodes: {2}, configured nodes: {3}", health.ClusterName, health.Status, health.NumberOfNodes, nodeAddresses);
