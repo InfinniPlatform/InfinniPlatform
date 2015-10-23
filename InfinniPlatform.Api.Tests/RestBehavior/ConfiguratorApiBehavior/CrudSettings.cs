@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
@@ -12,7 +12,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
 
         public const string ConfigurationSecondId = "TestConfigurationCRUD1";
 
-        public const string ConfigurationDescription = "Тестовая конфигурация";
+        public const string ConfigurationDescription = "РўРµСЃС‚РѕРІР°СЏ РєРѕРЅС„РёРіСѓСЂР°С†РёСЏ";
         private readonly string _metadataType;
 
         public CrudSettings(string metadataType)
