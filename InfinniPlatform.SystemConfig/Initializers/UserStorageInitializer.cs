@@ -23,7 +23,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
             contextBuilder.SetEnvironment<IApplicationUserStore>(applicationUserStore);
             contextBuilder.SetEnvironment<IApplicationUserPasswordHasher>(applicationUserPasswordHasher);
 
-            ApplicationUserStorePersistentStorageExtensions.CheckStorage();
+            //ApplicationUserStorePersistentStorageExtensions.CheckStorage();
         }
     }
 }
