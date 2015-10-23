@@ -79,23 +79,23 @@
     <None Include="..\Files\Tests\App.config">
       <Link>App.config</Link>
     </None>
-    <None Include=".metadata\Gameshop_1.0.0.0\Configuration.json" />
-    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Catalogue\Catalogue.json" />
-    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Comment\Comment.json" />
-    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Comment\Processes\Default.json" />
-    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Comment\Scenarios\ActionUnitOnSaveComment.json" />
-    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Comment\Services\OnSaveComment.json" />
-    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Common\Common.json" />
-    <None Include=".metadata\Gameshop_1.0.0.0\Documents\GameInfo\GameInfo.json" />
-    <None Include=".metadata\Gameshop_1.0.0.0\Documents\GameRating\GameRating.json" />
-    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Gameshop_Registers\Gameshop_Registers.json" />
-    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Lottery\Lottery.json" />
-    <None Include=".metadata\Gameshop_1.0.0.0\Documents\PCConfig\PCConfig.json" />
-    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Review\Processes\Like.json" />
-    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Review\Review.json" />
-    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Review\Scenarios\ActionUnitLike.json" />
-    <None Include=".metadata\Gameshop_1.0.0.0\Documents\Review\Services\Like.json" />
-    <None Include=".metadata\Gameshop_1.0.0.0\Documents\UserProfile\UserProfile.json" />
+    <None Include=".metadata\Gameshop\Configuration.json" />
+    <None Include=".metadata\Gameshop\Documents\Catalogue\Catalogue.json" />
+    <None Include=".metadata\Gameshop\Documents\Comment\Comment.json" />
+    <None Include=".metadata\Gameshop\Documents\Comment\Processes\Default.json" />
+    <None Include=".metadata\Gameshop\Documents\Comment\Scenarios\ActionUnitOnSaveComment.json" />
+    <None Include=".metadata\Gameshop\Documents\Comment\Services\OnSaveComment.json" />
+    <None Include=".metadata\Gameshop\Documents\Common\Common.json" />
+    <None Include=".metadata\Gameshop\Documents\GameInfo\GameInfo.json" />
+    <None Include=".metadata\Gameshop\Documents\GameRating\GameRating.json" />
+    <None Include=".metadata\Gameshop\Documents\Gameshop_Registers\Gameshop_Registers.json" />
+    <None Include=".metadata\Gameshop\Documents\Lottery\Lottery.json" />
+    <None Include=".metadata\Gameshop\Documents\PCConfig\PCConfig.json" />
+    <None Include=".metadata\Gameshop\Documents\Review\Processes\Like.json" />
+    <None Include=".metadata\Gameshop\Documents\Review\Review.json" />
+    <None Include=".metadata\Gameshop\Documents\Review\Scenarios\ActionUnitLike.json" />
+    <None Include=".metadata\Gameshop\Documents\Review\Services\Like.json" />
+    <None Include=".metadata\Gameshop\Documents\UserProfile\UserProfile.json" />
     <None Include=".metadata\Solution.json" />
     <None Include="packages.config" />
   </ItemGroup>
