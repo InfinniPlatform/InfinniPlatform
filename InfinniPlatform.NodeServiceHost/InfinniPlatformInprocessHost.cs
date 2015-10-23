@@ -5,16 +5,32 @@ using InfinniPlatform.Sdk.Api;
 
 namespace InfinniPlatform.NodeServiceHost
 {
-	public static class InfinniPlatformInprocessHost
-	{
-		public static IDisposable Start()
-		{
-			var server = new InfinniPlatformServiceHostDomain();
-			server.Start();
+    public static class InfinniPlatformInprocessHost
+    {
+        public static IDisposable Start()
+        {
+            var server = new InfinniPlatformServiceHostDomain();
 
-			ControllerRoutingFactory.Instance = new ControllerRoutingFactory(HostingConfig.Default);
+            try
+            {
+                server.Start();
 
-			return server;
-		}
-	}
+                ControllerRoutingFactory.Instance = new ControllerRoutingFactory(HostingConfig.Default);
+            }
+            catch
+            {
+                try
+                {
+                    server.Dispose();
+                }
+                catch
+                {
+                }
+
+                throw;
+            }
+
+            return server;
+        }
+    }
 }
