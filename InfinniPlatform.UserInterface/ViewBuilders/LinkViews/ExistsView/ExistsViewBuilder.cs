@@ -1,4 +1,5 @@
 ﻿using InfinniPlatform.Api.Extensions;
+using InfinniPlatform.UserInterface.Configurations;
 using InfinniPlatform.UserInterface.Services.Metadata;
 using InfinniPlatform.UserInterface.ViewBuilders.Data;
 using InfinniPlatform.UserInterface.ViewBuilders.Parameter;
@@ -32,8 +33,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.LinkViews.ExistsView
             View view = null;
 
             // Получение метаданных представления
-            var viewMetadataService = new ViewMetadataService(null, metadata.ConfigId, metadata.DocumentId, _server, _port, _routeVersion);
-            var viewMetadata = viewMetadataService.GetItem(metadata.ViewId);
+			var viewMetadata = ConfigResourceRepository.GetView(metadata.ConfigId, metadata.DocumentId, metadata.ViewId);
 
             if (viewMetadata != null)
             {

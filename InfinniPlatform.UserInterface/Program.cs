@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using System.Windows.Forms;
 
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.UserInterface.AppHost;
+using InfinniPlatform.UserInterface.Services.Metadata;
 
 namespace InfinniPlatform.UserInterface
 {
@@ -14,16 +17,7 @@ namespace InfinniPlatform.UserInterface
         [STAThread]
         private static void Main()
         {
-            try
-            {
-                new SignInApi().SignInInternal(AuthorizationStorageExtensions.AdminUser, "Admin", true);
-            }
-            catch
-            {
-                //не удалось авторизоваться
-            }
-
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+	        Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
 
             Application.EnableVisualStyles();

@@ -128,6 +128,7 @@
     <Compile Include="Services\Metadata\AssemblyMetadataService.cs" />
     <Compile Include="Services\Metadata\BaseMetadataService.cs" />
     <Compile Include="Services\Metadata\ConfigurationMetadataService.cs" />
+    <Compile Include="Services\Metadata\PackageMetadataLoader.cs" />
     <Compile Include="Services\Metadata\RegisterMetadataService.cs" />
     <Compile Include="Services\Metadata\DocumentMetadataService.cs" />
     <Compile Include="Services\Metadata\IMetadataService.cs" />

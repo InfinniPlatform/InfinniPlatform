@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.Environment.Settings;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {
@@ -46,17 +50,20 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		public override void DeleteItem(string itemId)
 		{
+			var enumerateFiles = Directory.EnumerateFiles(AppSettings.GetValue("ContentDirectory"), "*.json",SearchOption.AllDirectories);
+			var enumerable = enumerateFiles.Where(s => s.Contains(string.Format("{0}.json", itemId)));
 			_metadataApi.DeleteDocument(Version, ConfigId, itemId);
 		}
 
 		public override object GetItem(string itemId)
 		{
-			return _metadataApi.GetDocument(Version, ConfigId, itemId);
+			return PackageMetadataLoader.Configurations.Value[ConfigId].Documents[itemId].Content;
 		}
 
 		public override IEnumerable<object> GetItems()
 		{
-			return _metadataApi.GetDocumentList(Version, ConfigId);
+			Dictionary<string, dynamic> documents = PackageMetadataLoader.Configurations.Value[ConfigId].Documents;
+			return documents.Values.Select(o => o.Content);
 		}
 	}
 }

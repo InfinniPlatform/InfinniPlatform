@@ -1,6 +1,4 @@
-﻿using System;
-using InfinniPlatform.Sdk.Environment.Settings;
-using InfinniPlatform.UserInterface.Services.Metadata;
+﻿using InfinniPlatform.UserInterface.Configurations;
 
 namespace InfinniPlatform.UserInterface.AppHost
 {
@@ -14,9 +12,8 @@ namespace InfinniPlatform.UserInterface.AppHost
         /// </summary>
         public static dynamic CreateAppView(string server, int port, string routeVersion)
         {
-            var configId = AppSettings.GetValue("ConfigId");
-            var viewMetadataService = new ViewMetadataService(null, configId, "Common",server,port, routeVersion);
-            return viewMetadataService.GetItem("App");
+			var viewMetadataService = ConfigResourceRepository.GetView("Designer", "Common", "App");
+	        return viewMetadataService;
         }
 
         /// <summary>

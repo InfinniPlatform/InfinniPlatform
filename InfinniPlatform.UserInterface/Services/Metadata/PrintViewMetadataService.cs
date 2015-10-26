@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
+﻿using System.Collections.Generic;
+
 using InfinniPlatform.Sdk.Api;
-using InfinniPlatform.Sdk.Metadata;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {
