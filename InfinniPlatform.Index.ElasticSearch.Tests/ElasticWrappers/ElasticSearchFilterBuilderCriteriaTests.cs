@@ -65,6 +65,14 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             _elasticSearchProvider.Refresh();
         }
 
+
+        [TearDown]
+        public void DeleteIndex()
+        {
+            _indexStateProvider.DeleteIndexType(IndexName, IndexName);
+        }
+
+
         [Test]
         public void IsEqualsCriteriaUnderStringFieldTest()
         {
@@ -524,12 +532,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             Assert.AreEqual(1, result.HitsCount);
             Assert.AreEqual(41, result.Items.First().HouseNumber);
             Assert.AreEqual("Lenina-Avenue", result.Items.First().Street);
-        }
-
-        [TearDown]
-        public void DeleteIndex()
-        {
-            _indexStateProvider.DeleteIndexType(IndexName,IndexName);
         }
     }
 }

@@ -68,7 +68,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 		/// Во всех остальных случаях достаточно выполнения операции Set. Предназначена для ручного управления логом транзакций elasticsearch
 		public void Refresh()
 		{
-			_elasticConnection.Client.Refresh(r => r.Force());
+            _elasticConnection.Refresh();
 		}
 
 		/// <summary>

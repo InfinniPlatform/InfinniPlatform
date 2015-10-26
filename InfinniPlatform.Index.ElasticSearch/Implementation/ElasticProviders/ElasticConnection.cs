@@ -19,7 +19,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
     /// </summary>
     public sealed class ElasticConnection
     {
-        private const int Timeout = 5000;
         private static readonly NodePool NodePool;
         private static readonly Lazy<ElasticClient> ElasticClient;
 
@@ -52,13 +51,12 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             var connectionPool = new SniffingConnectionPool(nodeAddresses);
 
             var connectionSettings = new ConnectionSettings(connectionPool);
-            connectionSettings.SetTimeout(Timeout);
-            connectionSettings.SetPingTimeout(Timeout);
-            connectionSettings.SetConnectTimeout(Timeout);
             connectionSettings.SetDefaultPropertyNameInferrer(i => i);
             connectionSettings.SetJsonSerializerSettingsModifier(m => m.ContractResolver = new ElasticContractResolver(connectionSettings));
 
-            return new ElasticClient(connectionSettings);
+            var client = new ElasticClient(connectionSettings);
+
+            return client;
         }
 
 
@@ -68,6 +66,14 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         public ElasticClient Client
         {
             get { return ElasticClient.Value; }
+        }
+
+
+        public void Refresh()
+        {
+            // TODO: От этого нужно избавиться!!!
+
+            Client.Refresh(i => i.Force());
         }
 
 

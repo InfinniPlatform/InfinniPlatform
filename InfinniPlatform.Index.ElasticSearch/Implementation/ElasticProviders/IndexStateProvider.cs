@@ -46,7 +46,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         /// </summary>
         public void Refresh()
         {
-            _connection.Client.Refresh(f => f.Force());
+            _connection.Refresh();
         }
 
         /// <summary>

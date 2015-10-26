@@ -80,7 +80,7 @@ namespace InfinniPlatform.RestfulApi.Extensions
 			var elasticProvider = (ElasticSearchProvider)new ElasticFactory().BuildCrudOperationProvider(indexName, typeName, AuthorizationStorageExtensions.AnonimousUser);
 	        var typeNameActual = elasticProvider.ActualTypeName;
 			elasticConnection.Client.Index(indexObject, d=>d.Index(indexName).Type(typeNameActual));
-            elasticConnection.Client.Refresh(f=>f.Force());
+            elasticConnection.Refresh();
         }
     }
 }
