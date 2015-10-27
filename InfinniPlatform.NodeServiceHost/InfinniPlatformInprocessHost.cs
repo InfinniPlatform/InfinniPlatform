@@ -7,13 +7,14 @@ namespace InfinniPlatform.NodeServiceHost
 {
     public static class InfinniPlatformInprocessHost
     {
+        private static readonly InfinniPlatformServiceHostDomain ServerInstance = new InfinniPlatformServiceHostDomain();
+
+
         public static IDisposable Start()
         {
-            var server = new InfinniPlatformServiceHostDomain();
-
             try
             {
-                server.Start();
+                ServerInstance.Start();
 
                 ControllerRoutingFactory.Instance = new ControllerRoutingFactory(HostingConfig.Default);
             }
@@ -21,7 +22,7 @@ namespace InfinniPlatform.NodeServiceHost
             {
                 try
                 {
-                    server.Dispose();
+                    ServerInstance.Stop();
                 }
                 catch
                 {
@@ -30,7 +31,17 @@ namespace InfinniPlatform.NodeServiceHost
                 throw;
             }
 
-            return server;
+            return FakeDisposableServer.Instance;
+        }
+
+
+        private class FakeDisposableServer : IDisposable
+        {
+            public static readonly FakeDisposableServer Instance = new FakeDisposableServer();
+
+            public void Dispose()
+            {
+            }
         }
     }
 }
