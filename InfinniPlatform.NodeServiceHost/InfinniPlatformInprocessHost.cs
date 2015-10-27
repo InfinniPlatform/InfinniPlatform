@@ -16,7 +16,7 @@ namespace InfinniPlatform.NodeServiceHost
 
         static InfinniPlatformInprocessHost()
         {
-            AppDomain.CurrentDomain.ProcessExit += (s, e) => TryStop();
+            AppDomain.CurrentDomain.DomainUnload += (s, e) => TryStop();
         }
 
 
