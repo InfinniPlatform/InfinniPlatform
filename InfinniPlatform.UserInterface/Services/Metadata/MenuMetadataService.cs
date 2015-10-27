@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
 using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.Environment.Settings;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {
@@ -41,9 +42,9 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		public override object GetItem(string itemId)
 		{
-			var configPath = @"C:\Projects\InfinniPlatform\Assemblies\content";
+			var contentDirectory = AppSettings.GetValue("ContentDirectory", "..\\Assemblies\\content");
 
-			return PackageMetadataLoader.LoadDocumentMetadata(ConfigId, configPath);
+			return PackageMetadataLoader.LoadDocumentMetadata(ConfigId, contentDirectory);
 		}
 
 		public override IEnumerable<object> GetItems()

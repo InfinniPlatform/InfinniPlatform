@@ -25,7 +25,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		public static Dictionary<string, dynamic> LoadConfigsMetadata()
 		{
-			var contentDirectory = AppSettings.GetValue("ContentDirectory", "content");
+			var contentDirectory = AppSettings.GetValue("ContentDirectory", "..\\Assemblies\\content");
 
 			var metadataDirectories = Directory.EnumerateDirectories(contentDirectory)
 											   .Select(d => Path.Combine(d, "metadata"))

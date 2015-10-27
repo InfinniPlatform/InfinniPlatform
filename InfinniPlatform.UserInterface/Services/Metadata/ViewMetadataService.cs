@@ -51,8 +51,8 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			//TODO Wrapper for PackageMetadataLoader.Configurations
 			if (PackageMetadataLoader.Configurations[_configId].Documents[_documentId].Views.ContainsKey(item.Name))
 			{
-				dynamic oldDocument = PackageMetadataLoader.Configurations[_configId].Documents[_documentId].Views[item.Name];
-				filePath = oldDocument.FilePath;
+				dynamic oldView = PackageMetadataLoader.Configurations[_configId].Documents[_documentId].Views[item.Name];
+				filePath = oldView.FilePath;
 			}
 			else
 			{
