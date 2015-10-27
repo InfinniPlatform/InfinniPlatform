@@ -42,7 +42,7 @@ namespace InfinniPlatform.FastReport.Serialization
 				.Add<TimeFormat>("TimeFormat")
 				.Add<CustomFormat>("CustomFormat");
 
-			_reportSerializer = new JsonObjectSerializer(knownTypes, true);
+			_reportSerializer = new JsonObjectSerializer(true, knownTypes);
 		}
 
 

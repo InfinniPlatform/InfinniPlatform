@@ -44,7 +44,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		public override object GetItem(string itemId)
 		{
-			Dictionary<string, dynamic> documents = PackageMetadataLoader.Configurations.Value[_configId].Documents;
+			Dictionary<string, dynamic> documents = PackageMetadataLoader.Configurations[_configId].Documents;
 			var views = documents[_documentId].Views;
 			var view = views[itemId];
 			return view.Content;
@@ -52,7 +52,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		public override IEnumerable<object> GetItems()
 		{
-			Dictionary<string, dynamic> documents = PackageMetadataLoader.Configurations.Value[_configId].Documents;
+			Dictionary<string, dynamic> documents = PackageMetadataLoader.Configurations[_configId].Documents;
 			Dictionary<string, dynamic> views = documents[_documentId].Views;
 			return views.Values.Select(o => o.Content);
 		}

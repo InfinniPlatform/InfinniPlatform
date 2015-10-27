@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-using InfinniPlatform.Sdk.Api;
-using InfinniPlatform.Sdk.Environment.Settings;
+using InfinniPlatform.Api.Serialization;
+using InfinniPlatform.Sdk.Dynamic;
+
+using Newtonsoft.Json;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {
@@ -17,13 +19,9 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			: base(version, server, port, route)
 		{
 			_configId = configId;
-			_metadataApi = new InfinniMetadataApi(server, port.ToString(), route);
 		}
 
-
 		private readonly string _configId;
-		private readonly InfinniMetadataApi _metadataApi;
-
 
 		public string ConfigId
 		{
@@ -32,37 +30,66 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		public override object CreateItem()
 		{
-			return _metadataApi.CreateDocument(Version, ConfigId);
+			dynamic document = new DynamicWrapper();
+
+			document.Id = Guid.NewGuid().ToString();
+			document.Services = new dynamic[] { };
+			document.Processes = new dynamic[] { };
+			document.Scenarios = new dynamic[] { };
+			document.Generators = new dynamic[] { };
+			document.Views = new dynamic[] { };
+			document.PrintViews = new dynamic[] { };
+			document.ValidationWarnings = new dynamic[] { };
+			document.ValidationErrors = new dynamic[] { };
+
+			return document;
 		}
 
 		public override void ReplaceItem(dynamic item)
 		{
-			var name = (item.Name ?? string.Empty).ToString().Trim();
-			var metadataIndex = (item.MetadataIndex ?? string.Empty).ToString().Trim();
+			string filePath;
+			var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
 
-			if (string.IsNullOrEmpty(metadataIndex))
+			//TODO Wrapper for PackageMetadataLoader.Configurations
+			if (PackageMetadataLoader.Configurations[_configId].Documents.ContainsKey(item.Name))
 			{
-				item.MetadataIndex = name;
+				dynamic oldDocument = PackageMetadataLoader.Configurations[_configId].Documents[item.Name];
+				filePath = oldDocument.FilePath;
+			}
+			else
+			{
+				string directoryPath = Path.Combine(Path.GetDirectoryName(PackageMetadataLoader.Configurations[_configId].FilePath), "Documents", item.Name);
+				Directory.CreateDirectory(directoryPath);
+
+				filePath = Path.Combine(directoryPath, string.Concat(item.Name, ".json"));
 			}
 
-			_metadataApi.UpdateDocument(item, Version, ConfigId);
+			File.WriteAllBytes(filePath, serializedItem);
+
+			PackageMetadataLoader.UpdateCache();
 		}
 
 		public override void DeleteItem(string itemId)
 		{
-			var enumerateFiles = Directory.EnumerateFiles(AppSettings.GetValue("ContentDirectory"), "*.json",SearchOption.AllDirectories);
-			var enumerable = enumerateFiles.Where(s => s.Contains(string.Format("{0}.json", itemId)));
-			_metadataApi.DeleteDocument(Version, ConfigId, itemId);
+			dynamic document = PackageMetadataLoader.Configurations[_configId].Documents[itemId];
+
+			var documentDirectory = Path.GetDirectoryName(document.FilePath);
+
+			if (documentDirectory != null)
+			{
+				Directory.Delete(documentDirectory, true);
+				PackageMetadataLoader.UpdateCache();
+			}
 		}
 
 		public override object GetItem(string itemId)
 		{
-			return PackageMetadataLoader.Configurations.Value[ConfigId].Documents[itemId].Content;
+			return PackageMetadataLoader.Configurations[_configId].Documents[itemId].Content;
 		}
 
 		public override IEnumerable<object> GetItems()
 		{
-			Dictionary<string, dynamic> documents = PackageMetadataLoader.Configurations.Value[ConfigId].Documents;
+			Dictionary<string, dynamic> documents = PackageMetadataLoader.Configurations[_configId].Documents;
 			return documents.Values.Select(o => o.Content);
 		}
 	}

@@ -34,12 +34,12 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		public override object GetItem(string itemId)
 		{
-			return PackageMetadataLoader.Configurations.Value[itemId].Content;
+			return PackageMetadataLoader.Configurations[itemId].Content;
 		}
 
 		public override IEnumerable<object> GetItems()
 		{
-			return PackageMetadataLoader.Configurations.Value.Values.Select(o => o.Content);
+			return PackageMetadataLoader.Configurations.Values.Select(o => o.Content);
 		}
 
 	}

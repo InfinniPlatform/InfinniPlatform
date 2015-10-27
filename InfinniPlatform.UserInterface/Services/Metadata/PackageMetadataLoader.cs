@@ -3,16 +3,25 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-using InfinniPlatform.Api.Deprecated;
 using InfinniPlatform.Api.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Settings;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {
-	public static class PackageMetadataLoader
+	public class PackageMetadataLoader
 	{
-		public static readonly Lazy<Dictionary<string, dynamic>> Configurations = new Lazy<Dictionary<string, dynamic>>(LoadConfigsMetadata);
+		private static Lazy<Dictionary<string, dynamic>> _configurations = new Lazy<Dictionary<string, dynamic>>(LoadConfigsMetadata);
+
+		public static Dictionary<string, dynamic> Configurations
+		{
+			get { return _configurations.Value; }
+		}
+
+		public static void UpdateCache()
+		{
+			_configurations = new Lazy<Dictionary<string, dynamic>>(LoadConfigsMetadata);
+		}
 
 		public static Dictionary<string, dynamic> LoadConfigsMetadata()
 		{
@@ -27,7 +36,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 				.SelectMany(Directory.EnumerateDirectories)
 				.Select(LoadConfigMetadata);
 
-			var dictionary = loadConfigsMetadata.ToDictionary(config => (string) config.Content.Name, confog => confog);
+			var dictionary = loadConfigsMetadata.ToDictionary(config => (string)config.Content.Name, confog => confog);
 
 			return dictionary;
 		}
@@ -55,9 +64,9 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			if (Directory.Exists(documentsDirectory))
 			{
 				IEnumerable<dynamic> enumerable = Directory.EnumerateDirectories(documentsDirectory)
-												  .Select(d => LoadDocumentMetadata(d, configId));
+														   .Select(d => LoadDocumentMetadata(d, configId));
 
-				return enumerable.ToDictionary(document => (string) document.Content.Name, document => document);
+				return enumerable.ToDictionary(document => (string)document.Content.Name, document => document);
 			}
 
 			return new Dictionary<string, dynamic>();
@@ -114,7 +123,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 				dynamic loadItemMetadata = new DynamicWrapper();
 				loadItemMetadata.FilePath = filePath;
 				loadItemMetadata.Content = JsonObjectSerializer.Default.Deserialize(reader, typeof(DynamicWrapper));
-				
+
 				return loadItemMetadata;
 			}
 		}
