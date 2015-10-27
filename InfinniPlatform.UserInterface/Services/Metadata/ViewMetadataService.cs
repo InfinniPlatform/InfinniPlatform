@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
-using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Api.Serialization;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {
@@ -15,12 +18,10 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 		{
 			_configId = configId;
 			_documentId = documentId;
-			_metadataApi = new InfinniMetadataApi(server, port.ToString(), route);
 		}
 
-		readonly string _configId;
-		readonly string _documentId;
-		readonly InfinniMetadataApi _metadataApi;
+		private readonly string _configId;
+		private readonly string _documentId;
 
 		public string ConfigId
 		{
@@ -29,17 +30,51 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		public override object CreateItem()
 		{
-			return _metadataApi.CreateView(Version, ConfigId, _documentId);
+			dynamic view = new DynamicWrapper();
+
+			view.Id = Guid.NewGuid().ToString();
+			view.Name = string.Empty;
+			view.Caption = string.Empty;
+			view.DataSources = new dynamic[]{};
+			view.Parameters = new dynamic[] { };
+			view.LayoutPanel = new object();
+			view.Scripts = new dynamic[] { };
+
+			return view;
 		}
 
 		public override void ReplaceItem(dynamic item)
 		{
-			_metadataApi.UpdateView(item, Version, ConfigId, _documentId);
+			string filePath;
+			var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
+
+			//TODO Wrapper for PackageMetadataLoader.Configurations
+			if (PackageMetadataLoader.Configurations[_configId].Documents[_documentId].Views.ContainsKey(item.Name))
+			{
+				dynamic oldDocument = PackageMetadataLoader.Configurations[_configId].Documents[_documentId].Views[item.Name];
+				filePath = oldDocument.FilePath;
+			}
+			else
+			{
+				filePath = Path.Combine(Path.GetDirectoryName(PackageMetadataLoader.Configurations[_configId].FilePath),
+										"Documents",
+										_documentId,
+										"Views",
+										string.Concat(item.Name, ".json"));
+			}
+
+			File.WriteAllBytes(filePath, serializedItem);
+
+			PackageMetadataLoader.UpdateCache();
 		}
 
 		public override void DeleteItem(string itemId)
 		{
-			_metadataApi.DeleteView(Version, ConfigId, _documentId, itemId);
+			dynamic document = PackageMetadataLoader.Configurations[_configId].Documents[_documentId].Views[itemId];
+
+			File.Delete(document.FilePath);
+
+			PackageMetadataLoader.UpdateCache();
 		}
 
 		public override object GetItem(string itemId)
