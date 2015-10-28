@@ -36,14 +36,15 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
 
 			//TODO Wrapper for PackageMetadataLoader.Configurations
-			if (PackageMetadataLoader.Configurations[_configId].Menu.ContainsKey(item.Name))
+			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+			if (configuration.Menu.ContainsKey(item.Name))
 			{
-				dynamic oldMenu = PackageMetadataLoader.Configurations[_configId].Documents[item.Name];
+				dynamic oldMenu = configuration.Documents[item.Name];
 				filePath = oldMenu.FilePath;
 			}
 			else
 			{
-				string directoryPath = Path.Combine(Path.GetDirectoryName(PackageMetadataLoader.Configurations[_configId].FilePath), "Menu", item.Name);
+				string directoryPath = Path.Combine(Path.GetDirectoryName(configuration.FilePath), "Menu", item.Name);
 				Directory.CreateDirectory(directoryPath);
 
 				filePath = Path.Combine(directoryPath, string.Concat(item.Name, ".json"));
@@ -56,7 +57,8 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		public override void DeleteItem(string itemId)
 		{
-			dynamic menu = PackageMetadataLoader.Configurations[_configId].Menu[itemId];
+			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+			var menu = configuration.Menu[itemId];
 
 			var menuDirectory = Path.GetDirectoryName(menu.FilePath);
 
@@ -69,12 +71,14 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		public override object GetItem(string itemId)
 		{
-			return PackageMetadataLoader.Configurations[_configId].Menu[itemId].Content;
+			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+			return configuration.Menu[itemId].Content;
 		}
 
 		public override IEnumerable<object> GetItems()
 		{
-			Dictionary<string, dynamic> documents = PackageMetadataLoader.Configurations[_configId].Menu;
+			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+			Dictionary<string, dynamic> documents = configuration.Menu;
 			return documents.Values.Select(o => o.Content);
 		}
 	}

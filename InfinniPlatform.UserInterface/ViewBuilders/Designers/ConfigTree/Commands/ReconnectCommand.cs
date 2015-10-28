@@ -26,7 +26,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Comman
         public override void Execute(object parameter)
         {
             dynamic connectionSettings = new DynamicWrapper();
-			connectionSettings.Path = Path.GetFullPath(AppSettings.GetValue("ContentDirectory", "..\\Assemblies\\content"));
+			connectionSettings.Path = Path.GetFullPath(AppSettings.GetValue("ContentDirectory", Path.Combine("..", "Assemblies", "content")));
 
             _builder.EditPanel.EditElement(_elementEditor,
                 _elementNode.GetNodePath(),

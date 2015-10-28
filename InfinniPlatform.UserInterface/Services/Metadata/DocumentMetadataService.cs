@@ -51,14 +51,15 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
 
 			//TODO Wrapper for PackageMetadataLoader.Configurations
-			if (PackageMetadataLoader.Configurations[_configId].Documents.ContainsKey(item.Name))
+			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+			if (configuration.Documents.ContainsKey(item.Name))
 			{
-				dynamic oldDocument = PackageMetadataLoader.Configurations[_configId].Documents[item.Name];
+				dynamic oldDocument = configuration.Documents[item.Name];
 				filePath = oldDocument.FilePath;
 			}
 			else
 			{
-				string directoryPath = Path.Combine(Path.GetDirectoryName(PackageMetadataLoader.Configurations[_configId].FilePath), "Documents", item.Name);
+				string directoryPath = Path.Combine(Path.GetDirectoryName(configuration.FilePath), "Documents", item.Name);
 				Directory.CreateDirectory(directoryPath);
 
 				filePath = Path.Combine(directoryPath, string.Concat(item.Name, ".json"));
@@ -71,7 +72,8 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		public override void DeleteItem(string itemId)
 		{
-			dynamic document = PackageMetadataLoader.Configurations[_configId].Documents[itemId];
+			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+			dynamic document = configuration.Documents[itemId];
 
 			var documentDirectory = Path.GetDirectoryName(document.FilePath);
 
@@ -84,12 +86,14 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		public override object GetItem(string itemId)
 		{
-			return PackageMetadataLoader.Configurations[_configId].Documents[itemId].Content;
+			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+			return configuration.Documents[itemId].Content;
 		}
 
 		public override IEnumerable<object> GetItems()
 		{
-			Dictionary<string, dynamic> documents = PackageMetadataLoader.Configurations[_configId].Documents;
+			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+			Dictionary<string, dynamic> documents = configuration.Documents;
 			return documents.Values.Select(o => o.Content);
 		}
 	}

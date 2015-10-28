@@ -20,7 +20,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Factor
         public void Create(ConfigElementNodeBuilder builder, ICollection<ConfigElementNode> elements,
             ConfigElementNode elementNode)
         {
-			var contentPath = Path.GetFullPath(AppSettings.GetValue("ContentDirectory", "..\\Assemblies\\content"));
+			var contentPath = Path.GetFullPath(AppSettings.GetValue("ContentDirectory", Path.Combine("..", "Assemblies", "content")));
 			elementNode.ElementId = contentPath;
 			elementNode.ElementName = contentPath;
             elementNode.Version = builder.Version;

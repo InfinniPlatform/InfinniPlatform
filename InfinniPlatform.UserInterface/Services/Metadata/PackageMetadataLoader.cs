@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -11,21 +10,21 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 {
 	public class PackageMetadataLoader
 	{
-		private static Lazy<Dictionary<string, dynamic>> _configurations = new Lazy<Dictionary<string, dynamic>>(LoadConfigsMetadata);
+		private static Dictionary<string, object> _configurations = LoadConfigsMetadata();
 
-		public static Dictionary<string, dynamic> Configurations
+		public static Dictionary<string, object> Configurations
 		{
-			get { return _configurations.Value; }
+			get { return _configurations; }
 		}
 
 		public static void UpdateCache()
 		{
-			_configurations = new Lazy<Dictionary<string, dynamic>>(LoadConfigsMetadata);
+			_configurations = LoadConfigsMetadata();
 		}
 
-		public static Dictionary<string, dynamic> LoadConfigsMetadata()
+		public static Dictionary<string, object> LoadConfigsMetadata()
 		{
-			var contentDirectory = AppSettings.GetValue("ContentDirectory", "..\\Assemblies\\content");
+			var contentDirectory = AppSettings.GetValue("ContentDirectory", Path.Combine("..", "Assemblies", "content"));
 
 			var metadataDirectories = Directory.EnumerateDirectories(contentDirectory)
 											   .Select(d => Path.Combine(d, "metadata"))
@@ -36,7 +35,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 				.SelectMany(Directory.EnumerateDirectories)
 				.Select(LoadConfigMetadata);
 
-			var dictionary = loadConfigsMetadata.ToDictionary(config => (string)config.Content.Name, confog => confog);
+			Dictionary<string, object> dictionary = loadConfigsMetadata.ToDictionary(config => (string)config.Content.Name, confog => confog);
 
 			return dictionary;
 		}
@@ -57,7 +56,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			return configuration;
 		}
 
-		public static Dictionary<string, dynamic> LoadDocumentsMetadata(string configDirectory, object configId)
+		public static Dictionary<string, object> LoadDocumentsMetadata(string configDirectory, object configId)
 		{
 			var documentsDirectory = Path.Combine(configDirectory, "Documents");
 
@@ -69,7 +68,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 				return enumerable.ToDictionary(document => (string)document.Content.Name, document => document);
 			}
 
-			return new Dictionary<string, dynamic>();
+			return new Dictionary<string, object>();
 		}
 
 		public static object LoadDocumentMetadata(string documentDirectory, object configId)
@@ -94,7 +93,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			return document;
 		}
 
-		public static Dictionary<string, dynamic> LoadItemsMetadata(string documentDirectory, string itemsContainer, object configId, object documentId = null)
+		public static Dictionary<string, object> LoadItemsMetadata(string documentDirectory, string itemsContainer, object configId, object documentId = null)
 		{
 			var itemsDirectory = Path.Combine(documentDirectory, itemsContainer);
 
@@ -113,7 +112,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 				return itemsMetadata.ToDictionary(item => (string)item.Content.Name, item => item);
 			}
 
-			return new Dictionary<string, dynamic>();
+			return new Dictionary<string, object>();
 		}
 
 		public static object LoadItemMetadata(string filePath)

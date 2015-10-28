@@ -49,7 +49,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			}
 			else
 			{
-				var contentDirectory = AppSettings.GetValue("ContentDirectory", "..\\Assemblies\\content");
+				var contentDirectory = AppSettings.GetValue("", "..\\Assemblies\\content");
 				var configurationDirectory = Path.Combine(contentDirectory, item.Subfolder ?? "InfinniPlatform", "metadata", item.Name);
 				Directory.CreateDirectory(configurationDirectory);
 				filePath = Path.Combine(configurationDirectory, "Configuration.json");
@@ -75,12 +75,14 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		public override object GetItem(string itemId)
 		{
-			return PackageMetadataLoader.Configurations[itemId].Content;
+			dynamic configuration = PackageMetadataLoader.Configurations[itemId];
+			return configuration.Content;
 		}
 
 		public override IEnumerable<object> GetItems()
 		{
-			return PackageMetadataLoader.Configurations.Values.Select(o => o.Content);
+			Dictionary<string, dynamic>.ValueCollection valueCollection = PackageMetadataLoader.Configurations.Values;
+			return valueCollection.Select(o => o.Content);
 		}
 	}
 }

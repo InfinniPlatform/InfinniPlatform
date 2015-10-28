@@ -52,7 +52,7 @@ namespace InfinniPlatform.UserInterface.Configurations
 				return ReadObject(resource);
 			}
 
-			var configPath = AppSettings.GetValue("ContentDirectory", "..\\Assemblies\\content");
+			var configPath = AppSettings.GetValue("ContentDirectory", Path.Combine("..", "Assemblies", "content"));
 
 			var filePath = Path.Combine(configPath, "Documents", documentId, "Views", string.Format("{0}.json", viewId));
 

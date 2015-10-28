@@ -49,14 +49,15 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
 
 			//TODO Wrapper for PackageMetadataLoader.Configurations
-			if (PackageMetadataLoader.Configurations[_configId].Documents[_documentId].Views.ContainsKey(item.Name))
+			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+			if (configuration.Documents[_documentId].Views.ContainsKey(item.Name))
 			{
-				dynamic oldView = PackageMetadataLoader.Configurations[_configId].Documents[_documentId].Views[item.Name];
+				dynamic oldView = configuration.Documents[_documentId].Views[item.Name];
 				filePath = oldView.FilePath;
 			}
 			else
 			{
-				filePath = Path.Combine(Path.GetDirectoryName(PackageMetadataLoader.Configurations[_configId].FilePath),
+				filePath = Path.Combine(Path.GetDirectoryName(configuration.FilePath),
 										"Documents",
 										_documentId,
 										"Views",
@@ -70,7 +71,8 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		public override void DeleteItem(string itemId)
 		{
-			dynamic document = PackageMetadataLoader.Configurations[_configId].Documents[_documentId].Views[itemId];
+			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+			dynamic document = configuration.Documents[_documentId].Views[itemId];
 
 			File.Delete(document.FilePath);
 
@@ -79,16 +81,14 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		public override object GetItem(string itemId)
 		{
-			Dictionary<string, dynamic> documents = PackageMetadataLoader.Configurations[_configId].Documents;
-			var views = documents[_documentId].Views;
-			var view = views[itemId];
-			return view.Content;
+			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+			return configuration.Documents[_documentId].Views[itemId].Content;
 		}
 
 		public override IEnumerable<object> GetItems()
 		{
-			Dictionary<string, dynamic> documents = PackageMetadataLoader.Configurations[_configId].Documents;
-			Dictionary<string, dynamic> views = documents[_documentId].Views;
+			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+			Dictionary<string, dynamic> views = configuration.Documents[_documentId].Views;
 			return views.Values.Select(o => o.Content);
 		}
 	}
