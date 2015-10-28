@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
-using InfinniPlatform.Sdk.Api;
-using InfinniPlatform.Sdk.Environment.Settings;
+using InfinniPlatform.Api.Serialization;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {
@@ -14,11 +16,9 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			: base(version, server, port, route)
 		{
 			_configId = configId;
-			_metadataApi = new InfinniMetadataApi(server, port.ToString(), route);
 		}
 
-		readonly string _configId;
-		readonly InfinniMetadataApi _metadataApi;
+		private readonly string _configId;
 
 		public string ConfigId
 		{
@@ -27,29 +27,55 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		public override object CreateItem()
 		{
-			return _metadataApi.CreateMenu(Version, ConfigId);
+			return new DynamicWrapper();
 		}
 
 		public override void ReplaceItem(dynamic item)
 		{
-			_metadataApi.UpdateMenu(item, Version, ConfigId);
+			string filePath;
+			var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
+
+			//TODO Wrapper for PackageMetadataLoader.Configurations
+			if (PackageMetadataLoader.Configurations[_configId].Menu.ContainsKey(item.Name))
+			{
+				dynamic oldMenu = PackageMetadataLoader.Configurations[_configId].Documents[item.Name];
+				filePath = oldMenu.FilePath;
+			}
+			else
+			{
+				string directoryPath = Path.Combine(Path.GetDirectoryName(PackageMetadataLoader.Configurations[_configId].FilePath), "Menu", item.Name);
+				Directory.CreateDirectory(directoryPath);
+
+				filePath = Path.Combine(directoryPath, string.Concat(item.Name, ".json"));
+			}
+
+			File.WriteAllBytes(filePath, serializedItem);
+
+			PackageMetadataLoader.UpdateCache();
 		}
 
 		public override void DeleteItem(string itemId)
 		{
-			_metadataApi.DeleteMenu(Version, ConfigId, itemId);
+			dynamic menu = PackageMetadataLoader.Configurations[_configId].Menu[itemId];
+
+			var menuDirectory = Path.GetDirectoryName(menu.FilePath);
+
+			if (menuDirectory != null)
+			{
+				Directory.Delete(menuDirectory, true);
+				PackageMetadataLoader.UpdateCache();
+			}
 		}
 
 		public override object GetItem(string itemId)
 		{
-			var contentDirectory = AppSettings.GetValue("ContentDirectory", "..\\Assemblies\\content");
-
-			return PackageMetadataLoader.LoadDocumentMetadata(ConfigId, contentDirectory);
+			return PackageMetadataLoader.Configurations[_configId].Menu[itemId].Content;
 		}
 
 		public override IEnumerable<object> GetItems()
 		{
-			return PackageMetadataLoader.LoadDocumentsMetadata(ConfigId, 1).Values;
+			Dictionary<string, dynamic> documents = PackageMetadataLoader.Configurations[_configId].Menu;
+			return documents.Values.Select(o => o.Content);
 		}
 	}
 }
