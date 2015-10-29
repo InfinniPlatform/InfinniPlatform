@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices.ComTypes;
 
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Hosting;
@@ -69,7 +71,11 @@ namespace InfinniPlatform.SystemConfig.Initializers
 
             if (!indexApi.IndexExists(configId, documentId))
             {
-                Logger.Log.Info("Create index for {0}.{1}", configId, documentId);
+                Logger.Log.Info("Creating index.", new Dictionary<string, object>
+                                                   {
+                                                       { "configurationId", configId },
+                                                       { "documentId", documentId },
+                                                   });
 
                 indexApi.RebuildIndex(configId, documentId);
             }
@@ -89,7 +95,11 @@ namespace InfinniPlatform.SystemConfig.Initializers
 
             if (!versionBuilder.VersionExists())
             {
-                Logger.Log.Info("Create index for {0}.{1}", configId, documentId);
+                Logger.Log.Info("Creating index.", new Dictionary<string, object>
+                                                   {
+                                                       { "configurationId", configId },
+                                                       { "documentId", documentId },
+                                                   });
 
                 versionBuilder.CreateVersion();
             }

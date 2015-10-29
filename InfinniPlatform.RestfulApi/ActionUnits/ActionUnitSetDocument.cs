@@ -1,12 +1,17 @@
 ﻿using System;
+
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
+
 using System.Collections.Generic;
 using System.Linq;
+
+using InfinniPlatform.Logging;
 using InfinniPlatform.RestfulApi.Utils;
+using InfinniPlatform.Sdk.Environment.Log;
 
 namespace InfinniPlatform.RestfulApi.ActionUnits
 {
@@ -21,7 +26,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             dynamic documentProvider =
                 target.Context.GetComponent<InprocessDocumentComponent>()
                       .GetDocumentProvider(version, target.Item.Configuration, target.Item.Metadata,
-                                           target.UserName);
+                          target.UserName);
 
             dynamic instanceId = null;
             if (documentProvider != null)
@@ -31,9 +36,9 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                 _metadataComponent = target.Context.GetComponent<IMetadataComponent>();
 
                 IEnumerable<dynamic> result = _metadataComponent.GetMetadataList(version,
-                                                                                 target.Item.Configuration,
-                                                                                 target.Item.Metadata,
-                                                                                 MetadataType.Schema);
+                    target.Item.Configuration,
+                    target.Item.Metadata,
+                    MetadataType.Schema);
 
                 dynamic documentSchema = result.FirstOrDefault();
 
@@ -43,7 +48,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                 if (target.Item.Document != null)
                 {
                     target.Item.Document = AdjustDocumentContent(version, target.Item.Document, documentSchema,
-                                                                 allowNonSchemaProperties);
+                        allowNonSchemaProperties);
 
                     instanceId = target.Item.Document.Id;
                 }
@@ -54,7 +59,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                     foreach (var document in target.Item.Documents)
                     {
                         adjustedDocs.Add(AdjustDocumentContent(version, document, documentSchema,
-                                                               allowNonSchemaProperties));
+                            allowNonSchemaProperties));
                     }
 
                     target.Item.Documents = adjustedDocs.ToArray();
@@ -71,9 +76,16 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
                 return;
             }
-            target.Context.GetComponent<ILogComponent>()
-                  .GetLog()
-                  .Error("document \"{0}\" type \"{1}\" not exists", target.Item.Configuration, target.Item.Metadata);
+
+
+            var log = target.Context.GetComponent<ILogComponent>().GetLog();
+
+            log.Warn("Document type does not exist.", new Dictionary<string, object>
+                                                      {
+                                                          { "configuration", target.Item.Configuration },
+                                                          { "type", target.Item.Metadata },
+                                                      });
+
             // throw new ArgumentException(string.Format("document \"{0}\" type \"{1}\" not exists", target.Item.Configuration, target.Item.Metadata));
         }
 
@@ -104,7 +116,9 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
         private static dynamic RemoveInappropriateProperties(string version, dynamic document, dynamic schema)
         {
             if (document == null)
+            {
                 return null;
+            }
 
             var propertyNamesToRemove = new List<string>();
             var propertiesToModify = new Dictionary<string, dynamic>();
@@ -120,7 +134,6 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                 }
 
                 dynamic propertyMetadata = schema.Properties[documentProperty.Key];
- 
 
 
                 if (propertyMetadata == null)
@@ -131,12 +144,9 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                 {
                     if (propertyMetadata.Type == "Object")
                     {
-                    propertiesToModify.Add(
+                        propertiesToModify.Add(
                             documentProperty.Key,
-                            ProcessInnerObjectProperties(version,propertyMetadata.TypeInfo, documentProperty));
-
-
-
+                            ProcessInnerObjectProperties(version, propertyMetadata.TypeInfo, documentProperty));
                     }
                     else if (propertyMetadata.Type == "Array")
                     {
@@ -148,7 +158,6 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                         propertiesToModify.Add(
                             documentProperty.Key,
                             ProcessInnerArrayProperties(version, propertyMetadata.Items.TypeInfo, documentProperty));
-
                     }
                 }
             }
@@ -170,7 +179,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
         ///     Обработка вложенных свойств объектов
         /// </summary>
         private static dynamic ProcessInnerObjectProperties(string version, dynamic propertyTypeInfo, dynamic documentProperty)
-                                                       
+
         {
             dynamic result = documentProperty.Value;
 
@@ -187,10 +196,10 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                     if (propertyTypeInfo.DocumentLink.ConfigId != null &&
                         propertyTypeInfo.DocumentLink.DocumentId != null)
                     {
-                    IEnumerable<dynamic> metadataList = _metadataComponent.GetMetadataList(version,
+                        IEnumerable<dynamic> metadataList = _metadataComponent.GetMetadataList(version,
                             propertyTypeInfo.DocumentLink.ConfigId,
                             propertyTypeInfo.DocumentLink.DocumentId,
-                              MetadataType.Schema);
+                            MetadataType.Schema);
 
                         documentSchema = metadataList.FirstOrDefault();
                     }
@@ -227,7 +236,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
         ///     Обработка вложенных свойств массивов
         /// </summary>
         private static IEnumerable<dynamic> ProcessInnerArrayProperties(string version, dynamic propertyTypeInfo,
-            dynamic documentProperty)
+                                                                        dynamic documentProperty)
         {
             var handledItems = new List<dynamic>();
 
@@ -305,7 +314,5 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                 instanceToHandle[propertyName] = null;
             }
         }
-
-
     }
 }

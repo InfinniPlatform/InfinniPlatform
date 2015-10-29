@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+
 using InfinniPlatform.Logging;
+using InfinniPlatform.Sdk.Environment.Log;
 using InfinniPlatform.Sdk.Events;
+
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Json.EventBuilders
@@ -20,7 +24,11 @@ namespace InfinniPlatform.Json.EventBuilders
 
             if (objectToRemove == null)
             {
-                Logger.Log.Error("object to remove not found: \"{0}\"", eventDefinition.Property);
+                Logger.Log.Warn("Object to remove is not found.", new Dictionary<string, object>
+                                                                                {
+                                                                                    { "object", eventDefinition.Property },
+                                                                                });
+
                 return;
             }
 

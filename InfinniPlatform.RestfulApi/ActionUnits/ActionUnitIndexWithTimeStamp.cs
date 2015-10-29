@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.Api.RestApi.Auth;
+﻿using System.Collections.Generic;
+
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.RestfulApi.Extensions;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
@@ -18,9 +20,13 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                                                        AuthorizationStorageExtensions.AnonimousUser);
             target.Context.GetComponent<ILogComponent>()
                   .GetLog()
-                  .Info("insert \"{0}\" document to index \"{1}\" (type: \"{2}\") with timestamp \"{3}\" ",
-                        target.Item.ToString(),
-                        target.Item.Configuration, target.Item.Metadata, target.Item.TimeStamp);
+                  .Info("Document inserted.", new Dictionary<string, object>
+                                              {
+                                                  { "document", target.Item.ToString() },
+                                                  { "configurationId", target.Item.Configuration },
+                                                  { "type", target.Item.Metadata },
+                                                  { "timestamp", target.Item.TimeStamp },
+                                              });
         }
     }
 }

@@ -20,25 +20,25 @@ namespace InfinniPlatform.Logging
 		static Log4NetLogFactory()
 		{
 			GlobalContext.Properties["pid"] = Process.GetCurrentProcess().Id;
+
+            var logConfiguration = GetLogConfigFile();
+
+            if (logConfiguration.Exists)
+            {
+                XmlConfigurator.Configure(logConfiguration);
+            }
+            else
+            {
+                XmlConfigurator.Configure();
+            }
 		}
 
 		/// <summary>
 		/// Создает <see cref="Sdk.Environment.Log.ILog" />.
 		/// </summary>
-		public ILog CreateLog()
+		public ILog CreateLog(string name)
 		{
-			var logConfiguration = GetLogConfigFile();
-
-			if (logConfiguration.Exists)
-			{
-				XmlConfigurator.Configure(logConfiguration);
-			}
-			else
-			{
-				XmlConfigurator.Configure();
-			}
-
-			return new Log4NetLog(LogManager.GetLogger("Log4Net"));
+			return new Log4NetLog(LogManager.GetLogger(name));
 		}
 
 		/// <summary>

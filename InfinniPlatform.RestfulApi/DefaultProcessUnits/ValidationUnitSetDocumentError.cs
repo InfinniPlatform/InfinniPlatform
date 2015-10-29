@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Properties;
@@ -7,6 +9,7 @@ using InfinniPlatform.Logging;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Log;
 using InfinniPlatform.Sdk.Environment.Metadata;
 using InfinniPlatform.Sdk.Environment.Validations;
 using InfinniPlatform.Sdk.Global;
@@ -33,7 +36,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                 defaultBusinessProcess =
                     target.Context.GetComponent<IMetadataComponent>()
                           .GetMetadata(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration, target.Item.Metadata,
-                                       MetadataType.Process, "Default");
+                              MetadataType.Process, "Default");
             }
 
             if (defaultBusinessProcess == null || defaultBusinessProcess.Transitions.Count == 0)
@@ -49,8 +52,8 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                 var validationOperator =
                     target.Context.GetComponent<IMetadataComponent>()
                           .GetMetadata(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration, target.Item.Metadata,
-                                       MetadataType.ValidationError,
-                                       (string) defaultBusinessProcess.Transitions[0].ValidationRuleError)
+                              MetadataType.ValidationError,
+                              (string)defaultBusinessProcess.Transitions[0].ValidationRuleError)
                           .ValidationOperator;
                 IValidationOperator op = ValidationExtensions.CreateValidatorFromConfigValidator(validationOperator);
                 op.Validate(target.Item.Document, validationResult);
@@ -64,14 +67,16 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                     target.Context.GetComponent<IConfigurationMediatorComponent>().ConfigurationBuilder;
 
                 IConfigurationObject configurationObject = configBuilder.GetConfigurationObject(target.Context.GetVersion(target.Item.Configuration, target.UserName),
-                                                                                                target.Item
-                                                                                                      .Configuration);
+                    target.Item
+                          .Configuration);
 
                 if (configurationObject == null)
                 {
-                    Logger.Log.Error(string.Format(Resources.ConfigurationReferencedInObjectNotFound,
-                                                   target.Item.Configuration,
-                                                   "DefaultBusinessProcess"));
+                    Logger.Log.Error(Resources.ConfigurationReferencedInObjectNotFound, new Dictionary<string, object>
+                                                                                        {
+                                                                                            { "configuration", target.Item.Configuration },
+                                                                                            { "object", "DefaultBusinessProcess" },
+                                                                                        });
                 }
                 else
                 {
@@ -94,7 +99,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                         if (context.ValidationMessage != null)
                         {
                             if (context.ValidationMessage is IEnumerable &&
-                                context.ValidationMessage.GetType() != typeof (string))
+                                context.ValidationMessage.GetType() != typeof(string))
                             {
                                 validationResult.Items.AddRange(context.ValidationMessage);
                             }

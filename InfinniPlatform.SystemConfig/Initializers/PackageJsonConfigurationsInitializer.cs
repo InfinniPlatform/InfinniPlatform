@@ -8,6 +8,7 @@ using InfinniPlatform.Hosting;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Log;
 using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.WebApi.Factories;
 
@@ -50,7 +51,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
 					}
 					catch (Exception e)
 					{
-						Logger.Log.Error("Error during metadata update.", e);
+					    Logger.Log.Error("Error during metadata update.", null, e);
 					}
 				}
 			};

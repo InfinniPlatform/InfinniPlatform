@@ -3,184 +3,189 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Remoting.Messaging;
 
 using InfinniPlatform.Logging;
 using InfinniPlatform.Runtime.Properties;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Log;
 using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.Runtime.Implementation.AssemblyDispatch
 {
-	/// <summary>
-	/// Загрузчик версий конфигурационных объектов.
-	/// </summary>
-	[Obsolete]
-	public class AssemblyVersionLoader : IVersionLoader
-	{
-		private readonly IConfigurationObjectBuilder _configurationObjectBuilder;
+    /// <summary>
+    /// Загрузчик версий конфигурационных объектов.
+    /// </summary>
+    [Obsolete]
+    public class AssemblyVersionLoader : IVersionLoader
+    {
+        private readonly IConfigurationObjectBuilder _configurationObjectBuilder;
 
-		public AssemblyVersionLoader(IConfigurationObjectBuilder configurationObjectBuilder)
-		{
-			_configurationObjectBuilder = configurationObjectBuilder;
-		}
-
-
-		private static bool IsSystemConfig(string configurationId)
-		{
-			if (string.Equals(configurationId, "systemconfig", StringComparison.OrdinalIgnoreCase)
-				|| string.Equals(configurationId, "restfulapi", StringComparison.OrdinalIgnoreCase)
-				|| string.Equals(configurationId, "update", StringComparison.OrdinalIgnoreCase))
-			{
-				return true;
-			}
-
-			return false;
-		}
-
-		private IEnumerable<dynamic> LoadVersions(string version, string configurationId)
-		{
-			//функционал всех версий конфигурации 'update' одинаков, можно не указывать версию
-			var configurationObject = _configurationObjectBuilder.GetConfigurationObject(null, "update");
-			var packageProvider = configurationObject.GetDocumentProvider("package", version, null);
-
-			// если индекс не существует, конфигурация еще не развернута
-			if (packageProvider == null)
-			{
-				return new List<dynamic>();
-			}
-
-			dynamic criteria = new DynamicWrapper();
-			criteria.Property = "ConfigurationName";
-			criteria.Value = configurationId;
-			criteria.CriteriaType = CriteriaType.IsEquals;
-
-			dynamic criteriaVersion = new DynamicWrapper();
-			criteriaVersion.Property = "Version";
-			criteriaVersion.Value = version;
-			criteriaVersion.CriteriaType = CriteriaType.IsEquals;
+        public AssemblyVersionLoader(IConfigurationObjectBuilder configurationObjectBuilder)
+        {
+            _configurationObjectBuilder = configurationObjectBuilder;
+        }
 
 
-			// получаем актуальные версии сохраненных сборок конфигурации
-			IEnumerable<dynamic> searchResult = DynamicWrapperExtensions.ToEnumerable(packageProvider.GetDocument(new[] { criteria, criteriaVersion }, 0, 10000));
+        private static bool IsSystemConfig(string configurationId)
+        {
+            if (string.Equals(configurationId, "systemconfig", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(configurationId, "restfulapi", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(configurationId, "update", StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
 
-			var blobStorage = configurationObject.GetBlobStorage();
+            return false;
+        }
 
-			foreach (var document in searchResult)
-			{
-				// если системная конфигурация, загружаем ее из текущей папки сервера
-				if (IsSystemConfig(configurationId))
-				{
-					var assemblyFile = Directory.GetFiles(Directory.GetCurrentDirectory()).FirstOrDefault(f => string.Equals(Path.GetFileName(f), document.ModuleId, StringComparison.OrdinalIgnoreCase));
+        private IEnumerable<dynamic> LoadVersions(string version, string configurationId)
+        {
+            //функционал всех версий конфигурации 'update' одинаков, можно не указывать версию
+            var configurationObject = _configurationObjectBuilder.GetConfigurationObject(null, "update");
+            var packageProvider = configurationObject.GetDocumentProvider("package", version, null);
 
-					if (assemblyFile != null)
-					{
-						document.Assembly = File.ReadAllBytes(assemblyFile);
-						continue;
-					}
+            // если индекс не существует, конфигурация еще не развернута
+            if (packageProvider == null)
+            {
+                return new List<dynamic>();
+            }
 
-					throw new ArgumentException(string.Format("System metadata assembly: {0} not found. Current location: {1}", configurationId, Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)));
-				}
+            dynamic criteria = new DynamicWrapper();
+            criteria.Property = "ConfigurationName";
+            criteria.Value = configurationId;
+            criteria.CriteriaType = CriteriaType.IsEquals;
 
-				if (document.ContentId == null)
-				{
-					throw new ArgumentException(string.Format(Resources.AssemblyMetadataNotFound, document.ModuleId));
-				}
+            dynamic criteriaVersion = new DynamicWrapper();
+            criteriaVersion.Property = "Version";
+            criteriaVersion.Value = version;
+            criteriaVersion.CriteriaType = CriteriaType.IsEquals;
 
-				var documentAssembly = blobStorage.GetBlobData(new Guid(document.ContentId));
 
-				if (documentAssembly != null)
-				{
-					document.Assembly = documentAssembly.Data;
-				}
+            // получаем актуальные версии сохраненных сборок конфигурации
+            IEnumerable<dynamic> searchResult = DynamicWrapperExtensions.ToEnumerable(packageProvider.GetDocument(new[] { criteria, criteriaVersion }, 0, 10000));
 
-				if (document.Assembly == null)
-				{
-					Logger.Log.Info("Assembly content not found: {0}", document.ModuleId);
-				}
+            var blobStorage = configurationObject.GetBlobStorage();
 
-				if (document.PdbId != null)
-				{
-					var documentPdb = blobStorage.GetBlobData(new Guid(document.PdbId));
+            foreach (var document in searchResult)
+            {
+                // если системная конфигурация, загружаем ее из текущей папки сервера
+                if (IsSystemConfig(configurationId))
+                {
+                    var assemblyFile = Directory.GetFiles(Directory.GetCurrentDirectory()).FirstOrDefault(f => string.Equals(Path.GetFileName(f), document.ModuleId, StringComparison.OrdinalIgnoreCase));
 
-					if (documentPdb != null)
-					{
-						document.Pdb = documentPdb.Data;
-					}
-				}
-			}
+                    if (assemblyFile != null)
+                    {
+                        document.Assembly = File.ReadAllBytes(assemblyFile);
+                        continue;
+                    }
 
-			return searchResult;
-		}
+                    throw new ArgumentException(string.Format("System metadata assembly: {0} not found. Current location: {1}", configurationId, Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)));
+                }
 
-		private IMethodInvokationCacheList RefreshInvokationCache(string version, string metadataConfigurationId, IMethodInvokationCacheList invokationCacheList)
-		{
-			const string assemblyVersionPath = "AssemblyVersion";
+                if (document.ContentId == null)
+                {
+                    throw new ArgumentException(string.Format(Resources.AssemblyMetadataNotFound, document.ModuleId));
+                }
 
-			var versionAssemblies = LoadVersions(version, metadataConfigurationId).ToList();
+                var documentAssembly = blobStorage.GetBlobData(new Guid(document.ContentId));
 
-			foreach (var configurationVersion in versionAssemblies)
-			{
-				var assemblyResult = new List<Assembly>();
+                if (documentAssembly != null)
+                {
+                    document.Assembly = documentAssembly.Data;
+                }
 
-				var directory = Directory.CreateDirectory(Path.Combine(assemblyVersionPath, string.Format("{0}_{1}", configurationVersion.Version, DateTime.Now.ToString("yyyyMMddHHmmss")))).FullName;
+                if (document.Assembly == null)
+                {
+                    Logger.Log.Info("Assembly content not found.", new Dictionary<string, object>
+                                                                   {
+                                                                       { "moduleId", document.ModuleId }
+                                                                   });
+                }
 
-				if (configurationVersion.Assembly != null)
-				{
-					LoadAppliedAssemblies(directory, configurationVersion, assemblyResult);
+                if (document.PdbId != null)
+                {
+                    var documentPdb = blobStorage.GetBlobData(new Guid(document.PdbId));
 
-					IMethodInvokationCache cacheExisting = invokationCacheList.GetCache(configurationVersion.Version, false);
+                    if (documentPdb != null)
+                    {
+                        document.Pdb = documentPdb.Data;
+                    }
+                }
+            }
 
-					if (cacheExisting == null)
-					{
-						invokationCacheList.AddCache(new MethodInvokationCache(configurationVersion.Version,
-																				 configurationVersion.TimeStamp,
-																				 assemblyResult));
-					}
-					else
-					{
-						cacheExisting.AddVersionAssembly(assemblyResult);
-					}
-				}
-			}
+            return searchResult;
+        }
 
-			return invokationCacheList;
-		}
+        private IMethodInvokationCacheList RefreshInvokationCache(string version, string metadataConfigurationId, IMethodInvokationCacheList invokationCacheList)
+        {
+            const string assemblyVersionPath = "AssemblyVersion";
 
-		public IMethodInvokationCacheList ConstructInvokationCache(string version, string metadataConfigurationId)
-		{
-			return RefreshInvokationCache(version, metadataConfigurationId, new MethodInvokationCacheList());
-		}
+            var versionAssemblies = LoadVersions(version, metadataConfigurationId).ToList();
 
-		public void UpdateInvokationCache(string version, string metadataConfigurationId, IMethodInvokationCacheList versionCacheList)
-		{
-			RefreshInvokationCache(version, metadataConfigurationId, versionCacheList);
-		}
+            foreach (var configurationVersion in versionAssemblies)
+            {
+                var assemblyResult = new List<Assembly>();
 
-		private static void LoadAppliedAssemblies(dynamic directory, dynamic configurationVersion, List<Assembly> assemblyResult)
-		{
-			var assemblyLocation = Path.Combine(directory, configurationVersion.ModuleId);
-			var pdbLocation = Path.Combine(directory, Path.GetFileNameWithoutExtension(configurationVersion.ModuleId) + ".pdb");
+                var directory = Directory.CreateDirectory(Path.Combine(assemblyVersionPath, string.Format("{0}_{1}", configurationVersion.Version, DateTime.Now.ToString("yyyyMMddHHmmss")))).FullName;
 
-			try
-			{
-				File.WriteAllBytes(assemblyLocation, configurationVersion.Assembly);
+                if (configurationVersion.Assembly != null)
+                {
+                    LoadAppliedAssemblies(directory, configurationVersion, assemblyResult);
 
-				if (configurationVersion.Pdb != null)
-				{
-					File.WriteAllBytes(pdbLocation, configurationVersion.Pdb);
-				}
-			}
-			catch (Exception)
-			{
-				throw new ArgumentException(string.Format("Cannot write file in location: {0}.", assemblyLocation));
-			}
+                    IMethodInvokationCache cacheExisting = invokationCacheList.GetCache(configurationVersion.Version, false);
 
-			// Желательно загрузить еще pdb file, чтобы в случае возникновения исключения получить информацию о строке,
-			// в которой это исключение произошло
-			assemblyResult.Add(configurationVersion.Pdb == null
-				? Assembly.Load(File.ReadAllBytes(assemblyLocation))
-				: Assembly.Load(File.ReadAllBytes(assemblyLocation), File.ReadAllBytes(pdbLocation)));
-		}
-	}
+                    if (cacheExisting == null)
+                    {
+                        invokationCacheList.AddCache(new MethodInvokationCache(configurationVersion.Version,
+                            configurationVersion.TimeStamp,
+                            assemblyResult));
+                    }
+                    else
+                    {
+                        cacheExisting.AddVersionAssembly(assemblyResult);
+                    }
+                }
+            }
+
+            return invokationCacheList;
+        }
+
+        public IMethodInvokationCacheList ConstructInvokationCache(string version, string metadataConfigurationId)
+        {
+            return RefreshInvokationCache(version, metadataConfigurationId, new MethodInvokationCacheList());
+        }
+
+        public void UpdateInvokationCache(string version, string metadataConfigurationId, IMethodInvokationCacheList versionCacheList)
+        {
+            RefreshInvokationCache(version, metadataConfigurationId, versionCacheList);
+        }
+
+        private static void LoadAppliedAssemblies(dynamic directory, dynamic configurationVersion, List<Assembly> assemblyResult)
+        {
+            var assemblyLocation = Path.Combine(directory, configurationVersion.ModuleId);
+            var pdbLocation = Path.Combine(directory, Path.GetFileNameWithoutExtension(configurationVersion.ModuleId) + ".pdb");
+
+            try
+            {
+                File.WriteAllBytes(assemblyLocation, configurationVersion.Assembly);
+
+                if (configurationVersion.Pdb != null)
+                {
+                    File.WriteAllBytes(pdbLocation, configurationVersion.Pdb);
+                }
+            }
+            catch (Exception)
+            {
+                throw new ArgumentException(string.Format("Cannot write file in location: {0}.", assemblyLocation));
+            }
+
+            // Желательно загрузить еще pdb file, чтобы в случае возникновения исключения получить информацию о строке,
+            // в которой это исключение произошло
+            assemblyResult.Add(configurationVersion.Pdb == null
+                ? Assembly.Load(File.ReadAllBytes(assemblyLocation))
+                : Assembly.Load(File.ReadAllBytes(assemblyLocation), File.ReadAllBytes(pdbLocation)));
+        }
+    }
 }

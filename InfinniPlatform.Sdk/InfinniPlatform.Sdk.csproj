@@ -78,6 +78,9 @@
     <Compile Include="ContextComponents\ISharedCacheComponent.cs" />
     <Compile Include="Environment\Actions\IActionOperator.cs" />
     <Compile Include="Environment\Actions\IActionOperatorBuilder.cs" />
+    <Compile Include="Environment\Log\ExceptionExtensions.cs" />
+    <Compile Include="Environment\Log\IPerformanceLog.cs" />
+    <Compile Include="Environment\Log\JsonEvent.cs" />
     <Compile Include="Environment\Register\RegisterConstants.cs" />
     <Compile Include="Environment\Register\RegisterEntryType.cs" />
     <Compile Include="Environment\Settings\AppSettings.cs" />
