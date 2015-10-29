@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
-using InfinniPlatform.Api.Deprecated;
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Sdk.Api;
-using InfinniPlatform.Sdk.Metadata;
+using System.IO;
+using System.Linq;
+
+using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Api.Serialization;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {
@@ -16,13 +15,11 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
     internal sealed class AssemblyMetadataService : BaseMetadataService
     {
         private readonly string _configId;
-        private InfinniMetadataApi _metadataApi;
-
+        
         public AssemblyMetadataService(string version, string configId, string server, int port, string route)
             : base(version, server, port, route)
         {
             _configId = configId;
-            _metadataApi = new InfinniMetadataApi(server, port.ToString(),route);
         }
 
         public string ConfigId
@@ -33,27 +30,64 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
         public override object CreateItem()
         {
-            return _metadataApi.CreateAssembly(Version, ConfigId);
+			dynamic assembly = new DynamicWrapper();
+
+			assembly.Id = Guid.NewGuid().ToString();
+			assembly.Name = string.Empty;
+			assembly.Caption = string.Empty;
+			assembly.Description = string.Empty;
+
+	        return assembly;
         }
 
         public override void ReplaceItem(dynamic item)
         {
-            _metadataApi.UpdateAssembly(item,Version,ConfigId);
+			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+			IEnumerable<object> assemblies = configuration.Content.Assemblies;
+
+	        var newAssembliesList = new List<object>(assemblies) { item };
+
+	        configuration.Content.Assemblies = newAssembliesList;
+
+			var filePath = configuration.FilePath;
+
+			var serializedItem = JsonObjectSerializer.Formated.Serialize(configuration.Content);
+
+			File.WriteAllBytes(filePath, serializedItem);
+
+			PackageMetadataLoader.UpdateCache();
         }
 
-        public override void DeleteItem(string itemId)
-        {
-            _metadataApi.DeleteAssembly(Version, ConfigId, itemId);
-        }
+	    public override void DeleteItem(string itemId)
+	    {
+		    dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+		    IEnumerable<dynamic> assemblies = configuration.Content.Assemblies;
+
+		    var newAssembliesList = assemblies.Where(assembly => assembly.Name != itemId)
+											  .ToArray();
+
+		    configuration.Content.Assemblies = newAssembliesList;
+
+		    var filePath = configuration.FilePath;
+
+		    var serializedItem = JsonObjectSerializer.Formated.Serialize(configuration.Content);
+
+		    File.WriteAllBytes(filePath, serializedItem);
+
+		    PackageMetadataLoader.UpdateCache();
+	    }
 
         public override object GetItem(string itemId)
         {
-            return _metadataApi.GetAssembly(Version, ConfigId, itemId);
+	        dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+	        IEnumerable<dynamic> assemblies = configuration.Content.Assemblies;
+	        return assemblies.FirstOrDefault(assembly => assembly.Name == itemId);
         }
 
         public override IEnumerable<object> GetItems()
         {
-            return _metadataApi.GetAssemblyList(Version, ConfigId);
+			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+			return configuration.Content.Assemblies;
         }
     }
 }
