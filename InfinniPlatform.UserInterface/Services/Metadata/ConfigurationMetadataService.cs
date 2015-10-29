@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
+using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Settings;

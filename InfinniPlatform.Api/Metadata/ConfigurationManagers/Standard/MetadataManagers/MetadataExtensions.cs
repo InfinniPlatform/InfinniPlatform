@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using InfinniPlatform.Api.RestApi.CommonApi;
+﻿using System.Linq;
 
 namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers
 {
@@ -9,17 +7,6 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
     /// </summary>
     public static class MetadataExtensions
     {
-        /// <summary>
-        ///     Получить доступные типы сервисов
-        /// </summary>
-        /// <returns></returns>
-        public static IEnumerable<dynamic> GetServiceTypeMetadata()
-        {
-            return
-                RestQueryApi.QueryGetRaw("SystemConfig", "metadata", "getservicemetadata", null, 0, 1000)
-                    .ToDynamicList();
-        }
-
         /// <summary>
         ///     Получить сохраненные метаданные для указанного объекта метаданных
         /// </summary>

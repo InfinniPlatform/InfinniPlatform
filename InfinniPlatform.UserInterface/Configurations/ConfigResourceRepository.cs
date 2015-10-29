@@ -46,19 +46,8 @@ namespace InfinniPlatform.UserInterface.Configurations
 
 		public static object GetView(string configId, string documentId, string viewId)
 		{
-			if (configId == "Designer")
-			{
-				var resource = string.Format(@"{0}.Configurations.{1}.Documents.{2}.{3}.resjson", Assembly.GetName().Name, configId, documentId, viewId);
-				return ReadObject(resource);
-			}
-
-			var configPath = AppSettings.GetValue("ContentDirectory", Path.Combine("..", "Assemblies", "content"));
-
-			var filePath = Path.Combine(configPath, "Documents", documentId, "Views", string.Format("{0}.json", viewId));
-
-			var loadItemMetadata = PackageMetadataLoader.LoadItemMetadata(filePath);
-
-			return loadItemMetadata;
+			var resource = string.Format(@"{0}.Configurations.{1}.Documents.{2}.{3}.resjson", Assembly.GetName().Name, configId, documentId, viewId);
+			return ReadObject(resource);
 		}
 
 		static object ReadObject(string resource)

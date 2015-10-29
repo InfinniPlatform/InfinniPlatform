@@ -94,7 +94,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 			var discovery = new AssemblyDiscovery();
 			process.StartOperation(() =>
 			{
-				discoverResult = discovery.DiscoverAppliedAssemblies(Version(), ConfigId());
+				discoverResult = discovery.DiscoverAppliedAssemblies(ConfigId());
 			});
 			process.EndOperation();
 			if (!discoverResult)

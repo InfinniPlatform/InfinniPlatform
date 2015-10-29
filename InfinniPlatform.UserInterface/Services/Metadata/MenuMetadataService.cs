@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 
+using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
 

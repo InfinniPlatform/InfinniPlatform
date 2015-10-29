@@ -1,7 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
-using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Api.Serialization;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {
@@ -15,12 +19,10 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 		{
 			_configId = configId;
 			_documentId = documentId;
-			_metadataApi = new InfinniMetadataApi(server, port.ToString(), route);
 		}
 
 		private readonly string _configId;
 		private readonly string _documentId;
-		private readonly InfinniMetadataApi _metadataApi;
 
 		public string ConfigId
 		{
@@ -29,17 +31,50 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		public override object CreateItem()
 		{
-			return _metadataApi.CreateService(Version, ConfigId, _documentId);
+			dynamic service = new DynamicWrapper();
+
+			service.Id = Guid.NewGuid().ToString();
+			service.Name = string.Empty;
+			service.Caption = string.Empty;
+			service.Description = string.Empty;
+
+			return service;
 		}
 
 		public override void ReplaceItem(dynamic item)
 		{
-			_metadataApi.UpdateService(item, Version, ConfigId, _documentId);
+			string filePath;
+			var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
+
+			//TODO Wrapper for PackageMetadataLoader.Configurations
+			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+			if (configuration.Documents[_documentId].Services.ContainsKey(item.Name))
+			{
+				dynamic oldServices = configuration.Documents[_documentId].Services[item.Name];
+				filePath = oldServices.FilePath;
+			}
+			else
+			{
+				filePath = Path.Combine(Path.GetDirectoryName(configuration.FilePath),
+										"Documents",
+										_documentId,
+										"Services",
+										string.Concat(item.Name, ".json"));
+			}
+
+			File.WriteAllBytes(filePath, serializedItem);
+
+			PackageMetadataLoader.UpdateCache();
 		}
 
 		public override void DeleteItem(string itemId)
 		{
-			_metadataApi.DeleteService(Version, ConfigId, _documentId, itemId);
+			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+			dynamic process = configuration.Documents[_documentId].Services[itemId];
+
+			File.Delete(process.FilePath);
+
+			PackageMetadataLoader.UpdateCache();
 		}
 
 		public override object GetItem(string itemId)

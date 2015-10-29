@@ -6,23 +6,32 @@ using InfinniPlatform.Api.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Settings;
 
-namespace InfinniPlatform.UserInterface.Services.Metadata
+namespace InfinniPlatform.Api.RestApi.DataApi
 {
+	/// <summary>
+	/// Кэш метаданных для конфигуратора (UserInterface.exe).
+	/// </summary>
 	public class PackageMetadataLoader
 	{
 		private static Dictionary<string, object> _configurations = LoadConfigsMetadata();
 
+		/// <summary>
+		/// Кэш конфигураций.
+		/// </summary>
 		public static Dictionary<string, object> Configurations
 		{
 			get { return _configurations; }
 		}
 
+		/// <summary>
+		/// Обновить кэш конфигураций.
+		/// </summary>
 		public static void UpdateCache()
 		{
 			_configurations = LoadConfigsMetadata();
 		}
 
-		public static Dictionary<string, object> LoadConfigsMetadata()
+		private static Dictionary<string, object> LoadConfigsMetadata()
 		{
 			var contentDirectory = AppSettings.GetValue("ContentDirectory", Path.Combine("..", "Assemblies", "content"));
 
@@ -35,12 +44,12 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 				.SelectMany(Directory.EnumerateDirectories)
 				.Select(LoadConfigMetadata);
 
-			Dictionary<string, object> dictionary = loadConfigsMetadata.ToDictionary(config => (string)config.Content.Name, confog => confog);
+			Dictionary<string, object> dictionary = loadConfigsMetadata.ToDictionary(config => (string)config.Content.Name, config => config);
 
 			return dictionary;
 		}
 
-		public static DynamicWrapper LoadConfigMetadata(string configDirectory)
+		private static DynamicWrapper LoadConfigMetadata(string configDirectory)
 		{
 			var configFile = Path.Combine(configDirectory, "Configuration.json");
 
@@ -56,7 +65,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			return configuration;
 		}
 
-		public static Dictionary<string, object> LoadDocumentsMetadata(string configDirectory, object configId)
+		private static Dictionary<string, object> LoadDocumentsMetadata(string configDirectory, object configId)
 		{
 			var documentsDirectory = Path.Combine(configDirectory, "Documents");
 
@@ -71,7 +80,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			return new Dictionary<string, object>();
 		}
 
-		public static object LoadDocumentMetadata(string documentDirectory, object configId)
+		private static object LoadDocumentMetadata(string documentDirectory, object configId)
 		{
 			var documentFile = Directory.EnumerateFiles(documentDirectory, "*.json").FirstOrDefault();
 
@@ -93,7 +102,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			return document;
 		}
 
-		public static Dictionary<string, object> LoadItemsMetadata(string documentDirectory, string itemsContainer, object configId, object documentId = null)
+		private static Dictionary<string, object> LoadItemsMetadata(string documentDirectory, string itemsContainer, object configId, object documentId = null)
 		{
 			var itemsDirectory = Path.Combine(documentDirectory, itemsContainer);
 
@@ -115,7 +124,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			return new Dictionary<string, object>();
 		}
 
-		public static object LoadItemMetadata(string filePath)
+		private static object LoadItemMetadata(string filePath)
 		{
 			using (var reader = File.OpenRead(filePath))
 			{
