@@ -49,7 +49,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.DocumentSelector
         {
             if (!string.IsNullOrWhiteSpace(configId))
             {
-                var documentService = new DocumentMetadataService(version, configId, _server, _port, _routeVersion);
+                var documentService = new DocumentMetadataService(configId);
                 return documentService.GetItems();
             }
 

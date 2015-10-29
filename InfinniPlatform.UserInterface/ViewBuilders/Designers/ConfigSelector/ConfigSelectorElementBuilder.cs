@@ -43,7 +43,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigSelector
 
 		IEnumerable GetConfigurations()
 		{
-			return new ConfigurationMetadataService(_version, _server, _port, _routeVersion).GetItems();
+			return new ConfigurationMetadataService().GetItems();
 		}
 	}
 }

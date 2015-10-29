@@ -219,7 +219,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigDesigner
                 MessageBox.Show(string.Format(Resources.DocumentDesignerDeleteQuestion, itemText), GetView().GetText(),
                     MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                var dataProvider = new MetadataProvider(metadataType, _server, _port, _routeVersion);
+                var dataProvider = new MetadataProvider(metadataType);
                 dataProvider.SetConfigId(configId);
                 dataProvider.DeleteItem(itemId);
 

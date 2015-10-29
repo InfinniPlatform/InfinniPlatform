@@ -15,11 +15,6 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 	/// </summary>
 	internal sealed class ConfigurationMetadataService : BaseMetadataService
 	{
-		public ConfigurationMetadataService(string version, string server, int port, string route)
-			: base(version, server, port, route)
-		{
-		}
-
 		public override object CreateItem()
 		{
 			dynamic configuration = new DynamicWrapper();

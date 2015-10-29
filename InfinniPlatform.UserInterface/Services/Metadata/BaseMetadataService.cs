@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
-using InfinniPlatform.Api.Metadata;
+
 using InfinniPlatform.UserInterface.Dynamic;
 using InfinniPlatform.UserInterface.Properties;
 
@@ -13,32 +11,6 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
     /// </summary>
     public abstract class BaseMetadataService : IMetadataService 
     {
-        private readonly string _version;
-        private readonly string _server;
-        private readonly int _port;
-        private readonly string _route;
-
-        protected BaseMetadataService(string version, string server, int port, string route)
-        {
-            _version = version;
-            _server = server;
-            _port = port;
-            _route = route;
-        }
-
-        public string Version
-        {
-            get { return _version; }
-        }
-
-        /// <summary>
-        ///   Роутинг-селектор, на который будет замаплен Nginx (например "1.5")
-        /// </summary>
-        public string Route
-        {
-            get { return _route; }
-        }
-
         public abstract object CreateItem();
 
         public abstract void ReplaceItem(dynamic item);

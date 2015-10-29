@@ -14,8 +14,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 	/// </summary>
 	internal sealed class ServiceMetadataService : BaseMetadataService
 	{
-		public ServiceMetadataService(string version, string configId, string documentId, string server, int port, string route)
-			: base(version, server, port, route)
+		public ServiceMetadataService(string configId, string documentId)
 		{
 			_configId = configId;
 			_documentId = documentId;

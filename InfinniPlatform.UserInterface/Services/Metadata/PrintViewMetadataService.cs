@@ -14,8 +14,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 	/// </summary>
 	internal sealed class PrintViewMetadataService : BaseMetadataService
 	{
-		public PrintViewMetadataService(string version, string configId, string documentId, string server, int port, string route)
-			: base(version, server, port, route)
+		public PrintViewMetadataService(string configId, string documentId)
 		{
 			_configId = configId;
 			_documentId = documentId;

@@ -32,7 +32,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.ActionElements.MenuBar
 
         private IEnumerable GetMenuListMetadata(string version, string configId)
         {
-            var menuMetadataService = new MenuMetadataService(version, configId, _server, _port, _routeVersion);
+            var menuMetadataService = new MenuMetadataService(configId);
             return menuMetadataService.GetItems();
         }
 

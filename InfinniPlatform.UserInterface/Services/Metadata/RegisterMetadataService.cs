@@ -13,8 +13,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 	/// </summary>
 	internal sealed class RegisterMetadataService : BaseMetadataService
 	{
-		public RegisterMetadataService(string version, string configId, string server, int port, string route)
-			: base(version, server, port, route)
+		public RegisterMetadataService(string configId)
 		{
 			_configId = configId;
 		}

@@ -223,7 +223,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.DocumentDesigner
                 MessageBox.Show(string.Format(Resources.DocumentDesignerDeleteQuestion, itemText), GetView().GetText(),
                     MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                var dataProvider = new MetadataProvider(metadataType,_server, _port,_routeVersion);
+                var dataProvider = new MetadataProvider(metadataType);
                 dataProvider.SetConfigId(GetConfigIdValue());
                 dataProvider.SetDocumentId(documentId);
                 dataProvider.SetVersion(version);

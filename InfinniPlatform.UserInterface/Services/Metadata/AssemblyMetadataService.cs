@@ -16,8 +16,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
     {
         private readonly string _configId;
         
-        public AssemblyMetadataService(string version, string configId, string server, int port, string route)
-            : base(version, server, port, route)
+        public AssemblyMetadataService(string configId)
         {
             _configId = configId;
         }

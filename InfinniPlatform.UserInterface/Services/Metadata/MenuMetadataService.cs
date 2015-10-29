@@ -13,8 +13,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 	/// </summary>
 	internal sealed class MenuMetadataService : BaseMetadataService
 	{
-		public MenuMetadataService(string version, string configId, string server, int port, string route)
-			: base(version, server, port, route)
+		public MenuMetadataService(string configId)
 		{
 			_configId = configId;
 		}

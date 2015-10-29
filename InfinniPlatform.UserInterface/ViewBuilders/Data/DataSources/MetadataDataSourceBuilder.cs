@@ -18,7 +18,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Data.DataSources
 
         protected override IDataSource CreateDataSource(View parent, dynamic metadata)
         {
-            var metadataProvider = new MetadataProvider(metadata.MetadataType,_server,_port, _routeVersion);
+            var metadataProvider = new MetadataProvider(metadata.MetadataType);
 
             return new DataSource(parent, "Name", metadataProvider);
         }
