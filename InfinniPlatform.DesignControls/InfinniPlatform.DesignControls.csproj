@@ -474,7 +474,6 @@
     <EmbeddedResource Include="ObjectInspector\ObjectInspectorTree.resx">
       <DependentUpon>ObjectInspectorTree.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="PropertyDesigner\CollectionEditor.resx">
       <DependentUpon>CollectionEditor.cs</DependentUpon>
     </EmbeddedResource>
