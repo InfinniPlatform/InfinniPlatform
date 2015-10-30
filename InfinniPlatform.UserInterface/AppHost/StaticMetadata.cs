@@ -10,7 +10,7 @@ namespace InfinniPlatform.UserInterface.AppHost
         /// <summary>
         ///     Создать метаданные главного окна приложения.
         /// </summary>
-        public static dynamic CreateAppView(string server, int port, string routeVersion)
+        public static dynamic CreateAppView()
         {
 			var viewMetadataService = ConfigResourceRepository.GetView("Designer", "Common", "App");
 	        return viewMetadataService;

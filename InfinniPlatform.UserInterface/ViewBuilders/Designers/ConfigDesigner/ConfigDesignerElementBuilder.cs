@@ -7,20 +7,9 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigDesigner
 {
     internal sealed class ConfigDesignerElementBuilder : IObjectBuilder
     {
-        private readonly string _server;
-        private readonly int _port;
-        private readonly string _routeVersion;
-
-        public ConfigDesignerElementBuilder(string server, int port, string routeVersion)
-        {
-            _server = server;
-            _port = port;
-            _routeVersion = routeVersion;
-        }
-
         public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
         {
-            var configDesigner = new ConfigDesignerElement(parent, _server, _port, _routeVersion);
+            var configDesigner = new ConfigDesignerElement(parent);
             configDesigner.ApplyElementMeatadata((object) metadata);
 
             // Редакторы элементов метаданных

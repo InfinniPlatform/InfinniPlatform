@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
-using InfinniPlatform.Api.RestApi.Auth;
-using InfinniPlatform.Sdk.Api;
-using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.UserInterface.AppHost;
-using InfinniPlatform.UserInterface.Services.Metadata;
 
 namespace InfinniPlatform.UserInterface
 {
@@ -23,12 +21,11 @@ namespace InfinniPlatform.UserInterface
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var appViewMetadata = StaticMetadata.CreateAppView(HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort,"1");
+            var appViewMetadata = StaticMetadata.CreateAppView();
 
             //TODO здесь необходимо настроить, куда API метаданных будет в итоге делать запросы
-            AppRunner.Server = HostingConfig.Default.ServerName;
-            AppRunner.Port = HostingConfig.Default.ServerPort;
-            AppRunner.Run(appViewMetadata);
+
+	        AppRunner.Run(appViewMetadata);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.IO;
 
+using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Settings;
 
@@ -25,9 +26,9 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Comman
 
         public override void Execute(object parameter)
         {
-            dynamic connectionSettings = new DynamicWrapper();
-			connectionSettings.Path = Path.GetFullPath(AppSettings.GetValue("ContentDirectory", Path.Combine("..", "Assemblies", "content")));
-
+            dynamic metadataPath = new DynamicWrapper();
+			metadataPath.Path = _elementNode.ElementName;
+			
             _builder.EditPanel.EditElement(_elementEditor,
                 _elementNode.GetNodePath(),
                 _elementNode.ConfigId,
@@ -35,16 +36,17 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Comman
                 _elementNode.Version,
                 _elementNode.ElementType,
                 _elementNode.ElementId,
-                (object) connectionSettings,
-                () => Reconnect(connectionSettings));
+                (object) metadataPath,
+                () => Reconnect(metadataPath));
         }
 
-	    void Reconnect(dynamic connectionSettings)
+	    void Reconnect(dynamic metadataPath)
 	    {
 		    _builder.EditPanel.CloseAll();
 
-		    _elementNode.ElementName = connectionSettings.Path;
-		    _elementNode.RefreshCommand.TryExecute(true);
+		    _elementNode.ElementName = metadataPath.Path;
+		    PackageMetadataLoader.UpdateCache(metadataPath.Path);
+			_elementNode.RefreshCommand.TryExecute(true);
 	    }
     }
 }

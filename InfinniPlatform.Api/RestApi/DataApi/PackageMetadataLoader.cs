@@ -14,7 +14,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 	public class PackageMetadataLoader
 	{
 		private static Dictionary<string, object> _configurations = LoadConfigsMetadata();
-
+		
 		/// <summary>
 		/// Кэш конфигураций.
 		/// </summary>
@@ -26,16 +26,19 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 		/// <summary>
 		/// Обновить кэш конфигураций.
 		/// </summary>
-		public static void UpdateCache()
+		public static void UpdateCache(string metadataPath = null)
 		{
-			_configurations = LoadConfigsMetadata();
+			_configurations = LoadConfigsMetadata(metadataPath);
 		}
 
-		private static Dictionary<string, object> LoadConfigsMetadata()
+		private static Dictionary<string, object> LoadConfigsMetadata(string metadataDirectory = null)
 		{
-			var contentDirectory = AppSettings.GetValue("ContentDirectory", Path.Combine("..", "Assemblies", "content"));
+			if (metadataDirectory == null)
+			{
+				metadataDirectory = Path.GetFullPath(AppSettings.GetValue("ContentDirectory", Path.Combine("..", "Assemblies", "content")));
+			}
 
-			var metadataDirectories = Directory.EnumerateDirectories(contentDirectory)
+			var metadataDirectories = Directory.EnumerateDirectories(metadataDirectory)
 											   .Select(d => Path.Combine(d, "metadata"))
 											   .Where(Directory.Exists)
 											   .ToArray();
