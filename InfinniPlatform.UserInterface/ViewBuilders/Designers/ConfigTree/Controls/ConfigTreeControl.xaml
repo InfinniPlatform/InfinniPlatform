@@ -111,7 +111,6 @@
             <dxg:TreeListColumn FieldName="ElementName"
                                 VisibleIndex="0" />
         </dxg:TreeListControl.Columns>
-        <dxg:AutoFilterRowControl />
         <dxg:TreeListControl.View>
             <dxg:TreeListView KeyFieldName="Key"
                               ParentFieldName="Parent"
