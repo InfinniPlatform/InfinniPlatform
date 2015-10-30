@@ -26,36 +26,40 @@ namespace InfinniPlatform.SystemConfig.Initializers
 				IncludeSubdirectories = true
 			};
 
-			watcher.Changed += (sender, args) =>
-			{
-				if (FileHistoryHelper.IsChanged(args.FullPath))
-				{
-					try
-					{
-						Console.WriteLine("[{1}] File {0} changed.", args.Name, DateTime.Now.TimeOfDay);
-
-						foreach (dynamic configuration in _configurations.Value)
-						{
-							RemoveConfiguration(configuration.Name);
-						}
-
-						var updatedConfigurations = LoadConfigsMetadata();
-
-						foreach (dynamic configuration in updatedConfigurations)
-						{
-							InstallConfiguration(configuration, configuration.Name);
-						}
-
-						Console.WriteLine("[{0}] Configurations successfully updated.", DateTime.Now.TimeOfDay);
-					}
-					catch (Exception e)
-					{
-						Logger.Log.Error("Error during metadata update.", e);
-					}
-				}
-			};
+			watcher.Changed += (sender, args) => { UpdateConfigsMetadata(args); };
+			watcher.Created += (sender, args) => { UpdateConfigsMetadata(args); };
+			watcher.Deleted += (sender, args) => { UpdateConfigsMetadata(args); };
 
 			watcher.EnableRaisingEvents = true;
+		}
+
+		private void UpdateConfigsMetadata(FileSystemEventArgs args)
+		{
+			if (FileHistoryHelper.IsChanged(args.FullPath))
+			{
+				try
+				{
+					Console.WriteLine("[{1}] File {0} changed.", args.Name, DateTime.Now.TimeOfDay);
+
+					foreach (dynamic configuration in _configurations.Value)
+					{
+						RemoveConfiguration(configuration.Name);
+					}
+
+					var updatedConfigurations = LoadConfigsMetadata();
+
+					foreach (dynamic configuration in updatedConfigurations)
+					{
+						InstallConfiguration(configuration, configuration.Name);
+					}
+
+					Console.WriteLine("[{0}] Configurations successfully updated.", DateTime.Now.TimeOfDay);
+				}
+				catch (Exception e)
+				{
+					Logger.Log.Error("Error during metadata update.", e);
+				}
+			}
 		}
 
 		private readonly ISecurityComponent _securityComponent;
