@@ -114,7 +114,7 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
         /// <summary>
         ///     Список индексов метаданных
         /// </summary>
-        public IEnumerable<string> Containers
+        public IEnumerable<string> Documents
         {
             get { return _documents.Keys; }
         }

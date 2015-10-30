@@ -80,7 +80,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 
             if (_metadataConfiguration != null)
             {
-                IEnumerable<string> containers = _metadataConfiguration.Containers;
+                IEnumerable<string> containers = _metadataConfiguration.Documents;
 
                 int propertyIndex = 0;
 
@@ -166,7 +166,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 
             if (_metadataConfiguration != null)
             {
-                IEnumerable<string> containers = _metadataConfiguration.Containers;
+                IEnumerable<string> containers = _metadataConfiguration.Documents;
                 foreach (string containerId in containers)
                 {
                     dynamic schema = _metadataConfiguration.GetSchemaVersion(containerId);

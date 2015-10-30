@@ -1,4 +1,6 @@
-﻿namespace InfinniPlatform.Sdk.Environment.Index
+﻿using System.Collections.Generic;
+
+namespace InfinniPlatform.Sdk.Environment.Index
 {
     /// <summary>
     ///     Провайдер административных операций с индексом
@@ -49,7 +51,7 @@
             string indexName,
             string typeName,
             bool deleteExistingVersion = false,
-            IIndexTypeMapping mappingUpdates = null
+            IList<PropertyMapping> mappingUpdates = null
             );
 
         /// <summary>

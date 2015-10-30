@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using InfinniPlatform.Api.Index;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Sdk.Environment.Index;
@@ -31,7 +32,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.Versioning
         /// Считается, что версия существует, если все свойства переданного маппинга соответсвуют по типу всем имеющимся свойствам,
         /// в противном случае нужно создавать новую версию. 
         /// </summary>
-        public bool VersionExists(IIndexTypeMapping properties = null)
+		public bool VersionExists(IList<PropertyMapping> properties = null)
         {
             var isTypeExists = _indexStateProvider.GetIndexStatus(_indexName, _typeName) == IndexStatus.Exists;
 
@@ -41,7 +42,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.Versioning
             {
                 var currentProperties = _connection.GetIndexTypeMapping(_indexName, _typeName);
 
-                foreach (var newMappingProperty in properties.Properties)
+                foreach (var newMappingProperty in properties)
                 {
                     var propertyToCheck = currentProperties.FirstOrDefault(p => p.Name == newMappingProperty.Name);
                     if (propertyToCheck != null)
@@ -71,7 +72,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.Versioning
 	    /// </summary>
 	    /// <param name="deleteExisting">Флаг, показывающий нужно ли удалять версию харнилища, если она уже существует</param>
 	    /// <param name="properties">Первоначальный список полей справочника</param>
-	    public void CreateVersion(bool deleteExisting = false, IIndexTypeMapping properties = null)
+		public void CreateVersion(bool deleteExisting = false, IList<PropertyMapping> properties = null)
 	    {
 	        _indexStateProvider.CreateIndexType(
 	            _indexName,

@@ -1,21 +1,18 @@
 ﻿using System.Collections.Generic;
-using InfinniPlatform.Api.Index;
-using InfinniPlatform.Api.Metadata;
+
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment;
-using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Metadata;
 
-namespace InfinniPlatform.MigrationsAndVerifications.Helpers
+namespace InfinniPlatform.Sdk.Environment.Index
 {
     public static class DocumentSchemaHelper
     {
         /// <summary>
         ///     Метод преобразует схему данных документа в схему, применимую к контейнеру документов
         /// </summary>
-        public static IEnumerable<PropertyMapping> ExtractProperties(string version, dynamic schemaProperties,
-                                                                     IConfigurationObjectBuilder
-                                                                         configurationObjectBuilder)
+        public static IEnumerable<PropertyMapping> ExtractProperties(string version,
+																	 dynamic schemaProperties,
+																	 IConfigurationObjectBuilder configurationObjectBuilder)
         {
             var properties = new List<PropertyMapping>();
 

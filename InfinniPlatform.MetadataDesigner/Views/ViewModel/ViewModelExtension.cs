@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 using DevExpress.XtraEditors.Controls;
 
@@ -26,6 +27,19 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 	public static class ViewModelExtension
 	{
 		private static readonly IEnumerable<ServiceType> ServiceTypes = ServiceType.GetRegisteredServiceTypes();
+		private const string AssemblyName = "InfinniPlatform.MigrationsAndVerifications.dll";
+		private static readonly List<dynamic> RegisteredMigrationsList = new List<dynamic>
+											  {
+												  new
+												  {
+													  Name = "UpdateStoreMigration",
+													  Description = "Migration updates store mapping after changing configuration documents data schema",
+													  IsUndoable = false,
+													  ConfigurationId = string.Empty,
+													  ConfigVersion = string.Empty,
+													  Parameters = new MigrationParameter[0]
+												  }
+											  };
 
 		/// <summary>
 		/// Extension method to convert dynamic data to a DataTable. Useful for databinding.
@@ -504,27 +518,14 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 			return result;
 		}
 
-        public static IEnumerable<string> BuildMigrations(string version, string configurationId)
+        public static object[] BuildMigrations()
         {
-            var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getmigrations", null, null);
-            
-            return result.ToDynamicList()
-                .Where(m => (m.ConfigurationId == configurationId || string.IsNullOrEmpty(m.ConfigurationId)))
-                .Where(m => (m.ConfigVersion == version || string.IsNullOrEmpty(m.ConfigVersion)))
-                .Select(m => m.Name.ToString()).Cast<string>().ToList();
+	        return RegisteredMigrationsList.Select(m => (object) m.Name).ToArray();
         }
 
-        public static dynamic BuildMigrationDetails(string version, string configurationId, string migrationName)
+		public static dynamic BuildMigrationDetails(string version, string configurationId, string migrationName)
         {
-            var body = new
-            {
-                MigrationName = migrationName,
-                ConfigurationName = configurationId
-            };
-
-            var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getmigrationdetails", null, body);
-            
-            return result.ToDynamic();
+			return RegisteredMigrationsList.FirstOrDefault(m => m.Name == migrationName);
         }
 
         public static string RunMigration(string version, string configId, string migrationName, object[] parameters)
@@ -558,14 +559,9 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
             return result.Content;
         }
 
-        public static IEnumerable<string> BuildVerifications(string configurationId, string configVersion)
+        public static object[] BuildVerifications()
         {
-			var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getverifications", null, null);
-
-            return result.ToDynamicList()
-                .Where(m => (m.ConfigurationId == configurationId || string.IsNullOrEmpty(m.ConfigurationId)))
-                .Where(m => (m.ConfigVersion == configVersion || string.IsNullOrEmpty(m.ConfigVersion)))
-                .Select(m => m.Name.ToString()).Cast<string>().ToList();
+			return new object[] { };
         }
 
         public static dynamic BuildVerificationDetails(string verifiecationName)

@@ -28,8 +28,8 @@ namespace InfinniPlatform.MetadataDesigner.Views
 
         private void ConfigVerifyDesignerView_Load(object sender, EventArgs e)
         {
-            MigrationsComboBox.Properties.Items.AddRange(ViewModelExtension.BuildMigrations(Value.Version, Value.Name).ToArray());
-            VerificationsComboBox.Properties.Items.AddRange(ViewModelExtension.BuildVerifications(Value.Name, Value.Version).ToArray());
+			MigrationsComboBox.Properties.Items.AddRange(ViewModelExtension.BuildMigrations());
+            VerificationsComboBox.Properties.Items.AddRange(ViewModelExtension.BuildVerifications());
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
             var process = new StatusProcess();
             process.StartOperation(() =>
             {
-                foreach (string verification in ViewModelExtension.BuildVerifications(Value.Name, Value.Version))
+                foreach (string verification in ViewModelExtension.BuildVerifications())
                 {
                     string resultString = ViewModelExtension.RunVerification(Version, Value.Name.ToString(), verification);
 
@@ -212,7 +212,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
             MigrationDescriptionLabelControl.Text = migration.Description;
             DownButton.Visible = migration.IsUndoable;
 
-            if (migration.Parameters.Count == 0)
+            if (migration.Parameters.Length == 0)
             {
                 ParametersPanelControl.Visible = false;
                 MigrationParametersControl.Visible = false;

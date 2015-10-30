@@ -24,7 +24,7 @@ namespace InfinniPlatform.Sdk.Environment.Metadata
         /// <summary>
         ///     Список индексов метаданных
         /// </summary>
-        IEnumerable<string> Containers { get; }
+        IEnumerable<string> Documents { get; }
 
         /// <summary>
         ///     Признак того, что конфигурация является встроенной в код C# (не хранится в JSON)
