@@ -20,36 +20,36 @@ namespace InfinniPlatform.Api.Validation.Serialization
 
         public ValidationOperatorSerializer()
         {
-            _serializer = new JsonObjectSerializer(
+            _serializer = new JsonObjectSerializer(false,
                 new KnownTypesContainer()
-                    // BooleanValidators
-                    .Add<OrValidator>("Or")
-                    .Add<AndValidator>("And")
-                    .Add<NotValidator>("Not")
-                    // CollectionValidators
-                    .Add<AllCollectionValidator>("All")
-                    .Add<AnyCollectionValidator>("Any")
-                    .Add<ContainsCollectionValidator>("IsContainsCollection")
-                    .Add<NullOrEmptyCollectionValidator>("IsNullOrEmptyCollection")
-                    // ObjectValidators
-                    .Add<NullValidator>("IsNull")
-                    .Add<EqualValidator>("IsEqual")
-                    .Add<DefaultValueValidator>("IsDefaultValue")
-                    .Add<GuidValidator>("IsGuid")
-                    .Add<UriValidator>("IsUri")
-                    .Add<AbsoluteUriValidator>("IsAbsoluteUri")
-                    .Add<RelativeUriValidator>("IsRelativeUri")
-                    .Add<NullOrEmptyValidator>("IsNullOrEmpty")
-                    .Add<NullOrWhiteSpaceValidator>("IsNullOrWhiteSpace")
-                    .Add<ContainsValidator>("IsContains")
-                    .Add<StartsWithValidator>("IsStartsWith")
-                    .Add<EndsWithValidator>("IsEndsWith")
-                    .Add<RegexValidator>("IsRegex")
-                    .Add<LessThanValidator>("IsLessThan")
-                    .Add<MoreThanValidator>("IsMoreThan")
-                    .Add<LessThanOrEqualValidator>("IsLessThanOrEqual")
-                    .Add<MoreThanOrEqualValidator>("IsMoreThanOrEqual")
-                    .Add<InValidator>("IsIn")
+					// BooleanValidators
+					.Add<OrValidator>("Or")
+					.Add<AndValidator>("And")
+					.Add<NotValidator>("Not")
+					// CollectionValidators
+					.Add<AllCollectionValidator>("All")
+					.Add<AnyCollectionValidator>("Any")
+					.Add<ContainsCollectionValidator>("IsContainsCollection")
+					.Add<NullOrEmptyCollectionValidator>("IsNullOrEmptyCollection")
+					// ObjectValidators
+					.Add<NullValidator>("IsNull")
+					.Add<EqualValidator>("IsEqual")
+					.Add<DefaultValueValidator>("IsDefaultValue")
+					.Add<GuidValidator>("IsGuid")
+					.Add<UriValidator>("IsUri")
+					.Add<AbsoluteUriValidator>("IsAbsoluteUri")
+					.Add<RelativeUriValidator>("IsRelativeUri")
+					.Add<NullOrEmptyValidator>("IsNullOrEmpty")
+					.Add<NullOrWhiteSpaceValidator>("IsNullOrWhiteSpace")
+					.Add<ContainsValidator>("IsContains")
+					.Add<StartsWithValidator>("IsStartsWith")
+					.Add<EndsWithValidator>("IsEndsWith")
+					.Add<RegexValidator>("IsRegex")
+					.Add<LessThanValidator>("IsLessThan")
+					.Add<MoreThanValidator>("IsMoreThan")
+					.Add<LessThanOrEqualValidator>("IsLessThanOrEqual")
+					.Add<MoreThanOrEqualValidator>("IsMoreThanOrEqual")
+					.Add<InValidator>("IsIn")
                 );
         }
 

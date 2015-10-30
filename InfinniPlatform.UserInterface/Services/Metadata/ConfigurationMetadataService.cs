@@ -1,51 +1,84 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Sdk.Api;
-using InfinniPlatform.Sdk.Metadata;
+
+using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Api.Serialization;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Settings;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {
-    /// <summary>
-    ///     Сервис для работы с метаданными конфигурации.
-    /// </summary>
-    internal sealed class ConfigurationMetadataService : BaseMetadataService
-    {
+	/// <summary>
+	/// Сервис для работы с метаданными конфигурации.
+	/// </summary>
+	internal sealed class ConfigurationMetadataService : BaseMetadataService
+	{
+		public override object CreateItem()
+		{
+			dynamic configuration = new DynamicWrapper();
 
-        private InfinniMetadataApi _metadataApi;
+			configuration.Id = Guid.NewGuid().ToString();
+			configuration.Name = string.Empty;
+			configuration.Caption = string.Empty;
+			configuration.Description = string.Empty;
+			configuration.Menu = new dynamic[] { };
+			configuration.Documents = new dynamic[] { };
+			configuration.Registers = new dynamic[] { };
+			configuration.Assemblies = new dynamic[] { };
+			configuration.Reports = new dynamic[] { };
 
-        public ConfigurationMetadataService(string version, string server, int port, string route) : base(version,server, port, route)
-        {
-           
-            _metadataApi = new InfinniMetadataApi(server, port.ToString(), route);
-        }
+			return configuration;
+		}
 
+		public override void ReplaceItem(dynamic item)
+		{
+			string filePath;
+			var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
+			
+			//TODO Wrapper for PackageMetadataLoader.Configurations
+			if (PackageMetadataLoader.Configurations.ContainsKey(item.Name))
+			{
+				dynamic oldConfiguration = PackageMetadataLoader.Configurations[item.Name];
+				filePath = oldConfiguration.FilePath;
+			}
+			else
+			{
+				var contentDirectory = AppSettings.GetValue("", "..\\Assemblies\\content");
+				var configurationDirectory = Path.Combine(contentDirectory, item.Subfolder ?? "InfinniPlatform", "metadata", item.Name);
+				Directory.CreateDirectory(configurationDirectory);
+				filePath = Path.Combine(configurationDirectory, "Configuration.json");
+			}
 
-        public override object CreateItem()
-        {
-            return _metadataApi.CreateConfig();
-        }
+			File.WriteAllBytes(filePath, serializedItem);
 
-        public override void ReplaceItem(dynamic item)
-        {
-            _metadataApi.InsertConfig(item);
-        }
+			PackageMetadataLoader.UpdateCache();
+		}
 
-        public override void DeleteItem(string itemId)
-        {
-            _metadataApi.DeleteConfig(Version, itemId);
-        }
+		public override void DeleteItem(string itemId)
+		{
+			dynamic configuration = PackageMetadataLoader.Configurations[itemId];
 
-        public override object GetItem(string itemId)
-        {
-            return _metadataApi.GetConfig(Version, itemId);
-        }
+			var configurationDirectory = Path.GetDirectoryName(configuration.FilePath);
 
-        public override IEnumerable<object> GetItems()
-        {
-            return _metadataApi.GetConfigList();
-        }
-    }
+			if (configurationDirectory != null)
+			{
+				Directory.Delete(configurationDirectory, true);
+				PackageMetadataLoader.UpdateCache();
+			}
+		}
+
+		public override object GetItem(string itemId)
+		{
+			dynamic configuration = PackageMetadataLoader.Configurations[itemId];
+			return configuration.Content;
+		}
+
+		public override IEnumerable<object> GetItems()
+		{
+			Dictionary<string, dynamic>.ValueCollection valueCollection = PackageMetadataLoader.Configurations.Values;
+			return valueCollection.Select(o => o.Content);
+		}
+	}
 }

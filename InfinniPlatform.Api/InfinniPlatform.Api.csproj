@@ -210,6 +210,7 @@
     <Compile Include="Metadata\ConfigurationManagers\Standard\MetadataManagers\MetadataManagerElement.cs" />
     <Compile Include="RestApi\DataApi\DocumentApiUnsecured.cs" />
     <Compile Include="RestApi\DataApi\MetadataApi.cs" />
+    <Compile Include="RestApi\DataApi\PackageMetadataLoader.cs" />
     <Compile Include="RestApi\DataApi\SessionApi.cs" />
     <Compile Include="RestApi\Public\AuthApi.cs" />
     <Compile Include="RestApi\Public\CustomServiceApi.cs" />

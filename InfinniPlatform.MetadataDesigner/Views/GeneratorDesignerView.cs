@@ -61,7 +61,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 			bool discoverResult = false;
 			process.StartOperation(() =>
 			{
-				discoverResult = _assemblyDiscovery.DiscoverAppliedAssemblies(version, _configurationName);
+				discoverResult = _assemblyDiscovery.DiscoverAppliedAssemblies(_configurationName);
 			});
 			process.EndOperation();
 			if (!discoverResult)

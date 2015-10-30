@@ -18,16 +18,22 @@ namespace InfinniPlatform.Api.Serialization
         ///     Экземпляр с настройками по умолчанию.
         /// </summary>
         public static readonly JsonObjectSerializer Default = new JsonObjectSerializer();
+		/// <summary>
+		///		Экземпляр с настройками форматирования.
+		/// </summary>
+		public static readonly JsonObjectSerializer Formated = new JsonObjectSerializer(true);
 
         private readonly JsonSerializer _serializer;
 
-        public JsonObjectSerializer(KnownTypesContainer knownTypes = null, bool withFormatting = false)
+        public JsonObjectSerializer(bool withFormatting = false, KnownTypesContainer knownTypes = null)
         {
             var serializer = new JsonSerializer
             {
                 NullValueHandling = NullValueHandling.Ignore,
                 ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-                Formatting = withFormatting ? Formatting.Indented : Formatting.None
+				Formatting = withFormatting
+								 ? Formatting.Indented
+								 : Formatting.None
             };
 
             // При сериализации будут учитываться приватные поля

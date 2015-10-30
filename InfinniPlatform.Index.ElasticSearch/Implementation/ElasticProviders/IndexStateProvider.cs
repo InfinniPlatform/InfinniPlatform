@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions;
+﻿using System.Collections.Generic;
+
+using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions;
 using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
@@ -26,9 +28,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         public IndexStatus GetIndexStatus(string indexName, string typeName)
         {
             return new MultipleTypeIndex().GetIndexStatus(indexName, typeName);
-        }
+	    }
 
-        /// <summary>
+	    /// <summary>
         ///   В ходе выполнения операции удалятся все данные и маппинга всех типов из индекса.
         /// </summary>
         /// <param name="indexName">Наименование индекса</param>
@@ -68,24 +70,24 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         ///     Иначе создается новая версия типа внутри индекса
         /// </param>
         /// <param name="deleteExistingVersion">Удалить существующую версию</param>
-        /// <param name="indexTypeMapping">Список изменений в маппинге</param>
+		/// <param name="properties">Список изменений в маппинге</param>
         public void CreateIndexType(
-            string indexName,
-            string typeName,
+            string indexName, 
+            string typeName, 
             bool deleteExistingVersion = false,
-            IIndexTypeMapping indexTypeMapping = null)
+			IList<PropertyMapping> properties = null)
         {
             var index = new MultipleTypeIndex();
 
             var schemaVersionName = index.CreateIndexType(indexName, typeName, deleteExistingVersion);
 
-            if (indexTypeMapping != null)
+			if (properties != null)
             {
                 IndexTypeMapper.ApplyIndexTypeMapping(
-                    _connection.Client,
-                    indexName,
+                    _connection.Client, 
+                    indexName, 
                     schemaVersionName,
-                    indexTypeMapping.Properties);
+					properties);
             }
         }
 

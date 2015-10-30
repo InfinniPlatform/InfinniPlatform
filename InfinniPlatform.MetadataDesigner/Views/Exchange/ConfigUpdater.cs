@@ -51,7 +51,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
         {
             try
             {
-                if (!_assemblyDiscovery.DiscoverAppliedAssemblies(VersionName, configuration))
+                if (!_assemblyDiscovery.DiscoverAppliedAssemblies(configuration))
                 {
                     var failedAssemblies = string.Join(",",
                         _assemblyDiscovery.SourceAssemblyList.Where(s => s.Assembly == null).Select(s => s.Name));

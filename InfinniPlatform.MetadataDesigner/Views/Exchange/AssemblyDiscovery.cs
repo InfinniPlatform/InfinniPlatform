@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
+
+using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Sdk.Environment.Settings;
 
 namespace InfinniPlatform.MetadataDesigner.Views.Exchange
@@ -11,70 +12,58 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
 	public sealed class AssemblyDiscovery
 	{
 		private readonly IList<SourceAssemblyInfo> _sourceAssemblyList = new List<SourceAssemblyInfo>();
-        
-		public bool DiscoverAppliedAssemblies(string version, string configurationId)
-		{
-			LoadSourceAssembliesForConfig(version, configurationId);
-
-		    var folderExtension = DateTime.Now.ToString("yyyyMMddHHmmss");
-			foreach (var sourceAssemblyInfo in SourceAssemblyList)
-			{
-				var relativePath = AppSettings.GetValue("AppliedAssemblies");
-				var pathToAssemblies = relativePath != null ? Path.GetFullPath(relativePath) : Directory.GetCurrentDirectory();
-
-				if (sourceAssemblyInfo.Assembly == null)
-				{
-					var assemblyFileName = Path.Combine(pathToAssemblies, sourceAssemblyInfo.Name);
-					var copyDir = Path.Combine(Path.GetDirectoryName(assemblyFileName), "temp_" + folderExtension);
-                    if (!Directory.Exists(copyDir))
-                    {
-                        Directory.CreateDirectory(copyDir);
-                    }
-
-					if (File.Exists(assemblyFileName + ".dll"))
-					{
-						var copyFileName = Path.Combine(copyDir, sourceAssemblyInfo.Name + ".dll");
-                        File.Copy(assemblyFileName + ".dll",copyFileName,true);
-
-					    sourceAssemblyInfo.Assembly = Assembly.Load(File.ReadAllBytes(copyFileName));
-					    sourceAssemblyInfo.AssemblyFileName = assemblyFileName + ".dll";
-					    
-					}
-					else if (File.Exists(assemblyFileName + ".exe"))
-					{
-						var copyFileName = Path.Combine(copyDir, sourceAssemblyInfo.Name + ".exe");
-						File.Copy(assemblyFileName + ".exe", copyFileName,true);
-
-					    sourceAssemblyInfo.Assembly = Assembly.Load(File.ReadAllBytes(assemblyFileName + ".exe"));
-                        sourceAssemblyInfo.AssemblyFileName = assemblyFileName + ".exe";
-					}
-				}
-			}
-			if (SourceAssemblyList.Any(a => a.Assembly == null))
-			{
-				return false;
-			}
-			return true;
-		}
-
-	    private void LoadSourceAssembliesForConfig(string version, string configurationId)
-		{
-			SourceAssemblyList.Clear();
-
-			var reader = new ManagerFactoryConfiguration(version, configurationId).BuildAssemblyMetadataReader();
-			var items = reader.GetItems();
-			foreach (var item in items)
-			{
-				SourceAssemblyList.Add(new SourceAssemblyInfo()
-				{
-					Name = item.Name
-				});
-			}
-		}
 
 		public IList<SourceAssemblyInfo> SourceAssemblyList
 		{
 			get { return _sourceAssemblyList; }
+		}
+
+		public bool DiscoverAppliedAssemblies(string configurationId)
+		{
+			LoadSourceAssembliesForConfig(configurationId);
+
+			foreach (var sourceAssemblyInfo in SourceAssemblyList)
+			{
+				var relativePath = AppSettings.GetValue("AppliedAssemblies", "..\\Assemblies");
+				var pathToAssemblies = relativePath != null
+										   ? Path.GetFullPath(relativePath)
+										   : Directory.GetCurrentDirectory();
+
+				if (sourceAssemblyInfo.Assembly == null)
+				{
+					var assemblyFileName = Path.Combine(pathToAssemblies, string.Concat(sourceAssemblyInfo.Name, ".dll"));
+					var executableFileName = Path.Combine(pathToAssemblies, string.Concat(sourceAssemblyInfo.Name, ".exe"));
+
+					if (File.Exists(assemblyFileName))
+					{
+						sourceAssemblyInfo.Assembly = Assembly.Load(File.ReadAllBytes(assemblyFileName));
+						sourceAssemblyInfo.AssemblyFileName = assemblyFileName;
+					}
+					else if (File.Exists(executableFileName))
+					{
+						sourceAssemblyInfo.Assembly = Assembly.Load(File.ReadAllBytes(executableFileName));
+						sourceAssemblyInfo.AssemblyFileName = executableFileName;
+					}
+				}
+			}
+
+			return SourceAssemblyList.All(a => a.Assembly != null);
+		}
+
+		private void LoadSourceAssembliesForConfig(string configurationId)
+		{
+			SourceAssemblyList.Clear();
+
+			dynamic configs = PackageMetadataLoader.Configurations[configurationId];
+
+			var items = configs.Content.Assemblies;
+			foreach (var item in items)
+			{
+				SourceAssemblyList.Add(new SourceAssemblyInfo
+									   {
+										   Name = item.Name
+									   });
+			}
 		}
 	}
 }

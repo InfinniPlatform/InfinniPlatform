@@ -25,28 +25,21 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.DocumentDesigner
     /// </summary>
     internal sealed class DocumentDesignerElement : BaseElement<UserControl>
     {
-        private readonly string _server;
-        private readonly int _port;
-        private readonly string _routeVersion;
         // ConfigId
-
         private Func<string> _configId;
+
         // Editors
+		private IEnumerable<ItemEditor> _editors;
 
-        private IEnumerable<ItemEditor> _editors;
         // Items
-
-        private IEnumerable _items;
+		private IEnumerable _items;
         private readonly ToolBarPopupButtonItem _addItemButton;
         private readonly ContextMenuItem _addItemMenuButton;
         private readonly TreeViewElement _itemsTreeView;
 
-        public DocumentDesignerElement(View view, string server, int port, string routeVersion)
+        public DocumentDesignerElement(View view)
             : base(view)
         {
-            _server = server;
-            _port = port;
-            _routeVersion = routeVersion;
             var mainPanel = new StackPanelElement(view);
 
             // TreeView
@@ -223,7 +216,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.DocumentDesigner
                 MessageBox.Show(string.Format(Resources.DocumentDesignerDeleteQuestion, itemText), GetView().GetText(),
                     MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                var dataProvider = new MetadataProvider(metadataType,_server, _port,_routeVersion);
+                var dataProvider = new MetadataProvider(metadataType);
                 dataProvider.SetConfigId(GetConfigIdValue());
                 dataProvider.SetDocumentId(documentId);
                 dataProvider.SetVersion(version);

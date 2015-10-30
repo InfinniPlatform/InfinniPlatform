@@ -29,8 +29,8 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Factor
             elementNode.RefreshCommand = new RefreshContainerCommand(elementNode);
             elementNode.RegisterAddCommands(builder, ElementChildrenTypes);
             elementNode.RegisterEditCommand(builder);
-            elementNode.RegisterEditCommand(builder, "DeployView", Resources.DeployView, "Deploy");
-            elementNode.RegisterEditCommand(builder, "MigrationView", Resources.MigrationView, "Migration");
+//            elementNode.RegisterEditCommand(builder, "DeployView", Resources.DeployView, "Deploy");
+//            elementNode.RegisterEditCommand(builder, "MigrationView", Resources.MigrationView, "Migration");
             elementNode.DeleteCommand = new DeleteElementCommand(builder, elements, elementNode);
             elementNode.CopyCommand = FactoryHelper.NoCopyCommand;
             elementNode.PasteCommand = FactoryHelper.NoPasteCommand;
@@ -45,6 +45,8 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Factor
                 RegisterContainerNodeFactory.ElementType);
             builder.BuildElement(elements, elementNode, elementNode.ElementMetadata,
                 ReportContainerNodeFactory.ElementType);
+
+			elementNode.RefreshCommand.TryExecute();
         }
     }
 }

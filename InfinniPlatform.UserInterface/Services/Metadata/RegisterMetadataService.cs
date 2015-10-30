@@ -1,56 +1,85 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Sdk.Api;
-using InfinniPlatform.Sdk.Metadata;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
+using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Api.Serialization;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {
-    /// <summary>
-    ///     Сервис для работы с метаданными документов.
-    /// </summary>
-    internal sealed class RegisterMetadataService : BaseMetadataService
-    {
-        private readonly string _configId;
-        private InfinniMetadataApi _metadataApi;
+	/// <summary>
+	/// Сервис для работы с метаданными документов.
+	/// </summary>
+	internal sealed class RegisterMetadataService : BaseMetadataService
+	{
+		public RegisterMetadataService(string configId)
+		{
+			_configId = configId;
+		}
 
-        public RegisterMetadataService(string version, string configId, string server, int port, string route)
-            : base(version, server, port, route)
-        {
-            _configId = configId;
-            _metadataApi = new InfinniMetadataApi(server, port.ToString(), route);
-        }
+		private readonly string _configId;
 
-        public string ConfigId
-        {
-            get { return _configId; }
-        }
+		public string ConfigId
+		{
+			get { return _configId; }
+		}
 
-        public override object CreateItem()
-        {
-            return _metadataApi.CreateRegister(Version, ConfigId);
-        }
+		public override object CreateItem()
+		{
+			return new DynamicWrapper();
+		}
 
-        public override void ReplaceItem(dynamic item)
-        {
-            _metadataApi.UpdateRegister(item, Version, ConfigId);
-        }
+		public override void ReplaceItem(dynamic item)
+		{
+			string filePath;
+			var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
 
-        public override void DeleteItem(string itemId)
-        {
-            _metadataApi.DeleteRegister(Version, ConfigId, itemId);
-        }
+			//TODO Wrapper for PackageMetadataLoader.Configurations
+			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+			if (configuration.Registers.ContainsKey(item.Name))
+			{
+				dynamic oldRegister = configuration.Registers[item.Name];
+				filePath = oldRegister.FilePath;
+			}
+			else
+			{
+				string directoryPath = Path.Combine(Path.GetDirectoryName(configuration.FilePath), "Registers", item.Name);
+				Directory.CreateDirectory(directoryPath);
 
-        public override object GetItem(string itemId)
-        {
-            return _metadataApi.GetRegister(Version, ConfigId, itemId);
-        }
+				filePath = Path.Combine(directoryPath, string.Concat(item.Name, ".json"));
+			}
 
-        public override IEnumerable<object> GetItems()
-        {
-            return _metadataApi.GetRegisterList(Version, ConfigId);
-        }
-    }
+			File.WriteAllBytes(filePath, serializedItem);
+
+			PackageMetadataLoader.UpdateCache();
+		}
+
+		public override void DeleteItem(string itemId)
+		{
+			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+			var register = configuration.Registers[itemId];
+
+			var registerDirectory = Path.GetDirectoryName(register.FilePath);
+
+			if (registerDirectory != null)
+			{
+				Directory.Delete(registerDirectory, true);
+				PackageMetadataLoader.UpdateCache();
+			}
+		}
+
+		public override object GetItem(string itemId)
+		{
+			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+			return configuration.Registers[itemId].Content;
+		}
+
+		public override IEnumerable<object> GetItems()
+		{
+			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+			Dictionary<string, dynamic> documents = configuration.Registers;
+			return documents.Values.Select(o => o.Content);
+		}
+	}
 }

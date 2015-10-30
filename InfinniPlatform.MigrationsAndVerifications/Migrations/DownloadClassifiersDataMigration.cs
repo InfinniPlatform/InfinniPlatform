@@ -74,7 +74,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                 item.Configuration = "classifierstorage";
                 item.PathToZip = parameters[0].ToString();
 
-                string[] classifiers = _metadataConfiguration.Containers.ToArray();
+                string[] classifiers = _metadataConfiguration.Documents.ToArray();
 
                 for (int i = 0; i < classifiers.Length; i++)
                 {
@@ -133,7 +133,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 
             if (_metadataConfiguration != null)
             {
-                foreach (string containerId in _metadataConfiguration.Containers)
+                foreach (string containerId in _metadataConfiguration.Documents)
                 {
                     if (containerId.ToLowerInvariant() == "common")
                     {

@@ -134,7 +134,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 
             if (metadataConfiguration != null)
             {
-                configurationContainers = new List<string>(metadataConfiguration.Containers);
+                configurationContainers = new List<string>(metadataConfiguration.Documents);
                 foreach (string containerId in configurationContainers)
                 {
                     _parameters.Add(new MigrationParameter {Caption = containerId, InitialValue = true});

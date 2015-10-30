@@ -44,7 +44,6 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\DocumentSchemaHelper.cs" />
     <Compile Include="Migrations\AddReportsMigration.cs" />
     <Compile Include="Migrations\AddRegistersMigration.cs" />
     <Compile Include="Migrations\CalculateTotalsForRegisters.cs" />
