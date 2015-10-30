@@ -111,6 +111,7 @@
             <dxg:TreeListColumn FieldName="ElementName"
                                 VisibleIndex="0" />
         </dxg:TreeListControl.Columns>
+        <dxg:AutoFilterRowControl />
         <dxg:TreeListControl.View>
             <dxg:TreeListView KeyFieldName="Key"
                               ParentFieldName="Parent"
@@ -119,6 +120,7 @@
                               ShowIndicator="False"
                               ShowVerticalLines="False"
                               ShowHorizontalLines="False"
+                              ShowAutoFilterRow="True"
                               AutoWidth="True"
                               AllowEditing="False"
                               ShowColumnHeaders="False"
@@ -128,7 +130,8 @@
                               AllowScrollToFocusedRow="True"
                               NodeImageSelector="{x:Static controls:ConfigTreeControlImageSelector.Instance}"
                               RowDoubleClick="OnNodeDoubleClick"
-                              NodeExpanded="OnNodeExpanded" />
+                              NodeExpanded="OnNodeExpanded"
+                              CustomNodeFilter="OnCustomNodeFilter" />
         </dxg:TreeListControl.View>
         <dxg:TreeListControl.InputBindings>
             <KeyBinding Command="ApplicationCommands.NotACommand" Gesture="Ctrl+C" />

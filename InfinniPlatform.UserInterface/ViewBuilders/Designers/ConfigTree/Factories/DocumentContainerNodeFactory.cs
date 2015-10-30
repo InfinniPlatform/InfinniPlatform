@@ -26,6 +26,8 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Factor
             elementNode.PasteCommand = FactoryHelper.NoPasteCommand;
 
             FactoryHelper.AddEmptyElement(elements, elementNode);
+
+			elementNode.RefreshCommand.TryExecute();
         }
     }
 }

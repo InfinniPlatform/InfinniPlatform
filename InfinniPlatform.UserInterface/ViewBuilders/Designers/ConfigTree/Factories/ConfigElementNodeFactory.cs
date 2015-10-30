@@ -45,6 +45,8 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Factor
                 RegisterContainerNodeFactory.ElementType);
             builder.BuildElement(elements, elementNode, elementNode.ElementMetadata,
                 ReportContainerNodeFactory.ElementType);
+
+			elementNode.RefreshCommand.TryExecute();
         }
     }
 }
