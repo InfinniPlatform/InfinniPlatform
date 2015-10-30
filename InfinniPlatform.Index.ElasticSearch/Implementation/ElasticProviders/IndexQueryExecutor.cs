@@ -31,7 +31,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 			_typeNames = settings.Accordances.ToArray();
 			_searchInAllIndeces = settings.SearchInAllIndeces;
 			_searchInAllTypes = settings.SearchInAllTypes;
-			_elasticConnection.ConnectIndex();
 		}
 
 		private readonly ElasticConnection _elasticConnection;

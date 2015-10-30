@@ -4,7 +4,6 @@ using System.Threading;
 
 using InfinniPlatform.BlobStorage;
 using InfinniPlatform.Cassandra.Client;
-using InfinniPlatform.EventStorage;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Modules;
@@ -108,7 +107,6 @@ namespace InfinniPlatform.NodeServiceHost
 			}
 
 			CreateBlobStorage();
-			CreateEventStorage();
 
 			var assemblies = ModuleExtension.LoadModulesAssemblies(configurations);
 
@@ -121,8 +119,6 @@ namespace InfinniPlatform.NodeServiceHost
 			factory.InfinniPlatformHostServer.RegisterServerInitializer<PackageJsonConfigurationsInitializer>();
 			// Создаем типы индексов для документов конфигураций
 			factory.InfinniPlatformHostServer.RegisterServerInitializer<DocumentIndexTypeInitializer>();
-			// Пользовательские обработчики бизнес-логики старта сервера
-			factory.InfinniPlatformHostServer.RegisterServerInitializer<UserLogicInitializer>();
 			// Обработчик настройки хранилища пользователей
 			factory.InfinniPlatformHostServer.RegisterServerInitializer<UserStorageInitializer>();
 
@@ -138,21 +134,6 @@ namespace InfinniPlatform.NodeServiceHost
 			try
 			{
 				blobStorageManager.CreateStorage();
-			}
-			catch
-			{
-			}
-		}
-
-		private static void CreateEventStorage()
-		{
-			var cassandraFactory = new CassandraDatabaseFactory();
-			var eventStorageFactory = new CassandraEventStorageFactory(cassandraFactory);
-			var eventStorageManager = eventStorageFactory.CreateEventStorageManager();
-
-			try
-			{
-				eventStorageManager.CreateStorage();
 			}
 			catch
 			{

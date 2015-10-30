@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-using InfinniPlatform.Api.Index;
+﻿using InfinniPlatform.Api.Index;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions;
 using InfinniPlatform.Sdk.Environment.Index;
 
@@ -17,7 +15,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
         public IndexStateProvider()
         {
-            _connection = new ElasticConnection();            
+            _connection = new ElasticConnection();
         }
 
         /// <summary>
@@ -42,13 +40,13 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             index.DeleteIndexType(indexName, typeName);
             index.CreateIndexType(indexName, typeName);
         }
-        
+
         /// <summary>
         /// Обновление позволяет делать запросы к только что добавленным данным
         /// </summary>
         public void Refresh()
         {
-            _connection.Client.Refresh(f => f.Force());
+            _connection.Refresh();
         }
 
         /// <summary>
@@ -101,6 +99,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             var index = new MultipleTypeIndex();
             index.DeleteIndex(indexName);
         }
-      
+
     }
 }

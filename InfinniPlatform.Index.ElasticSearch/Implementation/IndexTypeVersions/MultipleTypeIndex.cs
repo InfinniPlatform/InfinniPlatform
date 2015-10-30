@@ -70,7 +70,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions
                 }
             }
 
-            _connection.Client.Refresh(f => f.Force());
+            _connection.Refresh();
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions
                 }
             }
 
-            _connection.Client.Refresh(f => f.Force());
+            _connection.Refresh();
 
             _connection.Client.Map<dynamic>(s => s
                 .Index(indexName)
@@ -159,7 +159,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions
                 throw new ArgumentException(string.Format("Fail to create type name mapping: \"{0}\"", typeName));
             }
 
-            _connection.Client.Refresh(f => f.Force());
+            _connection.Refresh();
             return schemaTypeVersion;
         }
 
