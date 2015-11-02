@@ -29,7 +29,7 @@ namespace InfinniPlatform.RestfulApi.Binary
 	    private dynamic LoadBlobData(IBlobStorageComponent blobStorageComponent, string contentId)
 	    {
             var blobStorage = blobStorageComponent.GetBlobStorage();
-            var blobData = blobStorage.GetBlobData(Guid.Parse(contentId));
+            var blobData = blobStorage.GetBlobData(contentId);
             return blobData;	        
 	    }
 

@@ -37,7 +37,7 @@ namespace InfinniPlatform.Reporting.Services
 				throw new ArgumentNullException("templateId");
 			}
 
-			var reportTemplateData = _blobStorage.GetBlobData(new Guid(templateId));
+			var reportTemplateData = _blobStorage.GetBlobData(templateId);
 
 			return _reportTemplateSerializer.Deserialize(reportTemplateData.Data);
 		}
@@ -56,7 +56,7 @@ namespace InfinniPlatform.Reporting.Services
 
 			var reportTemplateData = _reportTemplateSerializer.Serialize(template);
 
-			_blobStorage.SaveBlob(new Guid(templateId), Report, reportTemplateData);
+			_blobStorage.SaveBlob(templateId, Report, reportTemplateData);
 		}
 	}
 }

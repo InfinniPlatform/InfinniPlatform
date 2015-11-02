@@ -41,7 +41,7 @@ namespace InfinniPlatform.BlobStorage.Tests
 		{
 			// GIVEN
 
-			var blobId = Guid.NewGuid();
+			var blobId = Guid.NewGuid().ToString("N");
 
 			const string blobNameV1 = "Attachment.pdf";
 			const string blobTypeV1 = "application/pdf";

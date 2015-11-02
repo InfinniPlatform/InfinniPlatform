@@ -87,7 +87,7 @@ namespace InfinniPlatform.Runtime.Implementation.AssemblyDispatch
 					throw new ArgumentException(string.Format(Resources.AssemblyMetadataNotFound, document.ModuleId));
 				}
 
-				var documentAssembly = blobStorage.GetBlobData(new Guid(document.ContentId));
+				var documentAssembly = blobStorage.GetBlobData(document.ContentId);
 
 				if (documentAssembly != null)
 				{
@@ -101,7 +101,7 @@ namespace InfinniPlatform.Runtime.Implementation.AssemblyDispatch
 
 				if (document.PdbId != null)
 				{
-					var documentPdb = blobStorage.GetBlobData(new Guid(document.PdbId));
+					var documentPdb = blobStorage.GetBlobData(document.PdbId);
 
 					if (documentPdb != null)
 					{

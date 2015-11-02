@@ -36,13 +36,13 @@ namespace InfinniPlatform.Update.ActionUnits
 
                 if (target.Item.ContentId == null)
                 {
-                    var contentId = Guid.NewGuid();
+                    string contentId = Guid.NewGuid().ToString("N");
                     blobStorage.SaveBlob(contentId, contentName, contentData);
                     target.Item.ContentId = contentId;
                 }
                 else
                 {
-                    var contentId = new Guid(target.Item.ContentId);
+                    string contentId = target.Item.ContentId;
                     blobStorage.SaveBlob(contentId, contentName, contentData);
                 }
 
@@ -57,13 +57,13 @@ namespace InfinniPlatform.Update.ActionUnits
 
                     if (target.Item.PdbId == null)
                     {
-                        var pdbId = Guid.NewGuid();
+                        string pdbId = Guid.NewGuid().ToString("N");
                         blobStorage.SaveBlob(pdbId, pdbName, pdbData);
                         target.Item.PdbId = pdbId;
                     }
                     else
                     {
-                        var pdbId = new Guid(target.Item.PdbId);
+                        string pdbId = target.Item.PdbId;
                         blobStorage.SaveBlob(pdbId, pdbName, pdbData);
                     }
                 }

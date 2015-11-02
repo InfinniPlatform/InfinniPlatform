@@ -85,21 +85,9 @@
       <Project>{7CA0F96C-7FF4-44B2-9D44-851984DF4532}</Project>
       <Name>InfinniPlatform.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.BlobStorage\InfinniPlatform.BlobStorage.csproj">
-      <Project>{3BCBCD4C-1155-464E-B020-51FA57B5E9B3}</Project>
-      <Name>InfinniPlatform.BlobStorage</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Cassandra\InfinniPlatform.Cassandra.csproj">
-      <Project>{EC8E01A2-76C8-453A-B957-F83265778971}</Project>
-      <Name>InfinniPlatform.Cassandra</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
       <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
       <Name>InfinniPlatform.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.EventStorage\InfinniPlatform.EventStorage.csproj">
-      <Project>{B95D4F0B-A6CB-473C-BA9A-28285DBCA50E}</Project>
-      <Name>InfinniPlatform.EventStorage</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Hosting\InfinniPlatform.Hosting.csproj">
       <Project>{D6FBC1D7-48E7-4819-8C8B-DD7FA398D2CC}</Project>

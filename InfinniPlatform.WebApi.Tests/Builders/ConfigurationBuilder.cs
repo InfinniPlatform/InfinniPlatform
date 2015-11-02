@@ -25,7 +25,7 @@ namespace InfinniPlatform.WebApi.Tests.Builders
 			itemConfig.Version = "version_metadatatests";
 
 			var itemId = Guid.NewGuid();
-			var contentId = Guid.NewGuid();
+			var contentId = Guid.NewGuid().ToString("N");
 
 			dynamic item = new DynamicWrapper();
 			item.Id = itemId;
@@ -49,8 +49,7 @@ namespace InfinniPlatform.WebApi.Tests.Builders
 
 		private static IBlobStorage CreateBlobStorage()
 		{
-			var cassandraFactory = new CassandraDatabaseFactory();
-			var blobStorageFactory = new CassandraBlobStorageFactory(cassandraFactory);
+			var blobStorageFactory = new FileSystemBlobStorageFactory();
 			return blobStorageFactory.CreateBlobStorage();
 		}
 	}
