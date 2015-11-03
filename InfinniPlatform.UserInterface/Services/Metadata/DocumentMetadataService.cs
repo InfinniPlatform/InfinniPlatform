@@ -31,14 +31,14 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			dynamic document = new DynamicWrapper();
 
 			document.Id = Guid.NewGuid().ToString();
-			document.Services = new dynamic[] { };
-			document.Processes = new dynamic[] { };
-			document.Scenarios = new dynamic[] { };
-			document.Generators = new dynamic[] { };
-			document.Views = new dynamic[] { };
-			document.PrintViews = new dynamic[] { };
-			document.ValidationWarnings = new dynamic[] { };
-			document.ValidationErrors = new dynamic[] { };
+			document.Services = new object[] { };
+			document.Processes = new object[] { };
+			document.Scenarios = new object[] { };
+			document.Generators = new object[] { };
+			document.Views = new object[] { };
+			document.PrintViews = new object[] { };
+			document.ValidationWarnings = new object[] { };
+			document.ValidationErrors = new object[] { };
 
 			return document;
 		}

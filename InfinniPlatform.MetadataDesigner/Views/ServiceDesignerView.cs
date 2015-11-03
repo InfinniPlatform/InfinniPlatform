@@ -132,15 +132,14 @@ namespace InfinniPlatform.MetadataDesigner.Views
                 ComboBoxServiceType.Properties.Items.AddRange(ViewModelExtension.BuildServiceTypesHeaders().BuildImageComboBoxItemsString().ToList());
 
 	            dynamic configuration = PackageMetadataLoader.Configurations[ConfigId()];
-				IEnumerable<dynamic> processesList = configuration.Documents[DocumentId()].Content.Processes;
+				Dictionary<string, dynamic> processesList = configuration.Documents[DocumentId()].Processes;
 
-	            var descriptions = processesList.Select(process => new ProcessDescription
+				var descriptions = processesList.Values.Select(process => new ProcessDescription
 																   {
-																	   Id = process.Id,
-																	   Name = process.Name,
-																	   Caption = process.Caption
-																   })
-												.ToArray();
+																	   Id = process.Content.Id,
+																	   Name = process.Content.Name,
+																	   Caption = process.Content.Caption
+																   });
 
                 ComboBoxScenarioId.Properties.Items.Clear();
                 ComboBoxScenarioId.Properties.Items.AddRange(descriptions.BuildImageComboBoxItems().ToList());
