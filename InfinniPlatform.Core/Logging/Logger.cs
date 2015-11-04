@@ -1,6 +1,4 @@
-﻿using InfinniPlatform.Api.Profiling;
-using InfinniPlatform.Sdk.Environment;
-using InfinniPlatform.Sdk.Environment.Log;
+﻿using InfinniPlatform.Sdk.Environment.Log;
 
 namespace InfinniPlatform.Logging
 {

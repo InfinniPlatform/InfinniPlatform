@@ -24,8 +24,5 @@ namespace InfinniPlatform.Sdk.Environment.Log
         /// <param name="start">Момент начала выполнения метода.</param>
         /// <param name="outcome">Результат выполнения: <c>null</c> - если вызов метода завершился успешно; <c>текст исключения</c> - иначе.</param>
         void Log(string component, string method, DateTime start, string outcome);
-
-        void SetMdcAttribute(string key, string value);
-        void RemoveMdcContext(string key);
     }
 }

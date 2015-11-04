@@ -22,15 +22,5 @@ namespace InfinniPlatform.Logging
         {
             Log(component, method, DateTime.Now - start, outcome);
         }
-
-        public void SetMdcAttribute(string key, string value)
-        {
-            MDC.Set(key, value);
-        }
-
-        public void RemoveMdcContext(string key)
-        {
-            MDC.Remove(key);
-        }
     }
 }
