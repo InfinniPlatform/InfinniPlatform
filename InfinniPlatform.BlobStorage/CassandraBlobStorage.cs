@@ -4,6 +4,7 @@ using InfinniPlatform.Cassandra;
 using InfinniPlatform.Cassandra.DataAdapter;
 using InfinniPlatform.Cassandra.Repository;
 using InfinniPlatform.Cassandra.Storage;
+using InfinniPlatform.Logging;
 using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Binary;
 
@@ -33,10 +34,12 @@ namespace InfinniPlatform.BlobStorage
 		private readonly IColumnFamilyRepository _repository;
 		private readonly IColumnFamilyStorage _storage;
 
+        private const string ComponentName = "CassandraBlobStorage";
 
-		// Метаданные таблицы BLOB
-		private const string BlobTableName = "blobstorage";
-		private static readonly Column IdColumn = new Column("id", ColumnType.Uuid, true);
+        // Метаданные таблицы BLOB
+        private const string BlobTableName = "blobstorage";
+	    
+	    private static readonly Column IdColumn = new Column("id", ColumnType.Uuid, true);
 		private static readonly Column NameColumn = new Column("name", ColumnType.String);
 		private static readonly Column TypeColumn = new Column("type", ColumnType.String);
 		private static readonly Column SizeColumn = new Column("size", ColumnType.Int64);
@@ -91,9 +94,13 @@ namespace InfinniPlatform.BlobStorage
 		/// <returns>Информация о BLOB.</returns>
 		public BlobInfo GetBlobInfo(Guid blobId)
 		{
+            var start = DateTime.Now;
+
 			var rows = _repository.Fetch(GetBlobInfoQuery, new object[] { blobId });
 
-			if (rows != null)
+            Logger.PerformanceLog.Log(ComponentName, "GetBlobInfo", start, null);
+
+            if (rows != null)
 			{
 				var dataRow = rows.FirstOrDefault();
 
@@ -130,14 +137,20 @@ namespace InfinniPlatform.BlobStorage
 		/// <returns>Данные BLOB.</returns>
 		public BlobData GetBlobData(Guid blobId)
 		{
+		    var start = DateTime.Now;
+
 			var rows = _repository.Fetch(GetBlobDataQuery, new object[] { blobId });
 
-			if (rows != null)
+            Logger.PerformanceLog.Log(ComponentName, "GetBlobData", start, null);
+
+            if (rows != null)
 			{
 				var dataRow = rows.FirstOrDefault();
 
 				if (dataRow != null)
 				{
+				    
+
 					return new BlobData
 						   {
 							   Info = new BlobInfo
@@ -153,7 +166,7 @@ namespace InfinniPlatform.BlobStorage
 				}
 			}
 
-			return null;
+            return null;
 		}
 
 
@@ -186,11 +199,15 @@ namespace InfinniPlatform.BlobStorage
 		/// <param name="blobData">Данные BLOB.</param>
 		public void SaveBlob(Guid blobId, string blobName, string blobType, byte[] blobData)
 		{
+		    var start = DateTime.Now;
+
 			var blobTime = DateTimeOffset.UtcNow;
 			var blobSize = (blobData != null) ? blobData.LongLength : 0;
 
 			_dataAdapter.Insert(SaveBlobQuery, new object[] { blobId, blobName, blobType, blobSize, blobTime, blobData });
-		}
+
+            Logger.PerformanceLog.Log(ComponentName, "SaveBlob", start, null);
+        }
 
 
 		private static readonly DeleteQueryStatement DeleteBlobQuery
@@ -206,7 +223,11 @@ namespace InfinniPlatform.BlobStorage
 		/// <param name="blobId">Идентификатор BLOB.</param>
 		public void DeleteBlob(Guid blobId)
 		{
+		    var start = DateTime.Now;
+
 			_dataAdapter.Delete(DeleteBlobQuery, new object[] { blobId });
-		}
+
+            Logger.PerformanceLog.Log(ComponentName, "DeleteBlob", start, null);
+        }
 	}
 }
