@@ -6,6 +6,7 @@ using System.Linq;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.Transactions;
 using InfinniPlatform.Factories;
+using InfinniPlatform.Logging;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Transactions;
 
@@ -46,6 +47,11 @@ namespace InfinniPlatform.Transactions
         /// </summary>
         public void CommitTransaction()
         {
+            var start = DateTime.Now;
+
+            const string component = "TransactionMaster";
+            const string method = "CommitTransaction";
+
             try
             {
                 // Насколько я понял, внутри этой велосипедной транзакции накапливаются документы, которые нужно сохранить.
@@ -74,10 +80,18 @@ namespace InfinniPlatform.Transactions
                 {
                     OnCommit(this);
                 }
+
+                Logger.PerformanceLog.Log(component, method, start, null);
             }
             catch (Exception e)
             {
-                throw new ArgumentException("Fail to commit transaction", e);
+                const string message = "Fail to commit transaction.";
+
+                Logger.Log.Error(message, null, e);
+                Logger.PerformanceLog.Log(component, method, start, e.Message);
+
+                
+                throw new ArgumentException(message, e);
             }
         }
 
