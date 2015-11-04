@@ -4,13 +4,13 @@
     "query": {
       "list": {
         "0": {
-          "query": "*",
-          "alias": "ALL",
-          "color": "#70DBED",
           "id": 0,
+          "color": "#BF1B00",
+          "alias": "Exception",
           "pin": false,
           "type": "lucene",
-          "enable": true
+          "enable": true,
+          "query": "_exists_:result.raw"
         },
         "1": {
           "id": 1,
@@ -23,15 +23,6 @@
         },
         "2": {
           "id": 2,
-          "color": "#E5A8E2",
-          "alias": "GetDocument",
-          "pin": false,
-          "type": "lucene",
-          "enable": true,
-          "query": "qualifiedAction.raw:OWIN.POST\\:\\:/RestfulApi/StandardApi/configuration/GetDocument"
-        },
-        "3": {
-          "id": 3,
           "color": "#EF843C",
           "alias": "ScriptProcessor",
           "pin": false,
@@ -39,22 +30,51 @@
           "enable": true,
           "query": "component:ScriptProcessor"
         },
-        "7": {
-          "id": 7,
-          "color": "#BF1B00",
-          "alias": "Exception",
+        "3": {
+          "id": 3,
+          "color": "#967302",
+          "alias": "Transactions",
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "_exists_:result.raw"
+          "query": "component:TransactionMaster"
+        },
+        "4": {
+          "id": 4,
+          "color": "#F9BA8F",
+          "alias": "Cassandra",
+          "pin": false,
+          "type": "lucene",
+          "enable": true,
+          "query": "component:CassandraBlobStorage"
+        },
+        "5": {
+          "id": 5,
+          "color": "#E5A8E2",
+          "alias": "GetDocument",
+          "pin": false,
+          "type": "lucene",
+          "enable": true,
+          "query": "qualifiedAction.raw:OWIN.POST\\:\\:\\/RestfulApi\\/StandardApi\\/configuration\\/GetDocument"
+        },
+        "6": {
+          "id": 6,
+          "color": "#447EBC",
+          "alias": "SetDocument",
+          "pin": false,
+          "type": "lucene",
+          "enable": true,
+          "query": "qualifiedAction.raw:OWIN.POST\\:\\:\\/RestfulApi\\/StandardApi\\/configuration\\/SetDocument"
         }
       },
       "ids": [
         0,
         1,
         2,
-        7,
-        3
+        3,
+        4,
+        5,
+        6
       ]
     },
     "filter": {
@@ -62,7 +82,7 @@
         "0": {
           "type": "time",
           "field": "@timestamp",
-          "from": "now-6h",
+          "from": "now-1h",
           "to": "now",
           "mandate": "must",
           "active": true,
@@ -122,7 +142,9 @@
               1,
               2,
               3,
-              7
+              4,
+              5,
+              6
             ]
           },
           "tmode": "terms",
@@ -159,7 +181,9 @@
               1,
               2,
               3,
-              7
+              4,
+              5,
+              6
             ]
           },
           "tmode": "terms_stats",
@@ -196,7 +220,9 @@
               1,
               2,
               3,
-              7
+              4,
+              5,
+              6
             ]
           },
           "tmode": "terms_stats",
@@ -233,7 +259,9 @@
               1,
               2,
               3,
-              7
+              4,
+              5,
+              6
             ]
           },
           "tmode": "terms_stats",
@@ -270,7 +298,9 @@
               1,
               2,
               3,
-              7
+              4,
+              5,
+              6
             ]
           },
           "tmode": "terms_stats",
@@ -307,7 +337,9 @@
               1,
               2,
               3,
-              7
+              4,
+              5,
+              6
             ]
           },
           "tmode": "terms_stats",
@@ -338,7 +370,9 @@
               1,
               2,
               3,
-              7
+              4,
+              5,
+              6
             ]
           },
           "style": {
@@ -396,98 +430,15 @@
               1,
               2,
               3,
-              7
+              4,
+              5,
+              6
             ]
           },
           "tmode": "terms",
           "tstat": "total",
           "valuefield": "",
           "title": "Exception Stats"
-        }
-      ],
-      "notice": false
-    },
-    {
-      "title": "Event Frequency",
-      "height": "150px",
-      "editable": true,
-      "collapse": false,
-      "collapsable": true,
-      "panels": [
-        {
-          "span": 12,
-          "editable": true,
-          "type": "histogram",
-          "loadingEditor": false,
-          "mode": "count",
-          "time_field": "timestamp",
-          "value_field": "duration",
-          "x-axis": true,
-          "y-axis": true,
-          "scale": 1,
-          "y_format": "none",
-          "grid": {
-            "max": null,
-            "min": 0
-          },
-          "queries": {
-            "mode": "selected",
-            "ids": [
-              0,
-              1,
-              3
-            ]
-          },
-          "annotate": {
-            "enable": false,
-            "query": "*",
-            "size": 20,
-            "field": "_type",
-            "sort": [
-              "_score",
-              "desc"
-            ]
-          },
-          "auto_int": true,
-          "resolution": 100,
-          "interval": "5m",
-          "intervals": [
-            "auto",
-            "1s",
-            "1m",
-            "5m",
-            "10m",
-            "30m",
-            "1h",
-            "3h",
-            "12h",
-            "1d",
-            "1w",
-            "1y"
-          ],
-          "lines": true,
-          "fill": 3,
-          "linewidth": 3,
-          "points": false,
-          "pointradius": 5,
-          "bars": false,
-          "stack": false,
-          "spyable": true,
-          "zoomlinks": true,
-          "options": true,
-          "legend": true,
-          "show_query": true,
-          "interactive": true,
-          "legend_counts": true,
-          "timezone": "browser",
-          "percentage": true,
-          "zerofill": true,
-          "derivative": false,
-          "tooltip": {
-            "value_type": "individual",
-            "query_as_alias": true
-          },
-          "title": "Event Frequency"
         }
       ],
       "notice": false
@@ -518,7 +469,7 @@
           "queries": {
             "mode": "selected",
             "ids": [
-              7
+              0
             ]
           },
           "annotate": {
@@ -533,7 +484,7 @@
           },
           "auto_int": true,
           "resolution": 100,
-          "interval": "5m",
+          "interval": "30s",
           "intervals": [
             "auto",
             "1s",
@@ -576,6 +527,94 @@
       "notice": false
     },
     {
+      "title": "Event Frequency",
+      "height": "150px",
+      "editable": true,
+      "collapse": false,
+      "collapsable": true,
+      "panels": [
+        {
+          "span": 12,
+          "editable": true,
+          "type": "histogram",
+          "loadingEditor": false,
+          "mode": "count",
+          "time_field": "timestamp",
+          "value_field": "duration",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_format": "none",
+          "grid": {
+            "max": null,
+            "min": 0
+          },
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ]
+          },
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "auto_int": true,
+          "resolution": 100,
+          "interval": "30s",
+          "intervals": [
+            "auto",
+            "1s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1y"
+          ],
+          "lines": true,
+          "fill": 3,
+          "linewidth": 3,
+          "points": false,
+          "pointradius": 5,
+          "bars": false,
+          "stack": false,
+          "spyable": true,
+          "zoomlinks": true,
+          "options": true,
+          "legend": true,
+          "show_query": true,
+          "interactive": true,
+          "legend_counts": true,
+          "timezone": "browser",
+          "percentage": true,
+          "zerofill": true,
+          "derivative": false,
+          "tooltip": {
+            "value_type": "individual",
+            "query_as_alias": true
+          },
+          "title": "Event Frequency"
+        }
+      ],
+      "notice": false
+    },
+    {
       "title": "Mean Response",
       "height": "150px",
       "editable": true,
@@ -603,7 +642,10 @@
             "ids": [
               1,
               2,
-              3
+              3,
+              4,
+              5,
+              6
             ]
           },
           "annotate": {
@@ -618,7 +660,7 @@
           },
           "auto_int": true,
           "resolution": 100,
-          "interval": "5m",
+          "interval": "30s",
           "intervals": [
             "auto",
             "1s",
@@ -688,7 +730,10 @@
             "ids": [
               1,
               2,
-              3
+              3,
+              4,
+              5,
+              6
             ]
           },
           "annotate": {
@@ -703,7 +748,7 @@
           },
           "auto_int": true,
           "resolution": 100,
-          "interval": "5m",
+          "interval": "30s",
           "intervals": [
             "auto",
             "1s",
@@ -783,7 +828,9 @@
               0,
               1,
               2,
-              7
+              3,
+              4,
+              5
             ]
           },
           "style": {
@@ -827,7 +874,9 @@
               0,
               1,
               2,
-              7
+              3,
+              4,
+              5
             ]
           },
           "style": {
@@ -858,16 +907,16 @@
       "query": "*",
       "pinned": true,
       "history": [
+        "qualifiedAction.raw:OWIN.POST\\:\\:\\/RestfulApi\\/StandardApi\\/configuration\\/SetDocument",
+        "qualifiedAction.raw:OWIN.POST\\:\\:\\/RestfulApi\\/StandardApi\\/configuration\\/GetDocument",
         "_exists_:result.raw",
+        "component:CassandraBlobStorage",
+        "component:TransactionMaster",
         "component:ScriptProcessor",
-        "qualifiedAction.raw:OWIN.POST\\:\\:/RestfulApi/StandardApi/configuration/GetDocument",
         "component:OWIN",
         "*",
-        "qualifiedAction.raw:OWIN.POST::/RestfulApi/StandardApi/configuration/GetDocument",
-        "component:ThinkehrWebTemplateBuilder",
-        "component:ThinkehrCompositionBuilder",
-        "component:EhrRegistry",
-        "component:AuditToForcareService"
+        "qualifiedAction.raw:OWIN.POST\\:\\:/RestfulApi/StandardApi/configuration/SetDocument",
+        "qualifiedAction.raw:OWIN.POST\\:\\:/RestfulApi/StandardApi/configuration/GetDocument"
       ],
       "remember": 10,
       "enable": true
@@ -875,7 +924,7 @@
     {
       "type": "filtering",
       "collapse": true,
-      "notice": true,
+      "notice": false,
       "enable": true
     }
   ],
