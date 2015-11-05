@@ -12,8 +12,6 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Factor
         {
             MetadataType.View,
             MetadataType.PrintView,
-            MetadataType.ValidationError,
-            MetadataType.ValidationWarning,
             MetadataType.Scenario,
             MetadataType.Process,
             MetadataType.Service,

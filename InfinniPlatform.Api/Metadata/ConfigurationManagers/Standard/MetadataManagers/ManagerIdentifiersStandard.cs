@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using InfinniPlatform.Api.RestApi.CommonApi;
+using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers
@@ -30,8 +29,8 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
         /// <param name="name">Наименование элемента</param>
         /// <returns>Идентификатор элемента</returns>
         public string GetConfigurationUid(string version, string name)
-        {
-            var configList = GetConfigList(version);
+		{
+            var configList = GetConfigList();
 
             return
                 configList.Where(
@@ -48,7 +47,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
         public string GetDocumentUid(string version, string configurationId, string documentId)
         {
             var config =
-                GetConfigList(version)
+                GetConfigList()
                     .FirstOrDefault(
                         c =>
                             c.Name.ToLowerInvariant() == configurationId.ToLowerInvariant() &&
@@ -71,19 +70,13 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
             return null;
         }
 
-        private static IEnumerable<dynamic> GetConfigList(string version)
-        {
-            dynamic body = new
-                {
-                    Version = version
-                };
-            IEnumerable<dynamic> configList = DynamicWrapperExtensions.ToEnumerable(
-                RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getregisteredconfiglist", null, body)
-                    .ToDynamic().ConfigList);
-            return configList;
-        }
+	    private static IEnumerable<dynamic> GetConfigList()
+	    {
+		    IEnumerable<dynamic> configList = PackageMetadataLoader.Configurations.Values;
+		    return configList.Select(o => o.Content);
+	    }
 
-        private static IEnumerable<dynamic> GetSolutionList(string version)
+	    private static IEnumerable<dynamic> GetSolutionList(string version)
         {
             dynamic body = new
             {

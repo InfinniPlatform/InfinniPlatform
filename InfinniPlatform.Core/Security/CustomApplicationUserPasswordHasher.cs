@@ -1,38 +1,28 @@
 ﻿using InfinniPlatform.Api.Security;
-using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.Security
 {
-    public sealed class CustomApplicationUserPasswordHasher : IApplicationUserPasswordHasher
-    {
-        private readonly IGlobalContext _globalContext;
+	public sealed class CustomApplicationUserPasswordHasher : IApplicationUserPasswordHasher
+	{
+		/// <summary>
+		/// Возвращает хэш пароля.
+		/// </summary>
+		public string HashPassword(string password)
+		{
+			return StringHasher.HashValue(password);
+		}
 
-        public CustomApplicationUserPasswordHasher(IGlobalContext globalContext)
-        {
-            _globalContext = globalContext;
-        }
-
-        /// <summary>
-        ///     Возвращает хэш пароля.
-        /// </summary>
-        public string HashPassword(string password)
-        {
-            return StringHasher.HashValue(password);
-        }
-
-        /// <summary>
-        ///     Проверяет, что пароль соответствует хэшу.
-        /// </summary>
-        public bool VerifyHashedPassword(string hashedPassword, string providedPassword)
-        {
-            var success = StringHasher.VerifyValue(hashedPassword, providedPassword);
-            if (!success)
-            {
-                success = _globalContext.GetComponent<IPasswordVerifierComponent>()
-                    .VerifyPassword(hashedPassword, providedPassword);
-            }
-            return success;
-        }
-    }
+		/// <summary>
+		/// Проверяет, что пароль соответствует хэшу.
+		/// </summary>
+		public bool VerifyHashedPassword(string hashedPassword, string providedPassword)
+		{
+			var success = StringHasher.VerifyValue(hashedPassword, providedPassword);
+			if (!success)
+			{
+				success = new DefaultApplicationUserPasswordHasher().VerifyHashedPassword(hashedPassword, providedPassword);
+			}
+			return success;
+		}
+	}
 }

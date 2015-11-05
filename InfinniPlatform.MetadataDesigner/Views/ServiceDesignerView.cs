@@ -7,6 +7,7 @@ using DevExpress.XtraEditors.Controls;
 using InfinniPlatform.Api.Deprecated;
 
 using InfinniPlatform.Api.Metadata;
+using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.MetadataDesigner.Views.ViewModel;
 using InfinniPlatform.Sdk.Dynamic;
 using Newtonsoft.Json.Linq;
@@ -130,8 +131,15 @@ namespace InfinniPlatform.MetadataDesigner.Views
                 ComboBoxServiceType.Properties.Items.Clear();
                 ComboBoxServiceType.Properties.Items.AddRange(ViewModelExtension.BuildServiceTypesHeaders().BuildImageComboBoxItemsString().ToList());
 
-                IEnumerable<ProcessDescription> descriptions = ViewModelExtension.GetDocumentProcessesList(Version(), ConfigId(), DocumentId());
+	            dynamic configuration = PackageMetadataLoader.Configurations[ConfigId()];
+				Dictionary<string, dynamic> processesList = configuration.Documents[DocumentId()].Processes;
 
+				var descriptions = processesList.Values.Select(process => new ProcessDescription
+																   {
+																	   Id = process.Content.Id,
+																	   Name = process.Content.Name,
+																	   Caption = process.Content.Caption
+																   });
 
                 ComboBoxScenarioId.Properties.Items.Clear();
                 ComboBoxScenarioId.Properties.Items.AddRange(descriptions.BuildImageComboBoxItems().ToList());

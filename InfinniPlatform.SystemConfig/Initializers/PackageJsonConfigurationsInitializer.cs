@@ -8,236 +8,234 @@ using InfinniPlatform.Hosting;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Log;
 using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.WebApi.Factories;
 
 namespace InfinniPlatform.SystemConfig.Initializers
 {
-	public sealed class PackageJsonConfigurationsInitializer : IStartupInitializer
-	{
-		public PackageJsonConfigurationsInitializer(ISecurityComponent securityComponent)
-		{
-			_securityComponent = securityComponent;
+    public sealed class PackageJsonConfigurationsInitializer : IStartupInitializer
+    {
+        public PackageJsonConfigurationsInitializer(ISecurityComponent securityComponent)
+        {
+            _securityComponent = securityComponent;
 
-			_configurations = new Lazy<IEnumerable<DynamicWrapper>>(LoadConfigsMetadata);
+            _configurations = new Lazy<IEnumerable<DynamicWrapper>>(LoadConfigsMetadata);
 
-			var watcher = new FileSystemWatcher(AppSettings.GetValue("ContentDirectory", "content"), "*.json")
-			{
-				IncludeSubdirectories = true
-			};
+            var watcher = new FileSystemWatcher(AppSettings.GetValue("ContentDirectory", "content"), "*.json")
+                          {
+                              IncludeSubdirectories = true
+                          };
 
-			watcher.Changed += (sender, args) =>
-			{
-				if (FileHistoryHelper.IsChanged(args.FullPath))
-				{
-					try
-					{
-						Console.WriteLine("[{1}] File {0} changed.", args.Name, DateTime.Now.TimeOfDay);
+            watcher.Changed += (sender, args) => { UpdateConfigsMetadata(args); };
+            watcher.Created += (sender, args) => { UpdateConfigsMetadata(args); };
+            watcher.Deleted += (sender, args) => { UpdateConfigsMetadata(args); };
 
-						foreach (dynamic configuration in _configurations.Value)
-						{
-							RemoveConfiguration(configuration.Name);
-						}
+            watcher.EnableRaisingEvents = true;
+        }
 
-						var updatedConfigurations = LoadConfigsMetadata();
+        private readonly Lazy<IEnumerable<DynamicWrapper>> _configurations;
+        private readonly ISecurityComponent _securityComponent;
 
-						foreach (dynamic configuration in updatedConfigurations)
-						{
-							InstallConfiguration(configuration, configuration.Name);
-						}
+        public void OnStart(HostingContextBuilder contextBuilder)
+        {
+            // Получение списка всех установленных конфигураций
+            var configurations = _configurations.Value;
 
-						Console.WriteLine("[{0}] Configurations successfully updated.", DateTime.Now.TimeOfDay);
-					}
-					catch (Exception e)
-					{
-					    Logger.Log.Error("Error during metadata update.", null, e);
-					}
-				}
-			};
+            // Загрузка и кэширование метаданных каждой конфигурации
+            foreach (dynamic configuration in configurations)
+            {
+                string configurationId = configuration.Name;
+                string configurationVersion = configuration.Version;
 
-			watcher.EnableRaisingEvents = true;
-		}
+                InstallConfiguration(configuration, configurationId, configurationVersion);
+            }
+        }
 
-		private readonly ISecurityComponent _securityComponent;
-		private readonly Lazy<IEnumerable<DynamicWrapper>> _configurations;
+        private void UpdateConfigsMetadata(FileSystemEventArgs args)
+        {
+            if (FileHistoryHelper.IsChanged(args.FullPath))
+            {
+                try
+                {
+                    Console.WriteLine(@"[{1}] File {0} changed.", args.Name, DateTime.Now.TimeOfDay);
 
+                    foreach (dynamic configuration in _configurations.Value)
+                    {
+                        RemoveConfiguration(configuration.Name);
+                    }
 
-		public void OnStart(HostingContextBuilder contextBuilder)
-		{
-			// Получение списка всех установленных конфигураций
-			var configurations = _configurations.Value;
+                    var updatedConfigurations = LoadConfigsMetadata();
 
-			// Загрузка и кэширование метаданных каждой конфигурации
-			foreach (dynamic configuration in configurations)
-			{
-				string configurationId = configuration.Name;
-				string configurationVersion = configuration.Version;
+                    foreach (dynamic configuration in updatedConfigurations)
+                    {
+                        InstallConfiguration(configuration, configuration.Name);
+                    }
 
-				InstallConfiguration(configuration, configurationId, configurationVersion);
-			}
-		}
+                    Console.WriteLine(@"[{0}] Configurations successfully updated.", DateTime.Now.TimeOfDay);
+                }
+                catch (Exception e)
+                {
+                    Logger.Log.Error("Error during metadata update.", null, e);
+                }
+            }
+        }
 
+        private void InstallConfiguration(object configuration, string configId, string configVersion = null)
+        {
+            // Загрузка метеданных конфигурации для кэширования
+            var metadataCacheFiller = LoadConfigurationMetadata(configuration);
 
-		private void InstallConfiguration(object configuration, string configId, string configVersion = null)
-		{
-			// Загрузка метеданных конфигурации для кэширования
-			var metadataCacheFiller = LoadConfigurationMetadata(configuration);
+            // Создание менеджера кэша метаданных конфигураций
+            var metadataCacheManager = InfinniPlatformHostServer.Instance.CreateConfiguration(configId, false, configVersion);
 
-			// Создание менеджера кэша метаданных конфигураций
-			var metadataCacheManager = InfinniPlatformHostServer.Instance.CreateConfiguration(configId, false, configVersion);
+            // Загрузка метаданных конфигурации в кэш
+            metadataCacheFiller.InstallConfiguration(metadataCacheManager);
 
-			// Загрузка метаданных конфигурации в кэш
-			metadataCacheFiller.InstallConfiguration(metadataCacheManager);
+            // Создание обработчика скриптов
+            metadataCacheManager.ScriptConfiguration.InitActionUnitStorage(configVersion);
 
-			// Создание обработчика скриптов
-			metadataCacheManager.ScriptConfiguration.InitActionUnitStorage(configVersion);
+            // Создание сервисов конфигурации
+            InfinniPlatformHostServer.Instance.InstallServices(configVersion, metadataCacheManager.ServiceRegistrationContainer);
 
-			// Создание сервисов конфигурации
-			InfinniPlatformHostServer.Instance.InstallServices(configVersion, metadataCacheManager.ServiceRegistrationContainer);
+            // Загрузка ACL после установки конфигурации "Authorization"
+            if (string.Equals(configId, "authorization", StringComparison.OrdinalIgnoreCase))
+            {
+                _securityComponent.WarmUpAcl();
+            }
+        }
 
-			// Загрузка ACL после установки конфигурации "Authorization"
-			if (string.Equals(configId, "authorization", StringComparison.OrdinalIgnoreCase))
-			{
-				_securityComponent.WarmUpAcl();
-			}
-		}
+        private static void RemoveConfiguration(string configurationName)
+        {
+            // Удаление сервисов конфигурации
+            InfinniPlatformHostServer.Instance.UninstallServices(configurationName);
 
+            // Удаление метаданных конфигурации из кэша
+            InfinniPlatformHostServer.Instance.RemoveConfiguration(configurationName);
+        }
 
-		static void RemoveConfiguration(string configurationName)
-		{
-			// Удаление сервисов конфигурации
-			InfinniPlatformHostServer.Instance.UninstallServices(configurationName);
+        private static PackageJsonConfigurationInstaller LoadConfigurationMetadata(dynamic configuration)
+        {
+            IEnumerable<dynamic> menu = configuration.Menu;
+            IEnumerable<dynamic> registers = configuration.Registers;
+            IEnumerable<dynamic> documents = configuration.Documents;
+            IEnumerable<dynamic> scenarios = documents.SelectMany(i => (IEnumerable<dynamic>)i.Scenarios).ToArray();
+            IEnumerable<dynamic> processes = documents.SelectMany(i => (IEnumerable<dynamic>)i.Processes).ToArray();
+            IEnumerable<dynamic> services = documents.SelectMany(i => (IEnumerable<dynamic>)i.Services).ToArray();
+            IEnumerable<dynamic> generators = documents.SelectMany(i => (IEnumerable<dynamic>)i.Generators).ToArray();
+            IEnumerable<dynamic> views = documents.SelectMany(i => (IEnumerable<dynamic>)i.Views).ToArray();
+            IEnumerable<dynamic> printViews = documents.SelectMany(i => (IEnumerable<dynamic>)i.PrintViews).ToArray();
+            IEnumerable<dynamic> validationErrors = documents.SelectMany(i => (IEnumerable<dynamic>)i.ValidationErrors).ToArray();
+            IEnumerable<dynamic> validationWarnings = documents.SelectMany(i => (IEnumerable<dynamic>)i.ValidationWarnings).ToArray();
 
-			// Удаление метаданных конфигурации из кэша
-			InfinniPlatformHostServer.Instance.RemoveConfiguration(configurationName);
-		}
+            return new PackageJsonConfigurationInstaller(
+                documents,
+                menu,
+                scenarios,
+                processes,
+                services,
+                generators,
+                views,
+                printViews,
+                validationErrors,
+                validationWarnings,
+                registers);
+        }
 
+        private static IEnumerable<DynamicWrapper> LoadConfigsMetadata()
+        {
+            var contentDirectory = AppSettings.GetValue("ContentDirectory", "content");
 
-		private static PackageJsonConfigurationInstaller LoadConfigurationMetadata(dynamic configuration)
-		{
-			IEnumerable<dynamic> menu = configuration.Menu;
-			IEnumerable<dynamic> registers = configuration.Registers;
-			IEnumerable<dynamic> documents = configuration.Documents;
-			IEnumerable<dynamic> scenarios = documents.SelectMany(i => (IEnumerable<dynamic>)i.Scenarios).ToArray();
-			IEnumerable<dynamic> processes = documents.SelectMany(i => (IEnumerable<dynamic>)i.Processes).ToArray();
-			IEnumerable<dynamic> services = documents.SelectMany(i => (IEnumerable<dynamic>)i.Services).ToArray();
-			IEnumerable<dynamic> generators = documents.SelectMany(i => (IEnumerable<dynamic>)i.Generators).ToArray();
-			IEnumerable<dynamic> views = documents.SelectMany(i => (IEnumerable<dynamic>)i.Views).ToArray();
-			IEnumerable<dynamic> printViews = documents.SelectMany(i => (IEnumerable<dynamic>)i.PrintViews).ToArray();
-			IEnumerable<dynamic> validationErrors = documents.SelectMany(i => (IEnumerable<dynamic>)i.ValidationErrors).ToArray();
-			IEnumerable<dynamic> validationWarnings = documents.SelectMany(i => (IEnumerable<dynamic>)i.ValidationWarnings).ToArray();
+            var metadataDirectories = Directory.EnumerateDirectories(contentDirectory)
+                                               .Select(d => Path.Combine(d, "metadata"))
+                                               .Where(Directory.Exists)
+                                               .ToArray();
 
-			return new PackageJsonConfigurationInstaller(
-				documents,
-				menu,
-				scenarios,
-				processes,
-				services,
-				generators,
-				views,
-				printViews,
-				validationErrors,
-				validationWarnings,
-				registers);
-		}
+            return metadataDirectories
+                .SelectMany(Directory.EnumerateDirectories)
+                .Select(LoadConfigMetadata)
+                .ToArray();
+        }
 
+        private static DynamicWrapper LoadConfigMetadata(string configDirectory)
+        {
+            var configFile = Path.Combine(configDirectory, "Configuration.json");
 
-		private static IEnumerable<DynamicWrapper> LoadConfigsMetadata()
-		{
-			var contentDirectory = AppSettings.GetValue("ContentDirectory", "content");
+            dynamic configuration = LoadItemMetadata(configFile);
 
-			var metadataDirectories = Directory.EnumerateDirectories(contentDirectory)
-											   .Select(d => Path.Combine(d, "metadata"))
-											   .Where(Directory.Exists)
-											   .ToArray();
+            object configId = configuration.Name;
 
-			return metadataDirectories
-				.SelectMany(Directory.EnumerateDirectories)
-				.Select(LoadConfigMetadata)
-				.ToArray();
-		}
+            configuration.Version = null;
+            configuration.Menu = LoadItemsMetadata(configDirectory, "Menu", configId);
+            configuration.Registers = LoadItemsMetadata(configDirectory, "Registers", configId);
+            configuration.Documents = LoadDocumentsMetadata(configDirectory, configId);
 
-		private static DynamicWrapper LoadConfigMetadata(string configDirectory)
-		{
-			var configFile = Path.Combine(configDirectory, "Configuration.json");
+            return configuration;
+        }
 
-			dynamic configuration = LoadItemMetadata(configFile);
+        private static IEnumerable<object> LoadDocumentsMetadata(string configDirectory, object configId)
+        {
+            var documentsDirectory = Path.Combine(configDirectory, "Documents");
 
-			object configId = configuration.Name;
+            if (Directory.Exists(documentsDirectory))
+            {
+                return Directory.EnumerateDirectories(documentsDirectory)
+                                .Select(d => LoadDocumentMetadata(d, configId))
+                                .ToArray();
+            }
 
-			configuration.Version = null;
-			configuration.Menu = LoadItemsMetadata(configDirectory, "Menu", configId);
-			configuration.Registers = LoadItemsMetadata(configDirectory, "Registers", configId);
-			configuration.Documents = LoadDocumentsMetadata(configDirectory, configId);
+            return Enumerable.Empty<object>();
+        }
 
-			return configuration;
-		}
+        private static object LoadDocumentMetadata(string documentDirectory, object configId)
+        {
+            var documentFile = Directory.EnumerateFiles(documentDirectory, "*.json").FirstOrDefault();
 
-		private static IEnumerable<object> LoadDocumentsMetadata(string configDirectory, object configId)
-		{
-			var documentsDirectory = Path.Combine(configDirectory, "Documents");
+            dynamic document = LoadItemMetadata(documentFile);
 
-			if (Directory.Exists(documentsDirectory))
-			{
-				return Directory.EnumerateDirectories(documentsDirectory)
-						 .Select(d => LoadDocumentMetadata(d, configId))
-						 .ToArray();
-			}
+            object documentId = document.Name;
 
-			return Enumerable.Empty<object>();
-		}
+            document.ConfigId = configId;
+            document.Views = LoadItemsMetadata(documentDirectory, "Views", configId, documentId);
+            document.PrintViews = LoadItemsMetadata(documentDirectory, "PrintViews", configId, documentId);
+            document.Scenarios = LoadItemsMetadata(documentDirectory, "Scenarios", configId, documentId);
+            document.Processes = LoadItemsMetadata(documentDirectory, "Processes", configId, documentId);
+            document.Services = LoadItemsMetadata(documentDirectory, "Services", configId, documentId);
+            document.Generators = LoadItemsMetadata(documentDirectory, "Generators", configId, documentId);
+            document.ValidationWarnings = LoadItemsMetadata(documentDirectory, "ValidationWarnings", configId, documentId);
+            document.ValidationErrors = LoadItemsMetadata(documentDirectory, "ValidationErrors", configId, documentId);
+            document.DocumentStatuses = LoadItemsMetadata(documentDirectory, "DocumentStatuses", configId, documentId);
 
-		private static object LoadDocumentMetadata(string documentDirectory, object configId)
-		{
-			var documentFile = Directory.EnumerateFiles(documentDirectory, "*.json").FirstOrDefault();
+            return document;
+        }
 
-			dynamic document = LoadItemMetadata(documentFile);
+        private static IEnumerable<object> LoadItemsMetadata(string documentDirectory, string itemsContainer, object configId, object documentId = null)
+        {
+            var itemsDirectory = Path.Combine(documentDirectory, itemsContainer);
 
-			object documentId = document.Name;
+            if (Directory.Exists(itemsDirectory))
+            {
+                var itemsMetadata = Directory.EnumerateFiles(itemsDirectory, "*.json", SearchOption.AllDirectories)
+                                             .Select(LoadItemMetadata)
+                                             .ToArray();
 
-			document.ConfigId = configId;
-			document.Views = LoadItemsMetadata(documentDirectory, "Views", configId, documentId);
-			document.PrintViews = LoadItemsMetadata(documentDirectory, "PrintViews", configId, documentId);
-			document.Scenarios = LoadItemsMetadata(documentDirectory, "Scenarios", configId, documentId);
-			document.Processes = LoadItemsMetadata(documentDirectory, "Processes", configId, documentId);
-			document.Services = LoadItemsMetadata(documentDirectory, "Services", configId, documentId);
-			document.Generators = LoadItemsMetadata(documentDirectory, "Generators", configId, documentId);
-			document.ValidationWarnings = LoadItemsMetadata(documentDirectory, "ValidationWarnings", configId, documentId);
-			document.ValidationErrors = LoadItemsMetadata(documentDirectory, "ValidationErrors", configId, documentId);
-			document.DocumentStatuses = LoadItemsMetadata(documentDirectory, "DocumentStatuses", configId, documentId);
+                foreach (dynamic item in itemsMetadata)
+                {
+                    item.ConfigId = configId;
+                    item.DocumentId = documentId;
+                }
 
-			return document;
-		}
+                return itemsMetadata;
+            }
 
-		private static IEnumerable<object> LoadItemsMetadata(string documentDirectory, string itemsContainer, object configId, object documentId = null)
-		{
-			var itemsDirectory = Path.Combine(documentDirectory, itemsContainer);
+            return Enumerable.Empty<object>();
+        }
 
-			if (Directory.Exists(itemsDirectory))
-			{
-				var itemsMetadata = Directory.EnumerateFiles(itemsDirectory, "*.json", SearchOption.AllDirectories)
-											 .Select(LoadItemMetadata)
-											 .ToArray();
-
-				foreach (dynamic item in itemsMetadata)
-				{
-					item.ConfigId = configId;
-					item.DocumentId = documentId;
-				}
-
-				return itemsMetadata;
-			}
-
-			return Enumerable.Empty<object>();
-		}
-
-		private static object LoadItemMetadata(string fileName)
-		{
-			using (var reader = File.OpenRead(fileName))
-			{
-				return JsonObjectSerializer.Default.Deserialize(reader, typeof(DynamicWrapper));
-			}
-		}
-	}
+        private static object LoadItemMetadata(string fileName)
+        {
+            using (var reader = File.OpenRead(fileName))
+            {
+                return JsonObjectSerializer.Default.Deserialize(reader, typeof(DynamicWrapper));
+            }
+        }
+    }
 }

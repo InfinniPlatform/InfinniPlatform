@@ -11,6 +11,7 @@ namespace InfinniPlatform.Sdk.Tests
 {
 	[TestFixture]
 	[Category(TestCategories.IntegrationTest)]
+	[Ignore("Obsolete")]
 	public class AuthApiTest
 	{
 		private const string Route = "1";

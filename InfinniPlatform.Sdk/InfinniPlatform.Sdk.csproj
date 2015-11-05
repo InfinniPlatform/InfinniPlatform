@@ -81,6 +81,8 @@
     <Compile Include="Environment\Log\ExceptionExtensions.cs" />
     <Compile Include="Environment\Log\IPerformanceLog.cs" />
     <Compile Include="Environment\Log\JsonEvent.cs" />
+    <Compile Include="Environment\Index\DocumentSchemaHelper.cs" />
+    <Compile Include="Environment\Index\MigrationHelper.cs" />
     <Compile Include="Environment\Register\RegisterConstants.cs" />
     <Compile Include="Environment\Register\RegisterEntryType.cs" />
     <Compile Include="Environment\Settings\AppSettings.cs" />
@@ -109,7 +111,6 @@
     <Compile Include="ContextComponents\ILogComponent.cs" />
     <Compile Include="ContextComponents\IMetadataComponent.cs" />
     <Compile Include="ContextComponents\IMetadataConfigurationProvider.cs" />
-    <Compile Include="ContextComponents\IPasswordVerifierComponent.cs" />
     <Compile Include="ContextComponents\IPrintViewComponent.cs" />
     <Compile Include="ContextComponents\IProfilerComponent.cs" />
     <Compile Include="ContextComponents\IReferenceResolver.cs" />

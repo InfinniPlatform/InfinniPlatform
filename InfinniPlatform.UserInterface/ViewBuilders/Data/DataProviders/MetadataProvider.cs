@@ -11,69 +11,62 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Data.DataProviders
     /// </summary>
     public sealed class MetadataProvider : IDataProvider
     {
-        private readonly Dictionary<string, Func<string, string, string, IMetadataService>> MetadataServices
-            = new Dictionary<string, Func<string, string, string, IMetadataService>>();
-            
+	    private readonly Dictionary<string, Func<string, string, string, IMetadataService>> _metadataServices
+		    = new Dictionary<string, Func<string, string, string, IMetadataService>>();
 
-        private string _configId;
-        private string _documentId;
-        private IMetadataService _metadataService;
-        private string _versionId;
-        private readonly string _metadataType;
-        private readonly string _server;
-        private readonly int _port;
-        private readonly string _versionRoute;
+	    private string _configId;
+	    private string _documentId;
+	    private IMetadataService _metadataService;
+	    private string _versionId;
+	    private readonly string _metadataType;
 
         /// <summary>
         ///   VersionRoute не является идентификатором версии конфигурации, это идентификатор роутинга
         /// сервера (например "1.5") по которому nginx выполнит сопоставление урла в случае нескольких серверов приложения
         /// </summary>
-        public MetadataProvider(string metadataType, string server, int port, string versionRoute)
+        public MetadataProvider(string metadataType)
         {
             FillServices();
             _metadataType = metadataType;
-            _server = server;
-            _port = port;
-            _versionRoute = versionRoute;
         }
 
         private void FillServices()
         {
-            MetadataServices.Add(
+            _metadataServices.Add(
                     MetadataType.Solution,
-                    (version, configId, documentId) => new SolutionMetadataService(version, _server, _port, _versionRoute)
+                    (version, configId, documentId) => new SolutionMetadataService()
             );
-            MetadataServices.Add(
+            _metadataServices.Add(
                     MetadataType.Configuration,
-                    (version, configId, documentId) => new ConfigurationMetadataService(version, _server, _port, _versionRoute)                
+                    (version, configId, documentId) => new ConfigurationMetadataService()                
             );
-            MetadataServices.Add(
-                    MetadataType.Menu, (version, configId, documentId) => new MenuMetadataService(version, configId, _server, _port, _versionRoute)
+            _metadataServices.Add(
+                    MetadataType.Menu, (version, configId, documentId) => new MenuMetadataService(configId)
             );
-            MetadataServices.Add(
-                    MetadataType.Assembly, (version, configId, documentId) => new AssemblyMetadataService(version, configId, _server, _port, _versionRoute)
+            _metadataServices.Add(
+                    MetadataType.Assembly, (version, configId, documentId) => new AssemblyMetadataService(configId)
             );
-            MetadataServices.Add(
-                    MetadataType.Register, (version, configId, documentId) => new RegisterMetadataService(version, configId, _server, _port, _versionRoute)
+            _metadataServices.Add(
+                    MetadataType.Register, (version, configId, documentId) => new RegisterMetadataService(configId)
             );
-            MetadataServices.Add(
-                    MetadataType.Document, (version, configId, documentId) => new DocumentMetadataService(version, configId, _server, _port, _versionRoute)
+            _metadataServices.Add(
+                    MetadataType.Document, (version, configId, documentId) => new DocumentMetadataService(configId)
             );
 
-            MetadataServices.Add(
-                    MetadataType.PrintView, (version, configId, documentId) => new PrintViewMetadataService(version, configId, documentId, _server, _port, _versionRoute)
+            _metadataServices.Add(
+                    MetadataType.PrintView, (version, configId, documentId) => new PrintViewMetadataService(configId, documentId)
             );
-            MetadataServices.Add(
-                    MetadataType.View, (version, configId, documentId) => new ViewMetadataService(version, configId, documentId, _server, _port, _versionRoute)
+            _metadataServices.Add(
+                    MetadataType.View, (version, configId, documentId) => new ViewMetadataService(configId, documentId)
             );
-            MetadataServices.Add(
-                    MetadataType.Service, (version, configId, documentId) => new ServiceMetadataService(version, configId, documentId, _server, _port, _versionRoute)
+            _metadataServices.Add(
+                    MetadataType.Service, (version, configId, documentId) => new ServiceMetadataService(configId, documentId)
             );
-            MetadataServices.Add(
-                    MetadataType.Process, (version, configId, documentId) => new ProcessMetadataService(version, configId, documentId, _server, _port, _versionRoute)
+            _metadataServices.Add(
+                    MetadataType.Process, (version, configId, documentId) => new ProcessMetadataService(configId, documentId)
             );
-            MetadataServices.Add(
-                    MetadataType.Scenario, (version, configId, documentId) => new ScenarioMetadataService(version, configId, documentId, _server, _port, _versionRoute)
+            _metadataServices.Add(
+                    MetadataType.Scenario, (version, configId, documentId) => new ScenarioMetadataService(configId, documentId)
             );
         }
 
@@ -173,7 +166,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Data.DataProviders
                     {
                         Func<string, string, string, IMetadataService> metadataServiceFunc;
 
-                        if (MetadataServices.TryGetValue(_metadataType, out metadataServiceFunc) == false)
+                        if (_metadataServices.TryGetValue(_metadataType, out metadataServiceFunc) == false)
                         {
                             throw new NotSupportedException(_metadataType);
                         }

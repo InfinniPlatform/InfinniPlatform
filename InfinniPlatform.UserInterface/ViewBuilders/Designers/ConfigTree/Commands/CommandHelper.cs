@@ -10,7 +10,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Comman
 
         public static IDataProvider GetMetadataProvider(ConfigElementNode elementNode, string elementType, string server, int port, string routeVersion)
         {
-            var metadataProvider = new MetadataProvider(elementType, server, port, routeVersion);
+            var metadataProvider = new MetadataProvider(elementType);
             metadataProvider.SetConfigId(elementNode.ConfigId);
             metadataProvider.SetDocumentId(elementNode.DocumentId);
             metadataProvider.SetVersion(elementNode.Version);

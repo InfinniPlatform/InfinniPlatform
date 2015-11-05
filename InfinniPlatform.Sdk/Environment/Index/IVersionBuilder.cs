@@ -1,4 +1,6 @@
-﻿namespace InfinniPlatform.Sdk.Environment.Index
+﻿using System.Collections.Generic;
+
+namespace InfinniPlatform.Sdk.Environment.Index
 {
     /// <summary>
     ///     Конструктор версий хранилища документов
@@ -21,13 +23,13 @@
         ///     свойствам,
         ///     в противном случае нужно создавать новую версию.
         /// </summary>
-        bool VersionExists(IIndexTypeMapping properties = null);
+		bool VersionExists(IList<PropertyMapping> properties = null);
 
         /// <summary>
         ///     Создать версию индекса метаданных
         /// </summary>
         /// <param name="deleteExisting">Флаг, показывающий нужно ли удалять версию харнилища, если она уже существует</param>
         /// <param name="properties">Первоначальный список полей</param>
-        void CreateVersion(bool deleteExisting = false, IIndexTypeMapping properties = null);
+		void CreateVersion(bool deleteExisting = false, IList<PropertyMapping> properties = null);
     }
 }

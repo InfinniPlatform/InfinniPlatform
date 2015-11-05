@@ -59,8 +59,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
 			//все версии типа в индексе
 			_derivedTypeNames = new Lazy<IEnumerable<IndexToTypeAccordance>>(() => _elasticConnection.GetAllTypes(new[] { _indexName }, new[] { _typeName }));
-
-			_elasticConnection.ConnectIndex();
 		}
 
 		/// <summary>
@@ -70,7 +68,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 		/// Во всех остальных случаях достаточно выполнения операции Set. Предназначена для ручного управления логом транзакций elasticsearch
 		public void Refresh()
 		{
-			_elasticConnection.Client.Refresh(r => r.Force());
+            _elasticConnection.Refresh();
 		}
 
 		/// <summary>

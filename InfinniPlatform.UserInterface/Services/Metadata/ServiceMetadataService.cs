@@ -1,59 +1,92 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Sdk.Api;
-using InfinniPlatform.Sdk.Metadata;
+using System.IO;
+using System.Linq;
+
+using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Api.Serialization;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {
-    /// <summary>
-    ///     Сервис для работы с метаданными бизнес-сервисов.
-    /// </summary>
-    internal sealed class ServiceMetadataService : BaseMetadataService
-    {
-        private readonly string _configId;
-        private string _documentId;
-        private InfinniMetadataApi _metadataApi;
+	/// <summary>
+	/// Сервис для работы с метаданными бизнес-сервисов.
+	/// </summary>
+	internal sealed class ServiceMetadataService : BaseMetadataService
+	{
+		public ServiceMetadataService(string configId, string documentId)
+		{
+			_configId = configId;
+			_documentId = documentId;
+		}
 
-        public ServiceMetadataService(string version, string configId, string documentId, string server, int port, string route)
-            : base(version, server, port, route)
-        {
-            _configId = configId;
-            _documentId = documentId;
-            _metadataApi = new InfinniMetadataApi(server, port.ToString(), route);
-        }
+		private readonly string _configId;
+		private readonly string _documentId;
 
-        public string ConfigId
-        {
-            get { return _configId; }
-        }
+		public string ConfigId
+		{
+			get { return _configId; }
+		}
 
+		public override object CreateItem()
+		{
+			dynamic service = new DynamicWrapper();
 
-        public override object CreateItem()
-        {
-            return _metadataApi.CreateService(Version, ConfigId, _documentId);
-        }
+			service.Id = Guid.NewGuid().ToString();
+			service.Name = string.Empty;
+			service.Caption = string.Empty;
+			service.Description = string.Empty;
 
-        public override void ReplaceItem(dynamic item)
-        {
-            _metadataApi.UpdateService(item, Version, ConfigId, _documentId);
-        }
+			return service;
+		}
 
-        public override void DeleteItem(string itemId)
-        {
-            _metadataApi.DeleteService(Version, ConfigId, _documentId, itemId);
-        }
+		public override void ReplaceItem(dynamic item)
+		{
+			string filePath;
+			var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
 
-        public override object GetItem(string itemId)
-        {
-            return _metadataApi.GetService(Version, ConfigId, _documentId, itemId);
-        }
+			//TODO Wrapper for PackageMetadataLoader.Configurations
+			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+			if (configuration.Documents[_documentId].Services.ContainsKey(item.Name))
+			{
+				dynamic oldServices = configuration.Documents[_documentId].Services[item.Name];
+				filePath = oldServices.FilePath;
+			}
+			else
+			{
+				filePath = Path.Combine(Path.GetDirectoryName(configuration.FilePath),
+										"Documents",
+										_documentId,
+										"Services",
+										string.Concat(item.Name, ".json"));
+			}
 
-        public override IEnumerable<object> GetItems()
-        {
-            return _metadataApi.GetServiceItems(Version, ConfigId, _documentId);
-        }
-    }
+			File.WriteAllBytes(filePath, serializedItem);
+
+			PackageMetadataLoader.UpdateCache();
+		}
+
+		public override void DeleteItem(string itemId)
+		{
+			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+			dynamic process = configuration.Documents[_documentId].Services[itemId];
+
+			File.Delete(process.FilePath);
+
+			PackageMetadataLoader.UpdateCache();
+		}
+
+		public override object GetItem(string itemId)
+		{
+			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+			return configuration.Documents[_documentId].Services[itemId].Content;
+		}
+
+		public override IEnumerable<object> GetItems()
+		{
+			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+			Dictionary<string, dynamic> processes = configuration.Documents[_documentId].Services;
+			return processes.Values.Select(o => o.Content);
+		}
+	}
 }

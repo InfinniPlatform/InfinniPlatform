@@ -54,7 +54,7 @@
 										]
 									}
 								]
-							},
+							},							
 							{
 								"Cells": [
 									{
@@ -114,6 +114,52 @@
 															"Property": "Description"
 														}
 													}
+												}
+											}
+										]
+									}
+								]
+							},							
+							{
+								"Cells": [
+									{
+										"ColumnSpan": 2,
+										"Items": [
+											{
+												"Label": {
+													"Name": "SubfolderLabel",
+													"Text": "Subfolder:"
+												}
+											}
+										]
+									},
+									{
+										"ColumnSpan": 10,
+										"Items": [
+											{
+												"TextBox": {
+													"Name": "SubfolderEditor",
+													"Value": {
+														"PropertyBinding": {
+															"DataSource": "MainDataSource",
+															"Property": "Subfolder"
+														}
+													}
+												}
+											}
+										]
+									}
+								]
+							},
+							{
+								"Cells": [
+									{
+										"ColumnSpan": 12,
+										"Items": [
+											{
+												"Label": {
+													"Name": "HelpLabel",
+													"Text": "*Здесь нужно указать подпапку проекта, в которой будет лежать конфигурация (например, PTA). Иначе сами ищите её."
 												}
 											}
 										]

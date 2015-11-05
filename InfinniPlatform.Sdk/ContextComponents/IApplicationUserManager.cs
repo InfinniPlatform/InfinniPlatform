@@ -17,21 +17,25 @@ namespace InfinniPlatform.Sdk.ContextComponents
 		/// Проверяет, что пользователь имеет пароль.
 		/// </summary>
 		bool HasPassword();
+		bool HasPassword(string userName);
 
 		/// <summary>
 		/// Добавляет пользователю пароль.
 		/// </summary>
 		void AddPassword(string password);
+		void AddPassword(string userName, string password);
 
 		/// <summary>
 		/// Удаляет у пользователя пароль.
 		/// </summary>
 		void RemovePassword();
+		void RemovePassword(string userName);
 
 		/// <summary>
 		/// Изменяет пользователю пароль.
 		/// </summary>
 		void ChangePassword(string currentPassword, string newPassword);
+		void ChangePassword(string userName, string currentPassword, string newPassword);
 
 
 		/// <summary>

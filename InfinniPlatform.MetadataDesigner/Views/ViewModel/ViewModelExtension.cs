@@ -1,34 +1,45 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.IO;
+using System.Linq;
 using System.Reflection;
+
 using DevExpress.XtraEditors.Controls;
 
 using InfinniPlatform.Api.Context;
 using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
 using InfinniPlatform.Api.Registers;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Api.RestQuery.EventObjects.EventSerializers;
-using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
-
 using InfinniPlatform.MetadataDesigner.Views.Exchange;
 using InfinniPlatform.MetadataDesigner.Views.Status;
-using InfinniPlatform.Sdk.Environment.Hosting;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Hosting;
 using InfinniPlatform.Sdk.Environment.Register;
+
+using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 {
 	public static class ViewModelExtension
 	{
-		private static IEnumerable<dynamic> _serviceTypes;
+		private static readonly IEnumerable<ServiceType> ServiceTypes = ServiceType.GetRegisteredServiceTypes();
+		private const string AssemblyName = "InfinniPlatform.MigrationsAndVerifications.dll";
+		private static readonly List<dynamic> RegisteredMigrationsList = new List<dynamic>
+											  {
+												  new
+												  {
+													  Name = "UpdateStoreMigration",
+													  Description = "Migration updates store mapping after changing configuration documents data schema",
+													  IsUndoable = false,
+													  ConfigurationId = string.Empty,
+													  ConfigVersion = string.Empty,
+													  Parameters = new MigrationParameter[0]
+												  }
+											  };
 
 		/// <summary>
 		/// Extension method to convert dynamic data to a DataTable. Useful for databinding.
@@ -114,47 +125,47 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
 		public static IEnumerable<ContextTypeDescription> BuildContextTypes()
 		{
-			return new List<ContextTypeDescription>()
-				       {
-					       new ContextTypeDescription()
-						       {
+			return new List<ContextTypeDescription>
+				   {
+					       new ContextTypeDescription
+						   {
 							      ContextTypeKind = ContextTypeKind.ApplyFilter,
 								  Description = ContextTypeKind.ApplyFilter.GetContextTypeDisplayByKind()
 						       },
-					       new ContextTypeDescription()
-						       {
+					       new ContextTypeDescription
+						   {
 							      ContextTypeKind = ContextTypeKind.ApplyMove,
 								  Description = ContextTypeKind.ApplyMove.GetContextTypeDisplayByKind()
 						       },
-					       new ContextTypeDescription()
-						       {
+					       new ContextTypeDescription
+						   {
 							      ContextTypeKind = ContextTypeKind.ApplyResult,
 								  Description = ContextTypeKind.ApplyResult.GetContextTypeDisplayByKind()
 						       },
-					       new ContextTypeDescription()
-						       {
+					       new ContextTypeDescription
+						   {
 							      ContextTypeKind = ContextTypeKind.SearchContext,
 								  Description = ContextTypeKind.SearchContext.GetContextTypeDisplayByKind()
 						       },
-					       new ContextTypeDescription()
-						       {
+					       new ContextTypeDescription
+						   {
 							      ContextTypeKind = ContextTypeKind.Upload,
 								  Description = ContextTypeKind.Upload.GetContextTypeDisplayByKind()
-						       },
+						       }
 				       };
 		}
 
 		public static IEnumerable<ScriptUnitTypeDescription> BuildScriptUnitTypes()
 		{
-			return new List<ScriptUnitTypeDescription>()
-				       {
-					       new ScriptUnitTypeDescription()
-						       {
+			return new List<ScriptUnitTypeDescription>
+				   {
+					       new ScriptUnitTypeDescription
+						   {
 							       ScriptUnitType = ScriptUnitType.Action,
 							       Description = "Action"
 						       },
-					       new ScriptUnitTypeDescription()
-						       {
+					       new ScriptUnitTypeDescription
+						   {
 							       ScriptUnitType = ScriptUnitType.Validator,
 							       Description = "Validator"
 						       }
@@ -163,30 +174,21 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
 		public static List<string> BuildServiceTypesHeaders()
 		{
-			_serviceTypes = MetadataExtensions.GetServiceTypeMetadata();
-			return _serviceTypes.Select(s => (string)s.Name).ToList();
+			return ServiceTypes.Select(type => type.Name).ToList();
 		}
 
 		public static object BuildCompleteServiceType(string serviceTypeName)
 		{
-			return _serviceTypes.FirstOrDefault(st => st.Name == serviceTypeName);
+			return ServiceTypes.FirstOrDefault(st => st.Name == serviceTypeName);
 		}
 
 		public static IEnumerable<ExtensionPoint> BuildServiceTypeExtensionPointList(string serviceName)
 		{
-			dynamic type = _serviceTypes.Where(s => s.Name == serviceName).FirstOrDefault();
-			IEnumerable<dynamic> extensionPoints = DynamicWrapperExtensions.ToEnumerable(type.WorkflowExtensionPoints);
+			dynamic type = ServiceTypes.FirstOrDefault(s => s.Name == serviceName);
 
-			var result = new List<ExtensionPoint>();
-			foreach (var wf in extensionPoints)
-			{
-				ExtensionPoint extensionPoint = new ExtensionPoint();
-				extensionPoint.Name = wf.Name;
-				extensionPoint.ContextType = Convert.ToInt32(wf.ContextType);
-				extensionPoint.Caption = wf.Caption;
-				result.Add(extensionPoint);
-			}
-			return result;
+			return type != null
+					   ? type.WorkflowExtensionPoints
+					   : Enumerable.Empty<ExtensionPoint>();
 		}
 
 		public static IEnumerable<ImageComboBoxItem> BuildImageComboBoxItemsString(this IEnumerable<string> items)
@@ -299,8 +301,8 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 					var infoList = scriptInfoProvider.GetScriptMethodsInfo();
 					foreach (var o in infoList)
 					{
-						result.Add(new ScriptDescription()
-						{
+						result.Add(new ScriptDescription
+								   {
 							ContextTypeCode = (ContextTypeKind)o.ContextTypeCode,
 							MethodName = o.MethodName,
 							TypeName = o.TypeName
@@ -322,7 +324,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 		{
 			var reader = new ManagerFactoryDocument(version, configurationId, documentId).BuildScenarioMetadataReader();
 			IEnumerable<dynamic> scenarios =
-				DynamicWrapperExtensions.ToEnumerable(reader.GetItems());
+				reader.GetItems().ToEnumerable();
 			return scenarios;
 		}
 
@@ -412,7 +414,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 				Configuration = configId,
 				MetadataObject = documentId,
 				MetadataType = viewType,
-				MetadataName = viewName,
+				MetadataName = viewName
 			};
 
 			dynamic dynamicBody = bodyMetadata.ToDynamic();
@@ -444,22 +446,24 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 			return result;
 		}
 
+		[Obsolete]
 		public static IEnumerable<string> BuildValidationRuleWarningDescriptions(string version, string configId, string documentId)
 		{
-			IEnumerable<dynamic> warnings = new MetadataApi().GetMetadataList(version: version, configuration: configId, metadata: documentId, metadataType: MetadataType.ValidationWarning);
-			return warnings.Select(w => w.Name).Cast<string>().ToList();
+			return Enumerable.Empty<string>();
 		}
 
+		[Obsolete]
 		public static IEnumerable<string> BuildValidationRuleErrorDescriptions(string version, string configId, string documentId)
 		{
-			IEnumerable<dynamic> objects = new MetadataApi().GetMetadataList(version: version, configuration: configId, metadata: documentId, metadataType: MetadataType.ValidationError); ;
-			return objects.Select(w => w.Name).Cast<string>().ToList();
+			return Enumerable.Empty<string>();
 		}
 
 
 		public static IEnumerable<HandlerDescription> BuildValidationHandlerDescriptions(string version, string configId, string documentId)
 		{
-			IEnumerable<dynamic> scenarios = new MetadataApi().GetMetadataList(version:version, configuration: configId, metadata: documentId, metadataType: MetadataType.Scenario);
+			dynamic configurations = PackageMetadataLoader.Configurations[configId];
+			IEnumerable<dynamic> values = configurations.Documents[documentId].Scenarios.Values;
+			var scenarios = values.Select(o => o.Content);
 
 			var result = new List<HandlerDescription>();
 
@@ -472,8 +476,8 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 				}
 				if ((ScriptUnitType)scenario.ScriptUnitType == ScriptUnitType.Validator)
 				{
-					var handler = new HandlerDescription()
-					{
+					var handler = new HandlerDescription
+								  {
 						HandlerCaption = scenario.Caption,
 						HandlerId = scenario.Id
 					};
@@ -486,10 +490,12 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
 		public static IEnumerable<HandlerDescription> BuildActionHandlerDescriptions(string version, string configId, string documentId)
 		{
-			IEnumerable<dynamic> scenarios = new MetadataApi().GetMetadataList(version: version, configuration: configId, metadata: documentId, metadataType: MetadataType.Scenario);
+			dynamic configurations = PackageMetadataLoader.Configurations[configId];
+			IEnumerable<dynamic> values = configurations.Documents[documentId].Scenarios.Values;
+			var scenarios = values.Select(o => o.Content);
 
 			var result = new List<HandlerDescription>();
-			//var scenarioManager = new ManagerFactoryDocument(configId, documentId).BuildScenarioMetadataReader();
+
 			foreach (var scenario in scenarios)
 			{
 				
@@ -500,8 +506,8 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 				}
 				if ((ScriptUnitType)scenario.ScriptUnitType == ScriptUnitType.Action)
 				{
-					var handler = new HandlerDescription()
-					{
+					var handler = new HandlerDescription
+								  {
 						HandlerCaption = scenario.Caption,
 						HandlerId = scenario.Id
 					};
@@ -512,27 +518,14 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 			return result;
 		}
 
-        public static IEnumerable<string> BuildMigrations(string version, string configurationId)
+        public static object[] BuildMigrations()
         {
-            var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getmigrations", null, null);
-            
-            return result.ToDynamicList()
-                .Where(m => (m.ConfigurationId == configurationId || string.IsNullOrEmpty(m.ConfigurationId)))
-                .Where(m => (m.ConfigVersion == version || string.IsNullOrEmpty(m.ConfigVersion)))
-                .Select(m => m.Name.ToString()).Cast<string>().ToList();
+	        return RegisteredMigrationsList.Select(m => (object) m.Name).ToArray();
         }
 
-        public static dynamic BuildMigrationDetails(string version, string configurationId, string migrationName)
+		public static dynamic BuildMigrationDetails(string version, string configurationId, string migrationName)
         {
-            var body = new
-            {
-                MigrationName = migrationName,
-                ConfigurationName = configurationId
-            };
-
-            var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getmigrationdetails", null, body);
-            
-            return result.ToDynamic();
+			return RegisteredMigrationsList.FirstOrDefault(m => m.Name == migrationName);
         }
 
         public static string RunMigration(string version, string configId, string migrationName, object[] parameters)
@@ -566,14 +559,9 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
             return result.Content;
         }
 
-        public static IEnumerable<string> BuildVerifications(string configurationId, string configVersion)
+        public static object[] BuildVerifications()
         {
-			var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getverifications", null, null);
-
-            return result.ToDynamicList()
-                .Where(m => (m.ConfigurationId == configurationId || string.IsNullOrEmpty(m.ConfigurationId)))
-                .Where(m => (m.ConfigVersion == configVersion || string.IsNullOrEmpty(m.ConfigVersion)))
-                .Select(m => m.Name.ToString()).Cast<string>().ToList();
+			return new object[] { };
         }
 
         public static dynamic BuildVerificationDetails(string verifiecationName)
@@ -783,9 +771,12 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
 	    public static dynamic GetRegisterDocumentSchema(string version, string configId, string registerName)
         {
-            var managerDocument = new ManagerFactoryConfiguration(version, configId).BuildDocumentManager();
-            var registerDocument = managerDocument.MetadataReader.GetItem(RegisterConstants.RegisterNamePrefix + registerName);
+//            var managerDocument = new ManagerFactoryConfiguration(version, configId).BuildDocumentManager();
+//            var registerDocument = managerDocument.MetadataReader.GetItem(RegisterConstants.RegisterNamePrefix + registerName);
 
+			dynamic configurations = PackageMetadataLoader.Configurations[configId];
+			dynamic registerDocument = configurations.Documents[RegisterConstants.RegisterNamePrefix + registerName].Content;
+			
             if (registerDocument != null)
             {
                 return registerDocument.Schema;
@@ -830,5 +821,66 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
             // UpdateApi.ForceReload(configId);
         }
+	}
+
+	/// <summary>
+	/// Доступные типы сервисов. Регистрируются в классе InfinniPlatformHostFactory.cs.
+	/// Захардкожено, чтобы не создавать лишних ссылок на проекты.
+	/// Изменять типы сервисов не планируется - планируется удалить.
+	/// </summary>
+	internal class ServiceType
+	{
+		public string Name { get; set; }
+		public List<ExtensionPoint> WorkflowExtensionPoints { get; set; }
+
+		public ServiceType(string name, List<ExtensionPoint> workflowExtensionPoints)
+		{
+			Name = name;
+			WorkflowExtensionPoints = workflowExtensionPoints;
+		}
+
+		public static IEnumerable<ServiceType> GetRegisteredServiceTypes()
+		{
+			return new List<ServiceType>
+				   {
+					   new ServiceType("applyevents", new List<ExtensionPoint>
+													  {
+														  new ExtensionPoint("FilterEvents", 4, "Document filter events context"),
+														  new ExtensionPoint("Move", 2, "Document move context"),
+														  new ExtensionPoint("GetResult", 8, "Document move result context")
+													  }),
+					   new ServiceType("applyjson", new List<ExtensionPoint>
+													{
+														new ExtensionPoint("FilterEvents", 4, "Document filter events context"),
+														new ExtensionPoint("Move", 2, "Document move context"),
+														new ExtensionPoint("GetResult", 8, "Document move result context")
+													}),
+					   new ServiceType("apiapplyjson", new List<ExtensionPoint>
+													   {
+														   new ExtensionPoint("FilterEvents", 4, "Document filter events context"),
+														   new ExtensionPoint("Move", 2, "Document move context"),
+														   new ExtensionPoint("GetResult", 8, "Document move result context")
+													   }),
+					   new ServiceType("notify", new List<ExtensionPoint>()),
+					   new ServiceType("search", new List<ExtensionPoint>
+												 {
+													 new ExtensionPoint("ValidateFilter", 16, "Document search context"),
+													 new ExtensionPoint("SearchModel", 16, "Document search context")
+												 }),
+					   new ServiceType("upload", new List<ExtensionPoint>
+												 {
+													 new ExtensionPoint("Upload", 32, "File upload context")
+												 }),
+					   new ServiceType("urlencodeddata", new List<ExtensionPoint>
+														 {
+															 new ExtensionPoint("ProcessUrlEncodedData", 64, "Unknown context type")
+														 }),
+					   new ServiceType("aggregation", new List<ExtensionPoint>
+													  {
+														  new ExtensionPoint("Join", 16, "Document search context"),
+														  new ExtensionPoint("TransformResult", 16, "Document search context")
+													  })
+				   };
+		}
 	}
 }

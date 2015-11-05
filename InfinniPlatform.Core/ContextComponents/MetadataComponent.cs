@@ -122,7 +122,7 @@ namespace InfinniPlatform.ContextComponents
                 {
                     if (config != null)
                     {
-                        return config.Containers.Select(c => new
+                        return config.Documents.Select(c => new
                         {
                             Id = c,
                             Name = c
@@ -131,7 +131,7 @@ namespace InfinniPlatform.ContextComponents
                 }
                 else
                 {
-                    return config.Containers.Where(predicate).Select(c => new
+                    return config.Documents.Where(predicate).Select(c => new
                     {
                         Id = c,
                         Name = c

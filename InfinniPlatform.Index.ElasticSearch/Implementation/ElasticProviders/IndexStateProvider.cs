@@ -1,4 +1,5 @@
-﻿using InfinniPlatform.Api.Index;
+﻿using System.Collections.Generic;
+
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions;
 using InfinniPlatform.Sdk.Environment.Index;
 
@@ -15,7 +16,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
         public IndexStateProvider()
         {
-            _connection = new ElasticConnection();            
+            _connection = new ElasticConnection();
         }
 
         /// <summary>
@@ -40,13 +41,13 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             index.DeleteIndexType(indexName, typeName);
             index.CreateIndexType(indexName, typeName);
         }
-        
+
         /// <summary>
         /// Обновление позволяет делать запросы к только что добавленным данным
         /// </summary>
         public void Refresh()
         {
-            _connection.Client.Refresh(f => f.Force());
+            _connection.Refresh();
         }
 
         /// <summary>
@@ -69,24 +70,24 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         ///     Иначе создается новая версия типа внутри индекса
         /// </param>
         /// <param name="deleteExistingVersion">Удалить существующую версию</param>
-        /// <param name="indexTypeMapping">Список изменений в маппинге</param>
+		/// <param name="properties">Список изменений в маппинге</param>
         public void CreateIndexType(
             string indexName, 
             string typeName, 
-            bool deleteExistingVersion = false, 
-            IIndexTypeMapping indexTypeMapping = null)
+            bool deleteExistingVersion = false,
+			IList<PropertyMapping> properties = null)
         {
             var index = new MultipleTypeIndex();
 
             var schemaVersionName = index.CreateIndexType(indexName, typeName, deleteExistingVersion);
 
-            if (indexTypeMapping != null)
+			if (properties != null)
             {
                 IndexTypeMapper.ApplyIndexTypeMapping(
                     _connection.Client, 
                     indexName, 
-                    schemaVersionName, 
-                    indexTypeMapping.Properties);
+                    schemaVersionName,
+					properties);
             }
         }
 
@@ -99,6 +100,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             var index = new MultipleTypeIndex();
             index.DeleteIndex(indexName);
         }
-      
+
     }
 }

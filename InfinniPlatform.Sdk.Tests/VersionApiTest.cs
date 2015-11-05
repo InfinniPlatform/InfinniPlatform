@@ -9,6 +9,7 @@ namespace InfinniPlatform.Sdk.Tests
 {
 	[TestFixture]
 	[Category(TestCategories.IntegrationTest)]
+	[Ignore("Obsolete")]
 	public sealed class VersionApiTest
 	{
 		private const string Route = "1";

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
 using InfinniPlatform.Api.Metadata;
@@ -15,6 +16,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
     /// <summary>
     ///     Инициализация пользовательской логики при старте системы
     /// </summary>
+    [Obsolete]
     public sealed class UserLogicInitializer : IStartupInitializer
     {
         private readonly IChangeListener _changeListener;
