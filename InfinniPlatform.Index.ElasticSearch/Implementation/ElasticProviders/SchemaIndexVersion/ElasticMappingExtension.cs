@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
-
-using RestSharp;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion
 {
@@ -17,7 +18,20 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
     /// </summary>
     internal static class ElasticMappingExtension
     {
-        public static IEnumerable<IndexToTypeAccordance> FillIndexMappings(NodePool nodePool, IEnumerable<string> indexNames, IEnumerable<string> typeNames)
+		private static readonly HttpClient HttpClient = CreateHttpClient();
+
+	    private static HttpClient CreateHttpClient()
+	    {
+		    var httpClient = new HttpClient();
+		    httpClient.DefaultRequestHeaders.Authorization =
+			    new AuthenticationHeaderValue("Basic",
+											  Convert.ToBase64String(Encoding.ASCII
+																			 .GetBytes($"{ElasticShieldSecuritySettings.Login}:{ElasticShieldSecuritySettings.Password}")));
+
+		    return httpClient;
+	    }
+
+		public static IEnumerable<IndexToTypeAccordance> FillIndexMappings(NodePool nodePool, IEnumerable<string> indexNames, IEnumerable<string> typeNames)
         {
             List<IndexToTypeAccordance> result = null;
 
@@ -46,17 +60,24 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
 
             var elasticQueryMappings = new Uri(nodeAddress, string.Format("{0}/{1}/_mapping", indexNameList, typeNameList));
 
-            // Запрос возвращает схему маппинга для всех индексов и типов индексов в следующем виде:
-            //
-            // testperson_schema_0": {  -- наименование индекса
-            //   "indexobjects": { ... }, -- наименование типа
-            //   "testperson_schema_1": { ... } -- наименование типа
-            // }
-
-            // получаем список маппингов
-            var restClient = new RestClient(elasticQueryMappings);
-            var response = restClient.Get(new RestRequest { RequestFormat = DataFormat.Json });
-            var responseContent = response.Content;
+			// Запрос возвращает схему маппинга для всех индексов и типов индексов в следующем виде:
+			//
+			// testperson_schema_0": {  -- наименование индекса
+			//   "indexobjects": { ... }, -- наименование типа
+			//   "testperson_schema_1": { ... } -- наименование типа
+			// }
+			
+			// получаем список маппингов
+			//			var restClient = new RestClient(elasticQueryMappings);
+			//			
+			//			if (ElasticShieldSecuritySettings.IsSet())
+			//	        {
+			//		        restClient.Authenticator = new HttpBasicAuthenticator(ElasticShieldSecuritySettings.Login, ElasticShieldSecuritySettings.Password);
+			//	        }
+			//			
+			//            var response = restClient.Get(new RestRequest { RequestFormat = DataFormat.Json });
+			var response = HttpClient.GetAsync(elasticQueryMappings).Result;
+			var responseContent = response.Content.ReadAsStringAsync().Result;
 
             if (response.StatusCode != HttpStatusCode.OK || responseContent == "{}")
             {
@@ -143,19 +164,18 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
 
             var elasticQueryMappings = new Uri(nodeAddress, string.Format("{0}/{1}/_mapping", indexName, typeName));
 
-            // Запрос возвращает схему маппинга для всех индексов и типов индексов в следующем виде:
-            //
-            // testperson_schema_0": {  -- наименование индекса
-            //   "indexobjects": { ... }, -- наименование типа
-            //   "testperson_schema_1": { ... } -- наименование типа
-            // }
+			// Запрос возвращает схему маппинга для всех индексов и типов индексов в следующем виде:
+			//
+			// testperson_schema_0": {  -- наименование индекса
+			//   "indexobjects": { ... }, -- наименование типа
+			//   "testperson_schema_1": { ... } -- наименование типа
+			// }
 
-            // получаем список маппингов
-            var restClient = new RestClient(elasticQueryMappings);
-            var response = restClient.Get(new RestRequest { RequestFormat = DataFormat.Json });
-            var responseContent = response.Content;
+			// получаем список маппингов
+			var response = HttpClient.GetAsync(elasticQueryMappings).Result;
+			var responseContent = response.Content.ReadAsStringAsync().Result;
 
-            if (response.StatusCode != HttpStatusCode.OK || responseContent == "{}")
+			if (response.StatusCode != HttpStatusCode.OK || responseContent == "{}")
             {
                 return false;
             }

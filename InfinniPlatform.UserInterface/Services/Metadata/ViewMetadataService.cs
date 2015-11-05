@@ -35,10 +35,10 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			view.Id = Guid.NewGuid().ToString();
 			view.Name = string.Empty;
 			view.Caption = string.Empty;
-			view.DataSources = new dynamic[]{};
-			view.Parameters = new dynamic[] { };
+			view.DataSources = new object[]{};
+			view.Parameters = new object[] { };
 			view.LayoutPanel = new object();
-			view.Scripts = new dynamic[] { };
+			view.Scripts = new object[] { };
 
 			return view;
 		}

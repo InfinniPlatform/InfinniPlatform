@@ -108,7 +108,6 @@
     <Compile Include="ContextComponents\ILogComponent.cs" />
     <Compile Include="ContextComponents\IMetadataComponent.cs" />
     <Compile Include="ContextComponents\IMetadataConfigurationProvider.cs" />
-    <Compile Include="ContextComponents\IPasswordVerifierComponent.cs" />
     <Compile Include="ContextComponents\IPrintViewComponent.cs" />
     <Compile Include="ContextComponents\IProfilerComponent.cs" />
     <Compile Include="ContextComponents\IReferenceResolver.cs" />

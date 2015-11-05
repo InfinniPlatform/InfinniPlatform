@@ -257,7 +257,6 @@
     <Compile Include="Security\ForeignKey.cs" />
     <Compile Include="Security\IApplicationUserStore.cs" />
     <Compile Include="Security\IApplicationUserPasswordHasher.cs" />
-    <Compile Include="Security\PasswordVerifierComponent.cs" />
     <Compile Include="Security\SecurityExtensions.cs" />
     <Compile Include="SelfDocumentation\DocumentationKeeper.cs" />
     <Compile Include="SelfDocumentation\DocumentationKeeperBuilder.cs" />

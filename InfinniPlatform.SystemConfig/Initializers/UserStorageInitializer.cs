@@ -18,12 +18,10 @@ namespace InfinniPlatform.SystemConfig.Initializers
         public void OnStart(HostingContextBuilder contextBuilder)
         {
             var applicationUserStore = ApplicationUserStorePersistentStorage.Instance;
-            var applicationUserPasswordHasher = new CustomApplicationUserPasswordHasher(_globalContext);
+            var applicationUserPasswordHasher = new DefaultApplicationUserPasswordHasher();
 
             contextBuilder.SetEnvironment<IApplicationUserStore>(applicationUserStore);
             contextBuilder.SetEnvironment<IApplicationUserPasswordHasher>(applicationUserPasswordHasher);
-
-            //ApplicationUserStorePersistentStorageExtensions.CheckStorage();
         }
     }
 }

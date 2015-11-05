@@ -21,9 +21,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
     {
         private static readonly NodePool NodePool;
         private static readonly Lazy<ElasticClient> ElasticClient;
-
-
-        static ElasticConnection()
+		
+		static ElasticConnection()
         {
             /* Remember: The client is thread-safe, so you can use a single client, in which case, passing a per request configuration
              * is the only way to pass state local to the request. Instantiating a client each time is also supported. In this case each
@@ -50,9 +49,13 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
             var connectionPool = new SniffingConnectionPool(nodeAddresses);
 
-            var connectionSettings = new ConnectionSettings(connectionPool);
-            connectionSettings.SetDefaultPropertyNameInferrer(i => i);
-            connectionSettings.SetJsonSerializerSettingsModifier(m => m.ContractResolver = new ElasticContractResolver(connectionSettings));
+	        var connectionSettings = ElasticShieldSecuritySettings.IsSet()
+										 ? new ConnectionSettings(connectionPool).SetBasicAuthentication(ElasticShieldSecuritySettings.Login,
+																										 ElasticShieldSecuritySettings.Password)
+										 : new ConnectionSettings(connectionPool);
+
+	        connectionSettings.SetDefaultPropertyNameInferrer(i => i);
+	        connectionSettings.SetJsonSerializerSettingsModifier(m => m.ContractResolver = new ElasticContractResolver(connectionSettings));
 
             var client = new ElasticClient(connectionSettings);
 

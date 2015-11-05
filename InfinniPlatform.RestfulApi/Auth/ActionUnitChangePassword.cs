@@ -33,16 +33,14 @@ namespace InfinniPlatform.RestfulApi.Auth
             ApplicationUser user = storage.FindUserByName(target.Item.UserName);
             if (user != null)
             {
-                if (
-                    !new DefaultApplicationUserPasswordHasher().VerifyHashedPassword(user.PasswordHash,
+                if (!new DefaultApplicationUserPasswordHasher().VerifyHashedPassword(user.PasswordHash,
                                                                                      target.Item.OldPassword))
                 {
                     target.CreateValidationMessage("Old password is incorrect.", true);
                     return;
                 }
 
-                user.PasswordHash =
-                    new CustomApplicationUserPasswordHasher(target.Context).HashPassword(target.Item.NewPassword);
+                user.PasswordHash = new DefaultApplicationUserPasswordHasher().HashPassword(target.Item.NewPassword);
                 storage.UpdateUser(user);
                 //добавляем доступ на чтение пользователей
                 target.Context.GetComponent<CachedSecurityComponent>().UpdateAcl();

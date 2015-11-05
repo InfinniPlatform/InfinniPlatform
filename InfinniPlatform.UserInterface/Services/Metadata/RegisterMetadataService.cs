@@ -27,7 +27,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		public override object CreateItem()
 		{
-			return new DynamicWrapper();
+			return new object();
 		}
 
 		public override void ReplaceItem(dynamic item)

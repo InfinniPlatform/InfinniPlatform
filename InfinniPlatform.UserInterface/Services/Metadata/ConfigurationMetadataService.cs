@@ -23,11 +23,11 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			configuration.Name = string.Empty;
 			configuration.Caption = string.Empty;
 			configuration.Description = string.Empty;
-			configuration.Menu = new dynamic[] { };
-			configuration.Documents = new dynamic[] { };
-			configuration.Registers = new dynamic[] { };
-			configuration.Assemblies = new dynamic[] { };
-			configuration.Reports = new dynamic[] { };
+			configuration.Menu = new object[] { };
+			configuration.Documents = new object[] { };
+			configuration.Registers = new object[] { };
+			configuration.Assemblies = new object[] { };
+			configuration.Reports = new object[] { };
 
 			return configuration;
 		}

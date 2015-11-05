@@ -16,6 +16,7 @@ using NUnit.Framework;
 namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
 {
     [TestFixture]
+	[Ignore("Тесты потеряли актуальность, т.к. метаданые теперь хранятся в файловой системе.")]
     [Category(TestCategories.UnitTest)]
     public sealed class MetadataCrudBehavior
     {
