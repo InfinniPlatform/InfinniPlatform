@@ -6,18 +6,41 @@ using InfinniPlatform.Sdk.Environment.Binary;
 
 namespace InfinniPlatform.BlobStorage
 {
+    /// <summary>
+    /// Реализует сервис для работы хранилищем BLOB (Binary Large OBject) на основе файловой системы.
+    /// </summary>
+    /// <returns>
+    /// Достаточно простая реализация. Хранилище представляет собой каталог с файлами. Файлы храняться
+    /// в подкаталогах. Имена подкаталогов совпадают с уникальными идентификторами файлов. Подкаталоги
+    /// содержат два файла: info и data. В файле info хранится метаинформация о файле, представленная
+    /// в виде JSON-объекта (идентификтор, наименование, MIME-тип, размер, дата измения и т.п.).
+    /// В файле data хранятся данные самого файла (собственно BLOB).
+    /// 
+    /// Выбор в пользу использования обычной файловой системы был сделан не случайно. Во-первых,
+    /// это самый простой и гибкий способ. Во-вторых, некоторые распределенные файловые системы
+    /// имеют FUSE (Filesystem in Userspace) адаптеры, поддерживающие POSIX-стандарт, что дает
+    /// возможность использовать функции обычной файловой системы при работе, не задумываясь о
+    /// том, что на самом деле работа идет с распределенным хранилищем. В-третьих, пока трудно
+    /// судить о том, какое распределенное хранилище (из тех, которые не имеют FUSE) подойдет
+    /// лучше других.
+    /// </returns>
     public sealed class FileSystemBlobStorage : IBlobStorage
     {
         public FileSystemBlobStorage(string baseDirectory)
         {
             _baseDirectory = baseDirectory;
+
+            // TODO: Refactor
+            // Получать эти зависимости через конструктор
             _serializer = JsonObjectSerializer.Default;
             _typeProvider = FileExtensionTypeProvider.Default;
         }
 
+
         private readonly string _baseDirectory;
         private readonly IObjectSerializer _serializer;
         private readonly FileExtensionTypeProvider _typeProvider;
+
 
         public BlobInfo GetBlobInfo(string blobId)
         {
@@ -25,6 +48,8 @@ namespace InfinniPlatform.BlobStorage
             {
                 throw new ArgumentNullException(nameof(blobId));
             }
+
+            blobId = NormalizeBlobId(blobId);
 
             var blobInfo = ReadBlobInfo(blobId);
 
@@ -37,6 +62,8 @@ namespace InfinniPlatform.BlobStorage
             {
                 throw new ArgumentNullException(nameof(blobId));
             }
+
+            blobId = NormalizeBlobId(blobId);
 
             var blobInfo = ReadBlobInfo(blobId);
             var blobData = ReadBlobData(blobId);
@@ -52,7 +79,7 @@ namespace InfinniPlatform.BlobStorage
 
         public string CreateBlob(string blobName, string blobType, byte[] blobData)
         {
-            var blobId = Guid.NewGuid().ToString("N");
+            var blobId = GenerateBlobId();
 
             UpdateBlob(blobId, blobName, blobType, blobData);
 
@@ -70,6 +97,8 @@ namespace InfinniPlatform.BlobStorage
             {
                 throw new ArgumentNullException(nameof(blobData));
             }
+
+            blobId = NormalizeBlobId(blobId);
 
             if (string.IsNullOrEmpty(blobType))
             {
@@ -96,8 +125,11 @@ namespace InfinniPlatform.BlobStorage
                 throw new ArgumentNullException(nameof(blobId));
             }
 
+            blobId = NormalizeBlobId(blobId);
+
             DeleteBlobData(blobId);
         }
+
 
         private BlobInfo ReadBlobInfo(string blobId)
         {
@@ -152,6 +184,7 @@ namespace InfinniPlatform.BlobStorage
             }
         }
 
+
         private byte[] ReadBlobData(string blobId)
         {
             var dataFilePath = GetBlobDataFilePath(blobId);
@@ -188,6 +221,7 @@ namespace InfinniPlatform.BlobStorage
             }
         }
 
+
         private string GetBlobDirectoryPath(string blobId)
         {
             return Path.Combine(_baseDirectory, blobId);
@@ -201,6 +235,30 @@ namespace InfinniPlatform.BlobStorage
         private string GetBlobDataFilePath(string blobId)
         {
             return Path.Combine(_baseDirectory, blobId, "data");
+        }
+
+
+        private static string GenerateBlobId()
+        {
+            return Guid.NewGuid().ToString("N");
+        }
+
+        private static string NormalizeBlobId(string blobId)
+        {
+            Guid blobGuid;
+
+            if (Guid.TryParse(blobId, out blobGuid))
+            {
+                // TODO: Refactor
+                // Ниже осущесвляется переформатирование ссылки на файл.
+                // Есть старые документы, которые хранят ссылки на файлы в ином формате.
+                // Нужно сделать миграцию этих данных, чтобы отказаться от данного кода.
+                // Код был добавлен при переносе файлов с Cassandra в файловую систему.
+
+                blobId = blobGuid.ToString("N");
+            }
+
+            return blobId;
         }
     }
 }
