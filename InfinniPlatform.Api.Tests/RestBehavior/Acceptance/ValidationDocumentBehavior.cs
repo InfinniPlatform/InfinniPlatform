@@ -23,13 +23,13 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
     {
         private IDisposable _server;
 
-        [TestFixtureSetUp]
+        //[TestFixtureSetUp]
         public void FixtureSetup()
         {
 			_server = InfinniPlatformInprocessHost.Start();
 		}
 
-        [TestFixtureTearDown]
+        //[TestFixtureTearDown]
         public void FixtureTearDown()
         {
             _server.Dispose();

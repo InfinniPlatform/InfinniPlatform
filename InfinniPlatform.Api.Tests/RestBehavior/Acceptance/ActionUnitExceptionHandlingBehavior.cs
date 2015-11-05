@@ -23,13 +23,13 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         private IDisposable _server;
         private const string ConfigurationId = "exceptionhandlingconfig";
 
-        [TestFixtureSetUp]
+        //[TestFixtureSetUp]
         public void FixtureSetup()
         {
 			_server = InfinniPlatformInprocessHost.Start();
 		}
 
-        [TestFixtureTearDown]
+        //[TestFixtureTearDown]
         public void FixtureTearDown()
         {
             _server.Dispose();

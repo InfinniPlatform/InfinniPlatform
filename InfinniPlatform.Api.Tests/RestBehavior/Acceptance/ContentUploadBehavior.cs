@@ -24,13 +24,13 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 		private string _configurationId = "testconfigacontentupload";
 		private string _documentId = "testcontentdocument";
 
-		[TestFixtureSetUp]
+		//[TestFixtureSetUp]
 		public void FixtureSetup()
 		{
 			_server = InfinniPlatformInprocessHost.Start();
 		}
 
-		[TestFixtureTearDown]
+		//[TestFixtureTearDown]
 		public void FixtureTearDown()
 		{
 			_server.Dispose();

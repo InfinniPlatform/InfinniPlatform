@@ -21,7 +21,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         private const string ConfigurationId = "testdocumentapi";
         private const string DocumentId = "documentapitest";
 
-        [TestFixtureSetUp]
+        //[TestFixtureSetUp]
         public void FixtureSetup()
         {
 			_server = InfinniPlatformInprocessHost.Start();
@@ -29,7 +29,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             CreateTestConfig();
         }
 
-        [TestFixtureTearDown]
+        //[TestFixtureTearDown]
         public void FixtureTearDown()
         {
             _server.Dispose();
