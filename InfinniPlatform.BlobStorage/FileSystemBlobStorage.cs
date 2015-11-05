@@ -15,11 +15,9 @@ namespace InfinniPlatform.BlobStorage
             _typeProvider = FileExtensionTypeProvider.Default;
         }
 
-
         private readonly string _baseDirectory;
         private readonly IObjectSerializer _serializer;
         private readonly FileExtensionTypeProvider _typeProvider;
-
 
         public BlobInfo GetBlobInfo(string blobId)
         {
@@ -43,11 +41,13 @@ namespace InfinniPlatform.BlobStorage
             var blobInfo = ReadBlobInfo(blobId);
             var blobData = ReadBlobData(blobId);
 
-            return new BlobData
-                   {
-                       Info = blobInfo,
-                       Data = blobData
-                   };
+            return (blobInfo != null || blobData != null)
+                ? new BlobData
+                  {
+                      Info = blobInfo,
+                      Data = blobData
+                  }
+                : null;
         }
 
         public void SaveBlob(string blobId, string blobName, byte[] blobData)

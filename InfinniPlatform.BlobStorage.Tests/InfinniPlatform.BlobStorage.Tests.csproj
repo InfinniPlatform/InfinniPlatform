@@ -48,7 +48,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CassandraBlobStorageTest.cs" />
+    <Compile Include="FileSystemBlobStorageTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -56,17 +56,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
-      <Project>{7CA0F96C-7FF4-44B2-9D44-851984DF4532}</Project>
-      <Name>InfinniPlatform.Api</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.BlobStorage\InfinniPlatform.BlobStorage.csproj">
       <Project>{3bcbcd4c-1155-464e-b020-51fa57b5e9b3}</Project>
       <Name>InfinniPlatform.BlobStorage</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Cassandra\InfinniPlatform.Cassandra.csproj">
-      <Project>{EC8E01A2-76C8-453A-B957-F83265778971}</Project>
-      <Name>InfinniPlatform.Cassandra</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
       <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
