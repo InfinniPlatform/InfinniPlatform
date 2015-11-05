@@ -17,6 +17,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 {
     [TestFixture]
     [Category(TestCategories.AcceptanceTest)]
+	[Ignore("Необходимо создать конфигурацию метаданных на диске, т.к. теперь метаданные загружаются только с диска")]
     public sealed class ActionUnitExceptionHandlingBehavior
     {
         private IDisposable _server;
