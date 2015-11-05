@@ -20,21 +20,23 @@
         BlobData GetBlobData(string blobId);
 
         /// <summary>
-        /// Сохраняет BLOB.
+        /// Создает BLOB.
         /// </summary>
-        /// <param name="blobId">Идентификатор BLOB.</param>
         /// <param name="blobName">Наименование BLOB.</param>
+        /// <param name="blobType">Формат данных BLOB.</param>
         /// <param name="blobData">Данные BLOB.</param>
-        void SaveBlob(string blobId, string blobName, byte[] blobData);
+        /// <returns>Идентификатор BLOB. </returns>
+        string CreateBlob(string blobName, string blobType, byte[] blobData);
 
         /// <summary>
-        /// Сохраняет BLOB.
+        /// Обновляет BLOB.
         /// </summary>
         /// <param name="blobId">Идентификатор BLOB.</param>
         /// <param name="blobName">Наименование BLOB.</param>
         /// <param name="blobType">Формат данных BLOB.</param>
         /// <param name="blobData">Данные BLOB.</param>
-        void SaveBlob(string blobId, string blobName, string blobType, byte[] blobData);
+        /// <returns>Идентификатор BLOB. </returns>
+        void UpdateBlob(string blobId, string blobName, string blobType, byte[] blobData);
 
         /// <summary>
         /// Удаляет BLOB.

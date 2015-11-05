@@ -160,7 +160,6 @@
     <Compile Include="Runtime\IScriptMetadataProvider.cs" />
     <Compile Include="Runtime\ReflectionExtensions.cs" />
     <Compile Include="Runtime\ScriptMetadata.cs" />
-    <Compile Include="BlobStorage\IBlobStorageManager.cs" />
     <Compile Include="EventStorage\IEventStorageManager.cs" />
     <Compile Include="Extensions\CommonExtensions.cs" />
     <Compile Include="Security\CustomApplicationUserPasswordHasher.cs" />

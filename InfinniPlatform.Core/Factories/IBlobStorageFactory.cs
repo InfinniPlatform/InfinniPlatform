@@ -1,5 +1,4 @@
-﻿using InfinniPlatform.BlobStorage;
-using InfinniPlatform.Sdk.Environment.Binary;
+﻿using InfinniPlatform.Sdk.Environment.Binary;
 
 namespace InfinniPlatform.Factories
 {
@@ -12,10 +11,5 @@ namespace InfinniPlatform.Factories
         /// Создает сервис для работы хранилищем BLOB.
         /// </summary>
         IBlobStorage CreateBlobStorage();
-
-        /// <summary>
-        /// Создает сервис для администрирования хранилища BLOB.
-        /// </summary>
-        IBlobStorageManager CreateBlobStorageManager();
     }
 }

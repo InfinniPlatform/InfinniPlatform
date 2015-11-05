@@ -36,14 +36,13 @@ namespace InfinniPlatform.Update.ActionUnits
 
                 if (target.Item.ContentId == null)
                 {
-                    string contentId = Guid.NewGuid().ToString("N");
-                    blobStorage.SaveBlob(contentId, contentName, contentData);
+                    string contentId = blobStorage.CreateBlob(contentName, string.Empty, contentData);
                     target.Item.ContentId = contentId;
                 }
                 else
                 {
                     string contentId = target.Item.ContentId;
-                    blobStorage.SaveBlob(contentId, contentName, contentData);
+                    blobStorage.UpdateBlob(contentId, contentName, string.Empty, contentData);
                 }
 
                 // добавляем информацию для отладчика
@@ -57,14 +56,13 @@ namespace InfinniPlatform.Update.ActionUnits
 
                     if (target.Item.PdbId == null)
                     {
-                        string pdbId = Guid.NewGuid().ToString("N");
-                        blobStorage.SaveBlob(pdbId, pdbName, pdbData);
+                        string pdbId = blobStorage.CreateBlob(pdbName, string.Empty, pdbData);
                         target.Item.PdbId = pdbId;
                     }
                     else
                     {
                         string pdbId = target.Item.PdbId;
-                        blobStorage.SaveBlob(pdbId, pdbName, pdbData);
+                        blobStorage.UpdateBlob(pdbId, pdbName, string.Empty, pdbData);
                     }
                 }
             }

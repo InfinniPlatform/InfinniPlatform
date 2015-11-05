@@ -24,10 +24,5 @@ namespace InfinniPlatform.BlobStorage
         {
             return _blobStorage;
         }
-
-        public IBlobStorageManager CreateBlobStorageManager()
-        {
-            return _blobStorage;
-        }
     }
 }

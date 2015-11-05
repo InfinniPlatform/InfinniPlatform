@@ -32,9 +32,7 @@ namespace InfinniPlatform.Api.Transactions
         /// <param name="application">Приложение</param>
         public void SaveBinary(IEnumerable<dynamic> documents, string application, string version, string documentType, string fieldName, byte[] bytes)
         {
-            var contentId = Guid.NewGuid().ToString("N");
-
-            _blobStorage.SaveBlob(contentId, fieldName, bytes);
+            var contentId = _blobStorage.CreateBlob(fieldName, string.Empty, bytes);
 
             foreach (var containingDocument in documents)
             {

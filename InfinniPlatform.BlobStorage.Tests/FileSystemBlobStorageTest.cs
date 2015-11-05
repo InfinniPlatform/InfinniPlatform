@@ -32,8 +32,6 @@ namespace InfinniPlatform.BlobStorage.Tests
         {
             // GIVEN
 
-            var blobId = Guid.NewGuid().ToString("N");
-
             const string blobNameV1 = "Attachment.pdf";
             const string blobTypeV1 = "application/pdf";
             var blobDataV1 = new byte[] { 1, 2, 3 };
@@ -45,7 +43,7 @@ namespace InfinniPlatform.BlobStorage.Tests
             // WHEN
 
             // Create
-            _blobStorage.SaveBlob(blobId, blobNameV1, blobTypeV1, blobDataV1);
+            var blobId = _blobStorage.CreateBlob(blobNameV1, blobTypeV1, blobDataV1);
 
             // Read
             var timeV1 = DateTime.UtcNow;
@@ -53,7 +51,7 @@ namespace InfinniPlatform.BlobStorage.Tests
             var dataV1 = _blobStorage.GetBlobData(blobId);
 
             // Update
-            _blobStorage.SaveBlob(blobId, blobNameV2, blobTypeV2, blobDataV2);
+            _blobStorage.UpdateBlob(blobId, blobNameV2, blobTypeV2, blobDataV2);
 
             // Read
             var timeV2 = DateTime.UtcNow;

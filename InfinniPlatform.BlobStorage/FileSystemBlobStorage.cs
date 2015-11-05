@@ -6,7 +6,7 @@ using InfinniPlatform.Sdk.Environment.Binary;
 
 namespace InfinniPlatform.BlobStorage
 {
-    public sealed class FileSystemBlobStorage : IBlobStorage, IBlobStorageManager
+    public sealed class FileSystemBlobStorage : IBlobStorage
     {
         public FileSystemBlobStorage(string baseDirectory)
         {
@@ -50,14 +50,16 @@ namespace InfinniPlatform.BlobStorage
                 : null;
         }
 
-        public void SaveBlob(string blobId, string blobName, byte[] blobData)
+        public string CreateBlob(string blobName, string blobType, byte[] blobData)
         {
-            var blobType = _typeProvider.GetBlobType(blobName);
+            var blobId = Guid.NewGuid().ToString("N");
 
-            SaveBlob(blobId, blobName, blobType, blobData);
+            UpdateBlob(blobId, blobName, blobType, blobData);
+
+            return blobId;
         }
 
-        public void SaveBlob(string blobId, string blobName, string blobType, byte[] blobData)
+        public void UpdateBlob(string blobId, string blobName, string blobType, byte[] blobData)
         {
             if (string.IsNullOrEmpty(blobId))
             {
@@ -67,6 +69,11 @@ namespace InfinniPlatform.BlobStorage
             if (blobData == null)
             {
                 throw new ArgumentNullException(nameof(blobData));
+            }
+
+            if (string.IsNullOrEmpty(blobType))
+            {
+                blobType = _typeProvider.GetBlobType(blobName);
             }
 
             var blobInfo = new BlobInfo
@@ -90,22 +97,6 @@ namespace InfinniPlatform.BlobStorage
             }
 
             DeleteBlobData(blobId);
-        }
-
-        public void CreateStorage()
-        {
-            if (!Directory.Exists(_baseDirectory))
-            {
-                Directory.CreateDirectory(_baseDirectory);
-            }
-        }
-
-        public void DeleteStorage()
-        {
-            if (Directory.Exists(_baseDirectory))
-            {
-                Directory.Delete(_baseDirectory, true);
-            }
         }
 
         private BlobInfo ReadBlobInfo(string blobId)
