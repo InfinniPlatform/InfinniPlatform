@@ -4,14 +4,21 @@ using DevExpress.XtraEditors.Controls;
 
 namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 {
-    public class ExtensionPoint
-    {
-        public string Name { get; set; }
+	public class ExtensionPoint
+	{
+		public string Name { get; set; }
 
-        public int ContextType { get; set; }
-        
-        public string Caption { get; set; }
-    }
+		public int ContextType { get; set; }
+
+		public string Caption { get; set; }
+
+		public ExtensionPoint(string name, int contextType, string caption)
+		{
+			Name = name;
+			ContextType = contextType;
+			Caption = caption;
+		}
+	}
 
     public static class ExtensionPointExtensions
     {

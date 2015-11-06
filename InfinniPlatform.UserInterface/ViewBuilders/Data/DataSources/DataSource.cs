@@ -238,7 +238,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Data.DataSources
             InvokeAction(() =>
             {
                 dynamic itemVersioned = item;
-                itemVersioned.Version = GetVersion();
+                itemVersioned.Version = null;
                 _dataProvider.ReplaceItem(item);
             });
 

@@ -4,8 +4,6 @@ using System.Text;
 
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Index.ElasticSearch.Factories;
-using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
-using InfinniPlatform.MigrationsAndVerifications.Helpers;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment.Index;
@@ -22,16 +20,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 
         public UpdateStoreMigration()
         {
-            _updatedContainers = new List<string>();
 			_indexFactory = new ElasticFactory();
         }
-
-
-        /// <summary>
-        ///     Необходимо хранить имена контейнеров, для которых уже была создана новая версия, чтобы не сделать это несколько раз
-        /// </summary>
-        private readonly IList<string> _updatedContainers;
-
+		
         /// <summary>
         ///     Конфигурация, к которой применяется миграция
         /// </summary>
@@ -85,11 +76,8 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         {
             var resultMessage = new StringBuilder();
 
-            _updatedContainers.Clear();
-
-            var configObject =
-                _context.GetComponent<IConfigurationMediatorComponent>()
-                        .ConfigurationBuilder.GetConfigurationObject(_version, _activeConfiguration);
+            var configObject = _context.GetComponent<IConfigurationMediatorComponent>()
+									   .ConfigurationBuilder.GetConfigurationObject(_version, _activeConfiguration);
 
             IMetadataConfiguration metadataConfiguration = null;
             if (configObject != null)
@@ -99,41 +87,13 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 
             if (metadataConfiguration != null)
             {
-                IEnumerable<string> containers = metadataConfiguration.Containers;
-                foreach (string containerId in containers)
+	            var configurationObjectBuilder = _context.GetComponent<IConfigurationMediatorComponent>()
+														 .ConfigurationBuilder;
+
+                var documents = metadataConfiguration.Documents;
+                foreach (var documentId in documents)
                 {
-                    IVersionBuilder versionBuilder = _indexFactory.BuildVersionBuilder(
-                        metadataConfiguration.ConfigurationId,
-                        metadataConfiguration.GetMetadataIndexType(containerId));
-
-                    dynamic schema = metadataConfiguration.GetSchemaVersion(containerId);
-
-                    var props = new List<PropertyMapping>();
-
-                    if (schema != null)
-                    {
-                        // convert document schema to index mapping
-                        props = DocumentSchemaHelper.ExtractProperties(_version, schema.Properties,
-                                                                       _context
-                                                                           .GetComponent
-                                                                           <IConfigurationMediatorComponent>()
-                                                                           .ConfigurationBuilder);
-                    }
-
-                    if (!versionBuilder.VersionExists(props.Count > 0 ? new IndexTypeMapping(props) : null) &&
-                        !_updatedContainers.Contains(metadataConfiguration.ConfigurationId + "_" + containerId))
-                    {
-                        resultMessage.AppendLine();
-                        resultMessage.AppendFormat("Created new version of {0} document.", containerId);
-
-                        versionBuilder.CreateVersion(false, props.Count > 0 ? new IndexTypeMapping(props) : null);
-
-                        _updatedContainers.Add(metadataConfiguration.ConfigurationId + "_" + containerId);
-
-                        // Необходимо создать новые версии для контейнеров документов, имеющих inline ссылки на измененный документ
-                        UpdateContainersWithInlineLinks(metadataConfiguration.ConfigurationId, containerId,
-                                                        resultMessage);
-                    }
+					resultMessage.AppendFormat(MigrationHelper.TryUpdateDocumentMappings(metadataConfiguration, configurationObjectBuilder, _indexFactory, documentId));
                 }
 
                 resultMessage.AppendLine();
@@ -143,7 +103,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
             message = resultMessage.ToString();
         }
 
-        /// <summary>
+	    /// <summary>
         ///     Отменить миграцию
         /// </summary>
         /// <param name="message">Информативное сообщение с результатом выполнения действия</param>
@@ -172,60 +132,6 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
             _version = version;
             _activeConfiguration = configurationId;
             _context = context;
-        }
-
-        /// <summary>
-        ///     Метод обновляет маппинг контейнеров, документы в которых имеют inline ссылки на документы
-        ///     с изменившейся структурой
-        /// </summary>
-        private void UpdateContainersWithInlineLinks(string configId, string documentId,
-                                                     StringBuilder messagesIntegrator)
-        {
-            var configList =
-                _context.GetComponent<IConfigurationMediatorComponent>()
-                        .ConfigurationBuilder.GetConfigurationList();
-            foreach (var metadataConfiguration in configList)
-            {
-                var containers = metadataConfiguration.Containers;
-                foreach (var containerId in containers)
-                {
-                    IVersionBuilder versionBuilder = _indexFactory.BuildVersionBuilder(
-                        metadataConfiguration.ConfigurationId,
-                        metadataConfiguration.GetMetadataIndexType(containerId));
-
-                    var schema = metadataConfiguration.GetSchemaVersion(containerId);
-
-                    if (schema != null)
-                    {
-                        // Проверяем, имеется ли в схеме данных документа inline ссылка 
-                        // на документ с documentId из конфигурации configId
-                        if (DocumentSchemaHelper.CheckObjectForSpecifiedInline(schema, configId, documentId))
-                        {
-                            // convert document schema to index mapping
-                            List<PropertyMapping> props = DocumentSchemaHelper.ExtractProperties(_version,
-                                                                                                 schema.Properties,
-                                                                                                 _context
-                                                                                                     .GetComponent
-                                                                                                     <
-                                                                                                     IConfigurationMediatorComponent
-                                                                                                     >()
-                                                                                                     .ConfigurationBuilder);
-
-                            if (!_updatedContainers.Contains(metadataConfiguration.ConfigurationId + "_" + containerId))
-                            {
-                                versionBuilder.CreateVersion(false, props.Count > 0 ? new IndexTypeMapping(props) : null);
-
-                                _updatedContainers.Add(metadataConfiguration.ConfigurationId + "_" + containerId);
-
-                                messagesIntegrator.AppendLine();
-                                messagesIntegrator.AppendFormat(
-                                    "Created new version of {0} document from configuration {1} due online link on other changed document.",
-                                    containerId, ConfigurationId);
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
 }

@@ -44,6 +44,13 @@ namespace InfinniPlatform.Authentication.Modules
 			return InvokeUserManager((m, userId) => m.HasPasswordAsync(userId));
 		}
 
+		public bool HasPassword(string userName)
+		{
+			var user = GetUserByUserName(userName);
+			var hasPasswordTask = UserManager.HasPasswordAsync(user.Id);
+			return hasPasswordTask.Result;
+		}
+
 		public void AddPassword(string password)
 		{
 			if (string.IsNullOrEmpty(password))
@@ -54,9 +61,23 @@ namespace InfinniPlatform.Authentication.Modules
 			InvokeUserManager((m, userId) => m.AddPasswordAsync(userId, password));
 		}
 
+		public void AddPassword(string userName, string password)
+		{
+			var user = GetUserByUserName(userName);
+			var addPasswordTask = UserManager.AddPasswordAsync(user.Id, password);
+			ThrowIfError(addPasswordTask);
+		}
+
 		public void RemovePassword()
 		{
 			InvokeUserManager((m, userId) => m.RemovePasswordAsync(userId));
+		}
+
+		public void RemovePassword(string userName)
+		{
+			var user = GetUserByUserName(userName);
+			var removePasswordTask = UserManager.RemovePasswordAsync(user.Id);
+			ThrowIfError(removePasswordTask);
 		}
 
 		public void ChangePassword(string currentPassword, string newPassword)
@@ -74,6 +95,22 @@ namespace InfinniPlatform.Authentication.Modules
 			InvokeUserManager((m, userId) => m.ChangePasswordAsync(userId, currentPassword, newPassword));
 		}
 
+		public void ChangePassword(string userName, string currentPassword, string newPassword)
+		{
+			if (string.IsNullOrEmpty(currentPassword))
+			{
+				throw new ArgumentNullException("currentPassword");
+			}
+
+			if (string.IsNullOrEmpty(newPassword))
+			{
+				throw new ArgumentNullException("newPassword");
+			}
+
+			var user = GetUserByUserName(userName);
+			var changePasswordTask = UserManager.ChangePasswordAsync(user.Id, currentPassword, newPassword);
+			ThrowIfError(changePasswordTask);
+		}
 
 		// SecurityStamp
 
@@ -349,6 +386,13 @@ namespace InfinniPlatform.Authentication.Modules
 			}
 
 			return Thread.CurrentPrincipal.Identity;
+		}
+
+		private IdentityApplicationUser GetUserByUserName(string userName)
+		{
+			var findUserTask = UserManager.FindByNameAsync(userName);
+			var user = findUserTask.Result;
+			return user;
 		}
 
 		private static void ThrowIfError(Task<IdentityResult> task)

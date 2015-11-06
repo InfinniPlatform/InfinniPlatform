@@ -1,5 +1,5 @@
 ﻿using InfinniPlatform.Api.Extensions;
-using InfinniPlatform.UserInterface.Services.Metadata;
+using InfinniPlatform.UserInterface.Configurations;
 using InfinniPlatform.UserInterface.ViewBuilders.Data;
 using InfinniPlatform.UserInterface.ViewBuilders.Parameter;
 using InfinniPlatform.UserInterface.ViewBuilders.Views;
@@ -8,17 +8,6 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.LinkViews.ExistsView
 {
     internal sealed class ExistsViewBuilder : IObjectBuilder
     {
-        private readonly string _server;
-        private readonly int _port;
-        private readonly string _routeVersion;
-
-        public ExistsViewBuilder(string server, int port, string routeVersion)
-        {
-            _server = server;
-            _port = port;
-            _routeVersion = routeVersion;
-        }
-
         public object Build(ObjectBuilderContext context, View parent, dynamic metadata)
         {
             var linkView = new LinkView(context.AppView, parent, () => CreateView(context, parent, metadata));
@@ -32,8 +21,7 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.LinkViews.ExistsView
             View view = null;
 
             // Получение метаданных представления
-            var viewMetadataService = new ViewMetadataService(null, metadata.ConfigId, metadata.DocumentId, _server, _port, _routeVersion);
-            var viewMetadata = viewMetadataService.GetItem(metadata.ViewId);
+			var viewMetadata = ConfigResourceRepository.GetView(metadata.ConfigId, metadata.DocumentId, metadata.ViewId);
 
             if (viewMetadata != null)
             {

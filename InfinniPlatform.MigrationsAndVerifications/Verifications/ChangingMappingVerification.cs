@@ -5,8 +5,6 @@ using System.Text;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Index.ElasticSearch.Factories;
-using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
-using InfinniPlatform.MigrationsAndVerifications.Helpers;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
@@ -83,7 +81,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
 
             if (metadataConfiguration != null)
             {
-                var containers = metadataConfiguration.Containers;
+                var containers = metadataConfiguration.Documents;
                 foreach (var containerId in containers)
                 {
                     IVersionBuilder versionBuilder = _indexFactory.BuildVersionBuilder(
@@ -104,7 +102,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
                                                                            .ConfigurationBuilder);
                     }
 
-                    if (!versionBuilder.VersionExists(props.Count > 0 ? new IndexTypeMapping(props) : null))
+	                if (!versionBuilder.VersionExists(props.Count > 0
+														  ? props
+														  : null))
                     {
                         result = false;
 

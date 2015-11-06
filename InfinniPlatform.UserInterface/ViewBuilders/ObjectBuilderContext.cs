@@ -11,40 +11,13 @@ namespace InfinniPlatform.UserInterface.ViewBuilders
     /// </summary>
     internal sealed class ObjectBuilderContext
     {
-        private readonly string _server;
-        private readonly int _port;
-        private readonly string _routeVersion;
-
-        private readonly Dictionary<string, IObjectBuilder> _objectBuilders
+		private readonly Dictionary<string, IObjectBuilder> _objectBuilders
             = new Dictionary<string, IObjectBuilder>();
-
-        public ObjectBuilderContext(string server, int port, string routeVersion)
-        {
-            _server = server;
-            _port = port;
-            _routeVersion = routeVersion;
-        }
-
+		
         /// <summary>
         ///     Главное представление приложения.
         /// </summary>
         public View AppView { get; set; }
-
-        public string Server
-        {
-            get { return _server; }
-        }
-
-        public int Port
-        {
-            get { return _port; }
-        }
-
-        public string RouteVersion
-        {
-            get { return _routeVersion; }
-        }
-
 
         /// <summary>
         ///     Зарегистрировать построитель.

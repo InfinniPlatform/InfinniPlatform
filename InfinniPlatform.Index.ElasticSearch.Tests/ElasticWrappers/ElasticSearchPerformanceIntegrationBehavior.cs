@@ -29,7 +29,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 
 			var watch = Stopwatch.StartNew();
 			var elasticConnection = new ElasticConnection();
-		    elasticConnection.ConnectIndex();
 			watch.Stop();
 
 			var oneConnectionInitTime = watch.ElapsedMilliseconds;
@@ -38,7 +37,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 			for (int i = 0; i < connectionCount; i++)
 			{
 				elasticConnection = new ElasticConnection();
-                elasticConnection.ConnectIndex();
 			}
 			watch.Stop();
 

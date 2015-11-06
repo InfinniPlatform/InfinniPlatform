@@ -1,10 +1,11 @@
-﻿using InfinniPlatform.Api.Index;
-using InfinniPlatform.Sdk.Environment.Index;
-using Nest;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using InfinniPlatform.Sdk.Environment.Index;
+
+using Nest;
+
 using PropertyMapping = InfinniPlatform.Sdk.Environment.Index.PropertyMapping;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions
@@ -64,7 +65,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions
                     .Type(schemaversionname)
                     .SearchAnalyzer("string_lowercase")
                     .IndexAnalyzer(searchAbility.ToString().ToLowerInvariant())
-                    .Properties( p => p.Object<dynamic>(
+                    .Properties(p => p.Object<dynamic>(
                         od => od.Name("Values").Properties(ps => ps.AddProperties(propertiesDictionary)))));
         }
 
@@ -80,8 +81,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions
                 case PropertyDataType.String:
                     if (mapping.AddSortField)
                     {
-                        var multifield = new MultiFieldMapping {Type = "string"};
-                        multifield.Fields.Add("sort", new StringMapping {Index = FieldIndexOption.NotAnalyzed});
+                        var multifield = new MultiFieldMapping { Type = "string" };
+                        multifield.Fields.Add("sort", new StringMapping { Index = FieldIndexOption.NotAnalyzed });
                         resultType = multifield;
                     }
                     else
@@ -93,24 +94,24 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions
                     if (mapping.AddSortField)
                     {
                         var multifield = new MultiFieldMapping { Type = "integer" };
-                        multifield.Fields.Add("sort", new NumberMapping{Type = "integer"});
+                        multifield.Fields.Add("sort", new NumberMapping { Type = "integer" });
                         resultType = multifield;
                     }
                     else
                     {
-                        resultType = new NumberMapping {Type = "integer"};
+                        resultType = new NumberMapping { Type = "integer" };
                     }
                     break;
                 case PropertyDataType.Float:
                     if (mapping.AddSortField)
                     {
                         var multifield = new MultiFieldMapping { Type = "float" };
-                        multifield.Fields.Add("sort", new NumberMapping{Type = "float"});
+                        multifield.Fields.Add("sort", new NumberMapping { Type = "float" });
                         resultType = multifield;
                     }
                     else
                     {
-                        resultType = new NumberMapping {Type = "float"};
+                        resultType = new NumberMapping { Type = "float" };
                     }
                     break;
                 case PropertyDataType.Date:
@@ -137,20 +138,20 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions
                         resultType = new BooleanMapping();
                     }
                     break;
-				case PropertyDataType.Binary:
-					resultType = new ObjectMapping
-					{
-						Properties = new Dictionary<PropertyNameMarker, IElasticType>()
-					};
-					(resultType as ObjectMapping).Properties.Add("Info",new ObjectMapping());
-					break;
+                case PropertyDataType.Binary:
+                    resultType = new ObjectMapping
+                                 {
+                                     Properties = new Dictionary<PropertyNameMarker, IElasticType>()
+                                 };
+                    (resultType as ObjectMapping).Properties.Add("Info", new ObjectMapping());
+                    break;
                 case PropertyDataType.Object:
-				                    
+
                     // Поле является контейнером для других полей
                     resultType = new ObjectMapping
-                    {
-                        Properties = new Dictionary<PropertyNameMarker, IElasticType>()
-                    };
+                                 {
+                                     Properties = new Dictionary<PropertyNameMarker, IElasticType>()
+                                 };
 
                     foreach (var property in mapping.ChildProperties)
                     {

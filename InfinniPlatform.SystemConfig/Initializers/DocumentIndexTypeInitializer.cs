@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.ComTypes;
 
-using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.SystemConfig.Initializers
 {
@@ -16,16 +15,17 @@ namespace InfinniPlatform.SystemConfig.Initializers
     /// </summary>
     public sealed class DocumentIndexTypeInitializer : IStartupInitializer
     {
-        public DocumentIndexTypeInitializer(IMetadataConfigurationProvider metadataProvider)
+        public DocumentIndexTypeInitializer(IMetadataConfigurationProvider metadataProvider,
+                                            IConfigurationObjectBuilder configurationBuilder)
         {
             _metadataProvider = metadataProvider;
+            _configurationBuilder = configurationBuilder;
             _indexFactory = new Lazy<IIndexFactory>(() => new ElasticFactory());
         }
 
-
+        private readonly IConfigurationObjectBuilder _configurationBuilder;
         private readonly Lazy<IIndexFactory> _indexFactory;
         private readonly IMetadataConfigurationProvider _metadataProvider;
-
 
         public void OnStart(HostingContextBuilder contextBuilder)
         {
@@ -37,7 +37,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
             {
                 foreach (var configuration in configurations)
                 {
-                    var documents = configuration.Containers;
+                    var documents = configuration.Documents;
 
                     if (documents != null)
                     {
@@ -64,20 +64,17 @@ namespace InfinniPlatform.SystemConfig.Initializers
             Logger.Log.Info("Creating indexes successfully completed.");
         }
 
-
-        private static void CreateStorage(string configId, string documentId)
+        private void CreateStorage(string configId, string documentId)
         {
-            var indexApi = new IndexApi();
+            var message = MigrationHelper.TryUpdateDocumentMappings(_metadataProvider.GetMetadataConfiguration(null, configId), _configurationBuilder, _indexFactory.Value, documentId);
 
-            if (!indexApi.IndexExists(configId, documentId))
+            if (message != null)
             {
                 Logger.Log.Info("Creating index.", new Dictionary<string, object>
                                                    {
                                                        { "configurationId", configId },
-                                                       { "documentId", documentId },
+                                                       { "documentId", documentId }
                                                    });
-
-                indexApi.RebuildIndex(configId, documentId);
             }
         }
 
@@ -98,7 +95,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
                 Logger.Log.Info("Creating index.", new Dictionary<string, object>
                                                    {
                                                        { "configurationId", configId },
-                                                       { "documentId", documentId },
+                                                       { "documentId", documentId }
                                                    });
 
                 versionBuilder.CreateVersion();

@@ -81,7 +81,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                     string containerName = Path.GetFileNameWithoutExtension(classifier.ToLowerInvariant())
                                                .Replace("classifierstorage_", "");
 
-                    if (_metadataConfiguration.Containers.Select(c => c.ToLowerInvariant()).Contains(containerName))
+                    if (_metadataConfiguration.Documents.Select(c => c.ToLowerInvariant()).Contains(containerName))
                     {
                         item.Metadata = containerName;
                         item.FileContent = Convert.ToBase64String(File.ReadAllBytes(classifier));
