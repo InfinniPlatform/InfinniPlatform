@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.Serialization;
@@ -16,17 +15,13 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 	{
 		public ViewMetadataService(string configId, string documentId)
 		{
-			_configId = configId;
+			ConfigId = configId;
 			_documentId = documentId;
 		}
 
-		private readonly string _configId;
 		private readonly string _documentId;
 
-		public string ConfigId
-		{
-			get { return _configId; }
-		}
+		public string ConfigId { get; }
 
 		public override object CreateItem()
 		{
@@ -35,7 +30,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			view.Id = Guid.NewGuid().ToString();
 			view.Name = string.Empty;
 			view.Caption = string.Empty;
-			view.DataSources = new object[]{};
+			view.DataSources = new object[] { };
 			view.Parameters = new object[] { };
 			view.LayoutPanel = new object();
 			view.Scripts = new object[] { };
@@ -48,11 +43,10 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			string filePath;
 			var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
 
-			//TODO Wrapper for PackageMetadataLoader.Configurations
-			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
-			if (configuration.Documents[_documentId].Views.ContainsKey(item.Name))
+			dynamic configuration = PackageMetadataLoader.GetConfiguration(ConfigId);
+			if (PackageMetadataLoader.IsViewExists(ConfigId, _documentId, item.Name))
 			{
-				dynamic oldView = configuration.Documents[_documentId].Views[item.Name];
+				dynamic oldView = PackageMetadataLoader.GetView(ConfigId, _documentId, item.Name);
 				filePath = oldView.FilePath;
 			}
 			else
@@ -71,25 +65,21 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		public override void DeleteItem(string itemId)
 		{
-			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
-			dynamic document = configuration.Documents[_documentId].Views[itemId];
+			dynamic view = PackageMetadataLoader.GetView(ConfigId, _documentId, itemId);
 
-			File.Delete(document.FilePath);
+			File.Delete(view.FilePath);
 
 			PackageMetadataLoader.UpdateCache();
 		}
 
 		public override object GetItem(string itemId)
 		{
-			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
-			return configuration.Documents[_documentId].Views[itemId].Content;
+			return PackageMetadataLoader.GetView(ConfigId, _documentId, itemId);
 		}
 
 		public override IEnumerable<object> GetItems()
 		{
-			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
-			Dictionary<string, dynamic> views = configuration.Documents[_documentId].Views;
-			return views.Values.Select(o => o.Content);
+			return PackageMetadataLoader.GetViews(ConfigId, _documentId);
 		}
 	}
 }

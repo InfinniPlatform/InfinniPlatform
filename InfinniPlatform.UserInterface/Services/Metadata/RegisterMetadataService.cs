@@ -4,7 +4,6 @@ using System.Linq;
 
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.Serialization;
-using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {
@@ -15,15 +14,10 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 	{
 		public RegisterMetadataService(string configId)
 		{
-			_configId = configId;
+			ConfigId = configId;
 		}
 
-		private readonly string _configId;
-
-		public string ConfigId
-		{
-			get { return _configId; }
-		}
+		public string ConfigId { get; }
 
 		public override object CreateItem()
 		{
@@ -35,8 +29,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			string filePath;
 			var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
 
-			//TODO Wrapper for PackageMetadataLoader.Configurations
-			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+			dynamic configuration = PackageMetadataLoader.GetConfiguration(ConfigId);
 			if (configuration.Registers.ContainsKey(item.Name))
 			{
 				dynamic oldRegister = configuration.Registers[item.Name];
@@ -57,8 +50,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		public override void DeleteItem(string itemId)
 		{
-			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
-			var register = configuration.Registers[itemId];
+			dynamic register = PackageMetadataLoader.GetRegister(ConfigId, itemId);
 
 			var registerDirectory = Path.GetDirectoryName(register.FilePath);
 
@@ -71,15 +63,12 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		public override object GetItem(string itemId)
 		{
-			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
-			return configuration.Registers[itemId].Content;
+			return PackageMetadataLoader.GetRegister(ConfigId, itemId);
 		}
 
 		public override IEnumerable<object> GetItems()
 		{
-			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
-			Dictionary<string, dynamic> documents = configuration.Registers;
-			return documents.Values.Select(o => o.Content);
+			return PackageMetadataLoader.GetRegisters(ConfigId);
 		}
 	}
 }

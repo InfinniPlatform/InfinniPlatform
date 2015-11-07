@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.Serialization;
@@ -16,17 +15,13 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 	{
 		public PrintViewMetadataService(string configId, string documentId)
 		{
-			_configId = configId;
+			ConfigId = configId;
 			_documentId = documentId;
 		}
 
-		private readonly string _configId;
 		private readonly string _documentId;
 
-		public string ConfigId
-		{
-			get { return _configId; }
-		}
+		public string ConfigId { get; }
 
 		public override object CreateItem()
 		{
@@ -45,8 +40,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			string filePath;
 			var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
 
-			//TODO Wrapper for PackageMetadataLoader.Configurations
-			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+			dynamic configuration = PackageMetadataLoader.GetConfiguration(ConfigId);
 			if (configuration.Documents[_documentId].Views.ContainsKey(item.Name))
 			{
 				dynamic oldView = configuration.Documents[_documentId].PrintViews[item.Name];
@@ -68,25 +62,21 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		public override void DeleteItem(string itemId)
 		{
-			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
-			dynamic document = configuration.Documents[_documentId].PrintViews[itemId];
+			dynamic printView = PackageMetadataLoader.GetPrintView(ConfigId, _documentId, itemId);
 
-			File.Delete(document.FilePath);
+			File.Delete(printView.FilePath);
 
 			PackageMetadataLoader.UpdateCache();
 		}
 
 		public override object GetItem(string itemId)
 		{
-			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
-			return configuration.Documents[_documentId].PrintViews[itemId].Content;
+			return PackageMetadataLoader.GetPrintView(ConfigId, _documentId, itemId);
 		}
 
 		public override IEnumerable<object> GetItems()
 		{
-			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
-			Dictionary<string, dynamic> printViews = configuration.Documents[_documentId].PrintViews;
-			return printViews.Values.Select(o => o.Content);
+			return PackageMetadataLoader.GetPrintViews(ConfigId, _documentId);
 		}
 	}
 }

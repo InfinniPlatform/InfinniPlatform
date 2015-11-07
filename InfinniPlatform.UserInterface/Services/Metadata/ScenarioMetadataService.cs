@@ -16,17 +16,13 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 	{
 		public ScenarioMetadataService(string configId, string documentId)
 		{
-			_configId = configId;
+			ConfigId = configId;
 			_documentId = documentId;
 		}
 
-		private readonly string _configId;
 		private readonly string _documentId;
 
-		public string ConfigId
-		{
-			get { return _configId; }
-		}
+		public string ConfigId { get; }
 
 		public override object CreateItem()
 		{
@@ -45,8 +41,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			string filePath;
 			var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
 
-			//TODO Wrapper for PackageMetadataLoader.Configurations
-			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
+			dynamic configuration = PackageMetadataLoader.GetConfiguration(ConfigId);
 			if (configuration.Documents[_documentId].Scenarios.ContainsKey(item.Name))
 			{
 				dynamic oldScenario = configuration.Documents[_documentId].Scenarios[item.Name];
@@ -68,25 +63,21 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		public override void DeleteItem(string itemId)
 		{
-			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
-			dynamic process = configuration.Documents[_documentId].Scenarios[itemId];
+			dynamic scenario = PackageMetadataLoader.GetScenario(ConfigId, _documentId, itemId);
 
-			File.Delete(process.FilePath);
+			File.Delete(scenario.FilePath);
 
 			PackageMetadataLoader.UpdateCache();
 		}
 
 		public override object GetItem(string itemId)
 		{
-			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
-			return configuration.Documents[_documentId].Scenarios[itemId].Content;
+			return PackageMetadataLoader.GetScenario(ConfigId, _documentId, itemId);
 		}
 
 		public override IEnumerable<object> GetItems()
 		{
-			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
-			Dictionary<string, dynamic> processes = configuration.Documents[_documentId].Scenarios;
-			return processes.Values.Select(o => o.Content);
+			return PackageMetadataLoader.GetScenarios(ConfigId, _documentId);
 		}
 	}
 }

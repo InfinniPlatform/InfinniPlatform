@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.Serialization;
@@ -16,15 +15,10 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 	{
 		public DocumentMetadataService(string configId)
 		{
-			_configId = configId;
+			ConfigId = configId;
 		}
 
-		private readonly string _configId;
-
-		public string ConfigId
-		{
-			get { return _configId; }
-		}
+		public string ConfigId { get; }
 
 		public override object CreateItem()
 		{
@@ -48,16 +42,15 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			string filePath;
 			var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
 
-			//TODO Wrapper for PackageMetadataLoader.Configurations
-			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
-			if (configuration.Documents.ContainsKey(item.Name))
+			if (PackageMetadataLoader.IsDocumentExists(ConfigId, item.Name))
 			{
-				dynamic oldDocument = configuration.Documents[item.Name];
+				dynamic oldDocument = PackageMetadataLoader.GetDocument(ConfigId, item.Name);
 				filePath = oldDocument.FilePath;
 			}
 			else
 			{
-				string directoryPath = Path.Combine(Path.GetDirectoryName(configuration.FilePath), "Documents", item.Name);
+				dynamic config = PackageMetadataLoader.GetConfiguration(ConfigId);
+				string directoryPath = Path.Combine(Path.GetDirectoryName(config.FilePath), "Documents", item.Name);
 				Directory.CreateDirectory(directoryPath);
 
 				filePath = Path.Combine(directoryPath, string.Concat(item.Name, ".json"));
@@ -70,8 +63,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		public override void DeleteItem(string itemId)
 		{
-			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
-			dynamic document = configuration.Documents[itemId];
+			dynamic document = PackageMetadataLoader.GetDocument(ConfigId, itemId);
 
 			var documentDirectory = Path.GetDirectoryName(document.FilePath);
 
@@ -84,15 +76,12 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		public override object GetItem(string itemId)
 		{
-			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
-			return configuration.Documents[itemId].Content;
+			return PackageMetadataLoader.GetDocument(ConfigId, itemId);
 		}
 
 		public override IEnumerable<object> GetItems()
 		{
-			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
-			Dictionary<string, dynamic> documents = configuration.Documents;
-			return documents.Values.Select(o => o.Content);
+			return PackageMetadataLoader.GetDocuments(ConfigId);
 		}
 	}
 }
