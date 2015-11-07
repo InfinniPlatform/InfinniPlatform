@@ -44,9 +44,10 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
 
 			dynamic configuration = PackageMetadataLoader.GetConfiguration(ConfigId);
-			if (PackageMetadataLoader.IsViewExists(ConfigId, _documentId, item.Name))
+			dynamic oldView = PackageMetadataLoader.GetView(ConfigId, _documentId, item.Name);
+			if (oldView!=null)
 			{
-				dynamic oldView = PackageMetadataLoader.GetView(ConfigId, _documentId, item.Name);
+				
 				filePath = oldView.FilePath;
 			}
 			else

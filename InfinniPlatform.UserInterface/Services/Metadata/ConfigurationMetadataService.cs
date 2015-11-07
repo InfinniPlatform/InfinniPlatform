@@ -36,9 +36,12 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			string filePath;
 			var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
 
-			if (PackageMetadataLoader.IsConfigurationExists(item.Name))
+			var configuration = PackageMetadataLoader.GetConfiguration(item.Name);
+
+			if (configuration!=null)
 			{
-				dynamic oldConfiguration = PackageMetadataLoader.GetConfiguration(item.Name);
+				
+				dynamic oldConfiguration = configuration;
 				filePath = oldConfiguration.FilePath;
 			}
 			else

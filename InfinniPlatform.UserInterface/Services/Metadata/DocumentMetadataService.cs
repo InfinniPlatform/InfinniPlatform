@@ -42,9 +42,10 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			string filePath;
 			var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
 
-			if (PackageMetadataLoader.IsDocumentExists(ConfigId, item.Name))
+			dynamic oldDocument = PackageMetadataLoader.GetDocument(ConfigId, item.Name);
+			if (oldDocument!=null)
 			{
-				dynamic oldDocument = PackageMetadataLoader.GetDocument(ConfigId, item.Name);
+				
 				filePath = oldDocument.FilePath;
 			}
 			else
