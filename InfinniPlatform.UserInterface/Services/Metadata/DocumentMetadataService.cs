@@ -43,7 +43,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
 
 			dynamic oldDocument = PackageMetadataLoader.GetDocument(ConfigId, item.Name);
-			if (oldDocument!=null)
+			if (oldDocument != null)
 			{
 				
 				filePath = oldDocument.FilePath;

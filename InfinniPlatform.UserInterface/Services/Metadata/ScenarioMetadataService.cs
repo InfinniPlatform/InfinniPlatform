@@ -42,9 +42,9 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
 
 			dynamic configuration = PackageMetadataLoader.GetConfiguration(ConfigId);
-			if (configuration.Documents[_documentId].Scenarios.ContainsKey(item.Name))
+			dynamic oldScenario = PackageMetadataLoader.GetScenario(ConfigId, _documentId, item.Name);
+			if (oldScenario != null)
 			{
-				dynamic oldScenario = configuration.Documents[_documentId].Scenarios[item.Name];
 				filePath = oldScenario.FilePath;
 			}
 			else

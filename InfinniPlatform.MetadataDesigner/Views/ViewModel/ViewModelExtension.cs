@@ -771,11 +771,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
 	    public static dynamic GetRegisterDocumentSchema(string version, string configId, string registerName)
         {
-//            var managerDocument = new ManagerFactoryConfiguration(version, configId).BuildDocumentManager();
-//            var registerDocument = managerDocument.MetadataReader.GetItem(RegisterConstants.RegisterNamePrefix + registerName);
-
-			dynamic configurations = PackageMetadataLoader.GetConfiguration(configId);
-			dynamic registerDocument = configurations.Documents[RegisterConstants.RegisterNamePrefix + registerName].Content;
+			dynamic registerDocument = PackageMetadataLoader.GetDocuments($"{RegisterConstants.RegisterNamePrefix}{registerName}");
 			
             if (registerDocument != null)
             {

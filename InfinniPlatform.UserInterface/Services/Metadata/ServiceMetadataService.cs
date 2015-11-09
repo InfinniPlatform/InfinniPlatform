@@ -41,9 +41,10 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
 
 			dynamic configuration = PackageMetadataLoader.GetConfiguration(ConfigId);
-			if (configuration.Documents[_documentId].Services.ContainsKey(item.Name))
+			var services = PackageMetadataLoader.GetService(ConfigId, _documentId, item.Name);
+			if (services != null)
 			{
-				dynamic oldServices = configuration.Documents[_documentId].Services[item.Name];
+				dynamic oldServices = services;
 				filePath = oldServices.FilePath;
 			}
 			else

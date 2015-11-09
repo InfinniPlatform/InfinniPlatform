@@ -30,9 +30,9 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
 
 			dynamic configuration = PackageMetadataLoader.GetConfiguration(ConfigId);
-			if (configuration.Registers.ContainsKey(item.Name))
+			dynamic oldRegister = PackageMetadataLoader.GetRegister(ConfigId, item.Name);
+			if (oldRegister != null)
 			{
-				dynamic oldRegister = configuration.Registers[item.Name];
 				filePath = oldRegister.FilePath;
 			}
 			else

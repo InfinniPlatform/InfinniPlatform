@@ -29,9 +29,10 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
 
 			dynamic configuration = PackageMetadataLoader.GetConfiguration(ConfigId);
-			if (configuration.Menu.ContainsKey(item.Name))
+			dynamic oldMenu = PackageMetadataLoader.GetMenu(ConfigId, item.Name);
+			if (oldMenu != null)
 			{
-				dynamic oldMenu = configuration.Documents[item.Name];
+				
 				filePath = oldMenu.FilePath;
 			}
 			else

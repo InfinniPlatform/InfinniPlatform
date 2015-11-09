@@ -36,7 +36,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 		public override void ReplaceItem(dynamic item)
 		{
 			dynamic configuration = PackageMetadataLoader.GetConfiguration(ConfigId);
-			IEnumerable<object> assemblies = configuration.Content.Assemblies;
+			var assemblies = PackageMetadataLoader.GetAssemblies(ConfigId);
 
 			var newAssembliesList = new List<object>(assemblies) { item };
 
@@ -54,10 +54,10 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 		public override void DeleteItem(string itemId)
 		{
 			dynamic configuration = PackageMetadataLoader.GetConfiguration(ConfigId);
-			IEnumerable<dynamic> assemblies = configuration.Content.Assemblies;
+			IEnumerable<dynamic> assemblies = PackageMetadataLoader.GetAssemblies(ConfigId);
 
 			var newAssembliesList = assemblies.Where(assembly => assembly.Name != itemId)
-											  .ToArray();
+			                                  .ToArray();
 
 			configuration.Content.Assemblies = newAssembliesList;
 

@@ -16,7 +16,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 		/// <summary>
 		/// Кэш конфигураций.
 		/// </summary>
-		public static Dictionary<string, object> Configurations { get; private set; } = LoadConfigsMetadata();
+		private static Dictionary<string, object> Configurations { get; set; } = LoadConfigsMetadata();
 
 		/// <summary>
 		/// Обновить кэш конфигураций.
@@ -136,8 +136,15 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
 		public static object GetConfiguration(string configId)
 		{
-			dynamic configuration = Configurations[configId];
-			return configuration.Content;
+			return TryGetValueContent(Configurations, configId);
+		}
+
+		public static object GetConfigurationContent(string configId)
+		{
+			dynamic configuration;
+			return Configurations.TryGetValue(configId, out configuration)
+				? configuration
+				: null;
 		}
 
 		public static IEnumerable<object> GetConfigurations()
@@ -146,16 +153,18 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 			return valueCollection.Select(o => o.Content);
 		}
 
-		private static object GetConfigurationElements(string configId)
-		{
-			dynamic configuration = Configurations[configId];
-			return configuration;
-		}
-
 		public static object GetDocument(string configId, string docId)
 		{
 			dynamic configuration = Configurations[configId];
-			return configuration.Documents[docId].Content;
+			return TryGetValueContent(configuration.Documents, docId);
+		}
+
+		private static object TryGetValueContent(dynamic dictionary, string docId)
+		{
+			dynamic item;
+			return dictionary.TryGetValue(docId, out item)
+				? item.Content
+				: null;
 		}
 
 		public static IEnumerable<object> GetDocuments(string configId)
@@ -167,8 +176,8 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
 		public static object GetView(string configId, string documentId, string viewId)
 		{
-			dynamic configuration = Configurations[configId];
-			return configuration.Documents[documentId].Views[viewId].Content;
+			dynamic document = GetDocument(configId, documentId);
+			return TryGetValueContent(document.Views, viewId);
 		}
 
 		public static IEnumerable<object> GetViews(string configId, string documentId)
@@ -194,7 +203,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 		public static object GetMenu(string configId, string menuId)
 		{
 			dynamic configuration = Configurations[configId];
-			return configuration.Menu[menuId].Content;
+			return TryGetValueContent(configuration.Menu, menuId);
 		}
 
 		public static IEnumerable<object> GetMenus(string configId)
@@ -206,8 +215,8 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
 		public static object GetPrintView(string configId, string documentId, string printViewId)
 		{
-			dynamic configuration = Configurations[configId];
-			return configuration.Documents[documentId].PrintViews[printViewId].Content;
+			dynamic document = GetDocument(configId, documentId);
+			return TryGetValueContent(document.PrintViews, printViewId);
 		}
 
 		public static IEnumerable<object> GetPrintViews(string configId, string documentId)
@@ -219,8 +228,8 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
 		public static object GetProcess(string configId, string documentId, string processId)
 		{
-			dynamic configuration = Configurations[configId];
-			return configuration.Documents[documentId].Processes[processId].Content;
+			dynamic document = GetDocument(configId, documentId);
+			return TryGetValueContent(document.Processes, processId);
 		}
 
 		public static IEnumerable<object> GetProcesses(string configId, string documentId)
@@ -233,7 +242,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 		public static object GetRegister(string configId, string registerId)
 		{
 			dynamic configuration = Configurations[configId];
-			return configuration.Registers[registerId].Content;
+			return TryGetValueContent(configuration.Registers, registerId);
 		}
 
 		public static IEnumerable<object> GetRegisters(string configId)
@@ -245,8 +254,8 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
 		public static object GetService(string configId, string documentId, string serviceId)
 		{
-			dynamic configuration = Configurations[configId];
-			return configuration.Documents[documentId].Services[serviceId].Content;
+			dynamic document = GetDocument(configId, documentId);
+			return TryGetValueContent(document.Services, serviceId);
 		}
 
 		public static IEnumerable<object> GetServices(string configId, string documentId)
@@ -258,8 +267,8 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
 		public static object GetScenario(string configId, string documentId, string scenarioId)
 		{
-			dynamic configuration = Configurations[configId];
-			return configuration.Documents[documentId].Scenarios[scenarioId].Content;
+			dynamic document = GetDocument(configId, documentId);
+			return TryGetValueContent(document.Scenarios, scenarioId);
 		}
 
 		public static IEnumerable<object> GetScenarios(string configId, string documentId)

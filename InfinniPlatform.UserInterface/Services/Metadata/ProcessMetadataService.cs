@@ -41,9 +41,10 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
 
 			dynamic configuration = PackageMetadataLoader.GetConfiguration(ConfigId);
-			if (configuration.Documents[_documentId].Processes.ContainsKey(item.Name))
+			dynamic oldProcess = PackageMetadataLoader.GetProcess(ConfigId,_documentId, item.Name);
+			if (oldProcess != null)
 			{
-				dynamic oldProcess = configuration.Documents[_documentId].Processes[item.Name];
+				
 				filePath = oldProcess.FilePath;
 			}
 			else

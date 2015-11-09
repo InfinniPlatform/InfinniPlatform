@@ -45,7 +45,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 			dynamic configuration = PackageMetadataLoader.GetConfiguration(ConfigId);
 			dynamic oldView = PackageMetadataLoader.GetView(ConfigId, _documentId, item.Name);
-			if (oldView!=null)
+			if (oldView != null)
 			{
 				
 				filePath = oldView.FilePath;
