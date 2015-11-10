@@ -156,6 +156,15 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 		public static object GetDocument(string configId, string docId)
 		{
 			dynamic configuration = Configurations[configId];
+			dynamic item;
+			return configuration.Documents.TryGetValue(docId, out item)
+					   ? item
+					   : null;
+		}
+
+		public static object GetDocumentContent(string configId, string docId)
+		{
+			dynamic configuration = Configurations[configId];
 			return TryGetValueContent(configuration.Documents, docId);
 		}
 
