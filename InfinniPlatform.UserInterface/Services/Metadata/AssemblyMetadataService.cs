@@ -9,26 +9,20 @@ using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {
-    /// <summary>
-    ///     Сервис для работы с метаданными сборок.
-    /// </summary>
-    internal sealed class AssemblyMetadataService : BaseMetadataService
-    {
-        private readonly string _configId;
-        
-        public AssemblyMetadataService(string configId)
-        {
-            _configId = configId;
-        }
+	/// <summary>
+	/// Сервис для работы с метаданными сборок.
+	/// </summary>
+	internal sealed class AssemblyMetadataService : BaseMetadataService
+	{
+		public AssemblyMetadataService(string configId)
+		{
+			ConfigId = configId;
+		}
 
-        public string ConfigId
-        {
-            get { return _configId; }
-        }
+		public string ConfigId { get; }
 
-
-        public override object CreateItem()
-        {
+		public override object CreateItem()
+		{
 			dynamic assembly = new DynamicWrapper();
 
 			assembly.Id = Guid.NewGuid().ToString();
@@ -36,17 +30,17 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			assembly.Caption = string.Empty;
 			assembly.Description = string.Empty;
 
-	        return assembly;
-        }
+			return assembly;
+		}
 
-        public override void ReplaceItem(dynamic item)
-        {
-			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
-			IEnumerable<object> assemblies = configuration.Content.Assemblies;
+		public override void ReplaceItem(dynamic item)
+		{
+			dynamic configuration = PackageMetadataLoader.GetConfiguration(ConfigId);
+			var assemblies = PackageMetadataLoader.GetAssemblies(ConfigId);
 
-	        var newAssembliesList = new List<object>(assemblies) { item };
+			var newAssembliesList = new List<object>(assemblies) { item };
 
-	        configuration.Content.Assemblies = newAssembliesList;
+			configuration.Content.Assemblies = newAssembliesList;
 
 			var filePath = configuration.FilePath;
 
@@ -55,38 +49,35 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 			File.WriteAllBytes(filePath, serializedItem);
 
 			PackageMetadataLoader.UpdateCache();
-        }
+		}
 
-	    public override void DeleteItem(string itemId)
-	    {
-		    dynamic configuration = PackageMetadataLoader.Configurations[_configId];
-		    IEnumerable<dynamic> assemblies = configuration.Content.Assemblies;
+		public override void DeleteItem(string itemId)
+		{
+			dynamic configuration = PackageMetadataLoader.GetConfiguration(ConfigId);
+			IEnumerable<dynamic> assemblies = PackageMetadataLoader.GetAssemblies(ConfigId);
 
-		    var newAssembliesList = assemblies.Where(assembly => assembly.Name != itemId)
-											  .ToArray();
+			var newAssembliesList = assemblies.Where(assembly => assembly.Name != itemId)
+			                                  .ToArray();
 
-		    configuration.Content.Assemblies = newAssembliesList;
+			configuration.Content.Assemblies = newAssembliesList;
 
-		    var filePath = configuration.FilePath;
+			var filePath = configuration.FilePath;
 
-		    var serializedItem = JsonObjectSerializer.Formated.Serialize(configuration.Content);
+			var serializedItem = JsonObjectSerializer.Formated.Serialize(configuration.Content);
 
-		    File.WriteAllBytes(filePath, serializedItem);
+			File.WriteAllBytes(filePath, serializedItem);
 
-		    PackageMetadataLoader.UpdateCache();
-	    }
+			PackageMetadataLoader.UpdateCache();
+		}
 
-        public override object GetItem(string itemId)
-        {
-	        dynamic configuration = PackageMetadataLoader.Configurations[_configId];
-	        IEnumerable<dynamic> assemblies = configuration.Content.Assemblies;
-	        return assemblies.FirstOrDefault(assembly => assembly.Name == itemId);
-        }
+		public override object GetItem(string itemId)
+		{
+			return PackageMetadataLoader.GetAssembly(ConfigId, itemId);
+		}
 
-        public override IEnumerable<object> GetItems()
-        {
-			dynamic configuration = PackageMetadataLoader.Configurations[_configId];
-			return configuration.Content.Assemblies;
-        }
-    }
+		public override IEnumerable<object> GetItems()
+		{
+			return PackageMetadataLoader.GetAssemblies(ConfigId);
+		}
+	}
 }
