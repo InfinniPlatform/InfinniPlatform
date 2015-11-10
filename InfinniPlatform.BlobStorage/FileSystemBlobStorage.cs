@@ -10,11 +10,15 @@ namespace InfinniPlatform.BlobStorage
     /// Реализует сервис для работы хранилищем BLOB (Binary Large OBject) на основе файловой системы.
     /// </summary>
     /// <returns>
-    /// Достаточно простая реализация. Хранилище представляет собой каталог с файлами. Файлы храняться
-    /// в подкаталогах. Имена подкаталогов совпадают с уникальными идентификторами файлов. Подкаталоги
-    /// содержат два файла: info и data. В файле info хранится метаинформация о файле, представленная
-    /// в виде JSON-объекта (идентификтор, наименование, MIME-тип, размер, дата измения и т.п.).
-    /// В файле data хранятся данные самого файла (собственно BLOB).
+    /// Достаточно простая реализация. Хранилище представляет собой каталог с файлами. Для обеспечения
+    /// быстрого доступа к файлам - log(N) - каталог организован в виден набора вложенных друг в друга
+    /// подкаталогов. Нулевой уровень - корневая папка хранилища, первый уровень - первые 2 символа
+    /// идентификатора BLOB, второй уровень - вторые 2 символа идентификатора BLOB, третий уровень -
+    /// оставшиеся символы идентификатора BLOB. В каталоге третьего уровня содержат два файла: info
+    /// и data. В файле info хранится мета-информация о BLOB, представленная в виде JSON-объекта
+    /// (идентификатор, наименование, MIME-тип, размер, дата изменения и т.п.). Наличие файла info
+    /// в текущей реализации не обязательно. В файле data хранятся данные BLOB. Наличие файла data
+    /// обязательно.
     /// 
     /// Выбор в пользу использования обычной файловой системы был сделан не случайно. Во-первых,
     /// это самый простой и гибкий способ. Во-вторых, некоторые распределенные файловые системы
@@ -224,17 +228,21 @@ namespace InfinniPlatform.BlobStorage
 
         private string GetBlobDirectoryPath(string blobId)
         {
-            return Path.Combine(_baseDirectory, blobId);
+            var level1 = blobId.Substring(0, 2);
+            var level2 = blobId.Substring(2, 2);
+            var level3 = blobId.Substring(4);
+
+            return Path.Combine(_baseDirectory, level1, level2, level3);
         }
 
         private string GetBlobInfoFilePath(string blobId)
         {
-            return Path.Combine(_baseDirectory, blobId, "info");
+            return Path.Combine(GetBlobDirectoryPath(blobId), "info");
         }
 
         private string GetBlobDataFilePath(string blobId)
         {
-            return Path.Combine(_baseDirectory, blobId, "data");
+            return Path.Combine(GetBlobDirectoryPath(blobId), "data");
         }
 
 
@@ -250,7 +258,7 @@ namespace InfinniPlatform.BlobStorage
             if (Guid.TryParse(blobId, out blobGuid))
             {
                 // TODO: Refactor
-                // Ниже осущесвляется переформатирование ссылки на файл.
+                // Ниже осуществляется переформатирование ссылки на файл.
                 // Есть старые документы, которые хранят ссылки на файлы в ином формате.
                 // Нужно сделать миграцию этих данных, чтобы отказаться от данного кода.
                 // Код был добавлен при переносе файлов с Cassandra в файловую систему.
