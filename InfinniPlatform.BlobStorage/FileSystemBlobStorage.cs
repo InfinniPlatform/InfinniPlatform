@@ -2,6 +2,7 @@
 using System.IO;
 
 using InfinniPlatform.Api.Serialization;
+using InfinniPlatform.Logging;
 using InfinniPlatform.Sdk.Environment.Binary;
 
 namespace InfinniPlatform.BlobStorage
@@ -30,6 +31,9 @@ namespace InfinniPlatform.BlobStorage
     /// </returns>
     public sealed class FileSystemBlobStorage : IBlobStorage
     {
+        private const string LogComponentName = "FileSystemBlobStorage";
+
+
         public FileSystemBlobStorage(string baseDirectory)
         {
             _baseDirectory = baseDirectory;
@@ -53,11 +57,15 @@ namespace InfinniPlatform.BlobStorage
                 throw new ArgumentNullException(nameof(blobId));
             }
 
+            var start = DateTime.Now;
+
             blobId = NormalizeBlobId(blobId);
 
-            var blobInfo = ReadBlobInfo(blobId);
+            var result = ReadBlobInfo(blobId);
 
-            return blobInfo;
+            Logger.PerformanceLog.Log(LogComponentName, "GetBlobInfo", start, null);
+
+            return result;
         }
 
         public BlobData GetBlobData(string blobId)
@@ -67,18 +75,24 @@ namespace InfinniPlatform.BlobStorage
                 throw new ArgumentNullException(nameof(blobId));
             }
 
+            var start = DateTime.Now;
+
             blobId = NormalizeBlobId(blobId);
 
             var blobInfo = ReadBlobInfo(blobId);
             var blobData = ReadBlobData(blobId);
 
-            return (blobInfo != null || blobData != null)
+            var result = (blobInfo != null || blobData != null)
                 ? new BlobData
                   {
                       Info = blobInfo,
                       Data = blobData
                   }
                 : null;
+
+            Logger.PerformanceLog.Log(LogComponentName, "GetBlobData", start, null);
+
+            return result;
         }
 
         public string CreateBlob(string blobName, string blobType, byte[] blobData)
@@ -102,6 +116,8 @@ namespace InfinniPlatform.BlobStorage
                 throw new ArgumentNullException(nameof(blobData));
             }
 
+            var start = DateTime.Now;
+
             blobId = NormalizeBlobId(blobId);
 
             if (string.IsNullOrEmpty(blobType))
@@ -120,6 +136,8 @@ namespace InfinniPlatform.BlobStorage
 
             WriteBlobInfo(blobId, blobInfo);
             WriteBlobData(blobId, blobData);
+
+            Logger.PerformanceLog.Log(LogComponentName, "UpdateBlob", start, null);
         }
 
         public void DeleteBlob(string blobId)
@@ -129,9 +147,13 @@ namespace InfinniPlatform.BlobStorage
                 throw new ArgumentNullException(nameof(blobId));
             }
 
+            var start = DateTime.Now;
+
             blobId = NormalizeBlobId(blobId);
 
             DeleteBlobData(blobId);
+
+            Logger.PerformanceLog.Log(LogComponentName, "DeleteBlob", start, null);
         }
 
 

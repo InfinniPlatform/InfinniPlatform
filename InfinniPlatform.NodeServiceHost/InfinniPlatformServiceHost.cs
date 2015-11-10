@@ -6,6 +6,7 @@ using InfinniPlatform.Hosting;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Modules;
 using InfinniPlatform.NodeServiceHost.Properties;
+using InfinniPlatform.Sdk.Environment.Log;
 using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.SystemConfig.Initializers;
 
@@ -46,7 +47,7 @@ namespace InfinniPlatform.NodeServiceHost
 						}
 						catch (Exception error)
 						{
-							Logger.Log.Fatal(Resources.ServiceHostHasNotBeenStarted, error);
+							Logger.Log.Fatal(Resources.ServiceHostHasNotBeenStarted, null, error);
 
 							_status = prevStatus;
 
@@ -81,7 +82,7 @@ namespace InfinniPlatform.NodeServiceHost
 						}
 						catch (Exception error)
 						{
-							Logger.Log.Fatal(Resources.ServiceHostHasNotBeenStopped, error);
+							Logger.Log.Fatal(Resources.ServiceHostHasNotBeenStopped, null, error);
 
 							_status = prevStatus;
 

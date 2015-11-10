@@ -1,66 +1,57 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace InfinniPlatform.Sdk.Environment.Log
 {
     /// <summary>
-    ///     Сервис журналирования событий.
+    /// Сервис журналирования событий.
     /// </summary>
     public interface ILog
     {
         /// <summary>
-        ///     Записывает в журнал информационное сообщение.
+        /// Записывает в журнал событие с уровнем INFO.
         /// </summary>
-        /// <param name="message">Текст сообщения.</param>
-        /// <param name="exception">Произошедшее исключение.</param>
-        void Info(string message, Exception exception);
+        /// <param name="message">Сообщение.</param>
+        /// <param name="context">Контекстная информация.</param>
+        /// <param name="exception">Исключение.</param>
+        void Info(string message, Dictionary<string, Object> context = null, Exception exception = null);
 
         /// <summary>
-        ///     Записывает в журнал информационное сообщение.
+        /// Записывает в журнал событие с уровнем WARN.
         /// </summary>
-        /// <param name="formatMessage">Строка форматирования сообщения.</param>
-        /// <param name="formatArguments">Список параметров для строки форматирования сообщения.</param>
-        void Info(string formatMessage, params object[] formatArguments);
+        /// <param name="message">Сообщение.</param>
+        /// <param name="context">Контекстная информация.</param>
+        /// <param name="exception">Исключение.</param>
+        void Warn(string message, Dictionary<string, Object> context = null, Exception exception = null);
 
         /// <summary>
-        ///     Записывает в журнал сообщение с предупреждением.
+        /// Записывает в журнал событие с уровнем DEBUG.
         /// </summary>
-        /// <param name="message">Текст сообщения.</param>
-        /// <param name="exception">Произошедшее исключение.</param>
-        void Warn(string message, Exception exception);
+        /// <param name="message">Сообщение.</param>
+        /// <param name="context">Контекстная информация.</param>
+        /// <param name="exception">Исключение.</param>
+        void Debug(string message, Dictionary<string, Object> context = null, Exception exception = null);
 
         /// <summary>
-        ///     Записывает в журнал сообщение с предупреждением.
+        /// Записывает в журнал событие с уровнем ERROR.
         /// </summary>
-        /// <param name="formatMessage">Строка форматирования сообщения.</param>
-        /// <param name="formatArguments">Список параметров для строки форматирования сообщения.</param>
-        void Warn(string formatMessage, params object[] formatArguments);
+        /// <param name="message">Сообщение.</param>
+        /// <param name="context">Контекстная информация.</param>
+        /// <param name="exception">Исключение.</param>
+        void Error(string message, Dictionary<string, Object> context = null, Exception exception = null);
 
         /// <summary>
-        ///     Записывает в журнал сообщение с ошибкой.
+        /// Записывает в журнал событие с уровнем FATAL.
         /// </summary>
-        /// <param name="message">Текст сообщения.</param>
-        /// <param name="exception">Произошедшее исключение.</param>
-        void Error(string message, Exception exception);
+        /// <param name="message">Сообщение.</param>
+        /// <param name="context">Контекстная информация.</param>
+        /// <param name="exception">Исключение.</param>
+        void Fatal(string message, Dictionary<string, Object> context = null, Exception exception = null);
 
         /// <summary>
-        ///     Записывает в журнал сообщение с ошибкой.
+        /// Инициализирует контекст логирования текущего потока информацией из словаря.
         /// </summary>
-        /// <param name="formatMessage">Строка форматирования сообщения.</param>
-        /// <param name="formatArguments">Список параметров для строки форматирования сообщения.</param>
-        void Error(string formatMessage, params object[] formatArguments);
-
-        /// <summary>
-        ///     Записывает в журнал сообщение с критичной ошибкой.
-        /// </summary>
-        /// <param name="message">Текст сообщения.</param>
-        /// <param name="exception">Произошедшее исключение.</param>
-        void Fatal(string message, Exception exception);
-
-        /// <summary>
-        ///     Записывает в журнал сообщение с критичной ошибкой.
-        /// </summary>
-        /// <param name="formatMessage">Строка форматирования сообщения.</param>
-        /// <param name="formatArguments">Список параметров для строки форматирования сообщения.</param>
-        void Fatal(string formatMessage, params object[] formatArguments);
+        /// <param name="context">Контекстные данные.</param>
+        void InitThreadLoggingContext(IDictionary<string, object> context);
     }
 }

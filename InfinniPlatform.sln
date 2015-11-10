@@ -223,6 +223,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packaging", "Packaging", "{
 		Files\Packaging\SetVersion.ps1 = Files\Packaging\SetVersion.ps1
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Monitoring", "Monitoring", "{C71676EF-83E3-4549-B43E-F3CEAE4FABC7}"
+	ProjectSection(SolutionItems) = preProject
+		Files\Monitoring\Inf.logstash.rb = Files\Monitoring\Inf.logstash.rb
+		Files\Monitoring\Inf.Monitor.kibana.json = Files\Monitoring\Inf.Monitor.kibana.json
+		Files\Monitoring\Inf.Performance.kibana.json = Files\Monitoring\Inf.Performance.kibana.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -601,5 +608,6 @@ Global
 		{2322469D-7D54-4C76-97E2-EF40F15645F5} = {D2A3ECA9-064A-44A1-95EE-37AB350D303C}
 		{DCB067DB-E581-4F90-85DF-ACF9C6B42AD4} = {89D37C8B-9A73-45AB-A4C0-E91DC1A6D5CA}
 		{8237A533-D176-4BB1-86F7-F07C7AEFBA03} = {9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}
+		{C71676EF-83E3-4549-B43E-F3CEAE4FABC7} = {9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}
 	EndGlobalSection
 EndGlobal

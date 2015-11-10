@@ -138,6 +138,7 @@
     <Compile Include="Logging\ILogFactory.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Logging\PerformanceLog.cs" />
     <Compile Include="MessageQueue\Integration\IIntegrationBus.cs" />
     <Compile Include="MessageQueue\Integration\IIntegrationBusSubscriptionStorage.cs" />
     <Compile Include="MessageQueue\Integration\IIntegrationBusSubscriptionStorageManager.cs" />

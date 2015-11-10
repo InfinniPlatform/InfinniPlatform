@@ -1,13 +1,17 @@
 ﻿using System;
-using InfinniPlatform.Api.Profiling;
-using InfinniPlatform.Sdk.Environment;
+using System.Collections.Generic;
+
 using InfinniPlatform.Sdk.Environment.Log;
+
+using log4net;
+
+using ILog = InfinniPlatform.Sdk.Environment.Log.ILog;
 using ILog4NetLog = log4net.ILog;
 
 namespace InfinniPlatform.Logging
 {
     /// <summary>
-    ///     Сервис <see cref="ILog" /> на базе log4net.
+    ///     Сервис <see cref="Sdk.Environment.Log.ILog" /> на базе log4net.
     /// </summary>
     public sealed class Log4NetLog : ILog
     {
@@ -28,84 +32,39 @@ namespace InfinniPlatform.Logging
             _log = log;
         }
 
-        /// <summary>
-        ///     Записывает в журнал информационное сообщение.
-        /// </summary>
-        /// <param name="message">Текст сообщения.</param>
-        /// <param name="exception">Произошедшее исключение.</param>
-        public void Info(string message, Exception exception)
+        public void Info(string message, Dictionary<string, Object> context, Exception exception = null)
         {
-            _log.Info(message, exception);
+            _log.Info(new JsonEvent(message, context, exception));
         }
 
-        /// <summary>
-        ///     Записывает в журнал информационное сообщение.
-        /// </summary>
-        /// <param name="formatMessage">Строка форматирования сообщения.</param>
-        /// <param name="formatArguments">Список параметров для строки форматирования сообщения.</param>
-        public void Info(string formatMessage, params object[] formatArguments)
+        public void Warn(string message, Dictionary<string, Object> context, Exception exception = null)
         {
-            _log.InfoFormat(formatMessage, formatArguments);
+            _log.Warn(new JsonEvent(message, context, exception));
         }
 
-        /// <summary>
-        ///     Записывает в журнал сообщение с предупреждением.
-        /// </summary>
-        /// <param name="message">Текст сообщения.</param>
-        /// <param name="exception">Произошедшее исключение.</param>
-        public void Warn(string message, Exception exception)
+        public void Debug(string message, Dictionary<string, Object> context, Exception exception = null)
         {
-            _log.Warn(message, exception);
+            _log.Debug(new JsonEvent(message, context, exception));
         }
 
-        /// <summary>
-        ///     Записывает в журнал сообщение с предупреждением.
-        /// </summary>
-        /// <param name="formatMessage">Строка форматирования сообщения.</param>
-        /// <param name="formatArguments">Список параметров для строки форматирования сообщения.</param>
-        public void Warn(string formatMessage, params object[] formatArguments)
+        public void Error(string message, Dictionary<string, Object> context, Exception exception = null)
         {
-            _log.WarnFormat(formatMessage, formatArguments);
+            _log.Error(new JsonEvent(message, context, exception));
         }
 
-        /// <summary>
-        ///     Записывает в журнал сообщение с ошибкой.
-        /// </summary>
-        /// <param name="message">Текст сообщения.</param>
-        /// <param name="exception">Произошедшее исключение.</param>
-        public void Error(string message, Exception exception)
+        public void Fatal(string message, Dictionary<string, Object> context, Exception exception = null)
         {
-            _log.Error(message, exception);
+            _log.Fatal(new JsonEvent(message, context, exception));
         }
 
-        /// <summary>
-        ///     Записывает в журнал сообщение с ошибкой.
-        /// </summary>
-        /// <param name="formatMessage">Строка форматирования сообщения.</param>
-        /// <param name="formatArguments">Список параметров для строки форматирования сообщения.</param>
-        public void Error(string formatMessage, params object[] formatArguments)
+        public void InitThreadLoggingContext(IDictionary<string, object> context)
         {
-            _log.ErrorFormat(formatMessage, formatArguments);
-        }
+            ThreadContext.Properties.Clear();
 
-        /// <summary>
-        ///     Записывает в журнал сообщение с критичной ошибкой.
-        /// </summary>
-        /// <param name="message">Текст сообщения.</param>
-        /// <param name="exception">Произошедшее исключение.</param>
-        public void Fatal(string message, Exception exception)
-        {
-            _log.Fatal(message, exception);
-        }
-
-        /// <summary>
-        ///     Записывает в журнал сообщение с критичной ошибкой.
-        /// </summary>
-        /// <param name="formatMessage">Строка форматирования сообщения.</param>
-        /// <param name="formatArguments">Список параметров для строки форматирования сообщения.</param>
-        public void Fatal(string formatMessage, params object[] formatArguments)
-        {
-            _log.FatalFormat(formatMessage, formatArguments);
+            foreach (var pair in context)
+            {
+                ThreadContext.Properties[pair.Key] = pair.Value;
+            }
         }
     }
 }
