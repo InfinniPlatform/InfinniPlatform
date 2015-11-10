@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.Serialization;
@@ -36,16 +35,16 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 		{
 			string filePath;
 			var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
-			
-			//TODO Wrapper for PackageMetadataLoader.Configurations
-			if (PackageMetadataLoader.Configurations.ContainsKey(item.Name))
+
+			var oldConfiguration = PackageMetadataLoader.GetConfiguration(item.Name);
+
+			if (oldConfiguration != null)
 			{
-				dynamic oldConfiguration = PackageMetadataLoader.Configurations[item.Name];
 				filePath = oldConfiguration.FilePath;
 			}
 			else
 			{
-				var contentDirectory = AppSettings.GetValue("", "..\\Assemblies\\content");
+				var contentDirectory = AppSettings.GetValue("ContentDirectory", "..\\Assemblies\\content");
 				var configurationDirectory = Path.Combine(contentDirectory, item.Subfolder ?? "InfinniPlatform", "metadata", item.Name);
 				Directory.CreateDirectory(configurationDirectory);
 				filePath = Path.Combine(configurationDirectory, "Configuration.json");
@@ -58,7 +57,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		public override void DeleteItem(string itemId)
 		{
-			dynamic configuration = PackageMetadataLoader.Configurations[itemId];
+			dynamic configuration = PackageMetadataLoader.GetConfiguration(itemId);
 
 			var configurationDirectory = Path.GetDirectoryName(configuration.FilePath);
 
@@ -71,14 +70,12 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
 		public override object GetItem(string itemId)
 		{
-			dynamic configuration = PackageMetadataLoader.Configurations[itemId];
-			return configuration.Content;
+			return PackageMetadataLoader.GetConfigurationContent(itemId);
 		}
 
 		public override IEnumerable<object> GetItems()
 		{
-			Dictionary<string, dynamic>.ValueCollection valueCollection = PackageMetadataLoader.Configurations.Values;
-			return valueCollection.Select(o => o.Content);
+			return PackageMetadataLoader.GetConfigurations();
 		}
 	}
 }

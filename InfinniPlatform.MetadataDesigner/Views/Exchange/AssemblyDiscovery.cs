@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -11,12 +10,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
 {
 	public sealed class AssemblyDiscovery
 	{
-		private readonly IList<SourceAssemblyInfo> _sourceAssemblyList = new List<SourceAssemblyInfo>();
-
-		public IList<SourceAssemblyInfo> SourceAssemblyList
-		{
-			get { return _sourceAssemblyList; }
-		}
+		public IList<SourceAssemblyInfo> SourceAssemblyList { get; } = new List<SourceAssemblyInfo>();
 
 		public bool DiscoverAppliedAssemblies(string configurationId)
 		{
@@ -24,7 +18,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
 
 			foreach (var sourceAssemblyInfo in SourceAssemblyList)
 			{
-				var relativePath = AppSettings.GetValue("AppliedAssemblies", "..\\Assemblies");
+				var relativePath = AppSettings.GetValue("AppliedAssemblies", Path.Combine("..", "Assemblies"));
 				var pathToAssemblies = relativePath != null
 										   ? Path.GetFullPath(relativePath)
 										   : Directory.GetCurrentDirectory();
@@ -54,7 +48,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
 		{
 			SourceAssemblyList.Clear();
 
-			dynamic configs = PackageMetadataLoader.Configurations[configurationId];
+			dynamic configs = PackageMetadataLoader.GetConfiguration(configurationId);
 
 			var items = configs.Content.Assemblies;
 			foreach (var item in items)

@@ -30,7 +30,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
         /// <returns>Идентификатор элемента</returns>
         public string GetConfigurationUid(string version, string name)
 		{
-            var configList = GetConfigList();
+            var configList = (IEnumerable<dynamic>)PackageMetadataLoader.GetConfigurations();
 
             return
                 configList.Where(
@@ -47,7 +47,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
         public string GetDocumentUid(string version, string configurationId, string documentId)
         {
             var config =
-                GetConfigList()
+                ((IEnumerable<dynamic>)PackageMetadataLoader.GetConfigurations())
                     .FirstOrDefault(
                         c =>
                             c.Name.ToLowerInvariant() == configurationId.ToLowerInvariant() &&
@@ -69,12 +69,6 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
             }
             return null;
         }
-
-	    private static IEnumerable<dynamic> GetConfigList()
-	    {
-		    IEnumerable<dynamic> configList = PackageMetadataLoader.Configurations.Values;
-		    return configList.Select(o => o.Content);
-	    }
 
 	    private static IEnumerable<dynamic> GetSolutionList(string version)
         {
