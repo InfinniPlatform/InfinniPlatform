@@ -17,20 +17,27 @@ namespace InfinniPlatform.Owin.Modules
     public sealed class UnhandledExceptionOwinHostingModule : OwinHostingModule
     {
         private readonly ILog _log;
+        private readonly IPerformanceLog _performanceLog;
 
-        public UnhandledExceptionOwinHostingModule(ILog log)
+        public UnhandledExceptionOwinHostingModule(ILog log, IPerformanceLog performanceLog)
         {
             if (log == null)
             {
                 throw new ArgumentNullException("log");
             }
 
+            if (performanceLog == null)
+            {
+                throw new ArgumentNullException("performanceLog");
+            }
+
             _log = log;
+            _performanceLog = performanceLog;
         }
 
         public override void Configure(IAppBuilder builder, IHostingContext context)
         {
-            builder.Use(typeof (UnhandledExceptionOwinMiddleware), _log);
+            builder.Use(typeof (UnhandledExceptionOwinMiddleware), _log, _performanceLog);
         }
     }
 }

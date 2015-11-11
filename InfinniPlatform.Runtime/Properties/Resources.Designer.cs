@@ -79,7 +79,7 @@ namespace InfinniPlatform.Runtime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot find script implementation. Script completed with error. Script Identifier = &apos;{0}&apos;, Type = &apos;{1}&apos;, Method = &apos;{2}&apos;..
+        ///   Looks up a localized string similar to Cannot find script implementation. Script completed with error..
         /// </summary>
         internal static string CannotFindScriptImplementation {
             get {
@@ -97,7 +97,7 @@ namespace InfinniPlatform.Runtime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Script completed with error. Script Identifier = &apos;{0}&apos;, Type = &apos;{1}&apos;, Method = &apos;{2}&apos;..
+        ///   Looks up a localized string similar to Script completed with error..
         /// </summary>
         internal static string ScriptCompletedWithError {
             get {
@@ -115,7 +115,7 @@ namespace InfinniPlatform.Runtime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Update cache request. Version = &apos;{0}&apos;, Configuration = &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Update cache request..
         /// </summary>
         internal static string UpdateCacheRequest {
             get {

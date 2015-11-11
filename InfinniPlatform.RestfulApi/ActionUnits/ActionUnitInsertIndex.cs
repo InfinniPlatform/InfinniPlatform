@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.RestfulApi.Extensions;
+﻿using System.Collections.Generic;
+
+using InfinniPlatform.RestfulApi.Extensions;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 
@@ -12,9 +14,12 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                                                 target.Item.Metadata ?? string.Empty);
 
             target.Context.GetComponent<ILogComponent>().GetLog().Info(
-                "insert \"{0}\" document to configuration \"{1}\", type \"{2}\" ",
-                target.Item.ToString(),
-                target.Item.Configuration, target.Item.Metadata);
+                "Document inserted.", new Dictionary<string, object>
+                                                                                   {
+                                                                                       { "document", target.Item.ToString() },
+                                                                                       { "configurationId", target.Item.Configuration },
+                                                                                       { "type", target.Item.Metadata },
+                                                                                   });
         }
     }
 }

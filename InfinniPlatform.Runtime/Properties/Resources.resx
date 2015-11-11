@@ -127,15 +127,15 @@
     <value>No one configuration version installed.</value>
   </data>
   <data name="CannotFindScriptImplementation" xml:space="preserve">
-    <value>Cannot find script implementation. Script completed with error. Script Identifier = '{0}', Type = '{1}', Method = '{2}'.</value>
+    <value>Cannot find script implementation. Script completed with error.</value>
   </data>
   <data name="ScriptCompletedWithError" xml:space="preserve">
-    <value>Script completed with error. Script Identifier = '{0}', Type = '{1}', Method = '{2}'.</value>
+    <value>Script completed with error.</value>
   </data>
   <data name="ScriptMetadataIsNotRegistered" xml:space="preserve">
     <value>Script metadata is not registered. Script Identifier = '{0}'.</value>
   </data>
   <data name="UpdateCacheRequest" xml:space="preserve">
-    <value>Update cache request. Version = '{0}', Configuration = '{1}'.</value>
+    <value>Update cache request.</value>
   </data>
 </root>

@@ -1,4 +1,5 @@
-﻿using InfinniPlatform.Sdk.Environment;
+﻿using System.Collections.Generic;
+
 using InfinniPlatform.Sdk.Environment.Log;
 
 namespace InfinniPlatform.Api.Profiling.Implementation
@@ -22,9 +23,14 @@ namespace InfinniPlatform.Api.Profiling.Implementation
 
         public void FormatSnapshot(Snapshot snapshot)
         {
-            _log.Info("Config: {0}, Metadata: {1}, Action {2}, with arguments: {3}. ELAPSED {4} ms",
-                _configId, _metadata, _action, _body != null ? _body.ToString() : "<no arguments>",
-                snapshot.ElapsedMilliseconds);
+            _log.Info("Method execution captured (ms).", new Dictionary<string, object>
+                                                         {
+                                                             { "configurationId", _configId },
+                                                             { "metadata", _metadata },
+                                                             { "action", _action },
+                                                             { "arguments", _body != null ? _body.ToString() : "<noargs>" },
+                                                             { "elapsed", snapshot.ElapsedMilliseconds },
+                                                         });
         }
     }
 }

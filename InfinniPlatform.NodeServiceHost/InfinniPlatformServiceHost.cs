@@ -2,12 +2,11 @@
 using System.ComponentModel.Composition;
 using System.Threading;
 
-using InfinniPlatform.BlobStorage;
-using InfinniPlatform.Cassandra.Client;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Modules;
 using InfinniPlatform.NodeServiceHost.Properties;
+using InfinniPlatform.Sdk.Environment.Log;
 using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.SystemConfig.Initializers;
 
@@ -48,7 +47,7 @@ namespace InfinniPlatform.NodeServiceHost
 						}
 						catch (Exception error)
 						{
-							Logger.Log.Fatal(Resources.ServiceHostHasNotBeenStarted, error);
+							Logger.Log.Fatal(Resources.ServiceHostHasNotBeenStarted, null, error);
 
 							_status = prevStatus;
 
@@ -83,7 +82,7 @@ namespace InfinniPlatform.NodeServiceHost
 						}
 						catch (Exception error)
 						{
-							Logger.Log.Fatal(Resources.ServiceHostHasNotBeenStopped, error);
+							Logger.Log.Fatal(Resources.ServiceHostHasNotBeenStopped, null, error);
 
 							_status = prevStatus;
 
@@ -106,8 +105,6 @@ namespace InfinniPlatform.NodeServiceHost
 				throw new ArgumentException(Resources.ConfigurationListIsEmpty);
 			}
 
-			CreateBlobStorage();
-
 			var assemblies = ModuleExtension.LoadModulesAssemblies(configurations);
 
 			var factory = new OwinHostingServiceFactory(assemblies);
@@ -123,21 +120,6 @@ namespace InfinniPlatform.NodeServiceHost
 			factory.InfinniPlatformHostServer.RegisterServerInitializer<UserStorageInitializer>();
 
 			return server;
-		}
-
-		private static void CreateBlobStorage()
-		{
-			var cassandraFactory = new CassandraDatabaseFactory();
-			var blobStorageFactory = new CassandraBlobStorageFactory(cassandraFactory);
-			var blobStorageManager = blobStorageFactory.CreateBlobStorageManager();
-
-			try
-			{
-				blobStorageManager.CreateStorage();
-			}
-			catch
-			{
-			}
 		}
 
 

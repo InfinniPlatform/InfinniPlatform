@@ -48,7 +48,11 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
             target.Context.GetComponent<ILogComponent>()
                   .GetLog()
-                  .Info(Resources.LogDocumentDeleted, indexName);
+                  .Info(Resources.LogDocumentDeleted, new Dictionary<string, object>
+                                                      {
+                                                          { "documentId", target.Item.Id },
+                                                          { "indexName", indexName },
+                                                      });
 
             target.Result = new DynamicWrapper();
             target.Result.IsValid = true;
