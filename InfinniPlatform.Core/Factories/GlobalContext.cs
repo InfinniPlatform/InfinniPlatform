@@ -15,97 +15,97 @@ using InfinniPlatform.Sdk.Global;
 
 namespace InfinniPlatform.Factories
 {
-	/// <summary>
-	///     Реализация контекста компонентов платформы
-	/// </summary>
-	public class GlobalContext : IGlobalContext, IComponentContainer
-	{
-		// TODO: Избавиться от этого кода после добавления IoC!!!
-		private static ISessionManager _sessionManager;
+    /// <summary>
+    /// Реализация контекста компонентов платформы
+    /// </summary>
+    public class GlobalContext : IGlobalContext, IComponentContainer
+    {
+        // TODO: Избавиться от этого кода после добавления IoC!!!
+        private static ISessionManager _sessionManager;
 
-		public static string GetTenantId()
-		{
-			string tenantId = null;
+        public GlobalContext(IDependencyContainerComponent dependencyContainerComponent)
+        {
+            // TODO: Избавиться от этого кода после добавления IoC!!!
+            var sessionManagerFactory = dependencyContainerComponent.ResolveDependency<ISessionManagerFactory>();
+            var sessionManager = sessionManagerFactory.CreateSessionManager();
+            _sessionManager = sessionManager;
 
-			var sessionManager = _sessionManager;
+            _platformComponentsPack = new PlatformComponentsPack(dependencyContainerComponent);
 
-			if (sessionManager != null)
-			{
-				tenantId = sessionManager.GetSessionData("tenantid");
+            _components.Add(new ContextRegistration(typeof(ICustomServiceGlobalContext), dependencyContainerComponent.ResolveDependency<ICustomServiceGlobalContext>));
+            _components.Add(new ContextRegistration(typeof(DocumentApi), () => new DocumentApi()));
+            _components.Add(new ContextRegistration(typeof(DocumentApiUnsecured),
+                () => new DocumentApiUnsecured()));
+            _components.Add(new ContextRegistration(typeof(PrintViewApi), () => new PrintViewApi()));
+            _components.Add(new ContextRegistration(typeof(RegisterApi), () => new RegisterApi()));
+            _components.Add(new ContextRegistration(typeof(ReportApi), () => new ReportApi()));
+            _components.Add(new ContextRegistration(typeof(UploadApi), () => new UploadApi()));
+            _components.Add(new ContextRegistration(typeof(MetadataApi), () => new MetadataApi()));
+            _components.Add(new ContextRegistration(typeof(AuthApi), () => new AuthApi()));
+            _components.Add(new ContextRegistration(typeof(SignInApi), () => new SignInApi()));
+            _components.Add(new ContextRegistration(typeof(InprocessDocumentComponent),
+                () => new InprocessDocumentComponent(new ConfigurationMediatorComponent(
+                    dependencyContainerComponent.ResolveDependency<IConfigurationObjectBuilder>()
+                    ),
+                    dependencyContainerComponent.ResolveDependency<IIndexFactory>())));
 
-				if (string.IsNullOrEmpty(tenantId))
-				{
-					var currentIdentity = Thread.CurrentPrincipal.Identity;
+            _components.Add(new ContextRegistration(typeof(ISessionManager), () => sessionManager));
 
-					tenantId = currentIdentity.FindFirstClaim("defaulttenantid");
+            _components.Add(new ContextRegistration(typeof(IApplicationUserManager), () =>
+                                                                                     {
+                                                                                         // Должен быть зарегистрирован при старте системы
+                                                                                         var hostingContext = dependencyContainerComponent.ResolveDependency<IHostingContext>();
 
-					if (string.IsNullOrEmpty(tenantId))
-					{
-						tenantId = currentIdentity.FindFirstClaim("tenantid");
-					}
-				}
-			}
+                                                                                         return hostingContext.Get<IApplicationUserManager>();
+                                                                                     }));
+        }
 
-			if (string.IsNullOrEmpty(tenantId))
-			{
-				tenantId = AuthorizationStorageExtensions.AnonimousUser;
-			}
+        private readonly IList<ContextRegistration> _components = new List<ContextRegistration>();
+        private readonly IPlatformComponentsPack _platformComponentsPack;
 
-			return tenantId;
-		}
-		
-		private readonly IList<ContextRegistration> _components = new List<ContextRegistration>();
-		private readonly IPlatformComponentsPack _platformComponentsPack;
+        public T GetComponent<T>() where T : class
+        {
+            //ищем среди зарегистрированных компонентов платформы, если не находим, обращаемся к контексту компонентов ядра платформы
+            return
+                _platformComponentsPack.GetComponent<T>() ??
+                _components.Where(c => c.IsTypeOf(typeof(T))).Select(c => c.GetInstance()).FirstOrDefault() as T;
+        }
 
-		public GlobalContext(IDependencyContainerComponent dependencyContainerComponent)
-		{
-			// TODO: Избавиться от этого кода после добавления IoC!!!
-			var sessionManagerFactory = dependencyContainerComponent.ResolveDependency<ISessionManagerFactory>();
-			var sessionManager =  sessionManagerFactory.CreateSessionManager();
-			_sessionManager = sessionManager;
+        public string GetVersion(string configuration, string userName)
+        {
+            var configVersions = GetComponent<IMetadataConfigurationProvider>().ConfigurationVersions;
+            return GetComponent<IVersionStrategy>().GetActualVersion(configuration, configVersions, userName);
+        }
 
-			_platformComponentsPack = new PlatformComponentsPack(dependencyContainerComponent, sessionManager);
+        public static string GetTenantId()
+        {
+            string tenantId = null;
 
-			_components.Add(new ContextRegistration(typeof(ICustomServiceGlobalContext), dependencyContainerComponent.ResolveDependency<ICustomServiceGlobalContext>));
-			_components.Add(new ContextRegistration(typeof(DocumentApi), () => new DocumentApi()));
-			_components.Add(new ContextRegistration(typeof(DocumentApiUnsecured),
-				() => new DocumentApiUnsecured()));
-			_components.Add(new ContextRegistration(typeof(PrintViewApi), () => new PrintViewApi()));
-			_components.Add(new ContextRegistration(typeof(RegisterApi), () => new RegisterApi()));
-			_components.Add(new ContextRegistration(typeof(ReportApi), () => new ReportApi()));
-			_components.Add(new ContextRegistration(typeof(UploadApi), () => new UploadApi()));
-			_components.Add(new ContextRegistration(typeof(MetadataApi), () => new MetadataApi()));
-			_components.Add(new ContextRegistration(typeof(AuthApi), () => new AuthApi()));
-			_components.Add(new ContextRegistration(typeof(SignInApi), () => new SignInApi()));
-			_components.Add(new ContextRegistration(typeof(InprocessDocumentComponent),
-				() => new InprocessDocumentComponent(new ConfigurationMediatorComponent(
-					dependencyContainerComponent.ResolveDependency<IConfigurationObjectBuilder>()
-					),
-					dependencyContainerComponent.ResolveDependency<IIndexFactory>())));
+            var sessionManager = _sessionManager;
 
-			_components.Add(new ContextRegistration(typeof(ISessionManager), () => sessionManager));
+            if (sessionManager != null)
+            {
+                tenantId = sessionManager.GetSessionData("tenantid");
 
-			_components.Add(new ContextRegistration(typeof(IApplicationUserManager), () =>
-																					 {
-																						 // Должен быть зарегистрирован при старте системы
-																						 var hostingContext = dependencyContainerComponent.ResolveDependency<IHostingContext>();
+                if (string.IsNullOrEmpty(tenantId))
+                {
+                    var currentIdentity = Thread.CurrentPrincipal.Identity;
 
-																						 return hostingContext.Get<IApplicationUserManager>();
-																					 }));
-		}
+                    tenantId = currentIdentity.FindFirstClaim("defaulttenantid");
 
-		public T GetComponent<T>() where T : class
-		{
-			//ищем среди зарегистрированных компонентов платформы, если не находим, обращаемся к контексту компонентов ядра платформы
-			return
-				_platformComponentsPack.GetComponent<T>() ??
-				_components.Where(c => c.IsTypeOf(typeof(T))).Select(c => c.GetInstance()).FirstOrDefault() as T;
-		}
+                    if (string.IsNullOrEmpty(tenantId))
+                    {
+                        tenantId = currentIdentity.FindFirstClaim("tenantid");
+                    }
+                }
+            }
 
-		public string GetVersion(string configuration, string userName)
-		{
-			var configVersions = GetComponent<IMetadataConfigurationProvider>().ConfigurationVersions;
-			return GetComponent<IVersionStrategy>().GetActualVersion(configuration, configVersions, userName);
-		}
-	}
+            if (string.IsNullOrEmpty(tenantId))
+            {
+                tenantId = AuthorizationStorageExtensions.AnonimousUser;
+            }
+
+            return tenantId;
+        }
+    }
 }
