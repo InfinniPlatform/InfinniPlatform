@@ -36,15 +36,14 @@ namespace InfinniPlatform.Sdk.Environment.Transactions
         /// <returns>Список документов транзакции</returns>
         List<Transactions.AttachedInstance> GetTransactionItems();
 
-        /// <summary>
-        ///     Присоединить документ к транзакции
-        /// </summary>
-        /// <param name="configId">Идентификатор конфигурации</param>
-        /// <param name="documentId">Идентификатор типа документа</param>
-        /// <param name="version">Версия конфигурации</param>
-        /// <param name="documents">Присоединяемые документы</param>
-        /// <param name="routing">Роутинг сохранения</param>
-        void Attach(string configId, string documentId, string version, IEnumerable<dynamic> documents, string routing);
+	    /// <summary>
+	    ///     Присоединить документ к транзакции
+	    /// </summary>
+	    /// <param name="configId">Идентификатор конфигурации</param>
+	    /// <param name="documentId">Идентификатор типа документа</param>
+	    /// <param name="version">Версия конфигурации</param>
+	    /// <param name="documents">Присоединяемые документы</param>
+	    void Attach(string configId, string documentId, string version, IEnumerable<dynamic> documents);
 
         /// <summary>
         ///     Присоединить файл к участнику транзакции, ссылающемуся на документ

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Api.Index;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
@@ -14,12 +12,10 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
     /// </summary>
     public sealed class ElasticSearchProviderAllIndexes : IAllIndexesOperationProvider
     {
-        private readonly string _tenantId;
         private readonly ElasticConnection _elasticConnection;
 
-        public ElasticSearchProviderAllIndexes(string tenantId)
+        public ElasticSearchProviderAllIndexes()
         {
-            _tenantId = tenantId;
             _elasticConnection = new ElasticConnection();
         }
 
@@ -45,9 +41,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
                             && f.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid)
                     )
                 );
-
-
-            
+			
             dynamic indexObject =
                 response.Documents.FirstOrDefault();
 

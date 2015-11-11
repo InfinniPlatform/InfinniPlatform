@@ -1,5 +1,4 @@
-﻿using InfinniPlatform.Api.RestApi.Auth;
-using InfinniPlatform.Sdk.ContextComponents;
+﻿using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.RestfulApi.Utils
@@ -15,15 +14,12 @@ namespace InfinniPlatform.RestfulApi.Utils
 
                 if (docs != null)
                 {
-                    target.Context.GetComponent<ITransactionComponent>().GetTransactionManager()
+					target.Context.GetComponent<ITransactionComponent>().GetTransactionManager()
                           .GetTransaction(target.TransactionMarker)
                           .Attach(target.Item.Configuration,
                                   target.Item.Metadata,
                                   target.Context.GetVersion(target.Item.Configuration, target.UserName),
-                                  docs,
-                                  target.Context.GetComponent<ISecurityComponent>()
-                                        .GetClaim(AuthorizationStorageExtensions.OrganizationClaim, target.UserName) ??
-                                  AuthorizationStorageExtensions.AnonimousUser);
+                                  docs);
                 }
             }
 		}

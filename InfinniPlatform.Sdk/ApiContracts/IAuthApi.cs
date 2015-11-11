@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using InfinniPlatform.Sdk.Api;
 
 namespace InfinniPlatform.Sdk.ApiContracts
 {
-    public interface IAuthApi
+	[Obsolete("Must be replaced with IApplicationUserManager")]
+	public interface IAuthApi
     {
         /// <summary>
         ///   Добавить нового пользователя системы

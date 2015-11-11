@@ -37,8 +37,8 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
             _indexProvider.RecreateIndex("TestIndex", "TestIndex");
             _indexProvider.RecreateIndex("Document", "Document");
 
-            _elasticSearchProvider = elasticFactory.BuildCrudOperationProvider("TestIndex", "TestIndex", AuthorizationStorageExtensions.AnonimousUser);
-            _elasticSearchProviderMain = elasticFactory.BuildCrudOperationProvider("Document", "Document", AuthorizationStorageExtensions.AnonimousUser);
+            _elasticSearchProvider = elasticFactory.BuildCrudOperationProvider("TestIndex", "TestIndex", null);
+            _elasticSearchProviderMain = elasticFactory.BuildCrudOperationProvider("Document", "Document", null);
         }
 
         private void CreateReferencedEntity()
@@ -173,7 +173,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
                                  }
                              };
 
-            var referenceBuilder = new ReferenceBuilder(new ElasticFactory(), AuthorizationStorageExtensions.AnonimousUser);
+            var referenceBuilder = new ReferenceBuilder(new ElasticFactory());
             referenceBuilder.FillReference(_selectingJson, references.ToArray(), new List<WhereObject>(), new NestFilterBuilder());
 
             Assert.AreEqual(
@@ -199,7 +199,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
                                  }
                              };
 
-            var referenceBuilder = new ReferenceBuilder(new ElasticFactory(), AuthorizationStorageExtensions.AnonimousUser);
+            var referenceBuilder = new ReferenceBuilder(new ElasticFactory());
             referenceBuilder.FillReference(_selectingJson, references.ToArray(), new List<WhereObject>(), new NestFilterBuilder());
 
             Assert.AreEqual(
@@ -225,7 +225,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
                                  }
                              };
 
-            var referenceBuilder = new ReferenceBuilder(new ElasticFactory(), AuthorizationStorageExtensions.AnonimousUser);
+            var referenceBuilder = new ReferenceBuilder(new ElasticFactory());
             referenceBuilder.FillReference(_selectingJson, references.ToArray(), new List<WhereObject>(), new NestFilterBuilder());
 
             Assert.AreEqual(
@@ -407,7 +407,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
                                                             }
                                                });
 
-            var result = new JsonQueryExecutor(new ElasticFactory(), _filterFactory, AuthorizationStorageExtensions.AnonimousUser).ExecuteQuery(jsonQuery);
+            var result = new JsonQueryExecutor(new ElasticFactory(), _filterFactory).ExecuteQuery(jsonQuery);
             var compareResult = new[]
                                 {
                                     new
@@ -471,7 +471,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
                                                             }
                                                });
 
-            var result = new JsonQueryExecutor(new ElasticFactory(), _filterFactory, AuthorizationStorageExtensions.AnonimousUser).ExecuteQuery(jsonQuery);
+            var result = new JsonQueryExecutor(new ElasticFactory(), _filterFactory).ExecuteQuery(jsonQuery);
 
             var compareResult = new[]
                                 {
@@ -529,7 +529,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
                                                             }
                                                });
 
-            var result = new JsonQueryExecutor(new ElasticFactory(), _filterFactory, AuthorizationStorageExtensions.AnonimousUser).ExecuteQuery(jsonQuery);
+            var result = new JsonQueryExecutor(new ElasticFactory(), _filterFactory).ExecuteQuery(jsonQuery);
 
             var compareResult = new[]
                                 {

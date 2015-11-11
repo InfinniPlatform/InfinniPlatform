@@ -99,24 +99,21 @@ namespace InfinniPlatform.Transactions
             }
         }
 
-        /// <summary>
-        ///     Присоединить документ к транзакции
-        /// </summary>
-        /// <param name="configId">Идентификатор конфигурации</param>
-        /// <param name="documentId">Идентификатор типа документа</param>
-        /// <param name="version">Версия конфигурации</param>
-        /// <param name="documents">Присоединяемые документы</param>
-        /// <param name="routing">Роутинг сохранения</param>
-        public void Attach(string configId, string documentId, string version, IEnumerable<dynamic> documents,
-            string routing)
+	    /// <summary>
+	    ///     Присоединить документ к транзакции
+	    /// </summary>
+	    /// <param name="configId">Идентификатор конфигурации</param>
+	    /// <param name="documentId">Идентификатор типа документа</param>
+	    /// <param name="version">Версия конфигурации</param>
+	    /// <param name="documents">Присоединяемые документы</param>
+	    public void Attach(string configId, string documentId, string version, IEnumerable<dynamic> documents)
         {
             _itemsList.Add(new AttachedInstance
             {
                 Documents = documents,
                 ConfigId = configId,
                 DocumentId = documentId,
-                Version = version,
-                Routing = routing
+                Version = version
             });
         }
 

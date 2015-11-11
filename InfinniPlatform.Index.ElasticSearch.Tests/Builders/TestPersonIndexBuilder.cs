@@ -21,7 +21,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.Builders
             _indexStateProvider = factory.BuildIndexStateProvider();
 			_indexStateProvider.RecreateIndex(indexName,indexName);
 
-			_elasticSearchProvider = factory.BuildCrudOperationProvider(indexName, indexName, AuthorizationStorageExtensions.AnonimousUser);
+			_elasticSearchProvider = factory.BuildCrudOperationProvider(indexName, indexName, null);
         }
 
 		public void BuildIndexObjectForTestPersonsAndSetItems(string indexName)

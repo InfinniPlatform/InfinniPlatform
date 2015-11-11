@@ -75,6 +75,7 @@
     <Compile Include="Api\InfinniPrintViewApi.cs" />
     <Compile Include="AttachedInstance.cs" />
     <Compile Include="ContextComponents\IApplicationUserManager.cs" />
+    <Compile Include="ContextComponents\ISessionManager.cs" />
     <Compile Include="ContextComponents\ISharedCacheComponent.cs" />
     <Compile Include="Environment\Actions\IActionOperator.cs" />
     <Compile Include="Environment\Actions\IActionOperatorBuilder.cs" />

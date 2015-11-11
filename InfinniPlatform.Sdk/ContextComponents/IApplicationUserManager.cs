@@ -8,33 +8,78 @@ namespace InfinniPlatform.Sdk.ContextComponents
 	public interface IApplicationUserManager
 	{
 		/// <summary>
-		/// Возвращает сведения о пользователе.
+		/// Возвращает сведения о текущем пользователе.
 		/// </summary>
 		object GetCurrentUser();
 
+		/// <summary>
+		/// Возвращает пользователя системы.
+		/// </summary>
+		/// <param name="userName">Логин пользователя.</param>
+		/// <returns>Пользователь системы.</returns>
+		object FindUserByName(string userName);
+
+		/// <summary>
+		/// Создает нового пользователя системы.
+		/// </summary>
+		/// <param name="userName">Пользователь системы.</param>
+		/// <param name="password">Пароль пользователя.</param>
+		/// <returns>Результат добавления.</returns>
+		void CreateUser(string userName, string password);
+
+		/// <summary>
+		/// Удаляет пользователя.
+		/// </summary>
+		/// <param name="userName">Логин пользователя.</param>
+		/// <returns>Результат удаления пользователя.</returns>
+		void DeleteUser(string userName);
 
 		/// <summary>
 		/// Проверяет, что пользователь имеет пароль.
 		/// </summary>
 		bool HasPassword();
+
+		/// <summary>
+		/// Проверяет, что пользователь имеет пароль.
+		/// </summary>
+		/// <param name="userName">Имя пользователя.</param>
 		bool HasPassword(string userName);
 
 		/// <summary>
 		/// Добавляет пользователю пароль.
 		/// </summary>
+		/// <param name="password">Пароль пользователя.</param>
 		void AddPassword(string password);
+
+		/// <summary>
+		/// Добавляет пользователю пароль.
+		/// </summary>
+		/// <param name="userName">Имя пользователя.</param>
+		/// <param name="password">Пароль пользователя.</param>
 		void AddPassword(string userName, string password);
 
 		/// <summary>
 		/// Удаляет у пользователя пароль.
 		/// </summary>
 		void RemovePassword();
+
+		/// <summary>
+		/// Удаляет у пользователя пароль.
+		/// </summary>
+		/// <param name="userName">Имя пользователя.</param>
 		void RemovePassword(string userName);
 
 		/// <summary>
 		/// Изменяет пользователю пароль.
 		/// </summary>
 		void ChangePassword(string currentPassword, string newPassword);
+
+		/// <summary>
+		/// Изменяет пользователю пароль.
+		/// </summary>
+		/// <param name="userName">Имя пользователя.</param>
+		/// <param name="currentPassword">Текущий пароль пользователя.</param>
+		/// <param name="newPassword">Новый пароль пользователя.</param>
 		void ChangePassword(string userName, string currentPassword, string newPassword);
 
 
@@ -137,5 +182,12 @@ namespace InfinniPlatform.Sdk.ContextComponents
 		/// Удаляет пользователя из ролей.
 		/// </summary>
 		void RemoveFromRoles(IEnumerable<string> roles);
+
+		/// <summary>
+		/// Устанавливает утверждение пользователя (заменяет все утверждения данного типа).
+		/// </summary>
+		/// <param name="claimType">Тип утверждения.</param>
+		/// <param name="claimValue">Значение утверждения.</param>
+		void SetClaim(string claimType, string claimValue);
 	}
 }

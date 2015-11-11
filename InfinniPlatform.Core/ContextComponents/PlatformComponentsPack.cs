@@ -22,7 +22,7 @@ namespace InfinniPlatform.ContextComponents
 		private static readonly ISystemComponent SystemComponent = new SystemComponent();
 		private readonly IList<ContextRegistration> _components = new List<ContextRegistration>();
 
-		public PlatformComponentsPack(IDependencyContainerComponent dependencyContainerComponent)
+		public PlatformComponentsPack(IDependencyContainerComponent dependencyContainerComponent, ISessionManager sessionManager)
 		{
 			var eventStorage =
 				 dependencyContainerComponent.ResolveDependency<IEventStorageFactory>().CreateEventStorage();
@@ -85,6 +85,8 @@ namespace InfinniPlatform.ContextComponents
 			_components.Add(new ContextRegistration(typeof(IFileApi), () => new Api.RestApi.Public.FileApi()));
 			_components.Add(new ContextRegistration(typeof(IAuthApi), () => new Api.RestApi.Public.AuthApi()));
 			_components.Add(new ContextRegistration(typeof(ICustomServiceApi), () => new Api.RestApi.Public.CustomServiceApi()));
+
+			_components.Add(new ContextRegistration(typeof(ISessionManager), () => sessionManager));
 
 			_components.Add(new ContextRegistration(typeof(IApplicationUserManager), () =>
 			{

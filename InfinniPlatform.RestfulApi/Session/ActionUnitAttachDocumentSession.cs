@@ -1,10 +1,7 @@
 ﻿using InfinniPlatform.Api.Properties;
-using InfinniPlatform.Api.RestApi.Auth;
-using InfinniPlatform.Api.Transactions;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Transactions;
 
 namespace InfinniPlatform.RestfulApi.Session
@@ -26,14 +23,11 @@ namespace InfinniPlatform.RestfulApi.Session
             {
                 ITransaction transaction = manager.GetTransaction(target.Item.SessionId);
 
-                transaction.Attach(
+				transaction.Attach(
                     target.Item.AttachedInfo.Application,
                     target.Item.AttachedInfo.DocumentType,
                     target.Context.GetVersion(target.Item.AttachedInfo.Application, target.UserName),
-                    new[] {target.Item.AttachedInfo.Document},
-                    target.Context.GetComponent<ISecurityComponent>()
-                          .GetClaim(AuthorizationStorageExtensions.OrganizationClaim, target.UserName) ??
-                    AuthorizationStorageExtensions.AnonimousUser);
+                    new[] {target.Item.AttachedInfo.Document});
 
                 target.Result = new DynamicWrapper();
                 target.Result.Id = target.Item.AttachedInfo.Document.Id;

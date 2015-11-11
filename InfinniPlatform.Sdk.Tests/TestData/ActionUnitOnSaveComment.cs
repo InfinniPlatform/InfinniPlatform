@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Sdk.ApiContracts;
+﻿using InfinniPlatform.Sdk.ApiContracts;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Global;
 

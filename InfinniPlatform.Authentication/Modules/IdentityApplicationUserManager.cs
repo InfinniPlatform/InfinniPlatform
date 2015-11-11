@@ -14,7 +14,7 @@ using Microsoft.AspNet.Identity;
 
 namespace InfinniPlatform.Authentication.Modules
 {
-	sealed class IdentityApplicationUserManager : IApplicationUserManager
+	internal sealed class IdentityApplicationUserManager : IApplicationUserManager
 	{
 		public IdentityApplicationUserManager(Func<UserManager<IdentityApplicationUser>> userManagerFunc)
 		{
@@ -25,7 +25,7 @@ namespace InfinniPlatform.Authentication.Modules
 		private readonly Lazy<UserManager<IdentityApplicationUser>> _userManager;
 
 
-		public UserManager<IdentityApplicationUser> UserManager
+		private UserManager<IdentityApplicationUser> UserManager
 		{
 			get { return _userManager.Value; }
 		}
@@ -34,6 +34,34 @@ namespace InfinniPlatform.Authentication.Modules
 		public object GetCurrentUser()
 		{
 			return InvokeUserManager((m, userId) => m.FindByIdAsync(userId));
+		}
+
+
+		// CRUD
+
+		public object FindUserByName(string userName)
+		{
+			return InvokeUserManager(m => m.FindByNameAsync(userName));
+		}
+
+		public void CreateUser(string userName, string password)
+		{
+			InvokeUserManager(m => m.CreateAsync(new IdentityApplicationUser { UserName = userName }, password));
+		}
+
+		public void DeleteUser(string userName)
+		{
+			InvokeUserManager(async m =>
+			{
+				var user = await m.FindByNameAsync(userName);
+
+				if (user != null)
+				{
+					await m.DeleteAsync(user);
+				}
+
+				return null;
+			});
 		}
 
 
@@ -212,6 +240,44 @@ namespace InfinniPlatform.Authentication.Modules
 
 		// Claims
 
+		public void SetClaim(string claimType, string claimValue)
+		{
+			if (string.IsNullOrEmpty(claimType))
+			{
+				throw new ArgumentNullException("claimType");
+			}
+
+			if (string.IsNullOrEmpty(claimValue))
+			{
+				throw new ArgumentNullException("claimValue");
+			}
+
+			var user = InvokeUserManager((m, userId) => m.FindByIdAsync(userId));
+
+			var applicationUserClaims = user.Claims
+											.Where(claim => claim.Type.DisplayName != claimType)
+											.ToList();
+
+			var newClaim = new ApplicationUserClaim
+			{
+				Type = new ForeignKey
+				{
+					Id = claimType,
+					DisplayName = claimType
+				},
+				Value = claimValue
+			};
+
+			applicationUserClaims.Add(newClaim); 
+
+			user.Claims = applicationUserClaims;
+
+			InvokeUserManager((m, userId) => m.UpdateAsync(user));
+			
+			var currentIdentity = GetCurrentIdentity();
+			currentIdentity.SetClaim(claimType, claimValue);
+		}
+
 		public void AddClaim(string claimType, string claimValue)
 		{
 			if (string.IsNullOrEmpty(claimType))
@@ -342,6 +408,7 @@ namespace InfinniPlatform.Authentication.Modules
 			}
 		}
 
+
 		private static void RemoveRolesFromClaims(params string[] roles)
 		{
 			var currentIdentity = GetCurrentIdentity();
@@ -363,6 +430,18 @@ namespace InfinniPlatform.Authentication.Modules
 			var currentUserId = GetCurrentUserId();
 			var task = actionForUserId(UserManager, currentUserId);
 			ThrowIfError(task);
+		}
+
+		private void InvokeUserManager(Func<UserManager<IdentityApplicationUser>, Task<IdentityResult>> actionForUserId)
+		{
+			var task = actionForUserId(UserManager);
+			ThrowIfError(task);
+		}
+
+		private TResult InvokeUserManager<TResult>(Func<UserManager<IdentityApplicationUser>, Task<TResult>> actionForUserId)
+		{
+			var task = actionForUserId(UserManager);
+			return task.Result;
 		}
 
 		private static string GetCurrentUserId()

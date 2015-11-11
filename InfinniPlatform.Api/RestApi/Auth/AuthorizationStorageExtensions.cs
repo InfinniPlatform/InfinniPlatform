@@ -21,5 +21,7 @@
         public const string CurrentUserCredentials = "UserCredentials";
         public const string CustomCredentials = "CustomCredentials";
         public const string SystemTenant = "system";
+        public const string TenantId = "tenantid";
+        public const string DefaultTenantId = "defaulttenantid";
     }
 }

@@ -39,12 +39,7 @@ namespace InfinniPlatform.Sdk.Environment.Transactions
         ///     Версия конфигурации
         /// </summary>
         public string Version { get; set; }
-
-        /// <summary>
-        ///     Роутинг пользователя
-        /// </summary>
-        public string Routing { get; set; }
-
+		
         /// <summary>
         ///     Признак отсоединения от транзакции
         /// </summary>

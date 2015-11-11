@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.SearchOptions;
+using InfinniPlatform.Api.Security;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Metadata.Properties;
 using InfinniPlatform.Sdk.ContextComponents;
@@ -92,12 +95,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
                     configVersion = _globalContext.GetVersion(ConfigRequestProvider.GetConfiguration(),ConfigRequestProvider.GetUserName()) ?? appliedConfig.GetConfigurationVersion();
                 }
 
-
-                var documentProvider = appliedConfig
-                    .GetDocumentProvider(ConfigRequestProvider.GetMetadataIdentifier(), configVersion,
-                        target.Context.GetComponent<ISecurityComponent>()
-                            .GetClaim(AuthorizationStorageExtensions.OrganizationClaim, target.UserName) ??
-                        AuthorizationStorageExtensions.AnonimousUser);
+				var documentProvider = appliedConfig.GetDocumentProvider(ConfigRequestProvider.GetMetadataIdentifier(), configVersion);
 
                 dynamic sr = null;
                 if (documentProvider != null)

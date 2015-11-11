@@ -18,10 +18,7 @@ namespace InfinniPlatform.Sdk.ContextComponents
         void UpdateRoles();
         void UpdateVersions();
 
-        string GetClaim(string claimType, string userName);
-        void UpdateClaim(string userName, string claimType, string claimValue);
-
-        /// <summary>
+	    /// <summary>
         ///     Прогрев Acl на старте сервера
         /// </summary>
         void WarmUpAcl();

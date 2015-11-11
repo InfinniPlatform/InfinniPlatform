@@ -34,11 +34,11 @@ namespace InfinniPlatform.WebApi.Tests.Builders
 			item.Version = "version_federal";
 			item.ContentId = contentId;
 
-			var providerConfig = new ElasticFactory().BuildCrudOperationProvider("update_configuration", "update_configuration", AuthorizationStorageExtensions.AnonimousUser);
+			var providerConfig = new ElasticFactory().BuildCrudOperationProvider("update_configuration", "update_configuration", null);
 			providerConfig.Set(itemConfig);
 			providerConfig.Refresh();
 
-			var provider = new ElasticFactory().BuildCrudOperationProvider("update_package", "update_package", AuthorizationStorageExtensions.AnonimousUser);
+			var provider = new ElasticFactory().BuildCrudOperationProvider("update_package", "update_package", null);
 			provider.Set(item);
 			provider.Refresh();
 

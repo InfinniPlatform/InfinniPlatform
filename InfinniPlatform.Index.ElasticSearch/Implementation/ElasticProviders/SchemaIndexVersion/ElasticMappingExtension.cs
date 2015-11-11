@@ -68,14 +68,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
 			// }
 			
 			// получаем список маппингов
-			//			var restClient = new RestClient(elasticQueryMappings);
-			//			
-			//			if (ElasticShieldSecuritySettings.IsSet())
-			//	        {
-			//		        restClient.Authenticator = new HttpBasicAuthenticator(ElasticShieldSecuritySettings.Login, ElasticShieldSecuritySettings.Password);
-			//	        }
-			//			
-			//            var response = restClient.Get(new RestRequest { RequestFormat = DataFormat.Json });
 			var response = HttpClient.GetAsync(elasticQueryMappings).Result;
 			var responseContent = response.Content.ReadAsStringAsync().Result;
 

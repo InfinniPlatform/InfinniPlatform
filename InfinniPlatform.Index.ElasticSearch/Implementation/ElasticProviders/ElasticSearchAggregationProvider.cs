@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
+using InfinniPlatform.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters.NestFilters;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeSelectors;
@@ -17,15 +18,13 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 {
     public sealed class ElasticSearchAggregationProvider : IAggregationProvider
     {
-        private readonly string _tenantId;
         private readonly string _indexName;
         private readonly IEnumerable<IndexToTypeAccordance> _typeName;
         private IFilter _filters;
         private readonly ElasticConnection _elasticConnection;
 
-        public ElasticSearchAggregationProvider(string indexName, string typeName, string tenantId)
+        public ElasticSearchAggregationProvider(string indexName, string typeName)
         {
-            _tenantId = tenantId;
             _indexName = indexName.ToLowerInvariant();
             _elasticConnection = new ElasticConnection();
             _typeName = _elasticConnection.GetAllTypes(new[] { _indexName }, new[] { typeName.ToLowerInvariant() });
@@ -201,9 +200,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             {
                 filters = new SearchModel();
             }
-
+	        var tenantId = GlobalContext.GetTenantId();
             filters.AddFilter(new NestFilter(Filter<dynamic>.Query(q =>
-                q.Term(ElasticConstants.TenantIdField, _tenantId) &&
+                q.Term(ElasticConstants.TenantIdField, tenantId) &&
                 q.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid))));
 
             _filters = filters.Filter;

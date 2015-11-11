@@ -39,7 +39,7 @@ namespace InfinniPlatform.RestfulApi.Utils
 
         public dynamic GetBaseDocument(string userName, string instanceId)
         {
-            IAllIndexesOperationProvider documentProvider = _documentComponent.GetAllIndexesOperationProvider(userName);
+            IAllIndexesOperationProvider documentProvider = _documentComponent.GetAllIndexesOperationProvider();
             return documentProvider.GetItem(instanceId);
         }
 

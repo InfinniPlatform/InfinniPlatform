@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+
+using InfinniPlatform.Factories;
 using InfinniPlatform.Json;
 using InfinniPlatform.Sdk.Environment.Index;
 using Newtonsoft.Json.Linq;
@@ -11,12 +12,10 @@ namespace InfinniPlatform.Index.QueryLanguage.Implementation
 	public sealed class ReferenceBuilder
 	{
 		private readonly IIndexFactory _indexFactory;
-		private readonly string _tenantId;
-
-		public ReferenceBuilder(IIndexFactory indexFactory, string tenantId)
+		
+		public ReferenceBuilder(IIndexFactory indexFactory)
 		{
 			_indexFactory = indexFactory;
-			_tenantId = tenantId;
 		}
 
 
@@ -50,9 +49,11 @@ namespace InfinniPlatform.Index.QueryLanguage.Implementation
 
 			var executors = new Dictionary<string, IIndexQueryExecutor>();
 
+			var tenantId = GlobalContext.GetTenantId();
+
 			foreach (var reference in referencedObjects)
 			{
-				executors.Add(reference.Path, _indexFactory.BuildIndexQueryExecutor(reference.Index.ToLowerInvariant(), reference.Type, _tenantId));
+				executors.Add(reference.Path, _indexFactory.BuildIndexQueryExecutor(reference.Index.ToLowerInvariant(), reference.Type));
 			}
 
 

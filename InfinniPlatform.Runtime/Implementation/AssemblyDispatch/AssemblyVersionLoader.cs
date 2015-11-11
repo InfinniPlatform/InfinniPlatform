@@ -42,7 +42,7 @@ namespace InfinniPlatform.Runtime.Implementation.AssemblyDispatch
 		{
 			//функционал всех версий конфигурации 'update' одинаков, можно не указывать версию
 			var configurationObject = _configurationObjectBuilder.GetConfigurationObject(null, "update");
-			var packageProvider = configurationObject.GetDocumentProvider("package", version, null);
+			var packageProvider = configurationObject.GetDocumentProvider("package", version);
 
 			// если индекс не существует, конфигурация еще не развернута
 			if (packageProvider == null)

@@ -1,32 +1,20 @@
-﻿using System;
-using InfinniPlatform.Api.Properties;
-using InfinniPlatform.Api.Security;
-using InfinniPlatform.ContextComponents;
+﻿using InfinniPlatform.Api.Properties;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.SystemConfig.UserStorage;
 
 namespace InfinniPlatform.RestfulApi.Auth
 {
     /// <summary>
-    ///     Удаление утверждения оносительно пользователя (Claim)
+    ///     Удаление утверждения относительно пользователя (Claim).
     /// </summary>
     public sealed class ActionUnitRemoveClaim
     {
         public void Action(IApplyContext target)
         {
-            var storage = ApplicationUserStorePersistentStorage.Instance;
-            ApplicationUser user = storage.FindUserByName(target.Item.UserName);
-            if (user == null)
-            {
-                throw new ArgumentException(string.Format(Resources.UserToRemoveClaimNotFound, target.Item.UserName));
-            }
+            target.Context.GetComponent<ISessionManager>().SetSessionData(target.Item.ClaimType, null);
 
-            storage.RemoveUserClaim(user, target.Item.ClaimType);
-
-            //обновляем пользователей системы
-            target.Context.GetComponent<CachedSecurityComponent>().UpdateUsers();
-            target.Result = new DynamicWrapper();
+			target.Result = new DynamicWrapper();
             target.Result.ValidationMessage = Resources.ClaimRemovedSuccessfully;
             target.Result.IsValid = true;
         }

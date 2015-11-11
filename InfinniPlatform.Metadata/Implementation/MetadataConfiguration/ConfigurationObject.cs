@@ -41,16 +41,15 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
             get { return _metadataConfiguration; }
         }
 
-        /// <summary>
-        /// Возвращает провайдер версий документов.
-        /// </summary>
-        /// <param name="documentId">Имя документа.</param>
-        /// <param name="version">Версия документа.</param>
-        /// <param name="tenantId">Идентификатор организации.</param>
-        /// <remarks>
-        /// Создает провайдер, возвращающий версии документов всех существующих в индексе типов.
-        /// </remarks>
-        public IVersionProvider GetDocumentProvider(string documentId, string version, string tenantId)
+	    /// <summary>
+	    /// Возвращает провайдер версий документов.
+	    /// </summary>
+	    /// <param name="documentId">Имя документа.</param>
+	    /// <param name="version">Версия документа.</param>
+	    /// <remarks>
+	    /// Создает провайдер, возвращающий версии документов всех существующих в индексе типов.
+	    /// </remarks>
+	    public IVersionProvider GetDocumentProvider(string documentId, string version)
         {
             IVersionProvider versionProvider;
 
@@ -71,7 +70,7 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
                     _indexStateProvider.CreateIndexType(documentIndexName, documentTypeName);
                 }
 
-                versionProvider = _indexFactory.BuildVersionProvider(documentIndexName, documentTypeName, tenantId, version);
+                versionProvider = _indexFactory.BuildVersionProvider(documentIndexName, documentTypeName, version);
 
                 VersionProviderCache[versionProviderKey] = versionProvider;
             }

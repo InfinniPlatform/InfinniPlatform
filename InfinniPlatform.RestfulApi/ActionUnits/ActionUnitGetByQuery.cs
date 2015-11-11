@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
+
 using InfinniPlatform.Api.Index.SearchOptions;
 using InfinniPlatform.Api.RestApi.Auth;
+using InfinniPlatform.Api.Security;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Index.QueryLanguage.Implementation;
 using InfinniPlatform.Sdk.ContextComponents;
@@ -19,13 +22,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
         {
             IFilterBuilder filterFactory = FilterBuilderFactory.GetInstance();
 
-
-            _jsonQueryExecutor =
-                new JsonQueryExecutor(target.Context.GetComponent<IIndexComponent>().IndexFactory,
-                                      filterFactory,
-                                      target.Context.GetComponent<ISecurityComponent>()
-                                            .GetClaim(AuthorizationStorageExtensions.OrganizationClaim, target.UserName) ??
-                                      AuthorizationStorageExtensions.AnonimousUser);
+			_jsonQueryExecutor = new JsonQueryExecutor(target.Context.GetComponent<IIndexComponent>().IndexFactory, filterFactory);
 
             dynamic query = DynamicWrapperExtensions.ToDynamic((string) target.Item.QueryText);
 

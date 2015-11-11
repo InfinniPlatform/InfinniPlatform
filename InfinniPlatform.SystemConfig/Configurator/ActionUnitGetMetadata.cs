@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+
 using InfinniPlatform.Api.Index.SearchOptions;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.SearchOptions;
+using InfinniPlatform.Api.Security;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Index.QueryLanguage.Implementation;
 using InfinniPlatform.Sdk.ContextComponents;
@@ -25,11 +28,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
 
         public void Action(IApplyResultContext target)
         {
-            _jsonQueryExecutor =
-                new JsonQueryExecutor(target.Context.GetComponent<IIndexComponent>().IndexFactory,
-                                      FilterFactory,
-                                      target.Context.GetComponent<ISecurityComponent>()
-                                            .GetClaim(AuthorizationStorageExtensions.OrganizationClaim, target.UserName));
+			_jsonQueryExecutor = new JsonQueryExecutor(target.Context.GetComponent<IIndexComponent>().IndexFactory, FilterFactory);
 
             var version = target.Item.Version ?? target.Context.GetVersion(target.Item.ConfigId, target.UserName);
 

@@ -1,6 +1,4 @@
-﻿using InfinniPlatform.Api.Index;
-using InfinniPlatform.Api.RestApi.Auth;
-using InfinniPlatform.Api.Versioning;
+﻿using InfinniPlatform.Factories;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment.Index;
 
@@ -13,27 +11,23 @@ namespace InfinniPlatform.ContextComponents
     {
         private readonly IConfigurationMediatorComponent _configurationMediatorComponent;
         private readonly IIndexFactory _indexFactory;
-        private readonly ISecurityComponent _securityComponent;
 
-        public InprocessDocumentComponent(IConfigurationMediatorComponent configurationMediatorComponent,
-            ISecurityComponent securityComponent, IIndexFactory indexFactory)
+	    public InprocessDocumentComponent(IConfigurationMediatorComponent configurationMediatorComponent, IIndexFactory indexFactory)
         {
             _configurationMediatorComponent = configurationMediatorComponent;
-            _securityComponent = securityComponent;
-            _indexFactory = indexFactory;
+	        _indexFactory = indexFactory;
 
         }
 
-        public IAllIndexesOperationProvider GetAllIndexesOperationProvider(string userName)
+        public IAllIndexesOperationProvider GetAllIndexesOperationProvider()
         {
-            return _indexFactory.BuildAllIndexesOperationProvider(GetUserRouting(userName));
+            return _indexFactory.BuildAllIndexesOperationProvider();
         }
 
-        private string GetUserRouting(string userName)
+        private string GetUserRouting()
         {
-            return _securityComponent.GetClaim(AuthorizationStorageExtensions.OrganizationClaim, userName) ??
-                   AuthorizationStorageExtensions.AnonimousUser;
-        }
+			return GlobalContext.GetTenantId();
+		}
 
         public IVersionProvider GetDocumentProvider(string version, string configId, string documentId, string userName)
         {
@@ -45,7 +39,7 @@ namespace InfinniPlatform.ContextComponents
 
             if (config != null)
             {
-                return config.GetDocumentProvider(documentId, version, GetUserRouting(userName));
+                return config.GetDocumentProvider(documentId, version);
             }
             return null;
         }

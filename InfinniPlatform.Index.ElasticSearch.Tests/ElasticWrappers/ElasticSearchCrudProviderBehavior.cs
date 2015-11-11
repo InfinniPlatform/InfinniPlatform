@@ -22,14 +22,10 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             indexProvider.RecreateIndex("elasticcrudbehavior1", "testtype");
             indexProvider.RecreateIndex("elasticcrudbehavior1", "testtype_another");
 
-            var elasticProvider1 = new ElasticSearchProvider("elasticcrudbehavior", "testtype",
-                                                             AuthorizationStorageExtensions.AnonimousUser);
-            var elasticProvider2 = new ElasticSearchProvider("elasticcrudbehavior", "testtype1",
-                                                             AuthorizationStorageExtensions.AnonimousUser);
-            var elasticProvider3 = new ElasticSearchProvider("elasticcrudbehavior1", "testtype",
-                                                             AuthorizationStorageExtensions.AnonimousUser);
-            var elasticProvider4 = new ElasticSearchProvider("elasticcrudbehavior1", "testtype_another",
-                                                             AuthorizationStorageExtensions.AnonimousUser);
+            var elasticProvider1 = new ElasticSearchProvider("elasticcrudbehavior", "testtype");
+            var elasticProvider2 = new ElasticSearchProvider("elasticcrudbehavior", "testtype1");
+            var elasticProvider3 = new ElasticSearchProvider("elasticcrudbehavior1", "testtype");
+            var elasticProvider4 = new ElasticSearchProvider("elasticcrudbehavior1", "testtype_another");
 
             dynamic instance1 = new DynamicWrapper();
             string instance1Id = "1elasticcrudbehavior_testtype_first";
@@ -142,8 +138,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             indexProvider.CreateIndexType("elasticcrudbehavior", "testtype");
 
             //успешно добавляем в него инстанс, который ранее выдавал ошибку маппинга
-			elasticProvider1 = new ElasticSearchProvider("elasticcrudbehavior", "testtype",
-															 AuthorizationStorageExtensions.AnonimousUser);
+			elasticProvider1 = new ElasticSearchProvider("elasticcrudbehavior", "testtype");
 			elasticProvider1.Set(failInstance);
             elasticProvider1.Refresh();
 

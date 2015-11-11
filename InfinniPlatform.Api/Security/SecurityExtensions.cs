@@ -172,7 +172,7 @@ namespace InfinniPlatform.Api.Security
 
 			if (claimsIdentity != null && !string.IsNullOrEmpty(claimType))
 			{
-				action(claimsIdentity, claimType);
+				return action(claimsIdentity, claimType);
 			}
 
 			return default(TResult);

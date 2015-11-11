@@ -54,7 +54,7 @@ namespace InfinniPlatform.Transactions
 
                 foreach (var item in _itemsList.Where(i => !i.Detached))
                 {
-                    var versionProvider = _indexFactory.BuildVersionProvider(item.ConfigId, item.DocumentId, item.Routing, item.Version);
+                    var versionProvider = _indexFactory.BuildVersionProvider(item.ConfigId, item.DocumentId, item.Version);
 
                     versionProvider.SetDocuments(item.Documents);
 
@@ -130,24 +130,21 @@ namespace InfinniPlatform.Transactions
             }
         }
 
-        /// <summary>
-        /// Присоединить документ к транзакции
-        /// </summary>
-        /// <param name="configId">Идентификатор конфигурации</param>
-        /// <param name="documentId">Идентификатор типа документа</param>
-        /// <param name="version">Версия конфигурации</param>
-        /// <param name="document">Присоединяемые документы</param>
-        /// <param name="routing">Роутинг сохранения</param>
-        public void Attach(string configId, string documentId, string version, IEnumerable<dynamic> document,
-                           string routing)
+	    /// <summary>
+	    /// Присоединить документ к транзакции
+	    /// </summary>
+	    /// <param name="configId">Идентификатор конфигурации</param>
+	    /// <param name="documentId">Идентификатор типа документа</param>
+	    /// <param name="version">Версия конфигурации</param>
+	    /// <param name="document">Присоединяемые документы</param>
+	    public void Attach(string configId, string documentId, string version, IEnumerable<dynamic> document)
         {
             _itemsList.Add(new AttachedInstance
                            {
                                Documents = document,
                                ConfigId = configId,
                                DocumentId = documentId,
-                               Version = version,
-                               Routing = routing
+                               Version = version
                            });
         }
 

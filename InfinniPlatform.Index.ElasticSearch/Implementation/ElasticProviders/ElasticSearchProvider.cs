@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using InfinniPlatform.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeSelectors;
 using InfinniPlatform.Sdk.Dynamic;
@@ -21,19 +22,17 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 	{
 		private readonly string _indexName;
 		private readonly string _typeName;
-		private readonly string _tenantId;
 		private readonly string _version;
 		private readonly ElasticConnection _elasticConnection;
 		private readonly Lazy<IEnumerable<IndexToTypeAccordance>> _derivedTypeNames;
 
 		/// <summary>
-		///     Установливает соединение с указанным индексом
+		///     Устанавливает соединение с указанным индексом
 		/// </summary>
 		/// <param name="indexName">Наименование индекса</param>
 		/// <param name="typeName">Тип объекта для получения данных из индекса</param>
-		/// <param name="tenantId">Идентификатор организации-клиента для получения данных</param>
 		/// <param name="version">Версия документа</param>
-		public ElasticSearchProvider(string indexName, string typeName, string tenantId, string version = null)
+		public ElasticSearchProvider(string indexName, string typeName, string version = null)
 		{
 			if (string.IsNullOrEmpty(indexName))
 			{
@@ -45,16 +44,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 				throw new ArgumentException("Index type name should not be empty.");
 			}
 
-			if (string.IsNullOrEmpty(tenantId))
-			{
-				throw new ArgumentException("tenantId should not be empty");
-			}
-
 			_indexName = indexName.ToLowerInvariant();
 			_typeName = typeName.ToLowerInvariant();
-			_tenantId = string.IsNullOrEmpty(tenantId) ? "" : tenantId.ToLowerInvariant();
 			_version = version;
-
 			_elasticConnection = new ElasticConnection();
 
 			//все версии типа в индексе
@@ -83,9 +75,10 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 				throw new ArgumentException(string.Format("Actual index type not found. Type: '{0}'.", _typeName));
 			}
 
-			var objectsToIndex =
-				itemsToIndex.Select(item => PrepareObjectToIndex(item, _tenantId)).Cast<IndexObject>().ToList();
+			var tenantId = GlobalContext.GetTenantId();
 
+			var objectsToIndex = itemsToIndex.Select(item => PrepareObjectToIndex(item, tenantId)).Cast<IndexObject>().ToList();
+			
 			var objectIds = objectsToIndex.Select(o => o.Id).ToArray();
 
 			//сохраняем элементы для rollback в случае ошибки
@@ -100,7 +93,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 						d.Index(_indexName)
 						 .AllTypes()
 						 .Query(queryDescriptor => queryDescriptor.Ids(objectIds) &&
-												   queryDescriptor.Term(ElasticConstants.TenantIdField, _tenantId) &&
+												   queryDescriptor.Term(ElasticConstants.TenantIdField, tenantId) &&
 												   queryDescriptor.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid)));
 			}
 
@@ -191,7 +184,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 				throw new ArgumentException(string.Format("Actual index type not found. Type: '{0}'.", _typeName));
 			}
 
-			IndexObject objectToIndex = PrepareObjectToIndex(item, _tenantId);
+			var tenantId = GlobalContext.GetTenantId();
+			IndexObject objectToIndex = PrepareObjectToIndex(item, tenantId);
 
 
 			BaseResponse response;
@@ -214,7 +208,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 				_elasticConnection.Client.DeleteByQuery<dynamic>(
 					d => d.Index(_indexName).AllTypes().Query(
 						queryDescriptor => queryDescriptor.Ids(new[] { objectToIndex.Id }) &&
-										   queryDescriptor.Term(ElasticConstants.TenantIdField, _tenantId) &&
+										   queryDescriptor.Term(ElasticConstants.TenantIdField, tenantId) &&
 										   queryDescriptor.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid)));
 
 				// Добавляем документ в актуальный тип
@@ -320,6 +314,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 		/// <param name="key">Идентификатор удаляемого объекта индекса</param>
 		public void Remove(string key)
 		{
+			var tenantId = GlobalContext.GetTenantId();
 			// Удаление реализуем через обновление статуса документа.
 			foreach (var indexType in _derivedTypeNames.Value.SelectMany(d => d.TypeNames))
 			{
@@ -332,7 +327,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 							m =>
 								m.Term(ElasticConstants.IndexObjectPath + ElasticConstants.IndexObjectIdentifierField,
 									key.ToLowerInvariant())
-								&& m.Term(ElasticConstants.TenantIdField, _tenantId)
+								&& m.Term(ElasticConstants.TenantIdField, tenantId)
 								&& m.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid))
 					);
 
@@ -340,7 +335,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
 				if (indexObject != null)
 				{
-					IndexObject objectToDelete = PrepareObjectToIndex(DynamicWrapperExtensions.ToDynamic(indexObject.Values), _tenantId);
+					IndexObject objectToDelete = PrepareObjectToIndex(DynamicWrapperExtensions.ToDynamic(indexObject.Values), tenantId);
 
 					objectToDelete.Status = IndexObjectStatus.Deleted;
 
@@ -381,10 +376,14 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 					.Index(_indexName)
 					.Types(_derivedTypeNames.Value.SelectMany(d => d.TypeNames))
 					.Query(
-						f => f.Term(ElasticConstants.IndexObjectPath + ElasticConstants.IndexObjectIdentifierField, key.ToLowerInvariant())
-							 && f.Term(ElasticConstants.TenantIdField, _tenantId)
-							 && f.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid)
-					)
+						f =>
+						{
+							var tenantId = GlobalContext.GetTenantId();
+
+							return f.Term(ElasticConstants.IndexObjectPath + ElasticConstants.IndexObjectIdentifierField, key.ToLowerInvariant())
+								   && f.Term(ElasticConstants.TenantIdField, tenantId)
+								   && f.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid);
+						})
 				);
 
 			dynamic indexObject = response.Documents.FirstOrDefault();
@@ -407,10 +406,12 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 			const int batchSize = 300;
 
 			var indexObjects = new List<dynamic>();
-
+			
 			if (items.Any())
 			{
 				var i = 0;
+
+				var tenantId = GlobalContext.GetTenantId();
 
 				while (items.Skip(i * batchSize).Count() != 0)
 				{
@@ -423,7 +424,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 							.Size(batchSize)
 							.Filter(
 								m => m.Terms(ElasticConstants.IndexObjectPath + ElasticConstants.IndexObjectIdentifierField, itemsToIndex.Select(batchItem => batchItem.ToLowerInvariant()))
-									 && m.Term(ElasticConstants.TenantIdField, _tenantId)
+									 && m.Term(ElasticConstants.TenantIdField, tenantId)
 									 && m.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid)));
 
 					indexObjects.AddRange(searchResponse.Documents);
@@ -441,10 +442,12 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 		/// <returns>Количество записей в индексе</returns>
 		public int GetTotalCount()
 		{
+			var tenantId = GlobalContext.GetTenantId();
+
 			return _elasticConnection.Client
 									 .Search<dynamic>(q => q
 										 .BuildSearchForType(new[] { _indexName }, _derivedTypeNames.Value.SelectMany(d => d.TypeNames), false, false)
-										 .Query(qr => qr.Term(ElasticConstants.TenantIdField, _tenantId) &&
+										 .Query(qr => qr.Term(ElasticConstants.TenantIdField, tenantId) &&
 													  qr.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid))).Hits.Count();
 		}
 

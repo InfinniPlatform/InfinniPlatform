@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Cache;
 using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.ContextComponents
 {
-    /// <summary>
-    ///     Компонент безопасности глобалього контекста
-    /// </summary>
-    public sealed class CachedSecurityComponent : ISecurityComponent
+	/// <summary>
+	///     Компонент безопасности глобального контекста
+	/// </summary>
+	[Obsolete]
+	public sealed class CachedSecurityComponent : ISecurityComponent
     {
         public static readonly CachedSecurityComponent Instance = new CachedSecurityComponent();
 
@@ -82,63 +81,7 @@ namespace InfinniPlatform.ContextComponents
             get { return SecurityCache.Users; }
         }
 
-
-
-        public void UpdateClaim(string userName, string claimType, string claimValue)
-        {
-            if (Users != null)
-            {
-                var user = Users.FirstOrDefault(u => u.UserName == userName);
-                if (user != null)
-                {
-                    dynamic claim = null;
-                    if (user.Claims == null)
-                    {
-                        user.Claims = new List<dynamic>();
-                    }
-                    else
-                    {
-                        claim = ((IEnumerable<dynamic>)user.Claims).FirstOrDefault(c => c.Type.DisplayName == claimType);
-                    }
-
-                    if (claim == null)
-                    {
-                        claim = new DynamicWrapper();
-                        user.Claims.Add(claim);
-                    }
-
-                    claim.Type = new DynamicWrapper();
-                    claim.Type.Id = Guid.NewGuid().ToString();
-                    claim.Type.DisplayName = claimType;
-                    claim.Value = claimValue;
-
-
-                    var users = Users.Where(u => u.UserName != userName).ToList();
-                    users.Add(user);
-                    SecurityCache.Users = users;
-                }
-            }
-        }
-
-        public string GetClaim(string claimType, string userName)
-        {
-            if (Users != null)
-            {
-                var user = Users.FirstOrDefault(u => u.UserName == userName);
-                if (user != null)
-                {
-                    IEnumerable<dynamic> claims = user.Claims;
-                    if (claims != null)
-                    {
-                        return claims.Where(c => c.Type.DisplayName == claimType).Select(c => c.Value).FirstOrDefault();
-                    }
-                }
-                return null;
-            }
-            return null;
-        }
-
-        private void InternalUpdateUserRoles()
+		private void InternalUpdateUserRoles()
         {
             SecurityCache.UserRoles = new AuthApi().GetUserRoles(false);
         }

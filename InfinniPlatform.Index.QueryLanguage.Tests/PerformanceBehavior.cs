@@ -308,16 +308,14 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
             var mockIndexQueryExecutor = new Mock<IIndexQueryExecutor>();
             mockFactory.Setup(
                 m =>
-                m.BuildIndexQueryExecutor(It.IsAny<string>(), It.IsAny<string>(),
-                                          AuthorizationStorageExtensions.AnonimousUser))
+                m.BuildIndexQueryExecutor(It.IsAny<string>(), It.IsAny<string>()))
                        .Returns(mockIndexQueryExecutor.Object);
             mockIndexQueryExecutor.Setup(
                 m => m.QueryOverObject(It.IsAny<SearchModel>(), It.IsAny<Func<dynamic, string, string, object>>()))
                                   .Returns(new SearchViewModel(0, countObjects, countObjects, listQuery));
 
             //When
-            var indexQueryExecutor = new JsonQueryExecutor(mockFactory.Object, _filterFactory,
-                                                           AuthorizationStorageExtensions.AnonimousUser);
+            var indexQueryExecutor = new JsonQueryExecutor(mockFactory.Object, _filterFactory);
 
             //warmup
             indexQueryExecutor.ExecuteQuery(jquery);

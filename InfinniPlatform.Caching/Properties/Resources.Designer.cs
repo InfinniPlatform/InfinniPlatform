@@ -59,5 +59,23 @@ namespace InfinniPlatform.Caching.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request is not authenticated..
+        /// </summary>
+        internal static string RequestIsNotAuthenticated {
+            get {
+                return ResourceManager.GetString("RequestIsNotAuthenticated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User not found..
+        /// </summary>
+        internal static string UserIdNotFound {
+            get {
+                return ResourceManager.GetString("UserIdNotFound", resourceCulture);
+            }
+        }
     }
 }

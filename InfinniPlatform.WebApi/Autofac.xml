@@ -102,5 +102,9 @@
 			type="InfinniPlatform.Compression.GZipDataCompressor, InfinniPlatform.Core"
 			service="InfinniPlatform.Compression.IDataCompressor, InfinniPlatform.Core"
 			instance-scope="per-dependency" />
+		<component
+			type="InfinniPlatform.Caching.Factory.SessionManagerFactory, InfinniPlatform.Caching"
+			service="InfinniPlatform.Factories.ISessionManagerFactory, InfinniPlatform.Core"
+			instance-scope="single-instance" />
 	</components>
 </autofac>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 
 using InfinniPlatform.Api.RestApi.Auth;
+using InfinniPlatform.Api.Security;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
@@ -12,6 +13,7 @@ using InfinniPlatform.Index.ElasticSearch.Implementation.Filters.NestFilters;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters.NestQueries;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeSelectors;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions;
+using InfinniPlatform.Logging;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
 
@@ -39,6 +41,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 		private readonly bool _searchInAllIndeces;
 		private readonly bool _searchInAllTypes;
 		private readonly IEnumerable<IndexToTypeAccordance> _typeNames;
+		private static readonly string[] SystemConfigurations = { "administration", "administrationcustomization","authorization", "restfulapi", "systemconfig", "update" };
 
 		/// <summary>
 		/// Найти список объектов в индексе по указанной модели поиска
@@ -64,9 +67,14 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 		/// <returns>Количество объектов, удовлетворяющих условиям поиска</returns>
 		public long CalculateCountQuery(SearchModel searchModel)
 		{
-            var tenantId = CachedSecurityComponent.Instance.GetClaim(AuthorizationStorageExtensions.OrganizationClaim, "TestOverlord") ??
-                       AuthorizationStorageExtensions.AnonimousUser;
-            searchModel.AddFilter(new NestQuery(Query<dynamic>.Term(ElasticConstants.TenantIdField, tenantId)));
+			var indexName = _indexNames.FirstOrDefault();
+			
+			if (indexName != null && !SystemConfigurations.Contains(indexName.ToLowerInvariant()))
+			{
+				var tenantId = GlobalContext.GetTenantId();
+				searchModel.AddFilter(new NestQuery(Query<dynamic>.Term(ElasticConstants.TenantIdField, tenantId)));
+			}
+
 			searchModel.AddFilter(new NestQuery(Query<dynamic>.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid)));
 
 			Func<CountDescriptor<dynamic>, CountDescriptor<dynamic>> desc =
@@ -90,21 +98,14 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 		/// <returns>Результаты поиска</returns>
 		public SearchViewModel QueryOverObject(SearchModel searchModel, Func<dynamic, string, string, object> convert)
 		{
-			var userName = string.Empty;
-
-			try
-			{
-				userName = Thread.CurrentPrincipal.Identity.Name;
-			}
-			catch (Exception)
-			{
-				//ignored
-			}
-
-			var tenantId = CachedSecurityComponent.Instance.GetClaim(AuthorizationStorageExtensions.OrganizationClaim, userName) ??
-						   MultitenancyProvider.GetTenantId(null, _indexNames.FirstOrDefault());
+			var indexName = _indexNames.FirstOrDefault();
 			
-            searchModel.AddFilter(new NestFilter(Filter<dynamic>.Query(q => q.Term(ElasticConstants.TenantIdField, tenantId))));
+			if (indexName != null && !SystemConfigurations.Contains(indexName.ToLowerInvariant()))
+			{
+				var tenantId = GlobalContext.GetTenantId();
+				searchModel.AddFilter(new NestFilter(Filter<dynamic>.Query(q => q.Term(ElasticConstants.TenantIdField, tenantId))));
+			}
+			
 			searchModel.AddFilter(new NestFilter(Filter<dynamic>.Query(q => q.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid))));
 
 			Func<SearchDescriptor<dynamic>, SearchDescriptor<dynamic>> desc =
@@ -116,14 +117,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
 			var documentsResponse = _elasticConnection.Client.Search(desc);
 
-			var hitsCount = documentsResponse != null && documentsResponse.Hits != null
-				? documentsResponse.Hits.Count()
-				: 0;
+			var hitsCount = documentsResponse?.Hits?.Count() ?? 0;
 
-			var documentResponseCount = documentsResponse != null &&
-										documentsResponse.Hits != null
-				? documentsResponse.Hits.Select(r => convert(r.Source, r.Index, ToDocumentId(r.Type))).ToList()
-				: new List<dynamic>();
+			var documentResponseCount = documentsResponse?.Hits?.Select(r => convert(r.Source, r.Index, ToDocumentId(r.Type))).ToList() ?? new List<dynamic>();
 
 			return new SearchViewModel(searchModel.FromPage, searchModel.PageSize, hitsCount, documentResponseCount);
 		}

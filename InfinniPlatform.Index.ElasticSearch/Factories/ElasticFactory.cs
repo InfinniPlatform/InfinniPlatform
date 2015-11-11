@@ -1,7 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 
-using InfinniPlatform.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Versioning;
@@ -58,12 +57,10 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 		/// </summary>
 		/// <param name="indexName">Наименование индекса</param>
 		/// <param name="typeName">Наименование типа</param>
-		/// <param name="tenantId">Идентификатор организации-клиента для получения данных</param>
 		/// <param name="version">Версия данных</param>
-		public IVersionProvider BuildVersionProvider(string indexName, string typeName, string tenantId, string version = null)
+		public IVersionProvider BuildVersionProvider(string indexName, string typeName, string version = null)
 		{
-			var expectedTenantId = MultitenancyProvider.GetTenantId(tenantId, indexName);
-			var elasticSearchProvider = new ElasticSearchProvider(indexName, typeName, expectedTenantId, version);
+			var elasticSearchProvider = new ElasticSearchProvider(indexName, typeName);
 			var indexSettings = GetIndexTypeAccordanceSettings(new[] { indexName }, new[] { typeName });
 			var indexQueryExecutor = new IndexQueryExecutor(indexSettings);
 			var documentProvider = new DocumentProvider(indexQueryExecutor);
@@ -74,13 +71,12 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 		/// <summary>
 		///     Создать провайдер данных для доступа к нескольким индексам
 		/// </summary>
-		/// <param name="tenantId">Идентификатор организации-клиента для выполнения запросов</param>
 		/// <param name="indexNames">
-		///     Наименование индексов. Если имена не указаны,
-		///     для поиска будут использованы все имеющиеся индексы
+		/// Наименование индексов. Если имена не указаны,
+		/// для поиска будут использованы все имеющиеся индексы
 		/// </param>
 		/// <param name="typeNames">Наименования типов</param>
-		public IDocumentProvider BuildMultiIndexDocumentProvider(string tenantId, IEnumerable<string> indexNames = null, IEnumerable<string> typeNames = null)
+		public IDocumentProvider BuildMultiIndexDocumentProvider(IEnumerable<string> indexNames = null, IEnumerable<string> typeNames = null)
 		{
 			// Создаём универсальный провайдер для выполнения поисковых запросов ко всем документам конфигурации
 			return new DocumentProvider(new IndexQueryExecutor(GetIndexTypeAccordanceSettings(indexNames, typeNames)));
@@ -93,19 +89,17 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 		/// </summary>
 		/// <param name="indexName">Наименование индекса для поиска</param>
 		/// <param name="typeName">
-		///     Наименование типа для выполнения операций с данными. Если не указан, осуществляется выборка всех
-		///     существующих в индексе типов
+		/// Наименование типа для выполнения операций с данными. Если не указан, осуществляется выборка всех
+		/// существующих в индексе типов
 		/// </param>
-		/// <param name="tenantId">Идентификатор организации-клиента для выполнения запросов</param>
 		/// <param name="version">Версия конфигурации, для которой создается провайдер данных</param>
 		/// <returns>Провайдер для поиска данных</returns>
-		public ICrudOperationProvider BuildCrudOperationProvider(string indexName, string typeName, string tenantId, string version = null)
+		public ICrudOperationProvider BuildCrudOperationProvider(string indexName, string typeName, string version = null)
 		{
-			var expectedtenantId = MultitenancyProvider.GetTenantId(tenantId, indexName);
 			var providerInfo = _providersInfo.FindInfo(indexName, typeName);
 			if (providerInfo == null)
 			{
-				var provider = new ElasticSearchProvider(indexName, typeName, expectedtenantId, version);
+				var provider = new ElasticSearchProvider(indexName, typeName);
 				_providersInfo.Add(new ElasticSearchProviderInfo(indexName, typeName, provider));
 				return provider;
 			}
@@ -115,12 +109,10 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 		/// <summary>
 		///     Получить провайдер операций по всем индексам и типам базы
 		/// </summary>
-		/// <param name="tenantId">Идентификатор организации-клиента для выполнения запросов</param>
 		/// <returns>Провайдер операций по всем индексам и типам базы</returns>
-		public IAllIndexesOperationProvider BuildAllIndexesOperationProvider(string tenantId)
+		public IAllIndexesOperationProvider BuildAllIndexesOperationProvider()
 		{
-			var expectedTenantId = MultitenancyProvider.GetTenantId(tenantId);
-			return new ElasticSearchProviderAllIndexes(expectedTenantId);
+			return new ElasticSearchProviderAllIndexes();
 		}
 
 		/// <summary>
@@ -136,16 +128,15 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 		///     Создать исполнитель запросов к индексу
 		/// </summary>
 		/// <param name="indexName">
-		///     Наимемнование индекса, для которого выполняется запрос. Если не указан, осуществляется выборка
-		///     из всех существующих индексов
+		/// Наимемнование индекса, для которого выполняется запрос. Если не указан, осуществляется выборка
+		/// из всех существующих индексов
 		/// </param>
 		/// <param name="typeName">
-		///     Наименование типа для выполнения операций с данными. Если не указан, осуществляется выборка из
-		///     всех существующих в индексе типов
+		/// Наименование типа для выполнения операций с данными. Если не указан, осуществляется выборка из
+		/// всех существующих в индексе типов
 		/// </param>
-		/// <param name="tenantId">Идентификатор организации-клиента выполнения запросов</param>
 		/// <returns></returns>
-		public IIndexQueryExecutor BuildIndexQueryExecutor(string indexName, string typeName, string tenantId)
+		public IIndexQueryExecutor BuildIndexQueryExecutor(string indexName, string typeName)
 		{
 			return new IndexQueryExecutor(GetIndexTypeAccordanceSettings(new[] { indexName }, new[] { typeName }));
 		}
@@ -155,14 +146,12 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 		/// </summary>
 		/// <param name="indexName">Наимемнование индекса, для которого выполняется запрос</param>
 		/// <param name="typeName">
-		///     Наименование типа для выполнения операций с данными. Если не указан, осуществляется выборка всех
-		///     существующих в индексе типов
+		/// Наименование типа для выполнения операций с данными. Если не указан, осуществляется выборка всех
+		/// существующих в индексе типов
 		/// </param>
-		/// <param name="tenantId">Идентификатор организации-клиента выполнения запросов</param>
-		public IAggregationProvider BuildAggregationProvider(string indexName, string typeName, string tenantId)
+		public IAggregationProvider BuildAggregationProvider(string indexName, string typeName)
 		{
-			var expectedTenantId = MultitenancyProvider.GetTenantId(tenantId, indexName);
-			return new ElasticSearchAggregationProvider(indexName, typeName, expectedTenantId);
+			return new ElasticSearchAggregationProvider(indexName, typeName);
 		}
 	}
 }

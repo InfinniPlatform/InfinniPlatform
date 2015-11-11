@@ -50,7 +50,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 		{
 			var indexProvider = new ElasticFactory().BuildIndexStateProvider();
             indexProvider.RecreateIndex("testindex", "testindex");
-			var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider("testindex", "testindex", AuthorizationStorageExtensions.AnonimousUser);
+			var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider("testindex", "testindex", null);
 
 			dynamic expandoObject = new ExpandoObject();
 
@@ -99,7 +99,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 			var indexProvider = new ElasticFactory().BuildIndexStateProvider();
             indexProvider.RecreateIndex("testindex", "testindex");
             var queryWrapper = new IndexQueryExecutor(new IndexToTypeAccordanceProvider().GetIndexTypeAccordances(new[] { "testindex" }, new[] { "testindex" }));
-			var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider("testindex", "testindex", AuthorizationStorageExtensions.AnonimousUser);
+			var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider("testindex", "testindex", null);
             
 			for (int i = 0; i < recordCount; i++)
 			{

@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
 using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Api.Index.SearchOptions;
-using InfinniPlatform.Api.RestApi.Auth;
-using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
@@ -54,16 +52,10 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
             metadataConfig.MoveWorkflow(idType, metadataConfig.GetExtensionPointValue(ConfigRequestProvider, "Join"),
                 target);
 
-            //в качестве tenantId используется клэйм организации пользователя
-            var executor =
-                target.Context.GetComponent<IIndexComponent>()
-                    .IndexFactory.BuildAggregationProvider(aggregationConfiguration, aggregationMetadata,
-                        target.Context.GetComponent<ISecurityComponent>()
-                            .GetClaim(AuthorizationStorageExtensions.OrganizationClaim, target.UserName) ??
-                        AuthorizationStorageExtensions.AnonimousUser);
-
-            //заполняем предварительные результаты поиска
-            target.SearchResult = executor.ExecuteAggregation(
+			var executor = target.Context.GetComponent<IIndexComponent>().IndexFactory.BuildAggregationProvider(aggregationConfiguration, aggregationMetadata);
+			
+			//заполняем предварительные результаты поиска
+			target.SearchResult = executor.ExecuteAggregation(
                 dimensions.ToArray(),
                 aggregationTypes.ToArray(),
                 aggregationFields.ToArray(),
