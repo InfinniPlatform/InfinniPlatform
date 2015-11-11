@@ -1,17 +1,17 @@
 ﻿namespace InfinniPlatform.Sdk.Environment.Binary
 {
     /// <summary>
-    ///     Данные BLOB.
+    /// Данные BLOB.
     /// </summary>
     public sealed class BlobData
     {
         /// <summary>
-        ///     Информация о BLOB.
+        /// Информация о BLOB.
         /// </summary>
         public BlobInfo Info { get; set; }
 
         /// <summary>
-        ///     Данные BLOB.
+        /// Данные BLOB.
         /// </summary>
         public byte[] Data { get; set; }
     }

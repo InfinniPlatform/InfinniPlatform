@@ -3,32 +3,32 @@
 namespace InfinniPlatform.Sdk.Environment.Binary
 {
     /// <summary>
-    ///     Информация о BLOB.
+    /// Информация о BLOB.
     /// </summary>
     public sealed class BlobInfo
     {
         /// <summary>
-        ///     Идентификатор.
+        /// Идентификатор.
         /// </summary>
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
-        ///     Наименование.
+        /// Наименование.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        ///     Формат данных.
+        /// Формат данных.
         /// </summary>
         public string Type { get; set; }
 
         /// <summary>
-        ///     Размер в байтах.
+        /// Размер в байтах.
         /// </summary>
         public long Size { get; set; }
 
         /// <summary>
-        ///     Дата и время создания.
+        /// Дата и время создания.
         /// </summary>
         public DateTime Time { get; set; }
     }

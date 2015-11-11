@@ -40,7 +40,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -66,7 +65,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Builders\ConfigurationBuilder.cs" />
     <Compile Include="Builders\RequestBuilder.cs" />
     <Compile Include="Builders\Samples.cs" />
     <Compile Include="Builders\TestPerson.cs" />
@@ -86,18 +84,6 @@
     <Compile Include="Hosting\WebApiOwinHostingModuleIntegrationTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
-      <Project>{7ca0f96c-7ff4-44b2-9d44-851984df4532}</Project>
-      <Name>InfinniPlatform.Api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.BlobStorage\InfinniPlatform.BlobStorage.csproj">
-      <Project>{3BCBCD4C-1155-464E-B020-51FA57B5E9B3}</Project>
-      <Name>InfinniPlatform.BlobStorage</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Cassandra\InfinniPlatform.Cassandra.csproj">
-      <Project>{EC8E01A2-76C8-453A-B957-F83265778971}</Project>
-      <Name>InfinniPlatform.Cassandra</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
       <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
       <Name>InfinniPlatform.Core</Name>
@@ -105,10 +91,6 @@
     <ProjectReference Include="..\InfinniPlatform.Hosting\InfinniPlatform.Hosting.csproj">
       <Project>{D6FBC1D7-48E7-4819-8C8B-DD7FA398D2CC}</Project>
       <Name>InfinniPlatform.Hosting</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Index.ElasticSearch\InfinniPlatform.Index.ElasticSearch.csproj">
-      <Project>{2B2F3FA6-F434-4FCF-A4C7-323FFC602F0C}</Project>
-      <Name>InfinniPlatform.Index.ElasticSearch</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Metadata\InfinniPlatform.Metadata.csproj">
       <Project>{F1239C4B-CA5F-4B5E-83AC-DA686E81030F}</Project>
@@ -121,10 +103,6 @@
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
       <Name>InfinniPlatform.Sdk</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.SystemConfig\InfinniPlatform.SystemConfig.csproj">
-      <Project>{6EFC2069-AFEB-453D-AD2C-3E170486A4F1}</Project>
-      <Name>InfinniPlatform.SystemConfig</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Tests\InfinniPlatform.Tests.csproj">
       <Project>{a46f638c-c9c5-49be-bc8d-8144e8c8f87a}</Project>

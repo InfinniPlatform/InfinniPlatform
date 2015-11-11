@@ -6,11 +6,13 @@ using InfinniPlatform.Api.ContextTypes.ContextImpl;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.Validation;
+using InfinniPlatform.Logging;
 using InfinniPlatform.RestfulApi.Utils;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Log;
 using InfinniPlatform.Sdk.Environment.Validations;
 using InfinniPlatform.Sdk.Global;
 
@@ -27,11 +29,11 @@ namespace InfinniPlatform.RestfulApi.Auth
             {
                 ValidationResult result =
                     new AuthUtils(target.Context.GetComponent<ISecurityComponent>(), target.UserName,
-                                  FilterRoles(target)).CheckDocumentAccess(target.Item.Configuration,
-                                                                           target.Item.Metadata, target.Action,
-                                                                           target.Item.Document != null
-                                                                               ? target.Item.Document.Id
-                                                                               : null);
+                        FilterRoles(target)).CheckDocumentAccess(target.Item.Configuration,
+                            target.Item.Metadata, target.Action,
+                            target.Item.Document != null
+                                ? target.Item.Document.Id
+                                : null);
                 target.IsValid = result.IsValid;
                 target.ValidationMessage = string.Join(",", (result.Items != null) ? result.Items.Select(i => (string)i.ToString()) : Enumerable.Empty<string>());
             }
@@ -46,7 +48,7 @@ namespace InfinniPlatform.RestfulApi.Auth
             var roleCheckProcess =
                 target.Context.GetComponent<IMetadataComponent>()
                       .GetMetadata(target.Context.GetVersion(AuthorizationStorageExtensions.AuthorizationConfigId, target.UserName), AuthorizationStorageExtensions.AuthorizationConfigId, "Common",
-                                   MetadataType.Process, "FilterRoles");
+                          MetadataType.Process, "FilterRoles");
 
             if (roleCheckProcess != null && roleCheckProcess.Transitions[0].ActionPoint != null)
             {
@@ -63,9 +65,9 @@ namespace InfinniPlatform.RestfulApi.Auth
                 }
                 catch (ArgumentException e)
                 {
-                    target.Context.GetComponent<ILogComponent>()
-                          .GetLog()
-                          .Error("Fail to get filtered roles: " + e.Message);
+                    var log = target.Context.GetComponent<ILogComponent>().GetLog();
+                    log.Warn("Failed to get filtered roles.", null, e);
+
                     return new List<dynamic>();
                 }
 

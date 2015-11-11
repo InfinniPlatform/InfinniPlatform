@@ -39,7 +39,7 @@
 			service="InfinniPlatform.Sdk.ContextComponents.ISecurityComponent, InfinniPlatform.Sdk"
 			instance-scope="single-instance" />
 		<component
-			type="InfinniPlatform.BlobStorage.CassandraBlobStorageFactory, InfinniPlatform.BlobStorage"
+            type="InfinniPlatform.BlobStorage.FileSystemBlobStorageFactory, InfinniPlatform.BlobStorage"
 			service="InfinniPlatform.Factories.IBlobStorageFactory, InfinniPlatform.Core"
 			instance-scope="single-instance" />
 		<component

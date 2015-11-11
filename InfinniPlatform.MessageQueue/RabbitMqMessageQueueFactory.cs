@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using InfinniPlatform.Factories;
 using InfinniPlatform.Logging;
 using InfinniPlatform.RabbitMq;
 using InfinniPlatform.RabbitMq.Client;
 using InfinniPlatform.RabbitMq.Policies;
+using InfinniPlatform.Sdk.Environment.Log;
 
 namespace InfinniPlatform.MessageQueue
 {
@@ -101,12 +103,12 @@ namespace InfinniPlatform.MessageQueue
 
 			private static void DefaultWorkerThreadErrorHandler(Exception error)
 			{
-				Logger.Log.Fatal(error.Message, error);
+			    Logger.Log.Error(error.Message, null, error);
 			}
 
 			private static void DefaultConsumerErrorHandler(Exception error)
 			{
-				Logger.Log.Error(error.Message, error);
+                Logger.Log.Error(error.Message, null, error);
 			}
 
 			private static void DefaultExchangeConfigAction(IExchangeConfig config)

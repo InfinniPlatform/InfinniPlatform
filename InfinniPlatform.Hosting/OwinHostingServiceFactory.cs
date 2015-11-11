@@ -42,7 +42,7 @@ namespace InfinniPlatform.Hosting
             _hostingService = new OwinHostingService(config => config.Configuration(hostingConfig));
 
             // Error Handling
-            _hostingService.RegisterModule(new UnhandledExceptionOwinHostingModule(Logger.Log));
+            _hostingService.RegisterModule(new UnhandledExceptionOwinHostingModule(Logger.Log, Logger.PerformanceLog));
 
             // ASP.NET CORS
             _hostingService.RegisterModule(new CorsOwinHostingModule());

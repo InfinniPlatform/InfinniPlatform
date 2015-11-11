@@ -8,6 +8,7 @@ using InfinniPlatform.Logging;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Hosting;
 using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Log;
 using InfinniPlatform.Sdk.Environment.Metadata;
 using InfinniPlatform.Sdk.Environment.Scripts;
 using InfinniPlatform.Sdk.Environment.Worklow;
@@ -224,12 +225,20 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 
         private void LoadProcess(string documentId, dynamic processFull)
         {
+            var context = new Dictionary<string, object>
+                          {
+                              { "configurationId", ConfigurationId },
+                              { "documentId", documentId },
+                              { "processFullName", processFull.Name },
+                          };
+
             try
             {
                 Action<IStateWorkflowStartingPointConfig> workflowConfig = null;
                 if (processFull.Transitions == null || processFull.Transitions.Count == 0)
                 {
-                    Logger.Log.Error("No one transition defined for process: {0}:{1}", processFull.Name, documentId);
+                    Logger.Log.Error("No transition defined for the process.", context);
+
                     return;
                 }
 
@@ -303,11 +312,15 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 
                     workflowConfig = wf => wf.FlowWithoutState(wc => wc.Move(configTransition));
                 }
+
                 if ((WorkflowTypes)processFull.Type == WorkflowTypes.WithState)
                 {
                     if (processFull.Transitions.Count == 0)
                     {
-                        Logger.Log.Error("No transition found for process: {0}", processFull.Name);
+                        Logger.Log.Error("No transition found for process.", new Dictionary<string, object>
+                                                                             {
+                                                                                 { "processFullName", processFull.Name },
+                                                                             });
                     }
                     var initialStateFrom = processFull.Transitions[0].StateFrom != null ? processFull.Transitions[0].StateFrom.Name.ToString() : null;
 
@@ -387,11 +400,11 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 
                 RegisterWorkflow(documentId, processFull.Name, workflowConfig);
 
-                Logger.Log.Info("Config:{0}, Document: {1}, Process: {2} registered", ConfigurationId, documentId, processFull.Name);
+                Logger.Log.Debug("Item registered.", context);
             }
             catch (Exception e)
             {
-                Logger.Log.Error("Config:{0}, Document: {1}, Process: {2}. REGISTRATION ERROR: {3}", ConfigurationId, documentId, processFull.Name, e.Message);
+                Logger.Log.Error("Item registration error.", context, e);
             }
         }
 

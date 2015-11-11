@@ -13,19 +13,19 @@ namespace InfinniPlatform.Update.ActionUnits
 
 			foreach (var result in target.SearchResult)
 			{
-				var contentId = result.ContentId;
+				string contentId = result.ContentId;
 
 				if (contentId != null)
 				{
-					var assembly = blobStorage.GetBlobData(new Guid(contentId));
+					var assembly = blobStorage.GetBlobData(contentId);
 					result.Assembly = (assembly != null) ? assembly.Data : null;
 				}
 
-				var pdbId = result.PdbId;
+				string pdbId = result.PdbId;
 
 				if (pdbId != null)
 				{
-					var pdb = blobStorage.GetBlobData(new Guid(pdbId));
+					var pdb = blobStorage.GetBlobData(pdbId);
 					result.Pdb = (pdb != null) ? pdb.Data : null;
 				}
 

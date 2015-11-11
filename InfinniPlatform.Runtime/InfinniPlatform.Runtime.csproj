@@ -47,7 +47,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Implementation\AssemblyDispatch\AppDomainSctiptCache.cs" />
-    <Compile Include="Implementation\AssemblyDispatch\AssemblyVersionLoader.cs" />
     <Compile Include="Implementation\AssemblyDispatch\MethodInvokationCache.cs" />
     <Compile Include="Implementation\AssemblyDispatch\MethodInvokationCacheList.cs" />
     <Compile Include="Implementation\AssemblyDispatch\PackageMethodInvokationCache.cs" />

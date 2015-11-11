@@ -1,6 +1,4 @@
-﻿using InfinniPlatform.Api.Profiling;
-using InfinniPlatform.Sdk.Environment;
-using InfinniPlatform.Sdk.Environment.Log;
+﻿using InfinniPlatform.Sdk.Environment.Log;
 
 namespace InfinniPlatform.Logging
 {
@@ -12,6 +10,11 @@ namespace InfinniPlatform.Logging
         /// <summary>
         ///     Сервис журналирования событий.
         /// </summary>
-        public static readonly ILog Log = new Log4NetLogFactory().CreateLog();
+        public static readonly ILog Log = new Log4NetLogFactory().CreateLog("InfinniPlatform");
+
+        /// <summary>
+        /// Сервис журналирования длительности выполнения методов компонентов.
+        /// </summary>
+        public static readonly IPerformanceLog PerformanceLog = new PerformanceLog();
     }
 }

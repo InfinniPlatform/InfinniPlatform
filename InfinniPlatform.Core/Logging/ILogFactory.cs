@@ -12,6 +12,6 @@ namespace InfinniPlatform.Logging
         /// <summary>
         ///     Создает <see cref="ILog" />.
         /// </summary>
-        ILog CreateLog();
+        ILog CreateLog(string name = "Log4Net");
     }
 }
