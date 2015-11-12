@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading;
 
 using InfinniPlatform.Api.RestApi.Auth;
@@ -77,25 +79,29 @@ namespace InfinniPlatform.Factories
             return GetComponent<IVersionStrategy>().GetActualVersion(configuration, configVersions, userName);
         }
 
+
         public static string GetTenantId()
         {
             string tenantId = null;
 
-            var sessionManager = _sessionManager;
+            var currentIdentity = GetCurrentIdentity();
 
-            if (sessionManager != null)
+            if (currentIdentity != null)
             {
-                tenantId = sessionManager.GetSessionData("tenantid");
+                var sessionManager = _sessionManager;
+
+                if (sessionManager != null)
+                {
+                    tenantId = sessionManager.GetSessionData(AuthorizationStorageExtensions.TenantId);
+                }
 
                 if (string.IsNullOrEmpty(tenantId))
                 {
-                    var currentIdentity = Thread.CurrentPrincipal.Identity;
-
-                    tenantId = currentIdentity.FindFirstClaim("defaulttenantid");
+                    tenantId = currentIdentity.FindFirstClaim(AuthorizationStorageExtensions.DefaultTenantId);
 
                     if (string.IsNullOrEmpty(tenantId))
                     {
-                        tenantId = currentIdentity.FindFirstClaim("tenantid");
+                        tenantId = currentIdentity.FindFirstClaim(AuthorizationStorageExtensions.TenantId);
                     }
                 }
             }
@@ -106,6 +112,15 @@ namespace InfinniPlatform.Factories
             }
 
             return tenantId;
+        }
+
+
+        private static IIdentity GetCurrentIdentity()
+        {
+            var currentIdentity = Thread.CurrentPrincipal?.Identity;
+            var currentUserId = currentIdentity?.FindFirstClaim(ClaimTypes.NameIdentifier);
+            var isNotAuthenticated = string.IsNullOrEmpty(currentUserId);
+            return isNotAuthenticated ? null : currentIdentity;
         }
     }
 }
