@@ -1,19 +1,24 @@
-﻿using InfinniPlatform.ContextComponents;
+﻿using System;
+
 using InfinniPlatform.Sdk.Contracts;
-using InfinniPlatform.SystemConfig.UserStorage;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.RestfulApi.Auth
 {
     /// <summary>
-    ///     Удалить ACL
+    /// Удалить ACL
     /// </summary>
+    [Obsolete]
     public sealed class ActionUnitRemoveAcl
     {
         public void Action(IApplyContext target)
         {
-            var storage = ApplicationUserStorePersistentStorage.Instance;
-            storage.RemoveAcl(target.Item.AclId);
-            target.Context.GetComponent<CachedSecurityComponent>().UpdateAcl();
+            // TODO: Без проверки прав пользователя, от имени которого выполняется данный запрос, выполнять эти действия нельзя!
+            // На текущий момент нет адекватного общего механизма для выполнения подобной проверки.
+
+            target.Result = new DynamicWrapper();
+            target.Result.IsValid = false;
+            target.Result.ValidationMessage = "Not Supported";
         }
     }
 }

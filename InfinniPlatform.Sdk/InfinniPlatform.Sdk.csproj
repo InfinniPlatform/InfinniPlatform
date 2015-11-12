@@ -117,7 +117,6 @@
     <Compile Include="ContextComponents\IReferenceResolver.cs" />
     <Compile Include="ContextComponents\IRegistryComponent.cs" />
     <Compile Include="ContextComponents\IScriptRunnerComponent.cs" />
-    <Compile Include="ContextComponents\ISecurityComponent.cs" />
     <Compile Include="ContextComponents\ISystemComponent.cs" />
     <Compile Include="ContextComponents\ITransactionComponent.cs" />
     <Compile Include="ContextComponents\IWebClientNotificationComponent.cs" />

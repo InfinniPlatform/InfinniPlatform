@@ -67,8 +67,6 @@ namespace InfinniPlatform.ContextComponents
                 () => new RegistryComponent()));
             _components.Add(new ContextRegistration(typeof(IScriptRunnerComponent),
                 () => new ScriptRunnerComponent(metadataConfigurationProvider)));
-            _components.Add(new ContextRegistration(typeof(ISecurityComponent),
-                () => CachedSecurityComponent.Instance));
             _components.Add(new ContextRegistration(typeof(ITransactionComponent),
                 () =>
                     new TransactionComponent(dependencyContainerComponent.ResolveDependency<ITransactionManager>())));

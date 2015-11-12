@@ -1,24 +1,24 @@
-﻿using InfinniPlatform.ContextComponents;
+﻿using System;
+
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.SystemConfig.UserStorage;
 
 namespace InfinniPlatform.RestfulApi.Auth
 {
     /// <summary>
-    ///     Модуль удаления роли пользователя
+    /// Модуль удаления роли пользователя
     /// </summary>
+    [Obsolete]
     public sealed class ActionUnitRemoveRole
     {
         public void Action(IApplyContext target)
         {
-            var storage = ApplicationUserStorePersistentStorage.Instance;
-            storage.RemoveRole(target.Item.RoleName);
-            target.Context.GetComponent<CachedSecurityComponent>().UpdateAcl();
-            target.Context.GetComponent<CachedSecurityComponent>().UpdateRoles();
+            // TODO: Без проверки прав пользователя, от имени которого выполняется данный запрос, выполнять эти действия нельзя!
+            // На текущий момент нет адекватного общего механизма для выполнения подобной проверки.
+
             target.Result = new DynamicWrapper();
-            target.Result.IsValid = true;
-            target.Result.ValidationMessage = "Role removed.";
+            target.Result.IsValid = false;
+            target.Result.ValidationMessage = "Not Supported";
         }
     }
 }

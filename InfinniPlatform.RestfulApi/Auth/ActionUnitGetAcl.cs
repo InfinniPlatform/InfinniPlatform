@@ -1,52 +1,24 @@
-﻿using System.Collections.Generic;
-using InfinniPlatform.Api.RestApi.Auth;
-using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.ContextComponents;
-using InfinniPlatform.Sdk.ContextComponents;
+﻿using System;
+
 using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.RestfulApi.Auth
 {
     /// <summary>
-    ///     Модуль получения всех существующих прав доступа пользователей
+    /// Модуль получения всех существующих прав доступа пользователей
     /// </summary>
+    [Obsolete]
     public sealed class ActionUnitGetAcl
     {
         public void Action(IApplyContext target)
         {
-            if (target.Item.FromCache)
-            {
-                target.Result = target.Context.GetComponent<ISecurityComponent>().Acl;
-            }
+            // TODO: Без проверки прав пользователя, от имени которого выполняется данный запрос, выполнять эти действия нельзя!
+            // На текущий момент нет адекватного общего механизма для выполнения подобной проверки.
 
-            else if (new IndexApi().IndexExists(AuthorizationStorageExtensions.AuthorizationConfigId,
-                                                AuthorizationStorageExtensions.AclStore))
-            {
-                target.Item.Configuration = AuthorizationStorageExtensions.AuthorizationConfigId;
-                target.Item.Metadata = AuthorizationStorageExtensions.AclStore;
-
-                var documentProvider =
-                    target.Context.GetComponent<InprocessDocumentComponent>()
-                          .GetDocumentProvider(null, target.Item.Configuration, target.Item.Metadata,
-                                               target.UserName);
-
-                if (documentProvider != null)
-                {
-                    target.Result =
-                        documentProvider.GetDocument(
-                            null,
-                            0,
-                            1000000);
-                }
-                else
-                {
-                    target.Result = new List<dynamic>();
-                }
-            }
-            else
-            {
-                target.Result = new List<dynamic>();
-            }
+            target.Result = new DynamicWrapper();
+            target.Result.IsValid = false;
+            target.Result.ValidationMessage = "Not Supported";
         }
     }
 }
