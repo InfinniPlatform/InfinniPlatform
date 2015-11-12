@@ -30,7 +30,7 @@ namespace InfinniPlatform.Api.Packages
         /// <param name="newVersion">Новая версия решения</param>
         public void ExportSolutionToStructure(string solutionId, string version, string newVersion)
         {
-            var manager = ManagerFactorySolution.BuildSolutionReader(version);
+            var manager = ManagerFactorySolution.BuildSolutionReader();
 
             dynamic solution = manager.GetItem(solutionId);
 
@@ -77,7 +77,7 @@ namespace InfinniPlatform.Api.Packages
 
             dynamic solution = _exportStructureSolution.GetSolution();
 
-            new UpdateApi(version).UpdateMetadataObject(solution.Name, null, solution, MetadataType.Solution);
+            new UpdateApi().UpdateMetadataObject(solution.Name, null, solution, MetadataType.Solution);
 
             foreach (var referencedConfig in solution.ReferencedConfigurations)
             {

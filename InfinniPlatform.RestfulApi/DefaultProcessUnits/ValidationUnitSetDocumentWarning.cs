@@ -35,7 +35,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                 //ищем метаданные бизнес-процесса по умолчанию документа 
                 defaultBusinessProcess =
                     target.Context.GetComponent<IMetadataComponent>()
-                          .GetMetadata(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration, target.Item.Metadata,
+                          .GetMetadata(target.Item.Configuration, target.Item.Metadata,
                               MetadataType.Process, "Default");
             }
 
@@ -52,7 +52,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
             {
                 var validationOperator =
                     target.Context.GetComponent<IMetadataComponent>()
-                          .GetMetadata(target.Context.GetVersion(target.Item.Configuration, target.UserName), (string)target.Item.Configuration, (string)target.Item.Metadata,
+                          .GetMetadata((string)target.Item.Configuration, (string)target.Item.Metadata,
                               MetadataType.ValidationWarning,
                               (string)defaultBusinessProcess.Transitions[0].ValidationRuleWarning)
                           .ValidationOperator;
@@ -71,9 +71,8 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                 var configBuilder =
                     target.Context.GetComponent<IConfigurationMediatorComponent>().ConfigurationBuilder;
 
-                IConfigurationObject configurationObject = configBuilder.GetConfigurationObject(target.Context.GetVersion(target.Item.Configuration, target.UserName),
-                    target.Item
-                          .Configuration);
+                IConfigurationObject configurationObject = configBuilder.GetConfigurationObject(target.Item
+                                                                                                      .Configuration);
 
                 if (configurationObject == null)
                 {

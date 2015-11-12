@@ -1,100 +1,92 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Metadata;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.ContextComponents
 {
     /// <summary>
-    ///     Контракт API для получения компонента, отвечающего за работу с метаданными
+    /// Контракт API для получения компонента, отвечающего за работу с метаданными
     /// </summary>
     public sealed class MetadataComponent : IMetadataComponent
     {
-        private readonly IMetadataConfigurationProvider _metadataConfigurationProvider;
-
         public MetadataComponent(IMetadataConfigurationProvider metadataConfigurationProvider)
         {
             _metadataConfigurationProvider = metadataConfigurationProvider;
         }
 
+        private readonly IMetadataConfigurationProvider _metadataConfigurationProvider;
+
         /// <summary>
-        ///     Получить метаданные первого уровня вложенности (регистр)
+        /// Получить метаданные первого уровня вложенности (регистр)
         /// </summary>
-        /// <param name="version">Версия конфигурации метаданных</param>
         /// <param name="configId">Идентификатор конфигурации</param>
         /// <param name="objectMetadataId">Идентификатор объекта метаданных (регистр)</param>
         /// <param name="metadataType">Тип объекта метаданных (MetadataType.Register)</param>
         /// <returns>Метаданные объекта первого уровня вложенности</returns>
-        public IEnumerable<dynamic> GetMetadataList(string version, string configId, string objectMetadataId,
-            string metadataType)
+        public IEnumerable<dynamic> GetMetadataList(string configId, string objectMetadataId, string metadataType)
         {
             if (string.IsNullOrEmpty(configId))
             {
-                return GetConfigMetadata(version);
+                return GetConfigMetadata();
             }
 
-            return GetMetadataItem(version, configId, objectMetadataId, metadataType, null);
+            return GetMetadataItem(configId, objectMetadataId, metadataType, null);
         }
 
         /// <summary>
-        ///     Получить метаданные второго уровня вложенности для документа
+        /// Получить метаданные второго уровня вложенности для документа
         /// </summary>
-        /// <param name="version">Версия конфигурации метаданных</param>
         /// <param name="configId">Идентификатор конфигурации</param>
         /// <param name="objectMetadataId">Идентификатор объекта метаданных</param>
         /// <param name="metadataType">Тип метаданных</param>
         /// <param name="metadataName">Наименование метаданных</param>
         /// <returns>Метаданные элемента документа</returns>
-        public dynamic GetMetadata(string version, string configId, string objectMetadataId, string metadataType,
-            string metadataName)
+        public dynamic GetMetadata(string configId, string objectMetadataId, string metadataType, string metadataName)
         {
             Func<dynamic, bool> predicate = item => item.Name == metadataName;
 
-            return GetMetadataItem(version, configId, objectMetadataId, metadataType, predicate);
+            return GetMetadataItem(configId, objectMetadataId, metadataType, predicate);
         }
 
         /// <summary>
-        ///     Получить список всех конфигураций
+        /// Получить список всех конфигураций
         /// </summary>
-        /// <param name="version">Версия</param>
         /// <returns>Список конфигураций метаданных</returns>
-        public dynamic GetConfigMetadata(string version)
+        public dynamic GetConfigMetadata()
         {
             return _metadataConfigurationProvider.Configurations
-                .Where(c => c.ConfigurationId.ToLowerInvariant() != "update" &&
-                            c.ConfigurationId.ToLowerInvariant() != "systemconfig" &&
-                            c.ConfigurationId.ToLowerInvariant() != "restfulapi" &&
-                            c.Version == version)
-                .Select(c => new
-                {
-                    Id = c.ConfigurationId,
-                    Name = c.ConfigurationId
-                }.ToDynamic()).ToList();
+                                                 .Where(c => c.ConfigurationId.ToLowerInvariant() != "update" &&
+                                                             c.ConfigurationId.ToLowerInvariant() != "systemconfig" &&
+                                                             c.ConfigurationId.ToLowerInvariant() != "restfulapi")
+                                                 .Select(c => new
+                                                              {
+                                                                  Id = c.ConfigurationId,
+                                                                  Name = c.ConfigurationId
+                                                              }.ToDynamic()).ToList();
         }
 
         /// <summary>
-        ///     Получить метаданные объекта с указанием предиката отбора
+        /// Получить метаданные объекта с указанием предиката отбора
         /// </summary>
-        /// <param name="version">Версия конфигурации</param>
         /// <param name="configId">Идентификатор конфигурации</param>
         /// <param name="objectMetadataId">Идентификатор объекта метаданных</param>
         /// <param name="metadataType">Идентификатор типа метаданных</param>
         /// <param name="predicate">Предикат для выборки метаданных</param>
         /// <returns>Метаданные объекта</returns>
-        public dynamic GetMetadataItem(string version, string configId, string objectMetadataId, string metadataType,
-            Func<object, bool> predicate)
+        public dynamic GetMetadataItem(string configId, string objectMetadataId, string metadataType, Func<object, bool> predicate)
         {
             if (configId == null)
             {
                 throw new ArgumentException("Configuration identifier should not be empty.");
             }
 
-            var config = _metadataConfigurationProvider.GetMetadataConfiguration(version, configId);
+            var config = _metadataConfigurationProvider.GetMetadataConfiguration(configId);
 
             if (config == null)
             {
@@ -123,19 +115,19 @@ namespace InfinniPlatform.ContextComponents
                     if (config != null)
                     {
                         return config.Documents.Select(c => new
-                        {
-                            Id = c,
-                            Name = c
-                        }.ToDynamic()).ToList();
+                                                            {
+                                                                Id = c,
+                                                                Name = c
+                                                            }.ToDynamic()).ToList();
                     }
                 }
                 else
                 {
                     return config.Documents.Where(predicate).Select(c => new
-                    {
-                        Id = c,
-                        Name = c
-                    }.ToDynamic()).ToList();
+                                                                         {
+                                                                             Id = c,
+                                                                             Name = c
+                                                                         }.ToDynamic()).ToList();
                 }
             }
 
@@ -144,7 +136,7 @@ namespace InfinniPlatform.ContextComponents
             {
                 if (metadataType == MetadataType.Schema)
                 {
-                    return new[] {config.GetSchemaVersion(objectMetadataId)};
+                    return new[] { config.GetSchemaVersion(objectMetadataId) };
                 }
 
                 if (metadataType == MetadataType.View)
@@ -201,17 +193,16 @@ namespace InfinniPlatform.ContextComponents
         }
 
         /// <summary>
-        ///     Обновить метаданные конфигурации
+        /// Обновить метаданные конфигурации
         /// </summary>
-        /// <param name="version"></param>
         /// <param name="configId">Идентификатор конфигурации</param>
         /// <param name="documentId">Идентификатор документа</param>
         /// <param name="metadataType">Идентификатор типа метаданных</param>
         /// <param name="metadataName">Идентификатор изменяемых метаданных</param>
-        public void UpdateMetadata(string version, string configId, string documentId, string metadataType,
-            string metadataName)
+        public void UpdateMetadata(string configId, string documentId, string metadataType, string metadataName)
         {
-            var config = _metadataConfigurationProvider.GetMetadataConfiguration(version, configId);
+            var config = _metadataConfigurationProvider.GetMetadataConfiguration(configId);
+
             if (config != null)
             {
                 if (metadataType == MetadataType.Configuration)
@@ -221,8 +212,7 @@ namespace InfinniPlatform.ContextComponents
                     return;
                 }
 
-                var metadataReader =
-                    new ManagerFactoryDocument(version, configId, documentId).BuildMetadataReaderByType(metadataType);
+                var metadataReader = new ManagerFactoryDocument(configId, documentId).BuildMetadataReaderByType(metadataType);
 
                 if (metadataType == MetadataType.View)
                 {
@@ -247,7 +237,7 @@ namespace InfinniPlatform.ContextComponents
                 else if (metadataType == MetadataType.Service)
                 {
                     config.RegisterService(documentId, metadataReader.GetItem(metadataName));
-                    RestQueryApi.QueryPostNotify(version, configId); //рестартовать конфигурацию для обновления API
+                    RestQueryApi.QueryPostNotify(configId); //рестартовать конфигурацию для обновления API
                 }
                 else if (metadataType == MetadataType.ValidationError)
                 {
@@ -265,17 +255,16 @@ namespace InfinniPlatform.ContextComponents
         }
 
         /// <summary>
-        ///     Удалить метаданные конфигурации
+        /// Удалить метаданные конфигурации
         /// </summary>
-        /// <param name="version"></param>
         /// <param name="configId">Идентификатор конфигурации</param>
         /// <param name="documentId">Идентификатор документа</param>
         /// <param name="metadataType">Идентификатор типа метаданных</param>
         /// <param name="metadataName">Идентификатор удаляемых метаданных</param>
-        public void DeleteMetadata(string version, string configId, string documentId, string metadataType,
-            string metadataName)
+        public void DeleteMetadata(string configId, string documentId, string metadataType, string metadataName)
         {
-            var config = _metadataConfigurationProvider.GetMetadataConfiguration(version, configId);
+            var config = _metadataConfigurationProvider.GetMetadataConfiguration(configId);
+
             if (config != null)
             {
                 if (metadataType == MetadataType.View)

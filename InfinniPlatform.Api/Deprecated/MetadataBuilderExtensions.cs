@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using InfinniPlatform.Api.Context;
-using InfinniPlatform.Api.ContextTypes;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Hosting;
@@ -32,10 +32,10 @@ namespace InfinniPlatform.Api.Deprecated
         public static object BuildSelectedValueEvent(this object buildObject, string linkedScriptName)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamicObject.OnValueSelected = new DynamicWrapper();
-                dynamicObject.OnValueSelected.Name = linkedScriptName;
-            });
+                                               {
+                                                   dynamicObject.OnValueSelected = new DynamicWrapper();
+                                                   dynamicObject.OnValueSelected.Name = linkedScriptName;
+                                               });
             return buildObject;
         }
 
@@ -101,14 +101,14 @@ namespace InfinniPlatform.Api.Deprecated
         public static object BuildContainer(this object buildObject, string name, Action<object> propertyAction = null)
         {
             return buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                var instance = new DynamicWrapper();
-                dynamicObject[name] = instance;
-                if (propertyAction != null)
-                {
-                    propertyAction(instance);
-                }
-            });
+                                                      {
+                                                          var instance = new DynamicWrapper();
+                                                          dynamicObject[name] = instance;
+                                                          if (propertyAction != null)
+                                                          {
+                                                              propertyAction(instance);
+                                                          }
+                                                      });
         }
 
         public static object BuildProperty(this object buildObject, string name, object value)
@@ -118,35 +118,35 @@ namespace InfinniPlatform.Api.Deprecated
 
 
         public static object BuildCollectionProperty(this object buildObject, string collectionName,
-            Action<dynamic> collectionAction = null)
+                                                     Action<dynamic> collectionAction = null)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamic dynamicCollection = dynamicObject[collectionName];
-                if (dynamicCollection == null)
-                {
-                    dynamicCollection = new List<dynamic>();
-                    dynamicObject[collectionName] = dynamicCollection;
-                }
-                InvokeAction(dynamicCollection, collectionAction);
-            });
+                                               {
+                                                   dynamic dynamicCollection = dynamicObject[collectionName];
+                                                   if (dynamicCollection == null)
+                                                   {
+                                                       dynamicCollection = new List<dynamic>();
+                                                       dynamicObject[collectionName] = dynamicCollection;
+                                                   }
+                                                   InvokeAction(dynamicCollection, collectionAction);
+                                               });
             return buildObject;
         }
 
         public static object BuildCollectionItem(this object buildObject, string collectionName,
-            Action<object> collectionItemAction = null)
+                                                 Action<object> collectionItemAction = null)
         {
             BuildCollectionProperty(buildObject, collectionName, items =>
-            {
-                dynamic item = new DynamicWrapper();
-                items.Add(item);
-                InvokeAction(item, collectionItemAction);
-            });
+                                                                 {
+                                                                     dynamic item = new DynamicWrapper();
+                                                                     items.Add(item);
+                                                                     InvokeAction(item, collectionItemAction);
+                                                                 });
             return buildObject;
         }
 
         public static object BuildCollectionItem(this object buildObject, string collectionName,
-            object collectionItem)
+                                                 object collectionItem)
         {
             BuildCollectionProperty(buildObject, collectionName, items => items.Add(collectionItem));
             return buildObject;
@@ -167,15 +167,15 @@ namespace InfinniPlatform.Api.Deprecated
         #region Создание Layout
 
         public static object BuildStackLayoutPanel(this object buildObject, string panelName,
-            Action<object> layoutPanelAction)
+                                                   Action<object> layoutPanelAction)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamicObject.LayoutPanel = new DynamicWrapper();
-                dynamicObject.LayoutPanel.StackPanel = new DynamicWrapper();
-                dynamicObject.LayoutPanel.StackPanel.Name = panelName;
-                InvokeAction(dynamicObject.LayoutPanel.StackPanel, layoutPanelAction);
-            });
+                                               {
+                                                   dynamicObject.LayoutPanel = new DynamicWrapper();
+                                                   dynamicObject.LayoutPanel.StackPanel = new DynamicWrapper();
+                                                   dynamicObject.LayoutPanel.StackPanel.Name = panelName;
+                                                   InvokeAction(dynamicObject.LayoutPanel.StackPanel, layoutPanelAction);
+                                               });
             return buildObject;
         }
 
@@ -183,24 +183,24 @@ namespace InfinniPlatform.Api.Deprecated
         public static object BuildTabPanel(this object buildObject, string panelName, Action<object> layoutPanelAction)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamicObject.LayoutPanel = new DynamicWrapper();
-                dynamicObject.LayoutPanel.TabPanel = new DynamicWrapper();
-                dynamicObject.LayoutPanel.TabPanel.Name = panelName;
-                InvokeAction(dynamicObject.LayoutPanel.TabPanel, layoutPanelAction);
-            });
+                                               {
+                                                   dynamicObject.LayoutPanel = new DynamicWrapper();
+                                                   dynamicObject.LayoutPanel.TabPanel = new DynamicWrapper();
+                                                   dynamicObject.LayoutPanel.TabPanel.Name = panelName;
+                                                   InvokeAction(dynamicObject.LayoutPanel.TabPanel, layoutPanelAction);
+                                               });
             return buildObject;
         }
 
         public static object BuildPanel(this object buildObject, string panelName, Action<object> layoutPanelAction)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamicObject.LayoutPanel = new DynamicWrapper();
-                dynamicObject.LayoutPanel.Panel = new DynamicWrapper();
-                dynamicObject.LayoutPanel.Panel.Name = panelName;
-                InvokeAction(dynamicObject.LayoutPanel.Panel, layoutPanelAction);
-            });
+                                               {
+                                                   dynamicObject.LayoutPanel = new DynamicWrapper();
+                                                   dynamicObject.LayoutPanel.Panel = new DynamicWrapper();
+                                                   dynamicObject.LayoutPanel.Panel.Name = panelName;
+                                                   InvokeAction(dynamicObject.LayoutPanel.Panel, layoutPanelAction);
+                                               });
             return buildObject;
         }
 
@@ -208,25 +208,25 @@ namespace InfinniPlatform.Api.Deprecated
         private static object BuildTabPages(this object buildObject, Action<dynamic> tabPagesAction)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                if (dynamicObject.Pages == null)
-                {
-                    dynamicObject.Pages = new List<dynamic>();
-                }
-                InvokeAction(dynamicObject.Pages, tabPagesAction);
-            });
+                                               {
+                                                   if (dynamicObject.Pages == null)
+                                                   {
+                                                       dynamicObject.Pages = new List<dynamic>();
+                                                   }
+                                                   InvokeAction(dynamicObject.Pages, tabPagesAction);
+                                               });
             return buildObject;
         }
 
         public static object BuildTabPage(this object buildObject, string text, Action<object> tabPageAction)
         {
             buildObject.BuildTabPages(dynamicObject =>
-            {
-                dynamic page = new DynamicWrapper();
-                page.Text = text;
-                dynamicObject.Add(page);
-                InvokeAction(page, tabPageAction);
-            });
+                                      {
+                                          dynamic page = new DynamicWrapper();
+                                          page.Text = text;
+                                          dynamicObject.Add(page);
+                                          InvokeAction(page, tabPageAction);
+                                      });
             return buildObject;
         }
 
@@ -246,12 +246,12 @@ namespace InfinniPlatform.Api.Deprecated
         public static object BuildSearchPanel(this object buildObject, string name, Action<object> searchPanelAction)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamic searchPanel = new DynamicWrapper();
-                searchPanel.Name = name;
-                dynamicObject.SearchPanel = searchPanel;
-                InvokeAction(searchPanel, searchPanelAction);
-            });
+                                               {
+                                                   dynamic searchPanel = new DynamicWrapper();
+                                                   searchPanel.Name = name;
+                                                   dynamicObject.SearchPanel = searchPanel;
+                                                   InvokeAction(searchPanel, searchPanelAction);
+                                               });
             return buildObject;
         }
 
@@ -262,11 +262,11 @@ namespace InfinniPlatform.Api.Deprecated
         public static object BuildDataGrid(this object buildObject, string name, Action<object> dataGridAction)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamicObject.DataGrid = new DynamicWrapper();
-                dynamicObject.DataGrid.Name = name;
-                InvokeAction(dynamicObject.DataGrid, dataGridAction);
-            });
+                                               {
+                                                   dynamicObject.DataGrid = new DynamicWrapper();
+                                                   dynamicObject.DataGrid.Name = name;
+                                                   InvokeAction(dynamicObject.DataGrid, dataGridAction);
+                                               });
             return buildObject;
         }
 
@@ -279,23 +279,23 @@ namespace InfinniPlatform.Api.Deprecated
         public static object BuildDataGridColumn(this object buildObject, Action<object> columnAction)
         {
             buildObject.BuildDataGridColumns(dynamicObject =>
-            {
-                var gridColumn = new DynamicWrapper();
-                dynamicObject.Add(gridColumn);
-                InvokeAction(gridColumn, columnAction);
-            });
+                                             {
+                                                 var gridColumn = new DynamicWrapper();
+                                                 dynamicObject.Add(gridColumn);
+                                                 InvokeAction(gridColumn, columnAction);
+                                             });
             return buildObject;
         }
 
         public static object BuildDataGridColumnProperties(this object buildObject, string name, string text,
-            string property)
+                                                           string property)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamicObject.Name = name;
-                dynamicObject.Text = text;
-                dynamicObject.Property = property;
-            });
+                                               {
+                                                   dynamicObject.Name = name;
+                                                   dynamicObject.Text = text;
+                                                   dynamicObject.Property = property;
+                                               });
             return buildObject;
         }
 
@@ -306,11 +306,11 @@ namespace InfinniPlatform.Api.Deprecated
         public static object BuildTreeView(this object buildObject, string name, Action<object> treeViewAction)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamicObject.TreeView = new DynamicWrapper();
-                dynamicObject.TreeView.Name = name;
-                InvokeAction(dynamicObject.TreeView, treeViewAction);
-            });
+                                               {
+                                                   dynamicObject.TreeView = new DynamicWrapper();
+                                                   dynamicObject.TreeView.Name = name;
+                                                   InvokeAction(dynamicObject.TreeView, treeViewAction);
+                                               });
             return buildObject;
         }
 
@@ -339,86 +339,86 @@ namespace InfinniPlatform.Api.Deprecated
         public static object BuildToolBar(this object buildObject, string name, Action<object> toolbarAction)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamic toolbar = new DynamicWrapper();
-                toolbar.Name = name;
-                dynamicObject.ToolBar = toolbar;
-                InvokeAction(toolbar, toolbarAction);
-            });
+                                               {
+                                                   dynamic toolbar = new DynamicWrapper();
+                                                   toolbar.Name = name;
+                                                   dynamicObject.ToolBar = toolbar;
+                                                   InvokeAction(toolbar, toolbarAction);
+                                               });
             return buildObject;
         }
 
         public static object BuildButton(this object buildObject, Action<object> buttonAction)
         {
             buildObject.BuildItemsList(dynamicObject =>
-            {
-                dynamic button = new DynamicWrapper();
-                dynamicObject.Add(button);
-                button.Button = new DynamicWrapper();
-                InvokeAction(button.Button, buttonAction);
-            });
+                                       {
+                                           dynamic button = new DynamicWrapper();
+                                           dynamicObject.Add(button);
+                                           button.Button = new DynamicWrapper();
+                                           InvokeAction(button.Button, buttonAction);
+                                       });
             return buildObject;
         }
 
         public static object BuildButtonProperties(this object buildObject, string name, string text,
-            Action<object> actionButtonAction)
+                                                   Action<object> actionButtonAction)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamicObject.Name = name;
-                dynamicObject.Text = text;
-                InvokeAction(dynamicObject, actionButtonAction);
-            });
+                                               {
+                                                   dynamicObject.Name = name;
+                                                   dynamicObject.Text = text;
+                                                   InvokeAction(dynamicObject, actionButtonAction);
+                                               });
             return buildObject;
         }
 
         public static object BuildButtonActionAddDefault(this object buildObject, string dataSourceName,
-            Action<object> actionDefaultEditFormDataSource)
+                                                         Action<object> actionDefaultEditFormDataSource)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamicObject.Action = new DynamicWrapper();
-                dynamicObject.Action.AddAction = new DynamicWrapper();
-                dynamicObject.Action.AddAction.View = new DynamicWrapper();
-                dynamicObject.Action.AddAction.View.DefaultEditView = new DynamicWrapper();
-                BuildDataSourceReference(dynamicObject.Action.AddAction.View.DefaultEditView,
-                    actionDefaultEditFormDataSource);
-                Action<object> action = db => db.BuildPropertyBinding(dataSourceName);
-                BuildDataBinding(dynamicObject.Action.AddAction, action);
-            });
+                                               {
+                                                   dynamicObject.Action = new DynamicWrapper();
+                                                   dynamicObject.Action.AddAction = new DynamicWrapper();
+                                                   dynamicObject.Action.AddAction.View = new DynamicWrapper();
+                                                   dynamicObject.Action.AddAction.View.DefaultEditView = new DynamicWrapper();
+                                                   BuildDataSourceReference(dynamicObject.Action.AddAction.View.DefaultEditView,
+                                                       actionDefaultEditFormDataSource);
+                                                   Action<object> action = db => db.BuildPropertyBinding(dataSourceName);
+                                                   BuildDataBinding(dynamicObject.Action.AddAction, action);
+                                               });
             return buildObject;
         }
 
         public static object BuildButtonActionEditDefault(this object buildObject, string dataSourceName,
-            string editValuePropertyBinding,
-            Action<object> actionDefaultEditFormDataSource)
+                                                          string editValuePropertyBinding,
+                                                          Action<object> actionDefaultEditFormDataSource)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamicObject.Action = new DynamicWrapper();
-                dynamicObject.Action.EditAction = new DynamicWrapper();
-                dynamicObject.Action.EditAction.View = new DynamicWrapper();
-                dynamicObject.Action.EditAction.View.DefaultEditView = new DynamicWrapper();
-                BuildDataSourceReference(dynamicObject.Action.EditAction.View.DefaultEditView,
-                    actionDefaultEditFormDataSource);
-                dynamicObject.Action.EditAction.View.DefaultEditView.Value = new DynamicWrapper();
-                BuildPropertyBinding(dynamicObject.Action.EditAction.View.DefaultEditView.Value,
-                    editValuePropertyBinding);
-                Action<object> action = db => db.BuildPropertyBinding(dataSourceName);
-                BuildDataBinding(dynamicObject.Action.EditAction, action);
-            });
+                                               {
+                                                   dynamicObject.Action = new DynamicWrapper();
+                                                   dynamicObject.Action.EditAction = new DynamicWrapper();
+                                                   dynamicObject.Action.EditAction.View = new DynamicWrapper();
+                                                   dynamicObject.Action.EditAction.View.DefaultEditView = new DynamicWrapper();
+                                                   BuildDataSourceReference(dynamicObject.Action.EditAction.View.DefaultEditView,
+                                                       actionDefaultEditFormDataSource);
+                                                   dynamicObject.Action.EditAction.View.DefaultEditView.Value = new DynamicWrapper();
+                                                   BuildPropertyBinding(dynamicObject.Action.EditAction.View.DefaultEditView.Value,
+                                                       editValuePropertyBinding);
+                                                   Action<object> action = db => db.BuildPropertyBinding(dataSourceName);
+                                                   BuildDataBinding(dynamicObject.Action.EditAction, action);
+                                               });
             return buildObject;
         }
 
         public static object BuildButtonActionDelete(this object buildObject, string dataSourceName)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamicObject.Action = new DynamicWrapper();
-                dynamicObject.Action.DeleteAction = new DynamicWrapper();
-                Action<object> action = db => db.BuildPropertyBinding(dataSourceName);
-                BuildDataBinding(dynamicObject.Action.DeleteAction, action);
-            });
+                                               {
+                                                   dynamicObject.Action = new DynamicWrapper();
+                                                   dynamicObject.Action.DeleteAction = new DynamicWrapper();
+                                                   Action<object> action = db => db.BuildPropertyBinding(dataSourceName);
+                                                   BuildDataBinding(dynamicObject.Action.DeleteAction, action);
+                                               });
             return buildObject;
         }
 
@@ -426,34 +426,34 @@ namespace InfinniPlatform.Api.Deprecated
         public static object BuildButtonSeparator(this object buildObject)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamicObject.Separator = new DynamicWrapper();
-                dynamicObject.Separator.Name = "Separator1";
-            });
+                                               {
+                                                   dynamicObject.Separator = new DynamicWrapper();
+                                                   dynamicObject.Separator.Name = "Separator1";
+                                               });
             return buildObject;
         }
 
         public static object BuildButtonActionSave(this object buildObject, string dataSourceName)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamicObject.Action = new DynamicWrapper();
-                dynamicObject.Action.SaveAction = new DynamicWrapper();
-                Action<object> action = db => db.BuildPropertyBinding(dataSourceName);
-                BuildDataBinding(dynamicObject.Action.SaveAction, action);
-            });
+                                               {
+                                                   dynamicObject.Action = new DynamicWrapper();
+                                                   dynamicObject.Action.SaveAction = new DynamicWrapper();
+                                                   Action<object> action = db => db.BuildPropertyBinding(dataSourceName);
+                                                   BuildDataBinding(dynamicObject.Action.SaveAction, action);
+                                               });
             return buildObject;
         }
 
         public static object BuildButtonActionCancel(this object buildObject, string dataSourceName)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamicObject.Action = new DynamicWrapper();
-                dynamicObject.Action.CancelAction = new DynamicWrapper();
-                Action<object> action = db => db.BuildPropertyBinding(dataSourceName);
-                BuildDataBinding(dynamicObject.Action.CancelAction, action);
-            });
+                                               {
+                                                   dynamicObject.Action = new DynamicWrapper();
+                                                   dynamicObject.Action.CancelAction = new DynamicWrapper();
+                                                   Action<object> action = db => db.BuildPropertyBinding(dataSourceName);
+                                                   BuildDataBinding(dynamicObject.Action.CancelAction, action);
+                                               });
             return buildObject;
         }
 
@@ -464,12 +464,12 @@ namespace InfinniPlatform.Api.Deprecated
         public static object BuildPropertyGrid(this object buildObject, string name, Action<object> propertyGridAction)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamic propertyGrid = new DynamicWrapper();
-                propertyGrid.Name = name;
-                dynamicObject.PropertyGrid = propertyGrid;
-                InvokeAction(propertyGrid, propertyGridAction);
-            });
+                                               {
+                                                   dynamic propertyGrid = new DynamicWrapper();
+                                                   propertyGrid.Name = name;
+                                                   dynamicObject.PropertyGrid = propertyGrid;
+                                                   InvokeAction(propertyGrid, propertyGridAction);
+                                               });
             return buildObject;
         }
 
@@ -484,47 +484,47 @@ namespace InfinniPlatform.Api.Deprecated
         }
 
         public static object BuildPropertyGridCategory(this object buildObject, string text,
-            Action<object> propertyGridAction)
+                                                       Action<object> propertyGridAction)
         {
             buildObject.BuildPropertyGridCategories(items =>
-            {
-                dynamic category = new DynamicWrapper();
-                category.Text = text;
-                items.Add(category);
-                InvokeAction(category, propertyGridAction);
-            });
+                                                    {
+                                                        dynamic category = new DynamicWrapper();
+                                                        category.Text = text;
+                                                        items.Add(category);
+                                                        InvokeAction(category, propertyGridAction);
+                                                    });
             return buildObject;
         }
 
         public static object BuildPropertyGridTextBox(this object buildObject, string text, string propertyName,
-            Action<object> textBoxAction)
+                                                      Action<object> textBoxAction)
         {
             buildObject.BuildCategoryProperties(properties =>
-            {
-                dynamic editor = new DynamicWrapper();
-                editor.Text = text;
-                editor.Property = propertyName;
-                editor.Editor = new DynamicWrapper();
-                editor.Editor.TextBox = new DynamicWrapper();
-                properties.Add(editor);
-                InvokeAction(editor.Editor.TextBox, textBoxAction);
-            });
+                                                {
+                                                    dynamic editor = new DynamicWrapper();
+                                                    editor.Text = text;
+                                                    editor.Property = propertyName;
+                                                    editor.Editor = new DynamicWrapper();
+                                                    editor.Editor.TextBox = new DynamicWrapper();
+                                                    properties.Add(editor);
+                                                    InvokeAction(editor.Editor.TextBox, textBoxAction);
+                                                });
             return buildObject;
         }
 
         public static object BuildPropertyGridLabel(this object buildObject, string text, string propertyName,
-            Action<object> labelAction)
+                                                    Action<object> labelAction)
         {
             buildObject.BuildCategoryProperties(properties =>
-            {
-                dynamic label = new DynamicWrapper();
-                label.Text = text;
-                label.Property = propertyName;
-                label.Editor = new DynamicWrapper();
-                label.Editor.Label = new DynamicWrapper();
-                properties.Add(label);
-                InvokeAction(label.Editor.Label, labelAction);
-            });
+                                                {
+                                                    dynamic label = new DynamicWrapper();
+                                                    label.Text = text;
+                                                    label.Property = propertyName;
+                                                    label.Editor = new DynamicWrapper();
+                                                    label.Editor.Label = new DynamicWrapper();
+                                                    properties.Add(label);
+                                                    InvokeAction(label.Editor.Label, labelAction);
+                                                });
             return buildObject;
         }
 
@@ -535,11 +535,11 @@ namespace InfinniPlatform.Api.Deprecated
         public static object BuildMenuBar(this object buildObject, string name, string configId)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamicObject.MenuBar = new DynamicWrapper();
-                dynamicObject.MenuBar.Name = name;
-                dynamicObject.MenuBar.ConfigId = configId;
-            });
+                                               {
+                                                   dynamicObject.MenuBar = new DynamicWrapper();
+                                                   dynamicObject.MenuBar.Name = name;
+                                                   dynamicObject.MenuBar.ConfigId = configId;
+                                               });
             return buildObject;
         }
 
@@ -550,54 +550,54 @@ namespace InfinniPlatform.Api.Deprecated
         public static object BuildFilterPanel(this object buildObject, string name, Action<object> filterPanelAction)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamic filterPanel = new DynamicWrapper();
-                filterPanel.Name = name;
-                dynamicObject.FilterPanel = filterPanel;
-                InvokeAction(filterPanel, filterPanelAction);
-            });
+                                               {
+                                                   dynamic filterPanel = new DynamicWrapper();
+                                                   filterPanel.Name = name;
+                                                   dynamicObject.FilterPanel = filterPanel;
+                                                   InvokeAction(filterPanel, filterPanelAction);
+                                               });
             return buildObject;
         }
 
         public static object BuildFilterPanelGeneralProperties(this object buildObject,
-            Action<object> generalPropertiesAction)
+                                                               Action<object> generalPropertiesAction)
         {
             return buildObject.BuildCollectionProperty("GeneralProperties", generalPropertiesAction);
         }
 
         public static object BuildFilterPanelAdditionalProperties(this object buildObject,
-            Action<object> additionalPropertiesAction)
+                                                                  Action<object> additionalPropertiesAction)
         {
             return buildObject.BuildCollectionProperty("AdditionalProperties", additionalPropertiesAction);
         }
 
 
         public static object BuildStringFilterProperty(this object buildObject, string text, string property,
-            Action<object> propertyBindingAction)
+                                                       Action<object> propertyBindingAction)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamic filterProperty = new DynamicWrapper();
-                filterProperty.Property = property;
-                filterProperty.Text = text;
-                filterProperty.DefaultOperator = 1;
+                                               {
+                                                   dynamic filterProperty = new DynamicWrapper();
+                                                   filterProperty.Property = property;
+                                                   filterProperty.Text = text;
+                                                   filterProperty.DefaultOperator = 1;
 
-                var operators = new[] { 1, 2, 64, 128, 256, 512, 1024, 2048, 4096, 8192 };
+                                                   var operators = new[] { 1, 2, 64, 128, 256, 512, 1024, 2048, 4096, 8192 };
 
-                var i = 0;
-                foreach (var @operator in operators)
-                {
-                    dynamic operatorInstance = new DynamicWrapper();
-                    operatorInstance.Operator = @operator;
-                    operatorInstance.Editor = new DynamicWrapper();
-                    operatorInstance.Editor.TextBox = new DynamicWrapper();
-                    operatorInstance.Editor.TextBox.Name = string.Format("TextBox_{0}_{1}", property, i);
-                    InvokeAction(operatorInstance.Editor.TextBox, propertyBindingAction);
-                    i++;
-                    BuildCollectionItem(filterProperty, "Operators", operatorInstance);
-                }
-                dynamicObject.Add(filterProperty);
-            });
+                                                   var i = 0;
+                                                   foreach (var @operator in operators)
+                                                   {
+                                                       dynamic operatorInstance = new DynamicWrapper();
+                                                       operatorInstance.Operator = @operator;
+                                                       operatorInstance.Editor = new DynamicWrapper();
+                                                       operatorInstance.Editor.TextBox = new DynamicWrapper();
+                                                       operatorInstance.Editor.TextBox.Name = string.Format("TextBox_{0}_{1}", property, i);
+                                                       InvokeAction(operatorInstance.Editor.TextBox, propertyBindingAction);
+                                                       i++;
+                                                       BuildCollectionItem(filterProperty, "Operators", operatorInstance);
+                                                   }
+                                                   dynamicObject.Add(filterProperty);
+                                               });
             return buildObject;
         }
 
@@ -610,11 +610,11 @@ namespace InfinniPlatform.Api.Deprecated
         public static object BuildDataSource(this object buildObject, Action<object> initDataSource)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamic dynamicDataSource = new DynamicWrapper();
-                dynamicObject.Add(dynamicDataSource);
-                InvokeAction(dynamicDataSource, initDataSource);
-            });
+                                               {
+                                                   dynamic dynamicDataSource = new DynamicWrapper();
+                                                   dynamicObject.Add(dynamicDataSource);
+                                                   InvokeAction(dynamicDataSource, initDataSource);
+                                               });
 
             return buildObject;
         }
@@ -622,11 +622,11 @@ namespace InfinniPlatform.Api.Deprecated
         private static object BuildDataSourceReference(this object buildObject, Action<object> dataSourceAction)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamic dynamicDataSource = new DynamicWrapper();
-                dynamicObject.DataSource = dynamicDataSource;
-                InvokeAction(dynamicDataSource, dataSourceAction);
-            });
+                                               {
+                                                   dynamic dynamicDataSource = new DynamicWrapper();
+                                                   dynamicObject.DataSource = dynamicDataSource;
+                                                   InvokeAction(dynamicDataSource, dataSourceAction);
+                                               });
 
             return buildObject;
         }
@@ -638,33 +638,33 @@ namespace InfinniPlatform.Api.Deprecated
 
 
         public static object BuildClassifierDataSource(this object buildObject, string name, string configId,
-            string classifierMetadataId, Action<object> dataSourcePropertiesAction = null)
+                                                       string classifierMetadataId, Action<object> dataSourcePropertiesAction = null)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamicObject.ClassifierDataSource = new DynamicWrapper();
+                                               {
+                                                   dynamicObject.ClassifierDataSource = new DynamicWrapper();
 
-                dynamicObject.ClassifierDataSource.Name = name;
-                dynamicObject.ClassifierDataSource.ConfigId = configId;
-                dynamicObject.ClassifierDataSource.ClassifierMetadataId = classifierMetadataId;
-                InvokeAction(dynamicObject.ClassifierDataSource, dataSourcePropertiesAction);
-            });
+                                                   dynamicObject.ClassifierDataSource.Name = name;
+                                                   dynamicObject.ClassifierDataSource.ConfigId = configId;
+                                                   dynamicObject.ClassifierDataSource.ClassifierMetadataId = classifierMetadataId;
+                                                   InvokeAction(dynamicObject.ClassifierDataSource, dataSourcePropertiesAction);
+                                               });
 
             return buildObject;
         }
 
         public static object BuildDocumentDataSource(this object buildObject, string name, string configId,
-            string documentId, Action<object> dataSourcePropertiesAction = null)
+                                                     string documentId, Action<object> dataSourcePropertiesAction = null)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamicObject.DocumentDataSource = new DynamicWrapper();
+                                               {
+                                                   dynamicObject.DocumentDataSource = new DynamicWrapper();
 
-                dynamicObject.DocumentDataSource.Name = name;
-                dynamicObject.DocumentDataSource.ConfigId = configId;
-                dynamicObject.DocumentDataSource.DocumentId = documentId;
-                InvokeAction(dynamicObject.DocumentDataSource, dataSourcePropertiesAction);
-            });
+                                                   dynamicObject.DocumentDataSource.Name = name;
+                                                   dynamicObject.DocumentDataSource.ConfigId = configId;
+                                                   dynamicObject.DocumentDataSource.DocumentId = documentId;
+                                                   InvokeAction(dynamicObject.DocumentDataSource, dataSourcePropertiesAction);
+                                               });
 
             return buildObject;
         }
@@ -672,40 +672,40 @@ namespace InfinniPlatform.Api.Deprecated
         public static object BuildObjectDataSource(this object buildObject, string name, object[] items)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamicObject.ObjectDataSource = new DynamicWrapper();
+                                               {
+                                                   dynamicObject.ObjectDataSource = new DynamicWrapper();
 
-                dynamicObject.ObjectDataSource.Name = name;
-                dynamicObject.ObjectDataSource.Value = items;
-            });
+                                                   dynamicObject.ObjectDataSource.Name = name;
+                                                   dynamicObject.ObjectDataSource.Value = items;
+                                               });
 
             return buildObject;
         }
 
         public static object BuildMetadataDataSource(this object buildObject, string name, string configId,
-            string metadataType)
+                                                     string metadataType)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamicObject.MetadataDataSource = new DynamicWrapper();
-                dynamicObject.MetadataDataSource.Name = name;
-                dynamicObject.MetadataDataSource.MetadataType = metadataType;
-            });
+                                               {
+                                                   dynamicObject.MetadataDataSource = new DynamicWrapper();
+                                                   dynamicObject.MetadataDataSource.Name = name;
+                                                   dynamicObject.MetadataDataSource.MetadataType = metadataType;
+                                               });
 
             return buildObject;
         }
 
         public static object BuildPropertyBinding(this object buildObject, string dataSourceName,
-            string propertyName = "")
+                                                  string propertyName = "")
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamicObject.DataSource = dataSourceName;
-                if (!string.IsNullOrEmpty(propertyName))
-                {
-                    dynamicObject.Property = propertyName;
-                }
-            });
+                                               {
+                                                   dynamicObject.DataSource = dataSourceName;
+                                                   if (!string.IsNullOrEmpty(propertyName))
+                                                   {
+                                                       dynamicObject.Property = propertyName;
+                                                   }
+                                               });
 
             return buildObject;
         }
@@ -713,15 +713,15 @@ namespace InfinniPlatform.Api.Deprecated
         public static object BuildDataBinding(this object buildObject, Action<object> dataBindingAction)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                if (dynamicObject.Items == null)
-                {
-                    dynamicObject.Items = new DynamicWrapper();
-                }
-                dynamic propertyBindingElement = new DynamicWrapper();
-                dynamicObject.Items.PropertyBinding = propertyBindingElement;
-                InvokeAction(propertyBindingElement, dataBindingAction);
-            });
+                                               {
+                                                   if (dynamicObject.Items == null)
+                                                   {
+                                                       dynamicObject.Items = new DynamicWrapper();
+                                                   }
+                                                   dynamic propertyBindingElement = new DynamicWrapper();
+                                                   dynamicObject.Items.PropertyBinding = propertyBindingElement;
+                                                   InvokeAction(propertyBindingElement, dataBindingAction);
+                                               });
             return buildObject;
         }
 
@@ -729,22 +729,22 @@ namespace InfinniPlatform.Api.Deprecated
         public static object BuildObjectBinding(this object buildObject, object bindingValue)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamicObject.ObjectBinding = new DynamicWrapper();
-                dynamicObject.ObjectBinding.Value = bindingValue;
-            });
+                                               {
+                                                   dynamicObject.ObjectBinding = new DynamicWrapper();
+                                                   dynamicObject.ObjectBinding.Value = bindingValue;
+                                               });
             return buildObject;
         }
 
         public static object BuildEditValueBinding(this object buildObject, Action<object> editValueBindingAction)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamic value = new DynamicWrapper();
-                dynamicObject.Value = value;
-                dynamicObject.Value.PropertyBinding = new DynamicWrapper();
-                InvokeAction(dynamicObject.Value.PropertyBinding, editValueBindingAction);
-            });
+                                               {
+                                                   dynamic value = new DynamicWrapper();
+                                                   dynamicObject.Value = value;
+                                                   dynamicObject.Value.PropertyBinding = new DynamicWrapper();
+                                                   InvokeAction(dynamicObject.Value.PropertyBinding, editValueBindingAction);
+                                               });
             return buildObject;
         }
 
@@ -752,13 +752,13 @@ namespace InfinniPlatform.Api.Deprecated
         public static object BuildDefaultTreeFilter(this object buildObject)
         {
             buildObject.BuildCollectionProperty("DefaultFilter", items =>
-            {
-                dynamic instance = new DynamicWrapper();
-                instance.Property = "ParentId";
-                instance.Value = null;
-                instance.CriteriaType = 1;
-                items.Add(instance);
-            });
+                                                                 {
+                                                                     dynamic instance = new DynamicWrapper();
+                                                                     instance.Property = "ParentId";
+                                                                     instance.Value = null;
+                                                                     instance.CriteriaType = 1;
+                                                                     items.Add(instance);
+                                                                 });
             return buildObject;
         }
 
@@ -769,22 +769,22 @@ namespace InfinniPlatform.Api.Deprecated
         public static object BuildDataElement(this object buildObject, Action<object> dataElementAction)
         {
             buildObject.BuildItemsList(items =>
-            {
-                dynamic dataElement = new DynamicWrapper();
-                items.Add(dataElement);
-                InvokeAction(dataElement, dataElementAction);
-            });
+                                       {
+                                           dynamic dataElement = new DynamicWrapper();
+                                           items.Add(dataElement);
+                                           InvokeAction(dataElement, dataElementAction);
+                                       });
             return buildObject;
         }
 
         public static object BuildActionElement(this object buildObject, Action<object> actionElementAction)
         {
             buildObject.BuildItemsList(items =>
-            {
-                dynamic actionElement = new DynamicWrapper();
-                items.Add(actionElement);
-                InvokeAction(actionElement, actionElementAction);
-            });
+                                       {
+                                           dynamic actionElement = new DynamicWrapper();
+                                           items.Add(actionElement);
+                                           InvokeAction(actionElement, actionElementAction);
+                                       });
             return buildObject;
         }
 
@@ -795,21 +795,21 @@ namespace InfinniPlatform.Api.Deprecated
         public static object BuildScript(this object buildObject, Action<object> scriptAction)
         {
             buildObject.BuildScripts(items =>
-            {
-                dynamic scriptElement = new DynamicWrapper();
-                items.Add(scriptElement);
-                InvokeAction(scriptElement, scriptAction);
-            });
+                                     {
+                                         dynamic scriptElement = new DynamicWrapper();
+                                         items.Add(scriptElement);
+                                         InvokeAction(scriptElement, scriptAction);
+                                     });
             return buildObject;
         }
 
         public static object BuildScriptProperties(this object buildObject, string scriptName, string base64scriptBody)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamicObject.Name = scriptName;
-                dynamicObject.Body = base64scriptBody;
-            });
+                                               {
+                                                   dynamicObject.Name = scriptName;
+                                                   dynamicObject.Body = base64scriptBody;
+                                               });
             return buildObject;
         }
 
@@ -820,26 +820,26 @@ namespace InfinniPlatform.Api.Deprecated
         public static object BuildMenuItem(this object buildObject, string itemText, Action<object> menuItemAction)
         {
             buildObject.BuildItemsList(dynamicObject =>
-            {
-                dynamic menuItem = new DynamicWrapper();
-                menuItem.MenuItem = new DynamicWrapper();
-                dynamicObject.Add(menuItem);
-                menuItem.MenuItem.Text = itemText;
-                InvokeAction(menuItem.MenuItem, menuItemAction);
-            });
+                                       {
+                                           dynamic menuItem = new DynamicWrapper();
+                                           menuItem.MenuItem = new DynamicWrapper();
+                                           dynamicObject.Add(menuItem);
+                                           menuItem.MenuItem.Text = itemText;
+                                           InvokeAction(menuItem.MenuItem, menuItemAction);
+                                       });
             return buildObject;
         }
 
         public static object BuildOpenViewAction(this object buildObject, Action<object> openViewAction)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamic action = new DynamicWrapper();
-                action.OpenViewAction = new DynamicWrapper();
-                action.OpenViewAction.View = new DynamicWrapper();
-                dynamicObject.Action = action;
-                InvokeAction(action.OpenViewAction.View, openViewAction);
-            });
+                                               {
+                                                   dynamic action = new DynamicWrapper();
+                                                   action.OpenViewAction = new DynamicWrapper();
+                                                   action.OpenViewAction.View = new DynamicWrapper();
+                                                   dynamicObject.Action = action;
+                                                   InvokeAction(action.OpenViewAction.View, openViewAction);
+                                               });
             return buildObject;
         }
 
@@ -850,33 +850,33 @@ namespace InfinniPlatform.Api.Deprecated
         public static object BuildSelectListView(this object buildObject, Action<object> selectListViewAction)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamic selectListView = new DynamicWrapper();
-                dynamicObject.SelectListView = selectListView;
-                InvokeAction(selectListView, selectListViewAction);
-            });
+                                               {
+                                                   dynamic selectListView = new DynamicWrapper();
+                                                   dynamicObject.SelectListView = selectListView;
+                                                   InvokeAction(selectListView, selectListViewAction);
+                                               });
             return buildObject;
         }
 
         public static object BuildInlineView(this object buildObject, Action<object> inlineViewAction)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamic inlineView = new DynamicWrapper();
-                dynamicObject.InlineView = inlineView;
-                InvokeAction(inlineView, inlineViewAction);
-            });
+                                               {
+                                                   dynamic inlineView = new DynamicWrapper();
+                                                   dynamicObject.InlineView = inlineView;
+                                                   InvokeAction(inlineView, inlineViewAction);
+                                               });
             return buildObject;
         }
 
         public static object BuildInlineViewContainer(this object buildObject, Action<object> inlineViewContainerAction)
         {
             buildObject.InvokeDynamicOperation(dynamicObject =>
-            {
-                dynamic inlineViewContainer = new DynamicWrapper();
-                dynamicObject.View = inlineViewContainer;
-                InvokeAction(inlineViewContainer, inlineViewContainerAction);
-            });
+                                               {
+                                                   dynamic inlineViewContainer = new DynamicWrapper();
+                                                   dynamicObject.View = inlineViewContainer;
+                                                   InvokeAction(inlineViewContainer, inlineViewContainerAction);
+                                               });
             return buildObject;
         }
 
@@ -884,23 +884,21 @@ namespace InfinniPlatform.Api.Deprecated
 
         #region Создание элементов метаданных конфигурации
 
-        public static dynamic BuildSolution(string name, string caption, string description, string version)
+        public static dynamic BuildSolution(string name, string caption, string description)
         {
             var result = new DynamicWrapper();
 
             result
                 .BuildName(name)
                 .BuildCaption(caption)
-                .BuildVersion(version)
                 .BuildCollectionProperty("ReferencedConfigurations");
 
-            
 
             return result;
         }
 
 
-        public static dynamic BuildConfiguration(string name, string caption, string description, string version)
+        public static dynamic BuildConfiguration(string name, string caption, string description)
         {
             var result = new DynamicWrapper();
 
@@ -908,7 +906,6 @@ namespace InfinniPlatform.Api.Deprecated
                 .BuildName(name)
                 .BuildCaption(caption)
                 .BuildDescription(description)
-                .BuildProperty("Version", version)
                 .BuildCollectionProperty(MetadataType.MenuContainer)
                 .BuildCollectionProperty(MetadataType.DocumentContainer)
                 .BuildCollectionProperty(MetadataType.RegisterContainer)
@@ -918,8 +915,7 @@ namespace InfinniPlatform.Api.Deprecated
             return result;
         }
 
-        public static dynamic BuildDocument(string name, string caption, string description, string indexName,
-            string version)
+        public static dynamic BuildDocument(string name, string caption, string description, string indexName)
         {
             dynamic document = new DynamicWrapper();
 
@@ -928,7 +924,6 @@ namespace InfinniPlatform.Api.Deprecated
             document.Caption = caption;
             document.Description = description;
             document.Versioning = 2;
-            document.Version = version;
             document.MetadataIndex = string.IsNullOrEmpty(indexName) ? name : indexName;
             document.Services = new List<dynamic>();
             document.Processes = new List<dynamic>();
@@ -942,7 +937,7 @@ namespace InfinniPlatform.Api.Deprecated
         }
 
         public static dynamic BuildScenario(string name, string scenarioId, ContextTypeKind contextType,
-            ScriptUnitType scriptUnitType)
+                                            ScriptUnitType scriptUnitType)
         {
             dynamic result = new DynamicWrapper();
             result.Id = name;
@@ -991,7 +986,7 @@ namespace InfinniPlatform.Api.Deprecated
         }
 
         public static dynamic BuildGenerator(string generatorName, string service, string actionUnit,
-            string metadataType)
+                                             string metadataType)
         {
             dynamic instance = new DynamicWrapper();
             instance.Id = Guid.NewGuid().ToString();
@@ -1007,12 +1002,12 @@ namespace InfinniPlatform.Api.Deprecated
         public static object BuildModel(this object buildObject, Action<object> modelAction)
         {
             return buildObject.BuildContainer("Model", c =>
-            {
-                if (modelAction != null)
-                {
-                    modelAction(c);
-                }
-            });
+                                                       {
+                                                           if (modelAction != null)
+                                                           {
+                                                               modelAction(c);
+                                                           }
+                                                       });
         }
 
         #endregion

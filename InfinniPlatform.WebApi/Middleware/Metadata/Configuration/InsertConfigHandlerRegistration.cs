@@ -24,7 +24,7 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.Configuration
                 return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
             }
 
-            var manager = ManagerFactoryConfiguration.BuildConfigurationManager(body.Version.ToString());
+            var manager = ManagerFactoryConfiguration.BuildConfigurationManager();
 
             manager.InsertItem(DynamicWrapperExtensions.ToDynamic(body));
 

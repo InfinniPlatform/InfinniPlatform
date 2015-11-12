@@ -37,12 +37,12 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.Configuration
                 }
 
                 MetadataManagerConfiguration managerConfig =
-                    ManagerFactoryConfiguration.BuildConfigurationManager(body.Version.ToString());
+                    ManagerFactoryConfiguration.BuildConfigurationManager();
 
                 managerConfig.MergeItem(DynamicWrapperExtensions.ToDynamic(body));
             }
 
-            return new ValueRequestHandlerResult(ManagerFactoryConfiguration.BuildConfigurationManager(null).CreateItem("NewConfig"));
+            return new ValueRequestHandlerResult(ManagerFactoryConfiguration.BuildConfigurationManager().CreateItem("NewConfig"));
         }
     }
 }

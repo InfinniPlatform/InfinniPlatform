@@ -136,7 +136,6 @@
     <Compile Include="Session\ActionUnitDetachDocumentSession.cs" />
     <Compile Include="Session\ActionUnitGetSession.cs" />
     <Compile Include="Session\ActionUnitSaveSession.cs" />
-    <Compile Include="Utils\AuthUtils.cs" />
     <Compile Include="Utils\DocumentExecutor.cs" />
     <Compile Include="Utils\DocumentLink.cs" />
     <Compile Include="Utils\DocumentLinkMap.cs" />

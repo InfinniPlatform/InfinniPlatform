@@ -19,7 +19,7 @@ namespace InfinniPlatform.Update.ActionUnits
 
             if (target.Item.MetadataType == MetadataType.Solution)
             {
-                ManagerFactorySolution.BuildSolutionManager(target.Item.Version).MergeItem(target.Item.MetadataObject);
+                ManagerFactorySolution.BuildSolutionManager().MergeItem(target.Item.MetadataObject);
                 return;
             }
 
@@ -41,36 +41,36 @@ namespace InfinniPlatform.Update.ActionUnits
 
             if (target.Item.MetadataType == MetadataType.Configuration)
             {
-                ManagerFactoryConfiguration.BuildConfigurationManager(target.Item.Version).MergeItem(target.Item.MetadataObject);
+                ManagerFactoryConfiguration.BuildConfigurationManager().MergeItem(target.Item.MetadataObject);
             }
             else if (target.Item.MetadataType == MetadataType.Menu)
             {
-                var manager = new ManagerFactoryConfiguration(target.Item.Version, target.Item.ConfigurationId).BuildMenuManager();
+                var manager = new ManagerFactoryConfiguration(target.Item.ConfigurationId).BuildMenuManager();
                 manager.MergeItem(target.Item.MetadataObject);
             }
             else if (target.Item.MetadataType == MetadataType.Report)
             {
-                var manager = new ManagerFactoryConfiguration(target.Item.Version, target.Item.ConfigurationId).BuildReportManager();
+                var manager = new ManagerFactoryConfiguration(target.Item.ConfigurationId).BuildReportManager();
                 manager.MergeItem(target.Item.MetadataObject);
             }
             else if (target.Item.MetadataType == MetadataType.Document)
             {
-                var manager = new ManagerFactoryConfiguration(target.Item.Version, target.Item.ConfigurationId).BuildDocumentManager();
+                var manager = new ManagerFactoryConfiguration(target.Item.ConfigurationId).BuildDocumentManager();
                 manager.MergeItem(target.Item.MetadataObject);
             }
             else if (target.Item.MetadataType == MetadataType.Assembly)
             {
-                var manager = new ManagerFactoryConfiguration(target.Item.Version, target.Item.ConfigurationId).BuildAssemblyManager();
+                var manager = new ManagerFactoryConfiguration(target.Item.ConfigurationId).BuildAssemblyManager();
                 manager.MergeItem(target.Item.MetadataObject);
             }
             else if (target.Item.MetadataType == MetadataType.Register)
             {
-                var manager = new ManagerFactoryConfiguration(target.Item.Version, target.Item.ConfigurationId).BuildRegisterManager();
+                var manager = new ManagerFactoryConfiguration(target.Item.ConfigurationId).BuildRegisterManager();
                 manager.MergeItem(target.Item.MetadataObject);
             }
             else
             {
-                var manager = new ManagerFactoryDocument(target.Item.Version, target.Item.ConfigurationId, target.Item.DocumentId).BuildManagerByType(
+                var manager = new ManagerFactoryDocument(target.Item.ConfigurationId, target.Item.DocumentId).BuildManagerByType(
                     target.Item.MetadataType);
                 manager.MergeItem(target.Item.MetadataObject);
             }

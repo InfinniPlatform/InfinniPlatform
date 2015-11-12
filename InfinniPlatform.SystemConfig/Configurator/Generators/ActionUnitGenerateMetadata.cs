@@ -24,7 +24,7 @@ namespace InfinniPlatform.SystemConfig.Configurator.Generators
             //получаем метаданные генератора по указанному наименованию
             dynamic generatorMetadata =
                 target.Context.GetComponent<IMetadataComponent>()
-                      .GetMetadataItem(target.Context.GetVersion(target.Item.Configuration,target.UserName), target.Item.Configuration, target.Item.Metadata,
+                      .GetMetadataItem(target.Item.Configuration, target.Item.Metadata,
                                        MetadataType.Generator, generatorSelector);
                 //generatorReader.GetItem(target.Item.GeneratorName);
 

@@ -68,7 +68,7 @@ namespace InfinniPlatform.Utils.Exchange
 		{
 			SourceAssemblyList.Clear();
 
-			var reader = new ManagerFactoryConfiguration(version, configurationId).BuildAssemblyMetadataReader();
+			var reader = new ManagerFactoryConfiguration(configurationId).BuildAssemblyMetadataReader();
 			var items = reader.GetItems();
 			foreach (var item in items)
 			{

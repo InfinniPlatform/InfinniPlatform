@@ -84,14 +84,14 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
 
             MetadataManagerConfiguration managerConfiguration =
-                ManagerFactoryConfiguration.BuildConfigurationManager("1.0.0.0");
+                ManagerFactoryConfiguration.BuildConfigurationManager();
 
             dynamic config = managerConfiguration.CreateItem(ConfigurationId);
             managerConfiguration.DeleteItem(config);
             managerConfiguration.MergeItem(config);
 
             MetadataManagerDocument managerDocument =
-                new ManagerFactoryConfiguration("1.0.0.0", ConfigurationId).BuildDocumentManager();
+                new ManagerFactoryConfiguration(ConfigurationId).BuildDocumentManager();
 
             // Документ BedsRegistrationDocumentId позволяет добавить новую койку в определенную палату
             /* Поля документа
@@ -135,7 +135,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             // добавляем бизнес-процесс по умолчанию
             MetadataManagerElement processManager =
-                new ManagerFactoryDocument("1.0.0.0", ConfigurationId, BedsRegistrationDocumentId).BuildProcessManager();
+                new ManagerFactoryDocument(ConfigurationId, BedsRegistrationDocumentId).BuildProcessManager();
             dynamic defaultProcess = processManager.CreateItem("Default");
 
             dynamic instance = new DynamicWrapper();
@@ -157,7 +157,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             // указываем ссылку на тестовый сценарий комплексного предзаполнения
             MetadataManagerElement scenarioManager =
-                new ManagerFactoryDocument("1.0.0.0", ConfigurationId, BedsRegistrationDocumentId).BuildScenarioManager();
+                new ManagerFactoryDocument(ConfigurationId, BedsRegistrationDocumentId).BuildScenarioManager();
 
             const string addScenarioRegisterId = "AddNewBedToRoomMoveAction";
             dynamic scenarioRegisterItem = scenarioManager.CreateItem(addScenarioRegisterId);
@@ -235,7 +235,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             // добавляем бизнес-процесс по умолчанию
             processManager =
-                new ManagerFactoryDocument("1.0.0.0", ConfigurationId, PatientMovementDocumentId).BuildProcessManager();
+                new ManagerFactoryDocument(ConfigurationId, PatientMovementDocumentId).BuildProcessManager();
             defaultProcess = processManager.CreateItem("Default");
 
             instance = new DynamicWrapper();
@@ -257,7 +257,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             // указываем ссылку на тестовый сценарий комплексного предзаполнения
             scenarioManager =
-                new ManagerFactoryDocument("1.0.0.0", ConfigurationId, PatientMovementDocumentId).BuildScenarioManager();
+                new ManagerFactoryDocument(ConfigurationId, PatientMovementDocumentId).BuildScenarioManager();
 
             const string scenarioRegisterId = "HospitalRegisterMoveAction";
             scenarioRegisterItem = scenarioManager.CreateItem(scenarioRegisterId);
@@ -271,14 +271,14 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             // добавляем ссылку на сборку, в которой находится прикладной модуль
 
             MetadataManagerElement assemblyManager =
-                new ManagerFactoryConfiguration("1.0.0.0", ConfigurationId).BuildAssemblyManager();
+                new ManagerFactoryConfiguration(ConfigurationId).BuildAssemblyManager();
             dynamic assemblyItem = assemblyManager.CreateItem("InfinniPlatform.Api.Tests");
             assemblyManager.MergeItem(assemblyItem);
 
             // Создаем новый регистр, который будет накапливать информацию о занятости коек
 
             MetadataManagerElement managerRegister =
-                new ManagerFactoryConfiguration("1.0.0.0", ConfigurationId).BuildRegisterManager();
+                new ManagerFactoryConfiguration(ConfigurationId).BuildRegisterManager();
 
             dynamic registerMetadata = managerRegister.CreateItem(AvailableBedsRegisterId);
 
@@ -329,11 +329,11 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             dynamic package = new PackageBuilder().BuildPackage(ConfigurationId, "1.0.0.0", GetType().Assembly.Location);
 
-            new UpdateApi("1.0.0.0").InstallPackages(new[] { package });
+            new UpdateApi().InstallPackages(new[] { package });
 
-            new UpdateApi("1.0.0.0").ForceReload(ConfigurationId);
+            new UpdateApi().ForceReload(ConfigurationId);
 
-            new UpdateApi("1.0.0.0").UpdateStore(ConfigurationId);
+            new UpdateApi().UpdateStore(ConfigurationId);
 
             var registerInfoDocument = new
                 {
@@ -353,7 +353,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         private static string CreateRegisterDocuments(string configId, string registerName, bool changeMapping = false)
         {
             MetadataManagerDocument managerDocument =
-                new ManagerFactoryConfiguration("1.0.0.0", configId).BuildDocumentManager();
+                new ManagerFactoryConfiguration(configId).BuildDocumentManager();
 
             dynamic documentMetadata = managerDocument.CreateItem(RegisterConstants.RegisterNamePrefix + registerName);
             documentMetadata.Id = Guid.NewGuid().ToString();
@@ -976,7 +976,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             // Меняем схему данных документа PatientMovementDocumentId: теперь номер койки становится числом
 
             MetadataManagerDocument managerDocument =
-                new ManagerFactoryConfiguration("1.0.0.0", ConfigurationId).BuildDocumentManager();
+                new ManagerFactoryConfiguration(ConfigurationId).BuildDocumentManager();
 
             dynamic documentMetadata = managerDocument.CreateItem(BedsRegistrationDocumentId);
 
@@ -1013,7 +1013,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             // добавляем бизнес-процесс по умолчанию
             MetadataManagerElement processManager =
-                new ManagerFactoryDocument("1.0.0.0", ConfigurationId, BedsRegistrationDocumentId).BuildProcessManager();
+                new ManagerFactoryDocument(ConfigurationId, BedsRegistrationDocumentId).BuildProcessManager();
             dynamic defaultProcess = processManager.CreateItem("Default");
 
             dynamic instance = new DynamicWrapper();
@@ -1035,7 +1035,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             // указываем ссылку на тестовый сценарий комплексного предзаполнения
             MetadataManagerElement scenarioManager =
-                new ManagerFactoryDocument("1.0.0.0", ConfigurationId, BedsRegistrationDocumentId).BuildScenarioManager();
+                new ManagerFactoryDocument(ConfigurationId, BedsRegistrationDocumentId).BuildScenarioManager();
 
             const string addScenarioRegisterId = "AddNewBedToRoomMoveAction";
             dynamic scenarioRegisterItem = scenarioManager.CreateItem(addScenarioRegisterId);
@@ -1058,14 +1058,14 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             // добавляем ссылку на сборку, в которой находится прикладной модуль
 
             MetadataManagerElement assemblyManager =
-                new ManagerFactoryConfiguration("1.0.0.0", ConfigurationId).BuildAssemblyManager();
+                new ManagerFactoryConfiguration(ConfigurationId).BuildAssemblyManager();
             dynamic assemblyItem = assemblyManager.CreateItem("InfinniPlatform.Api.Tests");
             assemblyManager.MergeItem(assemblyItem);
 
             // Обновляем регистр, который будет накапливать информацию о занятости коек
 
             MetadataManagerElement managerRegister =
-                new ManagerFactoryConfiguration("1.0.0.0", ConfigurationId).BuildRegisterManager();
+                new ManagerFactoryConfiguration(ConfigurationId).BuildRegisterManager();
 
             dynamic registerMetadata = managerRegister.CreateItem(AvailableBedsRegisterId);
 
@@ -1116,11 +1116,11 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             dynamic package = new PackageBuilder().BuildPackage(ConfigurationId, "1.0.0.0", GetType().Assembly.Location);
 
-            new UpdateApi("1.0.0.0").InstallPackages(new[] { package });
+            new UpdateApi().InstallPackages(new[] { package });
 
-            new UpdateApi("1.0.0.0").ForceReload(ConfigurationId);
+            new UpdateApi().ForceReload(ConfigurationId);
 
-            new UpdateApi("1.0.0.0").UpdateStore(ConfigurationId);
+            new UpdateApi().UpdateStore(ConfigurationId);
 
 
             // Добавляем документ (схема данных изменилась)
@@ -1177,7 +1177,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             // указываем ссылку на тестовый сценарий комплексного предзаполнения
             scenarioManager =
-                new ManagerFactoryDocument("1.0.0.0", ConfigurationId, BedsRegistrationDocumentId).BuildScenarioManager();
+                new ManagerFactoryDocument(ConfigurationId, BedsRegistrationDocumentId).BuildScenarioManager();
 
             scenarioRegisterItem = scenarioManager.CreateItem(addScenarioRegisterId);
             scenarioRegisterItem.ScenarioId = addScenarioRegisterId;
@@ -1197,13 +1197,13 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             // добавляем ссылку на сборку, в которой находится прикладной модуль
 
-            assemblyManager = new ManagerFactoryConfiguration("1.0.0.0", ConfigurationId).BuildAssemblyManager();
+            assemblyManager = new ManagerFactoryConfiguration(ConfigurationId).BuildAssemblyManager();
             assemblyItem = assemblyManager.CreateItem("InfinniPlatform.Api.Tests");
             assemblyManager.MergeItem(assemblyItem);
 
             // Обновляем регистр, который будет накапливать информацию о занятости коек
 
-            managerRegister = new ManagerFactoryConfiguration("1.0.0.0", ConfigurationId).BuildRegisterManager();
+            managerRegister = new ManagerFactoryConfiguration(ConfigurationId).BuildRegisterManager();
 
             registerMetadata = managerRegister.CreateItem(AvailableBedsRegisterId);
 
@@ -1254,11 +1254,11 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             package = new PackageBuilder().BuildPackage(ConfigurationId, "1.0.0.0", GetType().Assembly.Location);
 
-            new UpdateApi("1.0.0.0").InstallPackages(new[] { package });
+            new UpdateApi().InstallPackages(new[] { package });
 
-            new UpdateApi("1.0.0.0").ForceReload(ConfigurationId);
+            new UpdateApi().ForceReload(ConfigurationId);
 
-            new UpdateApi("1.0.0.0").UpdateStore(ConfigurationId);
+            new UpdateApi().UpdateStore(ConfigurationId);
 
             // Добавляем документ (схема данных изменилась)
             new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new

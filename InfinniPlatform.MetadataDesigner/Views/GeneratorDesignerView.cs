@@ -116,7 +116,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 				generatorBroker.CreateGenerator(generator);
 
 				var manager =
-					new ManagerFactoryDocument(_version, _configurationName, _documentName).BuildManagerByType(MetadataType.Generator);
+					new ManagerFactoryDocument(_configurationName, _documentName).BuildManagerByType(MetadataType.Generator);
 
 				_generator = manager.MetadataReader.GetItem(TextEditGeneratorName.Text);
 				

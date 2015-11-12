@@ -38,7 +38,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
         {
             CreateTestConfig();
 
-            var managerDocument = new ManagerFactoryDocument("1.0.0.0", ConfigurationId, DocumentId);
+            var managerDocument = new ManagerFactoryDocument(ConfigurationId, DocumentId);
             MetadataManagerElement managerView = managerDocument.BuildViewManager();
             dynamic view = managerView.CreateItem(ViewName);
             view.MetadataType = ViewType.EditView;
@@ -60,7 +60,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
         private void CreateTestConfig()
         {
             //добавили конфигурацию
-            MetadataManagerConfiguration manager = ManagerFactoryConfiguration.BuildConfigurationManager("1.0.0.0");
+            MetadataManagerConfiguration manager = ManagerFactoryConfiguration.BuildConfigurationManager();
 
             dynamic item = manager.CreateItem(ConfigurationId);
             manager.DeleteItem(item);
@@ -69,12 +69,12 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
             //добавляем именованный View в конкретном документе
             //---------------------------------------------------
             MetadataManagerDocument documentManager =
-                new ManagerFactoryConfiguration("1.0.0.0", ConfigurationId).BuildDocumentManager();
+                new ManagerFactoryConfiguration(ConfigurationId).BuildDocumentManager();
 
             dynamic doc = documentManager.CreateItem(DocumentId);
             documentManager.MergeItem(doc);
 
-            var managerDocument = new ManagerFactoryDocument("1.0.0.0", ConfigurationId, DocumentId);
+            var managerDocument = new ManagerFactoryDocument(ConfigurationId, DocumentId);
             MetadataManagerElement managerView = managerDocument.BuildViewManager();
             dynamic view = managerView.CreateItem(ViewName);
             view.MetadataType = ViewType.EditView;
@@ -83,7 +83,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
             //----------------------------------------------------
 
             //перезагрузим конфигурации
-            RestQueryApi.QueryPostNotify("1.0.0.0", ConfigurationId);
+            RestQueryApi.QueryPostNotify(ConfigurationId);
         }
     }
 }

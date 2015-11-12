@@ -160,11 +160,11 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
             };
         }
 
-        public RestQueryResponse QueryNotify(string version, string metadataConfigurationId, CookieContainer cookieContainer = null)
+        public RestQueryResponse QueryNotify(string metadataConfigurationId, CookieContainer cookieContainer = null)
         {
             var body = new Dictionary<string, object>
             {
-                {"version",version},
+                {"version", ""},
                 {"metadataConfigurationId", metadataConfigurationId}
             };
 

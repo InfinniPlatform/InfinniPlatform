@@ -32,13 +32,13 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         public void ShouldDeleteDocumentWithReferenceCorrectly()
         {
             MetadataManagerConfiguration managerConfiguration =
-                ManagerFactoryConfiguration.BuildConfigurationManager(null);
+                ManagerFactoryConfiguration.BuildConfigurationManager();
             dynamic config = managerConfiguration.CreateItem("testconfig");
             managerConfiguration.DeleteItem(config);
             managerConfiguration.MergeItem(config);
 
             MetadataManagerDocument managerDocument =
-                new ManagerFactoryConfiguration(null, "testconfig").BuildDocumentManager();
+                new ManagerFactoryConfiguration("testconfig").BuildDocumentManager();
             dynamic documentMetadata1 = managerDocument.CreateItem("testdoc1");
             dynamic documentMetadata2 = managerDocument.CreateItem("testdoc2");
 
@@ -81,9 +81,9 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             managerDocument.MergeItem(documentMetadata2);
 
 
-            RestQueryApi.QueryPostNotify(null, "testconfig");
+            RestQueryApi.QueryPostNotify("testconfig");
 
-            new UpdateApi(null).UpdateStore("testconfig");
+            new UpdateApi().UpdateStore("testconfig");
 
 
             string uid1 = Guid.NewGuid().ToString();

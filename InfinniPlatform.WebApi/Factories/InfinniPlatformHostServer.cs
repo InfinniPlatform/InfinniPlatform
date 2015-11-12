@@ -240,7 +240,7 @@ namespace InfinniPlatform.WebApi.Factories
 
             Instance.RegisterVersion(configurationId, version);
 
-			return metadataConfigurationProvider.AddConfiguration(version, configurationId, actionConfig, isEmbeddedConfiguration);
+			return metadataConfigurationProvider.AddConfiguration(configurationId, actionConfig, isEmbeddedConfiguration);
 		}
 
 		/// <summary>
@@ -251,7 +251,7 @@ namespace InfinniPlatform.WebApi.Factories
 		public void RemoveConfiguration(string configurationId, string version = null)
 		{
 			var metadataConfigurationProvider = _hostServer.Container().Resolve<IMetadataConfigurationProvider>();
-			metadataConfigurationProvider.RemoveConfiguration(version, configurationId);
+			metadataConfigurationProvider.RemoveConfiguration(configurationId);
 			Instance.UnregisterVersion(configurationId, version);
 		}
 

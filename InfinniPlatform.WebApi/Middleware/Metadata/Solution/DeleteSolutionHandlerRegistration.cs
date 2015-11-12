@@ -16,9 +16,9 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.Solution
         {
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            MetadataManagerSolution managerSolution = ManagerFactorySolution.BuildSolutionManager(routeDictionary["versionMetadata"]);
+            MetadataManagerSolution managerSolution = ManagerFactorySolution.BuildSolutionManager();
 
-            dynamic solution = ManagerFactorySolution.BuildSolutionReader(routeDictionary["versionMetadata"]).GetItem(routeDictionary["instanceId"]);
+            dynamic solution = ManagerFactorySolution.BuildSolutionReader().GetItem(routeDictionary["instanceId"]);
 
             if (solution != null)
             {

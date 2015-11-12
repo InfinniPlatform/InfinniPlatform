@@ -58,10 +58,10 @@ namespace InfinniPlatform.SystemConfig.Configurator
                 // Дата документа явно не задана, используем дату из содержимого переданного документа
                 var defaultProcess =
                     target.Context.GetComponent<IMetadataComponent>()
-                          .GetMetadata(target.Context.GetVersion(configuration, target.UserName), configuration, documentId, MetadataType.Process, "Default");
+                          .GetMetadata(configuration, documentId, MetadataType.Process, "Default");
                 var customProcess =
                     target.Context.GetComponent<IMetadataComponent>()
-                          .GetMetadata(target.Context.GetVersion(configuration, target.UserName), configuration, documentId, MetadataType.Process, "Custom");
+                          .GetMetadata(configuration, documentId, MetadataType.Process, "Custom");
 
                 if (defaultProcess != null &&
                     defaultProcess.Transitions != null &&
@@ -91,7 +91,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
 
             var registerMetadata =
                 target.Context.GetComponent<IMetadataComponent>()
-                      .GetMetadataList(target.Context.GetVersion(configuration, target.UserName), configuration, registerId, MetadataType.Register)
+                      .GetMetadataList(configuration, registerId, MetadataType.Register)
                       .FirstOrDefault();
 
             // Признак того, что необходимо создать запись для регистра сведений

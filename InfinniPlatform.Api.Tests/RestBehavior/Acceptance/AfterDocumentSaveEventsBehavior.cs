@@ -45,20 +45,20 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             new IndexApi().RebuildIndex(configurationId, documentId);
 
             MetadataManagerConfiguration managerConfiguration =
-                ManagerFactoryConfiguration.BuildConfigurationManager("1.0.0.0");
+                ManagerFactoryConfiguration.BuildConfigurationManager();
 
             dynamic config = managerConfiguration.CreateItem(configurationId);
             managerConfiguration.DeleteItem(config);
             managerConfiguration.MergeItem(config);
 
             MetadataManagerDocument managerDocument =
-                new ManagerFactoryConfiguration("1.0.0.0", configurationId).BuildDocumentManager();
+                new ManagerFactoryConfiguration(configurationId).BuildDocumentManager();
             dynamic documentMetadata1 = managerDocument.CreateItem(documentId);
             managerDocument.MergeItem(documentMetadata1);
 
             //добавляем бизнес-процесс по умолчанию
             MetadataManagerElement processManager =
-                new ManagerFactoryDocument("1.0.0.0", configurationId, documentId).BuildProcessManager();
+                new ManagerFactoryDocument(configurationId, documentId).BuildProcessManager();
             dynamic defaultProcess = processManager.CreateItem("Default");
 
             dynamic instance = new DynamicWrapper();
@@ -85,7 +85,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             //указываем ссылку на тестовый сценарий комплексного предзаполнения
             MetadataManagerElement scenarioManager =
-                new ManagerFactoryDocument("1.0.0.0", configurationId, documentId).BuildScenarioManager();
+                new ManagerFactoryDocument(configurationId, documentId).BuildScenarioManager();
 
             if (hasOnSuccessPoint)
             {
@@ -113,16 +113,16 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             //добавляем ссылку на сборку, в которой находится прикладной модуль
 
             MetadataManagerElement assemblyManager =
-                new ManagerFactoryConfiguration("1.0.0.0", configurationId).BuildAssemblyManager();
+                new ManagerFactoryConfiguration(configurationId).BuildAssemblyManager();
             dynamic assemblyItem = assemblyManager.CreateItem("InfinniPlatform.Api.Tests");
             assemblyManager.MergeItem(assemblyItem);
 
             dynamic package = new PackageBuilder().BuildPackage(configurationId, "1.0.0.0", GetType().Assembly.Location);
-            new UpdateApi("1.0.0.0").InstallPackages(new[] { package });
+            new UpdateApi().InstallPackages(new[] { package });
 
-            RestQueryApi.QueryPostNotify("1.0.0.0", configurationId);
+            RestQueryApi.QueryPostNotify(configurationId);
 
-            new UpdateApi("1.0.0.0").UpdateStore(configurationId);
+            new UpdateApi().UpdateStore(configurationId);
 
             _server.Dispose();
 
@@ -142,7 +142,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             // Замена точки расширения
             MetadataManagerElement processManager =
-                new ManagerFactoryDocument("1.0.0.0", _configurationId, "testdoc1").BuildProcessManager();
+                new ManagerFactoryDocument(_configurationId, "testdoc1").BuildProcessManager();
             dynamic defaultProcess = processManager.MetadataReader.GetItem("Default");
             defaultProcess.Transitions[0].SuccessPoint.ScenarioId = "yetanothertestcomplexaction";
 

@@ -19,8 +19,8 @@ namespace InfinniPlatform.Metadata.Tests.HandlersBehavior
         {
             _server = InfinniPlatformInprocessHost.Start();
 
-            new UpdateApi(null).ForceReload("Handlers");
-            new UpdateApi(null).UpdateStore("Handlers");
+            new UpdateApi().ForceReload("Handlers");
+            new UpdateApi().UpdateStore("Handlers");
         }
 
         [TestFixtureTearDown]

@@ -18,19 +18,16 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
         private readonly string _metadataType;
         private readonly string _parentUid;
         private readonly string _rootMetadataIndex;
-        private readonly string _version;
 
         /// <summary>
         ///     Публичный конструктор менеджера метаданных объектов конфигурации
         /// </summary>
-        /// <param name="version">Версия конфигурации</param>
         /// <param name="parentUid">Идентификатор (Id) родительского контейнера метаданных</param>
         /// <param name="metadataCacheRefresher">Механизм обновления кэша метаданных</param>
         /// <param name="metadataReader">Провайдер для чтения метаданных указанного типа</param>
         /// <param name="metadataContainerInfo">Информация о контейнере метаданных</param>
         /// <param name="ownerMetadataType">Контейнер, содержащий метаданные, по которым выполняется поиск данных</param>
-        public MetadataManagerElement(string version, string parentUid, MetadataCacheRefresher metadataCacheRefresher,
-            IDataReader metadataReader, IMetadataContainerInfo metadataContainerInfo, string ownerMetadataType)
+        public MetadataManagerElement(string parentUid, MetadataCacheRefresher metadataCacheRefresher, IDataReader metadataReader, IMetadataContainerInfo metadataContainerInfo, string ownerMetadataType)
         {
             if (parentUid == null)
             {
@@ -38,7 +35,6 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
             }
 
             _parentUid = parentUid;
-            _version = version;
             _metadataCacheRefresher = metadataCacheRefresher;
 
             _metadataReader = metadataReader;
@@ -84,7 +80,6 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
             var instance = new DynamicWrapper();
             instance
                 .BuildId(Guid.NewGuid().ToString())
-                .BuildProperty("Version", _version)
                 .BuildName(name)
                 .BuildCaption(name)
                 .BuildDescription(name);
@@ -113,8 +108,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
             {
                 //удаляем из метаданных конфигурации
                 var configurationBody =
-                    new RemoveCollectionItem(string.Format("{0}.$.Name:{1}", _metadataContainerName, element.Name),
-                        _version);
+                    new RemoveCollectionItem(string.Format("{0}.$.Name:{1}", _metadataContainerName, element.Name));
 
                 dynamic metadataContainer = GetMetadataContainer(element.Name);
 
@@ -135,7 +129,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 
                         if (_metadataCacheRefresher != null)
                         {
-                            _metadataCacheRefresher.RefreshMetadataAfterDeleting(_version, element.Name);
+                            _metadataCacheRefresher.RefreshMetadataAfterDeleting(element.Name);
                         }
                     }
                 }
@@ -165,7 +159,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 
 
             objectToCreate.ParentId = _parentUid;
-            objectToCreate.Version = _version;
+            objectToCreate.Version = null;
 
             //создаем заголовочную часть метаданных
             dynamic metadataHeader = MetadataBuilderExtensions.BuildMetadataHeader(objectToCreate);
@@ -179,7 +173,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
             }
 
             //иначе создаем новое 
-            var body = new AddCollectionItem(_metadataContainerName, metadataHeader, _version);
+            var body = new AddCollectionItem(_metadataContainerName, metadataHeader);
 
             
 
@@ -193,7 +187,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 
             if (_metadataCacheRefresher != null)
             {
-                _metadataCacheRefresher.RefreshMetadataAfterChanging(_version, objectToCreate.Name);
+                _metadataCacheRefresher.RefreshMetadataAfterChanging(objectToCreate.Name);
             }
         }
 

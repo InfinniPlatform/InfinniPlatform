@@ -1,4 +1,5 @@
 ﻿using System;
+
 using InfinniPlatform.Api.Deprecated;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataReaders;
@@ -9,22 +10,18 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 {
     public sealed class MetadataManagerDocument : IDataManager
     {
-        private readonly string _configurationId;
-        private readonly MetadataManagerElement _manager;
-        private readonly string _version;
-
-        public MetadataManagerDocument(string version, string configurationId,
-            IMetadataContainerInfo metadataContainerInfo, string metadataType)
+        public MetadataManagerDocument(string configurationId, IMetadataContainerInfo metadataContainerInfo, string metadataType)
         {
-            _version = version;
             _configurationId = configurationId;
-            var metadataCacheRefresher = new MetadataCacheRefresher(version, configurationId,
+            var metadataCacheRefresher = new MetadataCacheRefresher(configurationId,
                 metadataContainerInfo.GetMetadataContainerName(), metadataType);
-            _manager = new MetadataManagerElement(version,
-                new ManagerIdentifiersStandard().GetConfigurationUid(_version, _configurationId), metadataCacheRefresher,
-                new MetadataReaderConfigurationElement(_version, _configurationId, new MetadataContainerDocument()),
+            _manager = new MetadataManagerElement(new ManagerIdentifiersStandard().GetConfigurationUid(_configurationId), metadataCacheRefresher,
+                new MetadataReaderConfigurationElement(_configurationId, new MetadataContainerDocument()),
                 metadataContainerInfo, metadataType);
         }
+
+        private readonly string _configurationId;
+        private readonly MetadataManagerElement _manager;
 
         public IDataReader MetadataReader
         {
@@ -33,7 +30,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 
         public dynamic CreateItem(string name)
         {
-            return MetadataBuilderExtensions.BuildDocument(name, name, name, name, _version);
+            return MetadataBuilderExtensions.BuildDocument(name, name, name, name);
         }
 
         public void InsertItem(dynamic objectToCreate)
@@ -47,14 +44,14 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
         {
             var document =
                 MetadataExtensions.GetStoredMetadata(
-                    new ManagerFactoryConfiguration(_version, _configurationId).BuildDocumentMetadataReader(),
+                    new ManagerFactoryConfiguration(_configurationId).BuildDocumentMetadataReader(),
                     metadataObject);
 
             if (document != null)
             {
                 try
                 {
-                    var factory = new ManagerFactoryDocument(_version, _configurationId, document.Name);
+                    var factory = new ManagerFactoryDocument(_configurationId, document.Name);
 
                     foreach (var metadataType in MetadataType.GetDocumentMetadataTypes())
                     {

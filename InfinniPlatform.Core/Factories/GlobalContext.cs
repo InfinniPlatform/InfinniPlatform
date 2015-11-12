@@ -73,12 +73,6 @@ namespace InfinniPlatform.Factories
                 _components.Where(c => c.IsTypeOf(typeof(T))).Select(c => c.GetInstance()).FirstOrDefault() as T;
         }
 
-        public string GetVersion(string configuration, string userName)
-        {
-            var configVersions = GetComponent<IMetadataConfigurationProvider>().ConfigurationVersions;
-            return GetComponent<IVersionStrategy>().GetActualVersion(configuration, configVersions, userName);
-        }
-
 
         public static string GetTenantId()
         {

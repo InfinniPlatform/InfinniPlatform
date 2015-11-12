@@ -65,7 +65,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
             // Получаем информацию обо всех сценариях из сборок, подцепленных к конфигурации
 
             IDataReader assemblyMetadataReader =
-                new ManagerFactoryConfiguration(_version, _activeConfiguration).BuildAssemblyMetadataReader();
+                new ManagerFactoryConfiguration(_activeConfiguration).BuildAssemblyMetadataReader();
 
             var scripts = new List<string>();
 
@@ -83,7 +83,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
             // проверяем, что сценарии имеются в списке scripts, сформированном ранее
 
             IDataReader documentMetadataReader =
-                new ManagerFactoryConfiguration(_version, _activeConfiguration).BuildDocumentMetadataReader();
+                new ManagerFactoryConfiguration(_activeConfiguration).BuildDocumentMetadataReader();
 
             foreach (dynamic document in documentMetadataReader.GetItems())
             {
@@ -94,7 +94,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
                 }
 
                 IDataReader scenariosReader =
-                    new ManagerFactoryDocument(_version, _activeConfiguration, document.Name.ToString())
+                    new ManagerFactoryDocument(_activeConfiguration, document.Name.ToString())
                         .BuildScenarioManager().MetadataReader;
 
                 foreach (dynamic scenario in scenariosReader.GetItems())

@@ -39,13 +39,13 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.Solution
                 }
 
                 MetadataManagerSolution managerSolution =
-                    ManagerFactorySolution.BuildSolutionManager(body.Version.ToString());
+                    ManagerFactorySolution.BuildSolutionManager();
 
                 managerSolution.MergeItem(DynamicWrapperExtensions.ToDynamic(body));
                 
                 return new EmptyRequestHandlerResult();
             }
-            return new ValueRequestHandlerResult(ManagerFactorySolution.BuildSolutionManager(null).CreateItem("NewSolution"));
+            return new ValueRequestHandlerResult(ManagerFactorySolution.BuildSolutionManager().CreateItem("NewSolution"));
         }
     }
 }

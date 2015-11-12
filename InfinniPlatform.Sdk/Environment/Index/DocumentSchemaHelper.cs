@@ -63,8 +63,7 @@ namespace InfinniPlatform.Sdk.Environment.Index
                             // inline ссылка на документ: необходимо получить схему документа, на который сделана ссылка,
                             // чтобы получить сортировочные поля 
                             dynamic builder =
-                                configurationObjectBuilder.GetConfigurationObject(version,
-                                                                                  propertyModel.Value.TypeInfo
+                                configurationObjectBuilder.GetConfigurationObject(propertyModel.Value.TypeInfo
                                                                                                .DocumentLink.ConfigId);
                             //.Configurations.FirstOrDefault(
                             //c => c.ConfigurationId == propertyModel.Value.TypeInfo.DocumentLink.ConfigId);

@@ -1,34 +1,24 @@
 ﻿using System;
-using InfinniPlatform.ContextComponents;
+
 using InfinniPlatform.Sdk.Contracts;
-using InfinniPlatform.SystemConfig.UserStorage;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.RestfulApi.Auth
 {
     /// <summary>
-    ///     Модуль добавления роли пользователя
+    /// Модуль добавления роли пользователя
     /// </summary>
+    [Obsolete]
     public sealed class ActionUnitAddUserRole
     {
         public void Action(IApplyContext target)
         {
-            var storage = ApplicationUserStorePersistentStorage.Instance;
+            // TODO: Без проверки прав пользователя, от имени которого выполняется данный запрос, выполнять эти действия нельзя!
+            // На текущий момент нет адекватного общего механизма для выполнения подобной проверки.
 
-            dynamic userRoleParams = target.Item;
-            if (target.Item.Document != null)
-            {
-                userRoleParams = target.Item.Document;
-            }
-
-            dynamic user = storage.FindUserByName(userRoleParams.UserName);
-            if (user == null)
-            {
-                throw new ArgumentException(string.Format("User {0} not found", userRoleParams.UserName));
-            }
-
-            storage.AddUserToRole(user, userRoleParams.RoleName);
-            target.Context.GetComponent<CachedSecurityComponent>().UpdateUserRoles();
-            target.Context.GetComponent<CachedSecurityComponent>().UpdateAcl();
+            target.Result = new DynamicWrapper();
+            target.Result.IsValid = false;
+            target.Result.ValidationMessage = "Not Supported";
         }
     }
 }

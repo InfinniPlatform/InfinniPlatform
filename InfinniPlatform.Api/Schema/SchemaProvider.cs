@@ -22,7 +22,7 @@ namespace InfinniPlatform.Api.Schema
         /// <returns>Схема документа</returns>
         public dynamic GetSchema(string version, string configId, string documentId)
         {
-            var schemaMetadata = _metadataComponent.GetMetadataList(version, configId, documentId, MetadataType.Schema);
+            var schemaMetadata = _metadataComponent.GetMetadataList(configId, documentId, MetadataType.Schema);
 			return (schemaMetadata != null) ? schemaMetadata.FirstOrDefault() : null;
         }
     }

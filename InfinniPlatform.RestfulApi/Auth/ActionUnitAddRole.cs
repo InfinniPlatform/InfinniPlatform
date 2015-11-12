@@ -1,31 +1,24 @@
-﻿using InfinniPlatform.ContextComponents;
+﻿using System;
+
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.SystemConfig.UserStorage;
 
 namespace InfinniPlatform.RestfulApi.Auth
 {
     /// <summary>
-    ///     Модуль добавления роли
+    /// Модуль добавления роли
     /// </summary>
+    [Obsolete]
     public sealed class ActionUnitAddRole
     {
         public void Action(IApplyContext target)
         {
-            var storage = ApplicationUserStorePersistentStorage.Instance;
+            // TODO: Без проверки прав пользователя, от имени которого выполняется данный запрос, выполнять эти действия нельзя!
+            // На текущий момент нет адекватного общего механизма для выполнения подобной проверки.
 
-            dynamic roleParams = target.Item;
-            if (target.Item.Document != null)
-            {
-                roleParams = target.Item.Document;
-            }
-
-            storage.AddRole(roleParams.Name, roleParams.Caption, roleParams.Description);
-            target.Context.GetComponent<CachedSecurityComponent>().UpdateAcl();
-            target.Context.GetComponent<CachedSecurityComponent>().UpdateRoles();
             target.Result = new DynamicWrapper();
-            target.Result.IsValid = true;
-            target.Result.ValidationMessage = "Role added.";
+            target.Result.IsValid = false;
+            target.Result.ValidationMessage = "Not Supported";
         }
     }
 }

@@ -3,36 +3,28 @@
 namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataReaders
 {
     /// <summary>
-    ///     Контракт провайдера метаданных для чтения
+    /// Контракт провайдера метаданных для чтения
     /// </summary>
     public abstract class MetadataReader : IDataReader
     {
-        private readonly string _configurationId;
-
-        /// <summary>
-        ///     Индекс, по которому выполняем IQL запросы
-        /// </summary>
-        private readonly string _metadataSearchIndex;
-
-        private readonly string _version;
-
-        protected MetadataReader(string version, string configurationId, string metadataType)
+        protected MetadataReader(string configurationId, string metadataType)
         {
-            _version = version;
-            _configurationId = configurationId;
+            ConfigurationId = configurationId;
             _metadataSearchIndex = MetadataExtension.GetMetadataIndex(metadataType);
         }
 
         /// <summary>
-        ///     Идентификатор конфигурации, для которой реализован провайдер данных для чтения
+        /// Индекс, по которому выполняем IQL запросы
         /// </summary>
-        protected string ConfigurationId
-        {
-            get { return _configurationId; }
-        }
+        private readonly string _metadataSearchIndex;
 
         /// <summary>
-        ///     Индекс, по которому выполняем IQL запросы
+        /// Идентификатор конфигурации, для которой реализован провайдер данных для чтения
+        /// </summary>
+        protected string ConfigurationId { get; }
+
+        /// <summary>
+        /// Индекс, по которому выполняем IQL запросы
         /// </summary>
         protected string MetadataSearchIndex
         {
@@ -40,21 +32,18 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
         }
 
         /// <summary>
-        ///     Версия конфигурации
+        /// Версия конфигурации
         /// </summary>
-        public string Version
-        {
-            get { return _version; }
-        }
+        public string Version { get; }
 
         /// <summary>
-        ///     Получить метаданные объекта в кратком виде (ссылки на метаданные объектов конфигурации)
+        /// Получить метаданные объекта в кратком виде (ссылки на метаданные объектов конфигурации)
         /// </summary>
         /// <returns>Список описаний метаданных объекта в кратком формате</returns>
         public abstract IEnumerable<dynamic> GetItems();
 
         /// <summary>
-        ///     Получить метаданные конкретного объекта
+        /// Получить метаданные конкретного объекта
         /// </summary>
         /// <param name="metadataName">наименование объекта</param>
         /// <returns>Метаданные объекта конфигурации</returns>

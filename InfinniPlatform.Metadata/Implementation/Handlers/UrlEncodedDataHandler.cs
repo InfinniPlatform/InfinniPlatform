@@ -35,7 +35,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
 
             var metadataConfig =
                 _globalContext.GetComponent<IMetadataConfigurationProvider>()
-                    .GetMetadataConfiguration(_globalContext.GetVersion(ConfigRequestProvider.GetConfiguration(),ConfigRequestProvider.GetUserName()), ConfigRequestProvider.GetConfiguration());
+                    .GetMetadataConfiguration(ConfigRequestProvider.GetConfiguration());
 
             metadataConfig.MoveWorkflow(metadata,
                 metadataConfig.GetExtensionPointValue(ConfigRequestProvider, "ProcessUrlEncodedData"), target);

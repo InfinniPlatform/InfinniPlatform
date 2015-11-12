@@ -66,7 +66,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
 
         private void CreateStorage(string configId, string documentId)
         {
-            var message = MigrationHelper.TryUpdateDocumentMappings(_metadataProvider.GetMetadataConfiguration(null, configId), _configurationBuilder, _indexFactory.Value, documentId);
+            var message = MigrationHelper.TryUpdateDocumentMappings(_metadataProvider.GetMetadataConfiguration(configId), _configurationBuilder, _indexFactory.Value, documentId);
 
             if (message != null)
             {

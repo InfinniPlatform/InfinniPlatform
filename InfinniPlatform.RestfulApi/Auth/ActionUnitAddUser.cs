@@ -1,40 +1,24 @@
-﻿using InfinniPlatform.Api.Security;
-using InfinniPlatform.ContextComponents;
+﻿using System;
+
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Security;
-using InfinniPlatform.SystemConfig.UserStorage;
 
 namespace InfinniPlatform.RestfulApi.Auth
 {
     /// <summary>
-    ///     Добавить пользователя
+    /// Добавить пользователя
     /// </summary>
+    [Obsolete]
     public sealed class ActionUnitAddUser
     {
         public void Action(IApplyContext target)
         {
-            var storage = ApplicationUserStorePersistentStorage.Instance;
+            // TODO: Без проверки прав пользователя, от имени которого выполняется данный запрос, выполнять эти действия нельзя!
+            // На текущий момент нет адекватного общего механизма для выполнения подобной проверки.
 
-            dynamic userParams = target.Item.Document ?? target.Item;
-
-            dynamic user = storage.FindUserByName(userParams.UserName);
-            if (user == null)
-            {
-                storage.CreateUser(new ApplicationUser
-                    {
-                        UserName = userParams.UserName,
-                        PasswordHash =
-                            new DefaultApplicationUserPasswordHasher().HashPassword(userParams.Password)
-                    });
-                //добавляем доступ на чтение пользователей
-                var securityComponent = target.Context.GetComponent<CachedSecurityComponent>();
-
-                securityComponent.UpdateUsers();
-                target.Result = new DynamicWrapper();
-                target.Result.ValidationMessage = "User created successfully";
-                target.Result.IsValid = true;
-            }
+            target.Result = new DynamicWrapper();
+            target.Result.IsValid = false;
+            target.Result.ValidationMessage = "Not Supported";
         }
     }
 }

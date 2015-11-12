@@ -13,18 +13,14 @@ namespace InfinniPlatform.SystemConfig.Configurator
             if (target.Item.IsElementDeleted != null &&
                 target.Item.IsElementDeleted == true)
             {
-                target.Context.GetComponent<MetadataComponent>().DeleteMetadata(
-                    target.Item.Version,
-                    target.Item.ConfigId,
+                target.Context.GetComponent<MetadataComponent>().DeleteMetadata(target.Item.ConfigId,
                     target.Item.DocumentId,
                     target.Item.MetadataType,
                     target.Item.MetadataName);
             }
             else
             {
-                target.Context.GetComponent<MetadataComponent>().UpdateMetadata(
-                    target.Item.Version,
-                    target.Item.ConfigId,
+                target.Context.GetComponent<MetadataComponent>().UpdateMetadata(target.Item.ConfigId,
                     target.Item.DocumentId,
                     target.Item.MetadataType,
                     target.Item.MetadataName);

@@ -36,7 +36,7 @@ namespace InfinniPlatform.ContextComponents
             if (scriptProcessorVersioned == null)
             {
                 var scriptProcessor =
-                    _metadataConfigurationProvider.GetMetadataConfiguration(version, configurationId)
+                    _metadataConfigurationProvider.GetMetadataConfiguration(configurationId)
                         .ScriptConfiguration.GetScriptProcessor(version);
 
                 scriptProcessorVersioned = new VersionedScriptProcessor

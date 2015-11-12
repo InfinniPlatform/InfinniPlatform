@@ -30,7 +30,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
 
             dynamic printViewMetadata =
                 target.Context.GetComponent<IMetadataComponent>()
-                      .GetMetadataItem(target.Context.GetVersion(parameters.ConfigId,target.UserName), parameters.ConfigId, parameters.DocumentId,
+                      .GetMetadataItem(parameters.ConfigId, parameters.DocumentId,
                                        MetadataType.PrintView, printViewSelector);
 
             int pageNumber = parameters.PageNumber != null ? (int) parameters.PageNumber : 0;

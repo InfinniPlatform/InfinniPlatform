@@ -74,7 +74,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
                             solutionPath = Path.Combine(solutionPath, GetSolutionName());
                             exportSolution.ExportJsonSolutionToDirectory(solutionPath, GetSolutionVersion(), GetNewSolutionVersion());
 
-                            var manager = ManagerFactorySolution.BuildSolutionReader(GetSolutionVersion());
+                            var manager = ManagerFactorySolution.BuildSolutionReader();
 
                             dynamic solution = manager.GetItem(GetSolutionName());
 

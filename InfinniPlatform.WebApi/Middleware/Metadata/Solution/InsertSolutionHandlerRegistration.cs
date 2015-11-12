@@ -24,7 +24,7 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.Solution
                 return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
             }
 
-            MetadataManagerSolution managerSolution = ManagerFactorySolution.BuildSolutionManager(body.Version.ToString());
+            MetadataManagerSolution managerSolution = ManagerFactorySolution.BuildSolutionManager();
 
             managerSolution.InsertItem(DynamicWrapperExtensions.ToDynamic(body));
 

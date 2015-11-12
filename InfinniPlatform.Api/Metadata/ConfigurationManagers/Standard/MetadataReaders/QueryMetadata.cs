@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestQuery;
-using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
+
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataReaders
@@ -13,7 +14,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
     public static class QueryMetadata
     {
         /// <summary>
-        ///     Выполнить IQL запрос к метаданным конфигурации
+        /// Выполнить IQL запрос к метаданным конфигурации
         /// </summary>
         /// <param name="iqlQuery">IQL запрос</param>
         /// <param name="doNotCheckVersion">Не проверять версию метаданных</param>
@@ -52,184 +53,180 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
         }
 
         /// <summary>
-        ///     Получить список заголовков конфигураций
+        /// Получить список заголовков конфигураций
         /// </summary>
         /// <returns></returns>
-        public static string GetConfigurationShortListIql(string version)
+        public static string GetConfigurationShortListIql()
         {
             return JObject.FromObject(new
-            {
-                Version = version,
-                From = new
-                {
-                    Index = "systemconfig",
-                    Type = "metadata"
-                },
-                Select = new[]
-                {
-                    "Id",
-                    "Name",
-                    "Caption",
-                    "Description",
-                    "Version",
-                    "Documents.$"
-                }
-            }).ToString();
+                                      {
+                                          Version = "",
+                                          From = new
+                                                 {
+                                                     Index = "systemconfig",
+                                                     Type = "metadata"
+                                                 },
+                                          Select = new[]
+                                                   {
+                                                       "Id",
+                                                       "Name",
+                                                       "Caption",
+                                                       "Description",
+                                                       "Version",
+                                                       "Documents.$"
+                                                   }
+                                      }).ToString();
         }
 
         /// <summary>
-        ///   Получить список метаданных решений
+        /// Получить список метаданных решений
         /// </summary>
         /// <returns></returns>
         public static string GetSolutionListIql()
         {
             return JObject.FromObject(new
-            {
-                
-                From = new
-                {
-                    Index = "systemconfig",
-                    Type = "solutionmetadata"
-                },
-                Select = new[]
-                {
-                    "Id",
-                    "Name",
-                    "Caption",
-                    "Description",
-                    "Version",
-                    "ReferencedConfigurations"
-                }
-            }).ToString();
+                                      {
+                                          From = new
+                                                 {
+                                                     Index = "systemconfig",
+                                                     Type = "solutionmetadata"
+                                                 },
+                                          Select = new[]
+                                                   {
+                                                       "Id",
+                                                       "Name",
+                                                       "Caption",
+                                                       "Description",
+                                                       "Version",
+                                                       "ReferencedConfigurations"
+                                                   }
+                                      }).ToString();
         }
 
-        public static string GetConfigurationMetadataShortListIql(string version, string configurationId, string metadataContainer)
+        public static string GetConfigurationMetadataShortListIql(string configurationId, string metadataContainer)
         {
             return JObject.FromObject(new
-            {
-                Version = version,
-                ConfigId = configurationId,
-                From = new
-                {
-                    Index = "systemconfig",
-                    Type = "metadata"
-                },
-                Select = new[]
-                {
-                    "Id",
-                    "Name",
-                    "Caption",
-                    "Description",
-                    "Version",
-                    string.Format("{0}.$.Id", metadataContainer),
-                    string.Format("{0}.$.Name", metadataContainer),
-                    string.Format("{0}.$.Caption", metadataContainer)
-                }
-            }).ToString();
+                                      {
+                                          Version = "",
+                                          ConfigId = configurationId,
+                                          From = new
+                                                 {
+                                                     Index = "systemconfig",
+                                                     Type = "metadata"
+                                                 },
+                                          Select = new[]
+                                                   {
+                                                       "Id",
+                                                       "Name",
+                                                       "Caption",
+                                                       "Description",
+                                                       "Version",
+                                                       string.Format("{0}.$.Id", metadataContainer),
+                                                       string.Format("{0}.$.Name", metadataContainer),
+                                                       string.Format("{0}.$.Caption", metadataContainer)
+                                                   }
+                                      }).ToString();
         }
 
-        public static string GetDocumentMetadataShortListIql(string version, string configurationId, string documentId,
-            string metadataContainer)
+        public static string GetDocumentMetadataShortListIql(string configurationId, string documentId, string metadataContainer)
         {
             return JObject.FromObject(new
-            {
-                Version = version,
-                ConfigId = configurationId,
-                DocumentId = documentId,
-                From = new
-                {
-                    Index = "systemconfig",
-                    Type = "documentmetadata"
-                },
-                Select = new[]
-                {
-                    "Id",
-                    "Name",
-                    "Caption",
-                    "Description",
-                    "Version",
-                    string.Format("{0}.$.Id", metadataContainer),
-                    string.Format("{0}.$.Name", metadataContainer),
-                    string.Format("{0}.$.Caption", metadataContainer)
-                }
-            }).ToString();
+                                      {
+                                          Version = "",
+                                          ConfigId = configurationId,
+                                          DocumentId = documentId,
+                                          From = new
+                                                 {
+                                                     Index = "systemconfig",
+                                                     Type = "documentmetadata"
+                                                 },
+                                          Select = new[]
+                                                   {
+                                                       "Id",
+                                                       "Name",
+                                                       "Caption",
+                                                       "Description",
+                                                       "Version",
+                                                       string.Format("{0}.$.Id", metadataContainer),
+                                                       string.Format("{0}.$.Name", metadataContainer),
+                                                       string.Format("{0}.$.Caption", metadataContainer)
+                                                   }
+                                      }).ToString();
         }
 
-        public static string GetDocumentMetadataByNameIql(string version, string configurationId, string documentId, string metadataName,
-            string metadataContainer, string metadataType)
+        public static string GetDocumentMetadataByNameIql(string configurationId, string documentId, string metadataName, string metadataContainer, string metadataType)
         {
             return JObject.FromObject(new
-            {
-                Version = version,
-                ConfigId = configurationId,
-                DocumentId = documentId,
-                From = new
-                {
-                    Index = "systemconfig",
-                    Type = "documentmetadata"
-                },
-                Select = new[]
-                {
-                    string.Format("{0}Full", metadataType)
-                },
-                Join = new[]
-                {
-                    new
-                    {
-                        Index = "systemconfig",
-                        Alias = string.Format("{0}Full", metadataType),
-                        Path = string.Format("{0}.$.Id", metadataContainer),
-                        Type = string.Format("{0}metadata", metadataType)
-                    }
-                },
-                Where = new[]
-                {
-                    new
-                    {
-                        Property = string.Format("{0}Full.Name", metadataType),
-                        CriteriaType = CriteriaType.IsEquals,
-                        Value = metadataName
-                    }
-                }
-            }).ToString();
+                                      {
+                                          Version = "",
+                                          ConfigId = configurationId,
+                                          DocumentId = documentId,
+                                          From = new
+                                                 {
+                                                     Index = "systemconfig",
+                                                     Type = "documentmetadata"
+                                                 },
+                                          Select = new[]
+                                                   {
+                                                       string.Format("{0}Full", metadataType)
+                                                   },
+                                          Join = new[]
+                                                 {
+                                                     new
+                                                     {
+                                                         Index = "systemconfig",
+                                                         Alias = string.Format("{0}Full", metadataType),
+                                                         Path = string.Format("{0}.$.Id", metadataContainer),
+                                                         Type = string.Format("{0}metadata", metadataType)
+                                                     }
+                                                 },
+                                          Where = new[]
+                                                  {
+                                                      new
+                                                      {
+                                                          Property = string.Format("{0}Full.Name", metadataType),
+                                                          CriteriaType = CriteriaType.IsEquals,
+                                                          Value = metadataName
+                                                      }
+                                                  }
+                                      }).ToString();
         }
 
-        public static string GetConfigurationMetadataByNameIql(string version, string configurationId, string metadataName,
-            string metadataContainer, string metadataType)
+        public static string GetConfigurationMetadataByNameIql(string configurationId, string metadataName, string metadataContainer, string metadataType)
         {
             return JObject.FromObject(new
-            {
-                ConfigId = configurationId,
-                Version = version,
-                From = new
-                {
-                    Index = "systemconfig",
-                    Type = "metadata"
-                },
-                Select = new[]
-                {
-                    string.Format("{0}Full", metadataType)
-                },
-                Join = new[]
-                {
-                    new
-                    {
-                        Index = string.Format("systemconfig"),
-                        Alias = string.Format("{0}Full", metadataType),
-                        Path = string.Format("{0}.$.Id", metadataContainer),
-                        Type = string.Format("{0}metadata", metadataType)
-                    }
-                },
-                Where = new[]
-                {
-                    new
-                    {
-                        Property = string.Format("{0}Full.Name", metadataType),
-                        CriteriaType = CriteriaType.IsEquals,
-                        Value = metadataName
-                    }
-                }
-            }).ToString();
+                                      {
+                                          ConfigId = configurationId,
+                                          Version = "",
+                                          From = new
+                                                 {
+                                                     Index = "systemconfig",
+                                                     Type = "metadata"
+                                                 },
+                                          Select = new[]
+                                                   {
+                                                       string.Format("{0}Full", metadataType)
+                                                   },
+                                          Join = new[]
+                                                 {
+                                                     new
+                                                     {
+                                                         Index = "systemconfig",
+                                                         Alias = string.Format("{0}Full", metadataType),
+                                                         Path = string.Format("{0}.$.Id", metadataContainer),
+                                                         Type = string.Format("{0}metadata", metadataType)
+                                                     }
+                                                 },
+                                          Where = new[]
+                                                  {
+                                                      new
+                                                      {
+                                                          Property = string.Format("{0}Full.Name", metadataType),
+                                                          CriteriaType = CriteriaType.IsEquals,
+                                                          Value = metadataName
+                                                      }
+                                                  }
+                                      }).ToString();
         }
     }
 }

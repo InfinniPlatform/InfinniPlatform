@@ -13,7 +13,7 @@ namespace InfinniPlatform.SystemConfig.Configurator.ActionUnitsMetadataDataSourc
         {
             //получаем список всех прикладных конфигураций в системе
             target.Result = new DynamicWrapper();
-            target.Result.ConfigList = QueryMetadata.QueryConfiguration(QueryMetadata.GetConfigurationShortListIql(target.Item.Version),
+            target.Result.ConfigList = QueryMetadata.QueryConfiguration(QueryMetadata.GetConfigurationShortListIql(),
                                                                         doNotCheckVersion: target.Item.DoNotCheckVersion != null
                                                                                                ? target.Item.DoNotCheckVersion
                                                                                                : false);

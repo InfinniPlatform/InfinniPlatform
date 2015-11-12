@@ -14,7 +14,7 @@ namespace InfinniPlatform.SystemConfig.Configurator.ActionUnitsMetadataDataSourc
         {
             dynamic bodyQuery =
                 DynamicWrapperExtensions.ToDynamic(
-                    QueryMetadata.GetConfigurationMetadataShortListIql(target.Item.Version, target.Item.ConfigId,
+                    QueryMetadata.GetConfigurationMetadataShortListIql(target.Item.ConfigId,
                                                                        new MetadataContainerDocument()
                                                                            .GetMetadataContainerName()));
 

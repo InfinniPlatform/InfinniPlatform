@@ -6,7 +6,6 @@ using System.Linq;
 using InfinniPlatform.Api.Serialization;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Logging;
-using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.WebApi.Factories;
@@ -15,10 +14,8 @@ namespace InfinniPlatform.SystemConfig.Initializers
 {
     public sealed class PackageJsonConfigurationsInitializer : IStartupInitializer
     {
-        public PackageJsonConfigurationsInitializer(ISecurityComponent securityComponent)
+        public PackageJsonConfigurationsInitializer()
         {
-            _securityComponent = securityComponent;
-
             _configurations = new Lazy<IEnumerable<DynamicWrapper>>(LoadConfigsMetadata);
 
             var watcher = new FileSystemWatcher(AppSettings.GetValue("ContentDirectory", "content"), "*.json")
@@ -34,7 +31,6 @@ namespace InfinniPlatform.SystemConfig.Initializers
         }
 
         private readonly Lazy<IEnumerable<DynamicWrapper>> _configurations;
-        private readonly ISecurityComponent _securityComponent;
 
         public void OnStart(HostingContextBuilder contextBuilder)
         {
@@ -80,9 +76,9 @@ namespace InfinniPlatform.SystemConfig.Initializers
             }
         }
 
-        private void InstallConfiguration(object configuration, string configId, string configVersion = null)
+        private static void InstallConfiguration(object configuration, string configId, string configVersion = null)
         {
-            // Загрузка метеданных конфигурации для кэширования
+            // Загрузка метаданных конфигурации для кэширования
             var metadataCacheFiller = LoadConfigurationMetadata(configuration);
 
             // Создание менеджера кэша метаданных конфигураций
@@ -96,12 +92,6 @@ namespace InfinniPlatform.SystemConfig.Initializers
 
             // Создание сервисов конфигурации
             InfinniPlatformHostServer.Instance.InstallServices(configVersion, metadataCacheManager.ServiceRegistrationContainer);
-
-            // Загрузка ACL после установки конфигурации "Authorization"
-            if (string.Equals(configId, "authorization", StringComparison.OrdinalIgnoreCase))
-            {
-                _securityComponent.WarmUpAcl();
-            }
         }
 
         private static void RemoveConfiguration(string configurationName)

@@ -32,15 +32,11 @@ namespace InfinniPlatform.Transactions
             _itemsList = itemsList;
         }
 
-
         private readonly IBlobStorageFactory _blobStorageFactory;
         private readonly IIndexFactory _indexFactory;
         private readonly List<AttachedInstance> _itemsList;
         private readonly string _transactionMarker;
-
-
         public Action<ITransaction> OnCommit { get; set; }
-
 
         /// <summary>
         /// Зафиксировать транзакцию
@@ -60,7 +56,7 @@ namespace InfinniPlatform.Transactions
 
                 foreach (var item in _itemsList.Where(i => !i.Detached))
                 {
-                    var versionProvider = _indexFactory.BuildVersionProvider(item.ConfigId, item.DocumentId, item.Version);
+                    var versionProvider = _indexFactory.BuildVersionProvider(item.ConfigId, item.DocumentId);
 
                     versionProvider.SetDocuments(item.Documents);
 
@@ -71,7 +67,7 @@ namespace InfinniPlatform.Transactions
 
                         foreach (var fileDescription in item.Files)
                         {
-                            binaryManager.SaveBinary(item.Documents, item.ConfigId, item.Version, item.DocumentId, fileDescription.FieldName, fileDescription.Bytes);
+                            binaryManager.SaveBinary(item.Documents, item.ConfigId, item.DocumentId, fileDescription.FieldName, fileDescription.Bytes);
                         }
                     }
                 }
@@ -90,7 +86,7 @@ namespace InfinniPlatform.Transactions
                 Logger.Log.Error(message, null, e);
                 Logger.PerformanceLog.Log(component, method, start, e.Message);
 
-                
+
                 throw new ArgumentException(message, e);
             }
         }
@@ -144,21 +140,19 @@ namespace InfinniPlatform.Transactions
             }
         }
 
-	    /// <summary>
-	    /// Присоединить документ к транзакции
-	    /// </summary>
-	    /// <param name="configId">Идентификатор конфигурации</param>
-	    /// <param name="documentId">Идентификатор типа документа</param>
-	    /// <param name="version">Версия конфигурации</param>
-	    /// <param name="document">Присоединяемые документы</param>
-	    public void Attach(string configId, string documentId, string version, IEnumerable<dynamic> document)
+        /// <summary>
+        /// Присоединить документ к транзакции
+        /// </summary>
+        /// <param name="configId">Идентификатор конфигурации</param>
+        /// <param name="documentId">Идентификатор типа документа</param>
+        /// <param name="document">Присоединяемые документы</param>
+        public void Attach(string configId, string documentId, IEnumerable<dynamic> document)
         {
             _itemsList.Add(new AttachedInstance
                            {
                                Documents = document,
                                ConfigId = configId,
-                               DocumentId = documentId,
-                               Version = version
+                               DocumentId = documentId
                            });
         }
 

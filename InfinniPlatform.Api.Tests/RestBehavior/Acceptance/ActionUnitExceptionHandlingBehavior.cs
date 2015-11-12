@@ -42,20 +42,20 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             new IndexApi().RebuildIndex(ConfigurationId, documentId);
 
             MetadataManagerConfiguration managerConfiguration =
-                ManagerFactoryConfiguration.BuildConfigurationManager("1.0.0.0");
+                ManagerFactoryConfiguration.BuildConfigurationManager();
 
             dynamic config = managerConfiguration.CreateItem(ConfigurationId);
             managerConfiguration.DeleteItem(config);
             managerConfiguration.MergeItem(config);
 
             MetadataManagerDocument managerDocument =
-                new ManagerFactoryConfiguration("1.0.0.0", ConfigurationId).BuildDocumentManager();
+                new ManagerFactoryConfiguration(ConfigurationId).BuildDocumentManager();
             dynamic documentMetadata1 = managerDocument.CreateItem(documentId);
             managerDocument.MergeItem(documentMetadata1);
 
             //добавляем бизнес-процесс по умолчанию
             MetadataManagerElement processManager =
-                new ManagerFactoryDocument("1.0.0.0", ConfigurationId, documentId).BuildProcessManager();
+                new ManagerFactoryDocument(ConfigurationId, documentId).BuildProcessManager();
             dynamic defaultProcess = processManager.CreateItem("Default");
 
             dynamic instance = new DynamicWrapper();
@@ -73,7 +73,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             //указываем ссылку на тестовый сценарий комплексного предзаполнения
             MetadataManagerElement scenarioManager =
-                new ManagerFactoryDocument("1.0.0.0", ConfigurationId, documentId).BuildScenarioManager();
+                new ManagerFactoryDocument(ConfigurationId, documentId).BuildScenarioManager();
 
             const string scenarioSuccessId = "ActionWithException";
             dynamic scenarioSuccessItem = scenarioManager.CreateItem(scenarioSuccessId);
@@ -86,16 +86,16 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             //добавляем ссылку на сборку, в которой находится прикладной модуль
             MetadataManagerElement assemblyManager =
-                new ManagerFactoryConfiguration("1.0.0.0", ConfigurationId).BuildAssemblyManager();
+                new ManagerFactoryConfiguration(ConfigurationId).BuildAssemblyManager();
             dynamic assemblyItem = assemblyManager.CreateItem("InfinniPlatform.Api.Tests");
             assemblyManager.MergeItem(assemblyItem);
 
             dynamic package = new PackageBuilder().BuildPackage(ConfigurationId, "1.0.0.0", GetType().Assembly.Location);
-            new UpdateApi("1.0.0.0").InstallPackages(new[] { package });
+            new UpdateApi().InstallPackages(new[] { package });
 
-            RestQueryApi.QueryPostNotify(null, ConfigurationId);
+            RestQueryApi.QueryPostNotify(ConfigurationId);
 
-            new UpdateApi("1.0.0.0").UpdateStore(ConfigurationId);
+            new UpdateApi().UpdateStore(ConfigurationId);
         }
 
         [Test]

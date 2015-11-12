@@ -15,8 +15,7 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.DocumentElements
         {
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            var managerConfigElement = new ManagerFactoryDocument(routeDictionary["versionMetadata"],
-                                                                       routeDictionary["configuration"],
+            var managerConfigElement = new ManagerFactoryDocument(routeDictionary["configuration"],
                                                                        routeDictionary["document"]);
 
             if (routeDictionary["instanceId"].ToLowerInvariant() != "list")

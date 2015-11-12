@@ -24,7 +24,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
 
                 defaultBusinessProcess =
                     target.Context.GetComponent<IMetadataComponent>()
-                          .GetMetadata(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration, target.Item.Metadata,
+                          .GetMetadata(target.Item.Configuration, target.Item.Metadata,
                                        MetadataType.Process, "Default");
             }
             else
@@ -43,7 +43,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                 scriptArguments.Context = target.Context.GetComponent<ICustomServiceGlobalContext>();
 
                 target.Context.GetComponent<IScriptRunnerComponent>()
-                      .GetScriptRunner(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration)
+                      .GetScriptRunner(null, target.Item.Configuration)
                       .InvokeScript(defaultBusinessProcess.Transitions[0].ComplexAuthorizationPoint.ScenarioId,
                                     scriptArguments);
             }

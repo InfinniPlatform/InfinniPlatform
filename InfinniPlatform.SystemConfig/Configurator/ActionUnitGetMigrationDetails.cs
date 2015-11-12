@@ -33,7 +33,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
             {
                 var migration = (IConfigurationMigration) Activator.CreateInstance(selectedType);
 
-                migration.AssignActiveConfiguration(target.Context.GetVersion(configurationName, target.UserName), configurationName, target.Context);
+                migration.AssignActiveConfiguration(configurationName, target.Context);
 
                 target.Result = new
                     {
