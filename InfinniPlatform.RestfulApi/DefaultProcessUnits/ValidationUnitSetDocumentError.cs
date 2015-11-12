@@ -35,7 +35,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                 //ищем метаданные бизнес-процесса по умолчанию документа 
                 defaultBusinessProcess =
                     target.Context.GetComponent<IMetadataComponent>()
-                          .GetMetadata(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration, target.Item.Metadata,
+                          .GetMetadata(null, target.Item.Configuration, target.Item.Metadata,
                               MetadataType.Process, "Default");
             }
 
@@ -51,7 +51,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
             {
                 var validationOperator =
                     target.Context.GetComponent<IMetadataComponent>()
-                          .GetMetadata(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration, target.Item.Metadata,
+                          .GetMetadata(null, target.Item.Configuration, target.Item.Metadata,
                               MetadataType.ValidationError,
                               (string)defaultBusinessProcess.Transitions[0].ValidationRuleError)
                           .ValidationOperator;
@@ -66,7 +66,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                 var configBuilder =
                     target.Context.GetComponent<IConfigurationMediatorComponent>().ConfigurationBuilder;
 
-                IConfigurationObject configurationObject = configBuilder.GetConfigurationObject(target.Context.GetVersion(target.Item.Configuration, target.UserName),
+                IConfigurationObject configurationObject = configBuilder.GetConfigurationObject(null,
                     target.Item
                           .Configuration);
 

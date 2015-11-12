@@ -21,7 +21,7 @@ namespace InfinniPlatform.RestfulApi.Auth
 
 
                 var documentProvider = target.Context.GetComponent<InprocessDocumentComponent>()
-                                             .GetDocumentProvider(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration,
+                                             .GetDocumentProvider(null, target.Item.Configuration,
                                                                   target.Item.Metadata, target.UserName);
 
                 if (documentProvider != null)

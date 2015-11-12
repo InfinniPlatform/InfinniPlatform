@@ -58,7 +58,7 @@ namespace InfinniPlatform.SystemConfig.Configurator.Generators
                                                                          target.Item.MetadataType);
 
             MetadataManagerElement manager =
-                new ManagerFactoryDocument(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration, target.Item.Metadata)
+                new ManagerFactoryDocument(null, target.Item.Configuration, target.Item.Metadata)
                     .BuildGeneratorManager();
 
             //создаем новый генератор в конфигурации

@@ -55,14 +55,13 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
             var idType = ConfigRequestProvider.GetMetadataIdentifier();
             var config =
                 _globalContext.GetComponent<IConfigurationMediatorComponent>()
-                    .ConfigurationBuilder.GetConfigurationObject(_globalContext.GetVersion(ConfigRequestProvider.GetConfiguration(),ConfigRequestProvider.GetUserName()),
-                        ConfigRequestProvider.GetConfiguration())
+                    .ConfigurationBuilder.GetConfigurationObject(null, ConfigRequestProvider.GetConfiguration())
                     .MetadataConfiguration;
 
             //устанавливаем контекст прикладной конфигурации. В ходе рефакторинга необходимо обдумать, как вынести это на более высокий уровень абстракции
             var appliedConfig =
                 _globalContext.GetComponent<IConfigurationMediatorComponent>()
-                    .GetConfiguration(_globalContext.GetVersion(ConfigRequestProvider.GetConfiguration(),ConfigRequestProvider.GetUserName()), ConfigRequestProvider.GetConfiguration());
+                    .GetConfiguration(null, ConfigRequestProvider.GetConfiguration());
 
 
             if (string.IsNullOrEmpty(idType))
@@ -92,7 +91,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
                 string configVersion = null;
                 if (searchType != SearchType.All)
                 {
-                    configVersion = _globalContext.GetVersion(ConfigRequestProvider.GetConfiguration(),ConfigRequestProvider.GetUserName()) ?? appliedConfig.GetConfigurationVersion();
+                    configVersion = appliedConfig.GetConfigurationVersion();
                 }
 
 				var documentProvider = appliedConfig.GetDocumentProvider(ConfigRequestProvider.GetMetadataIdentifier(), configVersion);

@@ -21,11 +21,9 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
         public void Action(IApplyContext target)
         {
-            var version = target.Context.GetVersion(target.Item.Configuration, target.UserName);
-
             dynamic documentProvider =
                 target.Context.GetComponent<InprocessDocumentComponent>()
-                      .GetDocumentProvider(version, target.Item.Configuration, target.Item.Metadata,
+                      .GetDocumentProvider(null, target.Item.Configuration, target.Item.Metadata,
                           target.UserName);
 
             dynamic instanceId = null;
@@ -35,7 +33,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
                 _metadataComponent = target.Context.GetComponent<IMetadataComponent>();
 
-                IEnumerable<dynamic> result = _metadataComponent.GetMetadataList(version,
+                IEnumerable<dynamic> result = _metadataComponent.GetMetadataList(null,
                     target.Item.Configuration,
                     target.Item.Metadata,
                     MetadataType.Schema);
@@ -47,7 +45,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
                 if (target.Item.Document != null)
                 {
-                    target.Item.Document = AdjustDocumentContent(version, target.Item.Document, documentSchema,
+                    target.Item.Document = AdjustDocumentContent(null, target.Item.Document, documentSchema,
                         allowNonSchemaProperties);
 
                     instanceId = target.Item.Document.Id;
@@ -58,7 +56,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
                     foreach (var document in target.Item.Documents)
                     {
-                        adjustedDocs.Add(AdjustDocumentContent(version, document, documentSchema,
+                        adjustedDocs.Add(AdjustDocumentContent(null, document, documentSchema,
                             allowNonSchemaProperties));
                     }
 

@@ -22,7 +22,6 @@ namespace InfinniPlatform.SystemConfig.Configurator
             string configuration = target.Item.Configuration;
             string register = target.Item.Register;
             dynamic registerEntries = target.Item.RegisterEntries;
-            string version = target.Context.GetVersion(configuration, target.UserName);
 
             if (string.IsNullOrEmpty(configuration))
             {
@@ -41,7 +40,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
 
             var registerMetadata =
                 target.Context.GetComponent<IMetadataComponent>()
-                      .GetMetadataList(version, configuration, register, MetadataType.Register)
+                      .GetMetadataList(null, configuration, register, MetadataType.Register)
                       .FirstOrDefault();
 
             var dimensionNames = new List<string>();

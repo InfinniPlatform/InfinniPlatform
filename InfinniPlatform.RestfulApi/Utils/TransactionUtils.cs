@@ -18,7 +18,7 @@ namespace InfinniPlatform.RestfulApi.Utils
                           .GetTransaction(target.TransactionMarker)
                           .Attach(target.Item.Configuration,
                                   target.Item.Metadata,
-                                  target.Context.GetVersion(target.Item.Configuration, target.UserName),
+                                  null,
                                   docs);
                 }
             }

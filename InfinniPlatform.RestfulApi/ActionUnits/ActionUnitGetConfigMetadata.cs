@@ -46,15 +46,13 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
             if (target.Result != null)
             {
-                var version = target.Context.GetVersion(paramsDoc.Configuration, target.UserName);
-
                 var service = target.Context.GetComponent<IMetadataComponent>()
-                                    .GetMetadata(version, paramsDoc.Configuration, "Common", MetadataType.Service,
+                                    .GetMetadata(null, paramsDoc.Configuration, "Common", MetadataType.Service,
                                                  "FilterMetadata");
 
                 if (service != null)
                 {
-                    target.Result.Version = version;
+                    target.Result.Version = null;
 
                     dynamic filterMetadata =
                         RestQueryApi.QueryPostJsonRaw(paramsDoc.Configuration, "Common", "FilterMetadata", null,

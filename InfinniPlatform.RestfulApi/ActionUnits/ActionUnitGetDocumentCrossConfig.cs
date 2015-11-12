@@ -31,7 +31,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                             target.Context.GetComponent<IProfilerComponent>(),
                             target.Context.GetComponent<ILogComponent>());
 
-                    resultDocuments.AddRange(executor.GetCompleteDocuments(target.Context.GetVersion(config, target.UserName), config, document,
+                    resultDocuments.AddRange(executor.GetCompleteDocuments(null, config, document,
                                                                            target.UserName,
                                                                            Convert.ToInt32(target.Item.PageNumber),
                                                                            Convert.ToInt32(target.Item.PageSize),

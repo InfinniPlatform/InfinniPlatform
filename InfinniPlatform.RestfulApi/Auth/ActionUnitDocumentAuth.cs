@@ -47,7 +47,7 @@ namespace InfinniPlatform.RestfulApi.Auth
         {
             var roleCheckProcess =
                 target.Context.GetComponent<IMetadataComponent>()
-                      .GetMetadata(target.Context.GetVersion(AuthorizationStorageExtensions.AuthorizationConfigId, target.UserName), AuthorizationStorageExtensions.AuthorizationConfigId, "Common",
+                      .GetMetadata(null, AuthorizationStorageExtensions.AuthorizationConfigId, "Common",
                           MetadataType.Process, "FilterRoles");
 
             if (roleCheckProcess != null && roleCheckProcess.Transitions[0].ActionPoint != null)
@@ -60,7 +60,7 @@ namespace InfinniPlatform.RestfulApi.Auth
                 try
                 {
                     target.Context.GetComponent<IScriptRunnerComponent>()
-                          .GetScriptRunner(target.Context.GetVersion(AuthorizationStorageExtensions.AuthorizationConfigId, target.UserName), AuthorizationStorageExtensions.AuthorizationConfigId)
+                          .GetScriptRunner(null, AuthorizationStorageExtensions.AuthorizationConfigId)
                           .InvokeScript(roleCheckProcess.Transitions[0].ActionPoint.ScenarioId, scriptArguments);
                 }
                 catch (ArgumentException e)

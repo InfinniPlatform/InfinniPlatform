@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 
-using InfinniPlatform.Api.Index.SearchOptions;
-using InfinniPlatform.Api.RestApi.Auth;
-using InfinniPlatform.Api.SearchOptions;
-using InfinniPlatform.Api.Security;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Index.QueryLanguage.Implementation;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
+
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.SystemConfig.Configurator
@@ -30,7 +26,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
         {
 			_jsonQueryExecutor = new JsonQueryExecutor(target.Context.GetComponent<IIndexComponent>().IndexFactory, FilterFactory);
 
-            var version = target.Item.Version ?? target.Context.GetVersion(target.Item.ConfigId, target.UserName);
+            var version = target.Item.Version;
 
             var fullprofiler =
                 target.Context.GetComponent<IProfilerComponent>()

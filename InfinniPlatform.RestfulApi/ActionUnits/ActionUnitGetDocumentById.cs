@@ -26,7 +26,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             }
             else
             {
-                target.Result = executor.GetCompleteDocument(target.Context.GetVersion(target.Item.ConfigId, target.UserName), target.Item.ConfigId,
+                target.Result = executor.GetCompleteDocument(null, target.Item.ConfigId,
                                                              target.Item.DocumentId,
                                                              target.UserName, target.Item.Id);
             }

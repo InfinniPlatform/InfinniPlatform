@@ -18,10 +18,8 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 					target.Context.GetComponent<IProfilerComponent>(),
 					target.Context.GetComponent<ILogComponent>());
 
-			var configurationVersion = target.Context.GetVersion(target.Item.Configuration, target.UserName);
-
 			target.Result = executor.GetCompleteDocuments(
-				configurationVersion,
+				null,
 				target.Item.Configuration,
 				target.Item.Metadata,
 				target.UserName,

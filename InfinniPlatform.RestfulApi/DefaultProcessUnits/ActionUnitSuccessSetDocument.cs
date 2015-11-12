@@ -24,7 +24,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                 //ищем метаданные бизнес-процесса по умолчанию документа 
                 defaultBusinessProcess =
                     target.Context.GetComponent<IMetadataComponent>()
-                          .GetMetadata(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration, target.Item.Metadata,
+                          .GetMetadata(null, target.Item.Configuration, target.Item.Metadata,
                                        MetadataType.Process, "Default");
             }
             else
@@ -43,7 +43,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                 scriptArguments.Context = target.Context.GetComponent<ICustomServiceGlobalContext>();
 
                 target.Context.GetComponent<IScriptRunnerComponent>()
-                      .GetScriptRunner(target.Context.GetVersion(target.Item.Configuration, target.UserName), target.Item.Configuration)
+                      .GetScriptRunner(null, target.Item.Configuration)
                       .InvokeScript(defaultBusinessProcess.Transitions[0].SuccessPoint.ScenarioId, scriptArguments);
 
                 if (target.Item.Document != null && target.Item.Document.Id != null)

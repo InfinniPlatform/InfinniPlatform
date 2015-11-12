@@ -30,13 +30,13 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             string userName = target.UserName;
             IEnumerable<dynamic> filter = target.Item.Filter;
 
-            var documentProvider = _documentComponent.GetDocumentProvider(target.Context.GetVersion(target.Item.Configuration, target.UserName), configId, documentId, userName);
+            var documentProvider = _documentComponent.GetDocumentProvider(null, configId, documentId, userName);
 
             if (documentProvider != null)
             {
                 var metadataConfiguration =
                     _configurationMediatorComponent
-                          .ConfigurationBuilder.GetConfigurationObject(target.Context.GetVersion(target.Item.Configuration, target.UserName), configId)
+                          .ConfigurationBuilder.GetConfigurationObject(null, configId)
                           .MetadataConfiguration;
 
                 if (metadataConfiguration == null)
@@ -50,7 +50,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                 var profiler = _profilerComponent.GetOperationProfiler("VersionProvider.GetNumberOfDocuments", null);
                 profiler.Reset();
 
-                var queryAnalyzer = new QueryCriteriaAnalyzer(_metadataComponent, target.Context.GetVersion(target.Item.Configuration, target.UserName), schema);
+                var queryAnalyzer = new QueryCriteriaAnalyzer(_metadataComponent, null, schema);
 
                 returnResult.NumberOfDocuments = documentProvider.GetNumberOfDocuments(queryAnalyzer.GetBeforeResolveCriteriaList(filter));
                 
