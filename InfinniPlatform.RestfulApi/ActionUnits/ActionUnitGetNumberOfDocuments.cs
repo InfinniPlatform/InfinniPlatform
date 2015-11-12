@@ -36,7 +36,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             {
                 var metadataConfiguration =
                     _configurationMediatorComponent
-                          .ConfigurationBuilder.GetConfigurationObject(null, configId)
+                          .ConfigurationBuilder.GetConfigurationObject(configId)
                           .MetadataConfiguration;
 
                 if (metadataConfiguration == null)

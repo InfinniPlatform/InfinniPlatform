@@ -38,7 +38,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
 
             var metadataConfig =
                 _globalContext.GetComponent<IMetadataConfigurationProvider>()
-                    .GetMetadataConfiguration(null, ConfigRequestProvider.GetConfiguration());
+                    .GetMetadataConfiguration(ConfigRequestProvider.GetConfiguration());
 
             metadataConfig.MoveWorkflow(metadata, metadataConfig.GetExtensionPointValue(ConfigRequestProvider, "Upload"),
                 target);

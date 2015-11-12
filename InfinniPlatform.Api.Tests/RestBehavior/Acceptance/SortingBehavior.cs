@@ -64,13 +64,13 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             new IndexApi().RebuildIndex(ConfigurationId, DocumentWithInlineSorting);
 
             MetadataManagerConfiguration managerConfiguration =
-                ManagerFactoryConfiguration.BuildConfigurationManager(null);
+                ManagerFactoryConfiguration.BuildConfigurationManager();
             dynamic config = managerConfiguration.CreateItem(ConfigurationId);
             managerConfiguration.DeleteItem(config);
             managerConfiguration.MergeItem(config);
 
             MetadataManagerDocument managerDocument =
-                new ManagerFactoryConfiguration(null, ConfigurationId).BuildDocumentManager();
+                new ManagerFactoryConfiguration(ConfigurationId).BuildDocumentManager();
 
             dynamic stringPropertyModel = new DynamicWrapper();
             stringPropertyModel.Type = DataType.String.ToString();
@@ -223,9 +223,9 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             documentWithInlineSorting.Schema.Properties = schemaProperties;
             managerDocument.MergeItem(documentWithInlineSorting);
 
-            new UpdateApi(null).ForceReload(ConfigurationId);
+            new UpdateApi().ForceReload(ConfigurationId);
 
-            new UpdateApi(null).UpdateStore(ConfigurationId);
+            new UpdateApi().UpdateStore(ConfigurationId);
         }
 
         [Test]

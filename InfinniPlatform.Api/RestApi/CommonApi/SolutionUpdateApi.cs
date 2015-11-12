@@ -22,7 +22,7 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
 
         public dynamic InstallPackages(IEnumerable<dynamic> packages)
         {
-            var readerSolution = ManagerFactorySolution.BuildSolutionReader(_version);
+            var readerSolution = ManagerFactorySolution.BuildSolutionReader();
 
             dynamic solution = readerSolution.GetItem(_solutionId);
 
@@ -38,8 +38,8 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
 
             foreach (var referencedConfiguration in solution.ReferencedConfigurations)
             {
-                new UpdateApi(referencedConfiguration.Version).InstallPackages(packages.Where(p => p.ConfigurationName == referencedConfiguration.Name && p.Version == referencedConfiguration.Version).ToList());
-                RestQueryApi.QueryPostNotify(referencedConfiguration.Version, referencedConfiguration.Name);
+                new UpdateApi().InstallPackages(packages.Where(p => p.ConfigurationName == referencedConfiguration.Name && p.Version == referencedConfiguration.Version).ToList());
+                RestQueryApi.QueryPostNotify(referencedConfiguration.Name);
             }
 
             result = new DynamicWrapper();

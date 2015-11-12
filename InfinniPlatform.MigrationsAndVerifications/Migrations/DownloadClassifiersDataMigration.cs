@@ -2,28 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 {
     /// <summary>
-    ///     Миграция позволяет экспортировать данные всех справочников
+    /// Миграция позволяет экспортировать данные всех справочников
     /// </summary>
     public sealed class DownloadClassifiersDataMigration : IConfigurationMigration
     {
         private readonly List<MigrationParameter> _parameters = new List<MigrationParameter>();
-
         private IMetadataConfiguration _metadataConfiguration;
-        private string _version;
 
         /// <summary>
-        ///     Текстовое описание миграции
+        /// Текстовое описание миграции
         /// </summary>
         public string Description
         {
@@ -31,9 +29,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Идентификатор конфигурации, к которой применима миграция.
-        ///     В том случае, если идентификатор не указан (null or empty string),
-        ///     миграция применима ко всем конфигурациям
+        /// Идентификатор конфигурации, к которой применима миграция.
+        /// В том случае, если идентификатор не указан (null or empty string),
+        /// миграция применима ко всем конфигурациям
         /// </summary>
         public string ConfigurationId
         {
@@ -41,9 +39,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Версия конфигурации, к которой применима миграция.
-        ///     В том случае, если версия не указана (null or empty string),
-        ///     миграция применима к любой версии конфигурации
+        /// Версия конфигурации, к которой применима миграция.
+        /// В том случае, если версия не указана (null or empty string),
+        /// миграция применима к любой версии конфигурации
         /// </summary>
         public string ConfigVersion
         {
@@ -51,7 +49,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Признак того, что миграцию можно откатить
+        /// Признак того, что миграцию можно откатить
         /// </summary>
         public bool IsUndoable
         {
@@ -59,7 +57,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Выполнить миграцию
+        /// Выполнить миграцию
         /// </summary>
         /// <param name="message">Информативное сообщение с результатом выполнения действия</param>
         /// <param name="parameters"></param>
@@ -74,12 +72,14 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                 item.Configuration = "classifierstorage";
                 item.PathToZip = parameters[0].ToString();
 
-                string[] classifiers = _metadataConfiguration.Documents.ToArray();
+                var classifiers = _metadataConfiguration.Documents.ToArray();
 
-                for (int i = 0; i < classifiers.Length; i++)
+                for (var i = 0; i < classifiers.Length; i++)
                 {
                     if (parameters[i].ToString() == "False")
+                    {
                         continue;
+                    }
 
                     item.Metadata = classifiers[i];
                     RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "ExportDataToJson", null, item);
@@ -97,7 +97,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Отменить миграцию
+        /// Отменить миграцию
         /// </summary>
         /// <param name="message">Информативное сообщение с результатом выполнения действия</param>
         /// <param name="parameters">Параметры миграции</param>
@@ -107,7 +107,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Возвращает параметры миграции
+        /// Возвращает параметры миграции
         /// </summary>
         public IEnumerable<MigrationParameter> Parameters
         {
@@ -115,16 +115,15 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Устанавливает активную конфигурацию для миграции
+        /// Устанавливает активную конфигурацию для миграции
         /// </summary>
-        public void AssignActiveConfiguration(string version, string configurationId, IGlobalContext context)
+        public void AssignActiveConfiguration(string configurationId, IGlobalContext context)
         {
-            _version = version;
-            _parameters.Add(new MigrationParameter {Caption = "Path to folder"});
+            _parameters.Add(new MigrationParameter { Caption = "Path to folder" });
 
             var configObject =
                 context.GetComponent<IConfigurationMediatorComponent>()
-                       .ConfigurationBuilder.GetConfigurationObject(_version, "classifierstorage");
+                       .ConfigurationBuilder.GetConfigurationObject("classifierstorage");
 
             if (configObject != null)
             {
@@ -133,7 +132,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 
             if (_metadataConfiguration != null)
             {
-                foreach (string containerId in _metadataConfiguration.Documents)
+                foreach (var containerId in _metadataConfiguration.Documents)
                 {
                     if (containerId.ToLowerInvariant() == "common")
                     {
@@ -141,10 +140,10 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                     }
 
                     _parameters.Add(new MigrationParameter
-                        {
-                            Caption = containerId,
-                            InitialValue = true
-                        });
+                                    {
+                                        Caption = containerId,
+                                        InitialValue = true
+                                    });
                 }
             }
         }

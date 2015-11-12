@@ -40,7 +40,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
 
             var registerMetadata =
                 target.Context.GetComponent<IMetadataComponent>()
-                      .GetMetadataList(null, configuration, register, MetadataType.Register)
+                      .GetMetadataList(configuration, register, MetadataType.Register)
                       .FirstOrDefault();
 
             var dimensionNames = new List<string>();

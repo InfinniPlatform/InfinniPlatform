@@ -41,14 +41,14 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
         private void CreateTestConfig()
         {
-            MetadataManagerConfiguration managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager("1.0.0.0");
+            MetadataManagerConfiguration managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager();
 
             dynamic config = managerConfig.CreateItem(configId);
             managerConfig.DeleteItem(config);
             managerConfig.MergeItem(config);
 
             MetadataManagerDocument managerDocument =
-                new ManagerFactoryConfiguration("1.0.0.0", configId).BuildDocumentManager();
+                new ManagerFactoryConfiguration(configId).BuildDocumentManager();
 
 
             new IndexApi().RebuildIndex(configId, documentId);
@@ -69,9 +69,9 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             managerDocument.MergeItem(documentMetadata1);
 
-            RestQueryApi.QueryPostNotify("1.0.0.0", configId);
+            RestQueryApi.QueryPostNotify(configId);
 
-            new UpdateApi("1.0.0.0").UpdateStore(configId);
+            new UpdateApi().UpdateStore(configId);
         }
 
         [Test]

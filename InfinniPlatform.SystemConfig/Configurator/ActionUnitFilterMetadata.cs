@@ -32,11 +32,11 @@ namespace InfinniPlatform.SystemConfig.Configurator
 
                 if (target.Metadata != null && target.Metadata.ToLowerInvariant() == "solutionmetadata")
                 {
-                    target.Id = managerIdentifiers.GetSolutionUid(version, eventNameMetadata);
+                    target.Id = managerIdentifiers.GetSolutionUid(eventNameMetadata);
                 }
                 else
                 {
-                    target.Id = managerIdentifiers.GetConfigurationUid(version, eventNameMetadata);
+                    target.Id = managerIdentifiers.GetConfigurationUid(eventNameMetadata);
                 }
             }
 

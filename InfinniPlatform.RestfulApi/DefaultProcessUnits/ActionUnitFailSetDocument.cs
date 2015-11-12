@@ -24,7 +24,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
 
                 defaultBusinessProcess =
                     target.Context.GetComponent<IMetadataComponent>()
-                          .GetMetadata(null, target.Item.Configuration, target.Item.Metadata,
+                          .GetMetadata(target.Item.Configuration, target.Item.Metadata,
                                        MetadataType.Process, "Default");
             }
             else

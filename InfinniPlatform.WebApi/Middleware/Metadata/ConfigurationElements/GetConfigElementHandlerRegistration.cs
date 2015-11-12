@@ -15,8 +15,7 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.ConfigurationElements
         {
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            var factoryConfiguration = new ManagerFactoryConfiguration(routeDictionary["versionMetadata"],
-                                                                       routeDictionary["configuration"]);
+            var factoryConfiguration = new ManagerFactoryConfiguration(routeDictionary["configuration"]);
 
             if (routeDictionary["instanceId"].ToLowerInvariant() != "unknown")
             {

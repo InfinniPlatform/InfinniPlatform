@@ -9,11 +9,9 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
     [Obsolete]
     public sealed class UpdateApi
     {
-        private readonly string _version;
 
-        public UpdateApi(string version)
+        public UpdateApi()
         {
-            _version = version;
         }
 
         /// <summary>
@@ -36,7 +34,6 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
                 DocumentId = documentId,
                 MetadataType = metadataType,
                 MetadataObject = metadataObject,
-                Version = _version
             };
 
             RestQueryApi.QueryPostJsonRaw("Update", "Package", "installjsonmetadata", null, request);
@@ -52,7 +49,6 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
 
             var linkedData = new
                 {
-                    Version = _version
                 };
 
             var response = builder.QueryPostFile(linkedData, filePath, null);
@@ -78,7 +74,6 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
 
             var linkedData = new
             {
-                Version = _version
             };
 
             var response = builder.QueryPostFile(linkedData, filePath, null);
@@ -98,7 +93,7 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
         /// </summary>
         public void ForceReload(string configurationId)
         {
-            var response = RestQueryApi.QueryPostNotify(_version, configurationId);
+            var response = RestQueryApi.QueryPostNotify(configurationId);
 
             if (!response.IsAllOk)
             {

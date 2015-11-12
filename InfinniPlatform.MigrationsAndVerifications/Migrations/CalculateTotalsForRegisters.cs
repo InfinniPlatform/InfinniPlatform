@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+
 using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.Registers;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Sdk.Contracts;
@@ -11,19 +11,17 @@ using InfinniPlatform.Sdk.Environment.Register;
 namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 {
     /// <summary>
-    ///     Миграция позволяет рассчитать итоги для регистров накопления на текущую дату
+    /// Миграция позволяет рассчитать итоги для регистров накопления на текущую дату
     /// </summary>
     public sealed class CalculateTotalsForRegisters : IConfigurationMigration
     {
         /// <summary>
-        ///     Конфигурация, к которой применяется миграция
+        /// Конфигурация, к которой применяется миграция
         /// </summary>
         private string _activeConfiguration;
 
-        private string _version;
-
         /// <summary>
-        ///     Текстовое описание миграции
+        /// Текстовое описание миграции
         /// </summary>
         public string Description
         {
@@ -31,9 +29,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Идентификатор конфигурации, к которой применима миграция.
-        ///     В том случае, если идентификатор не указан (null or empty string),
-        ///     миграция применима ко всем конфигурациям
+        /// Идентификатор конфигурации, к которой применима миграция.
+        /// В том случае, если идентификатор не указан (null or empty string),
+        /// миграция применима ко всем конфигурациям
         /// </summary>
         public string ConfigurationId
         {
@@ -41,9 +39,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Версия конфигурации, к которой применима миграция.
-        ///     В том случае, если версия не указана (null or empty string),
-        ///     миграция применима к любой версии конфигурации
+        /// Версия конфигурации, к которой применима миграция.
+        /// В том случае, если версия не указана (null or empty string),
+        /// миграция применима к любой версии конфигурации
         /// </summary>
         public string ConfigVersion
         {
@@ -51,7 +49,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Признак того, что миграцию можно откатить
+        /// Признак того, что миграцию можно откатить
         /// </summary>
         public bool IsUndoable
         {
@@ -59,7 +57,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Выполнить миграцию
+        /// Выполнить миграцию
         /// </summary>
         /// <param name="message">Информативное сообщение с результатом выполнения действия</param>
         /// <param name="parameters"></param>
@@ -68,19 +66,19 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
             var resultMessage = new StringBuilder();
 
             if (new IndexApi().IndexExists(_activeConfiguration,
-                                           _activeConfiguration + RegisterConstants.RegistersCommonInfo))
+                _activeConfiguration + RegisterConstants.RegistersCommonInfo))
             {
-                IEnumerable<dynamic> registersInfo = new DocumentApi().GetDocument(_activeConfiguration,
-                                                                                           _activeConfiguration +
-                                                                                           RegisterConstants
-                                                                                               .RegistersCommonInfo,
-                                                                                           null, 0, 1000);
+                var registersInfo = new DocumentApi().GetDocument(_activeConfiguration,
+                    _activeConfiguration +
+                    RegisterConstants
+                        .RegistersCommonInfo,
+                    null, 0, 1000);
 
-                foreach (dynamic registerInfo in registersInfo)
+                foreach (var registerInfo in registersInfo)
                 {
                     dynamic registerId = registerInfo.Id;
 
-                    DateTime tempDate = DateTime.Now;
+                    var tempDate = DateTime.Now;
 
                     var calculationDate = new DateTime(
                         tempDate.Year,
@@ -90,22 +88,22 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                         tempDate.Minute,
                         tempDate.Second);
 
-                    IEnumerable<dynamic> aggregatedData =
+                    var aggregatedData =
                         RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetRegisterValuesByDate", null,
-                                                      new
-                                                          {
-                                                              Configuration = _activeConfiguration,
-                                                              Register = registerId,
-                                                              Date = calculationDate
-                                                          }).ToDynamicList();
+                            new
+                            {
+                                Configuration = _activeConfiguration,
+                                Register = registerId,
+                                Date = calculationDate
+                            }).ToDynamicList();
 
-                    foreach (dynamic item in aggregatedData)
+                    foreach (var item in aggregatedData)
                     {
                         item.Id = Guid.NewGuid().ToString();
                         item[RegisterConstants.DocumentDateProperty] = calculationDate;
                         new DocumentApi().SetDocument(_activeConfiguration,
-                                                              RegisterConstants.RegisterTotalNamePrefix + registerId,
-                                                              item);
+                            RegisterConstants.RegisterTotalNamePrefix + registerId,
+                            item);
                     }
                 }
             }
@@ -121,7 +119,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Отменить миграцию
+        /// Отменить миграцию
         /// </summary>
         /// <param name="message">Информативное сообщение с результатом выполнения действия</param>
         /// <param name="parameters">Параметры миграции</param>
@@ -131,7 +129,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Возвращает параметры миграции
+        /// Возвращает параметры миграции
         /// </summary>
         public IEnumerable<MigrationParameter> Parameters
         {
@@ -139,11 +137,10 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Устанавливает активную конфигурацию для миграции
+        /// Устанавливает активную конфигурацию для миграции
         /// </summary>
-        public void AssignActiveConfiguration(string version, string configurationId, IGlobalContext context)
+        public void AssignActiveConfiguration(string configurationId, IGlobalContext context)
         {
-            _version = version;
             _activeConfiguration = configurationId;
         }
     }

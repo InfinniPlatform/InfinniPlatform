@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataReaders;
@@ -9,16 +10,14 @@ using InfinniPlatform.Sdk.Contracts;
 namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 {
     /// <summary>
-    ///     Миграция добавляет контейнер Reports к конфигурации
+    /// Миграция добавляет контейнер Reports к конфигурации
     /// </summary>
     public sealed class AddReportsMigration : IConfigurationMigration
     {
         private string _activeConfiguration;
 
-        private string _version;
-
         /// <summary>
-        ///     Текстовое описание миграции
+        /// Текстовое описание миграции
         /// </summary>
         public string Description
         {
@@ -26,9 +25,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Идентификатор конфигурации, к которой применима миграция.
-        ///     В том случае, если идентификатор не указан (null or empty string),
-        ///     миграция применима ко всем конфигурациям
+        /// Идентификатор конфигурации, к которой применима миграция.
+        /// В том случае, если идентификатор не указан (null or empty string),
+        /// миграция применима ко всем конфигурациям
         /// </summary>
         public string ConfigurationId
         {
@@ -36,9 +35,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Версия конфигурации, к которой применима миграция.
-        ///     В том случае, если версия не указана (null or empty string),
-        ///     миграция применима к любой версии конфигурации
+        /// Версия конфигурации, к которой применима миграция.
+        /// В том случае, если версия не указана (null or empty string),
+        /// миграция применима к любой версии конфигурации
         /// </summary>
         public string ConfigVersion
         {
@@ -46,7 +45,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Признак того, что миграцию можно откатить
+        /// Признак того, что миграцию можно откатить
         /// </summary>
         public bool IsUndoable
         {
@@ -54,7 +53,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Выполнить миграцию
+        /// Выполнить миграцию
         /// </summary>
         /// <param name="message">Информативное сообщение с результатом выполнения действия</param>
         /// <param name="parameters"></param>
@@ -62,19 +61,19 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         {
             var resultMessage = new StringBuilder();
 
-            var configReader = new MetadataReaderConfiguration(_version);
+            var configReader = new MetadataReaderConfiguration();
 
             dynamic configMetadata = configReader.GetItem(_activeConfiguration);
 
             if (configMetadata.Reports == null)
             {
                 configMetadata.Reports = new List<dynamic>();
-                new MetadataManagerConfiguration(configReader, null).MergeItem(configMetadata);
+                new MetadataManagerConfiguration(configReader).MergeItem(configMetadata);
 
                 resultMessage.AppendLine();
                 resultMessage.AppendFormat("Reports container was added.");
 
-                new UpdateApi(_version).ForceReload(_activeConfiguration);
+                new UpdateApi().ForceReload(_activeConfiguration);
             }
 
             resultMessage.AppendLine();
@@ -84,7 +83,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Отменить миграцию
+        /// Отменить миграцию
         /// </summary>
         /// <param name="message">Информативное сообщение с результатом выполнения действия</param>
         /// <param name="parameters">Параметры миграции</param>
@@ -96,7 +95,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Возвращает параметры миграции
+        /// Возвращает параметры миграции
         /// </summary>
         public IEnumerable<MigrationParameter> Parameters
         {
@@ -104,12 +103,11 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Устанавливает активную конфигурацию для миграции
+        /// Устанавливает активную конфигурацию для миграции
         /// </summary>
-        public void AssignActiveConfiguration(string version, string configurationId, IGlobalContext context)
+        public void AssignActiveConfiguration(string configurationId, IGlobalContext context)
         {
             _activeConfiguration = configurationId;
-            _version = version;
         }
     }
 }

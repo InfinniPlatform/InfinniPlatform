@@ -44,7 +44,7 @@ namespace InfinniPlatform.Api.Tests.Packages
 
             solutionExporter.ImportHeaderFromStructure("1.0.0.0");
 
-            IDataReader managerConfiguration = ManagerFactoryConfiguration.BuildConfigurationMetadataReader("1.0.0.0");
+            IDataReader managerConfiguration = ManagerFactoryConfiguration.BuildConfigurationMetadataReader();
             dynamic config1 = managerConfiguration.GetItem("Administration");
             dynamic config2 = managerConfiguration.GetItem("AdministrationCustomization");
             dynamic config3 = managerConfiguration.GetItem("Authorization");

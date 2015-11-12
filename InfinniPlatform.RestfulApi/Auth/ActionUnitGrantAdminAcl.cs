@@ -21,13 +21,11 @@ namespace InfinniPlatform.RestfulApi.Auth
             //ищем конфигурацию авторизации и добавляем права на меню авторизации
             var metadataComponent = target.Context.GetComponent<IMetadataComponent>();
 
-            var menuAuth = metadataComponent.GetMetadata(null,
-                                                         AuthorizationStorageExtensions.AuthorizationConfigId, "Common",
+            var menuAuth = metadataComponent.GetMetadata(AuthorizationStorageExtensions.AuthorizationConfigId, "Common",
                                                          MetadataType.Menu, "MainMenu");
-            var menuAdmin = metadataComponent.GetMetadata(null,
-                                                          AuthorizationStorageExtensions.AdministrationConfigId,
+            var menuAdmin = metadataComponent.GetMetadata(AuthorizationStorageExtensions.AdministrationConfigId,
                                                           "Common", MetadataType.Menu, "MainMenu");
-            IEnumerable<dynamic> configs = metadataComponent.GetConfigMetadata(null);
+            IEnumerable<dynamic> configs = metadataComponent.GetConfigMetadata();
 
             dynamic configAuth =
                 configs.FirstOrDefault(c => c.Name == AuthorizationStorageExtensions.AuthorizationConfigId);

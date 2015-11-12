@@ -114,10 +114,10 @@ namespace InfinniPlatform.MetadataDesigner.Views
 			{
 				try
 				{
-				var metadataManager = new ManagerFactoryDocument(Version(), ConfigId(), DocumentId());
+				var metadataManager = new ManagerFactoryDocument(ConfigId(), DocumentId());
 				var generatorItemsDocument = metadataManager.BuildGeneratorMetadataReader().GetItems();
 
-                var metadataManagerCommon = new ManagerFactoryDocument(Version(), ConfigId(), "Common");
+                var metadataManagerCommon = new ManagerFactoryDocument(ConfigId(), "Common");
 				var generatorItemsCommon = metadataManagerCommon.BuildGeneratorMetadataReader().GetItems();
 
 				MetadataGeneratorSelect.Properties.Items.Clear();

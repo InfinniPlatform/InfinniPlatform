@@ -35,11 +35,11 @@ namespace InfinniPlatform.ContextComponents
             var configBuilder = _configurationMediatorComponent.ConfigurationBuilder;
 
             //получаем конфигурацию, указанную в метаданных запроса
-            var config = configBuilder.GetConfigurationObject(version, configId);
+            var config = configBuilder.GetConfigurationObject(configId);
 
             if (config != null)
             {
-                return config.GetDocumentProvider(documentId, version);
+                return config.GetDocumentProvider(documentId);
             }
             return null;
         }

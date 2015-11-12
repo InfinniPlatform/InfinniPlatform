@@ -47,7 +47,7 @@ namespace InfinniPlatform.RestfulApi.Auth
         {
             var roleCheckProcess =
                 target.Context.GetComponent<IMetadataComponent>()
-                      .GetMetadata(null, AuthorizationStorageExtensions.AuthorizationConfigId, "Common",
+                      .GetMetadata(AuthorizationStorageExtensions.AuthorizationConfigId, "Common",
                           MetadataType.Process, "FilterRoles");
 
             if (roleCheckProcess != null && roleCheckProcess.Transitions[0].ActionPoint != null)

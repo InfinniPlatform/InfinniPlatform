@@ -25,8 +25,7 @@ namespace InfinniPlatform.RestfulApi.Session
                 {
                     Application = tr.ConfigId,
                     DocumentType = tr.DocumentId,
-                    Document = tr.Documents.FirstOrDefault(),
-                    tr.Version
+                    Document = tr.Documents.FirstOrDefault()
                 });
         }
     }

@@ -10,14 +10,13 @@ namespace InfinniPlatform.Sdk.Environment.Metadata
         /// </summary>
         IMetadataConfiguration MetadataConfiguration { get; }
 
-	    /// <summary>
-	    ///     Предоставить провайдер версий документа для работы в прикладных скриптах
-	    ///     Создает провайдер, возвращающий версии документов всех существующих в индексе типов
-	    /// </summary>
-	    /// <param name="documentId">метаданные объекта</param>
-	    /// <param name="version"></param>
-	    /// <returns>Провайдер версий документа</returns>
-	    IVersionProvider GetDocumentProvider(string documentId, string version);
+        /// <summary>
+        ///     Предоставить провайдер версий документа для работы в прикладных скриптах
+        ///     Создает провайдер, возвращающий версии документов всех существующих в индексе типов
+        /// </summary>
+        /// <param name="documentId">метаданные объекта</param>
+        /// <returns>Провайдер версий документа</returns>
+        IVersionProvider GetDocumentProvider(string documentId);
 
         /// <summary>
         ///     Получить хранилище бинарных данных

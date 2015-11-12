@@ -66,7 +66,7 @@ namespace InfinniPlatform.RestfulApi.Utils
 
                 IMetadataConfiguration metadataConfiguration =
                     _configurationMediatorComponent
-                        .ConfigurationBuilder.GetConfigurationObject(version, configId)
+                        .ConfigurationBuilder.GetConfigurationObject(configId)
                         .MetadataConfiguration;
 
                 if (metadataConfiguration == null)
@@ -165,8 +165,7 @@ namespace InfinniPlatform.RestfulApi.Utils
                             // inline ссылка на документ: необходимо получить схему документа, на который сделана ссылка,
                             // чтобы получить сортировочные поля 
                             dynamic inlineMetadataConfiguration =
-                                configurationObjectBuilder.GetConfigurationObject(version,
-                                                                                  propertyMapping.Value.TypeInfo
+                                configurationObjectBuilder.GetConfigurationObject(propertyMapping.Value.TypeInfo
                                                                                                  .DocumentLink.ConfigId)
                                                           .MetadataConfiguration;
 

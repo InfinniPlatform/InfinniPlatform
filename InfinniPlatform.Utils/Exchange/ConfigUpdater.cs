@@ -31,12 +31,12 @@ namespace InfinniPlatform.Utils.Exchange
 
 		public void UpdateConfigurationMetadataFromZip(string fileName)
 		{
-			new UpdateApi(VersionName).UpdateConfigFromJson(fileName);
+			new UpdateApi().UpdateConfigFromJson(fileName);
 		}
 
 		public dynamic UpdateSolutionMetadataFromZip(string fileName)
 		{
-			return new UpdateApi(VersionName).UpdateSolutionFromJson(fileName);
+			return new UpdateApi().UpdateSolutionFromJson(fileName);
 		}
 
 		public void UpdateConfigurationMetadataFromDirectory(string pathToConfigDirectory)
@@ -62,12 +62,12 @@ namespace InfinniPlatform.Utils.Exchange
 				foreach (var appliedAssembly in appliedAssemblies)
 				{
 					var package = packageBuilder.BuildPackage(configuration, VersionName, appliedAssembly);
-					new UpdateApi(VersionName).InstallPackages(new[] { package });
+					new UpdateApi().InstallPackages(new[] { package });
 					Console.WriteLine(@"Assembly ""{0}"" installed", appliedAssembly);
 				}
 
-				RestQueryApi.QueryPostNotify(VersionName, configuration);
-				new UpdateApi(VersionName).UpdateStore(configuration);
+				RestQueryApi.QueryPostNotify(configuration);
+				new UpdateApi().UpdateStore(configuration);
 			}
 			catch (Exception e)
 			{

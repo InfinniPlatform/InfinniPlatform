@@ -82,7 +82,7 @@ namespace InfinniPlatform.RestfulApi.Utils
 
         private bool HasCircularRefs(string version, string configId, string documentId)
         {
-            IEnumerable<dynamic> metadata = _metadataComponent.GetMetadataList(version, configId, documentId,
+            IEnumerable<dynamic> metadata = _metadataComponent.GetMetadataList(configId, documentId,
                                                                                MetadataType.Schema);
 
             dynamic schema = metadata.FirstOrDefault();

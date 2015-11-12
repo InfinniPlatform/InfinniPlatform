@@ -33,8 +33,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
                 _metadataComponent = target.Context.GetComponent<IMetadataComponent>();
 
-                IEnumerable<dynamic> result = _metadataComponent.GetMetadataList(null,
-                    target.Item.Configuration,
+                IEnumerable<dynamic> result = _metadataComponent.GetMetadataList(target.Item.Configuration,
                     target.Item.Metadata,
                     MetadataType.Schema);
 
@@ -194,8 +193,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                     if (propertyTypeInfo.DocumentLink.ConfigId != null &&
                         propertyTypeInfo.DocumentLink.DocumentId != null)
                     {
-                        IEnumerable<dynamic> metadataList = _metadataComponent.GetMetadataList(version,
-                            propertyTypeInfo.DocumentLink.ConfigId,
+                        IEnumerable<dynamic> metadataList = _metadataComponent.GetMetadataList(propertyTypeInfo.DocumentLink.ConfigId,
                             propertyTypeInfo.DocumentLink.DocumentId,
                             MetadataType.Schema);
 
@@ -251,8 +249,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                     if (propertyTypeInfo.DocumentLink.ConfigId != null &&
                         propertyTypeInfo.DocumentLink.DocumentId != null)
                     {
-                        IEnumerable<dynamic> metadataList = _metadataComponent.GetMetadataList(version,
-                            propertyTypeInfo.DocumentLink.ConfigId,
+                        IEnumerable<dynamic> metadataList = _metadataComponent.GetMetadataList(propertyTypeInfo.DocumentLink.ConfigId,
                             propertyTypeInfo.DocumentLink.DocumentId,
                             MetadataType.Schema);
 

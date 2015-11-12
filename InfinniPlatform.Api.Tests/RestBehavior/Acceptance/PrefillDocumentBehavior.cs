@@ -48,7 +48,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             string documentIdReferenceInlineInner = "TestDocument2";
 
 
-            MetadataManagerConfiguration managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager("1.0.0.0");
+            MetadataManagerConfiguration managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager();
 
 
             dynamic config = managerConfig.CreateItem(configId);
@@ -58,7 +58,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             managerConfig.MergeItem(config);
 
             MetadataManagerDocument managerDocument =
-                new ManagerFactoryConfiguration("1.0.0.0", configId).BuildDocumentManager();
+                new ManagerFactoryConfiguration(configId).BuildDocumentManager();
 
 
             new IndexApi().RebuildIndex(configId, documentId);
@@ -145,13 +145,13 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             managerDocument.MergeItem(documentMetadata2);
             managerDocument.MergeItem(documentMetadata3);
 
-            RestQueryApi.QueryPostNotify("1.0.0.0", configId);
+            RestQueryApi.QueryPostNotify(configId);
 
-            new UpdateApi("1.0.0.0").UpdateStore(configId);
+            new UpdateApi().UpdateStore(configId);
 
             //указываем ссылку на тестовый сценарий комплексного предзаполнения
             MetadataManagerElement scenarioManager =
-                new ManagerFactoryDocument("1.0.0.0", configId, documentId).BuildScenarioManager();
+                new ManagerFactoryDocument(configId, documentId).BuildScenarioManager();
             string scenarioId = "TestComplexFillDocumentAction";
             dynamic scenarioItem = scenarioManager.CreateItem(scenarioId);
             scenarioItem.ScenarioId = scenarioId;
@@ -165,14 +165,14 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             //добавляем ссылку на сборку, в которой находится прикладной модуль
 
             MetadataManagerElement assemblyManager =
-                new ManagerFactoryConfiguration("1.0.0.0", configId).BuildAssemblyManager();
+                new ManagerFactoryConfiguration(configId).BuildAssemblyManager();
             dynamic assemblyItem = assemblyManager.CreateItem("InfinniPlatform.Api.Tests");
             assemblyManager.MergeItem(assemblyItem);
 
 
             //Описываем схему предзаполнения в умолчательном бизнес-процессе
             MetadataManagerElement processManager =
-                new ManagerFactoryDocument("1.0.0.0", configId, documentId).BuildProcessManager();
+                new ManagerFactoryDocument(configId, documentId).BuildProcessManager();
             dynamic process = processManager.CreateItem("Default");
 
             process.Type = WorkflowTypes.WithoutState;
@@ -195,12 +195,12 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             processManager.MergeItem(process);
 
             dynamic package = new PackageBuilder().BuildPackage(configId, "1.0.0.0", GetType().Assembly.Location);
-            new UpdateApi("1.0.0.0").InstallPackages(new[] { package });
+            new UpdateApi().InstallPackages(new[] { package });
 
 
-            RestQueryApi.QueryPostNotify("1.0.0.0", configId);
+            RestQueryApi.QueryPostNotify(configId);
 
-            new UpdateApi("1.0.0.0").UpdateStore(configId);
+            new UpdateApi().UpdateStore(configId);
 
 
             //вызываем предзаполнение

@@ -52,13 +52,12 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 			return new VersionBuilder(new IndexStateProvider(), indexName, typeName);
 		}
 
-		/// <summary>
-		///     Создать провайдер данных
-		/// </summary>
-		/// <param name="indexName">Наименование индекса</param>
-		/// <param name="typeName">Наименование типа</param>
-		/// <param name="version">Версия данных</param>
-		public IVersionProvider BuildVersionProvider(string indexName, string typeName, string version = null)
+	    /// <summary>
+	    ///     Создать провайдер данных
+	    /// </summary>
+	    /// <param name="indexName">Наименование индекса</param>
+	    /// <param name="typeName">Наименование типа</param>
+	    public IVersionProvider BuildVersionProvider(string indexName, string typeName)
 		{
 			var elasticSearchProvider = new ElasticSearchProvider(indexName, typeName);
 			var indexSettings = GetIndexTypeAccordanceSettings(new[] { indexName }, new[] { typeName });

@@ -48,7 +48,7 @@ namespace InfinniPlatform.RestfulApi.Utils
             }
 
 
-            IEnumerable<dynamic> metadataList = _metadataComponent.GetMetadataList(version, typeInfo.ConfigId,
+            IEnumerable<dynamic> metadataList = _metadataComponent.GetMetadataList(typeInfo.ConfigId,
                                                                                    typeInfo.DocumentId,
                                                                                    MetadataType.Schema);
 

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -10,13 +8,6 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
 {
     public sealed class MetadataReaderSolution : IDataReader
     {
-        private readonly string _version;
-
-        public MetadataReaderSolution(string version)
-        {
-            _version = version;
-        }
-
         public IEnumerable<dynamic> GetItems()
         {
             return

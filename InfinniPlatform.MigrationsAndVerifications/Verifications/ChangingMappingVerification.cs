@@ -74,7 +74,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
 
             var metadataConfiguration =
                 _context.GetComponent<IConfigurationMediatorComponent>()
-                        .ConfigurationBuilder.GetConfigurationObject(_version, _activeConfiguration)
+                        .ConfigurationBuilder.GetConfigurationObject(_activeConfiguration)
                         .MetadataConfiguration;
             //_metadataConfigurationProvider.Configurations.FirstOrDefault(
             //	c => c.ConfigurationId == _activeConfiguration);
@@ -111,7 +111,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
                         resultMessage.AppendLine();
                         resultMessage.AppendFormat("Version creation required for {0} document.", containerId);
 
-                        if (new ManagerFactoryDocument(_version, _activeConfiguration, containerId)
+                        if (new ManagerFactoryDocument(_activeConfiguration, containerId)
                             .BuildValidationWarningsMetadataReader().GetItems().Any())
                         {
                             resultMessage.AppendLine();
@@ -120,7 +120,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
                                 containerId);
                         }
 
-                        if (new ManagerFactoryDocument(_version, _activeConfiguration, containerId)
+                        if (new ManagerFactoryDocument(_activeConfiguration, containerId)
                             .BuildValidationErrorsMetadataReader().GetItems().Any())
                         {
                             resultMessage.AppendLine();
@@ -130,7 +130,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
                         }
 
                         foreach (dynamic process in
-                            new ManagerFactoryDocument(_version, _activeConfiguration, containerId)
+                            new ManagerFactoryDocument(_activeConfiguration, containerId)
                                 .BuildProcessMetadataReader()
                                 .GetItems())
                         {

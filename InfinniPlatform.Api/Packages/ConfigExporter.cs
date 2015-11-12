@@ -23,7 +23,7 @@ namespace InfinniPlatform.Api.Packages
         /// <param name="configurationId">Наименование экспортируемой конфигурации</param>
         public void ExportHeaderToStructure(string version, string newVersion, string configurationId)
         {
-            var managerConfig = ManagerFactoryConfiguration.BuildConfigurationMetadataReader(version);
+            var managerConfig = ManagerFactoryConfiguration.BuildConfigurationMetadataReader();
 
             dynamic config = managerConfig.GetItem(configurationId);
 
@@ -38,7 +38,7 @@ namespace InfinniPlatform.Api.Packages
 
                 _exportStructure.AddConfiguration(result);
 
-                var menuReader = new ManagerFactoryConfiguration(version, configurationId).BuildMenuMetadataReader();
+                var menuReader = new ManagerFactoryConfiguration(configurationId).BuildMenuMetadataReader();
                 var menuList = menuReader.GetItems();
 
                 foreach (var menu in menuList)
@@ -52,7 +52,7 @@ namespace InfinniPlatform.Api.Packages
                     _exportStructure.AddMenu(menu.Name, result);
                 }
 
-                var reportReader = new ManagerFactoryConfiguration(version, configurationId).BuildReportMetadataReader();
+                var reportReader = new ManagerFactoryConfiguration(configurationId).BuildReportMetadataReader();
                 var reportList = reportReader.GetItems();
 
                 foreach (var report in reportList)
@@ -66,7 +66,7 @@ namespace InfinniPlatform.Api.Packages
                 }
 
                 var documentReader =
-                    new ManagerFactoryConfiguration(version, configurationId).BuildDocumentMetadataReader();
+                    new ManagerFactoryConfiguration(configurationId).BuildDocumentMetadataReader();
                 var documents = documentReader.GetItems();
 
                 foreach (var document in documents)
@@ -93,7 +93,7 @@ namespace InfinniPlatform.Api.Packages
                 }
 
                 var registerReader =
-                    new ManagerFactoryConfiguration(version, configurationId).BuildRegisterMetadataReader();
+                    new ManagerFactoryConfiguration(configurationId).BuildRegisterMetadataReader();
                 var registers = registerReader.GetItems();
 
                 foreach (var register in registers)
@@ -116,7 +116,7 @@ namespace InfinniPlatform.Api.Packages
         private void ProcessMetadataType(string version, string newVersion, string configId, string documentId, string metadataType)
         {
             var metadataReader =
-                new ManagerFactoryDocument(version, configId, documentId).BuildManagerByType(metadataType)
+                new ManagerFactoryDocument(configId, documentId).BuildManagerByType(metadataType)
                     .MetadataReader;
             foreach (var item in metadataReader.GetItems())
             {
@@ -142,11 +142,11 @@ namespace InfinniPlatform.Api.Packages
 
             dynamic config = _exportStructure.GetConfiguration();
 
-            new UpdateApi(version).UpdateMetadataObject(config.Name, null, config, MetadataType.Configuration);
+            new UpdateApi().UpdateMetadataObject(config.Name, null, config, MetadataType.Configuration);
 
             foreach (var assembly in config.Assemblies)
             {
-                new UpdateApi(version).UpdateMetadataObject(config.Name, null, assembly, MetadataType.Assembly);
+                new UpdateApi().UpdateMetadataObject(config.Name, null, assembly, MetadataType.Assembly);
             }
 
             IEnumerable<dynamic> menuList = config.Menu;
@@ -154,7 +154,7 @@ namespace InfinniPlatform.Api.Packages
             foreach (var menu in menuList)
             {
                 dynamic menuFull = _exportStructure.GetMenu(menu.Name);
-                new UpdateApi(version).UpdateMetadataObject(config.Name, null, menuFull, MetadataType.Menu);
+                new UpdateApi().UpdateMetadataObject(config.Name, null, menuFull, MetadataType.Menu);
 
                 config.Menu.Add(menuFull);
             }
@@ -166,7 +166,7 @@ namespace InfinniPlatform.Api.Packages
                 foreach (var report in reportList)
                 {
                     dynamic reportFull = _exportStructure.GetReport(report.Name);
-                    new UpdateApi(version).UpdateMetadataObject(config.Name, null, reportFull, MetadataType.Report);
+                    new UpdateApi().UpdateMetadataObject(config.Name, null, reportFull, MetadataType.Report);
 
                     config.Reports.Add(reportFull);
                 }
@@ -177,7 +177,7 @@ namespace InfinniPlatform.Api.Packages
             foreach (var document in documents)
             {
                 dynamic documentFull = _exportStructure.GetDocument(document.Name);
-                new UpdateApi(version).UpdateMetadataObject(config.Name, document.Name, documentFull,
+                new UpdateApi().UpdateMetadataObject(config.Name, document.Name, documentFull,
                     MetadataType.Document);
 
                 config.Documents.Add(documentFull);
@@ -199,7 +199,7 @@ namespace InfinniPlatform.Api.Packages
                                     metadataType.Name,
                                     documentMetadataType);
 
-                                new UpdateApi(version).UpdateMetadataObject(config.Name, document.Name,
+                                new UpdateApi().UpdateMetadataObject(config.Name, document.Name,
                                     metadataTypeObject,
                                     documentMetadataType);
 
@@ -222,7 +222,7 @@ namespace InfinniPlatform.Api.Packages
                 foreach (var register in registers)
                 {
                     dynamic registerFull = _exportStructure.GetRegister(register.Name);
-                    new UpdateApi(version).UpdateMetadataObject(config.Name, register.Name, registerFull,
+                    new UpdateApi().UpdateMetadataObject(config.Name, register.Name, registerFull,
                         MetadataType.Register);
 
                     config.Registers.Add(registerFull);

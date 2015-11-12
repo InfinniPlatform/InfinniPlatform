@@ -27,7 +27,7 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
 
             var registerObject =
                 target.Context.GetComponent<IMetadataComponent>()
-                      .GetMetadataList(null, configurationId, registerId, MetadataType.Register)
+                      .GetMetadataList(configurationId, registerId, MetadataType.Register)
                       .FirstOrDefault();
 
             if (registerObject == null)

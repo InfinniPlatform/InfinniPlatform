@@ -55,7 +55,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
             var idType = ConfigRequestProvider.GetMetadataIdentifier();
             var config =
                 _globalContext.GetComponent<IConfigurationMediatorComponent>()
-                    .ConfigurationBuilder.GetConfigurationObject(null, ConfigRequestProvider.GetConfiguration())
+                    .ConfigurationBuilder.GetConfigurationObject(ConfigRequestProvider.GetConfiguration())
                     .MetadataConfiguration;
 
             //устанавливаем контекст прикладной конфигурации. В ходе рефакторинга необходимо обдумать, как вынести это на более высокий уровень абстракции
@@ -94,7 +94,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
                     configVersion = appliedConfig.GetConfigurationVersion();
                 }
 
-				var documentProvider = appliedConfig.GetDocumentProvider(ConfigRequestProvider.GetMetadataIdentifier(), configVersion);
+				var documentProvider = appliedConfig.GetDocumentProvider(ConfigRequestProvider.GetMetadataIdentifier());
 
                 dynamic sr = null;
                 if (documentProvider != null)

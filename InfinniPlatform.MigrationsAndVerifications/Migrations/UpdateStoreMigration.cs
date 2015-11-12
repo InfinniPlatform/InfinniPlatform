@@ -12,27 +12,26 @@ using InfinniPlatform.Sdk.Environment.Metadata;
 namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 {
     /// <summary>
-    ///     Миграция позволяет обновить маппинг в хранилище документов после изменения схемы данных документов конфигурации
+    /// Миграция позволяет обновить маппинг в хранилище документов после изменения схемы данных документов конфигурации
     /// </summary>
     public sealed class UpdateStoreMigration : IConfigurationMigration
     {
-        private readonly IIndexFactory _indexFactory;
-
         public UpdateStoreMigration()
         {
-			_indexFactory = new ElasticFactory();
+            _indexFactory = new ElasticFactory();
         }
-		
+
+        private readonly IIndexFactory _indexFactory;
+
         /// <summary>
-        ///     Конфигурация, к которой применяется миграция
+        /// Конфигурация, к которой применяется миграция
         /// </summary>
         private string _activeConfiguration;
 
         private IGlobalContext _context;
-        private string _version;
 
         /// <summary>
-        ///     Текстовое описание миграции
+        /// Текстовое описание миграции
         /// </summary>
         public string Description
         {
@@ -40,9 +39,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Идентификатор конфигурации, к которой применима миграция.
-        ///     В том случае, если идентификатор не указан (null or empty string),
-        ///     миграция применима ко всем конфигурациям
+        /// Идентификатор конфигурации, к которой применима миграция.
+        /// В том случае, если идентификатор не указан (null or empty string),
+        /// миграция применима ко всем конфигурациям
         /// </summary>
         public string ConfigurationId
         {
@@ -50,9 +49,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Версия конфигурации, к которой применима миграция.
-        ///     В том случае, если версия не указана (null or empty string),
-        ///     миграция применима к любой версии конфигурации
+        /// Версия конфигурации, к которой применима миграция.
+        /// В том случае, если версия не указана (null or empty string),
+        /// миграция применима к любой версии конфигурации
         /// </summary>
         public string ConfigVersion
         {
@@ -60,7 +59,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Признак того, что миграцию можно откатить
+        /// Признак того, что миграцию можно откатить
         /// </summary>
         public bool IsUndoable
         {
@@ -68,7 +67,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Выполнить миграцию
+        /// Выполнить миграцию
         /// </summary>
         /// <param name="message">Информативное сообщение с результатом выполнения действия</param>
         /// <param name="parameters"></param>
@@ -77,7 +76,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
             var resultMessage = new StringBuilder();
 
             var configObject = _context.GetComponent<IConfigurationMediatorComponent>()
-									   .ConfigurationBuilder.GetConfigurationObject(_version, _activeConfiguration);
+                                       .ConfigurationBuilder.GetConfigurationObject(_activeConfiguration);
 
             IMetadataConfiguration metadataConfiguration = null;
             if (configObject != null)
@@ -87,13 +86,13 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 
             if (metadataConfiguration != null)
             {
-	            var configurationObjectBuilder = _context.GetComponent<IConfigurationMediatorComponent>()
-														 .ConfigurationBuilder;
+                var configurationObjectBuilder = _context.GetComponent<IConfigurationMediatorComponent>()
+                                                         .ConfigurationBuilder;
 
                 var documents = metadataConfiguration.Documents;
                 foreach (var documentId in documents)
                 {
-					resultMessage.AppendFormat(MigrationHelper.TryUpdateDocumentMappings(metadataConfiguration, configurationObjectBuilder, _indexFactory, documentId));
+                    resultMessage.AppendFormat(MigrationHelper.TryUpdateDocumentMappings(metadataConfiguration, configurationObjectBuilder, _indexFactory, documentId));
                 }
 
                 resultMessage.AppendLine();
@@ -103,8 +102,8 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
             message = resultMessage.ToString();
         }
 
-	    /// <summary>
-        ///     Отменить миграцию
+        /// <summary>
+        /// Отменить миграцию
         /// </summary>
         /// <param name="message">Информативное сообщение с результатом выполнения действия</param>
         /// <param name="parameters">Параметры миграции</param>
@@ -117,7 +116,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Возвращает параметры миграции
+        /// Возвращает параметры миграции
         /// </summary>
         public IEnumerable<MigrationParameter> Parameters
         {
@@ -125,11 +124,10 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Устанавливает активную конфигурацию для миграции
+        /// Устанавливает активную конфигурацию для миграции
         /// </summary>
-        public void AssignActiveConfiguration(string version, string configurationId, IGlobalContext context)
+        public void AssignActiveConfiguration(string configurationId, IGlobalContext context)
         {
-            _version = version;
             _activeConfiguration = configurationId;
             _context = context;
         }

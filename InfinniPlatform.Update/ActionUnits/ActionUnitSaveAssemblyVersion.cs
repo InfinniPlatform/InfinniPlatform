@@ -17,11 +17,9 @@ namespace InfinniPlatform.Update.ActionUnits
             var configBuilder = target.Context.GetComponent<IConfigurationMediatorComponent>().ConfigurationBuilder;
 
             // получаем конфигурацию обновления
-            var config = configBuilder.GetConfigurationObject(null, "update");
+            var config = configBuilder.GetConfigurationObject("update");
 
-            string version = target.Item.Version;
-
-            var documentProvider = config.GetDocumentProvider("package", version);
+            var documentProvider = config.GetDocumentProvider("package");
 
             // публикуем прикладную сборку
 
@@ -75,11 +73,6 @@ namespace InfinniPlatform.Update.ActionUnits
             criteria.Value = target.Item.ConfigurationName;
             criteria.CriteriaType = CriteriaType.IsEquals;
 
-            dynamic criteria1 = new DynamicWrapper();
-            criteria1.Property = "Version";
-            criteria1.Value = version;
-            criteria1.CriteriaType = CriteriaType.IsEquals;
-
             dynamic criteria2 = new DynamicWrapper();
             criteria2.Property = "ModuleId";
             criteria2.Value = target.Item.ModuleId;
@@ -87,7 +80,7 @@ namespace InfinniPlatform.Update.ActionUnits
 
             // если пакет с таким же идентификатором версии не существует, создается новый пакет и, соответственно, новая версия системы
 
-            var packagesExisting = documentProvider.GetDocument(new[] { criteria, criteria1, criteria2 }, 0, 1);
+            var packagesExisting = documentProvider.GetDocument(new[] { criteria, criteria2 }, 0, 1);
 
             if (packagesExisting != null && packagesExisting.Count > 0)
             {

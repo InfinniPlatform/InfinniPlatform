@@ -56,7 +56,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
 
                 itemMetadata =
                     target.Context.GetComponent<IMetadataComponent>()
-                          .GetMetadataItem(null, target.Item.Configuration, target.Item.MetadataObject,
+                          .GetMetadataItem(target.Item.Configuration, target.Item.MetadataObject,
                                            MetadataType.View, predicate);
 
                 //если нашли существующие метаданные - возвращаем их
@@ -72,14 +72,14 @@ namespace InfinniPlatform.SystemConfig.Configurator
 
                     dynamic generatorMetadataItem =
                         target.Context.GetComponent<IMetadataComponent>()
-                              .GetMetadataItem(null, target.Item.Configuration, target.Item.MetadataObject,
+                              .GetMetadataItem(target.Item.Configuration, target.Item.MetadataObject,
                                                MetadataType.Generator, predicate);
                     if (generatorMetadataItem == null)
                     {
                         generatorDocument = "Common";
                         generatorMetadataItem =
                             target.Context.GetComponent<IMetadataComponent>()
-                                  .GetMetadataItem(null, target.Item.Configuration, generatorDocument,
+                                  .GetMetadataItem(target.Item.Configuration, generatorDocument,
                                                    MetadataType.Generator, predicate);
                     }
 

@@ -366,7 +366,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 		{
 			ProcessBuilder.EditTransition(GetTransition());
 
-			var processManager = new ManagerFactoryDocument(Version, ConfigId, DocumentId).BuildProcessManager();
+			var processManager = new ManagerFactoryDocument(ConfigId, DocumentId).BuildProcessManager();
 			processManager.DeleteItem(_process);
 			processManager.MergeItem(_process);
 

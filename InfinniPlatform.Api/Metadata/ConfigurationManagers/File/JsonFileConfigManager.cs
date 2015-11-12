@@ -3,23 +3,20 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.File.MetadataReaders;
 using InfinniPlatform.Api.Packages;
-using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.File
 {
     /// <summary>
-    ///     Менеджер конфигураций, хранящихся в Zip-архивах
+    /// Менеджер конфигураций, хранящихся в Zip-архивах
     /// </summary>
     public sealed class JsonFileConfigManager : IManagerIdentifiers
     {
-        private readonly string _configDirectory;
-        private readonly List<JsonFileConfig> _configList = new List<JsonFileConfig>();
-
         /// <summary>
-        ///     Создать менеджер файловых конфигураций JSON
+        /// Создать менеджер файловых конфигураций JSON
         /// </summary>
         /// <param name="configDirectory">Каталог, где хранятся конфигурации</param>
         public JsonFileConfigManager(string configDirectory)
@@ -27,20 +24,23 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.File
             _configDirectory = Path.GetFullPath(configDirectory);
         }
 
-        public string GetConfigurationUid(string version, string name)
+        private readonly string _configDirectory;
+        private readonly List<JsonFileConfig> _configList = new List<JsonFileConfig>();
+
+        public string GetConfigurationUid(string name)
         {
-            var config = GetJsonFileConfig(version, name);
+            var config = GetJsonFileConfig(name);
             return config != null ? config.Id : null;
         }
 
-        public string GetDocumentUid(string version, string configurationId, string documentId)
+        public string GetDocumentUid(string configurationId, string documentId)
         {
-            var config = GetJsonFileConfig(version, configurationId);
+            var config = GetJsonFileConfig(configurationId);
             IEnumerable<dynamic> documents = config.Documents;
             return documents.Where(d => d.Name == documentId).Select(d => d.Id).FirstOrDefault();
         }
 
-        public string GetSolutionUid(string version, string name)
+        public string GetSolutionUid(string name)
         {
             throw new NotImplementedException();
         }
@@ -49,8 +49,8 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.File
         {
             var fileNames =
                 Directory.GetFiles(_configDirectory)
-                    .Where(f => Path.GetExtension(f).ToLowerInvariant() == ".zip")
-                    .ToList();
+                         .Where(f => Path.GetExtension(f).ToLowerInvariant() == ".zip")
+                         .ToList();
 
             foreach (var fileName in fileNames)
             {
@@ -77,42 +77,29 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.File
         }
 
         /// <summary>
-        ///     Получить список существующих конфигураций
+        /// Получить список существующих конфигураций
         /// </summary>
-        /// <param name="version"></param>
         /// <returns>Список конфигураций</returns>
-        public IEnumerable<string> GetConfigurationList(string version)
+        public IEnumerable<string> GetConfigurationList()
         {
-            return
-                _configList.Where(
-                    c =>
-                        (c.GetVersion() == null && version == null) ||
-                        (c.GetVersion() != null && version != null &&
-                         c.GetVersion().ToLowerInvariant() == version.ToLowerInvariant()))
-                    .Select(c => c.GetConfigurationId())
-                    .ToList();
+            return _configList.Select(c => c.GetConfigurationId()).ToList();
         }
 
         /// <summary>
-        ///     Получить конфигурацию из JSON-файла по указанному идентификатору конфигурации
+        /// Получить конфигурацию из JSON-файла по указанному идентификатору конфигурации
         /// </summary>
-        /// <param name="version">Версия приложения</param>
         /// <param name="configurationId">Идентификатор конфигурации</param>
         /// <returns>Конфигурация JSON</returns>
-        public dynamic GetJsonFileConfig(string version, string configurationId)
+        public dynamic GetJsonFileConfig(string configurationId)
         {
-            return
-                _configList.Where(
-                    c =>
-                        c.GetConfigurationId().ToLowerInvariant() == configurationId.ToLowerInvariant() &&
-                        c.GetVersion().ToLowerInvariant() == version.ToLowerInvariant())
-                    .Select(c => c.ConfigObject)
-                    .FirstOrDefault();
+            return _configList.Where(c => c.GetConfigurationId().ToLowerInvariant() == configurationId.ToLowerInvariant())
+                              .Select(c => c.ConfigObject)
+                              .FirstOrDefault();
         }
 
-        public IDataReader BuildDocumentReader(string version, string configurationId)
+        public IDataReader BuildDocumentReader(string configurationId)
         {
-            var jsonConfig = GetJsonFileConfig(version, configurationId);
+            var jsonConfig = GetJsonFileConfig(configurationId);
             if (jsonConfig != null)
             {
                 return new JsonFileDocumentReader(jsonConfig);
@@ -120,9 +107,9 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.File
             throw new ArgumentException(string.Format("configuration: {0} not found.", configurationId));
         }
 
-        public IDataReader BuildRegisterReader(string version, string configurationId)
+        public IDataReader BuildRegisterReader(string configurationId)
         {
-            var jsonConfig = GetJsonFileConfig(version, configurationId);
+            var jsonConfig = GetJsonFileConfig(configurationId);
             if (jsonConfig != null)
             {
                 return new JsonFileRegisterReader(jsonConfig);
@@ -130,10 +117,9 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.File
             throw new ArgumentException(string.Format("configuration: {0} not found.", configurationId));
         }
 
-        public IDataReader BuildDocumentElementReader(string version, string configurationId, string documentName,
-            string metadataType)
+        public IDataReader BuildDocumentElementReader(string configurationId, string documentName, string metadataType)
         {
-            var jsonConfig = GetJsonFileConfig(version, configurationId);
+            var jsonConfig = GetJsonFileConfig(configurationId);
             if (jsonConfig != null)
             {
                 IEnumerable<dynamic> documents = jsonConfig.Documents;
@@ -149,16 +135,15 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.File
         }
 
         /// <summary>
-        ///     Получить конфигурацию JSON по имени файла архива
+        /// Получить конфигурацию JSON по имени файла архива
         /// </summary>
         /// <param name="configurationFileName">Файл архива конфигурации</param>
         /// <returns>Объект конфигурации</returns>
         public dynamic GetJsonFileConfigByFileName(string configurationFileName)
         {
-            return
-                _configList.Where(c => c.FileName.ToLowerInvariant() == configurationFileName.ToLowerInvariant())
-                    .Select(c => c.ConfigObject)
-                    .FirstOrDefault();
+            return _configList.Where(c => c.FileName.ToLowerInvariant() == configurationFileName.ToLowerInvariant())
+                              .Select(c => c.ConfigObject)
+                              .FirstOrDefault();
         }
     }
 }

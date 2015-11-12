@@ -287,14 +287,14 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         private dynamic CreateTestConfig(string configurationId, string documentId, string version, string scenarioId)
         {
             MetadataManagerConfiguration managerConfiguration =
-                ManagerFactoryConfiguration.BuildConfigurationManager(version); //указана версия конфигурации
+                ManagerFactoryConfiguration.BuildConfigurationManager(); //указана версия конфигурации
 
             dynamic config = managerConfiguration.CreateItem(configurationId);
             managerConfiguration.DeleteItem(config);
             managerConfiguration.MergeItem(config);
 
             MetadataManagerDocument managerDocument =
-                new ManagerFactoryConfiguration(version, configurationId).BuildDocumentManager();
+                new ManagerFactoryConfiguration(configurationId).BuildDocumentManager();
             dynamic documentMetadata1 = managerDocument.CreateItem(documentId);
 
             documentMetadata1.Schema = new DynamicWrapper();
@@ -309,7 +309,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             //добавляем бизнес-процесс по умолчанию
             MetadataManagerElement processManager =
-                new ManagerFactoryDocument(version, configurationId, documentId).BuildProcessManager();
+                new ManagerFactoryDocument(configurationId, documentId).BuildProcessManager();
             dynamic defaultProcess = processManager.CreateItem("Default");
 
             dynamic instance = new DynamicWrapper();
@@ -325,7 +325,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             processManager.MergeItem(defaultProcess);
 
             MetadataManagerElement scenarioManager =
-                new ManagerFactoryDocument(version, configurationId, documentId).BuildScenarioManager();
+                new ManagerFactoryDocument(configurationId, documentId).BuildScenarioManager();
 
             dynamic scenarioItem = scenarioManager.CreateItem(scenarioId);
             scenarioItem.ScenarioId = scenarioId;
@@ -336,7 +336,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             scenarioManager.MergeItem(scenarioItem);
 
             MetadataManagerElement assemblyManager =
-                new ManagerFactoryConfiguration(version, configurationId).BuildAssemblyManager();
+                new ManagerFactoryConfiguration(configurationId).BuildAssemblyManager();
             dynamic assemblyItem = assemblyManager.CreateItem("InfinniPlatform.Api.Tests");
             assemblyManager.MergeItem(assemblyItem);
 
@@ -345,7 +345,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
         private void CreateTestSolutionWithThreeConfigs(string[] referencedConfigVersions)
         {
-            MetadataManagerSolution managerSolution = ManagerFactorySolution.BuildSolutionManager(Version);
+            MetadataManagerSolution managerSolution = ManagerFactorySolution.BuildSolutionManager();
             var refConfigs = new List<dynamic>();
             var packages = new List<dynamic>();
             dynamic solution = managerSolution.CreateItem(SolutionId1);
@@ -378,13 +378,13 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
         private void DeleteConfigVersion()
         {
-            var reader = ManagerFactoryConfiguration.BuildConfigurationMetadataReader(null,true);
+            var reader = ManagerFactoryConfiguration.BuildConfigurationMetadataReader(true);
             foreach (var item in reader.GetItems())
             {
                 if (((string) item.Name).Contains("TestConfig"))
                 {
                     MetadataManagerConfiguration manager =
-                        ManagerFactoryConfiguration.BuildConfigurationManager(item.Version);
+                        ManagerFactoryConfiguration.BuildConfigurationManager();
                     manager.DeleteItem(item);
                 }
             }
@@ -403,7 +403,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
         private void CreateTestSolutionForSomeVersionsOfOneConfig(string version, string[] referencedConfigVersions)
         {
-            MetadataManagerSolution managerSolution = ManagerFactorySolution.BuildSolutionManager(version);
+            MetadataManagerSolution managerSolution = ManagerFactorySolution.BuildSolutionManager();
 
 
             dynamic solution = managerSolution.CreateItem(SolutionId3);
@@ -436,7 +436,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         private void CreateAndUpdateTestSolutionThreeTimes(string version, string[] referencedConfigVersions, Action onCreateFirstVersionOfSolution, 
             Action onCreateSecondVersionOfSolution, Action onCreateThirdVersionOfSolution, Action assertResults)
         {
-            MetadataManagerSolution managerSolution = ManagerFactorySolution.BuildSolutionManager(version);
+            MetadataManagerSolution managerSolution = ManagerFactorySolution.BuildSolutionManager();
             var refConfigs = new List<dynamic>();
             dynamic solution = managerSolution.CreateItem(SolutionId2);
             solution.ReferencedConfigurations = refConfigs;

@@ -37,7 +37,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
 
             var metadataConfig =
                 _globalContext.GetComponent<IMetadataConfigurationProvider>()
-                    .GetMetadataConfiguration(null, ConfigRequestProvider.GetConfiguration());
+                    .GetMetadataConfiguration(ConfigRequestProvider.GetConfiguration());
 
             var target = new SearchContext();
             target.Context = _globalContext;

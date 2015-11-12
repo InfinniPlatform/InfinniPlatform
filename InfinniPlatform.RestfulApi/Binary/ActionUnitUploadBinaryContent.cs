@@ -59,7 +59,7 @@ namespace InfinniPlatform.RestfulApi.Binary
 		    var configurationMediatorComponent = target.Context.GetComponent<IConfigurationMediatorComponent>();
 
             var schema = configurationMediatorComponent
-                .ConfigurationBuilder.GetConfigurationObject(null, target.LinkedData.Configuration)
+                .ConfigurationBuilder.GetConfigurationObject(target.LinkedData.Configuration)
                 .MetadataConfiguration.GetSchemaVersion(target.LinkedData.Metadata);
             
 		    var maxFileSize = -1;
@@ -113,7 +113,6 @@ namespace InfinniPlatform.RestfulApi.Binary
             new BinaryManager(target.Context.GetComponent<IBlobStorageComponent>().GetBlobStorage())
                 .SaveBinary(new[] {documentWithBinaryField},
                             target.LinkedData.Configuration,
-                            null,
                             target.LinkedData.Metadata,
                             target.LinkedData.FieldName, _fileContent);
         }

@@ -61,7 +61,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
 
             var appliedConfig =
                 _globalContext.GetComponent<IMetadataConfigurationProvider>()
-                    .GetMetadataConfiguration(null, ConfigRequestProvider.GetConfiguration());
+                    .GetMetadataConfiguration(ConfigRequestProvider.GetConfiguration());
 
             if (string.IsNullOrEmpty(documentId))
             {

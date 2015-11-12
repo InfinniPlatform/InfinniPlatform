@@ -1,29 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using InfinniPlatform.Sdk.Dynamic;
+
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataReaders
 {
     internal sealed class MetadataReaderDocumentElement : MetadataReader
     {
-        private readonly string _documentId;
-        private readonly IMetadataContainerInfo _metadataContainerInfo;
-
-        public MetadataReaderDocumentElement(string version, string configurationId, string documentId,
-            IMetadataContainerInfo metadataContainerInfo)
-            : base(version, configurationId, metadataContainerInfo.GetMetadataTypeName())
+        public MetadataReaderDocumentElement(string configurationId, string documentId, IMetadataContainerInfo metadataContainerInfo)
+            : base(configurationId, metadataContainerInfo.GetMetadataTypeName())
         {
             _documentId = documentId;
             _metadataContainerInfo = metadataContainerInfo;
         }
 
+        private readonly string _documentId;
+        private readonly IMetadataContainerInfo _metadataContainerInfo;
+
         public override IEnumerable<dynamic> GetItems()
         {
             dynamic result =
-                QueryMetadata.QueryConfiguration(QueryMetadata.GetDocumentMetadataShortListIql(Version, ConfigurationId, _documentId,
-                                                                                               _metadataContainerInfo.GetMetadataContainerName())).FirstOrDefault();
+                QueryMetadata.QueryConfiguration(QueryMetadata.GetDocumentMetadataShortListIql(ConfigurationId, _documentId,
+                    _metadataContainerInfo.GetMetadataContainerName())).FirstOrDefault();
 
             if (result != null)
             {
@@ -42,9 +43,9 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
         public override dynamic GetItem(string metadataName)
         {
             var result =
-                QueryMetadata.QueryConfiguration(QueryMetadata.GetDocumentMetadataByNameIql(Version, ConfigurationId, _documentId, metadataName,
-                                                                                            _metadataContainerInfo.GetMetadataContainerName(), _metadataContainerInfo.GetMetadataTypeName()))
-                    .FirstOrDefault();
+                QueryMetadata.QueryConfiguration(QueryMetadata.GetDocumentMetadataByNameIql(ConfigurationId, _documentId, metadataName,
+                    _metadataContainerInfo.GetMetadataContainerName(), _metadataContainerInfo.GetMetadataTypeName()))
+                             .FirstOrDefault();
 
             //если наши метаданные элемента документа
             if (result != null)
@@ -68,7 +69,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
         }
 
         /// <summary>
-        ///     Преобразовать свойства JSON, хранимые в виде строк в JSON объекты
+        /// Преобразовать свойства JSON, хранимые в виде строк в JSON объекты
         /// </summary>
         /// <param name="resultItem">JSON объект</param>
         private void ConvertStringToJsonProperties(dynamic resultItem)
@@ -80,7 +81,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
                 {
                     try
                     {
-                        dynamic jsonLayoutPanel = DynamicWrapperExtensions.ToDynamic((string) layoutPanel.JsonString);
+                        dynamic jsonLayoutPanel = ((string)layoutPanel.JsonString).ToDynamic();
                         resultItem.LayoutPanel = jsonLayoutPanel;
                     }
                     catch (Exception e)
@@ -93,7 +94,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
                 {
                     try
                     {
-                        dynamic jsonChildViews = DynamicWrapperExtensions.ToDynamicList((string) childViews.JsonString);
+                        dynamic jsonChildViews = ((string)childViews.JsonString).ToDynamicList();
                         resultItem.ChildViews = jsonChildViews;
                     }
                     catch (Exception e)
@@ -106,7 +107,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
                 {
                     try
                     {
-                        dynamic jsonDataSources = DynamicWrapperExtensions.ToDynamicList((string) dataSources.JsonString);
+                        dynamic jsonDataSources = ((string)dataSources.JsonString).ToDynamicList();
                         resultItem.DataSources = jsonDataSources;
                     }
                     catch (Exception e)
@@ -119,7 +120,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
                 {
                     try
                     {
-                        dynamic jsonParameters = DynamicWrapperExtensions.ToDynamicList((string) parameters.JsonString);
+                        dynamic jsonParameters = ((string)parameters.JsonString).ToDynamicList();
                         resultItem.Parameters = jsonParameters;
                     }
                     catch (Exception e)
@@ -138,7 +139,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
                     try
                     {
                         dynamic jsonValidationOperator =
-                            DynamicWrapperExtensions.ToDynamic((string) validationOperator.JsonString);
+                            ((string)validationOperator.JsonString).ToDynamic();
                         resultItem.ValidationOperator = jsonValidationOperator;
                     }
                     catch (Exception e)
@@ -154,7 +155,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
                 {
                     try
                     {
-                        dynamic jsonPrintView = DynamicWrapperExtensions.ToDynamicList((string) printView.JsonString);
+                        dynamic jsonPrintView = ((string)printView.JsonString).ToDynamicList();
                         resultItem.Blocks = jsonPrintView;
                     }
                     catch (Exception e)

@@ -69,7 +69,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
                 dynamic filterConfig = new DynamicWrapper();
                 dynamic id =
                     target.Context.GetComponent<ISystemComponent>()
-                          .ManagerIdentifiers.GetConfigurationUid(version, target.Item.ConfigId);
+                          .ManagerIdentifiers.GetConfigurationUid(target.Item.ConfigId);
                 filterConfig.Property = "Id";
                 filterConfig.Value = id;
                 filterConfig.CriteriaType = CriteriaType.IsEquals;
@@ -100,7 +100,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
                 dynamic filterConfig = new DynamicWrapper();
                 dynamic id =
                     target.Context.GetComponent<ISystemComponent>()
-                          .ManagerIdentifiers.GetConfigurationUid(version, target.Item.ConfigId);
+                          .ManagerIdentifiers.GetConfigurationUid(target.Item.ConfigId);
                 filterConfig.Property = "ParentId";
                 filterConfig.Value = id;
                 filterConfig.CriteriaType = CriteriaType.IsEquals;
@@ -118,7 +118,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
                 dynamic filterDocument = new DynamicWrapper();
                 id =
                     target.Context.GetComponent<ISystemComponent>()
-                          .ManagerIdentifiers.GetDocumentUid(version, target.Item.ConfigId,
+                          .ManagerIdentifiers.GetDocumentUid(target.Item.ConfigId,
                                                              target.Item.DocumentId);
                 filterDocument.Property = "Id";
                 filterDocument.Value = id;

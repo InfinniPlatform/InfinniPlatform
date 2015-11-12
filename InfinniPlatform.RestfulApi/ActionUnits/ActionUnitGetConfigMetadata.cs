@@ -28,7 +28,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
             //если указано конкретное наименование искомых метаданных
             target.Result = target.Context.GetComponent<IMetadataComponent>()
-                                  .GetMetadata(target.Item.Version, paramsDoc.Configuration, paramsDoc.Metadata,
+                                  .GetMetadata(paramsDoc.Configuration, paramsDoc.Metadata,
                                                paramsDoc.MetadataType, paramsDoc.MetadataName);
 
             if (target.Result != null)
@@ -47,7 +47,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             if (target.Result != null)
             {
                 var service = target.Context.GetComponent<IMetadataComponent>()
-                                    .GetMetadata(null, paramsDoc.Configuration, "Common", MetadataType.Service,
+                                    .GetMetadata(paramsDoc.Configuration, "Common", MetadataType.Service,
                                                  "FilterMetadata");
 
                 if (service != null)

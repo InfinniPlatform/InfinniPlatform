@@ -26,7 +26,6 @@ namespace InfinniPlatform.RestfulApi.Session
 				transaction.Attach(
                     target.Item.AttachedInfo.Application,
                     target.Item.AttachedInfo.DocumentType,
-                    null,
                     new[] {target.Item.AttachedInfo.Document});
 
                 target.Result = new DynamicWrapper();

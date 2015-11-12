@@ -11,13 +11,11 @@ namespace InfinniPlatform.Api.RestQuery.EventObjects.EventSerializers
     {
         private readonly string _collectionName;
         private readonly object _objectToCreate;
-        private readonly string _version;
 
-        public AddCollectionItem(string collectionName, object objectToCreate, string version)
+        public AddCollectionItem(string collectionName, object objectToCreate)
         {
             _collectionName = collectionName;
             _objectToCreate = objectToCreate;
-            _version = version;
         }
 
         /// <summary>
@@ -30,7 +28,7 @@ namespace InfinniPlatform.Api.RestQuery.EventObjects.EventSerializers
                 _objectToCreate.ToEventListCollectionItem(_collectionName)
                     .GetEvents()
                     .ToList()
-                    .AddVersionDefinition(_version);
+                    .AddVersionDefinition(null);
         }
     }
 }

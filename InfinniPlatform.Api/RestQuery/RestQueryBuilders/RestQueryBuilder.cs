@@ -105,13 +105,13 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
         ///     Сформировать и выполнить запрос на системную нотификацию
         /// </summary>
         /// <returns>Ответ на вызов сервиса</returns>
-        public RestQueryResponse QueryNotify(string version, string metadataConfigurationId, CookieContainer cookieContainer = null)
+        public RestQueryResponse QueryNotify(string metadataConfigurationId, CookieContainer cookieContainer = null)
         {
             var url = _controllerRoutingFactory.BuildRestRoutingUrlStandardApi(_configuration, _metadata,_action);
             var body = new
             {
-                version,                
-                metadataConfigurationId
+                version = "",                
+                metadataConfigurationId = metadataConfigurationId
             };
 
             RestQueryResponse response = null;

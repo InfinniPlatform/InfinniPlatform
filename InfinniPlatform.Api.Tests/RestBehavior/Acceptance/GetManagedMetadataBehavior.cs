@@ -147,7 +147,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         private void CreateTestConfig()
         {
             //добавили конфигурацию
-            MetadataManagerConfiguration manager = ManagerFactoryConfiguration.BuildConfigurationManager("1.0.0.0");
+            MetadataManagerConfiguration manager = ManagerFactoryConfiguration.BuildConfigurationManager();
 
             dynamic item = manager.CreateItem(ConfigurationId);
             manager.DeleteItem(item);
@@ -160,12 +160,12 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             //добавляем именованный View в конкретном документе
             //---------------------------------------------------
             MetadataManagerDocument documentManager =
-                new ManagerFactoryConfiguration("1.0.0.0", ConfigurationId).BuildDocumentManager();
+                new ManagerFactoryConfiguration(ConfigurationId).BuildDocumentManager();
 
             dynamic doc = documentManager.CreateItem(DocumentId);
             documentManager.MergeItem(doc);
 
-            var managerDocument = new ManagerFactoryDocument("1.0.0.0", ConfigurationId, DocumentId);
+            var managerDocument = new ManagerFactoryDocument(ConfigurationId, DocumentId);
             MetadataManagerElement managerView = managerDocument.BuildViewManager();
             dynamic view = managerView.CreateItem(ExistsViewName);
             view.MetadataType = ViewType.EditView;
@@ -174,7 +174,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             //----------------------------------------------------
 
             //перезагрузим конфигурации
-            RestQueryApi.QueryPostNotify("1.0.0.0", ConfigurationId);
+            RestQueryApi.QueryPostNotify(ConfigurationId);
 
             //добавляем генератор в документе Common
             //----------------------------------------------------
@@ -213,10 +213,10 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             dynamic package = new PackageBuilder().BuildPackage(ConfigurationId, "1.0.0.0",
                                                                 @"..\Assemblies\InfinniPlatform.Api.Tests.dll");
             //установка пакета
-            new UpdateApi("1.0.0.0").InstallPackages(new[] { package });
+            new UpdateApi().InstallPackages(new[] { package });
 
             //обновление конфигурации
-            RestQueryApi.QueryPostNotify("1.0.0.0", ConfigurationId);
+            RestQueryApi.QueryPostNotify(ConfigurationId);
 
             //генерируем метаданные напрямую
             builder = new RestQueryBuilder("SystemConfig", "metadata", "generatemetadata", null);

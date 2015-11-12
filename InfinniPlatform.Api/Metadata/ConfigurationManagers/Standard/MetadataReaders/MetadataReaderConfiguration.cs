@@ -7,21 +7,18 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
 {
     public sealed class MetadataReaderConfiguration : IDataReader
     {
-        private readonly string _version;
         private readonly bool _doNotCheckVersion;
 
         /// <summary>
         ///  Конструктор
         /// </summary>
-        /// <param name="version">Версия конфигурации</param>
         /// <param name="doNotCheckVersion">Флаг учета версии конфигурации при выборке. 
-        ///     Учитывается в данный момент только вследствие дизайнера, в котором пока не реализован показ Solution
-        ///     и нужно показывать скопом все версии всех конфигураций.
-        ///     После отображения Solution в дизайнере, данный флаг и его дальнейшее использование нужно удалить
+        /// Учитывается в данный момент только вследствие дизайнера, в котором пока не реализован показ Solution
+        /// и нужно показывать скопом все версии всех конфигураций.
+        /// После отображения Solution в дизайнере, данный флаг и его дальнейшее использование нужно удалить
         /// </param>
-        public MetadataReaderConfiguration(string version, bool doNotCheckVersion = false)
+        public MetadataReaderConfiguration(bool doNotCheckVersion = false)
         {
-            _version = version;
             _doNotCheckVersion = doNotCheckVersion;
         }
 
@@ -29,7 +26,7 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
         {
             dynamic body = new DynamicWrapper();
             body.DoNotCheckVersion = _doNotCheckVersion;
-            body.Version = _version;
+
             return
                 DynamicWrapperExtensions.ToEnumerable(
                     RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getregisteredconfiglist", null, body).ToDynamic().ConfigList);
@@ -39,7 +36,6 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
         {
             dynamic bodyQuery = new DynamicWrapper();
             bodyQuery.ConfigId = metadataName;
-            bodyQuery.Version = _version;
 
             dynamic itemResult =
                 RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getmetadata", null, bodyQuery)

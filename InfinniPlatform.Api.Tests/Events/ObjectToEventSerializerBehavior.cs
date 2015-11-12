@@ -20,7 +20,7 @@ namespace InfinniPlatform.Api.Tests.Events
                         }
                 };
 
-            var addCollectionItem = new AddCollectionItem("Test", obj, null);
+            var addCollectionItem = new AddCollectionItem("Test", obj);
 
             string[] events = addCollectionItem.GetEvents().Select(e => (JsonConvert.SerializeObject(e))).ToArray();
             Assert.AreEqual(events.Count(), 4);
@@ -52,7 +52,7 @@ namespace InfinniPlatform.Api.Tests.Events
         [Test]
         public void ShouldSerializeRemoveCollectionItem()
         {
-            var removeCollectionItem = new RemoveCollectionItem("Test:123", null);
+            var removeCollectionItem = new RemoveCollectionItem("Test:123");
 
             string[] events = removeCollectionItem.GetEvents().Select(e => (JsonConvert.SerializeObject(e))).ToArray();
             Assert.AreEqual(events.Count(), 2);

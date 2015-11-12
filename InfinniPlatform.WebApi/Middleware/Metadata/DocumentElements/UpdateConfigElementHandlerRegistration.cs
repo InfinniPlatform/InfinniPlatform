@@ -32,8 +32,7 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.DocumentElements
 
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            var managerFactoryDocument = new ManagerFactoryDocument(routeDictionary["versionMetadata"],
-                routeDictionary["configuration"], routeDictionary["document"]);
+            var managerFactoryDocument = new ManagerFactoryDocument(routeDictionary["configuration"], routeDictionary["document"]);
 
             IDataManager manager = managerFactoryDocument.BuildManagerByType(routeDictionary["metadataType"]);
 

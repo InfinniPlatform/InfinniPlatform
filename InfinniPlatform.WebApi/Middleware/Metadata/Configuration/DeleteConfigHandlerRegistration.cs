@@ -16,9 +16,9 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.Configuration
         {
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
            
-            MetadataManagerConfiguration manager = ManagerFactoryConfiguration.BuildConfigurationManager(routeDictionary["versionMetadata"]);
+            MetadataManagerConfiguration manager = ManagerFactoryConfiguration.BuildConfigurationManager();
 
-            dynamic config = ManagerFactoryConfiguration.BuildConfigurationMetadataReader(routeDictionary["versionMetadata"]).GetItem(routeDictionary["instanceId"]);
+            dynamic config = ManagerFactoryConfiguration.BuildConfigurationMetadataReader().GetItem(routeDictionary["instanceId"]);
 
             if (config != null)
             {

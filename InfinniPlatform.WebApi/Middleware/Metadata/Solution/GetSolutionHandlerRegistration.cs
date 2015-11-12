@@ -14,7 +14,7 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.Solution
         {
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            var solutionReader = ManagerFactorySolution.BuildSolutionReader(routeDictionary["versionMetadata"]);
+            var solutionReader = ManagerFactorySolution.BuildSolutionReader();
 
             if (routeDictionary["instanceId"].ToLowerInvariant() != "unknown")
             {

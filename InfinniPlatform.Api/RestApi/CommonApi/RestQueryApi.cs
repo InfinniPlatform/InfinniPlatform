@@ -193,14 +193,14 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
             return response;
         }
 
-        public static RestQueryResponse QueryPostNotify(string version, string configurationId)
+        public static RestQueryResponse QueryPostNotify(string configurationId)
         {
             var builder = _queryBuilder("Update", "Package", "Notify");
 
             var profiler = _operationProfiler(configurationId, string.Empty, "Notify", null);
 
             profiler.Reset();
-            var response = builder.QueryNotify(version, configurationId, SignInApi.CookieContainer);
+            var response = builder.QueryNotify(configurationId, SignInApi.CookieContainer);
             profiler.TakeSnapshot();
 
             CheckResponse(response);

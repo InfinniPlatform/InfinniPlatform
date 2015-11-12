@@ -1,32 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
-using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 {
     /// <summary>
-    ///     Миграция позволяет удалить тестовые данные из индексов
+    /// Миграция позволяет удалить тестовые данные из индексов
     /// </summary>
     public sealed class ClearTestDataMigration : IConfigurationMigration
     {
         private readonly List<MigrationParameter> _parameters = new List<MigrationParameter>();
 
         /// <summary>
-        ///     Конфигурация, к которой применяется миграция
+        /// Конфигурация, к которой применяется миграция
         /// </summary>
         private string _activeConfiguration;
 
-        private string _version;
         private List<string> configurationContainers;
 
         /// <summary>
-        ///     Текстовое описание миграции
+        /// Текстовое описание миграции
         /// </summary>
         public string Description
         {
@@ -34,9 +33,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Идентификатор конфигурации, к которой применима миграция.
-        ///     В том случае, если идентификатор не указан (null or empty string),
-        ///     миграция применима ко всем конфигурациям
+        /// Идентификатор конфигурации, к которой применима миграция.
+        /// В том случае, если идентификатор не указан (null or empty string),
+        /// миграция применима ко всем конфигурациям
         /// </summary>
         public string ConfigurationId
         {
@@ -44,9 +43,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Версия конфигурации, к которой применима миграция.
-        ///     В том случае, если версия не указана (null or empty string),
-        ///     миграция применима к любой версии конфигурации
+        /// Версия конфигурации, к которой применима миграция.
+        /// В том случае, если версия не указана (null or empty string),
+        /// миграция применима к любой версии конфигурации
         /// </summary>
         public string ConfigVersion
         {
@@ -54,7 +53,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Признак того, что миграцию можно откатить
+        /// Признак того, что миграцию можно откатить
         /// </summary>
         public bool IsUndoable
         {
@@ -62,7 +61,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Выполнить миграцию
+        /// Выполнить миграцию
         /// </summary>
         /// <param name="message">Информативное сообщение с результатом выполнения действия</param>
         /// <param name="parameters"></param>
@@ -72,15 +71,15 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 
             var resultMessage = new StringBuilder();
 
-            string[] containers = configurationContainers.ToArray();
+            var containers = configurationContainers.ToArray();
 
-            for (int i = 0; i < containers.Length; i++)
+            for (var i = 0; i < containers.Length; i++)
             {
                 if (parameters[i].ToString() == "True")
                 {
-                    IEnumerable<dynamic> docs = api.GetDocument(_activeConfiguration, containers[i], null, 0, 10000);
+                    var docs = api.GetDocument(_activeConfiguration, containers[i], null, 0, 10000);
 
-                    foreach (dynamic doc in docs)
+                    foreach (var doc in docs)
                     {
                         api.DeleteDocument(_activeConfiguration, containers[i], doc.Id);
                     }
@@ -94,7 +93,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Отменить миграцию
+        /// Отменить миграцию
         /// </summary>
         /// <param name="message">Информативное сообщение с результатом выполнения действия</param>
         /// <param name="parameters">Параметры миграции</param>
@@ -107,7 +106,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Возвращает параметры миграции
+        /// Возвращает параметры миграции
         /// </summary>
         public IEnumerable<MigrationParameter> Parameters
         {
@@ -115,16 +114,15 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         }
 
         /// <summary>
-        ///     Устанавливает активную конфигурацию для миграции
+        /// Устанавливает активную конфигурацию для миграции
         /// </summary>
-        public void AssignActiveConfiguration(string version, string configurationId, IGlobalContext context)
+        public void AssignActiveConfiguration(string configurationId, IGlobalContext context)
         {
-            _version = version;
             _activeConfiguration = configurationId;
 
             var configObject =
                 context.GetComponent<IConfigurationMediatorComponent>()
-                       .ConfigurationBuilder.GetConfigurationObject(_version, _activeConfiguration);
+                       .ConfigurationBuilder.GetConfigurationObject(_activeConfiguration);
 
             IMetadataConfiguration metadataConfiguration = null;
             if (configObject != null)
@@ -135,9 +133,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
             if (metadataConfiguration != null)
             {
                 configurationContainers = new List<string>(metadataConfiguration.Documents);
-                foreach (string containerId in configurationContainers)
+                foreach (var containerId in configurationContainers)
                 {
-                    _parameters.Add(new MigrationParameter {Caption = containerId, InitialValue = true});
+                    _parameters.Add(new MigrationParameter { Caption = containerId, InitialValue = true });
                 }
             }
         }

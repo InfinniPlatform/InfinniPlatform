@@ -60,8 +60,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
                 SecondMetadataName = CrudSettings.ConfigurationSecondId,
                 BuildInstanceAction =
                     (metadataId, metadataName) => { return CrudSettings.BuildTestConfig(metadataId, metadataName); },
-                Reader = () => new MetadataReaderConfiguration(null),
-                Manager = () => ManagerFactoryConfiguration.BuildConfigurationManager(null)
+                Reader = () => new MetadataReaderConfiguration(),
+                Manager = () => ManagerFactoryConfiguration.BuildConfigurationManager()
             },
             new CrudSettings(MetadataType.Menu)
             {
@@ -73,11 +73,11 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
                     (metadataId, metadataName) => new DynamicWrapper().BuildSampleMenu(metadataName, metadataId),
                 Reader =
                     () =>
-                    new ManagerFactoryConfiguration(null, CrudSettings.ConfigurationFirstId)
+                    new ManagerFactoryConfiguration(CrudSettings.ConfigurationFirstId)
                     .BuildMenuMetadataReader(),
                 Manager =
                     () =>
-                    new ManagerFactoryConfiguration(null, CrudSettings.ConfigurationFirstId).BuildMenuManager(),
+                    new ManagerFactoryConfiguration(CrudSettings.ConfigurationFirstId).BuildMenuManager(),
                 AdditionalOperationCheck = null,
                 InitTest =
                     () => CrudSettings.BuildTestConfig(ConfigurationFirstUid, CrudSettings.ConfigurationFirstId)
@@ -93,11 +93,11 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
                     new DynamicWrapper().BuildSampleRegister(metadataName, metadataId),
                 Reader =
                     () =>
-                    new ManagerFactoryConfiguration(null, CrudSettings.ConfigurationFirstId)
+                    new ManagerFactoryConfiguration(CrudSettings.ConfigurationFirstId)
                     .BuildRegisterMetadataReader(),
                 Manager =
                     () =>
-                    new ManagerFactoryConfiguration(null, CrudSettings.ConfigurationFirstId)
+                    new ManagerFactoryConfiguration(CrudSettings.ConfigurationFirstId)
                     .BuildRegisterManager(),
                 AdditionalOperationCheck = null,
                 InitTest =
@@ -114,11 +114,11 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
                     new DynamicWrapper().BuildSampleReport(metadataName, metadataId),
                 Reader =
                     () =>
-                    new ManagerFactoryConfiguration(null, CrudSettings.ConfigurationFirstId)
+                    new ManagerFactoryConfiguration(CrudSettings.ConfigurationFirstId)
                     .BuildReportMetadataReader(),
                 Manager =
                     () =>
-                    new ManagerFactoryConfiguration(null, CrudSettings.ConfigurationFirstId).BuildReportManager(),
+                    new ManagerFactoryConfiguration(CrudSettings.ConfigurationFirstId).BuildReportManager(),
                 AdditionalOperationCheck = null,
                 InitTest =
                     () => CrudSettings.BuildTestConfig(ConfigurationFirstUid, CrudSettings.ConfigurationFirstId)
@@ -134,11 +134,11 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
                     new DynamicWrapper().BuildSampleAssembly(metadataName, metadataId),
                 Reader =
                     () =>
-                    new ManagerFactoryConfiguration(null, CrudSettings.ConfigurationFirstId)
+                    new ManagerFactoryConfiguration(CrudSettings.ConfigurationFirstId)
                     .BuildAssemblyMetadataReader(),
                 Manager =
                     () =>
-                    new ManagerFactoryConfiguration(null, CrudSettings.ConfigurationFirstId)
+                    new ManagerFactoryConfiguration(CrudSettings.ConfigurationFirstId)
                     .BuildAssemblyManager(),
                 AdditionalOperationCheck = null,
                 InitTest =
@@ -155,11 +155,11 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
                     SampleMetadataBuilder.BuildEmptyDocument(metadataName, metadataId),
                 Reader =
                     () =>
-                    new ManagerFactoryConfiguration(null, CrudSettings.ConfigurationFirstId)
+                    new ManagerFactoryConfiguration(CrudSettings.ConfigurationFirstId)
                     .BuildDocumentMetadataReader(),
                 Manager =
                     () =>
-                    new ManagerFactoryConfiguration(null, CrudSettings.ConfigurationFirstId)
+                    new ManagerFactoryConfiguration(CrudSettings.ConfigurationFirstId)
                     .BuildDocumentManager(),
                 AdditionalOperationCheck = settings =>
                                            {

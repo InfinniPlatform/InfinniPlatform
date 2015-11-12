@@ -61,7 +61,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
 
         public ManagerFactoryDocument MetadataFactoryDocument(string documentId)
         {
-            return new ManagerFactoryDocument(null, ConfigurationFirstId, documentId);
+            return new ManagerFactoryDocument(ConfigurationFirstId, documentId);
         }
 
         public void CheckAdditionalMetadataOperations()
@@ -74,7 +74,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.ConfiguratorApiBehavior
 
         public static dynamic BuildTestConfig(string configUid, string configName)
         {
-            MetadataManagerConfiguration managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager(null);
+            MetadataManagerConfiguration managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager();
             dynamic existConfig = managerConfig.CreateItem(configName);
             existConfig.Id = configUid;
             existConfig.Name = configName;

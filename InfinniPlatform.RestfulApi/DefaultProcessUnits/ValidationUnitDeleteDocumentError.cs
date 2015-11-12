@@ -30,7 +30,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
             {
                 //ищем метаданные бизнес-процесса по умолчанию документа 
                 defaultBusinessProcess = target.Context.GetComponent<IMetadataComponent>()
-                                               .GetMetadata(null, target.Item.Configuration, target.Item.Metadata, MetadataType.Process, "Default");
+                                               .GetMetadata(target.Item.Configuration, target.Item.Metadata, MetadataType.Process, "Default");
             }
 
             if (defaultBusinessProcess == null || defaultBusinessProcess.Transitions.Count == 0)
@@ -46,7 +46,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                 //получаем конструктор метаданных конфигураций
                 var configBuilder = target.Context.GetComponent<IConfigurationMediatorComponent>().ConfigurationBuilder;
 
-                IConfigurationObject configurationObject = configBuilder.GetConfigurationObject(null, target.Item.Configuration);
+                IConfigurationObject configurationObject = configBuilder.GetConfigurationObject(target.Item.Configuration);
 
                 if (configurationObject == null)
                 {

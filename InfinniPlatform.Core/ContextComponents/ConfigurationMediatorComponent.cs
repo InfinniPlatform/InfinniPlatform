@@ -16,7 +16,7 @@ namespace InfinniPlatform.ContextComponents
 
         public IConfigurationObject GetConfiguration(string version, string configurationId)
         {
-            return _configurationObjectBuilder.GetConfigurationObject(version, configurationId);
+            return _configurationObjectBuilder.GetConfigurationObject(configurationId);
         }
 
         public IConfigurationObjectBuilder ConfigurationBuilder

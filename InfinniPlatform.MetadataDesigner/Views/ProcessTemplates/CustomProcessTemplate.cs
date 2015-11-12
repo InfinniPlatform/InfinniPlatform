@@ -45,7 +45,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 
         private IEnumerable<string> LoadPropertiesNames()
         {
-            var document = new ManagerFactoryConfiguration(Version, ConfigId).BuildDocumentMetadataReader().GetItem(DocumentId);
+            var document = new ManagerFactoryConfiguration(ConfigId).BuildDocumentMetadataReader().GetItem(DocumentId);
             
             var properiesNames = new List<string>();
 

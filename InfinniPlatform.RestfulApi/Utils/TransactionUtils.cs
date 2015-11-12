@@ -18,7 +18,6 @@ namespace InfinniPlatform.RestfulApi.Utils
                           .GetTransaction(target.TransactionMarker)
                           .Attach(target.Item.Configuration,
                                   target.Item.Metadata,
-                                  null,
                                   docs);
                 }
             }

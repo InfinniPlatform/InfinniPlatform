@@ -55,7 +55,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
             bool result = true;
             var resultMessage = new StringBuilder();
 
-            var configReader = new MetadataReaderConfiguration(_version);
+            var configReader = new MetadataReaderConfiguration();
 
             dynamic configMetadata = configReader.GetItem(_activeConfiguration);
 
@@ -93,12 +93,6 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
             {
                 result = false;
                 resultMessage.AppendLine("Configuration doesn't contain 'Assemblies'");
-            }
-
-            if (configMetadata.Version == null)
-            {
-                result = false;
-                resultMessage.AppendLine("Configuration doesn't contain 'Version'");
             }
 
             if (result)

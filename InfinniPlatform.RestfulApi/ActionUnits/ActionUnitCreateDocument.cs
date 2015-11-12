@@ -19,7 +19,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             string documentId = target.Item.Metadata;
 
             dynamic schema = target.Context.GetComponent<IMetadataComponent>()
-                                   .GetMetadataList(null, configId, documentId, MetadataType.Schema)
+                                   .GetMetadataList(configId, documentId, MetadataType.Schema)
                                    .FirstOrDefault();
 
             //если для документа указана схема, то предзаполняем документ
@@ -30,7 +30,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                                                                       target.Context.GetComponent<IMetadataComponent>()), schema);
 
                 dynamic metadataProcess = target.Context.GetComponent<IMetadataComponent>()
-                                                .GetMetadata(null, configId, documentId, MetadataType.Process,
+                                                .GetMetadata(configId, documentId, MetadataType.Process,
                                                              "Default");
 
                 if (metadataProcess != null && metadataProcess.Transitions != null &&

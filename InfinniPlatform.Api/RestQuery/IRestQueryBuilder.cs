@@ -72,7 +72,7 @@ namespace InfinniPlatform.Api.RestQuery
         ///     Сформировать и выполнить запрос на системную нотификацию
         /// </summary>
         /// <returns>Ответ на вызов сервиса</returns>
-        RestQueryResponse QueryNotify(string version, string metadataConfigurationId, CookieContainer cookieContainer = null);
+        RestQueryResponse QueryNotify(string metadataConfigurationId, CookieContainer cookieContainer = null);
 
         /// <summary>
         ///     Сформировать и выполнить запрос на применение изменений, представленных в виде JSON-объекта
