@@ -13,16 +13,13 @@ namespace InfinniPlatform.SystemConfig.UserStorage
     public sealed class ApplicationUserStorePersistentStorage : IApplicationUserStore
     {
         public static readonly ApplicationUserStorePersistentStorage Instance = new ApplicationUserStorePersistentStorage();
-
-
+        
         public ApplicationUserStorePersistentStorage()
         {
             _userCache = new ApplicationUserStoreCache();
         }
-
-
+        
         private readonly ApplicationUserStoreCache _userCache;
-
 
         public void CreateUser(ApplicationUser user)
         {
@@ -54,7 +51,6 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             UpdateUserInCache(user);
         }
 
-
         public ApplicationUser FindUserById(string userId)
         {
             return FindUserInCache(c => c.FindUserById(userId), () => GetDocument<ApplicationUser>(AuthorizationStorageExtensions.UserStore, "Id", userId));
@@ -84,7 +80,6 @@ namespace InfinniPlatform.SystemConfig.UserStorage
         {
             return FindUserByUserName(name) ?? FindUserByEmail(name) ?? FindUserByPhoneNumber(name);
         }
-
 
         public void AddUserToRole(ApplicationUser user, string roleName)
         {
@@ -150,8 +145,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
                 }
             }
         }
-
-
+        
         public void AddUserClaim(ApplicationUser user, string claimType, string claimValue, bool overwrite = true)
         {
             var claims = overwrite ? user.Claims.Where(c => c.Type.DisplayName != claimType).ToList() : user.Claims.ToList();
@@ -178,7 +172,6 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             }
         }
 
-
         public void AddUserLogin(ApplicationUser user, ApplicationUserLogin userLogin)
         {
             var logins = user.Logins.ToList();
@@ -199,7 +192,6 @@ namespace InfinniPlatform.SystemConfig.UserStorage
                 UpdateUser(user);
             }
         }
-
 
         public void AddRole(string name, string caption, string description)
         {
@@ -237,7 +229,6 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             DeleteDocument(AuthorizationStorageExtensions.RoleStore, role.Id);
         }
 
-
         public dynamic FindClaimType(string claimType)
         {
             return GetDocument<ApplicationClaimType>(AuthorizationStorageExtensions.ClaimStore, "Name", claimType);
@@ -272,18 +263,15 @@ namespace InfinniPlatform.SystemConfig.UserStorage
                 DeleteDocument(AuthorizationStorageExtensions.ClaimStore, claim.Id);
             }
         }
-
-
+        
         public void RemoveAcl(string aclId)
         {
             DeleteDocument(AuthorizationStorageExtensions.AclStore, aclId);
         }
 
-
         public void Dispose()
         {
         }
-
 
         private static object GetDocument(string documentType, string propertyName, string propertyValue)
         {
@@ -328,7 +316,6 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             documentApi.DeleteDocument(AuthorizationStorageExtensions.AuthorizationConfigId, documentType, documentId);
         }
 
-
         private static T ConvertFromDynamic<T>(object dynamicObject)
         {
             return (T)JsonObjectSerializer.Default.ConvertFromDynamic(dynamicObject, typeof(T));
@@ -338,7 +325,6 @@ namespace InfinniPlatform.SystemConfig.UserStorage
         {
             return JsonObjectSerializer.Default.ConvertToDynamic(typeObject);
         }
-
 
         private void UpdateUserInCache(ApplicationUser user)
         {
@@ -361,7 +347,6 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 
             return user;
         }
-
 
         private static string CreateUnique()
         {

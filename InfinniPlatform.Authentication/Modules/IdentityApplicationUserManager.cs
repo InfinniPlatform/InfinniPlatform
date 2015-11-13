@@ -6,6 +6,7 @@ using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Api.Deprecated;
 using InfinniPlatform.Api.Security;
 using InfinniPlatform.Authentication.Properties;
 using InfinniPlatform.Sdk.ContextComponents;
@@ -254,9 +255,11 @@ namespace InfinniPlatform.Authentication.Modules
 
 			var user = InvokeUserManager((m, userId) => m.FindByIdAsync(userId));
 
-			var applicationUserClaims = user.Claims
-											.Where(claim => claim.Type.DisplayName != claimType)
-											.ToList();
+            //TODO Может использовать для этого Id?
+		    var applicationUserClaims = user.Claims
+		                                    .Where(claim => claim.Type.DisplayName != claimType &&
+		                                                    claim.Value != claimType)
+		                                    .ToList();
 
 			var newClaim = new ApplicationUserClaim
 			{
