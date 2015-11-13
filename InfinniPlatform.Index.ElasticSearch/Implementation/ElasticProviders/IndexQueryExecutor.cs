@@ -104,7 +104,10 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
             if (tenantId != AuthorizationStorageExtensions.AnonymousUser)
             {
-                searchModel.AddFilter(new NestFilter(Filter<dynamic>.Query(q => q.Term(ElasticConstants.TenantIdField, tenantId))));
+                var newFilter = new NestFilter(Filter<dynamic>.Terms(ElasticConstants.TenantIdField, new[] { tenantId, AuthorizationStorageExtensions.AnonymousUser }));
+                var oldFilter = new NestFilter(Filter<dynamic>.Query(q => q.Term(ElasticConstants.TenantIdField, tenantId)));
+                searchModel.AddFilter(newFilter);
+                
             }
             
 			searchModel.AddFilter(new NestFilter(Filter<dynamic>.Query(q => q.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid))));
