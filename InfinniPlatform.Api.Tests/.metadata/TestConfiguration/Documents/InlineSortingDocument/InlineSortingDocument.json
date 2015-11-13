@@ -1,0 +1,38 @@
+﻿{
+  "Id": "8d31f2cc-ed27-4915-9dbf-ae25e738a3c3",
+  "Services": [],
+  "Processes": [],
+  "Scenarios": [],
+  "Generators": [],
+  "Views": [],
+  "PrintViews": [],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "Name": "InlineSortingDocument",
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "ObjectProperty": {
+        "Type": "Object",
+        "TypeInfo": {
+          "DocumentLink": {
+            "ConfigId": "TestConfiguration",
+            "DocumentId": "OneStringSortingFieldDocument",
+            "Inline": true
+          }
+        },
+        "Properties": {}
+      },
+      "DateProperty": {
+        "Type": "DateTime"
+      },
+      "StringProperty": {
+        "Type": "String"
+      },
+      "IntProperty": {
+        "Type": "Integer"
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+﻿{
+  "Id": "bcbff909-1c3f-45c4-9c70-f1c48ce7e63e",
+  "Services": [],
+  "Processes": [],
+  "Scenarios": [],
+  "Generators": [],
+  "Views": [],
+  "PrintViews": [],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "Name": "OneIntSortingFieldDocument",
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "IntProperty": {
+        "Type": "Integer"
+      },
+      "SortableIntProperty": {
+        "Type": "Integer",
+        "Sortable": true
+      },
+      "StringProperty": {
+        "Type": "String"
+      }
+    }
+  }
+}

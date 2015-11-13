@@ -1,0 +1,32 @@
+﻿{
+  "Id": "d623742d-0923-4ada-823f-1421590a32e9",
+  "Services": [],
+  "Processes": [],
+  "Scenarios": [],
+  "Generators": [],
+  "Views": [],
+  "PrintViews": [],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "Name": "TwoSortingFieldsDocument",
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "SortableStringProperty": {
+        "Type": "String",
+        "Sortable": true
+      },
+      "SortableIntProperty": {
+        "Type": "Integer",
+        "Sortable": true
+      },
+      "StringProperty": {
+        "Type": "String"
+      },
+      "IntProperty": {
+        "Type": "Integer"
+      }
+    }
+  }
+}

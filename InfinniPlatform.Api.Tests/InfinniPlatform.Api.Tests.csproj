@@ -184,6 +184,13 @@
     </None>
     <None Include=".metadata\TestConfiguration\Configuration.json" />
     <None Include=".metadata\TestConfiguration\Documents\ContentUploadDocument\ContentUploadDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\InlineSortingDocument\InlineSortingDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\OneDateSortingFieldDocument\OneDateSortingFieldDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\OneIntSortingFieldDocument\OneIntSortingFieldDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\OneSortingFieldInArrayDocument\OneSortingFieldInArrayDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\OneSortingFieldInNestedObjectDocument\OneSortingFieldInNestedObjectDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\OneStringSortingFieldDocument\OneStringSortingFieldDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\TwoSortingFieldsDocument\TwoSortingFieldsDocument.json" />
     <None Include="packages.config" />
     <None Include="TestData\UploadBinaryContent.zip" />
   </ItemGroup>

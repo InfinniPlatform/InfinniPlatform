@@ -1,0 +1,39 @@
+﻿{
+  "Id": "29aa6174-dd80-4dd3-8b78-8a7e5cd4b185",
+  "Services": [],
+  "Processes": [],
+  "Scenarios": [],
+  "Generators": [],
+  "Views": [],
+  "PrintViews": [],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "Name": "OneSortingFieldInArrayDocument",
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "ArrayProperty": {
+        "Type": "Array",
+        "Items": {
+          "Type": "Object",
+          "Properties": {
+            "SortableStringProperty": {
+              "Type": "String",
+              "Sortable": true
+            }
+          }
+        }
+      },
+      "DateProperty": {
+        "Type": "DateTime"
+      },
+      "StringProperty": {
+        "Type": "String"
+      },
+      "IntProperty": {
+        "Type": "Integer"
+      }
+    }
+  }
+}

@@ -1,792 +1,328 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
-using InfinniPlatform.Api.RestApi.CommonApi;
+
 using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.NodeServiceHost;
-using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
+
 using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 {
-    /// <summary>
-    ///     Проверка серверной сортировки
-    /// </summary>
-    [TestFixture]
+    [TestFixture(Description = "Проверка серверной сортировки")]
     [Category(TestCategories.AcceptanceTest)]
-	[Ignore("Необходимо создать конфиг	урацию метаданных на диске, т.к. теперь метаданные загружаются только с диска")]
-	public sealed class SortingBehavior
+    public sealed class SortingBehavior
     {
-        private const string ConfigurationId = "sortingbehaviorconfiguration";
-        private const string DocumentWithOneStringSortingField = "OneStringSortingField";
-        private const string DocumentWithOneIntSortingField = "OneIntSortingField";
-        private const string DocumentWithOneDateSortingField = "OneDateSortingField";
-        private const string DocumentWithOneSortingFieldInArray = "OneSortingFieldInArray";
-        private const string DocumentWithOneSortingFieldInNestedObject = "OneSortingFieldInNestedObject";
-        private const string DocumentWithTwoSortingFields = "TwoSortingFields";
-        private const string DocumentWithNoSorting = "NoSortingFields";
-        private const string DocumentWithInlineSorting = "InlineSorting";
-
-        private readonly Stopwatch _sw = new Stopwatch();
+        private const string ConfigurationId = "TestConfiguration";
+        private const string OneStringSortingFieldDocument = "OneStringSortingFieldDocument";
+        private const string OneIntSortingFieldDocument = "OneIntSortingFieldDocument";
+        private const string OneDateSortingFieldDocument = "OneDateSortingFieldDocument";
+        private const string OneSortingFieldInArrayDocument = "OneSortingFieldInArrayDocument";
+        private const string OneSortingFieldInNestedObjectDocument = "OneSortingFieldInNestedObjectDocument";
+        private const string TwoSortingFieldsDocument = "TwoSortingFieldsDocument";
+        private const string InlineSortingDocument = "InlineSortingDocument";
 
         private IDisposable _server;
 
-        //[TestFixtureSetUp]
+        [TestFixtureSetUp]
         public void FixtureSetup()
         {
-			_server = InfinniPlatformInprocessHost.Start();
-
-            _sw.Restart();
-
-            CreateTestConfig();
+            _server = InfinniPlatformInprocessHost.Start();
         }
 
-        //[TestFixtureTearDown]
+        [TestFixtureTearDown]
         public void FixtureTearDown()
         {
             _server.Dispose();
         }
 
-        private void CreateTestConfig()
-        {
-            new IndexApi().RebuildIndex(ConfigurationId, DocumentWithOneStringSortingField);
-            new IndexApi().RebuildIndex(ConfigurationId, DocumentWithOneIntSortingField);
-            new IndexApi().RebuildIndex(ConfigurationId, DocumentWithOneDateSortingField);
-            new IndexApi().RebuildIndex(ConfigurationId, DocumentWithOneSortingFieldInArray);
-            new IndexApi().RebuildIndex(ConfigurationId, DocumentWithOneSortingFieldInNestedObject);
-            new IndexApi().RebuildIndex(ConfigurationId, DocumentWithTwoSortingFields);
-            new IndexApi().RebuildIndex(ConfigurationId, DocumentWithInlineSorting);
-
-            MetadataManagerConfiguration managerConfiguration =
-                ManagerFactoryConfiguration.BuildConfigurationManager();
-            dynamic config = managerConfiguration.CreateItem(ConfigurationId);
-            managerConfiguration.DeleteItem(config);
-            managerConfiguration.MergeItem(config);
-
-            MetadataManagerDocument managerDocument =
-                new ManagerFactoryConfiguration(ConfigurationId).BuildDocumentManager();
-
-            dynamic stringPropertyModel = new DynamicWrapper();
-            stringPropertyModel.Type = DataType.String.ToString();
-            stringPropertyModel.Caption = "Строковое поле 1";
-
-            dynamic stringSortablePropertyModel = new DynamicWrapper();
-            stringSortablePropertyModel.Type = DataType.String.ToString();
-            stringSortablePropertyModel.Caption = "Строковое поле 2";
-            stringSortablePropertyModel.Sortable = true;
-
-            dynamic intPropertyModel = new DynamicWrapper();
-            intPropertyModel.Type = DataType.Integer.ToString();
-            intPropertyModel.Caption = "Числовое поле 1";
-            intPropertyModel.Sortable = false;
-
-            dynamic intSortablePropertyModel = new DynamicWrapper();
-            intSortablePropertyModel.Type = DataType.Integer.ToString();
-            intSortablePropertyModel.Caption = "Числовое поле 2";
-            intSortablePropertyModel.Sortable = true;
-
-            dynamic datePropertyModel = new DynamicWrapper();
-            datePropertyModel.Type = DataType.DateTime.ToString();
-            datePropertyModel.Caption = "Поле даты 1";
-            datePropertyModel.Sortable = false;
-
-            dynamic dateSortablePropertyModel = new DynamicWrapper();
-            dateSortablePropertyModel.Type = DataType.DateTime.ToString();
-            dateSortablePropertyModel.Caption = "Поле даты 2";
-            dateSortablePropertyModel.Sortable = true;
-
-            dynamic arrayPropertyModel = new DynamicWrapper();
-            arrayPropertyModel.Type = DataType.Array.ToString();
-            arrayPropertyModel.Caption = "Массив";
-            arrayPropertyModel.Sortable = false;
-            arrayPropertyModel.Items = new DynamicWrapper();
-            arrayPropertyModel.Items.Type = DataType.Object.ToString();
-            arrayPropertyModel.Items.Properties = new DynamicWrapper();
-            arrayPropertyModel.Items.Properties.SortableStringProperty = stringSortablePropertyModel;
-
-            dynamic objectPropertyModel = new DynamicWrapper();
-            objectPropertyModel.Type = DataType.Object.ToString();
-            objectPropertyModel.Caption = "Объект";
-            objectPropertyModel.Sortable = false;
-            objectPropertyModel.Properties = new DynamicWrapper();
-            objectPropertyModel.Properties.SortableStringProperty = stringSortablePropertyModel;
-
-            dynamic objectWithInlinePropertyModel = new DynamicWrapper();
-            objectWithInlinePropertyModel.Type = DataType.Object.ToString();
-            objectWithInlinePropertyModel.Caption = "Объект";
-            objectWithInlinePropertyModel.Sortable = false;
-            objectWithInlinePropertyModel.TypeInfo = new DynamicWrapper();
-            objectWithInlinePropertyModel.TypeInfo.DocumentLink = new DynamicWrapper();
-            objectWithInlinePropertyModel.TypeInfo.DocumentLink.Inline = true;
-            objectWithInlinePropertyModel.TypeInfo.DocumentLink.ConfigId = ConfigurationId;
-            objectWithInlinePropertyModel.TypeInfo.DocumentLink.DocumentId = DocumentWithOneStringSortingField;
-
-            dynamic documentWithOneStringSortingField = managerDocument.CreateItem(DocumentWithOneStringSortingField);
-            dynamic schemaProperties = new DynamicWrapper();
-            schemaProperties.SortableStringProperty = stringSortablePropertyModel;
-            schemaProperties.StringProperty = stringPropertyModel;
-            documentWithOneStringSortingField.Schema = new DynamicWrapper();
-            documentWithOneStringSortingField.Schema.Type = "Object";
-            documentWithOneStringSortingField.Schema.Caption = "DocumentWithOneStringSortingField";
-            documentWithOneStringSortingField.Schema.Properties = schemaProperties;
-            managerDocument.MergeItem(documentWithOneStringSortingField);
-
-            dynamic documentWithOneIntSortingField = managerDocument.CreateItem(DocumentWithOneIntSortingField);
-            schemaProperties = new DynamicWrapper();
-            schemaProperties.SortableIntProperty = intSortablePropertyModel;
-            schemaProperties.StringProperty = stringPropertyModel;
-            schemaProperties.IntProperty = intPropertyModel;
-            documentWithOneIntSortingField.Schema = new DynamicWrapper();
-            documentWithOneIntSortingField.Schema.Type = "Object";
-            documentWithOneIntSortingField.Schema.Caption = "DocumentWithOneIntSortingField";
-            documentWithOneIntSortingField.Schema.Properties = schemaProperties;
-
-            managerDocument.MergeItem(documentWithOneIntSortingField);
-
-            dynamic documentWithOneDateSortingField = managerDocument.CreateItem(DocumentWithOneDateSortingField);
-            schemaProperties = new DynamicWrapper();
-            schemaProperties.SortableDateProperty = dateSortablePropertyModel;
-            schemaProperties.StringProperty = stringPropertyModel;
-            schemaProperties.IntProperty = intPropertyModel;
-            documentWithOneDateSortingField.Schema = new DynamicWrapper();
-            documentWithOneDateSortingField.Schema.Type = "Object";
-            documentWithOneDateSortingField.Schema.Caption = "DocumentWithOneDateSortingField";
-            documentWithOneDateSortingField.Schema.Properties = schemaProperties;
-
-            managerDocument.MergeItem(documentWithOneDateSortingField);
-
-            dynamic documentWithOneSortingFieldInArray = managerDocument.CreateItem(DocumentWithOneSortingFieldInArray);
-            schemaProperties = new DynamicWrapper();
-            schemaProperties.ArrayProperty = arrayPropertyModel;
-            schemaProperties.DateProperty = datePropertyModel;
-            schemaProperties.StringProperty = stringPropertyModel;
-            schemaProperties.IntProperty = intPropertyModel;
-            documentWithOneSortingFieldInArray.Schema = new DynamicWrapper();
-            documentWithOneSortingFieldInArray.Schema.Type = "Object";
-            documentWithOneSortingFieldInArray.Schema.Caption = "DocumentWithOneSortingFieldInArray";
-            documentWithOneSortingFieldInArray.Schema.Properties = schemaProperties;
-            managerDocument.MergeItem(documentWithOneSortingFieldInArray);
-
-            dynamic documentWithOneSortingFieldInNestedObject =
-                managerDocument.CreateItem(DocumentWithOneSortingFieldInNestedObject);
-            schemaProperties = new DynamicWrapper();
-            schemaProperties.ObjectProperty = objectPropertyModel;
-            schemaProperties.DateProperty = datePropertyModel;
-            schemaProperties.StringProperty = stringPropertyModel;
-            schemaProperties.IntProperty = intPropertyModel;
-            documentWithOneSortingFieldInNestedObject.Schema = new DynamicWrapper();
-            documentWithOneSortingFieldInNestedObject.Schema.Type = "Object";
-            documentWithOneSortingFieldInNestedObject.Schema.Caption = "DocumentWithOneSortingFieldInNestedObject";
-            documentWithOneSortingFieldInNestedObject.Schema.Properties = schemaProperties;
-
-            managerDocument.MergeItem(documentWithOneSortingFieldInNestedObject);
-
-            dynamic documentWithTwoSortingFields = managerDocument.CreateItem(DocumentWithTwoSortingFields);
-            schemaProperties = new DynamicWrapper();
-            schemaProperties.SortableStringProperty = stringSortablePropertyModel;
-            schemaProperties.SortableIntProperty = intSortablePropertyModel;
-            schemaProperties.StringProperty = stringPropertyModel;
-            schemaProperties.IntProperty = intPropertyModel;
-            documentWithTwoSortingFields.Schema = new DynamicWrapper();
-            documentWithTwoSortingFields.Schema.Type = "Object";
-            documentWithTwoSortingFields.Schema.Caption = "DocumentWithTwoSortingFields";
-            documentWithTwoSortingFields.Schema.Properties = schemaProperties;
-            managerDocument.MergeItem(documentWithTwoSortingFields);
-
-            dynamic documentWithNoSorting = managerDocument.CreateItem(DocumentWithNoSorting);
-            schemaProperties = new DynamicWrapper();
-            schemaProperties.StringProperty1 = stringPropertyModel;
-            schemaProperties.IntProperty1 = intPropertyModel;
-            schemaProperties.StringProperty2 = stringPropertyModel;
-            schemaProperties.IntProperty2 = intPropertyModel;
-            documentWithNoSorting.Schema = new DynamicWrapper();
-            documentWithNoSorting.Schema.Type = "Object";
-            documentWithNoSorting.Schema.Caption = "DocumentWithNoSorting";
-            documentWithNoSorting.Schema.Properties = schemaProperties;
-            managerDocument.MergeItem(documentWithNoSorting);
-
-            dynamic documentWithInlineSorting = managerDocument.CreateItem(DocumentWithInlineSorting);
-            schemaProperties = new DynamicWrapper();
-            schemaProperties.ObjectProperty = objectWithInlinePropertyModel;
-            schemaProperties.DateProperty = datePropertyModel;
-            schemaProperties.StringProperty = stringPropertyModel;
-            schemaProperties.IntProperty = intPropertyModel;
-            documentWithInlineSorting.Schema = new DynamicWrapper();
-            documentWithInlineSorting.Schema.Type = "Object";
-            documentWithInlineSorting.Schema.Caption = "DocumentWithInlineSorting";
-            documentWithInlineSorting.Schema.Properties = schemaProperties;
-            managerDocument.MergeItem(documentWithInlineSorting);
-
-            new UpdateApi().ForceReload(ConfigurationId);
-
-            new UpdateApi().UpdateStore(ConfigurationId);
-        }
-
         [Test]
         public void ShouldSortByArrayField()
         {
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithOneSortingFieldInArray, new
-                {
-                    Id = Guid.NewGuid(),
-                    ArrayProperty = new[]
-                        {
-                            new
-                                {
-                                    SortableStringProperty = "ccc 1"
-                                },
-                            new
-                                {
-                                    SortableStringProperty = "yyy 1"
-                                }
-                        },
-                    StringProperty = "где абв эюя",
-                    IntProperty = 2,
-                    DateProperty = new DateTime(2014, 01, 02)
-                });
+            // Given
 
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithOneSortingFieldInArray, new
-                {
-                    Id = Guid.NewGuid(),
-                    ArrayProperty = new[]
-                        {
-                            new
-                                {
-                                    SortableStringProperty = "aaaa 2"
-                                },
-                            new
-                                {
-                                    SortableStringProperty = "zzz 2"
-                                }
-                        },
-                    StringProperty = "где абв эюя",
-                    IntProperty = 1,
-                    DateProperty = new DateTime(2014, 01, 02)
-                });
+            var documentApi = new DocumentApi();
 
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithOneSortingFieldInArray, new
-                {
-                    Id = Guid.NewGuid(),
-                    ArrayProperty = new[]
-                        {
-                            new
-                                {
-                                    SortableStringProperty = "eee 1"
-                                },
-                            new
-                                {
-                                    SortableStringProperty = "xxx 1"
-                                }
-                        },
-                    StringProperty = "где абв эюя",
-                    IntProperty = 3,
-                    DateProperty = new DateTime(2014, 01, 02)
-                });
+            var document1 = new
+            {
+                IntProperty = 2,
+                ArrayProperty = new[] { new { SortableStringProperty = "ccc 1" }, new { SortableStringProperty = "yyy 1" } }
+            };
 
-            _sw.Restart();
+            var document2 = new
+            {
+                IntProperty = 1,
+                ArrayProperty = new[] { new { SortableStringProperty = "aaaa 2" }, new { SortableStringProperty = "zzz 2" } }
+            };
 
-            // Автоматически должно отсортироваться по возрастанию SortableStringProperty
-            IEnumerable<dynamic> sortedData = new DocumentApi().GetDocument(ConfigurationId,
-                                                                                DocumentWithOneSortingFieldInArray, null,
-                                                                                0, 10);
+            var document3 = new
+            {
+                IntProperty = 3,
+                ArrayProperty = new[] { new { SortableStringProperty = "eee 1" }, new { SortableStringProperty = "xxx 1" } }
+            };
 
-            _sw.Stop();
-            Console.WriteLine("Sorting by array time: " + _sw.ElapsedMilliseconds + " ms");
+            // When
 
-            Assert.AreEqual(1, sortedData.First().IntProperty);
+            documentApi.SetDocument(ConfigurationId, OneSortingFieldInArrayDocument, document1);
+            documentApi.SetDocument(ConfigurationId, OneSortingFieldInArrayDocument, document2);
+            documentApi.SetDocument(ConfigurationId, OneSortingFieldInArrayDocument, document3);
 
-            _sw.Restart();
+            // По умолчанию - сортировка по возрастанию SortableStringProperty
+            var ascPage0 = documentApi.GetDocument(ConfigurationId, OneSortingFieldInArrayDocument, null, 0, 10);
 
             // Сортировка по убыванию
-            sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithOneSortingFieldInArray, null, 0,
-                                                           10,
-                                                           s =>
-                                                           s.AddSorting("ArrayProperty.SortableStringProperty",
-                                                                        SortOrder.Descending));
+            var descPage0 = documentApi.GetDocument(ConfigurationId, OneSortingFieldInArrayDocument, null, 0, 10, s => s.AddSorting("ArrayProperty.SortableStringProperty", SortOrder.Descending));
 
-            _sw.Stop();
-            Console.WriteLine("Sorting by array time: " + _sw.ElapsedMilliseconds + " ms");
+            // Then
 
-            Assert.AreEqual(3, sortedData.First().IntProperty);
+            Assert.AreEqual(1, ascPage0?.FirstOrDefault()?.IntProperty);
+            Assert.AreEqual(3, descPage0?.FirstOrDefault()?.IntProperty);
         }
 
         [Test]
         public void ShouldSortByDateField()
         {
-            var ids = new List<int>();
+            // Given
 
-            for (int i = 0; i < 100; i++)
+            var documentApi = new DocumentApi();
+
+            var startDate = DateTime.Today;
+
+            // When
+
+            for (var i = 0; i < 100; ++i)
             {
-                int next = new Random().Next(30);
+                var document = new { SortableDateProperty = startDate.AddDays(i) };
 
-                ids.Add(next);
-
-                new DocumentApi().SetDocument(ConfigurationId, DocumentWithOneDateSortingField, new
-                    {
-                        Id = Guid.NewGuid(),
-                        StringProperty = "где абв эюя" + next,
-                        SortableDateProperty = new DateTime(2014, 1, 1 + next),
-                        IntProperty = -1*next
-                    }.ToDynamic());
+                documentApi.SetDocument(ConfigurationId, OneDateSortingFieldDocument, document);
             }
 
-            ids.Sort();
+            // По умолчанию - сортировка по возрастанию SortableDateProperty
+            var ascPage0 = documentApi.GetDocument(ConfigurationId, OneDateSortingFieldDocument, null, 0, 10);
+            var ascPage1 = documentApi.GetDocument(ConfigurationId, OneDateSortingFieldDocument, null, 1, 10);
 
-            _sw.Restart();
+            // Сортировка по убыванию
+            var descPage0 = documentApi.GetDocument(ConfigurationId, OneDateSortingFieldDocument, null, 0, 10, s => s.AddSorting("SortableDateProperty", SortOrder.Descending));
+            var descPage1 = documentApi.GetDocument(ConfigurationId, OneDateSortingFieldDocument, null, 1, 10, s => s.AddSorting("SortableDateProperty", SortOrder.Descending));
 
-            // Автоматически должно отсортироваться по возрастанию SortableDateProperty
-            IEnumerable<dynamic> sortedData = new DocumentApi().GetDocument(ConfigurationId,
-                                                                                DocumentWithOneDateSortingField, null, 0,
-                                                                                10);
+            // Then
 
-            _sw.Stop();
+            Assert.AreEqual(startDate.AddDays(0), ascPage0?.FirstOrDefault()?.SortableDateProperty);
+            Assert.AreEqual(startDate.AddDays(10), ascPage1?.FirstOrDefault()?.SortableDateProperty);
 
-            Console.WriteLine("Sorting by date time: " + _sw.ElapsedMilliseconds + " ms");
-
-            Assert.AreEqual(new DateTime(2014, 1, 1 + ids.Min()), sortedData.First().SortableDateProperty);
-
-            _sw.Restart();
-
-            // Постраничная выборка - берем пятую страницу
-            sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithOneDateSortingField, null, 5, 5);
-
-            _sw.Stop();
-
-            Console.WriteLine("Sorting by date time: " + _sw.ElapsedMilliseconds + " ms");
-
-            Assert.AreEqual(new DateTime(2014, 1, 1 + ids.Skip(25).First()), sortedData.First().SortableDateProperty);
+            Assert.AreEqual(startDate.AddDays(99), descPage0?.FirstOrDefault()?.SortableDateProperty);
+            Assert.AreEqual(startDate.AddDays(89), descPage1?.FirstOrDefault()?.SortableDateProperty);
         }
 
         [Test]
         public void ShouldSortByInlinedDocumentField()
         {
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithInlineSorting, new
-                {
-                    Id = Guid.NewGuid(),
-                    ObjectProperty = new
-                        {
-                            SortableStringProperty = "ccc 1"
-                        },
-                    StringProperty = "где абв эюя",
-                    IntProperty = 2,
-                    DateProperty = new DateTime(2014, 01, 02)
-                });
+            // Given
 
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithInlineSorting, new
-                {
-                    Id = Guid.NewGuid(),
-                    ObjectProperty = new
-                        {
-                            SortableStringProperty = "aaa 2"
-                        },
-                    StringProperty = "где абв эюя",
-                    IntProperty = 1,
-                    DateProperty = new DateTime(2014, 01, 02)
-                });
+            var documentApi = new DocumentApi();
 
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithInlineSorting, new
-                {
-                    Id = Guid.NewGuid(),
-                    ObjectProperty = new
-                        {
-                            SortableStringProperty = "eee 1"
-                        },
-                    StringProperty = "где абв эюя",
-                    IntProperty = 3,
-                    DateProperty = new DateTime(2014, 01, 02)
-                });
+            var document1 = new
+            {
+                IntProperty = 2,
+                ObjectProperty = new { SortableStringProperty = "ccc 1" }
+            };
 
-            _sw.Restart();
+            var document2 = new
+            {
+                IntProperty = 1,
+                ObjectProperty = new { SortableStringProperty = "aaa 2" }
+            };
 
-            // Автоматически должно отсортироваться по возрастанию SortableStringProperty
-            IEnumerable<dynamic> sortedData = new DocumentApi().GetDocument(ConfigurationId,
-                                                                                DocumentWithInlineSorting, null, 0, 10);
+            var document3 = new
+            {
+                IntProperty = 3,
+                ObjectProperty = new { SortableStringProperty = "eee 1" }
+            };
 
-            _sw.Stop();
-            Console.WriteLine("Sorting by inline object field time: " + _sw.ElapsedMilliseconds + " ms");
+            // When
 
-            Assert.AreEqual(1, sortedData.First().IntProperty);
+            documentApi.SetDocument(ConfigurationId, InlineSortingDocument, document1);
+            documentApi.SetDocument(ConfigurationId, InlineSortingDocument, document2);
+            documentApi.SetDocument(ConfigurationId, InlineSortingDocument, document3);
 
-            _sw.Restart();
+            // По умолчанию - сортировка по возрастанию ObjectProperty.SortableStringProperty
+            var ascPage0 = documentApi.GetDocument(ConfigurationId, InlineSortingDocument, null, 0, 10);
 
             // Сортировка по убыванию
-            sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithInlineSorting, null, 0, 10,
-                                                           s =>
-                                                           s.AddSorting("ObjectProperty.SortableStringProperty",
-                                                                        SortOrder.Descending));
+            var descPage0 = documentApi.GetDocument(ConfigurationId, InlineSortingDocument, null, 0, 10, s => s.AddSorting("ObjectProperty.SortableStringProperty", SortOrder.Descending));
 
-            _sw.Stop();
-            Console.WriteLine("Sorting by inline object field time: " + _sw.ElapsedMilliseconds + " ms");
+            // Then
 
-            Assert.AreEqual(3, sortedData.First().IntProperty);
+            Assert.AreEqual(1, ascPage0?.FirstOrDefault()?.IntProperty);
+            Assert.AreEqual(3, descPage0?.FirstOrDefault()?.IntProperty);
         }
 
         [Test]
         public void ShouldSortByIntField()
         {
-            var ids = new List<int>();
+            // Given
 
-            for (int i = 0; i < 100; i++)
+            var documentApi = new DocumentApi();
+
+            // When
+
+            for (var i = 0; i < 100; ++i)
             {
-                int next = new Random().Next(1000);
+                var document = new { SortableIntProperty = i };
 
-                ids.Add(next);
-
-                new DocumentApi().SetDocument(ConfigurationId, DocumentWithOneIntSortingField, new
-                    {
-                        Id = Guid.NewGuid(),
-                        StringProperty = "где абв эюя" + next,
-                        SortableIntProperty = next,
-                        IntProperty = -1*next
-                    });
+                documentApi.SetDocument(ConfigurationId, OneIntSortingFieldDocument, document);
             }
 
-            ids.Sort();
+            // По умолчанию - сортировка по возрастанию SortableIntProperty
+            var ascPage0 = documentApi.GetDocument(ConfigurationId, OneIntSortingFieldDocument, null, 0, 10);
 
-            _sw.Restart();
+            // Сортировка по убыванию
+            var descPage0 = documentApi.GetDocument(ConfigurationId, OneIntSortingFieldDocument, null, 0, 10, s => s.AddSorting("SortableIntProperty", SortOrder.Descending));
 
-            // Автоматически должно отсортироваться по возрастанию SortableIntProperty
-            IEnumerable<dynamic> sortedData = new DocumentApi().GetDocument(ConfigurationId,
-                                                                                DocumentWithOneIntSortingField, null, 0,
-                                                                                10);
+            // Then
 
-            _sw.Stop();
-
-            Console.WriteLine("Sorting by int time: " + _sw.ElapsedMilliseconds + " ms");
-
-            Assert.AreEqual(ids.Min(), sortedData.First().SortableIntProperty);
-
-            _sw.Restart();
-
-            // Постраничная выборка - берем пятую страницу
-            sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithOneIntSortingField, null, 5, 10);
-
-            _sw.Stop();
-
-            Console.WriteLine("Sorting by int time: " + _sw.ElapsedMilliseconds + " ms");
-
-            Assert.AreEqual(ids.Skip(50).First(), sortedData.First().SortableIntProperty);
+            Assert.AreEqual(0, ascPage0?.FirstOrDefault()?.SortableIntProperty);
+            Assert.AreEqual(99, descPage0?.FirstOrDefault()?.SortableIntProperty);
         }
 
         [Test]
         public void ShouldSortByObjectField()
         {
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithOneSortingFieldInNestedObject, new
-                {
-                    Id = Guid.NewGuid(),
-                    ObjectProperty = new
-                        {
-                            SortableStringProperty = "ccc 1"
-                        },
-                    StringProperty = "где абв эюя",
-                    IntProperty = 2,
-                    DateProperty = new DateTime(2014, 01, 02)
-                });
+            // Given
 
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithOneSortingFieldInNestedObject, new
-                {
-                    Id = Guid.NewGuid(),
-                    ObjectProperty = new
-                        {
-                            SortableStringProperty = "aaa 2"
-                        },
-                    StringProperty = "где абв эюя",
-                    IntProperty = 1,
-                    DateProperty = new DateTime(2014, 01, 02)
-                });
+            var documentApi = new DocumentApi();
 
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithOneSortingFieldInNestedObject, new
-                {
-                    Id = Guid.NewGuid(),
-                    ObjectProperty = new
-                        {
-                            SortableStringProperty = "eee 1"
-                        },
-                    StringProperty = "где абв эюя",
-                    IntProperty = 3,
-                    DateProperty = new DateTime(2014, 01, 02)
-                });
+            var document1 = new
+            {
+                IntProperty = 2,
+                ObjectProperty = new { SortableStringProperty = "ccc 1" }
+            };
 
-            _sw.Restart();
+            var document2 = new
+            {
+                IntProperty = 1,
+                ObjectProperty = new { SortableStringProperty = "aaa 2" }
+            };
 
-            // Автоматически должно отсортироваться по возрастанию SortableStringProperty
-            IEnumerable<dynamic> sortedData = new DocumentApi().GetDocument(ConfigurationId,
-                                                                                DocumentWithOneSortingFieldInNestedObject,
-                                                                                null, 0, 10);
+            var document3 = new
+            {
+                IntProperty = 3,
+                ObjectProperty = new { SortableStringProperty = "eee 1" }
+            };
 
-            _sw.Stop();
-            Console.WriteLine("Sorting by object field time: " + _sw.ElapsedMilliseconds + " ms");
+            // When
 
-            Assert.AreEqual(1, sortedData.First().IntProperty);
+            documentApi.SetDocument(ConfigurationId, OneSortingFieldInNestedObjectDocument, document1);
+            documentApi.SetDocument(ConfigurationId, OneSortingFieldInNestedObjectDocument, document2);
+            documentApi.SetDocument(ConfigurationId, OneSortingFieldInNestedObjectDocument, document3);
 
-            _sw.Restart();
+            // По умолчанию - сортировка по возрастанию ObjectProperty.SortableStringProperty
+            var ascPage0 = documentApi.GetDocument(ConfigurationId, OneSortingFieldInNestedObjectDocument, null, 0, 10);
 
             // Сортировка по убыванию
-            sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithOneSortingFieldInNestedObject,
-                                                           null, 0, 10,
-                                                           s =>
-                                                           s.AddSorting("ObjectProperty.SortableStringProperty",
-                                                                        SortOrder.Descending));
+            var descPage0 = documentApi.GetDocument(ConfigurationId, OneSortingFieldInNestedObjectDocument, null, 0, 10, s => s.AddSorting("ObjectProperty.SortableStringProperty", SortOrder.Descending));
 
-            _sw.Stop();
-            Console.WriteLine("Sorting by object field time: " + _sw.ElapsedMilliseconds + " ms");
+            // Then
 
-            Assert.AreEqual(3, sortedData.First().IntProperty);
+            Assert.AreEqual(1, ascPage0?.FirstOrDefault()?.IntProperty);
+            Assert.AreEqual(3, descPage0?.FirstOrDefault()?.IntProperty);
         }
 
         [Test]
         public void ShouldSortByStringField()
         {
-            var ids = new List<int>();
+            // Given
 
-            for (int i = 0; i < 100; i++)
+            var documentApi = new DocumentApi();
+
+            // When
+
+            for (var i = 0; i < 100; ++i)
             {
-                int next = new Random().Next(1000);
+                var document = new { SortableStringProperty = $"эюя абв где {i}" };
 
-                ids.Add(next);
-
-                new DocumentApi().SetDocument(ConfigurationId, DocumentWithOneStringSortingField, new
-                    {
-                        Id = Guid.NewGuid(),
-                        StringProperty = "где абв эюя" + next,
-                        SortableStringProperty = string.Format("эюя абв где {0:D3}", next),
-                        RandomNumber = next
-                    }, false, true);
+                documentApi.SetDocument(ConfigurationId, OneStringSortingFieldDocument, document);
             }
 
-            ids.Sort();
+            // По умолчанию - сортировка по возрастанию SortableStringProperty
+            var ascPage0 = documentApi.GetDocument(ConfigurationId, OneStringSortingFieldDocument, null, 0, 10);
 
-            _sw.Restart();
+            // Сортировка по убыванию
+            var descPage0 = documentApi.GetDocument(ConfigurationId, OneStringSortingFieldDocument, null, 0, 10, s => s.AddSorting("SortableStringProperty", SortOrder.Descending));
 
-            // Автоматически должно отсортироваться по возрастанию SortableStringProperty
-            IEnumerable<dynamic> sortedData = new DocumentApi().GetDocument(ConfigurationId,
-                                                                                DocumentWithOneStringSortingField, null,
-                                                                                0, 10);
+            // Then
 
-            _sw.Stop();
-
-            Console.WriteLine("Sorting by string time: " + _sw.ElapsedMilliseconds + " ms");
-
-            Assert.AreEqual(ids.Min(), sortedData.First().RandomNumber);
-
-            _sw.Restart();
-
-            // Постраничная выборка - берем вторую страницу
-            sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithOneStringSortingField, null, 1,
-                                                           10);
-
-            _sw.Stop();
-
-            Console.WriteLine("Sorting by string time: " + _sw.ElapsedMilliseconds + " ms");
-
-            Assert.AreEqual(ids.Skip(10).First(), sortedData.First().RandomNumber);
-
-            // Crossconfig call
-            sortedData = new DocumentApi().GetDocumentCrossConfig(null, 0, 10, new[] {ConfigurationId},
-                                                                      new[] {DocumentWithOneStringSortingField},
-                                                                      s => s.AddSorting("SortableStringProperty"));
-            Assert.AreEqual(ids.Min(), sortedData.First().RandomNumber);
+            Assert.AreEqual("эюя абв где 0", ascPage0?.FirstOrDefault()?.SortableStringProperty);
+            Assert.AreEqual("эюя абв где 99", descPage0?.FirstOrDefault()?.SortableStringProperty);
         }
 
         [Test]
         public void ShouldSortByTwoFields()
         {
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithTwoSortingFields, new
-                {
-                    Id = Guid.NewGuid(),
-                    SortableStringProperty = "aaaaa",
-                    StringProperty = "где абв эюя",
-                    SortableIntProperty = 300,
-                    IntProperty = 2
-                });
+            // Given
 
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithTwoSortingFields, new
-                {
-                    Id = Guid.NewGuid(),
-                    SortableStringProperty = "aaaaa",
-                    StringProperty = "где абв эюя",
-                    SortableIntProperty = 200,
-                    IntProperty = 2
-                });
+            var documentApi = new DocumentApi();
 
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithTwoSortingFields, new
-                {
-                    Id = Guid.NewGuid(),
-                    SortableStringProperty = "aaaaa",
-                    StringProperty = "где абв эюя",
-                    SortableIntProperty = 100,
-                    IntProperty = 2
-                });
+            var document1 = new
+            {
+                SortableStringProperty = "aaaaa",
+                SortableIntProperty = 300
+            };
 
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithTwoSortingFields, new
-                {
-                    Id = Guid.NewGuid(),
-                    SortableStringProperty = "bbbbb",
-                    StringProperty = "где абв эюя",
-                    SortableIntProperty = 300,
-                    IntProperty = 2
-                });
+            var document2 = new
+            {
+                SortableStringProperty = "aaaaa",
+                SortableIntProperty = 200
+            };
 
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithTwoSortingFields, new
-                {
-                    Id = Guid.NewGuid(),
-                    SortableStringProperty = "bbbbb",
-                    StringProperty = "где абв эюя",
-                    SortableIntProperty = 200,
-                    IntProperty = 2
-                });
+            var document3 = new
+            {
+                SortableStringProperty = "aaaaa",
+                SortableIntProperty = 100
+            };
 
-            new DocumentApi().SetDocument(ConfigurationId, DocumentWithTwoSortingFields, new
-                {
-                    Id = Guid.NewGuid(),
-                    SortableStringProperty = "bbbbb",
-                    StringProperty = "где абв эюя",
-                    SortableIntProperty = 100,
-                    IntProperty = 2
-                });
+            var document4 = new
+            {
+                SortableStringProperty = "bbbbb",
+                SortableIntProperty = 300
+            };
 
+            var document5 = new
+            {
+                SortableStringProperty = "bbbbb",
+                SortableIntProperty = 200
+            };
 
-            _sw.Restart();
+            var document6 = new
+            {
+                SortableStringProperty = "bbbbb",
+                SortableIntProperty = 100
+            };
 
-            // Автоматически должно отсортироваться по возрастанию SortableStringProperty и SortableIntProperty
-            IEnumerable<dynamic> sortedData = new DocumentApi().GetDocument(ConfigurationId,
-                                                                                DocumentWithTwoSortingFields, null, 0,
-                                                                                10);
+            // When
 
-            _sw.Stop();
-            Console.WriteLine("Sorting by 2 fields time: " + _sw.ElapsedMilliseconds + " ms");
+            documentApi.SetDocument(ConfigurationId, TwoSortingFieldsDocument, document1);
+            documentApi.SetDocument(ConfigurationId, TwoSortingFieldsDocument, document2);
+            documentApi.SetDocument(ConfigurationId, TwoSortingFieldsDocument, document3);
+            documentApi.SetDocument(ConfigurationId, TwoSortingFieldsDocument, document4);
+            documentApi.SetDocument(ConfigurationId, TwoSortingFieldsDocument, document5);
+            documentApi.SetDocument(ConfigurationId, TwoSortingFieldsDocument, document6);
 
-            Assert.AreEqual(100, sortedData.First().SortableIntProperty);
-            Assert.AreEqual("aaaaa", sortedData.First().SortableStringProperty);
-
-            _sw.Restart();
+            // По умолчанию - сортировка по возрастанию SortableStringProperty и SortableIntProperty
+            var ascPage0 = documentApi.GetDocument(ConfigurationId, TwoSortingFieldsDocument, null, 0, 10);
 
             // Сортировка по убыванию
-            sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithTwoSortingFields, null, 0, 10,
-                                                           s =>
-                                                           s.AddSorting("SortableStringProperty", SortOrder.Descending)
-                                                            .AddSorting("SortableIntProperty"));
+            var descPage0 = documentApi.GetDocument(ConfigurationId, TwoSortingFieldsDocument, null, 0, 10, s => s.AddSorting("SortableStringProperty", SortOrder.Descending).AddSorting("SortableIntProperty"));
 
-            _sw.Stop();
-            Console.WriteLine("Sorting by 2 fields time: " + _sw.ElapsedMilliseconds + " ms");
+            // Then
 
-            Assert.AreEqual(100, sortedData.First().SortableIntProperty);
-            Assert.AreEqual("bbbbb", sortedData.First().SortableStringProperty);
-        }
+            var firstAscItem = ascPage0?.FirstOrDefault();
+            Assert.AreEqual(100, firstAscItem?.SortableIntProperty);
+            Assert.AreEqual("aaaaa", firstAscItem?.SortableStringProperty);
 
-        [Test]
-        [Ignore("Manual test for performance estimation")]
-        public void SortingByStringPerformance()
-        {
-            var ids = new List<int>();
-
-            for (int i = 0; i < 10000; i++)
-            {
-                int next = new Random().Next();
-
-                ids.Add(next);
-
-                new DocumentApi().SetDocument(ConfigurationId, DocumentWithOneStringSortingField, new
-                    {
-                        Id = Guid.NewGuid(),
-                        StringProperty = "где абв эюя" + next,
-                        SortableStringProperty = string.Format("эюя абв где {0:D10}", next),
-                        RandomNumber = next
-                    });
-
-                new DocumentApi().SetDocument(ConfigurationId, DocumentWithNoSorting, new
-                    {
-                        Id = Guid.NewGuid(),
-                        StringProperty1 = "где абв эюя" + next,
-                        StringProperty2 = string.Format("эюя абв где {0:D10}", next),
-                        RandomNumber = next
-                    });
-            }
-
-            ids.Sort();
-
-            _sw.Restart();
-            // Автоматически должно отсортироваться по возрастанию SortableStringProperty
-            IEnumerable<dynamic> sortedData = new DocumentApi().GetDocument(ConfigurationId,
-                                                                                DocumentWithOneStringSortingField, null,
-                                                                                0, 10);
-            _sw.Stop();
-
-            Assert.AreEqual(ids.Min(), sortedData.First().RandomNumber);
-
-            _sw.Restart();
-            new DocumentApi().GetDocument(ConfigurationId, DocumentWithNoSorting, null, 0, 10);
-            _sw.Stop();
-
-
-            _sw.Restart();
-            // Постраничная выборка
-            for (int i = 0; i < 10; i++)
-                sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithOneStringSortingField, null,
-                                                               5, 10);
-
-            _sw.Stop();
-
-            Console.WriteLine("Take page 5 with sorting: " + _sw.ElapsedMilliseconds/10 + " ms");
-
-            Assert.AreEqual(ids.Skip(50).First(), sortedData.First().RandomNumber);
-
-            _sw.Restart();
-            for (int i = 0; i < 10; i++)
-                new DocumentApi().GetDocument(ConfigurationId, DocumentWithNoSorting, null, 5, 10);
-            _sw.Stop();
-
-            Console.WriteLine("Take page 5 without sorting: " + _sw.ElapsedMilliseconds/10 + " ms");
-
-            // Изменение размера страницы до 100
-            _sw.Restart();
-            for (int i = 0; i < 10; i++)
-                sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithOneStringSortingField, null,
-                                                               5, 100);
-            _sw.Stop();
-
-            Console.WriteLine("Take page 5 (pagesize 100) with sorting: " + _sw.ElapsedMilliseconds/10 + " ms");
-
-            Assert.AreEqual(ids.Skip(500).First(), sortedData.First().RandomNumber);
-
-            _sw.Restart();
-            for (int i = 0; i < 10; i++)
-                new DocumentApi().GetDocument(ConfigurationId, DocumentWithNoSorting, null, 5, 100);
-            _sw.Stop();
-
-            Console.WriteLine("Take page 5 (pagesize 100) without sorting: " + _sw.ElapsedMilliseconds/10 + " ms");
-
-            // Изменение размера страницы до 1000
-            _sw.Restart();
-            for (int i = 0; i < 10; i++)
-                sortedData = new DocumentApi().GetDocument(ConfigurationId, DocumentWithOneStringSortingField, null,
-                                                               5, 1000);
-            _sw.Stop();
-
-            Console.WriteLine("Take page 5 (pagesize 1000) with sorting: " + _sw.ElapsedMilliseconds/10 + " ms");
-
-            Assert.AreEqual(ids.Skip(5000).First(), sortedData.First().RandomNumber);
-
-            _sw.Restart();
-            for (int i = 0; i < 10; i++)
-                new DocumentApi().GetDocument(ConfigurationId, DocumentWithNoSorting, null, 5, 1000);
-            _sw.Stop();
-
-            Console.WriteLine("Take page 5 (pagesize 1000) without sorting: " + _sw.ElapsedMilliseconds/10 + " ms");
-
-            /* Output:
-             * Take page 5 with sorting: 19 ms
-             * Take page 5 without sorting: 17 ms
-             * Take page 5 (pagesize 100) with sorting: 24 ms
-             * Take page 5 (pagesize 100) without sorting: 22 ms
-             * Take page 5 (pagesize 1000) with sorting: 89 ms
-             * Take page 5 (pagesize 1000) without sorting: 84 ms
-             */
+            var firstDescItem = descPage0?.FirstOrDefault();
+            Assert.AreEqual(100, firstDescItem?.SortableIntProperty);
+            Assert.AreEqual("bbbbb", firstDescItem?.SortableStringProperty);
         }
     }
 }
