@@ -40,7 +40,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                 if (credentialsType != null &&
                     credentialsType == AuthorizationStorageExtensions.AnonimousUserCredentials)
                 {
-                    target.UserName = AuthorizationStorageExtensions.AnonimousUser;
+                    target.UserName = AuthorizationStorageExtensions.AnonymousUser;
                 }
                 else if (credentialsType != null && credentialsType == AuthorizationStorageExtensions.CustomCredentials)
                 {

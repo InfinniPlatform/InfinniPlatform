@@ -3,34 +3,34 @@
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {
     /// <summary>
-    ///     Интерфейс сервиса для работы с метаданными системы.
+    /// Интерфейс сервиса для работы с метаданными системы.
     /// </summary>
     internal interface IMetadataService
     {
         object CreateItem();
 
         /// <summary>
-        ///     Заменить объект метаданных.
+        /// Заменить объект метаданных.
         /// </summary>
         void ReplaceItem(dynamic item);
 
         /// <summary>
-        ///     Удалить объект метаданных.
+        /// Удалить объект метаданных.
         /// </summary>
         void DeleteItem(string itemId);
 
         /// <summary>
-        ///     Получить объект метаданных.
+        /// Получить объект метаданных.
         /// </summary>
         object GetItem(string itemId);
 
         /// <summary>
-        ///     Получить объект метаданных.
+        /// Получить объект метаданных.
         /// </summary>
         object CloneItem(string itemId);
 
         /// <summary>
-        ///     Получить список объектов метаданных.
+        /// Получить список объектов метаданных.
         /// </summary>
         IEnumerable<object> GetItems();
     }

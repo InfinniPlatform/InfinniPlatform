@@ -41,7 +41,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 		private readonly bool _searchInAllIndeces;
 		private readonly bool _searchInAllTypes;
 		private readonly IEnumerable<IndexToTypeAccordance> _typeNames;
-		private static readonly string[] SystemConfigurations = { "administration", "administrationcustomization","authorization", "restfulapi", "systemconfig", "update" };
 
 		/// <summary>
 		/// Найти список объектов в индексе по указанной модели поиска
@@ -68,12 +67,13 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 		public long CalculateCountQuery(SearchModel searchModel)
 		{
 			var indexName = _indexNames.FirstOrDefault();
-			
-			if (indexName != null && !SystemConfigurations.Contains(indexName.ToLowerInvariant()))
-			{
-				var tenantId = GlobalContext.GetTenantId();
-				searchModel.AddFilter(new NestQuery(Query<dynamic>.Term(ElasticConstants.TenantIdField, tenantId)));
-			}
+
+		    var tenantId = GlobalContext.GetTenantId(indexName.ToLowerInvariant());
+
+		    if (tenantId != AuthorizationStorageExtensions.AnonymousUser)
+		    {
+		        searchModel.AddFilter(new NestQuery(Query<dynamic>.Term(ElasticConstants.TenantIdField, tenantId)));
+		    }
 
 			searchModel.AddFilter(new NestQuery(Query<dynamic>.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid)));
 
@@ -99,13 +99,14 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 		public SearchViewModel QueryOverObject(SearchModel searchModel, Func<dynamic, string, string, object> convert)
 		{
 			var indexName = _indexNames.FirstOrDefault();
-			
-			if (indexName != null && !SystemConfigurations.Contains(indexName.ToLowerInvariant()))
-			{
-				var tenantId = GlobalContext.GetTenantId();
-				searchModel.AddFilter(new NestFilter(Filter<dynamic>.Query(q => q.Term(ElasticConstants.TenantIdField, tenantId))));
-			}
-			
+            
+            var tenantId = GlobalContext.GetTenantId(indexName.ToLowerInvariant());
+
+            if (tenantId != AuthorizationStorageExtensions.AnonymousUser)
+            {
+                searchModel.AddFilter(new NestFilter(Filter<dynamic>.Query(q => q.Term(ElasticConstants.TenantIdField, tenantId))));
+            }
+            
 			searchModel.AddFilter(new NestFilter(Filter<dynamic>.Query(q => q.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid))));
 
 			Func<SearchDescriptor<dynamic>, SearchDescriptor<dynamic>> desc =

@@ -106,7 +106,7 @@ namespace InfinniPlatform.WebApi.Controllers
             return (User != null && !string.IsNullOrEmpty(User.Identity.Name))
                        ? User.Identity.Name
                        : GetServiceName().ToLowerInvariant() == "signin"
-                             ? AuthorizationStorageExtensions.AnonimousUser
+                             ? AuthorizationStorageExtensions.AnonymousUser
                              : AuthorizationStorageExtensions.UnknownUser;
         }
 

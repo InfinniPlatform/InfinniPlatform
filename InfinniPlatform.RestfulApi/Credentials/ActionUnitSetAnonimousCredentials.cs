@@ -7,7 +7,7 @@ namespace InfinniPlatform.RestfulApi.Credentials
     {
         public void Action(IApplyContext target)
         {
-            target.UserName = AuthorizationStorageExtensions.AnonimousUser;
+            target.UserName = AuthorizationStorageExtensions.AnonymousUser;
         }
     }
 }

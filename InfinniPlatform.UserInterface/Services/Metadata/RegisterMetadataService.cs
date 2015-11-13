@@ -1,74 +1,58 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.Serialization;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {
-	/// <summary>
-	/// Сервис для работы с метаданными документов.
-	/// </summary>
-	internal sealed class RegisterMetadataService : BaseMetadataService
-	{
-		public RegisterMetadataService(string configId)
-		{
-			ConfigId = configId;
-		}
+    /// <summary>
+    /// Сервис для работы с метаданными документов.
+    /// </summary>
+    internal sealed class RegisterMetadataService : BaseMetadataService
+    {
+        public RegisterMetadataService(string configId)
+        {
+            ConfigId = configId;
+        }
 
-		public string ConfigId { get; }
+        public string ConfigId { get; }
 
-		public override object CreateItem()
-		{
-			return new object();
-		}
+        public override object CreateItem()
+        {
+            return new object();
+        }
 
-		public override void ReplaceItem(dynamic item)
-		{
-			string filePath;
-			var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
+        public override void ReplaceItem(dynamic item)
+        {
+            var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
 
-			dynamic configuration = PackageMetadataLoader.GetConfiguration(ConfigId);
-			dynamic oldRegister = PackageMetadataLoader.GetRegister(ConfigId, item.Name);
-			if (oldRegister != null)
-			{
-				filePath = oldRegister.FilePath;
-			}
-			else
-			{
-				string directoryPath = Path.Combine(Path.GetDirectoryName(configuration.FilePath), "Registers", item.Name);
-				Directory.CreateDirectory(directoryPath);
+            File.WriteAllBytes(PackageMetadataLoader.GetRegisterPath(ConfigId, item.Path), serializedItem);
 
-				filePath = Path.Combine(directoryPath, string.Concat(item.Name, ".json"));
-			}
+            PackageMetadataLoader.UpdateCache();
+        }
 
-			File.WriteAllBytes(filePath, serializedItem);
+        public override void DeleteItem(string itemId)
+        {
+            dynamic register = PackageMetadataLoader.GetRegister(ConfigId, itemId);
 
-			PackageMetadataLoader.UpdateCache();
-		}
+            var registerDirectory = Path.GetDirectoryName(register.FilePath);
 
-		public override void DeleteItem(string itemId)
-		{
-			dynamic register = PackageMetadataLoader.GetRegister(ConfigId, itemId);
+            if (registerDirectory != null)
+            {
+                Directory.Delete(registerDirectory, true);
+                PackageMetadataLoader.UpdateCache();
+            }
+        }
 
-			var registerDirectory = Path.GetDirectoryName(register.FilePath);
+        public override object GetItem(string itemId)
+        {
+            return PackageMetadataLoader.GetRegister(ConfigId, itemId);
+        }
 
-			if (registerDirectory != null)
-			{
-				Directory.Delete(registerDirectory, true);
-				PackageMetadataLoader.UpdateCache();
-			}
-		}
-
-		public override object GetItem(string itemId)
-		{
-			return PackageMetadataLoader.GetRegister(ConfigId, itemId);
-		}
-
-		public override IEnumerable<object> GetItems()
-		{
-			return PackageMetadataLoader.GetRegisters(ConfigId);
-		}
-	}
+        public override IEnumerable<object> GetItems()
+        {
+            return PackageMetadataLoader.GetRegisters(ConfigId);
+        }
+    }
 }

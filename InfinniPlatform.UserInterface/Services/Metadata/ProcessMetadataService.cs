@@ -8,76 +8,59 @@ using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {
-	/// <summary>
-	/// Сервис для работы с метаданными бизнес-процессов.
-	/// </summary>
-	internal sealed class ProcessMetadataService : BaseMetadataService
-	{
-		public ProcessMetadataService(string configId, string documentId)
-		{
-			ConfigId = configId;
-			_documentId = documentId;
-		}
+    /// <summary>
+    /// Сервис для работы с метаданными бизнес-процессов.
+    /// </summary>
+    internal sealed class ProcessMetadataService : BaseMetadataService
+    {
+        public ProcessMetadataService(string configId, string documentId)
+        {
+            ConfigId = configId;
+            _documentId = documentId;
+        }
 
-		private readonly string _documentId;
+        private readonly string _documentId;
 
-		public string ConfigId { get; }
+        public string ConfigId { get; }
 
-		public override object CreateItem()
-		{
-			dynamic process = new DynamicWrapper();
+        public override object CreateItem()
+        {
+            dynamic process = new DynamicWrapper();
 
-			process.Id = Guid.NewGuid().ToString();
-			process.Name = string.Empty;
-			process.Caption = string.Empty;
-			process.Description = string.Empty;
+            process.Id = Guid.NewGuid().ToString();
+            process.Name = string.Empty;
+            process.Caption = string.Empty;
+            process.Description = string.Empty;
 
-			return process;
-		}
+            return process;
+        }
 
-		public override void ReplaceItem(dynamic item)
-		{
-			string filePath;
-			var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
+        public override void ReplaceItem(dynamic item)
+        {
+            var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
 
-			dynamic configuration = PackageMetadataLoader.GetConfiguration(ConfigId);
-			dynamic oldProcess = PackageMetadataLoader.GetProcess(ConfigId,_documentId, item.Name);
-			if (oldProcess != null)
-			{
-				
-				filePath = oldProcess.FilePath;
-			}
-			else
-			{
-				filePath = Path.Combine(Path.GetDirectoryName(configuration.FilePath),
-										"Documents",
-										_documentId,
-										"Processes",
-										string.Concat(item.Name, ".json"));
-			}
+            File.WriteAllBytes(PackageMetadataLoader.GetProcessPath(ConfigId, _documentId, item.Name), serializedItem);
 
-			File.WriteAllBytes(filePath, serializedItem);
+            PackageMetadataLoader.UpdateCache();
+        }
 
-			PackageMetadataLoader.UpdateCache();
-		}
+        public override void DeleteItem(string itemId)
+        {
+            dynamic process = PackageMetadataLoader.GetProcess(ConfigId, _documentId, itemId);
 
-		public override void DeleteItem(string itemId)
-		{
-			dynamic process = PackageMetadataLoader.GetProcess(ConfigId, _documentId, itemId);
+            File.Delete(process.FilePath);
 
-			File.Delete(process.FilePath);
+            PackageMetadataLoader.UpdateCache();
+        }
 
-			PackageMetadataLoader.UpdateCache();
-		}
+        public override object GetItem(string itemId)
+        {
+            return PackageMetadataLoader.GetProcess(ConfigId, _documentId, itemId);
+        }
 
-		public override object GetItem(string itemId)
-		{
-			return PackageMetadataLoader.GetProcess(ConfigId, _documentId, itemId);
-		}
-
-		public override IEnumerable<object> GetItems()
-		{
-			return PackageMetadataLoader.GetProcesses(ConfigId, _documentId);
-		}
-	}
+        public override IEnumerable<object> GetItems()
+        {
+            return PackageMetadataLoader.GetProcesses(ConfigId, _documentId);
+        }
+    }
 }

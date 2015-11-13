@@ -461,7 +461,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
 		public static IEnumerable<HandlerDescription> BuildValidationHandlerDescriptions(string version, string configId, string documentId)
 		{
-			dynamic configurations = PackageMetadataLoader.GetConfiguration(configId);
+			dynamic configurations = PackageMetadataLoader.GetConfigurationContent(configId);
 			IEnumerable<dynamic> values = configurations.Documents[documentId].Scenarios.Values;
 			var scenarios = values.Select(o => o.Content);
 
@@ -490,7 +490,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
 		public static IEnumerable<HandlerDescription> BuildActionHandlerDescriptions(string version, string configId, string documentId)
 		{
-			dynamic configurations = PackageMetadataLoader.GetConfiguration(configId);
+			dynamic configurations = PackageMetadataLoader.GetConfigurationContent(configId);
 			IEnumerable<dynamic> values = configurations.Documents[documentId].Scenarios.Values;
 			var scenarios = values.Select(o => o.Content);
 

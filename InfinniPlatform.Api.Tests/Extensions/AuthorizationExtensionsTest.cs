@@ -25,7 +25,7 @@ namespace InfinniPlatform.Api.Tests.Extensions
             foreach (dynamic user in users)
             {
                 if (user.UserName != AuthorizationStorageExtensions.AdminUser &&
-                    user.UserName != AuthorizationStorageExtensions.AnonimousUser &&
+                    user.UserName != AuthorizationStorageExtensions.AnonymousUser &&
                     user.UserName != AuthorizationStorageExtensions.Default)
                 {
                     aclApi.RemoveUser(user.UserName);
@@ -47,7 +47,7 @@ namespace InfinniPlatform.Api.Tests.Extensions
             {
                 if (a.UserName != AuthorizationStorageExtensions.AdminRole &&
                     a.UserName != AuthorizationStorageExtensions.AdminUser &&
-                    a.UserName != AuthorizationStorageExtensions.AnonimousUser)
+                    a.UserName != AuthorizationStorageExtensions.AnonymousUser)
                 {
                     aclApi.RemoveAcl(a.Id);
                 }

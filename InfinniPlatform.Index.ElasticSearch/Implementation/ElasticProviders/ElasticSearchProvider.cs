@@ -72,10 +72,10 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 			var actualTypeName = ActualTypeName;
 			if (string.IsNullOrEmpty(actualTypeName))
 			{
-				throw new ArgumentException(string.Format("Actual index type not found. Type: '{0}'.", _typeName));
+				throw new ArgumentException($"Actual index type not found. Type: '{_typeName}'.");
 			}
 
-			var tenantId = GlobalContext.GetTenantId();
+			var tenantId = GlobalContext.GetTenantId(_indexName);
 
 			var objectsToIndex = itemsToIndex.Select(item => PrepareObjectToIndex(item, tenantId)).Cast<IndexObject>().ToList();
 			
@@ -86,7 +86,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
 			if (existingItems.Any())
 			{
-				// Удаляем предыдующие версии документов.
+				// Удаляем предыдущие версии документов.
 				// Документы могут находиться в любом из типов.
 				_elasticConnection.Client.DeleteByQuery<dynamic>(
 					d =>
@@ -117,8 +117,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 				}
 				catch (Exception e)
 				{
-					rollbackMessage.AppendLine(string.Format("Rollback operation on element: {0} failed. Error: {1} ",
-						e.Message, existingItem.ToString()));
+					rollbackMessage.AppendLine($"Rollback operation on element: {e.Message} failed. Error: {existingItem} ");
 				}
 			}
 
@@ -181,7 +180,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 			var actualTypeName = ActualTypeName;
 			if (string.IsNullOrEmpty(actualTypeName))
 			{
-				throw new ArgumentException(string.Format("Actual index type not found. Type: '{0}'.", _typeName));
+				throw new ArgumentException($"Actual index type not found. Type: '{_typeName}'.");
 			}
 
 			var tenantId = GlobalContext.GetTenantId();
@@ -203,7 +202,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 				//сохраняем элемент для rollback в случае ошибки
 				existingItem = GetItem(objectToIndex.Id);
 
-				// Удаляем предыдующую версию этого документа.
+				// Удаляем предыдущую версию этого документа.
 				// Документ с данным идентификатором может находиться в любом из типов
 				_elasticConnection.Client.DeleteByQuery<dynamic>(
 					d => d.Index(_indexName).AllTypes().Query(
@@ -266,12 +265,11 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 				throw new ArgumentException(response.ConnectionStatus.OriginalException.Message);
 			}
 
-
-			throw new ArgumentException(string.Format("Index type mapping does not according actual document scheme.\r\nDocument: {0},\r\nIndexName: {1},\r\nTypeName: {2},\r\nActualMapping: {3}",
-				item.ToString(),
-				_indexName,
-				_typeName,
-				currentMapping));
+		    throw new ArgumentException("Index type mapping does not according actual document scheme." +
+		                                $"\r\nDocument: {item.ToString()}," +
+		                                $"\r\nIndexName: {_indexName}," +
+		                                $"\r\nTypeName: {_typeName}," +
+		                                $"\r\nActualMapping: {currentMapping}");
 		}
 
 		private IndexObject PrepareObjectToIndex(dynamic item, string tenantId)
