@@ -7,9 +7,9 @@ using InfinniPlatform.UserInterface.Properties;
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {
     /// <summary>
-    ///     Базовый класс сервисов для работы с метаданными системы.
+    /// Базовый класс сервисов для работы с метаданными системы.
     /// </summary>
-    public abstract class BaseMetadataService : IMetadataService 
+    public abstract class BaseMetadataService : IMetadataService
     {
         public abstract object CreateItem();
 
@@ -35,6 +35,5 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
         }
 
         public abstract IEnumerable<object> GetItems();
-
     }
 }

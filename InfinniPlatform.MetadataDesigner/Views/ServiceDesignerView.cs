@@ -42,7 +42,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 				ComboBoxServiceType.Properties.Items.Clear();
 				ComboBoxServiceType.Properties.Items.AddRange(ViewModelExtension.BuildServiceTypesHeaders().BuildImageComboBoxItemsString().ToList());
 
-				dynamic configuration = PackageMetadataLoader.GetConfiguration(ConfigId());
+				dynamic configuration = PackageMetadataLoader.GetConfigurationContent(ConfigId());
 				Dictionary<string, dynamic> processesList = configuration.Documents[DocumentId()].Processes;
 
 				var descriptions = processesList.Values.Select(process => new ProcessDescription
