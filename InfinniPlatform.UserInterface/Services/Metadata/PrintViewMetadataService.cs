@@ -46,9 +46,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
         public override void DeleteItem(string itemId)
         {
-            dynamic printView = PackageMetadataLoader.GetPrintView(ConfigId, _documentId, itemId);
-
-            File.Delete(printView.FilePath);
+            File.Delete(PackageMetadataLoader.GetPrintViewPath(ConfigId, _documentId, itemId));
 
             PackageMetadataLoader.UpdateCache();
         }

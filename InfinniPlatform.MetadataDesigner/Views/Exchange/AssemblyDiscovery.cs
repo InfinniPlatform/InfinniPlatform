@@ -48,9 +48,9 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
 		{
 			SourceAssemblyList.Clear();
 
-			dynamic configs = PackageMetadataLoader.GetConfigurationContent(configurationId);
+		    dynamic configurationContent = PackageMetadataLoader.GetConfigurationContent(configurationId);
 
-			var items = configs.Content.Assemblies;
+		    var items = configurationContent.Assemblies;
 			foreach (var item in items)
 			{
 				SourceAssemblyList.Add(new SourceAssemblyInfo

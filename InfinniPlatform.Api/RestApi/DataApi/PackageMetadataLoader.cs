@@ -14,6 +14,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
     public class PackageMetadataLoader
     {
         /// <summary>
+        /// k
         /// Кэш конфигураций.
         /// </summary>
         private static Dictionary<string, object> Configurations { get; set; } = LoadConfigsMetadata();
@@ -42,7 +43,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                 .SelectMany(Directory.EnumerateDirectories)
                 .Select(LoadConfigMetadata);
 
-            Dictionary<string, object> dictionary = loadConfigsMetadata.ToDictionary(config => (string)config.Content.Name, config => config);
+            var dictionary = loadConfigsMetadata.ConvertToDictionary();
 
             return dictionary;
         }
@@ -72,7 +73,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                 IEnumerable<dynamic> enumerable = Directory.EnumerateDirectories(documentsDirectory)
                                                            .Select(d => LoadDocumentMetadata(d, configId));
 
-                return enumerable.ToDictionary(document => (string)document.Content.Name, document => document);
+                return enumerable.ConvertToDictionary();
             }
 
             return new Dictionary<string, object>();
@@ -116,7 +117,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                     item.DocumentId = documentId;
                 }
 
-                return itemsMetadata.ToDictionary(item => (string)item.Content.Name, item => item);
+                return itemsMetadata.ConvertToDictionary();
             }
 
             return new Dictionary<string, object>();
@@ -138,12 +139,12 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
         public static object GetConfigurationContent(string configId)
         {
-            return MetadataLoaderHelper.TryGetValueContent(Configurations, configId);
+            return Configurations.TryGetItemContent(configId);
         }
 
         public static object GetConfiguration(string configId)
         {
-            return MetadataLoaderHelper.TryGetValue(Configurations, configId);
+            return Configurations.TryGetItem(configId);
         }
 
         public static IEnumerable<object> GetConfigurations()
@@ -152,7 +153,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             return valueCollection.Select(o => o.Content);
         }
 
-        public static string GetConfigurationPath(string configId, string subfolder)
+        public static string GetConfigurationPath(string configId, string subfolder = "InfinniPlatform")
         {
             dynamic oldConfiguration = GetConfiguration(configId);
 
@@ -162,23 +163,23 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             }
 
             var contentDirectory = AppSettings.GetValue("ContentDirectory", Path.Combine("..", "Assemblies", "content"));
-            var configurationDirectory = Path.Combine(contentDirectory, subfolder ?? "InfinniPlatform", "metadata", configId);
+            var configurationDirectory = Path.Combine(contentDirectory, subfolder, "metadata", configId);
             Directory.CreateDirectory(configurationDirectory);
             return Path.Combine(configurationDirectory, "Configuration.json");
         }
 
         //Documents
 
-        public static object GetDocument(string configId, string docId)
+        public static object GetDocument(string configId, string documentId)
         {
             dynamic configuration = Configurations[configId];
-            return MetadataLoaderHelper.TryGetValue(configuration.Documents, docId);
+            return MetadataLoaderHelper.TryGetItem(configuration.Documents, documentId);
         }
 
-        public static object GetDocumentContent(string configId, string docId)
+        public static object GetDocumentContent(string configId, string documentId)
         {
             dynamic configuration = Configurations[configId];
-            return MetadataLoaderHelper.TryGetValueContent(configuration.Documents, docId);
+            return MetadataLoaderHelper.TryGetItemContent(configuration.Documents, documentId);
         }
 
         public static IEnumerable<object> GetDocuments(string configId)
@@ -188,20 +189,19 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             return documents.Values.Select(o => o.Content);
         }
 
-        public static string GetDocumentPath(string configId, string docId)
+        public static string GetDocumentPath(string configId, string documentId)
         {
-            dynamic oldDocument = GetDocument(configId, docId);
+            dynamic oldDocument = GetDocument(configId, documentId);
 
             if (oldDocument != null)
             {
                 return oldDocument.FilePath;
             }
 
-            dynamic config = GetConfigurationContent(configId);
-            string directoryPath = Path.Combine(Path.GetDirectoryName(config.FilePath), "Documents", docId);
+            var directoryPath = Path.Combine(Path.GetDirectoryName(GetConfigurationPath(configId)), "Documents", documentId);
             Directory.CreateDirectory(directoryPath);
 
-            return Path.Combine(directoryPath, string.Concat(docId, ".json"));
+            return Path.Combine(directoryPath, string.Concat(documentId, ".json"));
         }
 
         //Views
@@ -209,13 +209,13 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         public static object GetViewContent(string configId, string documentId, string viewId)
         {
             dynamic document = GetDocument(configId, documentId);
-            return MetadataLoaderHelper.TryGetValueContent(document.Views, viewId);
+            return MetadataLoaderHelper.TryGetItemContent(document.Views, viewId);
         }
 
         public static object GetView(string configId, string documentId, string viewId)
         {
             dynamic document = GetDocument(configId, documentId);
-            return MetadataLoaderHelper.TryGetValue(document.Views, viewId);
+            return MetadataLoaderHelper.TryGetItem(document.Views, viewId);
         }
 
         public static IEnumerable<object> GetViews(string configId, string documentId)
@@ -225,21 +225,20 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             return views.Values.Select(o => o.Content);
         }
 
-        public static string GetViewPath(string configId, string docId, string viewId)
+        public static string GetViewPath(string configId, string documentId, string viewId)
         {
-            dynamic configuration = GetConfigurationContent(configId);
-            dynamic oldView = GetView(configId, docId, viewId);
+            dynamic oldView = GetView(configId, documentId, viewId);
 
             if (oldView != null)
             {
                 return oldView.FilePath;
             }
 
-            return Path.Combine(Path.GetDirectoryName(configuration.FilePath),
-                                "Documents",
-                                docId,
-                                "Views",
-                                string.Concat(viewId, ".json"));
+            var directoryPath = Path.Combine(Path.GetDirectoryName(GetConfigurationPath(configId)), "Documents", documentId, "Views");
+
+            Directory.CreateDirectory(directoryPath);
+
+            return Path.Combine(directoryPath, string.Concat(viewId, ".json"));
         }
 
         //Assemblies
@@ -262,7 +261,13 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         public static object GetMenu(string configId, string menuId)
         {
             dynamic configuration = Configurations[configId];
-            return MetadataLoaderHelper.TryGetValueContent(configuration.Menu, menuId);
+            return MetadataLoaderHelper.TryGetItem(configuration.Menu, menuId);
+        }
+
+        public static object GetMenuContent(string configId, string menuId)
+        {
+            dynamic configuration = Configurations[configId];
+            return MetadataLoaderHelper.TryGetItemContent(configuration.Menu, menuId);
         }
 
         public static IEnumerable<object> GetMenus(string configId)
@@ -274,7 +279,6 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
         public static string GetMenuPath(string configId, string menuId)
         {
-            dynamic configuration = GetConfigurationContent(configId);
             dynamic oldMenu = GetMenu(configId, menuId);
 
             if (oldMenu != null)
@@ -282,7 +286,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                 return oldMenu.FilePath;
             }
 
-            string directoryPath = Path.Combine(Path.GetDirectoryName(configuration.FilePath), "Menu", menuId);
+            var directoryPath = Path.Combine(Path.GetDirectoryName(GetConfigurationPath(configId)), "Menu", menuId);
 
             Directory.CreateDirectory(directoryPath);
 
@@ -294,7 +298,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         public static object GetPrintView(string configId, string documentId, string printViewId)
         {
             dynamic document = GetDocument(configId, documentId);
-            return MetadataLoaderHelper.TryGetValueContent(document.PrintViews, printViewId);
+            return MetadataLoaderHelper.TryGetItemContent(document.PrintViews, printViewId);
         }
 
         public static IEnumerable<object> GetPrintViews(string configId, string documentId)
@@ -306,7 +310,6 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
         public static string GetPrintViewPath(string configId, string documentId, string printViewId)
         {
-            dynamic configuration = GetConfigurationContent(configId);
             dynamic oldView = GetPrintView(configId, documentId, printViewId);
 
             if (oldView != null)
@@ -314,11 +317,11 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                 return oldView.FilePath;
             }
 
-            return Path.Combine(Path.GetDirectoryName(configuration.FilePath),
-                                "Documents",
-                                documentId,
-                                "PrintViews",
-                                string.Concat(printViewId, ".json"));
+            var directoryPath = Path.Combine(Path.GetDirectoryName(GetConfigurationPath(configId)), "Documents", documentId, "PrintViews");
+
+            Directory.CreateDirectory(directoryPath);
+
+            return Path.Combine(directoryPath, string.Concat(printViewId, ".json"));
         }
 
         //Processes
@@ -326,7 +329,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         public static object GetProcess(string configId, string documentId, string processId)
         {
             dynamic document = GetDocument(configId, documentId);
-            return MetadataLoaderHelper.TryGetValueContent(document.Processes, processId);
+            return MetadataLoaderHelper.TryGetItemContent(document.Processes, processId);
         }
 
         public static IEnumerable<object> GetProcesses(string configId, string documentId)
@@ -338,7 +341,6 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
         public static string GetProcessPath(string configId, string documentId, string processId)
         {
-            dynamic configuration = GetConfigurationContent(configId);
             dynamic oldProcess = GetProcess(configId, documentId, processId);
 
             if (oldProcess != null)
@@ -346,11 +348,11 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                 return oldProcess.FilePath;
             }
 
-            return Path.Combine(Path.GetDirectoryName(configuration.FilePath),
-                                "Documents",
-                                documentId,
-                                "Processes",
-                                string.Concat(processId, ".json"));
+            var directoryPath = Path.Combine(Path.GetDirectoryName(GetConfigurationPath(configId)), "Documents", documentId, "Processes");
+
+            Directory.CreateDirectory(directoryPath);
+
+            return Path.Combine(directoryPath, string.Concat(processId, ".json"));
         }
 
         //Registers
@@ -358,7 +360,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         public static object GetRegister(string configId, string registerId)
         {
             dynamic configuration = Configurations[configId];
-            return MetadataLoaderHelper.TryGetValueContent(configuration.Registers, registerId);
+            return MetadataLoaderHelper.TryGetItemContent(configuration.Registers, registerId);
         }
 
         public static IEnumerable<object> GetRegisters(string configId)
@@ -370,7 +372,6 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
         public static string GetRegisterPath(string configId, string registerId)
         {
-            dynamic configuration = GetConfigurationContent(configId);
             dynamic oldRegister = GetRegister(configId, registerId);
 
             if (oldRegister != null)
@@ -378,7 +379,8 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                 return oldRegister.FilePath;
             }
 
-            string directoryPath = Path.Combine(Path.GetDirectoryName(configuration.FilePath), "Registers", registerId);
+            var directoryPath = Path.Combine(Path.GetDirectoryName(GetConfigurationPath(configId)), "Registers", registerId);
+
             Directory.CreateDirectory(directoryPath);
 
             return Path.Combine(directoryPath, string.Concat(registerId, ".json"));
@@ -389,7 +391,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         public static object GetService(string configId, string documentId, string serviceId)
         {
             dynamic document = GetDocument(configId, documentId);
-            return MetadataLoaderHelper.TryGetValueContent(document.Services, serviceId);
+            return MetadataLoaderHelper.TryGetItemContent(document.Services, serviceId);
         }
 
         public static IEnumerable<object> GetServices(string configId, string documentId)
@@ -399,10 +401,9 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             return processes.Values.Select(o => o.Content);
         }
 
-        public static string GetServicePath(string configId, string docId, string serviceId)
+        public static string GetServicePath(string configId, string documentId, string serviceId)
         {
-            dynamic configuration = GetConfigurationContent(configId);
-            var services = GetService(configId, docId, serviceId);
+            var services = GetService(configId, documentId, serviceId);
 
             if (services != null)
             {
@@ -410,11 +411,11 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                 return oldServices.FilePath;
             }
 
-            return Path.Combine(Path.GetDirectoryName(configuration.FilePath),
-                                "Documents",
-                                docId,
-                                "Services",
-                                string.Concat(serviceId, ".json"));
+            var directoryPath = Path.Combine(Path.GetDirectoryName(GetConfigurationPath(configId)), "Documents", documentId, "Services");
+
+            Directory.CreateDirectory(directoryPath);
+
+            return Path.Combine(directoryPath, string.Concat(serviceId, ".json"));
         }
 
         //Scenarios
@@ -422,7 +423,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         public static object GetScenario(string configId, string documentId, string scenarioId)
         {
             dynamic document = GetDocument(configId, documentId);
-            return MetadataLoaderHelper.TryGetValueContent(document.Scenarios, scenarioId);
+            return MetadataLoaderHelper.TryGetItemContent(document.Scenarios, scenarioId);
         }
 
         public static IEnumerable<object> GetScenarios(string configId, string documentId)
@@ -434,18 +435,17 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
         public static string GetScenarioPath(string configId, string documentId, string scenarioId)
         {
-            dynamic configuration = GetConfigurationContent(configId);
             dynamic oldScenario = GetScenario(configId, documentId, scenarioId);
             if (oldScenario != null)
             {
                 return oldScenario.FilePath;
             }
 
-            return Path.Combine(Path.GetDirectoryName(configuration.FilePath),
-                                "Documents",
-                                documentId,
-                                "Scenarios",
-                                string.Concat(scenarioId, ".json"));
+            var directoryPath = Path.Combine(Path.GetDirectoryName(GetConfigurationPath(configId)), "Documents", documentId, "Scenarios");
+
+            Directory.CreateDirectory(directoryPath);
+
+            return Path.Combine(directoryPath, string.Concat(scenarioId, ".json"));
         }
     }
 }

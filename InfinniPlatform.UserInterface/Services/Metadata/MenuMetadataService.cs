@@ -3,6 +3,7 @@ using System.IO;
 
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.Serialization;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {
@@ -20,7 +21,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
         public override object CreateItem()
         {
-            return new object();
+            return new DynamicWrapper();
         }
 
         public override void ReplaceItem(dynamic item)
@@ -34,10 +35,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
         public override void DeleteItem(string itemId)
         {
-            dynamic configuration = PackageMetadataLoader.GetConfigurationContent(ConfigId);
-            var menu = configuration.Menu[itemId];
-
-            var menuDirectory = Path.GetDirectoryName(menu.FilePath);
+            var menuDirectory = Path.GetDirectoryName(PackageMetadataLoader.GetMenuPath(ConfigId, itemId));
 
             if (menuDirectory != null)
             {
@@ -48,7 +46,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
         public override object GetItem(string itemId)
         {
-            return PackageMetadataLoader.GetMenu(ConfigId, itemId);
+            return PackageMetadataLoader.GetMenuContent(ConfigId, itemId);
         }
 
         public override IEnumerable<object> GetItems()

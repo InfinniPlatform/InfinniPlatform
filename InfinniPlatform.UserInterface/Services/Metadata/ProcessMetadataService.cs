@@ -46,9 +46,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
         public override void DeleteItem(string itemId)
         {
-            dynamic process = PackageMetadataLoader.GetProcess(ConfigId, _documentId, itemId);
-
-            File.Delete(process.FilePath);
+            File.Delete(PackageMetadataLoader.GetProcessPath(ConfigId, _documentId, itemId));
 
             PackageMetadataLoader.UpdateCache();
         }

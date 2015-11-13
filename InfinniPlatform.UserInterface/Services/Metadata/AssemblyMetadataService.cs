@@ -35,16 +35,16 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
         public override void ReplaceItem(dynamic item)
         {
-            dynamic configuration = PackageMetadataLoader.GetConfigurationContent(ConfigId);
+            dynamic configurationContent = PackageMetadataLoader.GetConfigurationContent(ConfigId);
             var assemblies = PackageMetadataLoader.GetAssemblies(ConfigId);
 
             var newAssembliesList = new List<object>(assemblies) { item };
 
-            configuration.Content.Assemblies = newAssembliesList;
+            configurationContent.Assemblies = newAssembliesList;
 
-            var filePath = configuration.FilePath;
+            var filePath = (dynamic)PackageMetadataLoader.GetConfigurationPath(ConfigId);
 
-            var serializedItem = JsonObjectSerializer.Formated.Serialize(configuration.Content);
+            var serializedItem = JsonObjectSerializer.Formated.Serialize(configurationContent.Content);
 
             File.WriteAllBytes(filePath, serializedItem);
 
@@ -53,17 +53,17 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
         public override void DeleteItem(string itemId)
         {
-            dynamic configuration = PackageMetadataLoader.GetConfigurationContent(ConfigId);
+            dynamic configurationContent = PackageMetadataLoader.GetConfigurationContent(ConfigId);
             IEnumerable<dynamic> assemblies = PackageMetadataLoader.GetAssemblies(ConfigId);
 
             var newAssembliesList = assemblies.Where(assembly => assembly.Name != itemId)
                                               .ToArray();
 
-            configuration.Content.Assemblies = newAssembliesList;
+            configurationContent.Assemblies = newAssembliesList;
 
-            var filePath = configuration.FilePath;
+            var filePath = (dynamic)PackageMetadataLoader.GetConfigurationPath(ConfigId);
 
-            var serializedItem = JsonObjectSerializer.Formated.Serialize(configuration.Content);
+            var serializedItem = JsonObjectSerializer.Formated.Serialize(configurationContent);
 
             File.WriteAllBytes(filePath, serializedItem);
 

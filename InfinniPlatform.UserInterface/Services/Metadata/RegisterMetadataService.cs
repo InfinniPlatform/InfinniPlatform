@@ -3,6 +3,7 @@ using System.IO;
 
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.Serialization;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {
@@ -20,23 +21,21 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
         public override object CreateItem()
         {
-            return new object();
+            return new DynamicWrapper();
         }
 
         public override void ReplaceItem(dynamic item)
         {
             var serializedItem = JsonObjectSerializer.Formated.Serialize(item);
 
-            File.WriteAllBytes(PackageMetadataLoader.GetRegisterPath(ConfigId, item.Path), serializedItem);
+            File.WriteAllBytes(PackageMetadataLoader.GetRegisterPath(ConfigId, item.Name), serializedItem);
 
             PackageMetadataLoader.UpdateCache();
         }
 
         public override void DeleteItem(string itemId)
         {
-            dynamic register = PackageMetadataLoader.GetRegister(ConfigId, itemId);
-
-            var registerDirectory = Path.GetDirectoryName(register.FilePath);
+            var registerDirectory = Path.GetDirectoryName(PackageMetadataLoader.GetRegisterPath(ConfigId, itemId));
 
             if (registerDirectory != null)
             {
