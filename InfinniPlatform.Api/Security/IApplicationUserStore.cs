@@ -87,8 +87,7 @@ namespace InfinniPlatform.Api.Security
 		/// <param name="user">Сведения о пользователе системы.</param>
 		/// <param name="claimType">Уникальный идентификатор типа утверждения.</param>
 		/// <param name="claimValue">Значение утверждения заданного типа.</param>
-		/// <param name="overwrite">Признак необходимости перезаписать значение имеющегося утверждения.</param>
-		void AddUserClaim(ApplicationUser user, string claimType, string claimValue, bool overwrite = true);
+		void AddUserClaim(ApplicationUser user, string claimType, string claimValue);
 
 		/// <summary>
 		/// Удаляет у пользователя утверждение.

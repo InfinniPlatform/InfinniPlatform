@@ -146,12 +146,15 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             }
         }
         
-        public void AddUserClaim(ApplicationUser user, string claimType, string claimValue, bool overwrite = true)
+        public void AddUserClaim(ApplicationUser user, string claimType, string claimValue)
         {
-            var claims = overwrite ? user.Claims.Where(c => c.Type.DisplayName != claimType).ToList() : user.Claims.ToList();
-            claims.Add(new ApplicationUserClaim { Type = new ForeignKey { Id = claimType, DisplayName = claimType }, Value = claimValue });
-            user.Claims = claims;
-            UpdateUser(user);
+            if (!user.Claims.Any(c => c.Type.DisplayName == claimType && c.Value == claimValue))
+            {
+                var claims = user.Claims.ToList();
+                claims.Add(new ApplicationUserClaim { Type = new ForeignKey { Id = claimType, DisplayName = claimType }, Value = claimValue });
+                user.Claims = claims;
+                UpdateUser(user);
+            }
         }
 
         public void RemoveUserClaim(ApplicationUser user, string claimType, string claimValue)
