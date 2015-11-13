@@ -61,7 +61,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
             try
             {
-                return Convert.ToInt32(response.ToDynamic()[0].NumberOfDocuments);
+                return Convert.ToInt32(response.Content.ToDynamic().NumberOfDocuments);
             }
             catch (Exception)
             {
