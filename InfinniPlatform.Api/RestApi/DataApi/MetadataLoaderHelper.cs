@@ -1,4 +1,4 @@
-namespace InfinniPlatform.Api.RestApi.DataApi
+﻿namespace InfinniPlatform.Api.RestApi.DataApi
 {
     public static class MetadataLoaderHelper
     {
