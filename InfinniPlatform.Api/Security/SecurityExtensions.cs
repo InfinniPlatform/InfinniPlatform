@@ -121,7 +121,7 @@ namespace InfinniPlatform.Api.Security
 		}
 
 		/// <summary>
-		/// Устанавливает утверждение заданного типа.
+		/// Заменяет все утверждения заданного типа.
 		/// </summary>
 		/// <param name="identity">Объект идентификации.</param>
 		/// <param name="claimType">Тип утверждения (например, <see cref="ClaimTypes"/> или <see cref="ApplicationClaimTypes"/>).</param>
