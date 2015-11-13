@@ -256,12 +256,12 @@ namespace InfinniPlatform.Authentication.Modules
 			var user = InvokeUserManager((m, userId) => m.FindByIdAsync(userId));
 
             //TODO Может использовать для этого Id?
-		    var applicationUserClaims = user.Claims
-		                                    .Where(claim => claim.Type.DisplayName != claimType &&
-		                                                    claim.Value != claimType)
+            var applicationUserClaims = user.Claims.Where(claim => claim.Type.DisplayName != claimType ||
+		                                                           (claim.Type.DisplayName == claimType &&
+		                                                            claim.Value != claimValue))
 		                                    .ToList();
 
-			var newClaim = new ApplicationUserClaim
+            var newClaim = new ApplicationUserClaim
 			{
 				Type = new ForeignKey
 				{

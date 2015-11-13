@@ -102,10 +102,31 @@ namespace InfinniPlatform.Factories
 
             if (string.IsNullOrEmpty(tenantId))
             {
-                tenantId = AuthorizationStorageExtensions.AnonimousUser;
+                tenantId = AuthorizationStorageExtensions.AnonymousUser;
             }
 
             return tenantId;
+        }
+
+        private static readonly string[] SystemConfigurations =
+        {
+            "administration",
+            "administrationcustomization",
+            "authorization",
+            "restfulapi",
+            "systemconfig",
+            "update"
+        };
+
+        public static string GetTenantId(string indexName)
+        {
+            if (indexName != null &&
+                SystemConfigurations.Contains(indexName.ToLowerInvariant()))
+            {
+                return AuthorizationStorageExtensions.AnonymousUser;
+            }
+
+            return GetTenantId();
         }
 
 

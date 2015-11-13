@@ -17,11 +17,11 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 
 			var acl = aclApi.GetAcl(false).ToList();
 
-			dynamic anonymousUserRole = acl.FirstOrDefault(a => a.UserName == AuthorizationStorageExtensions.AnonimousUser);
+			dynamic anonymousUserRole = acl.FirstOrDefault(a => a.UserName == AuthorizationStorageExtensions.AnonymousUser);
 
 			if (anonymousUserRole == null)
 			{
-				adminApi.AddAnonimousUserAcl(AuthorizationStorageExtensions.AnonimousUser);
+				adminApi.AddAnonimousUserAcl(AuthorizationStorageExtensions.AnonymousUser);
 			}
 
 			var roles = aclApi.GetRoles(false);

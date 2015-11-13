@@ -14,7 +14,6 @@ namespace InfinniPlatform.RestfulApi.Auth
 			var tenantId = target.Context.GetComponent<ISessionManager>().GetSessionData(target.Item.ClaimType);
 
 			target.Result = new DynamicWrapper();
-			target.Result.UserName = target.Item.UserName;
 			target.Result.ClaimValue = tenantId;
 		}
 	}
