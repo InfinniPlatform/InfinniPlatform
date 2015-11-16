@@ -1,0 +1,17 @@
+﻿{
+  "Id": "ba7c4378-db95-4044-91bf-c5c737162b6e",
+  "Name": "Default",
+  "Caption": "",
+  "Type": 2,
+  "Transitions": [
+    {
+      "Id": "b7573598-fec2-44fb-a45e-55caf5c4928b",
+      "Name": "Default",
+      "SuccessPoint": {
+        "TypeName": "OnSuccess",
+        "ScenarioId": "131840bf-fa8a-4651-a8fd-37ea02662784"
+      }
+    }
+  ],
+  "SettingsType": "Default"
+}

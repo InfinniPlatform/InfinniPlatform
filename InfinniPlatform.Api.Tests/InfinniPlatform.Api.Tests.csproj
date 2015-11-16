@@ -67,9 +67,7 @@
     <Compile Include="Extensions\AuthorizationExtensionsTest.cs" />
     <Compile Include="Extensions\CommonExtensionsTest.cs" />
     <Compile Include="Extensions\ReflectionExtensionsTest.cs" />
-    <Compile Include="Packages\ConfigExporterBehavior.cs" />
     <Compile Include="Help\SelfDocumentationBehavior.cs" />
-    <Compile Include="Packages\SolutionExporterBehavior.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -184,6 +182,9 @@
     </None>
     <None Include=".metadata\TestConfiguration\Configuration.json" />
     <None Include=".metadata\TestConfiguration\Documents\ContentUploadDocument\ContentUploadDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\ExceptionHandlingDocument\ExceptionHandlingDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\ExceptionHandlingDocument\Processes\Default.json" />
+    <None Include=".metadata\TestConfiguration\Documents\ExceptionHandlingDocument\Scenarios\ActionWithException.json" />
     <None Include=".metadata\TestConfiguration\Documents\InlineSortingDocument\InlineSortingDocument.json" />
     <None Include=".metadata\TestConfiguration\Documents\OneDateSortingFieldDocument\OneDateSortingFieldDocument.json" />
     <None Include=".metadata\TestConfiguration\Documents\OneIntSortingFieldDocument\OneIntSortingFieldDocument.json" />
