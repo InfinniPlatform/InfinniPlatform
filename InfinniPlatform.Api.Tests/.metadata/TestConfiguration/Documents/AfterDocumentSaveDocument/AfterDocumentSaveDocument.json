@@ -1,0 +1,27 @@
+﻿{
+  "Id": "09c1bc76-b306-473c-b690-b400eb883f40",
+  "Services": [],
+  "Processes": [],
+  "Scenarios": [],
+  "Generators": [],
+  "Views": [],
+  "PrintViews": [],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "Name": "AfterDocumentSaveDocument",
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "Id": {
+        "Type": "Uuid"
+      },
+      "LastName": {
+        "Type": "String"
+      },
+      "TestValue": {
+        "Type": "String"
+      }
+    }
+  }
+}
