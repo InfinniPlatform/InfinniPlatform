@@ -196,6 +196,7 @@
     <None Include=".metadata\TestConfiguration\Documents\OneSortingFieldInArrayDocument\OneSortingFieldInArrayDocument.json" />
     <None Include=".metadata\TestConfiguration\Documents\OneSortingFieldInNestedObjectDocument\OneSortingFieldInNestedObjectDocument.json" />
     <None Include=".metadata\TestConfiguration\Documents\OneStringSortingFieldDocument\OneStringSortingFieldDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\TestDocument\TestDocument.json" />
     <None Include=".metadata\TestConfiguration\Documents\TwoSortingFieldsDocument\TwoSortingFieldsDocument.json" />
     <None Include="packages.config" />
     <None Include="TestData\UploadBinaryContent.zip" />
