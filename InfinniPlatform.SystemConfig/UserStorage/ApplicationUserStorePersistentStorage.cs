@@ -189,7 +189,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 
         public void RemoveUserLogin(ApplicationUser user, ApplicationUserLogin userLogin)
         {
-            if (user.Logins.Any(f => f.Provider == userLogin.ProviderKey && f.ProviderKey == userLogin.ProviderKey))
+            if (user.Logins.Any(f => f.Provider == userLogin.Provider && f.ProviderKey == userLogin.ProviderKey))
             {
                 user.Logins = user.Logins.Where(f => !(f.Provider == userLogin.Provider && f.ProviderKey == userLogin.ProviderKey)).ToList();
                 UpdateUser(user);
