@@ -27,7 +27,7 @@ namespace InfinniPlatform.Sdk.Tests
 			_api = new InfinniAuthApi(HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort.ToString(), Route);
 			_signInApi = new InfinniSignInApi(HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort.ToString(), Route);
 			_signInApi.SignInInternal("Admin", "Admin", false);
-			_api.CookieContainer = _signInApi.CookieContainer;
+//			_api.CookieContainer = _signInApi.CookieContainer;
 		}
 
 		[TestFixtureTearDown]
