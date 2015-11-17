@@ -7,7 +7,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
         public void Validate(IApplyContext target)
         {
             target.IsValid = false;
-            target.ValidationMessage = "testmessage";
+            target.ValidationMessage = "TestComplexValidatorMessage";
         }
     }
 }

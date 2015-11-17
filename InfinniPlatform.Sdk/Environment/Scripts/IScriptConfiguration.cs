@@ -25,8 +25,7 @@ namespace InfinniPlatform.Sdk.Environment.Scripts
         /// </summary>
         /// <param name="unitIdentifier">Идентификатор метаданных</param>
         /// <param name="type">Тип модуля</param>
-        /// <param name="version"></param>
-        void RegisterActionUnitDistributedStorage(string unitIdentifier, string type, string version = null);
+        void RegisterActionUnitDistributedStorage(string unitIdentifier, string type);
 
         /// <summary>
         ///     Получить модуль по идентификатору
@@ -38,8 +37,7 @@ namespace InfinniPlatform.Sdk.Environment.Scripts
         /// <summary>
         ///     Инииализировать хранилище прикладных модулей
         /// </summary>
-        /// <param name="version"></param>
-        void InitActionUnitStorage(string version);
+        void InitActionUnitStorage();
 
         /// <summary>
         ///     Зарегистрировать модуль валидации
@@ -53,8 +51,7 @@ namespace InfinniPlatform.Sdk.Environment.Scripts
         /// </summary>
         /// <param name="unitIdentifier"></param>
         /// <param name="type"></param>
-        /// <param name="version"></param>
-        void RegisterValidationUnitDistributedStorage(string unitIdentifier, string type, string version = null);
+        void RegisterValidationUnitDistributedStorage(string unitIdentifier, string type);
 
         /// <summary>
         ///     Получить оператор валидации по указанному идентификатору
@@ -67,6 +64,6 @@ namespace InfinniPlatform.Sdk.Environment.Scripts
         ///     Получить исполнитель скриптов конфигурации
         /// </summary>
         /// <returns></returns>
-        IScriptProcessor GetScriptProcessor(string version);
+        IScriptProcessor GetScriptProcessor();
     }
 }

@@ -50,10 +50,6 @@
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.105.2.3\lib\net45\RestSharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
@@ -199,6 +195,9 @@
     <None Include=".metadata\TestConfiguration\Documents\PrefillDocument\Scenarios\TestComplexFillDocumentAction.json" />
     <None Include=".metadata\TestConfiguration\Documents\TestDocument\TestDocument.json" />
     <None Include=".metadata\TestConfiguration\Documents\TwoSortingFieldsDocument\TwoSortingFieldsDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\ValidationDocument\Processes\Default.json" />
+    <None Include=".metadata\TestConfiguration\Documents\ValidationDocument\Scenarios\TestComplexValidator.json" />
+    <None Include=".metadata\TestConfiguration\Documents\ValidationDocument\ValidationDocument.json" />
     <None Include="packages.config" />
     <None Include="TestData\UploadBinaryContent.zip" />
   </ItemGroup>
