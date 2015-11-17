@@ -14,7 +14,6 @@
         public const string AdminUser = "Admin";
         public const string Default = "Default";
         public const string FilterRoles = "FilterRolesScript";
-        public const string OrganizationClaim = "Organization";
         public const string AnonymousUser = "anonimous";
         public const string UnknownUser = "unknown";
         public const string AnonimousUserCredentials = "AnonimousCredentials";

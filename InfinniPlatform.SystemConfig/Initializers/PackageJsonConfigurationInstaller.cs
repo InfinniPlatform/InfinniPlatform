@@ -128,11 +128,11 @@ namespace InfinniPlatform.SystemConfig.Initializers
 
 			if ((ScriptUnitType)scenario.ScriptUnitType == ScriptUnitType.Action)
 			{
-				metadataCacheManager.ScriptConfiguration.RegisterActionUnitDistributedStorage(scenario.Id, scenario.ScenarioId, metadataCacheManager.Version);
+				metadataCacheManager.ScriptConfiguration.RegisterActionUnitDistributedStorage(scenario.Id, scenario.ScenarioId);
 			}
 			else
 			{
-				metadataCacheManager.ScriptConfiguration.RegisterValidationUnitDistributedStorage(scenario.Id, scenario.ScenarioId, metadataCacheManager.Version);
+				metadataCacheManager.ScriptConfiguration.RegisterValidationUnitDistributedStorage(scenario.Id, scenario.ScenarioId);
 			}
 		}
 

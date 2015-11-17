@@ -88,7 +88,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
             metadataCacheFiller.InstallConfiguration(metadataCacheManager);
 
             // Создание обработчика скриптов
-            metadataCacheManager.ScriptConfiguration.InitActionUnitStorage(configVersion);
+            metadataCacheManager.ScriptConfiguration.InitActionUnitStorage();
 
             // Создание сервисов конфигурации
             InfinniPlatformHostServer.Instance.InstallServices(configVersion, metadataCacheManager.ServiceRegistrationContainer);

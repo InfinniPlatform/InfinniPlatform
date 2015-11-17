@@ -1,146 +1,128 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
+
 using InfinniPlatform.Api.RestApi.Auth;
-using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Api.Tests.Extensions;
+using InfinniPlatform.Api.Security;
 using InfinniPlatform.NodeServiceHost;
 using InfinniPlatform.Sdk.Api;
-using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Security;
+
 using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 {
     [TestFixture]
     [Category(TestCategories.AcceptanceTest)]
-	[Ignore("Необходимо создать конфигурацию метаданных на диске, т.к. теперь метаданные загружаются только с диска")]
-	public sealed class SaaSBehavior
+    public sealed class SaaSBehavior
     {
+        private const string ConfigurationId = "TestConfiguration";
+        private const string DocumentType = "TestDocument";
+
         private IDisposable _server;
 
-        //[TestFixtureSetUp]
+        [TestFixtureSetUp]
         public void FixtureSetup()
         {
-			_server = InfinniPlatformInprocessHost.Start();
-		}
+            _server = InfinniPlatformInprocessHost.Start();
+        }
 
-        //[TestFixtureTearDown]
+        [TestFixtureTearDown]
         public void FixtureTearDown()
         {
             _server.Dispose();
         }
 
-        private string configId = "TestConfigSaaS";
-
-        private string documentId = "TestDocumentSaaS";
-
-
-        private void CreateTestConfig()
+        private static void CreateUser(string userName, string userPassword, string userTenantId)
         {
-            MetadataManagerConfiguration managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager();
+            // TODO: Пользователь добавляется напрямую в базу данных, так как на текущий момент в тестовой инфраструктуре очень сложно это сделать по всем "правилам".
 
-            dynamic config = managerConfig.CreateItem(configId);
-            managerConfig.DeleteItem(config);
-            managerConfig.MergeItem(config);
+            var documentApi = new DocumentApi();
+            var passwordHasher = new DefaultApplicationUserPasswordHasher();
 
-            MetadataManagerDocument managerDocument =
-                new ManagerFactoryConfiguration(configId).BuildDocumentManager();
+            var user = new ApplicationUser
+            {
+                UserName = userName,
+                PasswordHash = passwordHasher.HashPassword(userPassword),
+                SecurityStamp = Guid.NewGuid().ToString(),
+                Claims = new[]
+                                    {
+                                        new ApplicationUserClaim
+                                        {
+                                            Type = new ForeignKey
+                                                   {
+                                                       Id = AuthorizationStorageExtensions.TenantId,
+                                                       DisplayName = AuthorizationStorageExtensions.TenantId
+                                                   },
+                                            Value = userTenantId
+                                        }
+                                    }
+            };
 
-
-            new IndexApi().RebuildIndex(configId, documentId);
-
-            dynamic documentMetadata1 = managerDocument.CreateItem(documentId);
-
-            documentMetadata1.Schema = new DynamicWrapper();
-            documentMetadata1.Schema.Type = documentId;
-            documentMetadata1.Schema.Caption = documentId;
-            documentMetadata1.Schema.Properties = new DynamicWrapper();
-            documentMetadata1.Schema.Properties.Id = new DynamicWrapper();
-            documentMetadata1.Schema.Properties.Id.Type = "Uuid";
-            documentMetadata1.Schema.Properties.Id.Caption = "Unique identifier";
-
-            documentMetadata1.Schema.Properties.Name = new DynamicWrapper();
-            documentMetadata1.Schema.Properties.Name.Type = "String";
-            documentMetadata1.Schema.Properties.Name.Caption = "Patient name";
-
-            managerDocument.MergeItem(documentMetadata1);
-
-            RestQueryApi.QueryPostNotify(configId);
-
-            new UpdateApi().UpdateStore(configId);
+            documentApi.SetDocument(AuthorizationStorageExtensions.AuthorizationConfigId, AuthorizationStorageExtensions.UserStore, user);
         }
 
         [Test]
         public void ShouldReturnOnlyOwnDocuments()
         {
-            CreateTestConfig();
+            // Given
 
-            AuthorizationExtensionsTest.ClearAuthConfig();
+            var documentApi = new InfinniDocumentApi(HostingConfig.Default.ServerName, HostingConfig.Default.DefaultServerPort.ToString(), "1");
+            var signInApi = new InfinniSignInApi(HostingConfig.Default.ServerName, HostingConfig.Default.DefaultServerPort.ToString(), "1");
 
-            //залогиниваемся под админом, чтобы добавить пользователя
-            new SignInApi().SignInInternal("Admin", "Admin", false);
+            var tenant1 = Guid.NewGuid().ToString("N");
+            var tenant2 = Guid.NewGuid().ToString("N");
 
-            var aclApi = new AuthApi();
+            var userName1 = $"User_1_{tenant1}";
+            var userName2 = $"User_2_{tenant2}";
 
-            aclApi.AddUser("TestUser1", "Password1");
-            aclApi.AddUser("TestUser2", "Password2");
+            var documentUser1 = new { Id = Guid.NewGuid().ToString(), TestProperty = userName1 };
+            var documentUser2 = new { Id = Guid.NewGuid().ToString(), TestProperty = userName2 };
 
-            aclApi.AddClaim("TestUser1", AuthorizationStorageExtensions.OrganizationClaim, "Organization1");
-            aclApi.AddClaim("TestUser2", AuthorizationStorageExtensions.OrganizationClaim, "Organization2");
+            CreateUser(userName1, userName1, tenant1);
+            CreateUser(userName2, userName2, tenant2);
 
-            new SignInApi().SignOutInternal();
+            // When
 
+            signInApi.SignInInternal(userName1, userName1);
+            documentApi.CookieContainer = signInApi.CookieContainer;
+            documentApi.SetDocument(ConfigurationId, DocumentType, documentUser1);
+            signInApi.SignOut();
 
-            //создаем экземпляр документа
-            dynamic documentForUser1 = new DynamicWrapper();
-            documentForUser1.Id = Guid.NewGuid().ToString();
-            documentForUser1.Name = "Document for user 1";
+            signInApi.SignInInternal(userName2, userName2);
+            documentApi.CookieContainer = signInApi.CookieContainer;
+            documentApi.SetDocument(ConfigurationId, DocumentType, documentUser2);
+            signInApi.SignOut();
 
-            dynamic documentForUser2 = new DynamicWrapper();
-            documentForUser2.Id = Guid.NewGuid().ToString();
-            documentForUser2.Name = "Document for user 2";
+            signInApi.SignInInternal(userName1, userName1);
+            documentApi.CookieContainer = signInApi.CookieContainer;
+            var allowedDocumentsForUser1 = documentApi.GetDocument(ConfigurationId, DocumentType, s => s.AddCriteria(c => c.Property("TestProperty").IsEquals(userName1)), 0, 10);
+            var notAllowedDocumentsForUser1 = documentApi.GetDocument(ConfigurationId, DocumentType, s => s.AddCriteria(c => c.Property("TestProperty").IsEquals(userName2)), 0, 10);
+            signInApi.SignOut();
 
-            //when
-            new SignInApi().SignInInternal("TestUser1", "Password1", false);
+            signInApi.SignInInternal(userName2, userName2);
+            documentApi.CookieContainer = signInApi.CookieContainer;
+            var allowedDocumentsForUser2 = documentApi.GetDocument(ConfigurationId, DocumentType, s => s.AddCriteria(c => c.Property("TestProperty").IsEquals(userName2)), 0, 10);
+            var notAllowedDocumentsForUser2 = documentApi.GetDocument(ConfigurationId, DocumentType, s => s.AddCriteria(c => c.Property("TestProperty").IsEquals(userName1)), 0, 10);
+            signInApi.SignOut();
 
-            new DocumentApi().SetDocument(configId, documentId, documentForUser1);
+            // Then
 
-            new SignInApi().SignOutInternal();
+            Assert.IsNotNull(allowedDocumentsForUser1);
+            Assert.AreEqual(1, allowedDocumentsForUser1.Count());
+            Assert.AreEqual(documentUser1.Id, allowedDocumentsForUser1.ElementAt(0).Id);
+            Assert.AreEqual(documentUser1.TestProperty, allowedDocumentsForUser1.ElementAt(0).TestProperty);
 
-            new SignInApi().SignInInternal("TestUser2", "Password2", false);
+            Assert.IsNotNull(notAllowedDocumentsForUser1);
+            Assert.AreEqual(0, notAllowedDocumentsForUser1.Count());
 
-            new DocumentApi().SetDocument(configId, documentId, documentForUser2);
+            Assert.IsNotNull(allowedDocumentsForUser2);
+            Assert.AreEqual(1, allowedDocumentsForUser2.Count());
+            Assert.AreEqual(documentUser2.Id, allowedDocumentsForUser2.ElementAt(0).Id);
+            Assert.AreEqual(documentUser2.TestProperty, allowedDocumentsForUser2.ElementAt(0).TestProperty);
 
-            new SignInApi().SignOutInternal();
-
-
-            //then
-
-            //проверяем документы первого пользователя
-            new SignInApi().SignInInternal("TestUser1", "Password1", false);
-
-            IEnumerable<dynamic> docsForUser1 =
-                new DocumentApi().GetDocument(configId, documentId, null, 0, 100).ToList();
-
-            Assert.AreEqual(1, docsForUser1.Count());
-            Assert.AreEqual(documentForUser1.Id, docsForUser1.First().Id);
-
-            new SignInApi().SignOutInternal();
-
-            new SignInApi().SignInInternal("TestUser2", "Password2", false);
-
-            //проверяем документы второго пользователя
-            IEnumerable<dynamic> docsForUser2 =
-                new DocumentApi().GetDocument(configId, documentId, null, 0, 100).ToList();
-
-            Assert.AreEqual(1, docsForUser2.Count());
-            Assert.AreEqual(documentForUser2.Id, docsForUser2.First().Id);
-
-            new SignInApi().SignOutInternal();
+            Assert.IsNotNull(notAllowedDocumentsForUser2);
+            Assert.AreEqual(0, notAllowedDocumentsForUser2.Count());
         }
     }
 }

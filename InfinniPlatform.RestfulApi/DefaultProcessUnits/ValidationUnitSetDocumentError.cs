@@ -79,21 +79,18 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                 }
                 else
                 {
-                    if (defaultBusinessProcess.Transitions[0].ValidationPointError.ScenarioId != null)
-                    {
-                        IValidationOperator validator = configurationObject.MetadataConfiguration.ScriptConfiguration
-                                                                           .GetValidator(
-                                                                               defaultBusinessProcess.Transitions[0]
-                                                                                   .ValidationPointError.ScenarioId);
+                    var validationScenarioId = defaultBusinessProcess.Transitions[0].ValidationPointError.ScenarioId;
 
+                    if (validationScenarioId != null)
+                    {
+                        var scriptProcessor = configurationObject.MetadataConfiguration.ScriptConfiguration.GetScriptProcessor();
 
                         var context = new ApplyContext();
-
                         context.CopyPropertiesFrom(target);
                         context.Item = target.Item.Document ?? target.Item;
                         context.Context = target.Context.GetComponent<ICustomServiceGlobalContext>();
 
-                        validator.Validate(context, new ValidationResult());
+                        scriptProcessor.InvokeScript(validationScenarioId, context);
 
                         if (context.ValidationMessage != null)
                         {

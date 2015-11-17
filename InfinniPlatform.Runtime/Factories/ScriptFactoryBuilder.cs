@@ -5,18 +5,9 @@ namespace InfinniPlatform.Runtime.Factories
 {
 	public sealed class ScriptFactoryBuilder : IScriptFactoryBuilder
 	{
-		public ScriptFactoryBuilder(IChangeListener changeListener)
+		public IScriptFactory BuildScriptFactory(string metadataConfigurationId)
 		{
-			_changeListener = changeListener;
-		}
-
-
-		private readonly IChangeListener _changeListener;
-
-
-		public IScriptFactory BuildScriptFactory(string metadataConfigurationId, string version)
-		{
-			return new ScriptFactory(new PackageVersionLoader(), _changeListener, metadataConfigurationId, version);
+			return new ScriptFactory(new PackageVersionLoader(), metadataConfigurationId);
 		}
 	}
 }

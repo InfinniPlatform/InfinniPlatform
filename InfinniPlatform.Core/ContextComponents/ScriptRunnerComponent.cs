@@ -37,7 +37,7 @@ namespace InfinniPlatform.ContextComponents
             {
                 var scriptProcessor =
                     _metadataConfigurationProvider.GetMetadataConfiguration(configurationId)
-                        .ScriptConfiguration.GetScriptProcessor(version);
+                        .ScriptConfiguration.GetScriptProcessor();
 
                 scriptProcessorVersioned = new VersionedScriptProcessor
                 {

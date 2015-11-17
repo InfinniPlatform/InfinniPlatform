@@ -49,10 +49,9 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
         /// </summary>
         /// <param name="unitIdentifier">Идентификатор модуля</param>
         /// <param name="type">Класс скриптового модуля для регистрации</param>
-        /// <param name="version"></param>
-        public void RegisterActionUnitDistributedStorage(string unitIdentifier, string type, string version)
+        public void RegisterActionUnitDistributedStorage(string unitIdentifier, string type)
         {
-            var factory = GetExecutedScriptBuilderFactory(version);
+            var factory = GetExecutedScriptBuilderFactory();
             factory.RegisterMetadata(unitIdentifier, type, "Action");
             ActionUnits.Add(new ActionUnit(unitIdentifier, factory.BuildActionOperatorBuilder(unitIdentifier)));
         }
@@ -72,17 +71,16 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
         /// </summary>
         /// <param name="unitIdentifier">Идентификатор метаданных валидатора</param>
         /// <param name="type">Класс валидатора, который зарегистрирован для данного модуля</param>
-        /// <param name="version"></param>
-        public void RegisterValidationUnitDistributedStorage(string unitIdentifier, string type, string version)
+        public void RegisterValidationUnitDistributedStorage(string unitIdentifier, string type)
         {
-            GetExecutedScriptBuilderFactory(version).RegisterMetadata(unitIdentifier, type, "Validate");
+            GetExecutedScriptBuilderFactory().RegisterMetadata(unitIdentifier, type, "Validate");
             ValidationUnits.Add(new ValidationUnit(unitIdentifier,
-                GetExecutedScriptBuilderFactory(version).BuildValidationOperatorBuilder(unitIdentifier)));
+                GetExecutedScriptBuilderFactory().BuildValidationOperatorBuilder(unitIdentifier)));
         }
 
-        public void InitActionUnitStorage(string version)
+        public void InitActionUnitStorage()
         {
-            GetExecutedScriptBuilderFactory(version).BuildScriptProcessor();
+            GetExecutedScriptBuilderFactory().BuildScriptProcessor();
         }
 
         public string ModuleName { get; set; }
@@ -111,28 +109,27 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
         /// <summary>
         ///     Получить исполнитель скриптов конфигурации
         /// </summary>
-        /// <param name="version"></param>
         /// <returns></returns>
-        public IScriptProcessor GetScriptProcessor(string version)
+        public IScriptProcessor GetScriptProcessor()
         {
-            return GetExecutedScriptBuilderFactory(version).BuildScriptProcessor();
+            return GetExecutedScriptBuilderFactory().BuildScriptProcessor();
         }
 
-        private IScriptFactory GetScriptFactory(string version)
+        private IScriptFactory GetScriptFactory()
         {
             lock (_lockObject)
             {
                 return _scriptFactoryInstance ??
-                       (_scriptFactoryInstance = _scriptFactoryBuilder.BuildScriptFactory(ModuleName, version));
+                       (_scriptFactoryInstance = _scriptFactoryBuilder.BuildScriptFactory(ModuleName));
             }
         }
 
-        public ExecutedScriptBuilderFactory GetExecutedScriptBuilderFactory(string version)
+        public ExecutedScriptBuilderFactory GetExecutedScriptBuilderFactory()
         {
             lock (_lockObject)
             {
                 return _actionOperatorBuilderFactory ??
-                       (_actionOperatorBuilderFactory = new ExecutedScriptBuilderFactory(GetScriptFactory(version)));
+                       (_actionOperatorBuilderFactory = new ExecutedScriptBuilderFactory(GetScriptFactory()));
             }
         }
     }
