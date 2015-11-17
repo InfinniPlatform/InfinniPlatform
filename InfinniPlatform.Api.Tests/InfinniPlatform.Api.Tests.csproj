@@ -77,7 +77,6 @@
     <Compile Include="RestBehavior\Acceptance\ActionUnitExceptionHandlingBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\ContentUploadBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\SaaSBehaivor.cs" />
-    <Compile Include="RestBehavior\Acceptance\SolutionVersionBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\SortingBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\RegistersBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\DeleteReferencedDocumentBehavior.cs" />
@@ -153,6 +152,10 @@
       <Project>{7ca0f96c-7ff4-44b2-9d44-851984df4532}</Project>
       <Name>InfinniPlatform.Api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
+      <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
+      <Name>InfinniPlatform.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Index.ElasticSearch\InfinniPlatform.Index.ElasticSearch.csproj">
       <Project>{2B2F3FA6-F434-4FCF-A4C7-323FFC602F0C}</Project>
       <Name>InfinniPlatform.Index.ElasticSearch</Name>
@@ -164,10 +167,6 @@
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
       <Name>InfinniPlatform.Sdk</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.SystemConfig\InfinniPlatform.SystemConfig.csproj">
-      <Project>{6EFC2069-AFEB-453D-AD2C-3E170486A4F1}</Project>
-      <Name>InfinniPlatform.SystemConfig</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Tests\InfinniPlatform.Tests.csproj">
       <Project>{a46f638c-c9c5-49be-bc8d-8144e8c8f87a}</Project>
