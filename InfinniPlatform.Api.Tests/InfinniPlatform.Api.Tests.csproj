@@ -181,10 +181,12 @@
       <SubType>Designer</SubType>
     </None>
     <None Include=".metadata\TestConfiguration\Configuration.json" />
+    <None Include=".metadata\TestConfiguration\Documents\AddressDocument\AddressDocument.json" />
     <None Include=".metadata\TestConfiguration\Documents\AfterDocumentSaveDocument\AfterDocumentSaveDocument.json" />
     <None Include=".metadata\TestConfiguration\Documents\AfterDocumentSaveDocument\Processes\Default.json" />
     <None Include=".metadata\TestConfiguration\Documents\AfterDocumentSaveDocument\Scenarios\TestComplexAction.json" />
     <None Include=".metadata\TestConfiguration\Documents\ContentUploadDocument\ContentUploadDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\DeleteReferencedDocument\DeleteReferencedDocument.json" />
     <None Include=".metadata\TestConfiguration\Documents\ExceptionHandlingDocument\ExceptionHandlingDocument.json" />
     <None Include=".metadata\TestConfiguration\Documents\ExceptionHandlingDocument\Processes\Default.json" />
     <None Include=".metadata\TestConfiguration\Documents\ExceptionHandlingDocument\Scenarios\ActionWithException.json" />

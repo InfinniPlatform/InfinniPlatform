@@ -1,0 +1,24 @@
+﻿{
+  "Id": "a8fd82c5-7cc3-41e0-b4b5-a5db67b41bc0",
+  "Services": [],
+  "Processes": [],
+  "Scenarios": [],
+  "Generators": [],
+  "Views": [],
+  "PrintViews": [],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "Name": "AddressDocument",
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "Id": {
+        "Type": "Uuid"
+      },
+      "Street": {
+        "Type": "String"
+      }
+    }
+  }
+}
