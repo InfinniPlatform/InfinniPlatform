@@ -79,7 +79,6 @@
     <Compile Include="RestBehavior\Acceptance\SaaSBehaivor.cs" />
     <Compile Include="RestBehavior\Acceptance\SolutionVersionBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\SortingBehavior.cs" />
-    <Compile Include="RestBehavior\Acceptance\GetManagedMetadataBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\RegistersBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\DeleteReferencedDocumentBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\PrefillDocumentBehavior.cs" />
@@ -196,6 +195,9 @@
     <None Include=".metadata\TestConfiguration\Documents\OneSortingFieldInArrayDocument\OneSortingFieldInArrayDocument.json" />
     <None Include=".metadata\TestConfiguration\Documents\OneSortingFieldInNestedObjectDocument\OneSortingFieldInNestedObjectDocument.json" />
     <None Include=".metadata\TestConfiguration\Documents\OneStringSortingFieldDocument\OneStringSortingFieldDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\PrefillDocument\PrefillDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\PrefillDocument\Processes\Default.json" />
+    <None Include=".metadata\TestConfiguration\Documents\PrefillDocument\Scenarios\TestComplexFillDocumentAction.json" />
     <None Include=".metadata\TestConfiguration\Documents\TestDocument\TestDocument.json" />
     <None Include=".metadata\TestConfiguration\Documents\TwoSortingFieldsDocument\TwoSortingFieldsDocument.json" />
     <None Include="packages.config" />
