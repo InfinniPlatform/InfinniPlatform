@@ -1,34 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using InfinniPlatform.Api.Context;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
-using InfinniPlatform.Api.Packages;
-using InfinniPlatform.Api.RestApi.CommonApi;
+
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.NodeServiceHost;
-using InfinniPlatform.Sdk.Api;
-using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Hosting;
+
 using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 {
     [TestFixture]
     [Category(TestCategories.AcceptanceTest)]
-	[Ignore("Необходимо создать конфигурацию метаданных на диске, т.к. теперь метаданные загружаются только с диска")]
-	public sealed class PrefillDocumentBehavior
+    public sealed class PrefillDocumentBehavior
     {
+        private const string ConfigurationId = "TestConfiguration";
+        private const string DocumentType = "PrefillDocument";
+
         private IDisposable _server;
 
-        //[TestFixtureSetUp]
+        [TestFixtureSetUp]
         public void FixtureSetup()
         {
-			_server = InfinniPlatformInprocessHost.Start();
-		}
+            _server = InfinniPlatformInprocessHost.Start();
+        }
 
-        //[TestFixtureTearDown]
+        [TestFixtureTearDown]
         public void FixtureTearDown()
         {
             _server.Dispose();
@@ -37,180 +31,17 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         [Test]
         public void ShouldPrefillDocumentBySchema()
         {
-            //создаем конфигурацию с документом для предзаполнения поля "Дата осмотра"
+            // Given
+            var documentApi = new DocumentApi();
 
-            string configId = "TestConfigPrefillSchema";
+            // When
+            var document = documentApi.CreateDocument(ConfigurationId, DocumentType);
 
-            string documentId = "TestDocument";
-
-            string documentIdReferenceInline = "TestDocument1";
-
-            string documentIdReferenceInlineInner = "TestDocument2";
-
-
-            MetadataManagerConfiguration managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager();
-
-
-            dynamic config = managerConfig.CreateItem(configId);
-
-            managerConfig.DeleteItem(config);
-
-            managerConfig.MergeItem(config);
-
-            MetadataManagerDocument managerDocument =
-                new ManagerFactoryConfiguration(configId).BuildDocumentManager();
-
-
-            new IndexApi().RebuildIndex(configId, documentId);
-
-            dynamic documentMetadata1 = managerDocument.CreateItem(documentId);
-
-            documentMetadata1.Schema = new DynamicWrapper();
-            documentMetadata1.Schema.Name = documentId;
-            documentMetadata1.Schema.Caption = documentId;
-            documentMetadata1.Schema.Properties = new DynamicWrapper();
-            documentMetadata1.Schema.Properties.Id = new DynamicWrapper();
-            documentMetadata1.Schema.Properties.Id.Type = "Uuid";
-            documentMetadata1.Schema.Properties.Id.Caption = "Unique identifier";
-
-            documentMetadata1.Schema.Properties.Name = new DynamicWrapper();
-            documentMetadata1.Schema.Properties.Name.Type = "String";
-            documentMetadata1.Schema.Properties.Name.Caption = "Patient name";
-
-            documentMetadata1.Schema.Properties.Address = new DynamicWrapper();
-            documentMetadata1.Schema.Properties.Address.Type = "Object";
-            documentMetadata1.Schema.Properties.Address.TypeInfo = new DynamicWrapper();
-            documentMetadata1.Schema.Properties.Address.TypeInfo.DocumentLink = new DynamicWrapper();
-            documentMetadata1.Schema.Properties.Address.TypeInfo.DocumentLink.ConfigId = configId;
-            documentMetadata1.Schema.Properties.Address.TypeInfo.DocumentLink.DocumentId = documentIdReferenceInline;
-            documentMetadata1.Schema.Properties.Address.TypeInfo.DocumentLink.Inline = true;
-
-            documentMetadata1.Schema.Properties.ObservationDate = new DynamicWrapper();
-            documentMetadata1.Schema.Properties.ObservationDate.Type = "DateTime";
-            documentMetadata1.Schema.Properties.ObservationDate.Caption = "Дата осмотра";
-
-            documentMetadata1.Schema.Properties.RecursiveLink = new DynamicWrapper();
-            documentMetadata1.Schema.Properties.RecursiveLink.Type = "Object";
-            documentMetadata1.Schema.Properties.RecursiveLink.TypeInfo = new DynamicWrapper();
-            documentMetadata1.Schema.Properties.RecursiveLink.TypeInfo.DocumentLink = new DynamicWrapper();
-            documentMetadata1.Schema.Properties.RecursiveLink.TypeInfo.DocumentLink.ConfigId = configId;
-            documentMetadata1.Schema.Properties.RecursiveLink.TypeInfo.DocumentLink.DocumentId = documentId;
-
-
-            dynamic documentMetadata2 = managerDocument.CreateItem(documentIdReferenceInline);
-
-            documentMetadata2.Schema = new DynamicWrapper();
-            documentMetadata2.Schema.Type = documentIdReferenceInline;
-            documentMetadata2.Schema.Caption = documentIdReferenceInline;
-            documentMetadata2.Schema.Properties = new DynamicWrapper();
-            documentMetadata2.Schema.Properties.Id = new DynamicWrapper();
-            documentMetadata2.Schema.Properties.Id.Type = "Uuid";
-            documentMetadata2.Schema.Properties.Id.Caption = "Unique identifier";
-
-            documentMetadata2.Schema.Properties.Street = new DynamicWrapper();
-            documentMetadata2.Schema.Properties.Street.Type = "Object";
-            documentMetadata2.Schema.Properties.Street.Caption = "Address street";
-            documentMetadata2.Schema.Properties.Street.TypeInfo = new DynamicWrapper();
-            documentMetadata2.Schema.Properties.Street.TypeInfo.DocumentLink = new DynamicWrapper();
-            documentMetadata2.Schema.Properties.Street.TypeInfo.DocumentLink.ConfigId = configId;
-            documentMetadata2.Schema.Properties.Street.TypeInfo.DocumentLink.DocumentId = documentIdReferenceInlineInner;
-            documentMetadata2.Schema.Properties.Street.TypeInfo.DocumentLink.Inline = true;
-
-            dynamic documentMetadata3 = managerDocument.CreateItem(documentIdReferenceInlineInner);
-
-            documentMetadata3.Schema = new DynamicWrapper();
-            documentMetadata3.Schema.Type = documentIdReferenceInlineInner;
-            documentMetadata3.Schema.Caption = documentIdReferenceInlineInner;
-            documentMetadata3.Schema.Properties = new DynamicWrapper();
-            documentMetadata3.Schema.Properties.Id = new DynamicWrapper();
-            documentMetadata3.Schema.Properties.Id.Type = "Uuid";
-            documentMetadata3.Schema.Properties.Id.Caption = "Unique identifier";
-
-            documentMetadata3.Schema.Properties.House = new DynamicWrapper();
-            documentMetadata3.Schema.Properties.House.Type = "String";
-            documentMetadata3.Schema.Properties.House.Caption = "House";
-
-            documentMetadata3.Schema.Properties.PostIndex = new DynamicWrapper();
-            documentMetadata3.Schema.Properties.PostIndex.Type = "String";
-            documentMetadata3.Schema.Properties.PostIndex.Caption = "Post index";
-
-
-            //Структура
-            // TestDocument
-            //  |---TestDocument1
-            //     |-- TestDocument2
-
-
-            managerDocument.MergeItem(documentMetadata1);
-            managerDocument.MergeItem(documentMetadata2);
-            managerDocument.MergeItem(documentMetadata3);
-
-            RestQueryApi.QueryPostNotify(configId);
-
-            new UpdateApi().UpdateStore(configId);
-
-            //указываем ссылку на тестовый сценарий комплексного предзаполнения
-            MetadataManagerElement scenarioManager =
-                new ManagerFactoryDocument(configId, documentId).BuildScenarioManager();
-            string scenarioId = "TestComplexFillDocumentAction";
-            dynamic scenarioItem = scenarioManager.CreateItem(scenarioId);
-            scenarioItem.ScenarioId = scenarioId;
-            scenarioItem.Id = scenarioId;
-            scenarioItem.Name = scenarioId;
-            scenarioItem.ScriptUnitType = ScriptUnitType.Action;
-            scenarioItem.ContextType = ContextTypeKind.ApplyMove;
-
-            scenarioManager.MergeItem(scenarioItem);
-
-            //добавляем ссылку на сборку, в которой находится прикладной модуль
-
-            MetadataManagerElement assemblyManager =
-                new ManagerFactoryConfiguration(configId).BuildAssemblyManager();
-            dynamic assemblyItem = assemblyManager.CreateItem("InfinniPlatform.Api.Tests");
-            assemblyManager.MergeItem(assemblyItem);
-
-
-            //Описываем схему предзаполнения в умолчательном бизнес-процессе
-            MetadataManagerElement processManager =
-                new ManagerFactoryDocument(configId, documentId).BuildProcessManager();
-            dynamic process = processManager.CreateItem("Default");
-
-            process.Type = WorkflowTypes.WithoutState;
-            process.Transitions = new List<dynamic>();
-            process.Transitions.Add(new DynamicWrapper());
-            process.Transitions[0].Id = Guid.NewGuid().ToString();
-            process.Transitions[0].SchemaPrefill = documentMetadata1.Schema;
-            process.Transitions[0].SchemaPrefill.Properties = new DynamicWrapper();
-            process.Transitions[0].SchemaPrefill.Properties.Name = new DynamicWrapper();
-            process.Transitions[0].SchemaPrefill.Properties.Name.DefaultValue = "ИВАНОВ";
-            process.Transitions[0].SchemaPrefill.Properties.ObservationDate = new DynamicWrapper();
-            process.Transitions[0].SchemaPrefill.Properties.ObservationDate.DefaultValue = "prefilldatetimenow";
-
-            process.Transitions[0].SchemaPrefill = process.Transitions[0].SchemaPrefill.ToString();
-
-            process.Transitions[0].ActionPoint = new DynamicWrapper();
-            process.Transitions[0].ActionPoint.TypeName = "Action";
-            process.Transitions[0].ActionPoint.ScenarioId = scenarioId;
-
-            processManager.MergeItem(process);
-
-            dynamic package = new PackageBuilder().BuildPackage(configId, "1.0.0.0", GetType().Assembly.Location);
-            new UpdateApi().InstallPackages(new[] { package });
-
-
-            RestQueryApi.QueryPostNotify(configId);
-
-            new UpdateApi().UpdateStore(configId);
-
-
-            //вызываем предзаполнение
-            dynamic item = new DocumentApi().CreateDocument(configId, documentId);
-
-            Assert.IsNotNull(item);
-            Assert.AreEqual(item.Name, "ИВАНОВ");
-            Assert.IsNotNull(item.ObservationDate);
-
-            Assert.AreEqual(item.PrefiledField, "TestValue");
+            // Then
+            Assert.IsNotNull(document);
+            Assert.AreEqual("ИВАНОВ", document.Name);
+            Assert.AreEqual("2015-01-01", document.ObservationDate);
+            Assert.AreEqual("TestValue", document.PrefiledField);
         }
     }
 }

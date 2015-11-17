@@ -1,0 +1,43 @@
+﻿{
+  "Id": "7d989fd7-1891-48a2-972e-86e1b7ef09c9",
+  "Services": [],
+  "Processes": [],
+  "Scenarios": [],
+  "Generators": [],
+  "Views": [],
+  "PrintViews": [],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "Name": "TestDocument",
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "Id": {
+        "Type": "String"
+      },
+      "TestProperty": {
+        "Type": "String"
+      },
+      "ComplexObject": {
+        "Type": "Object",
+        "Properties": {
+          "ValidProperty": {
+            "Type": "Integer"
+          }
+        }
+      },
+      "ComplexArray": {
+        "Type": "Array",
+        "Items": {
+          "Type": "Object",
+          "Properties": {
+            "ValidProperty": {
+              "Type": "Integer"
+            }
+          }
+        }
+      }
+    }
+  }
+}
