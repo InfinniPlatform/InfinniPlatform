@@ -63,15 +63,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RegisterApiTest.cs" />
-    <Compile Include="SignInApiTest.cs" />
-    <Compile Include="AuthApiTest.cs" />
     <Compile Include="TestData\ActionUnitHelloWorld.cs" />
     <Compile Include="TestData\ActionUnitHelloWorld2.cs" />
     <Compile Include="TestData\ActionUnitLike.cs" />
     <Compile Include="TestData\ActionUnitHelloWorld1.cs" />
     <Compile Include="TestData\ActionUnitOnSaveComment.cs" />
-    <Compile Include="VersionApiTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Files\Tests\App.config">

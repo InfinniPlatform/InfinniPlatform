@@ -8,11 +8,8 @@ using NUnit.Framework;
 
 namespace InfinniPlatform.Sdk.Tests
 {
-    //[Ignore("Тесты SDK не выполняют запуск сервера InfinniPlatform. Необходимо существование уже запущенного сервера на localhost : 9900")]
     public sealed class FileApiTest
     {
-        private const string InfinniSessionPort = "9900";
-        private const string InfinniSessionServer = "localhost";
         private const string Route = "1";
 
         private InfinniFileApi _fileApi;
@@ -21,8 +18,8 @@ namespace InfinniPlatform.Sdk.Tests
         [TestFixtureSetUp]
         public void SetupApi()
         {
-            _fileApi = new InfinniFileApi(InfinniSessionServer, InfinniSessionPort,Route);
-            _documentApi = new InfinniDocumentApi(InfinniSessionServer, InfinniSessionPort,Route);
+            _fileApi = new InfinniFileApi(HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort.ToString(), Route);
+            _documentApi = new InfinniDocumentApi(HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort.ToString(), Route);
         }
 
         [Test]

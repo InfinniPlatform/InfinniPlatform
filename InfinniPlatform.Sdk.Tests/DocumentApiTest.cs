@@ -128,7 +128,6 @@ namespace InfinniPlatform.Sdk.Tests
 		}
 
 		[Test]
-		[Ignore]
 		public void ShouldGetDocumentWithSorting()
 		{
 			var documentObject1 = new
@@ -303,22 +302,6 @@ namespace InfinniPlatform.Sdk.Tests
 			Assert.IsNotNull(result);
 		}
 
-		[Test]
-		[Ignore]
-		public void ShouldSetDocumentWithIncorrectMapping()
-		{
-			var documentObject = new
-								 {
-									 Name = "gta vice city",
-									 Price = "someStringValueThatNotConvertToFloat" //string value but float in schema
-								 };
-
-			var ex = Assert.Throws<ApplicationException>(() => _api.SetDocument("gameshop", "catalogue", documentObject));
-			Assert.AreEqual(ex.Message,
-				"Unable to set document with exception: There an business logic error on request execution./r/nAdditional info: ﻿{\r\n  \"Error\": \"Fail to commit transaction: \\r\\nExpected value for field 'Price' should have Float type, but value has System.String type ('someStringValueThatNotConvertToFloat')\"\r\n}");
-		}
-
-		[Test]
 		public void ShouldUpdateDocument()
 		{
 			var documentObject = new
