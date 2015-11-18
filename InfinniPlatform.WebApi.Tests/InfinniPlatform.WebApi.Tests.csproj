@@ -81,7 +81,6 @@
     <Compile Include="TestConfiguration\QueryExecutorTestInstaller.cs" />
     <Compile Include="Services\ApiControllerBehavior.cs" />
     <Compile Include="Services\ServicesQueryBehavior.cs" />
-    <Compile Include="Hosting\WebApiOwinHostingModuleIntegrationTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">

@@ -51,7 +51,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Builders\ActionUnitTestStorage.cs" />
-    <Compile Include="HandlersBehavior\ApplyHandlerBehavior.cs" />
     <Compile Include="Builders\HandlersInstaller.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <AutoGen>True</AutoGen>

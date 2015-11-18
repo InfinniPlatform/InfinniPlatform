@@ -138,58 +138,6 @@ namespace InfinniPlatform.WebApi.Tests.Services
 
             Assert.AreEqual(expectedResult, restResponse.Content.Contains("STREAM_123"));
         }
-
-        [Ignore]
-        [TestCase("testuploadhandler", true)]
-        public void ShouldMakeUploadWithObjectQueryToService(string handlerName, bool expectedResult)
-        {
-            string argumentsString = JsonConvert.SerializeObject(new[]
-                {
-                    new
-                        {
-                            Test1 = "value1",
-                            Test2 = "value2"
-                        },
-                    new
-                        {
-                            Test1 = "value1",
-                            Test2 = "value2"
-                        }
-                });
-
-            var restClient =
-                new RestClient(string.Format("{0}://{1}:{2}/DrugsVidal/Upload/REF_TEST/{3}/",
-											 HostingConfig.Default.ServerScheme,
-											 HostingConfig.Default.ServerName,
-											 HostingConfig.Default.ServerPort, handlerName));
-
-            IRestResponse restResponse =
-                restClient.Post(new RestRequest("?linkedData={argument}") {RequestFormat = DataFormat.Json}
-                                    .AddUrlSegment("argument", argumentsString)
-				.AddFile("uploadFile", Resources.CheckUploadFile, "fileUploaded", "multipart/form-data"));
-
-
-            Assert.AreEqual(expectedResult,
-                            restResponse.Content.Contains(
-                                "\"STREAM_[\\r\\n  {\\r\\n    \\\"Test1\\\": \\\"value1\\\",\\r\\n    \\\"Test2\\\": \\\"value2\\\"\\r\\n  },\\r\\n  {\\r\\n    \\\"Test1\\\": \\\"value1\\\",\\r\\n    \\\"Test2\\\": \\\"value2\\\"\\r\\n  }\\r\\n]\""));
-        }
-
-        [Test]
-        [Ignore("Currently can't work")]
-        public void ShouldMakeDeleteQueryToService()
-        {
-            var restClient =
-                new RestClient(string.Format("{0}://{1}:{2}/DrugsVidal/StandardApi/REF_TEST/testdeletehandler",
-											 HostingConfig.Default.ServerScheme,
-											 HostingConfig.Default.ServerName,
-											 HostingConfig.Default.ServerPort));
-
-            IRestResponse restResponse =
-                restClient.Delete(new RestRequest("&IdList={IdList}") {RequestFormat = DataFormat.Json}
-                                      .AddUrlSegment("IdList", RequestBuilder.BuildDeleteArguments()));
-
-            Assert.True(restResponse.Content.Contains("\"Data\":\"DELETE\""));
-        }
     }
 
 

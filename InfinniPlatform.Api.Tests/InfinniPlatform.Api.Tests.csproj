@@ -91,7 +91,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AssemblyInfo.tt</DependentUpon>
     </Compile>
-    <Compile Include="RestBehavior\ConfiguratorApiBehavior\MetadataCrudBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\DocumentApiBehavior.cs" />
     <Compile Include="RestBehavior\TestActions\ActionUnitGeneratorTest.cs" />
     <Compile Include="RestBehavior\TestActions\AddNewBedToRoomMoveAction.cs" />

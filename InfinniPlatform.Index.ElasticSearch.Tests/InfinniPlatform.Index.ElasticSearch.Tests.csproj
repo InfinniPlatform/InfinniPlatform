@@ -68,7 +68,6 @@
     <Compile Include="ElasticWrappers\ElasticSearchBehavior.cs" />
     <Compile Include="ElasticWrappers\ElasticSearchChangingMappingTests.cs" />
     <Compile Include="ElasticWrappers\ElasticSearchFilterBuilderCriteriaTests.cs" />
-    <Compile Include="ElasticWrappers\ElasticSearchInitialization.cs" />
     <Compile Include="ElasticWrappers\ElasticSearchModelExpressionBehavior.cs" />
     <Compile Include="ElasticWrappers\ElasticSearchPerformanceIntegrationBehavior.cs" />
     <Compile Include="ElasticWrappers\ElasticSearchIndexStateBehavior.cs" />

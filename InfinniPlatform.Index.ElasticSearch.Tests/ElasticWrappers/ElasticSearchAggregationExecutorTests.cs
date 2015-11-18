@@ -123,13 +123,13 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         }
 
         [Test]
-        [Ignore("Ручной тест для оценки быстродействия агрегаций")]
-        /// Тест выдаёт следующие результаты измерений
-        /// Aggregation time 1 term (10^6 documents) 8 ms.
-        /// Aggregation time 2 terms (10^6 documents) 9 ms.
-        /// Aggregation time 3 terms (10^6 documents) 83 ms.
-        /// Aggregation time by range (10^6 documents) 19 ms.
-        /// Search by query time (10^6 documents) 39 ms.
+        [Ignore("Manual")]
+        // Тест выдаёт следующие результаты измерений
+        // Aggregation time 1 term (10^6 documents) 8 ms.
+        // Aggregation time 2 terms (10^6 documents) 9 ms.
+        // Aggregation time 3 terms (10^6 documents) 83 ms.
+        // Aggregation time by range (10^6 documents) 19 ms.
+        // Search by query time (10^6 documents) 39 ms.
         public void AggregationPerformanceVsSearchPerformance()
         {
             const string aggrindex = "aggrperfomancetest";

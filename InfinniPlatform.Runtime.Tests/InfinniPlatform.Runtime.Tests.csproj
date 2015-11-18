@@ -50,9 +50,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IdentityMapBehavior.cs" />
-    <Compile Include="ProjectConverter\ProjectConverterBehavior.cs" />
-    <Compile Include="ProjectConverter\ProjectConverterToBehavior.cs" />
-    <Compile Include="ProjectConverter\ProjectConverterFromBehavior.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -79,11 +76,6 @@
       <Link>App.config</Link>
     </None>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ProjectConverter\projExamples\example1.xml" />
-    <None Include="ProjectConverter\projExamples\example2.xml" />
-    <None Include="ProjectConverter\projExamples\example3.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\Files\Build\TransformOnBuild.targets" />
