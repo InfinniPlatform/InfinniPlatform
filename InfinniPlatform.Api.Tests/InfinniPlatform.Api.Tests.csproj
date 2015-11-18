@@ -63,7 +63,6 @@
     <Compile Include="Extensions\AuthorizationExtensionsTest.cs" />
     <Compile Include="Extensions\CommonExtensionsTest.cs" />
     <Compile Include="Extensions\ReflectionExtensionsTest.cs" />
-    <Compile Include="Help\SelfDocumentationBehavior.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -78,7 +77,6 @@
     <Compile Include="RestBehavior\Acceptance\DeleteReferencedDocumentBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\PrefillDocumentBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\ReportingBehavior.cs" />
-    <Compile Include="RestBehavior\Acceptance\SchemaChangeDocumentBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\SignalRNotificationBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\TransactionBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\ValidationDocumentBehavior.cs" />
@@ -207,6 +205,7 @@
     <None Include=".metadata\TestConfiguration\Documents\Register_RegisterTest_AvailableBedsRegister\Register_RegisterTest_AvailableBedsRegister.json" />
     <None Include=".metadata\TestConfiguration\Documents\Register_RegisterTest_InfoRegister\Register_RegisterTest_InfoRegister.json" />
     <None Include=".metadata\TestConfiguration\Documents\TestConfiguration_Registers\TestConfiguration_Registers.json" />
+    <None Include=".metadata\TestConfiguration\Documents\TestDocument\PrintViews\TestPrintView.json" />
     <None Include=".metadata\TestConfiguration\Documents\TestDocument\TestDocument.json" />
     <None Include=".metadata\TestConfiguration\Documents\TwoSortingFieldsDocument\TwoSortingFieldsDocument.json" />
     <None Include=".metadata\TestConfiguration\Documents\ValidationDocument\Processes\Default.json" />

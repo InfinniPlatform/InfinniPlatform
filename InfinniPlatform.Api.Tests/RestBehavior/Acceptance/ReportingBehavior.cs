@@ -1,29 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Api.Reporting;
+
 using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Api.RestQuery;
+using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.SearchOptions.Builders;
 using InfinniPlatform.NodeServiceHost;
-using InfinniPlatform.Sdk.Api;
-using InfinniPlatform.Sdk.Dynamic;
+
 using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 {
     [TestFixture]
     [Category(TestCategories.AcceptanceTest)]
-    [Ignore]
     public sealed class ReportingBehavior
     {
+        private const string ConfigurationId = "TestConfiguration";
+        private const string DocumentType = "PrefillDocument";
+
         private IDisposable _server;
 
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-			_server = InfinniPlatformInprocessHost.Start();
-		}
+            _server = InfinniPlatformInprocessHost.Start();
+        }
 
         [TestFixtureTearDown]
         public void FixtureTearDown()
@@ -31,53 +30,37 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             _server.Dispose();
         }
 
-        private void CreateTestConfig()
-        {
-        }
-
         [Test]
         public void ShouldGetPrintViewPdf()
         {
-            IEnumerable<object> filter =
-                new FilterBuilder().AddCriteria(cr => cr.IsNotContains("123").Property("TestProperty")).GetFilter();
+            // Given
+
+            var documentApi = new DocumentApi();
+
+            var document = new { TestProperty = Guid.NewGuid() };
+
+            // When
+
+            documentApi.SetDocument(ConfigurationId, DocumentType, document);
+
+            var filter = new FilterBuilder().AddCriteria(cr => cr.Property("TestProperty").IsEquals(document.TestProperty)).GetFilter();
 
             var queryParam = new
-                {
-                    ConfigId = "Ehr",
-                    DocumentId = "Header",
-                    PrintViewId = "TestPrintView",
-                    PrintViewType = "ListView",
-                    PageNumber = 0,
-                    PageSize = 100,
-                    Query = filter
-                };
+            {
+                ConfigId = ConfigurationId,
+                DocumentId = DocumentType,
+                PrintViewId = "TestPrintView",
+                PrintViewType = "ListView",
+                PageNumber = 0,
+                PageSize = 100,
+                Query = filter
+            };
 
-            RestQueryResponse response = RestQueryApi.QueryPostUrlEncodedData("SystemConfig", "Reporting",
-                                                                              "GetPrintView", queryParam);
-            Assert.IsNotNull(response);
-        }
+            var response = RestQueryApi.QueryPostUrlEncodedData("SystemConfig", "Reporting", "GetPrintView", queryParam);
 
-        [Test]
-        public void ShouldGetReportPdf()
-        {
-            dynamic instance = new DynamicWrapper();
-            instance.Name = "HospitalizationId";
-            instance.Value = "4427715e-1f73-4077-a58b-9be70c502287";
-
-
-            var queryParam = new
-                {
-                    FileFormat = ReportFileFormat.Pdf,
-                    Parameters = new[] {instance},
-                    Configuration = "EmergencyRoom",
-                    Template = "MedicalHistoryReport"
-                };
-
-            RestQueryResponse response = RestQueryApi.QueryPostUrlEncodedData("SystemConfig", "Reporting", "GetReport",
-                                                                              queryParam);
+            // Then
 
             Assert.IsNotNull(response);
-            Console.WriteLine(response.Content);
         }
     }
 }
