@@ -85,23 +85,19 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             // When
 
             signInApi.SignInInternal(userName1, userName1);
-            documentApi.CookieContainer = signInApi.CookieContainer;
             documentApi.SetDocument(ConfigurationId, DocumentType, documentUser1);
             signInApi.SignOut();
 
             signInApi.SignInInternal(userName2, userName2);
-            documentApi.CookieContainer = signInApi.CookieContainer;
             documentApi.SetDocument(ConfigurationId, DocumentType, documentUser2);
             signInApi.SignOut();
 
             signInApi.SignInInternal(userName1, userName1);
-            documentApi.CookieContainer = signInApi.CookieContainer;
             var allowedDocumentsForUser1 = documentApi.GetDocument(ConfigurationId, DocumentType, s => s.AddCriteria(c => c.Property("TestProperty").IsEquals(userName1)), 0, 10);
             var notAllowedDocumentsForUser1 = documentApi.GetDocument(ConfigurationId, DocumentType, s => s.AddCriteria(c => c.Property("TestProperty").IsEquals(userName2)), 0, 10);
             signInApi.SignOut();
 
             signInApi.SignInInternal(userName2, userName2);
-            documentApi.CookieContainer = signInApi.CookieContainer;
             var allowedDocumentsForUser2 = documentApi.GetDocument(ConfigurationId, DocumentType, s => s.AddCriteria(c => c.Property("TestProperty").IsEquals(userName2)), 0, 10);
             var notAllowedDocumentsForUser2 = documentApi.GetDocument(ConfigurationId, DocumentType, s => s.AddCriteria(c => c.Property("TestProperty").IsEquals(userName1)), 0, 10);
             signInApi.SignOut();

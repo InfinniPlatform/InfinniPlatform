@@ -39,7 +39,9 @@ namespace InfinniPlatform.WebApi.WebApi
 
         public ApiControllerFactory BuildApiFactory()
         {
-            _containerBuilder.RegisterModule(new XmlFileReader("Autofac.xml"));
+            var configFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
+            InfinniPlatform.Logging.Logger.Log.Info($"Register Autofac configuration {configFile}");
+            _containerBuilder.RegisterModule(new ConfigurationSettingsReader("autofac", configFile));
 
             return new ApiControllerFactory(() => Container);
         }

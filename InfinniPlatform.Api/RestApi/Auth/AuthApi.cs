@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using InfinniPlatform.Api.RestApi.CommonApi;
 
 namespace InfinniPlatform.Api.RestApi.Auth
@@ -6,6 +7,7 @@ namespace InfinniPlatform.Api.RestApi.Auth
     /// <summary>
     ///     API для работы с Access control list
     /// </summary>
+    [Obsolete("Без проверки прав пользователя, от имени которого выполняется данный запрос, выполнять эти действия нельзя!")]
     public sealed class AuthApi
     {
         /// <summary>

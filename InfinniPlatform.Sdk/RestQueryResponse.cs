@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using System.Text;
 using InfinniPlatform.Sdk.Properties;
-using RestSharp;
 
 namespace InfinniPlatform.Sdk
 {
@@ -83,18 +82,5 @@ namespace InfinniPlatform.Sdk
 
             return builder.ToString();
         }
-    }
-
-    public static class RestQueryExtensions
-    {
-        public static RestQueryResponse ToQueryResponse(this IRestResponse restResponse)
-        {
-            return new RestQueryResponse()
-            {
-                Content = restResponse.Content,
-                HttpStatusCode = restResponse.StatusCode,
-            };
-        }
-
     }
 }

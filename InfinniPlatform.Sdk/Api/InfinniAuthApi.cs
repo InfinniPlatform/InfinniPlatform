@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using InfinniPlatform.Sdk.ApiContracts;
 using InfinniPlatform.Sdk.Properties;
 
 namespace InfinniPlatform.Sdk.Api
 {
-    public enum AclType { User, Role }
+    public enum AclType
+    {
+        User,
+        Role
+    }
+
 
     /// <summary>
-    ///   API для работы с ролями, пользователями и правами
+    /// API для работы с ролями, пользователями и правами
     /// </summary>
     public sealed class InfinniAuthApi : BaseApi, IAuthApi
     {
@@ -17,57 +23,52 @@ namespace InfinniPlatform.Sdk.Api
         }
 
         /// <summary>
-        ///   Добавить нового пользователя системы
+        /// Добавить нового пользователя системы
         /// </summary>
         /// <param name="userName">Пользователь системы</param>
         /// <param name="password">Пароль пользователя</param>
         /// <returns>Результат добавления</returns>
         public dynamic AddUser(string userName, string password)
         {
-            var restQueryExecutor = new RequestExecutor(CookieContainer);
-
-            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlAddUser(), new
-            {
-                UserName = userName,
-                Password = password
-            });
+            var response = RequestExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlAddUser(),
+                                                    new
+                                                    {
+                                                        UserName = userName,
+                                                        Password = password
+                                                    });
 
             return ProcessAsObjectResult(response,
-                string.Format(Resources.UnableToAddUser, response.GetErrorContent()));
+                                         string.Format(Resources.UnableToAddUser, response));
         }
 
         /// <summary>
-        ///  Удалить пользователя
+        /// Удалить пользователя
         /// </summary>
         /// <param name="userName">Логин пользователя</param>
         /// <returns>Результат удаления пользователя</returns>
         public dynamic DeleteUser(string userName)
         {
-            var restQueryExecutor = new RequestExecutor(CookieContainer);
+            var response = RequestExecutor.QueryDelete(RouteBuilder.BuildRestRoutingToSpecifiedUser(userName));
 
-            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingToSpecifiedUser(userName));
-
-            return ProcessAsObjectResult(response, 
-                string.Format(Resources.UnableToDeleteUser, response.GetErrorContent()));
+            return ProcessAsObjectResult(response,
+                                         string.Format(Resources.UnableToDeleteUser, response));
         }
 
         /// <summary>
-        ///   Получить пользователя системы
+        /// Получить пользователя системы
         /// </summary>
         /// <param name="userName">Логин пользователя</param>
         /// <returns>Пользователь системы</returns>
-        public dynamic GetUser(string userName) {
+        public dynamic GetUser(string userName)
+        {
+            var response = RequestExecutor.QueryGet(RouteBuilder.BuildRestRoutingToSpecifiedUser(userName));
 
-            var restQueryExecutor = new RequestExecutor(CookieContainer);
-
-            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingToSpecifiedUser(userName));
-
-            return ProcessAsObjectResult(response, 
-                string.Format(Resources.UnableToGetUser, response.GetErrorContent()));        
+            return ProcessAsObjectResult(response,
+                                         string.Format(Resources.UnableToGetUser, response));
         }
 
         /// <summary>
-        ///   Предоставить доступ пользователю к указанному ресурсу
+        /// Предоставить доступ пользователю к указанному ресурсу
         /// </summary>
         /// <param name="userName">Логин пользователя</param>
         /// <param name="application">Приложение</param>
@@ -77,52 +78,46 @@ namespace InfinniPlatform.Sdk.Api
         /// <returns>Признак успешной установки прав</returns>
         public dynamic GrantAccess(string userName, string application, string documentType = null, string service = null, string instanceId = null)
         {
-            var restQueryExecutor = new RequestExecutor(CookieContainer);
-
             dynamic body = new
-            {
-                UserName = userName,
-                Application = application,
-                DocumentType = documentType,
-                Service = service,
-                InstanceId = instanceId
-            };
+                           {
+                               UserName = userName,
+                               Application = application,
+                               DocumentType = documentType,
+                               Service = service,
+                               InstanceId = instanceId
+                           };
 
-            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlGrantAccess(), body);
+            var response = RequestExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlGrantAccess(), body);
 
             return ProcessAsObjectResult(response,
-                string.Format((string)Resources.UnableToGrantAccessToUser, response.GetErrorContent()));
+                                         string.Format(Resources.UnableToGrantAccessToUser, response));
         }
 
         /// <summary>
-        ///  Запретить доступ пользователю к указанному ресурсу 
+        /// Запретить доступ пользователю к указанному ресурсу
         /// </summary>
         /// <param name="userName">Логин пользователя</param>
         /// <param name="application">Приложение</param>
         /// <param name="documentType">Тип документа</param>
         /// <param name="service">Наименование се</param>
         /// <param name="instanceId"></param>
-        /// <returns></returns>
         public dynamic DenyAccess(string userName, string application, string documentType = null, string service = null,
-            string instanceId = null)
+                                  string instanceId = null)
         {
-            var restQueryExecutor = new RequestExecutor(CookieContainer);
-
             dynamic body = new
-            {
-                UserName = userName,
-                Application = application,
-                DocumentType = documentType,
-                Service = service,
-                InstanceId = instanceId
-            };
+                           {
+                               UserName = userName,
+                               Application = application,
+                               DocumentType = documentType,
+                               Service = service,
+                               InstanceId = instanceId
+                           };
 
-            var response = restQueryExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlDenyAccess(), body);
+            var response = RequestExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlDenyAccess(), body);
 
             return ProcessAsObjectResult(response,
-                string.Format((string)Resources.UnableToGrantAccessToUser, response.GetErrorContent()));
+                                         string.Format(Resources.UnableToGrantAccessToUser, response));
         }
-
 
         /// <summary>
         /// Установить пользователю указанное значение для claim указанного типа
@@ -133,33 +128,29 @@ namespace InfinniPlatform.Sdk.Api
         /// <returns>Результат запроса добавления утверждения</returns>
         public dynamic AddUserClaim(string userName, string claimType, string claimValue)
         {
-            var restQueryExecutor = new RequestExecutor(CookieContainer);
-
             dynamic body = new
-            {
-                ClaimValue = claimValue
-            };
+                           {
+                               ClaimValue = claimValue
+                           };
 
-            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingToSpecifiedUserClaim(userName, claimType), body);
+            var response = RequestExecutor.QueryPut(RouteBuilder.BuildRestRoutingToSpecifiedUserClaim(userName, claimType), body);
 
             return ProcessAsObjectResult(response,
-                string.Format(Resources.UnableToAddUserClaim, response.GetErrorContent()));
+                                         string.Format(Resources.UnableToAddUserClaim, response));
         }
 
         /// <summary>
-        ///Получить значение утверждение относительно пользователя
+        /// Получить значение утверждение относительно пользователя
         /// </summary>
         /// <param name="userName">Логин пользователя</param>
-        /// <param name="claimType">Тип утверждениия относительно пользователя</param>
+        /// <param name="claimType">Тип утверждения относительно пользователя</param>
         /// <returns>Значение утверждения относительно пользователя</returns>
         public dynamic GetUserClaim(string userName, string claimType)
         {
-            var restQueryExecutor = new RequestExecutor(CookieContainer);
-
-            var response = restQueryExecutor.QueryGet(RouteBuilder.BuildRestRoutingToSpecifiedUserClaim(userName, claimType));
+            var response = RequestExecutor.QueryGet(RouteBuilder.BuildRestRoutingToSpecifiedUserClaim(userName, claimType));
 
             return ProcessAsObjectResult(response,
-                string.Format(Resources.UnableToGetUserClaim, response.GetErrorContent()));
+                                         string.Format(Resources.UnableToGetUserClaim, response));
         }
 
         /// <summary>
@@ -170,57 +161,49 @@ namespace InfinniPlatform.Sdk.Api
         /// <returns>Результат запроса удаления утверждения</returns>
         public dynamic DeleteUserClaim(string userName, string claimType)
         {
-            var restQueryExecutor = new RequestExecutor(CookieContainer);
-
-            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingToSpecifiedUserClaim(userName,claimType));
+            var response = RequestExecutor.QueryDelete(RouteBuilder.BuildRestRoutingToSpecifiedUserClaim(userName, claimType));
 
             return ProcessAsObjectResult(response,
-                string.Format(Resources.UnableToRemoveUserClaim, response.GetErrorContent()));
+                                         string.Format(Resources.UnableToRemoveUserClaim, response));
         }
 
         /// <summary>
-        ///   Добавить роль пользователя
+        /// Добавить роль пользователя
         /// </summary>
         /// <param name="roleName">Наименование роли</param>
         /// <returns>Результат добавления роли пользователя</returns>
         public dynamic AddRole(string roleName)
         {
-            var restQueryExecutor = new RequestExecutor(CookieContainer);
+            var response = RequestExecutor.QueryPut(RouteBuilder.BuildRestRoutingToSpecifiedRole(roleName));
 
-            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingToSpecifiedRole(roleName));
-
-            return ProcessAsObjectResult(response, string.Format(Resources.UnableToAddRole,response.GetErrorContent()));
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToAddRole, response));
         }
 
         /// <summary>
-        ///   Удалить роль пользователя
+        /// Удалить роль пользователя
         /// </summary>
         /// <param name="roleName">Наименование роли</param>
         /// <returns>Результат удаления роли пользователя</returns>
         public dynamic DeleteRole(string roleName)
         {
-            var restQueryExecutor = new RequestExecutor(CookieContainer);
-
-            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingToSpecifiedRole(roleName));
+            var response = RequestExecutor.QueryDelete(RouteBuilder.BuildRestRoutingToSpecifiedRole(roleName));
 
             return ProcessAsObjectResult(response,
-                string.Format(Resources.UnableToDeleteRole, response.GetErrorContent()));
+                                         string.Format(Resources.UnableToDeleteRole, response));
         }
 
         /// <summary>
-        ///  Добавить роль пользователю
+        /// Добавить роль пользователю
         /// </summary>
         /// <param name="userName">Логин пользователя</param>
         /// <param name="roleName">Роль</param>
         /// <returns>Результат добавления роли пользователю</returns>
         public dynamic AddUserRole(string userName, string roleName)
         {
-            var restQueryExecutor = new RequestExecutor(CookieContainer);
-
-            var response = restQueryExecutor.QueryPut(RouteBuilder.BuildRestRoutingToSpecifiedUserRole(userName, roleName));
+            var response = RequestExecutor.QueryPut(RouteBuilder.BuildRestRoutingToSpecifiedUserRole(userName, roleName));
 
             return ProcessAsObjectResult(response,
-                string.Format(Resources.UnableToAddUserRole, response.GetErrorContent()));
+                                         string.Format(Resources.UnableToAddUserRole, response));
         }
 
         /// <summary>
@@ -231,16 +214,14 @@ namespace InfinniPlatform.Sdk.Api
         /// <returns>Результат удаления роли пользователя</returns>
         public dynamic DeleteUserRole(string userName, string roleName)
         {
-            var restQueryExecutor = new RequestExecutor(CookieContainer);
-
-            var response = restQueryExecutor.QueryDelete(RouteBuilder.BuildRestRoutingToSpecifiedUserRole(userName, roleName));
+            var response = RequestExecutor.QueryDelete(RouteBuilder.BuildRestRoutingToSpecifiedUserRole(userName, roleName));
 
             return ProcessAsObjectResult(response,
-                string.Format(Resources.UnableToDeleteUserRole, response.GetErrorContent()));
+                                         string.Format(Resources.UnableToDeleteUserRole, response));
         }
 
         /// <summary>
-        ///Получить список объектов ACL указанного типа
+        /// Получить список объектов ACL указанного типа
         /// </summary>
         /// <param name="aclType">Тип объекта ACL</param>
         /// <param name="filter">Фильтр получаемых объектов</param>
@@ -257,7 +238,7 @@ namespace InfinniPlatform.Sdk.Api
         {
             var docApi = new InfinniDocumentApi(Server, Port, Route);
 
-            docApi.CookieContainer = CookieContainer;
+            //            docApi.CookieContainer = CookieContainer;
 
             if (aclType == AclType.User)
             {
@@ -267,7 +248,7 @@ namespace InfinniPlatform.Sdk.Api
             {
                 return docApi.GetDocument("Administration", "Role", filter, pageNumber, pageSize, sorting);
             }
-            throw new ArgumentException(string.Format(Resources.CantGetAclListForSpecifiedType,aclType));
+            throw new ArgumentException(string.Format(Resources.CantGetAclListForSpecifiedType, aclType));
         }
     }
 }

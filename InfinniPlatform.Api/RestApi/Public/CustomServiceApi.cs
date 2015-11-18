@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.RestApi.CommonApi;
+﻿using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Sdk.ApiContracts;
 
 namespace InfinniPlatform.Api.RestApi.Public

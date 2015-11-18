@@ -1,197 +1,177 @@
-﻿using System.Collections;
+﻿using System;
 using System.IO;
 using System.Net;
-using InfinniPlatform.Sdk.Dynamic;
+using System.Net.Http;
+using System.Text;
+
+using InfinniPlatform.Sdk.Properties;
+
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using RestSharp;
-using RestSharp.Extensions;
 
 namespace InfinniPlatform.Sdk
 {
-    public sealed class RequestExecutor 
+    public sealed class RequestExecutor
     {
-        private readonly CookieContainer _cookieContainer;
+        [ThreadStatic]
+        private static RequestExecutor _instance;
 
-        public RequestExecutor(CookieContainer cookieContainer = null)
+        public RequestExecutor()
         {
-            _cookieContainer = cookieContainer;
+            var clientHandler = new HttpClientHandler { CookieContainer = new CookieContainer() };
+            var client = new HttpClient(clientHandler);
+
+            _client = client;
         }
 
+        private readonly HttpClient _client;
 
-        public RestQueryResponse QueryGet(string url, string arguments = null)
+        public static RequestExecutor Instance => _instance ?? (_instance = new RequestExecutor());
+
+        public string QueryGet(string url, string arguments = null)
         {
-            var restClient = new RestClient(url);
+            var urlBuilder = new StringBuilder(url);
 
-            restClient.CookieContainer = _cookieContainer;
-
-            restClient.Timeout = 1000 * 60 * 200;
-
-            IRestRequest request = null;
             if (arguments != null)
             {
-                request = new RestRequest("?{argument}") {RequestFormat = DataFormat.Json}
-                    .AddUrlSegment("argument", arguments);
+                urlBuilder.Append($"?{arguments}");
             }
-            else
+
+            var response = _client.GetAsync(urlBuilder.ToString()).Result;
+            var content = response.Content.ReadAsStringAsync().Result;
+
+            if (!response.IsSuccessStatusCode)
             {
-                request = new RestRequest() { RequestFormat = DataFormat.Json };
+                throw new InvalidOperationException(string.Format(Resources.CannotProcessPostRequest, response.StatusCode, content));
             }
 
-            IRestResponse restResponse = restClient.Get(request);
-
-            return restResponse.ToQueryResponse();
+            return content;
         }
 
-        public RestQueryResponse QueryPost(string url, object body = null)
+        public string QueryPost(string url, object body = null)
         {
-            var restClient = new RestClient(url);
+            var jsonRequestContent = CreateJsonHttpContent(body);
 
+            var response = _client.PostAsync(new Uri(url), jsonRequestContent).Result;
+            var content = response.Content.ReadAsStringAsync().Result;
 
-            restClient.CookieContainer = _cookieContainer;
-
-            // Изменение времени ожидания ответа сделано для того, чтобы можно было загрузить большие объемы данных
-            restClient.Timeout = 1000 * 60 * 300;
-
-            var restRequest = new RestRequest
+            if (!response.IsSuccessStatusCode)
             {
-                RequestFormat = DataFormat.Json
-            };
+                throw new InvalidOperationException(string.Format(Resources.CannotProcessPostRequest, response.StatusCode, content));
+            }
 
-            AddBody(body, restRequest);
-
-            IRestResponse restResponse = restClient.Post(restRequest);
-
-            return restResponse.ToQueryResponse();
+            return content;
         }
 
         /// <summary>
-        ///   Формирование запроса на вставку нового документа
+        /// Формирование запроса на вставку нового документа
         /// </summary>
-        /// <param name="url">Url</param>
+        /// <param name="url">URL</param>
         /// <param name="body">Тело запроса</param>
         /// <returns>Результат выполнения запроса</returns>
-        public RestQueryResponse QueryPut(string url, object body = null)
+        public string QueryPut(string url, object body = null)
         {
-            var restClient = new RestClient(url);
+            var jsonRequestContent = CreateJsonHttpContent(body);
 
+            var response = _client.PutAsync(new Uri(url), jsonRequestContent).Result;
+            var content = response.Content.ReadAsStringAsync().Result;
 
-            restClient.CookieContainer = _cookieContainer;
-            restClient.Timeout = 1000 * 60 * 300;
-
-            var restRequest = new RestRequest
+            if (!response.IsSuccessStatusCode)
             {
-                RequestFormat = DataFormat.Json
-            };
-
-            AddBody(body, restRequest);
-
-            IRestResponse restResponse = restClient.Put(restRequest);
-
-            return restResponse.ToQueryResponse();
-        }
-
-        private static void AddBody(object body, RestRequest restRequest)
-        {
-            if (body != null)
-            {
-                dynamic bodyObject = body;
-                if (!(body is JToken) && !(body is DynamicWrapper))
-                {
-                    if (body is IEnumerable)
-                    {
-                        bodyObject = JArray.FromObject(body);
-                    }
-                    else
-                    {
-                        bodyObject = JObject.FromObject(body);
-                    }
-                }
-                restRequest.AddParameter("application/json", bodyObject, ParameterType.RequestBody);
+                throw new InvalidOperationException(string.Format(Resources.CannotProcessPostRequest, response.StatusCode, content));
             }
+
+            return content;
         }
 
-        public RestQueryResponse QueryDelete(string url, dynamic body = null)
+        public string QueryDelete(string url, dynamic body = null)
         {
-            var restClient = new RestClient(url);
+            var response = _client.DeleteAsync(new Uri(url)).Result;
+            var content = response.Content.ReadAsStringAsync().Result;
 
-            restClient.CookieContainer = _cookieContainer;
-
-            var restRequest = new RestRequest
+            if (!response.IsSuccessStatusCode)
             {
-                RequestFormat = DataFormat.Json
-            };
+                throw new InvalidOperationException(string.Format(Resources.CannotProcessPostRequest, response.StatusCode, content));
+            }
 
-            AddBody(body, restRequest);
-
-            IRestResponse restResponse = restClient.Delete(restRequest);
-
-            return restResponse.ToQueryResponse();
+            return content;
         }
 
-        public RestQueryResponse QueryGetById(string url)
+        public string QueryGetById(string url)
         {
-            var restClient = new RestClient(url);
+            var response = _client.GetAsync(new Uri(url)).Result;
+            var content = response.Content.ReadAsStringAsync().Result;
 
-            restClient.CookieContainer = _cookieContainer;
-            IRestResponse restResponse = restClient.Get(new RestRequest
+            if (!response.IsSuccessStatusCode)
             {
-                RequestFormat = DataFormat.Json
-            });
+                throw new InvalidOperationException(string.Format(Resources.CannotProcessPostRequest, response.StatusCode, content));
+            }
 
-            return restResponse.ToQueryResponse();
+            return content;
         }
 
-        public RestQueryResponse QueryPostFile(string url,string applicationId, string documentType,  string instanceId, string fieldName, string fileName, Stream fileStream, string sessionId = null)
+        public string QueryPostFile(string url, string applicationId, string documentType, string instanceId, string fieldName, string fileName, Stream fileStream, string sessionId = null)
         {
-            var restClient = new RestClient(url);
-
-            restClient.CookieContainer = _cookieContainer;
-            restClient.Timeout = 1000 * 60 * 200;
-
             var linkedData = new
+                             {
+                                 InstanceId = instanceId,
+                                 FieldName = fieldName,
+                                 FileName = fileName,
+                                 SessionId = sessionId,
+                                 ApplicationId = applicationId,
+                                 DocumentType = documentType
+                             };
+
+            var linkedDataJson = JsonConvert.SerializeObject(linkedData);
+
+            var urlBuilder = new StringBuilder(url);
+            urlBuilder.Append($"?linkedData={linkedDataJson}");
+
+            var dataContent = new MultipartFormDataContent { { new StreamContent(fileStream), fileName, fileName } };
+
+            var response = _client.PostAsync(new Uri(urlBuilder.ToString()), dataContent).Result;
+            var content = response.Content.ReadAsStringAsync().Result;
+
+            if (!response.IsSuccessStatusCode)
             {
-                InstanceId = instanceId,
-                FieldName = fieldName,
-                FileName = fileName,
-                SessionId = sessionId,
-                ApplicationId = applicationId,
-                DocumentType = documentType
-            };
+                throw new InvalidOperationException(string.Format(Resources.CannotProcessPostRequest, response.StatusCode, content));
+            }
 
-            IRestResponse restResponse = restClient.Post(new RestRequest("?linkedData={argument}") { RequestFormat = DataFormat.Json }
-                                                             .AddUrlSegment("argument", JsonConvert.SerializeObject(linkedData))
-                                                             .AddFile(fileName, fileStream.ReadAsBytes(), fileName, "multipart/form-data"));
-            return restResponse.ToQueryResponse();
+            return content;
         }
 
-        public RestQueryResponse QueryPostUrlEncodedData(string url, object formData)
+        public string QueryGetUrlEncodedData(string url, object formData)
         {
-            var restClient = new RestClient(url);
+            var formDataJson = SerializeObjectToJson(formData);
 
-            restClient.CookieContainer = _cookieContainer;
-            restClient.Timeout = 1000 * 60 * 200;
+            var urlBuilder = new StringBuilder(url);
+            urlBuilder.Append($"?Form={formDataJson}");
+            var response = _client.GetAsync(new Uri(url)).Result;
+            var content = response.Content.ReadAsStringAsync().Result;
 
-            var request = new RestRequest("", Method.POST);
-            request.AddParameter("Form", JsonConvert.SerializeObject(formData));
-            var response = restClient.Execute(request);
-            return response.ToQueryResponse();
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new InvalidOperationException(string.Format(Resources.CannotProcessPostRequest, response.StatusCode, content));
+            }
 
+            return content;
         }
 
-
-        public RestQueryResponse QueryGetUrlEncodedData(string url, object formData)
+        private static StringContent CreateJsonHttpContent(object body)
         {
-            var restClient = new RestClient(url);
+            var jsonRequestBody = body != null
+                                      ? SerializeObjectToJson(body)
+                                      : string.Empty;
 
-            restClient.CookieContainer = _cookieContainer;
-            restClient.Timeout = 1000 * 60 * 200;
+            var jsonRequestContent = new StringContent(jsonRequestBody, Encoding.UTF8, "application/json");
 
-            var argumentsString = JsonConvert.SerializeObject(formData);
-            IRestResponse restResponse = restClient.Get(new RestRequest("?Form={formData}") { RequestFormat = DataFormat.Json }
-                                                            .AddUrlSegment("formData", argumentsString));
-            return restResponse.ToQueryResponse();
+            return jsonRequestContent;
         }
 
+        private static string SerializeObjectToJson(object target)
+        {
+            return target != null
+                       ? JsonConvert.SerializeObject(target)
+                       : null;
+        }
     }
 }
