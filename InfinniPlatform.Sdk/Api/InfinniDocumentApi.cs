@@ -259,10 +259,7 @@ namespace InfinniPlatform.Sdk.Api
                                                      routeBuilder.BuildRestRoutingUrlDefaultById(applicationId, documentType, instanceId),
                                                      parameters);
 
-            if (response != null)
-            {
-                throw new ArgumentException(string.Format(Resources.UnableToUpdateDocument, response));
-            }
+            ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateDocument, response));
         }
 
         /// <summary>
