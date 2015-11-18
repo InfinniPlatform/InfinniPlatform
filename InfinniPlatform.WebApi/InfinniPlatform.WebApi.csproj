@@ -227,10 +227,6 @@
       <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="Autofac.xml">
-    </Content>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\Files\Build\TransformOnBuild.targets" />
   <ItemGroup>
@@ -239,14 +235,6 @@
       <LastGenOutput>AssemblyInfo.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <AutofacFiles Include="Autofac.xml">
-      <Visible>false</Visible>
-    </AutofacFiles>
-  </ItemGroup>
-  <Target Name="AfterBuild">
-    <Copy SourceFiles="@(AutofacFiles)" DestinationFolder="$(OutDir)" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

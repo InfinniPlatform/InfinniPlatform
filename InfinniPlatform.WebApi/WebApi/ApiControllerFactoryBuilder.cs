@@ -39,7 +39,7 @@ namespace InfinniPlatform.WebApi.WebApi
 
         public ApiControllerFactory BuildApiFactory()
         {
-            _containerBuilder.RegisterModule(new XmlFileReader("Autofac.xml"));
+            _containerBuilder.RegisterModule(new ConfigurationSettingsReader());
 
             return new ApiControllerFactory(() => Container);
         }
