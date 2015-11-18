@@ -16,7 +16,7 @@
 		public const string StressTest = "StressTest";
 
 		/// <summary>
-		/// Тесты на праверку утечек памяти.
+		/// Тесты на проверку утечек памяти.
 		/// </summary>
 		public const string MemoryLeakTest = "MemoryLeakTest";
 
@@ -29,11 +29,6 @@
 		/// Интеграционные тесты.
 		/// </summary>
 		public const string IntegrationTest = "IntegrationTest";
-
-		/// <summary>
-		/// Тесты бизнес-логики.  
-		/// </summary>
-		public const string BusinessLogicTest = "BusinessLogicTest";
 
 		/// <summary>
 		/// Приемочные тесты.
