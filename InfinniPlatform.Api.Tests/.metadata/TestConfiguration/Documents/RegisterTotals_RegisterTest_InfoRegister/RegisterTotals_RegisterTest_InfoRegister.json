@@ -1,0 +1,35 @@
+﻿{
+  "Id": "b33d0c00-6f31-420b-a80c-8ce4ed2402b1",
+  "Services": [],
+  "Processes": [],
+  "Scenarios": [],
+  "Generators": [],
+  "Views": [],
+  "PrintViews": [],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "Name": "RegisterTotals_RegisterTest_InfoRegister",
+  "Caption": "Служебный документ регистра, хранящий промежуточные итоги",
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "DocumentDate": {
+        "Caption": "Дата регистрируемого документа",
+        "Type": "DateTime"
+      },
+      "Room": {
+        "Caption": "Номер палаты",
+        "Type": "String"
+      },
+      "Bed": {
+        "Caption": "Номер койки",
+        "Type": "String"
+      },
+      "Value": {
+        "Caption": "Изменение количества коек",
+        "Type": "Integer"
+      }
+    }
+  }
+}

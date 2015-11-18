@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.Api.Registers;
+﻿using System;
+
+using InfinniPlatform.Api.Tests.RestBehavior.Acceptance;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment.Register;
@@ -11,39 +13,38 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
         {
             if (target.Item.Info == null)
             {
-                // Койка освободилась - income
-
-                var entry =
-                    target.Context.GetComponent<IRegistryComponent>()
-                          .CreateAccumulationRegisterEntry(target.Item.Configuration, "availablebeds",
-                                                           target.Item.Metadata,
-                                                           target.Item, target.Item.Date);
-
-                entry.EntryType = RegisterEntryType.Income;
-                entry.Room = target.Item.Room;
-                entry.Bed = target.Item.Bed;
-                entry.Value = 1; // Изменение количества на единицу
-
-                target.Context.GetComponent<IRegistryComponent>()
-                      .PostRegisterEntries(target.Item.Configuration, "availablebeds", new[] {entry});
+                CreateRegisterEntry(target, RegistersBehavior.AvailableBedsRegister,
+                    r => r.CreateAccumulationRegisterEntry(
+                        target.Item.Configuration,
+                        RegistersBehavior.AvailableBedsRegister,
+                        target.Item.Metadata,
+                        target.Item,
+                        target.Item.Date));
             }
             else
             {
-                // Добавляем данные в регистр сведений
-
-                var infoEntry =
-                    target.Context.GetComponent<IRegistryComponent>()
-                          .CreateInfoRegisterEntry(target.Item.Configuration, "inforegister",
-                                                   target.Item.Metadata, target.Item, target.Item.Date);
-
-                infoEntry.EntryType = RegisterEntryType.Income;
-                infoEntry.Room = target.Item.Room;
-                infoEntry.Bed = target.Item.Bed;
-                infoEntry.Value = 1; // Изменение количества на единицу
-
-                target.Context.GetComponent<IRegistryComponent>()
-                      .PostRegisterEntries(target.Item.Configuration, "inforegister", new[] {infoEntry});
+                CreateRegisterEntry(target, RegistersBehavior.InfoRegister,
+                    r => r.CreateInfoRegisterEntry(
+                        target.Item.Configuration,
+                        RegistersBehavior.InfoRegister,
+                        target.Item.Metadata,
+                        target.Item,
+                        target.Item.Date));
             }
+        }
+
+        private static void CreateRegisterEntry(IApplyContext target, string registerName, Func<IRegistryComponent, dynamic> createEntry)
+        {
+            var registryComponent = target.Context.GetComponent<IRegistryComponent>();
+
+            var registerEntry = createEntry(registryComponent);
+            registerEntry.EntryType = RegisterEntryType.Income;
+            registerEntry.Info = target.Item.Info;
+            registerEntry.Room = target.Item.Room;
+            registerEntry.Bed = target.Item.Bed;
+            registerEntry.Value = 1; // Изменение количества на единицу
+
+            registryComponent.PostRegisterEntries(target.Item.Configuration, registerName, new[] { registerEntry });
         }
     }
 }

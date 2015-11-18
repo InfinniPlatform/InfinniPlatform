@@ -193,11 +193,27 @@
     <None Include=".metadata\TestConfiguration\Documents\PrefillDocument\PrefillDocument.json" />
     <None Include=".metadata\TestConfiguration\Documents\PrefillDocument\Processes\Default.json" />
     <None Include=".metadata\TestConfiguration\Documents\PrefillDocument\Scenarios\TestComplexFillDocumentAction.json" />
+    <None Include=".metadata\TestConfiguration\Documents\RegisterTest_AvailableBedsRegister\RegisterTest_AvailableBedsRegister.json" />
+    <None Include=".metadata\TestConfiguration\Documents\RegisterTest_BedsRegistrationDocument\Processes\Default.json" />
+    <None Include=".metadata\TestConfiguration\Documents\RegisterTest_BedsRegistrationDocument\RegisterTest_BedsRegistrationDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\RegisterTest_BedsRegistrationDocument\Scenarios\AddNewBedToRoomMoveAction.json" />
+    <None Include=".metadata\TestConfiguration\Documents\RegisterTest_BedsRegistrationDocument\Scenarios\DeleteRegisterEntriesAction.json" />
+    <None Include=".metadata\TestConfiguration\Documents\RegisterTest_InfoRegister\RegisterTest_InfoRegister.json" />
+    <None Include=".metadata\TestConfiguration\Documents\RegisterTest_PatientMovementDocument\Processes\Default.json" />
+    <None Include=".metadata\TestConfiguration\Documents\RegisterTest_PatientMovementDocument\RegisterTest_PatientMovementDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\RegisterTest_PatientMovementDocument\Scenarios\HospitalRegisterMoveAction.json" />
+    <None Include=".metadata\TestConfiguration\Documents\RegisterTotals_RegisterTest_AvailableBedsRegister\RegisterTotals_RegisterTest_AvailableBedsRegister.json" />
+    <None Include=".metadata\TestConfiguration\Documents\RegisterTotals_RegisterTest_InfoRegister\RegisterTotals_RegisterTest_InfoRegister.json" />
+    <None Include=".metadata\TestConfiguration\Documents\Register_RegisterTest_AvailableBedsRegister\Register_RegisterTest_AvailableBedsRegister.json" />
+    <None Include=".metadata\TestConfiguration\Documents\Register_RegisterTest_InfoRegister\Register_RegisterTest_InfoRegister.json" />
+    <None Include=".metadata\TestConfiguration\Documents\TestConfiguration_Registers\TestConfiguration_Registers.json" />
     <None Include=".metadata\TestConfiguration\Documents\TestDocument\TestDocument.json" />
     <None Include=".metadata\TestConfiguration\Documents\TwoSortingFieldsDocument\TwoSortingFieldsDocument.json" />
     <None Include=".metadata\TestConfiguration\Documents\ValidationDocument\Processes\Default.json" />
     <None Include=".metadata\TestConfiguration\Documents\ValidationDocument\Scenarios\TestComplexValidator.json" />
     <None Include=".metadata\TestConfiguration\Documents\ValidationDocument\ValidationDocument.json" />
+    <None Include=".metadata\TestConfiguration\Registers\RegisterTest_InfoRegister.json" />
+    <None Include=".metadata\TestConfiguration\Registers\RegisterTest_AvailableBedsRegister.json" />
     <None Include="packages.config" />
     <None Include="TestData\UploadBinaryContent.zip" />
   </ItemGroup>

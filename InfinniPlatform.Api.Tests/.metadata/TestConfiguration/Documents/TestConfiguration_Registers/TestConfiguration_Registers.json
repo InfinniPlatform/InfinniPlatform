@@ -1,0 +1,13 @@
+﻿{
+  "Id": "5b607009-8d9f-4067-a999-e0e0e0709289",
+  "Services": [],
+  "Processes": [],
+  "Scenarios": [],
+  "Generators": [],
+  "Views": [],
+  "PrintViews": [],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "Name": "TestConfiguration_Registers",
+  "Caption": "Служебный документ, хранящий общие данные по всем регистрам конфигурации"
+}

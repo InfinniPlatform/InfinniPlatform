@@ -1,0 +1,37 @@
+{
+  "Id": "11bde853-3ad4-4ee9-8b26-0f250fd91557",
+  "Name": "RegisterTest_AvailableBedsRegister",
+  "Type": "Balance",
+  "Period": "Month",
+  "Properties": [
+    {
+      "Property": "Registrar",
+      "Type": "Info"
+    },
+    {
+      "Property": "RegistrarType",
+      "Type": "Info"
+    },
+    {
+      "Property": "DocumentDate",
+      "Type": "Info"
+    },
+    {
+      "Property": "EntryType",
+      "Type": "Info"
+    },
+    {
+      "Property": "Room",
+      "Type": "Dimension"
+    },
+    {
+      "Property": "Bed",
+      "Type": "Dimension"
+    },
+    {
+      "Property": "Value",
+      "Type": "Value"
+    }
+  ],
+  "DocumentId": "Register_RegisterTest_AvailableBedsRegister"
+}

@@ -1,0 +1,12 @@
+﻿{
+  "Id": "435ec209-95c6-4083-a425-ea2e87518279",
+  "Services": [],
+  "Processes": [],
+  "Scenarios": [],
+  "Generators": [],
+  "Views": [],
+  "PrintViews": [],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "Name": "RegisterTest_AvailableBedsRegister"
+}

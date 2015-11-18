@@ -1,0 +1,47 @@
+﻿{
+  "Id": "e151164e-d9c9-4cf5-a589-1e53425402f8",
+  "Services": [],
+  "Processes": [],
+  "Scenarios": [],
+  "Generators": [],
+  "Views": [],
+  "PrintViews": [],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "Name": "Register_RegisterTest_AvailableBedsRegister",
+  "Caption": "Служебный документ регистра",
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "Registrar": {
+        "Caption": "Регистратор",
+        "Type": "String"
+      },
+      "RegistrarType": {
+        "Caption": "Тип регистратора",
+        "Type": "String"
+      },
+      "DocumentDate": {
+        "Caption": "Дата регистрируемого документа",
+        "Type": "DateTime"
+      },
+      "EntryType": {
+        "Caption": "Тип записи регистра",
+        "Type": "String"
+      },
+      "Room": {
+        "Caption": "Номер палаты",
+        "Type": "String"
+      },
+      "Bed": {
+        "Caption": "Номер койки",
+        "Type": "String"
+      },
+      "Value": {
+        "Caption": "Изменение количества коек",
+        "Type": "Integer"
+      }
+    }
+  }
+}

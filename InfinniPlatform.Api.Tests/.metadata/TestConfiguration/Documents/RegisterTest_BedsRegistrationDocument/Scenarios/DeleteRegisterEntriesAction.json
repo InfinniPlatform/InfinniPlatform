@@ -1,0 +1,7 @@
+{
+  "Id": "DeleteRegisterEntriesAction",
+  "Name": "DeleteRegisterEntriesAction",
+  "ScenarioId": "DeleteRegisterEntriesAction",
+  "ContextType": 2,
+  "ScriptUnitType": 1
+}

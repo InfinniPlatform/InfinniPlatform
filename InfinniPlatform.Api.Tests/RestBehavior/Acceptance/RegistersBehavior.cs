@@ -1,1406 +1,289 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using InfinniPlatform.Api.Context;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
-using InfinniPlatform.Api.Packages;
+
 using InfinniPlatform.Api.Registers;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.NodeServiceHost;
-using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Hosting;
 using InfinniPlatform.Sdk.Environment.Register;
+
 using NUnit.Framework;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 {
     /// <summary>
-    ///     В тесте воспроизводится сценарий накопления информации по свободным
-    ///     койкам стационара с последующей агрегацией по различным критериям
+    /// В тесте воспроизводится сценарий накопления информации по свободным койкам стационара с последующей агрегацией по различным критериям.
     /// </summary>
     [TestFixture]
     [Category(TestCategories.AcceptanceTest)]
-	[Ignore("Необходимо создать конфигурацию метаданных на диске, т.к. теперь метаданные загружаются только с диска")]
-	public sealed class RegistersBehavior
+    public sealed class RegistersBehavior
     {
-        private static readonly Guid TestGuid = new Guid("194E44BD-3E55-4945-AEEF-8AB9BE51DC61");
+        public const string ConfigurationId = "TestConfiguration";
 
-        private const string ConfigurationId = "hospitalregisterconfiguration";
-        private const string PatientMovementDocumentId = "patientmovement";
-        private const string BedsRegistrationDocumentId = "bedsregistration";
-        private const string AvailableBedsRegisterId = "availablebeds";
-        private const string InfoRegisterId = "inforegister";
+        public const string PatientMovementDocument = "RegisterTest_PatientMovementDocument";
+        public const string BedsRegistrationDocument = "RegisterTest_BedsRegistrationDocument";
 
-        private readonly Stopwatch _sw = new Stopwatch();
+        public const string InfoRegister = "RegisterTest_InfoRegister";
+        public const string AvailableBedsRegister = "RegisterTest_AvailableBedsRegister";
+        public const string ConfigurationRegistersCommonInfo = ConfigurationId + RegisterConstants.RegistersCommonInfo;
 
         private IDisposable _server;
 
-        //[TestFixtureSetUp]
+        [TestFixtureSetUp]
         public void FixtureSetup()
         {
-			_server = InfinniPlatformInprocessHost.Start();
+            _server = InfinniPlatformInprocessHost.Start();
 
-            _sw.Restart();
-
-
-            CreateTestConfig();
-
-            _sw.Stop();
-            Console.WriteLine("Configuration creation time: " + _sw.ElapsedMilliseconds + " ms");
-
-            _sw.Restart();
-
-            AddTestDocuments();
-
-            _sw.Stop();
-            Console.WriteLine("Adding 15 documents: " + _sw.ElapsedMilliseconds + " ms");
+            InitTestData();
         }
 
-        //[TestFixtureTearDown]
+        [TestFixtureTearDown]
         public void FixtureTearDown()
         {
             _server.Dispose();
         }
 
-        private void CreateTestConfig()
+        private static void InitTestData()
         {
-            //пересоздаем таблицы данных
-            //TODO: Необходимо реализовать механизм очистки существующих данных (архивирование?)
-            new IndexApi().RebuildIndex(ConfigurationId, BedsRegistrationDocumentId);
-            new IndexApi().RebuildIndex(ConfigurationId, PatientMovementDocumentId);
-            new IndexApi().RebuildIndex(ConfigurationId, AvailableBedsRegisterId);
-            new IndexApi().RebuildIndex(ConfigurationId, InfoRegisterId);
-            new IndexApi().RebuildIndex(ConfigurationId, RegisterConstants.RegisterNamePrefix + AvailableBedsRegisterId);
-            new IndexApi().RebuildIndex(ConfigurationId, RegisterConstants.RegisterNamePrefix + InfoRegisterId);
-            new IndexApi().RebuildIndex(ConfigurationId,
-                                        RegisterConstants.RegisterTotalNamePrefix + AvailableBedsRegisterId);
-            new IndexApi().RebuildIndex(ConfigurationId, RegisterConstants.RegisterTotalNamePrefix + InfoRegisterId);
-            new IndexApi().RebuildIndex(ConfigurationId, ConfigurationId + RegisterConstants.RegistersCommonInfo);
+            // Тестовая конфигурация содержит документы двух типов: 
+            // * BedsRegistrationDocument (Реестр коек)
+            // * PatientMovementDocument (Движения пациентов по палатам)
+            //
+            // При сохранении документов этих типов, будут добавляться записи в регистры, накапливающие изменения состояния коек в палатах:
+            // * InfoRegister
+            // * AvailableBedsRegister
 
+            var documentApi = new DocumentApi();
 
-            MetadataManagerConfiguration managerConfiguration =
-                ManagerFactoryConfiguration.BuildConfigurationManager();
+            // Регистрация документов регистров
 
-            dynamic config = managerConfiguration.CreateItem(ConfigurationId);
-            managerConfiguration.DeleteItem(config);
-            managerConfiguration.MergeItem(config);
+            documentApi.SetDocument(ConfigurationId, ConfigurationRegistersCommonInfo, new { Id = InfoRegister });
+            documentApi.SetDocument(ConfigurationId, ConfigurationRegistersCommonInfo, new { Id = AvailableBedsRegister });
 
-            MetadataManagerDocument managerDocument =
-                new ManagerFactoryConfiguration(ConfigurationId).BuildDocumentManager();
+            // Регистрация коек
 
-            // Документ BedsRegistrationDocumentId позволяет добавить новую койку в определенную палату
-            /* Поля документа
-             * 
-             * Room      - номер палаты
-             * Bed       - номер койки
-             */
+            AddBed(documentApi, new DateTime(2014, 01, 01), "Палата 33", "Койка 1");
+            AddBed(documentApi, new DateTime(2014, 01, 01), "Палата 33", "Койка 2");
+            AddBed(documentApi, new DateTime(2014, 01, 01), "Палата 33", "Койка 3");
 
-            dynamic documentMetadata = managerDocument.CreateItem(BedsRegistrationDocumentId);
+            AddBed(documentApi, new DateTime(2014, 01, 01), "Палата 54", "Койка 1");
+            AddBed(documentApi, new DateTime(2014, 01, 01), "Палата 54", "Койка 2");
+            AddBed(documentApi, new DateTime(2014, 01, 01), "Палата 54", "Койка 3");
 
-            dynamic schemaProperties = new DynamicWrapper();
+            // Поступление новых пациентов
 
-            dynamic roomPropertyModel = new DynamicWrapper();
-            roomPropertyModel.Type = DataType.String.ToString();
-            roomPropertyModel.Caption = "Палата";
-            schemaProperties.Room = roomPropertyModel;
-
-            dynamic bedPropertyModel = new DynamicWrapper();
-            bedPropertyModel.Type = DataType.String.ToString();
-            bedPropertyModel.Caption = "Койка";
-            schemaProperties.Bed = bedPropertyModel;
-
-            dynamic datetimePropertyModel = new DynamicWrapper();
-            datetimePropertyModel.Type = DataType.DateTime.ToString();
-            datetimePropertyModel.Caption = "Дата";
-            schemaProperties.Date = datetimePropertyModel;
-
-            dynamic infoPropertyModel = new DynamicWrapper();
-            infoPropertyModel.Type = DataType.Bool.ToString();
-            infoPropertyModel.Caption = "Инфо";
-            schemaProperties.Info = infoPropertyModel;
-
-            documentMetadata.Schema = new
-                {
-                    Type = "Object",
-                    Caption = "Beds register",
-                    Properties = schemaProperties
-                }.ToDynamic();
-
-            managerDocument.MergeItem(documentMetadata);
-
-            // добавляем бизнес-процесс по умолчанию
-            MetadataManagerElement processManager =
-                new ManagerFactoryDocument(ConfigurationId, BedsRegistrationDocumentId).BuildProcessManager();
-            dynamic defaultProcess = processManager.CreateItem("Default");
-
-            dynamic instance = new DynamicWrapper();
-            instance.Name = "Default transition";
-            defaultProcess.Type = WorkflowTypes.WithoutState;
-            defaultProcess.Transitions = new List<dynamic>();
-            defaultProcess.Transitions.Add(instance);
-
-            instance.SuccessPoint = new DynamicWrapper();
-            instance.SuccessPoint.TypeName = "Action";
-            instance.SuccessPoint.ScenarioId = "AddNewBedToRoomMoveAction";
-            instance.SuccessPoint.DocumentDateProperty = "Date";
-
-            instance.DeletePoint = new DynamicWrapper();
-            instance.DeletePoint.TypeName = "Action";
-            instance.DeletePoint.ScenarioId = "DeleteRegisterEntriesAction";
-
-            processManager.MergeItem(defaultProcess);
-
-            // указываем ссылку на тестовый сценарий комплексного предзаполнения
-            MetadataManagerElement scenarioManager =
-                new ManagerFactoryDocument(ConfigurationId, BedsRegistrationDocumentId).BuildScenarioManager();
-
-            const string addScenarioRegisterId = "AddNewBedToRoomMoveAction";
-            dynamic scenarioRegisterItem = scenarioManager.CreateItem(addScenarioRegisterId);
-            scenarioRegisterItem.ScenarioId = addScenarioRegisterId;
-            scenarioRegisterItem.Id = addScenarioRegisterId;
-            scenarioRegisterItem.Name = addScenarioRegisterId;
-            scenarioRegisterItem.ScriptUnitType = ScriptUnitType.Action;
-            scenarioRegisterItem.ContextType = ContextTypeKind.ApplyMove;
-            scenarioManager.MergeItem(scenarioRegisterItem);
-
-            const string deleteRegisterEntriesId = "DeleteRegisterEntriesAction";
-            dynamic scenarioDeleteRegisterItem = scenarioManager.CreateItem(deleteRegisterEntriesId);
-            scenarioDeleteRegisterItem.ScenarioId = deleteRegisterEntriesId;
-            scenarioDeleteRegisterItem.Id = deleteRegisterEntriesId;
-            scenarioDeleteRegisterItem.Name = deleteRegisterEntriesId;
-            scenarioDeleteRegisterItem.ScriptUnitType = ScriptUnitType.Action;
-            scenarioDeleteRegisterItem.ContextType = ContextTypeKind.ApplyMove;
-            scenarioManager.MergeItem(scenarioDeleteRegisterItem);
-
-            // Документ PatientMovementDocumentId c движением пациентов описывает перевод пациента с одной койки на другую.
-
-            /* Поля документа
-             * 
-             * PatientName  - имя пациента
-             * OldRoom      - номер палаты, в которой пациент находился ранее
-             * OldBed       - номер койки, на которой пациент находился ранее
-             * NewRoom      - номер палаты, в которую переведен пациент
-             * NewBed       - номер койки, на которую переведен пациент
-             * Date         - дата перевода пациента
-             */
-
-            documentMetadata = managerDocument.CreateItem(PatientMovementDocumentId);
-
-            schemaProperties = new DynamicWrapper();
-
-            dynamic patientNamePropertyModel = new DynamicWrapper();
-            patientNamePropertyModel.Type = DataType.String.ToString();
-            patientNamePropertyModel.Caption = "Имя пациента";
-            schemaProperties.PatientName = patientNamePropertyModel;
-
-            dynamic oldRoomPropertyModel = new DynamicWrapper();
-            oldRoomPropertyModel.Type = DataType.String.ToString();
-            oldRoomPropertyModel.Caption = "Прежняя палата";
-            schemaProperties.OldRoom = oldRoomPropertyModel;
-
-            dynamic oldBedPropertyModel = new DynamicWrapper();
-            oldBedPropertyModel.Type = DataType.String.ToString();
-            oldBedPropertyModel.Caption = "Прежняя койка";
-            schemaProperties.OldBed = oldBedPropertyModel;
-
-            dynamic newRoomPropertyModel = new DynamicWrapper();
-            newRoomPropertyModel.Type = DataType.String.ToString();
-            newRoomPropertyModel.Caption = "Новая палата";
-            schemaProperties.NewRoom = newRoomPropertyModel;
-
-            dynamic newBedPropertyModel = new DynamicWrapper();
-            newBedPropertyModel.Type = DataType.String.ToString();
-            newBedPropertyModel.Caption = "Новая койка";
-            schemaProperties.NewBed = newBedPropertyModel;
-
-            dynamic datePropertyModel = new DynamicWrapper();
-            datePropertyModel.Type = DataType.DateTime.ToString();
-            datePropertyModel.Caption = "Дата перевода";
-            schemaProperties.Date = datePropertyModel;
-
-            documentMetadata.Schema = new
-                {
-                    Type = "Object",
-                    Caption = "Patient movement document",
-                    Description = "Patient movement document schema",
-                    Properties = schemaProperties
-                }.ToDynamic();
-
-            managerDocument.MergeItem(documentMetadata);
-
-            // добавляем бизнес-процесс по умолчанию
-            processManager =
-                new ManagerFactoryDocument(ConfigurationId, PatientMovementDocumentId).BuildProcessManager();
-            defaultProcess = processManager.CreateItem("Default");
-
-            instance = new DynamicWrapper();
-            instance.Name = "Default transition";
-            defaultProcess.Type = WorkflowTypes.WithoutState;
-            defaultProcess.Transitions = new List<dynamic>();
-            defaultProcess.Transitions.Add(instance);
-
-            instance.SuccessPoint = new DynamicWrapper();
-            instance.SuccessPoint.TypeName = "Action";
-            instance.SuccessPoint.ScenarioId = "HospitalRegisterMoveAction";
-            instance.SuccessPoint.DocumentDateProperty = "Date";
-
-            instance.DeletePoint = new DynamicWrapper();
-            instance.DeletePoint.TypeName = "Action";
-            instance.DeletePoint.ScenarioId = "DeleteRegisterEntriesAction";
-
-            processManager.MergeItem(defaultProcess);
-
-            // указываем ссылку на тестовый сценарий комплексного предзаполнения
-            scenarioManager =
-                new ManagerFactoryDocument(ConfigurationId, PatientMovementDocumentId).BuildScenarioManager();
-
-            const string scenarioRegisterId = "HospitalRegisterMoveAction";
-            scenarioRegisterItem = scenarioManager.CreateItem(scenarioRegisterId);
-            scenarioRegisterItem.ScenarioId = scenarioRegisterId;
-            scenarioRegisterItem.Id = scenarioRegisterId;
-            scenarioRegisterItem.Name = scenarioRegisterId;
-            scenarioRegisterItem.ScriptUnitType = ScriptUnitType.Action;
-            scenarioRegisterItem.ContextType = ContextTypeKind.ApplyMove;
-            scenarioManager.MergeItem(scenarioRegisterItem);
-
-            // добавляем ссылку на сборку, в которой находится прикладной модуль
-
-            MetadataManagerElement assemblyManager =
-                new ManagerFactoryConfiguration(ConfigurationId).BuildAssemblyManager();
-            dynamic assemblyItem = assemblyManager.CreateItem("InfinniPlatform.Api.Tests");
-            assemblyManager.MergeItem(assemblyItem);
-
-            // Создаем новый регистр, который будет накапливать информацию о занятости коек
-
-            MetadataManagerElement managerRegister =
-                new ManagerFactoryConfiguration(ConfigurationId).BuildRegisterManager();
-
-            dynamic registerMetadata = managerRegister.CreateItem(AvailableBedsRegisterId);
-
-            registerMetadata.Id = Guid.NewGuid().ToString();
-
-            registerMetadata.Properties = new List<dynamic>();
-
-            registerMetadata.Properties.Add(
-                new {Property = RegisterConstants.RegistrarProperty, Type = RegisterPropertyType.Info});
-            registerMetadata.Properties.Add(
-                new {Property = RegisterConstants.RegistrarTypeProperty, Type = RegisterPropertyType.Info});
-            registerMetadata.Properties.Add(
-                new {Property = RegisterConstants.DocumentDateProperty, Type = RegisterPropertyType.Info});
-            registerMetadata.Properties.Add(
-                new {Property = RegisterConstants.EntryTypeProperty, Type = RegisterPropertyType.Info});
-            registerMetadata.Properties.Add(new {Property = "Room", Type = RegisterPropertyType.Dimension});
-            registerMetadata.Properties.Add(new {Property = "Bed", Type = RegisterPropertyType.Dimension});
-            registerMetadata.Properties.Add(new {Property = "Value", Type = RegisterPropertyType.Value});
-            registerMetadata.Period = RegisterPeriod.Month;
-
-            registerMetadata.DocumentId = CreateRegisterDocuments(ConfigurationId, AvailableBedsRegisterId);
-
-            managerRegister.MergeItem(registerMetadata);
-
-            // Создаем регистр сведений
-            dynamic registerInfoMetadata = managerRegister.CreateItem(InfoRegisterId);
-
-            registerInfoMetadata.Id = Guid.NewGuid().ToString();
-            registerInfoMetadata.Period = RegisterPeriod.Month;
-
-            registerInfoMetadata.Properties = new List<dynamic>();
-
-            registerInfoMetadata.Properties.Add(
-                new {Property = RegisterConstants.RegistrarProperty, Type = RegisterPropertyType.Info});
-            registerInfoMetadata.Properties.Add(
-                new {Property = RegisterConstants.RegistrarTypeProperty, Type = RegisterPropertyType.Info});
-            registerInfoMetadata.Properties.Add(
-                new {Property = RegisterConstants.DocumentDateProperty, Type = RegisterPropertyType.Info});
-            registerInfoMetadata.Properties.Add(
-                new {Property = RegisterConstants.EntryTypeProperty, Type = RegisterPropertyType.Info});
-            registerInfoMetadata.Properties.Add(new {Property = "Room", Type = RegisterPropertyType.Dimension});
-            registerInfoMetadata.Properties.Add(new {Property = "Bed", Type = RegisterPropertyType.Dimension});
-            registerInfoMetadata.Properties.Add(new {Property = "Value", Type = RegisterPropertyType.Value});
-
-            registerInfoMetadata.DocumentId = CreateRegisterDocuments(ConfigurationId, InfoRegisterId);
-
-            managerRegister.MergeItem(registerInfoMetadata);
-
-            dynamic package = new PackageBuilder().BuildPackage(ConfigurationId, "1.0.0.0", GetType().Assembly.Location);
-
-            new UpdateApi().InstallPackages(new[] { package });
-
-            new UpdateApi().ForceReload(ConfigurationId);
-
-            new UpdateApi().UpdateStore(ConfigurationId);
-
-            var registerInfoDocument = new
-                {
-                    Id = InfoRegisterId
-                };
-            new DocumentApi().SetDocument(ConfigurationId, ConfigurationId + RegisterConstants.RegistersCommonInfo,
-                                              registerInfoDocument);
-
-            registerInfoDocument = new
-                {
-                    Id = AvailableBedsRegisterId
-                };
-            new DocumentApi().SetDocument(ConfigurationId, ConfigurationId + RegisterConstants.RegistersCommonInfo,
-                                              registerInfoDocument);
-        }
-
-        private static string CreateRegisterDocuments(string configId, string registerName, bool changeMapping = false)
-        {
-            MetadataManagerDocument managerDocument =
-                new ManagerFactoryConfiguration(configId).BuildDocumentManager();
-
-            dynamic documentMetadata = managerDocument.CreateItem(RegisterConstants.RegisterNamePrefix + registerName);
-            documentMetadata.Id = Guid.NewGuid().ToString();
-            documentMetadata.SearchAbility = 0; // SearchAbilityType.KeywordBasedSearch;
-            documentMetadata.Description = string.Format("Storage for register {0} data", registerName);
-
-            dynamic schemaProperties = new DynamicWrapper();
-
-            // Общие свойства для всех регистров
-
-            dynamic registrarPropertyModel = new DynamicWrapper();
-            registrarPropertyModel.Type = DataType.String.ToString();
-            registrarPropertyModel.Caption = "Registrar";
-            registrarPropertyModel.Description = "Регистратор";
-            schemaProperties[RegisterConstants.RegistrarProperty] = registrarPropertyModel;
-
-            dynamic registrarTypePropertyModel = new DynamicWrapper();
-            registrarTypePropertyModel.Type = DataType.String.ToString();
-            registrarTypePropertyModel.Caption = "Registrar type";
-            registrarTypePropertyModel.Description = "Тип регистратора";
-            schemaProperties[RegisterConstants.RegistrarTypeProperty] = registrarTypePropertyModel;
-
-            dynamic documentDatePropertyModel = new DynamicWrapper();
-            documentDatePropertyModel.Type = DataType.DateTime.ToString();
-            documentDatePropertyModel.Caption = "Document date";
-            documentDatePropertyModel.Description = "Дата регистрируемого документа";
-            schemaProperties[RegisterConstants.DocumentDateProperty] = documentDatePropertyModel;
-
-            dynamic entryTypePropertyModel = new DynamicWrapper();
-            entryTypePropertyModel.Type = DataType.String.ToString();
-            entryTypePropertyModel.Caption = "EntryType";
-            entryTypePropertyModel.Description = "Тип записи регистра";
-            schemaProperties[RegisterConstants.EntryTypeProperty] = entryTypePropertyModel;
-
-            // Специфичные свойства регистра
-
-            dynamic roomPropertyModel = new DynamicWrapper();
-            roomPropertyModel.Type = DataType.String.ToString();
-            roomPropertyModel.Caption = "Room";
-            roomPropertyModel.Description = "Номер палаты";
-            schemaProperties.Room = roomPropertyModel;
-
-            dynamic bedPropertyModel = new DynamicWrapper();
-            bedPropertyModel.Type = changeMapping ? DataType.Integer.ToString() : DataType.String.ToString();
-            bedPropertyModel.Caption = "Bed";
-            bedPropertyModel.Description = "Номер койки";
-            schemaProperties.Bed = bedPropertyModel;
-
-            dynamic changesPropertyModel = new DynamicWrapper();
-            changesPropertyModel.Type = DataType.Integer.ToString();
-            changesPropertyModel.Caption = "Value";
-            changesPropertyModel.Description = "Изменение количества коек";
-            schemaProperties.Value = changesPropertyModel;
-
-            documentMetadata.Schema = new
-                {
-                    Type = "Object",
-                    Caption = "Register document",
-                    Description = "Register document schema",
-                    Properties = schemaProperties
-                }.ToDynamic();
-
-            managerDocument.MergeItem(documentMetadata);
-
-            // Документ для хранения промежуточных итогов
-
-            dynamic documentTotalMetadata =
-                managerDocument.CreateItem(RegisterConstants.RegisterTotalNamePrefix + registerName);
-            documentTotalMetadata.Id = Guid.NewGuid().ToString();
-            documentTotalMetadata.SearchAbility = 0; // SearchAbilityType.KeywordBasedSearch;
-            documentTotalMetadata.Description = string.Format("Storage for register {0} totals", registerName);
-
-            dynamic schemaTotalProperties = new DynamicWrapper();
-
-            dynamic documentCalculationDatePropertyModel = new DynamicWrapper();
-            documentCalculationDatePropertyModel.Type = DataType.DateTime.ToString();
-            documentCalculationDatePropertyModel.Caption = "Date of total calculation";
-            documentCalculationDatePropertyModel.Description = "Дата регистрируемого документа";
-            schemaTotalProperties[RegisterConstants.DocumentDateProperty] = documentCalculationDatePropertyModel;
-
-            // Специфичные свойства регистра
-            schemaTotalProperties.Room = roomPropertyModel;
-            schemaTotalProperties.Bed = bedPropertyModel;
-            schemaTotalProperties.Value = changesPropertyModel;
-
-            documentTotalMetadata.Schema = new
-                {
-                    Type = "Object",
-                    Caption = "Register document",
-                    Description = "Register document schema",
-                    Properties = schemaTotalProperties
-                }.ToDynamic();
-
-            managerDocument.MergeItem(documentTotalMetadata);
-
-            return RegisterConstants.RegisterNamePrefix + registerName;
-        }
-
-        private static void AddTestDocuments()
-        {
-            // Добавляем новые койки
-            dynamic result = new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
-                {
-                    Id = Guid.NewGuid(),
-                    Room = "Палата 33",
-                    Bed = "Койка 1",
-                    Date = new DateTime(2014, 01, 01)
-                });
-
-            // Console.WriteLine(result.ToString());
-
-            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
-                {
-                    Id = Guid.NewGuid(),
-                    Room = "Палата 33",
-                    Bed = "Койка 2",
-                    Date = new DateTime(2014, 01, 01)
-                });
-            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
-                {
-                    Id = Guid.NewGuid(),
-                    Room = "Палата 33",
-                    Bed = "Койка 3",
-                    Date = new DateTime(2014, 01, 01)
-                });
-            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
-                {
-                    Id = Guid.NewGuid(),
-                    Room = "Палата 54",
-                    Bed = "Койка 1",
-                    Date = new DateTime(2014, 01, 01)
-                });
-            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
-                {
-                    Id = Guid.NewGuid(),
-                    Room = "Палата 54",
-                    Bed = "Койка 2",
-                    Date = new DateTime(2014, 01, 01)
-                });
-            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
-                {
-                    Id = Guid.NewGuid(),
-                    Room = "Палата 54",
-                    Bed = "Койка 3",
-                    Date = new DateTime(2014, 01, 01)
-                });
-
-            // Новые пациенты
-            result = new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
-                {
-                    Id = Guid.NewGuid(),
-                    PatientName = "Иванов",
-                    NewRoom = "Палата 54",
-                    NewBed = "Койка 3",
-                    Date = new DateTime(2014, 08, 10)
-                });
-
-            // Console.WriteLine(result.ToString());
-
-            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
-                {
-                    Id = Guid.NewGuid(),
-                    PatientName = "Петров",
-                    NewRoom = "Палата 54",
-                    NewBed = "Койка 2",
-                    Date = new DateTime(2014, 08, 10)
-                });
-
-            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
-                {
-                    Id = Guid.NewGuid(),
-                    PatientName = "Сидоров",
-                    NewRoom = "Палата 54",
-                    NewBed = "Койка 1",
-                    Date = new DateTime(2014, 08, 10)
-                });
+            AddPatientMovement(documentApi, new DateTime(2014, 08, 10), "Иванов", "", "", "Палата 54", "Койка 3");
+            AddPatientMovement(documentApi, new DateTime(2014, 08, 10), "Петров", "", "", "Палата 54", "Койка 2");
+            AddPatientMovement(documentApi, new DateTime(2014, 08, 10), "Сидоров", "", "", "Палата 54", "Койка 1");
 
             // Переводы пациентов в другие палаты
-            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
-                {
-                    Id = Guid.NewGuid(),
-                    PatientName = "Иванов",
-                    OldRoom = "Палата 54",
-                    OldBed = "Койка 3",
-                    NewRoom = "Палата 33",
-                    NewBed = "Койка 1",
-                    Date = new DateTime(2014, 08, 11)
-                });
 
-            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
-                {
-                    Id = Guid.NewGuid(),
-                    PatientName = "Петров",
-                    OldRoom = "Палата 54",
-                    OldBed = "Койка 2",
-                    NewRoom = "Палата 33",
-                    NewBed = "Койка 2",
-                    Date = new DateTime(2014, 08, 11)
-                });
-
-            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
-                {
-                    Id = TestGuid,
-                    PatientName = "Сидоров",
-                    OldRoom = "Палата 54",
-                    OldBed = "Койка 1",
-                    NewRoom = "Палата 33",
-                    NewBed = "Койка 3",
-                    Date = new DateTime(2014, 08, 11)
-                });
+            AddPatientMovement(documentApi, new DateTime(2014, 08, 11), "Иванов", "Палата 54", "Койка 3", "Палата 33", "Койка 1");
+            AddPatientMovement(documentApi, new DateTime(2014, 08, 11), "Петров", "Палата 54", "Койка 2", "Палата 33", "Койка 2");
+            AddPatientMovement(documentApi, new DateTime(2014, 08, 11), "Сидоров", "Палата 54", "Койка 1", "Палата 33", "Койка 3");
 
             // Выписка пациентов
-            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
-                {
-                    Id = Guid.NewGuid(),
-                    PatientName = "Иванов",
-                    OldRoom = "Палата 33",
-                    OldBed = "Койка 1",
-                    Date = new DateTime(2014, 08, 12)
-                });
 
-            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
-                {
-                    Id = Guid.NewGuid(),
-                    PatientName = "Петорв",
-                    OldRoom = "Палата 33",
-                    OldBed = "Койка 2",
-                    Date = new DateTime(2014, 09, 12)
-                });
+            AddPatientMovement(documentApi, new DateTime(2014, 08, 12), "Иванов", "Палата 33", "Койка 1", "", "");
+            AddPatientMovement(documentApi, new DateTime(2014, 09, 12), "Петорв", "Палата 33", "Койка 2", "", "");
+            AddPatientMovement(documentApi, new DateTime(2014, 09, 12), "Сидоров", "Палата 33", "Койка 3", "", "");
+        }
 
-            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
-                {
-                    Id = Guid.NewGuid(),
-                    PatientName = "Сидоров",
-                    OldRoom = "Палата 33",
-                    OldBed = "Койка 3",
-                    Date = new DateTime(2014, 09, 12)
-                });
+        private static void AddBed(DocumentApi documentApi, DateTime date, string room, string bed, string info = null)
+        {
+            var documentId = Guid.NewGuid().ToString();
+
+            documentApi.SetDocument(ConfigurationId, BedsRegistrationDocument, new
+            {
+                Id = documentId,
+                Room = room,
+                Bed = bed,
+                Date = date,
+                Info = info
+            });
+        }
+
+        private static string AddPatientMovement(DocumentApi documentApi, DateTime date, string patient, string oldRoom, string oldBed, string newRoom, string newBed)
+        {
+            var documentId = Guid.NewGuid().ToString();
+
+            documentApi.SetDocument(ConfigurationId, PatientMovementDocument, new
+            {
+                Id = documentId,
+                PatientName = patient,
+                OldRoom = oldRoom,
+                OldBed = oldBed,
+                NewRoom = newRoom,
+                NewBed = newBed,
+                Date = date
+            });
+
+            return documentId;
         }
 
         [Test]
         public void ShouldAddOnlyOneRegisterEntryToInfoRegisterPerPeriod()
         {
-            // Период для регистра сведений - 1 месяц, следовательно за каждый месяц будем иметь одну запись в регистре
-            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
-                {
-                    Info = true,
-                    Id = Guid.NewGuid(),
-                    Room = "Палата 33",
-                    Bed = "Койка 1",
-                    Date = new DateTime(2114, 01, 01, 12, 1, 1)
-                });
+            const string infoRegisterDocument = RegisterConstants.RegisterNamePrefix + InfoRegister;
 
-            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
-                {
-                    Info = true,
-                    Id = Guid.NewGuid(),
-                    Room = "Палата 33",
-                    Bed = "Койка 1",
-                    Date = new DateTime(2114, 01, 15, 1, 2, 3)
-                });
+            // Given
 
-            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
-                {
-                    Info = true,
-                    Id = Guid.NewGuid(),
-                    Room = "Палата 1",
-                    Bed = "Койка 3",
-                    Date = new DateTime(2114, 02, 01, 7, 6, 5)
-                });
+            var documentApi = new DocumentApi();
+            var infoProperty = Guid.NewGuid().ToString();
 
-            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
-                {
-                    Info = true,
-                    Id = Guid.NewGuid(),
-                    Room = "Палата 1",
-                    Bed = "Койка 3",
-                    Date = new DateTime(2114, 02, 02, 4, 4, 4)
-                });
+            // When
 
-            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
-                {
-                    Info = true,
-                    Id = Guid.NewGuid(),
-                    Room = "Палата 1",
-                    Bed = "Койка 3",
-                    Date = new DateTime(2114, 02, 04, 3, 2, 1)
-                });
+            AddBed(documentApi, new DateTime(2114, 01, 01, 9, 1, 1), "Палата 33", "Койка 1", infoProperty);
+            AddBed(documentApi, new DateTime(2114, 01, 15, 1, 2, 3), "Палата 33", "Койка 1", infoProperty);
+            AddBed(documentApi, new DateTime(2114, 02, 01, 7, 6, 5), "Палата 1", "Койка 3", infoProperty);
+            AddBed(documentApi, new DateTime(2114, 02, 02, 4, 4, 4), "Палата 1", "Койка 3", infoProperty);
+            AddBed(documentApi, new DateTime(2114, 02, 04, 3, 2, 1), "Палата 1", "Койка 3", infoProperty);
+            AddBed(documentApi, new DateTime(2114, 03, 01, 3, 2, 1), "Палата 1", "Койка 6", infoProperty);
 
-            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
-                {
-                    Info = true,
-                    Id = Guid.NewGuid(),
-                    Room = "Палата 1",
-                    Bed = "Койка 6",
-                    Date = new DateTime(2114, 03, 01, 3, 2, 1)
-                });
+            var registerEntries = documentApi.GetDocument(ConfigurationId, infoRegisterDocument, f => f.AddCriteria(c => c.Property("Info").IsEquals(infoProperty)), 0, 10);
 
-            IEnumerable<dynamic> docs = new DocumentApi().GetDocument(
-                ConfigurationId,
-                RegisterConstants.RegisterNamePrefix + InfoRegisterId,
-                f =>
-                f.AddCriteria(
-                    c => c.Property(RegisterConstants.DocumentDateProperty).IsMoreThan(new DateTime(2113, 01, 01)))
-                , 0, 1000);
+            // Then
 
-            // Должно добавиться толко три записи в регистр, каждая на определенный месяц
-            Assert.AreEqual(3, docs.Count());
+            // Период для регистра сведений задан равным в 1 месяц, поэтому за каждый месяц должно быть по одной записи в регистре.
+            // Должно добавиться только три записи в регистр, каждая на определенный месяц.
+
+            Assert.AreEqual(3, registerEntries.Count());
         }
 
         [Test]
         public void ShouldAggregateHospitalData()
         {
-            // Тестовая конфигурация будет содержать документы двух типов: 
-            // BedsRegistrationDocumentId (реестр коек) и PatientMovementDocumentId (движение пациентов по палате).
-            // При сохранении документов этих типов, будут добавляться записи в регистр AvailableBedsRegisterId,
-            // накапливающий изменения состояния коек в палатах.
+            // Given
+            var registerApi = new RegisterApi();
 
-            _sw.Restart();
+            // When & Then
 
-            // Получение информации по занятности коек на 1 февраля 2014
-            IEnumerable<dynamic> aggregationInfo = new RegisterApi().GetValuesByDate(ConfigurationId,
-                                                                                         AvailableBedsRegisterId,
-                                                                                         new DateTime(2014, 2, 1),
-                                                                                         new[] {"Room", "Bed"});
+            // 01.02.2014 - Все койки свободны, ни одного пациента еще не было
+            var aggregationInfo1 = registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 2, 1), new[] { "Room", "Bed" }).ToArray();
+            Assert.AreEqual(1d, aggregationInfo1.FirstOrDefault(i => i.Room == "палата 54" && i.Bed == "койка 3")?.Value);
+            Assert.AreEqual(1d, aggregationInfo1.FirstOrDefault(i => i.Room == "палата 33" && i.Bed == "койка 3")?.Value);
 
-            _sw.Stop();
-            Console.WriteLine("Aggregation by date time: " + _sw.ElapsedMilliseconds + " ms");
+            // 12.08.2014 - Свободные койки по палатам: "Палата 33" - 2 пациента, "Палата 54" - свободна
+            var aggregationInfo2 = registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 08, 12), new[] { "Room" }).ToArray();
+            Assert.AreEqual(3d, aggregationInfo2.FirstOrDefault(i => i.Room == "палата 54")?.Value);
+            Assert.AreEqual(1d, aggregationInfo2.FirstOrDefault(i => i.Room == "палата 33")?.Value);
 
-            // Все койки свободны, ни одного пациента еще не было
+            // 12.08.2014 - Свободные койки по номерам
+            var aggregationInfo3 = registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 08, 12), new[] { "Bed" }, new[] { "Value" }).ToArray();
+            Assert.AreEqual(2d, aggregationInfo3.FirstOrDefault(i => i.Bed == "койка 1")?.Value);
+            Assert.AreEqual(1d, aggregationInfo3.FirstOrDefault(i => i.Bed == "койка 2")?.Value);
+            Assert.AreEqual(1d, aggregationInfo3.FirstOrDefault(i => i.Bed == "койка 3")?.Value);
 
-            foreach (dynamic bucket in aggregationInfo)
-            {
-                if (bucket.Room.Contains("54") && bucket.Bed.Contains("1"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
+            // 12-14.08.2014 - Изменение занятости коек за период - освободилась "Койка 1" в "Палата 33"
+            var aggregationInfo4 = registerApi.GetValuesBetweenDates(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 08, 12), new DateTime(2014, 08, 14));
+            Assert.AreEqual(1, aggregationInfo4.FirstOrDefault(a => a.Room == "палата 33" && a.Bed == "койка 1")?.Value);
 
-                if (bucket.Room.Contains("54") && bucket.Bed.Contains("2"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
+            // Получение информации по типу регистратора - были добавлены все койки
+            var aggregationInfo5 = registerApi.GetValuesBуRegistrarType(ConfigurationId, AvailableBedsRegister, BedsRegistrationDocument).ToArray();
+            Assert.AreEqual(1d, aggregationInfo5.FirstOrDefault(i => i.Room == "палата 54" && i.Bed == "койка 3")?.Value);
+            Assert.AreEqual(1d, aggregationInfo5.FirstOrDefault(i => i.Room == "палата 33" && i.Bed == "койка 3")?.Value);
 
-                if (bucket.Room.Contains("54") && bucket.Bed.Contains("3"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
+            // 18.08.2014 - "Палата 54" свободна, в "Палата 33" занято 2 койки
+            var aggregationInfo6 = registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 8, 18)).ToArray();
+            Assert.AreEqual(1d, aggregationInfo6.FirstOrDefault(a => a.Room == "палата 54" && a.Bed == "койка 3")?.Value);
+            Assert.AreEqual(0d, aggregationInfo6.FirstOrDefault(a => a.Room == "палата 33" && a.Bed == "койка 3")?.Value);
 
-                if (bucket.Room.Contains("33") && bucket.Bed.Contains("1"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
-
-                if (bucket.Room.Contains("33") && bucket.Bed.Contains("1"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
-
-                if (bucket.Room.Contains("33") && bucket.Bed.Contains("1"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
-            }
-
-            _sw.Restart();
-
-            // Получение информации по наличию свободных коек по палатам на 12 августа 2014
-            aggregationInfo = new RegisterApi().GetValuesByDate(ConfigurationId, AvailableBedsRegisterId,
-                                                                    new DateTime(2014, 08, 12), new[] {"Room"});
-
-            _sw.Stop();
-            Console.WriteLine("Aggregation by date under Rooms time: " + _sw.ElapsedMilliseconds + " ms");
-
-            // 2 пациента в палате 33, все койки палаты 54 свободны
-            Assert.AreEqual(3, aggregationInfo.First(a => a.Room.Contains("54")).Value);
-            Assert.AreEqual(1, aggregationInfo.First(a => a.Room.Contains("33")).Value);
-
-            _sw.Restart();
-
-            // Получение информации по наличию свободных коек с различными номерами на 12 августа 2014
-            aggregationInfo = new RegisterApi().GetValuesByDate(ConfigurationId, AvailableBedsRegisterId,
-                                                                    new DateTime(2014, 08, 12), new[] {"Bed"},
-                                                                    new[] {"Value"});
-
-            _sw.Stop();
-            Console.WriteLine("Aggregation by date under Beds time: " + _sw.ElapsedMilliseconds + " ms");
-
-            // Койки с номером 1 свободны в обеих палатах, с номером 2 и 3 - только только в одной
-            Assert.AreEqual(2, aggregationInfo.First(a => a.Bed.Contains("1")).Value);
-            Assert.AreEqual(1, aggregationInfo.First(a => a.Bed.Contains("2")).Value);
-            Assert.AreEqual(1, aggregationInfo.First(a => a.Bed.Contains("3")).Value);
-
-            _sw.Restart();
-
-            // Получение информации по изменению занятности коек между 12 августа и 14 августа 2014 года
-            aggregationInfo = new RegisterApi().GetValuesBetweenDates(ConfigurationId, AvailableBedsRegisterId,
-                                                                          new DateTime(2014, 08, 12),
-                                                                          new DateTime(2014, 08, 14));
-
-            _sw.Stop();
-            Console.WriteLine("Aggregation between dates time: " + _sw.ElapsedMilliseconds + " ms");
-
-            // За этот период освободилась первая койка в палате 33
-            Assert.AreEqual(1, aggregationInfo.First(a => a.Room.Contains("33") && a.Bed.Contains("1")).Value);
-
-            // Получение информации по типу регистратора
-            aggregationInfo = new RegisterApi().GetValuesBуRegistrarType(ConfigurationId, AvailableBedsRegisterId,
-                                                                             BedsRegistrationDocumentId);
-
-            _sw.Stop();
-            Console.WriteLine("Aggregation by registrar type time: " + _sw.ElapsedMilliseconds + " ms");
-
-            // Были добавлены все койки
-            foreach (dynamic bucket in aggregationInfo)
-            {
-                if (bucket.Room.Contains("54") && bucket.Bed.Contains("1"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
-
-                if (bucket.Room.Contains("54") && bucket.Bed.Contains("2"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
-
-                if (bucket.Room.Contains("54") && bucket.Bed.Contains("3"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
-
-                if (bucket.Room.Contains("33") && bucket.Bed.Contains("1"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
-
-                if (bucket.Room.Contains("33") && bucket.Bed.Contains("1"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
-
-                if (bucket.Room.Contains("33") && bucket.Bed.Contains("1"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
-            }
-
-            // Получение информации по регистратору
-            aggregationInfo = new RegisterApi().GetValuesBуRegistrar(ConfigurationId, AvailableBedsRegisterId,
-                                                                         TestGuid.ToString());
-
-            _sw.Stop();
-            Console.WriteLine("Aggregation by registrar time: " + _sw.ElapsedMilliseconds + " ms");
-
-            // В рамках этого перевода койка из палаты 54 освободилась, из палаты 33 была занята
-            Assert.AreEqual(1, aggregationInfo.First(a => a.Room.Contains("54") && a.Bed.Contains("1")).Value);
-            Assert.AreEqual(-1, aggregationInfo.First(a => a.Room.Contains("33") && a.Bed.Contains("3")).Value);
-
-            // Получение информации по занятности коек на 18 августа 2014 года
-            aggregationInfo = new RegisterApi().GetValuesByDate(ConfigurationId, AvailableBedsRegisterId,
-                                                                    new DateTime(2014, 8, 18));
-
-            // Все койки в палате 54 должны освободиться
-            // Петров и Сидоров не были выписаны 18 августа 2014 года
-            foreach (dynamic bucket in aggregationInfo)
-            {
-                if (bucket.Room.Contains("54") && bucket.Bed.Contains("1"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
-
-                if (bucket.Room.Contains("54") && bucket.Bed.Contains("2"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
-
-                if (bucket.Room.Contains("54") && bucket.Bed.Contains("3"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
-
-                if (bucket.Room.Contains("33") && bucket.Bed.Contains("1"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
-
-                if (bucket.Room.Contains("33") && bucket.Bed.Contains("1"))
-                {
-                    Assert.AreEqual(0, bucket.Value);
-                }
-
-                if (bucket.Room.Contains("33") && bucket.Bed.Contains("1"))
-                {
-                    Assert.AreEqual(0, bucket.Value);
-                }
-            }
-
-            // Получение информации по занятности коек на 1 октября 2014 года
-            aggregationInfo = new RegisterApi().GetValuesByDate(ConfigurationId, AvailableBedsRegisterId,
-                                                                    new DateTime(2014, 10, 1));
-
-            // Все койки должны освободиться
-            foreach (dynamic bucket in aggregationInfo)
-            {
-                if (bucket.Room.Contains("54") && bucket.Bed.Contains("1"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
-
-                if (bucket.Room.Contains("54") && bucket.Bed.Contains("2"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
-
-                if (bucket.Room.Contains("54") && bucket.Bed.Contains("3"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
-
-                if (bucket.Room.Contains("33") && bucket.Bed.Contains("1"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
-
-                if (bucket.Room.Contains("33") && bucket.Bed.Contains("1"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
-
-                if (bucket.Room.Contains("33") && bucket.Bed.Contains("1"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
-            }
+            // 01.10.2014 - Все койки свободны
+            var aggregationInfo7 = registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 10, 1)).ToArray();
+            Assert.AreEqual(1d, aggregationInfo7.FirstOrDefault(i => i.Room == "палата 54" && i.Bed == "койка 3")?.Value);
+            Assert.AreEqual(1d, aggregationInfo7.FirstOrDefault(i => i.Room == "палата 33" && i.Bed == "койка 3")?.Value);
 
             // Получение агрегации с группировкой по месяцам
-
-            aggregationInfo = new RegisterApi().GetValuesByPeriods(ConfigurationId, AvailableBedsRegisterId,
-                                                                       DateTime.MinValue, DateTime.MaxValue,
-                                                                       RegisterPeriod.Month);
-            Assert.IsTrue(aggregationInfo.Any());
+            var aggregationInfo8 = registerApi.GetValuesByPeriods(ConfigurationId, AvailableBedsRegister, DateTime.MinValue, DateTime.MaxValue, RegisterPeriod.Month);
+            Assert.IsTrue(aggregationInfo8.Any());
 
             // Тот же запрос с установленной временной зоной
-            aggregationInfo = new RegisterApi().GetValuesByPeriods(ConfigurationId, AvailableBedsRegisterId,
-                                                                       DateTime.MinValue, DateTime.MaxValue,
-                                                                       RegisterPeriod.Month, null, null, "+05:00", new List<dynamic>());
-            Assert.IsTrue(aggregationInfo.Any());
+            var aggregationInfo9 = registerApi.GetValuesByPeriods(ConfigurationId, AvailableBedsRegister, DateTime.MinValue, DateTime.MaxValue, RegisterPeriod.Month, null, null, "+05:00", new List<dynamic>());
+            Assert.IsTrue(aggregationInfo9.Any());
         }
 
         [Test]
         public void ShouldAggregateHospitalDataAfterMappingChanged()
         {
-            // Добавляем новые койки
+            // Given
 
-            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
-                {
-                    Id = Guid.NewGuid(),
-                    Room = "Палата 6",
-                    Bed = "Койка 1",
-                    Date = new DateTime(2014, 01, 01)
-                });
-            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
-                {
-                    Id = Guid.NewGuid(),
-                    Room = "Палата 6",
-                    Bed = "Койка 2",
-                    Date = new DateTime(2014, 01, 01)
-                });
-            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
-                {
-                    Id = Guid.NewGuid(),
-                    Room = "Палата 6",
-                    Bed = "Койка 3",
-                    Date = new DateTime(2014, 01, 01)
-                });
+            var documentApi = new DocumentApi();
+            var registerApi = new RegisterApi();
 
-            // Получение информации по занятности коек на 1 февраля 2014
-            IEnumerable<dynamic> aggregationInfo = new RegisterApi().GetValuesByDate(ConfigurationId,
-                                                                                         AvailableBedsRegisterId,
-                                                                                         new DateTime(2014, 2, 1),
-                                                                                         new[] {"Room", "Bed"});
+            AddBed(documentApi, new DateTime(2014, 01, 01), "Палата 6", "Койка 1");
+            AddBed(documentApi, new DateTime(2014, 01, 01), "Палата 6", "Койка 2");
+            AddBed(documentApi, new DateTime(2014, 01, 01), "Палата 6", "Койка 3");
 
-            // Все койки свободны, ни одного пациента еще не было
+            // When & Then
 
-            foreach (dynamic bucket in aggregationInfo)
-            {
-                if (bucket.Room.Contains("6") && bucket.Bed.Contains("1"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
+            // 01.02.2014 - Все койки свободны, ни одного пациента еще не было
+            var aggregationInfo1 = registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 2, 1), new[] { "Room", "Bed" }).ToArray();
+            Assert.AreEqual(1d, aggregationInfo1.FirstOrDefault(i => i.Room == "палата 54" && i.Bed == "койка 3")?.Value);
+            Assert.AreEqual(1d, aggregationInfo1.FirstOrDefault(i => i.Room == "палата 33" && i.Bed == "койка 3")?.Value);
 
-                if (bucket.Room.Contains("6") && bucket.Bed.Contains("2"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
+            // When & Then
 
-                if (bucket.Room.Contains("6") && bucket.Bed.Contains("3"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
-            }
+            AddPatientMovement(documentApi, new DateTime(2014, 08, 10), "Иванов", "", "", "Палата 6", "Койка 1");
 
-            // Добавляем документ (схема данных не изменилась)
-
-            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
-                {
-                    Id = Guid.NewGuid(),
-                    PatientName = "Иванов",
-                    NewRoom = "Палата 6",
-                    NewBed = "Койка 1",
-                    Date = new DateTime(2014, 08, 10)
-                });
-
-            // Получение информации по наличию свободных коек по палатам на 12 августа 2014
-            aggregationInfo = new RegisterApi().GetValuesByDate(ConfigurationId, AvailableBedsRegisterId,
-                                                                    new DateTime(2014, 08, 12), new[] {"Room"});
-
-            // Занята только первая койка палаты номер 6
-            Assert.AreEqual(2, aggregationInfo.First(a => a.Room.Contains("6")).Value);
-
-            // Меняем схему данных документа PatientMovementDocumentId: теперь номер койки становится числом
-
-            MetadataManagerDocument managerDocument =
-                new ManagerFactoryConfiguration(ConfigurationId).BuildDocumentManager();
-
-            dynamic documentMetadata = managerDocument.CreateItem(BedsRegistrationDocumentId);
-
-            dynamic schemaProperties = new DynamicWrapper();
-
-            dynamic roomPropertyModel = new DynamicWrapper();
-            roomPropertyModel.Type = DataType.String.ToString();
-            roomPropertyModel.Caption = "Палата";
-            schemaProperties.Room = roomPropertyModel;
-
-            dynamic bedPropertyModel = new DynamicWrapper();
-            bedPropertyModel.Type = DataType.Integer.ToString();
-            bedPropertyModel.Caption = "Койка";
-            schemaProperties.Bed = bedPropertyModel;
-
-            dynamic datetimePropertyModel = new DynamicWrapper();
-            datetimePropertyModel.Type = DataType.DateTime.ToString();
-            datetimePropertyModel.Caption = "Дата";
-            schemaProperties.Date = datetimePropertyModel;
-
-            dynamic infoPropertyModel = new DynamicWrapper();
-            infoPropertyModel.Type = DataType.Bool.ToString();
-            infoPropertyModel.Caption = "Инфо";
-            schemaProperties.Info = infoPropertyModel;
-
-            documentMetadata.Schema = new
-                {
-                    Type = "Object",
-                    Caption = "Beds register",
-                    Properties = schemaProperties
-                }.ToDynamic();
-
-            managerDocument.MergeItem(documentMetadata);
-
-            // добавляем бизнес-процесс по умолчанию
-            MetadataManagerElement processManager =
-                new ManagerFactoryDocument(ConfigurationId, BedsRegistrationDocumentId).BuildProcessManager();
-            dynamic defaultProcess = processManager.CreateItem("Default");
-
-            dynamic instance = new DynamicWrapper();
-            instance.Name = "Default transition";
-            defaultProcess.Type = WorkflowTypes.WithoutState;
-            defaultProcess.Transitions = new List<dynamic>();
-            defaultProcess.Transitions.Add(instance);
-
-            instance.SuccessPoint = new DynamicWrapper();
-            instance.SuccessPoint.TypeName = "Action";
-            instance.SuccessPoint.ScenarioId = "AddNewBedToRoomMoveAction";
-            instance.SuccessPoint.DocumentDateProperty = "Date";
-
-            instance.DeletePoint = new DynamicWrapper();
-            instance.DeletePoint.TypeName = "Action";
-            instance.DeletePoint.ScenarioId = "DeleteRegisterEntriesAction";
-
-            processManager.MergeItem(defaultProcess);
-
-            // указываем ссылку на тестовый сценарий комплексного предзаполнения
-            MetadataManagerElement scenarioManager =
-                new ManagerFactoryDocument(ConfigurationId, BedsRegistrationDocumentId).BuildScenarioManager();
-
-            const string addScenarioRegisterId = "AddNewBedToRoomMoveAction";
-            dynamic scenarioRegisterItem = scenarioManager.CreateItem(addScenarioRegisterId);
-            scenarioRegisterItem.ScenarioId = addScenarioRegisterId;
-            scenarioRegisterItem.Id = addScenarioRegisterId;
-            scenarioRegisterItem.Name = addScenarioRegisterId;
-            scenarioRegisterItem.ScriptUnitType = ScriptUnitType.Action;
-            scenarioRegisterItem.ContextType = ContextTypeKind.ApplyMove;
-            scenarioManager.MergeItem(scenarioRegisterItem);
-
-            const string deleteRegisterEntriesId = "DeleteRegisterEntriesAction";
-            dynamic scenarioDeleteRegisterItem = scenarioManager.CreateItem(deleteRegisterEntriesId);
-            scenarioDeleteRegisterItem.ScenarioId = deleteRegisterEntriesId;
-            scenarioDeleteRegisterItem.Id = deleteRegisterEntriesId;
-            scenarioDeleteRegisterItem.Name = deleteRegisterEntriesId;
-            scenarioDeleteRegisterItem.ScriptUnitType = ScriptUnitType.Action;
-            scenarioDeleteRegisterItem.ContextType = ContextTypeKind.ApplyMove;
-            scenarioManager.MergeItem(scenarioDeleteRegisterItem);
-
-            // добавляем ссылку на сборку, в которой находится прикладной модуль
-
-            MetadataManagerElement assemblyManager =
-                new ManagerFactoryConfiguration(ConfigurationId).BuildAssemblyManager();
-            dynamic assemblyItem = assemblyManager.CreateItem("InfinniPlatform.Api.Tests");
-            assemblyManager.MergeItem(assemblyItem);
-
-            // Обновляем регистр, который будет накапливать информацию о занятости коек
-
-            MetadataManagerElement managerRegister =
-                new ManagerFactoryConfiguration(ConfigurationId).BuildRegisterManager();
-
-            dynamic registerMetadata = managerRegister.CreateItem(AvailableBedsRegisterId);
-
-            registerMetadata.Id = Guid.NewGuid().ToString();
-
-            registerMetadata.Properties = new List<dynamic>();
-
-            registerMetadata.Properties.Add(
-                new {Property = RegisterConstants.RegistrarProperty, Type = RegisterPropertyType.Info});
-            registerMetadata.Properties.Add(
-                new {Property = RegisterConstants.RegistrarTypeProperty, Type = RegisterPropertyType.Info});
-            registerMetadata.Properties.Add(
-                new {Property = RegisterConstants.DocumentDateProperty, Type = RegisterPropertyType.Info});
-            registerMetadata.Properties.Add(
-                new {Property = RegisterConstants.EntryTypeProperty, Type = RegisterPropertyType.Info});
-            registerMetadata.Properties.Add(new {Property = "Room", Type = RegisterPropertyType.Dimension});
-            registerMetadata.Properties.Add(new {Property = "Bed", Type = RegisterPropertyType.Dimension});
-            registerMetadata.Properties.Add(new {Property = "Value", Type = RegisterPropertyType.Value});
-            registerMetadata.Period = RegisterPeriod.Month;
-
-            registerMetadata.DocumentId = CreateRegisterDocuments(ConfigurationId, AvailableBedsRegisterId, true);
-
-            managerRegister.MergeItem(registerMetadata);
-
-            // Создаем регистр сведений
-            dynamic registerInfoMetadata = managerRegister.CreateItem(InfoRegisterId);
-
-            registerInfoMetadata.Id = Guid.NewGuid().ToString();
-            registerInfoMetadata.Period = RegisterPeriod.Month;
-
-            registerInfoMetadata.Properties = new List<dynamic>();
-
-            registerInfoMetadata.Properties.Add(
-                new {Property = RegisterConstants.RegistrarProperty, Type = RegisterPropertyType.Info});
-            registerInfoMetadata.Properties.Add(
-                new {Property = RegisterConstants.RegistrarTypeProperty, Type = RegisterPropertyType.Info});
-            registerInfoMetadata.Properties.Add(
-                new {Property = RegisterConstants.DocumentDateProperty, Type = RegisterPropertyType.Info});
-            registerInfoMetadata.Properties.Add(
-                new {Property = RegisterConstants.EntryTypeProperty, Type = RegisterPropertyType.Info});
-            registerInfoMetadata.Properties.Add(new {Property = "Room", Type = RegisterPropertyType.Dimension});
-            registerInfoMetadata.Properties.Add(new {Property = "Bed", Type = RegisterPropertyType.Dimension});
-            registerInfoMetadata.Properties.Add(new {Property = "Value", Type = RegisterPropertyType.Value});
-
-            registerInfoMetadata.DocumentId = CreateRegisterDocuments(ConfigurationId, InfoRegisterId, true);
-
-            managerRegister.MergeItem(registerInfoMetadata);
-
-            dynamic package = new PackageBuilder().BuildPackage(ConfigurationId, "1.0.0.0", GetType().Assembly.Location);
-
-            new UpdateApi().InstallPackages(new[] { package });
-
-            new UpdateApi().ForceReload(ConfigurationId);
-
-            new UpdateApi().UpdateStore(ConfigurationId);
-
-
-            // Добавляем документ (схема данных изменилась)
-            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
-                {
-                    Id = Guid.NewGuid(),
-                    PatientName = "Петров",
-                    NewRoom = "Палата 6",
-                    NewBed = 2,
-                    Date = new DateTime(2014, 08, 10)
-                });
-
-
-            aggregationInfo = new RegisterApi().GetValuesByDate(ConfigurationId, AvailableBedsRegisterId,
-                                                                    new DateTime(2014, 09, 11), new[] {"Room"});
-
-            // Заняты 2 койки палаты номер 6 (одна занята после проводки документа со старой схемой и одна после проводки документа с новой схемой)
-            Assert.AreEqual(1, aggregationInfo.First(a => a.Room.Contains("6")).Value);
-
-            // Возвращаем старую схему
-
-            bedPropertyModel = new DynamicWrapper();
-            bedPropertyModel.Type = DataType.String.ToString();
-            bedPropertyModel.Caption = "Койка";
-            schemaProperties.Bed = bedPropertyModel;
-
-            documentMetadata.Schema = new
-                {
-                    Type = "Object",
-                    Caption = "Beds register",
-                    Properties = schemaProperties
-                }.ToDynamic();
-
-            managerDocument.MergeItem(documentMetadata);
-
-            // добавляем бизнес-процесс по умолчанию
-
-            instance = new DynamicWrapper();
-            instance.Name = "Default transition";
-            defaultProcess.Type = WorkflowTypes.WithoutState;
-            defaultProcess.Transitions = new List<dynamic>();
-            defaultProcess.Transitions.Add(instance);
-
-            instance.SuccessPoint = new DynamicWrapper();
-            instance.SuccessPoint.TypeName = "Action";
-            instance.SuccessPoint.ScenarioId = "AddNewBedToRoomMoveAction";
-            instance.SuccessPoint.DocumentDateProperty = "Date";
-
-            instance.DeletePoint = new DynamicWrapper();
-            instance.DeletePoint.TypeName = "Action";
-            instance.DeletePoint.ScenarioId = "DeleteRegisterEntriesAction";
-
-            processManager.MergeItem(defaultProcess);
-
-            // указываем ссылку на тестовый сценарий комплексного предзаполнения
-            scenarioManager =
-                new ManagerFactoryDocument(ConfigurationId, BedsRegistrationDocumentId).BuildScenarioManager();
-
-            scenarioRegisterItem = scenarioManager.CreateItem(addScenarioRegisterId);
-            scenarioRegisterItem.ScenarioId = addScenarioRegisterId;
-            scenarioRegisterItem.Id = addScenarioRegisterId;
-            scenarioRegisterItem.Name = addScenarioRegisterId;
-            scenarioRegisterItem.ScriptUnitType = ScriptUnitType.Action;
-            scenarioRegisterItem.ContextType = ContextTypeKind.ApplyMove;
-            scenarioManager.MergeItem(scenarioRegisterItem);
-
-            scenarioDeleteRegisterItem = scenarioManager.CreateItem(deleteRegisterEntriesId);
-            scenarioDeleteRegisterItem.ScenarioId = deleteRegisterEntriesId;
-            scenarioDeleteRegisterItem.Id = deleteRegisterEntriesId;
-            scenarioDeleteRegisterItem.Name = deleteRegisterEntriesId;
-            scenarioDeleteRegisterItem.ScriptUnitType = ScriptUnitType.Action;
-            scenarioDeleteRegisterItem.ContextType = ContextTypeKind.ApplyMove;
-            scenarioManager.MergeItem(scenarioDeleteRegisterItem);
-
-            // добавляем ссылку на сборку, в которой находится прикладной модуль
-
-            assemblyManager = new ManagerFactoryConfiguration(ConfigurationId).BuildAssemblyManager();
-            assemblyItem = assemblyManager.CreateItem("InfinniPlatform.Api.Tests");
-            assemblyManager.MergeItem(assemblyItem);
-
-            // Обновляем регистр, который будет накапливать информацию о занятости коек
-
-            managerRegister = new ManagerFactoryConfiguration(ConfigurationId).BuildRegisterManager();
-
-            registerMetadata = managerRegister.CreateItem(AvailableBedsRegisterId);
-
-            registerMetadata.Id = Guid.NewGuid().ToString();
-
-            registerMetadata.Properties = new List<dynamic>();
-
-            registerMetadata.Properties.Add(
-                new {Property = RegisterConstants.RegistrarProperty, Type = RegisterPropertyType.Info});
-            registerMetadata.Properties.Add(
-                new {Property = RegisterConstants.RegistrarTypeProperty, Type = RegisterPropertyType.Info});
-            registerMetadata.Properties.Add(
-                new {Property = RegisterConstants.DocumentDateProperty, Type = RegisterPropertyType.Info});
-            registerMetadata.Properties.Add(
-                new {Property = RegisterConstants.EntryTypeProperty, Type = RegisterPropertyType.Info});
-            registerMetadata.Properties.Add(new {Property = "Room", Type = RegisterPropertyType.Dimension});
-            registerMetadata.Properties.Add(new {Property = "Bed", Type = RegisterPropertyType.Dimension});
-            registerMetadata.Properties.Add(new {Property = "Value", Type = RegisterPropertyType.Value});
-            registerMetadata.Period = RegisterPeriod.Month;
-
-            registerMetadata.DocumentId = CreateRegisterDocuments(ConfigurationId, AvailableBedsRegisterId);
-
-            managerRegister.MergeItem(registerMetadata);
-
-            // Создаем регистр сведений
-            registerInfoMetadata = managerRegister.CreateItem(InfoRegisterId);
-
-            registerInfoMetadata.Id = Guid.NewGuid().ToString();
-            registerInfoMetadata.Period = RegisterPeriod.Month;
-
-            registerInfoMetadata.Properties = new List<dynamic>();
-
-            registerInfoMetadata.Properties.Add(
-                new {Property = RegisterConstants.RegistrarProperty, Type = RegisterPropertyType.Info});
-            registerInfoMetadata.Properties.Add(
-                new {Property = RegisterConstants.RegistrarTypeProperty, Type = RegisterPropertyType.Info});
-            registerInfoMetadata.Properties.Add(
-                new {Property = RegisterConstants.DocumentDateProperty, Type = RegisterPropertyType.Info});
-            registerInfoMetadata.Properties.Add(
-                new {Property = RegisterConstants.EntryTypeProperty, Type = RegisterPropertyType.Info});
-            registerInfoMetadata.Properties.Add(new {Property = "Room", Type = RegisterPropertyType.Dimension});
-            registerInfoMetadata.Properties.Add(new {Property = "Bed", Type = RegisterPropertyType.Dimension});
-            registerInfoMetadata.Properties.Add(new {Property = "Value", Type = RegisterPropertyType.Value});
-
-            registerInfoMetadata.DocumentId = CreateRegisterDocuments(ConfigurationId, InfoRegisterId);
-
-            managerRegister.MergeItem(registerInfoMetadata);
-
-            package = new PackageBuilder().BuildPackage(ConfigurationId, "1.0.0.0", GetType().Assembly.Location);
-
-            new UpdateApi().InstallPackages(new[] { package });
-
-            new UpdateApi().ForceReload(ConfigurationId);
-
-            new UpdateApi().UpdateStore(ConfigurationId);
-
-            // Добавляем документ (схема данных изменилась)
-            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
-                {
-                    Id = Guid.NewGuid(),
-                    PatientName = "Петров",
-                    NewRoom = "Палата 6",
-                    NewBed = 10,
-                    Date = new DateTime(2014, 08, 10)
-                });
-
-            aggregationInfo = new RegisterApi().GetValuesByDate(ConfigurationId, AvailableBedsRegisterId,
-                                                                    new DateTime(2014, 09, 11), new[] {"Room"});
-
-            Assert.AreEqual(0, aggregationInfo.First(a => a.Room.Contains("6")).Value);
+            // 12.08.2014 - Занята только первая койка в "Палата 6"
+            var aggregationInfo2 = registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 08, 12), new[] { "Room" }).ToArray();
+            Assert.AreEqual(2, aggregationInfo2.FirstOrDefault(i => i.Room == "палата 6")?.Value);
         }
 
-        [Test]
-        [Ignore]
+        [Test(Description = "Тестирование функционала таблицы итогов")]
         public void ShouldCalculateTotals()
         {
-            // Тестирование функционала таблицы итогов:
-            // помещаем содержимое регистра в таблицу итогов (миграция поместит имеющиеся на данный момент записи в таблицу итогов)
-            RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "runmigration", null,
-                                          new
-                                              {
-                                                  MigrationName = "CalculateTotalsForRegisters",
-                                                  ConfigurationName = ConfigurationId,
-                                                  Version = "1.0.0.0"
-                                              });
+            // Given
 
-            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
-                {
-                    Id = Guid.NewGuid(),
-                    PatientName = "Иванов",
-                    OldRoom = "Палата 33",
-                    OldBed = "Койка 3",
-                    Date = DateTime.Now.AddYears(2)
-                }, false, true);
+            var documentApi = new DocumentApi();
+            var registerApi = new RegisterApi();
 
-            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
-                {
-                    Id = Guid.NewGuid(),
-                    PatientName = "Петров",
-                    OldRoom = "Палата 33",
-                    OldBed = "Койка 2",
-                    Date = DateTime.Now.AddYears(2)
-                }, false, true);
+            // When
 
-            new DocumentApi().SetDocument(ConfigurationId, PatientMovementDocumentId, new
-                {
-                    Id = Guid.NewGuid(),
-                    PatientName = "Сидоров",
-                    OldRoom = "Палата 33",
-                    OldBed = "Койка 1",
-                    Date = DateTime.Now.AddYears(2)
-                }, false, true);
+            // Миграция поместит имеющиеся на данный момент записи в таблицу итогов
+            RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "runmigration", null, new { MigrationName = "CalculateTotalsForRegisters", ConfigurationName = ConfigurationId, Version = "1.0.0.0" });
+
+            AddPatientMovement(documentApi, DateTime.Now.AddYears(2), "Иванов", "Палата 33", "Койка 3", "", "");
+            AddPatientMovement(documentApi, DateTime.Now.AddYears(2), "Петров", "Палата 33", "Койка 2", "", "");
+            AddPatientMovement(documentApi, DateTime.Now.AddYears(2), "Сидоров", "Палата 33", "Койка 1", "", "");
 
             // В данном случае расчет будет произведен с учетом данных из таблицы итогов
-            IEnumerable<dynamic> aggregationInfo = new RegisterApi().GetValuesByDate(ConfigurationId,
-                                                                                         AvailableBedsRegisterId,
-                                                                                         DateTime.Now.AddYears(3));
+            var aggregationInfo = registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, DateTime.Now.AddYears(3)).ToArray();
 
-            foreach (dynamic bucket in aggregationInfo)
-            {
-                if (bucket.Room.Contains("54") && bucket.Bed.Contains("1"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
+            // Then
 
-                if (bucket.Room.Contains("54") && bucket.Bed.Contains("2"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
-
-                if (bucket.Room.Contains("54") && bucket.Bed.Contains("3"))
-                {
-                    Assert.AreEqual(1, bucket.Value);
-                }
-
-                if (bucket.Room.Contains("33") && bucket.Bed.Contains("1"))
-                {
-                    Assert.AreEqual(2, bucket.Value);
-                }
-
-                if (bucket.Room.Contains("33") && bucket.Bed.Contains("1"))
-                {
-                    Assert.AreEqual(2, bucket.Value);
-                }
-
-                if (bucket.Room.Contains("33") && bucket.Bed.Contains("1"))
-                {
-                    Assert.AreEqual(2, bucket.Value);
-                }
-            }
-
-            IEnumerable<dynamic> docs = new RegisterApi().GetRegisterTotals(ConfigurationId, AvailableBedsRegisterId,
-                                                                                DateTime.Now);
-
-            // Три палаты по три койки в каждой
-            Assert.GreaterOrEqual(docs.Count(), 6);
+            Assert.AreEqual(1d, aggregationInfo.FirstOrDefault(i => i.Room == "палата 54" && i.Bed == "койка 3")?.Value);
+            Assert.AreEqual(10d, aggregationInfo.FirstOrDefault(i => i.Room == "палата 33" && i.Bed == "койка 3")?.Value);
         }
 
         [Test]
-        [Ignore]
         public void ShouldDeleteRegisterEntriesAfterDeletingDocument()
         {
-            string testingDocumentGuid = Guid.NewGuid().ToString();
+            // Given
 
-            new DocumentApi().SetDocument(ConfigurationId, BedsRegistrationDocumentId, new
-                {
-                    Info = true,
-                    Id = testingDocumentGuid,
-                    Room = "Палата 123",
-                    Bed = "Койка 321",
-                    Date = new DateTime(2214, 01, 01)
-                });
+            var date = new DateTime(2214, 01, 01);
+            var documentApi = new DocumentApi();
+            var registerApi = new RegisterApi();
 
-            IEnumerable<dynamic> docs = new RegisterApi().GetRegisterEntries(
-                ConfigurationId,
-                InfoRegisterId,
-                f =>
-                f.AddCriteria(
-                    c => c.Property(RegisterConstants.DocumentDateProperty).IsMoreThan(new DateTime(2213, 01, 01))),
-                0, 1000);
+            // When
 
-            // Проверяем, что в регистр была помещена новая запись
-            Assert.AreEqual(1, docs.Count());
+            AddBed(documentApi, date, "Палата 123", "Койка 321");
 
-            // Удаляем документ
-            new DocumentApi().DeleteDocument(ConfigurationId, BedsRegistrationDocumentId, testingDocumentGuid);
+            var documentId = AddPatientMovement(documentApi, date, "Иванов", "", "", "Палата 123", "Койка 321");
 
-            docs = new RegisterApi().GetRegisterEntries(
-                ConfigurationId,
-                InfoRegisterId,
-                f =>
-                f.AddCriteria(
-                    c => c.Property(RegisterConstants.DocumentDateProperty).IsMoreThan(new DateTime(2213, 01, 01)))
-                , 0, 1000);
+            var registerEntries1 = registerApi.GetRegisterEntries(ConfigurationId, AvailableBedsRegister,
+                f => f.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty).IsMoreThanOrEquals(date)), 0, 10);
 
-            // Проверяем, что соответствующая запись была удалена из регистра
-            Assert.AreEqual(0, docs.Count());
+            documentApi.DeleteDocument(ConfigurationId, BedsRegistrationDocument, documentId);
+
+            var registerEntries2 = registerApi.GetRegisterEntries(ConfigurationId, AvailableBedsRegister,
+                f => f.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty).IsMoreThanOrEquals(date)), 0, 10);
+
+            // Then
+
+            Assert.AreEqual(2, registerEntries1.Count());
+            Assert.AreEqual(0, registerEntries2.Count());
         }
     }
 }

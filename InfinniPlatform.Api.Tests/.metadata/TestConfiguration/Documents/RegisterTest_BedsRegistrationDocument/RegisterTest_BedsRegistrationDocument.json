@@ -1,0 +1,34 @@
+﻿{
+  "Id": "46537971-a55e-4094-b7ca-e0dae60ed4a1",
+  "Services": [],
+  "Processes": [],
+  "Scenarios": [],
+  "Generators": [],
+  "Views": [],
+  "PrintViews": [],
+  "ValidationWarnings": [],
+  "ValidationErrors": [],
+  "Name": "RegisterTest_BedsRegistrationDocument",
+  "Caption": "Реестр коек",
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "Room": {
+        "Caption": "Палата",
+        "Type": "String"
+      },
+      "Bed": {
+        "Caption": "Койка",
+        "Type": "String"
+      },
+      "Date": {
+        "Caption": "Дата",
+        "Type": "DateTime"
+      },
+      "Info": {
+        "Type": "String"
+      }
+    }
+  }
+}
