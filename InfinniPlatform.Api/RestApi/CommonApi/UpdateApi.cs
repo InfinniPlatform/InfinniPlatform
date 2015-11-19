@@ -51,15 +51,15 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
                 {
                 };
 
-            var response = builder.QueryPostFile(linkedData, filePath, null);
+            var response = builder.QueryPostFile(linkedData, filePath);
 
             if (!response.IsAllOk)
             {
                 Console.WriteLine("===========package install error===============================");
-                Console.WriteLine("Response content: " + response.Content);
+                Console.WriteLine("Response content: " + response);
                 throw new ArgumentException(string.Format("Error update configuration: \"{0}\"  ", filePath));
             }
-            var result = response.Content.ToDynamic();
+            var result = response.ToDynamic();
             return result;
         }
 
@@ -76,15 +76,15 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
             {
             };
 
-            var response = builder.QueryPostFile(linkedData, filePath, null);
+            var response = builder.QueryPostFile(linkedData, filePath);
 
             if (!response.IsAllOk)
             {
                 Console.WriteLine("===========package install error===============================");
-                Console.WriteLine("Response content: " + response.Content);
+                Console.WriteLine("Response content: " + response);
                 throw new ArgumentException(string.Format("Error update solution: \"{0}\"  ", filePath));
             }
-            var result = response.Content.ToDynamic();
+            var result = response.ToDynamic();
             return result;
         }
 
@@ -98,7 +98,7 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
             if (!response.IsAllOk)
             {
                 Console.WriteLine("===========package install error===============================");
-                Console.WriteLine("Response content: " + response.Content);
+                Console.WriteLine("Response content: " + response);
                 throw new ArgumentException(string.Format("Error reload configuration: \"{0}\"  ", configurationId));
             }
         }
@@ -140,9 +140,9 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
             if (!response.IsAllOk)
             {
                 Console.WriteLine("===========package install error===============================");
-                Console.WriteLine("Response content: " + response.Content);
+                Console.WriteLine("Response content: " + response);
                 throw new ArgumentException(string.Format("Error install package {0} :{1} ",
-                    updatePackage.PackageHeader.Value, response.Content));
+                    updatePackage.PackageHeader.Value, response));
             }            
         }
     }

@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.RestApi.Auth;
+
 using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.WebApi.Middleware.RouteFormatters;
+
 using Microsoft.Owin;
-using Newtonsoft.Json.Linq;
-using InfinniPlatform.Api.Properties;
 
 namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 {
@@ -25,24 +20,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 
         protected override IRequestHandlerResult ExecuteHandler(IOwinContext context)
         {
-            dynamic body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
-
-            var routeDictionary = RouteFormatter.GetRouteDictionary(context);
-
-            if (body.UserName == null || body.OldPassword == null || body.NewPassword == null)
-            {
-                return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
-            }
-
-            try
-            {
-                return new ValueRequestHandlerResult(new SignInApi().ChangePassword(body.UserName.ToString(), body.OldPassword.ToString(),
-                     body.NewPassword.ToString()));
-            }
-            catch (Exception e)
-            {
-                return new ErrorRequestHandlerResult(e.Message);
-            }     
+            throw new NotSupportedException("Сервис SignInApi был удален ввиду своей неактуальности.");
         }
     }
 }

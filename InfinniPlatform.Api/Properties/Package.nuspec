@@ -4,7 +4,7 @@
 		<id>InfinniPlatform.Api</id>
 		<title>InfinniPlatform.Api</title>
 		<description>InfinniPlatform SDK for .NET</description>
-		<version>1.0.0.140</version>
+		<version>1.0.0.150</version>
 		<authors>Infinnity Solutions</authors>
 		<licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -14,7 +14,6 @@
 		<dependencies>
 			<dependency id="Newtonsoft.Json" version="7.0.1" />
 			<dependency id="NUnit" version="2.6.4" />
-			<dependency id="RestSharp" version="105.2.3" />
 		</dependencies>
 	</metadata>
 	<files>

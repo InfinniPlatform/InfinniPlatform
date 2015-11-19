@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.RestApi.Auth;
+
 using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.WebApi.Middleware.RouteFormatters;
 using Microsoft.Owin;
@@ -23,17 +19,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 
         protected override IRequestHandlerResult ExecuteHandler(IOwinContext context)
         {
-            dynamic result = null;
-            try
-            {
-                result = new SignInApi().SignOutInternal();
-            }
-            catch (Exception e)
-            {
-                return new ErrorRequestHandlerResult(e.Message);
-            }
-
-            return new ValueRequestHandlerResult(result);
+            throw new NotSupportedException("Сервис SignInApi был удален ввиду своей неактуальности.");
         }
     }
 }

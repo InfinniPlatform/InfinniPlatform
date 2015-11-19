@@ -120,7 +120,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                 // Необходимо получить идентификаторы всех доступных справочников
 
                 var classifierOids =
-                    oidsresponse.Content.ToDynamicList().Select(i => string.Format("{0} ({1})", i["Oid"], i["Name"]));
+                    oidsresponse.ToDynamicList().Select(i => string.Format("{0} ({1})", i["Oid"], i["Name"]));
 
                 _parameters.Add(new MigrationParameter { Caption = "Classifier", PossibleValues = classifierOids });
 

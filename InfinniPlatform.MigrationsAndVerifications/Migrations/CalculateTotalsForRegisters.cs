@@ -6,6 +6,7 @@ using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Register;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Migrations

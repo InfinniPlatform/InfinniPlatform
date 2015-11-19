@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 
 namespace InfinniPlatform.Sdk
 {
+    //TODO Класс по сути дублирует RequestExecutor в сборке InfinniPlatform.Api. Необходимо избавиться от дублирования.
     public sealed class RequestExecutor
     {
         [ThreadStatic]
@@ -31,7 +32,7 @@ namespace InfinniPlatform.Sdk
         {
             var urlBuilder = new StringBuilder(url);
 
-            if (arguments != null)
+            if (!string.IsNullOrEmpty(arguments))
             {
                 urlBuilder.Append($"?{arguments}");
             }
@@ -41,7 +42,7 @@ namespace InfinniPlatform.Sdk
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new InvalidOperationException(string.Format(Resources.CannotProcessPostRequest, response.StatusCode, content));
+                throw new InvalidOperationException(string.Format(Resources.CannotProcessGetRequest, response.StatusCode, content));
             }
 
             return content;
@@ -77,7 +78,7 @@ namespace InfinniPlatform.Sdk
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new InvalidOperationException(string.Format(Resources.CannotProcessPostRequest, response.StatusCode, content));
+                throw new InvalidOperationException(string.Format(Resources.CannotProcessPutRequest, response.StatusCode, content));
             }
 
             return content;
@@ -90,7 +91,7 @@ namespace InfinniPlatform.Sdk
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new InvalidOperationException(string.Format(Resources.CannotProcessPostRequest, response.StatusCode, content));
+                throw new InvalidOperationException(string.Format(Resources.CannotProcessDeleteRequest, response.StatusCode, content));
             }
 
             return content;
@@ -103,7 +104,7 @@ namespace InfinniPlatform.Sdk
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new InvalidOperationException(string.Format(Resources.CannotProcessPostRequest, response.StatusCode, content));
+                throw new InvalidOperationException(string.Format(Resources.CannotProcessGetRequest, response.StatusCode, content));
             }
 
             return content;
@@ -150,7 +151,7 @@ namespace InfinniPlatform.Sdk
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new InvalidOperationException(string.Format(Resources.CannotProcessPostRequest, response.StatusCode, content));
+                throw new InvalidOperationException(string.Format(Resources.CannotProcessGetRequest, response.StatusCode, content));
             }
 
             return content;

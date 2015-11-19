@@ -1,87 +1,70 @@
 ﻿using System;
+
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Api.RestApi.CommonApi
 {
     public sealed class IndexApi
     {
-        private readonly string _version;
-
         public IndexApi(string version = null)
         {
             _version = version;
         }
 
+        private readonly string _version;
+
         public void RebuildIndex(string configuration, string metadata)
         {
-            var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "rebuildindex", null, new
-                {
-                    Configuration = configuration,
-                    Metadata = metadata
-                });
-            if (!response.IsAllOk)
-            {
-                throw new ArgumentException(response.Content);
-            }
+            RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "rebuildindex", null, new
+                                                                                       {
+                                                                                           Configuration = configuration,
+                                                                                           Metadata = metadata
+                                                                                       });
         }
 
         public bool IndexExists(string configuration, string metadata)
         {
             var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "indexexists", null, new
-                {
-                    Configuration = configuration,
-                    Metadata = metadata
-                });
-            if (!response.IsAllOk)
-            {
-                throw new ArgumentException(response.Content);
-            }
-            dynamic result = response.Content.ToDynamic();
+                                                                                                     {
+                                                                                                         Configuration = configuration,
+                                                                                                         Metadata = metadata
+                                                                                                     });
+
+            dynamic result = response.ToDynamic();
             return result.IndexExists;
         }
 
         public dynamic GetFromIndex(string id, string configuration, string metadata)
         {
             var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "getfromindex", null, new
-                {
-                    Id = id,
-                    Configuration = configuration,
-                    Metadata = metadata
-                });
-            if (!response.IsAllOk)
-            {
-                throw new ArgumentException(response.Content);
-            }
-            return response.Content.ToDynamic();
+                                                                                                      {
+                                                                                                          Id = id,
+                                                                                                          Configuration = configuration,
+                                                                                                          Metadata = metadata
+                                                                                                      });
+
+            return response.ToDynamic();
         }
 
         public void InsertDocument(object item, string configuration, string metadata)
         {
-            var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "insertindex", null, new
-                {
-                    Item = item,
-                    Configuration = configuration,
-                    Metadata = metadata
-                });
-            if (!response.IsAllOk)
-            {
-                throw new ArgumentException(response.Content);
-            }
+            RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "insertindex", null, new
+                                                                                      {
+                                                                                          Item = item,
+                                                                                          Configuration = configuration,
+                                                                                          Metadata = metadata
+                                                                                      });
         }
 
         public void InsertDocumentWithTimestamp(object item, DateTime timeStamp, string configuration, string metadata)
         {
-            var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "insertindexwithtimestamp", null, new
-                {
-                    Item = item,
-                    Configuration = configuration,
-                    Metadata = metadata,
-                    TimeStamp = timeStamp
-                });
-            if (!response.IsAllOk)
-            {
-                throw new ArgumentException(response.Content);
-            }
+            RestQueryApi.QueryPostJsonRaw("RestfulApi", "index", "insertindexwithtimestamp", null, new
+                                                                                                   {
+                                                                                                       Item = item,
+                                                                                                       Configuration = configuration,
+                                                                                                       Metadata = metadata,
+                                                                                                       TimeStamp = timeStamp
+                                                                                                   });
         }
     }
 }

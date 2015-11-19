@@ -44,7 +44,6 @@ namespace InfinniPlatform.Factories
             _components.Add(new ContextRegistration(typeof(UploadApi), () => new UploadApi()));
             _components.Add(new ContextRegistration(typeof(MetadataApi), () => new MetadataApi()));
             _components.Add(new ContextRegistration(typeof(AuthApi), () => new AuthApi()));
-            _components.Add(new ContextRegistration(typeof(SignInApi), () => new SignInApi()));
             _components.Add(new ContextRegistration(typeof(InprocessDocumentComponent),
                 () => new InprocessDocumentComponent(new ConfigurationMediatorComponent(
                     dependencyContainerComponent.ResolveDependency<IConfigurationObjectBuilder>()

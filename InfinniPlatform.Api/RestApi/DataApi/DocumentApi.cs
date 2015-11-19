@@ -61,7 +61,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
             try
             {
-                return Convert.ToInt32(response.Content.ToDynamic().NumberOfDocuments);
+                return Convert.ToInt32(response.ToDynamic().NumberOfDocuments);
             }
             catch (Exception)
             {
@@ -290,7 +290,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
                 if (!string.IsNullOrEmpty(response.Content))
                 {
-                    dynamic dynamicContent = response.Content.ToDynamic();
+                    dynamic dynamicContent = response.ToDynamic();
 
                     if (dynamicContent != null &&
                         dynamicContent.IsValid != null &&

@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+
 using InfinniPlatform.Api.Profiling;
 using InfinniPlatform.Api.Profiling.Implementation;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
-using InfinniPlatform.Api.SearchOptions;
-using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Log;
 using InfinniPlatform.Sdk.Environment.Profiling;
@@ -21,6 +20,7 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
         Local,
         Remote
     }
+
 
     public static class RestQueryApi
     {
@@ -41,15 +41,15 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
             if (routingType == RoutingType.Local)
             {
                 _queryBuilder = (configuration, metadata, action) =>
-                    new LocalQueryBuilder(configuration, metadata, action,
-                        !string.IsNullOrEmpty(Thread.CurrentPrincipal.Identity.Name)
-                            ? Thread.CurrentPrincipal.Identity.Name
-                            : AuthorizationStorageExtensions.UnknownUser, _operationProfiler);
+                                new LocalQueryBuilder(configuration, metadata, action,
+                                                      !string.IsNullOrEmpty(Thread.CurrentPrincipal.Identity.Name)
+                                                          ? Thread.CurrentPrincipal.Identity.Name
+                                                          : AuthorizationStorageExtensions.UnknownUser, _operationProfiler);
             }
             else
             {
                 _queryBuilder = (configuration, metadata, action) =>
-                    new RestQueryBuilder(configuration, metadata, action, _operationProfiler);
+                                new RestQueryBuilder(configuration, metadata, action, _operationProfiler);
             }
 
             RoutingType = routingType;
@@ -61,7 +61,7 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
             {
                 _operationProfiler =
                     (configuration, metadata, action, body) =>
-                        new RestQueryProfiler(Log, configuration, metadata, action, body);
+                    new RestQueryProfiler(Log, configuration, metadata, action, body);
             }
             else
             {
@@ -76,7 +76,7 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
             var profiler = _operationProfiler(configuration, metadata, action, null);
 
             profiler.Reset();
-            var response = builder.QueryPostFile(linkedData, filePath, SignInApi.CookieContainer);
+            var response = builder.QueryPostFile(linkedData, filePath);
             profiler.TakeSnapshot();
 
             CheckResponse(response);
@@ -91,7 +91,7 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
             var profiler = _operationProfiler(configuration, metadata, action, null);
 
             profiler.Reset();
-            var response = builder.QueryPostFile(linkedData, fileStream, SignInApi.CookieContainer);
+            var response = builder.QueryPostFile(linkedData, fileStream);
             profiler.TakeSnapshot();
 
             CheckResponse(response);
@@ -136,7 +136,7 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
             var profiler = _operationProfiler(configuration, metadata, action, body);
 
             profiler.Reset();
-            var response = builder.QueryPost(id, body, SignInApi.CookieContainer);
+            var response = builder.QueryPost(id, body);
             profiler.TakeSnapshot();
 
             CheckResponse(response);
@@ -152,7 +152,7 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
             var builder = _queryBuilder(configuration, metadata, action);
             profiler.TakeSnapshot();
 
-            var response = builder.QueryPostJson(id, body,SignInApi.CookieContainer);
+            var response = builder.QueryPostJson(id, body);
 
             CheckResponse(response);
 
@@ -167,7 +167,7 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
             var builder = _queryBuilder(configuration, metadata, action);
             profiler.TakeSnapshot();
 
-            var response = builder.QueryGet(filter, pageNumber, pageSize, 1, SignInApi.CookieContainer);
+            var response = builder.QueryGet(filter, pageNumber, pageSize, 1);
 
             CheckResponse(response);
 
@@ -179,14 +179,14 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
             var builder = _queryBuilder(configuration, metadata, action);
 
             var response = builder.QueryAggregation(
-                aggregationConfiguration,
-                aggregationMetadata,
-                filterObject,
-                dimensions,
-                aggregationTypes,
-                aggregationFields,
-                pageNumber,
-                pageSize, SignInApi.CookieContainer);
+                                                    aggregationConfiguration,
+                                                    aggregationMetadata,
+                                                    filterObject,
+                                                    dimensions,
+                                                    aggregationTypes,
+                                                    aggregationFields,
+                                                    pageNumber,
+                                                    pageSize);
 
             CheckResponse(response);
 
@@ -200,7 +200,7 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
             var profiler = _operationProfiler(configurationId, string.Empty, "Notify", null);
 
             profiler.Reset();
-            var response = builder.QueryNotify(configurationId, SignInApi.CookieContainer);
+            var response = builder.QueryNotify(configurationId);
             profiler.TakeSnapshot();
 
             CheckResponse(response);

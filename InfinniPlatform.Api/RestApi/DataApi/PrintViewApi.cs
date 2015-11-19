@@ -21,7 +21,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                     PageNumber = pageNumber,
                     PageSize = pageSize,
                     Filter = filterBuilder.GetFilter()
-                }).Content;
+                });
         }
     }
 }

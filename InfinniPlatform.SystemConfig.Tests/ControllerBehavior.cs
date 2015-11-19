@@ -1,6 +1,5 @@
 ﻿using System;
 using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
 using InfinniPlatform.NodeServiceHost;
 
@@ -31,7 +30,7 @@ namespace InfinniPlatform.SystemConfig.Tests
         {
             var builder = new RestQueryBuilder("SystemConfig", "metadata", "helpconfiguration", null);
 
-            RestQueryResponse help = builder.QueryHelp("dmd");
+            var help = builder.QueryHelp("dmd");
 
             Assert.IsNotNull(help);
 
@@ -43,7 +42,7 @@ namespace InfinniPlatform.SystemConfig.Tests
         [Test]
         public void ShouldGetPrefillUnits()
         {
-            RestQueryResponse response = RestQueryApi.QueryPostJsonRaw("systemconfig", "prefill", "getfillitems", null,
+            var response = RestQueryApi.QueryPostJsonRaw("systemconfig", "prefill", "getfillitems", null,
                                                                        null);
             Assert.AreEqual(true, response.IsAllOk);
         }
@@ -53,7 +52,7 @@ namespace InfinniPlatform.SystemConfig.Tests
         public void ShouldGetRegisteredConfigList()
         {
             var builder = new RestQueryBuilder( "SystemConfig", "metadata", "getregisteredconfiglist", null);
-            RestQueryResponse result = builder.QueryPostJson(null, null);
+            var result = builder.QueryPostJson(null, null);
 
             Assert.True(result.IsAllOk);
 
@@ -66,7 +65,7 @@ namespace InfinniPlatform.SystemConfig.Tests
         {
             var builder = new RestQueryBuilder("SystemConfig", "metadata", "getstandardextensionpoints", null);
 
-            RestQueryResponse response = builder.QueryGet(null, 0, 1000);
+            var response = builder.QueryGet(null, 0, 1000);
 
             Assert.AreEqual(true, response.IsAllOk);
             Assert.True(response.Content.Contains("[\"Action\",\"OnSuccess\",\"OnFail\",\"Validation\"]"));

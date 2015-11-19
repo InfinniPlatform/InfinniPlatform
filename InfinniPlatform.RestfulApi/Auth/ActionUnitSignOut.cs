@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Api.RestApi.Auth;
-using InfinniPlatform.Sdk.Contracts;
+﻿using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.RestfulApi.Auth
 {
@@ -7,7 +7,11 @@ namespace InfinniPlatform.RestfulApi.Auth
     {
         public void Action(IApplyContext target)
         {
-            target.Context.GetComponent<SignInApi>().SignOutInternal();
+            // TODO: Сервис SignInApi был удален ввиду своей неактуальности.
+
+            target.Result = new DynamicWrapper();
+            target.Result.IsValid = false;
+            target.Result.ValidationMessage = "Not Supported";
         }
     }
 }

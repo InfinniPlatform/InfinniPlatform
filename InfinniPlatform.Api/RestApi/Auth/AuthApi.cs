@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using InfinniPlatform.Api.RestApi.CommonApi;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Api.RestApi.Auth
 {

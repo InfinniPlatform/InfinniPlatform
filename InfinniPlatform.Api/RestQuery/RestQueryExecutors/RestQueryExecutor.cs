@@ -1,120 +1,194 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Text;
+
 using Newtonsoft.Json;
-using RestSharp;
-using RestSharp.Extensions;
 
 namespace InfinniPlatform.Api.RestQuery.RestQueryExecutors
 {
+    //TODO Класс по сути дублирует RequestExecutor в сборке InfinniPlatform.Sdk. Необходимо избавиться от дублирования.
+    /// <summary>
+    /// Сервис для отправки HTTP запросов.
+    /// </summary>
     public sealed class RestQueryExecutor : IRestQueryExecutor
     {
-        private readonly CookieContainer _cookieContainer;
-
-        public RestQueryExecutor(CookieContainer cookieContainer = null)
+        /// <summary>
+        /// Сервис для отправки HTTP запросов.
+        /// </summary>
+        public RestQueryExecutor()
         {
-            _cookieContainer = cookieContainer;
+            var clientHandler = new HttpClientHandler { CookieContainer = new CookieContainer() };
+            var client = new HttpClient(clientHandler);
+
+            _client = client;
         }
 
+        private readonly HttpClient _client;
+
+        /// <summary>
+        /// Отправляет GET-запрос.
+        /// </summary>
+        /// <param name="url">URL.</param>
+        /// <param name="queryObject"></param>
+        /// <exception cref="InvalidOperationException"></exception>
         public RestQueryResponse QueryGet(string url, object queryObject)
         {
-            var restClient = new RestClient(url);
-
-            restClient.CookieContainer = _cookieContainer;
-
-            restClient.Timeout = 1000*60*200;
             var argumentsString = JsonConvert.SerializeObject(queryObject);
-            var restResponse = restClient.Get(new RestRequest("?query={argument}") {RequestFormat = DataFormat.Json}
-                .AddUrlSegment("argument", argumentsString));
 
-            return restResponse.ToQueryResponse();
+            var urlBuilder = new StringBuilder(url);
+
+            if (argumentsString != null)
+            {
+                urlBuilder.Append($"?query={argumentsString}");
+            }
+
+            var response = _client.GetAsync(urlBuilder.ToString()).Result;
+            var content = response.Content.ReadAsStringAsync().Result;
+
+            return new RestQueryResponse
+                   {
+                       Content = content,
+                       HttpStatusCode = response.StatusCode
+                   };
         }
 
+        /// <summary>
+        /// Отправляет POST-запрос.
+        /// </summary>
+        /// <param name="url">URL.</param>
+        /// <param name="body"></param>
+        /// <exception cref="InvalidOperationException"></exception>
         public RestQueryResponse QueryPost(string url, object body)
         {
-            var restClient = new RestClient(url);
+            var jsonRequestContent = body.ToJsonHttpContent();
 
+            var response = _client.PostAsync(new Uri(url), jsonRequestContent).Result;
+            var content = response.Content.ReadAsStringAsync().Result;
 
-            restClient.CookieContainer = _cookieContainer;
-
-
-            // TODO: HOT FIX
-            // Изменение времени ожидания ответа сделано для того, чтобы можно было загрузить
-            // объемные справочники из реестра Росминздрава. Дело в том, что в конфигурации
-            // ExternalClassifiersLoader может быть запущен импорт очень больших справочников,
-            // например, справочник лекарственных средств 1.2.643.5.1.13.2.1.1.587 имеет 22 тысячи записей,
-            // которые загружаются страницами по 500 через медленный SOAP. Загрузка справочника 
-            // занимает порядка 20 минут.
-            // 
-            // Необходимо переделать реализацию и использовать шину сообщений,
-            // пока сделано простое увеличение таймаута до 200 минут 
-            restClient.Timeout = 1000*60*300;
-
-            var restResponse = restClient.Post(
-                new RestRequest
-                {
-                    RequestFormat = DataFormat.Json
-                }
-                    .AddBody(body));
-
-            return restResponse.ToQueryResponse();
+            return new RestQueryResponse
+                   {
+                       Content = content,
+                       HttpStatusCode = response.StatusCode
+                   };
         }
 
+        /// <summary>
+        /// Отправляет POST-запрос с файлом в качестве параметра.
+        /// </summary>
+        /// <param name="url">URL.</param>
+        /// <param name="linkedData">Параметры запроса.</param>
+        /// <param name="filePath">Путь до файла.</param>
         public RestQueryResponse QueryPostFile(string url, object linkedData, string filePath)
         {
-            var restClient = new RestClient(url);
-
-            restClient.CookieContainer = _cookieContainer;
-            restClient.Timeout = 1000*60*200;
-
-            var restResponse =
-                restClient.Post(new RestRequest("?linkedData={argument}") {RequestFormat = DataFormat.Json}
-                    .AddUrlSegment("argument", JsonConvert.SerializeObject(linkedData))
-                    .AddFile(Path.GetFileName(filePath), File.ReadAllBytes(filePath), Path.GetFileName(filePath),
-                        "multipart/form-data"));
-            return restResponse.ToQueryResponse();
+            var fileStream = new FileStream(filePath, FileMode.Open);
+            return QueryPostFile(url, linkedData, fileStream);
         }
 
+        /// <summary>
+        /// Отправляет POST-запрос с параметрами.
+        /// </summary>
+        /// <param name="url">URL.</param>
+        /// <param name="formData">Параметры.</param>
+        /// <exception cref="InvalidOperationException"></exception>
         public RestQueryResponse QueryPostUrlEncodedData(string url, object formData)
         {
-            var restClient = new RestClient(url);
+            var formDataJson = formData.ToJsonHttpContent();
 
-            restClient.CookieContainer = _cookieContainer;
-            restClient.Timeout = 1000*60*200;
+            var urlBuilder = new StringBuilder(url);
+            urlBuilder.Append($"?Form={formDataJson}");
+            var response = _client.PostAsync(new Uri(url), formDataJson).Result;
+            var content = response.Content.ReadAsStringAsync().Result;
 
-            var request = new RestRequest("", Method.POST);
-            request.AddParameter("Form", JsonConvert.SerializeObject(formData));
-            var response = restClient.Execute(request);
-            return response.ToQueryResponse();
+            return new RestQueryResponse
+                   {
+                       Content = content,
+                       HttpStatusCode = response.StatusCode
+                   };
         }
 
+        /// <summary>
+        /// Отправляет GET-запрос с параметрами.
+        /// </summary>
+        /// <param name="url">URL.</param>
+        /// <param name="formData">Параметры.</param>
+        /// <exception cref="InvalidOperationException"></exception>
         public RestQueryResponse QueryGetUrlEncodedData(string url, object formData)
         {
-            var restClient = new RestClient(url);
+            var formDataJson = formData.SerializeToJson();
 
-            restClient.CookieContainer = _cookieContainer;
-            restClient.Timeout = 1000*60*200;
+            var urlBuilder = new StringBuilder(url);
+            urlBuilder.Append($"?Form={formDataJson}");
+            var response = _client.GetAsync(new Uri(url)).Result;
+            var content = response.Content.ReadAsStringAsync().Result;
 
-            var argumentsString = JsonConvert.SerializeObject(formData);
-            var restResponse = restClient.Get(new RestRequest("?Form={formData}") {RequestFormat = DataFormat.Json}
-                .AddUrlSegment("formData", argumentsString)
-                );
-            return restResponse.ToQueryResponse();
+            return new RestQueryResponse
+                   {
+                       Content = content,
+                       HttpStatusCode = response.StatusCode
+                   };
         }
 
+        /// <summary>
+        /// Отправляет POST-запрос с файлом в качестве параметра.
+        /// </summary>
+        /// <param name="url">URL.</param>
+        /// <param name="linkedData">Параметры запроса.</param>
+        /// <param name="fileStream">Файловый поток.</param>
+        /// <exception cref="InvalidOperationException"></exception>
         public RestQueryResponse QueryPostFile(string url, object linkedData, Stream fileStream)
         {
-            var restClient = new RestClient(url);
+            string fileName = ((dynamic)linkedData).FileName.ToString();
 
-            restClient.CookieContainer = _cookieContainer;
-            restClient.Timeout = 1000*60*200;
+            var linkedDataJson = JsonConvert.SerializeObject(linkedData);
 
-            string fileName = ((dynamic) linkedData).FileName.ToString();
+            var urlBuilder = new StringBuilder(url);
+            urlBuilder.Append($"?linkedData={linkedDataJson}");
 
-            var restResponse =
-                restClient.Post(new RestRequest("?linkedData={argument}") {RequestFormat = DataFormat.Json}
-                    .AddUrlSegment("argument", JsonConvert.SerializeObject(linkedData))
-                    .AddFile(fileName, fileStream.ReadAsBytes(), fileName, "multipart/form-data"));
-            return restResponse.ToQueryResponse();
+            var dataContent = new MultipartFormDataContent { { new StreamContent(fileStream), fileName, fileName } };
+
+            var response = _client.PostAsync(new Uri(urlBuilder.ToString()), dataContent).Result;
+            var content = response.Content.ReadAsStringAsync().Result;
+
+            return new RestQueryResponse
+                   {
+                       Content = content,
+                       HttpStatusCode = response.StatusCode
+                   };
+        }
+    }
+
+
+    /// <summary>
+    /// Класс расширений для RequestExecutor.
+    /// </summary>
+    public static class RequestExecutorExtension
+    {
+        /// <summary>
+        /// Преобразует объект в JSON-строку для передачи в HTTP-запросе.
+        /// </summary>
+        /// <param name="body">Объект.</param>
+        public static StringContent ToJsonHttpContent(this object body)
+        {
+            var jsonBody = body != null
+                               ? SerializeToJson(body)
+                               : string.Empty;
+
+            var jsonRequestContent = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+
+            return jsonRequestContent;
+        }
+
+        /// <summary>
+        /// Сериализует объект в JSON строку.
+        /// </summary>
+        /// <param name="target">Объект.</param>
+        public static string SerializeToJson(this object target)
+        {
+            return target != null
+                       ? JsonConvert.SerializeObject(target)
+                       : null;
         }
     }
 }
