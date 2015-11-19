@@ -36,6 +36,12 @@
     "DatePicker": {
       "$ref": "http://demo.infinnity.ru:8081/display/MC/DatePicker"
     },
+    "PasswordBox": {
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/PasswordBox"
+    },
+    "Icon": {
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/Icon"
+    },
     "ImageBox": {
       "$ref": "http://demo.infinnity.ru:8081/display/MC/ImageBox"
     },
@@ -83,6 +89,9 @@
     },
     "ExtensionPanel": {
       "$ref": "http://demo.infinnity.ru:8081/display/MC/ExtensionPanel"
+    },
+    "Frame": {
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/Frame"
     }
   },
   "additionalProperties": false

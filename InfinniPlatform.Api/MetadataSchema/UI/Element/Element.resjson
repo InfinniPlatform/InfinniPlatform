@@ -62,6 +62,10 @@
       "description": "Текстура элемента",
       "type": "object"
     },
+    "ToolTip": {
+      "description": "Подсказка элемента",
+      "$ref": "http://demo.infinnity.ru:8081/display/MC/VisualElement"
+    },
     "OnLoaded": {
       "description": "Обработчик события о том, что элемент был загружен",
       "$ref": "http://demo.infinnity.ru:8081/display/MC/LinkScript"

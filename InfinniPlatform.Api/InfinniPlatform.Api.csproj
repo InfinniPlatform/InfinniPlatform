@@ -611,6 +611,15 @@
   <ItemGroup>
     <EmbeddedResource Include="MetadataSchema\UI\Action\ActionBase.resjson" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MetadataSchema\UI\Components\PasswordBox\PasswordBox.resjson" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MetadataSchema\UI\Components\Icon\Icon.resjson" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MetadataSchema\UI\Components\Frame\Frame.resjson" />
+  </ItemGroup>
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
