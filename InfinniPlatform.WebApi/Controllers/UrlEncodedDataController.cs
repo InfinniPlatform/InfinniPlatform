@@ -89,10 +89,10 @@ namespace InfinniPlatform.WebApi.Controllers
 
 
 		private dynamic GetParamsDictionary()
-		{
-			var dataProvider = Request.Content.ReadAsFormDataAsync().Result;
-
-			return dataProvider.Get("Form").ToDynamic();			
+        {
+            var dataProvider = Request.Content.ReadAsStringAsync().Result;
+            
+            return dataProvider.ToDynamic();			
 		}
 
 

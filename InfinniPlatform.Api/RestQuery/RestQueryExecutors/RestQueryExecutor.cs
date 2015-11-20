@@ -37,11 +37,10 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryExecutors
         {
             var argumentsString = JsonConvert.SerializeObject(queryObject);
 
-            var urlBuilder = new StringBuilder(url);
-
+            var urlBuilder = new StringBuilder(url.Trim('/'));
             if (argumentsString != null)
             {
-                urlBuilder.Append($"?query={argumentsString}");
+                urlBuilder.Append($"/?query={argumentsString}");
             }
 
             var response = _client.GetAsync(urlBuilder.ToString()).Result;
@@ -64,7 +63,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryExecutors
         {
             var jsonRequestContent = body.ToJsonHttpContent();
 
-            var response = _client.PostAsync(new Uri(url), jsonRequestContent).Result;
+            var response = _client.PostAsync(url, jsonRequestContent).Result;
             var content = response.Content.ReadAsStringAsync().Result;
 
             return new RestQueryResponse
@@ -94,11 +93,13 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryExecutors
         /// <exception cref="InvalidOperationException"></exception>
         public RestQueryResponse QueryPostUrlEncodedData(string url, object formData)
         {
-            var formDataJson = formData.ToJsonHttpContent();
-
-            var urlBuilder = new StringBuilder(url);
-            urlBuilder.Append($"?Form={formDataJson}");
-            var response = _client.PostAsync(new Uri(url), formDataJson).Result;
+            var formDataJson = formData.SerializeToJson();
+            var jsonHttpContent = formData.ToJsonHttpContent();
+            
+            var urlBuilder = new StringBuilder(url.Trim('/'));
+            urlBuilder.Append($"/?Form={formDataJson}");
+            
+            var response = _client.PostAsync(urlBuilder.ToString(), jsonHttpContent).Result;
             var content = response.Content.ReadAsStringAsync().Result;
 
             return new RestQueryResponse
@@ -118,9 +119,9 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryExecutors
         {
             var formDataJson = formData.SerializeToJson();
 
-            var urlBuilder = new StringBuilder(url);
-            urlBuilder.Append($"?Form={formDataJson}");
-            var response = _client.GetAsync(new Uri(url)).Result;
+            var urlBuilder = new StringBuilder(url.Trim('/'));
+            urlBuilder.Append($"/?Form={formDataJson}");
+            var response = _client.GetAsync(urlBuilder.ToString()).Result;
             var content = response.Content.ReadAsStringAsync().Result;
 
             return new RestQueryResponse
@@ -143,12 +144,12 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryExecutors
 
             var linkedDataJson = JsonConvert.SerializeObject(linkedData);
 
-            var urlBuilder = new StringBuilder(url);
-            urlBuilder.Append($"?linkedData={linkedDataJson}");
+            var urlBuilder = new StringBuilder(url.Trim('/'));
+            urlBuilder.Append($"/?linkedData={linkedDataJson}");
 
             var dataContent = new MultipartFormDataContent { { new StreamContent(fileStream), fileName, fileName } };
 
-            var response = _client.PostAsync(new Uri(urlBuilder.ToString()), dataContent).Result;
+            var response = _client.PostAsync(urlBuilder.ToString(), dataContent).Result;
             var content = response.Content.ReadAsStringAsync().Result;
 
             return new RestQueryResponse
@@ -175,7 +176,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryExecutors
                                ? SerializeToJson(body)
                                : string.Empty;
 
-            var jsonRequestContent = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+            var jsonRequestContent = new StringContent(jsonBody, Encoding.UTF8);
 
             return jsonRequestContent;
         }
