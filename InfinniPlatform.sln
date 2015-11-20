@@ -230,6 +230,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Monitoring", "Monitoring", 
 		Files\Monitoring\Inf.Performance.kibana.json = Files\Monitoring\Inf.Performance.kibana.json
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.IoC", "InfinniPlatform.IoC\InfinniPlatform.IoC.csproj", "{197A078F-F42F-4F87-B8B2-463129ED4797}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.IoC.Tests", "InfinniPlatform.IoC.Tests\InfinniPlatform.IoC.Tests.csproj", "{075765EF-E0DF-45D4-86E3-5DE2AFBAE5F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -544,6 +548,14 @@ Global
 		{CACE5337-D31B-4AF2-ACF5-C98CA01DB1F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CACE5337-D31B-4AF2-ACF5-C98CA01DB1F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CACE5337-D31B-4AF2-ACF5-C98CA01DB1F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{197A078F-F42F-4F87-B8B2-463129ED4797}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{197A078F-F42F-4F87-B8B2-463129ED4797}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{197A078F-F42F-4F87-B8B2-463129ED4797}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{197A078F-F42F-4F87-B8B2-463129ED4797}.Release|Any CPU.Build.0 = Release|Any CPU
+		{075765EF-E0DF-45D4-86E3-5DE2AFBAE5F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{075765EF-E0DF-45D4-86E3-5DE2AFBAE5F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{075765EF-E0DF-45D4-86E3-5DE2AFBAE5F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{075765EF-E0DF-45D4-86E3-5DE2AFBAE5F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -609,5 +621,7 @@ Global
 		{DCB067DB-E581-4F90-85DF-ACF9C6B42AD4} = {89D37C8B-9A73-45AB-A4C0-E91DC1A6D5CA}
 		{8237A533-D176-4BB1-86F7-F07C7AEFBA03} = {9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}
 		{C71676EF-83E3-4549-B43E-F3CEAE4FABC7} = {9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}
+		{197A078F-F42F-4F87-B8B2-463129ED4797} = {76075218-7249-4C01-A184-35E066952A8F}
+		{075765EF-E0DF-45D4-86E3-5DE2AFBAE5F5} = {76075218-7249-4C01-A184-35E066952A8F}
 	EndGlobalSection
 EndGlobal
