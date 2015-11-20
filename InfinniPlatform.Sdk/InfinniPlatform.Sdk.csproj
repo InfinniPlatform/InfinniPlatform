@@ -193,6 +193,7 @@
     <Compile Include="Global\ICustomServiceGlobalContext.cs" />
     <Compile Include="Global\ScriptContext.cs" />
     <Compile Include="IoC\IContainerBuilder.cs" />
+    <Compile Include="IoC\IContainerInstanceActivator.cs" />
     <Compile Include="IoC\IContainerModule.cs" />
     <Compile Include="IoC\IContainerParameterResolver.cs" />
     <Compile Include="IoC\IContainerRegistrationRule.cs" />

@@ -16,7 +16,7 @@ namespace InfinniPlatform.Sdk.IoC
         /// <example>
         /// RegisterType&lt;MyComponent&gt;()
         /// </example>
-        IContainerRegistrationRule RegisterType<TComponent>();
+        IContainerRegistrationRule RegisterType<TComponent>() where TComponent : class;
 
         /// <summary>
         /// Регистрирует компонент по его типу.
@@ -49,7 +49,7 @@ namespace InfinniPlatform.Sdk.IoC
         /// <example>
         /// RegisterInstance(new MyComponent())
         /// </example>
-        IContainerRegistrationRule RegisterInstance<TComponent>(TComponent componentInstance);
+        IContainerRegistrationRule RegisterInstance<TComponent>(TComponent componentInstance) where TComponent : class;
 
         /// <summary>
         /// Регистрирует фабричный метод компонента.
@@ -60,7 +60,7 @@ namespace InfinniPlatform.Sdk.IoC
         /// <example>
         /// RegisterFactory(r =&gt; new MyComponent())
         /// </example>
-        IContainerRegistrationRule RegisterFactory<TComponent>(Func<IContainerResolver, TComponent> componentFactory);
+        IContainerRegistrationRule RegisterFactory<TComponent>(Func<IContainerResolver, TComponent> componentFactory) where TComponent : class;
 
         /// <summary>
         /// Определяет обработчик на событие создания зависимости.
@@ -71,7 +71,7 @@ namespace InfinniPlatform.Sdk.IoC
         /// <summary>
         /// Определяет обработчик на событие инициализации зависимости.
         /// </summary>
-        /// <param name="instanceActivator">Обработчик инициализации зависимости.</param>
-        void OnActivateInstance(Func<object> instanceActivator);
+        /// <param name="instanceActivator">Обработчик инициализации экземпляра зависимости.</param>
+        void OnActivateInstance(IContainerInstanceActivator instanceActivator);
     }
 }

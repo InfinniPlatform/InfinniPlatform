@@ -39,6 +39,16 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutofacActivateInstanceModule.cs" />
+    <Compile Include="AutofacContainerBuilder.cs" />
+    <Compile Include="AutofacContainerModule.cs" />
+    <Compile Include="AutofacContainerResolver.cs" />
+    <Compile Include="AutofacContainerRegistrationRule.cs" />
+    <Compile Include="AutofacCreateInstanceModule.cs" />
+    <Compile Include="BaseDirectoryContainerModuleScanner.cs" />
+    <Compile Include="ContainerFactory.cs" />
+    <Compile Include="ContainerModuleInfo.cs" />
+    <Compile Include="ContainerModuleLocation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

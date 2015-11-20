@@ -59,5 +59,14 @@ namespace InfinniPlatform.IoC.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Can not create IoC container module..
+        /// </summary>
+        internal static string CannotCreateContainerModule {
+            get {
+                return ResourceManager.GetString("CannotCreateContainerModule", resourceCulture);
+            }
+        }
     }
 }
