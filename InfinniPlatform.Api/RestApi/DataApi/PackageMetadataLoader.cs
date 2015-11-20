@@ -250,7 +250,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             return assemblies.FirstOrDefault(assembly => assembly.Name == assemblyId);
         }
 
-        public static IEnumerable<object> GetAssemblies(string configId)
+        public static IEnumerable<dynamic> GetAssemblies(string configId)
         {
             dynamic configuration = Configurations[configId];
             return configuration.Content.Assemblies;
