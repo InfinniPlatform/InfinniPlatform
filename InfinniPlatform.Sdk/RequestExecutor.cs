@@ -4,8 +4,6 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 
-using InfinniPlatform.Sdk.Properties;
-
 using Newtonsoft.Json;
 
 namespace InfinniPlatform.Sdk
@@ -28,39 +26,37 @@ namespace InfinniPlatform.Sdk
 
         public static RequestExecutor Instance => _instance ?? (_instance = new RequestExecutor());
 
-        public string QueryGet(string url, string arguments = null)
+        public RestQueryResponse QueryGet(string url, string arguments = null)
         {
-            var urlBuilder = new StringBuilder(url);
+            var urlBuilder = new StringBuilder(url.Trim('/'));
 
             if (!string.IsNullOrEmpty(arguments))
             {
-                urlBuilder.Append($"?{arguments}");
+                urlBuilder.Append($"/?{arguments}");
             }
 
             var response = _client.GetAsync(urlBuilder.ToString()).Result;
             var content = response.Content.ReadAsStringAsync().Result;
 
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new InvalidOperationException(string.Format(Resources.CannotProcessGetRequest, response.StatusCode, content));
-            }
-
-            return content;
+            return new RestQueryResponse
+                   {
+                       Content = content,
+                       HttpStatusCode = response.StatusCode
+                   };
         }
 
-        public string QueryPost(string url, object body = null)
+        public RestQueryResponse QueryPost(string url, object body = null)
         {
             var jsonRequestContent = CreateJsonHttpContent(body);
 
-            var response = _client.PostAsync(new Uri(url), jsonRequestContent).Result;
+            var response = _client.PostAsync(url, jsonRequestContent).Result;
             var content = response.Content.ReadAsStringAsync().Result;
 
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new InvalidOperationException(string.Format(Resources.CannotProcessPostRequest, response.StatusCode, content));
-            }
-
-            return content;
+            return new RestQueryResponse
+                   {
+                       Content = content,
+                       HttpStatusCode = response.StatusCode
+                   };
         }
 
         /// <summary>
@@ -69,48 +65,45 @@ namespace InfinniPlatform.Sdk
         /// <param name="url">URL</param>
         /// <param name="body">Тело запроса</param>
         /// <returns>Результат выполнения запроса</returns>
-        public string QueryPut(string url, object body = null)
+        public RestQueryResponse QueryPut(string url, object body = null)
         {
             var jsonRequestContent = CreateJsonHttpContent(body);
 
-            var response = _client.PutAsync(new Uri(url), jsonRequestContent).Result;
+            var response = _client.PutAsync(url, jsonRequestContent).Result;
             var content = response.Content.ReadAsStringAsync().Result;
 
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new InvalidOperationException(string.Format(Resources.CannotProcessPutRequest, response.StatusCode, content));
-            }
-
-            return content;
+            return new RestQueryResponse
+                   {
+                       Content = content,
+                       HttpStatusCode = response.StatusCode
+                   };
         }
 
-        public string QueryDelete(string url, dynamic body = null)
+        public RestQueryResponse QueryDelete(string url, dynamic body = null)
         {
-            var response = _client.DeleteAsync(new Uri(url)).Result;
+            var response = _client.DeleteAsync(url).Result;
             var content = response.Content.ReadAsStringAsync().Result;
 
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new InvalidOperationException(string.Format(Resources.CannotProcessDeleteRequest, response.StatusCode, content));
-            }
-
-            return content;
+            return new RestQueryResponse
+                   {
+                       Content = content,
+                       HttpStatusCode = response.StatusCode
+                   };
         }
 
-        public string QueryGetById(string url)
+        public RestQueryResponse QueryGetById(string url)
         {
-            var response = _client.GetAsync(new Uri(url)).Result;
+            var response = _client.GetAsync(url).Result;
             var content = response.Content.ReadAsStringAsync().Result;
 
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new InvalidOperationException(string.Format(Resources.CannotProcessGetRequest, response.StatusCode, content));
-            }
-
-            return content;
+            return new RestQueryResponse
+                   {
+                       Content = content,
+                       HttpStatusCode = response.StatusCode
+                   };
         }
 
-        public string QueryPostFile(string url, string applicationId, string documentType, string instanceId, string fieldName, string fileName, Stream fileStream, string sessionId = null)
+        public RestQueryResponse QueryPostFile(string url, string applicationId, string documentType, string instanceId, string fieldName, string fileName, Stream fileStream, string sessionId = null)
         {
             var linkedData = new
                              {
@@ -124,37 +117,35 @@ namespace InfinniPlatform.Sdk
 
             var linkedDataJson = JsonConvert.SerializeObject(linkedData);
 
-            var urlBuilder = new StringBuilder(url);
-            urlBuilder.Append($"?linkedData={linkedDataJson}");
+            var urlBuilder = new StringBuilder(url.Trim('/'));
+            urlBuilder.Append($"/?linkedData={linkedDataJson}");
 
             var dataContent = new MultipartFormDataContent { { new StreamContent(fileStream), fileName, fileName } };
 
-            var response = _client.PostAsync(new Uri(urlBuilder.ToString()), dataContent).Result;
+            var response = _client.PostAsync(urlBuilder.ToString(), dataContent).Result;
             var content = response.Content.ReadAsStringAsync().Result;
 
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new InvalidOperationException(string.Format(Resources.CannotProcessPostRequest, response.StatusCode, content));
-            }
-
-            return content;
+            return new RestQueryResponse
+                   {
+                       Content = content,
+                       HttpStatusCode = response.StatusCode
+                   };
         }
 
-        public string QueryGetUrlEncodedData(string url, object formData)
+        public RestQueryResponse QueryGetUrlEncodedData(string url, object formData)
         {
             var formDataJson = SerializeObjectToJson(formData);
 
-            var urlBuilder = new StringBuilder(url);
-            urlBuilder.Append($"?Form={formDataJson}");
-            var response = _client.GetAsync(new Uri(url)).Result;
+            var urlBuilder = new StringBuilder(url.Trim('/'));
+            urlBuilder.Append($"/?Form={formDataJson}");
+            var response = _client.GetAsync(urlBuilder.ToString()).Result;
             var content = response.Content.ReadAsStringAsync().Result;
 
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new InvalidOperationException(string.Format(Resources.CannotProcessGetRequest, response.StatusCode, content));
-            }
-
-            return content;
+            return new RestQueryResponse
+                   {
+                       Content = content,
+                       HttpStatusCode = response.StatusCode
+                   };
         }
 
         private static StringContent CreateJsonHttpContent(object body)
