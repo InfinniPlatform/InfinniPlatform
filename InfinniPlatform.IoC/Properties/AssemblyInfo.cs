@@ -1,9 +1,9 @@
 ﻿// 1
 // 0
 // 0
-// 0
+// 1
 // 09f6c5ab-8b63-4f6a-b4ed-5c940fcdcdcd
-// 5AB11AA7123848D909D6D6A8A157C257
+// 3587D5F60B3253D4A1DB644847A4EA24
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -17,7 +17,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: Guid("09f6c5ab-8b63-4f6a-b4ed-5c940fcdcdcd")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.0.1")]
+[assembly: AssemblyFileVersion("1.0.0.1")]
 [assembly: InternalsVisibleTo("InfinniPlatform.IoC.Tests")]
 [assembly: AssemblyDescription("InfinniPlatform.IoC")]
