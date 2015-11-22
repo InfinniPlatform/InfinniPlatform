@@ -1,22 +1,22 @@
 ﻿using System;
+
 using InfinniPlatform.SystemInfo;
+
 using Microsoft.Owin;
 
 namespace InfinniPlatform.Owin.Middleware
 {
     /// <summary>
-    ///     Обработчик HTTP-запросов на базе OWIN для вывода информации о системе.
+    /// Обработчик HTTP-запросов на базе OWIN для вывода информации о системе.
     /// </summary>
     internal sealed class SystemInfoOwinMiddleware : RoutingOwinMiddleware
     {
-        private readonly ISystemInfoProvider _systemInfoProvider;
-
         public SystemInfoOwinMiddleware(OwinMiddleware next, ISystemInfoProvider systemInfoProvider)
             : base(next)
         {
             if (systemInfoProvider == null)
             {
-                throw new ArgumentNullException("systemInfoProvider");
+                throw new ArgumentNullException(nameof(systemInfoProvider));
             }
 
             _systemInfoProvider = systemInfoProvider;
@@ -25,8 +25,10 @@ namespace InfinniPlatform.Owin.Middleware
             RegisterHandler(new RegistrationHandlerBase("GET", new PathString("/favicon.ico"), GetFavicon));
         }
 
+        private readonly ISystemInfoProvider _systemInfoProvider;
+
         /// <summary>
-        ///     Возвращает информацию о системе.
+        /// Возвращает информацию о системе.
         /// </summary>
         private IRequestHandlerResult GetSystemInfo(IOwinContext context)
         {
@@ -43,7 +45,7 @@ namespace InfinniPlatform.Owin.Middleware
         }
 
         /// <summary>
-        ///     Обрабатывает запрос браузера на получение "favicon.ico".
+        /// Обрабатывает запрос браузера на получение "favicon.ico".
         /// </summary>
         private static IRequestHandlerResult GetFavicon(IOwinContext context)
         {

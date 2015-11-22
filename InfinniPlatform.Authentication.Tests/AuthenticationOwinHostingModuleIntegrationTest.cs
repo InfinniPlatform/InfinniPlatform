@@ -36,7 +36,7 @@ namespace InfinniPlatform.Authentication.Tests
 
 			var requests = new List<IPrincipal>();
 
-			var hosting = new OwinHostingService(config => config.Configuration(HostingConfig.Default));
+			var hosting = new OwinHostingService(null);
 
 			var userStore = new MemoryApplicationUserStore();
 			var passwordHasher = new FakeApplicationUserPasswordHasher();
@@ -45,10 +45,10 @@ namespace InfinniPlatform.Authentication.Tests
 			userStore.CreateUser(user);
 
 			// Сначала регистрируется модуль аутентификации
-			hosting.RegisterModule(new AuthenticationOwinHostingModule());
+			// TODO: hosting.RegisterModule(new AuthenticationOwinHostingModule());
 
 			// Затем регистрируются все остальные модули, которые нуждаются в IPrincipal
-			hosting.RegisterModule(new FakeOwinHostingModule(userStore, passwordHasher, requests));
+			// TODO: hosting.RegisterModule(new FakeOwinHostingModule(userStore, passwordHasher, requests));
 
 			// WHEN
 
@@ -142,7 +142,7 @@ namespace InfinniPlatform.Authentication.Tests
 		/// Фиктивный модуль хостинга на базе OWIN.
 		/// Суть модуля заключается в сохранении IPrincipal всех перехваченных запросов.
 		/// </summary>
-		public sealed class FakeOwinHostingModule : OwinHostingModule
+		public sealed class FakeOwinHostingModule : IOwinHostingModule
 		{
 			public FakeOwinHostingModule(IApplicationUserStore userStore, IApplicationUserPasswordHasher passwordHasher, ICollection<IPrincipal> requests)
 			{
@@ -157,10 +157,13 @@ namespace InfinniPlatform.Authentication.Tests
 			private readonly ICollection<IPrincipal> _requests;
 
 
-			public override void Configure(IAppBuilder builder, IHostingContext context)
+            public OwinHostingModuleType ModuleType => OwinHostingModuleType.Application;
+
+			public void Configure(IAppBuilder builder, IOwinHostingContext context)
 			{
-				context.Set(_userStore);
-				context.Set(_passwordHasher);
+                // TODO
+				//context.Set(_userStore);
+				//context.Set(_passwordHasher);
 				builder.Use(typeof(FakeOwinMiddleware), _requests);
 			}
 

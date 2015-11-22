@@ -15,8 +15,8 @@ namespace InfinniPlatform.ClientNotification.Tests
 		{
 			// Given
 
-			var hosting = new OwinHostingService(config => config.Configuration(HostingConfig.Default));
-			hosting.RegisterModule(new SignalROwinHostingModule());
+			var hosting = new OwinHostingService(null);
+			// TODO: hosting.RegisterModule(new SignalROwinHostingModule());
 
 			var notificationServiceFactory = new SignalRWebClientNotificationServiceFactory();
 			var notificationService = notificationServiceFactory.CreateClientNotificationService();

@@ -86,8 +86,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationHostingModule.cs" />
+    <Compile Include="IoC\ApplicationSdkOwinHostingModule.cs" />
     <Compile Include="HttpResultHandlers\HttpResultHandlerSignIn.cs" />
+    <Compile Include="IoC\WebApiContainerModule.cs" />
     <Compile Include="Middleware\ApplicationHostingRoutingMiddleware.cs" />
     <Compile Include="ConfigRequestProviders\ConfigRequestProvider.cs" />
     <Compile Include="Controllers\UploadController.cs" />
@@ -188,7 +189,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="ProvidersLocal\ApiControllerLocal.cs" />
-    <Compile Include="WebApiOwinHostingModule.cs" />
+    <Compile Include="Modules\ApplicationWebApiOwinHostingModule.cs" />
     <Compile Include="WebApi\ApiControllerFactory.cs" />
     <Compile Include="WebApi\ApiControllerFactoryBuilder.cs" />
     <Compile Include="WebApi\AutofacWebApiDependencyResolver.cs" />

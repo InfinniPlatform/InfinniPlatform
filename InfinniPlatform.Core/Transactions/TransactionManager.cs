@@ -1,105 +1,77 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Threading;
-using InfinniPlatform.Api.Index;
-using InfinniPlatform.Api.Transactions;
+
 using InfinniPlatform.Factories;
-using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Log;
 using InfinniPlatform.Sdk.Environment.Transactions;
 
 namespace InfinniPlatform.Transactions
 {
     public sealed class TransactionManager : ITransactionManager
     {
-        private readonly IBlobStorageFactory _blobStorageFactory;
-        private readonly ISharedCacheComponent _sharedCache;
-        private readonly IIndexFactory _indexFactory;
-
-        private const string CacheTransactionKey = "___transactions";
-
-        public TransactionManager(ISharedCacheComponent sharedCache, IIndexFactory indexFactory, IBlobStorageFactory blobStorageFactory)
+        public TransactionManager(IIndexFactory indexFactory, IBlobStorageFactory blobStorageFactory, IPerformanceLog performanceLog)
         {
-            var transactions = sharedCache.Get(CacheTransactionKey);
-            if (transactions == null)
-            {
-                sharedCache.Lock();
-                try
-                {
-                    if (sharedCache.Get(CacheTransactionKey) == null)
-                    {
-                        sharedCache.Set(CacheTransactionKey, new ConcurrentDictionary<string, ITransaction>());
-                    }
-                }
-                finally
-                {
-                    sharedCache.Unlock();
-                }
-            }
-
-            _sharedCache = sharedCache;
             _indexFactory = indexFactory;
             _blobStorageFactory = blobStorageFactory;
+            _performanceLog = performanceLog;
+            _transactions = new ConcurrentDictionary<string, ITransaction>();
         }
 
-        private ConcurrentDictionary<string, ITransaction> Transactions
-        {
-            get { return (ConcurrentDictionary<string, ITransaction>) _sharedCache.Get(CacheTransactionKey); }
-        }
+        private readonly IBlobStorageFactory _blobStorageFactory;
+        private readonly IPerformanceLog _performanceLog;
+        private readonly IIndexFactory _indexFactory;
+        private readonly object _syncTransactions = new object();
+        private readonly ConcurrentDictionary<string, ITransaction> _transactions;
 
         /// <summary>
-        ///     Зафиксировать транзакцию
+        /// Зафиксировать транзакцию
         /// </summary>
         /// <param name="transactionMarker">Идентификатор транзакции</param>
         public void CommitTransaction(string transactionMarker)
         {
-            Transactions[transactionMarker].MasterTransaction.CommitTransaction();
+            _transactions[transactionMarker].MasterTransaction.CommitTransaction();
         }
 
         /// <summary>
-        ///     Удалить транзакцию
+        /// Удалить транзакцию
         /// </summary>
         /// <param name="transactionMarker">Идентификатор транзакции</param>
         public void RemoveTransaction(string transactionMarker)
         {
-            if (Transactions.ContainsKey(transactionMarker))
+            if (_transactions.ContainsKey(transactionMarker))
             {
-                RemoveTransaction(Transactions[transactionMarker]);
+                RemoveTransaction(_transactions[transactionMarker]);
             }
         }
 
-        private readonly object _syncTransactions = new object();
-
         /// <summary>
-        ///     Получить транзакцию с указанным идентификатором
+        /// Получить транзакцию с указанным идентификатором
         /// </summary>
         /// <param name="transactionMarker">Идентификатор транзакции</param>
         /// <returns>Транзакция</returns>
         public ITransaction GetTransaction(string transactionMarker)
         {
-            ITransaction result = null;
+            ITransaction result;
 
-            if (Transactions.ContainsKey(transactionMarker))
+            if (_transactions.ContainsKey(transactionMarker))
             {
-                var containedInstances = Transactions[transactionMarker].GetTransactionItems();
-                var transactionSlave = new TransactionSlave(transactionMarker,
-                    Transactions[transactionMarker].MasterTransaction, containedInstances);
+                var containedInstances = _transactions[transactionMarker].GetTransactionItems();
+                var transactionSlave = new TransactionSlave(transactionMarker, _transactions[transactionMarker].MasterTransaction, containedInstances);
                 result = transactionSlave;
             }
-
             else
             {
-                var transactionMaster = new TransactionMaster(_indexFactory, _blobStorageFactory, transactionMarker,
-                    new List<AttachedInstance>())
+                var transactionMaster = new TransactionMaster(_indexFactory, _blobStorageFactory, _performanceLog, transactionMarker, new List<AttachedInstance>())
                 {
                     OnCommit = RemoveTransaction
                 };
 
                 result = transactionMaster;
+
                 lock (_syncTransactions)
                 {
-                    Transactions.AddOrUpdate(transactionMarker, result, (key, oldValue) => result);
+                    _transactions.AddOrUpdate(transactionMarker, result, (key, oldValue) => result);
                 }
             }
 
@@ -109,10 +81,11 @@ namespace InfinniPlatform.Transactions
         private void RemoveTransaction(ITransaction removedTransaction)
         {
             var key = removedTransaction.GetTransactionMarker();
-            if (Transactions.ContainsKey(key))
+
+            if (_transactions.ContainsKey(key))
             {
                 ITransaction transaction;
-                Transactions.TryRemove(key, out transaction);
+                _transactions.TryRemove(key, out transaction);
             }
         }
     }

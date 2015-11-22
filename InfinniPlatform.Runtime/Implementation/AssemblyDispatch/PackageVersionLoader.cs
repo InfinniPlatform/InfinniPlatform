@@ -2,12 +2,12 @@
 {
 	public sealed class PackageVersionLoader : IVersionLoader
 	{
-		public IMethodInvokationCacheList ConstructInvokationCache(string metadataConfigurationId)
+		public IMethodInvokationCacheList ConstructInvokationCache()
 		{
 			return new PackageMethodInvokationCacheList();
 		}
 
-		public void UpdateInvokationCache(string metadataConfigurationId, IMethodInvokationCacheList versionCacheList)
+		public void UpdateInvokationCache(IMethodInvokationCacheList versionCacheList)
 		{
 			versionCacheList.UpdateCaches();
 		}

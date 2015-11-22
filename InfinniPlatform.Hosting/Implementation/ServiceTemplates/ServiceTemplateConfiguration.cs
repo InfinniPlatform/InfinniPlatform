@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Hosting;
 
 namespace InfinniPlatform.Hosting.Implementation.ServiceTemplates
 {
     /// <summary>
-    ///     Конфигурация шаблонов сервисов
+    /// Конфигурация шаблонов сервисов
     /// </summary>
     public sealed class ServiceTemplateConfiguration : IServiceTemplateConfiguration
     {
@@ -18,23 +17,22 @@ namespace InfinniPlatform.Hosting.Implementation.ServiceTemplates
             new Dictionary<string, ServiceTemplate>();
 
         /// <summary>
-        ///     Зарегистрировать шаблон сервиса
+        /// Зарегистрировать шаблон сервиса
         /// </summary>
         /// <typeparam name="T">Тип класса, предоставляющего сервис</typeparam>
         /// <param name="containerName">Наименование, под который сервис будет зарегистрирован</param>
         /// <param name="methodName">Имя исполянемого метода</param>
         /// <param name="extensionPointHandlerConfig">Инициализатор обработчика запроса</param>
         /// <returns></returns>
-        public IServiceTemplateConfiguration RegisterServiceTemplate<T>(string containerName, string methodName,
-            IExtensionPointHandlerConfig extensionPointHandlerConfig = null) where T : class
+        public IServiceTemplateConfiguration RegisterServiceTemplate<T>(string containerName, string methodName, IExtensionPointHandlerConfig extensionPointHandlerConfig = null) where T : class
         {
-            var serviceTemplate = new ServiceTemplate(typeof (T), methodName, extensionPointHandlerConfig);
+            var serviceTemplate = new ServiceTemplate(typeof(T), methodName, extensionPointHandlerConfig);
             _serviceTemplateList.Add(containerName.ToLowerInvariant(), serviceTemplate);
             return this;
         }
 
         /// <summary>
-        ///     Получить зарегистрированный обработчик запроса для указанного имени контейнера
+        /// Получить зарегистрированный обработчик запроса для указанного имени контейнера
         /// </summary>
         /// <param name="containerName">Имя зарегистрированного контейера</param>
         /// <returns>Обработчик запроса</returns>
@@ -46,7 +44,7 @@ namespace InfinniPlatform.Hosting.Implementation.ServiceTemplates
         }
 
         /// <summary>
-        ///     Получить список типов классов, реализующих сервисы
+        /// Получить список типов классов, реализующих сервисы
         /// </summary>
         /// <returns></returns>
         public IEnumerable<Type> GetRegisteredTypes()
@@ -55,7 +53,7 @@ namespace InfinniPlatform.Hosting.Implementation.ServiceTemplates
         }
 
         /// <summary>
-        ///     Получить список зарегистрированных шаблонов сервисов
+        /// Получить список зарегистрированных шаблонов сервисов
         /// </summary>
         /// <returns>Список информации о шаблонах</returns>
         public IEnumerable<dynamic> GetRegisteredTemplatesInfo()

@@ -1,6 +1,4 @@
-﻿using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Sdk.Environment;
-using InfinniPlatform.Sdk.Environment.Hosting;
+﻿using InfinniPlatform.Sdk.Environment.Hosting;
 
 namespace InfinniPlatform.Factories
 {

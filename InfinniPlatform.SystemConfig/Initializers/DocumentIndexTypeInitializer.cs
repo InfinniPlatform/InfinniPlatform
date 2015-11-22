@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Hosting;
-using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment.Index;
@@ -11,23 +9,24 @@ using InfinniPlatform.Sdk.Environment.Metadata;
 namespace InfinniPlatform.SystemConfig.Initializers
 {
     /// <summary>
-    /// Созадает типы индексов для документов.
+    /// Создает типы индексов ElasticSearch для документов прикладных конфигураций.
     /// </summary>
-    public sealed class DocumentIndexTypeInitializer : IStartupInitializer
+    internal sealed class DocumentIndexTypeInitializer : IStartupInitializer
     {
-        public DocumentIndexTypeInitializer(IMetadataConfigurationProvider metadataProvider,
-                                            IConfigurationObjectBuilder configurationBuilder)
+        public DocumentIndexTypeInitializer(Lazy<IIndexFactory> indexFactory, IMetadataConfigurationProvider metadataProvider, IConfigurationObjectBuilder configurationBuilder)
         {
             _metadataProvider = metadataProvider;
             _configurationBuilder = configurationBuilder;
-            _indexFactory = new Lazy<IIndexFactory>(() => new ElasticFactory());
+            _indexFactory = indexFactory;
         }
 
+
+        private readonly IMetadataConfigurationProvider _metadataProvider;
         private readonly IConfigurationObjectBuilder _configurationBuilder;
         private readonly Lazy<IIndexFactory> _indexFactory;
-        private readonly IMetadataConfigurationProvider _metadataProvider;
 
-        public void OnStart(HostingContextBuilder contextBuilder)
+
+        public void OnStart()
         {
             Logger.Log.Info("Creating indexes started.");
 
@@ -63,6 +62,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
 
             Logger.Log.Info("Creating indexes successfully completed.");
         }
+
 
         private void CreateStorage(string configId, string documentId)
         {

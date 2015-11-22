@@ -3,6 +3,8 @@ using System.Threading;
 
 using InfinniPlatform.Owin.Hosting;
 using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.SignalR.Modules;
+
 using Microsoft.AspNet.SignalR.Client;
 
 using NUnit.Framework;
@@ -18,10 +20,10 @@ namespace InfinniPlatform.SignalR.Tests
 		{
 			// Given
 
-			var hosting = new OwinHostingService(config => config.Configuration(HostingConfig.Default));
-			hosting.RegisterModule(new SignalROwinHostingModule());
+			var hosting = new OwinHostingService(null);
+            // TODO: hosting.RegisterModule(new SignalROwinHostingModule());
 
-			var serverProxy = new WebClientNotificationProxy();
+            var serverProxy = new WebClientNotificationProxy();
 			var receiveEvent = new CountdownEvent(3);
 
 			// When
@@ -51,10 +53,10 @@ namespace InfinniPlatform.SignalR.Tests
 		{
 			// Given
 
-			var hosting = new OwinHostingService(config => config.Configuration(HostingConfig.Default));
-			hosting.RegisterModule(new SignalROwinHostingModule());
+			var hosting = new OwinHostingService(null);
+            // TODO: hosting.RegisterModule(new SignalROwinHostingModule());
 
-			var serverProxy = new WebClientNotificationProxy();
+            var serverProxy = new WebClientNotificationProxy();
 			var receiveEventWebClient1 = new CountdownEvent(1);
 			var receiveEventWebClient2 = new CountdownEvent(1);
 			var receiveEventWebClient3 = new CountdownEvent(1);
@@ -90,10 +92,10 @@ namespace InfinniPlatform.SignalR.Tests
 		{
 			// Given
 
-			var hosting = new OwinHostingService(config => config.Configuration(HostingConfig.Default));
-			hosting.RegisterModule(new SignalROwinHostingModule());
+			var hosting = new OwinHostingService(null);
+            // TODO: hosting.RegisterModule(new SignalROwinHostingModule());
 
-			var receiveEventWebClient1 = new CountdownEvent(1);
+            var receiveEventWebClient1 = new CountdownEvent(1);
 			var receiveEventWebClient2 = new CountdownEvent(1);
 
 			// When

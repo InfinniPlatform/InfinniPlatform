@@ -93,10 +93,6 @@
       <HintPath>..\packages\Microsoft.Owin.Security.WsFederation.3.0.1\lib\net45\Microsoft.Owin.Security.WsFederation.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
@@ -115,17 +111,19 @@
     <Compile Include="DataProtectors\AesDataProtectionProvider.cs" />
     <Compile Include="DataProtectors\AesDataProtector.cs" />
     <Compile Include="DataProtectors\AesSecureTokenFormatter.cs" />
-    <Compile Include="Modules\AuthenticationEsiaOwinHostingModule.cs" />
-    <Compile Include="Modules\AuthenticationAdfsOwinHostingModule.cs" />
-    <Compile Include="Modules\AuthenticationFacebookOwinHostingModule.cs" />
-    <Compile Include="Modules\AuthenticationGoogleOwinHostingModule.cs" />
-    <Compile Include="Middleware\AuthenticationOwinMiddleware.cs" />
-    <Compile Include="Modules\AuthenticationVkOwinHostingModule.cs" />
-    <Compile Include="Modules\IdentityApplicationRole.cs" />
-    <Compile Include="Modules\IdentityApplicationUser.cs" />
-    <Compile Include="Modules\IdentityApplicationUserManager.cs" />
-    <Compile Include="Modules\IdentityApplicationUserPasswordHasher.cs" />
-    <Compile Include="Modules\IdentityApplicationUserValidator.cs" />
+    <Compile Include="IoC\AuthenticationContainerModule.cs" />
+    <Compile Include="Modules\ExternalAuthEsiaOwinHostingModule.cs" />
+    <Compile Include="Modules\ExternalAuthAdfsOwinHostingModule.cs" />
+    <Compile Include="Modules\ExternalAuthFacebookOwinHostingModule.cs" />
+    <Compile Include="Modules\ExternalAuthGoogleOwinHostingModule.cs" />
+    <Compile Include="Middleware\InternalAuthOwinMiddleware.cs" />
+    <Compile Include="Modules\ExternalAuthVkOwinHostingModule.cs" />
+    <Compile Include="Internaldentity\IdentityApplicationRole.cs" />
+    <Compile Include="Internaldentity\IdentityApplicationUser.cs" />
+    <Compile Include="Internaldentity\IdentityApplicationUserManager.cs" />
+    <Compile Include="Internaldentity\IdentityApplicationUserPasswordHasher.cs" />
+    <Compile Include="Internaldentity\IdentityApplicationUserValidator.cs" />
+    <Compile Include="Modules\InternalAuthOwinHostingModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -136,8 +134,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Modules\AuthenticationOwinHostingModule.cs" />
-    <Compile Include="Modules\IdentityApplicationUserStore.cs" />
+    <Compile Include="Modules\CookieAuthOwinHostingModule.cs" />
+    <Compile Include="Internaldentity\IdentityApplicationUserStore.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

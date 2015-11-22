@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="DapperSqlQueryExecutorFactory.cs" />
     <Compile Include="DapperSqlQueryExecutor.cs" />
+    <Compile Include="IoC\SqlContainerModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

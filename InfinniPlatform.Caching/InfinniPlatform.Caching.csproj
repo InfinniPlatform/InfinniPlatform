@@ -52,6 +52,7 @@
     <Compile Include="Factory\SessionManagerFactory.cs" />
     <Compile Include="ICache.cs" />
     <Compile Include="ICacheMessageBus.cs" />
+    <Compile Include="IoC\CachingContainerModule.cs" />
     <Compile Include="Memory\MemoryCacheImpl.cs" />
     <Compile Include="Memory\MemoryCacheMessageBusImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

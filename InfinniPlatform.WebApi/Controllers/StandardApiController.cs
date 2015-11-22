@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
+
 using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Api.Index;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestQuery;
-using InfinniPlatform.Api.Versioning;
-using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.WebApi.ConfigRequestProviders;
+
 using Newtonsoft.Json;
 
 namespace InfinniPlatform.WebApi.Controllers

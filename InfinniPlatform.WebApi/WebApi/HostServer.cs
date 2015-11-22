@@ -22,13 +22,11 @@ namespace InfinniPlatform.WebApi.WebApi
 	/// </summary>
 	public sealed class HostServer
 	{
-		public HostServer(IEnumerable<Assembly> modules)
+		public HostServer()
 		{
 		    _hostConfiguration = new HttpConfiguration();
 		    _hostConfiguration.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
 			_hostConfiguration.Services.Replace(typeof(IHttpControllerSelector), new HttpControllerSelector(_hostConfiguration));
-
-			_modules = modules;
 
 			_containerBuilder = new ContainerBuilder();
 			_apiControllerFactory = new ApiControllerFactory(() => _container);

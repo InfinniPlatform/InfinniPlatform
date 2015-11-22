@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace InfinniPlatform.Api.RestQuery
+﻿namespace InfinniPlatform.Api.RestQuery
 {
     /// <summary>
-    ///     Factory for creating instances of REST service
+    /// Factory for creating instances of REST service
     /// </summary>
     public interface IApiControllerFactory
     {
@@ -18,12 +15,10 @@ namespace InfinniPlatform.Api.RestQuery
         IRestVerbsContainer GetTemplate(string metadataConfigurationId, string metadataName, string userName);
 
         /// <summary>
-        ///  Удалить зарегистрированные шаблоны
+        /// Удалить зарегистрированные шаблоны
         /// </summary>
         /// <param name="version">Версия конфигурации, для которой следует удалить шаблоны</param>
         /// <param name="metadataConfigurationId">Идентификатор конфигурации</param>
         void RemoveTemplates(string version, string metadataConfigurationId);
-
-
     }
 }

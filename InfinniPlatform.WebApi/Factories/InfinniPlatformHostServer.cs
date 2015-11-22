@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web.Http;
+
 using Autofac;
 using Autofac.Configuration;
-using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Api.Metadata;
+
 using InfinniPlatform.Factories;
 using InfinniPlatform.Hosting;
-using InfinniPlatform.Metadata;
+using InfinniPlatform.Logging;
+using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Hosting;
 using InfinniPlatform.Sdk.Environment.Metadata;
 using InfinniPlatform.Sdk.Environment.Scripts;
@@ -19,107 +19,99 @@ using InfinniPlatform.WebApi.WebApi;
 
 namespace InfinniPlatform.WebApi.Factories
 {
+    /// <summary>
+    /// Сервер хостинга конфигураций
+    /// </summary>
+    public class InfinniPlatformHostServer
+    {
+        /// <summary>
+        /// Конфигурация роутинга по умолчанию.
+        /// Сервер может быть сконфигурирован с использованием роутинга по умолчанию,
+        /// с помощью вызова метода InstallDefaultRoutes, либо
+        /// с помощью вызова метода InstallRoutes с указанием другой конфигурации роутинга
+        /// </summary>
+        private static readonly Action<HttpRouteCollection> RouteConfig = routes =>
+                                                                          {
+                                                                              routes.MapHttpRoute("DefaultApi", "api/{controller}/{action}");
+                                                                              routes.MapHttpRoute("Default", "api/{controller}/{id}", new { id = RouteParameter.Optional });
+                                                                              routes.MapHttpRoute("DefaultWithAction", "api/{controller}/{action}/{id}", new { id = RouteParameter.Optional });
+                                                                              routes.MapHttpRoute("RestControllerConfiguration", "{controller}/{service}", new
+                                                                              {
+                                                                                  service = RouteParameter.Optional,
+                                                                                  id = RouteParameter.Optional
+                                                                              });
 
-	/// <summary>
-	///   Сервер хостинга конфигураций
-	/// </summary>
-	public class InfinniPlatformHostServer
-	{
-		private readonly HostServer _hostServer;
-		private readonly IServiceRegistrationContainerFactory _serviceRegistrationContainerFactory;
-		private readonly ModuleComposer _moduleComposer;
-		private readonly IServiceTemplateConfiguration _serviceTemplateConfiguration;
+                                                                              routes.MapHttpRoute("RestControllerDefault", "{configuration}/{controller}/{metadata}/{service}/{id}", new { id = RouteParameter.Optional });
+                                                                          };
 
-		private InfinniPlatformHostServer(HostServer hostServer, IServiceRegistrationContainerFactory serviceRegistrationContainerFactory, IServiceTemplateConfiguration serviceTemplateConfiguration)
-		{
-			_hostServer = hostServer;
-			_serviceRegistrationContainerFactory = serviceRegistrationContainerFactory;
+        private InfinniPlatformHostServer(HostServer hostServer, IServiceRegistrationContainerFactory serviceRegistrationContainerFactory)
+        {
+            _hostServer = hostServer;
+            _serviceRegistrationContainerFactory = serviceRegistrationContainerFactory;
+            _moduleComposer = new ModuleComposer(_hostServer.Modules, hostServer.ContainerBuilder, hostServer.Container);
+        }
 
-			_serviceTemplateConfiguration = serviceTemplateConfiguration;
-			_moduleComposer = new ModuleComposer(_hostServer.Modules, hostServer.ContainerBuilder, hostServer.Container);
+        private readonly HostServer _hostServer;
+        private readonly ModuleComposer _moduleComposer;
+        private readonly IServiceRegistrationContainerFactory _serviceRegistrationContainerFactory;
+        private readonly IList<Type> _startupInitializers = new List<Type>();
+        public static InfinniPlatformHostServer Instance { get; private set; }
 
-		}
+        /// <summary>
+        /// Список модулей, загружаемых при инициализации сервера конфигурации
+        /// Список модулей используется в процедурах регистрации зависимостей,
+        /// регистрации индексирующих сервисов, регистрации сервисов терминологии
+        /// </summary>
+        public IEnumerable<Assembly> Modules
+        {
+            get { return _hostServer.Modules; }
+        }
 
+        public HttpConfiguration HttpConfiguration
+        {
+            get { return _hostServer.HostConfiguration; }
+        }
 
-		public static InfinniPlatformHostServer Instance { get; private set; }
+        /// <summary>
+        /// Конфигурация шаблонов сервисов для данного сервера
+        /// </summary>
+        public IServiceTemplateConfiguration ServiceTemplateConfiguration
+        {
+            get { return _serviceRegistrationContainerFactory.ServiceTemplateConfiguration; }
+        }
 
-		/// <summary>
-		///  В пределах одного домена возможен запуск только одного сервера приложения.
-		///  Цель: обеспечить возможность доступа к свойствам и методам серверы платформы
-		/// без дополнительных затрат на обеспечение доступа к нему в прикладных скриптах
-		/// </summary>
-		/// <param name="hostServer">Сервер хостинга</param>
-		/// <param name="containerFactory">Фабрика регистрации сервисов</param>
-		/// <param name="serviceTemplateConfiguration">Конфигурация шаблонов сервисов</param>
-		/// <returns>Сконфигурированный сервер</returns>
-		public static InfinniPlatformHostServer CreateInstance(HostServer hostServer, IServiceRegistrationContainerFactory containerFactory, IServiceTemplateConfiguration serviceTemplateConfiguration)
-		{
-			Instance = new InfinniPlatformHostServer(hostServer, containerFactory, serviceTemplateConfiguration);
-			return Instance;
-		}
+        /// <summary>
+        /// В пределах одного домена возможен запуск только одного сервера приложения.
+        /// Цель: обеспечить возможность доступа к свойствам и методам серверы платформы
+        /// без дополнительных затрат на обеспечение доступа к нему в прикладных скриптах
+        /// </summary>
+        /// <param name="hostServer">Сервер хостинга</param>
+        /// <param name="containerFactory">Фабрика регистрации сервисов</param>
+        /// <param name="serviceTemplateConfiguration">Конфигурация шаблонов сервисов</param>
+        /// <returns>Сконфигурированный сервер</returns>
+        public static InfinniPlatformHostServer CreateInstance(HostServer hostServer, IServiceRegistrationContainerFactory containerFactory)
+        {
+            Instance = new InfinniPlatformHostServer(hostServer, containerFactory);
+            return Instance;
+        }
 
-		/// <summary>
-		///  Список модулей, загружаемых при инициализации сервера конфигурации
-		///  Список модулей используется в процедурах регистрации зависимостей,
-		///  регистрации индексирующих сервисов, регистрации сервисов терминологии
-		/// </summary>
-		public IEnumerable<Assembly> Modules
-		{
-			get { return _hostServer.Modules; }
-		}
-
-		public HttpConfiguration HttpConfiguration
-		{
-			get { return _hostServer.HostConfiguration; }
-		}
-
-
-		/// <summary>
-		///   Конфигурация шаблонов сервисов для данного сервера
-		/// </summary>
-		public IServiceTemplateConfiguration ServiceTemplateConfiguration
-		{
-			get { return _serviceTemplateConfiguration; }
-		}
-
-		/// <summary>
-		///   Конфигурация роутинга по умолчанию. 
-		///   Сервер может быть сконфигурирован с использованием роутинга по умолчанию, 
-		///   с помощью вызова метода InstallDefaultRoutes, либо 
-		///   с помощью вызова метода InstallRoutes с указанием другой конфигурации роутинга 
-		/// </summary>
-		private static readonly Action<HttpRouteCollection> RouteConfig = routes =>
-		{
-            routes.MapHttpRoute("DefaultApi", "api/{controller}/{action}");
-            routes.MapHttpRoute("Default", "api/{controller}/{id}", new { id = RouteParameter.Optional });
-            routes.MapHttpRoute("DefaultWithAction", "api/{controller}/{action}/{id}", new { id = RouteParameter.Optional });
-            routes.MapHttpRoute("RestControllerConfiguration", "{controller}/{service}", new
-			{
-				service = RouteParameter.Optional,
-				id = RouteParameter.Optional
-			});
-
-            routes.MapHttpRoute("RestControllerDefault", "{configuration}/{controller}/{metadata}/{service}/{id}", new { id = RouteParameter.Optional });
-
-		};
-
-		/// <summary>
-		///   Ручная установка сервисов WebApi
-		///   По умолчанию, установка сервисов осуществляется автоматически при поиске реализации
-		///   IModuleInstaller и вызове его методов регистрации сервисов, однако, возможна
-		///   ручная регистрация методов установки сервисов, позволяющая регистрировать дополнительные сервисы,
-		///   не связанные с каким-либо установщиком модуля. При этом следует иметь в виду, что регистрация
-		///   для одного и того же сервера нескольких типов сервисов с одним и тем же списком параметров 
-		///   приведет к невозможности разрешения запускаемого метода.
-		/// </summary>		
-		public InfinniPlatformHostServer InstallServices(string version, IServiceRegistrationContainer serviceRegistrationContainer)
-		{
+        /// <summary>
+        /// Ручная установка сервисов WebApi
+        /// По умолчанию, установка сервисов осуществляется автоматически при поиске реализации
+        /// IModuleInstaller и вызове его методов регистрации сервисов, однако, возможна
+        /// ручная регистрация методов установки сервисов, позволяющая регистрировать дополнительные сервисы,
+        /// не связанные с каким-либо установщиком модуля. При этом следует иметь в виду, что регистрация
+        /// для одного и того же сервера нескольких типов сервисов с одним и тем же списком параметров
+        /// приведет к невозможности разрешения запускаемого метода.
+        /// </summary>
+        public InfinniPlatformHostServer InstallServices(string version, IServiceRegistrationContainer serviceRegistrationContainer)
+        {
             foreach (var serviceType in serviceRegistrationContainer.Registrations)
-			{
-				_hostServer.CreateTemplate(version, serviceRegistrationContainer.MetadataConfigurationId, serviceType.MetadataName).AddVerb(serviceType.QueryHandler);
-			}
-			return this;
-		}
+            {
+                _hostServer.CreateTemplate(version, serviceRegistrationContainer.MetadataConfigurationId, serviceType.MetadataName).AddVerb(serviceType.QueryHandler);
+            }
+            return this;
+        }
 
         public InfinniPlatformHostServer RegisterVersion(string metadataConfigurationId, string version)
         {
@@ -133,158 +125,150 @@ namespace InfinniPlatform.WebApi.Factories
             return this;
         }
 
-		/// <summary>
-		///   Удаление установленных сервисов (обычно используется для переустановки модуля в режиме runtime)
-		/// </summary>
-		public void UninstallServices(string metadataConfigurationId, string version = null)
-		{
+        /// <summary>
+        /// Удаление установленных сервисов (обычно используется для переустановки модуля в режиме runtime)
+        /// </summary>
+        public void UninstallServices(string metadataConfigurationId, string version = null)
+        {
             _hostServer.RemoveTemplates(version, metadataConfigurationId);
-		}
+        }
+
+        /// <summary>
+        /// Установка роутинга по умолчанию, примеяемого для всех конфигураций, хостящихся на данном сервере
+        /// </summary>
+        private InfinniPlatformHostServer InstallDefaultRoutes()
+        {
+            _hostServer.BeforeCreateContainer(() =>
+                _hostServer.RegisterRoutes(RouteConfig));
+            return this;
+        }
+
+        /// <summary>
+        /// Регистрация конфигураций метаданных.
+        /// Осуществляет поиск установщиков модулей на сервере и затем регистрирует метаданные для каждого из них
+        /// </summary
+        /// <returns></returns>
+        private InfinniPlatformHostServer InstallModules()
+        {
+            _hostServer.AfterCreateContainer(() =>
+                                             {
+                                                 _moduleComposer.RegisterTemplates();
+                                                 _hostServer.ActionUpdateContainer(updateContainer =>
+                                                                                   {
+                                                                                       foreach (var registeredType in ServiceTemplateConfiguration.GetRegisteredTypes())
+                                                                                       {
+                                                                                           updateContainer.RegisterType(registeredType).AsSelf().InstancePerDependency();
+                                                                                       }
+                                                                                   });
 
 
-		/// <summary>
-		///   Установка роутинга по умолчанию, примеяемого для всех конфигураций, хостящихся на данном сервере
-		/// </summary>		
-		private InfinniPlatformHostServer InstallDefaultRoutes()
-		{
-			_hostServer.BeforeCreateContainer(() =>
-				_hostServer.RegisterRoutes(RouteConfig));
-			return this;
-		}
+                                                 var modules = _moduleComposer.RegisterModules();
+                                                 foreach (var module in modules)
+                                                 {
+                                                     InstallServices(module.Version, module.ServiceRegistrationContainer);
+                                                 }
+                                             });
 
-		/// <summary>
-		///   Регистрация конфигураций метаданных.
-		///   Осуществляет поиск установщиков модулей на сервере и затем регистрирует метаданные для каждого из них 
-		/// </summary
-		/// <returns></returns>
-		private InfinniPlatformHostServer InstallModules()
-		{
-			_hostServer.AfterCreateContainer(() =>
-			{
-				_moduleComposer.RegisterTemplates();
-				_hostServer.ActionUpdateContainer(updateContainer =>
-				{
-					foreach (var registeredType in ServiceTemplateConfiguration.GetRegisteredTypes())
-					{
-						updateContainer.RegisterType(registeredType).AsSelf().InstancePerDependency();
-					}
-				});
+            return this;
+        }
 
+        /// <summary>
+        /// Сконструировать сервер хостинга конфигурации исходя из настроек по умолчанию
+        /// </summary>
+        /// <param name="assemblies">Список модулей, в которых будет осуществляться поиск установщиков модулей конфигураций</param>
+        /// <param name="containerFactory">Фабрика контейнеров регистрации сервисов</param>
+        /// <param name="serviceTemplateConfiguration">Конфигурация сервисов по умолчанию</param>
+        /// <returns>Сконфигурированный настройками по умолчанию сервер</returns>
+        public static InfinniPlatformHostServer ConstructHostServer(IServiceRegistrationContainerFactory containerFactory)
+        {
+            var server = new HostServer();
 
-				var modules = _moduleComposer.RegisterModules();
-				foreach (var module in modules)
-				{
-					InstallServices(module.Version, module.ServiceRegistrationContainer);
-				}
-			});
+            var hostServer = CreateInstance(server, containerFactory)
+                .InstallDefaultRoutes()
+                .InstallDefaultConfigurationDependencies()
+                .InstallModules();
+            return hostServer;
+        }
 
-			return this;
-		}
+        /// <summary>
+        /// Установить зависимости по умолчанию для сервера конфигураций
+        /// </summary>
+        /// <returns></returns>
+        private InfinniPlatformHostServer InstallDefaultConfigurationDependencies()
+        {
+            _hostServer.BeforeCreateContainer(() =>
+                                              {
+                                                  var containerBuilder = _hostServer.ContainerBuilder;
+                                                  containerBuilder.RegisterInstance(ServiceTemplateConfiguration).AsSelf().AsImplementedInterfaces().SingleInstance();
+                                                  containerBuilder.RegisterInstance(_serviceRegistrationContainerFactory).AsImplementedInterfaces().AsSelf().SingleInstance();
 
-		/// <summary>
-		///   Сконструировать сервер хостинга конфигурации исходя из настроек по умолчанию
-		/// </summary>
-		/// <param name="assemblies">Список модулей, в которых будет осуществляться поиск установщиков модулей конфигураций</param>
-		/// <param name="containerFactory">Фабрика контейнеров регистрации сервисов</param>
-		/// <param name="serviceTemplateConfiguration">Конфигурация сервисов по умолчанию</param>
-		/// <returns>Сконфигурированный настройками по умолчанию сервер</returns>
-		public static InfinniPlatformHostServer ConstructHostServer(IEnumerable<Assembly> assemblies, IServiceRegistrationContainerFactory containerFactory,
-			IServiceTemplateConfiguration serviceTemplateConfiguration)
-		{
-			assemblies = assemblies.ToList();
-			var server = new HostServer(assemblies);
+                                                  var configFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
+                                                  Logger.Log.Info($"Register Autofac configuration {configFile}");
+                                                  containerBuilder.RegisterModule(new ConfigurationSettingsReader("autofac", configFile));
+                                              });
+            return this;
+        }
 
-			var hostServer = CreateInstance(server, containerFactory, serviceTemplateConfiguration)
-				.InstallDefaultRoutes()
-				.InstallDefaultConfigurationDependencies()
-				.InstallModules();
-			return hostServer;
-		}
+        public void Build(IOwinHostingContext context)
+        {
+            // Регистрация IHostingContext в контейнере
+            _hostServer.ContainerBuilder.RegisterInstance(context).As<IOwinHostingContext>();
 
-		/// <summary>
-		///   Установить зависимости по умолчанию для сервера конфигураций
-		/// </summary>
-		/// <returns></returns>
-		private InfinniPlatformHostServer InstallDefaultConfigurationDependencies()
-		{
-			_hostServer.BeforeCreateContainer(() =>
-			{
-				var containerBuilder = _hostServer.ContainerBuilder;
-				containerBuilder.RegisterInstance(ServiceTemplateConfiguration).AsSelf().AsImplementedInterfaces().SingleInstance();
-				containerBuilder.RegisterInstance(_serviceRegistrationContainerFactory).AsImplementedInterfaces().AsSelf().SingleInstance();
+            _hostServer.BuildServer();
+        }
 
-			    var configFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
-                InfinniPlatform.Logging.Logger.Log.Info($"Register Autofac configuration {configFile}");
-			    containerBuilder.RegisterModule(new ConfigurationSettingsReader("autofac", configFile));
-			});
-			return this;
-		}
-
-
-		public void Build(IHostingContext context)
-		{
-			// Регистрация IHostingContext в контейнере
-			_hostServer.ContainerBuilder.RegisterInstance(context).As<IHostingContext>();
-
-			_hostServer.BuildServer();
-		}
-
-		/// <summary>
-		///   Создать экземпляр пустой (неинициализированной) конфигурации на сервере
-		/// </summary>
-		/// <param name="configurationId">Идентификатор конфигурации</param>
-		/// <param name="isEmbeddedConfiguration">Признак встроенной конфигурации C#</param>
-		/// <param name="version">Версия приложения</param>
-		/// <returns>Конфигурация метаданных</returns>
-		public IMetadataConfiguration CreateConfiguration(string configurationId, bool isEmbeddedConfiguration, string version)
-		{
-			var metadataConfigurationProvider = _hostServer.Container().Resolve<IMetadataConfigurationProvider>();
-			var actionConfig = _hostServer.Container().Resolve<IScriptConfiguration>();
+        /// <summary>
+        /// Создать экземпляр пустой (неинициализированной) конфигурации на сервере
+        /// </summary>
+        /// <param name="configurationId">Идентификатор конфигурации</param>
+        /// <param name="isEmbeddedConfiguration">Признак встроенной конфигурации C#</param>
+        /// <param name="version">Версия приложения</param>
+        /// <returns>Конфигурация метаданных</returns>
+        public IMetadataConfiguration CreateConfiguration(string configurationId, bool isEmbeddedConfiguration, string version)
+        {
+            var metadataConfigurationProvider = _hostServer.Container().Resolve<IMetadataConfigurationProvider>();
+            var actionConfig = _hostServer.Container().Resolve<IScriptConfiguration>();
 
             Instance.RegisterVersion(configurationId, version);
 
-			return metadataConfigurationProvider.AddConfiguration(configurationId, actionConfig, isEmbeddedConfiguration);
-		}
+            return metadataConfigurationProvider.AddConfiguration(configurationId, actionConfig, isEmbeddedConfiguration);
+        }
 
-		/// <summary>
-		///   Удалить конфигурацию из списка сервера
-		/// </summary>
-		/// <param name="configurationId">Идентификатор конфигурации</param>
-		/// <param name="version">Версия приложения</param>
-		public void RemoveConfiguration(string configurationId, string version = null)
-		{
-			var metadataConfigurationProvider = _hostServer.Container().Resolve<IMetadataConfigurationProvider>();
-			metadataConfigurationProvider.RemoveConfiguration(configurationId);
-			Instance.UnregisterVersion(configurationId, version);
-		}
+        /// <summary>
+        /// Удалить конфигурацию из списка сервера
+        /// </summary>
+        /// <param name="configurationId">Идентификатор конфигурации</param>
+        /// <param name="version">Версия приложения</param>
+        public void RemoveConfiguration(string configurationId, string version = null)
+        {
+            var metadataConfigurationProvider = _hostServer.Container().Resolve<IMetadataConfigurationProvider>();
+            metadataConfigurationProvider.RemoveConfiguration(configurationId);
+            Instance.UnregisterVersion(configurationId, version);
+        }
 
-		private readonly IList<Type> _startupInitializers = new List<Type>();
+        /// <summary>
+        /// Зарегистрировать тип инициализатора старта сервера
+        /// </summary>
+        public void RegisterServerInitializer<T>()
+        {
+            _startupInitializers.Add(typeof(T));
+            _hostServer.ContainerBuilder.RegisterType<T>().AsSelf().AsImplementedInterfaces();
+        }
 
-		/// <summary>
-		///   Зарегистрировать тип инициализатора старта сервера
-		/// </summary>
-		public void RegisterServerInitializer<T>() where T : IStartupInitializer
-		{
-			_startupInitializers.Add(typeof(T));
-			_hostServer.ContainerBuilder.RegisterType<T>().AsSelf().AsImplementedInterfaces();
-		}
+        /// <summary>
+        /// При старте хостинга
+        /// </summary>
+        public void OnStartHost(IOwinHostingContext context)
+        {
+            foreach (var startupInitializer in _startupInitializers)
+            {
+                //((IStartupInitializer)_hostServer.Container().Resolve(startupInitializer)).OnStart(context);
+            }
+        }
 
-		/// <summary>
-		///   При старте хостинга 
-		/// </summary>
-		public void OnStartHost(HostingContextBuilder contextBuilder, IHostingContext context)
-		{
-			foreach (var startupInitializer in _startupInitializers)
-			{
-				((IStartupInitializer)_hostServer.Container().Resolve(startupInitializer)).OnStart(contextBuilder);
-			}
-		}
-
-		public ApiControllerFactory GetApiControllerFactory()
-		{
-			return _hostServer.ApiControllerFactory;
-		}
-	}
-
-
+        public ApiControllerFactory GetApiControllerFactory()
+        {
+            return _hostServer.ApiControllerFactory;
+        }
+    }
 }

@@ -68,6 +68,7 @@
     <Compile Include="Implementation\MetadataConfiguration\MetadataConfigurationProvider.cs" />
     <Compile Include="Implementation\MetadataConfiguration\MetadataContainer.cs" />
     <Compile Include="Implementation\Modules\StandardTemplatesInstaller.cs" />
+    <Compile Include="IoC\MetadataContainerModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

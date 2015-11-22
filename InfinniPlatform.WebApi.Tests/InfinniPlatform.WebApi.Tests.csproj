@@ -79,8 +79,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="TestConfiguration\QueryExecutorTestInstaller.cs" />
-    <Compile Include="Services\ApiControllerBehavior.cs" />
-    <Compile Include="Services\ServicesQueryBehavior.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">

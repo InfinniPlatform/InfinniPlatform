@@ -48,9 +48,9 @@
   <ItemGroup>
     <Compile Include="Implementation\ExtensionPointHandling\ExtensionPointHandler.cs" />
     <Compile Include="Implementation\ExtensionPointHandling\ExtensionPointHandlerInstance.cs" />
-    <Compile Include="Implementation\LoaderExtension.cs" />
     <Compile Include="Implementation\Modules\MetadataConfigurationInstaller.cs" />
     <Compile Include="Implementation\ServiceRegistration\ServiceRegistrationContainerFactory.cs" />
+    <Compile Include="IoC\HostingContainerModule.cs" />
     <Compile Include="OwinHostingServiceFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <AutoGen>True</AutoGen>

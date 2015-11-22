@@ -341,7 +341,6 @@
     <Compile Include="Validation\ValidationExtensions.cs" />
     <Compile Include="Validation\ValidationResultItem.cs" />
     <Compile Include="Validation\ValidationUtils.cs" />
-    <Compile Include="Versioning\VersionStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

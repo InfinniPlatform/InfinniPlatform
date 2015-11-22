@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using InfinniPlatform.Factories;
 using InfinniPlatform.Sdk.ContextComponents;
@@ -54,11 +53,6 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
         public IEnumerable<IMetadataConfiguration> GetConfigurationList()
         {
             return _metadataConfigurationProvider.Configurations;
-        }
-
-        public IEnumerable<Tuple<string, string>> GetConfigurationVersions()
-        {
-            return _metadataConfigurationProvider.ConfigurationVersions;
         }
     }
 }

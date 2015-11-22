@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.RestApi.Public;
 using InfinniPlatform.Factories;
-using InfinniPlatform.Hosting;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Sdk.ApiContracts;
 using InfinniPlatform.Sdk.ContextComponents;
@@ -13,6 +13,7 @@ using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Metadata;
 using InfinniPlatform.Sdk.Environment.Transactions;
+using InfinniPlatform.Sdk.IoC;
 
 using DocumentApi = InfinniPlatform.Api.RestApi.Public.DocumentApi;
 using PrintViewApi = InfinniPlatform.Api.RestApi.Public.PrintViewApi;
@@ -27,38 +28,30 @@ namespace InfinniPlatform.ContextComponents
     {
         private static readonly ISystemComponent SystemComponent = new SystemComponent();
 
-        public PlatformComponentsPack(IDependencyContainerComponent dependencyContainerComponent)
+        public PlatformComponentsPack(Func<IContainerResolver> containerResolverFactory)
         {
+            var containerResolver = containerResolverFactory();
+
             // TODO: Избавиться от этого кода после добавления IoC!!!
-            var sessionManagerFactory = dependencyContainerComponent.ResolveDependency<ISessionManagerFactory>();
+            var sessionManagerFactory = containerResolver.Resolve<ISessionManagerFactory>();
             var sessionManager = sessionManagerFactory.CreateSessionManager();
 
-            var eventStorage =
-                dependencyContainerComponent.ResolveDependency<IEventStorageFactory>().CreateEventStorage();
-            var blobStorage = dependencyContainerComponent.ResolveDependency<IBlobStorageFactory>().CreateBlobStorage();
-            var printViewBuilder =
-                dependencyContainerComponent.ResolveDependency<IPrintViewBuilderFactory>().CreatePrintViewBuilder();
-            var metadataConfigurationProvider =
-                dependencyContainerComponent.ResolveDependency<IMetadataConfigurationProvider>();
-            var versionStrategy = dependencyContainerComponent.ResolveDependency<IVersionStrategy>();
-
-            var sharedCacheComponent = dependencyContainerComponent.ResolveDependency<ISharedCacheComponent>();
-
-            _components.Add(new ContextRegistration(typeof(ISharedCacheComponent), () => sharedCacheComponent));
-
-            _components.Add(new ContextRegistration(typeof(IVersionStrategy), () => versionStrategy));
+            var eventStorage = containerResolver.Resolve<IEventStorageFactory>().CreateEventStorage();
+            var blobStorage = containerResolver.Resolve<IBlobStorageFactory>().CreateBlobStorage();
+            var printViewBuilder = containerResolver.Resolve<IPrintViewBuilderFactory>().CreatePrintViewBuilder();
+            var metadataConfigurationProvider = containerResolver.Resolve<IMetadataConfigurationProvider>();
 
             _components.Add(new ContextRegistration(typeof(IBlobStorageComponent),
                 () => new BlobStorageComponent(blobStorage)));
             _components.Add(new ContextRegistration(typeof(IEventStorageComponent),
                 () => new EventStorageComponent(eventStorage)));
             _components.Add(new ContextRegistration(typeof(IIndexComponent),
-                () => new IndexComponent(dependencyContainerComponent.ResolveDependency<IIndexFactory>())));
+                () => new IndexComponent(containerResolver.Resolve<IIndexFactory>())));
             _components.Add(new ContextRegistration(typeof(ILogComponent), () => new LogComponent(Logger.Log)));
             _components.Add(new ContextRegistration(typeof(IMetadataComponent),
                 () => new MetadataComponent(metadataConfigurationProvider)));
             _components.Add(new ContextRegistration(typeof(ICrossConfigSearchComponent),
-                () => new CrossConfigSearchComponent(dependencyContainerComponent.ResolveDependency<ICrossConfigSearcher>())));
+                () => new CrossConfigSearchComponent(containerResolver.Resolve<ICrossConfigSearcher>())));
             _components.Add(new ContextRegistration(typeof(IPrintViewComponent),
                 () => new PrintViewComponent(printViewBuilder)));
             _components.Add(new ContextRegistration(typeof(IProfilerComponent),
@@ -69,17 +62,17 @@ namespace InfinniPlatform.ContextComponents
                 () => new ScriptRunnerComponent(metadataConfigurationProvider)));
             _components.Add(new ContextRegistration(typeof(ITransactionComponent),
                 () =>
-                    new TransactionComponent(dependencyContainerComponent.ResolveDependency<ITransactionManager>())));
+                    new TransactionComponent(containerResolver.Resolve<ITransactionManager>())));
             _components.Add(new ContextRegistration(typeof(IWebClientNotificationComponent),
                 () =>
                     new WebClientNotificationComponent(
-                        dependencyContainerComponent.ResolveDependency<IWebClientNotificationServiceFactory>())));
+                        containerResolver.Resolve<IWebClientNotificationServiceFactory>())));
             _components.Add(new ContextRegistration(typeof(IConfigurationMediatorComponent),
                 () => new ConfigurationMediatorComponent(
-                    dependencyContainerComponent.ResolveDependency<IConfigurationObjectBuilder>())));
+                    containerResolver.Resolve<IConfigurationObjectBuilder>())));
 
             _components.Add(new ContextRegistration(typeof(IDependencyContainerComponent),
-                () => dependencyContainerComponent));
+                () => containerResolver));
             _components.Add(new ContextRegistration(typeof(ISystemComponent), () => SystemComponent));
 
             _components.Add(new ContextRegistration(typeof(IMetadataConfigurationProvider),
@@ -95,21 +88,14 @@ namespace InfinniPlatform.ContextComponents
 
             _components.Add(new ContextRegistration(typeof(ISessionManager), () => sessionManager));
 
-            _components.Add(new ContextRegistration(typeof(IApplicationUserManager), () =>
-                                                                                     {
-                                                                                         // Должен быть зарегистрирован при старте системы
-                                                                                         var hostingContext = dependencyContainerComponent.ResolveDependency<IHostingContext>();
-
-                                                                                         return hostingContext.Get<IApplicationUserManager>();
-                                                                                     }));
+            _components.Add(new ContextRegistration(typeof(IApplicationUserManager), () => containerResolver.Resolve<IApplicationUserManager>()));
         }
 
         private readonly IList<ContextRegistration> _components = new List<ContextRegistration>();
 
         public T GetComponent<T>() where T : class
         {
-            return
-                _components.Where(c => c.IsTypeOf(typeof(T))).Select(c => c.GetInstance()).FirstOrDefault() as T;
+            return _components.Where(c => c.IsTypeOf(typeof(T))).Select(c => c.GetInstance()).FirstOrDefault() as T;
         }
     }
 }

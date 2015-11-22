@@ -120,7 +120,7 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
             lock (_lockObject)
             {
                 return _scriptFactoryInstance ??
-                       (_scriptFactoryInstance = _scriptFactoryBuilder.BuildScriptFactory(ModuleName));
+                       (_scriptFactoryInstance = _scriptFactoryBuilder.BuildScriptFactory());
             }
         }
 

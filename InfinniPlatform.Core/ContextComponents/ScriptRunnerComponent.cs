@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.Versioning;
-using InfinniPlatform.Metadata;
+
 using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Scripts;
 
 namespace InfinniPlatform.ContextComponents

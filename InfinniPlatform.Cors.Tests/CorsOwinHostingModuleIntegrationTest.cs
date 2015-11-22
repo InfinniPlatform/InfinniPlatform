@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Api.Hosting;
+using InfinniPlatform.Cors.Modules;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Owin.Hosting;
 using InfinniPlatform.Owin.Modules;
@@ -30,14 +31,14 @@ namespace InfinniPlatform.Cors.Tests
 
 			var requestUri = new Uri(string.Format("{0}://{1}:{2}/some/resource", HostingConfig.Default.ServerScheme, HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort));
 
-			var hosting = new OwinHostingService(config => config.Configuration(HostingConfig.Default));
+			var hosting = new OwinHostingService(null);
 
-			hosting.RegisterModule(new CorsOwinHostingModule());
-			hosting.RegisterModule(new FakeOwinHostingModule());
+            // TODO: hosting.RegisterModule(new CorsOwinHostingModule());
+            // TODO: hosting.RegisterModule(new FakeOwinHostingModule());
 
-			// When
+            // When
 
-			hosting.Start();
+            hosting.Start();
 
 			var request = WebRequest.Create(requestUri);
 			request.Method = "GET";
@@ -56,9 +57,11 @@ namespace InfinniPlatform.Cors.Tests
 	}
 
 
-	public class FakeOwinHostingModule : OwinHostingModule
+	public class FakeOwinHostingModule : IOwinHostingModule
 	{
-		public override void Configure(IAppBuilder builder, IHostingContext context)
+        public OwinHostingModuleType  ModuleType => OwinHostingModuleType.Application;
+
+		public void Configure(IAppBuilder builder, IOwinHostingContext context)
 		{
 			builder.Use(typeof(FakeOwinHandler), "Fake");
 		}

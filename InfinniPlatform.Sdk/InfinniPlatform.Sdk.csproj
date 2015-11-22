@@ -72,9 +72,9 @@
     <Compile Include="AttachedInstance.cs" />
     <Compile Include="ContextComponents\IApplicationUserManager.cs" />
     <Compile Include="ContextComponents\ISessionManager.cs" />
-    <Compile Include="ContextComponents\ISharedCacheComponent.cs" />
     <Compile Include="Environment\Actions\IActionOperator.cs" />
     <Compile Include="Environment\Actions\IActionOperatorBuilder.cs" />
+    <Compile Include="Environment\IApplicationEventHandler.cs" />
     <Compile Include="Environment\Log\ExceptionExtensions.cs" />
     <Compile Include="Environment\Log\IPerformanceLog.cs" />
     <Compile Include="Environment\Log\JsonEvent.cs" />
@@ -125,7 +125,6 @@
     <Compile Include="Contracts\ISearchContext.cs" />
     <Compile Include="Contracts\IUploadContext.cs" />
     <Compile Include="Contracts\IUrlEncodedDataContext.cs" />
-    <Compile Include="Contracts\IVersionStrategy.cs" />
     <Compile Include="Dynamic\DynamicWrapper.cs" />
     <Compile Include="Dynamic\DynamicWrapperExtensions.cs" />
     <Compile Include="Dynamic\DynamicWrapperJsonConverter.cs" />

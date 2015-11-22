@@ -61,7 +61,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CorsOwinHostingModule.cs" />
+    <Compile Include="Modules\CorsOwinHostingModule.cs" />
+    <Compile Include="IoC\CorsContainerModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -80,13 +81,13 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
-      <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
-      <Name>InfinniPlatform.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Owin\InfinniPlatform.Owin.csproj">
       <Project>{deadc17e-4c51-48d7-9aea-f8dae3090c74}</Project>
       <Name>InfinniPlatform.Owin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
+      <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
+      <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

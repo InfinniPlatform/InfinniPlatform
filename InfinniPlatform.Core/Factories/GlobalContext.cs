@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -8,12 +9,12 @@ using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.Security;
 using InfinniPlatform.ContextComponents;
-using InfinniPlatform.Hosting;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Metadata;
 using InfinniPlatform.Sdk.Global;
+using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.Factories
 {
@@ -25,16 +26,28 @@ namespace InfinniPlatform.Factories
         // TODO: Избавиться от этого кода после добавления IoC!!!
         private static ISessionManager _sessionManager;
 
-        public GlobalContext(IDependencyContainerComponent dependencyContainerComponent)
+        private static readonly string[] SystemConfigurations =
         {
+            "administration",
+            "administrationcustomization",
+            "authorization",
+            "restfulapi",
+            "systemconfig",
+            "update"
+        };
+
+        public GlobalContext(Func<IContainerResolver> containerResolverFactory)
+        {
+            var containerResolver = containerResolverFactory();
+
             // TODO: Избавиться от этого кода после добавления IoC!!!
-            var sessionManagerFactory = dependencyContainerComponent.ResolveDependency<ISessionManagerFactory>();
+            var sessionManagerFactory = containerResolver.Resolve<ISessionManagerFactory>();
             var sessionManager = sessionManagerFactory.CreateSessionManager();
             _sessionManager = sessionManager;
 
-            _platformComponentsPack = new PlatformComponentsPack(dependencyContainerComponent);
+            _platformComponentsPack = new PlatformComponentsPack(containerResolverFactory);
 
-            _components.Add(new ContextRegistration(typeof(ICustomServiceGlobalContext), dependencyContainerComponent.ResolveDependency<ICustomServiceGlobalContext>));
+            _components.Add(new ContextRegistration(typeof(ICustomServiceGlobalContext), containerResolver.Resolve<ICustomServiceGlobalContext>));
             _components.Add(new ContextRegistration(typeof(DocumentApi), () => new DocumentApi()));
             _components.Add(new ContextRegistration(typeof(DocumentApiUnsecured),
                 () => new DocumentApiUnsecured()));
@@ -47,19 +60,13 @@ namespace InfinniPlatform.Factories
             _components.Add(new ContextRegistration(typeof(SignInApi), () => new SignInApi()));
             _components.Add(new ContextRegistration(typeof(InprocessDocumentComponent),
                 () => new InprocessDocumentComponent(new ConfigurationMediatorComponent(
-                    dependencyContainerComponent.ResolveDependency<IConfigurationObjectBuilder>()
+                    containerResolver.Resolve<IConfigurationObjectBuilder>()
                     ),
-                    dependencyContainerComponent.ResolveDependency<IIndexFactory>())));
+                    containerResolver.Resolve<IIndexFactory>())));
 
             _components.Add(new ContextRegistration(typeof(ISessionManager), () => sessionManager));
 
-            _components.Add(new ContextRegistration(typeof(IApplicationUserManager), () =>
-                                                                                     {
-                                                                                         // Должен быть зарегистрирован при старте системы
-                                                                                         var hostingContext = dependencyContainerComponent.ResolveDependency<IHostingContext>();
-
-                                                                                         return hostingContext.Get<IApplicationUserManager>();
-                                                                                     }));
+            _components.Add(new ContextRegistration(typeof(IApplicationUserManager), () => containerResolver.Resolve<IApplicationUserManager>()));
         }
 
         private readonly IList<ContextRegistration> _components = new List<ContextRegistration>();
@@ -72,7 +79,6 @@ namespace InfinniPlatform.Factories
                 _platformComponentsPack.GetComponent<T>() ??
                 _components.Where(c => c.IsTypeOf(typeof(T))).Select(c => c.GetInstance()).FirstOrDefault() as T;
         }
-
 
         public static string GetTenantId()
         {
@@ -108,16 +114,6 @@ namespace InfinniPlatform.Factories
             return tenantId;
         }
 
-        private static readonly string[] SystemConfigurations =
-        {
-            "administration",
-            "administrationcustomization",
-            "authorization",
-            "restfulapi",
-            "systemconfig",
-            "update"
-        };
-
         public static string GetTenantId(string indexName)
         {
             if (indexName != null &&
@@ -128,7 +124,6 @@ namespace InfinniPlatform.Factories
 
             return GetTenantId();
         }
-
 
         private static IIdentity GetCurrentIdentity()
         {

@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 
 using InfinniPlatform.Api.Serialization;
-using InfinniPlatform.Hosting;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Settings;
@@ -12,16 +11,19 @@ using InfinniPlatform.WebApi.Factories;
 
 namespace InfinniPlatform.SystemConfig.Initializers
 {
-    public sealed class PackageJsonConfigurationsInitializer : IStartupInitializer
+    /// <summary>
+    /// Загружает метаданные прикладных конфигураций из JSON-файлов текущего пакета приложения.
+    /// </summary>
+    internal sealed class PackageJsonConfigurationsInitializer : IStartupInitializer
     {
         public PackageJsonConfigurationsInitializer()
         {
             _configurations = new Lazy<IEnumerable<DynamicWrapper>>(LoadConfigsMetadata);
 
             var watcher = new FileSystemWatcher(AppSettings.GetValue("ContentDirectory", "content"), "*.json")
-                          {
-                              IncludeSubdirectories = true
-                          };
+            {
+                IncludeSubdirectories = true
+            };
 
             watcher.Changed += (sender, args) => { UpdateConfigsMetadata(args); };
             watcher.Created += (sender, args) => { UpdateConfigsMetadata(args); };
@@ -30,9 +32,11 @@ namespace InfinniPlatform.SystemConfig.Initializers
             watcher.EnableRaisingEvents = true;
         }
 
+
         private readonly Lazy<IEnumerable<DynamicWrapper>> _configurations;
 
-        public void OnStart(HostingContextBuilder contextBuilder)
+
+        public void OnStart()
         {
             // Получение списка всех установленных конфигураций
             var configurations = _configurations.Value;
@@ -47,13 +51,16 @@ namespace InfinniPlatform.SystemConfig.Initializers
             }
         }
 
+
         private void UpdateConfigsMetadata(FileSystemEventArgs args)
         {
             if (FileHistoryHelper.IsChanged(args.FullPath))
             {
                 try
                 {
+#if DEBUG
                     Console.WriteLine(@"[{1}] File {0} changed.", args.Name, DateTime.Now.TimeOfDay);
+#endif
 
                     foreach (dynamic configuration in _configurations.Value)
                     {
@@ -67,7 +74,9 @@ namespace InfinniPlatform.SystemConfig.Initializers
                         InstallConfiguration(configuration, configuration.Name);
                     }
 
+#if DEBUG
                     Console.WriteLine(@"[{0}] Configurations successfully updated.", DateTime.Now.TimeOfDay);
+#endif
                 }
                 catch (Exception e)
                 {
