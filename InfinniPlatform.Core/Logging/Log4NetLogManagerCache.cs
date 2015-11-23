@@ -14,7 +14,7 @@ namespace InfinniPlatform.Logging
         {
             ILog log;
 
-            if (Logs.TryGetValue(type, out log))
+            if (!Logs.TryGetValue(type, out log))
             {
                 log = LogManager.GetLogger(type);
 

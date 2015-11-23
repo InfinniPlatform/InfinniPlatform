@@ -10,7 +10,7 @@ namespace InfinniPlatform.WebApi.Factories
     /// </summary>
     public class ApplicationHostServer
     {
-        private ApplicationHostServer(ModuleComposer moduleComposer, IApiControllerFactory apiControllerFactory, IMetadataConfigurationProvider metadataConfigurationProvider)
+        public ApplicationHostServer(ModuleComposer moduleComposer, IApiControllerFactory apiControllerFactory, IMetadataConfigurationProvider metadataConfigurationProvider)
         {
             _moduleComposer = moduleComposer;
             _apiControllerFactory = apiControllerFactory;
