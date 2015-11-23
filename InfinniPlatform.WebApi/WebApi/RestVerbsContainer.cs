@@ -14,24 +14,20 @@ namespace InfinniPlatform.WebApi.WebApi
 {
     internal class RestVerbsContainer : IRestVerbsContainer, IRestVerbsRegistrator
     {
-        public RestVerbsContainer(string version, string metadataConfigurationId, string metadata, Func<IContainerResolver> containerResolverFactory)
+        public RestVerbsContainer(string configId, string documentType, Func<IContainerResolver> containerResolverFactory)
         {
-            _version = version;
-            _metadataConfigurationId = metadataConfigurationId;
-            _metadata = metadata;
+            _configId = configId;
+            _documentType = documentType;
             _containerResolverFactory = containerResolverFactory;
+            _invokationInfoList = new List<MethodInvokationInfo>();
         }
 
+
+        private readonly string _configId;
+        private readonly string _documentType;
         private readonly Func<IContainerResolver> _containerResolverFactory;
-        private readonly List<MethodInvokationInfo> _invokationInfoList = new List<MethodInvokationInfo>();
-        private readonly string _metadata;
-        private readonly string _metadataConfigurationId;
-        private readonly string _version;
+        private readonly List<MethodInvokationInfo> _invokationInfoList;
 
-        public string ControllerName
-        {
-            get { return FormatTemplateName(_version, _metadataConfigurationId, _metadata); }
-        }
 
         public TargetDelegate FindVerbGet(string serviceName, IDictionary<string, object> verbArguments)
         {
@@ -40,19 +36,12 @@ namespace InfinniPlatform.WebApi.WebApi
 
         public TargetDelegate FindUploadVerb(string serviceName, dynamic linkedData, Stream uploadStream)
         {
-            return FindVerb(serviceName, VerbType.Upload, new Dictionary<string, object>
-                                                          {
-                                                              { "linkedData", linkedData },
-                                                              { "uploadStream", uploadStream }
-                                                          });
+            return FindVerb(serviceName, VerbType.Upload, new Dictionary<string, object> { { "linkedData", linkedData }, { "uploadStream", uploadStream } });
         }
 
         public TargetDelegate FindVerbUrlEncodedData(string serviceName, dynamic argument)
         {
-            return FindVerb(serviceName, VerbType.UrlEncodedData, new Dictionary<string, object>
-                                                                  {
-                                                                      { "parameters", argument }
-                                                                  });
+            return FindVerb(serviceName, VerbType.UrlEncodedData, new Dictionary<string, object> { { "parameters", argument } });
         }
 
         public TargetDelegate FindVerbPost(string serviceName, IDictionary<string, object> verbArguments)
@@ -70,59 +59,54 @@ namespace InfinniPlatform.WebApi.WebApi
             foreach (var actionHandler in queryHandler.ActionHandlers)
             {
                 var verbType = actionHandler.VerbType;
-                var methodInfo = queryHandler.QueryHandlerType.GetMethod(actionHandler.ActionName);
-                if (methodInfo != null)
+
+                var serviceMethodInfo = queryHandler.QueryHandlerType.GetMethod(actionHandler.ActionName);
+
+                if (serviceMethodInfo != null)
                 {
-                    _invokationInfoList.Add(new MethodInvokationInfo(methodInfo, queryHandler, verbType,
-                        actionHandler.GetInstanceNames()));
+                    var serviceNames = actionHandler.GetInstanceNames();
+
+                    _invokationInfoList.Add(new MethodInvokationInfo(serviceMethodInfo, queryHandler, verbType, serviceNames));
                 }
                 else
                 {
-                    throw new ArgumentException(string.Format("Method not found: {0}", actionHandler.ActionName));
+                    throw new ArgumentException($"Method not found: {actionHandler.ActionName}");
                 }
             }
 
             return this;
         }
 
-        private string FormatTemplateName(string version, string metadataConfigurationId, string metadataName)
+
+        public bool HasRoute(string configId, string documentType)
         {
-            return string.Format("{0}_{1}_{2}", version, metadataConfigurationId, metadataName).ToLowerInvariant();
+            return string.Equals(configId, _configId, StringComparison.OrdinalIgnoreCase)
+                   && string.Equals(documentType, _documentType, StringComparison.OrdinalIgnoreCase);
         }
 
-        private string FormatBaseTemplateName(string version, string metadataConfigurationId)
+        public bool HasRoute(string configId)
         {
-            return string.Format("{0}_{1}", version, metadataConfigurationId).ToLowerInvariant();
+            return string.Equals(configId, _configId, StringComparison.OrdinalIgnoreCase);
         }
 
-        internal bool HasRoute(string version, string metadataConfigurationId, string metadataName)
-        {
-            //если при регистрации сервиса указана версия конфигурации, то определяем роутинг, принимая во внимание номер версии
-            //в противном случае, не учитываем номер версии
-            return string.IsNullOrEmpty(_version)
-                ? FormatTemplateName(null, metadataConfigurationId, metadataName) == ControllerName
-                : FormatTemplateName(version, metadataConfigurationId, metadataName) == ControllerName;
-        }
-
-        internal bool HasRoute(string version, string metadataConfigurationId)
-        {
-            return string.IsNullOrEmpty(_version)
-                ? ControllerName.StartsWith(FormatBaseTemplateName(null, metadataConfigurationId))
-                : ControllerName.StartsWith(FormatBaseTemplateName(version, metadataConfigurationId));
-        }
 
         private TargetDelegate FindVerb(string serviceName, VerbType verbType, IDictionary<string, object> verbArguments)
         {
             verbArguments = verbArguments ?? new Dictionary<string, object>();
-            var invokationInfo = _invokationInfoList.Where(i => i.CanVerb(serviceName, verbType)).ToList();
-            if (invokationInfo.Count == 0)
+
+            var serviceMethodInfo = _invokationInfoList.FirstOrDefault(i => i.CanVerb(serviceName, verbType));
+
+            if (serviceMethodInfo == null)
             {
                 throw new ArgumentException(Resources.ServiceNotFoundError);
             }
 
-            var instance = _containerResolverFactory.Invoke().Resolve(invokationInfo.First().TargetType.QueryHandlerType);
-            var verb = invokationInfo.First().ConstructDelegate(verbArguments, instance, invokationInfo.First().TargetType.HttpResultHandlerType);
-            return verb;
+            var serviceHandlerType = serviceMethodInfo.TargetType.QueryHandlerType;
+            var serviceHandlerInstance = _containerResolverFactory.Invoke().Resolve(serviceHandlerType);
+            var serviceResultHandlerType = serviceMethodInfo.TargetType.HttpResultHandlerType;
+            var serviceHandlerDelegate = serviceMethodInfo.ConstructDelegate(verbArguments, serviceHandlerInstance, serviceResultHandlerType);
+
+            return serviceHandlerDelegate;
         }
     }
 }

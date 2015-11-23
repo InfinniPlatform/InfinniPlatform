@@ -30,35 +30,32 @@ namespace InfinniPlatform.WebApi.Factories
         }
 
 
-        public IMetadataConfiguration CreateConfiguration(string configId, bool isEmbeddedConfiguration, string version)
+        public IMetadataConfiguration CreateConfiguration(string configId, bool isEmbeddedConfiguration)
         {
-            _apiControllerFactory.RegisterVersion(configId, version);
-
             return _metadataConfigurationProvider.AddConfiguration(configId, isEmbeddedConfiguration);
         }
 
         public void RemoveConfiguration(string configId)
         {
-            _apiControllerFactory.UnregisterVersion(configId, null);
-
             _metadataConfigurationProvider.RemoveConfiguration(configId);
         }
 
 
-        public void InstallServices(string version, IServiceRegistrationContainer serviceRegistrationContainer)
+        public void InstallServices(IServiceRegistrationContainer serviceRegistrationContainer)
         {
             var configId = serviceRegistrationContainer.MetadataConfigurationId;
 
             foreach (var serviceType in serviceRegistrationContainer.Registrations)
             {
-                var restVerbsRegistrator = _apiControllerFactory.CreateTemplate(version, configId, serviceType.MetadataName);
+                var restVerbsRegistrator = _apiControllerFactory.CreateTemplate(configId, serviceType.MetadataName);
+
                 restVerbsRegistrator.AddVerb(serviceType.QueryHandler);
             }
         }
 
         public void UninstallServices(string configId)
         {
-            _apiControllerFactory.RemoveTemplates(null, configId);
+            _apiControllerFactory.RemoveTemplates(configId);
         }
     }
 }

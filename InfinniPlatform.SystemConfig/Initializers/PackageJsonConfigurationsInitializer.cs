@@ -47,9 +47,8 @@ namespace InfinniPlatform.SystemConfig.Initializers
             foreach (dynamic configuration in configurations)
             {
                 string configurationId = configuration.Name;
-                string configurationVersion = configuration.Version;
 
-                InstallConfiguration(configuration, configurationId, configurationVersion);
+                InstallConfiguration(configuration, configurationId);
             }
         }
 
@@ -87,13 +86,13 @@ namespace InfinniPlatform.SystemConfig.Initializers
             }
         }
 
-        private void InstallConfiguration(object configuration, string configId, string configVersion = null)
+        private void InstallConfiguration(object configuration, string configId)
         {
             // Загрузка метаданных конфигурации для кэширования
             var metadataCacheFiller = LoadConfigurationMetadata(configuration);
 
             // Создание менеджера кэша метаданных конфигураций
-            var metadataCacheManager = _applicationHostServer.CreateConfiguration(configId, false, configVersion);
+            var metadataCacheManager = _applicationHostServer.CreateConfiguration(configId, false);
 
             // Загрузка метаданных конфигурации в кэш
             metadataCacheFiller.InstallConfiguration(metadataCacheManager);
@@ -102,7 +101,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
             metadataCacheManager.ScriptConfiguration.InitActionUnitStorage();
 
             // Создание сервисов конфигурации
-            _applicationHostServer.InstallServices(configVersion, metadataCacheManager.ServiceRegistrationContainer);
+            _applicationHostServer.InstallServices(metadataCacheManager.ServiceRegistrationContainer);
         }
 
         private void RemoveConfiguration(string configurationName)

@@ -3,30 +3,28 @@
 namespace InfinniPlatform.Api.RestQuery
 {
     /// <summary>
-    /// Factory for creating instances of REST service
+    /// Фабрика для построения REST-сервисов.
     /// </summary>
     public interface IApiControllerFactory
     {
-        void RegisterVersion(string metadataConfigurationId, string version);
-
-        void UnregisterVersion(string metadataConfigurationId, string version);
-
-        IRestVerbsRegistrator CreateTemplate(string version, string configId, string metadataName);
+        /// <summary>
+        /// Создает объект для регистрации сервисов документа.
+        /// </summary>
+        /// <param name="configId">Имя конфигурации.</param>
+        /// <param name="documentType">Имя типа документа.</param>
+        IRestVerbsRegistrator CreateTemplate(string configId, string documentType);
 
         /// <summary>
-        /// Получить шаблон исполняемого действия
+        /// Возвращает объект для поиска сервиса документа.
         /// </summary>
-        /// <param name="configId">Идентификатор конфигурации</param>
-        /// <param name="metadataName">Наименование метаданных</param>
-        /// <param name="userName">Логин пользователя</param>
-        /// <returns>Контейнер, содержащий шаблон действия</returns>
-        IRestVerbsContainer GetTemplate(string configId, string metadataName, string userName);
+        /// <param name="configId">Имя конфигурации.</param>
+        /// <param name="documentType">Имя типа документа.</param>
+        IRestVerbsContainer GetTemplate(string configId, string documentType);
 
         /// <summary>
-        /// Удалить зарегистрированные шаблоны
+        /// Удаляет зарегистрированные сервисы всех документов конфигурации.
         /// </summary>
-        /// <param name="version">Версия конфигурации, для которой следует удалить шаблоны</param>
-        /// <param name="configId">Идентификатор конфигурации</param>
-        void RemoveTemplates(string version, string configId);
+        /// <param name="configId">Имя конфигурации.</param>
+        void RemoveTemplates(string configId);
     }
 }

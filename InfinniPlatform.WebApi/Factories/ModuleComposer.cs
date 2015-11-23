@@ -26,13 +26,13 @@ namespace InfinniPlatform.WebApi.Factories
             {
                 var module = moduleInstaller.InstallModule();
 
-                var version = module.Version;
                 var serviceRegistrationContainer = module.ServiceRegistrationContainer;
                 var metadataConfigurationId = serviceRegistrationContainer.MetadataConfigurationId;
 
                 foreach (var serviceType in serviceRegistrationContainer.Registrations)
                 {
-                    var restVerbsRegistrator = _apiControllerFactory.CreateTemplate(version, metadataConfigurationId, serviceType.MetadataName);
+                    var restVerbsRegistrator = _apiControllerFactory.CreateTemplate(metadataConfigurationId, serviceType.MetadataName);
+
                     restVerbsRegistrator.AddVerb(serviceType.QueryHandler);
                 }
             }
