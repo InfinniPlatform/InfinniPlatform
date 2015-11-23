@@ -83,7 +83,7 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
             GetExecutedScriptBuilderFactory().BuildScriptProcessor();
         }
 
-        public string ModuleName { get; set; }
+        public string ConfigurationId { get; set; }
 
         public IActionOperator GetAction(string unitIdentifier)
         {

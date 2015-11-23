@@ -9,11 +9,6 @@ namespace InfinniPlatform.Sdk.Environment.Scripts
     public interface IScriptConfiguration
     {
         /// <summary>
-        ///     Идентификатор модуля/конфигурации, к которой относится конфигурация прикладных скриптов
-        /// </summary>
-        string ModuleName { get; set; }
-
-        /// <summary>
         ///     Зарегистрировать встроенный в проект скриптовый модуль
         /// </summary>
         /// <param name="unitIdentifier">Идентификатор метаданных</param>

@@ -50,39 +50,16 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Builders\ActionUnitTestStorage.cs" />
-    <Compile Include="Builders\HandlersInstaller.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AssemblyInfo.tt</DependentUpon>
     </Compile>
-    <Compile Include="StateWorkflowBehavior.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
-      <Project>{7CA0F96C-7FF4-44B2-9D44-851984DF4532}</Project>
-      <Name>InfinniPlatform.Api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
-      <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
-      <Name>InfinniPlatform.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Hosting\InfinniPlatform.Hosting.csproj">
-      <Project>{D6FBC1D7-48E7-4819-8C8B-DD7FA398D2CC}</Project>
-      <Name>InfinniPlatform.Hosting</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Metadata\InfinniPlatform.Metadata.csproj">
       <Project>{f1239c4b-ca5f-4b5e-83ac-da686e81030f}</Project>
       <Name>InfinniPlatform.Metadata</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.NodeServiceHost\InfinniPlatform.NodeServiceHost.csproj">
-      <Project>{DCB067DB-E581-4F90-85DF-ACF9C6B42AD4}</Project>
-      <Name>InfinniPlatform.NodeServiceHost</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
-      <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
-      <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Tests\InfinniPlatform.Tests.csproj">
       <Project>{a46f638c-c9c5-49be-bc8d-8144e8c8f87a}</Project>

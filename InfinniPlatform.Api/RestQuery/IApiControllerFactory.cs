@@ -1,24 +1,32 @@
-﻿namespace InfinniPlatform.Api.RestQuery
+﻿using InfinniPlatform.Api.RestApi;
+
+namespace InfinniPlatform.Api.RestQuery
 {
     /// <summary>
     /// Factory for creating instances of REST service
     /// </summary>
     public interface IApiControllerFactory
     {
+        void RegisterVersion(string metadataConfigurationId, string version);
+
+        void UnregisterVersion(string metadataConfigurationId, string version);
+
+        IRestVerbsRegistrator CreateTemplate(string version, string configId, string metadataName);
+
         /// <summary>
         /// Получить шаблон исполняемого действия
         /// </summary>
-        /// <param name="metadataConfigurationId">Идентификатор конфигурации</param>
+        /// <param name="configId">Идентификатор конфигурации</param>
         /// <param name="metadataName">Наименование метаданных</param>
         /// <param name="userName">Логин пользователя</param>
         /// <returns>Контейнер, содержащий шаблон действия</returns>
-        IRestVerbsContainer GetTemplate(string metadataConfigurationId, string metadataName, string userName);
+        IRestVerbsContainer GetTemplate(string configId, string metadataName, string userName);
 
         /// <summary>
         /// Удалить зарегистрированные шаблоны
         /// </summary>
         /// <param name="version">Версия конфигурации, для которой следует удалить шаблоны</param>
-        /// <param name="metadataConfigurationId">Идентификатор конфигурации</param>
-        void RemoveTemplates(string version, string metadataConfigurationId);
+        /// <param name="configId">Идентификатор конфигурации</param>
+        void RemoveTemplates(string version, string configId);
     }
 }

@@ -102,7 +102,6 @@
     <Compile Include="ContextComponents\IComponentContainer.cs" />
     <Compile Include="ContextComponents\IConfigurationMediatorComponent.cs" />
     <Compile Include="ContextComponents\ICrossConfigSearchComponent.cs" />
-    <Compile Include="ContextComponents\IDependencyContainerComponent.cs" />
     <Compile Include="ContextComponents\IEventStorageComponent.cs" />
     <Compile Include="ContextComponents\IIndexComponent.cs" />
     <Compile Include="ContextComponents\ILogComponent.cs" />

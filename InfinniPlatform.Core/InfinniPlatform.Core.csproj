@@ -64,7 +64,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ContextComponents\CrossConfigSearchComponent.cs" />
-    <Compile Include="ContextComponents\DependencyContainerComponent.cs" />
     <Compile Include="ContextComponents\EventStorageComponent.cs" />
     <Compile Include="ContextComponents\IndexComponent.cs" />
     <Compile Include="ContextComponents\InprocessDocumentComponent.cs" />

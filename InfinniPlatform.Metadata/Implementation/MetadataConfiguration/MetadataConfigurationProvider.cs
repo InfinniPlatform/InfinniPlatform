@@ -15,10 +15,11 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
     /// </summary>
     internal sealed class MetadataConfigurationProvider : IMetadataConfigurationProvider
     {
-        public MetadataConfigurationProvider(IServiceRegistrationContainerFactory serviceRegistrationContainerFactory, IServiceTemplateConfiguration serviceTemplateConfiguration)
+        public MetadataConfigurationProvider(IServiceRegistrationContainerFactory serviceRegistrationContainerFactory, IServiceTemplateConfiguration serviceTemplateConfiguration, IScriptConfiguration scriptConfiguration)
         {
             _serviceRegistrationContainerFactory = serviceRegistrationContainerFactory;
             _serviceTemplateConfiguration = serviceTemplateConfiguration;
+            _scriptConfiguration = scriptConfiguration;
 
             _configurations = new ConcurrentDictionary<string, IMetadataConfiguration>(StringComparer.OrdinalIgnoreCase);
         }
@@ -26,6 +27,8 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 
         private readonly IServiceRegistrationContainerFactory _serviceRegistrationContainerFactory;
         private readonly IServiceTemplateConfiguration _serviceTemplateConfiguration;
+        private readonly IScriptConfiguration _scriptConfiguration;
+
         private readonly ConcurrentDictionary<string, IMetadataConfiguration> _configurations;
 
 
@@ -61,10 +64,9 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
         /// Добавить конфигурацию метаданных
         /// </summary>
         /// <param name="metadataConfigurationId">Идентификатор конфигурации метаданных</param>
-        /// <param name="actionConfiguration">Конфигурация скриптовых модулей</param>
         /// <param name="isEmbeddedConfiguration">Признак встроенной в код конфигурации C#</param>
         /// <returns>Конфигурация метаданных</returns>
-        public IMetadataConfiguration AddConfiguration(string metadataConfigurationId, IScriptConfiguration actionConfiguration, bool isEmbeddedConfiguration)
+        public IMetadataConfiguration AddConfiguration(string metadataConfigurationId, bool isEmbeddedConfiguration)
         {
             IMetadataConfiguration metadataConfiguration;
 
@@ -72,7 +74,7 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
             {
                 var buildServiceRegistrationContainer = _serviceRegistrationContainerFactory.BuildServiceRegistrationContainer(metadataConfigurationId);
 
-                metadataConfiguration = new MetadataConfiguration(actionConfiguration, buildServiceRegistrationContainer, _serviceTemplateConfiguration, isEmbeddedConfiguration)
+                metadataConfiguration = new MetadataConfiguration(_scriptConfiguration, buildServiceRegistrationContainer, _serviceTemplateConfiguration, isEmbeddedConfiguration)
                 {
                     ConfigurationId = metadataConfigurationId,
                 };

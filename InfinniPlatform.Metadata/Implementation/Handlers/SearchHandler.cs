@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
 using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.SearchOptions;
-using InfinniPlatform.Api.Security;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Metadata.Properties;
 using InfinniPlatform.Sdk.ContextComponents;
@@ -20,8 +17,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
     {
         private readonly IGlobalContext _globalContext;
 
-        public SearchHandler(
-            IGlobalContext globalContext)
+        public SearchHandler(IGlobalContext globalContext)
         {
             _globalContext = globalContext;
         }

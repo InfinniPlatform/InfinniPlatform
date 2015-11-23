@@ -3,16 +3,17 @@ using InfinniPlatform.Hosting.Implementation.Modules;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment.Hosting;
 using InfinniPlatform.Sdk.Environment.Metadata;
-using InfinniPlatform.Sdk.Environment.Scripts;
 
 namespace InfinniPlatform.RestfulApi.Installers
 {
-    public sealed class RestfulApiInstaller : MetadataConfigurationInstaller
+    internal sealed class RestfulApiInstaller : MetadataConfigurationInstaller
     {
-        public RestfulApiInstaller(IMetadataConfigurationProvider metadataConfigurationProvider, IScriptConfiguration actionConfiguration)
-            : base(metadataConfigurationProvider, actionConfiguration)
+        public RestfulApiInstaller(IMetadataConfigurationProvider metadataConfigurationProvider)
+            : base(metadataConfigurationProvider)
         {
         }
+
+        protected override string ConfigurationId => "RestfulApi";
 
         protected override void RegisterConfiguration(IMetadataConfiguration metadataConfiguration)
         {

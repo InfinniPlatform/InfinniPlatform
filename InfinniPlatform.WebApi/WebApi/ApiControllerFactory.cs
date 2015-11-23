@@ -2,38 +2,38 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Autofac;
-
+using InfinniPlatform.Api.RestApi;
 using InfinniPlatform.Api.RestQuery;
+using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.WebApi.WebApi
 {
     public class ApiControllerFactory : IApiControllerFactory
     {
-        public ApiControllerFactory(Func<IContainer> container)
+        public ApiControllerFactory(Func<IContainerResolver> containerResolverFactory)
         {
-            _container = container;
+            _containerResolverFactory = containerResolverFactory;
         }
 
-        private readonly Func<IContainer> _container;
+        private readonly Func<IContainerResolver> _containerResolverFactory;
         private List<RestVerbsContainer> _restVerbsContainers = new List<RestVerbsContainer>();
         public List<Tuple<string, string>> Versions { get; private set; } = new List<Tuple<string, string>>();
 
         /// <summary>
         /// Получить шаблон контейнера регистрации сервиса для указанной версии конфигурации и указанного пользователя
         /// </summary>
-        /// <param name="metadataConfigurationId">Идентификатор конфигурации</param>
+        /// <param name="configId">Идентификатор конфигурации</param>
         /// <param name="metadataName">Идентификатор контейнера метаданных</param>
         /// <param name="userName">Логин пользователя</param>
         /// <returns>Шаблон регистрации сервиса</returns>
-        public IRestVerbsContainer GetTemplate(string metadataConfigurationId, string metadataName, string userName)
+        public IRestVerbsContainer GetTemplate(string configId, string metadataName, string userName)
         {
-            return _restVerbsContainers.FirstOrDefault(r => r.HasRoute(null, metadataConfigurationId, metadataName));
+            return _restVerbsContainers.FirstOrDefault(r => r.HasRoute(null, configId, metadataName));
         }
 
-        public void RemoveTemplates(string version, string metadataConfigurationId)
+        public void RemoveTemplates(string version, string configId)
         {
-            _restVerbsContainers = _restVerbsContainers.Where(r => !r.HasRoute(version, metadataConfigurationId)).ToList();
+            _restVerbsContainers = _restVerbsContainers.Where(r => !r.HasRoute(version, configId)).ToList();
         }
 
         public void RegisterVersion(string metadataConfigurationId, string version)
@@ -53,12 +53,12 @@ namespace InfinniPlatform.WebApi.WebApi
             Versions = versions;
         }
 
-        public IRestVerbsRegistrator CreateTemplate(string version, string metadataConfigurationId, string metadataName)
+        public IRestVerbsRegistrator CreateTemplate(string version, string configId, string metadataName)
         {
-            var verbsContainer = GetRegistrator(version, metadataConfigurationId, metadataName);
+            var verbsContainer = GetRegistrator(version, configId, metadataName);
             if (verbsContainer == null)
             {
-                verbsContainer = new RestVerbsContainer(version, metadataConfigurationId, metadataName, _container);
+                verbsContainer = new RestVerbsContainer(version, configId, metadataName, _containerResolverFactory);
                 _restVerbsContainers.Add(verbsContainer);
             }
             return verbsContainer;

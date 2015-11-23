@@ -1,7 +1,9 @@
 ﻿using InfinniPlatform.Api.Security;
+using InfinniPlatform.Modules;
 using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.SystemConfig.Initializers;
+using InfinniPlatform.SystemConfig.Installers;
 using InfinniPlatform.SystemConfig.UserStorage;
 
 namespace InfinniPlatform.SystemConfig.IoC
@@ -28,6 +30,11 @@ namespace InfinniPlatform.SystemConfig.IoC
             // Хранилище сведений о пользователях системы
             builder.RegisterType<ApplicationUserStorePersistentStorage>()
                    .As<IApplicationUserStore>()
+                   .SingleInstance();
+
+            // Обработчики сервисов системной конфигурации
+            builder.RegisterType<SystemConfigInstaller>()
+                   .As<IModuleInstaller>()
                    .SingleInstance();
         }
     }

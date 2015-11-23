@@ -71,8 +71,6 @@ namespace InfinniPlatform.ContextComponents
                 () => new ConfigurationMediatorComponent(
                     containerResolver.Resolve<IConfigurationObjectBuilder>())));
 
-            _components.Add(new ContextRegistration(typeof(IDependencyContainerComponent),
-                () => containerResolver));
             _components.Add(new ContextRegistration(typeof(ISystemComponent), () => SystemComponent));
 
             _components.Add(new ContextRegistration(typeof(IMetadataConfigurationProvider),

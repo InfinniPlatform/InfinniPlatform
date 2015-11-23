@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 
 using InfinniPlatform.Sdk.Environment.Metadata;
-using InfinniPlatform.Sdk.Environment.Scripts;
 
 namespace InfinniPlatform.Sdk.ContextComponents
 {
@@ -26,10 +25,9 @@ namespace InfinniPlatform.Sdk.ContextComponents
         /// Добавить конфигурацию метаданных
         /// </summary>
         /// <param name="metadataConfigurationId">Идентификатор конфигурации метаданных</param>
-        /// <param name="actionConfiguration">Конфигурация скриптовых модулей</param>
         /// <param name="isEmbeddedConfiguration">Признак встроенной в код конфигурации C#</param>
         /// <returns>Конфигурация метаданных</returns>
-        IMetadataConfiguration AddConfiguration(string metadataConfigurationId, IScriptConfiguration actionConfiguration, bool isEmbeddedConfiguration);
+        IMetadataConfiguration AddConfiguration(string metadataConfigurationId, bool isEmbeddedConfiguration);
 
         /// <summary>
         /// Удалить указанную конфигурацию метаданных из списка загруженных конфигурации

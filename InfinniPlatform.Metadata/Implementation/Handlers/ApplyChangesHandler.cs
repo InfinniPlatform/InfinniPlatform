@@ -20,8 +20,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
     {
         private readonly IGlobalContext _globalContext;
 
-        public ApplyChangesHandler(
-            IGlobalContext globalContext)
+        public ApplyChangesHandler(IGlobalContext globalContext)
         {
             _globalContext = globalContext;
         }

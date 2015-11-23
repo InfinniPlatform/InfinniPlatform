@@ -116,7 +116,7 @@ namespace InfinniPlatform.Core.Tests.Events
 		//	var configurationObjectBuilder = new ConfigurationObjectBuilder(elasticFactory);
 
 		//	var installer = new IntegrationConfigInstaller();
-		//	var config = metadataConfigurationProvider.AddConfiguration(installer.ModuleName);
+		//	var config = metadataConfigurationProvider.AddConfiguration(installer.ConfigurationId);
 		//	installer.InstallConfiguration(config);
 		//	installer.InstallConfigurationServices(config.ServiceRegistrationContainer);
 
@@ -232,7 +232,7 @@ namespace InfinniPlatform.Core.Tests.Events
             
 		//	var metadataConfigurationProvider = new MetadataConfigurationProvider(new ServiceRegistrationContainerProvider(MultiCareHostServerExtensions.CreateDefaultServiceConfiguration()));
 		//	var installer = new IntegrationConfigInstaller();
-		//	var config = metadataConfigurationProvider.AddConfiguration(installer.ModuleName);
+		//	var config = metadataConfigurationProvider.AddConfiguration(installer.ConfigurationId);
 
 		//	var configurationObjectBuilder = new ConfigurationObjectBuilder(elasticFactory);
 

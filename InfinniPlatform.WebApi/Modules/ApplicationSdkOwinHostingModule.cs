@@ -3,7 +3,7 @@ using InfinniPlatform.WebApi.Middleware;
 
 using Owin;
 
-namespace InfinniPlatform.WebApi.IoC
+namespace InfinniPlatform.WebApi.Modules
 {
     /// <summary>
     /// Модуль хостинга обработки прикладных запросов (на базе прямой обработки запросов).

@@ -16,8 +16,9 @@ namespace InfinniPlatform.SystemConfig.Initializers
     /// </summary>
     internal sealed class PackageJsonConfigurationsInitializer : IStartupInitializer
     {
-        public PackageJsonConfigurationsInitializer()
+        public PackageJsonConfigurationsInitializer(ApplicationHostServer applicationHostServer)
         {
+            _applicationHostServer = applicationHostServer;
             _configurations = new Lazy<IEnumerable<DynamicWrapper>>(LoadConfigsMetadata);
 
             var watcher = new FileSystemWatcher(AppSettings.GetValue("ContentDirectory", "content"), "*.json")
@@ -33,6 +34,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
         }
 
 
+        private readonly ApplicationHostServer _applicationHostServer;
         private readonly Lazy<IEnumerable<DynamicWrapper>> _configurations;
 
 
@@ -85,13 +87,13 @@ namespace InfinniPlatform.SystemConfig.Initializers
             }
         }
 
-        private static void InstallConfiguration(object configuration, string configId, string configVersion = null)
+        private void InstallConfiguration(object configuration, string configId, string configVersion = null)
         {
             // Загрузка метаданных конфигурации для кэширования
             var metadataCacheFiller = LoadConfigurationMetadata(configuration);
 
             // Создание менеджера кэша метаданных конфигураций
-            var metadataCacheManager = InfinniPlatformHostServer.Instance.CreateConfiguration(configId, false, configVersion);
+            var metadataCacheManager = _applicationHostServer.CreateConfiguration(configId, false, configVersion);
 
             // Загрузка метаданных конфигурации в кэш
             metadataCacheFiller.InstallConfiguration(metadataCacheManager);
@@ -100,16 +102,16 @@ namespace InfinniPlatform.SystemConfig.Initializers
             metadataCacheManager.ScriptConfiguration.InitActionUnitStorage();
 
             // Создание сервисов конфигурации
-            InfinniPlatformHostServer.Instance.InstallServices(configVersion, metadataCacheManager.ServiceRegistrationContainer);
+            _applicationHostServer.InstallServices(configVersion, metadataCacheManager.ServiceRegistrationContainer);
         }
 
-        private static void RemoveConfiguration(string configurationName)
+        private void RemoveConfiguration(string configurationName)
         {
             // Удаление сервисов конфигурации
-            InfinniPlatformHostServer.Instance.UninstallServices(configurationName);
+            _applicationHostServer.UninstallServices(configurationName);
 
             // Удаление метаданных конфигурации из кэша
-            InfinniPlatformHostServer.Instance.RemoveConfiguration(configurationName);
+            _applicationHostServer.RemoveConfiguration(configurationName);
         }
 
         private static PackageJsonConfigurationInstaller LoadConfigurationMetadata(dynamic configuration)
