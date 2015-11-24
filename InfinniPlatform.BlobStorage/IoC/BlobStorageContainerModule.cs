@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.Factories;
+﻿using InfinniPlatform.ContextComponents;
+using InfinniPlatform.Factories;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.BlobStorage.IoC
@@ -9,6 +11,10 @@ namespace InfinniPlatform.BlobStorage.IoC
         {
             builder.RegisterType<FileSystemBlobStorageFactory>()
                    .As<IBlobStorageFactory>()
+                   .SingleInstance();
+
+            builder.RegisterType<BlobStorageComponent>()
+                   .As<IBlobStorageComponent>()
                    .SingleInstance();
         }
     }

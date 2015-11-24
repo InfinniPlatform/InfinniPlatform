@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.Index.ElasticSearch.Factories;
+﻿using InfinniPlatform.ContextComponents;
+using InfinniPlatform.Index.ElasticSearch.Factories;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.IoC;
 
@@ -10,6 +12,10 @@ namespace InfinniPlatform.Index.ElasticSearch.IoC
         {
             builder.RegisterType<ElasticFactory>()
                    .As<IIndexFactory>()
+                   .SingleInstance();
+
+            builder.RegisterType<IndexComponent>()
+                   .As<IIndexComponent>()
                    .SingleInstance();
         }
     }

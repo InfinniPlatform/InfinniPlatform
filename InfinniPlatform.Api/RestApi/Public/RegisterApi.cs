@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using InfinniPlatform.Api.SearchOptions.Converters;
 using InfinniPlatform.Sdk;
 using InfinniPlatform.Sdk.ApiContracts;
@@ -13,22 +10,47 @@ namespace InfinniPlatform.Api.RestApi.Public
 {
     public class RegisterApi : IRegisterApi
     {
-        public IEnumerable<dynamic> GetValuesByDate(string configuration, string register, DateTime endDate, IEnumerable<string> dimensions = null, IEnumerable<string> valueProperties = null, IEnumerable<AggregationType> valueAggregationTypes = null, Action<FilterBuilder> filter = null)
+        public RegisterApi()
         {
-
-            return new DataApi.RegisterApi().GetValuesByDate(configuration, register, endDate, dimensions,
-                valueProperties, valueAggregationTypes, new FilterConverter().ConvertToInternal(filter));
+            _registerApi = new DataApi.RegisterApi();
+            _filterConverter = new FilterConverter();
         }
 
-        public IEnumerable<dynamic> GetValuesBetweenDates(string configuration, string register, DateTime startDate, DateTime endDate, IEnumerable<string> dimensions = null, IEnumerable<string> valueProperties = null, IEnumerable<AggregationType> valueAggregationTypes = null, Action<FilterBuilder> filter = null)
+
+        private readonly DataApi.RegisterApi _registerApi;
+        private readonly FilterConverter _filterConverter;
+
+
+        public IEnumerable<dynamic> GetValuesByDate(string configuration,
+                                                    string register,
+                                                    DateTime endDate,
+                                                    IEnumerable<string> dimensions = null,
+                                                    IEnumerable<string> valueProperties = null,
+                                                    IEnumerable<AggregationType> valueAggregationTypes = null,
+                                                    Action<FilterBuilder> filter = null)
         {
-            return new DataApi.RegisterApi().GetValuesBetweenDates(configuration, register, startDate, endDate,
-                dimensions, valueProperties, valueAggregationTypes, new FilterConverter().ConvertToInternal(filter));
+            return _registerApi.GetValuesByDate(configuration, register, endDate, dimensions, valueProperties, valueAggregationTypes, _filterConverter.ConvertToInternal(filter));
         }
 
-        public IEnumerable<dynamic> GetRegisterEntries(string configuration, string register, Action<FilterBuilder> filter, int pageNumber, int pageSize)
+        public IEnumerable<dynamic> GetValuesBetweenDates(string configuration,
+                                                          string register,
+                                                          DateTime startDate,
+                                                          DateTime endDate,
+                                                          IEnumerable<string> dimensions = null,
+                                                          IEnumerable<string> valueProperties = null,
+                                                          IEnumerable<AggregationType> valueAggregationTypes = null,
+                                                          Action<FilterBuilder> filter = null)
         {
-            return new DataApi.RegisterApi().GetRegisterEntries(configuration, register, new FilterConverter().ConvertToInternal(filter), pageNumber, pageSize);
+            return _registerApi.GetValuesBetweenDates(configuration, register, startDate, endDate, dimensions, valueProperties, valueAggregationTypes, _filterConverter.ConvertToInternal(filter));
+        }
+
+        public IEnumerable<dynamic> GetRegisterEntries(string configuration,
+                                                       string register,
+                                                       Action<FilterBuilder> filter,
+                                                       int pageNumber,
+                                                       int pageSize)
+        {
+            return _registerApi.GetRegisterEntries(configuration, register, _filterConverter.ConvertToInternal(filter), pageNumber, pageSize);
         }
     }
 }

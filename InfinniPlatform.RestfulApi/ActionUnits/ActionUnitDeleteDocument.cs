@@ -20,8 +20,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             //получаем провайдер версий документов
             dynamic documentProvider =
                 target.Context.GetComponent<InprocessDocumentComponent>()
-                      .GetDocumentProvider(null, target.Item.Configuration, target.Item.Metadata,
-                                           target.UserName);
+                      .GetDocumentProvider(target.Item.Configuration, target.Item.Metadata);
             if (documentProvider == null)
             {
                 throw new ArgumentException(string.Format(Resources.DocumentProviderTypeNotFound, target.Item.Metadata));

@@ -1,6 +1,8 @@
-﻿using InfinniPlatform.Factories;
+﻿using InfinniPlatform.ContextComponents;
+using InfinniPlatform.Factories;
 using InfinniPlatform.Runtime.Factories;
 using InfinniPlatform.Runtime.Implementation.AssemblyDispatch;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.Runtime.IoC
@@ -19,6 +21,10 @@ namespace InfinniPlatform.Runtime.IoC
 
             builder.RegisterType<ScriptFactoryBuilder>()
                    .As<IScriptFactoryBuilder>()
+                   .SingleInstance();
+
+            builder.RegisterType<ScriptRunnerComponent>()
+                   .As<IScriptRunnerComponent>()
                    .SingleInstance();
         }
     }

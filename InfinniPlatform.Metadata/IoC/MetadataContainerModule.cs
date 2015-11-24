@@ -1,4 +1,5 @@
-﻿using InfinniPlatform.Hosting;
+﻿using InfinniPlatform.ContextComponents;
+using InfinniPlatform.Hosting;
 using InfinniPlatform.Metadata.Implementation.Handlers;
 using InfinniPlatform.Metadata.Implementation.MetadataConfiguration;
 using InfinniPlatform.Metadata.Implementation.Modules;
@@ -15,6 +16,10 @@ namespace InfinniPlatform.Metadata.IoC
     {
         public void Load(IContainerBuilder builder)
         {
+            builder.RegisterType<MetadataComponent>()
+                   .As<IMetadataComponent>()
+                   .SingleInstance();
+
             builder.RegisterType<MetadataConfigurationProvider>()
                    .As<IMetadataConfigurationProvider>()
                    .SingleInstance();
@@ -23,8 +28,16 @@ namespace InfinniPlatform.Metadata.IoC
                    .As<IConfigurationObjectBuilder>()
                    .SingleInstance();
 
+            builder.RegisterType<ConfigurationMediatorComponent>()
+                   .As<IConfigurationMediatorComponent>()
+                   .SingleInstance();
+
             builder.RegisterType<ScriptConfiguration>()
                    .As<IScriptConfiguration>()
+                   .SingleInstance();
+
+            builder.RegisterType<CrossConfigSearchComponent>()
+                   .As<ICrossConfigSearchComponent>()
                    .SingleInstance();
 
             builder.RegisterType<CrossConfigSearcher>()

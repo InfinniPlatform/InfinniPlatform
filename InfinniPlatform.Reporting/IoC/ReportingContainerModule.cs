@@ -1,5 +1,7 @@
-﻿using InfinniPlatform.Factories;
+﻿using InfinniPlatform.ContextComponents;
+using InfinniPlatform.Factories;
 using InfinniPlatform.Reporting.PrintView;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.Reporting.IoC
@@ -10,6 +12,10 @@ namespace InfinniPlatform.Reporting.IoC
         {
             builder.RegisterType<FlowDocumentPrintViewBuilderFactory>()
                    .As<IPrintViewBuilderFactory>()
+                   .SingleInstance();
+
+            builder.RegisterType<PrintViewComponent>()
+                   .As<IPrintViewComponent>()
                    .SingleInstance();
         }
     }

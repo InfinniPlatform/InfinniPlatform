@@ -30,7 +30,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             string userName = target.UserName;
             IEnumerable<dynamic> filter = target.Item.Filter;
 
-            var documentProvider = _documentComponent.GetDocumentProvider(null, configId, documentId, userName);
+            var documentProvider = _documentComponent.GetDocumentProvider(configId, documentId);
 
             if (documentProvider != null)
             {

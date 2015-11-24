@@ -1,23 +1,25 @@
-﻿using InfinniPlatform.Sdk.Contracts;
+﻿using System;
+
+using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.Sdk.Global
 {
+    [Obsolete("Use IoC")]
     public sealed class CustomServiceGlobalContext : ICustomServiceGlobalContext
     {
-        public CustomServiceGlobalContext(IPlatformComponentsPack platformComponentsPack)
+        public CustomServiceGlobalContext(Func<IContainerResolver> containerResolverFactory)
         {
-            _platformComponentsPack = platformComponentsPack;
+            _containerResolver = containerResolverFactory();
         }
 
-        private readonly IPlatformComponentsPack _platformComponentsPack;
 
+        private readonly IContainerResolver _containerResolver;
+
+
+        [Obsolete("Use IoC")]
         public T GetComponent<T>() where T : class
         {
-            if (typeof(T) == typeof(ScriptContext))
-            {
-                return new ScriptContext() as T;
-            }
-            return _platformComponentsPack.GetComponent<T>();
+            return _containerResolver.Resolve<T>();
         }
     }
 }

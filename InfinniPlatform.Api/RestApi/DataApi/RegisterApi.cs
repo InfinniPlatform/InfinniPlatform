@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using InfinniPlatform.Api.Registers;
+
 using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Api.RestQuery;
-using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Api.SearchOptions.Builders;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Register;
-using NUnit.Framework;
 
 namespace InfinniPlatform.Api.RestApi.DataApi
 {

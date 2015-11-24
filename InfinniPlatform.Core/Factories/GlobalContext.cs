@@ -1,19 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading;
 
 using InfinniPlatform.Api.RestApi.Auth;
-using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.Security;
-using InfinniPlatform.ContextComponents;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
-using InfinniPlatform.Sdk.Environment.Index;
-using InfinniPlatform.Sdk.Environment.Metadata;
-using InfinniPlatform.Sdk.Global;
 using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.Factories
@@ -23,7 +17,25 @@ namespace InfinniPlatform.Factories
     /// </summary>
     public class GlobalContext : IGlobalContext, IComponentContainer
     {
-        // TODO: Избавиться от этого кода после добавления IoC!!!
+        public GlobalContext(Func<IContainerResolver> containerResolverFactory, ISessionManager sessionManager)
+        {
+            _containerResolver = containerResolverFactory();
+            _sessionManager = sessionManager;
+        }
+
+
+        private readonly IContainerResolver _containerResolver;
+
+
+        [Obsolete("Use IoC")]
+        public T GetComponent<T>() where T : class
+        {
+            return _containerResolver.Resolve<T>();
+        }
+
+
+        // TODO: Избавиться от нижележащего кода после добавления IoC!!!
+
         private static ISessionManager _sessionManager;
 
         private static readonly string[] SystemConfigurations =
@@ -36,94 +48,47 @@ namespace InfinniPlatform.Factories
             "update"
         };
 
-        public GlobalContext(Func<IContainerResolver> containerResolverFactory)
-        {
-            var containerResolver = containerResolverFactory();
-
-            // TODO: Избавиться от этого кода после добавления IoC!!!
-            var sessionManagerFactory = containerResolver.Resolve<ISessionManagerFactory>();
-            var sessionManager = sessionManagerFactory.CreateSessionManager();
-            _sessionManager = sessionManager;
-
-            _platformComponentsPack = new PlatformComponentsPack(containerResolverFactory);
-
-            _components.Add(new ContextRegistration(typeof(ICustomServiceGlobalContext), containerResolver.Resolve<ICustomServiceGlobalContext>));
-            _components.Add(new ContextRegistration(typeof(DocumentApi), () => new DocumentApi()));
-            _components.Add(new ContextRegistration(typeof(DocumentApiUnsecured),
-                () => new DocumentApiUnsecured()));
-            _components.Add(new ContextRegistration(typeof(PrintViewApi), () => new PrintViewApi()));
-            _components.Add(new ContextRegistration(typeof(RegisterApi), () => new RegisterApi()));
-            _components.Add(new ContextRegistration(typeof(ReportApi), () => new ReportApi()));
-            _components.Add(new ContextRegistration(typeof(UploadApi), () => new UploadApi()));
-            _components.Add(new ContextRegistration(typeof(MetadataApi), () => new MetadataApi()));
-            _components.Add(new ContextRegistration(typeof(AuthApi), () => new AuthApi()));
-            _components.Add(new ContextRegistration(typeof(SignInApi), () => new SignInApi()));
-            _components.Add(new ContextRegistration(typeof(InprocessDocumentComponent),
-                () => new InprocessDocumentComponent(new ConfigurationMediatorComponent(
-                    containerResolver.Resolve<IConfigurationObjectBuilder>()
-                    ),
-                    containerResolver.Resolve<IIndexFactory>())));
-
-            _components.Add(new ContextRegistration(typeof(ISessionManager), () => sessionManager));
-
-            _components.Add(new ContextRegistration(typeof(IApplicationUserManager), () => containerResolver.Resolve<IApplicationUserManager>()));
-        }
-
-        private readonly IList<ContextRegistration> _components = new List<ContextRegistration>();
-        private readonly IPlatformComponentsPack _platformComponentsPack;
-
-        public T GetComponent<T>() where T : class
-        {
-            //ищем среди зарегистрированных компонентов платформы, если не находим, обращаемся к контексту компонентов ядра платформы
-            return
-                _platformComponentsPack.GetComponent<T>() ??
-                _components.Where(c => c.IsTypeOf(typeof(T))).Select(c => c.GetInstance()).FirstOrDefault() as T;
-        }
-
-        public static string GetTenantId()
+        public static string GetTenantId(string indexName = null)
         {
             string tenantId = null;
 
-            var currentIdentity = GetCurrentIdentity();
-
-            if (currentIdentity != null)
+            if (indexName != null && SystemConfigurations.Contains(indexName, StringComparer.OrdinalIgnoreCase))
             {
-                var sessionManager = _sessionManager;
+                tenantId = AuthorizationStorageExtensions.AnonymousUser;
+            }
+            else
+            {
+                var currentIdentity = GetCurrentIdentity();
 
-                if (sessionManager != null)
+                if (currentIdentity != null)
                 {
-                    tenantId = sessionManager.GetSessionData(AuthorizationStorageExtensions.TenantId);
+                    var sessionManager = _sessionManager;
+
+                    if (sessionManager != null)
+                    {
+                        tenantId = sessionManager.GetSessionData(AuthorizationStorageExtensions.TenantId);
+                    }
+
+                    if (string.IsNullOrEmpty(tenantId))
+                    {
+                        tenantId = currentIdentity.FindFirstClaim(AuthorizationStorageExtensions.DefaultTenantId);
+
+                        if (string.IsNullOrEmpty(tenantId))
+                        {
+                            tenantId = currentIdentity.FindFirstClaim(AuthorizationStorageExtensions.TenantId);
+                        }
+                    }
                 }
 
                 if (string.IsNullOrEmpty(tenantId))
                 {
-                    tenantId = currentIdentity.FindFirstClaim(AuthorizationStorageExtensions.DefaultTenantId);
-
-                    if (string.IsNullOrEmpty(tenantId))
-                    {
-                        tenantId = currentIdentity.FindFirstClaim(AuthorizationStorageExtensions.TenantId);
-                    }
+                    tenantId = AuthorizationStorageExtensions.AnonymousUser;
                 }
-            }
-
-            if (string.IsNullOrEmpty(tenantId))
-            {
-                tenantId = AuthorizationStorageExtensions.AnonymousUser;
             }
 
             return tenantId;
         }
 
-        public static string GetTenantId(string indexName)
-        {
-            if (indexName != null &&
-                SystemConfigurations.Contains(indexName.ToLowerInvariant()))
-            {
-                return AuthorizationStorageExtensions.AnonymousUser;
-            }
-
-            return GetTenantId();
-        }
 
         private static IIdentity GetCurrentIdentity()
         {
