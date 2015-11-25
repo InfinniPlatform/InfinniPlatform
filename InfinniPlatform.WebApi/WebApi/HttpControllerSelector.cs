@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Dispatcher;
@@ -23,33 +23,22 @@ namespace InfinniPlatform.WebApi.WebApi
 
         private static Dictionary<string, Type> GetControllerTypes()
         {
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies()
-                                      .Where(i => !i.IsDynamic
-                                                  && !string.IsNullOrEmpty(i.Location)
-                                                  && i.FullName.StartsWith("Infinni"))
-                                      .ToArray();
+            var currentAssembly = Assembly.GetExecutingAssembly();
 
             var result = new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase);
 
-            foreach (var assembly in assemblies)
+            foreach (var type in currentAssembly.GetTypes())
             {
-                try
+                if (!type.IsAbstract
+                    && type.Name.EndsWith(ControllerSuffix)
+                    && typeof(ApiController).IsAssignableFrom(type))
                 {
-                    var controllerTypes = assembly.GetTypes().Where(t => !t.IsAbstract && t.Name.EndsWith(ControllerSuffix) && typeof(ApiController).IsAssignableFrom(t)).ToArray();
+                    var controllerName = type.Name.Substring(0, type.Name.Length - ControllerSuffix.Length);
 
-                    if (controllerTypes.Length > 0)
+                    if (!result.ContainsKey(controllerName))
                     {
-                        foreach (var controllerType in controllerTypes)
-                        {
-                            if (!result.ContainsKey(controllerType.Name))
-                            {
-                                result.Add(controllerType.Name, controllerType);
-                            }
-                        }
+                        result.Add(controllerName, type);
                     }
-                }
-                catch
-                {
                 }
             }
 
@@ -63,7 +52,7 @@ namespace InfinniPlatform.WebApi.WebApi
 
             Type controllerType;
 
-            _controllerTypes.Value.TryGetValue(controllerName + ControllerSuffix, out controllerType);
+            _controllerTypes.Value.TryGetValue(controllerName, out controllerType);
 
             return new HttpControllerDescriptor(_configuration, controllerName, controllerType);
         }
