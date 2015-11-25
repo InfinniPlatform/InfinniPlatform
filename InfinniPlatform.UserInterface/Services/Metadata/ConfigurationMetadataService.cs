@@ -26,6 +26,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
             configuration.Registers = new object[] { };
             configuration.Assemblies = new object[] { };
             configuration.Reports = new object[] { };
+            configuration.Subfolder = "InfinniPlatform";
 
             return configuration;
         }
