@@ -3,6 +3,7 @@ using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.WebApi.Controllers;
 using InfinniPlatform.WebApi.Factories;
+using InfinniPlatform.WebApi.Middleware;
 using InfinniPlatform.WebApi.Modules;
 using InfinniPlatform.WebApi.WebApi;
 
@@ -32,6 +33,10 @@ namespace InfinniPlatform.WebApi.IoC
 
             builder.RegisterType<ApplicationSdkOwinHostingModule>()
                    .As<IOwinHostingModule>()
+                   .SingleInstance();
+
+            builder.RegisterType<ApplicationSdkOwinMiddleware>()
+                   .AsSelf()
                    .SingleInstance();
 
             builder.RegisterType<HttpResultHandlerFactory>()

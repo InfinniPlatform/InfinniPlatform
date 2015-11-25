@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 using Autofac;
 using Autofac.Core;
@@ -17,6 +18,7 @@ namespace InfinniPlatform.IoC.Owin.Middleware
         public override Task Invoke(IOwinContext context)
         {
             var lifetimeScope = context.Get<ILifetimeScope>(AutofacOwinConstants.LifetimeScopeKey);
+            //var realMiddleware = lifetimeScope?.Resolve<Func<OwinMiddleware, T>>()?.Invoke(Next) ?? Next;
             var realMiddleware = lifetimeScope?.ResolveOptional<T>(TypedParameter.From(Next) as Parameter) ?? Next;
             return realMiddleware.Invoke(context);
         }

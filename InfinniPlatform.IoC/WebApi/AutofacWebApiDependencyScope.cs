@@ -7,31 +7,31 @@ using Autofac;
 
 namespace InfinniPlatform.IoC.WebApi
 {
-    internal sealed class AutofacWebApiDependencyScope : IDependencyScope
+    internal class AutofacWebApiDependencyScope : IDependencyScope
     {
         public AutofacWebApiDependencyScope(ILifetimeScope lifetimeScope)
         {
-            _lifetimeScope = lifetimeScope;
+            LifetimeScope = lifetimeScope;
         }
 
 
-        private readonly ILifetimeScope _lifetimeScope;
+        protected readonly ILifetimeScope LifetimeScope;
 
 
         public object GetService(Type serviceType)
         {
-            return _lifetimeScope.ResolveOptional(serviceType);
+            return LifetimeScope.ResolveOptional(serviceType);
         }
 
         public IEnumerable<object> GetServices(Type serviceType)
         {
-            if (!_lifetimeScope.IsRegistered(serviceType))
+            if (!LifetimeScope.IsRegistered(serviceType))
             {
                 return Enumerable.Empty<object>();
             }
 
             var enumerableServiceType = typeof(IEnumerable<>).MakeGenericType(serviceType);
-            var instance = _lifetimeScope.Resolve(enumerableServiceType);
+            var instance = LifetimeScope.Resolve(enumerableServiceType);
 
             return (IEnumerable<object>)instance;
         }
@@ -39,7 +39,7 @@ namespace InfinniPlatform.IoC.WebApi
 
         public void Dispose()
         {
-            _lifetimeScope?.Dispose();
+            LifetimeScope?.Dispose();
         }
     }
 }

@@ -1,97 +1,102 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Cors.Modules;
-using InfinniPlatform.Hosting;
 using InfinniPlatform.Owin.Hosting;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.IoC;
+
+using Microsoft.Owin;
+
+using Moq;
+
 using NUnit.Framework;
 
 using Owin;
 
-using AppFunc = System.Func<System.Collections.Generic.IDictionary<string, object>, System.Threading.Tasks.Task>;
-
 namespace InfinniPlatform.Cors.Tests
 {
-	[TestFixture]
-	[Category(TestCategories.IntegrationTest)]
-	public sealed class CorsOwinHostingModuleIntegrationTest
-	{
-		[Test]
-		public void ServerReplyShouldContainsAccessControlAllowOrigin()
-		{
-			// Given
+    [TestFixture]
+    [Category(TestCategories.IntegrationTest)]
+    public sealed class CorsOwinHostingModuleIntegrationTest
+    {
+        private static IOwinHostingContext CreateTestOwinHostingContext(params IOwinHostingModule[] owinHostingModules)
+        {
+            var containerResolverMoq = new Mock<IContainerResolver>();
+            containerResolverMoq.Setup(i => i.Resolve<IEnumerable<IOwinHostingModule>>()).Returns(owinHostingModules);
 
-			var requestUri = new Uri(string.Format("{0}://{1}:{2}/some/resource", HostingConfig.Default.ServerScheme, HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort));
+            var hostingContextMoq = new Mock<IOwinHostingContext>();
+            hostingContextMoq.SetupGet(i => i.Configuration).Returns(HostingConfig.Default);
+            hostingContextMoq.SetupGet(i => i.ContainerResolver).Returns(containerResolverMoq.Object);
 
-			var hosting = new OwinHostingService(null);
-
-            // TODO: hosting.RegisterModule(new CorsOwinHostingModule());
-            // TODO: hosting.RegisterModule(new FakeOwinHostingModule());
-
-            // When
-
-            hosting.Start();
-
-			var request = WebRequest.Create(requestUri);
-			request.Method = "GET";
-			request.Headers.Add("Origin", "null");
-			var response = request.GetResponse();
-			var headers = response.Headers;
-
-			hosting.Stop();
-
-			// Then
-			Assert.IsTrue(headers.AllKeys.Contains("Access-Control-Allow-Origin"));
-			Assert.AreEqual("true", headers["Access-Control-Allow-Credentials"]);
-			Assert.IsTrue(headers.AllKeys.Contains("Access-Control-Allow-Credentials"));
-			Assert.AreEqual("null", headers["Access-Control-Allow-Origin"]);
-		}
-	}
+            return hostingContextMoq.Object;
+        }
 
 
-	public class FakeOwinHostingModule : IOwinHostingModule
-	{
-        public OwinHostingModuleType  ModuleType => OwinHostingModuleType.Application;
+        [Test]
+        public void ServerReplyShouldContainsAccessControlAllowOrigin()
+        {
+            var owinHostingContext = CreateTestOwinHostingContext(new CorsOwinHostingModule(), new FakeOwinHostingModule());
+            var owinHostingService = new OwinHostingService(owinHostingContext);
 
-		public void Configure(IAppBuilder builder, IOwinHostingContext context)
-		{
-			builder.Use(typeof(FakeOwinHandler), "Fake");
-		}
+            owinHostingService.Start();
 
-		// ReSharper disable NotAccessedField.Local
+            try
+            {
+                // Given
 
-		public class FakeOwinHandler
-		{
-			private readonly AppFunc _next;
-			private readonly string _prefix;
+                var requestUri = new Uri($"{owinHostingContext.Configuration.ServerScheme}://{owinHostingContext.Configuration.ServerName}:{owinHostingContext.Configuration.ServerPort}/some/resource");
+                var request = WebRequest.Create(requestUri);
+                request.Method = "GET";
+                request.Headers.Add("Origin", "null");
 
-			public FakeOwinHandler(AppFunc next, string prefix)
-			{
-				_next = next;
-				_prefix = prefix;
-			}
+                // When
 
-			public Task Invoke(IDictionary<string, object> environment)
-			{
-				var headers = (IDictionary<string, string[]>)environment["owin.ResponseHeaders"];
-				headers.Add("Content-Type", new[] { "text/plain; charset=utf-8" });
+                var response = request.GetResponse();
+                var headers = response.Headers;
 
-				var outstream = (Stream)environment["owin.ResponseBody"];
-				var buffer = Encoding.UTF8.GetBytes("FakeOwinHandler");
-				outstream.WriteAsync(buffer, 0, buffer.Length);
+                // Then
+                Assert.IsTrue(headers.AllKeys.Contains("Access-Control-Allow-Origin"));
+                Assert.AreEqual("true", headers["Access-Control-Allow-Credentials"]);
+                Assert.IsTrue(headers.AllKeys.Contains("Access-Control-Allow-Credentials"));
+                Assert.AreEqual("null", headers["Access-Control-Allow-Origin"]);
+            }
+            finally
+            {
+                owinHostingService.Stop();
+            }
+        }
+    }
 
-				return _next(environment);
-			}
-		}
 
-		// ReSharper restore NotAccessedField.Local
-	}
+    internal sealed class FakeOwinHostingModule : IOwinHostingModule
+    {
+        public OwinHostingModuleType ModuleType => OwinHostingModuleType.Application;
+
+
+        public void Configure(IAppBuilder builder, IOwinHostingContext context)
+        {
+            builder.Use(typeof(FakeOwinHandler));
+        }
+
+
+        private sealed class FakeOwinHandler : OwinMiddleware
+        {
+            public FakeOwinHandler(OwinMiddleware next) : base(next)
+            {
+            }
+
+            public override Task Invoke(IOwinContext context)
+            {
+                var buffer = Encoding.UTF8.GetBytes("FakeOwinHandler");
+                context.Response.StatusCode = 200;
+                return context.Response.Body.WriteAsync(buffer, 0, buffer.Length);
+            }
+        }
+    }
 }

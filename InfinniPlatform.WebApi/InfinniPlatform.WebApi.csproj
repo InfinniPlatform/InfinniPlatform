@@ -81,7 +81,7 @@
     <Compile Include="Modules\ApplicationSdkOwinHostingModule.cs" />
     <Compile Include="HttpResultHandlers\HttpResultHandlerSignIn.cs" />
     <Compile Include="IoC\WebApiContainerModule.cs" />
-    <Compile Include="Middleware\ApplicationHostingRoutingMiddleware.cs" />
+    <Compile Include="Middleware\ApplicationSdkOwinMiddleware.cs" />
     <Compile Include="ConfigRequestProviders\ConfigRequestProvider.cs" />
     <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Controllers\UrlEncodedDataController.cs" />

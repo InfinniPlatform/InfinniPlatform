@@ -12,7 +12,7 @@ using InfinniPlatform.Sdk.ContextComponents;
 
 using Microsoft.AspNet.Identity;
 
-namespace InfinniPlatform.Authentication.Internaldentity
+namespace InfinniPlatform.Authentication.InternalIdentity
 {
     internal sealed class IdentityApplicationUserManager : IApplicationUserManager
     {

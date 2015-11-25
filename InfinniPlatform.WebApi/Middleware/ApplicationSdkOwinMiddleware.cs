@@ -1,5 +1,4 @@
 ﻿using InfinniPlatform.Owin.Middleware;
-using InfinniPlatform.WebApi.Middleware.Metadata;
 using InfinniPlatform.WebApi.Middleware.Metadata.Configuration;
 using InfinniPlatform.WebApi.Middleware.Metadata.ConfigurationElements;
 using InfinniPlatform.WebApi.Middleware.Metadata.DocumentElements;
@@ -9,6 +8,7 @@ using InfinniPlatform.WebApi.Middleware.SessionHandlers;
 using InfinniPlatform.WebApi.Middleware.StandardHandlers;
 using InfinniPlatform.WebApi.Middleware.UserAuthHandlers;
 using InfinniPlatform.WebApi.Middleware.VersionHandlers;
+
 using Microsoft.Owin;
 
 namespace InfinniPlatform.WebApi.Middleware
@@ -16,9 +16,9 @@ namespace InfinniPlatform.WebApi.Middleware
     /// <summary>
     ///   Модуль хостинга приложений на платформе
     /// </summary>
-    public sealed class ApplicationHostingRoutingMiddleware : RoutingOwinMiddleware
+    internal sealed class ApplicationSdkOwinMiddleware : RoutingOwinMiddleware
     {
-        public ApplicationHostingRoutingMiddleware(OwinMiddleware next)
+        public ApplicationSdkOwinMiddleware(OwinMiddleware next)
             : base(next)
         {
             RegisterHandler(new GetDocumentByIdHandlerRegistration());

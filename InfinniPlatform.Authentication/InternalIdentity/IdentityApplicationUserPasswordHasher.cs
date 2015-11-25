@@ -4,7 +4,7 @@ using InfinniPlatform.Api.Security;
 
 using Microsoft.AspNet.Identity;
 
-namespace InfinniPlatform.Authentication.Internaldentity
+namespace InfinniPlatform.Authentication.InternalIdentity
 {
     /// <summary>
     /// Предоставляет методы хэширования пароля.

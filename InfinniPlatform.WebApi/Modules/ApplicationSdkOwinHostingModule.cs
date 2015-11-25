@@ -18,7 +18,7 @@ namespace InfinniPlatform.WebApi.Modules
 
         public void Configure(IAppBuilder builder, IOwinHostingContext context)
         {
-            builder.Use(context.OwinMiddlewareResolver.ResolveType<ApplicationHostingRoutingMiddleware>());
+            builder.Use(context.OwinMiddlewareResolver.ResolveType<ApplicationSdkOwinMiddleware>());
         }
     }
 }

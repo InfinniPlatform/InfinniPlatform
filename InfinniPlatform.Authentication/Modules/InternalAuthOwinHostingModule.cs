@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Authentication.Internaldentity;
+﻿using InfinniPlatform.Authentication.InternalIdentity;
 using InfinniPlatform.Authentication.Middleware;
 using InfinniPlatform.Owin.Modules;
 

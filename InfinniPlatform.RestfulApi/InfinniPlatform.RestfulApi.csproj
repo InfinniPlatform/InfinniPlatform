@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{75952D00-54DA-419A-8233-91949D74D9E3}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>InfinniPlatform.RestfulApi</RootNamespace>
     <AssemblyName>InfinniPlatform.RestfulApi</AssemblyName>
@@ -161,10 +161,6 @@
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
       <Name>InfinniPlatform.Sdk</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.SystemConfig\InfinniPlatform.SystemConfig.csproj">
-      <Project>{6EFC2069-AFEB-453D-AD2C-3E170486A4F1}</Project>
-      <Name>InfinniPlatform.SystemConfig</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
       <Project>{7ca0f96c-7ff4-44b2-9d44-851984df4532}</Project>

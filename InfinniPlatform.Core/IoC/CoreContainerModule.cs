@@ -8,6 +8,7 @@ using InfinniPlatform.Sdk.Environment.Log;
 using InfinniPlatform.Sdk.Environment.Transactions;
 using InfinniPlatform.Sdk.Global;
 using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.SystemInfo;
 using InfinniPlatform.Transactions;
 
 namespace InfinniPlatform.IoC
@@ -24,6 +25,10 @@ namespace InfinniPlatform.IoC
 
             builder.RegisterType<CustomServiceGlobalContext>()
                    .As<ICustomServiceGlobalContext>();
+
+            builder.RegisterType<SystemInfoProvider>()
+                   .As<ISystemInfoProvider>()
+                   .SingleInstance();
 
             builder.RegisterType<ScriptContext>()
                    .AsSelf()
@@ -55,6 +60,7 @@ namespace InfinniPlatform.IoC
 
             builder.RegisterType<ProfilerComponent>()
                    .As<IProfilerComponent>()
+                   .AsSelf()
                    .SingleInstance();
 
             // Log4Net

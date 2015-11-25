@@ -8,7 +8,7 @@ using InfinniPlatform.Authentication.Properties;
 
 using Microsoft.AspNet.Identity;
 
-namespace InfinniPlatform.Authentication.Internaldentity
+namespace InfinniPlatform.Authentication.InternalIdentity
 {
     /// <summary>
     /// Проверяет корректность данных пользователей.

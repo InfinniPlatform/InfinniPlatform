@@ -104,7 +104,6 @@ namespace InfinniPlatform.IoC
             var tempDomain = AppDomain.CreateDomain("ContainerModuleScanner", null, new AppDomainSetup
             {
                 LoaderOptimization = LoaderOptimization.MultiDomainHost,
-                ShadowCopyFiles = currentDomainInfo.ShadowCopyFiles,
                 ApplicationBase = currentDomainInfo.ApplicationBase,
                 ConfigurationFile = currentDomainInfo.ConfigurationFile
             });

@@ -60,6 +60,7 @@ namespace InfinniPlatform.IoC
 
         public void OnActivateInstance(IContainerInstanceActivator instanceActivator)
         {
+            _builder.RegisterModule(new AutofacActivateInstanceModule(instanceActivator));
         }
 
 

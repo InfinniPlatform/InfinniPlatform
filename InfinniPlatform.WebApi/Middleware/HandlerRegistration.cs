@@ -108,6 +108,7 @@ namespace InfinniPlatform.WebApi.Middleware
             {
                 return path.Value.Split(new[] { '?' }, StringSplitOptions.RemoveEmptyEntries).First().TrimEnd('/').ToLower();
             }
+
             return string.Empty;
         }
     }

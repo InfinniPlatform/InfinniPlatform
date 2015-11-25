@@ -10,7 +10,7 @@ using InfinniPlatform.Api.Security;
 
 using Microsoft.AspNet.Identity;
 
-namespace InfinniPlatform.Authentication.Internaldentity
+namespace InfinniPlatform.Authentication.InternalIdentity
 {
     /// <summary>
     /// Хранилище сведений о пользователях приложения <see cref="IdentityApplicationUser" />.
@@ -228,7 +228,6 @@ namespace InfinniPlatform.Authentication.Internaldentity
 
         public void Dispose()
         {
-            _userStore.Dispose();
         }
 
         public Task<IdentityApplicationUser> FindByUserNameAsync(string userName)

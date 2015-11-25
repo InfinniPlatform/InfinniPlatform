@@ -14,18 +14,16 @@ namespace InfinniPlatform.Owin.Middleware
         public SystemInfoOwinMiddleware(OwinMiddleware next, ISystemInfoProvider systemInfoProvider)
             : base(next)
         {
-            if (systemInfoProvider == null)
-            {
-                throw new ArgumentNullException(nameof(systemInfoProvider));
-            }
-
             _systemInfoProvider = systemInfoProvider;
 
+            RegisterHandler(new RegistrationHandlerBase("GET", new PathString("/"), GetSystemInfo));
             RegisterHandler(new RegistrationHandlerBase("GET", new PathString("/Info"), GetSystemInfo));
             RegisterHandler(new RegistrationHandlerBase("GET", new PathString("/favicon.ico"), GetFavicon));
         }
 
+
         private readonly ISystemInfoProvider _systemInfoProvider;
+
 
         /// <summary>
         /// Возвращает информацию о системе.

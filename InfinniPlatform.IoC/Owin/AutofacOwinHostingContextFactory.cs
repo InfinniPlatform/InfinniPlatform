@@ -31,6 +31,11 @@ namespace InfinniPlatform.IoC.Owin
                 autofacContainerBuilder.RegisterModule(new AutofacContainerModule(containerModule));
             }
 
+            // Регистрация IoC-модуля для OWIN 
+            autofacContainerBuilder.RegisterType<AutofacOwinHostingModule>()
+                                   .As<IOwinHostingModule>()
+                                   .SingleInstance();
+
             // ReSharper disable AccessToModifiedClosure
 
             // Регистрация самого Autofac-контейнера

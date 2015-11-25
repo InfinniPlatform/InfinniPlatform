@@ -12,8 +12,6 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 {
     public sealed class ApplicationUserStorePersistentStorage : IApplicationUserStore
     {
-        public static readonly ApplicationUserStorePersistentStorage Instance = new ApplicationUserStorePersistentStorage();
-        
         public ApplicationUserStorePersistentStorage()
         {
             _userCache = new ApplicationUserStoreCache();
@@ -265,15 +263,6 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 
                 DeleteDocument(AuthorizationStorageExtensions.ClaimStore, claim.Id);
             }
-        }
-        
-        public void RemoveAcl(string aclId)
-        {
-            DeleteDocument(AuthorizationStorageExtensions.AclStore, aclId);
-        }
-
-        public void Dispose()
-        {
         }
 
         private static object GetDocument(string documentType, string propertyName, string propertyValue)

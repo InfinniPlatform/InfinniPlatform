@@ -1,5 +1,6 @@
 ﻿using InfinniPlatform.Api.Security;
-using InfinniPlatform.Authentication.Internaldentity;
+using InfinniPlatform.Authentication.InternalIdentity;
+using InfinniPlatform.Authentication.Middleware;
 using InfinniPlatform.Authentication.Modules;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Sdk.ContextComponents;
@@ -17,7 +18,7 @@ namespace InfinniPlatform.Authentication.IoC
             // Хранилище учетных записей пользователей для AspNet.Identity
             builder.RegisterType<IdentityApplicationUserStore>()
                    .As<IUserStore<IdentityApplicationUser>>()
-                   .SingleInstance();
+                   .ExternallyOwned();
 
             // Сервис проверки учетных записей пользователей для AspNet.Identity
             builder.RegisterType<IdentityApplicationUserValidator>()
@@ -32,7 +33,7 @@ namespace InfinniPlatform.Authentication.IoC
             // Менеджер работы с учетными записями пользователей для AspNet.Identity
             builder.RegisterType<UserManager<IdentityApplicationUser>>()
                    .AsSelf()
-                   .SingleInstance();
+                   .ExternallyOwned();
 
             // Сервис хэширования паролей пользователей на уровне приложения
             builder.RegisterType<DefaultApplicationUserPasswordHasher>()
@@ -41,8 +42,7 @@ namespace InfinniPlatform.Authentication.IoC
 
             // Менеджер работы с учетными записями пользователей на уровне приложения
             builder.RegisterType<IdentityApplicationUserManager>()
-                   .As<IApplicationUserManager>()
-                   .SingleInstance();
+                   .As<IApplicationUserManager>();
 
             // Модули аутентификации
 
@@ -72,6 +72,10 @@ namespace InfinniPlatform.Authentication.IoC
 
             builder.RegisterType<InternalAuthOwinHostingModule>()
                 .As<IOwinHostingModule>()
+                .SingleInstance();
+
+            builder.RegisterType<InternalAuthOwinMiddleware>()
+                .AsSelf()
                 .SingleInstance();
         }
     }

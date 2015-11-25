@@ -1,4 +1,4 @@
-using InfinniPlatform.Api.RestQuery;
+п»їusing InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Sdk.Environment.Hosting;
 
 namespace InfinniPlatform.Api.RestApi
@@ -6,9 +6,9 @@ namespace InfinniPlatform.Api.RestApi
     public interface IRestVerbsRegistrator
     {
         /// <summary>
-        /// Добавить обработчик методов сервиса REST
+        /// Р”РѕР±Р°РІРёС‚СЊ РѕР±СЂР°Р±РѕС‚С‡РёРє РјРµС‚РѕРґРѕРІ СЃРµСЂРІРёСЃР° REST
         /// </summary>
-        /// <returns>Контейнер обработчиков REST запросов</returns>
+        /// <returns>РљРѕРЅС‚РµР№РЅРµСЂ РѕР±СЂР°Р±РѕС‚С‡РёРєРѕРІ REST Р·Р°РїСЂРѕСЃРѕРІ</returns>
         IRestVerbsContainer AddVerb(IQueryHandler queryHandler);
     }
 }

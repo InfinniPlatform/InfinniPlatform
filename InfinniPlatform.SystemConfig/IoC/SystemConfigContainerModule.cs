@@ -8,7 +8,7 @@ using InfinniPlatform.SystemConfig.UserStorage;
 
 namespace InfinniPlatform.SystemConfig.IoC
 {
-    internal class SystemConfigContainerModule : IContainerModule
+    internal sealed class SystemConfigContainerModule : IContainerModule
     {
         public void Load(IContainerBuilder builder)
         {

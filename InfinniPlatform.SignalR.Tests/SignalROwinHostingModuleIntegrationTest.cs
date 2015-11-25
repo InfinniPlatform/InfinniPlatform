@@ -2,156 +2,167 @@
 using System.Threading;
 
 using InfinniPlatform.Owin.Hosting;
+using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.SignalR.Modules;
 
 using Microsoft.AspNet.SignalR.Client;
+
+using Moq;
 
 using NUnit.Framework;
 
 namespace InfinniPlatform.SignalR.Tests
 {
-	[TestFixture]
-	[Category(TestCategories.IntegrationTest)]
-	public sealed class SignalROwinHostingModuleIntegrationTest
-	{
-		[Test]
-		public void ServerProxyShouldSendNotificationToAllClients()
-		{
-			// Given
+    [TestFixture]
+    [Category(TestCategories.IntegrationTest)]
+    public sealed class SignalROwinHostingModuleIntegrationTest
+    {
+        private static IOwinHostingContext CreateTestOwinHostingContext(params IOwinHostingModule[] owinHostingModules)
+        {
+            var containerResolverMoq = new Mock<IContainerResolver>();
+            containerResolverMoq.Setup(i => i.Resolve<IEnumerable<IOwinHostingModule>>()).Returns(owinHostingModules);
 
-			var hosting = new OwinHostingService(null);
-            // TODO: hosting.RegisterModule(new SignalROwinHostingModule());
+            var hostingContextMoq = new Mock<IOwinHostingContext>();
+            hostingContextMoq.SetupGet(i => i.Configuration).Returns(HostingConfig.Default);
+            hostingContextMoq.SetupGet(i => i.ContainerResolver).Returns(containerResolverMoq.Object);
 
-            var serverProxy = new WebClientNotificationProxy();
-			var receiveEvent = new CountdownEvent(3);
-
-			// When
-
-			hosting.Start();
-
-			var webClient1 = new WebClientNotification(receiveEvent, "someEvent1");
-			var webClient2 = new WebClientNotification(receiveEvent, "someEvent1");
-			var webClient3 = new WebClientNotification(receiveEvent, "someEvent1");
-
-			serverProxy.Notify("someEvent1", "eventBody1");
-
-			receiveEvent.Wait(5000);
-
-			hosting.Stop();
-
-			// Then
-
-			CollectionAssert.AreEquivalent(new[] { "eventBody1" }, webClient1.ReceiveMessages);
-			CollectionAssert.AreEquivalent(new[] { "eventBody1" }, webClient2.ReceiveMessages);
-			CollectionAssert.AreEquivalent(new[] { "eventBody1" }, webClient3.ReceiveMessages);
-		}
-
-		[Test]
-		[Ignore("Manual")] // Почему-то SignalR в текущей версии не хочет "останавливаться"
-		public void ServerProxyShouldSendNotificationToSpecifiedClients()
-		{
-			// Given
-
-			var hosting = new OwinHostingService(null);
-            // TODO: hosting.RegisterModule(new SignalROwinHostingModule());
-
-            var serverProxy = new WebClientNotificationProxy();
-			var receiveEventWebClient1 = new CountdownEvent(1);
-			var receiveEventWebClient2 = new CountdownEvent(1);
-			var receiveEventWebClient3 = new CountdownEvent(1);
-
-			// When
-
-			hosting.Start();
-
-			var webClient1 = new WebClientNotification(receiveEventWebClient1, "someEvent1");
-			var webClient2 = new WebClientNotification(receiveEventWebClient2, "someEvent2");
-			var webClient3 = new WebClientNotification(receiveEventWebClient3, "someEvent3");
-
-			serverProxy.Notify("someEvent1", "eventBody1");
-			serverProxy.Notify("someEvent2", "eventBody2");
-			serverProxy.Notify("someEvent3", "eventBody3");
-
-			receiveEventWebClient1.Wait(5000);
-			receiveEventWebClient2.Wait(5000);
-			receiveEventWebClient3.Wait(5000);
-
-			hosting.Stop();
-
-			// Then
-
-			CollectionAssert.AreEquivalent(new[] { "eventBody1" }, webClient1.ReceiveMessages);
-			CollectionAssert.AreEquivalent(new[] { "eventBody2" }, webClient2.ReceiveMessages);
-			CollectionAssert.AreEquivalent(new[] { "eventBody3" }, webClient3.ReceiveMessages);
-		}
-
-		[Test]
-		[Ignore("Manual")] // Почему-то SignalR в текущей версии не хочет "останавливаться"
-		public void ClientsShouldToExchangeTogetherNotifications()
-		{
-			// Given
-
-			var hosting = new OwinHostingService(null);
-            // TODO: hosting.RegisterModule(new SignalROwinHostingModule());
-
-            var receiveEventWebClient1 = new CountdownEvent(1);
-			var receiveEventWebClient2 = new CountdownEvent(1);
-
-			// When
-
-			hosting.Start();
-
-			var webClient1 = new WebClientNotification(receiveEventWebClient1, "someEvent1");
-			var webClient2 = new WebClientNotification(receiveEventWebClient2, "someEvent2");
-
-			webClient1.Notify("someEvent2", "1to2");
-			webClient2.Notify("someEvent1", "2to1");
-
-			receiveEventWebClient1.Wait(5000);
-			receiveEventWebClient2.Wait(5000);
-
-			hosting.Stop();
-
-			// Then
-
-			CollectionAssert.AreEquivalent(new[] { "1to2" }, webClient2.ReceiveMessages);
-			CollectionAssert.AreEquivalent(new[] { "2to1" }, webClient1.ReceiveMessages);
-		}
+            return hostingContextMoq.Object;
+        }
 
 
-		class WebClientNotification
-		{
-			public WebClientNotification(CountdownEvent receiveEvent, string routingKey)
-			{
-				var hubConnection = new HubConnection(string.Format("{0}://{1}:{2}/", HostingConfig.Default.ServerScheme, HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort));
-				var hubProxy = hubConnection.CreateHubProxy("WebClientNotificationHub");
-				hubProxy.On<object>(routingKey, OnReceive);
-				hubConnection.Start().Wait();
+        [Test]
+        public void CheckCommunications()
+        {
+            var owinHostingContext = CreateTestOwinHostingContext(new SignalROwinHostingModule());
+            var owinHostingService = new OwinHostingService(owinHostingContext);
 
-				_receiveEvent = receiveEvent;
-				_hubProxy = hubProxy;
-			}
+            owinHostingService.Start();
+
+            try
+            {
+                // Направленное оповещение от клиента клиенту
+
+                {
+                    // Given
+
+                    var receiveEvent1 = new CountdownEvent(1);
+                    var receiveEvent2 = new CountdownEvent(1);
+
+                    var client1 = new WebClientNotification(owinHostingContext.Configuration, receiveEvent1, "someEvent1");
+                    var client2 = new WebClientNotification(owinHostingContext.Configuration, receiveEvent2, "someEvent2");
+
+                    // When
+
+                    client1.Notify("someEvent2", "1to2");
+                    client2.Notify("someEvent1", "2to1");
+
+                    receiveEvent1.Wait(5000);
+                    receiveEvent2.Wait(5000);
+
+                    // Then
+
+                    CollectionAssert.AreEquivalent(new[] { "1to2" }, client2.ReceiveMessages);
+                    CollectionAssert.AreEquivalent(new[] { "2to1" }, client1.ReceiveMessages);
+                }
+
+                // Оповещение от сервера всем клиентам
+
+                {
+                    // Given
+
+                    var receiveEvent = new CountdownEvent(3);
+
+                    var server = new WebClientNotificationProxy();
+
+                    var client1 = new WebClientNotification(owinHostingContext.Configuration, receiveEvent, "someEvent1");
+                    var client2 = new WebClientNotification(owinHostingContext.Configuration, receiveEvent, "someEvent1");
+                    var client3 = new WebClientNotification(owinHostingContext.Configuration, receiveEvent, "someEvent1");
+
+                    // When
+
+                    server.Notify("someEvent1", "eventBody1");
+
+                    receiveEvent.Wait(5000);
+
+                    // Then
+
+                    CollectionAssert.AreEquivalent(new[] { "eventBody1" }, client1.ReceiveMessages);
+                    CollectionAssert.AreEquivalent(new[] { "eventBody1" }, client2.ReceiveMessages);
+                    CollectionAssert.AreEquivalent(new[] { "eventBody1" }, client3.ReceiveMessages);
+                }
+
+                // Оповещения от сервера определенным клиентам
+
+                {
+                    // Given
+
+                    var receiveEvent1 = new CountdownEvent(1);
+                    var receiveEvent2 = new CountdownEvent(1);
+                    var receiveEvent3 = new CountdownEvent(1);
+
+                    var server = new WebClientNotificationProxy();
+
+                    var client1 = new WebClientNotification(owinHostingContext.Configuration, receiveEvent1, "someEvent1");
+                    var client2 = new WebClientNotification(owinHostingContext.Configuration, receiveEvent2, "someEvent2");
+                    var client3 = new WebClientNotification(owinHostingContext.Configuration, receiveEvent3, "someEvent3");
+
+                    // When
+
+                    server.Notify("someEvent1", "eventBody1");
+                    server.Notify("someEvent2", "eventBody2");
+                    server.Notify("someEvent3", "eventBody3");
+
+                    receiveEvent1.Wait(5000);
+                    receiveEvent2.Wait(5000);
+                    receiveEvent3.Wait(5000);
+
+                    // Then
+
+                    CollectionAssert.AreEquivalent(new[] { "eventBody1" }, client1.ReceiveMessages);
+                    CollectionAssert.AreEquivalent(new[] { "eventBody2" }, client2.ReceiveMessages);
+                    CollectionAssert.AreEquivalent(new[] { "eventBody3" }, client3.ReceiveMessages);
+                }
+            }
+            finally
+            {
+                owinHostingService.Stop();
+            }
+        }
 
 
-			private readonly CountdownEvent _receiveEvent;
-			private readonly IHubProxy _hubProxy;
+        private class WebClientNotification
+        {
+            public WebClientNotification(HostingConfig hostingConfig, CountdownEvent receiveEvent, string routingKey)
+            {
+                var hubConnection = new HubConnection($"{hostingConfig.ServerScheme}://{hostingConfig.ServerName}:{hostingConfig.ServerPort}/");
+                var hubProxy = hubConnection.CreateHubProxy("WebClientNotificationHub");
+                hubProxy.On<object>(routingKey, OnReceive);
+                hubConnection.Start().Wait();
 
-			public readonly List<object> ReceiveMessages = new List<object>();
+                _receiveEvent = receiveEvent;
+                _hubProxy = hubProxy;
+            }
 
 
-			private void OnReceive(object message)
-			{
-				ReceiveMessages.Add(message);
-
-				_receiveEvent.Signal();
-			}
+            private readonly IHubProxy _hubProxy;
+            private readonly CountdownEvent _receiveEvent;
+            public readonly List<object> ReceiveMessages = new List<object>();
 
 
-			public void Notify(string routingKey, object message)
-			{
-				_hubProxy.Invoke("Notify", routingKey, message);
-			}
-		}
-	}
+            public void Notify(string routingKey, object message)
+            {
+                _hubProxy.Invoke("Notify", routingKey, message);
+            }
+
+
+            private void OnReceive(object message)
+            {
+                ReceiveMessages.Add(message);
+
+                _receiveEvent.Signal();
+            }
+        }
+    }
 }
