@@ -1,2 +1,0 @@
-﻿InfinniConfiguration.Integration
-InfinniPlatform.Api

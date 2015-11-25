@@ -1,51 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Owin.Properties;
+
 using Microsoft.Owin.Hosting;
+
 using Owin;
 
 namespace InfinniPlatform.Owin.Hosting
 {
     /// <summary>
-    ///     Сервис хостинга на базе OWIN (Open Web Interface for .NET).
+    /// Сервис хостинга приложения на базе OWIN.
     /// </summary>
     public sealed class OwinHostingService : IHostingService
     {
-        private volatile IDisposable _host;
-        private readonly string _baseAddress;
-        private readonly HostingContextBuilder _contextBuilder;
-        private readonly List<OwinHostingModule> _hostingModules;
-        private readonly object _hostSync = new object();
-
         /// <summary>
-        ///     Конструктор.
+        /// Конструктор.
         /// </summary>
-        /// <param name="contextConfig">Функция настройки контекста подсистемы хостинга.</param>
+        /// <param name="hostingContext">Контекст подсистемы хостинга на базе OWIN.</param>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public OwinHostingService(Action<HostingContextBuilder> contextConfig)
+        public OwinHostingService(IOwinHostingContext hostingContext)
         {
-            // Настройка контекста
-
-            _contextBuilder = new HostingContextBuilder();
-
-            if (contextConfig != null)
+            if (hostingContext == null)
             {
-                contextConfig(_contextBuilder);
+                throw new ArgumentNullException(nameof(hostingContext));
             }
 
             // Проверка наличия конфигурации
 
-            if (_contextBuilder.Context.Configuration == null)
+            if (hostingContext.Configuration == null)
             {
                 throw new ArgumentNullException(Resources.ServerConfigurationCannotBeNull);
             }
 
             // Имя схемы протокола сервера
 
-            var scheme = _contextBuilder.Context.Configuration.ServerScheme;
+            var scheme = hostingContext.Configuration.ServerScheme;
 
             if (string.IsNullOrWhiteSpace(scheme))
             {
@@ -60,7 +54,7 @@ namespace InfinniPlatform.Owin.Hosting
 
             // Адрес или имя сервера
 
-            var server = _contextBuilder.Context.Configuration.ServerName;
+            var server = hostingContext.Configuration.ServerName;
 
             if (string.IsNullOrWhiteSpace(server))
             {
@@ -74,7 +68,7 @@ namespace InfinniPlatform.Owin.Hosting
 
             // Номер порта сервера
 
-            var port = _contextBuilder.Context.Configuration.ServerPort;
+            var port = hostingContext.Configuration.ServerPort;
 
             if (port <= 0)
             {
@@ -83,29 +77,30 @@ namespace InfinniPlatform.Owin.Hosting
 
             // Отпечаток сертификата
 
-            var certificate = _contextBuilder.Context.Configuration.ServerCertificate;
+            var certificate = hostingContext.Configuration.ServerCertificate;
 
-            if (Uri.UriSchemeHttps.Equals(scheme, StringComparison.OrdinalIgnoreCase) &&
-                string.IsNullOrWhiteSpace(certificate))
+            if (Uri.UriSchemeHttps.Equals(scheme, StringComparison.OrdinalIgnoreCase) && string.IsNullOrWhiteSpace(certificate))
             {
                 throw new ArgumentNullException(Resources.ServerCertificateCannotBeNullOrWhiteSpace);
             }
 
 
-            Context = _contextBuilder.Context;
+            _hostingContext = hostingContext;
 
-            _baseAddress = string.Format("{0}://{1}:{2}/", scheme, server, port);
-            _hostingModules = new List<OwinHostingModule>();
+            _baseAddress = $"{scheme}://{server}:{port}/";
+            _hostingModules = hostingContext.ContainerResolver.Resolve<IEnumerable<IOwinHostingModule>>().OrderBy(m => m.ModuleType);
         }
 
-        /// <summary>
-        ///     Контекст подсистемы хостинга.
-        /// </summary>
-        public IHostingContext Context { get; private set; }
 
-        /// <summary>
-        ///     Запустить хостинг.
-        /// </summary>
+        private readonly IOwinHostingContext _hostingContext;
+
+        private readonly string _baseAddress;
+        private readonly IEnumerable<IOwinHostingModule> _hostingModules;
+
+        private readonly object _hostSync = new object();
+        private volatile IDisposable _host;
+
+
         public void Start()
         {
             if (_host == null)
@@ -118,21 +113,12 @@ namespace InfinniPlatform.Owin.Hosting
 
                         _host = WebApp.Start(_baseAddress, Startup);
 
-                        foreach (var module in _hostingModules)
-                        {
-                            if (module.OnStart != null)
-                            {
-                                module.OnStart(_contextBuilder, Context);
-                            }
-                        }
+                        OnStart?.Invoke(this, EventArgs.Empty);
                     }
                 }
             }
         }
 
-        /// <summary>
-        ///     Остановить хостинг.
-        /// </summary>
         public void Stop()
         {
             if (_host != null)
@@ -143,13 +129,7 @@ namespace InfinniPlatform.Owin.Hosting
                     {
                         try
                         {
-                            foreach (var module in _hostingModules)
-                            {
-                                if (module.OnStop != null)
-                                {
-                                    module.OnStop(Context);
-                                }
-                            }
+                            OnStop?.Invoke(this, EventArgs.Empty);
 
                             _host.Dispose();
                         }
@@ -162,32 +142,22 @@ namespace InfinniPlatform.Owin.Hosting
             }
         }
 
-        /// <summary>
-        ///     Зарегистрировать модуль хостинга.
-        /// </summary>
-        /// <param name="module">Модуль хостинга.</param>
-        /// <exception cref="ArgumentNullException"></exception>
-        public void RegisterModule(OwinHostingModule module)
-        {
-            if (module == null)
-            {
-                throw new ArgumentNullException("module");
-            }
+        public event EventHandler OnStart;
 
-            _hostingModules.Add(module);
-        }
+        public event EventHandler OnStop;
+
 
         private void Startup(IAppBuilder builder)
         {
             foreach (var module in _hostingModules)
             {
-                module.Configure(builder, Context);
+                module.Configure(builder, _hostingContext);
             }
         }
 
         private void BindCertificate()
         {
-            var config = Context.Configuration;
+            var config = _hostingContext.Configuration;
 
             if (Uri.UriSchemeHttps.Equals(config.ServerScheme, StringComparison.OrdinalIgnoreCase))
             {

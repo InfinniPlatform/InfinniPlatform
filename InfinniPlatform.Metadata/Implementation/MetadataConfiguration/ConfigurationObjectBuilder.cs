@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using InfinniPlatform.Factories;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Metadata;
-using InfinniPlatform.Sdk.Environment.Scripts;
 
 namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 {
@@ -16,18 +14,16 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
     /// </summary>
     public sealed class ConfigurationObjectBuilder : IConfigurationObjectBuilder
     {
-        public ConfigurationObjectBuilder(IIndexFactory indexFactory, IBlobStorageFactory blobStorageFactory, IMetadataConfigurationProvider metadataConfigurationProvider, IScriptConfiguration scriptConfiguration)
+        public ConfigurationObjectBuilder(IIndexFactory indexFactory, IBlobStorageFactory blobStorageFactory, IMetadataConfigurationProvider metadataConfigurationProvider)
         {
             _indexFactory = indexFactory;
             _blobStorageFactory = blobStorageFactory;
             _metadataConfigurationProvider = metadataConfigurationProvider;
-            _scriptConfiguration = scriptConfiguration;
         }
 
         private readonly IBlobStorageFactory _blobStorageFactory;
         private readonly IIndexFactory _indexFactory;
         private readonly IMetadataConfigurationProvider _metadataConfigurationProvider;
-        private readonly IScriptConfiguration _scriptConfiguration;
 
         /// <summary>
         /// Получить объект конфигурации метаданных для указанного идентификатора
@@ -40,7 +36,7 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
             if (metadataConfiguration == null)
             {
                 // Для тестов %) т.к. теперь метаданные загружаются только с диска
-                metadataConfiguration = _metadataConfigurationProvider.AddConfiguration(metadataIdentifier, _scriptConfiguration, false);
+                metadataConfiguration = _metadataConfigurationProvider.AddConfiguration(metadataIdentifier, false);
                 // Logger.Log.Error(string.Format("Metadata configuration not registered: \"{0}\"", metadataIdentifier));
                 // return null;
             }
@@ -54,11 +50,6 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
         public IEnumerable<IMetadataConfiguration> GetConfigurationList()
         {
             return _metadataConfigurationProvider.Configurations;
-        }
-
-        public IEnumerable<Tuple<string, string>> GetConfigurationVersions()
-        {
-            return _metadataConfigurationProvider.ConfigurationVersions;
         }
     }
 }

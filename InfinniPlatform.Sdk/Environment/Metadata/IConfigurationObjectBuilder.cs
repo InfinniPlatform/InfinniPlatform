@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace InfinniPlatform.Sdk.Environment.Metadata
 {
@@ -20,11 +19,5 @@ namespace InfinniPlatform.Sdk.Environment.Metadata
         /// </summary>
         /// <returns></returns>
         IEnumerable<IMetadataConfiguration> GetConfigurationList();
-
-        /// <summary>
-        /// Получить список соответствия конфигураций и версий, существующих в системе
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<Tuple<string, string>> GetConfigurationVersions();
     }
 }

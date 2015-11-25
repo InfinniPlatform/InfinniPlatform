@@ -8,6 +8,6 @@
 		/// <summary>
 		/// Создает фабрику для создания классов по работе с прикладными скриптами.
 		/// </summary>
-		IScriptFactory BuildScriptFactory(string metadataConfigurationId);
+		IScriptFactory BuildScriptFactory();
 	}
 }

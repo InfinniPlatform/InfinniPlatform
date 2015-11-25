@@ -58,10 +58,6 @@ namespace InfinniPlatform.SystemConfig.Initializers
 
 		public void InstallConfiguration(IMetadataConfiguration metadataCacheManager)
 		{
-			var scriptConfiguration = metadataCacheManager.ScriptConfiguration;
-
-			scriptConfiguration.ModuleName = metadataCacheManager.ConfigurationId;
-
 			foreach (var document in _documents)
 			{
 				string documentId = document.Name;

@@ -66,6 +66,7 @@
     <Compile Include="DataSources\GenericDataSource.cs" />
     <Compile Include="DataSources\IDataSource.cs" />
     <Compile Include="DataSources\RegisterDataSource.cs" />
+    <Compile Include="IoC\ReportingContainerModule.cs" />
     <Compile Include="ParameterValueProviders\IParameterValueProvider.cs" />
     <Compile Include="ParameterValueProviders\ParameterConstantValueProvider.cs" />
     <Compile Include="DataSources\RestDataSource.cs" />

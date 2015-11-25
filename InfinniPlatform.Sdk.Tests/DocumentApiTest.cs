@@ -14,7 +14,7 @@ using NUnit.Framework;
 namespace InfinniPlatform.Sdk.Tests
 {
 	[TestFixture]
-	[Category("IntegrationTest")]
+	[Category(TestCategories.AcceptanceTest)]
 	public class DocumentApiTest
 	{
 		private const string Route = "1";

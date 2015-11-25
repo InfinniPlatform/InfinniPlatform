@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 
 using InfinniPlatform.Api.Serialization;
-using InfinniPlatform.Hosting;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Settings;
@@ -12,16 +11,20 @@ using InfinniPlatform.WebApi.Factories;
 
 namespace InfinniPlatform.SystemConfig.Initializers
 {
-    public sealed class PackageJsonConfigurationsInitializer : IStartupInitializer
+    /// <summary>
+    /// Загружает метаданные прикладных конфигураций из JSON-файлов текущего пакета приложения.
+    /// </summary>
+    internal sealed class PackageJsonConfigurationsInitializer : IStartupInitializer
     {
-        public PackageJsonConfigurationsInitializer()
+        public PackageJsonConfigurationsInitializer(ApplicationHostServer applicationHostServer)
         {
+            _applicationHostServer = applicationHostServer;
             _configurations = new Lazy<IEnumerable<DynamicWrapper>>(LoadConfigsMetadata);
 
             var watcher = new FileSystemWatcher(AppSettings.GetValue("ContentDirectory", "content"), "*.json")
-                          {
-                              IncludeSubdirectories = true
-                          };
+            {
+                IncludeSubdirectories = true
+            };
 
             watcher.Changed += (sender, args) => { UpdateConfigsMetadata(args); };
             watcher.Created += (sender, args) => { UpdateConfigsMetadata(args); };
@@ -30,9 +33,15 @@ namespace InfinniPlatform.SystemConfig.Initializers
             watcher.EnableRaisingEvents = true;
         }
 
+
+        private readonly ApplicationHostServer _applicationHostServer;
         private readonly Lazy<IEnumerable<DynamicWrapper>> _configurations;
 
-        public void OnStart(HostingContextBuilder contextBuilder)
+
+        public int Order => 0;
+
+
+        public void OnStart()
         {
             // Получение списка всех установленных конфигураций
             var configurations = _configurations.Value;
@@ -41,11 +50,11 @@ namespace InfinniPlatform.SystemConfig.Initializers
             foreach (dynamic configuration in configurations)
             {
                 string configurationId = configuration.Name;
-                string configurationVersion = configuration.Version;
 
-                InstallConfiguration(configuration, configurationId, configurationVersion);
+                InstallConfiguration(configuration, configurationId);
             }
         }
+
 
         private void UpdateConfigsMetadata(FileSystemEventArgs args)
         {
@@ -53,7 +62,9 @@ namespace InfinniPlatform.SystemConfig.Initializers
             {
                 try
                 {
+#if DEBUG
                     Console.WriteLine(@"[{1}] File {0} changed.", args.Name, DateTime.Now.TimeOfDay);
+#endif
 
                     foreach (dynamic configuration in _configurations.Value)
                     {
@@ -67,7 +78,9 @@ namespace InfinniPlatform.SystemConfig.Initializers
                         InstallConfiguration(configuration, configuration.Name);
                     }
 
+#if DEBUG
                     Console.WriteLine(@"[{0}] Configurations successfully updated.", DateTime.Now.TimeOfDay);
+#endif
                 }
                 catch (Exception e)
                 {
@@ -76,13 +89,13 @@ namespace InfinniPlatform.SystemConfig.Initializers
             }
         }
 
-        private static void InstallConfiguration(object configuration, string configId, string configVersion = null)
+        private void InstallConfiguration(object configuration, string configId)
         {
             // Загрузка метаданных конфигурации для кэширования
             var metadataCacheFiller = LoadConfigurationMetadata(configuration);
 
             // Создание менеджера кэша метаданных конфигураций
-            var metadataCacheManager = InfinniPlatformHostServer.Instance.CreateConfiguration(configId, false, configVersion);
+            var metadataCacheManager = _applicationHostServer.CreateConfiguration(configId, false);
 
             // Загрузка метаданных конфигурации в кэш
             metadataCacheFiller.InstallConfiguration(metadataCacheManager);
@@ -91,16 +104,16 @@ namespace InfinniPlatform.SystemConfig.Initializers
             metadataCacheManager.ScriptConfiguration.InitActionUnitStorage();
 
             // Создание сервисов конфигурации
-            InfinniPlatformHostServer.Instance.InstallServices(configVersion, metadataCacheManager.ServiceRegistrationContainer);
+            _applicationHostServer.InstallServices(metadataCacheManager.ServiceRegistrationContainer);
         }
 
-        private static void RemoveConfiguration(string configurationName)
+        private void RemoveConfiguration(string configurationName)
         {
             // Удаление сервисов конфигурации
-            InfinniPlatformHostServer.Instance.UninstallServices(configurationName);
+            _applicationHostServer.UninstallServices(configurationName);
 
             // Удаление метаданных конфигурации из кэша
-            InfinniPlatformHostServer.Instance.RemoveConfiguration(configurationName);
+            _applicationHostServer.RemoveConfiguration(configurationName);
         }
 
         private static PackageJsonConfigurationInstaller LoadConfigurationMetadata(dynamic configuration)

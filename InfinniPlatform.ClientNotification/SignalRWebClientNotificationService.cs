@@ -1,5 +1,6 @@
 ﻿using InfinniPlatform.Api.ClientNotification;
 using InfinniPlatform.SignalR;
+using InfinniPlatform.SignalR.Modules;
 
 namespace InfinniPlatform.ClientNotification
 {

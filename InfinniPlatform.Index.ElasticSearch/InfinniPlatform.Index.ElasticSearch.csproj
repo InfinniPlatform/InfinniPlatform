@@ -135,6 +135,7 @@
     <Compile Include="Implementation\ElasticProviders\DocumentProvider.cs" />
     <Compile Include="Implementation\Versioning\VersionProvider.cs" />
     <Compile Include="Implementation\Versioning\VersionBuilder.cs" />
+    <Compile Include="IoC\ElasticSearchContainerModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

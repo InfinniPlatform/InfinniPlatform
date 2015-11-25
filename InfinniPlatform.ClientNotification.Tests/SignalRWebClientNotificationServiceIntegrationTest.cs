@@ -1,41 +1,41 @@
-﻿using InfinniPlatform.Owin.Hosting;
-using InfinniPlatform.Sdk.Api;
-using InfinniPlatform.SignalR;
+﻿using System;
+
+using InfinniPlatform.NodeServiceHost;
 
 using NUnit.Framework;
 
 namespace InfinniPlatform.ClientNotification.Tests
 {
-	[TestFixture]
-	[Category(TestCategories.IntegrationTest)]
-	public sealed class SignalRWebClientNotificationServiceIntegrationTest
-	{
-		[Test]
-		public void ShouldNotifyClients()
-		{
-			// Given
+    [TestFixture]
+    [Category(TestCategories.AcceptanceTest)]
+    public sealed class SignalRWebClientNotificationServiceIntegrationTest
+    {
+        private IDisposable _server;
 
-			var hosting = new OwinHostingService(config => config.Configuration(HostingConfig.Default));
-			hosting.RegisterModule(new SignalROwinHostingModule());
+        [TestFixtureSetUp]
+        public void SetUp()
+        {
+            _server = InfinniPlatformInprocessHost.Start();
+        }
 
-			var notificationServiceFactory = new SignalRWebClientNotificationServiceFactory();
-			var notificationService = notificationServiceFactory.CreateClientNotificationService();
+        [TestFixtureTearDown]
+        public void TearDown()
+        {
+            _server.Dispose();
+        }
 
-			// When
+        [Test]
+        public void ShouldNotifyClients()
+        {
+            // Given
+            var notificationServiceFactory = new SignalRWebClientNotificationServiceFactory();
+            var notificationService = notificationServiceFactory.CreateClientNotificationService();
 
-			TestDelegate notifyClients
-				= () =>
-					  {
-						  hosting.Start();
+            // When
+            TestDelegate notifyClients = () => notificationService.Notify("someEvent1", "eventBody1");
 
-						  notificationService.Notify("someEvent1", "eventBody1");
-
-						  hosting.Stop();
-					  };
-
-			// Then
-
-			Assert.DoesNotThrow(notifyClients);
-		}
-	}
+            // Then
+            Assert.DoesNotThrow(notifyClients);
+        }
+    }
 }

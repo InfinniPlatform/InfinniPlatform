@@ -11,14 +11,16 @@ namespace InfinniPlatform.Runtime.Implementation.ScriptProcessors
 {
     public sealed class ScriptProcessor : IScriptProcessor
     {
-        public ScriptProcessor(IMethodInvokationCacheList scriptCache, IScriptMetadataProvider scriptMetadataProvider)
+        public ScriptProcessor(IMethodInvokationCacheList scriptCache, IScriptMetadataProvider scriptMetadataProvider, IPerformanceLog performanceLog)
         {
             _scriptCache = scriptCache;
             _scriptMetadataProvider = scriptMetadataProvider;
+            _performanceLog = performanceLog;
         }
 
         private readonly IMethodInvokationCacheList _scriptCache;
         private readonly IScriptMetadataProvider _scriptMetadataProvider;
+        private readonly IPerformanceLog _performanceLog;
 
         public object InvokeScript(string scriptIdentifier, object scriptContext)
         {
@@ -76,7 +78,7 @@ namespace InfinniPlatform.Runtime.Implementation.ScriptProcessors
                     {
                         var result = scriptMethodInfo.Invoke(handler, parameters);
 
-                        Logger.PerformanceLog.Log(component, method, start, null);
+                        _performanceLog.Log(component, method, start, null);
 
                         return result;
                     }
@@ -85,14 +87,16 @@ namespace InfinniPlatform.Runtime.Implementation.ScriptProcessors
                         var error = e.InnerException ?? e;
 
                         Logger.Log.Error(Resources.ScriptCompletedWithError, context, error);
-                        Logger.PerformanceLog.Log(component, method, start, Resources.ScriptCompletedWithError);
+
+                        _performanceLog.Log(component, method, start, Resources.ScriptCompletedWithError);
 
                         throw error;
                     }
                     catch (Exception e)
                     {
                         Logger.Log.Error(Resources.ScriptCompletedWithError, context, e);
-                        Logger.PerformanceLog.Log(component, method, start, Resources.ScriptCompletedWithError);
+
+                        _performanceLog.Log(component, method, start, Resources.ScriptCompletedWithError);
 
                         throw;
                     }
@@ -100,7 +104,8 @@ namespace InfinniPlatform.Runtime.Implementation.ScriptProcessors
             }
 
             Logger.Log.Warn(Resources.CannotFindScriptImplementation, context);
-            Logger.PerformanceLog.Log(component, method, start, Resources.CannotFindScriptImplementation);
+
+            _performanceLog.Log(component, method, start, Resources.CannotFindScriptImplementation);
 
             throw new ArgumentException(Resources.CannotFindScriptImplementation).AddContextData(context);
         }

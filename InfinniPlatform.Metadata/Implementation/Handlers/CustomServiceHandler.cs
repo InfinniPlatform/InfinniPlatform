@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.Hosting;
+﻿using InfinniPlatform.Api.Hosting;
+using InfinniPlatform.Hosting;
 using InfinniPlatform.Sdk.Global;
 
 namespace InfinniPlatform.Metadata.Implementation.Handlers
@@ -11,7 +7,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
     /// <summary>
     ///   Обработчик запроса пользовательского сервиса SDK API
     /// </summary>
-    public sealed class CustomServiceHandler
+    public sealed class CustomServiceHandler : IWebRoutingHandler
     {
         private readonly ICustomServiceGlobalContext _context;
 

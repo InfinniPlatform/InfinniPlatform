@@ -46,6 +46,7 @@
     <Compile Include="FileExtensionTypeProvider.cs" />
     <Compile Include="FileSystemBlobStorage.cs" />
     <Compile Include="FileSystemBlobStorageFactory.cs" />
+    <Compile Include="IoC\BlobStorageContainerModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

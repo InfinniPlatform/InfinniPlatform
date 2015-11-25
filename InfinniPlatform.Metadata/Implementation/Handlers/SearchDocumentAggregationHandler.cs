@@ -3,6 +3,7 @@ using System.Linq;
 
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
 using InfinniPlatform.Api.Hosting;
+using InfinniPlatform.Hosting;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
@@ -10,7 +11,7 @@ using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Metadata.Implementation.Handlers
 {
-    public class SearchDocumentAggregationHandler
+    public class SearchDocumentAggregationHandler : IWebRoutingHandler
     {
         private readonly IFilterBuilder _filterFactory = FilterBuilderFactory.GetInstance();
         private readonly IGlobalContext _globalContext;

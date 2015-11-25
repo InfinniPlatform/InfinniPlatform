@@ -1,10 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 
 using InfinniPlatform.Factories;
 using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Hosting;
 using InfinniPlatform.Sdk.Environment.Metadata;
 using InfinniPlatform.Sdk.Environment.Scripts;
@@ -14,73 +13,27 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
     /// <summary>
     /// Провайдер для работы с конфигурациями метаданных
     /// </summary>
-    public class MetadataConfigurationProvider : IMetadataConfigurationProvider
+    internal sealed class MetadataConfigurationProvider : IMetadataConfigurationProvider
     {
-        private const string CacheConfigListKey = "___configurations";
-
-        public MetadataConfigurationProvider(IServiceRegistrationContainerFactory serviceRegistrationContainerFactory, IServiceTemplateConfiguration serviceTemplateConfiguration, ISharedCacheComponent sharedCacheComponent)
+        public MetadataConfigurationProvider(IServiceRegistrationContainerFactory serviceRegistrationContainerFactory, IServiceTemplateConfiguration serviceTemplateConfiguration, IScriptConfiguration scriptConfiguration)
         {
             _serviceRegistrationContainerFactory = serviceRegistrationContainerFactory;
             _serviceTemplateConfiguration = serviceTemplateConfiguration;
-            _sharedCacheComponent = sharedCacheComponent;
+            _scriptConfiguration = scriptConfiguration;
 
-            lock (_configLock)
-            {
-                sharedCacheComponent.Lock();
-                try
-                {
-                    var configurations = sharedCacheComponent.Get(CacheConfigListKey);
-                    if (configurations == null)
-                    {
-                        sharedCacheComponent.Set(CacheConfigListKey, _configurationList);
-                    }
-                }
-                finally
-                {
-                    sharedCacheComponent.Unlock();
-                }
-            }
+            _configurations = new ConcurrentDictionary<string, IMetadataConfiguration>(StringComparer.OrdinalIgnoreCase);
         }
 
-        private readonly object _configLock = new object();
+
         private readonly IServiceRegistrationContainerFactory _serviceRegistrationContainerFactory;
         private readonly IServiceTemplateConfiguration _serviceTemplateConfiguration;
-        private readonly ISharedCacheComponent _sharedCacheComponent;
-        private volatile List<IMetadataConfiguration> _configurationList = new List<IMetadataConfiguration>();
+        private readonly IScriptConfiguration _scriptConfiguration;
 
-        /// <summary>
-        /// Список конфигураций метаданных
-        /// </summary>
-        public IEnumerable<IMetadataConfiguration> Configurations
-        {
-            get { return (List<IMetadataConfiguration>)_sharedCacheComponent.Get(CacheConfigListKey); }
-        }
+        private readonly ConcurrentDictionary<string, IMetadataConfiguration> _configurations;
 
-        /// <summary>
-        /// Список версий конфигураций
-        /// </summary>
-        public IEnumerable<Tuple<string, string>> ConfigurationVersions
-        {
-            get
-            {
-                var result = new List<Tuple<string, string>>();
-                foreach (var metadataConfiguration in Configurations)
-                {
-                    if (
-                        result.Any(
-                            c =>
-                                c.Item1 == metadataConfiguration.ConfigurationId &&
-                                c.Item2 == metadataConfiguration.Version))
-                    {
-                        continue;
-                    }
-                    result.Add(new Tuple<string, string>(metadataConfiguration.ConfigurationId,
-                        metadataConfiguration.Version));
-                }
 
-                return result;
-            }
-        }
+        public IEnumerable<IMetadataConfiguration> Configurations => _configurations.Values;
+
 
         /// <summary>
         /// Удалить указанную конфигурацию метаданных из списка загруженных конфигурации
@@ -88,12 +41,9 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
         /// <param name="metadataConfigurationId">Идентификатор конфигурации</param>
         public void RemoveConfiguration(string metadataConfigurationId)
         {
-            var configToRemove = Configurations.FirstOrDefault(c => c.ConfigurationId.ToLowerInvariant() == metadataConfigurationId.ToLowerInvariant());
+            IMetadataConfiguration metadataConfiguration;
 
-            if (configToRemove != null)
-            {
-                RemoveConfiguration(configToRemove);
-            }
+            _configurations.TryRemove(metadataConfigurationId, out metadataConfiguration);
         }
 
         /// <summary>
@@ -103,73 +53,36 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
         /// <returns>Метаданные конфигурации</returns>
         public IMetadataConfiguration GetMetadataConfiguration(string metadataConfigurationId)
         {
-            return Configurations.FirstOrDefault(c => c.ConfigurationId.ToLowerInvariant() == metadataConfigurationId.ToLowerInvariant());
+            IMetadataConfiguration metadataConfiguration;
+
+            _configurations.TryGetValue(metadataConfigurationId, out metadataConfiguration);
+
+            return metadataConfiguration;
         }
 
         /// <summary>
         /// Добавить конфигурацию метаданных
         /// </summary>
         /// <param name="metadataConfigurationId">Идентификатор конфигурации метаданных</param>
-        /// <param name="actionConfiguration">Конфигурация скриптовых модулей</param>
         /// <param name="isEmbeddedConfiguration">Признак встроенной в код конфигурации C#</param>
         /// <returns>Конфигурация метаданных</returns>
-        public IMetadataConfiguration AddConfiguration(string metadataConfigurationId, IScriptConfiguration actionConfiguration, bool isEmbeddedConfiguration)
+        public IMetadataConfiguration AddConfiguration(string metadataConfigurationId, bool isEmbeddedConfiguration)
         {
-            var configurationExists = Configurations.FirstOrDefault(c => c.ConfigurationId == metadataConfigurationId);
+            IMetadataConfiguration metadataConfiguration;
 
-            if (configurationExists != null)
+            if (!_configurations.TryGetValue(metadataConfigurationId, out metadataConfiguration))
             {
-                return configurationExists;
+                var buildServiceRegistrationContainer = _serviceRegistrationContainerFactory.BuildServiceRegistrationContainer(metadataConfigurationId);
+
+                metadataConfiguration = new MetadataConfiguration(_scriptConfiguration, buildServiceRegistrationContainer, _serviceTemplateConfiguration, isEmbeddedConfiguration)
+                {
+                    ConfigurationId = metadataConfigurationId,
+                };
+
+                _configurations.TryAdd(metadataConfigurationId, metadataConfiguration);
             }
-
-
-            var metadataConfiguration = new MetadataConfiguration(actionConfiguration,
-                _serviceRegistrationContainerFactory.BuildServiceRegistrationContainer(metadataConfigurationId),
-                _serviceTemplateConfiguration, isEmbeddedConfiguration)
-                                        {
-                                            ConfigurationId = metadataConfigurationId,
-                                            Version = null
-                                        };
-
-            AddConfiguration(metadataConfiguration);
 
             return metadataConfiguration;
-        }
-
-        private void RemoveConfiguration(IMetadataConfiguration metadataConfiguration)
-        {
-            lock (_configLock)
-            {
-                _sharedCacheComponent.Lock();
-                try
-                {
-                    var configList = Configurations;
-                    configList.RemoveItem(metadataConfiguration);
-                    _sharedCacheComponent.Set(CacheConfigListKey, configList);
-                }
-                finally
-                {
-                    _sharedCacheComponent.Unlock();
-                }
-            }
-        }
-
-        private void AddConfiguration(IMetadataConfiguration metadataConfiguration)
-        {
-            lock (_configLock)
-            {
-                _sharedCacheComponent.Lock();
-                try
-                {
-                    var configList = Configurations;
-                    configList.AddItem(metadataConfiguration);
-                    _sharedCacheComponent.Set(CacheConfigListKey, configList);
-                }
-                finally
-                {
-                    _sharedCacheComponent.Unlock();
-                }
-            }
         }
     }
 }

@@ -1,29 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using InfinniPlatform.Api.RestApi;
 
 namespace InfinniPlatform.Api.RestQuery
 {
     /// <summary>
-    ///     Factory for creating instances of REST service
+    /// Фабрика для построения REST-сервисов.
     /// </summary>
     public interface IApiControllerFactory
     {
         /// <summary>
-        /// Получить шаблон исполняемого действия
+        /// Создает объект для регистрации сервисов документа.
         /// </summary>
-        /// <param name="metadataConfigurationId">Идентификатор конфигурации</param>
-        /// <param name="metadataName">Наименование метаданных</param>
-        /// <param name="userName">Логин пользователя</param>
-        /// <returns>Контейнер, содержащий шаблон действия</returns>
-        IRestVerbsContainer GetTemplate(string metadataConfigurationId, string metadataName, string userName);
+        /// <param name="configId">Имя конфигурации.</param>
+        /// <param name="documentType">Имя типа документа.</param>
+        IRestVerbsRegistrator CreateTemplate(string configId, string documentType);
 
         /// <summary>
-        ///  Удалить зарегистрированные шаблоны
+        /// Возвращает объект для поиска сервиса документа.
         /// </summary>
-        /// <param name="version">Версия конфигурации, для которой следует удалить шаблоны</param>
-        /// <param name="metadataConfigurationId">Идентификатор конфигурации</param>
-        void RemoveTemplates(string version, string metadataConfigurationId);
+        /// <param name="configId">Имя конфигурации.</param>
+        /// <param name="documentType">Имя типа документа.</param>
+        IRestVerbsContainer GetTemplate(string configId, string documentType);
 
-
+        /// <summary>
+        /// Удаляет зарегистрированные сервисы всех документов конфигурации.
+        /// </summary>
+        /// <param name="configId">Имя конфигурации.</param>
+        void RemoveTemplates(string configId);
     }
 }

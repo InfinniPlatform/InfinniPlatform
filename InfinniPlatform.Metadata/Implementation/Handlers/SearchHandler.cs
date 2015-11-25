@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
 using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.SearchOptions;
-using InfinniPlatform.Api.Security;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Metadata.Properties;
 using InfinniPlatform.Sdk.ContextComponents;
@@ -20,8 +17,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
     {
         private readonly IGlobalContext _globalContext;
 
-        public SearchHandler(
-            IGlobalContext globalContext)
+        public SearchHandler(IGlobalContext globalContext)
         {
             _globalContext = globalContext;
         }
@@ -61,7 +57,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
             //устанавливаем контекст прикладной конфигурации. В ходе рефакторинга необходимо обдумать, как вынести это на более высокий уровень абстракции
             var appliedConfig =
                 _globalContext.GetComponent<IConfigurationMediatorComponent>()
-                    .GetConfiguration(null, ConfigRequestProvider.GetConfiguration());
+                    .GetConfiguration(ConfigRequestProvider.GetConfiguration());
 
 
             if (string.IsNullOrEmpty(idType))

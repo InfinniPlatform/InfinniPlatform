@@ -1,6 +1,9 @@
 ﻿using System;
 
 using InfinniPlatform.Sdk.Environment.Binary;
+using InfinniPlatform.Sdk.Environment.Log;
+
+using Moq;
 
 using NUnit.Framework;
 
@@ -13,7 +16,7 @@ namespace InfinniPlatform.BlobStorage.Tests
         [TestFixtureSetUp]
         public void Setup()
         {
-            var blobStorageFactory = new FileSystemBlobStorageFactory();
+            var blobStorageFactory = new FileSystemBlobStorageFactory(new Mock<IPerformanceLog>().Object);
 
             _blobStorage = blobStorageFactory.CreateBlobStorage();
         }

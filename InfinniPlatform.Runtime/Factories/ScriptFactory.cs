@@ -3,6 +3,7 @@
 using InfinniPlatform.Factories;
 using InfinniPlatform.Runtime.Implementation.ScriptMetadataProviders;
 using InfinniPlatform.Runtime.Implementation.ScriptProcessors;
+using InfinniPlatform.Sdk.Environment.Log;
 using InfinniPlatform.Sdk.Environment.Scripts;
 
 namespace InfinniPlatform.Runtime.Factories
@@ -13,11 +14,11 @@ namespace InfinniPlatform.Runtime.Factories
         /// Конструктор.
         /// </summary>
         /// <param name="versionLoader">Загрузчик версий прикладных скриптов.</param>
-        /// <param name="metadataConfigurationId">Идентификатор загружаемой конфигурации.</param>
-        public ScriptFactory(IVersionLoader versionLoader, string metadataConfigurationId)
+        /// <param name="performanceLog">Сервис протоколирования длительности вызова методов компонентов.</param>
+        public ScriptFactory(IVersionLoader versionLoader, IPerformanceLog performanceLog)
         {
             _versionLoader = versionLoader;
-            _metadataConfigurationId = metadataConfigurationId;
+            _performanceLog = performanceLog;
 
             _scriptInvokationCache = new Lazy<IMethodInvokationCacheList>(CreateScriptInvokationCache);
             _scriptMetadataProvider = new Lazy<IScriptMetadataProvider>(CreateScriptMetadataProvider);
@@ -26,7 +27,7 @@ namespace InfinniPlatform.Runtime.Factories
 
 
         private readonly IVersionLoader _versionLoader;
-        private readonly string _metadataConfigurationId;
+        private readonly IPerformanceLog _performanceLog;
 
 
         private readonly Lazy<IScriptMetadataProvider> _scriptMetadataProvider;
@@ -47,7 +48,7 @@ namespace InfinniPlatform.Runtime.Factories
 
         private IMethodInvokationCacheList CreateScriptInvokationCache()
         {
-            return _versionLoader.ConstructInvokationCache(_metadataConfigurationId);
+            return _versionLoader.ConstructInvokationCache();
         }
 
         private static IScriptMetadataProvider CreateScriptMetadataProvider()
@@ -57,7 +58,7 @@ namespace InfinniPlatform.Runtime.Factories
 
         private IScriptProcessor CreateScriptProcessor()
         {
-            return new ScriptProcessor(_scriptInvokationCache.Value, _scriptMetadataProvider.Value);
+            return new ScriptProcessor(_scriptInvokationCache.Value, _scriptMetadataProvider.Value, _performanceLog);
         }
     }
 }

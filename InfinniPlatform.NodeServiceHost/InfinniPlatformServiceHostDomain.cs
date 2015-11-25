@@ -94,8 +94,7 @@ namespace InfinniPlatform.NodeServiceHost
 																		  {
 																			  LoaderOptimization = LoaderOptimization.MultiDomainHost,
 																			  ApplicationBase = currentDomainInfo.ApplicationBase,
-																			  ConfigurationFile = currentDomainInfo.ConfigurationFile,
-																			  ShadowCopyFiles = currentDomainInfo.ShadowCopyFiles
+																			  ConfigurationFile = currentDomainInfo.ConfigurationFile
 																		  });
 
 			DomainAssemblyResolver.Setup(domain);

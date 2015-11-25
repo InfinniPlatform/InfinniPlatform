@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using InfinniPlatform.Api.Context;
-using InfinniPlatform.Api.Versioning;
+
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Events;
 

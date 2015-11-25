@@ -8,6 +8,7 @@ using InfinniPlatform.Api.Transactions;
 using InfinniPlatform.Factories;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Log;
 using InfinniPlatform.Sdk.Environment.Transactions;
 
 namespace InfinniPlatform.Transactions
@@ -22,17 +23,20 @@ namespace InfinniPlatform.Transactions
         /// </summary>
         /// <param name="indexFactory">Фабрика для работы с индексами</param>
         /// <param name="blobStorageFactory">Фабрика хранилища бинарных данных</param>
+        /// <param name="performanceLog">Сервис протоколирования длительности вызова методов компонентов.</param>
         /// <param name="transactionMarker">Идентификатор создаваемой транзакции</param>
         /// <param name="itemsList">Разделяемый между различными экземплярами ITransaction список присоединенных элементов</param>
-        public TransactionMaster(IIndexFactory indexFactory, IBlobStorageFactory blobStorageFactory, string transactionMarker, List<AttachedInstance> itemsList)
+        public TransactionMaster(IIndexFactory indexFactory, IBlobStorageFactory blobStorageFactory, IPerformanceLog performanceLog, string transactionMarker, List<AttachedInstance> itemsList)
         {
             _indexFactory = indexFactory;
             _blobStorageFactory = blobStorageFactory;
+            _performanceLog = performanceLog;
             _transactionMarker = transactionMarker;
             _itemsList = itemsList;
         }
 
         private readonly IBlobStorageFactory _blobStorageFactory;
+        private readonly IPerformanceLog _performanceLog;
         private readonly IIndexFactory _indexFactory;
         private readonly List<AttachedInstance> _itemsList;
         private readonly string _transactionMarker;
@@ -77,15 +81,15 @@ namespace InfinniPlatform.Transactions
                     OnCommit(this);
                 }
 
-                Logger.PerformanceLog.Log(component, method, start, null);
+                _performanceLog.Log(component, method, start, null);
             }
             catch (Exception e)
             {
                 const string message = "Fail to commit transaction.";
 
                 Logger.Log.Error(message, null, e);
-                Logger.PerformanceLog.Log(component, method, start, e.Message);
 
+                _performanceLog.Log(component, method, start, e.Message);
 
                 throw new ArgumentException(message, e);
             }

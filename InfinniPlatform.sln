@@ -6,7 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".files", ".files", "{9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}"
 	ProjectSection(SolutionItems) = preProject
 		Files\Log.config = Files\Log.config
-		Files\LogTest.config = Files\LogTest.config
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Core", "InfinniPlatform.Core\InfinniPlatform.Core.csproj", "{EBC684B7-B72A-475F-BBC1-B6293B607B9B}"
@@ -114,8 +113,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.OceanInformatics.Tests", "InfinniPlatform.OceanInformatics.Tests\InfinniPlatform.OceanInformatics.Tests.csproj", "{EA6ADAF1-C6B2-4EFC-A0A5-35D0E2DE8DB4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.ReportDesigner", "InfinniPlatform.ReportDesigner\InfinniPlatform.ReportDesigner.csproj", "{65734184-A04C-4509-BF68-6F07CA324104}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Update", "InfinniPlatform.Update\InfinniPlatform.Update.csproj", "{7CFF6202-F62D-40C0-81F2-C07D23AF723A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.SystemConfig", "InfinniPlatform.SystemConfig\InfinniPlatform.SystemConfig.csproj", "{6EFC2069-AFEB-453D-AD2C-3E170486A4F1}"
 EndProject
@@ -229,6 +226,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Monitoring", "Monitoring", 
 		Files\Monitoring\Inf.Monitor.kibana.json = Files\Monitoring\Inf.Monitor.kibana.json
 		Files\Monitoring\Inf.Performance.kibana.json = Files\Monitoring\Inf.Performance.kibana.json
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.IoC", "InfinniPlatform.IoC\InfinniPlatform.IoC.csproj", "{197A078F-F42F-4F87-B8B2-463129ED4797}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.IoC.Tests", "InfinniPlatform.IoC.Tests\InfinniPlatform.IoC.Tests.csproj", "{075765EF-E0DF-45D4-86E3-5DE2AFBAE5F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -428,10 +429,6 @@ Global
 		{65734184-A04C-4509-BF68-6F07CA324104}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65734184-A04C-4509-BF68-6F07CA324104}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65734184-A04C-4509-BF68-6F07CA324104}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7CFF6202-F62D-40C0-81F2-C07D23AF723A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7CFF6202-F62D-40C0-81F2-C07D23AF723A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7CFF6202-F62D-40C0-81F2-C07D23AF723A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7CFF6202-F62D-40C0-81F2-C07D23AF723A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6EFC2069-AFEB-453D-AD2C-3E170486A4F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6EFC2069-AFEB-453D-AD2C-3E170486A4F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EFC2069-AFEB-453D-AD2C-3E170486A4F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -544,6 +541,14 @@ Global
 		{CACE5337-D31B-4AF2-ACF5-C98CA01DB1F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CACE5337-D31B-4AF2-ACF5-C98CA01DB1F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CACE5337-D31B-4AF2-ACF5-C98CA01DB1F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{197A078F-F42F-4F87-B8B2-463129ED4797}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{197A078F-F42F-4F87-B8B2-463129ED4797}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{197A078F-F42F-4F87-B8B2-463129ED4797}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{197A078F-F42F-4F87-B8B2-463129ED4797}.Release|Any CPU.Build.0 = Release|Any CPU
+		{075765EF-E0DF-45D4-86E3-5DE2AFBAE5F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{075765EF-E0DF-45D4-86E3-5DE2AFBAE5F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{075765EF-E0DF-45D4-86E3-5DE2AFBAE5F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{075765EF-E0DF-45D4-86E3-5DE2AFBAE5F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -576,7 +581,6 @@ Global
 		{42CB828F-E466-42C7-B0C4-6E3BDB56D328} = {76075218-7249-4C01-A184-35E066952A8F}
 		{EA6ADAF1-C6B2-4EFC-A0A5-35D0E2DE8DB4} = {76075218-7249-4C01-A184-35E066952A8F}
 		{65734184-A04C-4509-BF68-6F07CA324104} = {DA71DF4B-1976-4716-B2F3-D361BC234729}
-		{7CFF6202-F62D-40C0-81F2-C07D23AF723A} = {D9A6588C-AAAB-4488-BEB8-DBBE12BC28BF}
 		{6EFC2069-AFEB-453D-AD2C-3E170486A4F1} = {D9A6588C-AAAB-4488-BEB8-DBBE12BC28BF}
 		{48B80D63-D8AA-472B-9120-C6338F0B7988} = {D9A6588C-AAAB-4488-BEB8-DBBE12BC28BF}
 		{E9AAAC4A-A3DA-4695-8074-BFDE4EE03995} = {DA71DF4B-1976-4716-B2F3-D361BC234729}
@@ -609,5 +613,7 @@ Global
 		{DCB067DB-E581-4F90-85DF-ACF9C6B42AD4} = {89D37C8B-9A73-45AB-A4C0-E91DC1A6D5CA}
 		{8237A533-D176-4BB1-86F7-F07C7AEFBA03} = {9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}
 		{C71676EF-83E3-4549-B43E-F3CEAE4FABC7} = {9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}
+		{197A078F-F42F-4F87-B8B2-463129ED4797} = {76075218-7249-4C01-A184-35E066952A8F}
+		{075765EF-E0DF-45D4-86E3-5DE2AFBAE5F5} = {76075218-7249-4C01-A184-35E066952A8F}
 	EndGlobalSection
 EndGlobal

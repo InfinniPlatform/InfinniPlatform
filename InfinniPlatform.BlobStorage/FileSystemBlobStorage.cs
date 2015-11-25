@@ -4,6 +4,7 @@ using System.IO;
 using InfinniPlatform.Api.Serialization;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Sdk.Environment.Binary;
+using InfinniPlatform.Sdk.Environment.Log;
 
 namespace InfinniPlatform.BlobStorage
 {
@@ -34,9 +35,10 @@ namespace InfinniPlatform.BlobStorage
         private const string LogComponentName = "FileSystemBlobStorage";
 
 
-        public FileSystemBlobStorage(string baseDirectory)
+        public FileSystemBlobStorage(string baseDirectory, IPerformanceLog performanceLog)
         {
             _baseDirectory = baseDirectory;
+            _performanceLog = performanceLog;
 
             // TODO: Refactor
             // Получать эти зависимости через конструктор
@@ -46,6 +48,7 @@ namespace InfinniPlatform.BlobStorage
 
 
         private readonly string _baseDirectory;
+        private readonly IPerformanceLog _performanceLog;
         private readonly IObjectSerializer _serializer;
         private readonly FileExtensionTypeProvider _typeProvider;
 
@@ -63,7 +66,7 @@ namespace InfinniPlatform.BlobStorage
 
             var result = ReadBlobInfo(blobId);
 
-            Logger.PerformanceLog.Log(LogComponentName, "GetBlobInfo", start, null);
+            _performanceLog.Log(LogComponentName, "GetBlobInfo", start, null);
 
             return result;
         }
@@ -90,7 +93,7 @@ namespace InfinniPlatform.BlobStorage
                   }
                 : null;
 
-            Logger.PerformanceLog.Log(LogComponentName, "GetBlobData", start, null);
+            _performanceLog.Log(LogComponentName, "GetBlobData", start, null);
 
             return result;
         }
@@ -137,7 +140,7 @@ namespace InfinniPlatform.BlobStorage
             WriteBlobInfo(blobId, blobInfo);
             WriteBlobData(blobId, blobData);
 
-            Logger.PerformanceLog.Log(LogComponentName, "UpdateBlob", start, null);
+            _performanceLog.Log(LogComponentName, "UpdateBlob", start, null);
         }
 
         public void DeleteBlob(string blobId)
@@ -153,7 +156,7 @@ namespace InfinniPlatform.BlobStorage
 
             DeleteBlobData(blobId);
 
-            Logger.PerformanceLog.Log(LogComponentName, "DeleteBlob", start, null);
+            _performanceLog.Log(LogComponentName, "DeleteBlob", start, null);
         }
 
 

@@ -403,10 +403,6 @@ namespace InfinniPlatform.Security
 			UpdateInfo(user, userEntry);
 		}
 
-		public void Dispose()
-		{
-		}
-
 
 		// Helpers
 

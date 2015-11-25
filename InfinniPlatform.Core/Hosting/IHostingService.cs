@@ -1,23 +1,30 @@
-﻿namespace InfinniPlatform.Hosting
+﻿using System;
+
+namespace InfinniPlatform.Hosting
 {
     /// <summary>
-    ///     Сервис хостинга.
+    /// Сервис хостинга приложения.
     /// </summary>
     public interface IHostingService
     {
         /// <summary>
-        ///     Контекст подсистемы хостинга.
-        /// </summary>
-        IHostingContext Context { get; }
-
-        /// <summary>
-        ///     Запустить хостинг.
+        /// Запускает хостинг приложения.
         /// </summary>
         void Start();
 
         /// <summary>
-        ///     Остановить хостинг.
+        /// Останавливает хостинг приложения.
         /// </summary>
         void Stop();
+
+        /// <summary>
+        /// Событие запуска хостинга приложения.
+        /// </summary>
+        event EventHandler OnStart;
+
+        /// <summary>
+        /// Событие остановки хостинга приложения.
+        /// </summary>
+        event EventHandler OnStop;
     }
 }

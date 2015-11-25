@@ -22,7 +22,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\Assemblies\InfinniPlatform.Api.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -209,6 +210,7 @@
     <Compile Include="RestApi\DataApi\MetadataLoaderHelper.cs" />
     <Compile Include="RestApi\DataApi\PackageMetadataLoader.cs" />
     <Compile Include="RestApi\DataApi\SessionApi.cs" />
+    <Compile Include="RestApi\IRestVerbsRegistrator.cs" />
     <Compile Include="RestApi\Public\AuthApi.cs" />
     <Compile Include="RestApi\Public\CustomServiceApi.cs" />
     <Compile Include="RestApi\Public\DocumentApi.cs" />
@@ -336,7 +338,6 @@
     <Compile Include="Validation\ValidationExtensions.cs" />
     <Compile Include="Validation\ValidationResultItem.cs" />
     <Compile Include="Validation\ValidationUtils.cs" />
-    <Compile Include="Versioning\VersionStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

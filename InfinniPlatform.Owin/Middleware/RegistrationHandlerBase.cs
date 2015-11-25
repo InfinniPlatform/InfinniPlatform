@@ -11,13 +11,12 @@ namespace InfinniPlatform.Owin.Middleware
     {
         private readonly Func<IOwinContext, IRequestHandlerResult> _handler;
         private readonly string _method;
-        private readonly PathString _pathString;
+        private readonly string _pathString;
 
-        public RegistrationHandlerBase(string method, PathString pathString,
-            Func<IOwinContext, IRequestHandlerResult> handler)
+        public RegistrationHandlerBase(string method, PathString pathString, Func<IOwinContext, IRequestHandlerResult> handler)
         {
             _method = method;
-            _pathString = pathString;
+            _pathString = NormalizePath(pathString);
             _handler = handler;
         }
 
@@ -33,7 +32,7 @@ namespace InfinniPlatform.Owin.Middleware
 
         public bool CanProcessRequest(IOwinContext context, string requestPath)
         {
-            return NormalizePath(_pathString).ToLowerInvariant() == requestPath.ToLowerInvariant();
+            return string.Equals(_pathString, requestPath, StringComparison.OrdinalIgnoreCase);
         }
 
         public IRequestHandlerResult Execute(IOwinContext context)
@@ -45,9 +44,9 @@ namespace InfinniPlatform.Owin.Middleware
         {
             if (path.HasValue)
             {
-                return
-                    path.Value.Split(new[] {'?'}, StringSplitOptions.RemoveEmptyEntries).First().TrimEnd('/').ToLower();
+                return path.Value.Split(new[] {'?'}, StringSplitOptions.RemoveEmptyEntries).First().TrimEnd('/');
             }
+
             return string.Empty;
         }
     }

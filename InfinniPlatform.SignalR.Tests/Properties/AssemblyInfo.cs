@@ -1,9 +1,9 @@
 ﻿// 1
 // 0
 // 0
-// 9
+// 16
 // 028bf5f5-2076-4cf4-b87a-b0a11157cf74
-// A825891F2EB69F99D35D230250FF611A
+// 6835146296F734962D39E88E7FCAB0B4
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -17,7 +17,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: Guid("028bf5f5-2076-4cf4-b87a-b0a11157cf74")]
-[assembly: AssemblyVersion("1.0.0.9")]
-[assembly: AssemblyFileVersion("1.0.0.9")]
+[assembly: AssemblyVersion("1.0.0.16")]
+[assembly: AssemblyFileVersion("1.0.0.16")]
 
 [assembly: AssemblyDescription("InfinniPlatform.SignalR.Tests")]

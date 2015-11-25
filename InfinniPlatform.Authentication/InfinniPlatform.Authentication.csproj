@@ -115,17 +115,19 @@
     <Compile Include="DataProtectors\AesDataProtectionProvider.cs" />
     <Compile Include="DataProtectors\AesDataProtector.cs" />
     <Compile Include="DataProtectors\AesSecureTokenFormatter.cs" />
-    <Compile Include="Modules\AuthenticationEsiaOwinHostingModule.cs" />
-    <Compile Include="Modules\AuthenticationAdfsOwinHostingModule.cs" />
-    <Compile Include="Modules\AuthenticationFacebookOwinHostingModule.cs" />
-    <Compile Include="Modules\AuthenticationGoogleOwinHostingModule.cs" />
-    <Compile Include="Middleware\AuthenticationOwinMiddleware.cs" />
-    <Compile Include="Modules\AuthenticationVkOwinHostingModule.cs" />
-    <Compile Include="Modules\IdentityApplicationRole.cs" />
-    <Compile Include="Modules\IdentityApplicationUser.cs" />
-    <Compile Include="Modules\IdentityApplicationUserManager.cs" />
-    <Compile Include="Modules\IdentityApplicationUserPasswordHasher.cs" />
-    <Compile Include="Modules\IdentityApplicationUserValidator.cs" />
+    <Compile Include="IoC\AuthenticationContainerModule.cs" />
+    <Compile Include="Modules\ExternalAuthEsiaOwinHostingModule.cs" />
+    <Compile Include="Modules\ExternalAuthAdfsOwinHostingModule.cs" />
+    <Compile Include="Modules\ExternalAuthFacebookOwinHostingModule.cs" />
+    <Compile Include="Modules\ExternalAuthGoogleOwinHostingModule.cs" />
+    <Compile Include="Middleware\InternalAuthOwinMiddleware.cs" />
+    <Compile Include="Modules\ExternalAuthVkOwinHostingModule.cs" />
+    <Compile Include="InternalIdentity\IdentityApplicationRole.cs" />
+    <Compile Include="InternalIdentity\IdentityApplicationUser.cs" />
+    <Compile Include="InternalIdentity\IdentityApplicationUserManager.cs" />
+    <Compile Include="InternalIdentity\IdentityApplicationUserPasswordHasher.cs" />
+    <Compile Include="InternalIdentity\IdentityApplicationUserValidator.cs" />
+    <Compile Include="Modules\InternalAuthOwinHostingModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -136,8 +138,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Modules\AuthenticationOwinHostingModule.cs" />
-    <Compile Include="Modules\IdentityApplicationUserStore.cs" />
+    <Compile Include="Modules\CookieAuthOwinHostingModule.cs" />
+    <Compile Include="InternalIdentity\IdentityApplicationUserStore.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

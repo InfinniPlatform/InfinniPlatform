@@ -64,8 +64,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ContextComponents\CrossConfigSearchComponent.cs" />
-    <Compile Include="ContextComponents\DependencyContainerComponent.cs" />
-    <Compile Include="ContextComponents\EventStorageComponent.cs" />
     <Compile Include="ContextComponents\IndexComponent.cs" />
     <Compile Include="ContextComponents\InprocessDocumentComponent.cs" />
     <Compile Include="ContextComponents\LogComponent.cs" />
@@ -75,7 +73,6 @@
     <Compile Include="ContextComponents\ProfilerComponent.cs" />
     <Compile Include="ContextComponents\RegistryComponent.cs" />
     <Compile Include="ContextComponents\ScriptRunnerComponent.cs" />
-    <Compile Include="ContextComponents\SharedCacheComponent.cs" />
     <Compile Include="ContextComponents\SystemComponent.cs" />
     <Compile Include="ContextComponents\TransactionComponent.cs" />
     <Compile Include="ContextComponents\VersionedScriptProcessor.cs" />
@@ -84,10 +81,6 @@
     <Compile Include="Factories\IPrintViewBuilderFactory.cs" />
     <Compile Include="Factories\ISessionManagerFactory.cs" />
     <Compile Include="Hosting\ExtensionPointHandlerConfig.cs" />
-    <Compile Include="Hosting\HostingContext.cs" />
-    <Compile Include="Hosting\HostingContextBuilder.cs" />
-    <Compile Include="Hosting\IHostingContext.cs" />
-    <Compile Include="Hosting\IStartupInitializer.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Factories\AggregateProvider.cs" />
     <Compile Include="Factories\GlobalContext.cs" />
@@ -110,6 +103,9 @@
     <Compile Include="Index\ICalculatedFieldFactory.cs" />
     <Compile Include="Index\IndexObject.cs" />
     <Compile Include="Index\IndexObjectStatus.cs" />
+    <Compile Include="IoC\CoreContainerModule.cs" />
+    <Compile Include="Logging\Log4NetContainerInstanceActivator.cs" />
+    <Compile Include="Logging\Log4NetContainerParameterResolver.cs" />
     <Compile Include="Json\BackboneBuilder.cs" />
     <Compile Include="Json\EventBuilders\ChangeCollectionItemIndexBuilder.cs" />
     <Compile Include="Json\JsonCollectionLastItemTokenProvider.cs" />
@@ -134,9 +130,8 @@
     <Compile Include="Json\JsonTokenConfiguration.cs" />
     <Compile Include="Json\ObjectRenderingHandler.cs" />
     <Compile Include="Json\ParsedTokenContainer.cs" />
-    <Compile Include="Logging\ILogFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Logging\Log4NetLog.cs" />
+    <Compile Include="Logging\Log4NetLogManagerCache.cs" />
     <Compile Include="Logging\PerformanceLog.cs" />
     <Compile Include="MessageQueue\Integration\IIntegrationBus.cs" />
     <Compile Include="MessageQueue\Integration\IIntegrationBusSubscriptionStorage.cs" />
@@ -150,8 +145,6 @@
     <Compile Include="Metadata\IStateTransitionInvalid.cs" />
     <Compile Include="Modules\IModuleInstaller.cs" />
     <Compile Include="Modules\ITemplateInstaller.cs" />
-    <Compile Include="Modules\ModuleExtension.cs" />
-    <Compile Include="Runtime\IChangeListener.cs" />
     <Compile Include="Runtime\IMethodInvokationCache.cs" />
     <Compile Include="Runtime\IMethodInvokationCacheList.cs" />
     <Compile Include="Runtime\IVersionLoader.cs" />
@@ -171,8 +164,6 @@
     <Compile Include="Factories\IMessageQueueFactory.cs" />
     <Compile Include="Factories\ISqlQueryExecutorFactory.cs" />
     <Compile Include="Factories\IVersionProviderFactory.cs" />
-    <Compile Include="Logging\Log4netLog.cs" />
-    <Compile Include="Logging\Log4NetLogFactory.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="MessageQueue\IAcknowledgePolicy.cs" />
     <Compile Include="MessageQueue\IExchangeConfig.cs" />

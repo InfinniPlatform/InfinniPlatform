@@ -72,9 +72,9 @@
     <Compile Include="AttachedInstance.cs" />
     <Compile Include="ContextComponents\IApplicationUserManager.cs" />
     <Compile Include="ContextComponents\ISessionManager.cs" />
-    <Compile Include="ContextComponents\ISharedCacheComponent.cs" />
     <Compile Include="Environment\Actions\IActionOperator.cs" />
     <Compile Include="Environment\Actions\IActionOperatorBuilder.cs" />
+    <Compile Include="Environment\IApplicationEventHandler.cs" />
     <Compile Include="Environment\Log\ExceptionExtensions.cs" />
     <Compile Include="Environment\Log\IPerformanceLog.cs" />
     <Compile Include="Environment\Log\JsonEvent.cs" />
@@ -102,8 +102,6 @@
     <Compile Include="ContextComponents\IComponentContainer.cs" />
     <Compile Include="ContextComponents\IConfigurationMediatorComponent.cs" />
     <Compile Include="ContextComponents\ICrossConfigSearchComponent.cs" />
-    <Compile Include="ContextComponents\IDependencyContainerComponent.cs" />
-    <Compile Include="ContextComponents\IEventStorageComponent.cs" />
     <Compile Include="ContextComponents\IIndexComponent.cs" />
     <Compile Include="ContextComponents\ILogComponent.cs" />
     <Compile Include="ContextComponents\IMetadataComponent.cs" />
@@ -125,7 +123,6 @@
     <Compile Include="Contracts\ISearchContext.cs" />
     <Compile Include="Contracts\IUploadContext.cs" />
     <Compile Include="Contracts\IUrlEncodedDataContext.cs" />
-    <Compile Include="Contracts\IVersionStrategy.cs" />
     <Compile Include="Dynamic\DynamicWrapper.cs" />
     <Compile Include="Dynamic\DynamicWrapperExtensions.cs" />
     <Compile Include="Dynamic\DynamicWrapperJsonConverter.cs" />
@@ -192,6 +189,13 @@
     <Compile Include="Global\CustomServiceGlobalContext.cs" />
     <Compile Include="Global\ICustomServiceGlobalContext.cs" />
     <Compile Include="Global\ScriptContext.cs" />
+    <Compile Include="IoC\IContainerBuilder.cs" />
+    <Compile Include="IoC\IContainerInstanceActivator.cs" />
+    <Compile Include="IoC\IContainerModule.cs" />
+    <Compile Include="IoC\IContainerParameterResolver.cs" />
+    <Compile Include="IoC\IContainerRegistrationRule.cs" />
+    <Compile Include="IoC\IContainerResolver.cs" />
+    <Compile Include="IoC\SimpleContainerParameterResolver.cs" />
     <Compile Include="Metadata\DocumentMetadata.cs" />
     <Compile Include="Metadata\PrintViewMetadata.cs" />
     <Compile Include="Metadata\ProcessMetadata.cs" />

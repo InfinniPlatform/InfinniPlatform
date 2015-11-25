@@ -83,7 +83,7 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
             GetExecutedScriptBuilderFactory().BuildScriptProcessor();
         }
 
-        public string ModuleName { get; set; }
+        public string ConfigurationId { get; set; }
 
         public IActionOperator GetAction(string unitIdentifier)
         {
@@ -120,7 +120,7 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
             lock (_lockObject)
             {
                 return _scriptFactoryInstance ??
-                       (_scriptFactoryInstance = _scriptFactoryBuilder.BuildScriptFactory(ModuleName));
+                       (_scriptFactoryInstance = _scriptFactoryBuilder.BuildScriptFactory());
             }
         }
 

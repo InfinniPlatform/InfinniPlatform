@@ -152,8 +152,7 @@ namespace InfinniPlatform.Runtime.Implementation.AssemblyDispatch
 																		{
 																			LoaderOptimization = LoaderOptimization.MultiDomainHost,
 																			ShadowCopyFiles = currentDomainInfo.ShadowCopyFiles,
-																			ApplicationBase = currentDomainInfo.ApplicationBase,
-																			ConfigurationFile = currentDomainInfo.ConfigurationFile
+																			ApplicationBase = currentDomainInfo.ApplicationBase
 																		});
 
 			try

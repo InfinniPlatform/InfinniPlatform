@@ -2,15 +2,16 @@
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+
 using InfinniPlatform.Sdk.Dynamic;
+
 using Microsoft.Owin;
 using Microsoft.Owin.Helpers;
 
 namespace InfinniPlatform.Owin.Formatting
 {
     /// <summary>
-    ///     Предоставляет методы чтения и записи тела запроса и ответа, представленных в формате
-    ///     "application/x-www-form-urlencoded".
+    /// Предоставляет методы чтения и записи тела запроса и ответа, представленных в формате "application/x-www-form-urlencoded".
     /// </summary>
     public sealed class FormBodyFormatter : IBodyFormatter
     {

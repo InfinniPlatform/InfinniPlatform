@@ -1,19 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading;
 
 using InfinniPlatform.Api.RestApi.Auth;
-using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.Security;
-using InfinniPlatform.ContextComponents;
-using InfinniPlatform.Hosting;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
-using InfinniPlatform.Sdk.Environment.Index;
-using InfinniPlatform.Sdk.Environment.Metadata;
-using InfinniPlatform.Sdk.Global;
+using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.Factories
 {
@@ -22,90 +17,26 @@ namespace InfinniPlatform.Factories
     /// </summary>
     public class GlobalContext : IGlobalContext, IComponentContainer
     {
-        // TODO: Избавиться от этого кода после добавления IoC!!!
-        private static ISessionManager _sessionManager;
-
-        public GlobalContext(IDependencyContainerComponent dependencyContainerComponent)
+        public GlobalContext(Func<IContainerResolver> containerResolverFactory, ISessionManager sessionManager)
         {
-            // TODO: Избавиться от этого кода после добавления IoC!!!
-            var sessionManagerFactory = dependencyContainerComponent.ResolveDependency<ISessionManagerFactory>();
-            var sessionManager = sessionManagerFactory.CreateSessionManager();
+            _containerResolver = containerResolverFactory();
             _sessionManager = sessionManager;
-
-            _platformComponentsPack = new PlatformComponentsPack(dependencyContainerComponent);
-
-            _components.Add(new ContextRegistration(typeof(ICustomServiceGlobalContext), dependencyContainerComponent.ResolveDependency<ICustomServiceGlobalContext>));
-            _components.Add(new ContextRegistration(typeof(DocumentApi), () => new DocumentApi()));
-            _components.Add(new ContextRegistration(typeof(DocumentApiUnsecured),
-                () => new DocumentApiUnsecured()));
-            _components.Add(new ContextRegistration(typeof(PrintViewApi), () => new PrintViewApi()));
-            _components.Add(new ContextRegistration(typeof(RegisterApi), () => new RegisterApi()));
-            _components.Add(new ContextRegistration(typeof(ReportApi), () => new ReportApi()));
-            _components.Add(new ContextRegistration(typeof(UploadApi), () => new UploadApi()));
-            _components.Add(new ContextRegistration(typeof(MetadataApi), () => new MetadataApi()));
-            _components.Add(new ContextRegistration(typeof(AuthApi), () => new AuthApi()));
-            _components.Add(new ContextRegistration(typeof(InprocessDocumentComponent),
-                () => new InprocessDocumentComponent(new ConfigurationMediatorComponent(
-                    dependencyContainerComponent.ResolveDependency<IConfigurationObjectBuilder>()
-                    ),
-                    dependencyContainerComponent.ResolveDependency<IIndexFactory>())));
-
-            _components.Add(new ContextRegistration(typeof(ISessionManager), () => sessionManager));
-
-            _components.Add(new ContextRegistration(typeof(IApplicationUserManager), () =>
-                                                                                     {
-                                                                                         // Должен быть зарегистрирован при старте системы
-                                                                                         var hostingContext = dependencyContainerComponent.ResolveDependency<IHostingContext>();
-
-                                                                                         return hostingContext.Get<IApplicationUserManager>();
-                                                                                     }));
         }
 
-        private readonly IList<ContextRegistration> _components = new List<ContextRegistration>();
-        private readonly IPlatformComponentsPack _platformComponentsPack;
 
+        private readonly IContainerResolver _containerResolver;
+
+
+        [Obsolete("Use IoC")]
         public T GetComponent<T>() where T : class
         {
-            //ищем среди зарегистрированных компонентов платформы, если не находим, обращаемся к контексту компонентов ядра платформы
-            return
-                _platformComponentsPack.GetComponent<T>() ??
-                _components.Where(c => c.IsTypeOf(typeof(T))).Select(c => c.GetInstance()).FirstOrDefault() as T;
+            return _containerResolver.Resolve<T>();
         }
 
 
-        public static string GetTenantId()
-        {
-            string tenantId = null;
+        // TODO: Избавиться от нижележащего кода после добавления IoC!!!
 
-            var currentIdentity = GetCurrentIdentity();
-
-            if (currentIdentity != null)
-            {
-                var sessionManager = _sessionManager;
-
-                if (sessionManager != null)
-                {
-                    tenantId = sessionManager.GetSessionData(AuthorizationStorageExtensions.TenantId);
-                }
-
-                if (string.IsNullOrEmpty(tenantId))
-                {
-                    tenantId = currentIdentity.FindFirstClaim(AuthorizationStorageExtensions.DefaultTenantId);
-
-                    if (string.IsNullOrEmpty(tenantId))
-                    {
-                        tenantId = currentIdentity.FindFirstClaim(AuthorizationStorageExtensions.TenantId);
-                    }
-                }
-            }
-
-            if (string.IsNullOrEmpty(tenantId))
-            {
-                tenantId = AuthorizationStorageExtensions.AnonymousUser;
-            }
-
-            return tenantId;
-        }
+        private static ISessionManager _sessionManager;
 
         private static readonly string[] SystemConfigurations =
         {
@@ -117,15 +48,45 @@ namespace InfinniPlatform.Factories
             "update"
         };
 
-        public static string GetTenantId(string indexName)
+        public static string GetTenantId(string indexName = null)
         {
-            if (indexName != null &&
-                SystemConfigurations.Contains(indexName.ToLowerInvariant()))
+            string tenantId = null;
+
+            if (indexName != null && SystemConfigurations.Contains(indexName, StringComparer.OrdinalIgnoreCase))
             {
-                return AuthorizationStorageExtensions.AnonymousUser;
+                tenantId = AuthorizationStorageExtensions.AnonymousUser;
+            }
+            else
+            {
+                var currentIdentity = GetCurrentIdentity();
+
+                if (currentIdentity != null)
+                {
+                    var sessionManager = _sessionManager;
+
+                    if (sessionManager != null)
+                    {
+                        tenantId = sessionManager.GetSessionData(AuthorizationStorageExtensions.TenantId);
+                    }
+
+                    if (string.IsNullOrEmpty(tenantId))
+                    {
+                        tenantId = currentIdentity.FindFirstClaim(AuthorizationStorageExtensions.DefaultTenantId);
+
+                        if (string.IsNullOrEmpty(tenantId))
+                        {
+                            tenantId = currentIdentity.FindFirstClaim(AuthorizationStorageExtensions.TenantId);
+                        }
+                    }
+                }
+
+                if (string.IsNullOrEmpty(tenantId))
+                {
+                    tenantId = AuthorizationStorageExtensions.AnonymousUser;
+                }
             }
 
-            return GetTenantId();
+            return tenantId;
         }
 
 

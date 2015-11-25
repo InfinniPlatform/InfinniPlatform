@@ -20,8 +20,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
     {
         private readonly IGlobalContext _globalContext;
 
-        public ApplyChangesHandler(
-            IGlobalContext globalContext)
+        public ApplyChangesHandler(IGlobalContext globalContext)
         {
             _globalContext = globalContext;
         }
@@ -78,18 +77,6 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
             target.UserName = ConfigRequestProvider.GetUserName();
             target.Events = events.ToList();
             target.Item = new AggregateProvider().CreateAggregate();
-
-
-            //Сохранение агрегата в кассандре
-            var eventStorage =
-                _globalContext.GetComponent<IEventStorageComponent>()
-                    .GetEventStorage();
-
-            if (eventStorage != null)
-            {
-                //временно отключено сохранение событий в cassandra из-за периодического свопа кассандры
-                //eventStorage.AddEvents(new Guid(item.Id), target.Events.Select(JsonConvert.SerializeObject).ToList());
-            }
 
 
             var profiler =

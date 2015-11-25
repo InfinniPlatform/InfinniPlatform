@@ -52,7 +52,6 @@
     <Compile Include="Implementation\AssemblyDispatch\PackageMethodInvokationCache.cs" />
     <Compile Include="Implementation\AssemblyDispatch\PackageMethodInvokationCacheList.cs" />
     <Compile Include="Implementation\AssemblyDispatch\PackageVersionLoader.cs" />
-    <Compile Include="Implementation\ChangeListeners\ChangeListener.cs" />
     <Compile Include="Implementation\ProjectConverter\Content.cs" />
     <Compile Include="Implementation\ProjectConverter\EmbeddedResource.cs" />
     <Compile Include="Implementation\ProjectConverter\IItemElement.cs" />
@@ -70,6 +69,7 @@
     <Compile Include="Implementation\ProjectConverter\Reference.cs" />
     <Compile Include="Implementation\ProjectConverter\ReflectionPair.cs" />
     <Compile Include="Implementation\ProjectConverter\XDocumentExtension.cs" />
+    <Compile Include="IoC\RuntimeContainerModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

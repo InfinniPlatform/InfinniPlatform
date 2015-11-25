@@ -1,5 +1,6 @@
 ﻿using InfinniPlatform.Factories;
 using InfinniPlatform.Sdk.Environment.Binary;
+using InfinniPlatform.Sdk.Environment.Log;
 using InfinniPlatform.Sdk.Environment.Settings;
 
 namespace InfinniPlatform.BlobStorage
@@ -9,11 +10,11 @@ namespace InfinniPlatform.BlobStorage
     /// </summary>
     public sealed class FileSystemBlobStorageFactory : IBlobStorageFactory
     {
-        public FileSystemBlobStorageFactory()
+        public FileSystemBlobStorageFactory(IPerformanceLog performanceLog)
         {
             var baseDirectory = AppSettings.GetValue("BlobStorageBaseDirectory", "BlobStorage");
 
-            _blobStorage = new FileSystemBlobStorage(baseDirectory);
+            _blobStorage = new FileSystemBlobStorage(baseDirectory, performanceLog);
         }
 
 

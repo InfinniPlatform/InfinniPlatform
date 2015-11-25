@@ -58,8 +58,7 @@ namespace InfinniPlatform.RestfulApi.Utils
                                                          IEnumerable<dynamic> ignoreResolve)
         {
 
-            IVersionProvider documentProvider = _documentComponent.GetDocumentProvider(version, configId, documentId,
-                                                                                       userName);
+            IVersionProvider documentProvider = _documentComponent.GetDocumentProvider(configId, documentId);
 
             if (documentProvider != null)
             {

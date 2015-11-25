@@ -1,31 +1,20 @@
-﻿using System;
-using InfinniPlatform.Hosting;
-using InfinniPlatform.Owin.Middleware;
-using InfinniPlatform.SystemInfo;
+﻿using InfinniPlatform.Owin.Middleware;
+
 using Owin;
 
 namespace InfinniPlatform.Owin.Modules
 {
     /// <summary>
-    ///     Модуль хостинга на базе OWIN для вывода информации о системе.
+    /// Модуль хостинга обработчика запросов информации о системе.
     /// </summary>
-    public sealed class SystemInfoOwinHostingModule : OwinHostingModule
+    internal sealed class SystemInfoOwinHostingModule : IOwinHostingModule
     {
-        private readonly ISystemInfoProvider _systemInfoProvider;
+        public OwinHostingModuleType ModuleType => OwinHostingModuleType.SystemInfo;
 
-        public SystemInfoOwinHostingModule(ISystemInfoProvider systemInfoProvider)
+
+        public void Configure(IAppBuilder builder, IOwinHostingContext context)
         {
-            if (systemInfoProvider == null)
-            {
-                throw new ArgumentNullException("systemInfoProvider");
-            }
-
-            _systemInfoProvider = systemInfoProvider;
-        }
-
-        public override void Configure(IAppBuilder builder, IHostingContext context)
-        {
-            builder.Use(typeof (SystemInfoOwinMiddleware), _systemInfoProvider);
+            builder.Use(context.OwinMiddlewareResolver.ResolveType<SystemInfoOwinMiddleware>());
         }
     }
 }

@@ -1,20 +1,19 @@
-﻿using InfinniPlatform.Sdk.Environment.Log;
+﻿using log4net;
+
+using ILog = InfinniPlatform.Sdk.Environment.Log.ILog;
 
 namespace InfinniPlatform.Logging
 {
     /// <summary>
-    ///     Предоставляет статическую точку доступа к <see cref="ILog" />.
+    /// Предоставляет статическую точку доступа к <see cref="Sdk.Environment.Log.ILog" />.
     /// </summary>
     public static class Logger
     {
-        /// <summary>
-        ///     Сервис журналирования событий.
-        /// </summary>
-        public static readonly ILog Log = new Log4NetLogFactory().CreateLog("InfinniPlatform");
+        // TODO: Перевести на IoC
 
         /// <summary>
-        /// Сервис журналирования длительности выполнения методов компонентов.
+        /// Сервис регистрации событий.
         /// </summary>
-        public static readonly IPerformanceLog PerformanceLog = new PerformanceLog();
+        public static readonly ILog Log = new Log4NetLog(LogManager.GetLogger("InfinniPlatform"));
     }
 }

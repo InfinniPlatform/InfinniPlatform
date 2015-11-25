@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+
 using Microsoft.Owin.Helpers;
 
 namespace InfinniPlatform.Owin
 {
     /// <summary>
-    ///     Предоставляет методы для формирования URI.
+    /// Предоставляет методы для формирования URI.
     /// </summary>
     public sealed class UrlBuilder
     {
         private static readonly Uri BaseUri = new Uri("http://localhost");
-        private string _baseAddress;
-        private readonly Dictionary<string, object> _query = new Dictionary<string, object>();
 
         /// <summary>
-        ///     Конструктор.
+        /// Конструктор.
         /// </summary>
         /// <param name="address">Адресная строка.</param>
         public UrlBuilder(string address = null)
@@ -29,8 +28,7 @@ namespace InfinniPlatform.Owin
 
                 if (addressUri.IsAbsoluteUri)
                 {
-                    baseAddress = string.Format("{0}://{1}:{2}{3}", addressUri.Scheme, addressUri.Host, addressUri.Port,
-                        addressUri.LocalPath);
+                    baseAddress = $"{addressUri.Scheme}://{addressUri.Host}:{addressUri.Port}{addressUri.LocalPath}";
                     queryText = addressUri.Query;
                 }
                 else if (Uri.TryCreate(BaseUri, address, out addressUri))
@@ -54,8 +52,13 @@ namespace InfinniPlatform.Owin
             }
         }
 
+
+        private string _baseAddress;
+        private readonly Dictionary<string, object> _query = new Dictionary<string, object>();
+
+
         /// <summary>
-        ///     Устанавливает базовый адрес для относительного URI.
+        /// Устанавливает базовый адрес для относительного URI.
         /// </summary>
         public UrlBuilder Relative(string baseAddress)
         {
@@ -65,40 +68,40 @@ namespace InfinniPlatform.Owin
         }
 
         /// <summary>
-        ///     Устанавливает базовый адрес для абсолютного URI.
+        /// Устанавливает базовый адрес для абсолютного URI.
         /// </summary>
         public UrlBuilder Absolute(string serverScheme, string serverName, int? serverPort = null)
         {
             if (string.IsNullOrWhiteSpace(serverScheme))
             {
-                throw new ArgumentNullException("serverScheme");
+                throw new ArgumentNullException(nameof(serverScheme));
             }
 
             if (string.IsNullOrWhiteSpace(serverName))
             {
-                throw new ArgumentNullException("serverName");
+                throw new ArgumentNullException(nameof(serverName));
             }
 
             if (serverPort <= 0)
             {
-                throw new ArgumentOutOfRangeException("serverPort");
+                throw new ArgumentOutOfRangeException(nameof(serverPort));
             }
 
             _baseAddress = (serverPort != null)
-                ? string.Format("{0}://{1}:{2}", serverScheme, serverName, serverPort)
-                : string.Format("{0}://{1}", serverScheme, serverName);
+                ? $"{serverScheme}://{serverName}:{serverPort}"
+                : $"{serverScheme}://{serverName}";
 
             return this;
         }
 
         /// <summary>
-        ///     Добавляет параметры запроса URI.
+        /// Добавляет параметры запроса URI.
         /// </summary>
         public UrlBuilder AddQuery(string name, object value)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
             }
 
             _query[name] = value;
@@ -107,7 +110,7 @@ namespace InfinniPlatform.Owin
         }
 
         /// <summary>
-        ///     Возвращает строковое представление URI.
+        /// Возвращает строковое представление URI.
         /// </summary>
         public override string ToString()
         {
@@ -135,7 +138,7 @@ namespace InfinniPlatform.Owin
         }
 
         /// <summary>
-        ///     Возвращает объектное представление URI.
+        /// Возвращает объектное представление URI.
         /// </summary>
         public Uri ToUri()
         {

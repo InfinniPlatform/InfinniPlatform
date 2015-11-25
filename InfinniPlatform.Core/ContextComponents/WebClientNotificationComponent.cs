@@ -1,24 +1,24 @@
-﻿using InfinniPlatform.Factories;
+﻿using InfinniPlatform.Api.ClientNotification;
+using InfinniPlatform.Factories;
 using InfinniPlatform.Sdk.ContextComponents;
 
 namespace InfinniPlatform.ContextComponents
 {
     /// <summary>
-    ///     Компонент для осуществления клиентской нотификации из контекста
+    /// Компонент для осуществления клиентской нотификации из контекста
     /// </summary>
     public sealed class WebClientNotificationComponent : IWebClientNotificationComponent
     {
-        private readonly IWebClientNotificationServiceFactory _factory;
-
         public WebClientNotificationComponent(IWebClientNotificationServiceFactory factory)
         {
-            _factory = factory;
+            _notificationService = factory.CreateClientNotificationService();
         }
+
+        private readonly IWebClientNotificationService _notificationService;
 
         public void Notify(string routingKey, object message)
         {
-            var service = _factory.CreateClientNotificationService();
-            service.Notify(routingKey, message);
+            _notificationService.Notify(routingKey, message);
         }
     }
 }

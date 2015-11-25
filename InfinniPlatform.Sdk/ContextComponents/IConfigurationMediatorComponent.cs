@@ -16,6 +16,6 @@ namespace InfinniPlatform.Sdk.ContextComponents
         /// <summary>
         ///     Объект конфигурации метаданных для скриптового доступа
         /// </summary>
-        IConfigurationObject GetConfiguration(string version, string configurationId);
+        IConfigurationObject GetConfiguration(string configurationId);
     }
 }

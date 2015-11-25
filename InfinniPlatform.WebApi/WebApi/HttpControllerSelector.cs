@@ -1,66 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Dispatcher;
 
 namespace InfinniPlatform.WebApi.WebApi
 {
-	public sealed class HttpControllerSelector : DefaultHttpControllerSelector
-	{
-		private readonly HttpConfiguration _configuration;
+    internal sealed class HttpControllerSelector : DefaultHttpControllerSelector
+    {
+        public HttpControllerSelector(HttpConfiguration configuration) : base(configuration)
+        {
+            _configuration = configuration;
+            _controllerTypes = new Lazy<Dictionary<string, Type>>(GetControllerTypes);
+        }
 
-		public HttpControllerSelector(HttpConfiguration configuration) : base(configuration)
-		{
-			_configuration = configuration;
-		}
 
-		private static IEnumerable<KeyValuePair<string, Type>> _apiControllerTypes;
+        private readonly HttpConfiguration _configuration;
+        private readonly Lazy<Dictionary<string, Type>> _controllerTypes;
 
-		private IEnumerable<KeyValuePair<string, Type>> ApiControllerTypes
-		{
-			get { return _apiControllerTypes ?? (_apiControllerTypes = GetControllerTypes()); }
-		}
-        
-		private static IEnumerable<KeyValuePair<string, Type>> GetControllerTypes()
-		{
-			var assemblies = AppDomain.CurrentDomain.GetAssemblies().Distinct();
 
-		    var result = new List<KeyValuePair<string, Type>>();
+        private static Dictionary<string, Type> GetControllerTypes()
+        {
+            var currentAssembly = Assembly.GetExecutingAssembly();
 
-		    foreach (var assembly in assemblies)
-		    {
-		        try
-		        {
-		            var applicableTypes = assembly.GetTypes()
-		                .Where(t =>
-		                    !t.IsAbstract && t.Name.EndsWith(ControllerSuffix) &&
-		                    typeof (IHttpController).IsAssignableFrom(t));
+            var result = new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase);
 
-		            result.AddRange(applicableTypes.Select(applicableType => new KeyValuePair<string, Type>(applicableType.FullName, applicableType)));
-		        }
-		        catch
-		        {
-		            // Некоторые сборки (например, Microsoft.Owin.Security) содержат классы, заканчивающиеся на ControllerSuffix, но
-		            // загрузка этих типов приводит к исключениям ввиду отсутствия зависимых сборок. Пропускаем подобные сборки.
-		        }
-		    }
+            foreach (var type in currentAssembly.GetTypes())
+            {
+                if (!type.IsAbstract
+                    && type.Name.EndsWith(ControllerSuffix)
+                    && typeof(ApiController).IsAssignableFrom(type))
+                {
+                    var controllerName = type.Name.Substring(0, type.Name.Length - ControllerSuffix.Length);
 
-		    return result;
-		}
+                    if (!result.ContainsKey(controllerName))
+                    {
+                        result.Add(controllerName, type);
+                    }
+                }
+            }
 
-        public static void ClearCache()
-	    {
-	        _apiControllerTypes = null;
-	    }
+            return result;
+        }
 
-		public override HttpControllerDescriptor SelectController(HttpRequestMessage request)
-		{
-			var controllerType =
-				ApiControllerTypes.FirstOrDefault(a => a.Key.ToLowerInvariant().Contains((GetControllerName(request)).ToLowerInvariant() + "controller"));
-			return new HttpControllerDescriptor(_configuration, GetControllerName(request),controllerType.Value);
-		}
-	}
+
+        public override HttpControllerDescriptor SelectController(HttpRequestMessage request)
+        {
+            var controllerName = GetControllerName(request);
+
+            Type controllerType;
+
+            _controllerTypes.Value.TryGetValue(controllerName, out controllerType);
+
+            return new HttpControllerDescriptor(_configuration, controllerName, controllerType);
+        }
+    }
 }

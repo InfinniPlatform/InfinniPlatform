@@ -23,8 +23,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
         {
             dynamic documentProvider =
                 target.Context.GetComponent<InprocessDocumentComponent>()
-                      .GetDocumentProvider(null, target.Item.Configuration, target.Item.Metadata,
-                          target.UserName);
+                      .GetDocumentProvider(target.Item.Configuration, target.Item.Metadata);
 
             dynamic instanceId = null;
             if (documentProvider != null)
