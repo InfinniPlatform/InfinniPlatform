@@ -135,9 +135,9 @@ namespace InfinniPlatform.Api.RestApi.Auth
         /// <param name="userName">Пользователь</param>
         /// <param name="claimType">Тип утверждения</param>
         /// <param name="claimValue">Значение утверждения</param>
-        public dynamic AddClaim(string userName, string claimType, string claimValue)
+        public dynamic SetSessionData(string userName, string claimType, string claimValue)
         {
-            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "addclaim", null, new
+            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "setsessiondata", null, new
                 {
                     UserName = userName,
                     ClaimType = claimType,
@@ -151,9 +151,9 @@ namespace InfinniPlatform.Api.RestApi.Auth
         /// <param name="userName">Пользователь</param>
         /// <param name="claimType">Тип утверждения</param>
         /// <returns>Результат удаления</returns>
-        public dynamic RemoveClaim(string userName, string claimType)
+        public dynamic RemoveSessionData(string userName, string claimType)
         {
-            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "removeclaim", null, new
+            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "removesessiondata", null, new
                 {
                     UserName = userName,
                     ClaimType = claimType
@@ -167,9 +167,9 @@ namespace InfinniPlatform.Api.RestApi.Auth
         /// <param name="claimType">Тип утверждения</param>
         /// <param name="fromCache">Получить информацию из кэша</param>
         /// <returns>Значение утверждения относительно пользователя</returns>
-        public dynamic GetClaim(string userName, string claimType, bool fromCache = true)
+        public dynamic GetSessionData(string userName, string claimType, bool fromCache = true)
         {
-            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "getclaim", null, new
+            return RestQueryApi.QueryPostJsonRaw("RestfulApi", "authorization", "getsessiondata", null, new
                 {
                     UserName = userName,
                     ClaimType = claimType,

@@ -30,7 +30,7 @@ namespace InfinniPlatform.WebApi.Middleware.UserAuthHandlers
 
             dynamic body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
 
-            return new ValueRequestHandlerResult(new AuthApi().AddClaim(routeDictionary["userName"], routeDictionary["claimType"], body.ClaimValue != null ? body.ClaimValue.ToString() : null));
+            return new ValueRequestHandlerResult(new AuthApi().SetSessionData(routeDictionary["userName"], routeDictionary["claimType"], body.ClaimValue != null ? body.ClaimValue.ToString() : null));
 
         }
     }

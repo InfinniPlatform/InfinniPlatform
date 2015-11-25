@@ -60,7 +60,7 @@ namespace InfinniPlatform.Sdk.ApiContracts
         /// <param name="claimType">Тип claim</param>
         /// <param name="claimValue">Значение claim для указанного типа claim</param>
         /// <returns>Результат запроса добавления утверждения</returns>
-        dynamic AddUserClaim(string userName, string claimType, string claimValue);
+        dynamic SetSessionData(string userName, string claimType, string claimValue);
 
         /// <summary>
         ///Получить значение утверждение относительно пользователя
@@ -68,7 +68,7 @@ namespace InfinniPlatform.Sdk.ApiContracts
         /// <param name="userName">Логин пользователя</param>
         /// <param name="claimType">Тип утверждениия относительно пользователя</param>
         /// <returns>Значение утверждения относительно пользователя</returns>
-        dynamic GetUserClaim(string userName, string claimType);
+        dynamic GetSessionData(string userName, string claimType);
 
         /// <summary>
         /// Удалить у пользователя утверждение указанного типа
@@ -76,7 +76,7 @@ namespace InfinniPlatform.Sdk.ApiContracts
         /// <param name="userName">Логин пользователя</param>
         /// <param name="claimType">Тип утверждения относительно пользователя</param>
         /// <returns>Результат запроса удаления утверждения</returns>
-        dynamic DeleteUserClaim(string userName, string claimType);
+        dynamic RemoveSessionData(string userName, string claimType);
 
         /// <summary>
         ///   Добавить роль пользователя
