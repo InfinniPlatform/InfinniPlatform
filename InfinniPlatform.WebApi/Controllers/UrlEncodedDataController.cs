@@ -19,19 +19,30 @@ namespace InfinniPlatform.WebApi.Controllers
             _resultHandlerFactory = resultHandlerFactory;
         }
 
+
         private readonly IApiControllerFactory _apiControllerFactory;
         private readonly IHttpResultHandlerFactory _resultHandlerFactory;
 
+
         private IRestVerbsContainer GetMetadata()
         {
-            var metadata = Request.GetRouteData().Values.ContainsKey("metadata") ? _apiControllerFactory.GetTemplate((string)Request.GetRouteData().Values["configuration"], (string)Request.GetRouteData().Values["metadata"]) : null;
+            IRestVerbsContainer restVerbsContainer = null;
 
-            if (metadata == null)
+            object configuration = null;
+            object documentType = null;
+            var routeData = Request.GetRouteData();
+
+            if (routeData.Values.TryGetValue("configuration", out configuration) && routeData.Values.TryGetValue("metadata", out documentType))
             {
-                throw new ArgumentException(string.Format("Не найдены метаданные для {0}. Используйте метод InstallServices для регистрации обработчиков.", Request.GetRouteData().Values["metadata"]));
+                restVerbsContainer = _apiControllerFactory.GetTemplate((string)configuration, (string)documentType);
             }
 
-            return metadata;
+            if (restVerbsContainer == null)
+            {
+                throw new ArgumentException($"Не найдены метаданные для {documentType}. Используйте метод InstallServices для регистрации обработчиков.");
+            }
+
+            return restVerbsContainer;
         }
 
         private string GetServiceName()
@@ -82,8 +93,7 @@ namespace InfinniPlatform.WebApi.Controllers
                 return null;
             }
 
-            var match = queryStrings.FirstOrDefault(kv => string.Compare(kv.Key, key, StringComparison.OrdinalIgnoreCase) == 0);
-
+            var match = queryStrings.FirstOrDefault(kv => string.Compare(kv.Key, key, true) == 0);
             if (string.IsNullOrEmpty(match.Value))
             {
                 return null;
@@ -94,9 +104,9 @@ namespace InfinniPlatform.WebApi.Controllers
 
         private dynamic GetParamsDictionary()
         {
-            var dataProvider = Request.Content.ReadAsFormDataAsync().Result;
+            var dataProvider = Request.Content.ReadAsStringAsync().Result;
 
-            return dataProvider.Get("Form").ToDynamic();
+            return dataProvider.ToDynamic();
         }
 
         private object InvokeRestVerb(TargetDelegate verbProcessor)
@@ -122,10 +132,10 @@ namespace InfinniPlatform.WebApi.Controllers
             if (prop != null)
             {
                 prop.SetValue(invokationInfo.Target, new ConfigRequestProvider
-                                                     {
-                                                         RequestData = Request.GetRouteData(),
-                                                         UserName = GetUserName()
-                                                     });
+                {
+                    RequestData = Request.GetRouteData(),
+                    UserName = GetUserName()
+                });
             }
         }
     }

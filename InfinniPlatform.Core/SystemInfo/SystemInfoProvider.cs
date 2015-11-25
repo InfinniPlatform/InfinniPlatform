@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.Reflection;
 
+using InfinniPlatform.Sdk.Dynamic;
+
 namespace InfinniPlatform.SystemInfo
 {
 	/// <summary>

@@ -26,6 +26,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
             configuration.Registers = new object[] { };
             configuration.Assemblies = new object[] { };
             configuration.Reports = new object[] { };
+            configuration.Subfolder = "InfinniPlatform";
 
             return configuration;
         }
@@ -54,7 +55,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
         public override object GetItem(string itemId)
         {
-            return PackageMetadataLoader.GetConfiguration(itemId);
+            return PackageMetadataLoader.GetConfigurationContent(itemId);
         }
 
         public override IEnumerable<object> GetItems()

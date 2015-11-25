@@ -60,7 +60,6 @@
     <Compile Include="Dynamic\DynamicWrapperJsonConverterTest.cs" />
     <Compile Include="Dynamic\DynamicWrapperTest.cs" />
     <Compile Include="Dynamic\ObjectHelperTest.cs" />
-    <Compile Include="Extensions\AuthorizationExtensionsTest.cs" />
     <Compile Include="Extensions\CommonExtensionsTest.cs" />
     <Compile Include="Extensions\ReflectionExtensionsTest.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

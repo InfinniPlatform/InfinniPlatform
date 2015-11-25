@@ -44,19 +44,19 @@ namespace InfinniPlatform.Api.RestApi.Public
             return _authApi.DenyAccess(userName, application, documentType, service, instanceId);
         }
 
-        public dynamic AddUserClaim(string userName, string claimType, string claimValue)
+        public dynamic SetSessionData(string userName, string claimType, string claimValue)
         {
-            return _authApi.AddClaim(userName, claimType, claimValue);
+            return _authApi.SetSessionData(userName, claimType, claimValue);
         }
 
-        public dynamic GetUserClaim(string userName, string claimType)
+        public dynamic GetSessionData(string userName, string claimType)
         {
-            return _authApi.GetClaim(userName, claimType);
+            return _authApi.GetSessionData(userName, claimType);
         }
 
-        public dynamic DeleteUserClaim(string userName, string claimType)
+        public dynamic RemoveSessionData(string userName, string claimType)
         {
-            return _authApi.RemoveClaim(userName, claimType);
+            return _authApi.RemoveSessionData(userName, claimType);
         }
 
         public dynamic AddRole(string roleName)

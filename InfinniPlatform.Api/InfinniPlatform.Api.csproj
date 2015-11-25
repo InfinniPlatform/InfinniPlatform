@@ -60,14 +60,11 @@
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.105.2.3\lib\net45\RestSharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
@@ -190,9 +187,8 @@
     <Compile Include="Registers\RegisterPeriod.cs" />
     <Compile Include="Registers\RegisterType.cs" />
     <Compile Include="Reporting\ReportFileFormat.cs" />
-    <Compile Include="RestApi\Auth\AuthorizationStorageExtensions.cs" />
     <Compile Include="RestApi\Auth\AuthApi.cs" />
-    <Compile Include="RestApi\Auth\SignInApi.cs" />
+    <Compile Include="RestApi\Auth\AuthorizationStorageExtensions.cs" />
     <Compile Include="RestApi\Auth\UsersApi.cs" />
     <Compile Include="RestApi\CommonApi\IRouteTrace.cs" />
     <Compile Include="RestApi\CommonApi\RouteTraces\RouteTraceNoTrace.cs" />
@@ -280,7 +276,6 @@
     <Compile Include="RestQuery\EventObjects\EventSerializers\UpdateCollectionItem.cs" />
     <Compile Include="RestQuery\EventObjects\EventSerializers\UpdatePropertyItem.cs" />
     <Compile Include="RestQuery\EventObjects\IObjectToEventSerializer.cs" />
-    <Compile Include="RestQuery\RestSharpExtension.cs" />
     <Compile Include="RestApi\DataApi\DocumentApi.cs" />
     <Compile Include="RestApi\CommonApi\IndexApi.cs" />
     <Compile Include="RestQuery\ControllerRoutingFactory.cs" />

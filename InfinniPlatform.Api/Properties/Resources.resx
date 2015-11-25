@@ -481,4 +481,10 @@
 	<data name="FailToConvertFilterValueToDateTime" xml:space="preserve">
     <value>Fail to convert value to datetime format: {0}</value>
   </data>
+    <data name="CannotProcessGetRequest" xml:space="preserve">
+    <value>Cannot process GET-request. StatusCode: '{0}', Content: '{1}'.</value>
+  </data>
+    <data name="CannotProcessPostRequest" xml:space="preserve">
+    <value>Cannot process POST-request. StatusCode: '{0}', Content: '{1}'.</value>
+  </data>
 </root>

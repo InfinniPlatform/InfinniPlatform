@@ -70,11 +70,38 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot process DELETE-request. StatusCode: &apos;{0}&apos;, Content: &apos;{1}&apos;..
+        /// </summary>
+        internal static string CannotProcessDeleteRequest {
+            get {
+                return ResourceManager.GetString("CannotProcessDeleteRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot process GET-request. StatusCode: &apos;{0}&apos;, Content: &apos;{1}&apos;..
+        /// </summary>
+        internal static string CannotProcessGetRequest {
+            get {
+                return ResourceManager.GetString("CannotProcessGetRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot process POST-request. StatusCode: &apos;{0}&apos;, Content: &apos;{1}&apos;..
         /// </summary>
         internal static string CannotProcessPostRequest {
             get {
                 return ResourceManager.GetString("CannotProcessPostRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot process PUT-request. StatusCode: &apos;{0}&apos;, Content: &apos;{1}&apos;..
+        /// </summary>
+        internal static string CannotProcessPutRequest {
+            get {
+                return ResourceManager.GetString("CannotProcessPutRequest", resourceCulture);
             }
         }
         

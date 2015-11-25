@@ -126,7 +126,7 @@ namespace InfinniPlatform.Sdk.Api
         /// <param name="claimType">Тип claim</param>
         /// <param name="claimValue">Значение claim для указанного типа claim</param>
         /// <returns>Результат запроса добавления утверждения</returns>
-        public dynamic AddUserClaim(string userName, string claimType, string claimValue)
+        public dynamic SetSessionData(string userName, string claimType, string claimValue)
         {
             dynamic body = new
                            {
@@ -145,7 +145,7 @@ namespace InfinniPlatform.Sdk.Api
         /// <param name="userName">Логин пользователя</param>
         /// <param name="claimType">Тип утверждения относительно пользователя</param>
         /// <returns>Значение утверждения относительно пользователя</returns>
-        public dynamic GetUserClaim(string userName, string claimType)
+        public dynamic GetSessionData(string userName, string claimType)
         {
             var response = RequestExecutor.QueryGet(RouteBuilder.BuildRestRoutingToSpecifiedUserClaim(userName, claimType));
 
@@ -159,7 +159,7 @@ namespace InfinniPlatform.Sdk.Api
         /// <param name="userName">Логин пользователя</param>
         /// <param name="claimType">Тип утверждения относительно пользователя</param>
         /// <returns>Результат запроса удаления утверждения</returns>
-        public dynamic DeleteUserClaim(string userName, string claimType)
+        public dynamic RemoveSessionData(string userName, string claimType)
         {
             var response = RequestExecutor.QueryDelete(RouteBuilder.BuildRestRoutingToSpecifiedUserClaim(userName, claimType));
 

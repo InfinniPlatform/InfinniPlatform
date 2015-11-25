@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.SearchOptions.Builders;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Register;
 

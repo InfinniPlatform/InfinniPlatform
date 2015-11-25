@@ -14,7 +14,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                     Template = templateName,
                     Parameters = parameters,
                     FileFormat = (int) reportFileFormat
-                }).Content;
+                });
         }
     }
 }

@@ -19,7 +19,7 @@ namespace InfinniPlatform.Sdk.Api
         /// <returns>Клиентская сессия</returns>
         public dynamic ExecuteAction(string application, string documentType, string service, dynamic body)
         {
-            string response = RequestExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrl(application, documentType, service), body);
+            var response = RequestExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrl(application, documentType, service), body);
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToInvokeCustomService, response));
         }

@@ -130,10 +130,6 @@ namespace InfinniPlatform.IoC
                    .AsSelf()
                    .SingleInstance();
 
-            builder.RegisterType<Api.RestApi.Auth.SignInApi>()
-                   .AsSelf()
-                   .SingleInstance();
-
             // CustomServiceApi
 
             builder.RegisterType<Api.RestApi.Public.CustomServiceApi>()

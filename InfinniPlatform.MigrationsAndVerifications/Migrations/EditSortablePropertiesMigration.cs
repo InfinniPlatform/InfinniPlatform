@@ -110,7 +110,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                                                         .Replace("\\n", "\n")
                                                         .Replace("\"", "")
                                                         .Split(new[] { "\r\n", "\n" },
-                                                            StringSplitOptions.RemoveEmptyEntries);
+                                                               StringSplitOptions.RemoveEmptyEntries);
 
                 foreach (var line in updateStoreMigrationLines)
                 {

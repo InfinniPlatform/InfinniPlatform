@@ -7,7 +7,7 @@ namespace InfinniPlatform.RestfulApi.Auth
 	/// <summary>
 	/// Модуль для получения утверждений относительно пользователя
 	/// </summary>
-	public sealed class ActionUnitGetClaim
+	public sealed class ActionUnitGetSessionData
 	{
 		public void Action(IApplyContext target)
 		{

@@ -196,6 +196,24 @@ namespace InfinniPlatform.Api.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot process GET-request. StatusCode: &apos;{0}&apos;, Content: &apos;{1}&apos;..
+        /// </summary>
+        public static string CannotProcessGetRequest {
+            get {
+                return ResourceManager.GetString("CannotProcessGetRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot process POST-request. StatusCode: &apos;{0}&apos;, Content: &apos;{1}&apos;..
+        /// </summary>
+        public static string CannotProcessPostRequest {
+            get {
+                return ResourceManager.GetString("CannotProcessPostRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Can&apos;t add unsaved user to role.
         /// </summary>
         public static string CantAddUnsavedUserToRole {

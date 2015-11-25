@@ -42,11 +42,11 @@ namespace InfinniPlatform.Sdk.Api
         /// </summary>
         /// <param name="response">Результат выполнения запроса</param>
         /// <param name="exceptionMessage">Сообщение в случае ошибки выполнения запроса</param>
-        protected dynamic ProcessAsObjectResult(string response, string exceptionMessage)
+        protected dynamic ProcessAsObjectResult(RestQueryResponse response, string exceptionMessage)
         {
-            if (!string.IsNullOrEmpty(response))
+            if (!string.IsNullOrEmpty(response.Content))
             {
-                return ProcessRequestResult(response, () => response.ToDynamic(), () => Resources.ResultIsNotOfObjectType, () => exceptionMessage);
+                return ProcessRequestResult(response, () => response.Content.ToDynamic(), () => Resources.ResultIsNotOfObjectType, () => exceptionMessage);
             }
             return null;
         }
@@ -54,21 +54,23 @@ namespace InfinniPlatform.Sdk.Api
         /// <summary>
         /// Обработать результат выполнения запроса
         /// </summary>
-        private dynamic ProcessRequestResult(string response, Func<dynamic> processResultMethod,
+        private dynamic ProcessRequestResult(RestQueryResponse response, Func<dynamic> processResultMethod,
                                              Func<string> getRequestFormatExceptionMessage, Func<string> getRequestExceptionMessage)
         {
-            try
+            if (response.IsAllOk)
             {
-                if (!string.IsNullOrEmpty(response))
+                try
                 {
-                    return processResultMethod();
+                    if (!string.IsNullOrEmpty(response.Content))
+                    {
+                        return processResultMethod();
+                    }
+                }
+                catch
+                {
+                    throw new ApplicationException(getRequestFormatExceptionMessage());
                 }
             }
-            catch
-            {
-                throw new ApplicationException(getRequestFormatExceptionMessage());
-            }
-
             throw new ApplicationException(getRequestExceptionMessage());
         }
     }

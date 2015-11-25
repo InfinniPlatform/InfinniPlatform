@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
+using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Sdk.Environment.Settings;
 
 namespace InfinniPlatform.MetadataDesigner.Views.Exchange
@@ -13,9 +14,20 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
 
         public bool DiscoverAppliedAssemblies(string configurationId)
         {
-            LoadSourceAssembliesForConfig();
+            var assemblies = PackageMetadataLoader.GetAssemblies(configurationId)
+                                                  .ToArray();
 
-            return (SourceAssemblyList.Count > 0);
+            if (assemblies.Any())
+            {
+                var assembliesNames = assemblies.Select(ass => (string)ass.Name).ToArray();
+                LoadSourceAssembliesForConfig(assembliesNames);
+            }
+            else
+            {
+                LoadSourceAssembliesForConfig();
+            }
+
+            return SourceAssemblyList.Any();
         }
 
         private void LoadSourceAssembliesForConfig()
@@ -27,22 +39,37 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
 
             foreach (var asssemblyFile in asssemblyFiles)
             {
-                try
-                {
-                    var asssemblyFilePath = Path.GetFullPath(asssemblyFile);
+                var asssemblyFilePath = Path.GetFullPath(asssemblyFile);
 
-                    var assembly = Assembly.LoadFile(asssemblyFilePath);
+                var assembly = Assembly.LoadFile(asssemblyFilePath);
 
-                    SourceAssemblyList.Add(new SourceAssemblyInfo
-                    {
-                        Name = Path.GetFileNameWithoutExtension(asssemblyFile),
-                        AssemblyFileName = asssemblyFilePath,
-                        Assembly = assembly
-                    });
-                }
-                catch
-                {
-                }
+                SourceAssemblyList.Add(new SourceAssemblyInfo
+                                       {
+                                           Name = Path.GetFileNameWithoutExtension(asssemblyFile),
+                                           AssemblyFileName = asssemblyFilePath,
+                                           Assembly = assembly
+                                       });
+            }
+        }
+
+        private void LoadSourceAssembliesForConfig(IEnumerable<string> assemblyNames)
+        {
+            SourceAssemblyList.Clear();
+
+            var assemblyPath = AppSettings.GetValue("AppliedAssemblies", Path.Combine("..", "Assemblies"));
+
+            foreach (var assemblyName in assemblyNames)
+            {
+                var asssemblyFilePath = Path.GetFullPath(Path.Combine(assemblyPath, assemblyName + ".dll"));
+
+                var assembly = Assembly.LoadFile(asssemblyFilePath);
+
+                SourceAssemblyList.Add(new SourceAssemblyInfo
+                                       {
+                                           Name = Path.GetFileNameWithoutExtension(asssemblyFilePath),
+                                           AssemblyFileName = asssemblyFilePath,
+                                           Assembly = assembly
+                                       });
             }
         }
     }

@@ -13,6 +13,7 @@ using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Registers;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.MetadataDesigner.Views.Exchange;
 using InfinniPlatform.MetadataDesigner.Views.Status;
 using InfinniPlatform.Sdk.Dynamic;
@@ -511,7 +512,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
             return RegisteredMigrationsList.FirstOrDefault(m => m.Name == migrationName);
         }
 
-        public static string RunMigration(string version, string configId, string migrationName, object[] parameters)
+        public static RestQueryResponse RunMigration(string version, string configId, string migrationName, object[] parameters)
         {
             RestQueryApi.QueryPostNotify(configId);
 
@@ -523,10 +524,10 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
                        };
 
             var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "runmigration", null, body);
-            return result.Content;
+            return result;
         }
 
-        public static string RevertMigration(string version, string configId, string migrationName, object[] parameters)
+        public static RestQueryResponse RevertMigration(string version, string configId, string migrationName, object[] parameters)
         {
             RestQueryApi.QueryPostNotify(configId);
 
@@ -539,7 +540,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
             var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "revertmigration", null, body);
 
-            return result.Content;
+            return result;
         }
 
         public static object[] BuildVerifications()
@@ -554,7 +555,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
             return result.ToDynamicList().FirstOrDefault(verification => verification.Name.ToString() == verifiecationName);
         }
 
-        public static string RunVerification(string version, string configId, string verificationName)
+        public static RestQueryResponse RunVerification(string version, string configId, string verificationName)
         {
             RestQueryApi.QueryPostNotify(configId);
 
@@ -566,7 +567,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
             var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "runverification", null, body);
 
-            return result.Content;
+            return result;
         }
 
         public static IEnumerable<string> BuildViewTypes()

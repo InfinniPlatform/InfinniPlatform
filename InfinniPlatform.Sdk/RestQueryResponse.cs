@@ -1,11 +1,12 @@
 ﻿using System.Net;
 using System.Text;
+
 using InfinniPlatform.Sdk.Properties;
 
 namespace InfinniPlatform.Sdk
 {
     /// <summary>
-    ///   Ответ сервера на REST-запрос
+    /// Ответ сервера на REST-запрос
     /// </summary>
     public class RestQueryResponse
     {
@@ -13,13 +14,18 @@ namespace InfinniPlatform.Sdk
 
         public int ContentLength
         {
-            get { return string.IsNullOrEmpty(Content) ? 0 : Content.Length; }
+            get
+            {
+                return string.IsNullOrEmpty(Content)
+                           ? 0
+                           : Content.Length;
+            }
         }
 
         public HttpStatusCode HttpStatusCode { get; set; }
 
         /// <summary>
-        ///   Внутренняя ошибка сервера
+        /// Внутренняя ошибка сервера
         /// </summary>
         public bool IsServerError
         {
@@ -28,11 +34,11 @@ namespace InfinniPlatform.Sdk
 
         public bool IsServiceNotRegistered
         {
-            get {  return Content.Contains(Resources.ServiceNotRegistered); }
+            get { return Content.Contains(Resources.ServiceNotRegistered); }
         }
 
         /// <summary>
-        ///   Сервер по указанному адресу не найден
+        /// Сервер по указанному адресу не найден
         /// </summary>
         public bool IsRemoteServerNotFound
         {
@@ -40,7 +46,7 @@ namespace InfinniPlatform.Sdk
         }
 
         /// <summary>
-        ///  Ошибка в бизнес-логике сервера
+        /// Ошибка в бизнес-логике сервера
         /// </summary>
         public bool IsBusinessLogicError
         {
@@ -52,7 +58,7 @@ namespace InfinniPlatform.Sdk
             get
             {
                 return (HttpStatusCode == HttpStatusCode.OK || HttpStatusCode == HttpStatusCode.BadRequest) &&
-                      !IsBusinessLogicError && !IsRemoteServerNotFound && !IsServiceNotRegistered && !IsServerError;
+                       !IsBusinessLogicError && !IsRemoteServerNotFound && !IsServiceNotRegistered && !IsServerError;
             }
         }
 

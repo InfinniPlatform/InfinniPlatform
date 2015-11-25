@@ -60,9 +60,9 @@ namespace InfinniPlatform.RestfulApi.Installers
             actionUnits.RegisterActionUnitDistributedStorage("adduser", "ActionUnitAddUser");
             actionUnits.RegisterActionUnitDistributedStorage("adduserrole", "ActionUnitAddUserRole");
             actionUnits.RegisterActionUnitDistributedStorage("addrole", "ActionUnitAddRole");
-            actionUnits.RegisterActionUnitDistributedStorage("addclaim", "ActionUnitAddClaim");
-            actionUnits.RegisterActionUnitDistributedStorage("removeclaim", "ActionUnitRemoveClaim");
-            actionUnits.RegisterActionUnitDistributedStorage("getclaim", "ActionUnitGetClaim");
+            actionUnits.RegisterActionUnitDistributedStorage("setsessiondata", "ActionUnitSetSessionData");
+            actionUnits.RegisterActionUnitDistributedStorage("removesessiondata", "ActionUnitRemoveSessionData");
+            actionUnits.RegisterActionUnitDistributedStorage("getsessiondata", "ActionUnitGetSessionData");
 
             actionUnits.RegisterActionUnitDistributedStorage("removeuser", "ActionUnitRemoveUser");
             actionUnits.RegisterActionUnitDistributedStorage("removeuserrole", "ActionUnitRemoveUserRole");
@@ -289,34 +289,34 @@ namespace InfinniPlatform.RestfulApi.Installers
                                         "addrole"))
                     )));
 
-            metadataConfiguration.RegisterWorkflow("authorization", "addclaim",
+            metadataConfiguration.RegisterWorkflow("authorization", "setsessiondata",
                 f => f.FlowWithoutState(wc => wc
                     .Move(ws => ws
                         .WithAction(
                             () =>
                                 actionUnits
                                     .GetAction(
-                                        "addclaim"))
+                                        "setsessiondata"))
                     )));
 
-            metadataConfiguration.RegisterWorkflow("authorization", "removeclaim",
+            metadataConfiguration.RegisterWorkflow("authorization", "removesessiondata",
                 f => f.FlowWithoutState(wc => wc
                     .Move(ws => ws
                         .WithAction(
                             () =>
                                 actionUnits
                                     .GetAction(
-                                        "removeclaim"))
+                                        "removesessiondata"))
                     )));
 
-            metadataConfiguration.RegisterWorkflow("authorization", "getclaim",
+            metadataConfiguration.RegisterWorkflow("authorization", "getsessiondata",
                 f => f.FlowWithoutState(wc => wc
                     .Move(ws => ws
                         .WithAction(
                             () =>
                                 actionUnits
                                     .GetAction(
-                                        "getclaim"))
+                                        "getsessiondata"))
                     )));
 
             metadataConfiguration.RegisterWorkflow("authorization", "removeuser",
@@ -776,24 +776,24 @@ namespace InfinniPlatform.RestfulApi.Installers
                             ("Move",
                                 "adduserrole"))
                 .RegisterHandlerInstance(
-                    "addclaim",
+                    "setsessiondata",
                     insance =>
                         insance
                             .RegisterExtensionPoint
-                            ("Move", "addclaim"))
+                            ("Move", "setsessiondata"))
                 .RegisterHandlerInstance(
-                    "removeclaim",
+                    "removesessiondata",
                     insance =>
                         insance
                             .RegisterExtensionPoint
                             ("Move",
-                                "removeclaim"))
+                                "removesessiondata"))
                 .RegisterHandlerInstance(
-                    "getclaim",
+                    "getsessiondata",
                     insance =>
                         insance
                             .RegisterExtensionPoint
-                            ("Move", "getclaim"))
+                            ("Move", "getsessiondata"))
                 .RegisterHandlerInstance(
                     "setdefaultacl",
                     insance =>

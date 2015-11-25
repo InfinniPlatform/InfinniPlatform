@@ -387,4 +387,13 @@
   <data name="CannotProcessPostRequest" xml:space="preserve">
     <value>Cannot process POST-request. StatusCode: '{0}', Content: '{1}'.</value>
   </data>
+  <data name="CannotProcessDeleteRequest" xml:space="preserve">
+    <value>Cannot process DELETE-request. StatusCode: '{0}', Content: '{1}'.</value>
+  </data>
+  <data name="CannotProcessGetRequest" xml:space="preserve">
+    <value>Cannot process GET-request. StatusCode: '{0}', Content: '{1}'.</value>
+  </data>
+  <data name="CannotProcessPutRequest" xml:space="preserve">
+    <value>Cannot process PUT-request. StatusCode: '{0}', Content: '{1}'.</value>
+  </data>
 </root>

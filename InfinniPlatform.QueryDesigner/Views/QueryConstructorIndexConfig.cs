@@ -10,6 +10,8 @@ using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.QueryDesigner.Contracts;
 using InfinniPlatform.Sdk.Api;
 
+using IRequestExecutor = InfinniPlatform.QueryDesigner.Contracts.IRequestExecutor;
+
 namespace InfinniPlatform.QueryDesigner.Views
 {
     /// <summary>

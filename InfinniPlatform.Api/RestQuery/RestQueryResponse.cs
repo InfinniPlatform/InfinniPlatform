@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Net;
+
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Api.RestQuery
 {
     /// <summary>
-    ///     Ответ сервера на REST-запрос
+    /// Ответ сервера на REST-запрос
     /// </summary>
     public class RestQueryResponse
     {
@@ -14,13 +15,18 @@ namespace InfinniPlatform.Api.RestQuery
 
         public int ContentLength
         {
-            get { return string.IsNullOrEmpty(Content) ? 0 : Content.Length; }
+            get
+            {
+                return string.IsNullOrEmpty(Content)
+                           ? 0
+                           : Content.Length;
+            }
         }
 
         public HttpStatusCode HttpStatusCode { get; set; }
 
         /// <summary>
-        ///     Внутренняя ошибка сервера
+        /// Внутренняя ошибка сервера
         /// </summary>
         public bool IsServerError
         {
@@ -37,7 +43,7 @@ namespace InfinniPlatform.Api.RestQuery
         }
 
         /// <summary>
-        ///     Сервер по указанному адресу не найден
+        /// Сервер по указанному адресу не найден
         /// </summary>
         public bool IsRemoteServerNotFound
         {
@@ -45,7 +51,7 @@ namespace InfinniPlatform.Api.RestQuery
         }
 
         /// <summary>
-        ///     Ошибка в бизнес-логике сервера
+        /// Ошибка в бизнес-логике сервера
         /// </summary>
         public bool IsBusinessLogicError
         {
