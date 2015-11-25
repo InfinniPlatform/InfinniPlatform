@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace InfinniPlatform.Sdk.Tests
 {
 	[TestFixture]
-	[Category(TestCategories.IntegrationTest)]
+	[Category(TestCategories.AcceptanceTest)]
 	public sealed class CustomServiceApiTest
 	{
 		private const string Route = "1";

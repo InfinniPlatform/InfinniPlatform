@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace InfinniPlatform.ClientNotification.Tests
 {
     [TestFixture]
-    [Category(TestCategories.IntegrationTest)]
+    [Category(TestCategories.AcceptanceTest)]
     public sealed class SignalRWebClientNotificationServiceIntegrationTest
     {
         private IDisposable _server;
