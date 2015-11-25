@@ -17,7 +17,7 @@ namespace InfinniPlatform.Sdk.Environment.Log
 
             public ExceptionWrapper(Exception ex)
             {
-                msg = ex.Message;
+                msg = ex.GetMessage();
                 stackTrace = ex.StackTrace;
             }
         }

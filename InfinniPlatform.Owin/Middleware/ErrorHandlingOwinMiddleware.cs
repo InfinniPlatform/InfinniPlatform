@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Owin.Properties;
@@ -66,39 +65,7 @@ namespace InfinniPlatform.Owin.Middleware
 
         private void LogPerformance(string method, DateTime start, Exception exception)
         {
-            _performanceLog.Log("OWIN", method, start, BuildCompleteExceptionMessage(exception));
-        }
-
-
-        private static string BuildCompleteExceptionMessage(Exception exception)
-        {
-            // TODO: Эту логику стоит вынести на более общий уровень, например, в качестве расширения к интерфейсу IPerformanceLog
-
-            if (exception != null)
-            {
-                var message = new StringBuilder();
-
-                BuildCompleteExceptionMessage(exception, message);
-
-                return message.ToString();
-            }
-
-            return null;
-        }
-
-        private static void BuildCompleteExceptionMessage(Exception exception, StringBuilder message)
-        {
-            message.AppendLine(exception.Message);
-
-            var aggregateException = exception as AggregateException;
-
-            if (aggregateException?.InnerExceptions != null && aggregateException.InnerExceptions.Count > 0)
-            {
-                foreach (var innerException in aggregateException.InnerExceptions)
-                {
-                    BuildCompleteExceptionMessage(innerException, message);
-                }
-            }
+            _performanceLog.Log("OWIN", method, start, exception.GetMessage());
         }
     }
 }
