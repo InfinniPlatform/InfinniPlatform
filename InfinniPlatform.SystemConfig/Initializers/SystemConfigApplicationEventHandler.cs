@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 using InfinniPlatform.Sdk.Environment;
 
@@ -11,7 +12,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
     {
         public SystemConfigApplicationEventHandler(IEnumerable<IStartupInitializer> startupInitializers)
         {
-            _startupInitializers = startupInitializers;
+            _startupInitializers = startupInitializers.OrderBy(i => i.Order);
         }
 
 

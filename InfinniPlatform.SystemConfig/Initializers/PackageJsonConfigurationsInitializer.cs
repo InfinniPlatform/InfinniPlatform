@@ -38,6 +38,9 @@ namespace InfinniPlatform.SystemConfig.Initializers
         private readonly Lazy<IEnumerable<DynamicWrapper>> _configurations;
 
 
+        public int Order => 0;
+
+
         public void OnStart()
         {
             // Получение списка всех установленных конфигураций

@@ -26,6 +26,9 @@ namespace InfinniPlatform.SystemConfig.Initializers
         private readonly Lazy<IIndexFactory> _indexFactory;
 
 
+        public int Order => 1;
+
+
         public void OnStart()
         {
             Logger.Log.Info("Creating indexes started.");
