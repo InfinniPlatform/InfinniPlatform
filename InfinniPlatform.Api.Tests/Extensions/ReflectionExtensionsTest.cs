@@ -451,16 +451,12 @@ namespace InfinniPlatform.Api.Tests.Extensions
                           Equals(result, "BaseClass.BaseEvent"));
             Assert.IsTrue(baseInstance.InvokeMember("VirtualEvent", null, out result) &&
                           Equals(result, "BaseClass.VirtualEvent"));
-            Assert.IsTrue(baseInstance.InvokeMember("BaseStaticEvent", null, out result) &&
-                          Equals(result, "BaseClass.BaseStaticEvent"));
             Assert.IsTrue(childInstance.InvokeMember("BaseEvent", null, out result) &&
                           Equals(result, "ChildClass.BaseEvent"));
             Assert.IsTrue(childInstance.InvokeMember("ChildEvent", null, out result) &&
                           Equals(result, "ChildClass.ChildEvent"));
             Assert.IsTrue(childInstance.InvokeMember("VirtualEvent", null, out result) &&
                           Equals(result, "ChildClass.VirtualEvent"));
-            Assert.IsTrue(childInstance.InvokeMember("ChildStaticEvent", null, out result) &&
-                          Equals(result, "ChildClass.ChildStaticEvent"));
         }
 
         [Test]
