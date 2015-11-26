@@ -4,7 +4,7 @@ using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
 {
-    public sealed class TestComplexAction
+    public sealed class ActionUnitTestComplexAction
     {
         public void Action(IApplyContext target)
         {

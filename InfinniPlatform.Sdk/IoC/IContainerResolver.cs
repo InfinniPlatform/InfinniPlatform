@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace InfinniPlatform.Sdk.IoC
 {
@@ -7,6 +8,11 @@ namespace InfinniPlatform.Sdk.IoC
     /// </summary>
     public interface IContainerResolver
     {
+        /// <summary>
+        /// Возвращает список зарегистрированных сервисов.
+        /// </summary>
+        IEnumerable<Type> Services { get; }
+
         /// <summary>
         /// Определяет, зарегистрирован ли сервис указанного типа.
         /// </summary>

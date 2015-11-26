@@ -1,14 +1,8 @@
 {
   "Id": "131840bf-fa8a-4651-a8fd-37ea02662784",
   "Secured": true,
-  "Name": "ActionWithException",
-  "Caption": "ActionWithException",
-  "Description": "",
-  "ScenarioId": "ActionWithException",
+  "Name": "ActionUnitWithException",
+  "ScenarioId": "ActionUnitWithException",
   "ContextType": 2,
-  "ScriptUnitType": 1,
-  "Version": "1.0.0.0",
-  "ParentId": "4375a77b-dc48-45e6-b7fa-582de5f4318f",
-  "__ConfigId": "systemconfig",
-  "__DocumentId": "scenariometadata"
+  "ScriptUnitType": 1
 }

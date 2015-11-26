@@ -1,56 +1,44 @@
-﻿using System;
-using InfinniPlatform.Factories;
-using InfinniPlatform.Metadata.StateMachine.ActionUnits.ActionOperatorBuilders;
+﻿using InfinniPlatform.Metadata.StateMachine.ActionUnits.ActionOperatorBuilders;
 using InfinniPlatform.Metadata.StateMachine.ValidationUnits.ValidationUnitBuilders;
 using InfinniPlatform.Runtime;
-using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Scripts;
 
 namespace InfinniPlatform.Metadata.StateMachine
 {
     /// <summary>
-    ///     Фабрика конструкторов скриптовых модулей
+    /// Фабрика конструкторов скриптовых модулей
     /// </summary>
     public sealed class ExecutedScriptBuilderFactory
     {
-        private IScriptProcessor _scriptProcessor;
-        private readonly IScriptFactory _scriptFactory;
+        public ExecutedScriptBuilderFactory(IScriptMetadataProvider scriptMetadataProvider, IScriptProcessor scriptProcessor)
+        {
+            _scriptMetadataProvider = scriptMetadataProvider;
+            _scriptProcessor = scriptProcessor;
+        }
+
+
         private readonly IScriptMetadataProvider _scriptMetadataProvider;
+        private readonly IScriptProcessor _scriptProcessor;
 
-        public ExecutedScriptBuilderFactory(IScriptFactory scriptFactory)
-        {
-            _scriptFactory = scriptFactory;
-            _scriptMetadataProvider = _scriptFactory.BuildScriptMetadataProvider();
-        }
-
-        public IScriptProcessor BuildScriptProcessor()
-        {
-            return _scriptProcessor ?? (_scriptProcessor = _scriptFactory.BuildScriptProcessor());
-        }
 
         public ActionOperatorBuilderScript BuildActionOperatorBuilder(string unitIdentifier)
         {
-            return new ActionOperatorBuilderScript(BuildScriptProcessor(), unitIdentifier);
+            return new ActionOperatorBuilderScript(_scriptProcessor, unitIdentifier);
         }
 
         public ValidationOperatorBuilderScript BuildValidationOperatorBuilder(string unitIdentifier)
         {
-            return new ValidationOperatorBuilderScript(BuildScriptProcessor(), unitIdentifier);
+            return new ValidationOperatorBuilderScript(_scriptProcessor, unitIdentifier);
         }
 
         public void RegisterMetadata(string unitIdentifier, string type, string action)
         {
-            if (string.IsNullOrEmpty(type))
-            {
-                throw new ArgumentException("Type should not be empty.");
-            }
-
             _scriptMetadataProvider.SetScriptMetadata(new ScriptMetadata
-            {
-                Identifier = unitIdentifier,
-                Type = type,
-                Method = action
-            });
+                                                      {
+                                                          Identifier = unitIdentifier,
+                                                          Type = type,
+                                                          Method = action
+                                                      });
         }
     }
 }

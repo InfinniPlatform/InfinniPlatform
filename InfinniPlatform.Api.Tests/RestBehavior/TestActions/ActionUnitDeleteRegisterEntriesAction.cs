@@ -4,7 +4,7 @@ using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
 {
-    public sealed class DeleteRegisterEntriesAction
+    public sealed class ActionUnitDeleteRegisterEntriesAction
     {
         public void Action(IApplyContext target)
         {

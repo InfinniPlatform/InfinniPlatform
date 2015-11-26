@@ -8,12 +8,12 @@
       "Name": "Default",
       "SuccessPoint": {
         "TypeName": "Action",
-        "ScenarioId": "AddNewBedToRoomMoveAction",
+        "ScenarioId": "ActionUnitAddNewBedToRoomMoveAction",
         "DocumentDateProperty": "Date"
       },
       "DeletePoint": {
         "TypeName": "Action",
-        "ScenarioId": "DeleteRegisterEntriesAction"
+        "ScenarioId": "ActionUnitDeleteRegisterEntriesAction"
       }
     }
   ],

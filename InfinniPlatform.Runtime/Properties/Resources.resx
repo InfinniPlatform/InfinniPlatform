@@ -117,25 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AssemblyVersionRepositoryNotSpecified" xml:space="preserve">
-    <value>Assembly version repository folder should be specified</value>
-  </data>
-  <data name="AssemblyMetadataNotFound" xml:space="preserve">
-    <value>Assembly metadata for module '{0}' not found.</value>
-  </data>
-  <data name="NoOneConfigurationInstalled" xml:space="preserve">
-    <value>No one configuration version installed.</value>
-  </data>
-  <data name="CannotFindScriptImplementation" xml:space="preserve">
-    <value>Cannot find script implementation. Script completed with error.</value>
-  </data>
   <data name="ScriptCompletedWithError" xml:space="preserve">
     <value>Script completed with error.</value>
   </data>
   <data name="ScriptMetadataIsNotRegistered" xml:space="preserve">
     <value>Script metadata is not registered. Script Identifier = '{0}'.</value>
   </data>
-  <data name="UpdateCacheRequest" xml:space="preserve">
-    <value>Update cache request.</value>
+  <data name="ActionUnitIsNotRegistered" xml:space="preserve">
+    <value>ActionUnit is not registered.</value>
   </data>
 </root>

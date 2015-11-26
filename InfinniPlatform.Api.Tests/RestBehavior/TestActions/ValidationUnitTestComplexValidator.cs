@@ -2,11 +2,12 @@
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
 {
-    public sealed class TestComplexFillDocumentAction
+    public sealed class ValidationUnitTestComplexValidator
     {
         public void Action(IApplyContext target)
         {
-            target.Item.PrefiledField = "TestValue";
+            target.IsValid = false;
+            target.ValidationMessage = "TestComplexValidatorMessage";
         }
     }
 }

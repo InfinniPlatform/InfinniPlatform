@@ -1,16 +1,15 @@
 ﻿namespace InfinniPlatform.Sdk.Environment.Scripts
 {
-	/// <summary>
-	/// Обработчик прикладных скриптов.
-	/// </summary>
-	public interface IScriptProcessor
-	{
-		/// <summary>
-		/// Выполняет прикладной скрипт.
-		/// </summary>
-		/// <param name="scriptIdentifier">Идентификатор прикладного скрипта.</param>
-		/// <param name="scriptContext">Контекст прикладного скрипта.</param>
-		/// <returns>Результат работы прикладного скрипта.</returns>
-		object InvokeScript(string scriptIdentifier, object scriptContext);
-	}
+    /// <summary>
+    /// Обработчик прикладных скриптов.
+    /// </summary>
+    public interface IScriptProcessor
+    {
+        /// <summary>
+        /// Выполняет прикладной скрипт.
+        /// </summary>
+        /// <param name="actionUnitId">Идентификатор прикладного скрипта.</param>
+        /// <param name="actionUnitContext">Контекст прикладного скрипта.</param>
+        void InvokeScript(string actionUnitId, object actionUnitContext);
+    }
 }

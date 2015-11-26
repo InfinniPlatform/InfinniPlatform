@@ -42,33 +42,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Implementation\AssemblyDispatch\AppDomainSctiptCache.cs" />
-    <Compile Include="Implementation\AssemblyDispatch\MethodInvokationCache.cs" />
-    <Compile Include="Implementation\AssemblyDispatch\MethodInvokationCacheList.cs" />
-    <Compile Include="Implementation\AssemblyDispatch\PackageMethodInvokationCache.cs" />
-    <Compile Include="Implementation\AssemblyDispatch\PackageMethodInvokationCacheList.cs" />
-    <Compile Include="Implementation\AssemblyDispatch\PackageVersionLoader.cs" />
-    <Compile Include="Implementation\ProjectConverter\Content.cs" />
-    <Compile Include="Implementation\ProjectConverter\EmbeddedResource.cs" />
-    <Compile Include="Implementation\ProjectConverter\IItemElement.cs" />
-    <Compile Include="Implementation\ProjectConverter\Import.cs" />
-    <Compile Include="Implementation\ProjectConverter\IProjectComponent.cs" />
-    <Compile Include="Implementation\ProjectConverter\IProjectConverterFrom.cs" />
-    <Compile Include="Implementation\ProjectConverter\IProjectConverterTo.cs" />
-    <Compile Include="Implementation\ProjectConverter\Module.cs" />
-    <Compile Include="Implementation\ProjectConverter\Project.cs" />
-    <Compile Include="Implementation\ProjectConverter\ProjectConfig.cs" />
-    <Compile Include="Implementation\ProjectConverter\ProjectConverterFrom.cs" />
-    <Compile Include="Implementation\ProjectConverter\ProjectConverterTo.cs" />
-    <Compile Include="Implementation\ProjectConverter\ProjectProperty.cs" />
-    <Compile Include="Implementation\ProjectConverter\ProjectReference.cs" />
-    <Compile Include="Implementation\ProjectConverter\Reference.cs" />
-    <Compile Include="Implementation\ProjectConverter\ReflectionPair.cs" />
-    <Compile Include="Implementation\ProjectConverter\XDocumentExtension.cs" />
+    <Compile Include="Implementation\ActionUnitFactory.cs" />
     <Compile Include="IoC\RuntimeContainerModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <AutoGen>True</AutoGen>
@@ -80,10 +56,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Factories\ScriptFactory.cs" />
-    <Compile Include="Factories\ScriptFactoryBuilder.cs" />
-    <Compile Include="Implementation\ScriptMetadataProviders\ScriptMetadataProviderMemory.cs" />
-    <Compile Include="Implementation\ScriptProcessors\ScriptProcessor.cs" />
+    <Compile Include="Implementation\ScriptMetadataProviderMemory.cs" />
+    <Compile Include="Implementation\ScriptProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

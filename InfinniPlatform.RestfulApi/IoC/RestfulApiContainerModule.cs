@@ -11,6 +11,9 @@ namespace InfinniPlatform.RestfulApi.IoC
             builder.RegisterType<RestfulApiInstaller>()
                    .As<IModuleInstaller>()
                    .SingleInstance();
+
+            // Прикладные скрипты
+            builder.RegisterActionUnits();
         }
     }
 }

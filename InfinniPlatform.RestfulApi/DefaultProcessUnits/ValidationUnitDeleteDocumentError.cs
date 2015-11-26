@@ -19,7 +19,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
     /// </summary>
     public sealed class ValidationUnitDeleteDocumentError
     {
-        public void Validate(IApplyContext target)
+        public void Action(IApplyContext target)
         {
             dynamic validationMessage = target.ValidationMessage;
 

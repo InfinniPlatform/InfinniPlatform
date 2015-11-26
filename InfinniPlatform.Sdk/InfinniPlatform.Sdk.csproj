@@ -189,6 +189,7 @@
     <Compile Include="Global\CustomServiceGlobalContext.cs" />
     <Compile Include="Global\ICustomServiceGlobalContext.cs" />
     <Compile Include="Global\ScriptContext.cs" />
+    <Compile Include="IoC\ContainerExtensions.cs" />
     <Compile Include="IoC\IContainerBuilder.cs" />
     <Compile Include="IoC\IContainerInstanceActivator.cs" />
     <Compile Include="IoC\IContainerModule.cs" />

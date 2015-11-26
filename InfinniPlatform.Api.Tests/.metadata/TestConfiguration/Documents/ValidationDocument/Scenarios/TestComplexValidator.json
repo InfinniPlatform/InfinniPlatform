@@ -1,7 +1,7 @@
 {
   "Id": "731840bf-fa8a-4651-a8fd-37ea02662784",
-  "Name": "TestComplexValidator",
-  "ScenarioId": "TestComplexValidator",
+  "Name": "ValidationUnitTestComplexValidator",
+  "ScenarioId": "ValidationUnitTestComplexValidator",
   "ContextType": 2,
   "ScriptUnitType": 2
 }
