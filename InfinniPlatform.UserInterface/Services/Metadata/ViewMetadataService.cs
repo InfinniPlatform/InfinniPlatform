@@ -49,9 +49,9 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
         public override void DeleteItem(string itemId)
         {
-            dynamic view = PackageMetadataLoader.GetViewContent(ConfigId, _documentId, itemId);
+            var filePath = PackageMetadataLoader.GetViewPath(ConfigId, _documentId, itemId);
 
-            File.Delete(view.FilePath);
+            File.Delete(filePath);
 
             PackageMetadataLoader.UpdateCache();
         }
