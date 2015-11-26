@@ -36,6 +36,9 @@ namespace InfinniPlatform.SystemConfig.IoC
             builder.RegisterType<SystemConfigInstaller>()
                    .As<IModuleInstaller>()
                    .SingleInstance();
+
+            // Прикладные скрипты
+            builder.RegisterActionUnits();
         }
     }
 }

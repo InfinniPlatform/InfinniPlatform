@@ -72,7 +72,6 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                         var scriptArguments = target;
                         scriptArguments.Item = prefiledInstance;
                         target.Context.GetComponent<IScriptRunnerComponent>()
-                              .GetScriptRunner(null, configId)
                               .InvokeScript(metadataProcess.Transitions[0].ActionPoint.ScenarioId, scriptArguments);
                     }
                 }
@@ -164,10 +163,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                 if (prefillItems.Any(f => f.Contains(prefiledField.Value.DefaultValue.ToString())))
                 {
                     target.Context.GetComponent<IScriptRunnerComponent>()
-                          .GetScriptRunner(null, "systemconfig")
-                          .InvokeScript(
-                              prefiledField.Value.DefaultValue.ToString(),
-                              scriptArguments);
+                          .InvokeScript(prefiledField.Value.DefaultValue.ToString(), scriptArguments);
 
                     prefiledInstance = scriptArguments.Result ?? scriptArguments.Item.Document;
                 }

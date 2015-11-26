@@ -1,8 +1,7 @@
 ﻿using InfinniPlatform.ContextComponents;
-using InfinniPlatform.Factories;
-using InfinniPlatform.Runtime.Factories;
-using InfinniPlatform.Runtime.Implementation.AssemblyDispatch;
+using InfinniPlatform.Runtime.Implementation;
 using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Environment.Scripts;
 using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.Runtime.IoC
@@ -11,20 +10,20 @@ namespace InfinniPlatform.Runtime.IoC
     {
         public void Load(IContainerBuilder builder)
         {
-            builder.RegisterType<PackageVersionLoader>()
-                   .As<IVersionLoader>()
-                   .SingleInstance();
-
-            builder.RegisterType<ScriptFactory>()
-                   .As<IScriptFactory>()
-                   .SingleInstance();
-
-            builder.RegisterType<ScriptFactoryBuilder>()
-                   .As<IScriptFactoryBuilder>()
-                   .SingleInstance();
-
             builder.RegisterType<ScriptRunnerComponent>()
                    .As<IScriptRunnerComponent>()
+                   .SingleInstance();
+
+            builder.RegisterType<ScriptMetadataProviderMemory>()
+                   .As<IScriptMetadataProvider>()
+                   .SingleInstance();
+
+            builder.RegisterType<ActionUnitFactory>()
+                   .AsSelf()
+                   .SingleInstance();
+
+            builder.RegisterType<ScriptProcessor>()
+                   .As<IScriptProcessor>()
                    .SingleInstance();
         }
     }

@@ -43,7 +43,6 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                 scriptArguments.Context = target.Context.GetComponent<ICustomServiceGlobalContext>();
 
                 target.Context.GetComponent<IScriptRunnerComponent>()
-                      .GetScriptRunner(null, target.Item.Configuration)
                       .InvokeScript(defaultBusinessProcess.Transitions[0].SuccessPoint.ScenarioId, scriptArguments);
 
                 if (target.Item.Document != null && target.Item.Document.Id != null)

@@ -61,38 +61,11 @@ namespace InfinniPlatform.Runtime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Assembly metadata for module &apos;{0}&apos; not found..
+        ///   Looks up a localized string similar to ActionUnit is not registered..
         /// </summary>
-        internal static string AssemblyMetadataNotFound {
+        internal static string ActionUnitIsNotRegistered {
             get {
-                return ResourceManager.GetString("AssemblyMetadataNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Assembly version repository folder should be specified.
-        /// </summary>
-        internal static string AssemblyVersionRepositoryNotSpecified {
-            get {
-                return ResourceManager.GetString("AssemblyVersionRepositoryNotSpecified", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot find script implementation. Script completed with error..
-        /// </summary>
-        internal static string CannotFindScriptImplementation {
-            get {
-                return ResourceManager.GetString("CannotFindScriptImplementation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No one configuration version installed..
-        /// </summary>
-        internal static string NoOneConfigurationInstalled {
-            get {
-                return ResourceManager.GetString("NoOneConfigurationInstalled", resourceCulture);
+                return ResourceManager.GetString("ActionUnitIsNotRegistered", resourceCulture);
             }
         }
         
@@ -111,15 +84,6 @@ namespace InfinniPlatform.Runtime.Properties {
         internal static string ScriptMetadataIsNotRegistered {
             get {
                 return ResourceManager.GetString("ScriptMetadataIsNotRegistered", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Update cache request..
-        /// </summary>
-        internal static string UpdateCacheRequest {
-            get {
-                return ResourceManager.GetString("UpdateCacheRequest", resourceCulture);
             }
         }
     }

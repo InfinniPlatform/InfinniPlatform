@@ -30,11 +30,6 @@ namespace InfinniPlatform.Sdk.Environment.Scripts
         IActionOperator GetAction(string unitIdentifier);
 
         /// <summary>
-        ///     Инииализировать хранилище прикладных модулей
-        /// </summary>
-        void InitActionUnitStorage();
-
-        /// <summary>
         ///     Зарегистрировать модуль валидации
         /// </summary>
         /// <param name="unitIdentifier">Идентификатор метаданных валидатора</param>

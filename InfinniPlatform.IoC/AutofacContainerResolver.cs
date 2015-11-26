@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using Autofac;
+using Autofac.Core;
 
 using InfinniPlatform.Sdk.IoC;
 
@@ -15,6 +18,13 @@ namespace InfinniPlatform.IoC
 
 
         private readonly IComponentContext _componentContext;
+
+
+        public IEnumerable<Type> Services => _componentContext.ComponentRegistry.Registrations
+                                                              .SelectMany(r => r.Services)
+                                                              .OfType<IServiceWithType>()
+                                                              .Select(s => s.ServiceType)
+                                                              .Distinct();
 
 
         public bool IsRegistered<TService>() where TService : class

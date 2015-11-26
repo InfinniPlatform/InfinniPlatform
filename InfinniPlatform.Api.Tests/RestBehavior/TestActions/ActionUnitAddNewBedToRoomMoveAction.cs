@@ -7,7 +7,7 @@ using InfinniPlatform.Sdk.Environment.Register;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
 {
-    public sealed class AddNewBedToRoomMoveAction
+    public sealed class ActionUnitAddNewBedToRoomMoveAction
     {
         public void Action(IApplyContext target)
         {

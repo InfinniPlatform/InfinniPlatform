@@ -100,9 +100,6 @@ namespace InfinniPlatform.SystemConfig.Initializers
             // Загрузка метаданных конфигурации в кэш
             metadataCacheFiller.InstallConfiguration(metadataCacheManager);
 
-            // Создание обработчика скриптов
-            metadataCacheManager.ScriptConfiguration.InitActionUnitStorage();
-
             // Создание сервисов конфигурации
             _applicationHostServer.InstallServices(metadataCacheManager.ServiceRegistrationContainer);
         }

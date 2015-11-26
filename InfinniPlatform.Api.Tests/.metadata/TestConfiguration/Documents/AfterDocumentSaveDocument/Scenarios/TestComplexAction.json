@@ -1,7 +1,7 @@
 {
   "Id": "231840bf-fa8a-4651-a8fd-37ea02662784",
-  "Name": "TestComplexAction",
-  "ScenarioId": "TestComplexAction",
+  "Name": "ActionUnitTestComplexAction",
+  "ScenarioId": "ActionUnitTestComplexAction",
   "ContextType": 2,
   "ScriptUnitType": 1
 }

@@ -77,6 +77,9 @@ namespace InfinniPlatform.Metadata.IoC
             builder.RegisterType<SearchDocumentAggregationHandler>()
                    .As<IWebRoutingHandler>()
                    .AsSelf();
+
+            // Прикладные скрипты
+            builder.RegisterActionUnits();
         }
     }
 }

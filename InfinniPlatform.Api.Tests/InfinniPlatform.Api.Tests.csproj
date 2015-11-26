@@ -62,6 +62,7 @@
     <Compile Include="Dynamic\ObjectHelperTest.cs" />
     <Compile Include="Extensions\CommonExtensionsTest.cs" />
     <Compile Include="Extensions\ReflectionExtensionsTest.cs" />
+    <Compile Include="IoC\ApiTestsContainerModule.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -91,17 +92,17 @@
     </Compile>
     <Compile Include="RestBehavior\Acceptance\DocumentApiBehavior.cs" />
     <Compile Include="RestBehavior\TestActions\ActionUnitGeneratorTest.cs" />
-    <Compile Include="RestBehavior\TestActions\AddNewBedToRoomMoveAction.cs" />
-    <Compile Include="RestBehavior\TestActions\ActionWithException.cs" />
-    <Compile Include="RestBehavior\TestActions\DeleteRegisterEntriesAction.cs" />
-    <Compile Include="RestBehavior\TestActions\HospitalRegisterMoveAction.cs" />
+    <Compile Include="RestBehavior\TestActions\ActionUnitAddNewBedToRoomMoveAction.cs" />
+    <Compile Include="RestBehavior\TestActions\ActionUnitWithException.cs" />
+    <Compile Include="RestBehavior\TestActions\ActionUnitDeleteRegisterEntriesAction.cs" />
+    <Compile Include="RestBehavior\TestActions\ActionUnitHospitalRegisterMoveAction.cs" />
     <Compile Include="RestBehavior\TestActions\TestRegisterMoveAction.cs" />
     <Compile Include="RestBehavior\TestActions\Versions\TestAction_v2.cs" />
     <Compile Include="RestBehavior\TestActions\Versions\TestAction_v1.cs" />
     <Compile Include="RestBehavior\TestActions\Versions\TestAction.cs" />
-    <Compile Include="RestBehavior\TestActions\TestComplexAction.cs" />
-    <Compile Include="RestBehavior\TestActions\TestComplexFillDocumentAction.cs" />
-    <Compile Include="RestBehavior\TestActions\TestComplexValidator.cs" />
+    <Compile Include="RestBehavior\TestActions\ActionUnitTestComplexAction.cs" />
+    <Compile Include="RestBehavior\TestActions\ActionUnitTestComplexFillDocumentAction.cs" />
+    <Compile Include="RestBehavior\TestActions\ValidationUnitTestComplexValidator.cs" />
     <Compile Include="RestBehavior\TestActions\TestSignalRAction.cs" />
     <Compile Include="RestBehavior\TestActions\YetAnotherTestComplexAction.cs" />
     <Compile Include="Schema\SchemaCreatorBehavior.cs" />

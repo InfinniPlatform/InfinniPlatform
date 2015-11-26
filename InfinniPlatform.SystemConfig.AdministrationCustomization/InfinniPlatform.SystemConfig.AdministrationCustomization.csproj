@@ -46,6 +46,7 @@
     <Compile Include="ActionUnits\ActionUnitGetCredentials.cs" />
     <Compile Include="ActionUnits\ActionUnitOnAddUserEvent.cs" />
     <Compile Include="ActionUnits\ActionUnitOnRemoveUserEvent.cs" />
+    <Compile Include="IoC\SystemConfigAdministrationCustomizationContainerModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <DependentUpon>AssemblyInfo.tt</DependentUpon>
       <AutoGen>True</AutoGen>

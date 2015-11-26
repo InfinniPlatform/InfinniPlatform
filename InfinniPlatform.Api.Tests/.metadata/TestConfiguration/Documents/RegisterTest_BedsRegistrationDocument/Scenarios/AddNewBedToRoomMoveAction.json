@@ -1,7 +1,7 @@
 {
-  "Id": "AddNewBedToRoomMoveAction",
-  "Name": "AddNewBedToRoomMoveAction",
-  "ScenarioId": "AddNewBedToRoomMoveAction",
+  "Id": "ActionUnitAddNewBedToRoomMoveAction",
+  "Name": "ActionUnitAddNewBedToRoomMoveAction",
+  "ScenarioId": "ActionUnitAddNewBedToRoomMoveAction",
   "ContextType": 2,
   "ScriptUnitType": 1
 }

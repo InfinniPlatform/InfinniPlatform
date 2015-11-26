@@ -1,7 +1,7 @@
 {
-  "Id": "DeleteRegisterEntriesAction",
-  "Name": "DeleteRegisterEntriesAction",
-  "ScenarioId": "DeleteRegisterEntriesAction",
+  "Id": "ActionUnitDeleteRegisterEntriesAction",
+  "Name": "ActionUnitDeleteRegisterEntriesAction",
+  "ScenarioId": "ActionUnitDeleteRegisterEntriesAction",
   "ContextType": 2,
   "ScriptUnitType": 1
 }

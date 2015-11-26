@@ -5,7 +5,7 @@ using InfinniPlatform.Sdk.Environment.Register;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
 {
-    public sealed class HospitalRegisterMoveAction
+    public sealed class ActionUnitHospitalRegisterMoveAction
     {
         public void Action(IApplyContext target)
         {

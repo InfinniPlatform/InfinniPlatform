@@ -3,7 +3,7 @@ using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
 {
-    public sealed class ActionWithException
+    public sealed class ActionUnitWithException
     {
         public void Action(IApplyContext target)
         {

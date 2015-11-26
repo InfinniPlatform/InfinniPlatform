@@ -75,7 +75,6 @@
     <Compile Include="ContextComponents\ScriptRunnerComponent.cs" />
     <Compile Include="ContextComponents\SystemComponent.cs" />
     <Compile Include="ContextComponents\TransactionComponent.cs" />
-    <Compile Include="ContextComponents\VersionedScriptProcessor.cs" />
     <Compile Include="ContextComponents\WebClientNotificationComponent.cs" />
     <Compile Include="Factories\ContextRegistration.cs" />
     <Compile Include="Factories\IPrintViewBuilderFactory.cs" />
@@ -90,7 +89,6 @@
     <Compile Include="Factories\IIntegrationBusFactory.cs" />
     <Compile Include="Factories\IIntegrationBusStorageFactory.cs" />
     <Compile Include="Factories\IOpenEhrFactory.cs" />
-    <Compile Include="Factories\IScriptFactoryBuilder.cs" />
     <Compile Include="Factories\IServiceRegistrationContainerFactory.cs" />
     <Compile Include="Factories\IWebClientNotificationServiceFactory.cs" />
     <Compile Include="Hosting\IHostingService.cs" />
@@ -147,9 +145,7 @@
     <Compile Include="Modules\ITemplateInstaller.cs" />
     <Compile Include="Runtime\IMethodInvokationCache.cs" />
     <Compile Include="Runtime\IMethodInvokationCacheList.cs" />
-    <Compile Include="Runtime\IVersionLoader.cs" />
     <Compile Include="Runtime\IdentityMap.cs" />
-    <Compile Include="Factories\IScriptFactory.cs" />
     <Compile Include="Runtime\IScriptMetadataProvider.cs" />
     <Compile Include="Runtime\ReflectionExtensions.cs" />
     <Compile Include="Runtime\ScriptMetadata.cs" />
