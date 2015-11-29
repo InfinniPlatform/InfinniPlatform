@@ -65,9 +65,9 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 
 		private void FillControlsItems()
 		{
-			_prefillItems = RestQueryApi.QueryPostJsonRaw("systemconfig", "prefill", "getfillitems", null, null).ToDynamicList();
-
-			ComplexPrefillEditor.Properties.Items.Clear();
+            //_prefillItems = RestQueryApi.QueryPostJsonRaw("systemconfig", "prefill", "getfillitems", null, null).ToDynamicList();
+		    _prefillItems = new dynamic[]{};
+            ComplexPrefillEditor.Properties.Items.Clear();
 			ComplexPrefillEditor.Properties.Items.AddRange(ActionHandlers.BuildImageComboBoxItems().ToList());
 
 			ComplexValidationErrorEditor.Properties.Items.Clear();
