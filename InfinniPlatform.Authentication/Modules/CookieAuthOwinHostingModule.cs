@@ -3,6 +3,7 @@
 using InfinniPlatform.Authentication.DataProtectors;
 using InfinniPlatform.Authentication.Middleware;
 using InfinniPlatform.Owin.Modules;
+using InfinniPlatform.Sdk.Environment.Settings;
 
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security.Cookies;
@@ -22,10 +23,11 @@ namespace InfinniPlatform.Authentication.Modules
 
         public void Configure(IAppBuilder builder, IOwinHostingContext context)
         {
-            if (IsRunningOnMono())
-            {
-                builder.SetDataProtectionProvider(new AesDataProtectionProvider());
-            }
+            // Домен для создания cookie
+            var cookieDomain = AppSettings.GetValue("CookieDomain");
+
+            // Шифрование данных по умолчанию (работает также в Linux/Mono)
+            builder.SetDataProtectionProvider(new AesDataProtectionProvider());
 
             // Разрешение использования cookie для входа в систему через внутренний провайдер
 
@@ -38,6 +40,11 @@ namespace InfinniPlatform.Authentication.Modules
                 SlidingExpiration = true
             };
 
+            if (!string.IsNullOrWhiteSpace(cookieDomain))
+            {
+                cookieAuthOptions.CookieDomain = cookieDomain;
+            }
+
             if (Uri.UriSchemeHttps.Equals(context.Configuration.ServerScheme, StringComparison.OrdinalIgnoreCase))
             {
                 cookieAuthOptions.CookieSecure = CookieSecureOption.Always;
@@ -47,12 +54,6 @@ namespace InfinniPlatform.Authentication.Modules
 
             // Разрешение использования cookie для входа в систему через внешние провайдеры
             builder.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
-        }
-
-
-        private static bool IsRunningOnMono()
-        {
-            return Type.GetType("Mono.Runtime") != null;
         }
     }
 }
