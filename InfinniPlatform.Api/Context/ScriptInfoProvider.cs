@@ -43,7 +43,7 @@ namespace InfinniPlatform.Api.Context
                     }
                 }
             }
-            return result;
+            return result.OrderBy(info => info.DeclaringType.Name);
         }
 
         public static IEnumerable<MethodInfo> GetArgumentCountAccordingMethods(this IEnumerable<MethodInfo> methodInfos)
@@ -56,7 +56,7 @@ namespace InfinniPlatform.Api.Context
                     result.Add(methodInfo);
                 }
             }
-            return result;
+            return result.OrderBy(info => info.Name);
         }
 
         public static IEnumerable<MethodInfo> GetArgumentAccordingTypeMethods(this IEnumerable<MethodInfo> methodInfos)
@@ -71,7 +71,7 @@ namespace InfinniPlatform.Api.Context
                     result.Add(methodInfo);
                 }
             }
-            return result;
+            return result.OrderBy(info => info.Name);
         }
 
         public static IEnumerable<dynamic> GetMethodDynamicInfo(this IEnumerable<MethodInfo> methodInfoList)
@@ -87,7 +87,7 @@ namespace InfinniPlatform.Api.Context
                 info.ContextTypeCode = (int) argument.GetContextTypeKind();
                 result.Add(info);
             }
-            return result;
+            return result.OrderBy(info => info.Name);
         }
     }
 }
