@@ -1,5 +1,4 @@
 ﻿using InfinniPlatform.Api.Profiling.Implementation;
-using InfinniPlatform.Sdk.Api;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment.Log;
 using InfinniPlatform.Sdk.Environment.Profiling;
@@ -24,11 +23,6 @@ namespace InfinniPlatform.ContextComponents
         /// <returns>Профайлер операций</returns>
         public IOperationProfiler GetOperationProfiler(string method, string arguments)
         {
-            if (HostingConfig.Default.ServerProfileQuery)
-            {
-                return new ActionUnitProfiler(_logger, method, arguments);
-            }
-
             return new NoQueryProfiler();
         }
     }

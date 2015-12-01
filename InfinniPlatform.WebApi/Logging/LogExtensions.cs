@@ -1,7 +1,6 @@
 ﻿using System;
 
 using InfinniPlatform.Logging;
-using InfinniPlatform.Sdk.Environment.Log;
 
 namespace InfinniPlatform.WebApi.Logging
 {

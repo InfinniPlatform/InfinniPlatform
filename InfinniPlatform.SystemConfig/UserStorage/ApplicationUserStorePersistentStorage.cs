@@ -7,17 +7,22 @@ using InfinniPlatform.Api.SearchOptions.Builders;
 using InfinniPlatform.Api.Security;
 using InfinniPlatform.Api.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Settings;
 
 namespace InfinniPlatform.SystemConfig.UserStorage
 {
-    public sealed class ApplicationUserStorePersistentStorage : IApplicationUserStore
+    internal sealed class ApplicationUserStorePersistentStorage : IApplicationUserStore
     {
-        public ApplicationUserStorePersistentStorage()
+        public ApplicationUserStorePersistentStorage(IAppConfiguration appConfiguration)
         {
-            _userCache = new ApplicationUserStoreCache();
+            var settings = appConfiguration.GetSection<UserStorageSettings>(UserStorageSettings.SectionName);
+
+            _userCache = new ApplicationUserStoreCache(settings.UserCacheTimeout);
         }
-        
+
+
         private readonly ApplicationUserStoreCache _userCache;
+
 
         public void CreateUser(ApplicationUser user)
         {
@@ -143,7 +148,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
                 }
             }
         }
-        
+
         public void AddUserClaim(ApplicationUser user, string claimType, string claimValue)
         {
             if (!user.Claims.Any(c => c.Type.DisplayName == claimType && c.Value == claimValue))

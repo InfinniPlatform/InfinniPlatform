@@ -46,10 +46,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="Topshelf, Version=3.2.150.0, Culture=neutral, PublicKeyToken=b800c4cfcdeea87b, processorArchitecture=MSIL">
-      <HintPath>..\packages\Topshelf.3.2.0\lib\net40-full\Topshelf.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -65,12 +61,20 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Files\Log.config">
+    <None Include="..\Files\Config\AppCommon.json">
+      <Link>AppCommon.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Files\Config\AppExtension.json">
+      <Link>AppExtension.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Files\Monitoring\AppLog.config">
       <Link>Log.config</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
-    <None Include="..\Files\Platform\App.config">
+    <None Include="..\Files\Config\App.config">
       <Link>App.config</Link>
       <SubType>Designer</SubType>
     </None>
@@ -85,14 +89,6 @@
     <ProjectReference Include="..\InfinniPlatform.NodeServiceHost\InfinniPlatform.NodeServiceHost.csproj">
       <Project>{DCB067DB-E581-4F90-85DF-ACF9C6B42AD4}</Project>
       <Name>InfinniPlatform.NodeServiceHost</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
-      <Project>{2322469d-7d54-4c76-97e2-ef40f15645f5}</Project>
-      <Name>InfinniPlatform.Sdk</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.WebApi\InfinniPlatform.WebApi.csproj">
-      <Project>{86AB4502-9B73-43B5-8A20-F01AADE0EDA4}</Project>
-      <Name>InfinniPlatform.WebApi</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

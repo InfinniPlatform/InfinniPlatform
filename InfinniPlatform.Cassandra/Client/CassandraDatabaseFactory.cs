@@ -9,9 +9,9 @@ namespace InfinniPlatform.Cassandra.Client
 	/// </summary>
 	public sealed class CassandraDatabaseFactory : IColumnFamilyDatabaseFactory
 	{
-		public CassandraDatabaseFactory()
+		public CassandraDatabaseFactory(CassandraSettings settings)
 		{
-			var sessionFactory = new CassandraSessionFactory();
+			var sessionFactory = new CassandraSessionFactory(settings);
 			var queryExecutor = new QueryExecutor(sessionFactory);
 
 			_dataAdapter = new ColumnFamilyDataAdapter(queryExecutor);

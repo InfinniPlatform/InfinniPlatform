@@ -14,8 +14,16 @@ namespace InfinniPlatform.Authentication.Modules
     /// <remarks>Аутентификация осуществляется через службу ADFS по протоколу WS-Federation.</remarks>
     internal sealed class ExternalAuthAdfsOwinHostingModule : IOwinHostingModule
     {
-        private const string ResourceUri = "https://InfinniPlatform";
         private const string MetadataUri = "https://{0}/FederationMetadata/2007-06/FederationMetadata.xml";
+
+
+        public ExternalAuthAdfsOwinHostingModule(IAppConfiguration appConfiguration)
+        {
+            _settings = appConfiguration.GetSection<ExternalAuthAdfsOwinHostingModuleSettings>(ExternalAuthAdfsOwinHostingModuleSettings.SectionName);
+        }
+
+
+        private readonly ExternalAuthAdfsOwinHostingModuleSettings _settings;
 
 
         public OwinHostingModuleType ModuleType => OwinHostingModuleType.ExternalAuth;
@@ -23,17 +31,15 @@ namespace InfinniPlatform.Authentication.Modules
 
         public void Configure(IAppBuilder builder, IOwinHostingContext context)
         {
-            if (AppSettings.GetValue("AppServerAuthAdfsEnable", false))
+            if (_settings.Enable)
             {
-                var adfsServer = AppSettings.GetValue("AppServerAuthAdfsServer");
-
                 builder.UseWsFederationAuthentication(new WsFederationAuthenticationOptions
                 {
                     Caption = WsFederationAuthenticationDefaults.Caption,
                     AuthenticationType = WsFederationAuthenticationDefaults.AuthenticationType,
                     AuthenticationMode = AuthenticationMode.Passive,
-                    MetadataAddress = string.Format(MetadataUri, adfsServer),
-                    Wtrealm = ResourceUri
+                    MetadataAddress = string.Format(MetadataUri, _settings.Server),
+                    Wtrealm = _settings.ResourceUri
                 });
             }
         }

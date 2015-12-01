@@ -18,13 +18,22 @@ namespace InfinniPlatform.Authentication.Modules
     /// </summary>
     internal sealed class CookieAuthOwinHostingModule : IOwinHostingModule
     {
+        public CookieAuthOwinHostingModule(IAppConfiguration appConfiguration)
+        {
+            _settings = appConfiguration.GetSection<CookieAuthOwinHostingModuleSettings>(CookieAuthOwinHostingModuleSettings.SectionName);
+        }
+
+
+        private readonly CookieAuthOwinHostingModuleSettings _settings;
+
+
         public OwinHostingModuleType ModuleType => OwinHostingModuleType.CookieAuth;
 
 
         public void Configure(IAppBuilder builder, IOwinHostingContext context)
         {
             // Домен для создания cookie
-            var cookieDomain = AppSettings.GetValue("CookieDomain");
+            var cookieDomain = _settings.CookieDomain;
 
             // Шифрование данных по умолчанию (работает также в Linux/Mono)
             builder.SetDataProtectionProvider(new AesDataProtectionProvider());
@@ -45,7 +54,7 @@ namespace InfinniPlatform.Authentication.Modules
                 cookieAuthOptions.CookieDomain = cookieDomain;
             }
 
-            if (Uri.UriSchemeHttps.Equals(context.Configuration.ServerScheme, StringComparison.OrdinalIgnoreCase))
+            if (Uri.UriSchemeHttps.Equals(context.Configuration.Scheme, StringComparison.OrdinalIgnoreCase))
             {
                 cookieAuthOptions.CookieSecure = CookieSecureOption.Always;
             }

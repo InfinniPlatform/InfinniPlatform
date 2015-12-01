@@ -8,20 +8,19 @@ using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Utils
 {
-    public class DataManager
+    public static class DataManager
     {
-        public void Import(string pathToFolder)
+        public static void Import(string pathToFolder)
         {
             ControllerRoutingFactory.Instance = new ControllerRoutingFactory(HostingConfig.Default);
 
             if (!Directory.Exists(pathToFolder))
             {
-                Console.WriteLine("Specified path {0} doesn't exist", pathToFolder);
+                Console.WriteLine(@"Specified path {0} doesn't exist", pathToFolder);
                 return;
             }
 
-            foreach (
-                var folderFullFile in Directory.EnumerateFiles(pathToFolder, "*.zip", SearchOption.TopDirectoryOnly))
+            foreach (var folderFullFile in Directory.EnumerateFiles(pathToFolder, "*.zip", SearchOption.TopDirectoryOnly))
             {
                 var fileName = Path.GetFileNameWithoutExtension(folderFullFile);
 
@@ -29,7 +28,7 @@ namespace InfinniPlatform.Utils
 
                 if (dividerIndex == -1)
                 {
-                    Console.WriteLine("File {0} skipped due to incorrect name", folderFullFile);
+                    Console.WriteLine(@"File {0} skipped due to incorrect name", folderFullFile);
                     continue;
                 }
 
@@ -46,11 +45,11 @@ namespace InfinniPlatform.Utils
                 {
                     RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "ImportDataFromJson", null, item);
 
-                    Console.WriteLine("Data from file {0} imported", folderFullFile);
+                    Console.WriteLine(@"Data from file {0} imported", folderFullFile);
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("Fail to import data from file {0}: ", e);
+                    Console.WriteLine(@"Fail to import data from file {0}: ", e);
                 }
             }
         }

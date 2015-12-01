@@ -84,6 +84,7 @@
     <Compile Include="Environment\Register\RegisterEntryType.cs" />
     <Compile Include="Environment\Settings\AppSettings.cs" />
     <Compile Include="Environment\Settings\ConnectionStrings.cs" />
+    <Compile Include="Environment\Settings\IConfigurationManager.cs" />
     <Compile Include="Environment\Transactions\AttachedInstance.cs" />
     <Compile Include="Environment\Binary\BlobData.cs" />
     <Compile Include="Environment\Binary\BlobInfo.cs" />

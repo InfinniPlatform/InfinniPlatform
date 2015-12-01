@@ -15,13 +15,11 @@ namespace InfinniPlatform.FlowDocument.PrintView
         private readonly IFlowDocumentPrintViewConverter _printViewConverter;
         private readonly IFlowDocumentPrintViewFactory _printViewFactory;
 
-        public FlowDocumentPrintViewBuilder()
-            : this(new FlowDocumentPrintViewFactory(), new FlowDocumentPrintViewConverter())
+        public FlowDocumentPrintViewBuilder() : this(new FlowDocumentPrintViewFactory(), new FlowDocumentPrintViewConverter(PrintViewSettings.Default))
         {
         }
 
-        public FlowDocumentPrintViewBuilder(IFlowDocumentPrintViewFactory printViewFactory,
-            IFlowDocumentPrintViewConverter printViewConverter)
+        public FlowDocumentPrintViewBuilder(IFlowDocumentPrintViewFactory printViewFactory, IFlowDocumentPrintViewConverter printViewConverter)
         {
             if (printViewFactory == null)
             {

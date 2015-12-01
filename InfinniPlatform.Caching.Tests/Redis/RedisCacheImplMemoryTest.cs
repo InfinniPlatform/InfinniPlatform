@@ -1,49 +1,56 @@
 ﻿using System;
 
 using InfinniPlatform.Caching.Factory;
+using InfinniPlatform.Sdk.Environment.Settings;
+
+using Moq;
 
 using NUnit.Framework;
 
 namespace InfinniPlatform.Caching.Tests.Redis
 {
-	[TestFixture]
-	[Category(TestCategories.PerformanceTest)]
-	[Ignore("Should setup Redis on TeamCity")]
-	public sealed class RedisCacheImplMemoryTest
-	{
-		[Test]
-		[TestCase(1000)]
-		[TestCase(10000)]
-		[TestCase(100000)]
-		public void MemoryTest(int iterations)
-		{
-			// Given
+    [TestFixture]
+    [Category(TestCategories.PerformanceTest)]
+    [Ignore("Should setup Redis on TeamCity")]
+    public sealed class RedisCacheImplMemoryTest
+    {
+        [Test]
+        [TestCase(1000)]
+        [TestCase(10000)]
+        [TestCase(100000)]
+        public void MemoryTest(int iterations)
+        {
+            // Given
 
-			const string key = "GetMemoryTest_Key";
+            var appConfigMock = new Mock<IAppConfiguration>();
+            appConfigMock.Setup(m => m.GetSection<CacheSettings>(CacheSettings.SectionName)).Returns(new CacheSettings());
+            appConfigMock.Setup(m => m.GetSection<RedisSettings>(RedisSettings.SectionName)).Returns(new RedisSettings());
 
-			double startSize = GC.GetTotalMemory(true);
+            const string key = "GetMemoryTest_Key";
 
-			// When
+            double startSize = GC.GetTotalMemory(true);
 
-			var cache = new CacheFactory(new CacheMessageBusFactory()).GetSharedCache();
+            // When
 
-			for (var i = 0; i < iterations; ++i)
-			{
-				var value = Guid.NewGuid().ToString("N");
-				cache.Set(key, value);
-				cache.Get(key);
-			}
+            var cache = new CacheFactory(appConfigMock.Object, new CacheMessageBusFactory(appConfigMock.Object)).GetSharedCache();
 
-			((IDisposable)cache).Dispose();
+            for (var i = 0; i < iterations; ++i)
+            {
+                var value = Guid.NewGuid().ToString("N");
+                cache.Set(key, value);
+                cache.Get(key);
+            }
 
-			double stopSize = GC.GetTotalMemory(true);
+            ((IDisposable)cache).Dispose();
 
-			var memoryLeak = (stopSize - startSize);
+            double stopSize = GC.GetTotalMemory(true);
 
-			// Then
-			Console.WriteLine(@"Iteration count: {0}", iterations);
-			Console.WriteLine(@"Memory Leak : {0:N2} %", memoryLeak / startSize);
-			Console.WriteLine(@"Memory Leak : {0:N2} Kb", memoryLeak / 1024);
-		}
-	}
+            var memoryLeak = (stopSize - startSize);
+
+            // Then
+            Console.WriteLine(@"Iteration count: {0}", iterations);
+            Console.WriteLine(@"Memory Leak : {0:N2} %", memoryLeak / startSize);
+            Console.WriteLine(@"Memory Leak : {0:N2} Kb", memoryLeak / 1024);
+        }
+    }
 }

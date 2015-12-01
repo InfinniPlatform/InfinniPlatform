@@ -140,6 +140,7 @@
     <Compile Include="Model\Views\PrintViewDocument.cs" />
     <Compile Include="Model\Views\PrintViewStyle.cs" />
     <Compile Include="PrintElementMetadataMap.cs" />
+    <Compile Include="PrintViewSettings.cs" />
     <Compile Include="PrintView\FlowDocumentPrintViewDesignerFactory.cs" />
     <Compile Include="PrintView\FlowDocumentPrintViewConverter.cs" />
     <Compile Include="PrintView\IFlowDocumentPrintViewConverter.cs" />

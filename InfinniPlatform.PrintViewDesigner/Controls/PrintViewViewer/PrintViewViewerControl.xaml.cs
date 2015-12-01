@@ -30,7 +30,7 @@ namespace InfinniPlatform.PrintViewDesigner.Controls.PrintViewViewer
 		static PrintViewViewerControl()
 		{
 			PrintViewFactory = new FlowDocumentPrintViewDesignerFactory();
-			PrintViewBuilder = new FlowDocumentPrintViewBuilder(PrintViewFactory, new FlowDocumentPrintViewConverter());
+			PrintViewBuilder = new FlowDocumentPrintViewBuilder(PrintViewFactory, new FlowDocumentPrintViewConverter(PrintViewSettings.Default));
 			HighlightElementBrush = new SolidColorBrush(SystemColors.HighlightColor) { Opacity = 0.4 };
 		}
 

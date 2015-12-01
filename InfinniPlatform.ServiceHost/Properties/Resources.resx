@@ -117,13 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ConfigurationListIsEmpty" xml:space="preserve">
-    <value>Configuration list should not be empty!</value>
-  </data>
-  <data name="PleaseWaitWhileTheServerIsStarted" xml:space="preserve">
-    <value>Please wait while the server is started...</value>
-  </data>
-  <data name="ServerStartedAt" xml:space="preserve">
-    <value>Server started at {0}</value>
+  <data name="ServerStarted" xml:space="preserve">
+    <value>Server started.</value>
   </data>
 </root>

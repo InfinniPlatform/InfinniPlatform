@@ -13,6 +13,7 @@ using InfinniPlatform.Authentication.Modules;
 using InfinniPlatform.Owin.Hosting;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Security;
 
@@ -55,9 +56,12 @@ namespace InfinniPlatform.Authentication.Tests
         [TestCase(true)]
         public void ShouldSignInInternal(bool remember)
         {
+            var appConfigMock = new Mock<IAppConfiguration>();
+            appConfigMock.Setup(m => m.GetSection<CookieAuthOwinHostingModuleSettings>(CookieAuthOwinHostingModuleSettings.SectionName)).Returns(new CookieAuthOwinHostingModuleSettings());
+
             var requests = new List<IPrincipal>();
             var userInfo = new IdentityApplicationUser { UserName = "User1", Claims = new[] { CreateClaim("Claim1", "Value1") } };
-            var owinHostingModules = new IOwinHostingModule[] { new CookieAuthOwinHostingModule(), new InternalAuthOwinHostingModule(), new FakeOwinHostingModule(requests) };
+            var owinHostingModules = new IOwinHostingModule[] { new CookieAuthOwinHostingModule(appConfigMock.Object), new InternalAuthOwinHostingModule(), new FakeOwinHostingModule(requests) };
             var owinHostingContext = CreateTestOwinHostingContext(m => m.Create(userInfo, "Password1"), owinHostingModules);
             var owinHostingService = new OwinHostingService(owinHostingContext);
 
@@ -105,7 +109,7 @@ namespace InfinniPlatform.Authentication.Tests
 
         private static HttpClient CreateClient(HostingConfig hostingConfig)
         {
-            return new HttpClient { BaseAddress = new Uri($"{hostingConfig.ServerScheme}://{hostingConfig.ServerName}:{hostingConfig.DefaultServerPort}") };
+            return new HttpClient { BaseAddress = new Uri($"{hostingConfig.Scheme}://{hostingConfig.Name}:{hostingConfig.Port}") };
         }
 
         private static void SignInInternal(HttpClient client, string userName, string password, bool remember)

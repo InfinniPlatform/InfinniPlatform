@@ -12,20 +12,26 @@ namespace InfinniPlatform.Authentication.Modules
     /// </summary>
     internal sealed class ExternalAuthFacebookOwinHostingModule : IOwinHostingModule
     {
+        public ExternalAuthFacebookOwinHostingModule(IAppConfiguration appConfiguration)
+        {
+            _settings = appConfiguration.GetSection<ExternalAuthFacebookOwinHostingModuleSettings>(ExternalAuthFacebookOwinHostingModuleSettings.SectionName);
+        }
+
+
+        private readonly ExternalAuthFacebookOwinHostingModuleSettings _settings;
+
+
         public OwinHostingModuleType ModuleType => OwinHostingModuleType.ExternalAuth;
 
 
         public void Configure(IAppBuilder builder, IOwinHostingContext context)
         {
-            if (AppSettings.GetValue("AppServerAuthFacebookEnable", false))
+            if (_settings.Enable)
             {
-                var clientId = AppSettings.GetValue("AppServerAuthFacebookClientId");
-                var clientSecret = AppSettings.GetValue("AppServerAuthFacebookClientSecret");
-
                 builder.UseFacebookAuthentication(new FacebookAuthenticationOptions
                 {
-                    AppId = clientId,
-                    AppSecret = clientSecret
+                    AppId = _settings.ClientId,
+                    AppSecret = _settings.ClientSecret
                 });
             }
         }

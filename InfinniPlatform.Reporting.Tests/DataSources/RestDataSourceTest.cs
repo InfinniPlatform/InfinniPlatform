@@ -24,7 +24,7 @@ namespace InfinniPlatform.Reporting.Tests.DataSources
 	[Ignore("Manual")]
 	public sealed class RestDataSourceTest
 	{
-		private static readonly string BaseAddress = string.Format("{0}://{1}:{2}/", HostingConfig.Default.ServerScheme, HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort);
+		private static readonly string BaseAddress = string.Format("{0}://{1}:{2}/", HostingConfig.Default.Scheme, HostingConfig.Default.Name, HostingConfig.Default.Port);
 
 
 		[Test]

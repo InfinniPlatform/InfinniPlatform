@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 
 using InfinniPlatform.Api.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Settings;
 
 namespace InfinniPlatform.Api.RestApi.DataApi
 {
@@ -14,7 +14,6 @@ namespace InfinniPlatform.Api.RestApi.DataApi
     public class PackageMetadataLoader
     {
         /// <summary>
-        /// k
         /// Кэш конфигураций.
         /// </summary>
         private static Dictionary<string, object> Configurations { get; set; } = LoadConfigsMetadata();
@@ -31,7 +30,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         {
             if (metadataDirectory == null)
             {
-                metadataDirectory = Path.GetFullPath(AppSettings.GetValue("ContentDirectory", Path.Combine("..", "Assemblies", "content")));
+                metadataDirectory = GetContentDirectory();
             }
 
             var metadataDirectories = Directory.EnumerateDirectories(metadataDirectory)
@@ -107,11 +106,11 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
             if (Directory.Exists(itemsDirectory))
             {
-                dynamic[] itemsMetadata = Directory.EnumerateFiles(itemsDirectory, "*.json", SearchOption.AllDirectories)
-                                                   .Select(LoadItemMetadata)
-                                                   .ToArray();
+                var itemsMetadata = Directory.EnumerateFiles(itemsDirectory, "*.json", SearchOption.AllDirectories)
+                                             .Select(LoadItemMetadata)
+                                             .ToArray();
 
-                foreach (var item in itemsMetadata)
+                foreach (dynamic item in itemsMetadata)
                 {
                     item.ConfigId = configId;
                     item.DocumentId = documentId;
@@ -162,7 +161,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                 return oldConfiguration.FilePath;
             }
 
-            var contentDirectory = AppSettings.GetValue("ContentDirectory", Path.Combine("..", "Assemblies", "content"));
+            var contentDirectory = GetContentDirectory();
             var configurationDirectory = Path.Combine(contentDirectory, subfolder, "metadata", configId);
             Directory.CreateDirectory(configurationDirectory);
             return Path.Combine(configurationDirectory, "Configuration.json");
@@ -446,6 +445,19 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             Directory.CreateDirectory(directoryPath);
 
             return Path.Combine(directoryPath, string.Concat(scenarioId, ".json"));
+        }
+
+
+        private static string GetContentDirectory()
+        {
+            var contentDirectory = ConfigurationManager.AppSettings["ContentDirectory"];
+
+            if (string.IsNullOrEmpty(contentDirectory))
+            {
+                contentDirectory = Path.Combine("..", "Assemblies", "content");
+            }
+
+            return Path.GetFullPath(contentDirectory);
         }
     }
 }

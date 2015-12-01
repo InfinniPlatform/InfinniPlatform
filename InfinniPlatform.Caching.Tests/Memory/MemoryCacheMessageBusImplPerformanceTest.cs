@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Threading;
 
-using InfinniPlatform.Caching.Factory;
+using InfinniPlatform.Caching.Memory;
 
 using NUnit.Framework;
 
@@ -18,7 +18,7 @@ namespace InfinniPlatform.Caching.Tests.Memory
 		[SetUp]
 		public void SetUp()
 		{
-			_cacheMessageBus = CacheMessageBusFactory.Instance.GetMemoryCacheMessageBus();
+			_cacheMessageBus = new MemoryCacheMessageBusImpl();
 		}
 
 		[TearDown]

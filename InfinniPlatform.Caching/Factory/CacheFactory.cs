@@ -3,72 +3,66 @@
 using InfinniPlatform.Caching.Memory;
 using InfinniPlatform.Caching.Redis;
 using InfinniPlatform.Caching.TwoLayer;
+using InfinniPlatform.Sdk.Environment.Settings;
 
 namespace InfinniPlatform.Caching.Factory
 {
-	public sealed class CacheFactory : ICacheFactory
-	{
-		public static readonly CacheFactory Instance = new CacheFactory(CacheMessageBusFactory.Instance);
+    internal sealed class CacheFactory : ICacheFactory
+    {
+        public CacheFactory(IAppConfiguration appConfiguration, ICacheMessageBusFactory cacheMessageBusFactory)
+        {
+            _cacheSettings = appConfiguration.GetSection<CacheSettings>(CacheSettings.SectionName);
+            _redisSettings = appConfiguration.GetSection<RedisSettings>(RedisSettings.SectionName);
+            _cacheMessageBusFactory = cacheMessageBusFactory;
+
+            _memoryCache = new Lazy<ICache>(CreateMemoryCache);
+            _sharedCache = new Lazy<ICache>(CreateSharedCache);
+            _twoLayerCache = new Lazy<ICache>(CreateTwoLayerCache);
+        }
 
 
-		public CacheFactory(ICacheMessageBusFactory cacheMessageBusFactory)
-		{
-			if (cacheMessageBusFactory == null)
-			{
-				throw new ArgumentNullException("cacheMessageBusFactory");
-			}
+        private readonly CacheSettings _cacheSettings;
+        private readonly RedisSettings _redisSettings;
+        private readonly ICacheMessageBusFactory _cacheMessageBusFactory;
 
-			_cacheMessageBusFactory = cacheMessageBusFactory;
-			_memoryCache = new Lazy<ICache>(CreateMemoryCache);
-			_sharedCache = new Lazy<ICache>(CreateSharedCache);
-			_twoLayerCache = new Lazy<ICache>(CreateTwoLayerCache);
-		}
+        private readonly Lazy<ICache> _memoryCache;
+        private readonly Lazy<ICache> _sharedCache;
+        private readonly Lazy<ICache> _twoLayerCache;
 
 
-		private readonly ICacheMessageBusFactory _cacheMessageBusFactory;
-		private readonly Lazy<ICache> _memoryCache;
-		private readonly Lazy<ICache> _sharedCache;
-		private readonly Lazy<ICache> _twoLayerCache;
+        public ICache GetMemoryCache()
+        {
+            return _memoryCache.Value;
+        }
+
+        public ICache GetSharedCache()
+        {
+            return _sharedCache.Value;
+        }
+
+        public ICache GetTwoLayerCache()
+        {
+            return _twoLayerCache.Value;
+        }
 
 
-		public ICache GetMemoryCache()
-		{
-			return _memoryCache.Value;
-		}
+        private ICache CreateMemoryCache()
+        {
+            return new MemoryCacheImpl(_cacheSettings.Name);
+        }
 
-		public ICache GetSharedCache()
-		{
-			return _sharedCache.Value;
-		}
+        private ICache CreateSharedCache()
+        {
+            return new RedisCacheImpl(_cacheSettings.Name, _redisSettings.ConnectionString);
+        }
 
-		public ICache GetTwoLayerCache()
-		{
-			return _twoLayerCache.Value;
-		}
-
-
-		private static ICache CreateMemoryCache()
-		{
-			var cacheName = CachingHelpers.GetConfigCacheName();
-			var memoryCache = new MemoryCacheImpl(cacheName);
-			return memoryCache;
-		}
-
-		private static ICache CreateSharedCache()
-		{
-			var cacheName = CachingHelpers.GetConfigCacheName();
-			var redisConnectionString = CachingHelpers.GetConfigRedisConnectionString();
-			var sharedCache = new RedisCacheImpl(cacheName, redisConnectionString);
-			return sharedCache;
-		}
-
-		private ICache CreateTwoLayerCache()
-		{
-			var memoryCache = GetMemoryCache();
-			var sharedCache = GetSharedCache();
-			var sharedCacheMessageBus = _cacheMessageBusFactory.GetSharedCacheMessageBus();
-			var twoLayerCache = new TwoLayerCacheImpl(memoryCache, sharedCache, sharedCacheMessageBus);
-			return twoLayerCache;
-		}
-	}
+        private ICache CreateTwoLayerCache()
+        {
+            var memoryCache = GetMemoryCache();
+            var sharedCache = GetSharedCache();
+            var sharedCacheMessageBus = _cacheMessageBusFactory.GetSharedCacheMessageBus();
+            var twoLayerCache = new TwoLayerCacheImpl(memoryCache, sharedCache, sharedCacheMessageBus);
+            return twoLayerCache;
+        }
+    }
 }

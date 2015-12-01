@@ -116,7 +116,7 @@ namespace InfinniPlatform.RestfulApi.Utils
                 profiler.Reset();
 
                 //делаем выборку документов для последующего Resolve и фильтрации по полям Resolved объектов
-                int pageSizeUnresolvedDocuments = Math.Max(pageSize, AppSettings.GetValue("ResolvedRecordNumber", 1000));
+                int pageSizeUnresolvedDocuments = Math.Min(pageSize, 1000);
 
                 var criteriaInterpreter = new QueryCriteriaInterpreter();
 

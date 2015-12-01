@@ -5,50 +5,51 @@ using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Caching
 {
-	public static class CachingExtensions
-	{
-		public static object GetObject(this ICache cache, string key)
-		{
-			object value;
+    public static class CachingExtensions
+    {
+        public static object GetObject(this ICache cache, string key)
+        {
+            object value;
 
-			TryGetObject(cache, key, out value);
+            TryGetObject(cache, key, out value);
 
-			return value;
-		}
+            return value;
+        }
 
-		public static bool TryGetObject(this ICache cache, string key, out object value)
-		{
-			if (string.IsNullOrEmpty(key))
-			{
-				throw new ArgumentNullException("key");
-			}
+        public static bool TryGetObject(this ICache cache, string key, out object value)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
 
-			string stringValue;
+            string stringValue;
 
-			if (cache.TryGet(key, out stringValue))
-			{
-				value = JToken.Parse(stringValue);
-				return true;
-			}
+            if (cache.TryGet(key, out stringValue))
+            {
+                value = JToken.Parse(stringValue);
+                return true;
+            }
 
-			value = null;
-			return false;
-		}
+            value = null;
+            return false;
+        }
 
-		public static void SetObject(this ICache cache, string key, object value)
-		{
-			if (string.IsNullOrEmpty(key))
-			{
-				throw new ArgumentNullException("key");
-			}
+        public static void SetObject(this ICache cache, string key, object value)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
 
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
 
-			string stringValue = JsonConvert.SerializeObject(value);
-			cache.Set(key, stringValue);
-		}
-	}
+            var stringValue = JsonConvert.SerializeObject(value);
+
+            cache.Set(key, stringValue);
+        }
+    }
 }

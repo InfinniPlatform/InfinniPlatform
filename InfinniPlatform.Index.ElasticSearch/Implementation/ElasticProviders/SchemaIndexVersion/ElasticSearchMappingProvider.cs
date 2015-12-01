@@ -16,42 +16,49 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
     /// И, очевидно стоит использовать их, так как вручную делать опрос узлов совершенно
     /// неудачное решение. Видимо, ручная работа с REST была сделана от безысходности?!
     /// </summary>
-    internal static class ElasticMappingExtension
+    internal sealed class ElasticSearchMappingProvider
     {
-		private static readonly HttpClient HttpClient = CreateHttpClient();
+        public ElasticSearchMappingProvider(ElasticSearchSettings settings)
+        {
+            var nodeUrls = settings.Nodes.Select(url => new Uri(url.Trim()));
 
-	    private static HttpClient CreateHttpClient()
-	    {
-		    var httpClient = new HttpClient();
-		    httpClient.DefaultRequestHeaders.Authorization =
-			    new AuthenticationHeaderValue("Basic",
-											  Convert.ToBase64String(Encoding.ASCII
-																			 .GetBytes($"{ElasticShieldSecuritySettings.Login}:{ElasticShieldSecuritySettings.Password}")));
+            _nodePool = new ElasticSearchNodePool(nodeUrls);
 
-		    return httpClient;
-	    }
+            _httpClient = new HttpClient();
 
-		public static IEnumerable<IndexToTypeAccordance> FillIndexMappings(NodePool nodePool, IEnumerable<string> indexNames, IEnumerable<string> typeNames)
+            if (!string.IsNullOrEmpty(settings.Login) && !string.IsNullOrEmpty(settings.Password))
+            {
+                _httpClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($"{settings.Login}:{settings.Password}")));
+            }
+        }
+
+
+        private readonly ElasticSearchNodePool _nodePool;
+        private readonly HttpClient _httpClient;
+
+
+        public IEnumerable<IndexToTypeAccordance> FillIndexMappings(IEnumerable<string> indexNames, IEnumerable<string> typeNames)
         {
             List<IndexToTypeAccordance> result = null;
 
-            var nodeAddresses = nodePool.GetActualNodes();
+            var nodeAddresses = _nodePool.GetActualNodes();
 
             foreach (var nodeAddress in nodeAddresses)
             {
                 if (TryFillIndexMappings(nodeAddress, indexNames, typeNames, out result))
                 {
-                    nodePool.NodeIsWork(nodeAddress);
+                    _nodePool.NodeIsWork(nodeAddress);
                     break;
                 }
 
-                nodePool.NodeIsNotWork(nodeAddress);
+                _nodePool.NodeIsNotWork(nodeAddress);
             }
 
             return result ?? new List<IndexToTypeAccordance>();
         }
 
-        private static bool TryFillIndexMappings(Uri nodeAddress, IEnumerable<string> indexNames, IEnumerable<string> typeNames, out List<IndexToTypeAccordance> result)
+        private bool TryFillIndexMappings(Uri nodeAddress, IEnumerable<string> indexNames, IEnumerable<string> typeNames, out List<IndexToTypeAccordance> result)
         {
             result = null;
 
@@ -60,16 +67,16 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
 
             var elasticQueryMappings = new Uri(nodeAddress, string.Format("{0}/{1}/_mapping", indexNameList, typeNameList));
 
-			// Запрос возвращает схему маппинга для всех индексов и типов индексов в следующем виде:
-			//
-			// testperson_schema_0": {  -- наименование индекса
-			//   "indexobjects": { ... }, -- наименование типа
-			//   "testperson_schema_1": { ... } -- наименование типа
-			// }
-			
-			// получаем список маппингов
-			var response = HttpClient.GetAsync(elasticQueryMappings).Result;
-			var responseContent = response.Content.ReadAsStringAsync().Result;
+            // Запрос возвращает схему маппинга для всех индексов и типов индексов в следующем виде:
+            //
+            // testperson_schema_0": {  -- наименование индекса
+            //   "indexobjects": { ... }, -- наименование типа
+            //   "testperson_schema_1": { ... } -- наименование типа
+            // }
+
+            // получаем список маппингов
+            var response = _httpClient.GetAsync(elasticQueryMappings).Result;
+            var responseContent = response.Content.ReadAsStringAsync().Result;
 
             if (response.StatusCode != HttpStatusCode.OK || responseContent == "{}")
             {
@@ -127,27 +134,27 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
         /// <summary>
         /// Получение маппинга конкретного типа в заданном индексе.
         /// </summary>
-        public static IList<PropertyMapping> GetIndexTypeMapping(NodePool nodePool, string indexName, string typeName)
+        public IList<PropertyMapping> GetIndexTypeMapping(string indexName, string typeName)
         {
             List<PropertyMapping> result = null;
 
-            var nodeAddresses = nodePool.GetActualNodes();
+            var nodeAddresses = _nodePool.GetActualNodes();
 
             foreach (var nodeAddress in nodeAddresses)
             {
                 if (TryGetIndexTypeMapping(nodeAddress, indexName, typeName, out result))
                 {
-                    nodePool.NodeIsWork(nodeAddress);
+                    _nodePool.NodeIsWork(nodeAddress);
                     break;
                 }
 
-                nodePool.NodeIsNotWork(nodeAddress);
+                _nodePool.NodeIsNotWork(nodeAddress);
             }
 
             return result ?? new List<PropertyMapping>();
         }
 
-        public static bool TryGetIndexTypeMapping(Uri nodeAddress, string indexName, string typeName, out List<PropertyMapping> result)
+        private bool TryGetIndexTypeMapping(Uri nodeAddress, string indexName, string typeName, out List<PropertyMapping> result)
         {
             result = null;
 
@@ -156,18 +163,18 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
 
             var elasticQueryMappings = new Uri(nodeAddress, string.Format("{0}/{1}/_mapping", indexName, typeName));
 
-			// Запрос возвращает схему маппинга для всех индексов и типов индексов в следующем виде:
-			//
-			// testperson_schema_0": {  -- наименование индекса
-			//   "indexobjects": { ... }, -- наименование типа
-			//   "testperson_schema_1": { ... } -- наименование типа
-			// }
+            // Запрос возвращает схему маппинга для всех индексов и типов индексов в следующем виде:
+            //
+            // testperson_schema_0": {  -- наименование индекса
+            //   "indexobjects": { ... }, -- наименование типа
+            //   "testperson_schema_1": { ... } -- наименование типа
+            // }
 
-			// получаем список маппингов
-			var response = HttpClient.GetAsync(elasticQueryMappings).Result;
-			var responseContent = response.Content.ReadAsStringAsync().Result;
+            // получаем список маппингов
+            var response = _httpClient.GetAsync(elasticQueryMappings).Result;
+            var responseContent = response.Content.ReadAsStringAsync().Result;
 
-			if (response.StatusCode != HttpStatusCode.OK || responseContent == "{}")
+            if (response.StatusCode != HttpStatusCode.OK || responseContent == "{}")
             {
                 return false;
             }
@@ -197,10 +204,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
             return true;
         }
 
-
-        /// <summary>
-        /// Рекурсивный метод для извлечения одного свойства.
-        /// </summary>
         private static PropertyMapping ExtractProperty(dynamic property)
         {
             if (property.Value.properties != null)
@@ -250,6 +253,12 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
             var hasSortingFiled = property.Value.fields != null && property.Value.fields.sort != null;
 
             return new PropertyMapping(property.Key, dataType, hasSortingFiled);
+        }
+
+
+        public IEnumerable<Uri> GetActualNodes()
+        {
+            return _nodePool.GetActualNodes();
         }
     }
 }

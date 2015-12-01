@@ -9,6 +9,14 @@ namespace InfinniPlatform.Caching.IoC
     {
         public void Load(IContainerBuilder builder)
         {
+            builder.RegisterType<CacheMessageBusFactory>()
+                   .As<ICacheMessageBusFactory>()
+                   .SingleInstance();
+
+            builder.RegisterType<CacheFactory>()
+                   .As<ICacheFactory>()
+                   .SingleInstance();
+
             builder.RegisterType<SessionManagerFactory>()
                    .As<ISessionManagerFactory>()
                    .SingleInstance();

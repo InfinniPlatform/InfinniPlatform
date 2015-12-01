@@ -1,0 +1,108 @@
+{
+  /* Настройки хостинга приложения */
+  "host": {
+    /* Адрес или доменное имя (по умолчанию - 'localhost') */
+    "ServerName": "localhost",
+    /* Номер порта (по умолчанию - 9900) */
+    "ServerPort": 9900
+  },
+  /* Настройки аутентификации через Cookie */
+  "authCookie": {
+    /* Домен для создания cookie (значения по умолчанию нет, при развертывании в кластере - указать шаблон) */
+    /* Если равен ".mycluster.local", тогда "node1.mycluster.local" и "node2.mycluster.local" будут считаться допустимыми */
+    "CookieDomain": ""
+  },
+  /* Настройки аутентификации через ADFS */
+  "authAdfs": {
+    /* Разрешает аутентификацию через ADFS (допустимые значения - true или false, по умолчанию - false) */
+    "Enable": false,
+    /* Адрес сервера ADFS (например, 'myadfs.org:1234', значения по умолчанию нет) */
+    "Server": "Adfs-Server",
+    /* URI защищенного ресурса ADFS (например, 'https://InfinniPlatform', значения по умолчанию нет) */
+    "ResourceUri": ""
+  },
+  /* Настройки аутентификации через ЕСИА */
+  "authEsia": {
+    /* Разрешает аутентификацию через ЕСИА (допустимые значения - true или false, по умолчанию - false) */
+    "Enable": false,
+    /* Базовый адрес сервера ЕСИА (например, 'https://esia.ru', значения по умолчанию нет) */
+    "Server": "Esia-Server",
+    /* ClientId приложения в ЕСИА (значения по умолчанию нет) */
+    "ClientId": "Esia-Client-Id",
+    /* ClientSecret приложения в ЕСИА (используется Thumbprint сертификата приложения, значения по умолчанию нет) */
+    "ClientSecret": "Esia-Client-Certificate-Thumbprint"
+  },
+  /* Настройки аутентификации через Google+ */
+  "authGoogle": {
+    /* Разрешает аутентификацию через Google+ (допустимые значения - true или false, по умолчанию - false) */
+    "Enable": false,
+    /* ClientId приложения в Goole+ (значения по умолчанию нет) */
+    "ClientId": "Google-Client-Id",
+    /* ClientSecret приложения в Goole+ (значения по умолчанию нет) */
+    "ClientSecret": "Google-Client-Secret"
+  },
+  /* Настройки аутентификации через Facebook */
+  "authFacebook": {
+    /* Разрешает аутентификацию через Facebook (допустимые значения - true или false, по умолчанию - false) */
+    "Enable": false,
+    /* ClientId приложения в Facebook (значения по умолчанию нет) */
+    "ClientId": "Facebook-Client-Id",
+    /* ClientSecret приложения в Facebook (значения по умолчанию нет) */
+    "ClientSecret": "Facebook-Client-Secret"
+  },
+  /* Настройки аутентификации через ВКонтакте */
+  "authVk": {
+    /* Разрешает аутентификацию через ВКонтакте (допустимые значения - true или false, по умолчанию - false) */
+    "Enable": false,
+    /* ClientId приложения в ВКонтакте (значения по умолчанию нет) */
+    "ClientId": "Vk-Client-Id",
+    /* ClientSecret приложения в ВКонтакте (значения по умолчанию нет) */
+    "ClientSecret": "Vk-Client-Secret"
+  },
+  /* Настройки подключения к Redis */
+  "redis": {
+    /* Строка подключения к Redis (описание - https://github.com/StackExchange/StackExchange.Redis/blob/master/Docs/Configuration.md, по умолчанию - 'localhost') */
+    "ConnectionString": "localhost"
+  },
+  /* Настройки подключения к ElasticSearch */
+  "elasticSearch": {
+    /* Список базовых адресов узлов ElasticSearch (по умолчанию - 'http://localhost:9200') */
+    "Nodes": [
+      "http://localhost:9200"
+    ],
+    /* Логин для доступа к ElasticSearch через Shield (значения по умолчанию нет) */
+    "Login": "",
+    /* Пароль для доступа к ElasticSearch через Shield (значения по умолчанию нет) */
+    "Password": ""
+  },
+  /* Настройки хранения BLOB и файлов */
+  "blobStorage": {
+    /* Базовый каталог для хранения файлов системы (по умолчанию - 'BlobStorage') */
+    "BaseDirectory": "BlobStorage"
+  },
+  /* Настройки хранения пользователей */
+  "userStorage": {
+    /* Таймаут сброса кэша пользователей в минутах (минимум - 1, по умолчанию - 30) */
+    "UserCacheTimeout": 30
+  },
+  /* Настройки кэширования данных */
+  "cache": {
+    /* Имя кэша для приложения (по умолчанию - 'ApplicationCache') */
+    "Name": "InfinniPlatform",
+    /* Тип кэша для приложения (возможные варианты: 'Memory', 'Redis', 'TwoLayer', по умолчанию - 'Memory') */
+    /* При развертывании приложения в промышленной инфраструктуре рекомендуемое значение - 'TwoLayer' */
+    "Type": "Memory"
+  },
+  /* Настройки печатных представлений */
+  "printView": {
+    /* Формат команды вызова утилиты wkhtmltopdf - http://wkhtmltopdf.org/ (по умолчанию - генерируется автоматически с учетом операционной системы) */
+    "HtmlToPdfUtil": "",
+    /* Каталог для хранения временных файлов при генерации HTML/PDF (по умолчанию - каталог временных файлов учетной записи пользователя) */
+    "HtmlToPdfTemp": ""
+  },
+  /* Настройки хранения метаданных */
+  "metadata": {
+    /* Каталог с файлами метаданных (по умолчанию - 'content') */
+    "ContentDirectory": "content"
+  }
+}

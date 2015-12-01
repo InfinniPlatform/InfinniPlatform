@@ -2,6 +2,7 @@
 using System.Diagnostics;
 
 using InfinniPlatform.Caching.Factory;
+using InfinniPlatform.Caching.Redis;
 
 using NUnit.Framework;
 
@@ -17,7 +18,7 @@ namespace InfinniPlatform.Caching.Tests.Redis
 		[SetUp]
 		public void SetUp()
 		{
-			_cache = CacheFactory.Instance.GetSharedCache();
+			_cache = new RedisCacheImpl(nameof(RedisCacheImplPerformanceTest), "localhost");
 		}
 
 		[TearDown]

@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".files", ".files", "{9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}"
-	ProjectSection(SolutionItems) = preProject
-		Files\Log.config = Files\Log.config
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Core", "InfinniPlatform.Core\InfinniPlatform.Core.csproj", "{EBC684B7-B72A-475F-BBC1-B6293B607B9B}"
 EndProject
@@ -138,16 +135,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Authenticat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Authentication.Tests", "InfinniPlatform.Authentication.Tests\InfinniPlatform.Authentication.Tests.csproj", "{01FDB3B6-D433-4D85-AEF6-E194742A708D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{AF6E3B44-DC18-4F48-977E-991FADE1766A}"
-	ProjectSection(SolutionItems) = preProject
-		Files\Tests\App.config = Files\Tests\App.config
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platform", "Platform", "{2D2AFD36-DB33-44BE-97E7-C664B9031BCA}"
-	ProjectSection(SolutionItems) = preProject
-		Files\Platform\App.config = Files\Platform\App.config
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{2F5C5276-823F-4C7D-B95A-3EFD75C7B0C5}"
 	ProjectSection(SolutionItems) = preProject
 		Files\Client\App.config = Files\Client\App.config
@@ -216,12 +203,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packaging", "Packaging", "{8237A533-D176-4BB1-86F7-F07C7AEFBA03}"
 	ProjectSection(SolutionItems) = preProject
 		Files\Packaging\CreateNugetPackage.bat = Files\Packaging\CreateNugetPackage.bat
-		Files\Packaging\InfinniPlatform.nuspec = Files\Packaging\InfinniPlatform.nuspec
 		Files\Packaging\SetVersion.ps1 = Files\Packaging\SetVersion.ps1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Monitoring", "Monitoring", "{C71676EF-83E3-4549-B43E-F3CEAE4FABC7}"
 	ProjectSection(SolutionItems) = preProject
+		Files\Monitoring\AppLog.config = Files\Monitoring\AppLog.config
 		Files\Monitoring\Inf.logstash.rb = Files\Monitoring\Inf.logstash.rb
 		Files\Monitoring\Inf.Monitor.kibana.json = Files\Monitoring\Inf.Monitor.kibana.json
 		Files\Monitoring\Inf.Performance.kibana.json = Files\Monitoring\Inf.Performance.kibana.json
@@ -230,6 +217,18 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.IoC", "InfinniPlatform.IoC\InfinniPlatform.IoC.csproj", "{197A078F-F42F-4F87-B8B2-463129ED4797}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.IoC.Tests", "InfinniPlatform.IoC.Tests\InfinniPlatform.IoC.Tests.csproj", "{075765EF-E0DF-45D4-86E3-5DE2AFBAE5F5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{FA93727B-56AC-452A-8F91-F09C6620134F}"
+	ProjectSection(SolutionItems) = preProject
+		Files\Config\App.config = Files\Config\App.config
+		Files\Config\AppCommon.json = Files\Config\AppCommon.json
+		Files\Config\AppExtension.json = Files\Config\AppExtension.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{EE369BF1-62B4-40CD-83DA-467710B4E376}"
+	ProjectSection(SolutionItems) = preProject
+		Files\Packaging\Templates\InfinniPlatform.Template.nuspec = Files\Packaging\Templates\InfinniPlatform.Template.nuspec
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -590,8 +589,6 @@ Global
 		{75952D00-54DA-419A-8233-91949D74D9E3} = {D9A6588C-AAAB-4488-BEB8-DBBE12BC28BF}
 		{9FEC0071-8A7C-44C1-91C7-9C1219601B34} = {76075218-7249-4C01-A184-35E066952A8F}
 		{01FDB3B6-D433-4D85-AEF6-E194742A708D} = {76075218-7249-4C01-A184-35E066952A8F}
-		{AF6E3B44-DC18-4F48-977E-991FADE1766A} = {9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}
-		{2D2AFD36-DB33-44BE-97E7-C664B9031BCA} = {9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}
 		{2F5C5276-823F-4C7D-B95A-3EFD75C7B0C5} = {9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}
 		{AFFC8625-1412-44AD-9C88-AE10FD9DDA0C} = {9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}
 		{392528E2-B90C-449C-9C45-98E8A8018A66} = {9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}
@@ -615,5 +612,7 @@ Global
 		{C71676EF-83E3-4549-B43E-F3CEAE4FABC7} = {9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}
 		{197A078F-F42F-4F87-B8B2-463129ED4797} = {76075218-7249-4C01-A184-35E066952A8F}
 		{075765EF-E0DF-45D4-86E3-5DE2AFBAE5F5} = {76075218-7249-4C01-A184-35E066952A8F}
+		{FA93727B-56AC-452A-8F91-F09C6620134F} = {9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}
+		{EE369BF1-62B4-40CD-83DA-467710B4E376} = {8237A533-D176-4BB1-86F7-F07C7AEFBA03}
 	EndGlobalSection
 EndGlobal

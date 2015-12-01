@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 
 using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.UserInterface.Properties;
 using InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Commands;
 
@@ -20,14 +20,22 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Factor
         public void Create(ConfigElementNodeBuilder builder, ICollection<ConfigElementNode> elements,
             ConfigElementNode elementNode)
         {
-			var contentPath = Path.GetFullPath(AppSettings.GetValue("ContentDirectory", Path.Combine("..", "Assemblies", "content")));
-			elementNode.ElementId = contentPath;
-			elementNode.ElementName = contentPath;
+            var contentDirectory = ConfigurationManager.AppSettings["ContentDirectory"];
+
+            if (string.IsNullOrEmpty(contentDirectory))
+            {
+                contentDirectory = Path.Combine("..", "Assemblies", "content");
+            }
+
+            var contentPath = Path.GetFullPath(contentDirectory);
+
+            elementNode.ElementId = contentPath;
+            elementNode.ElementName = contentPath;
             elementNode.Version = builder.Version;
 
             elementNode.RefreshCommand = new RefreshElementCommand(builder, elements, elementNode, MetadataType.Configuration);
             elementNode.RegisterAddCommands(builder, ElementChildrenTypes);
-            elementNode.EditCommands = new[] {new ReconnectCommand(builder, elementNode, "EditView") {Text = Resources.Reconnect, Image = ElementType}};
+            elementNode.EditCommands = new[] { new ReconnectCommand(builder, elementNode, "EditView") { Text = Resources.Reconnect, Image = ElementType } };
             elementNode.DeleteCommand = FactoryHelper.NoDeleteCommand;
             elementNode.CopyCommand = FactoryHelper.NoCopyCommand;
             elementNode.PasteCommand = FactoryHelper.NoPasteCommand;

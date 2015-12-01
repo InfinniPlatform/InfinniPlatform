@@ -1,36 +1,27 @@
-﻿
-
-using InfinniPlatform.Sdk.Environment.Settings;
-using RabbitMQ.Client;
-
-namespace InfinniPlatform.RabbitMq.Client
+﻿namespace InfinniPlatform.RabbitMq.Client
 {
-	/// <summary>
-	/// Фабрика сессий очереди сообщений RabbitMq.
-	/// </summary>
-	public sealed class RabbitMqSessionFactory : IMessageQueueSessionFactory
-	{
-		public RabbitMqSessionFactory()
-		{
-			_port = AppSettings.GetValue(PortConfig, AmqpTcpEndpoint.UseDefaultPort);
-			_host = AppSettings.GetValue(HostConfig, "localhost");
-		}
+    /// <summary>
+    /// Фабрика сессий очереди сообщений RabbitMq.
+    /// </summary>
+    public sealed class RabbitMqSessionFactory : IMessageQueueSessionFactory
+    {
+        public RabbitMqSessionFactory(string node, int port)
+        {
+            _node = node;
+            _port = port;
+        }
 
 
-		public const string PortConfig = "RabbitMqPort";
-		public const string HostConfig = "RabbitMqHost";
+        private readonly string _node;
+        private readonly int _port;
 
 
-		private readonly int _port;
-		private readonly string _host;
-
-
-		/// <summary>
-		/// Открыть сессию.
-		/// </summary>
-		public IMessageQueueSession OpenSession()
-		{
-			return new RabbitMqSession(_host, _port);
-		}
-	}
+        /// <summary>
+        /// Открыть сессию.
+        /// </summary>
+        public IMessageQueueSession OpenSession()
+        {
+            return new RabbitMqSession(_node, _port);
+        }
+    }
 }

@@ -4,8 +4,8 @@ using System.Linq;
 
 using Elasticsearch.Net.ConnectionPool;
 
+using InfinniPlatform.Api.Settings;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
-using InfinniPlatform.Sdk.Environment.Settings;
 
 using Nest;
 using Nest.Resolvers;
@@ -19,11 +19,10 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
     /// </summary>
     public sealed class ElasticConnection
     {
-        private static readonly NodePool NodePool;
-        private static readonly Lazy<ElasticClient> ElasticClient;
-		
-		static ElasticConnection()
+        static ElasticConnection()
         {
+            // TODO: Избавиться от статического конструктора и нормально зарегистрировать все зависимости
+
             /* Remember: The client is thread-safe, so you can use a single client, in which case, passing a per request configuration
              * is the only way to pass state local to the request. Instantiating a client each time is also supported. In this case each
              * client instance could hold a different ConnectionSettings object with their own set of basic authorization credentials.
@@ -31,31 +30,35 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
              * https://www.elastic.co/blog/nest-and-elasticsearch-net-1-3
              */
 
-            NodePool = CreateNodePool();
-            ElasticClient = new Lazy<ElasticClient>(() => CreatElasticClient(NodePool));
+            // TODO: Избавиться от прямого обращения к AppConfiguration.Instance
+
+            var settings = AppConfiguration.Instance.GetSection<ElasticSearchSettings>(ElasticSearchSettings.SectionName);
+
+            _mappingProvider = new ElasticSearchMappingProvider(settings);
+            _elasticClient = new Lazy<ElasticClient>(() => CreatElasticClient(settings));
         }
 
 
-        private static NodePool CreateNodePool()
-        {
-            var nodeAddresses = AppSettings.GetValues("ElasticSearchNodes", "http://localhost:9200").Select(url => new Uri(url.Trim()));
+        private static readonly ElasticSearchMappingProvider _mappingProvider;
+        private static readonly Lazy<ElasticClient> _elasticClient;
 
-            return new NodePool(nodeAddresses);
-        }
 
-        private static ElasticClient CreatElasticClient(NodePool nodePool)
+        private static ElasticClient CreatElasticClient(ElasticSearchSettings settings)
         {
-            var nodeAddresses = nodePool.GetActualNodes();
+            var nodeAddresses = _mappingProvider.GetActualNodes();
 
             var connectionPool = new SniffingConnectionPool(nodeAddresses);
 
-	        var connectionSettings = ElasticShieldSecuritySettings.IsSet()
-										 ? new ConnectionSettings(connectionPool).SetBasicAuthentication(ElasticShieldSecuritySettings.Login,
-																										 ElasticShieldSecuritySettings.Password)
-										 : new ConnectionSettings(connectionPool);
 
-	        connectionSettings.SetDefaultPropertyNameInferrer(i => i);
-	        connectionSettings.SetJsonSerializerSettingsModifier(m => m.ContractResolver = new ElasticContractResolver(connectionSettings));
+            var connectionSettings = new ConnectionSettings(connectionPool);
+
+            if (!string.IsNullOrEmpty(settings.Login) && !string.IsNullOrEmpty(settings.Password))
+            {
+                connectionSettings.SetBasicAuthentication(settings.Login, settings.Password);
+            }
+
+            connectionSettings.SetDefaultPropertyNameInferrer(i => i);
+            connectionSettings.SetJsonSerializerSettingsModifier(m => m.ContractResolver = new ElasticContractResolver(connectionSettings));
 
             var client = new ElasticClient(connectionSettings);
 
@@ -68,7 +71,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         /// </summary>
         public ElasticClient Client
         {
-            get { return ElasticClient.Value; }
+            get { return _elasticClient.Value; }
         }
 
 
@@ -116,7 +119,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
             var actualType = schemaTypes.GetActualTypeName(typeName);
 
-            return ElasticMappingExtension.GetIndexTypeMapping(NodePool, indexName, actualType);
+            return _mappingProvider.GetIndexTypeMapping(indexName, actualType);
         }
 
         /// <summary>
@@ -124,8 +127,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         /// </summary>
         public string GetStatus()
         {
-            var health = ElasticClient.Value.ClusterHealth();
-            var nodeAddresses = string.Join("; ", NodePool.GetActualNodes().Select(i => i.ToString()));
+            var health = _elasticClient.Value.ClusterHealth();
+            var nodeAddresses = string.Join("; ", _mappingProvider.GetActualNodes().Select(i => i.ToString()));
 
             return string.Format("cluster name - {0}, status - {1}, number of nodes: {2}, configured nodes: {3}", health.ClusterName, health.Status, health.NumberOfNodes, nodeAddresses);
         }
@@ -136,10 +139,10 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         /// <param name="indexNames">Список индексов для поиска</param>
         /// <param name="typeNames">Список типов, для которых ищем версии схем</param>
         /// <returns>Список версий схем</returns>
-        private static IEnumerable<IndexToTypeAccordance> GetTypeVersions(IEnumerable<string> indexNames, IEnumerable<string> typeNames)
+        private IEnumerable<IndexToTypeAccordance> GetTypeVersions(IEnumerable<string> indexNames, IEnumerable<string> typeNames)
         {
             // собираем маппинги по всем индексам и типам
-            var mappings = ElasticMappingExtension.FillIndexMappings(NodePool, indexNames, typeNames);
+            var mappings = _mappingProvider.FillIndexMappings(indexNames, typeNames);
             typeNames = typeNames.Select(t => t.ToLowerInvariant()).ToList();
             indexNames = indexNames.Select(s => s.ToLowerInvariant()).ToList();
 

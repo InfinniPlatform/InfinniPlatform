@@ -34,7 +34,7 @@ namespace InfinniPlatform.MessageQueue.Tests
 		{
 			// Given
 
-			var factory = new RabbitMqMessageQueueFactory();
+			var factory = new RabbitMqMessageQueueFactory(RabbitMqSettings.Default);
 			var publisher = factory.CreateMessageQueuePublisher();
 			var listener = factory.CreateMessageQueueListener();
 			var subscriptions = factory.CreateMessageQueueManager();

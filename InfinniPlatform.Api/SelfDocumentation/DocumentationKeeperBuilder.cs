@@ -19,10 +19,11 @@ namespace InfinniPlatform.Api.SelfDocumentation
         }
 
         public static DocumentationKeeper Build(
+            string helpPath,
             string assemblyPath,
             IDocumentationFormatter documentationFormatter)
         {
-            var documentationKeeper = new DocumentationKeeper(documentationFormatter);
+            var documentationKeeper = new DocumentationKeeper(helpPath, documentationFormatter);
 
             var assembly = Assembly.Load(
                 new AssemblyName

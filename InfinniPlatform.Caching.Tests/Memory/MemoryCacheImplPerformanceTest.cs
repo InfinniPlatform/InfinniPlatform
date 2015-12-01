@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-using InfinniPlatform.Caching.Factory;
+using InfinniPlatform.Caching.Memory;
 
 using NUnit.Framework;
 
@@ -17,7 +17,7 @@ namespace InfinniPlatform.Caching.Tests.Memory
 		[SetUp]
 		public void SetUp()
 		{
-			_cache = CacheFactory.Instance.GetMemoryCache();
+			_cache = new MemoryCacheImpl(nameof(MemoryCacheImplPerformanceTest));
 		}
 
 		[TearDown]

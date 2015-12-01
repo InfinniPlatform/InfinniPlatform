@@ -136,7 +136,7 @@ namespace InfinniPlatform.SignalR.Tests
         {
             public WebClientNotification(HostingConfig hostingConfig, CountdownEvent receiveEvent, string routingKey)
             {
-                var hubConnection = new HubConnection($"{hostingConfig.ServerScheme}://{hostingConfig.ServerName}:{hostingConfig.ServerPort}/");
+                var hubConnection = new HubConnection($"{hostingConfig.Scheme}://{hostingConfig.Name}:{hostingConfig.Port}/");
                 var hubProxy = hubConnection.CreateHubProxy("WebClientNotificationHub");
                 hubProxy.On<object>(routingKey, OnReceive);
                 hubConnection.Start().Wait();

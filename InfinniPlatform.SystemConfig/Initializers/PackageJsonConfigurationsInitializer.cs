@@ -16,12 +16,14 @@ namespace InfinniPlatform.SystemConfig.Initializers
     /// </summary>
     internal sealed class PackageJsonConfigurationsInitializer : IStartupInitializer
     {
-        public PackageJsonConfigurationsInitializer(ApplicationHostServer applicationHostServer)
+        public PackageJsonConfigurationsInitializer(IAppConfiguration appConfiguration, ApplicationHostServer applicationHostServer)
         {
+            _contentDirectory = appConfiguration.GetSection("metadata")?.ContentDirectory as string ?? "content";
             _applicationHostServer = applicationHostServer;
+
             _configurations = new Lazy<IEnumerable<DynamicWrapper>>(LoadConfigsMetadata);
 
-            var watcher = new FileSystemWatcher(AppSettings.GetValue("ContentDirectory", "content"), "*.json")
+            var watcher = new FileSystemWatcher(_contentDirectory, "*.json")
             {
                 IncludeSubdirectories = true
             };
@@ -34,6 +36,7 @@ namespace InfinniPlatform.SystemConfig.Initializers
         }
 
 
+        private readonly string _contentDirectory;
         private readonly ApplicationHostServer _applicationHostServer;
         private readonly Lazy<IEnumerable<DynamicWrapper>> _configurations;
 
@@ -141,11 +144,9 @@ namespace InfinniPlatform.SystemConfig.Initializers
                 registers);
         }
 
-        private static IEnumerable<DynamicWrapper> LoadConfigsMetadata()
+        private IEnumerable<DynamicWrapper> LoadConfigsMetadata()
         {
-            var contentDirectory = AppSettings.GetValue("ContentDirectory", "content");
-
-            var metadataDirectories = Directory.EnumerateDirectories(contentDirectory)
+            var metadataDirectories = Directory.EnumerateDirectories(_contentDirectory)
                                                .Select(d => Path.Combine(d, "metadata"))
                                                .Where(Directory.Exists)
                                                .ToArray();

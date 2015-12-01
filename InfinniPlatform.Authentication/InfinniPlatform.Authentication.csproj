@@ -116,17 +116,23 @@
     <Compile Include="DataProtectors\AesDataProtector.cs" />
     <Compile Include="DataProtectors\AesSecureTokenFormatter.cs" />
     <Compile Include="IoC\AuthenticationContainerModule.cs" />
+    <Compile Include="Modules\CookieAuthOwinHostingModuleSettings.cs" />
+    <Compile Include="Modules\ExternalAuthAdfsOwinHostingModuleSettings.cs" />
     <Compile Include="Modules\ExternalAuthEsiaOwinHostingModule.cs" />
     <Compile Include="Modules\ExternalAuthAdfsOwinHostingModule.cs" />
+    <Compile Include="Modules\ExternalAuthEsiaOwinHostingModuleSettings.cs" />
     <Compile Include="Modules\ExternalAuthFacebookOwinHostingModule.cs" />
+    <Compile Include="Modules\ExternalAuthFacebookOwinHostingModuleSettings.cs" />
     <Compile Include="Modules\ExternalAuthGoogleOwinHostingModule.cs" />
     <Compile Include="Middleware\InternalAuthOwinMiddleware.cs" />
+    <Compile Include="Modules\ExternalAuthGoogleOwinHostingModuleSettings.cs" />
     <Compile Include="Modules\ExternalAuthVkOwinHostingModule.cs" />
     <Compile Include="InternalIdentity\IdentityApplicationRole.cs" />
     <Compile Include="InternalIdentity\IdentityApplicationUser.cs" />
     <Compile Include="InternalIdentity\IdentityApplicationUserManager.cs" />
     <Compile Include="InternalIdentity\IdentityApplicationUserPasswordHasher.cs" />
     <Compile Include="InternalIdentity\IdentityApplicationUserValidator.cs" />
+    <Compile Include="Modules\ExternalAuthVkOwinHostingModuleSettings.cs" />
     <Compile Include="Modules\InternalAuthOwinHostingModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <AutoGen>True</AutoGen>

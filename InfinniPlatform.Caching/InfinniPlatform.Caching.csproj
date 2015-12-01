@@ -47,8 +47,10 @@
     <Compile Include="CachingHelpers.cs" />
     <Compile Include="Factory\CacheFactory.cs" />
     <Compile Include="Factory\CacheMessageBusFactory.cs" />
+    <Compile Include="Factory\CacheSettings.cs" />
     <Compile Include="Factory\ICacheFactory.cs" />
     <Compile Include="Factory\ICacheMessageBusFactory.cs" />
+    <Compile Include="Factory\RedisSettings.cs" />
     <Compile Include="Factory\SessionManagerFactory.cs" />
     <Compile Include="ICache.cs" />
     <Compile Include="ICacheMessageBus.cs" />
@@ -67,7 +69,7 @@
     </Compile>
     <Compile Include="Redis\RedisCacheImpl.cs" />
     <Compile Include="Redis\RedisCacheMessageBusImpl.cs" />
-    <Compile Include="SessionManager.cs" />
+    <Compile Include="Session\SessionManager.cs" />
     <Compile Include="TwoLayer\TwoLayerCacheImpl.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -15,6 +15,7 @@ namespace InfinniPlatform.Api.SelfDocumentation
     /// </summary>
     public sealed class DocumentationKeeper
     {
+        private readonly string _helpPath;
         private readonly IDocumentationFormatter _documentationFormatter;
 
         /// <summary>
@@ -22,8 +23,9 @@ namespace InfinniPlatform.Api.SelfDocumentation
         /// </summary>
         private readonly HelpMultiDictionary _innerHelpContainer;
 
-        public DocumentationKeeper(IDocumentationFormatter documentationFormatter)
+        public DocumentationKeeper(string helpPath, IDocumentationFormatter documentationFormatter)
         {
+            _helpPath = helpPath;
             _documentationFormatter = documentationFormatter;
             _innerHelpContainer = new HelpMultiDictionary();
         }
@@ -33,16 +35,16 @@ namespace InfinniPlatform.Api.SelfDocumentation
         /// </summary>
         public void SaveHelp(string configuration)
         {
-            var filePath = GetHelpFilePath(configuration);
+            var filePath = GetHelpFilePath(_helpPath, configuration);
 
             EnsureDirectory(Path.GetDirectoryName(filePath));
 
             File.WriteAllText(filePath, GetHelp(configuration));
         }
 
-        public static string ReadHelpFromFile(string configuration)
+        public static string ReadHelpFromFile(string helpPath, string configuration)
         {
-            var helpFilePath = GetHelpFilePath(configuration);
+            var helpFilePath = GetHelpFilePath(helpPath, configuration);
             return File.Exists(helpFilePath) ? File.ReadAllText(helpFilePath) : String.Empty;
         }
 
@@ -98,10 +100,9 @@ namespace InfinniPlatform.Api.SelfDocumentation
                 Directory.CreateDirectory(dir);
         }
 
-        private static string GetHelpFilePath(string configurationName)
+        private static string GetHelpFilePath(string helpPath, string configurationName)
         {
-            var path = AppSettings.GetValue("HelpPath");
-            var pathToHelp = !string.IsNullOrEmpty(path) ? Path.GetFullPath(path) : Directory.GetCurrentDirectory();
+            var pathToHelp = !string.IsNullOrEmpty(helpPath) ? Path.GetFullPath(helpPath) : Directory.GetCurrentDirectory();
             var result = string.Format(Path.Combine(pathToHelp, @"{0}.html"), configurationName);
             return result;
         }

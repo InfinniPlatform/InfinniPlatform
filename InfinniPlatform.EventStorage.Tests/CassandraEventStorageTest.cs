@@ -1,5 +1,6 @@
 ﻿using System;
 
+using InfinniPlatform.Cassandra;
 using InfinniPlatform.Cassandra.Client;
 
 using NUnit.Framework;
@@ -17,7 +18,7 @@ namespace InfinniPlatform.EventStorage.Tests
 
 			var events = new[] { "Event1", "Event2" };
 
-			var cassandraFactory = new CassandraDatabaseFactory();
+			var cassandraFactory = new CassandraDatabaseFactory(CassandraSettings.Default);
 			var eventStorageFactory = new CassandraEventStorageFactory(cassandraFactory);
 
 			var eventStorage = eventStorageFactory.CreateEventStorage();

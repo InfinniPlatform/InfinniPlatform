@@ -21,8 +21,8 @@ namespace InfinniPlatform.Sdk.Tests
 		public void SetUp()
 		{
 			_server = InfinniPlatformInprocessHost.Start();
-			_customServiceApi = new InfinniCustomServiceApi(HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort.ToString(), Route);
-			_documentApi = new InfinniDocumentApi(HostingConfig.Default.ServerName, HostingConfig.Default.ServerPort.ToString(), Route);
+			_customServiceApi = new InfinniCustomServiceApi(HostingConfig.Default.Name, HostingConfig.Default.Port.ToString(), Route);
+			_documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port.ToString(), Route);
 		}
 
 		[TestFixtureTearDown]

@@ -67,8 +67,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var documentApi = new InfinniDocumentApi(HostingConfig.Default.ServerName, HostingConfig.Default.DefaultServerPort.ToString(), "1");
-            var signInApi = new InfinniSignInApi(HostingConfig.Default.ServerName, HostingConfig.Default.DefaultServerPort.ToString(), "1");
+            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port.ToString(), "1");
+            var signInApi = new InfinniSignInApi(HostingConfig.Default.Name, HostingConfig.Default.Port.ToString(), "1");
 
             var tenant1 = Guid.NewGuid().ToString("N");
             var tenant2 = Guid.NewGuid().ToString("N");

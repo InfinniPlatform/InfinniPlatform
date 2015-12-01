@@ -16,7 +16,7 @@ namespace InfinniPlatform.Cassandra.Tests.Client
 		[SetUp]
 		public void SetUp()
 		{
-			var sessionFactory = new CassandraSessionFactory();
+			var sessionFactory = new CassandraSessionFactory(CassandraSettings.Default);
 
 			_session = sessionFactory.OpenSession();
 		}

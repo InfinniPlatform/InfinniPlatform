@@ -11,22 +11,27 @@ namespace InfinniPlatform.Authentication.Modules
     /// </summary>
     internal sealed class ExternalAuthEsiaOwinHostingModule : IOwinHostingModule
     {
+        public ExternalAuthEsiaOwinHostingModule(IAppConfiguration appConfiguration)
+        {
+            _settings = appConfiguration.GetSection<ExternalAuthEsiaOwinHostingModuleSettings>(ExternalAuthEsiaOwinHostingModuleSettings.SectionName);
+        }
+
+
+        private readonly ExternalAuthEsiaOwinHostingModuleSettings _settings;
+
+
         public OwinHostingModuleType ModuleType => OwinHostingModuleType.ExternalAuth;
 
 
         public void Configure(IAppBuilder builder, IOwinHostingContext context)
         {
-            if (AppSettings.GetValue("AppServerAuthEsiaEnable", false))
+            if (_settings.Enable)
             {
-                var server = AppSettings.GetValue("AppServerAuthEsiaServer");
-                var clientId = AppSettings.GetValue("AppServerAuthEsiaClientId");
-                var clientSecret = AppSettings.GetValue("AppServerAuthEsiaClientSecret");
-
                 builder.UseEsiaAuthentication(new EsiaAuthenticationOptions
                 {
-                    Server = server,
-                    ClientId = clientId,
-                    ClientSecretCert = clientSecret
+                    Server = _settings.Server,
+                    ClientId = _settings.ClientId,
+                    ClientSecretCert = _settings.ClientSecret
                 });
             }
         }

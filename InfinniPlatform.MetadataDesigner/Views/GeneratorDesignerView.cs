@@ -69,7 +69,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 				MessageBox.Show(
 					string.Format(
 						"Не найдены прикладные сборки.\n\rКорректно укажите в App.config параметр AppliedAssemblies для указания местоположения прикладных сборок: \n\rТекущее значение параметра: {0}",
-						AppSettings.GetValue("AppliedAssemblies")));
+                        AppDomain.CurrentDomain.BaseDirectory));
 			}
 			else
 			{

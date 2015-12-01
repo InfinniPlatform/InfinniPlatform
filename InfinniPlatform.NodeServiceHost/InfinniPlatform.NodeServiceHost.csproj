@@ -44,10 +44,19 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Files\Log.config">
-      <Link>Log.config</Link>
+    <None Include="..\Files\Config\AppCommon.json">
+      <Link>AppCommon.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="..\Files\Platform\App.config">
+    <None Include="..\Files\Config\AppExtension.json">
+      <Link>AppExtension.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Files\Monitoring\AppLog.config">
+      <Link>Log.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Files\Config\App.config">
       <Link>App.config</Link>
     </None>
     <None Include="packages.config" />

@@ -10,7 +10,7 @@ namespace InfinniPlatform.MessageQueue.Integration
 		public IntegrationBusFactory(IMessageQueueFactory queueFactory, IIntegrationBusStorageFactory subscriptionStorageFactory)
 		{
 			_integrationBus = new IntegrationBus(queueFactory, subscriptionStorageFactory,
-												 new IntegrationBusSecurityTokenValidator(),
+												 new EmptyIntegrationBusSecurityTokenValidator(),
 												 new IntegrationBusSubscriptionValidator());
 		}
 

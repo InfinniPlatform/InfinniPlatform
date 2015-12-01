@@ -520,7 +520,7 @@
     <EmbeddedResource Include="Resources\next_16x16.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Files\Platform\App.config">
+    <None Include="..\Files\Config\App.config">
       <Link>App.config</Link>
     </None>
     <None Include="packages.config" />

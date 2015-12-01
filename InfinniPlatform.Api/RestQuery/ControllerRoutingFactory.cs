@@ -78,9 +78,9 @@ namespace InfinniPlatform.Api.RestQuery
         public string GetCustomRouting(string relativePath)
         {
             return string.Format(AppServerAddressFormat,
-                _hostingConfig.ServerScheme,
-                _hostingConfig.ServerName,
-                _hostingConfig.ServerPort,
+                _hostingConfig.Scheme,
+                _hostingConfig.Name,
+                _hostingConfig.Port,
                 relativePath);
         }
     }

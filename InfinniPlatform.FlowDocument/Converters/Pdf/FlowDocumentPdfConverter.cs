@@ -3,20 +3,15 @@
 using InfinniPlatform.FlowDocument.Converters.Html;
 using InfinniPlatform.FlowDocument.Model;
 using InfinniPlatform.FlowDocument.Model.Views;
-using InfinniPlatform.Sdk.Environment.Settings;
 
 namespace InfinniPlatform.FlowDocument.Converters.Pdf
 {
     internal sealed class FlowDocumentPdfConverter : IFlowDocumentConverter
     {
-        private static readonly HtmlToPdfUtil HtmlToPdfUtil;
-        private static readonly FlowDocumentHtmlConverter HtmlConverter;
-
-
-        static FlowDocumentPdfConverter()
+        public FlowDocumentPdfConverter(PrintViewSettings settings)
         {
-            var htmlToPdfUtil = AppSettings.GetValue("HtmlToPdfUtil");
-            var htmlToPdfTemp = AppSettings.GetValue("HtmlToPdfTemp");
+            var htmlToPdfUtil = settings.HtmlToPdfUtil;
+            var htmlToPdfTemp = settings.HtmlToPdfTemp;
 
             if (string.IsNullOrWhiteSpace(htmlToPdfUtil))
             {
@@ -28,9 +23,13 @@ namespace InfinniPlatform.FlowDocument.Converters.Pdf
                 htmlToPdfTemp = Path.GetTempPath();
             }
 
-            HtmlToPdfUtil = new HtmlToPdfUtil(htmlToPdfUtil, htmlToPdfTemp);
-            HtmlConverter = new FlowDocumentHtmlConverter();
+            _htmlToPdfUtil = new HtmlToPdfUtil(htmlToPdfUtil, htmlToPdfTemp);
+            _htmlConverter = new FlowDocumentHtmlConverter();
         }
+
+
+        private readonly FlowDocumentHtmlConverter _htmlConverter;
+        private readonly HtmlToPdfUtil _htmlToPdfUtil;
 
 
         public void Convert(PrintViewDocument document, Stream documentStream)
@@ -45,10 +44,11 @@ namespace InfinniPlatform.FlowDocument.Converters.Pdf
             {
                 using (var htmlStream = new MemoryStream())
                 {
-                    HtmlConverter.Convert(document, htmlStream);
+                    _htmlConverter.Convert(document, htmlStream);
+
                     htmlStream.Position = 0;
 
-                    HtmlToPdfUtil.Convert(saveSize, savePadding, htmlStream, documentStream);
+                    _htmlToPdfUtil.Convert(saveSize, savePadding, htmlStream, documentStream);
                 }
             }
             finally

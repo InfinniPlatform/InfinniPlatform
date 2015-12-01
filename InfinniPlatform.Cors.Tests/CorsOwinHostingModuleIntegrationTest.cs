@@ -50,7 +50,7 @@ namespace InfinniPlatform.Cors.Tests
             {
                 // Given
 
-                var requestUri = new Uri($"{owinHostingContext.Configuration.ServerScheme}://{owinHostingContext.Configuration.ServerName}:{owinHostingContext.Configuration.ServerPort}/some/resource");
+                var requestUri = new Uri($"{owinHostingContext.Configuration.Scheme}://{owinHostingContext.Configuration.Name}:{owinHostingContext.Configuration.Port}/some/resource");
                 var request = WebRequest.Create(requestUri);
                 request.Method = "GET";
                 request.Headers.Add("Origin", "null");

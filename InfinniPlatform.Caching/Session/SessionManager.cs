@@ -6,16 +6,18 @@ using InfinniPlatform.Api.Security;
 using InfinniPlatform.Caching.Properties;
 using InfinniPlatform.Sdk.ContextComponents;
 
-namespace InfinniPlatform.Caching
+namespace InfinniPlatform.Caching.Session
 {
-    public sealed class SessionManager : ISessionManager
+    internal sealed class SessionManager : ISessionManager
     {
         public SessionManager(ICache cache)
         {
             _cache = cache;
         }
 
+
         private readonly ICache _cache;
+
 
         public void SetSessionData(string key, string value)
         {

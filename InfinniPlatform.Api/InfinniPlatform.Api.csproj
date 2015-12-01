@@ -38,7 +38,8 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>InfinniPlatform.Api.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release_TeamCity|AnyCPU'">
     <OutputPath>..\Assemblies\</OutputPath>
@@ -61,6 +62,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
@@ -267,6 +269,7 @@
     <Compile Include="Serialization\JsonObjectSerializer.cs" />
     <Compile Include="Serialization\KnownTypesContainer.cs" />
     <Compile Include="Serialization\KnownTypesJsonConverter.cs" />
+    <Compile Include="Settings\AppConfiguration.cs" />
     <Compile Include="SystemExtensions\InstallerInfo.cs" />
     <Compile Include="SystemExtensions\InstallExtension.cs" />
     <Compile Include="RestQuery\EventObjects\EventSerializers\AddCollectionItem.cs" />
@@ -364,7 +367,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Security\SecurityModel.cd" />
-    <None Include="InfinniPlatform.Api.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Metadata\ConfigurationManagers\File\MetadataManagers\" />

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -34,7 +35,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
         {
             SourceAssemblyList.Clear();
 
-            var assemblyPath = AppSettings.GetValue("AppliedAssemblies", Path.Combine("..", "Assemblies"));
+            var assemblyPath = AppDomain.CurrentDomain.BaseDirectory;
             var asssemblyFiles = Directory.GetFiles(assemblyPath, "*.dll");
 
             foreach (var asssemblyFile in asssemblyFiles)
@@ -56,7 +57,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
         {
             SourceAssemblyList.Clear();
 
-            var assemblyPath = AppSettings.GetValue("AppliedAssemblies", Path.Combine("..", "Assemblies"));
+            var assemblyPath = AppDomain.CurrentDomain.BaseDirectory;
 
             foreach (var assemblyName in assemblyNames)
             {

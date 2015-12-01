@@ -1,10 +1,12 @@
-﻿using InfinniPlatform.Compression;
+﻿using InfinniPlatform.Api.Settings;
+using InfinniPlatform.Compression;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.Factories;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment.Log;
+using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.Sdk.Environment.Transactions;
 using InfinniPlatform.Sdk.Global;
 using InfinniPlatform.Sdk.IoC;
@@ -17,6 +19,9 @@ namespace InfinniPlatform.IoC
     {
         public void Load(IContainerBuilder builder)
         {
+            builder.RegisterInstance(AppConfiguration.Instance)
+                   .As<IAppConfiguration>();
+
             builder.RegisterType<GlobalContext>()
                    .As<IGlobalContext>();
 

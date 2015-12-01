@@ -12,20 +12,26 @@ namespace InfinniPlatform.Authentication.Modules
     /// </summary>
     internal sealed class ExternalAuthVkOwinHostingModule : IOwinHostingModule
     {
+        public ExternalAuthVkOwinHostingModule(IAppConfiguration appConfiguration)
+        {
+            _settings = appConfiguration.GetSection<ExternalAuthVkOwinHostingModuleSettings>(ExternalAuthVkOwinHostingModuleSettings.SectionName);
+        }
+
+
+        private readonly ExternalAuthVkOwinHostingModuleSettings _settings;
+
+
         public OwinHostingModuleType ModuleType => OwinHostingModuleType.ExternalAuth;
 
 
         public void Configure(IAppBuilder builder, IOwinHostingContext context)
         {
-            if (AppSettings.GetValue("AppServerAuthVkEnable", false))
+            if (_settings.Enable)
             {
-                var clientId = AppSettings.GetValue("AppServerAuthVkClientId");
-                var clientSecret = AppSettings.GetValue("AppServerAuthVkClientSecret");
-
                 builder.UseVkontakteAuthentication(new VkAuthenticationOptions
                 {
-                    AppId = clientId,
-                    AppSecret = clientSecret
+                    AppId = _settings.ClientId,
+                    AppSecret = _settings.ClientSecret
                 });
             }
         }

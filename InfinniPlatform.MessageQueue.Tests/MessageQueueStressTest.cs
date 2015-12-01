@@ -72,7 +72,7 @@ namespace InfinniPlatform.MessageQueue.Tests
 
 			ThreadPool.QueueUserWorkItem(state =>
 											 {
-												 var factory = new RabbitMqMessageQueueFactory();
+												 var factory = new RabbitMqMessageQueueFactory(RabbitMqSettings.Default);
 												 var publisher = factory.CreateMessageQueuePublisher();
 
 												 // Начало публикации сообщений
@@ -105,7 +105,7 @@ namespace InfinniPlatform.MessageQueue.Tests
 
 			ThreadPool.QueueUserWorkItem(state =>
 											 {
-												 var factory = new RabbitMqMessageQueueFactory();
+												 var factory = new RabbitMqMessageQueueFactory(RabbitMqSettings.Default);
 												 var listener = factory.CreateMessageQueueListener();
 												 var subscribtions = factory.CreateMessageQueueManager();
 

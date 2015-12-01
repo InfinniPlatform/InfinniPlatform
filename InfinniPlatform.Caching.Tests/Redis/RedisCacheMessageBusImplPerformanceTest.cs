@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading;
 
 using InfinniPlatform.Caching.Factory;
+using InfinniPlatform.Caching.Redis;
 
 using NUnit.Framework;
 
@@ -18,7 +19,7 @@ namespace InfinniPlatform.Caching.Tests.Redis
 		[SetUp]
 		public void SetUp()
 		{
-			_cacheMessageBus = CacheMessageBusFactory.Instance.GetSharedCacheMessageBus();
+			_cacheMessageBus = new RedisCacheMessageBusImpl(nameof(RedisCacheMessageBusImplPerformanceTest), "localhost");
 		}
 
 		[TearDown]

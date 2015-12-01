@@ -140,7 +140,7 @@
     <Compile Include="UserStorage\AdminApi.cs" />
     <Compile Include="UserStorage\ApplicationUserStoreCache.cs" />
     <Compile Include="UserStorage\ApplicationUserStorePersistentStorage.cs" />
-    <Compile Include="UserStorage\ApplicationUserStorePersistentStorageExtensions.cs" />
+    <Compile Include="UserStorage\UserStorageSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -192,7 +192,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Files\Platform\App.config">
+    <None Include="..\Files\Config\App.config">
       <Link>App.config</Link>
     </None>
     <None Include=".metadata\AdministrationCustomization\Configuration.json" />

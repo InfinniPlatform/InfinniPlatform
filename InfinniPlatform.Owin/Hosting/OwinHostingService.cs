@@ -39,7 +39,7 @@ namespace InfinniPlatform.Owin.Hosting
 
             // Имя схемы протокола сервера
 
-            var scheme = hostingContext.Configuration.ServerScheme;
+            var scheme = hostingContext.Configuration.Scheme;
 
             if (string.IsNullOrWhiteSpace(scheme))
             {
@@ -54,7 +54,7 @@ namespace InfinniPlatform.Owin.Hosting
 
             // Адрес или имя сервера
 
-            var server = hostingContext.Configuration.ServerName;
+            var server = hostingContext.Configuration.Name;
 
             if (string.IsNullOrWhiteSpace(server))
             {
@@ -68,7 +68,7 @@ namespace InfinniPlatform.Owin.Hosting
 
             // Номер порта сервера
 
-            var port = hostingContext.Configuration.ServerPort;
+            var port = hostingContext.Configuration.Port;
 
             if (port <= 0)
             {
@@ -77,7 +77,7 @@ namespace InfinniPlatform.Owin.Hosting
 
             // Отпечаток сертификата
 
-            var certificate = hostingContext.Configuration.ServerCertificate;
+            var certificate = hostingContext.Configuration.Certificate;
 
             if (Uri.UriSchemeHttps.Equals(scheme, StringComparison.OrdinalIgnoreCase) && string.IsNullOrWhiteSpace(certificate))
             {
@@ -159,14 +159,14 @@ namespace InfinniPlatform.Owin.Hosting
         {
             var config = _hostingContext.Configuration;
 
-            if (Uri.UriSchemeHttps.Equals(config.ServerScheme, StringComparison.OrdinalIgnoreCase))
+            if (Uri.UriSchemeHttps.Equals(config.Scheme, StringComparison.OrdinalIgnoreCase))
             {
-                if (string.IsNullOrWhiteSpace(config.ServerCertificate))
+                if (string.IsNullOrWhiteSpace(config.Certificate))
                 {
                     throw new ArgumentNullException(Resources.ServerCertificateCannotBeNullOrWhiteSpace);
                 }
 
-                OwinExtensions.BindCertificate(config.ServerPort, config.ServerCertificate);
+                OwinExtensions.BindCertificate(config.Port, config.Certificate);
             }
         }
     }

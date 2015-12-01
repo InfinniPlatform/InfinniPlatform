@@ -208,7 +208,6 @@
     <Folder Include="Actions\" />
     <Folder Include="Reporting\" />
     <Folder Include="SearchOptions\" />
-    <Folder Include="Settings\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">

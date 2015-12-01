@@ -2,6 +2,7 @@
 
 using InfinniPlatform.Sdk.Environment.Binary;
 using InfinniPlatform.Sdk.Environment.Log;
+using InfinniPlatform.Sdk.Environment.Settings;
 
 using Moq;
 
@@ -16,7 +17,11 @@ namespace InfinniPlatform.BlobStorage.Tests
         [TestFixtureSetUp]
         public void Setup()
         {
-            var blobStorageFactory = new FileSystemBlobStorageFactory(new Mock<IPerformanceLog>().Object);
+            var performanceLogMock = new Mock<IPerformanceLog>();
+            var appConfigurationMock = new Mock<IAppConfiguration>();
+            appConfigurationMock.Setup(m => m.GetSection<FileSystemBlobStorageSettings>(FileSystemBlobStorageSettings.SectionName)).Returns(new FileSystemBlobStorageSettings());
+
+            var blobStorageFactory = new FileSystemBlobStorageFactory(appConfigurationMock.Object, performanceLogMock.Object);
 
             _blobStorage = blobStorageFactory.CreateBlobStorage();
         }

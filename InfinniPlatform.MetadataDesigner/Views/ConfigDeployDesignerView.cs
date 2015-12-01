@@ -129,8 +129,8 @@ namespace InfinniPlatform.MetadataDesigner.Views
 								 AddExtension = true,
 								 DefaultExt = "zip",
 								 Filter = @"Archive files (*.zip)|",
-								 InitialDirectory = AppSettings.GetValue("AppliedAssemblies") ?? Directory.GetCurrentDirectory()
-							 };
+								 InitialDirectory = AppDomain.CurrentDomain.BaseDirectory
+                };
 
 				if (dialog.ShowDialog() == DialogResult.OK)
 				{
@@ -172,7 +172,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 
 	    private HostingConfig GetHostingConfig()
 		{
-			return new HostingConfig { ServerName = GetServerName(), ServerPort = GetServerPort() };
+			return new HostingConfig { Name = GetServerName(), Port = GetServerPort() };
 		}
 
 		private string GetServerName()
@@ -194,7 +194,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 							 AddExtension = true,
 							 DefaultExt = "zip",
 							 Filter = @"Archive files (*.zip)|",
-							 InitialDirectory = AppSettings.GetValue("AppliedAssemblies") ?? Directory.GetCurrentDirectory()
+							 InitialDirectory = AppDomain.CurrentDomain.BaseDirectory
 						 };
 
 			if (dialog.ShowDialog() == DialogResult.OK)

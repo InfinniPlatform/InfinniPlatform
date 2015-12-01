@@ -52,6 +52,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CassandraSettings.cs" />
     <Compile Include="Client\CassandraCqlQueryStatementConverter.cs" />
     <Compile Include="Client\CassandraCqlStringBuilderExtensions.cs" />
     <Compile Include="Client\CassandraDatabaseFactory.cs" />

@@ -17,9 +17,7 @@ namespace InfinniPlatform.Caching.Tests.Redis
 		{
 			// GIVEN
 
-			var redisConnectionString = CachingHelpers.GetConfigRedisConnectionString();
-
-			var messageBus = new RedisCacheMessageBusImpl(typeof(RedisCacheMessageBusImplTest).Name, redisConnectionString);
+			var messageBus = new RedisCacheMessageBusImpl(nameof(RedisCacheMessageBusImplTest), "localhost");
 
 			// subscriber1 for Key1
 

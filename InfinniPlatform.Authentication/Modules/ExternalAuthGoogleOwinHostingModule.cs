@@ -17,19 +17,25 @@ namespace InfinniPlatform.Authentication.Modules
     /// </remarks>
     internal sealed class ExternalAuthGoogleOwinHostingModule : IOwinHostingModule
     {
+        public ExternalAuthGoogleOwinHostingModule(IAppConfiguration appConfiguration)
+        {
+            _settings = appConfiguration.GetSection<ExternalAuthGoogleOwinHostingModuleSettings>(ExternalAuthGoogleOwinHostingModuleSettings.SectionName);
+        }
+
+
+        private readonly ExternalAuthGoogleOwinHostingModuleSettings _settings;
+
+
         public OwinHostingModuleType ModuleType => OwinHostingModuleType.ExternalAuth;
 
         public void Configure(IAppBuilder builder, IOwinHostingContext context)
         {
-            if (AppSettings.GetValue("AppServerAuthGoogleEnable", false))
+            if (_settings.Enable)
             {
-                var clientId = AppSettings.GetValue("AppServerAuthGoogleClientId");
-                var clientSecret = AppSettings.GetValue("AppServerAuthGoogleClientSecret");
-
                 builder.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions
                 {
-                    ClientId = clientId,
-                    ClientSecret = clientSecret
+                    ClientId = _settings.ClientId,
+                    ClientSecret = _settings.ClientSecret
                 });
             }
         }

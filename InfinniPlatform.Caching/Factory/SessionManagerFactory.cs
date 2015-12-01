@@ -1,42 +1,43 @@
 ﻿using System;
 
+using InfinniPlatform.Caching.Session;
 using InfinniPlatform.Factories;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment.Settings;
 
 namespace InfinniPlatform.Caching.Factory
 {
-	public sealed class SessionManagerFactory : ISessionManagerFactory
-	{
-		public SessionManagerFactory()
-		{
-			var cacheType = AppSettings.GetValue("CacheType", "Memory");
+    internal sealed class SessionManagerFactory : ISessionManagerFactory
+    {
+        public SessionManagerFactory(IAppConfiguration appConfiguration, ICacheFactory cacheFactory)
+        {
+            var cacheSettings = appConfiguration.GetSection<CacheSettings>(CacheSettings.SectionName);
 
-			ICache cache;
+            ICache cache;
 
-			if (string.Equals(cacheType, "Redis", StringComparison.OrdinalIgnoreCase))
-			{
-				cache = CacheFactory.Instance.GetSharedCache();
-			}
-			else if (string.Equals(cacheType, "TwoLayer", StringComparison.OrdinalIgnoreCase))
-			{
-				cache = CacheFactory.Instance.GetTwoLayerCache();
-			}
-			else
-			{
-				cache = CacheFactory.Instance.GetMemoryCache();
-			}
+            if (string.Equals(cacheSettings.Type, "Redis", StringComparison.OrdinalIgnoreCase))
+            {
+                cache = cacheFactory.GetSharedCache();
+            }
+            else if (string.Equals(cacheSettings.Type, "TwoLayer", StringComparison.OrdinalIgnoreCase))
+            {
+                cache = cacheFactory.GetTwoLayerCache();
+            }
+            else
+            {
+                cache = cacheFactory.GetMemoryCache();
+            }
 
-			_sessionManager = new SessionManager(cache);
-		}
-
-
-		private readonly ISessionManager _sessionManager;
+            _sessionManager = new SessionManager(cache);
+        }
 
 
-		public ISessionManager CreateSessionManager()
-		{
-			return _sessionManager;
-		}
-	}
+        private readonly ISessionManager _sessionManager;
+
+
+        public ISessionManager CreateSessionManager()
+        {
+            return _sessionManager;
+        }
+    }
 }

@@ -50,7 +50,7 @@
     <Compile Include="Integration\IIntegrationBusSubscriptionValidator.cs" />
     <Compile Include="Integration\IntegrationBus.cs" />
     <Compile Include="Integration\IntegrationBusConsumer.cs" />
-    <Compile Include="Integration\IntegrationBusSecurityTokenValidator.cs" />
+    <Compile Include="Integration\EmptyIntegrationBusSecurityTokenValidator.cs" />
     <Compile Include="Integration\IntegrationBusSubscriptionValidator.cs" />
     <Compile Include="Integration\CassandraIntegrationBusStorageFactory.cs" />
     <Compile Include="Integration\CassandraIntegrationBusSubscriptionStorage.cs" />
@@ -64,6 +64,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RabbitMqSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

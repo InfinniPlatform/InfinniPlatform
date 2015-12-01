@@ -5,15 +5,14 @@ using System.Runtime.Caching;
 using System.Threading;
 
 using InfinniPlatform.Api.Security;
-using InfinniPlatform.Sdk.Environment.Settings;
 
 namespace InfinniPlatform.SystemConfig.UserStorage
 {
-    sealed class ApplicationUserStoreCache
+    internal sealed class ApplicationUserStoreCache
     {
-        public ApplicationUserStoreCache()
+        public ApplicationUserStoreCache(int userCacheTimeout)
         {
-            _cacheTimeout = TimeSpan.FromMinutes(Math.Max(AppSettings.GetValue("UserCacheTimeout", 30), 1));
+            _cacheTimeout = TimeSpan.FromMinutes(Math.Max(userCacheTimeout, 1));
             _cacheLockSlim = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
             _usersById = new MemoryCache("UserCache");

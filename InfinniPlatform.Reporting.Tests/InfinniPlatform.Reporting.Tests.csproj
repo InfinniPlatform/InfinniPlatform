@@ -98,7 +98,7 @@
     <Compile Include="RestServerHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Files\Tests\App.config">
+    <None Include="..\Files\Config\App.config">
       <Link>App.config</Link>
     </None>
     <None Include="packages.config" />

@@ -140,10 +140,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
 
         private static Assembly LoadAppliedAssembly(string assemblyName)
         {
-            string relativePath = AppSettings.GetValue("AppliedAssemblies");
-            string pathToAssemblies = relativePath != null
-                                          ? Path.GetFullPath(relativePath)
-                                          : Directory.GetCurrentDirectory();
+            string pathToAssemblies = AppDomain.CurrentDomain.BaseDirectory;
 
             string assemblyFileName = Path.Combine(pathToAssemblies, assemblyName);
             if (File.Exists(assemblyFileName + ".dll"))

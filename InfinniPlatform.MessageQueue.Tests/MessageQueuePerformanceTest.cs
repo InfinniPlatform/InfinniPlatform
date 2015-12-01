@@ -146,7 +146,7 @@ namespace InfinniPlatform.MessageQueue.Tests
 			var stopwatch = new Stopwatch();
 			var message = CreateMessage(messageSize);
 
-			var factory = new RabbitMqMessageQueueFactory();
+			var factory = new RabbitMqMessageQueueFactory(RabbitMqSettings.Default);
 			var publisher = factory.CreateMessageQueuePublisher();
 			var listener = factory.CreateMessageQueueListener();
 			var subscriptions = factory.CreateMessageQueueManager();
@@ -196,7 +196,7 @@ namespace InfinniPlatform.MessageQueue.Tests
 			var stopwatch = new Stopwatch();
 			var message = CreateMessage(messageSize);
 
-			var factory = new RabbitMqMessageQueueFactory();
+			var factory = new RabbitMqMessageQueueFactory(RabbitMqSettings.Default);
 			var publisher = factory.CreateMessageQueuePublisher();
 			var listener = factory.CreateMessageQueueListener();
 			var subscriptions = factory.CreateMessageQueueManager();
@@ -255,7 +255,7 @@ namespace InfinniPlatform.MessageQueue.Tests
 
 		private static IMessageQueuePublisher GetMessageQueuePublisher()
 		{
-			var factory = new RabbitMqMessageQueueFactory();
+			var factory = new RabbitMqMessageQueueFactory(RabbitMqSettings.Default);
 			var publisher = factory.CreateMessageQueuePublisher();
 			var subscriptions = factory.CreateMessageQueueManager();
 			subscriptions.CreateExchangeFanout(ExchangeName).Subscribe(QueueName, () => null);

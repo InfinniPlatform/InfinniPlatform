@@ -32,7 +32,7 @@ namespace InfinniPlatform.Authentication.InternalIdentity
         private readonly IdentityApplicationUserStore _store;
 
         /// <summary>
-        /// Разрешать только пользователей с именами "^[A-Za-z0-9@_\\.]+$".
+        /// Разрешать только пользователей с именами @"^[A-Za-z0-9@_\+\-\.]+$".
         /// </summary>
         public bool AllowOnlyAlphanumericUserNames { get; set; }
 
@@ -71,7 +71,8 @@ namespace InfinniPlatform.Authentication.InternalIdentity
                 errors.Add(Resources.UserNameCannotBeNullOrWhiteSpace);
             }
             // Проверка корректности имени пользователя
-            else if (AllowOnlyAlphanumericUserNames && !Regex.IsMatch(userName, "^[A-Za-z0-9@_\\.]+$", RegexOptions.Compiled))
+
+            else if (AllowOnlyAlphanumericUserNames && !Regex.IsMatch(userName, @"^[A-Za-z0-9@_\+\-\.]+$", RegexOptions.Compiled))
             {
                 errors.Add(string.Format(Resources.InvalidUserName, userName));
             }

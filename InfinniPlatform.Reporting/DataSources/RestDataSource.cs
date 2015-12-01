@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Xml.Linq;
+
 using InfinniPlatform.Api.Schema;
 using InfinniPlatform.FastReport.Templates.Data;
 using InfinniPlatform.Reporting.DataProviders;
 using InfinniPlatform.Reporting.Properties;
-using InfinniPlatform.Sdk.Environment.Settings;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -36,8 +37,7 @@ namespace InfinniPlatform.Reporting.DataSources
 		{
 			var dataProviderInfo = (RestDataProviderInfo)dataSourceInfo.Provider;
 
-			// Адрес сервиса может быть обределен в конфигурации приложения, либо жестко прошит в отчете
-			var requestUri = AppSettings.GetValue(dataProviderInfo.RequestUri, dataProviderInfo.RequestUri);
+			var requestUri = dataProviderInfo.RequestUri;
 
 			if (string.IsNullOrWhiteSpace(requestUri))
 			{

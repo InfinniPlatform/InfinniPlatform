@@ -7,16 +7,15 @@
         <owners>Infinnity Solutions</owners>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>InfinniPlatform</description>
-        <copyright>Copyright 2015</copyright>        
+        <copyright>Copyright 2015</copyright>
     </metadata>
     <files>
-        <file target="lib\net45" src="..\..\Assemblies\*.exe"/>
         <file target="lib\net45" src="..\..\Assemblies\*.dll" exclude="..\..\Assemblies\*.Tests.dll;..\..\Assemblies\InfinniPlatform.SystemConfig.AdministrationCustomization.dll"/>
         <file target="lib\net45" src="..\..\Assemblies\*.pdb" exclude="..\..\Assemblies\*.Tests.pdb;..\..\Assemblies\InfinniPlatform.SystemConfig.AdministrationCustomization.pdb"/>
         <file target="lib\net45\InfinniPlatform.config" src="..\..\Assemblies\InfinniPlatform.NodeServiceHost.dll.config"/>
-        <file target="lib\net45\Log.config" src="..\..\Assemblies\Log.config"/>
-        <file target="lib\net45\Autofac.xml" src="..\..\Assemblies\Autofac.xml"/>
-        <file target="lib\net45\InfinniPlatform.config" src="..\..\Assemblies\InfinniPlatform.NodeServiceHost.dll.config"/>
-        <file target="content\metadata" src="..\..\InfinniPlatform.SystemConfig\.metadata\**\*.*" exclude="..\..\InfinniPlatform.SystemConfig\.metadata\AdministrationCustomization_1.0.0.0\**"/>
+        <file target="lib\net45\AppLog.config" src="..\..\Assemblies\AppLog.config"/>
+        <file target="lib\net45\AppCommon.json" src="..\..\Assemblies\AppCommon.json"/>
+        <file target="lib\net45\AppExtension.json" src="..\..\Assemblies\AppExtension.json"/>
+        <file target="content\metadata" src="..\..\InfinniPlatform.SystemConfig\.metadata\**\*.*" exclude="..\..\InfinniPlatform.SystemConfig\.metadata\AdministrationCustomization\**"/>
     </files>
 </package>

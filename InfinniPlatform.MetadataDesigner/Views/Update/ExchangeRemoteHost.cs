@@ -26,7 +26,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.Update
 
         public bool PrepareRoutingOperation()
         {
-            if (string.IsNullOrEmpty(HostingConfig.ServerScheme) || string.IsNullOrEmpty(HostingConfig.ServerName) || HostingConfig.ServerPort <= 0)
+            if (string.IsNullOrEmpty(HostingConfig.Scheme) || string.IsNullOrEmpty(HostingConfig.Name) || HostingConfig.Port <= 0)
             {
                 if (MessageBox.Show(@"Не указана схема, сервер или порт для обновления. Обновить конфигурацию локально?", @"Внимание!",
                                     MessageBoxButtons.YesNo) == DialogResult.No)

@@ -2,6 +2,7 @@
 using System.ComponentModel.Composition;
 using System.Threading;
 
+using InfinniPlatform.Api.Settings;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.IoC.Owin;
 using InfinniPlatform.Logging;
@@ -96,13 +97,23 @@ namespace InfinniPlatform.NodeServiceHost
 
         private static IHostingService CreateHostingService()
         {
+            var hostingConfig = GetHostingConfig();
+
             var owinHostingContextFactory = new AutofacOwinHostingContextFactory();
-            var owinHostingContext = owinHostingContextFactory.CreateOwinHostingContext(HostingConfig.Default);
+            var owinHostingContext = owinHostingContextFactory.CreateOwinHostingContext(hostingConfig);
 
             var owinHostingServiceFactory = new OwinHostingServiceFactory(owinHostingContext);
             var owinHostingService = owinHostingServiceFactory.CreateHostingService();
 
             return owinHostingService;
+        }
+
+
+        public static HostingConfig GetHostingConfig()
+        {
+            // Поскольку в данном контексте IoC еще не доступен, настройки читаются напрямую
+
+            return AppConfiguration.Instance.GetSection<HostingConfig>("host");
         }
 
 

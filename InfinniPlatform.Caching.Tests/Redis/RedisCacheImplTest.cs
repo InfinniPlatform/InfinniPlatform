@@ -16,9 +16,7 @@ namespace InfinniPlatform.Caching.Tests.Redis
 		[SetUp]
 		public void SetUp()
 		{
-			var redisConnectionString = CachingHelpers.GetConfigRedisConnectionString();
-
-			_cache = new RedisCacheImpl(typeof(RedisCacheImplTest).Name, redisConnectionString);
+			_cache = new RedisCacheImpl(nameof(RedisCacheImplTest), "localhost");
 		}
 
 		[TearDown]

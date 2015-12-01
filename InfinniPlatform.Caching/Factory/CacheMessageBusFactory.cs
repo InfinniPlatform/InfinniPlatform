@@ -2,48 +2,48 @@
 
 using InfinniPlatform.Caching.Memory;
 using InfinniPlatform.Caching.Redis;
+using InfinniPlatform.Sdk.Environment.Settings;
 
 namespace InfinniPlatform.Caching.Factory
 {
-	public sealed class CacheMessageBusFactory : ICacheMessageBusFactory
-	{
-		public static readonly CacheMessageBusFactory Instance = new CacheMessageBusFactory();
+    internal sealed class CacheMessageBusFactory : ICacheMessageBusFactory
+    {
+        public CacheMessageBusFactory(IAppConfiguration appConfiguration)
+        {
+            _cacheSettings = appConfiguration.GetSection<CacheSettings>(CacheSettings.SectionName);
+            _redisSettings = appConfiguration.GetSection<RedisSettings>(RedisSettings.SectionName);
+
+            _memoryCacheMessageBus = new Lazy<ICacheMessageBus>(CreateMemoryCacheMessageBus);
+            _sharedCacheMessageBus = new Lazy<ICacheMessageBus>(CreateSharedCacheMessageBus);
+        }
 
 
-		public CacheMessageBusFactory()
-		{
-			_memoryCacheMessageBus = new Lazy<ICacheMessageBus>(CreateMemoryCacheMessageBus);
-			_sharedCacheMessageBus = new Lazy<ICacheMessageBus>(CreateSharedCacheMessageBus);
-		}
+        private readonly CacheSettings _cacheSettings;
+        private readonly RedisSettings _redisSettings;
+
+        private readonly Lazy<ICacheMessageBus> _memoryCacheMessageBus;
+        private readonly Lazy<ICacheMessageBus> _sharedCacheMessageBus;
 
 
-		private readonly Lazy<ICacheMessageBus> _memoryCacheMessageBus;
-		private readonly Lazy<ICacheMessageBus> _sharedCacheMessageBus;
+        public ICacheMessageBus GetMemoryCacheMessageBus()
+        {
+            return _memoryCacheMessageBus.Value;
+        }
+
+        public ICacheMessageBus GetSharedCacheMessageBus()
+        {
+            return _sharedCacheMessageBus.Value;
+        }
 
 
-		public ICacheMessageBus GetMemoryCacheMessageBus()
-		{
-			return _memoryCacheMessageBus.Value;
-		}
+        private static ICacheMessageBus CreateMemoryCacheMessageBus()
+        {
+            return new MemoryCacheMessageBusImpl();
+        }
 
-		public ICacheMessageBus GetSharedCacheMessageBus()
-		{
-			return _sharedCacheMessageBus.Value;
-		}
-
-
-		private static ICacheMessageBus CreateMemoryCacheMessageBus()
-		{
-			var memoryCacheMessageBus = new MemoryCacheMessageBusImpl();
-			return memoryCacheMessageBus;
-		}
-
-		private static ICacheMessageBus CreateSharedCacheMessageBus()
-		{
-			var cacheName = CachingHelpers.GetConfigCacheName();
-			var redisConnectionString = CachingHelpers.GetConfigRedisConnectionString();
-			var sharedCacheMessageBus = new RedisCacheMessageBusImpl(cacheName, redisConnectionString);
-			return sharedCacheMessageBus;
-		}
-	}
+        private ICacheMessageBus CreateSharedCacheMessageBus()
+        {
+            return new RedisCacheMessageBusImpl(_cacheSettings.Name, _redisSettings.ConnectionString);
+        }
+    }
 }
