@@ -7,6 +7,9 @@ namespace InfinniPlatform.Sdk.Api
     /// </summary>
     public sealed class HostingConfig
     {
+        public const string SectionName = "host";
+
+
         /// <summary>
         /// Настройки подсистемы хостинга по умолчанию.
         /// </summary>

@@ -113,7 +113,7 @@ namespace InfinniPlatform.NodeServiceHost
         {
             // Поскольку в данном контексте IoC еще не доступен, настройки читаются напрямую
 
-            return AppConfiguration.Instance.GetSection<HostingConfig>("host");
+            return AppConfiguration.Instance.GetSection<HostingConfig>(HostingConfig.SectionName);
         }
 
 
