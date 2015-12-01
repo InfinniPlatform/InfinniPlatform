@@ -70,7 +70,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="..\Files\Monitoring\AppLog.config">
-      <Link>Log.config</Link>
+      <Link>AppLog.config</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>

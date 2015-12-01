@@ -98,13 +98,25 @@ namespace InfinniPlatform.Sdk.Environment.Index
 
             CriteriaType result;
 
-            if (value is string)
+            if (value is CriteriaType)
+            {
+                result = (CriteriaType)value;
+            }
+            else if (value is long)
+            {
+                result = (CriteriaType)((long)value);
+            }
+            else if (value is int)
+            {
+                result = (CriteriaType)((int)value);
+            }
+            else if (value is string)
             {
                 Enum.TryParse((string)value, true, out result);
             }
             else
             {
-                result = (CriteriaType)value;
+                result = default(CriteriaType);
             }
 
             return result;
