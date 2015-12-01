@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace InfinniPlatform.Sdk.Environment.Index
@@ -80,7 +81,7 @@ namespace InfinniPlatform.Sdk.Environment.Index
                 return searchModel;
 
             var filters = filterObject
-                .Select(x => filterFactory.Get((string) x.Property, (object) x.Value, (CriteriaType) x.CriteriaType))
+                .Select(x => filterFactory.Get((string) x.Property, (object) x.Value, ParseCriteriaType(x.CriteriaType)))
                 .ToList();
 
             foreach (var filter in filters)
@@ -89,6 +90,24 @@ namespace InfinniPlatform.Sdk.Environment.Index
             }
 
             return searchModel;
+        }
+
+        private static CriteriaType ParseCriteriaType(object value)
+        {
+            // TODO: Избавиться от этого после рефакторинга уровня доступа к данным
+
+            CriteriaType result;
+
+            if (value is string)
+            {
+                Enum.TryParse((string)value, true, out result);
+            }
+            else
+            {
+                result = (CriteriaType)value;
+            }
+
+            return result;
         }
     }
 }
