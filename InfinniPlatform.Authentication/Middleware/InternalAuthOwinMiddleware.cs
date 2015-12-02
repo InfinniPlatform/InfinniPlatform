@@ -91,6 +91,7 @@ namespace InfinniPlatform.Authentication.Middleware
         {
             // Методы, связанные с учетной записью пользователя
             RegisterHandler(new RegistrationHandlerBase("GET", GetCurrentUserPath, GetCurrentUser));
+            RegisterHandler(new RegistrationHandlerBase("POST", GetCurrentUserPath, GetCurrentUser));
             RegisterHandler(new RegistrationHandlerBase("POST", ChangePasswordPath, ChangePassword));
             RegisterHandler(new RegistrationHandlerBase("POST", ChangeProfilePath, ChangeProfile));
             RegisterHandler(new RegistrationHandlerBase("POST", ChangeActiveRolePath, ChangeActiveRole));
