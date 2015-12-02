@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Threading;
 
 using InfinniPlatform.NodeServiceHost;
@@ -6,21 +7,26 @@ using InfinniPlatform.ServiceHost.Properties;
 
 namespace InfinniPlatform.ServiceHost
 {
-    class Program
+    public class Program
     {
-        static void Main()
-        {
-            var serviceHost = new InfinniPlatformServiceHost();
+        private static readonly CultureInfo DefaultCulture = CultureInfo.GetCultureInfo("en-US");
 
+
+        public static void Main()
+        {
             try
             {
-                serviceHost.Start(Timeout.InfiniteTimeSpan);
+                Thread.CurrentThread.CurrentCulture = DefaultCulture;
+                Thread.CurrentThread.CurrentUICulture = DefaultCulture;
+
+                InfinniPlatformInprocessHost.Start();
+
                 Console.WriteLine(Resources.ServerStarted);
                 Console.ReadLine();
             }
-            finally
+            catch (Exception error)
             {
-                serviceHost.Stop(Timeout.InfiniteTimeSpan);
+                Console.WriteLine(error);
             }
         }
     }
