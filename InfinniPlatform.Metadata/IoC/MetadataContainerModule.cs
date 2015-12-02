@@ -79,7 +79,7 @@ namespace InfinniPlatform.Metadata.IoC
                    .AsSelf();
 
             // Прикладные скрипты
-            builder.RegisterActionUnits();
+            builder.RegisterActionUnits(GetType().Assembly);
         }
     }
 }

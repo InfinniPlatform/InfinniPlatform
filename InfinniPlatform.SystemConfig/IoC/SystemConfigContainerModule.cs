@@ -38,7 +38,7 @@ namespace InfinniPlatform.SystemConfig.IoC
                    .SingleInstance();
 
             // Прикладные скрипты
-            builder.RegisterActionUnits();
+            builder.RegisterActionUnits(GetType().Assembly);
         }
     }
 }

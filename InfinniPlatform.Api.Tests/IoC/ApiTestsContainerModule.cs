@@ -6,7 +6,7 @@ namespace InfinniPlatform.Api.Tests.IoC
     {
         public void Load(IContainerBuilder builder)
         {
-            builder.RegisterActionUnits();
+            builder.RegisterActionUnits(GetType().Assembly);
         }
     }
 }

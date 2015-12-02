@@ -17,10 +17,8 @@ namespace InfinniPlatform.Sdk.IoC
         /// <example>
         /// RegisterActionUnits()
         /// </example>
-        public static void RegisterActionUnits(this IContainerBuilder builder)
+        public static void RegisterActionUnits(this IContainerBuilder builder, Assembly assembly)
         {
-            var assembly = Assembly.GetCallingAssembly();
-
             foreach (var type in assembly.GetTypes())
             {
                 if (type.IsClass && !type.IsAbstract && !type.IsGenericType

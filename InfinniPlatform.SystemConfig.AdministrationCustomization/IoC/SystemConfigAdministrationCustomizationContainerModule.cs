@@ -7,7 +7,7 @@ namespace InfinniPlatform.SystemConfig.AdministrationCustomization.IoC
         public void Load(IContainerBuilder builder)
         {
             // Прикладные скрипты
-            builder.RegisterActionUnits();
+            builder.RegisterActionUnits(GetType().Assembly);
         }
     }
 }
