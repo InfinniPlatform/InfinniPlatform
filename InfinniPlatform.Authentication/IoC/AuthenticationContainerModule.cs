@@ -15,24 +15,9 @@ namespace InfinniPlatform.Authentication.IoC
     {
         public void Load(IContainerBuilder builder)
         {
-            // Хранилище учетных записей пользователей для AspNet.Identity
-            builder.RegisterType<IdentityApplicationUserStore>()
-                   .As<IUserStore<IdentityApplicationUser>>()
-                   .ExternallyOwned();
-
-            // Сервис проверки учетных записей пользователей для AspNet.Identity
-            builder.RegisterType<IdentityApplicationUserValidator>()
-                   .As<IIdentityValidator<IdentityApplicationUser>>()
-                   .SingleInstance();
-
-            // Сервис хэширования паролей пользователей для AspNet.Identity
-            builder.RegisterType<IdentityApplicationUserPasswordHasher>()
-                   .As<IPasswordHasher>()
-                   .SingleInstance();
-
             // Менеджер работы с учетными записями пользователей для AspNet.Identity
-            builder.RegisterType<UserManager<IdentityApplicationUser>>()
-                   .AsSelf()
+            builder.RegisterFactory(CreateUserManager)
+                   .As<UserManager<IdentityApplicationUser>>()
                    .ExternallyOwned();
 
             // Сервис хэширования паролей пользователей на уровне приложения
@@ -47,36 +32,59 @@ namespace InfinniPlatform.Authentication.IoC
             // Модули аутентификации
 
             builder.RegisterType<CookieAuthOwinHostingModule>()
-                .As<IOwinHostingModule>()
-                .SingleInstance();
+                   .As<IOwinHostingModule>()
+                   .SingleInstance();
 
             builder.RegisterType<ExternalAuthAdfsOwinHostingModule>()
-                .As<IOwinHostingModule>()
-                .SingleInstance();
+                   .As<IOwinHostingModule>()
+                   .SingleInstance();
 
             builder.RegisterType<ExternalAuthEsiaOwinHostingModule>()
-                .As<IOwinHostingModule>()
-                .SingleInstance();
+                   .As<IOwinHostingModule>()
+                   .SingleInstance();
 
             builder.RegisterType<ExternalAuthFacebookOwinHostingModule>()
-                .As<IOwinHostingModule>()
-                .SingleInstance();
+                   .As<IOwinHostingModule>()
+                   .SingleInstance();
 
             builder.RegisterType<ExternalAuthGoogleOwinHostingModule>()
-                .As<IOwinHostingModule>()
-                .SingleInstance();
+                   .As<IOwinHostingModule>()
+                   .SingleInstance();
 
             builder.RegisterType<ExternalAuthVkOwinHostingModule>()
-                .As<IOwinHostingModule>()
-                .SingleInstance();
+                   .As<IOwinHostingModule>()
+                   .SingleInstance();
 
             builder.RegisterType<InternalAuthOwinHostingModule>()
-                .As<IOwinHostingModule>()
-                .SingleInstance();
+                   .As<IOwinHostingModule>()
+                   .SingleInstance();
 
             builder.RegisterType<InternalAuthOwinMiddleware>()
-                .AsSelf()
-                .SingleInstance();
+                   .AsSelf()
+                   .SingleInstance();
+        }
+
+        private static UserManager<IdentityApplicationUser> CreateUserManager(IContainerResolver resolver)
+        {
+            var appUserStore = resolver.Resolve<IApplicationUserStore>();
+            var appPasswordHasher = resolver.Resolve<IApplicationUserPasswordHasher>();
+
+            // Хранилище учетных записей пользователей для AspNet.Identity
+            var identityUserStore = new IdentityApplicationUserStore(appUserStore);
+
+            // Сервис проверки учетных записей пользователей для AspNet.Identity
+            var identityUserValidator = new IdentityApplicationUserValidator(identityUserStore);
+
+            // Сервис хэширования паролей пользователей для AspNet.Identity
+            var identityPasswordHasher = new IdentityApplicationUserPasswordHasher(appPasswordHasher);
+
+            var userManager = new UserManager<IdentityApplicationUser>(identityUserStore)
+            {
+                UserValidator = identityUserValidator,
+                PasswordHasher = identityPasswordHasher
+            };
+
+            return userManager;
         }
     }
 }
