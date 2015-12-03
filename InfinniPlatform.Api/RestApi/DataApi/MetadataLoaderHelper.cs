@@ -2,8 +2,6 @@
 
 namespace InfinniPlatform.Api.RestApi.DataApi
 {
-    /// <summary>
-    /// </summary>
     public static class MetadataLoaderHelper
     {
         /// <summary>
@@ -11,22 +9,13 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         /// </summary>
         /// <param name="dictionary">Словарь элементов конфигурации.</param>
         /// <param name="itemId">Идентификатор элемента конфигурации.</param>
-        public static object TryGetItem(this object dictionary, string itemId)
+        public static object TryGetItem(this IDictionary<string, object> dictionary, string itemId)
         {
-            dynamic item;
-            return ((dynamic)dictionary).TryGetValue(itemId, out item)
-                       ? item
-                       : null;
-        }
+            object item;
 
-        /// <summary>
-        /// Получает метаданные элемента конфигурации из словаря.
-        /// </summary>
-        /// <param name="dictionary">Словарь элементов конфигурации.</param>
-        /// <param name="itemId">Идентификатор элемента конфигурации.</param>
-        public static object TryGetItemContent(this object dictionary, string itemId)
-        {
-            return ((dynamic)TryGetItem(dictionary, itemId))?.Content;
+            dictionary.TryGetValue(itemId, out item);
+
+            return item;
         }
 
         /// <summary>
@@ -34,20 +23,15 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         /// </summary>
         /// <param name="enumerable">Массив элементов конфигурации.</param>
         /// <returns>Словарь (имя элемента, элемент).</returns>
-        public static Dictionary<string, object> ConvertToDictionary(this IEnumerable<dynamic> enumerable)
+        public static IDictionary<string, object> ConvertToDictionary(this IEnumerable<object> enumerable)
         {
             var dictionary = new Dictionary<string, object>();
 
-            foreach (var item in enumerable)
+            foreach (dynamic item in enumerable)
             {
                 var key = (string)item.Content.Name;
 
-                if (dictionary.ContainsKey(key))
-                {
-                    dictionary.Remove(key);
-                }
-
-                dictionary.Add(key, item);
+                dictionary[key] = item;
             }
 
             return dictionary;

@@ -11,7 +11,6 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Contro
 
         static ConfigTreeBuilder()
         {
-            //TODO Необходимо придумать способ передачи параметров сервера в билдер
             ElementNodeBuilder = new ConfigElementNodeBuilder(HostingConfig.Default.Name, HostingConfig.Default.Port, null, "1");
 
             ElementNodeBuilder.Register(ConfigContainerNodeFactory.ElementType, new ConfigContainerNodeFactory());
@@ -22,9 +21,6 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Contro
 
             ElementNodeBuilder.Register(DocumentContainerNodeFactory.ElementType, new DocumentContainerNodeFactory());
             ElementNodeBuilder.Register(DocumentElementNodeFactory.ElementType, new DocumentElementNodeFactory());
-
-            ElementNodeBuilder.Register(AssemblyContainerNodeFactory.ElementType, new AssemblyContainerNodeFactory());
-            ElementNodeBuilder.Register(AssemblyElementNodeFactory.ElementType, new AssemblyElementNodeFactory());
 
             ElementNodeBuilder.Register(RegisterContainerNodeFactory.ElementType, new RegisterContainerNodeFactory());
             ElementNodeBuilder.Register(RegisterElementNodeFactory.ElementType, new RegisterElementNodeFactory());

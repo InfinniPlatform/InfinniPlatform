@@ -58,7 +58,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
         public override object GetItem(string itemId)
         {
-            return PackageMetadataLoader.GetViewContent(ConfigId, _documentId, itemId);
+            return PackageMetadataLoader.GetView(ConfigId, _documentId, itemId);
         }
 
         public override IEnumerable<object> GetItems()

@@ -48,20 +48,21 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
         public override void DeleteItem(string itemId)
         {
-            dynamic document = PackageMetadataLoader.GetDocument(ConfigId, itemId);
+            var documentPath = PackageMetadataLoader.GetDocumentPath(ConfigId, itemId);
 
-            var documentDirectory = Path.GetDirectoryName(document.FilePath);
+            var documentDirectory = Path.GetDirectoryName(documentPath);
 
-            if (documentDirectory != null)
+            if (!string.IsNullOrEmpty(documentDirectory) && Directory.Exists(documentDirectory))
             {
                 Directory.Delete(documentDirectory, true);
+
                 PackageMetadataLoader.UpdateCache();
             }
         }
 
         public override object GetItem(string itemId)
         {
-            return PackageMetadataLoader.GetDocumentContent(ConfigId, itemId);
+            return PackageMetadataLoader.GetDocument(ConfigId, itemId);
         }
 
         public override IEnumerable<object> GetItems()

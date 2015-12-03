@@ -4,9 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Sdk.Environment.Settings;
-
 namespace InfinniPlatform.MetadataDesigner.Views.Exchange
 {
     public sealed class AssemblyDiscovery
@@ -15,18 +12,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.Exchange
 
         public bool DiscoverAppliedAssemblies(string configurationId)
         {
-            var assemblies = PackageMetadataLoader.GetAssemblies(configurationId)
-                                                  .ToArray();
-
-            if (assemblies.Any())
-            {
-                var assembliesNames = assemblies.Select(ass => (string)ass.Name).ToArray();
-                LoadSourceAssembliesForConfig(assembliesNames);
-            }
-            else
-            {
-                LoadSourceAssembliesForConfig();
-            }
+            LoadSourceAssembliesForConfig();
 
             return SourceAssemblyList.Any();
         }

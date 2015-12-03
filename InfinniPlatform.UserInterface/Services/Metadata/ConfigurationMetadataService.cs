@@ -42,7 +42,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
         public override void DeleteItem(string itemId)
         {
-            dynamic configuration = PackageMetadataLoader.GetConfigurationContent(itemId);
+            dynamic configuration = PackageMetadataLoader.GetConfiguration(itemId);
 
             var configurationDirectory = Path.GetDirectoryName(configuration.FilePath);
 
@@ -55,7 +55,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
         public override object GetItem(string itemId)
         {
-            return PackageMetadataLoader.GetConfigurationContent(itemId);
+            return PackageMetadataLoader.GetConfiguration(itemId);
         }
 
         public override IEnumerable<object> GetItems()

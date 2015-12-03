@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
-using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Api.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
@@ -35,49 +31,22 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
         public override void ReplaceItem(dynamic item)
         {
-            dynamic configurationContent = PackageMetadataLoader.GetConfigurationContent(ConfigId);
-            var assemblies = PackageMetadataLoader.GetAssemblies(ConfigId);
-
-            var newAssembliesList = new List<object>(assemblies) { item };
-
-            configurationContent.Assemblies = newAssembliesList;
-
-            var filePath = (dynamic)PackageMetadataLoader.GetConfigurationPath(ConfigId);
-
-            var serializedItem = JsonObjectSerializer.Formated.Serialize(configurationContent.Content);
-
-            File.WriteAllBytes(filePath, serializedItem);
-
-            PackageMetadataLoader.UpdateCache();
+            throw new NotSupportedException();
         }
 
         public override void DeleteItem(string itemId)
         {
-            dynamic configurationContent = PackageMetadataLoader.GetConfigurationContent(ConfigId);
-            IEnumerable<dynamic> assemblies = PackageMetadataLoader.GetAssemblies(ConfigId);
-
-            var newAssembliesList = assemblies.Where(assembly => assembly.Name != itemId)
-                                              .ToArray();
-
-            configurationContent.Assemblies = newAssembliesList;
-
-            var filePath = (dynamic)PackageMetadataLoader.GetConfigurationPath(ConfigId);
-
-            var serializedItem = JsonObjectSerializer.Formated.Serialize(configurationContent);
-
-            File.WriteAllBytes(filePath, serializedItem);
-
-            PackageMetadataLoader.UpdateCache();
+            throw new NotSupportedException();
         }
 
         public override object GetItem(string itemId)
         {
-            return PackageMetadataLoader.GetAssembly(ConfigId, itemId);
+            throw new NotSupportedException();
         }
 
         public override IEnumerable<object> GetItems()
         {
-            return PackageMetadataLoader.GetAssemblies(ConfigId);
+            throw new NotSupportedException();
         }
     }
 }

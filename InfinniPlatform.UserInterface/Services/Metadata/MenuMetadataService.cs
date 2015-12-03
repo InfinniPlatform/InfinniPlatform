@@ -46,7 +46,7 @@ namespace InfinniPlatform.UserInterface.Services.Metadata
 
         public override object GetItem(string itemId)
         {
-            return PackageMetadataLoader.GetMenuContent(ConfigId, itemId);
+            return PackageMetadataLoader.GetMenu(ConfigId, itemId);
         }
 
         public override IEnumerable<object> GetItems()
