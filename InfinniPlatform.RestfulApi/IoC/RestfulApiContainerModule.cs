@@ -13,7 +13,7 @@ namespace InfinniPlatform.RestfulApi.IoC
                    .SingleInstance();
 
             // Прикладные скрипты
-            builder.RegisterActionUnits();
+            builder.RegisterActionUnits(GetType().Assembly);
         }
     }
 }
