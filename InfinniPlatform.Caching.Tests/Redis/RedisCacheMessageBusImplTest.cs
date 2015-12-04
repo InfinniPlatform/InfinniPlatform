@@ -9,7 +9,6 @@ namespace InfinniPlatform.Caching.Tests.Redis
 {
 	[TestFixture]
 	[Category(TestCategories.UnitTest)]
-	[Ignore("Should setup Redis on TeamCity")]
 	public sealed class RedisCacheMessageBusImplTest
 	{
 		[Test]
@@ -17,7 +16,7 @@ namespace InfinniPlatform.Caching.Tests.Redis
 		{
 			// GIVEN
 
-			var messageBus = new RedisCacheMessageBusImpl(nameof(RedisCacheMessageBusImplTest), "localhost");
+			var messageBus = new RedisCacheMessageBusImpl(nameof(RedisCacheMessageBusImplTest), "localhost,password=TeamCity,allowAdmin=true");
 
 			// subscriber1 for Key1
 

@@ -8,7 +8,6 @@ namespace InfinniPlatform.Caching.Tests.Redis
 {
 	[TestFixture]
 	[Category(TestCategories.UnitTest)]
-	[Ignore("Should setup Redis on TeamCity")]
 	public sealed class RedisCacheImplTest
 	{
 		private RedisCacheImpl _cache;
@@ -16,7 +15,7 @@ namespace InfinniPlatform.Caching.Tests.Redis
 		[SetUp]
 		public void SetUp()
 		{
-			_cache = new RedisCacheImpl(nameof(RedisCacheImplTest), "localhost");
+			_cache = new RedisCacheImpl(nameof(RedisCacheImplTest), "localhost,password=TeamCity,allowAdmin=true");
 		}
 
 		[TearDown]
