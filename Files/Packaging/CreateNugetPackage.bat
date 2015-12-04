@@ -14,6 +14,7 @@ rd /S /Q Assemblies
 popd
 
 ::Build project
+nuget restore ..\..\InfinniPlatform.sln
 msbuild ..\..\InfinniPlatform.sln /p:Configuration=Debug /m /v:q
 
 ::Create package
