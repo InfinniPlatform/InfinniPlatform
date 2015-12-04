@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 
-using InfinniPlatform.Caching.Factory;
 using InfinniPlatform.Caching.Redis;
 
 using NUnit.Framework;

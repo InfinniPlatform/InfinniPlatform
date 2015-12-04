@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace InfinniPlatform.Caching.Tests.Redis
 {
 	[TestFixture]
-	[Category(TestCategories.UnitTest)]
+	[Category(TestCategories.IntegrationTest)]
 	public sealed class RedisCacheMessageBusImplTest
 	{
 		[Test]

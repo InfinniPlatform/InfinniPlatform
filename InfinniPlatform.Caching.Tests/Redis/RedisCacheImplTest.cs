@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace InfinniPlatform.Caching.Tests.Redis
 {
 	[TestFixture]
-	[Category(TestCategories.UnitTest)]
+	[Category(TestCategories.IntegrationTest)]
 	public sealed class RedisCacheImplTest
 	{
 		private RedisCacheImpl _cache;

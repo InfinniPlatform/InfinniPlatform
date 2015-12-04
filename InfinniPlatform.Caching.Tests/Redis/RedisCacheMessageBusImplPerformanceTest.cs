@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Threading;
 
-using InfinniPlatform.Caching.Factory;
 using InfinniPlatform.Caching.Redis;
 
 using NUnit.Framework;
