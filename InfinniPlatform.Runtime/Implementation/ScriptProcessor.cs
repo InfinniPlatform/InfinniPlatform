@@ -51,7 +51,7 @@ namespace InfinniPlatform.Runtime.Implementation
 
                 actionUnit(actionUnitContext);
 
-                LogSuccessComplete(start);
+                LogSuccessComplete(actionUnitId, actionUnitType, start);
             }
             catch (Exception e)
             {
@@ -62,9 +62,9 @@ namespace InfinniPlatform.Runtime.Implementation
         }
 
 
-        private void LogSuccessComplete(DateTime start)
+        private void LogSuccessComplete(string actionUnitId, string actionUnitType, DateTime start)
         {
-            _performanceLog.Log(PerformanceLogComponent, PerformanceLogMethod, start, null);
+            _performanceLog.Log(PerformanceLogComponent, actionUnitType ?? actionUnitId ?? PerformanceLogMethod, start, null);
         }
 
         private void LogErrorComplete(string actionUnitId, string actionUnitType, DateTime start, string message, Exception error)
