@@ -9,60 +9,42 @@ namespace InfinniPlatform.Caching.Factory
 {
     internal sealed class CacheFactory : ICacheFactory
     {
-        public CacheFactory(IAppConfiguration appConfiguration, ICacheMessageBusFactory cacheMessageBusFactory)
+        public CacheFactory(IAppConfiguration appConfiguration, ICacheMessageBus cacheMessageBus)
         {
-            _cacheSettings = appConfiguration.GetSection<CacheSettings>(CacheSettings.SectionName);
-            _redisSettings = appConfiguration.GetSection<RedisSettings>(RedisSettings.SectionName);
-            _cacheMessageBusFactory = cacheMessageBusFactory;
+            var cacheSettings = appConfiguration.GetSection<CacheSettings>(CacheSettings.SectionName);
 
-            _memoryCache = new Lazy<ICache>(CreateMemoryCache);
-            _sharedCache = new Lazy<ICache>(CreateSharedCache);
-            _twoLayerCache = new Lazy<ICache>(CreateTwoLayerCache);
+            ICache cache;
+
+            if (string.Equals(cacheSettings.Type, CacheSettings.RedisCackeKey, StringComparison.OrdinalIgnoreCase))
+            {
+                var redisSettings = appConfiguration.GetSection<RedisSettings>(RedisSettings.SectionName);
+                var redisCache = new RedisCacheImpl(cacheSettings.Name, redisSettings.ConnectionString);
+                cache = redisCache;
+            }
+            else if (string.Equals(cacheSettings.Type, CacheSettings.TwoLayerCackeKey, StringComparison.OrdinalIgnoreCase))
+            {
+                var redisSettings = appConfiguration.GetSection<RedisSettings>(RedisSettings.SectionName);
+                var memoryCache = new MemoryCacheImpl(cacheSettings.Name);
+                var redisCache = new RedisCacheImpl(cacheSettings.Name, redisSettings.ConnectionString);
+                var twoLayerCache = new TwoLayerCacheImpl(memoryCache, redisCache, cacheMessageBus);
+                cache = twoLayerCache;
+            }
+            else
+            {
+                var memoryCache = new MemoryCacheImpl(cacheSettings.Name);
+                cache = memoryCache;
+            }
+
+            _cache = cache;
         }
 
 
-        private readonly CacheSettings _cacheSettings;
-        private readonly RedisSettings _redisSettings;
-        private readonly ICacheMessageBusFactory _cacheMessageBusFactory;
-
-        private readonly Lazy<ICache> _memoryCache;
-        private readonly Lazy<ICache> _sharedCache;
-        private readonly Lazy<ICache> _twoLayerCache;
+        private readonly ICache _cache;
 
 
-        public ICache GetMemoryCache()
+        public ICache CreateCache()
         {
-            return _memoryCache.Value;
-        }
-
-        public ICache GetSharedCache()
-        {
-            return _sharedCache.Value;
-        }
-
-        public ICache GetTwoLayerCache()
-        {
-            return _twoLayerCache.Value;
-        }
-
-
-        private ICache CreateMemoryCache()
-        {
-            return new MemoryCacheImpl(_cacheSettings.Name);
-        }
-
-        private ICache CreateSharedCache()
-        {
-            return new RedisCacheImpl(_cacheSettings.Name, _redisSettings.ConnectionString);
-        }
-
-        private ICache CreateTwoLayerCache()
-        {
-            var memoryCache = GetMemoryCache();
-            var sharedCache = GetSharedCache();
-            var sharedCacheMessageBus = _cacheMessageBusFactory.GetSharedCacheMessageBus();
-            var twoLayerCache = new TwoLayerCacheImpl(memoryCache, sharedCache, sharedCacheMessageBus);
-            return twoLayerCache;
+            return _cache;
         }
     }
 }

@@ -7,6 +7,10 @@
     {
         public const string SectionName = "cache";
 
+        public const string RedisCackeKey = "Redis";
+
+        public const string TwoLayerCackeKey = "TwoLayer";
+
 
         public CacheSettings()
         {

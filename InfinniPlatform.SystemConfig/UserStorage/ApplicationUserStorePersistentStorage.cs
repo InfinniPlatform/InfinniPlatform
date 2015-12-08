@@ -6,6 +6,7 @@ using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.SearchOptions.Builders;
 using InfinniPlatform.Api.Security;
 using InfinniPlatform.Api.Serialization;
+using InfinniPlatform.Caching;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Settings;
 
@@ -13,15 +14,28 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 {
     internal sealed class ApplicationUserStorePersistentStorage : IApplicationUserStore
     {
-        public ApplicationUserStorePersistentStorage(IAppConfiguration appConfiguration)
+        /// <summary>
+        /// Имя события об изменении сведений пользователе.
+        /// </summary>
+        private const string UserStorageUpdateUserEvent = "UserStorageCache";
+
+
+        public ApplicationUserStorePersistentStorage(IAppConfiguration appConfiguration, ICacheMessageBus cacheMessageBus)
         {
             var settings = appConfiguration.GetSection<UserStorageSettings>(UserStorageSettings.SectionName);
 
+            // Создание локального кэша сведений о пользователях
             _userCache = new ApplicationUserStoreCache(settings.UserCacheTimeout);
+
+            _cacheMessageBus = cacheMessageBus;
+
+            // Создание подписки на событие от других узлов об изменениях сведений пользователя
+            cacheMessageBus.Subscribe(UserStorageUpdateUserEvent, OnUpdateUserMessage);
         }
 
 
         private readonly ApplicationUserStoreCache _userCache;
+        private readonly ICacheMessageBus _cacheMessageBus;
 
 
         public void CreateUser(ApplicationUser user)
@@ -33,6 +47,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 
             InsertUser(user);
             UpdateUserInCache(user);
+            NotifyUpdateUser(user.Id);
         }
 
         public void UpdateUser(ApplicationUser user)
@@ -40,6 +55,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             DeleteUser(user);
             InsertUser(user);
             UpdateUserInCache(user);
+            NotifyUpdateUser(user.Id);
         }
 
         private static void InsertUser(ApplicationUser user)
@@ -51,7 +67,8 @@ namespace InfinniPlatform.SystemConfig.UserStorage
         public void DeleteUser(ApplicationUser user)
         {
             DeleteDocument(AuthorizationStorageExtensions.UserStore, user.Id);
-            UpdateUserInCache(user);
+            RemoveUserFromCache(user.Id);
+            NotifyUpdateUser(user.Id);
         }
 
         public ApplicationUser FindUserById(string userId)
@@ -323,11 +340,46 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             return JsonObjectSerializer.Default.ConvertToDynamic(typeObject);
         }
 
+
+        /// <summary>
+        /// Уведомляет об изменениях сведений пользователя все узлы.
+        /// </summary>
+        private void NotifyUpdateUser(string userId)
+        {
+            _cacheMessageBus.Publish(UserStorageUpdateUserEvent, userId);
+        }
+
+        /// <summary>
+        /// Обрабатывает событие от других узлов об изменениях сведений пользователя.
+        /// </summary>
+        private void OnUpdateUserMessage(string key, string userId)
+        {
+            if (!string.IsNullOrEmpty(userId))
+            {
+                RemoveUserFromCache(userId);
+            }
+        }
+
+
+        /// <summary>
+        /// Обновляет сведения о пользователе в локальном кэше.
+        /// </summary>
         private void UpdateUserInCache(ApplicationUser user)
         {
             _userCache.AddOrUpdateUser(user);
         }
 
+        /// <summary>
+        /// Удаляет сведения о пользователе из локального кэша.
+        /// </summary>
+        private void RemoveUserFromCache(string userId)
+        {
+            _userCache.RemoveUser(userId);
+        }
+
+        /// <summary>
+        /// Ищет сведения о пользователе в локальном кэше.
+        /// </summary>
         private ApplicationUser FindUserInCache(Func<ApplicationUserStoreCache, ApplicationUser> cacheSelector, Func<ApplicationUser> storageSelector)
         {
             var user = cacheSelector(_userCache);
@@ -344,6 +396,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 
             return user;
         }
+
 
         private static string CreateUnique()
         {

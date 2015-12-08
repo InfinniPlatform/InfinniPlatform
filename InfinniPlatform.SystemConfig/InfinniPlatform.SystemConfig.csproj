@@ -158,6 +158,10 @@
       <Project>{3BCBCD4C-1155-464E-B020-51FA57B5E9B3}</Project>
       <Name>InfinniPlatform.BlobStorage</Name>
     </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Caching\InfinniPlatform.Caching.csproj">
+      <Project>{BD628B04-C2DF-458A-8406-6BB60729FC1C}</Project>
+      <Name>InfinniPlatform.Caching</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
       <Project>{ebc684b7-b72a-475f-bbc1-b6293b607b9b}</Project>
       <Name>InfinniPlatform.Core</Name>

@@ -1,5 +1,5 @@
 ﻿using InfinniPlatform.Caching.Factory;
-using InfinniPlatform.Factories;
+using InfinniPlatform.Caching.Session;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.IoC;
 
@@ -13,15 +13,19 @@ namespace InfinniPlatform.Caching.IoC
                    .As<ICacheMessageBusFactory>()
                    .SingleInstance();
 
+            builder.RegisterFactory(r => r.Resolve<ICacheMessageBusFactory>().CreateCacheMessageBus())
+                   .As<ICacheMessageBus>()
+                   .SingleInstance();
+
             builder.RegisterType<CacheFactory>()
                    .As<ICacheFactory>()
                    .SingleInstance();
 
-            builder.RegisterType<SessionManagerFactory>()
-                   .As<ISessionManagerFactory>()
+            builder.RegisterFactory(r => r.Resolve<ICacheFactory>().CreateCache())
+                   .As<ICache>()
                    .SingleInstance();
 
-            builder.RegisterFactory(r => r.Resolve<ISessionManagerFactory>().CreateSessionManager())
+            builder.RegisterType<SessionManager>()
                    .As<ISessionManager>()
                    .SingleInstance();
         }

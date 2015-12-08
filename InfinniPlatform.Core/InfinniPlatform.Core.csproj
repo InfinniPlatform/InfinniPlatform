@@ -78,7 +78,6 @@
     <Compile Include="ContextComponents\WebClientNotificationComponent.cs" />
     <Compile Include="Factories\ContextRegistration.cs" />
     <Compile Include="Factories\IPrintViewBuilderFactory.cs" />
-    <Compile Include="Factories\ISessionManagerFactory.cs" />
     <Compile Include="Hosting\ExtensionPointHandlerConfig.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Factories\AggregateProvider.cs" />

@@ -1,9 +1,8 @@
 ﻿using System;
 
-using InfinniPlatform.Caching.Factory;
-using InfinniPlatform.Sdk.Environment.Settings;
-
-using Moq;
+using InfinniPlatform.Caching.Memory;
+using InfinniPlatform.Caching.Redis;
+using InfinniPlatform.Caching.TwoLayer;
 
 using NUnit.Framework;
 
@@ -22,9 +21,13 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
         {
             // Given
 
-            var appConfigMock = new Mock<IAppConfiguration>();
-            appConfigMock.Setup(m => m.GetSection<CacheSettings>(CacheSettings.SectionName)).Returns(new CacheSettings());
-            appConfigMock.Setup(m => m.GetSection<RedisSettings>(RedisSettings.SectionName)).Returns(new RedisSettings());
+            const string cacheName = nameof(TwoLayerCacheImplMemoryTest);
+            const string redisConnectionString = "localhost,password=TeamCity,allowAdmin=true";
+
+            var memoryCache = new MemoryCacheImpl(cacheName);
+            var redisCache = new RedisCacheImpl(cacheName, redisConnectionString);
+            var redisCacheMessageBus = new RedisCacheMessageBusImpl(cacheName, redisConnectionString);
+            var twoLayerCache = new TwoLayerCacheImpl(memoryCache, redisCache, redisCacheMessageBus);
 
             const string key = "GetMemoryTest_Key";
 
@@ -32,7 +35,7 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
 
             // When
 
-            var cache = new CacheFactory(appConfigMock.Object, new CacheMessageBusFactory(appConfigMock.Object)).GetTwoLayerCache();
+            var cache = twoLayerCache;
 
             for (var i = 0; i < iterations; ++i)
             {

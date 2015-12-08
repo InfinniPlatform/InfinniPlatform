@@ -118,14 +118,14 @@ namespace InfinniPlatform.SystemConfig.UserStorage
         /// <summary>
         /// Удаляет сведения о пользователе системы.
         /// </summary>
-        /// <param name="user">Сведения о пользователе системы.</param>
-        public void RemoveUser(ApplicationUser user)
+        /// <param name="userId">Уникальный идентификатор пользователе системы.</param>
+        public void RemoveUser(string userId)
         {
             _cacheLockSlim.EnterWriteLock();
 
             try
             {
-                RemoveUserCache(user.Id);
+                RemoveUserCache(userId);
             }
             finally
             {

@@ -51,7 +51,6 @@
     <Compile Include="Factory\ICacheFactory.cs" />
     <Compile Include="Factory\ICacheMessageBusFactory.cs" />
     <Compile Include="Factory\RedisSettings.cs" />
-    <Compile Include="Factory\SessionManagerFactory.cs" />
     <Compile Include="ICache.cs" />
     <Compile Include="ICacheMessageBus.cs" />
     <Compile Include="IoC\CachingContainerModule.cs" />

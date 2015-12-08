@@ -10,40 +10,32 @@ namespace InfinniPlatform.Caching.Factory
     {
         public CacheMessageBusFactory(IAppConfiguration appConfiguration)
         {
-            _cacheSettings = appConfiguration.GetSection<CacheSettings>(CacheSettings.SectionName);
-            _redisSettings = appConfiguration.GetSection<RedisSettings>(RedisSettings.SectionName);
+            var cacheSettings = appConfiguration.GetSection<CacheSettings>(CacheSettings.SectionName);
 
-            _memoryCacheMessageBus = new Lazy<ICacheMessageBus>(CreateMemoryCacheMessageBus);
-            _sharedCacheMessageBus = new Lazy<ICacheMessageBus>(CreateSharedCacheMessageBus);
+            ICacheMessageBus cacheMessageBus;
+
+            if (string.Equals(cacheSettings.Type, CacheSettings.RedisCackeKey, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(cacheSettings.Type, CacheSettings.TwoLayerCackeKey, StringComparison.OrdinalIgnoreCase))
+            {
+                var redisSettings = appConfiguration.GetSection<RedisSettings>(RedisSettings.SectionName);
+
+                cacheMessageBus = new RedisCacheMessageBusImpl(cacheSettings.Name, redisSettings.ConnectionString);
+            }
+            else
+            {
+                cacheMessageBus = new MemoryCacheMessageBusImpl();
+            }
+
+            _cacheMessageBus = cacheMessageBus;
         }
 
 
-        private readonly CacheSettings _cacheSettings;
-        private readonly RedisSettings _redisSettings;
-
-        private readonly Lazy<ICacheMessageBus> _memoryCacheMessageBus;
-        private readonly Lazy<ICacheMessageBus> _sharedCacheMessageBus;
+        private readonly ICacheMessageBus _cacheMessageBus;
 
 
-        public ICacheMessageBus GetMemoryCacheMessageBus()
+        public ICacheMessageBus CreateCacheMessageBus()
         {
-            return _memoryCacheMessageBus.Value;
-        }
-
-        public ICacheMessageBus GetSharedCacheMessageBus()
-        {
-            return _sharedCacheMessageBus.Value;
-        }
-
-
-        private static ICacheMessageBus CreateMemoryCacheMessageBus()
-        {
-            return new MemoryCacheMessageBusImpl();
-        }
-
-        private ICacheMessageBus CreateSharedCacheMessageBus()
-        {
-            return new RedisCacheMessageBusImpl(_cacheSettings.Name, _redisSettings.ConnectionString);
+            return _cacheMessageBus;
         }
     }
 }

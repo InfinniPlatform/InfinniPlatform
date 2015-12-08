@@ -6,13 +6,8 @@
     public interface ICacheMessageBusFactory
     {
         /// <summary>
-        /// Возвращает интерфейс шины сообщений для отслеживания изменений в кэша в памяти.
+        /// Возвращает интерфейс шины сообщений для отслеживания изменений кэша.
         /// </summary>
-        ICacheMessageBus GetMemoryCacheMessageBus();
-
-        /// <summary>
-        /// Возвращает интерфейс шины сообщений для отслеживания изменений распределенного кэша.
-        /// </summary>
-        ICacheMessageBus GetSharedCacheMessageBus();
+        ICacheMessageBus CreateCacheMessageBus();
     }
 }

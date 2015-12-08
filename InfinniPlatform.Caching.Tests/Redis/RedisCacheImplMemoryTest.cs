@@ -1,9 +1,6 @@
 ﻿using System;
 
-using InfinniPlatform.Caching.Factory;
-using InfinniPlatform.Sdk.Environment.Settings;
-
-using Moq;
+using InfinniPlatform.Caching.Redis;
 
 using NUnit.Framework;
 
@@ -22,9 +19,10 @@ namespace InfinniPlatform.Caching.Tests.Redis
         {
             // Given
 
-            var appConfigMock = new Mock<IAppConfiguration>();
-            appConfigMock.Setup(m => m.GetSection<CacheSettings>(CacheSettings.SectionName)).Returns(new CacheSettings());
-            appConfigMock.Setup(m => m.GetSection<RedisSettings>(RedisSettings.SectionName)).Returns(new RedisSettings());
+            const string cacheName = nameof(RedisCacheImplMemoryTest);
+            const string redisConnectionString = "localhost,password=TeamCity,allowAdmin=true";
+
+            var redisCache = new RedisCacheImpl(cacheName, redisConnectionString);
 
             const string key = "GetMemoryTest_Key";
 
@@ -32,7 +30,7 @@ namespace InfinniPlatform.Caching.Tests.Redis
 
             // When
 
-            var cache = new CacheFactory(appConfigMock.Object, new CacheMessageBusFactory(appConfigMock.Object)).GetSharedCache();
+            var cache = redisCache;
 
             for (var i = 0; i < iterations; ++i)
             {
@@ -41,7 +39,7 @@ namespace InfinniPlatform.Caching.Tests.Redis
                 cache.Get(key);
             }
 
-            ((IDisposable)cache).Dispose();
+            cache.Dispose();
 
             double stopSize = GC.GetTotalMemory(true);
 

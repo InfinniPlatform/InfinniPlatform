@@ -1,9 +1,6 @@
 ﻿using System;
 
-using InfinniPlatform.Caching.Factory;
-using InfinniPlatform.Sdk.Environment.Settings;
-
-using Moq;
+using InfinniPlatform.Caching.Memory;
 
 using NUnit.Framework;
 
@@ -22,9 +19,9 @@ namespace InfinniPlatform.Caching.Tests.Memory
         {
             // Given
 
-            var appConfigMock = new Mock<IAppConfiguration>();
-            appConfigMock.Setup(m => m.GetSection<CacheSettings>(CacheSettings.SectionName)).Returns(new CacheSettings());
-            appConfigMock.Setup(m => m.GetSection<RedisSettings>(RedisSettings.SectionName)).Returns(new RedisSettings());
+            const string cacheName = nameof(MemoryCacheImplMemoryTest);
+
+            var memoryCache = new MemoryCacheImpl(cacheName);
 
             const string key = "GetMemoryTest_Key";
 
@@ -32,7 +29,7 @@ namespace InfinniPlatform.Caching.Tests.Memory
 
             // When
 
-            var cache = new CacheFactory(appConfigMock.Object, new CacheMessageBusFactory(appConfigMock.Object)).GetMemoryCache();
+            var cache = memoryCache;
 
             for (var i = 0; i < iterations; ++i)
             {
@@ -41,7 +38,7 @@ namespace InfinniPlatform.Caching.Tests.Memory
                 cache.Get(key);
             }
 
-            ((IDisposable)cache).Dispose();
+            cache.Dispose();
 
             double stopSize = GC.GetTotalMemory(true);
 
