@@ -61,6 +61,15 @@ namespace InfinniPlatform.Caching.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Redis command completed with error..
+        /// </summary>
+        internal static string RedisCommandCompletedWithError {
+            get {
+                return ResourceManager.GetString("RedisCommandCompletedWithError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Request is not authenticated..
         /// </summary>
         internal static string RequestIsNotAuthenticated {

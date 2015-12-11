@@ -3,7 +3,7 @@
 namespace InfinniPlatform.Sdk.Environment.Log
 {
     /// <summary>
-    /// Сервис протоколирования длительности вызова методов компонентов.
+    /// Сервис регистрации длительности выполнения методов.
     /// </summary>
     public interface IPerformanceLog
     {

@@ -57,14 +57,7 @@ namespace InfinniPlatform.Caching.Redis
             {
                 foreach (var subscriber in subscribers)
                 {
-                    try
-                    {
-                        subscriber.Handle(key, value);
-                    }
-                    catch
-                    {
-                        // TODO: Log
-                    }
+                    subscriber.Handle(key, value);
                 }
             }
         }

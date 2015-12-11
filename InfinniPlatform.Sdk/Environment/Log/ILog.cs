@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace InfinniPlatform.Sdk.Environment.Log
 {
     /// <summary>
-    /// Сервис журналирования событий.
+    /// Сервис регистрации событий.
     /// </summary>
     public interface ILog
     {

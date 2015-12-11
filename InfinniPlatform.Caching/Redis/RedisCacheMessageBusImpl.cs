@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+
+using InfinniPlatform.Caching.Properties;
+using InfinniPlatform.Sdk.Environment.Log;
 
 namespace InfinniPlatform.Caching.Redis
 {
@@ -13,11 +17,16 @@ namespace InfinniPlatform.Caching.Redis
         /// </summary>
         /// <param name="keyspace">Пространство имен для ключей.</param>
         /// <param name="connectionFactory">Фабрика подключений к Redis.</param>
-        public RedisCacheMessageBusImpl(string keyspace, RedisConnectionFactory connectionFactory)
+        /// <param name="log">Сервис регистрации событий.</param>
+        /// <param name="performanceLog">Сервис регистрации длительности выполнения методов.</param>
+        public RedisCacheMessageBusImpl(string keyspace, RedisConnectionFactory connectionFactory, ILog log, IPerformanceLog performanceLog)
         {
             _keyspace = keyspace;
             _connectionFactory = connectionFactory;
             _messageBusObserver = new Lazy<RedisMessageBusObserver>(CreateMessageBusObserver);
+
+            _log = log;
+            _performanceLog = performanceLog;
         }
 
 
@@ -25,39 +34,115 @@ namespace InfinniPlatform.Caching.Redis
         private readonly RedisConnectionFactory _connectionFactory;
         private readonly Lazy<RedisMessageBusObserver> _messageBusObserver;
 
+        private readonly ILog _log;
+        private readonly IPerformanceLog _performanceLog;
+
 
         private RedisMessageBusObserver CreateMessageBusObserver()
         {
-            var wrappedKeyPattern = "*".WrapCacheKey(_keyspace);
+            var startTime = DateTime.Now;
 
-            var keyspaceObservable = _connectionFactory.GetClient().PSubscribe(wrappedKeyPattern);
+            var wrappedKeyPattern = CachingHelpers.RedisStarWildcards.WrapCacheKey(_keyspace);
 
-            var messageBusObserver = new RedisMessageBusObserver();
+            try
+            {
+                // Подписка на все ключи текущего приложения
+                var keyspaceObservable = _connectionFactory.GetClient().PSubscribe(wrappedKeyPattern);
+                var messageBusObserver = new RedisMessageBusObserver();
+                keyspaceObservable.Subscribe(messageBusObserver);
 
-            keyspaceObservable.Subscribe(messageBusObserver);
+                _performanceLog.Log(CachingHelpers.PerformanceLogRedisComponent, CachingHelpers.PerformanceLogRedisSubscribeMethod, startTime, null);
 
-            return messageBusObserver;
+                return messageBusObserver;
+            }
+            catch (Exception exception)
+            {
+                var errorContext = new Dictionary<string, object>
+                                   {
+                                       { "method", CachingHelpers.PerformanceLogRedisSubscribeMethod }
+                                   };
+
+                _log.Error(Resources.RedisCommandCompletedWithError, errorContext, exception);
+
+                _performanceLog.Log(CachingHelpers.PerformanceLogRedisComponent, CachingHelpers.PerformanceLogRedisSubscribeMethod, startTime, exception.GetMessage());
+
+                throw;
+            }
+        }
+
+        private void TryPublish(string unwrappedKey, string value)
+        {
+            var startTime = DateTime.Now;
+
+            var wrappedKey = unwrappedKey.WrapCacheKey(_keyspace);
+
+            try
+            {
+                _connectionFactory.GetClient().Publish(wrappedKey, value);
+
+                _performanceLog.Log(CachingHelpers.PerformanceLogRedisComponent, CachingHelpers.PerformanceLogRedisPublishMethod, startTime, null);
+            }
+            catch (Exception exception)
+            {
+                var errorContext = new Dictionary<string, object>
+                                   {
+                                       { "method", CachingHelpers.PerformanceLogRedisPublishMethod },
+                                       { "key", unwrappedKey }
+                                   };
+
+                _log.Error(Resources.RedisCommandCompletedWithError, errorContext, exception);
+
+                _performanceLog.Log(CachingHelpers.PerformanceLogRedisComponent, CachingHelpers.PerformanceLogRedisPublishMethod, startTime, exception.GetMessage());
+
+                throw;
+            }
+        }
+
+        private void TryHandle(string wrappedKey, string value, Action<string, string> handler)
+        {
+            var startTime = DateTime.Now;
+
+            var unwrappedKey = wrappedKey.UnwrapCacheKey(_keyspace);
+
+            if (!string.IsNullOrEmpty(unwrappedKey))
+            {
+                try
+                {
+                    handler(unwrappedKey, value);
+
+                    _performanceLog.Log(CachingHelpers.PerformanceLogRedisComponent, CachingHelpers.PerformanceLogRedisHandleMethod, startTime, null);
+                }
+                catch (Exception exception)
+                {
+                    var errorContext = new Dictionary<string, object>
+                                   {
+                                       { "method", CachingHelpers.PerformanceLogRedisHandleMethod },
+                                       { "key", unwrappedKey }
+                                   };
+
+                    _log.Error(Resources.RedisCommandCompletedWithError, errorContext, exception);
+
+                    _performanceLog.Log(CachingHelpers.PerformanceLogRedisComponent, CachingHelpers.PerformanceLogRedisHandleMethod, startTime, exception.GetMessage());
+
+                    // Не пробрасываем исключение, так как ошибка в одном обработчике не должна влиять на другой
+                }
+            }
         }
 
 
         public Task Publish(string key, string value)
         {
-            Logging.Logger.Log.Info($"REDIS: Publish({key}, {value})");
-
             if (string.IsNullOrEmpty(key))
             {
                 throw new ArgumentNullException(nameof(key));
             }
 
-            var wrappedKey = key.WrapCacheKey(_keyspace);
-
-            return Task.Run(() => _connectionFactory.GetClient().Publish(wrappedKey, value));
+            // Нет смысла в логировании данной операции, так как она выполняется асинхронно
+            return Task.Run(() => TryPublish(key, value));
         }
 
         public IDisposable Subscribe(string key, Action<string, string> handler)
         {
-            Logging.Logger.Log.Info($"REDIS: Subscribe({key})");
-
             if (string.IsNullOrEmpty(key))
             {
                 throw new ArgumentNullException(nameof(key));
@@ -70,29 +155,10 @@ namespace InfinniPlatform.Caching.Redis
 
             var wrappedKey = key.WrapCacheKey(_keyspace);
 
+            // Нет смысла в логировании данной операции, так как добавление подписчика идет без обращения к Redis
             var subscription = _messageBusObserver.Value.Subscribe(wrappedKey, (wk, v) => TryHandle(wk, v, handler));
 
             return subscription;
-        }
-
-
-        private void TryHandle(string wrappedKey, string value, Action<string, string> handler)
-        {
-            Logging.Logger.Log.Info($"REDIS: TryHandle({wrappedKey}, {value})");
-
-            var unwrappedKey = wrappedKey.UnwrapCacheKey(_keyspace);
-
-            if (!string.IsNullOrEmpty(unwrappedKey))
-            {
-                try
-                {
-                    handler(unwrappedKey, value);
-                }
-                catch
-                {
-                    // TODO: Log
-                }
-            }
         }
     }
 }

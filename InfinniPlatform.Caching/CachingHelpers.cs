@@ -2,6 +2,20 @@
 {
     internal static class CachingHelpers
     {
+        public const string RedisStarWildcards = "*";
+
+        // IPerformanceLog
+        public const string PerformanceLogRedisComponent = "Redis";
+        public const string PerformanceLogRedisContainsMethod = "Contains";
+        public const string PerformanceLogRedisGetMethod = "Get";
+        public const string PerformanceLogRedisSetMethod = "Set";
+        public const string PerformanceLogRedisRemoveMethod = "Remove";
+        public const string PerformanceLogRedisClearMethod = "Clear";
+        public const string PerformanceLogRedisSubscribeMethod = "Subscribe";
+        public const string PerformanceLogRedisPublishMethod = "Publish";
+        public const string PerformanceLogRedisHandleMethod = "Handle";
+
+
         /// <summary>
         /// Возвращает ключ кэширования с указанием пространства имен.
         /// </summary>

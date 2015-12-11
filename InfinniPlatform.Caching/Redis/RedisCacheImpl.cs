@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+
+using InfinniPlatform.Caching.Properties;
+using InfinniPlatform.Sdk.Environment.Log;
 
 using Sider;
 
@@ -12,35 +16,39 @@ namespace InfinniPlatform.Caching.Redis
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="name">Пространство имен для ключей.</param>
+        /// <param name="keyspace">Пространство имен для ключей.</param>
         /// <param name="connectionFactory">Фабрика подключений к Redis.</param>
-        public RedisCacheImpl(string name, RedisConnectionFactory connectionFactory)
+        /// <param name="log">Сервис регистрации событий.</param>
+        /// <param name="performanceLog">Сервис регистрации длительности выполнения методов.</param>
+        public RedisCacheImpl(string keyspace, RedisConnectionFactory connectionFactory, ILog log, IPerformanceLog performanceLog)
         {
-            _name = name;
+            _keyspace = keyspace;
             _connectionFactory = connectionFactory;
+
+            _log = log;
+            _performanceLog = performanceLog;
         }
 
 
-        private readonly string _name;
+        private readonly string _keyspace;
         private readonly RedisConnectionFactory _connectionFactory;
+
+        private readonly ILog _log;
+        private readonly IPerformanceLog _performanceLog;
 
 
         public bool Contains(string key)
         {
-            Logging.Logger.Log.Info($"REDIS: Contains({key})");
-
             if (string.IsNullOrEmpty(key))
             {
                 throw new ArgumentNullException(nameof(key));
             }
 
-            return TryExecute((c, wk) => c.Exists(wk), key);
+            return TryExecute((c, wk) => c.Exists(wk), key, CachingHelpers.PerformanceLogRedisContainsMethod);
         }
 
         public string Get(string key)
         {
-            Logging.Logger.Log.Info($"REDIS: Get({key})");
-
             string value;
 
             TryGet(key, out value);
@@ -50,14 +58,12 @@ namespace InfinniPlatform.Caching.Redis
 
         public bool TryGet(string key, out string value)
         {
-            Logging.Logger.Log.Info($"REDIS: TryGet({key})");
-
             if (string.IsNullOrEmpty(key))
             {
                 throw new ArgumentNullException(nameof(key));
             }
 
-            var cacheValue = TryExecute((c, wk) => c.Get(wk), key);
+            var cacheValue = TryExecute((c, wk) => c.Get(wk), key, CachingHelpers.PerformanceLogRedisGetMethod);
 
             value = cacheValue;
 
@@ -66,8 +72,6 @@ namespace InfinniPlatform.Caching.Redis
 
         public void Set(string key, string value)
         {
-            Logging.Logger.Log.Info($"REDIS: Set({key}, {value})");
-
             if (string.IsNullOrEmpty(key))
             {
                 throw new ArgumentNullException(nameof(key));
@@ -78,25 +82,21 @@ namespace InfinniPlatform.Caching.Redis
                 throw new ArgumentNullException(nameof(value));
             }
 
-            TryExecute((c, wk) => c.Set(wk, value), key);
+            TryExecute((c, wk) => c.Set(wk, value), key, CachingHelpers.PerformanceLogRedisSetMethod);
         }
 
         public bool Remove(string key)
         {
-            Logging.Logger.Log.Info($"REDIS: Remove({key})");
-
             if (string.IsNullOrEmpty(key))
             {
                 throw new ArgumentNullException(nameof(key));
             }
 
-            return TryExecute((c, wk) => c.Del(wk) > 0, key);
+            return TryExecute((c, wk) => c.Del(wk) > 0, key, CachingHelpers.PerformanceLogRedisRemoveMethod);
         }
 
         public void Clear()
         {
-            Logging.Logger.Log.Info($"REDIS: Clear()");
-
             TryExecute((c, wk) =>
                        {
                            c.Pipeline(pc =>
@@ -106,15 +106,40 @@ namespace InfinniPlatform.Caching.Redis
                                       });
 
                            return true;
-                       }, "*");
+                       },
+                CachingHelpers.RedisStarWildcards,
+                CachingHelpers.PerformanceLogRedisClearMethod);
         }
 
 
-        private T TryExecute<T>(Func<IRedisClient<string>, string, T> action, string key)
+        private T TryExecute<T>(Func<IRedisClient<string>, string, T> action, string key, string method)
         {
-            var wrappedKey = key.WrapCacheKey(_name);
+            var startTime = DateTime.Now;
 
-            return action(_connectionFactory.GetClient(), wrappedKey);
+            var wrappedKey = key.WrapCacheKey(_keyspace);
+
+            try
+            {
+                var result = action(_connectionFactory.GetClient(), wrappedKey);
+
+                _performanceLog.Log(CachingHelpers.PerformanceLogRedisComponent, method, startTime, null);
+
+                return result;
+            }
+            catch (Exception exception)
+            {
+                var errorContext = new Dictionary<string, object>
+                                   {
+                                       { "method", method },
+                                       { "key", key }
+                                   };
+
+                _log.Error(Resources.RedisCommandCompletedWithError, errorContext, exception);
+
+                _performanceLog.Log(CachingHelpers.PerformanceLogRedisComponent, method, startTime, exception.GetMessage());
+
+                throw;
+            }
         }
     }
 }

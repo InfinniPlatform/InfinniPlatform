@@ -2,6 +2,9 @@
 using System.Threading;
 
 using InfinniPlatform.Caching.Redis;
+using InfinniPlatform.Sdk.Environment.Log;
+
+using Moq;
 
 using NUnit.Framework;
 
@@ -24,7 +27,10 @@ namespace InfinniPlatform.Caching.Tests.Redis
                 Password = "TeamCity"
             };
 
-            var messageBus = new RedisCacheMessageBusImpl(cacheName, new RedisConnectionFactory(settings));
+            var log = new Mock<ILog>().Object;
+            var performanceLog = new Mock<IPerformanceLog>().Object;
+
+            var messageBus = new RedisCacheMessageBusImpl(cacheName, new RedisConnectionFactory(settings), log, performanceLog);
 
             // subscriber1 for Key1
 

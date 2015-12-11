@@ -7,15 +7,17 @@
     {
         public const string SectionName = "cache";
 
-        public const string RedisCackeKey = "Redis";
+        public const string MemoryCacheKey = "Redis";
 
-        public const string TwoLayerCackeKey = "TwoLayer";
+        public const string RedisCacheKey = "Redis";
+
+        public const string TwoLayerCacheKey = "TwoLayer";
 
 
         public CacheSettings()
         {
             Name = "InfinniPlatform";
-            Type = "Memory";
+            Type = MemoryCacheKey;
         }
 
 

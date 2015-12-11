@@ -1,6 +1,9 @@
 ﻿using System;
 
 using InfinniPlatform.Caching.Redis;
+using InfinniPlatform.Sdk.Environment.Log;
+
+using Moq;
 
 using NUnit.Framework;
 
@@ -27,7 +30,10 @@ namespace InfinniPlatform.Caching.Tests.Redis
                 Password = "TeamCity"
             };
 
-            var redisCache = new RedisCacheImpl(cacheName, new RedisConnectionFactory(settings));
+            var log = new Mock<ILog>().Object;
+            var performanceLog = new Mock<IPerformanceLog>().Object;
+
+            var redisCache = new RedisCacheImpl(cacheName, new RedisConnectionFactory(settings), log, performanceLog);
 
             const string key = "GetMemoryTest_Key";
 

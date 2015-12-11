@@ -5,6 +5,7 @@ using InfinniPlatform.Caching.Redis;
 using InfinniPlatform.Caching.Session;
 using InfinniPlatform.Caching.TwoLayer;
 using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Environment.Log;
 using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.Sdk.IoC;
 
@@ -64,17 +65,23 @@ namespace InfinniPlatform.Caching.IoC
 
             ICache cache;
 
-            if (string.Equals(cacheSettings.Type, CacheSettings.RedisCackeKey, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(cacheSettings.Type, CacheSettings.RedisCacheKey, StringComparison.OrdinalIgnoreCase))
             {
+                var log = resolver.Resolve<ILog>();
+                var performanceLog = resolver.Resolve<IPerformanceLog>();
+
                 var redisConnectionFactory = resolver.Resolve<RedisConnectionFactory>();
-                var redisCache = new RedisCacheImpl(cacheSettings.Name, redisConnectionFactory);
+                var redisCache = new RedisCacheImpl(cacheSettings.Name, redisConnectionFactory, log, performanceLog);
                 cache = redisCache;
             }
-            else if (string.Equals(cacheSettings.Type, CacheSettings.TwoLayerCackeKey, StringComparison.OrdinalIgnoreCase))
+            else if (string.Equals(cacheSettings.Type, CacheSettings.TwoLayerCacheKey, StringComparison.OrdinalIgnoreCase))
             {
+                var log = resolver.Resolve<ILog>();
+                var performanceLog = resolver.Resolve<IPerformanceLog>();
+
                 var redisConnectionFactory = resolver.Resolve<RedisConnectionFactory>();
                 var memoryCache = new MemoryCacheImpl(cacheSettings.Name);
-                var redisCache = new RedisCacheImpl(cacheSettings.Name, redisConnectionFactory);
+                var redisCache = new RedisCacheImpl(cacheSettings.Name, redisConnectionFactory, log, performanceLog);
                 var redisCacheMessageBus = resolver.Resolve<ICacheMessageBus>();
                 var twoLayerCache = new TwoLayerCacheImpl(memoryCache, redisCache, redisCacheMessageBus);
                 cache = twoLayerCache;
@@ -95,11 +102,14 @@ namespace InfinniPlatform.Caching.IoC
 
             ICacheMessageBus cacheMessageBus;
 
-            if (string.Equals(cacheSettings.Type, CacheSettings.RedisCackeKey, StringComparison.OrdinalIgnoreCase)
-                || string.Equals(cacheSettings.Type, CacheSettings.TwoLayerCackeKey, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(cacheSettings.Type, CacheSettings.RedisCacheKey, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(cacheSettings.Type, CacheSettings.TwoLayerCacheKey, StringComparison.OrdinalIgnoreCase))
             {
+                var log = resolver.Resolve<ILog>();
+                var performanceLog = resolver.Resolve<IPerformanceLog>();
+
                 var redisConnectionFactory = resolver.Resolve<RedisConnectionFactory>();
-                cacheMessageBus = new RedisCacheMessageBusImpl(cacheSettings.Name, redisConnectionFactory);
+                cacheMessageBus = new RedisCacheMessageBusImpl(cacheSettings.Name, redisConnectionFactory, log, performanceLog);
             }
             else
             {
