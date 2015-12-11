@@ -30,8 +30,22 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             _usersByPhone = new ConcurrentDictionary<string, ApplicationUser>();
             _usersByLogin = new ConcurrentDictionary<string, ApplicationUser>();
 
-            // Подписываемся на событие изменения сведений пользователя на других узлах
-            _cacheMessageBus.Subscribe(ApplicationUserStoreCacheEvent, OnApplicationUserStoreCacheEvent);
+            //TODO Remove or improve logging upon reaching Linux stability.
+            Logging.Logger.Log.Info("ApplicationUserStoreCache: Subscribe()...");
+
+            try
+            {
+                // Подписываемся на событие изменения сведений пользователя на других узлах
+                _cacheMessageBus.Subscribe(ApplicationUserStoreCacheEvent, OnApplicationUserStoreCacheEvent);
+
+                Logging.Logger.Log.Info("ApplicationUserStoreCache: Subscribe() - OK");
+
+            }
+            catch (Exception e)
+            {
+                Logging.Logger.Log.Error($"ApplicationUserStoreCache: Subscribe() - {e}");
+                throw;
+            }
         }
 
 
@@ -127,8 +141,13 @@ namespace InfinniPlatform.SystemConfig.UserStorage
                 _cacheLockSlim.ExitWriteLock();
             }
 
+            //TODO Remove or improve logging upon reaching Linux stability.
+            Logging.Logger.Log.Info("ApplicationUserStoreCache: Publish()...");
+
             // Оповещаем другие узлы об изменении сведений пользователя
             _cacheMessageBus.Publish(ApplicationUserStoreCacheEvent, user.Id);
+
+            Logging.Logger.Log.Info("ApplicationUserStoreCache: Publish() - OK");
         }
 
         /// <summary>
