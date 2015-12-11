@@ -1,4 +1,5 @@
 ﻿using InfinniPlatform.Api.Metadata;
+using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
@@ -39,6 +40,19 @@ namespace InfinniPlatform.SystemConfig.Configurator
             if (printViewMetadata != null)
             {
                 var printViewSource = _documentApi.GetDocument(configId, documentId, documentFilter, pageNumber, pageSize);
+
+                // TODO: Это вообще какое-то извращение
+
+                string updateAction = target.FormData.ActionId;
+
+                if (!string.IsNullOrEmpty(updateAction))
+                {
+                    dynamic requestBody = new DynamicWrapper();
+                    requestBody.Parameters = target.FormData;
+                    requestBody.PrintViewSource = printViewSource;
+
+                    printViewSource = RestQueryApi.QueryPostJsonRaw(configId, documentId, updateAction, null, requestBody).ToDynamicList();
+                }
 
                 data = _printViewComponent.BuildPrintView(printViewMetadata, printViewSource, PrintViewFileFormat.Pdf);
             }
