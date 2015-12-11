@@ -7,10 +7,12 @@
     {
         public const string SectionName = "userStorage";
 
+        public const int DefaultUserCacheTimeout = 30;
+
 
         public UserStorageSettings()
         {
-            UserCacheTimeout = 30;
+            UserCacheTimeout = DefaultUserCacheTimeout;
         }
 
 

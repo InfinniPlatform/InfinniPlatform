@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Caching.Factory
+﻿namespace InfinniPlatform.Caching
 {
     /// <summary>
     /// Настройки кэширования.

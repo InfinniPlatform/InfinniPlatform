@@ -10,7 +10,7 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
 {
     [TestFixture]
     [Category(TestCategories.PerformanceTest)]
-    [Ignore("Should setup Redis on TeamCity")]
+    [Ignore("Manual")]
     public sealed class TwoLayerCacheImplMemoryTest
     {
         [Test]
@@ -21,12 +21,18 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
         {
             // Given
 
-            const string cacheName = nameof(TwoLayerCacheImplMemoryTest);
-            const string redisConnectionString = "localhost,password=TeamCity,allowAdmin=true";
+            var cacheName = GetType().Name;
+
+            var settings = new RedisConnectionSettings
+            {
+                Host = "localhost",
+                Password = "TeamCity"
+            };
 
             var memoryCache = new MemoryCacheImpl(cacheName);
-            var redisCache = new RedisCacheImpl(cacheName, redisConnectionString);
-            var redisCacheMessageBus = new RedisCacheMessageBusImpl(cacheName, redisConnectionString);
+            var redisConnectionFactory = new RedisConnectionFactory(settings);
+            var redisCache = new RedisCacheImpl(cacheName, redisConnectionFactory);
+            var redisCacheMessageBus = new RedisCacheMessageBusImpl(cacheName, redisConnectionFactory);
             var twoLayerCache = new TwoLayerCacheImpl(memoryCache, redisCache, redisCacheMessageBus);
 
             const string key = "GetMemoryTest_Key";

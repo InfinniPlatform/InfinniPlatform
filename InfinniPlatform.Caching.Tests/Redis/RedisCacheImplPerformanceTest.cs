@@ -7,96 +7,97 @@ using NUnit.Framework;
 
 namespace InfinniPlatform.Caching.Tests.Redis
 {
-	[TestFixture]
-	[Category(TestCategories.PerformanceTest)]
-	[Ignore("Should setup Redis on TeamCity")]
-	public sealed class RedisCacheImplPerformanceTest
-	{
-		private ICache _cache;
+    [TestFixture]
+    [Category(TestCategories.PerformanceTest)]
+    [Ignore("Manual")]
+    public sealed class RedisCacheImplPerformanceTest
+    {
+        private ICache _cache;
 
-		[SetUp]
-		public void SetUp()
-		{
-			_cache = new RedisCacheImpl(nameof(RedisCacheImplPerformanceTest), "localhost");
-		}
+        [SetUp]
+        public void SetUp()
+        {
+            var cacheName = GetType().Name;
 
-		[TearDown]
-		public void TearDown()
-		{
-			((IDisposable)_cache).Dispose();
-		}
+            var settings = new RedisConnectionSettings
+            {
+                Host = "localhost",
+                Password = "TeamCity"
+            };
 
+            _cache = new RedisCacheImpl(cacheName, new RedisConnectionFactory(settings));
+        }
 
-		[Test]
-		[TestCase(1000)]
-		[TestCase(10000)]
-		[TestCase(100000)]
-		public void GetPerformance(int iterations)
-		{
-			// Given
+        [Test]
+        [TestCase(1000)]
+        [TestCase(10000)]
+        [TestCase(100000)]
+        public void GetPerformance(int iterations)
+        {
+            // Given
 
-			const string key = "GetPerformance_Key";
-			const string value = "GetPerformance_Value";
+            const string key = "GetPerformance_Key";
+            const string value = "GetPerformance_Value";
 
-			_cache.Set(key, value);
-			_cache.Get(key);
+            _cache.Set(key, value);
+            _cache.Get(key);
 
-			// When
+            // When
 
-			var stopwatch = new Stopwatch();
+            var stopwatch = new Stopwatch();
 
-			for (var i = 0; i < iterations; ++i)
-			{
-				stopwatch.Start();
+            for (var i = 0; i < iterations; ++i)
+            {
+                stopwatch.Start();
 
-				_cache.Get(key);
+                _cache.Get(key);
 
-				stopwatch.Stop();
-			}
+                stopwatch.Stop();
+            }
 
-			// Then
-			var avg = stopwatch.Elapsed.TotalMilliseconds / iterations;
-			Console.WriteLine(@"RedisCacheImpl.Get()");
-			Console.WriteLine(@"  Iteration count: {0}", iterations);
-			Console.WriteLine(@"  Operation time : {0:N4} sec", avg);
-			Console.WriteLine(@"  Operation/sec  : {0:N4}", 1000 / avg);
-		}
+            // Then
+            var avg = stopwatch.Elapsed.TotalMilliseconds / iterations;
+            Console.WriteLine(@"RedisCacheImpl.Get()");
+            Console.WriteLine(@"  Iteration count: {0}", iterations);
+            Console.WriteLine(@"  Operation time : {0:N4} sec", avg);
+            Console.WriteLine(@"  Operation/sec  : {0:N4}", 1000 / avg);
+        }
 
-		[Test]
-		[TestCase(1000)]
-		[TestCase(10000)]
-		[TestCase(100000)]
-		public void SetPerformance(int iterations)
-		{
-			// Given
+        [Test]
+        [TestCase(1000)]
+        [TestCase(10000)]
+        [TestCase(100000)]
+        public void SetPerformance(int iterations)
+        {
+            // Given
 
-			const string key = "SetPerformance_Key";
-			const string value = "SetPerformance_Value";
+            const string key = "SetPerformance_Key";
+            const string value = "SetPerformance_Value";
 
-			_cache.Set(key, value);
-			_cache.Get(key);
+            _cache.Set(key, value);
+            _cache.Get(key);
 
-			// When
+            // When
 
-			var stopwatch = new Stopwatch();
+            var stopwatch = new Stopwatch();
 
-			for (var i = 0; i < iterations; ++i)
-			{
-				var newValue = Guid.NewGuid().ToString("N");
+            for (var i = 0; i < iterations; ++i)
+            {
+                var newValue = Guid.NewGuid().ToString("N");
 
-				stopwatch.Start();
+                stopwatch.Start();
 
-				_cache.Set(key, newValue);
+                _cache.Set(key, newValue);
 
-				stopwatch.Stop();
-			}
+                stopwatch.Stop();
+            }
 
-			// Then
-			var avg = stopwatch.Elapsed.TotalMilliseconds / iterations;
-			Console.WriteLine(@"RedisCacheImpl.Set()");
-			Console.WriteLine(@"  Iteration count: {0}", iterations);
-			Console.WriteLine(@"  Operation time : {0:N4} sec", avg);
-			Console.WriteLine(@"  Operation/sec  : {0:N4}", 1000 / avg);
-		}
-	}
+            // Then
+            var avg = stopwatch.Elapsed.TotalMilliseconds / iterations;
+            Console.WriteLine(@"RedisCacheImpl.Set()");
+            Console.WriteLine(@"  Iteration count: {0}", iterations);
+            Console.WriteLine(@"  Operation time : {0:N4} sec", avg);
+            Console.WriteLine(@"  Operation/sec  : {0:N4}", 1000 / avg);
+        }
+    }
 }

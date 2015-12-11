@@ -1,59 +1,63 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using StackExchange.Redis;
-
 namespace InfinniPlatform.Caching.Redis
 {
     /// <summary>
-    /// Реализует интерфейс шины сообщений для отслеживания изменений в кэше <see cref="RedisCacheImpl"/>.
+    /// Реализует интерфейс шины сообщений на базе Redis.
     /// </summary>
-    internal sealed class RedisCacheMessageBusImpl : ICacheMessageBus, IDisposable
+    internal sealed class RedisCacheMessageBusImpl : ICacheMessageBus
     {
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="name">Пространство имен для ключей.</param>
-        /// <param name="connectionString">Строка подключения к Redis.</param>
-        /// <exception cref="ArgumentNullException"></exception>
-        public RedisCacheMessageBusImpl(string name, string connectionString)
+        /// <param name="keyspace">Пространство имен для ключей.</param>
+        /// <param name="connectionFactory">Фабрика подключений к Redis.</param>
+        public RedisCacheMessageBusImpl(string keyspace, RedisConnectionFactory connectionFactory)
         {
-            if (string.IsNullOrEmpty(name))
-            {
-                throw new ArgumentNullException(nameof(name));
-            }
-
-            if (string.IsNullOrEmpty(connectionString))
-            {
-                throw new ArgumentNullException(nameof(connectionString));
-            }
-
-            _name = name;
-            _exchange = new Lazy<ISubscriber>(() => CreateExchange(connectionString));
+            _keyspace = keyspace;
+            _connectionFactory = connectionFactory;
+            _messageBusObserver = new Lazy<RedisMessageBusObserver>(CreateMessageBusObserver);
         }
 
 
-        private readonly string _name;
-        private readonly Lazy<ISubscriber> _exchange;
+        private readonly string _keyspace;
+        private readonly RedisConnectionFactory _connectionFactory;
+        private readonly Lazy<RedisMessageBusObserver> _messageBusObserver;
+
+
+        private RedisMessageBusObserver CreateMessageBusObserver()
+        {
+            var wrappedKeyPattern = "*".WrapCacheKey(_keyspace);
+
+            var keyspaceObservable = _connectionFactory.GetClient().PSubscribe(wrappedKeyPattern);
+
+            var messageBusObserver = new RedisMessageBusObserver();
+
+            keyspaceObservable.Subscribe(messageBusObserver);
+
+            return messageBusObserver;
+        }
 
 
         public Task Publish(string key, string value)
         {
+            Logging.Logger.Log.Info($"REDIS: Publish({key}, {value})");
+
             if (string.IsNullOrEmpty(key))
             {
                 throw new ArgumentNullException(nameof(key));
             }
 
-            return Task.Run(() =>
-            {
-                var wrappedKey = key.WrapCacheKey(_name);
+            var wrappedKey = key.WrapCacheKey(_keyspace);
 
-                TryPublish(wrappedKey, value);
-            });
+            return Task.Run(() => _connectionFactory.GetClient().Publish(wrappedKey, value));
         }
 
         public IDisposable Subscribe(string key, Action<string, string> handler)
         {
+            Logging.Logger.Log.Info($"REDIS: Subscribe({key})");
+
             if (string.IsNullOrEmpty(key))
             {
                 throw new ArgumentNullException(nameof(key));
@@ -64,49 +68,19 @@ namespace InfinniPlatform.Caching.Redis
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            var wrappedKey = new RedisChannel(key.WrapCacheKey(_name), RedisChannel.PatternMode.Literal);
+            var wrappedKey = key.WrapCacheKey(_keyspace);
 
-            var subscriber = new Subscriber(() => TryUnsubscribe(wrappedKey));
+            var subscription = _messageBusObserver.Value.Subscribe(wrappedKey, (wk, v) => TryHandle(wk, v, handler));
 
-            TrySubscribe(wrappedKey, handler);
-
-            return subscriber;
+            return subscription;
         }
 
-        public void Dispose()
-        {
-            if (_exchange.IsValueCreated)
-            {
-                _exchange.Value.Multiplexer.Dispose();
-            }
-        }
-
-
-        private static ISubscriber CreateExchange(string connectionString)
-        {
-            var connection = ConnectionMultiplexer.Connect(connectionString);
-            var exchange = connection.GetSubscriber();
-            return exchange;
-        }
-
-        private void TryPublish(string wrappedKey, string value)
-        {
-            CachingHelpers.TryExecute(() => _exchange.Value.Publish(wrappedKey, value));
-        }
-
-        private void TrySubscribe(RedisChannel wrappedKey, Action<string, string> handler)
-        {
-            CachingHelpers.TryExecute(() => _exchange.Value.Subscribe(wrappedKey, (k, v) => TryHandle(k, v, handler)));
-        }
-
-        private void TryUnsubscribe(RedisChannel wrappedKey)
-        {
-            CachingHelpers.TryExecute(() => _exchange.Value.Unsubscribe(wrappedKey));
-        }
 
         private void TryHandle(string wrappedKey, string value, Action<string, string> handler)
         {
-            var unwrappedKey = wrappedKey.UnwrapCacheKey(_name);
+            Logging.Logger.Log.Info($"REDIS: TryHandle({wrappedKey}, {value})");
+
+            var unwrappedKey = wrappedKey.UnwrapCacheKey(_keyspace);
 
             if (!string.IsNullOrEmpty(unwrappedKey))
             {
@@ -116,25 +90,8 @@ namespace InfinniPlatform.Caching.Redis
                 }
                 catch
                 {
+                    // TODO: Log
                 }
-            }
-        }
-
-
-        private sealed class Subscriber : IDisposable
-        {
-            public Subscriber(Action unsubscribe)
-            {
-                _unsubscribe = unsubscribe;
-            }
-
-
-            private readonly Action _unsubscribe;
-
-
-            public void Dispose()
-            {
-                _unsubscribe();
             }
         }
     }

@@ -5,14 +5,23 @@ using System.Runtime.Caching;
 using System.Threading;
 
 using InfinniPlatform.Api.Security;
+using InfinniPlatform.Caching;
 
 namespace InfinniPlatform.SystemConfig.UserStorage
 {
     internal sealed class ApplicationUserStoreCache
     {
-        public ApplicationUserStoreCache(int userCacheTimeout)
+        private const string ApplicationUserStoreCacheEvent = nameof(ApplicationUserStoreCache);
+
+
+        public ApplicationUserStoreCache(UserStorageSettings userStorageSettings, ICacheMessageBus cacheMessageBus)
         {
-            _cacheTimeout = TimeSpan.FromMinutes(Math.Max(userCacheTimeout, 1));
+            var cacheTimeout = (userStorageSettings.UserCacheTimeout <= 0)
+                ? UserStorageSettings.DefaultUserCacheTimeout
+                : userStorageSettings.UserCacheTimeout;
+
+            _cacheTimeout = TimeSpan.FromMinutes(cacheTimeout);
+            _cacheMessageBus = cacheMessageBus;
             _cacheLockSlim = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
             _usersById = new MemoryCache("UserCache");
@@ -20,10 +29,14 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             _usersByEmail = new ConcurrentDictionary<string, ApplicationUser>();
             _usersByPhone = new ConcurrentDictionary<string, ApplicationUser>();
             _usersByLogin = new ConcurrentDictionary<string, ApplicationUser>();
+
+            // Подписываемся на событие изменения сведений пользователя на других узлах
+            _cacheMessageBus.Subscribe(ApplicationUserStoreCacheEvent, OnApplicationUserStoreCacheEvent);
         }
 
 
         private readonly TimeSpan _cacheTimeout;
+        private readonly ICacheMessageBus _cacheMessageBus;
         private readonly ReaderWriterLockSlim _cacheLockSlim;
 
         private readonly MemoryCache _usersById;
@@ -113,6 +126,9 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             {
                 _cacheLockSlim.ExitWriteLock();
             }
+
+            // Оповещаем другие узлы об изменении сведений пользователя
+            _cacheMessageBus.Publish(ApplicationUserStoreCacheEvent, user.Id);
         }
 
         /// <summary>
@@ -163,9 +179,18 @@ namespace InfinniPlatform.SystemConfig.UserStorage
         }
 
 
+        private void OnApplicationUserStoreCacheEvent(string key, string userId)
+        {
+            if (!string.IsNullOrEmpty(userId))
+            {
+                RemoveUser(userId);
+            }
+        }
+
+
         private static string GetUserLoginKey(ApplicationUserLogin userLogin)
         {
-            return string.Format("{0},{1}", userLogin.Provider, userLogin.ProviderKey);
+            return $"{userLogin.Provider},{userLogin.ProviderKey}";
         }
 
 

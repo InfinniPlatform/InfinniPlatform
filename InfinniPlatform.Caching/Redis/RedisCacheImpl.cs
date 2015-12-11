@@ -1,54 +1,46 @@
 ﻿using System;
-using System.Linq;
 
-using StackExchange.Redis;
+using Sider;
 
 namespace InfinniPlatform.Caching.Redis
 {
     /// <summary>
     /// Реализует интерфейс для управления распределенным кэшем на базе Redis.
     /// </summary>
-    internal sealed class RedisCacheImpl : ICache, IDisposable
+    internal sealed class RedisCacheImpl : ICache
     {
         /// <summary>
         /// Конструктор.
         /// </summary>
         /// <param name="name">Пространство имен для ключей.</param>
-        /// <param name="connectionString">Строка подключения к Redis.</param>
-        /// <exception cref="ArgumentNullException"></exception>
-        public RedisCacheImpl(string name, string connectionString)
+        /// <param name="connectionFactory">Фабрика подключений к Redis.</param>
+        public RedisCacheImpl(string name, RedisConnectionFactory connectionFactory)
         {
-            if (string.IsNullOrEmpty(name))
-            {
-                throw new ArgumentNullException(nameof(name));
-            }
-
-            if (string.IsNullOrEmpty(connectionString))
-            {
-                throw new ArgumentNullException(nameof(connectionString));
-            }
-
             _name = name;
-            _database = new Lazy<IDatabase>(() => CreateDatabase(connectionString));
+            _connectionFactory = connectionFactory;
         }
 
 
         private readonly string _name;
-        private readonly Lazy<IDatabase> _database;
+        private readonly RedisConnectionFactory _connectionFactory;
 
 
         public bool Contains(string key)
         {
+            Logging.Logger.Log.Info($"REDIS: Contains({key})");
+
             if (string.IsNullOrEmpty(key))
             {
                 throw new ArgumentNullException(nameof(key));
             }
 
-            return TryExecute((d, k) => d.KeyExists(k), key);
+            return TryExecute((c, wk) => c.Exists(wk), key);
         }
 
         public string Get(string key)
         {
+            Logging.Logger.Log.Info($"REDIS: Get({key})");
+
             string value;
 
             TryGet(key, out value);
@@ -58,20 +50,24 @@ namespace InfinniPlatform.Caching.Redis
 
         public bool TryGet(string key, out string value)
         {
+            Logging.Logger.Log.Info($"REDIS: TryGet({key})");
+
             if (string.IsNullOrEmpty(key))
             {
                 throw new ArgumentNullException(nameof(key));
             }
 
-            var cacheValue = TryExecute((d, k) => d.StringGet(k), key);
+            var cacheValue = TryExecute((c, wk) => c.Get(wk), key);
 
             value = cacheValue;
 
-            return cacheValue.HasValue;
+            return !string.IsNullOrEmpty(cacheValue);
         }
 
         public void Set(string key, string value)
         {
+            Logging.Logger.Log.Info($"REDIS: Set({key}, {value})");
+
             if (string.IsNullOrEmpty(key))
             {
                 throw new ArgumentNullException(nameof(key));
@@ -82,63 +78,43 @@ namespace InfinniPlatform.Caching.Redis
                 throw new ArgumentNullException(nameof(value));
             }
 
-            TryExecute((d, k) => d.StringSet(k, value), key);
+            TryExecute((c, wk) => c.Set(wk, value), key);
         }
 
         public bool Remove(string key)
         {
+            Logging.Logger.Log.Info($"REDIS: Remove({key})");
+
             if (string.IsNullOrEmpty(key))
             {
                 throw new ArgumentNullException(nameof(key));
             }
 
-            return TryExecute((d, k) => d.KeyDelete(k), key);
+            return TryExecute((c, wk) => c.Del(wk) > 0, key);
         }
 
         public void Clear()
         {
-            TryExecute((d, k) =>
-            {
-                var endpoints = d.Multiplexer.GetEndPoints();
+            Logging.Logger.Log.Info($"REDIS: Clear()");
 
-                if (endpoints != null && endpoints.Length > 0)
-                {
-                    var server = d.Multiplexer.GetServer(endpoints[0]);
+            TryExecute((c, wk) =>
+                       {
+                           c.Pipeline(pc =>
+                                      {
+                                          var allKeys = pc.Keys(wk);
+                                          pc.Del(allKeys);
+                                      });
 
-                    if (server != null)
-                    {
-                        var allKeys = server.Keys(d.Database, k).ToArray();
-
-                        d.KeyDelete(allKeys);
-                    }
-                }
-
-                return true;
-            }, "*");
-        }
-
-        public void Dispose()
-        {
-            if (_database.IsValueCreated)
-            {
-                var connection = _database.Value.Multiplexer;
-                connection.Dispose();
-            }
+                           return true;
+                       }, "*");
         }
 
 
-        private static IDatabase CreateDatabase(string connectionString)
-        {
-            var connection = ConnectionMultiplexer.Connect(connectionString);
-            var database = connection.GetDatabase();
-            return database;
-        }
-
-        private T TryExecute<T>(Func<IDatabase, string, T> action, string key)
+        private T TryExecute<T>(Func<IRedisClient<string>, string, T> action, string key)
         {
             var wrappedKey = key.WrapCacheKey(_name);
 
-            return CachingHelpers.TryExecute(() => action(_database.Value, wrappedKey));
+            return action(_connectionFactory.GetClient(), wrappedKey);
         }
     }
 }

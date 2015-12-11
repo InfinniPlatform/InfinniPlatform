@@ -1,61 +1,7 @@
-﻿using System;
-using System.Threading;
-
-namespace InfinniPlatform.Caching
+﻿namespace InfinniPlatform.Caching
 {
     internal static class CachingHelpers
     {
-        public const int AttempCount = 5;
-
-        public const int AttempDelay = 10 * 1000;
-
-
-        /// <summary>
-        /// Пытается выполнить метод за указанное количество попыток и с указанным ожиданием между попытками.
-        /// </summary>
-        /// <param name="action">Метод.</param>
-        /// <param name="attempCount">Количество попыток.</param>
-        /// <param name="attempDelay">Ожиданием между попытками.</param>
-        public static void TryExecute(Action action, int attempCount = AttempCount, int attempDelay = AttempDelay)
-        {
-            TryExecute<object>(() =>
-                               {
-                                   action();
-                                   return null;
-                               }, attempCount, attempDelay);
-        }
-
-        /// <summary>
-        /// Пытается выполнить метод за указанное количество попыток и с указанным ожиданием между попытками.
-        /// </summary>
-        /// <param name="action">Метод.</param>
-        /// <param name="attempCount">Количество попыток.</param>
-        /// <param name="attempDelay">Ожиданием между попытками.</param>
-        public static T TryExecute<T>(Func<T> action, int attempCount = AttempCount, int attempDelay = AttempDelay)
-        {
-            Exception error = null;
-
-            for (var i = 1; i <= attempCount; ++i)
-            {
-                try
-                {
-                    return action();
-                }
-                catch (Exception e)
-                {
-                    error = e;
-                }
-
-                if (i < attempCount)
-                {
-                    Thread.Sleep(i * attempDelay);
-                }
-            }
-
-            throw error ?? new InvalidOperationException();
-        }
-
-
         /// <summary>
         /// Возвращает ключ кэширования с указанием пространства имен.
         /// </summary>
@@ -64,7 +10,7 @@ namespace InfinniPlatform.Caching
         /// <returns>Ключ кэширования с указанием пространства имен.</returns>
         public static string WrapCacheKey(this string unwrappedKey, string name)
         {
-            return string.Format("{0}.{1}", name, unwrappedKey);
+            return $"{name}.{unwrappedKey}";
         }
 
         /// <summary>

@@ -8,7 +8,7 @@ namespace InfinniPlatform.Caching.Tests.Redis
 {
     [TestFixture]
     [Category(TestCategories.PerformanceTest)]
-    [Ignore("Should setup Redis on TeamCity")]
+    [Ignore("Manual")]
     public sealed class RedisCacheImplMemoryTest
     {
         [Test]
@@ -19,10 +19,15 @@ namespace InfinniPlatform.Caching.Tests.Redis
         {
             // Given
 
-            const string cacheName = nameof(RedisCacheImplMemoryTest);
-            const string redisConnectionString = "localhost,password=TeamCity,allowAdmin=true";
+            var cacheName = GetType().Name;
 
-            var redisCache = new RedisCacheImpl(cacheName, redisConnectionString);
+            var settings = new RedisConnectionSettings
+            {
+                Host = "localhost",
+                Password = "TeamCity"
+            };
+
+            var redisCache = new RedisCacheImpl(cacheName, new RedisConnectionFactory(settings));
 
             const string key = "GetMemoryTest_Key";
 
@@ -38,8 +43,6 @@ namespace InfinniPlatform.Caching.Tests.Redis
                 cache.Set(key, value);
                 cache.Get(key);
             }
-
-            cache.Dispose();
 
             double stopSize = GC.GetTotalMemory(true);
 

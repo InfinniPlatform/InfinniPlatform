@@ -61,8 +61,24 @@
   },
   /* Настройки подключения к Redis */
   "redis": {
-    /* Строка подключения к Redis (описание - https://github.com/StackExchange/StackExchange.Redis/blob/master/Docs/Configuration.md, по умолчанию - 'localhost') */
-    "ConnectionString": "localhost"
+    /* Адрес или доменное имя (по умолчанию - 'localhost') */
+    "Host": "localhost",
+    /* Номер порта (по умолчанию - 6379) */
+    "Port": 6379,
+    /* Номер базы данных (по умолчанию - 0) */
+    "Database": 0,
+    /* Пароль подключения (значения по умолчанию нет) */
+    "Password": "",
+    /* Размер буфера чтения (по умолчанию - 512) */
+    "ReadBufferSize": 512,
+    /* Размер буфера записи (по умолчанию - 512) */
+    "WriteBufferSize": 512,
+    /* Таймаут подключения в миллисекундах (по умолчанию - 10000) */
+    "ConnectionTimeout": 10000,
+    /* Количество попыток подключения (по умолчанию - 10) */
+    "MaxReconnectRetries": 10,
+    /* Размер пула подключений (по умолчанию - 0, то есть неограничен) */
+    "PoolSize": 0
   },
   /* Настройки подключения к ElasticSearch */
   "elasticSearch": {

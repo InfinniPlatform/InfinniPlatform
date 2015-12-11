@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace InfinniPlatform.Caching
 {
     /// <summary>
-    /// Предоставляет интерфейс шины сообщений для отслеживания изменений в кэше <see cref="ICache"/>.
+    /// Предоставляет интерфейс шины сообщений.
     /// </summary>
     public interface ICacheMessageBus
     {

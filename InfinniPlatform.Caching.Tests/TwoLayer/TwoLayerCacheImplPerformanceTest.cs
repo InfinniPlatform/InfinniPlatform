@@ -11,7 +11,7 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
 {
     [TestFixture]
     [Category(TestCategories.PerformanceTest)]
-    [Ignore("Should setup Redis on TeamCity")]
+    [Ignore("Manual")]
     public sealed class TwoLayerCacheImplPerformanceTest
     {
         private ICache _cache;
@@ -19,11 +19,19 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
         [SetUp]
         public void SetUp()
         {
-            var cacheName = nameof(TwoLayerCacheImplPerformanceTest);
+            var cacheName = GetType().Name;
+
+            var settings = new RedisConnectionSettings
+            {
+                Host = "localhost",
+                Password = "TeamCity"
+            };
+
             var memoryCache = new MemoryCacheImpl(cacheName);
-            var sharedCache = new RedisCacheImpl(cacheName, "localhost");
-            var sharedCacheMessageBus = new RedisCacheMessageBusImpl(cacheName, "localhost");
-            var twoLayerCache = new TwoLayerCacheImpl(memoryCache, sharedCache, sharedCacheMessageBus);
+            var redisConnectionFactory = new RedisConnectionFactory(settings);
+            var redisCache = new RedisCacheImpl(cacheName, redisConnectionFactory);
+            var redisCacheMessageBus = new RedisCacheMessageBusImpl(cacheName, redisConnectionFactory);
+            var twoLayerCache = new TwoLayerCacheImpl(memoryCache, redisCache, redisCacheMessageBus);
 
             _cache = twoLayerCache;
         }
@@ -66,7 +74,7 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
             var avg = stopwatch.Elapsed.TotalMilliseconds / iterations;
             Console.WriteLine(@"TwoLayerCacheImpl.Get()");
             Console.WriteLine(@"  Iteration count: {0}", iterations);
-            Console.WriteLine(@"  Operation time : {0:N4} sec", avg);
+            Console.WriteLine(@"  Operation time : {0:N4} ms", avg);
             Console.WriteLine(@"  Operation/sec  : {0:N4}", 1000 / avg);
         }
 
@@ -103,7 +111,7 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
             var avg = stopwatch.Elapsed.TotalMilliseconds / iterations;
             Console.WriteLine(@"TwoLayerCacheImpl.Set()");
             Console.WriteLine(@"  Iteration count: {0}", iterations);
-            Console.WriteLine(@"  Operation time : {0:N4} sec", avg);
+            Console.WriteLine(@"  Operation time : {0:N4} ms", avg);
             Console.WriteLine(@"  Operation/sec  : {0:N4}", 1000 / avg);
         }
     }

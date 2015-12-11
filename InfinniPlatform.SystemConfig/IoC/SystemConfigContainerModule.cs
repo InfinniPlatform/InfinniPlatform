@@ -1,6 +1,7 @@
 ﻿using InfinniPlatform.Api.Security;
 using InfinniPlatform.Modules;
 using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.SystemConfig.Initializers;
 using InfinniPlatform.SystemConfig.Installers;
@@ -12,6 +13,20 @@ namespace InfinniPlatform.SystemConfig.IoC
     {
         public void Load(IContainerBuilder builder)
         {
+            builder.RegisterFactory(r => r.Resolve<IAppConfiguration>().GetSection(UserStorageSettings.SectionName))
+                   .As<UserStorageSettings>()
+                   .SingleInstance();
+
+            // Кэш сведений о пользователях системы
+            builder.RegisterType<ApplicationUserStoreCache>()
+                   .AsSelf()
+                   .SingleInstance();
+
+            // Хранилище сведений о пользователях системы
+            builder.RegisterType<ApplicationUserStorePersistentStorage>()
+                   .As<IApplicationUserStore>()
+                   .SingleInstance();
+
             // Сервисы инициализации для обработки события старта приложения
 
             builder.RegisterType<PackageJsonConfigurationsInitializer>()
@@ -25,11 +40,6 @@ namespace InfinniPlatform.SystemConfig.IoC
             // Обработчик событий приложения системной конфигурации
             builder.RegisterType<SystemConfigApplicationEventHandler>()
                    .As<IApplicationEventHandler>()
-                   .SingleInstance();
-
-            // Хранилище сведений о пользователях системы
-            builder.RegisterType<ApplicationUserStorePersistentStorage>()
-                   .As<IApplicationUserStore>()
                    .SingleInstance();
 
             // Обработчики сервисов системной конфигурации

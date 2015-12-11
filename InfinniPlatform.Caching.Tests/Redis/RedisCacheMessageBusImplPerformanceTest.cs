@@ -8,81 +8,82 @@ using NUnit.Framework;
 
 namespace InfinniPlatform.Caching.Tests.Redis
 {
-	[TestFixture]
-	[Category(TestCategories.PerformanceTest)]
-	[Ignore("Should setup Redis on TeamCity")]
-	public sealed class RedisCacheMessageBusImplPerformanceTest
-	{
-		private ICacheMessageBus _cacheMessageBus;
+    [TestFixture]
+    [Category(TestCategories.PerformanceTest)]
+    [Ignore("Manual")]
+    public sealed class RedisCacheMessageBusImplPerformanceTest
+    {
+        private ICacheMessageBus _cacheMessageBus;
 
-		[SetUp]
-		public void SetUp()
-		{
-			_cacheMessageBus = new RedisCacheMessageBusImpl(nameof(RedisCacheMessageBusImplPerformanceTest), "localhost");
-		}
+        [SetUp]
+        public void SetUp()
+        {
+            var cacheName = GetType().Name;
 
-		[TearDown]
-		public void TearDown()
-		{
-			((IDisposable)_cacheMessageBus).Dispose();
-		}
+            var settings = new RedisConnectionSettings
+            {
+                Host = "localhost",
+                Password = "TeamCity"
+            };
 
+            _cacheMessageBus = new RedisCacheMessageBusImpl(cacheName, new RedisConnectionFactory(settings));
+        }
 
-		[Test]
-		[TestCase(1000, 100)]
-		[TestCase(1000, 1000)]
-		[TestCase(1000, 10000)]
-		public void PubSubPerformanceTest(int publications, int subscriptions)
-		{
-			// Given
+        [Test]
+        [TestCase(1000, 100)]
+        [TestCase(1000, 1000)]
+        [TestCase(1000, 10000)]
+        public void PubSubPerformanceTest(int publications, int subscriptions)
+        {
+            // Given
 
-			const string key = "PubSubPerformanceTest_Key";
-			const string value = "PubSubPerformanceTest_Value";
+            const string key = "PubSubPerformanceTest_Key";
+            const string value = "PubSubPerformanceTest_Value";
 
-			var completeEvent = new CountdownEvent(publications * subscriptions);
+            var completeEvent = new CountdownEvent(publications * subscriptions);
 
-			_cacheMessageBus.Publish(key, value); // JIT
+            _cacheMessageBus.Publish(key, value); // JIT
 
-			for (var i = 0; i < subscriptions; ++i)
-			{
-				_cacheMessageBus.Subscribe(key, (k, v) => completeEvent.Signal());
-			}
+            for (var i = 0; i < subscriptions; ++i)
+            {
+                _cacheMessageBus.Subscribe(key, (k, v) => completeEvent.Signal());
+            }
 
-			// When
+            // When
 
-			var totalTime = new Stopwatch();
-			var publishTimer = new Stopwatch();
+            var totalTime = new Stopwatch();
+            var publishTimer = new Stopwatch();
 
-			totalTime.Start();
+            totalTime.Start();
 
-			for (var i = 0; i < publications; ++i)
-			{
-				publishTimer.Start();
+            for (var i = 0; i < publications; ++i)
+            {
+                publishTimer.Start();
 
-				_cacheMessageBus.Publish(key, value);
+                _cacheMessageBus.Publish(key, value);
 
-				publishTimer.Stop();
-			}
+                publishTimer.Stop();
+            }
 
-			var isComplete = completeEvent.Wait(120 * 1000);
+            var isComplete = completeEvent.Wait(120 * 1000);
 
-			totalTime.Stop();
+            totalTime.Stop();
 
-			// Then
+            // Then
 
-			Assert.IsTrue(isComplete, "Too long...");
+            Assert.IsTrue(isComplete, "Too long...");
 
-			var publishTime = publishTimer.Elapsed.TotalMilliseconds / publications;
-			Console.WriteLine(@"RedisCacheMessageBusImpl: Publish");
-			Console.WriteLine(@"  Iteration count: {0}", publications);
-			Console.WriteLine(@"  Operation time : {0:N4} sec", publishTime);
-			Console.WriteLine(@"  Operation/sec  : {0:N4}", 1000 / publishTime);
+            var publishTime = publishTimer.Elapsed.TotalMilliseconds / publications;
+            Console.WriteLine(@"RedisCacheMessageBusImpl: Publish");
+            Console.WriteLine(@"  Iteration count: {0}", publications);
+            Console.WriteLine(@"  Operation time : {0:N4} sec", publishTime);
+            Console.WriteLine(@"  Operation/sec  : {0:N4}", 1000 / publishTime);
 
-			var deliveryTime = totalTime.Elapsed.TotalMilliseconds / (publications * subscriptions);
-			Console.WriteLine(@"RedisCacheMessageBusImpl: Delivery");
-			Console.WriteLine(@"  Iteration count: {0}", publications * subscriptions);
-			Console.WriteLine(@"  Operation time : {0:N4} sec", deliveryTime);
-			Console.WriteLine(@"  Operation/sec  : {0:N4}", 1000 / deliveryTime);
-		}
-	}
+            var deliveryTime = totalTime.Elapsed.TotalMilliseconds / (publications * subscriptions);
+            Console.WriteLine(@"RedisCacheMessageBusImpl: Delivery");
+            Console.WriteLine(@"  Iteration count: {0}", publications * subscriptions);
+            Console.WriteLine(@"  Operation time : {0:N4} sec", deliveryTime);
+            Console.WriteLine(@"  Operation/sec  : {0:N4}", 1000 / deliveryTime);
+        }
+    }
 }
