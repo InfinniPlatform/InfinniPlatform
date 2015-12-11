@@ -8,7 +8,7 @@ namespace InfinniPlatform.Caching.Tests.Memory
 {
     [TestFixture]
     [Category(TestCategories.PerformanceTest)]
-    [Ignore("Should setup Redis on TeamCity")]
+    [Ignore("Manual")]
     public sealed class MemoryCacheImplMemoryTest
     {
         [Test]

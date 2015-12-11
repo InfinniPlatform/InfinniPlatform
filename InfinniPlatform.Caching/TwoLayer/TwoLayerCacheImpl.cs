@@ -9,26 +9,17 @@ namespace InfinniPlatform.Caching.TwoLayer
     /// </summary>
     public sealed class TwoLayerCacheImpl : ICache, IDisposable
     {
-        public TwoLayerCacheImpl(ICache memoryCache, ICache sharedCache, ICacheMessageBus sharedCacheMessageBus)
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="memoryCache">Локальный кэш.</param>
+        /// <param name="sharedCache">Распределенный кэш.</param>
+        /// <param name="sharedMessageBus">Шина для синхронизации локальных кэшей.</param>
+        public TwoLayerCacheImpl(ICache memoryCache, ICache sharedCache, IMessageBus sharedMessageBus)
         {
-            if (memoryCache == null)
-            {
-                throw new ArgumentNullException(nameof(memoryCache));
-            }
-
-            if (sharedCache == null)
-            {
-                throw new ArgumentNullException(nameof(sharedCache));
-            }
-
-            if (sharedCacheMessageBus == null)
-            {
-                throw new ArgumentNullException(nameof(sharedCacheMessageBus));
-            }
-
             _memoryCache = memoryCache;
             _sharedCache = sharedCache;
-            _sharedCacheMessageBus = sharedCacheMessageBus;
+            _sharedMessageBus = sharedMessageBus;
 
             _sharedCachePublisherId = Guid.NewGuid().ToString("N");
             _sharedCacheSubscriptions = new ConcurrentDictionary<string, IDisposable>();
@@ -37,7 +28,7 @@ namespace InfinniPlatform.Caching.TwoLayer
 
         private readonly ICache _memoryCache;
         private readonly ICache _sharedCache;
-        private readonly ICacheMessageBus _sharedCacheMessageBus;
+        private readonly IMessageBus _sharedMessageBus;
 
         private readonly string _sharedCachePublisherId;
         private readonly ConcurrentDictionary<string, IDisposable> _sharedCacheSubscriptions;
@@ -179,7 +170,7 @@ namespace InfinniPlatform.Caching.TwoLayer
 
         private void NotifyOnKeyChanged(string key)
         {
-            ExecuteAsync(() => _sharedCacheMessageBus.Publish(key, _sharedCachePublisherId));
+            ExecuteAsync(() => _sharedMessageBus.Publish(key, _sharedCachePublisherId));
         }
 
         private void SubscribeOnKeyChanged(string key)
@@ -188,7 +179,7 @@ namespace InfinniPlatform.Caching.TwoLayer
             {
                 ExecuteAsync(() =>
                 {
-                    var subscription = _sharedCacheMessageBus.Subscribe(key, (k, v) =>
+                    var subscription = _sharedMessageBus.Subscribe(key, (k, v) =>
                     {
                         if (v != _sharedCachePublisherId)
                         {

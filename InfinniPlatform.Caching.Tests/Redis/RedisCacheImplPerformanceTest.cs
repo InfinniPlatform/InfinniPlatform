@@ -15,7 +15,7 @@ namespace InfinniPlatform.Caching.Tests.Redis
     [Ignore("Manual")]
     public sealed class RedisCacheImplPerformanceTest
     {
-        private ICache _cache;
+        private RedisCacheImpl _cache;
 
         [SetUp]
         public void SetUp()

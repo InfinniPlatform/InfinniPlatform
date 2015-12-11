@@ -1,18 +1,18 @@
 ﻿using System;
 
-namespace InfinniPlatform.Caching.Redis
+namespace InfinniPlatform.Caching
 {
     /// <summary>
-    /// Подписчик шины сообщений Redis.
+    /// Подписчик шины сообщений.
     /// </summary>
-    internal sealed class RedisMessageBusSubscriber : IDisposable
+    internal sealed class MessageBusSubscriber : IDisposable
     {
         /// <summary>
         /// Конструктор.
         /// </summary>
         /// <param name="handleAction">Обработчик сообщения.</param>
         /// <param name="unsubscribeAction">Функция отписки от сообщений.</param>
-        public RedisMessageBusSubscriber(Action<string, string> handleAction, Action unsubscribeAction)
+        public MessageBusSubscriber(Action<string, string> handleAction, Action unsubscribeAction)
         {
             _handleAction = handleAction;
             _unsubscribeAction = unsubscribeAction;

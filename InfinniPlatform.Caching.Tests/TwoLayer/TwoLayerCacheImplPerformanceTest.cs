@@ -17,7 +17,7 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
     [Ignore("Manual")]
     public sealed class TwoLayerCacheImplPerformanceTest
     {
-        private ICache _cache;
+        private TwoLayerCacheImpl _cache;
 
         [SetUp]
         public void SetUp()
@@ -34,10 +34,11 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
             var performanceLog = new Mock<IPerformanceLog>().Object;
 
             var memoryCache = new MemoryCacheImpl(cacheName);
-            var redisConnectionFactory = new RedisConnectionFactory(settings);
-            var redisCache = new RedisCacheImpl(cacheName, redisConnectionFactory, log, performanceLog);
-            var redisCacheMessageBus = new RedisCacheMessageBusImpl(cacheName, redisConnectionFactory, log, performanceLog);
-            var twoLayerCache = new TwoLayerCacheImpl(memoryCache, redisCache, redisCacheMessageBus);
+            var redisCache = new RedisCacheImpl(cacheName, new RedisConnectionFactory(settings), log, performanceLog);
+            var redisMessageBusManager = new RedisMessageBusManager(cacheName, new RedisConnectionFactory(settings), log, performanceLog);
+            var redisMessageBusPublisher = new RedisMessageBusPublisher(cacheName, new RedisConnectionFactory(settings), log, performanceLog);
+            var redisMessageBus = new MessageBusImpl(redisMessageBusManager, redisMessageBusPublisher);
+            var twoLayerCache = new TwoLayerCacheImpl(memoryCache, redisCache, redisMessageBus);
 
             _cache = twoLayerCache;
         }
@@ -45,7 +46,7 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
         [TearDown]
         public void TearDown()
         {
-            ((IDisposable)_cache).Dispose();
+            _cache.Dispose();
         }
 
 

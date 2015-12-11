@@ -40,9 +40,10 @@ namespace InfinniPlatform.Caching.Redis
                 ? RedisConnectionSettings.DefaultMaxReconnectRetries
                 : connectionSettings.MaxReconnectRetries;
 
-            var poolSize = (connectionSettings.PoolSize < 0)
+            // Sider не работает, если PoolSize=1
+            var poolSize = (connectionSettings.PoolSize <= 0)
                 ? RedisConnectionSettings.DefaultPoolSize
-                : connectionSettings.PoolSize;
+                : Math.Max(connectionSettings.PoolSize, 2);
 
             var redisSettings = RedisSettings.Build()
                                              .Host(redisHost)

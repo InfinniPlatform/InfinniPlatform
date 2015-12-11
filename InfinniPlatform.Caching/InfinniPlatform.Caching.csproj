@@ -46,12 +46,17 @@
     <Compile Include="CacheSettings.cs" />
     <Compile Include="CachingExtensions.cs" />
     <Compile Include="CachingHelpers.cs" />
+    <Compile Include="IMessageBusManager.cs" />
+    <Compile Include="IMessageBusPublisher.cs" />
+    <Compile Include="Memory\MemoryMessageBusManager.cs" />
+    <Compile Include="Memory\MemoryMessageBusPublisher.cs" />
+    <Compile Include="Redis\RedisMessageBusManager.cs" />
+    <Compile Include="Redis\RedisMessageBusPublisher.cs" />
     <Compile Include="Redis\RedisConnectionSettings.cs" />
     <Compile Include="ICache.cs" />
-    <Compile Include="ICacheMessageBus.cs" />
+    <Compile Include="IMessageBus.cs" />
     <Compile Include="IoC\CachingContainerModule.cs" />
     <Compile Include="Memory\MemoryCacheImpl.cs" />
-    <Compile Include="Memory\MemoryCacheMessageBusImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <DependentUpon>AssemblyInfo.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -63,11 +68,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Redis\RedisCacheImpl.cs" />
-    <Compile Include="Redis\RedisCacheMessageBusImpl.cs" />
+    <Compile Include="MessageBusImpl.cs" />
     <Compile Include="Redis\RedisConnectionFactory.cs" />
     <Compile Include="Redis\RedisMessageBusObserver.cs" />
-    <Compile Include="Redis\RedisMessageBusSubscriber.cs" />
-    <Compile Include="Redis\RedisMessageBusSubscriptions.cs" />
+    <Compile Include="MessageBusSubscriber.cs" />
+    <Compile Include="MessageBusSubscriptions.cs" />
     <Compile Include="Session\SessionManager.cs" />
     <Compile Include="TwoLayer\TwoLayerCacheImpl.cs" />
   </ItemGroup>

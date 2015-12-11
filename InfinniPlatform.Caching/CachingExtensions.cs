@@ -1,6 +1,4 @@
-﻿using System;
-
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Caching
@@ -18,11 +16,6 @@ namespace InfinniPlatform.Caching
 
         public static bool TryGetObject(this ICache cache, string key, out object value)
         {
-            if (string.IsNullOrEmpty(key))
-            {
-                throw new ArgumentNullException(nameof(key));
-            }
-
             string stringValue;
 
             if (cache.TryGet(key, out stringValue))
@@ -37,19 +30,16 @@ namespace InfinniPlatform.Caching
 
         public static void SetObject(this ICache cache, string key, object value)
         {
-            if (string.IsNullOrEmpty(key))
-            {
-                throw new ArgumentNullException(nameof(key));
-            }
-
-            if (value == null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-
             var stringValue = JsonConvert.SerializeObject(value);
 
             cache.Set(key, stringValue);
+        }
+
+        public static void PublishObject(this IMessageBusPublisher messageBusPublisher, string key, object value)
+        {
+            var stringValue = JsonConvert.SerializeObject(value);
+
+            messageBusPublisher.Publish(key, stringValue);
         }
     }
 }

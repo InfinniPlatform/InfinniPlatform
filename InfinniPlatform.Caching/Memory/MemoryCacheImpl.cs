@@ -13,14 +13,8 @@ namespace InfinniPlatform.Caching.Memory
         /// Конструктор.
         /// </summary>
         /// <param name="keyspace">Пространство имен для ключей.</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public MemoryCacheImpl(string keyspace)
         {
-            if (string.IsNullOrEmpty(keyspace))
-            {
-                throw new ArgumentNullException(nameof(keyspace));
-            }
-
             _cache = new MemoryCache(keyspace);
         }
 

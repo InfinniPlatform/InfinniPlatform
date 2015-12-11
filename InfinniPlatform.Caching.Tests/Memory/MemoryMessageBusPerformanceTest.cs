@@ -2,37 +2,25 @@
 using System.Diagnostics;
 using System.Threading;
 
-using InfinniPlatform.Caching.Redis;
-using InfinniPlatform.Sdk.Environment.Log;
-
-using Moq;
+using InfinniPlatform.Caching.Memory;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.Caching.Tests.Redis
+namespace InfinniPlatform.Caching.Tests.Memory
 {
     [TestFixture]
     [Category(TestCategories.PerformanceTest)]
     [Ignore("Manual")]
-    public sealed class RedisCacheMessageBusImplPerformanceTest
+    public sealed class MemoryMessageBusPerformanceTest
     {
-        private ICacheMessageBus _cacheMessageBus;
+        private MessageBusImpl _messageBus;
 
         [SetUp]
         public void SetUp()
         {
-            var cacheName = GetType().Name;
+            var subscriptions = new MessageBusSubscriptions();
 
-            var settings = new RedisConnectionSettings
-            {
-                Host = "localhost",
-                Password = "TeamCity"
-            };
-
-            var log = new Mock<ILog>().Object;
-            var performanceLog = new Mock<IPerformanceLog>().Object;
-
-            _cacheMessageBus = new RedisCacheMessageBusImpl(cacheName, new RedisConnectionFactory(settings), log, performanceLog);
+            _messageBus = new MessageBusImpl(new MemoryMessageBusManager(subscriptions), new MemoryMessageBusPublisher(subscriptions));
         }
 
         [Test]
@@ -48,11 +36,11 @@ namespace InfinniPlatform.Caching.Tests.Redis
 
             var completeEvent = new CountdownEvent(publications * subscriptions);
 
-            _cacheMessageBus.Publish(key, value); // JIT
+            _messageBus.Publish(key, value); // JIT
 
             for (var i = 0; i < subscriptions; ++i)
             {
-                _cacheMessageBus.Subscribe(key, (k, v) => completeEvent.Signal());
+                _messageBus.Subscribe(key, (k, v) => completeEvent.Signal());
             }
 
             // When
@@ -66,7 +54,7 @@ namespace InfinniPlatform.Caching.Tests.Redis
             {
                 publishTimer.Start();
 
-                _cacheMessageBus.Publish(key, value);
+                _messageBus.Publish(key, value);
 
                 publishTimer.Stop();
             }
@@ -80,13 +68,13 @@ namespace InfinniPlatform.Caching.Tests.Redis
             Assert.IsTrue(isComplete, "Too long...");
 
             var publishTime = publishTimer.Elapsed.TotalMilliseconds / publications;
-            Console.WriteLine(@"RedisCacheMessageBusImpl: Publish");
+            Console.WriteLine(@"MemoryCacheMessageBusImpl: Publish");
             Console.WriteLine(@"  Iteration count: {0}", publications);
             Console.WriteLine(@"  Operation time : {0:N4} sec", publishTime);
             Console.WriteLine(@"  Operation/sec  : {0:N4}", 1000 / publishTime);
 
             var deliveryTime = totalTime.Elapsed.TotalMilliseconds / (publications * subscriptions);
-            Console.WriteLine(@"RedisCacheMessageBusImpl: Delivery");
+            Console.WriteLine(@"MemoryCacheMessageBusImpl: Delivery");
             Console.WriteLine(@"  Iteration count: {0}", publications * subscriptions);
             Console.WriteLine(@"  Operation time : {0:N4} sec", deliveryTime);
             Console.WriteLine(@"  Operation/sec  : {0:N4}", 1000 / deliveryTime);

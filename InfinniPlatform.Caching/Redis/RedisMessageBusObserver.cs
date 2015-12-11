@@ -11,11 +11,11 @@ namespace InfinniPlatform.Caching.Redis
     {
         public RedisMessageBusObserver()
         {
-            _subscriptions = new RedisMessageBusSubscriptions();
+            _subscriptions = new MessageBusSubscriptions();
         }
 
 
-        private readonly RedisMessageBusSubscriptions _subscriptions;
+        private readonly MessageBusSubscriptions _subscriptions;
 
 
         void IObserver<Message<string>>.OnNext(Message<string> message)

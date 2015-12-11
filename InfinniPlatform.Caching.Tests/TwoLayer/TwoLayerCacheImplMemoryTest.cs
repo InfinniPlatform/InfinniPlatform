@@ -36,10 +36,11 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
             var performanceLog = new Mock<IPerformanceLog>().Object;
 
             var memoryCache = new MemoryCacheImpl(cacheName);
-            var redisConnectionFactory = new RedisConnectionFactory(settings);
-            var redisCache = new RedisCacheImpl(cacheName, redisConnectionFactory, log, performanceLog);
-            var redisCacheMessageBus = new RedisCacheMessageBusImpl(cacheName, redisConnectionFactory, log, performanceLog);
-            var twoLayerCache = new TwoLayerCacheImpl(memoryCache, redisCache, redisCacheMessageBus);
+            var redisCache = new RedisCacheImpl(cacheName, new RedisConnectionFactory(settings), log, performanceLog);
+            var redisMessageBusManager = new RedisMessageBusManager(cacheName, new RedisConnectionFactory(settings), log, performanceLog);
+            var redisMessageBusPublisher = new RedisMessageBusPublisher(cacheName, new RedisConnectionFactory(settings), log, performanceLog);
+            var redisMessageBus = new MessageBusImpl(redisMessageBusManager, redisMessageBusPublisher);
+            var twoLayerCache = new TwoLayerCacheImpl(memoryCache, redisCache, redisMessageBus);
 
             const string key = "GetMemoryTest_Key";
 
@@ -56,7 +57,7 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
                 cache.Get(key);
             }
 
-            ((IDisposable)cache).Dispose();
+            cache.Dispose();
 
             double stopSize = GC.GetTotalMemory(true);
 

@@ -4,40 +4,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace InfinniPlatform.Caching.Redis
+namespace InfinniPlatform.Caching
 {
     /// <summary>
-    /// Список подписчиков шины сообщений Redis.
+    /// Список подписчиков шины сообщений.
     /// </summary>
     /// <remarks>
     /// Все методы и члены класса являются потокобезопасными.
     /// </remarks>
-    internal sealed class RedisMessageBusSubscriptions
+    internal sealed class MessageBusSubscriptions
     {
         private readonly ReaderWriterLockSlim _syncKeySubscriptions
             = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
-        private readonly ConcurrentDictionary<string, ConcurrentDictionary<RedisMessageBusSubscriber, RedisMessageBusSubscriber>> _subscriptions
-            = new ConcurrentDictionary<string, ConcurrentDictionary<RedisMessageBusSubscriber, RedisMessageBusSubscriber>>(StringComparer.Ordinal);
+        private readonly ConcurrentDictionary<string, ConcurrentDictionary<MessageBusSubscriber, MessageBusSubscriber>> _subscriptions
+            = new ConcurrentDictionary<string, ConcurrentDictionary<MessageBusSubscriber, MessageBusSubscriber>>(StringComparer.Ordinal);
 
 
         /// <summary>
         /// Добавляет подписку.
         /// </summary>
-        public RedisMessageBusSubscriber AddSubscription(string key, Action<string, string> handler)
+        public MessageBusSubscriber AddSubscription(string key, Action<string, string> handler)
         {
-            ConcurrentDictionary<RedisMessageBusSubscriber, RedisMessageBusSubscriber> keySubscriptions;
+            ConcurrentDictionary<MessageBusSubscriber, MessageBusSubscriber> keySubscriptions;
 
             if (!_subscriptions.TryGetValue(key, out keySubscriptions))
             {
-                keySubscriptions = _subscriptions.GetOrAdd(key, new ConcurrentDictionary<RedisMessageBusSubscriber, RedisMessageBusSubscriber>());
+                keySubscriptions = _subscriptions.GetOrAdd(key, new ConcurrentDictionary<MessageBusSubscriber, MessageBusSubscriber>());
             }
 
-            RedisMessageBusSubscriber subscriber = null;
+            MessageBusSubscriber subscriber = null;
 
             // ReSharper disable AccessToModifiedClosure
 
-            subscriber = new RedisMessageBusSubscriber(handler, () => RemoveSubscription(keySubscriptions, subscriber));
+            subscriber = new MessageBusSubscriber(handler, () => RemoveSubscription(keySubscriptions, subscriber));
 
             // ReSharper restore AccessToModifiedClosure
 
@@ -55,7 +55,7 @@ namespace InfinniPlatform.Caching.Redis
             return subscriber;
         }
 
-        private void RemoveSubscription(ConcurrentDictionary<RedisMessageBusSubscriber, RedisMessageBusSubscriber> keySubscriptions, RedisMessageBusSubscriber subscriber)
+        private void RemoveSubscription(ConcurrentDictionary<MessageBusSubscriber, MessageBusSubscriber> keySubscriptions, MessageBusSubscriber subscriber)
         {
             _syncKeySubscriptions.EnterWriteLock();
 
@@ -73,9 +73,9 @@ namespace InfinniPlatform.Caching.Redis
         /// <summary>
         /// Возвращает список всех подписок.
         /// </summary>
-        public IEnumerable<RedisMessageBusSubscriber> GetSubscriptions(string key)
+        public IEnumerable<MessageBusSubscriber> GetSubscriptions(string key)
         {
-            ConcurrentDictionary<RedisMessageBusSubscriber, RedisMessageBusSubscriber> keySubscriptions;
+            ConcurrentDictionary<MessageBusSubscriber, MessageBusSubscriber> keySubscriptions;
 
             if (_subscriptions.TryGetValue(key, out keySubscriptions))
             {
@@ -91,7 +91,7 @@ namespace InfinniPlatform.Caching.Redis
                 }
             }
 
-            return Enumerable.Empty<RedisMessageBusSubscriber>();
+            return Enumerable.Empty<MessageBusSubscriber>();
         }
     }
 }

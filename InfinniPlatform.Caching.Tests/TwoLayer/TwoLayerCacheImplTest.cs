@@ -15,15 +15,17 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
         private TwoLayerCacheImpl _cache;
         private FakeCacheImpl _memoryCache;
         private FakeCacheImpl _sharedCache;
-        private MemoryCacheMessageBusImpl _sharedCacheMessageBus;
+        private MessageBusImpl _sharedCacheMessageBus;
 
 
         [SetUp]
         public void SetUp()
         {
+            var subscriptions = new MessageBusSubscriptions();
+
             _memoryCache = new FakeCacheImpl();
             _sharedCache = new FakeCacheImpl();
-            _sharedCacheMessageBus = new MemoryCacheMessageBusImpl();
+            _sharedCacheMessageBus = new MessageBusImpl(new MemoryMessageBusManager(subscriptions), new MemoryMessageBusPublisher(subscriptions));
 
             _cache = new TwoLayerCacheImpl(_memoryCache, _sharedCache, _sharedCacheMessageBus);
         }
@@ -32,10 +34,6 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
         public void TearDown()
         {
             _cache.Dispose();
-
-            _sharedCacheMessageBus.Dispose();
-            _sharedCache.Dispose();
-            _memoryCache.Dispose();
         }
 
 

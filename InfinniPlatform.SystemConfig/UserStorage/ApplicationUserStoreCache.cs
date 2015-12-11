@@ -14,14 +14,14 @@ namespace InfinniPlatform.SystemConfig.UserStorage
         private const string ApplicationUserStoreCacheEvent = nameof(ApplicationUserStoreCache);
 
 
-        public ApplicationUserStoreCache(UserStorageSettings userStorageSettings, ICacheMessageBus cacheMessageBus)
+        public ApplicationUserStoreCache(UserStorageSettings userStorageSettings, IMessageBus messageBus)
         {
             var cacheTimeout = (userStorageSettings.UserCacheTimeout <= 0)
                 ? UserStorageSettings.DefaultUserCacheTimeout
                 : userStorageSettings.UserCacheTimeout;
 
             _cacheTimeout = TimeSpan.FromMinutes(cacheTimeout);
-            _cacheMessageBus = cacheMessageBus;
+            _messageBus = messageBus;
             _cacheLockSlim = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
             _usersById = new MemoryCache("UserCache");
@@ -31,12 +31,12 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             _usersByLogin = new ConcurrentDictionary<string, ApplicationUser>();
 
             // Подписываемся на событие изменения сведений пользователя на других узлах
-            _cacheMessageBus.Subscribe(ApplicationUserStoreCacheEvent, OnApplicationUserStoreCacheEvent);
+            _messageBus.Subscribe(ApplicationUserStoreCacheEvent, OnApplicationUserStoreCacheEvent);
         }
 
 
         private readonly TimeSpan _cacheTimeout;
-        private readonly ICacheMessageBus _cacheMessageBus;
+        private readonly IMessageBus _messageBus;
         private readonly ReaderWriterLockSlim _cacheLockSlim;
 
         private readonly MemoryCache _usersById;
@@ -128,7 +128,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             }
 
             // Оповещаем другие узлы об изменении сведений пользователя
-            _cacheMessageBus.Publish(ApplicationUserStoreCacheEvent, user.Id);
+            _messageBus.Publish(ApplicationUserStoreCacheEvent, user.Id);
         }
 
         /// <summary>

@@ -1,36 +1,23 @@
 ﻿using System;
 using System.Threading;
 
-using InfinniPlatform.Caching.Redis;
-using InfinniPlatform.Sdk.Environment.Log;
-
-using Moq;
+using InfinniPlatform.Caching.Memory;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.Caching.Tests.Redis
+namespace InfinniPlatform.Caching.Tests.Memory
 {
     [TestFixture]
-    [Category(TestCategories.IntegrationTest)]
-    public sealed class RedisCacheMessageBusImplTest
+    [Category(TestCategories.UnitTest)]
+    public sealed class MemoryMessageBusTest
     {
         [Test]
         public void GeneralPubSubTest()
         {
             // GIVEN
 
-            var cacheName = GetType().Name;
-
-            var settings = new RedisConnectionSettings
-            {
-                Host = "localhost",
-                Password = "TeamCity"
-            };
-
-            var log = new Mock<ILog>().Object;
-            var performanceLog = new Mock<IPerformanceLog>().Object;
-
-            var messageBus = new RedisCacheMessageBusImpl(cacheName, new RedisConnectionFactory(settings), log, performanceLog);
+            var subscriptions = new MessageBusSubscriptions();
+            var messageBus = new MessageBusImpl(new MemoryMessageBusManager(subscriptions), new MemoryMessageBusPublisher(subscriptions));
 
             // subscriber1 for Key1
 

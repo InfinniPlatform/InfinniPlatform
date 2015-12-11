@@ -5,7 +5,6 @@ using InfinniPlatform.Caching.Redis;
 using InfinniPlatform.Caching.Session;
 using InfinniPlatform.Caching.TwoLayer;
 using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Environment.Log;
 using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.Sdk.IoC;
 
@@ -15,31 +14,76 @@ namespace InfinniPlatform.Caching.IoC
     {
         public void Load(IContainerBuilder builder)
         {
-            // Настройки кэширования
+            builder.RegisterType<MessageBusSubscriptions>()
+                   .AsSelf()
+                   .SingleInstance();
+
+            // НАСТРОЙКИ
+
             builder.RegisterFactory(GetCacheSettings)
                    .As<CacheSettings>()
                    .SingleInstance();
 
-            // Настройки подключения к Redis
             builder.RegisterFactory(GetRedisConnectionSettings)
                    .As<RedisConnectionSettings>()
                    .SingleInstance();
 
-            // Фабрика подключений к Redis
-            builder.RegisterType<RedisConnectionFactory>()
-                   .AsSelf();
+            // ПОДКЛЮЧЕНИЕ К Redis
 
-            // Подсистема кэширования данных
+            builder.RegisterType<RedisConnectionFactory>()
+                   .AsSelf()
+                   .InstancePerDependency();
+
+            // РЕАЛИЗАЦИИ КЭША
+
+            builder.RegisterType<MemoryCacheImpl>()
+                   .AsSelf()
+                   .SingleInstance();
+
+            builder.RegisterType<RedisCacheImpl>()
+                   .AsSelf()
+                   .SingleInstance();
+
+            builder.RegisterType<TwoLayerCacheImpl>()
+                   .AsSelf()
+                   .SingleInstance();
+
             builder.RegisterFactory(GetCache)
                    .As<ICache>()
                    .SingleInstance();
 
-            // Шина сообщений подсистемы кэширования данных
-            builder.RegisterFactory(GetCacheMessageBus)
-                   .As<ICacheMessageBus>()
+            // РЕАЛИЗАЦИИ ШИНЫ СООБЩЕНИЙ
+
+            builder.RegisterType<MemoryMessageBusManager>()
+                   .AsSelf()
                    .SingleInstance();
 
-            // Менеджер данных сессии пользователя
+            builder.RegisterType<RedisMessageBusManager>()
+                   .AsSelf()
+                   .SingleInstance();
+
+            builder.RegisterFactory(GetMessageBusManager)
+                   .As<IMessageBusManager>()
+                   .SingleInstance();
+
+            builder.RegisterType<MemoryMessageBusPublisher>()
+                   .AsSelf()
+                   .SingleInstance();
+
+            builder.RegisterType<RedisMessageBusPublisher>()
+                   .AsSelf()
+                   .SingleInstance();
+
+            builder.RegisterFactory(GetMessageBusPublisher)
+                   .As<IMessageBusPublisher>()
+                   .SingleInstance();
+
+            builder.RegisterType<MessageBusImpl>()
+                   .As<IMessageBus>()
+                   .SingleInstance();
+
+            // СЕССИЯ ПОЛЬЗОВАТЕЛЯ
+
             builder.RegisterType<SessionManager>()
                    .As<ISessionManager>()
                    .SingleInstance();
@@ -48,13 +92,15 @@ namespace InfinniPlatform.Caching.IoC
 
         private static CacheSettings GetCacheSettings(IContainerResolver resolver)
         {
-            return resolver.Resolve<IAppConfiguration>().GetSection<CacheSettings>(CacheSettings.SectionName);
+            return resolver.Resolve<IAppConfiguration>()
+                           .GetSection<CacheSettings>(CacheSettings.SectionName);
         }
 
 
         private static RedisConnectionSettings GetRedisConnectionSettings(IContainerResolver resolver)
         {
-            return resolver.Resolve<IAppConfiguration>().GetSection<RedisConnectionSettings>(RedisConnectionSettings.SectionName);
+            return resolver.Resolve<IAppConfiguration>()
+                           .GetSection<RedisConnectionSettings>(RedisConnectionSettings.SectionName);
         }
 
 
@@ -64,58 +110,76 @@ namespace InfinniPlatform.Caching.IoC
 
             ICache cache;
 
+            var keyspace = cacheSettings.Name;
+
             if (string.Equals(cacheSettings.Type, CacheSettings.RedisCacheKey, StringComparison.OrdinalIgnoreCase))
             {
-                var log = resolver.Resolve<ILog>();
-                var performanceLog = resolver.Resolve<IPerformanceLog>();
+                var redisCacheFactory = resolver.Resolve<Func<string, RedisCacheImpl>>();
 
-                var redisConnectionFactory = resolver.Resolve<RedisConnectionFactory>();
-                var redisCache = new RedisCacheImpl(cacheSettings.Name, redisConnectionFactory, log, performanceLog);
-                cache = redisCache;
+                cache = redisCacheFactory(keyspace);
             }
             else if (string.Equals(cacheSettings.Type, CacheSettings.TwoLayerCacheKey, StringComparison.OrdinalIgnoreCase))
             {
-                var log = resolver.Resolve<ILog>();
-                var performanceLog = resolver.Resolve<IPerformanceLog>();
+                var memoryCacheFactory = resolver.Resolve<Func<string, MemoryCacheImpl>>();
+                var redisCacheFactory = resolver.Resolve<Func<string, RedisCacheImpl>>();
+                var twoLayerCacheFactory = resolver.Resolve<Func<ICache, ICache, TwoLayerCacheImpl>>();
 
-                var redisConnectionFactory = resolver.Resolve<RedisConnectionFactory>();
-                var memoryCache = new MemoryCacheImpl(cacheSettings.Name);
-                var redisCache = new RedisCacheImpl(cacheSettings.Name, redisConnectionFactory, log, performanceLog);
-                var redisCacheMessageBus = resolver.Resolve<ICacheMessageBus>();
-                var twoLayerCache = new TwoLayerCacheImpl(memoryCache, redisCache, redisCacheMessageBus);
-                cache = twoLayerCache;
+                cache = twoLayerCacheFactory(memoryCacheFactory(keyspace), redisCacheFactory(keyspace));
             }
             else
             {
-                var memoryCache = new MemoryCacheImpl(cacheSettings.Name);
-                cache = memoryCache;
+                var memoryCacheFactory = resolver.Resolve<Func<string, MemoryCacheImpl>>();
+
+                cache = memoryCacheFactory(keyspace);
             }
 
             return cache;
         }
 
-
-        private static ICacheMessageBus GetCacheMessageBus(IContainerResolver resolver)
+        private static IMessageBusManager GetMessageBusManager(IContainerResolver resolver)
         {
             var cacheSettings = resolver.Resolve<CacheSettings>();
 
-            ICacheMessageBus cacheMessageBus;
+            var keyspace = cacheSettings.Name;
+
+            IMessageBusManager messageBusManager;
 
             if (string.Equals(cacheSettings.Type, CacheSettings.RedisCacheKey, StringComparison.OrdinalIgnoreCase)
                 || string.Equals(cacheSettings.Type, CacheSettings.TwoLayerCacheKey, StringComparison.OrdinalIgnoreCase))
             {
-                var log = resolver.Resolve<ILog>();
-                var performanceLog = resolver.Resolve<IPerformanceLog>();
+                var redisMessageBusManagerFactory = resolver.Resolve<Func<string, RedisMessageBusManager>>();
 
-                var redisConnectionFactory = resolver.Resolve<RedisConnectionFactory>();
-                cacheMessageBus = new RedisCacheMessageBusImpl(cacheSettings.Name, redisConnectionFactory, log, performanceLog);
+                messageBusManager = redisMessageBusManagerFactory(keyspace);
             }
             else
             {
-                cacheMessageBus = new MemoryCacheMessageBusImpl();
+                messageBusManager = resolver.Resolve<MemoryMessageBusManager>();
             }
 
-            return cacheMessageBus;
+            return messageBusManager;
+        }
+
+        private static IMessageBusPublisher GetMessageBusPublisher(IContainerResolver resolver)
+        {
+            var cacheSettings = resolver.Resolve<CacheSettings>();
+
+            var keyspace = cacheSettings.Name;
+
+            IMessageBusPublisher messageBusPublisher;
+
+            if (string.Equals(cacheSettings.Type, CacheSettings.RedisCacheKey, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(cacheSettings.Type, CacheSettings.TwoLayerCacheKey, StringComparison.OrdinalIgnoreCase))
+            {
+                var redisMessageBusPublisherFactory = resolver.Resolve<Func<string, RedisMessageBusPublisher>>();
+
+                messageBusPublisher = redisMessageBusPublisherFactory(keyspace);
+            }
+            else
+            {
+                messageBusPublisher = resolver.Resolve<MemoryMessageBusPublisher>();
+            }
+
+            return messageBusPublisher;
         }
     }
 }
