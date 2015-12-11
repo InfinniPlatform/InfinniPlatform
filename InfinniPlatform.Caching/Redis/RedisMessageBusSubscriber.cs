@@ -1,17 +1,17 @@
-using System;
+п»їusing System;
 
 namespace InfinniPlatform.Caching.Redis
 {
     /// <summary>
-    /// Подписчик шины сообщений Redis.
+    /// РџРѕРґРїРёСЃС‡РёРє С€РёРЅС‹ СЃРѕРѕР±С‰РµРЅРёР№ Redis.
     /// </summary>
     internal sealed class RedisMessageBusSubscriber : IDisposable
     {
         /// <summary>
-        /// Конструктор.
+        /// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ.
         /// </summary>
-        /// <param name="handleAction">Обработчик сообщения.</param>
-        /// <param name="unsubscribeAction">Функция отписки от сообщений.</param>
+        /// <param name="handleAction">РћР±СЂР°Р±РѕС‚С‡РёРє СЃРѕРѕР±С‰РµРЅРёСЏ.</param>
+        /// <param name="unsubscribeAction">Р¤СѓРЅРєС†РёСЏ РѕС‚РїРёСЃРєРё РѕС‚ СЃРѕРѕР±С‰РµРЅРёР№.</param>
         public RedisMessageBusSubscriber(Action<string, string> handleAction, Action unsubscribeAction)
         {
             _handleAction = handleAction;
@@ -24,7 +24,7 @@ namespace InfinniPlatform.Caching.Redis
 
 
         /// <summary>
-        /// Обрабатывает сообщение.
+        /// РћР±СЂР°Р±Р°С‚С‹РІР°РµС‚ СЃРѕРѕР±С‰РµРЅРёРµ.
         /// </summary>
         public void Handle(string key, string value)
         {

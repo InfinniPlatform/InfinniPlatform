@@ -1,11 +1,11 @@
-using System;
+п»їusing System;
 
 using Sider;
 
 namespace InfinniPlatform.Caching.Redis
 {
     /// <summary>
-    /// Обозреватель шины сообщений Redis.
+    /// РћР±РѕР·СЂРµРІР°С‚РµР»СЊ С€РёРЅС‹ СЃРѕРѕР±С‰РµРЅРёР№ Redis.
     /// </summary>
     internal sealed class RedisMessageBusObserver : IObserver<Message<string>>
     {
@@ -41,7 +41,7 @@ namespace InfinniPlatform.Caching.Redis
 
 
         /// <summary>
-        /// Добавляет подписку.
+        /// Р”РѕР±Р°РІР»СЏРµС‚ РїРѕРґРїРёСЃРєСѓ.
         /// </summary>
         public IDisposable Subscribe(string key, Action<string, string> handler)
         {

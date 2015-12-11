@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +7,10 @@ using System.Threading;
 namespace InfinniPlatform.Caching.Redis
 {
     /// <summary>
-    /// Список подписчиков шины сообщений Redis.
+    /// РЎРїРёСЃРѕРє РїРѕРґРїРёСЃС‡РёРєРѕРІ С€РёРЅС‹ СЃРѕРѕР±С‰РµРЅРёР№ Redis.
     /// </summary>
     /// <remarks>
-    /// Все методы и члены класса являются потокобезопасными.
+    /// Р’СЃРµ РјРµС‚РѕРґС‹ Рё С‡Р»РµРЅС‹ РєР»Р°СЃСЃР° СЏРІР»СЏСЋС‚СЃСЏ РїРѕС‚РѕРєРѕР±РµР·РѕРїР°СЃРЅС‹РјРё.
     /// </remarks>
     internal sealed class RedisMessageBusSubscriptions
     {
@@ -22,7 +22,7 @@ namespace InfinniPlatform.Caching.Redis
 
 
         /// <summary>
-        /// Добавляет подписку.
+        /// Р”РѕР±Р°РІР»СЏРµС‚ РїРѕРґРїРёСЃРєСѓ.
         /// </summary>
         public RedisMessageBusSubscriber AddSubscription(string key, Action<string, string> handler)
         {
@@ -71,7 +71,7 @@ namespace InfinniPlatform.Caching.Redis
 
 
         /// <summary>
-        /// Возвращает список всех подписок.
+        /// Р’РѕР·РІСЂР°С‰Р°РµС‚ СЃРїРёСЃРѕРє РІСЃРµС… РїРѕРґРїРёСЃРѕРє.
         /// </summary>
         public IEnumerable<RedisMessageBusSubscriber> GetSubscriptions(string key)
         {
