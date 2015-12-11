@@ -24,7 +24,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
 
             _nodePool = new ElasticSearchNodePool(nodeUrls);
 
-            _httpClient = new HttpClient();
+            _httpClient = new HttpClient {Timeout = TimeSpan.FromSeconds(60)};
 
             if (!string.IsNullOrEmpty(settings.Login) && !string.IsNullOrEmpty(settings.Password))
             {
@@ -65,7 +65,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
             var indexNameList = string.Join(",", indexNames).ToLowerInvariant();
             var typeNameList = string.Join(",", typeNames.Select(t => t + "*")).ToLowerInvariant();
 
-            var elasticQueryMappings = new Uri(nodeAddress, string.Format("{0}/{1}/_mapping", indexNameList, typeNameList));
+            var elasticQueryMappings = new Uri(nodeAddress, $"{indexNameList}/{typeNameList}/_mapping");
 
             // Запрос возвращает схему маппинга для всех индексов и типов индексов в следующем виде:
             //
@@ -75,16 +75,30 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
             // }
 
             // получаем список маппингов
-            var response = _httpClient.GetAsync(elasticQueryMappings).Result;
-            var responseContent = response.Content.ReadAsStringAsync().Result;
 
-            if (response.StatusCode != HttpStatusCode.OK || responseContent == "{}")
+            var response = _httpClient.GetAsync(elasticQueryMappings);
+
+            if (!response.Wait(_httpClient.Timeout))
+            {
+                Logging.Logger.Log.Info("ES: TryFillIndexMappings() - Timeout!");
+                return false;
+            }
+
+            var responseContent = response.Result.Content.ReadAsStringAsync();
+
+            if (!responseContent.Wait(_httpClient.Timeout))
+            {
+                Logging.Logger.Log.Info("ES: TryFillIndexMappings() - Timeout!");
+                return false;
+            }
+
+            if (response.Result.StatusCode != HttpStatusCode.OK || responseContent.Result == "{}")
             {
                 return false;
             }
 
-            dynamic resultMappings = responseContent.ToDynamic();
-
+            dynamic resultMappings = responseContent.Result.ToDynamic();
+            
             // проверяем, что получили маппинги индексов и типов
             if (resultMappings.error != null)
             {
@@ -161,7 +175,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
             indexName = indexName.ToLowerInvariant();
             typeName = typeName.ToLowerInvariant();
 
-            var elasticQueryMappings = new Uri(nodeAddress, string.Format("{0}/{1}/_mapping", indexName, typeName));
+            var elasticQueryMappings = new Uri(nodeAddress, $"{indexName}/{typeName}/_mapping");
 
             // Запрос возвращает схему маппинга для всех индексов и типов индексов в следующем виде:
             //
@@ -171,15 +185,29 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
             // }
 
             // получаем список маппингов
-            var response = _httpClient.GetAsync(elasticQueryMappings).Result;
-            var responseContent = response.Content.ReadAsStringAsync().Result;
 
-            if (response.StatusCode != HttpStatusCode.OK || responseContent == "{}")
+            var response = _httpClient.GetAsync(elasticQueryMappings);
+
+            if (!response.Wait(_httpClient.Timeout))
+            {
+                Logging.Logger.Log.Info("ES: TryGetIndexTypeMapping() - Timeout!");
+                return false;
+            }
+
+            var responseContent = response.Result.Content.ReadAsStringAsync();
+
+            if (!responseContent.Wait(_httpClient.Timeout))
+            {
+                Logging.Logger.Log.Info("ES: TryGetIndexTypeMapping() - Timeout!");
+                return false;
+            }
+
+            if (response.Result.StatusCode != HttpStatusCode.OK || responseContent.Result == "{}")
             {
                 return false;
             }
 
-            dynamic resultMappings = responseContent.ToDynamic();
+            dynamic resultMappings = responseContent.Result.ToDynamic();
 
             // проверяем, что получили маппинг типа
             if (resultMappings.error != null)
