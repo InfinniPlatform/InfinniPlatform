@@ -27,8 +27,7 @@ namespace InfinniPlatform.Caching.IoC
 
             // Фабрика подключений к Redis
             builder.RegisterType<RedisConnectionFactory>()
-                   .AsSelf()
-                   .SingleInstance();
+                   .AsSelf();
 
             // Подсистема кэширования данных
             builder.RegisterFactory(GetCache)
