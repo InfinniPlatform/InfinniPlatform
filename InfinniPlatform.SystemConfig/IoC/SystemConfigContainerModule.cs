@@ -13,7 +13,7 @@ namespace InfinniPlatform.SystemConfig.IoC
     {
         public void Load(IContainerBuilder builder)
         {
-            builder.RegisterFactory(r => r.Resolve<IAppConfiguration>().GetSection(UserStorageSettings.SectionName))
+            builder.RegisterFactory(r => r.Resolve<IAppConfiguration>().GetSection<UserStorageSettings>(UserStorageSettings.SectionName))
                    .As<UserStorageSettings>()
                    .SingleInstance();
 
