@@ -198,4 +198,13 @@
   <data name="RoleIsUsed" xml:space="preserve">
     <value>Role with name '{0}' has user linked and should not be deleted.</value>
   </data>
+  <data name="SubscribingOnUserStorageCache" xml:space="preserve">
+    <value>Subscribing on UserStorage cache...</value>
+  </data>
+  <data name="SubscribingOnUserStorageCacheHasCompleted" xml:space="preserve">
+    <value>Subscribing on UserStorage cache has successfuly completed.</value>
+  </data>
+  <data name="SubscribingOnUserStorageCacheHasCompletedWithError" xml:space="preserve">
+    <value>Subscribing on UserStorage cache has completed with error.</value>
+  </data>
 </root>

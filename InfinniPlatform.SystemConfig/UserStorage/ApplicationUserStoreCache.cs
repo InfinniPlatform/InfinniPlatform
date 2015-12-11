@@ -6,6 +6,8 @@ using System.Threading;
 
 using InfinniPlatform.Api.Security;
 using InfinniPlatform.Caching;
+using InfinniPlatform.Sdk.Environment.Log;
+using InfinniPlatform.SystemConfig.Properties;
 
 namespace InfinniPlatform.SystemConfig.UserStorage
 {
@@ -14,7 +16,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
         private const string ApplicationUserStoreCacheEvent = nameof(ApplicationUserStoreCache);
 
 
-        public ApplicationUserStoreCache(UserStorageSettings userStorageSettings, IMessageBus messageBus)
+        public ApplicationUserStoreCache(UserStorageSettings userStorageSettings, IMessageBus messageBus, ILog log)
         {
             var cacheTimeout = (userStorageSettings.UserCacheTimeout <= 0)
                 ? UserStorageSettings.DefaultUserCacheTimeout
@@ -22,6 +24,8 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 
             _cacheTimeout = TimeSpan.FromMinutes(cacheTimeout);
             _messageBus = messageBus;
+            _log = log;
+
             _cacheLockSlim = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
             _usersById = new MemoryCache("UserCache");
@@ -31,12 +35,29 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             _usersByLogin = new ConcurrentDictionary<string, ApplicationUser>();
 
             // Подписываемся на событие изменения сведений пользователя на других узлах
-            _messageBus.Subscribe(ApplicationUserStoreCacheEvent, OnApplicationUserStoreCacheEvent);
+
+            log.Info(Resources.SubscribingOnUserStorageCache);
+
+            try
+            {
+                _subscription = _messageBus.Subscribe(ApplicationUserStoreCacheEvent, OnApplicationUserStoreCacheEvent);
+
+                log.Info(Resources.SubscribingOnUserStorageCacheHasCompleted);
+            }
+            catch (Exception exception)
+            {
+                log.Error(Resources.SubscribingOnUserStorageCacheHasCompletedWithError, exception: exception);
+
+                throw;
+            }
         }
 
 
         private readonly TimeSpan _cacheTimeout;
         private readonly IMessageBus _messageBus;
+        private readonly ILog _log;
+
+        private readonly IDisposable _subscription;
         private readonly ReaderWriterLockSlim _cacheLockSlim;
 
         private readonly MemoryCache _usersById;

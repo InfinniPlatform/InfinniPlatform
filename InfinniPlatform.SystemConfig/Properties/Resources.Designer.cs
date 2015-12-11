@@ -302,5 +302,32 @@ namespace InfinniPlatform.SystemConfig.Properties {
                 return ResourceManager.GetString("SpecifiedTimezoneIsInvalid", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subscribing on UserStorage cache....
+        /// </summary>
+        internal static string SubscribingOnUserStorageCache {
+            get {
+                return ResourceManager.GetString("SubscribingOnUserStorageCache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subscribing on UserStorage cache has successfuly completed..
+        /// </summary>
+        internal static string SubscribingOnUserStorageCacheHasCompleted {
+            get {
+                return ResourceManager.GetString("SubscribingOnUserStorageCacheHasCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subscribing on UserStorage cache has completed with error..
+        /// </summary>
+        internal static string SubscribingOnUserStorageCacheHasCompletedWithError {
+            get {
+                return ResourceManager.GetString("SubscribingOnUserStorageCacheHasCompletedWithError", resourceCulture);
+            }
+        }
     }
 }
