@@ -23,6 +23,9 @@ namespace InfinniPlatform.Authentication.Middleware
     /// </summary>
     internal sealed class InternalAuthOwinMiddleware : RoutingOwinMiddleware
     {
+        private const int TaskTimeout = 60 * 1000;
+
+
         public static readonly PathString BasePath
             = new PathString("/Auth");
 
@@ -403,16 +406,16 @@ namespace InfinniPlatform.Authentication.Middleware
             }
 
             return new
-                   {
-                       user.UserName,
-                       user.DisplayName,
-                       user.Description,
-                       ActiveRole = activeRole,
-                       DefaultRole = defaultRole,
-                       user.Roles,
-                       user.Logins,
-                       Claims = claims
-                   };
+            {
+                user.UserName,
+                user.DisplayName,
+                user.Description,
+                ActiveRole = activeRole,
+                DefaultRole = defaultRole,
+                user.Roles,
+                user.Logins,
+                Claims = claims
+            };
         }
 
         /// <summary>
@@ -543,12 +546,12 @@ namespace InfinniPlatform.Authentication.Middleware
             }
 
             var user = new IdentityApplicationUser
-                       {
-                           Id = Guid.NewGuid().ToString(),
-                           UserName = userName,
-                           Email = loginInfo.Email,
-                           EmailConfirmed = !string.IsNullOrWhiteSpace(loginInfo.Email)
-                       };
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserName = userName,
+                Email = loginInfo.Email,
+                EmailConfirmed = !string.IsNullOrWhiteSpace(loginInfo.Email)
+            };
 
             if (loginInfo.ExternalIdentity != null && loginInfo.ExternalIdentity.Claims != null)
             {
@@ -592,10 +595,10 @@ namespace InfinniPlatform.Authentication.Middleware
         private static ApplicationUserClaim CreateApplicationUserClaim(Claim claim)
         {
             return new ApplicationUserClaim
-                   {
-                       Type = new ForeignKey { Id = claim.Type },
-                       Value = claim.Value
-                   };
+            {
+                Type = new ForeignKey { Id = claim.Type },
+                Value = claim.Value
+            };
         }
 
         private static IIdentity GetIdentity(IOwinContext context)
@@ -636,11 +639,14 @@ namespace InfinniPlatform.Authentication.Middleware
 
         private static void ThrowIfError(Task<IdentityResult> task)
         {
-            var result = task.Result;
-
-            if (!result.Succeeded)
+            if (!task.Wait(TaskTimeout))
             {
-                throw new InvalidOperationException(string.Join(Environment.NewLine, result.Errors));
+                throw new InvalidOperationException(Resources.OperationHasCancelledByTimeout);
+            }
+
+            if (!task.Result.Succeeded)
+            {
+                throw new InvalidOperationException(string.Join(Environment.NewLine, task.Result.Errors));
             }
         }
     }

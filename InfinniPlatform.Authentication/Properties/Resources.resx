@@ -207,4 +207,7 @@
   <data name="UserIdNotFound" xml:space="preserve">
     <value>UserId not found.</value>
   </data>
+  <data name="OperationHasCancelledByTimeout" xml:space="preserve">
+    <value>Operation has cancelled by timeout.</value>
+  </data>
 </root>

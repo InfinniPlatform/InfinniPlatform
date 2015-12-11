@@ -259,6 +259,15 @@ namespace InfinniPlatform.Authentication.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operation has cancelled by timeout..
+        /// </summary>
+        internal static string OperationHasCancelledByTimeout {
+            get {
+                return ResourceManager.GetString("OperationHasCancelledByTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Request is not authenticated..
         /// </summary>
         internal static string RequestIsNotAuthenticated {

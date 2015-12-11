@@ -16,6 +16,9 @@ namespace InfinniPlatform.Authentication.InternalIdentity
 {
     internal sealed class IdentityApplicationUserManager : IApplicationUserManager
     {
+        private const int TaskTimeout = 60 * 1000;
+
+
         public IdentityApplicationUserManager(UserManager<IdentityApplicationUser> userManager)
         {
             _userManager = userManager;
@@ -496,11 +499,14 @@ namespace InfinniPlatform.Authentication.InternalIdentity
 
         private static void ThrowIfError(Task<IdentityResult> task)
         {
-            var result = task.Result;
-
-            if (!result.Succeeded)
+            if (!task.Wait(TaskTimeout))
             {
-                throw new AggregateException(string.Join(Environment.NewLine, result.Errors));
+                throw new InvalidOperationException(Resources.OperationHasCancelledByTimeout);
+            }
+
+            if (!task.Result.Succeeded)
+            {
+                throw new InvalidOperationException(string.Join(Environment.NewLine, task.Result.Errors));
             }
         }
     }
