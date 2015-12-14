@@ -87,7 +87,17 @@ namespace InfinniPlatform.FlowDocument.Converters.Pdf
             // Linux
             if (RunningOnLinux())
             {
-                command = "wkhtmltopdf";
+                // В случае, если 'X server' на сервере не установлен, что более вероятно, то утилиту wkhtmltopdf придется
+                // запускать через какую-либо подсистему виртуализации, например, через xvfb. Предполагается, что в этом
+                // случае команда запуска будет находится в файле '/usr/local/bin/wkhtmltopdf.sh'. Например, для xvfb
+                // содержимое файла wkhtmltopdf.sh будет таким: 'xvfb-run -a -s "-screen 0 640x480x16" wkhtmltopdf "$@"'.
+
+                command = "/usr/local/bin/wkhtmltopdf.sh";
+
+                if (!File.Exists(command))
+                {
+                    command = "wkhtmltopdf";
+                }
             }
             // Windows
             else
