@@ -12,9 +12,14 @@
 
 
         /// <summary>
-        /// Формат команды вызова утилиты wkhtmltopdf - http://wkhtmltopdf.org/ (по умолчанию - генерируется автоматически с учетом операционной системы).
+        /// Местоположение утилиты wkhtmltopdf - http://wkhtmltopdf.org/ (по умолчанию - генерируется автоматически с учетом операционной системы).
         /// </summary>
-        public string HtmlToPdfUtil { get; set; }
+        public string HtmlToPdfUtilCommand { get; set; }
+
+        /// <summary>
+        /// Формат аргументов утилиты wkhtmltopdf - http://wkhtmltopdf.org/ (по умолчанию - генерируется автоматически с учетом операционной системы).
+        /// </summary>
+        public string HtmlToPdfUtilArguments { get; set; }
 
         /// <summary>
         /// Каталог для хранения временных файлов при генерации HTML/PDF (по умолчанию - каталог временных файлов учетной записи пользователя).
