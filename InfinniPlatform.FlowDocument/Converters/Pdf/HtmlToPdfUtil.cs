@@ -175,31 +175,49 @@ namespace InfinniPlatform.FlowDocument.Converters.Pdf
         {
             var result = new ProcessResult();
 
-            using (var shellProcess = new Process())
+            using (var process = new Process())
             {
-                shellProcess.StartInfo.FileName = command;
-                shellProcess.StartInfo.Arguments = arguments;
-                shellProcess.StartInfo.UseShellExecute = false;
-                shellProcess.StartInfo.RedirectStandardOutput = true;
-                shellProcess.StartInfo.RedirectStandardError = true;
-                shellProcess.StartInfo.CreateNoWindow = true;
-                shellProcess.Start();
+                process.StartInfo.FileName = command;
+                process.StartInfo.Arguments = arguments;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.RedirectStandardInput = true;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.RedirectStandardError = true;
+                process.StartInfo.CreateNoWindow = true;
 
-                if (shellProcess.WaitForExit(timeout))
+                bool isStarted;
+
+                try
+                {
+                    isStarted = process.Start();
+                }
+                catch (Exception error)
                 {
                     result.Completed = true;
-                    result.ExitCode = shellProcess.ExitCode;
-                    result.Output = shellProcess.StandardOutput.ReadToEnd();
+                    result.ExitCode = -1;
+                    result.Output = string.Format(Resources.CannotExecuteCommand, command, arguments, error.Message);
+
+                    isStarted = false;
                 }
-                else
+
+                if (isStarted)
                 {
-                    try
+                    if (process.WaitForExit(timeout))
                     {
-                        shellProcess.Kill();
+                        result.Completed = true;
+                        result.ExitCode = process.ExitCode;
+                        result.Output = process.StandardOutput.ReadToEnd() + process.StandardError.ReadToEnd();
                     }
-                    catch
+                    else
                     {
-                        // ignored
+                        try
+                        {
+                            process.Kill();
+                        }
+                        catch
+                        {
+                            // ignored
+                        }
                     }
                 }
             }
