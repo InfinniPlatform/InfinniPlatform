@@ -82,18 +82,62 @@ namespace InfinniPlatform.FlowDocument.Converters.Pdf
 
         private static string GetDefaultHtmlToPdfUtilCommand()
         {
-            var command = RunningOnLinux()
-                ? "wkhtmltopdf"
-                : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "wkhtmltopdf", "bin", "wkhtmltopdf.exe");
+            string command;
+
+            // Linux
+            if (RunningOnLinux())
+            {
+                command = "wkhtmltopdf";
+            }
+            // Windows
+            else
+            {
+                // Метод Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) работает неоднозначно для
+                // различных комбинаций Environment.Is64BitOperatingSystem и Environment.Is64BitProcess, поэтому
+                // местоположение ProgramFiles определяется явно по значениям переменных окружения
+
+                // x64
+                if (Environment.Is64BitOperatingSystem)
+                {
+                    // "C:\Program Files"
+                    var programFiles = Environment.GetEnvironmentVariable("ProgramW6432");
+
+                    // "C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"
+                    command = Path.Combine(programFiles ?? "", "wkhtmltopdf", "bin", "wkhtmltopdf.exe");
+
+                    if (!File.Exists(command))
+                    {
+                        // "C:\Program Files (x86)\wkhtmltopdf\bin\wkhtmltopdf.exe"
+                        var programFilesX86 = Environment.GetEnvironmentVariable("ProgramFiles(x86)");
+
+                        // "C:\Program Files (x86)\wkhtmltopdf\bin\wkhtmltopdf.exe"
+                        command = Path.Combine(programFilesX86 ?? "", "wkhtmltopdf", "bin", "wkhtmltopdf.exe");
+                    }
+                }
+                // x32
+                else
+                {
+                    var programFiles = Environment.GetEnvironmentVariable("ProgramFiles");
+
+                    command = Path.Combine(programFiles ?? "", "wkhtmltopdf", "bin", "wkhtmltopdf.exe");
+                }
+            }
 
             return command;
         }
 
         private static string GetDefaultHtmlToPdfUtilArguments()
         {
-            var arguments = RunningOnLinux()
-                ? " "
-                : " --disable-smart-shrinking --dpi 96";
+            string arguments;
+
+            if (RunningOnLinux())
+            {
+                arguments = " ";
+            }
+            else
+            {
+                arguments = " --disable-smart-shrinking --dpi 96";
+            }
 
             return $"{arguments} -B {PaddingBottom} -L {PaddingLeft} -R {PaddingRight} -T {PaddingTop} --page-height {PageHeight} --page-width {PageWidth} {$"\"{HtmlInput}\""} {$"\"{PdfOutput}\""}";
         }

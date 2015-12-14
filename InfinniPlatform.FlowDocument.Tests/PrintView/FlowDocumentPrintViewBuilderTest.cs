@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+
 using InfinniPlatform.FlowDocument.Model;
 using InfinniPlatform.FlowDocument.PrintView;
 using InfinniPlatform.FlowDocument.Tests.Properties;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment;
+
 using NUnit.Framework;
 
 namespace InfinniPlatform.FlowDocument.Tests.PrintView
