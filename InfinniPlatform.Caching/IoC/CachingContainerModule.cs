@@ -122,7 +122,7 @@ namespace InfinniPlatform.Caching.IoC
             {
                 var memoryCacheFactory = resolver.Resolve<Func<string, MemoryCacheImpl>>();
                 var redisCacheFactory = resolver.Resolve<Func<string, RedisCacheImpl>>();
-                var twoLayerCacheFactory = resolver.Resolve<Func<ICache, ICache, TwoLayerCacheImpl>>();
+                var twoLayerCacheFactory = resolver.Resolve<TwoLayerCacheFactory>();
 
                 cache = twoLayerCacheFactory(memoryCacheFactory(keyspace), redisCacheFactory(keyspace));
             }
@@ -181,5 +181,8 @@ namespace InfinniPlatform.Caching.IoC
 
             return messageBusPublisher;
         }
+
+
+        private delegate TwoLayerCacheImpl TwoLayerCacheFactory(ICache memoryCache, ICache sharedCache);
     }
 }
