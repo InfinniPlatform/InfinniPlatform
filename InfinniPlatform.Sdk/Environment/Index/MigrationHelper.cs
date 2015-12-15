@@ -35,7 +35,7 @@ namespace InfinniPlatform.Sdk.Environment.Index
 
 			if (!versionBuilder.VersionExists(indexTypeMapping))
 			{
-				resultMessage = string.Format("Created new version of {0} document.", documentId);
+				resultMessage = $"Created new version of {documentId} document.";
 
 				versionBuilder.CreateVersion(false, indexTypeMapping);
 

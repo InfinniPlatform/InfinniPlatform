@@ -35,7 +35,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             var settings = AppConfiguration.Instance.GetSection<ElasticSearchSettings>(ElasticSearchSettings.SectionName);
 
             _elasticClient = new Lazy<ElasticClient>(() => CreatElasticClient(settings));
-            _mappingProvider = new ElasticSearchMappingProvider(settings, _elasticClient);
+            _mappingProvider = new ElasticSearchMappingProvider(_elasticClient);
         }
 
 
@@ -45,11 +45,10 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
         private static ElasticClient CreatElasticClient(ElasticSearchSettings settings)
         {
-            var nodeAddresses = GetActualNodes(settings);
+            var nodeAddresses = settings.Nodes.Select(node => new Uri(node));
 
             var connectionPool = new SniffingConnectionPool(nodeAddresses);
-
-
+            
             var connectionSettings = new ConnectionSettings(connectionPool);
 
             if (!string.IsNullOrEmpty(settings.Login) && !string.IsNullOrEmpty(settings.Password))
@@ -64,7 +63,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
             return client;
         }
-
 
         /// <summary>
         /// Возвращает клиента для работы с индексом.
@@ -86,27 +84,12 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         /// <summary>
         /// Возвращает все типы, являющиеся версиями указанного типа в индексе
         /// </summary>
-        /// <param name="indexNames">Наименования индексов, по которым выполняем поиск.</param>
+        /// <param name="indexName">Наименование индекса, по которым выполняем поиск.</param>
         /// <param name="typeNames">Типы данных, для которого получаем все версии типов в индексе.</param>
         /// <returns>Список всех версий типов данных в указанных индексах.</returns>
         /// <remarks>
         /// Например product_schema_0, product_schema_1 являются версиями типа product и искать данные можно по всем этим типам.
         /// </remarks>
-//        [Obsolete]
-//        public IEnumerable<IndexToTypeAccordance> GetAllTypes(IEnumerable<string> indexNames, IEnumerable<string> typeNames)
-//        {
-//            if (typeNames == null || !typeNames.Any())
-//            {
-//                throw new ArgumentException("Type name for index should not be empty.");
-//            }
-//
-//            // Ищем все маппинги для указанных типов (используем низкоуровневый вызов GetMapping).
-//            // Ищем по всем типам и всем указанным индексам.
-//            var indexToTypeAccordances = GetTypeVersions(indexNames, typeNames);
-//            
-//            return indexToTypeAccordances;
-//        }
-
         public Dictionary<string, IList<TypeMapping>> GetAllTypesNest(string indexName, IEnumerable<string> typeNames)
         {
             var typeNamesArray = typeNames.ToArray();
@@ -127,7 +110,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         /// </summary>
         public IList<PropertyMapping> GetIndexTypeMapping(string indexName, string typeName)
         {
-//            var schemaTypes = GetAllTypes(new[] { indexName }, new[] { typeName });
             var schemaTypesNest = GetAllTypesNest(indexName , new[] { typeName });
 
             if (schemaTypesNest == null || !schemaTypesNest.Any())
@@ -135,13 +117,10 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
                 return new PropertyMapping[] { };
             }
 
-//            var actualType = schemaTypes.GetActualTypeName(typeName);
             var actualTypeNest = schemaTypesNest.GetActualTypeNameNest(typeName);
 
-//            var indexTypeMapping = _mappingProvider.GetIndexTypeMapping(indexName, actualType);
             var indexTypeMappingNest = _mappingProvider.GetIndexTypeMappingNest(indexName, actualTypeNest);
 
-            //            return indexTypeMapping;
             return indexTypeMappingNest;
         }
 
@@ -151,88 +130,11 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         public string GetStatus()
         {
             var settings = AppConfiguration.Instance.GetSection<ElasticSearchSettings>(ElasticSearchSettings.SectionName);
-
+            
             var health = _elasticClient.Value.ClusterHealth();
-            var nodeAddresses = string.Join("; ", GetActualNodes(settings).Select(i => i.ToString()));
+            var nodeAddresses = string.Join("; ", settings.Nodes);
 
             return $"cluster name - {health.ClusterName}, status - {health.Status}, number of nodes: {health.NumberOfNodes}, configured nodes: {nodeAddresses}";
         }
-
-        /// <summary>
-        /// Возвращает список версий указанных типов в указанных индексах.
-        /// </summary>
-        /// <param name="indexNames">Список индексов для поиска</param>
-        /// <param name="typeNames">Список типов, для которых ищем версии схем</param>
-        /// <returns>Список версий схем</returns>
-        private IEnumerable<IndexToTypeAccordance> GetTypeVersions(IEnumerable<string> indexNames, IEnumerable<string> typeNames)
-        {
-            // собираем маппинги по всем индексам и типам
-            var mappings = _mappingProvider.FillIndexMappings(indexNames, typeNames);
-            
-            typeNames = typeNames.Select(t => t.ToLowerInvariant()).ToList();
-            indexNames = indexNames.Select(s => s.ToLowerInvariant()).ToList();
-
-            var indexToTypeAccordances = mappings.Where(m => indexNames.Contains(m.IndexName) && typeNames.Contains(m.BaseTypeName))
-                                                 .OrderBy(m => m.IndexName)
-                                                 .ThenBy(m => m.BaseTypeName)
-                                                 .ToList();
-
-            return indexToTypeAccordances;
-        }
-
-        //TODO REMOVE
-//        private List<KeyValuePair<string, IList<TypeMapping>>> GetTypeVersionsNest(IEnumerable<string> indexNames, IEnumerable<string> typeNames)
-//        {
-//            // собираем маппинги по всем индексам и типам
-//            var mappingsNest = _mappingProvider.FillIndexMappingsNest(indexNames, typeNames);
-//
-//            typeNames = typeNames.Select(t => t.ToLowerInvariant()).ToList();
-//            indexNames = indexNames.Select(s => s.ToLowerInvariant()).ToList();
-//
-//            var indexToTypeAccordances = mappingsNest.Mappings.Where(m => indexNames.Contains(m.Key) && typeNames.Contains(m.Value[0].TypeName.Split('_').First()))
-//                                                     .ToList();
-//
-//            return indexToTypeAccordances;
-//        }
-
-
-        //TODO duplicated from InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.ElasticSearchNodePool. BEGIN
-        private readonly Dictionary<Uri, NodeInfo> _nodeList;
-        
-        private static IEnumerable<Uri> GetActualNodes(ElasticSearchSettings settings)
-        {
-            var nodeUrls = settings.Nodes.Select(url => new Uri(url.Trim()));
-
-            var nodeList = new Dictionary<Uri, NodeInfo>();
-
-            if (nodeUrls != null)
-            {
-                foreach (var nodeAddress in nodeUrls)
-                {
-                    nodeList[nodeAddress] = new NodeInfo(nodeAddress);
-                }
-            }
-
-            var result = nodeList.Values
-                              .OrderByDescending(i => i.IsWork)
-                              .Select(i => i.Address)
-                              .ToArray();
-
-            return result;
-        }
-
-        private class NodeInfo
-        {
-            public NodeInfo(Uri address)
-            {
-                Address = address;
-                IsWork = true;
-            }
-
-            public readonly Uri Address;
-
-            public bool IsWork;
-        }
-        //TODO duplicated from InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.ElasticSearchNodePool. END
     }
 }
