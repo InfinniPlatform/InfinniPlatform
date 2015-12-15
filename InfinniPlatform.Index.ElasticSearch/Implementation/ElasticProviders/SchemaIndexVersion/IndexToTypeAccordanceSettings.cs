@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
+using Nest;
+
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion
 {
 	public class IndexToTypeAccordanceSettings
 	{
-		private readonly IEnumerable<IndexToTypeAccordance> _accordances;
-		private readonly bool _indexEmpty;
+	    private readonly bool _indexEmpty;
 
-		public IndexToTypeAccordanceSettings(IEnumerable<IndexToTypeAccordance> accordances, bool indexEmpty)
+		public IndexToTypeAccordanceSettings(Dictionary<string, IList<TypeMapping>> accordances, bool indexEmpty)
 		{
-			_accordances = accordances;
+			Accordances = accordances;
 			_indexEmpty = indexEmpty;
 		}
 
@@ -18,7 +19,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
 		{
 			get
 			{
-				return !_indexEmpty && Accordances.Select(s => s.TypeNames).Any();
+			    return true;
+			    //				return !_indexEmpty && Accordances.Select(s => s.TypeNames).Any();
 			}
 		}
 
@@ -26,13 +28,11 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
 		{
 			get
 			{
-				return _indexEmpty && !Accordances.Select(s => s.TypeNames).Any();
-			}
+                return true;
+                //				return _indexEmpty && !Accordances.Select(s => s.TypeNames).Any();
+            }
 		}
 
-		public IEnumerable<IndexToTypeAccordance> Accordances
-		{
-			get { return _accordances; }
-		}
+		public Dictionary<string, IList<TypeMapping>> Accordances { get; }
 	}
 }

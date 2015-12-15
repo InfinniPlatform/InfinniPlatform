@@ -22,20 +22,20 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 			_accordanceProvider = new IndexToTypeAccordanceProvider();
 		}
 
-		private static string CreateKey(IEnumerable<string> indexNames, IEnumerable<string> typeNames)
+		private static string CreateKey(string indexName, IEnumerable<string> typeNames)
 		{
-			return string.Format("Indexes:{0};TypeNames:{1}", string.Join("_", indexNames), string.Join("_", typeNames));
+			return $"Indexes:{indexName};TypeNames:{string.Join("_", typeNames)}";
 		}
 
-		private IndexToTypeAccordanceSettings GetIndexTypeAccordanceSettings(IEnumerable<string> indexNames, IEnumerable<string> typeNames)
+		private IndexToTypeAccordanceSettings GetIndexTypeAccordanceSettings(string indexName, IEnumerable<string> typeNames)
 		{
-			var key = CreateKey(indexNames, typeNames);
+			var key = CreateKey(indexName, typeNames);
 
 			IndexToTypeAccordanceSettings indexSettings;
 
 			if (!_settings.TryGetValue(key, out indexSettings))
 			{
-				indexSettings = _accordanceProvider.GetIndexTypeAccordances(indexNames, typeNames);
+				indexSettings = _accordanceProvider.GetIndexTypeAccordances(indexName, typeNames);
 				_settings[key] = indexSettings;
 			}
 
@@ -60,7 +60,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 	    public IVersionProvider BuildVersionProvider(string indexName, string typeName)
 		{
 			var elasticSearchProvider = new ElasticSearchProvider(indexName, typeName);
-			var indexSettings = GetIndexTypeAccordanceSettings(new[] { indexName }, new[] { typeName });
+			var indexSettings = GetIndexTypeAccordanceSettings(indexName, new[] { typeName });
 			var indexQueryExecutor = new IndexQueryExecutor(indexSettings);
 			var documentProvider = new DocumentProvider(indexQueryExecutor);
 
@@ -70,15 +70,15 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 		/// <summary>
 		///     Создать провайдер данных для доступа к нескольким индексам
 		/// </summary>
-		/// <param name="indexNames">
+		/// <param name="indexName">
 		/// Наименование индексов. Если имена не указаны,
 		/// для поиска будут использованы все имеющиеся индексы
 		/// </param>
 		/// <param name="typeNames">Наименования типов</param>
-		public IDocumentProvider BuildMultiIndexDocumentProvider(IEnumerable<string> indexNames = null, IEnumerable<string> typeNames = null)
+		public IDocumentProvider BuildMultiIndexDocumentProvider(string indexName = null, IEnumerable<string> typeNames = null)
 		{
 			// Создаём универсальный провайдер для выполнения поисковых запросов ко всем документам конфигурации
-			return new DocumentProvider(new IndexQueryExecutor(GetIndexTypeAccordanceSettings(indexNames, typeNames)));
+			return new DocumentProvider(new IndexQueryExecutor(GetIndexTypeAccordanceSettings(indexName, typeNames)));
 		}
 
 		private readonly List<ElasticSearchProviderInfo> _providersInfo = new List<ElasticSearchProviderInfo>();
@@ -137,13 +137,13 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 		/// <returns></returns>
 		public IIndexQueryExecutor BuildIndexQueryExecutor(string indexName, string typeName)
 		{
-			return new IndexQueryExecutor(GetIndexTypeAccordanceSettings(new[] { indexName }, new[] { typeName }));
+			return new IndexQueryExecutor(GetIndexTypeAccordanceSettings(indexName, new[] { typeName }));
 		}
 
 		/// <summary>
 		///     Создать исполнитель агрегационных запросов к индексу
 		/// </summary>
-		/// <param name="indexName">Наимемнование индекса, для которого выполняется запрос</param>
+		/// <param name="indexName">Наименование индекса, для которого выполняется запрос</param>
 		/// <param name="typeName">
 		/// Наименование типа для выполнения операций с данными. Если не указан, осуществляется выборка всех
 		/// существующих в индексе типов

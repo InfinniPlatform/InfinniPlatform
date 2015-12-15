@@ -14,12 +14,13 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 			_elasticConnection = new ElasticConnection();
 		}
 
-		public IndexToTypeAccordanceSettings GetIndexTypeAccordances(IEnumerable<string> indeces, IEnumerable<string> types)
+		public IndexToTypeAccordanceSettings GetIndexTypeAccordances(string index, IEnumerable<string> types)
 		{
-			var indexTypes = _elasticConnection.GetAllTypes(indeces, types);
-			var indexEmpty = indeces != null && indeces.Any();
+//			var indexTypes = _elasticConnection.GetAllTypes(indeces, types);
+            var indexTypesNest = _elasticConnection.GetAllTypesNest(index, types);
+            var indexEmpty = string.IsNullOrEmpty(index);
 
-			return new IndexToTypeAccordanceSettings(indexTypes, indexEmpty);
+			return new IndexToTypeAccordanceSettings(indexTypesNest, indexEmpty);
 		}
 	}
 }

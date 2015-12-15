@@ -35,9 +35,15 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions
 
             indexName = indexName.ToLowerInvariant();
 
-            var types = _connection.GetAllTypes(new[] { indexName }, new[] { typeName });
+//            var types = _connection.GetAllTypes(new[] { indexName }, new[] { typeName });
+            var typesNest = _connection.GetAllTypesNest(indexName, new[] { typeName });
 
-            if (!types.Any())
+//            if (!types.Any())
+//            {
+//                return IndexStatus.NotExists;
+//            }
+
+            if (!typesNest.Any())
             {
                 return IndexStatus.NotExists;
             }
@@ -59,14 +65,16 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions
                 throw new ArgumentException(Resources.EmptyIndexTypeName);
             }
 
-            var types = _connection.GetAllTypes(new [] {indexName}, new[] { typeName });
+//            var types = _connection.GetAllTypes(new [] {indexName}, new[] { typeName });
+            var typesNest = _connection.GetAllTypesNest(indexName, new[] { typeName });
 
-            foreach (var indexToTypeAccordance in types)
+            foreach (var mappings in typesNest)
             {
+                var mappingIndexName = mappings.Key;
                 //удаляем только маппинги типов в индексе
-                foreach (var derivedTypeName in indexToTypeAccordance.TypeNames)
+                foreach (var type in mappings.Value)
                 {
-                    _connection.Client.DeleteMapping<dynamic>(d=>d.Index(indexToTypeAccordance.IndexName).Type(derivedTypeName));    
+                    _connection.Client.DeleteMapping<dynamic>(d=>d.Index(mappingIndexName).Type(type.TypeName));    
                 }
             }
 
@@ -100,29 +108,27 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions
 
             indexName = indexName.ToLowerInvariant();
 
-            var schemaTypes = _connection.GetAllTypes(new[] {indexName}, new[] {typeName});
+//            var schemaTypes = _connection.GetAllTypes(new[] {indexName}, new[] {typeName});
+            var schemaTypesNest = _connection.GetAllTypesNest(indexName, new[] { typeName });
 
             var schemaTypeVersionNumber = 0;
 
             //Если существует указанный тип
-            if (schemaTypes.Any())
+            if (schemaTypesNest.Any() && schemaTypesNest.First().Value.Any())
             {
                 //вычисляем номер следующей версии маппинга
-                schemaTypeVersionNumber =
-                    int.Parse(
-                        schemaTypes.First()
-                            .TypeNames.OrderByDescending(s => s.ToLowerInvariant()).First()
-                            .Substring((typeName + IndexTypeMapper.MappingTypeVersionPattern).Length)) + 1;
+                schemaTypeVersionNumber = int.Parse(schemaTypesNest.First().Value.First().TypeName.Substring((typeName + IndexTypeMapper.MappingTypeVersionPattern).Length)) + 1;
             }
 
-            if (schemaTypes.Any() && deleteExistingVersion)
+            if (schemaTypesNest.Any() && deleteExistingVersion)
             {
-                foreach (var indexToTypeAccordance in schemaTypes)
+                foreach (var schemaType in schemaTypesNest)
                 {
-                    foreach (var name in indexToTypeAccordance.TypeNames)
+                    foreach (var value in schemaType.Value)
                     {
-                        IndexToTypeAccordance accordance = indexToTypeAccordance;
-                        _connection.Client.DeleteMapping<dynamic>(d => d.Index(accordance.IndexName).Type(name));
+                        var name = value.TypeName;
+                        var schemaIndexName = schemaType.Key;
+                        _connection.Client.DeleteMapping<dynamic>(d => d.Index(schemaIndexName).Type(name));
                     }
                 }
             }

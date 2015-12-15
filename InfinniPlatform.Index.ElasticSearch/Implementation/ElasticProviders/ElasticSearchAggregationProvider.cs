@@ -19,7 +19,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
     public sealed class ElasticSearchAggregationProvider : IAggregationProvider
     {
         private readonly string _indexName;
-        private readonly IEnumerable<IndexToTypeAccordance> _typeName;
+//        private readonly IEnumerable<IndexToTypeAccordance> _typeName;
+        private readonly Dictionary<string, IList<TypeMapping>> _typeNameNest;
         private IFilter _filters;
         private readonly ElasticConnection _elasticConnection;
 
@@ -27,7 +28,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         {
             _indexName = indexName.ToLowerInvariant();
             _elasticConnection = new ElasticConnection();
-            _typeName = _elasticConnection.GetAllTypes(new[] { _indexName }, new[] { typeName.ToLowerInvariant() });
+//            _typeName = _elasticConnection.GetAllTypes(new[] { _indexName }, new[] { typeName.ToLowerInvariant() });
+            _typeNameNest = _elasticConnection.GetAllTypesNest(_indexName , new[] { typeName.ToLowerInvariant() });
         }
 
         /// <summary>
@@ -217,7 +219,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             }
 
             var rawResult = _elasticConnection.Client.Search<dynamic>(s => s
-                .BuildSearchForType(new[] { _indexName }, _typeName.SelectMany(d => d.TypeNames), false, false)
+                .BuildSearchForType(new[] { _indexName }, _typeNameNest.First().GetMappingsTypeNames(), false, false)
                 .Size(0) // Нас интересуют только агрегации, исключаем результаты поискового запроса
                 .Aggregations(activeAggregation)
                 );

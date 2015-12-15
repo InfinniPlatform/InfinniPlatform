@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions;
 
+using Nest;
+
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion
 {
 
@@ -141,7 +143,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
 
             if (accordances == null || !indexToTypeAccordances.Any())
             {
-                return String.Empty;
+                return string.Empty;
             }
             
             var actualIndexAccordance = indexToTypeAccordances.Where(a => a.TypeNames.Any(t => t.Contains(typeName))).OrderByDescending(a => a.IndexName).FirstOrDefault();
@@ -151,7 +153,28 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
                 return GetActualType(actualIndexAccordance.TypeNames);
             }
             
-            throw new ArgumentException(string.Format("no type \"{0}\"exists in actual index ",typeName));
+            throw new ArgumentException($"no type \"{typeName}\"exists in actual index ");
+        }
+
+        public static string GetActualTypeNameNest(this Dictionary<string, IList<TypeMapping>> accordances, string typeName)
+        {
+            var max = 0;
+            string actualTypeName = null;
+
+            var typeMappings = accordances.FirstOrDefault().Value;
+
+            foreach (var typeMapping in typeMappings)
+            {
+                var version = typeMapping.GetTypeVersion().GetValueOrDefault();
+
+                if (version >= max)
+                {
+                    actualTypeName = typeMapping.TypeName;
+                    max = version;
+                }
+            }
+
+            return actualTypeName;
         }
 
         private static string GetActualType(IEnumerable<string> types)

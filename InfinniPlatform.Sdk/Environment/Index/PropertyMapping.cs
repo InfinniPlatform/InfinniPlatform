@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq.Expressions;
 
 namespace InfinniPlatform.Sdk.Environment.Index
 {
@@ -19,6 +21,7 @@ namespace InfinniPlatform.Sdk.Environment.Index
     /// <summary>
     ///     Определяет параметры маппинга для поля типа, хранящегося в индексе
     /// </summary>
+    [DebuggerDisplay("{Name}, {DataType}")]
     public sealed class PropertyMapping
     {
         public PropertyMapping()

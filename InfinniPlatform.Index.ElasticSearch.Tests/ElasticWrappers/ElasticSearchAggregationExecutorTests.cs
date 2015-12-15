@@ -138,8 +138,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 
             if (indexStateProvider.GetIndexStatus(aggrindex, aggrindex) == IndexStatus.NotExists)
             {
-                indexStateProvider.CreateIndexType(aggrindex, aggrindex, false);
-				var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider(aggrindex, aggrindex, null);
+                indexStateProvider.CreateIndexType(aggrindex, aggrindex);
+				var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider(aggrindex, aggrindex);
 
                 foreach (var school in SchoolsFactory.CreateRandomSchools(300000))
                 {
@@ -152,7 +152,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             }
 
             var executor = new ElasticSearchAggregationProvider(aggrindex, aggrindex);
-            var queryWrapper = new IndexQueryExecutor(new IndexToTypeAccordanceProvider().GetIndexTypeAccordances(new[] { aggrindex }, new[] { aggrindex }));
+            var queryWrapper = new IndexQueryExecutor(new IndexToTypeAccordanceProvider().GetIndexTypeAccordances(aggrindex, new[] { aggrindex }));
 
             var r = executor.ExecuteTermAggregation(
                     new string[0],

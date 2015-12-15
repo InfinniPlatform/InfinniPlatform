@@ -25,7 +25,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         public IndexQueryExecutor(IndexToTypeAccordanceSettings settings)
         {
             _elasticConnection = new ElasticConnection();
-            _indexNames = settings.Accordances.Select(i => i.IndexName).ToArray();
+            _indexNames = new List<string>();
+            _indexNames = settings.Accordances.Select(x => x.Key).ToArray();
             _typeNames = settings.Accordances.ToArray();
             _searchInAllIndeces = settings.SearchInAllIndeces;
             _searchInAllTypes = settings.SearchInAllTypes;
@@ -36,7 +37,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         private readonly IEnumerable<string> _indexNames;
         private readonly bool _searchInAllIndeces;
         private readonly bool _searchInAllTypes;
-        private readonly IEnumerable<IndexToTypeAccordance> _typeNames;
+        private readonly KeyValuePair<string, IList<TypeMapping>>[] _typeNames;
 
         /// <summary>
         /// Найти список объектов в индексе по указанной модели поиска
@@ -79,7 +80,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
                                   .BuildSearchForType(_indexNames,
                                                       _typeNames == null || !_typeNames.Any()
                                                           ? null
-                                                          : _typeNames.SelectMany(d => d.TypeNames),
+                                                          : _typeNames.SelectMany(x => x.GetMappingsTypeNames()),
                                                       _searchInAllIndeces, _searchInAllTypes);
 
             var documentsResponse = _elasticConnection.Client.Count(desc);
@@ -110,10 +111,12 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             Func<SearchDescriptor<dynamic>, SearchDescriptor<dynamic>> desc =
                 descriptor => new ElasticSearchQueryBuilder(descriptor)
                                   .BuildSearchDescriptor(searchModel)
-                                  .BuildSearchForType(_indexNames,
-                                                      _typeNames == null || !_typeNames.Any()
-                                                          ? null
-                                                          : _typeNames.SelectMany(d => d.TypeNames), _searchInAllIndeces, _searchInAllTypes);
+                                  .BuildSearchForType(_indexNames, _typeNames == null || !_typeNames.Any()
+                                                                       ? null
+                                                                       : _typeNames.SelectMany(x => x.GetMappingsTypeNames()),
+                                                      _searchInAllIndeces, _searchInAllTypes);
+
+
 
             var documentsResponse = _elasticConnection.Client.Search(desc);
 

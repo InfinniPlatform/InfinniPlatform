@@ -555,20 +555,23 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             versionBuilder.CreateVersion(false, initialMapping);
             
             // Пробуем добавить в индекс объект с корректной схемой данных
-			var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider(IndexName, IndexName, null);
+			var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
 
-            IDictionary<string, object> expando = new ExpandoObject();
-            IDictionary<string, object> hobby = new ExpandoObject();
-            hobby.Add("ActivityName", "Football");
-            hobby.Add("StartingDate", new DateTime(1980, 1, 1));
-            expando.Add("FirstName", "Ivan");
-            expando.Add("IsActive", new{SomePropert = 1, Active = true});
-            expando.Add("Birthdate", new DateTime(1975, 1, 1));
-            expando.Add("Number", 2);
-            expando.Add("Hobbies", hobby);
+            var hobby = new DynamicWrapper
+                        {
+                            ["ActivityName"] = "Football",
+                            ["StartingDate"] = new DateTime(1980, 1, 1)
+                        };
 
-            dynamic dynObject1 = (ExpandoObject) expando;
-            dynObject1.Id = Guid.NewGuid().ToString().ToLowerInvariant();
+            dynamic dynObject1 = new DynamicWrapper
+                                 {
+                                     ["FirstName"] = "Ivan",
+                                     ["IsActive"] = new { SomePropert = 1, Active = true },
+                                     ["Birthdate"] = new DateTime(1975, 1, 1),
+                                     ["Number"] = 2,
+                                     ["Hobbies"] = hobby,
+                                     ["Id"] = Guid.NewGuid().ToString().ToLowerInvariant()
+                                 };
 
             elasticSearchProvider.Set(dynObject1);
             elasticSearchProvider.Refresh();
@@ -596,18 +599,16 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             elasticSearchProvider.Refresh();
 
             Assert.IsTrue(versionBuilder.VersionExists(newMapping));
+
+            dynamic dynObject2 = new DynamicWrapper();
+            dynObject2["FirstName"] = "Oleg";
+            dynObject2["IsActive"] = false;
+            dynObject2["Birthdate"] = new DateTime(1970, 1, 1);
+            dynObject2["Number"] = 2;
+            dynObject2["Hobbies"] = hobby;
+            dynObject2["Id"] = Guid.NewGuid().ToString().ToLowerInvariant();
             
-            IDictionary<string, object> expando2 = new ExpandoObject();
-            expando2.Add("FirstName", "Oleg");
-            expando2.Add("IsActive", false);
-            expando2.Add("Birthdate", new DateTime(1970, 1, 1));
-            expando2.Add("Number", 2); 
-            expando2.Add("Hobbies", hobby);
-
-            dynamic dynObject2 = (ExpandoObject)expando2;
-            dynObject2.Id = Guid.NewGuid().ToString().ToLowerInvariant();
-
-			elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider(IndexName, IndexName, null);
+			elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
             // Вызов метода не должен привести к исключению
             elasticSearchProvider.Set(dynObject2);
 

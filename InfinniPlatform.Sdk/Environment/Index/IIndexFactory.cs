@@ -24,12 +24,9 @@ namespace InfinniPlatform.Sdk.Environment.Index
         /// <summary>
         /// Создать провайдер данных для доступа к нескольким индексам
         /// </summary>
-        /// <param name="indexNames">
-        /// Наименование индексов. Если имена не указаны,
-        /// для поиска будут использованы все имеющиеся индексы
-        /// </param>
+        /// <param name="indexName">Наименование индекса</param>
         /// <param name="typeNames">Имена типов, по которым будет производиться поиск</param>
-        IDocumentProvider BuildMultiIndexDocumentProvider(IEnumerable<string> indexNames = null, IEnumerable<string> typeNames = null);
+        IDocumentProvider BuildMultiIndexDocumentProvider(string indexName = null, IEnumerable<string> typeNames = null);
 
         /// <summary>
         /// Создать провайдер для поиска данных
@@ -53,7 +50,7 @@ namespace InfinniPlatform.Sdk.Environment.Index
         /// Создать исполнитель запросов к индексу
         /// </summary>
         /// <param name="indexName">
-        /// Наимемнование индекса, для которого выполняется запрос. Если не указан, осуществляется выборка
+        /// Наименование индекса, для которого выполняется запрос. Если не указан, осуществляется выборка
         /// из всех существующих индексов
         /// </param>
         /// <param name="typeName">
@@ -66,7 +63,7 @@ namespace InfinniPlatform.Sdk.Environment.Index
         /// <summary>
         /// Создать исполнитель агрегационных запросов к индексу
         /// </summary>
-        /// <param name="indexName">Наимемнование индекса, для которого выполняется запрос</param>
+        /// <param name="indexName">Наименование индекса, для которого выполняется запрос</param>
         /// <param name="typeName">
         /// Наименование типа для выполнения операций с данными. Если не указан, осуществляется выборка всех
         /// существующих в индексе типов

@@ -70,6 +70,7 @@
     <Compile Include="Implementation\ElasticProviders\SchemaIndexVersion\IndexToTypeAccordance.cs" />
     <Compile Include="Implementation\ElasticProviders\SchemaIndexVersion\IndexToTypeAccordanceSettings.cs" />
     <Compile Include="Implementation\ElasticProviders\SchemaIndexVersion\IndexTypeMapping.cs" />
+    <Compile Include="Implementation\ElasticProviders\SchemaIndexVersion\TypeMappingExtensions.cs" />
     <Compile Include="Implementation\ElasticSearchModels\ElasticCountQueryBuilder.cs" />
     <Compile Include="Implementation\ElasticSearchModels\CountModelFilterDescriptor.cs" />
     <Compile Include="Implementation\ElasticSearchModels\SearchModelSkipDescriptor.cs" />

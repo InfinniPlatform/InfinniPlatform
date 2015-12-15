@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Index;
@@ -28,8 +30,9 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 
           public dynamic GetDocuments(IEnumerable<object> filterObject, int pageNumber, int pageSize, IEnumerable<object> sorting, IEnumerable<string> configs = null, IEnumerable<string> documents = null)
         {
-            var elasticProvider = _indexFactory.BuildMultiIndexDocumentProvider(indexNames: configs, typeNames: documents);
-            return elasticProvider.GetDocument(filterObject, pageNumber, pageSize, sorting);
+            throw new NotImplementedException("CrossConfigSearcher is not implemented yet.");
+//            var elasticProvider = _indexFactory.BuildMultiIndexDocumentProvider(configs.FirstOrDefault(), documents);
+//            return elasticProvider.GetDocument(filterObject, pageNumber, pageSize, sorting);
         }
     }
 }

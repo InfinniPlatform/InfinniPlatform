@@ -3,8 +3,6 @@ using System.Diagnostics;
 using System.Dynamic;
 using System.Globalization;
 using System.Linq;
-using InfinniPlatform.Api.RestApi.Auth;
-using InfinniPlatform.Factories;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
@@ -40,7 +38,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 			}
 			watch.Stop();
 
-			Console.WriteLine(string.Format("Connected {0} times {1} ms. First connection time: {2} ",connectionCount, watch.ElapsedMilliseconds,oneConnectionInitTime ));
+			Console.WriteLine("Connected {0} times {1} ms. First connection time: {2} ", connectionCount, watch.ElapsedMilliseconds, oneConnectionInitTime);
 		}
 
 		[Test]
@@ -65,7 +63,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 			}
 			watch.Stop();
 
-			Console.WriteLine(string.Format("INSERT {0} records. Elapsed {1} ms.",recordCount,  watch.ElapsedMilliseconds));
+			Console.WriteLine("INSERT {0} records. Elapsed {1} ms.", recordCount, watch.ElapsedMilliseconds);
 		}
 
 		[Test]
@@ -88,7 +86,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 			}
 			watch.Stop();
 
-			Console.WriteLine(string.Format("UPDATE {0} records. Elapsed {1} ms.", recordCount, watch.ElapsedMilliseconds));
+			Console.WriteLine("UPDATE {0} records. Elapsed {1} ms.", recordCount, watch.ElapsedMilliseconds);
 		}
 
 
@@ -98,8 +96,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 		{
 			var indexProvider = new ElasticFactory().BuildIndexStateProvider();
             indexProvider.RecreateIndex("testindex", "testindex");
-            var queryWrapper = new IndexQueryExecutor(new IndexToTypeAccordanceProvider().GetIndexTypeAccordances(new[] { "testindex" }, new[] { "testindex" }));
-			var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider("testindex", "testindex", null);
+            var queryWrapper = new IndexQueryExecutor(new IndexToTypeAccordanceProvider().GetIndexTypeAccordances("testindex", new[] { "testindex" }));
+			var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider("testindex", "testindex");
             
 			for (int i = 0; i < recordCount; i++)
 			{
