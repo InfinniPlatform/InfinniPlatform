@@ -10,20 +10,7 @@ namespace InfinniPlatform.FlowDocument.Converters.Pdf
     {
         public FlowDocumentPdfConverter(PrintViewSettings settings)
         {
-            var htmlToPdfUtil = settings.HtmlToPdfUtil;
-            var htmlToPdfTemp = settings.HtmlToPdfTemp;
-
-            if (string.IsNullOrWhiteSpace(htmlToPdfUtil))
-            {
-                htmlToPdfUtil = HtmlToPdfUtil.GetDefaultHtmlToPdfUtil();
-            }
-
-            if (string.IsNullOrWhiteSpace(htmlToPdfTemp))
-            {
-                htmlToPdfTemp = Path.GetTempPath();
-            }
-
-            _htmlToPdfUtil = new HtmlToPdfUtil(htmlToPdfUtil, htmlToPdfTemp);
+            _htmlToPdfUtil = new HtmlToPdfUtil(settings.HtmlToPdfUtilCommand, settings.HtmlToPdfUtilArguments, settings.HtmlToPdfTemp);
             _htmlConverter = new FlowDocumentHtmlConverter();
         }
 

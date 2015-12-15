@@ -8,146 +8,148 @@ using NUnit.Framework;
 
 namespace InfinniPlatform.MessageQueue.Tests
 {
-	[TestFixture]
-	[Category(TestCategories.StressTest)]
-	public sealed class MessageQueueStressTest
-	{
-		private const int WaitTimeout = 30000;
-		private const string ServiceName = "RabbitMQ";
+    [TestFixture]
+    [Category(TestCategories.StressTest)]
+    [Ignore("Manual - Only Windows")]
+    public sealed class MessageQueueStressTest
+    {
+        private const int WaitTimeout = 30000;
+        private const string ServiceName = "RabbitMQ";
 
-		private const string ExchangeName = "StressTestFanoutExchange";
-		private const string QueueName1 = "StressTestFanoutQueue1";
-		private const string QueueName2 = "StressTestFanoutQueue2";
+        private const string ExchangeName = "StressTestFanoutExchange";
+        private const string QueueName1 = "StressTestFanoutQueue1";
+        private const string QueueName2 = "StressTestFanoutQueue2";
 
-		private static readonly string[] BeforeRestartMessages
-			= new[]
-				  {
-					  "Message0",
-					  "Message1",
-					  "Message2",
-					  "Message3",
-					  "Message4"
-				  };
+        private static readonly string[] BeforeRestartMessages
+            = new[]
+                  {
+                      "Message0",
+                      "Message1",
+                      "Message2",
+                      "Message3",
+                      "Message4"
+                  };
 
-		private static readonly string[] AfterRestartMessages
-			= new[]
-				  {
-					  "Message5",
-					  "Message6",
-					  "Message7",
-					  "Message8",
-					  "Message9"
-				  };
-
-
-		[TestFixtureSetUp]
-		public void SetUp()
-		{
-			WindowsServices.StartService(ServiceName, WaitTimeout);
-		}
-
-		[Test]
-		public void ShouldDeliverAllMessages()
-		{
-			// Given
-			var result = new List<string[]>();
-
-			// When
-
-			var consumeCompleted = ListenerThread(result);
-
-			PublisherThread();
-
-			consumeCompleted.WaitOne(WaitTimeout);
-
-			// Then
-			CollectionAssert.AreEquivalent(BeforeRestartMessages.Concat(AfterRestartMessages), result[0]);
-			CollectionAssert.AreEquivalent(BeforeRestartMessages.Concat(AfterRestartMessages), result[1]);
-		}
+        private static readonly string[] AfterRestartMessages
+            = new[]
+                  {
+                      "Message5",
+                      "Message6",
+                      "Message7",
+                      "Message8",
+                      "Message9"
+                  };
 
 
-		private static void PublisherThread()
-		{
-			var consumeCompleted = new ManualResetEvent(false);
+        [TestFixtureSetUp]
+        public void SetUp()
+        {
+            WindowsServices.StartService(ServiceName, WaitTimeout);
+        }
 
-			ThreadPool.QueueUserWorkItem(state =>
-											 {
-												 var factory = new RabbitMqMessageQueueFactory(RabbitMqSettings.Default);
-												 var publisher = factory.CreateMessageQueuePublisher();
+        [Test]
+        public void ShouldDeliverAllMessages()
+        {
+            // Given
+            var result = new List<string[]>();
 
-												 // Начало публикации сообщений
+            // When
 
-												 foreach (var message in BeforeRestartMessages)
-												 {
-													 publisher.Publish(ExchangeName, null, null, message);
-												 }
+            var consumeCompleted = ListenerThread(result);
 
-												 // Перезапуск службы очереди сообщений
-												 RestartMessageQueueService();
+            PublisherThread();
 
-												 // Продолжение публикации сообщений
+            consumeCompleted.WaitOne(WaitTimeout);
 
-												 foreach (var message in AfterRestartMessages)
-												 {
-													 publisher.Publish(ExchangeName, null, null, message);
-												 }
+            // Then
+            Assert.AreEqual(2, result.Count);
+            CollectionAssert.AreEquivalent(BeforeRestartMessages.Concat(AfterRestartMessages), result[0]);
+            CollectionAssert.AreEquivalent(BeforeRestartMessages.Concat(AfterRestartMessages), result[1]);
+        }
 
-												 consumeCompleted.Set();
-											 });
 
-			consumeCompleted.WaitOne(WaitTimeout);
-		}
+        private static void PublisherThread()
+        {
+            var consumeCompleted = new ManualResetEvent(false);
 
-		private static EventWaitHandle ListenerThread(ICollection<string[]> result)
-		{
-			var subscribeCompleted = new ManualResetEvent(false);
-			var consumeCompleted = new ManualResetEvent(false);
+            ThreadPool.QueueUserWorkItem(state =>
+                                             {
+                                                 var factory = new RabbitMqMessageQueueFactory(RabbitMqSettings.Default);
+                                                 var publisher = factory.CreateMessageQueuePublisher();
 
-			ThreadPool.QueueUserWorkItem(state =>
-											 {
-												 var factory = new RabbitMqMessageQueueFactory(RabbitMqSettings.Default);
-												 var listener = factory.CreateMessageQueueListener();
-												 var subscribtions = factory.CreateMessageQueueManager();
+                                                 // Начало публикации сообщений
 
-												 // Создание подписок
+                                                 foreach (var message in BeforeRestartMessages)
+                                                 {
+                                                     publisher.Publish(ExchangeName, null, null, message);
+                                                 }
 
-												 var exchange = subscribtions.CreateExchangeFanout(ExchangeName, config => config.Durable());
+                                                 // Перезапуск службы очереди сообщений
+                                                 RestartMessageQueueService();
 
-												 var completeConsumer1 = new CountdownEvent(BeforeRestartMessages.Length + AfterRestartMessages.Length);
-												 var consumer1 = new TestConsumer(completeConsumer1);
-												 exchange.Subscribe(QueueName1, () => consumer1, config => config.Durable());
+                                                 // Продолжение публикации сообщений
 
-												 var completeConsumer2 = new CountdownEvent(BeforeRestartMessages.Length + AfterRestartMessages.Length);
-												 var consumer2 = new TestConsumer(completeConsumer2);
-												 exchange.Subscribe(QueueName2, () => consumer2, config => config.Durable());
+                                                 foreach (var message in AfterRestartMessages)
+                                                 {
+                                                     publisher.Publish(ExchangeName, null, null, message);
+                                                 }
 
-												 subscribeCompleted.Set();
+                                                 consumeCompleted.Set();
+                                             });
 
-												 // Запуск прослушивания
+            consumeCompleted.WaitOne(WaitTimeout);
+        }
 
-												 listener.StartListenAll();
+        private static EventWaitHandle ListenerThread(ICollection<string[]> result)
+        {
+            var subscribeCompleted = new ManualResetEvent(false);
+            var consumeCompleted = new ManualResetEvent(false);
 
-												 // Ожидание окончания приема
+            ThreadPool.QueueUserWorkItem(state =>
+                                             {
+                                                 var factory = new RabbitMqMessageQueueFactory(RabbitMqSettings.Default);
+                                                 var listener = factory.CreateMessageQueueListener();
+                                                 var subscribtions = factory.CreateMessageQueueManager();
 
-												 WaitHandle.WaitAll(new[] { completeConsumer1.WaitHandle, completeConsumer2.WaitHandle }, WaitTimeout);
-												 result.Add(consumer1.Messages);
-												 result.Add(consumer2.Messages);
+                                                 // Создание подписок
 
-												 consumeCompleted.Set();
+                                                 var exchange = subscribtions.CreateExchangeFanout(ExchangeName, config => config.Durable());
 
-												 // Остановка прослушивания
+                                                 var completeConsumer1 = new CountdownEvent(BeforeRestartMessages.Length + AfterRestartMessages.Length);
+                                                 var consumer1 = new TestConsumer(completeConsumer1);
+                                                 exchange.Subscribe(QueueName1, () => consumer1, config => config.Durable());
 
-												 listener.StopListenAll();
-											 });
+                                                 var completeConsumer2 = new CountdownEvent(BeforeRestartMessages.Length + AfterRestartMessages.Length);
+                                                 var consumer2 = new TestConsumer(completeConsumer2);
+                                                 exchange.Subscribe(QueueName2, () => consumer2, config => config.Durable());
 
-			subscribeCompleted.WaitOne(WaitTimeout);
+                                                 subscribeCompleted.Set();
 
-			return consumeCompleted;
-		}
+                                                 // Запуск прослушивания
 
-		private static void RestartMessageQueueService()
-		{
-			WindowsServices.RestartService(ServiceName, WaitTimeout);
-		}
-	}
+                                                 listener.StartListenAll();
+
+                                                 // Ожидание окончания приема
+
+                                                 WaitHandle.WaitAll(new[] { completeConsumer1.WaitHandle, completeConsumer2.WaitHandle }, WaitTimeout);
+                                                 result.Add(consumer1.Messages);
+                                                 result.Add(consumer2.Messages);
+
+                                                 consumeCompleted.Set();
+
+                                                 // Остановка прослушивания
+
+                                                 listener.StopListenAll();
+                                             });
+
+            subscribeCompleted.WaitOne(WaitTimeout);
+
+            return consumeCompleted;
+        }
+
+        private static void RestartMessageQueueService()
+        {
+            WindowsServices.RestartService(ServiceName, WaitTimeout);
+        }
+    }
 }

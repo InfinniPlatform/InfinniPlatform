@@ -10,36 +10,30 @@ namespace InfinniPlatform.FlowDocument.Converters.Pdf
 {
     internal sealed class HtmlToPdfUtil
     {
-        private const string ReplacePaddingBottom = "{padding-bottom}";
-        private const string ReplacePaddingLeft = "{padding-left}";
-        private const string ReplacePaddingRight = "{padding-right}";
-        private const string ReplacePaddingTop = "{padding-top}";
+        private const int UtilTimeout = 60 * 1000;
 
-        private const string ReplacePageWidth = "{page-width}";
-        private const string ReplacePageHeight = "{page-height}";
+        private const string PaddingBottom = "{padding-bottom}";
+        private const string PaddingLeft = "{padding-left}";
+        private const string PaddingRight = "{padding-right}";
+        private const string PaddingTop = "{padding-top}";
 
-        private const string ReplaceHtmlInput = "{file-html}";
-        private const string ReplacePdfOutput = "{file-pdf}";
+        private const string PageWidth = "{page-width}";
+        private const string PageHeight = "{page-height}";
+
+        private const string HtmlInput = "{file-html}";
+        private const string PdfOutput = "{file-pdf}";
 
 
-        public HtmlToPdfUtil(string htmlToPdfUtil, string htmlToPdfTemp)
+        public HtmlToPdfUtil(string htmlToPdfUtilCommand, string htmlToPdfUtilArguments, string htmlToPdfTemp)
         {
-            if (string.IsNullOrWhiteSpace(htmlToPdfUtil))
-            {
-                throw new ArgumentNullException("htmlToPdfUtil");
-            }
-
-            if (string.IsNullOrWhiteSpace(htmlToPdfTemp))
-            {
-                throw new ArgumentNullException("htmlToPdfTemp");
-            }
-
-            _htmlToPdfUtil = htmlToPdfUtil;
-            _htmlToPdfTemp = htmlToPdfTemp;
+            _htmlToPdfUtilCommand = string.IsNullOrWhiteSpace(htmlToPdfUtilCommand) ? GetDefaultHtmlToPdfUtilCommand() : htmlToPdfUtilCommand;
+            _htmlToPdfUtilArguments = string.IsNullOrWhiteSpace(htmlToPdfUtilArguments) ? GetDefaultHtmlToPdfUtilArguments() : htmlToPdfUtilArguments;
+            _htmlToPdfTemp = string.IsNullOrWhiteSpace(htmlToPdfTemp) ? GetDefaultHtmlToPdfTemp() : htmlToPdfTemp;
         }
 
 
-        private readonly string _htmlToPdfUtil;
+        private readonly string _htmlToPdfUtilCommand;
+        private readonly string _htmlToPdfUtilArguments;
         private readonly string _htmlToPdfTemp;
 
 
@@ -57,8 +51,8 @@ namespace InfinniPlatform.FlowDocument.Converters.Pdf
                     htmlFileStream.Flush();
                 }
 
-                var htmlToPdfUtil = ReplaceString(size, padding, fileHtmlPath, filePdfPath);
-                var htmlToPdfConvertResult = ExecuteShellCommand(htmlToPdfUtil, 60 * 1000);
+                var htmlToPdfUtilArguments = BuildHtmlToPdfUtilArguments(size, padding, fileHtmlPath, filePdfPath);
+                var htmlToPdfConvertResult = ExecuteShellCommand(_htmlToPdfUtilCommand, htmlToPdfUtilArguments, UtilTimeout);
 
                 if (htmlToPdfConvertResult.Completed && htmlToPdfConvertResult.ExitCode == 0)
                 {
@@ -86,35 +80,81 @@ namespace InfinniPlatform.FlowDocument.Converters.Pdf
         }
 
 
-        public static string GetDefaultHtmlToPdfUtil()
+        private static string GetDefaultHtmlToPdfUtilCommand()
         {
-            string wkhtmltopdf;
+            string command;
+
+            // Linux
+            if (RunningOnLinux())
+            {
+                // В случае, если 'X server' на сервере не установлен, что более вероятно, то утилиту wkhtmltopdf придется
+                // запускать через какую-либо подсистему виртуализации, например, через xvfb. Предполагается, что в этом
+                // случае команда запуска будет находится в файле '/usr/local/bin/wkhtmltopdf.sh'. Например, для xvfb
+                // содержимое файла wkhtmltopdf.sh будет таким: 'xvfb-run -a -s "-screen 0 640x480x16" wkhtmltopdf "$@"'.
+
+                command = "/usr/local/bin/wkhtmltopdf.sh";
+
+                if (!File.Exists(command))
+                {
+                    command = "wkhtmltopdf";
+                }
+            }
+            // Windows
+            else
+            {
+                // Метод Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) работает неоднозначно для
+                // различных комбинаций Environment.Is64BitOperatingSystem и Environment.Is64BitProcess, поэтому
+                // местоположение ProgramFiles определяется явно по значениям переменных окружения
+
+                // x64
+                if (Environment.Is64BitOperatingSystem)
+                {
+                    // "C:\Program Files"
+                    var programFiles = Environment.GetEnvironmentVariable("ProgramW6432");
+
+                    // "C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"
+                    command = Path.Combine(programFiles ?? "", "wkhtmltopdf", "bin", "wkhtmltopdf.exe");
+
+                    if (!File.Exists(command))
+                    {
+                        // "C:\Program Files (x86)\wkhtmltopdf\bin\wkhtmltopdf.exe"
+                        var programFilesX86 = Environment.GetEnvironmentVariable("ProgramFiles(x86)");
+
+                        // "C:\Program Files (x86)\wkhtmltopdf\bin\wkhtmltopdf.exe"
+                        command = Path.Combine(programFilesX86 ?? "", "wkhtmltopdf", "bin", "wkhtmltopdf.exe");
+                    }
+                }
+                // x32
+                else
+                {
+                    var programFiles = Environment.GetEnvironmentVariable("ProgramFiles");
+
+                    command = Path.Combine(programFiles ?? "", "wkhtmltopdf", "bin", "wkhtmltopdf.exe");
+                }
+            }
+
+            return command;
+        }
+
+        private static string GetDefaultHtmlToPdfUtilArguments()
+        {
+            string arguments;
 
             if (RunningOnLinux())
             {
-                wkhtmltopdf = "wkhtmltopdf";
+                arguments = " ";
             }
             else
             {
-                var programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-                wkhtmltopdf = string.Format("\"{0}\" --disable-smart-shrinking --dpi 96", Path.Combine(programFiles, "wkhtmltopdf", "bin", "wkhtmltopdf.exe"));          
+                arguments = " --disable-smart-shrinking --dpi 96";
             }
 
-            return string.Format("{0} -B {1} -L {2} -R {3} -T {4} --page-height {5} --page-width {6} {7} {8}",
+            return $"{arguments} -B {PaddingBottom} -L {PaddingLeft} -R {PaddingRight} -T {PaddingTop} --page-height {PageHeight} --page-width {PageWidth} {$"\"{HtmlInput}\""} {$"\"{PdfOutput}\""}";
+        }
 
-                wkhtmltopdf,
-
-                ReplacePaddingBottom,
-                ReplacePaddingLeft,
-                ReplacePaddingRight,
-                ReplacePaddingTop,
-
-                ReplacePageHeight,
-                ReplacePageWidth,
-
-                string.Format("\"{0}\"", ReplaceHtmlInput),
-                string.Format("\"{0}\"", ReplacePdfOutput)
-                );
+        private static string GetDefaultHtmlToPdfTemp()
+        {
+            return Path.GetTempPath();
         }
 
         private static bool RunningOnLinux()
@@ -140,21 +180,22 @@ namespace InfinniPlatform.FlowDocument.Converters.Pdf
             }
         }
 
-        private string ReplaceString(PrintElementSize size, PrintElementThickness padding, string fileHtmlPath, string filePdfPath)
+
+        private string BuildHtmlToPdfUtilArguments(PrintElementSize size, PrintElementThickness padding, string fileHtmlPath, string filePdfPath)
         {
             var mmPaddingBottom = (int)(padding.Bottom / SizeUnits.Mm);
             var mmPaddingLeft = (int)(padding.Left / SizeUnits.Mm);
             var mmPaddingRight = (int)(padding.Right / SizeUnits.Mm);
             var mmPaddingTop = (int)(padding.Right / SizeUnits.Mm);
 
-            var htmlToPdfUtil = _htmlToPdfUtil
-                .Replace(ReplaceHtmlInput, fileHtmlPath)
-                .Replace(ReplacePdfOutput, filePdfPath)
+            var htmlToPdfUtil = _htmlToPdfUtilArguments
+                .Replace(HtmlInput, fileHtmlPath)
+                .Replace(PdfOutput, filePdfPath)
 
-                .Replace(ReplacePaddingBottom, mmPaddingBottom.ToString())
-                .Replace(ReplacePaddingLeft, mmPaddingLeft.ToString())
-                .Replace(ReplacePaddingRight, mmPaddingRight.ToString())
-                .Replace(ReplacePaddingTop, mmPaddingTop.ToString())
+                .Replace(PaddingBottom, mmPaddingBottom.ToString())
+                .Replace(PaddingLeft, mmPaddingLeft.ToString())
+                .Replace(PaddingRight, mmPaddingRight.ToString())
+                .Replace(PaddingTop, mmPaddingTop.ToString())
                 ;
 
             if (size != null)
@@ -162,55 +203,86 @@ namespace InfinniPlatform.FlowDocument.Converters.Pdf
                 if (size.Height != null)
                 {
                     var mmPageHeight = (int)(size.Height / SizeUnits.Mm);
-                    htmlToPdfUtil = htmlToPdfUtil.Replace(ReplacePageHeight, mmPageHeight.ToString());
+                    htmlToPdfUtil = htmlToPdfUtil.Replace(PageHeight, mmPageHeight.ToString());
                 }
 
                 if (size.Width != null)
                 {
                     var mmPageWidth = (int)(size.Width / SizeUnits.Mm);
-                    htmlToPdfUtil = htmlToPdfUtil.Replace(ReplacePageWidth, mmPageWidth.ToString());
+                    htmlToPdfUtil = htmlToPdfUtil.Replace(PageWidth, mmPageWidth.ToString());
                 }
             }
             else
             {
-                var defaultPageHeight = 297;
-                var defaultPageWidth = 210;
+                const int defaultPageHeight = 297;
+                const int defaultPageWidth = 210;
 
-                htmlToPdfUtil = htmlToPdfUtil.Replace(ReplacePageHeight, defaultPageHeight.ToString());
-                htmlToPdfUtil = htmlToPdfUtil.Replace(ReplacePageWidth, defaultPageWidth.ToString());
+                htmlToPdfUtil = htmlToPdfUtil.Replace(PageHeight, defaultPageHeight.ToString());
+                htmlToPdfUtil = htmlToPdfUtil.Replace(PageWidth, defaultPageWidth.ToString());
             }
 
             return htmlToPdfUtil;
         }
 
-        private static ProcessResult ExecuteShellCommand(string command, int timeout)
+
+        private static ProcessResult ExecuteShellCommand(string command, string arguments, int timeout)
         {
             var result = new ProcessResult();
 
-            using (var shellProcess = new Process())
+            using (var process = new Process())
             {
-                shellProcess.StartInfo.FileName = command;
-                shellProcess.StartInfo.UseShellExecute = false;
-                shellProcess.StartInfo.RedirectStandardOutput = true;
-                shellProcess.StartInfo.RedirectStandardError = true;
-                shellProcess.StartInfo.CreateNoWindow = true;
-                shellProcess.Start();
+                // При запуске на Linux bash-скриптов, возможен код ошибки 255.
+                // Решением является добавление заголовка #!/bin/bash в начало скрипта.
 
-                if (shellProcess.WaitForExit(timeout))
+                process.StartInfo.FileName = command;
+                process.StartInfo.Arguments = arguments;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.RedirectStandardInput = true;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.RedirectStandardError = true;
+                process.StartInfo.CreateNoWindow = true;
+
+                bool isStarted;
+
+                try
                 {
-                    result.Completed = true;
-                    result.ExitCode = shellProcess.ExitCode;
-                    result.Output = shellProcess.StandardOutput.ReadToEnd();
+                    isStarted = process.Start();
                 }
-                else
+                catch (Exception error)
                 {
-                    try
+                    // Не удалось запустить процесс, скорей всего, файл не существует или не является исполняемым
+
+                    result.Completed = true;
+                    result.ExitCode = -1;
+                    result.Output = string.Format(Resources.CannotExecuteCommand, command, arguments, error.Message);
+
+                    isStarted = false;
+                }
+
+                if (isStarted)
+                {
+                    if (process.WaitForExit(timeout))
                     {
-                        shellProcess.Kill();
+                        result.Completed = true;
+                        result.ExitCode = process.ExitCode;
+
+                        // Вывод актуален только при наличии ошибки
+                        if (process.ExitCode != 0)
+                        {
+                            result.Output = process.StandardOutput.ReadToEnd() + process.StandardError.ReadToEnd();
+                        }
                     }
-                    catch
+                    else
                     {
-                        // ignored
+                        try
+                        {
+                            // Зависшие процессы завершаются принудительно
+                            process.Kill();
+                        }
+                        catch
+                        {
+                            // Любые ошибки в данном случае игнорируются
+                        }
                     }
                 }
             }
