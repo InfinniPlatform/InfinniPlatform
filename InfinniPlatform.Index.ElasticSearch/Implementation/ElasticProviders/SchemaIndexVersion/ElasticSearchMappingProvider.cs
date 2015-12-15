@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -68,6 +67,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
 
         public Dictionary<string, IList<TypeMapping>> FillIndexMappingsNest(string indexName, IEnumerable<string> typeNames)
         {
+            indexName = indexName.ToLower();
+
             var baseTypeNames = typeNames.Select(x => x.GetTypeBaseName()).ToArray();
 
             var typeNameFilter = string.Join(",", baseTypeNames.Select(t => t.ToLower() + "*")).ToLowerInvariant();

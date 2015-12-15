@@ -25,7 +25,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         public IndexQueryExecutor(IndexToTypeAccordanceSettings settings)
         {
             _elasticConnection = new ElasticConnection();
-            _indexNames = new List<string>();
             _indexNames = settings.Accordances.Select(x => x.Key).ToArray();
             _typeNames = settings.Accordances.ToArray();
             _searchInAllIndeces = settings.SearchInAllIndeces;
