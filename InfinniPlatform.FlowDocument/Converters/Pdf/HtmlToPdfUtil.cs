@@ -231,6 +231,9 @@ namespace InfinniPlatform.FlowDocument.Converters.Pdf
 
             using (var process = new Process())
             {
+                // При запуске на Linux bash-скриптов, возможен код ошибки 255.
+                // Решением является добавление заголовка #!/bin/bash в начало скрипта.
+
                 process.StartInfo.FileName = command;
                 process.StartInfo.Arguments = arguments;
                 process.StartInfo.UseShellExecute = false;
@@ -247,6 +250,8 @@ namespace InfinniPlatform.FlowDocument.Converters.Pdf
                 }
                 catch (Exception error)
                 {
+                    // Не удалось запустить процесс, скорей всего, файл не существует или не является исполняемым
+
                     result.Completed = true;
                     result.ExitCode = -1;
                     result.Output = string.Format(Resources.CannotExecuteCommand, command, arguments, error.Message);
@@ -260,17 +265,23 @@ namespace InfinniPlatform.FlowDocument.Converters.Pdf
                     {
                         result.Completed = true;
                         result.ExitCode = process.ExitCode;
-                        result.Output = process.StandardOutput.ReadToEnd() + process.StandardError.ReadToEnd();
+
+                        // Вывод актуален только при наличии ошибки
+                        if (process.ExitCode != 0)
+                        {
+                            result.Output = process.StandardOutput.ReadToEnd() + process.StandardError.ReadToEnd();
+                        }
                     }
                     else
                     {
                         try
                         {
+                            // Зависшие процессы завершаются принудительно
                             process.Kill();
                         }
                         catch
                         {
-                            // ignored
+                            // Любые ошибки в данном случае игнорируются
                         }
                     }
                 }

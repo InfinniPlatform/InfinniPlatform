@@ -112,8 +112,11 @@
   /* Настройки печатных представлений */
   "printView": {
     /* Местоположение утилиты wkhtmltopdf - http://wkhtmltopdf.org/ (по умолчанию - генерируется автоматически с учетом операционной системы) */
-    /* В Linux, если X server не установлен, утилиту wkhtmltopdf следует запускать через xvfb, поместив код запуска в /usr/local/bin/wkhtmltopdf.sh */
-    /* Пример содержимого файла /usr/local/bin/wkhtmltopdf.sh: 'xvfb-run -a -s "-screen 0 640x480x16" wkhtmltopdf "$@"' */
+    /* В Linux, если X Server не установлен, утилиту wkhtmltopdf следует запускать через xvfb, поместив код запуска в /usr/local/bin/wkhtmltopdf.sh */
+    /* Пример содержимого файла /usr/local/bin/wkhtmltopdf.sh (заголовок обязателен): */
+    /* #!/bin/bash
+    /* xvfb-run -a -s "-screen 0 640x480x16" wkhtmltopdf "$@" */
+    /* Также нужно не забыть установить права на исполнение: chmod a+x /usr/local/bin/wkhtmltopdf.sh */
     "HtmlToPdfUtilCommand": "",
     /* Формат аргументов утилиты wkhtmltopdf - http://wkhtmltopdf.org/ (по умолчанию - генерируется автоматически с учетом операционной системы) */
     "HtmlToPdfUtilArguments": "",
