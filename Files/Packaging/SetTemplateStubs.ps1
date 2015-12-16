@@ -2,7 +2,7 @@ Param ([string]$Version)
 $Hash=git rev-parse HEAD
 
 $VersionStub = "{VERSION}"
-$HashStub = "{COMMIT_HASH}"
+$HashStub = "{COMMIT}"
 
 (Get-Content ".\Templates\InfinniPlatform.Template.nuspec") | 
 Foreach-Object {$_ -replace $VersionStub, $Version} |

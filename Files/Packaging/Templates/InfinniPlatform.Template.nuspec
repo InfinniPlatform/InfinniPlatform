@@ -6,7 +6,7 @@
         <authors>Infinnity Solutions</authors>
         <owners>Infinnity Solutions</owners>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>InfinniPlatform. Commit hash: {COMMIT_HASH}.</description>
+        <description>InfinniPlatform. Commit hash: {COMMIT}.</description>
         <copyright>Copyright 2015</copyright>
     </metadata>
     <files>
