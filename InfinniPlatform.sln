@@ -181,8 +181,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packaging", "Packaging", "{8237A533-D176-4BB1-86F7-F07C7AEFBA03}"
 	ProjectSection(SolutionItems) = preProject
 		Files\Packaging\CreateNugetPackage.bat = Files\Packaging\CreateNugetPackage.bat
+		Files\Packaging\GlobalAssemblyInfo.cs = Files\Packaging\GlobalAssemblyInfo.cs
 		Files\Packaging\SetTemplateStubs.ps1 = Files\Packaging\SetTemplateStubs.ps1
-		Files\Packaging\VersionInfo.cs = Files\Packaging\VersionInfo.cs
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Monitoring", "Monitoring", "{C71676EF-83E3-4549-B43E-F3CEAE4FABC7}"

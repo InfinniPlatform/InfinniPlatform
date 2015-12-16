@@ -50,8 +50,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IdentityMapBehavior.cs" />
-    <Compile Include="..\Files\Packaging\VersionInfo.cs">
-      <Link>Properties\VersionInfo.cs</Link>
+    <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -42,8 +42,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Files\Packaging\VersionInfo.cs">
-      <Link>Properties\VersionInfo.cs</Link>
+    <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
