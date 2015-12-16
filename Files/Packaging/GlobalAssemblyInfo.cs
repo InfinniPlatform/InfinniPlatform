@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 // TeamCity File Content Replacer: Add build number
 // Look in: */Packaging/GlobalAssemblyInfo.cs
 // Find what: ((AssemblyVersion|AssemblyFileVersion)\s*\(\s*@?\")(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)\.(?<build>[0-9]+)(\"\s*\))
-// Replace with: $1$4.$5.$6.\%build.number%$3
+// Replace with: $1$3.$4.$5.\%build.number%$7
 [assembly: AssemblyVersion("1.1.0.0")]
 [assembly: AssemblyFileVersion("1.1.0.0")]
 
