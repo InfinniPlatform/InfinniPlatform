@@ -1,7 +1,7 @@
 Param ([string]$Version)
 $Hash=git rev-parse HEAD
 
-$VersionStub = "{INFINNI_PLATFORM_VERSION}"
+$VersionStub = "{VERSION}"
 $HashStub = "{COMMIT_HASH}"
 
 (Get-Content ".\Templates\InfinniPlatform.Template.nuspec") | 
