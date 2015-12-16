@@ -54,6 +54,9 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Files\Packaging\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="CustomServiceApiTest.cs" />
     <Compile Include="DocumentApiTest.cs" />
     <Compile Include="FileApiTest.cs" />

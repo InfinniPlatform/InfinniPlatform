@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".files", ".files", "{9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}"
 EndProject
@@ -142,21 +142,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{2F5C52
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{89D37C8B-9A73-45AB-A4C0-E91DC1A6D5CA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Certificates", "Certificates", "{AFFC8625-1412-44AD-9C88-AE10FD9DDA0C}"
-	ProjectSection(SolutionItems) = preProject
-		Files\Certificates\InfinniPlatform.pfx = Files\Certificates\InfinniPlatform.pfx
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{392528E2-B90C-449C-9C45-98E8A8018A66}"
-	ProjectSection(SolutionItems) = preProject
-		Files\Scripts\ElasticSearch.Install.ps1 = Files\Scripts\ElasticSearch.Install.ps1
-		Files\Scripts\ElasticSearch.Uninstall.ps1 = Files\Scripts\ElasticSearch.Uninstall.ps1
-		Files\Scripts\Platform.Install.ps1 = Files\Scripts\Platform.Install.ps1
-		Files\Scripts\Script.cmd = Files\Scripts\Script.cmd
-		Files\Scripts\Security.Certificates.ps1 = Files\Scripts\Security.Certificates.ps1
-		Files\Scripts\Security.Http.ps1 = Files\Scripts\Security.Http.ps1
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.FlowDocument", "InfinniPlatform.FlowDocument\InfinniPlatform.FlowDocument.csproj", "{E47F0C5B-F775-44B4-9E2E-E4C044864125}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.FlowDocument.Tests", "InfinniPlatform.FlowDocument.Tests\InfinniPlatform.FlowDocument.Tests.csproj", "{C4D8DDAE-6A41-479D-8DC7-652FEA918741}"
@@ -177,13 +162,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Expressions
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SystemConfigurations", "SystemConfigurations", "{D9A6588C-AAAB-4488-BEB8-DBBE12BC28BF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{D7EEE24A-5EE9-4CBA-9CEC-93A407A21CAB}"
-	ProjectSection(SolutionItems) = preProject
-		Files\Build\AssemblyInfo.tt = Files\Build\AssemblyInfo.tt
-		Files\Build\Package.tt = Files\Build\Package.tt
-		Files\Build\TransformOnBuild.targets = Files\Build\TransformOnBuild.targets
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.SystemConfig.Administration", "InfinniPlatform.SystemConfig.Administration\InfinniPlatform.SystemConfig.Administration.csproj", "{F087E239-018F-46D3-A0A3-3ED43CE745EB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.SystemConfig.AdministrationCustomization", "InfinniPlatform.SystemConfig.AdministrationCustomization\InfinniPlatform.SystemConfig.AdministrationCustomization.csproj", "{487447FD-AFC7-4A10-B140-1ECCD9C1741D}"
@@ -203,7 +181,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packaging", "Packaging", "{8237A533-D176-4BB1-86F7-F07C7AEFBA03}"
 	ProjectSection(SolutionItems) = preProject
 		Files\Packaging\CreateNugetPackage.bat = Files\Packaging\CreateNugetPackage.bat
-		Files\Packaging\SetVersion.ps1 = Files\Packaging\SetVersion.ps1
+		Files\Packaging\SetTemplateStubs.ps1 = Files\Packaging\SetTemplateStubs.ps1
+		Files\Packaging\VersionInfo.cs = Files\Packaging\VersionInfo.cs
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Monitoring", "Monitoring", "{C71676EF-83E3-4549-B43E-F3CEAE4FABC7}"
@@ -590,8 +569,6 @@ Global
 		{9FEC0071-8A7C-44C1-91C7-9C1219601B34} = {76075218-7249-4C01-A184-35E066952A8F}
 		{01FDB3B6-D433-4D85-AEF6-E194742A708D} = {76075218-7249-4C01-A184-35E066952A8F}
 		{2F5C5276-823F-4C7D-B95A-3EFD75C7B0C5} = {9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}
-		{AFFC8625-1412-44AD-9C88-AE10FD9DDA0C} = {9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}
-		{392528E2-B90C-449C-9C45-98E8A8018A66} = {9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}
 		{E47F0C5B-F775-44B4-9E2E-E4C044864125} = {76075218-7249-4C01-A184-35E066952A8F}
 		{C4D8DDAE-6A41-479D-8DC7-652FEA918741} = {76075218-7249-4C01-A184-35E066952A8F}
 		{9E7FD106-8434-41ED-8DB1-10761C25A25C} = {DA71DF4B-1976-4716-B2F3-D361BC234729}
@@ -601,7 +578,6 @@ Global
 		{DDC6B014-63C7-41EA-9CF0-9E5BEB7F6977} = {76075218-7249-4C01-A184-35E066952A8F}
 		{0CA27AD5-540A-4CC6-A9F4-18634716D096} = {76075218-7249-4C01-A184-35E066952A8F}
 		{93F9B582-2B31-45A1-B28B-96BEEF735B3C} = {76075218-7249-4C01-A184-35E066952A8F}
-		{D7EEE24A-5EE9-4CBA-9CEC-93A407A21CAB} = {9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}
 		{F087E239-018F-46D3-A0A3-3ED43CE745EB} = {D9A6588C-AAAB-4488-BEB8-DBBE12BC28BF}
 		{487447FD-AFC7-4A10-B140-1ECCD9C1741D} = {D9A6588C-AAAB-4488-BEB8-DBBE12BC28BF}
 		{66201AEC-C0C9-49DC-AB78-B8B8235A6607} = {89D37C8B-9A73-45AB-A4C0-E91DC1A6D5CA}

@@ -42,16 +42,15 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Files\Packaging\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Memory\MemoryCacheImplTest.cs" />
     <Compile Include="Memory\MemoryMessageBusTest.cs" />
     <Compile Include="Memory\MemoryCacheImplPerformanceTest.cs" />
     <Compile Include="Memory\MemoryMessageBusPerformanceTest.cs" />
     <Compile Include="Memory\MemoryCacheImplMemoryTest.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <DependentUpon>AssemblyInfo.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Redis\RedisCacheImplMemoryTest.cs" />
     <Compile Include="Redis\RedisCacheImplPerformanceTest.cs" />
     <Compile Include="Redis\RedisMessageBusPerformanceTest.cs" />
@@ -67,10 +66,6 @@
       <Link>App.config</Link>
     </None>
     <None Include="packages.config" />
-    <None Include="Properties\AssemblyInfo.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>AssemblyInfo.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
