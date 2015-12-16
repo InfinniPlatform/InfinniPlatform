@@ -16,7 +16,7 @@ function Build-Nuspec
 		[String] $assemblyInfo = 'Files\Packaging\GlobalAssemblyInfo.cs',
 
 		[Parameter(HelpMessage = "Номер VCS версии проекта.")]
-		[String] $commitHash= ''
+		[String] $commitHash = ''
 	)
 
 	process 
