@@ -8,5 +8,16 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: AssemblyConfiguration("")]
+
+// TeamCity File Content Replacer: Add build number
+// Look in: */Packaging/GlobalAssemblyInfo.cs
+// Find what: ((AssemblyVersion|AssemblyFileVersion)\s*\(\s*@?\")(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)\.(?<build>[0-9]+)(\"\s*\))
+// Replace with: $1$4.$5.$6.\%build.number%$3
 [assembly: AssemblyVersion("1.1.0.0")]
 [assembly: AssemblyFileVersion("1.1.0.0")]
+
+// TeamCity File Content Replacer: Add VCS hash
+// Look in: */Packaging/GlobalAssemblyInfo.cs
+// Find what: (AssemblyInformationalVersion\s*\(\s*@?\").*?(\"\s*\))
+// Replace with: $1\%build.vcs.number%$2
+[assembly: AssemblyInformationalVersion("")]
