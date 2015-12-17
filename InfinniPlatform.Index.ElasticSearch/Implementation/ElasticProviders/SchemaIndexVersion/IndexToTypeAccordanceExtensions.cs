@@ -1,10 +1,8 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions;
-
-using Nest;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion
 {
@@ -31,10 +29,10 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
         }
 
         /// <summary>
-        /// Получить базовые имена типов в индексе из имен версий
+        /// РџРѕР»СѓС‡РёС‚СЊ Р±Р°Р·РѕРІС‹Рµ РёРјРµРЅР° С‚РёРїРѕРІ РІ РёРЅРґРµРєСЃРµ РёР· РёРјРµРЅ РІРµСЂСЃРёР№
         /// </summary>
-        /// <param name="derivedTypesNames">Имена версий типов в индексе</param>
-        /// <returns>Список наименований базовых типов в индексе</returns>
+        /// <param name="derivedTypesNames">РРјРµРЅР° РІРµСЂСЃРёР№ С‚РёРїРѕРІ РІ РёРЅРґРµРєСЃРµ</param>
+        /// <returns>РЎРїРёСЃРѕРє РЅР°РёРјРµРЅРѕРІР°РЅРёР№ Р±Р°Р·РѕРІС‹С… С‚РёРїРѕРІ РІ РёРЅРґРµРєСЃРµ</returns>
         public static IEnumerable<string> GetBaseTypeNames(this IEnumerable<string> derivedTypesNames)
         {
             var result = new List<string>();
@@ -50,11 +48,11 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
         }
 
         /// <summary>
-        /// Найти существующее в коллекции сопоставление типа и индексов
+        /// РќР°Р№С‚Рё СЃСѓС‰РµСЃС‚РІСѓСЋС‰РµРµ РІ РєРѕР»Р»РµРєС†РёРё СЃРѕРїРѕСЃС‚Р°РІР»РµРЅРёРµ С‚РёРїР° Рё РёРЅРґРµРєСЃРѕРІ
         /// </summary>
-        /// <param name="accordances">Список сопоставлений</param>
-        /// <param name="typeName">Наименование типа для поиска</param>
-        /// <returns>Сопоставление типа и индексов</returns>
+        /// <param name="accordances">РЎРїРёСЃРѕРє СЃРѕРїРѕСЃС‚Р°РІР»РµРЅРёР№</param>
+        /// <param name="typeName">РќР°РёРјРµРЅРѕРІР°РЅРёРµ С‚РёРїР° РґР»СЏ РїРѕРёСЃРєР°</param>
+        /// <returns>РЎРѕРїРѕСЃС‚Р°РІР»РµРЅРёРµ С‚РёРїР° Рё РёРЅРґРµРєСЃРѕРІ</returns>
         public static IndexToTypeAccordance GetIndexToTypeAccordance(this IEnumerable<IndexToTypeAccordance> accordances,
                                                                      string typeName)
         {
@@ -63,11 +61,11 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
         }
 
         /// <summary>
-        /// Получить актуальный версию схемы типа документа
+        /// РџРѕР»СѓС‡РёС‚СЊ Р°РєС‚СѓР°Р»СЊРЅС‹Р№ РІРµСЂСЃРёСЋ СЃС…РµРјС‹ С‚РёРїР° РґРѕРєСѓРјРµРЅС‚Р°
         /// </summary>
-        /// <param name="accordances">Список соответствий наименований индексов и хранящихся в них версий типов данных</param>
-        /// <param name="typeName">Наименование типа, актуальную версию которого требуется получить</param>
-        /// <returns>Актуальная версия типа</returns>
+        /// <param name="accordances">РЎРїРёСЃРѕРє СЃРѕРѕС‚РІРµС‚СЃС‚РІРёР№ РЅР°РёРјРµРЅРѕРІР°РЅРёР№ РёРЅРґРµРєСЃРѕРІ Рё С…СЂР°РЅСЏС‰РёС…СЃСЏ РІ РЅРёС… РІРµСЂСЃРёР№ С‚РёРїРѕРІ РґР°РЅРЅС‹С…</param>
+        /// <param name="typeName">РќР°РёРјРµРЅРѕРІР°РЅРёРµ С‚РёРїР°, Р°РєС‚СѓР°Р»СЊРЅСѓСЋ РІРµСЂСЃРёСЋ РєРѕС‚РѕСЂРѕРіРѕ С‚СЂРµР±СѓРµС‚СЃСЏ РїРѕР»СѓС‡РёС‚СЊ</param>
+        /// <returns>РђРєС‚СѓР°Р»СЊРЅР°СЏ РІРµСЂСЃРёСЏ С‚РёРїР°</returns>
         public static string GetActualTypeName(this IEnumerable<IndexToTypeAccordance> accordances, string typeName)
         {
             typeName = typeName.ToLowerInvariant();
