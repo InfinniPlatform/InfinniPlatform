@@ -16,11 +16,15 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void ShouldCrudOperations()
         {
-            var indexProvider = new IndexStateProvider();
-            indexProvider.RecreateIndex("elasticcrudbehavior", "testtype");
-            indexProvider.RecreateIndex("elasticcrudbehavior", "testtype1");
-            indexProvider.RecreateIndex("elasticcrudbehavior1", "testtype");
-            indexProvider.RecreateIndex("elasticcrudbehavior1", "testtype_another");
+            var elasticConnection = new ElasticConnection();
+            elasticConnection.DeleteType("elasticcrudbehavior", "testtype");
+            elasticConnection.CreateType("elasticcrudbehavior", "testtype");
+            elasticConnection.DeleteType("elasticcrudbehavior", "testtype1");
+            elasticConnection.CreateType("elasticcrudbehavior", "testtype1");
+            elasticConnection.DeleteType("elasticcrudbehavior1", "testtype");
+            elasticConnection.CreateType("elasticcrudbehavior1", "testtype");
+            elasticConnection.DeleteType("elasticcrudbehavior1", "testtype_another");
+            elasticConnection.CreateType("elasticcrudbehavior1", "testtype_another");
 
             var elasticProvider1 = new ElasticSearchProvider("elasticcrudbehavior", "testtype");
             var elasticProvider2 = new ElasticSearchProvider("elasticcrudbehavior", "testtype1");
@@ -135,7 +139,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
                                              Resources.InappropriateItemMapping);
 
             //создаем новую версию маппинга для elasticcrudbehavior, testtype
-            indexProvider.CreateIndexType("elasticcrudbehavior", "testtype");
+            elasticConnection.CreateType("elasticcrudbehavior", "testtype");
 
             //успешно добавляем в него инстанс, который ранее выдавал ошибку маппинга
 			elasticProvider1 = new ElasticSearchProvider("elasticcrudbehavior", "testtype");

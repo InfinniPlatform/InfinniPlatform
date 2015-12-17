@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Dynamic;
 using System.Linq;
-using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Index.ElasticSearch.Tests.Builders;
@@ -22,14 +21,14 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         private const string IndexName = "aggrunittestindex";
         
         private ICrudOperationProvider _elasticSearchProvider;
-        private IIndexStateProvider _indexStateProvider;
+        private ElasticConnection _elasticConnection;
         
         [SetUp]
         public void InitializeElasticSearch()
         {
-            _indexStateProvider = new ElasticFactory().BuildIndexStateProvider();
-            _indexStateProvider.CreateIndexType(IndexName, IndexName);
-			_elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider(IndexName, IndexName, null);
+            _elasticConnection = new ElasticConnection();
+            _elasticConnection.CreateType(IndexName, IndexName);
+			_elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
 
             foreach (var school in SchoolsFactory.CreateSchoolsForFacetsTesting())
             {
@@ -52,10 +51,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         {
             var executor = new ElasticSearchAggregationProvider(IndexName, IndexName);
 
-            var result = executor.ExecuteTermAggregation(
-                new[] { "Name", "Principal.LastName" }, 
-                AggregationType.Avg, 
-                "Rating");
+            var result = executor.ExecuteTermAggregation(new[] { "Name", "Principal.LastName" }, AggregationType.Avg, "Rating");
 
             // Количество школ с имененм badschool
             var count = result.First(s => s.Name == "badschool").DocCount;
@@ -134,11 +130,11 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         {
             const string aggrindex = "aggrperfomancetest";
 
-            var indexStateProvider = new ElasticFactory().BuildIndexStateProvider();
+            var indexStateProvider = new ElasticConnection();
 
             if (indexStateProvider.GetIndexStatus(aggrindex, aggrindex) == IndexStatus.NotExists)
             {
-                indexStateProvider.CreateIndexType(aggrindex, aggrindex);
+                indexStateProvider.CreateType(aggrindex, aggrindex);
 				var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider(aggrindex, aggrindex);
 
                 foreach (var school in SchoolsFactory.CreateRandomSchools(300000))
@@ -412,7 +408,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [TearDown]
         public void DeleteIndex()
         {
-            _indexStateProvider.DeleteIndexType(IndexName, IndexName);
+            _elasticConnection.DeleteType(IndexName, IndexName);
         }
     }
 }

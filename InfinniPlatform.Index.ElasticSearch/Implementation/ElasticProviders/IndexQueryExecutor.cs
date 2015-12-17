@@ -36,7 +36,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         private readonly IEnumerable<string> _indexNames;
         private readonly bool _searchInAllIndeces;
         private readonly bool _searchInAllTypes;
-        private readonly KeyValuePair<string, IList<TypeMapping>>[] _typeNames;
+        private readonly KeyValuePair<string, IEnumerable<TypeMapping>>[] _typeNames;
 
         /// <summary>
         /// Найти список объектов в индексе по указанной модели поиска

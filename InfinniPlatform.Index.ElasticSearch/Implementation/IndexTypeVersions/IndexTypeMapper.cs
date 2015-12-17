@@ -17,12 +17,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions
         /// <summary>
         /// Задание схемы для документов, хранимых в индексе
         /// </summary>
-        public static void ApplyIndexTypeMapping(
-            ElasticClient elasticClient,
-            string indexName,
-            string schemaversionname,
-            IList<PropertyMapping> properties,
-            SearchAbilityType searchAbility = SearchAbilityType.KeywordBasedSearch)
+        public static void ApplyIndexTypeMapping(ElasticClient elasticClient, string indexName, string schemaversionname, IList<PropertyMapping> properties, SearchAbilityType searchAbility = SearchAbilityType.KeywordBasedSearch)
         {
             indexName = indexName.ToLowerInvariant();
 
@@ -55,18 +50,13 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions
 
             var props = properties ?? new List<PropertyMapping>();
 
-            var propertiesDictionary =
-                props.ToDictionary<PropertyMapping, PropertyNameMarker, IElasticType>(property => property.Name,
-                    GetElasticTypeByMapping);
+            var propertiesDictionary = props.ToDictionary<PropertyMapping, PropertyNameMarker, IElasticType>(property => property.Name, GetElasticTypeByMapping);
 
-            var mappingResult = elasticClient.Map<dynamic>(
-                m => m
-                    .Index(indexName)
-                    .Type(schemaversionname)
-                    .SearchAnalyzer("string_lowercase")
-                    .IndexAnalyzer(searchAbility.ToString().ToLowerInvariant())
-                    .Properties(p => p.Object<dynamic>(
-                        od => od.Name("Values").Properties(ps => ps.AddProperties(propertiesDictionary)))));
+            elasticClient.Map<dynamic>(m => m.Index(indexName)
+                                             .Type(schemaversionname)
+                                             .SearchAnalyzer("string_lowercase")
+                                             .IndexAnalyzer(searchAbility.ToString().ToLowerInvariant())
+                                             .Properties(p => p.Object<dynamic>(od => od.Name("Values").Properties(ps => ps.AddProperties(propertiesDictionary)))));
         }
 
         /// <summary>

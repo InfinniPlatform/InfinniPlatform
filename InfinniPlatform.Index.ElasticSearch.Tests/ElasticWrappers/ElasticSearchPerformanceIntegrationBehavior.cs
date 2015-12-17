@@ -17,38 +17,14 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 	public sealed class ElasticSearchPerformanceIntegrationBehavior
 	{
 		[Test]
-		public void ShouldConnect100Times()
-		{
-			var indexProvider = new ElasticFactory().BuildIndexStateProvider();
-			indexProvider.RecreateIndex("someindex","someindex");
-			indexProvider.RecreateIndex("testindex","testindex");
-
-			int connectionCount = 100;
-
-			var watch = Stopwatch.StartNew();
-			var elasticConnection = new ElasticConnection();
-			watch.Stop();
-
-			var oneConnectionInitTime = watch.ElapsedMilliseconds;
-
-			watch = Stopwatch.StartNew();
-			for (int i = 0; i < connectionCount; i++)
-			{
-				elasticConnection = new ElasticConnection();
-			}
-			watch.Stop();
-
-			Console.WriteLine("Connected {0} times {1} ms. First connection time: {2} ", connectionCount, watch.ElapsedMilliseconds, oneConnectionInitTime);
-		}
-
-		[Test]
 		[TestCase(10)]
 		//[TestCase(100000)]
 		public void ShouldWriteToEmptyIndex(int recordCount)
 		{
-			var indexProvider = new ElasticFactory().BuildIndexStateProvider();
-            indexProvider.RecreateIndex("testindex", "testindex");
-			var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider("testindex", "testindex", null);
+			var elasticConnection = new ElasticConnection();
+            elasticConnection.DeleteType("testindex", "testindex");
+            elasticConnection.CreateType("testindex", "testindex");
+            var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider("testindex", "testindex", null);
 
 			dynamic expandoObject = new ExpandoObject();
 
@@ -70,9 +46,10 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 		[TestCase(10)]
 		public void ShouldUpdateExistingItems(int recordCount)
 		{
-			var indexProvider = new ElasticFactory().BuildIndexStateProvider();
-            indexProvider.RecreateIndex("testindex", "testindex");
-			var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider("testindex", "testindex", null);
+			var elasticConnection = new ElasticConnection();
+            elasticConnection.DeleteType("testindex", "testindex");
+            elasticConnection.CreateType("testindex", "testindex");
+            var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider("testindex", "testindex");
 
 			dynamic expandoObject = new ExpandoObject();
 			expandoObject.Id = 1;
@@ -94,8 +71,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 		[TestCase(1)]		
 		public void ShouldSearchExistingItems(int recordCount)
 		{
-			var indexProvider = new ElasticFactory().BuildIndexStateProvider();
-            indexProvider.RecreateIndex("testindex", "testindex");
+			var indexProvider = new ElasticConnection();
+            indexProvider.DeleteType("testindex", "testindex");
+            indexProvider.CreateType("testindex", "testindex");
             var queryWrapper = new IndexQueryExecutor(new IndexToTypeAccordanceProvider().GetIndexTypeAccordances("testindex", new[] { "testindex" }));
 			var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider("testindex", "testindex");
             

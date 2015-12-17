@@ -19,8 +19,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
     public sealed class ElasticSearchAggregationProvider : IAggregationProvider
     {
         private readonly string _indexName;
-//        private readonly IEnumerable<IndexToTypeAccordance> _typeName;
-        private readonly Dictionary<string, IList<TypeMapping>> _typeNameNest;
+        private readonly IEnumerable<TypeMapping> _typeMappings;
         private IFilter _filters;
         private readonly ElasticConnection _elasticConnection;
 
@@ -28,8 +27,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         {
             _indexName = indexName.ToLowerInvariant();
             _elasticConnection = new ElasticConnection();
-//            _typeName = _elasticConnection.GetAllTypes(new[] { _indexName }, new[] { typeName.ToLowerInvariant() });
-            _typeNameNest = _elasticConnection.GetAllTypesNest(_indexName , new[] { typeName.ToLowerInvariant() });
+            _typeMappings = _elasticConnection.GetTypeMappings(_indexName, new[] { typeName });
         }
 
         /// <summary>
@@ -46,11 +44,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         /// <param name="measureFieldNames">Имена свойств, по которым необходимо произвести вычисление</param>
         /// <param name="filters">Фильтр для данных</param>
         /// <returns>Результат выполнения агрегации</returns>
-        public IEnumerable<AggregationResult> ExecuteAggregation(
-            dynamic[] dimensions,
-            AggregationType[] measureTypes,
-            string[] measureFieldNames,
-            SearchModel filters = null)
+        public IEnumerable<AggregationResult> ExecuteAggregation(dynamic[] dimensions, AggregationType[] measureTypes, string[] measureFieldNames, SearchModel filters = null)
         {
             Func<AggregationDescriptor<dynamic>, AggregationDescriptor<dynamic>> activeAggregation = null;
 
@@ -219,7 +213,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             }
 
             var rawResult = _elasticConnection.Client.Search<dynamic>(s => s
-                .BuildSearchForType(new[] { _indexName }, _typeNameNest.First().GetMappingsTypeNames(), false, false)
+                .BuildSearchForType(new[] { _indexName }, _typeMappings.GetMappingsTypeNames(), false, false)
                 .Size(0) // Нас интересуют только агрегации, исключаем результаты поискового запроса
                 .Aggregations(activeAggregation)
                 );
@@ -418,35 +412,35 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
                 switch (aggregationType)
                 {
                     case AggregationType.Count:
-                        var valueCount = item.ValueCount(string.Format("ValueCount{0}", measureIndex)).Value;
+                        var valueCount = item.ValueCount($"ValueCount{measureIndex}").Value;
                         if (valueCount != null)
                         {
                             result.Add(valueCount.Value);
                         }
                         break;
                     case AggregationType.Min:
-                        var min = item.Min(string.Format("Min{0}", measureIndex)).Value;
+                        var min = item.Min($"Min{measureIndex}").Value;
                         if (min != null)
                         {
                             result.Add(min.Value);
                         }
                         break;
                     case AggregationType.Max:
-                        var max = item.Max(string.Format("Max{0}", measureIndex)).Value;
+                        var max = item.Max($"Max{measureIndex}").Value;
                         if (max != null)
                         {
                             result.Add(max.Value);
                         }
                         break;
                     case AggregationType.Sum:
-                        var sum = item.Sum(string.Format("Sum{0}", measureIndex)).Value;
+                        var sum = item.Sum($"Sum{measureIndex}").Value;
                         if (sum != null)
                         {
                             result.Add(sum.Value);
                         }
                         break;
                     case AggregationType.Avg:
-                        var avg = item.Average(string.Format("Average{0}", measureIndex)).Value;
+                        var avg = item.Average($"Average{measureIndex}").Value;
                         if (avg != null)
                         {
                             result.Add(avg.Value);

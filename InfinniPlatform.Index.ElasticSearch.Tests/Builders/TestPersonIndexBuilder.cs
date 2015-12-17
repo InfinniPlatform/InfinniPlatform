@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Index.ElasticSearch.Factories;
+using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
 
@@ -10,18 +11,18 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.Builders
 {
     public class TestPersonIndexBuilder
     {
-
         private ICrudOperationProvider _elasticSearchProvider;
-        private IIndexStateProvider _indexStateProvider;
+        private ElasticConnection _elasticConnection;
 
 
         public void BuildTestPersonIndex(string indexName)
         {
             var factory = new ElasticFactory();
-            _indexStateProvider = factory.BuildIndexStateProvider();
-			_indexStateProvider.RecreateIndex(indexName,indexName);
+            _elasticConnection = new ElasticConnection();
+			_elasticConnection.DeleteType(indexName, indexName);
+            _elasticConnection.CreateType(indexName, indexName);
 
-			_elasticSearchProvider = factory.BuildCrudOperationProvider(indexName, indexName, null);
+            _elasticSearchProvider = factory.BuildCrudOperationProvider(indexName, indexName);
         }
 
 		public void BuildIndexObjectForTestPersonsAndSetItems(string indexName)

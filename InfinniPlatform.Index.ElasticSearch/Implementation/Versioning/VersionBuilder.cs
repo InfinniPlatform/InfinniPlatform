@@ -11,15 +11,15 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.Versioning
 	/// </summary>
 	public sealed class VersionBuilder : IVersionBuilder
 	{
-		private readonly IIndexStateProvider _indexStateProvider;
+		private readonly ElasticConnection _elasticConnection;
 	    private readonly string _indexName;
 	    private readonly string _typeName;
 
 	    private readonly ElasticConnection _connection;
 
-	    public VersionBuilder(IIndexStateProvider indexStateProvider,  string indexName, string typeName)
+	    public VersionBuilder(ElasticConnection elasticConnection,  string indexName, string typeName)
 		{
-			_indexStateProvider = indexStateProvider;
+			_elasticConnection = elasticConnection;
 		    _indexName = indexName;
 	        _typeName = typeName;
 
@@ -34,13 +34,13 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.Versioning
         /// </summary>
 		public bool VersionExists(IList<PropertyMapping> properties = null)
         {
-            var isTypeExists = _indexStateProvider.GetIndexStatus(_indexName, _typeName) == IndexStatus.Exists;
+            var isTypeExists = _elasticConnection.GetIndexStatus(_indexName, _typeName) == IndexStatus.Exists;
 
             var isPropertiesMatch = true;
 
             if (properties != null && isTypeExists)
             {
-                var currentProperties = _connection.GetIndexTypeMapping(_indexName, _typeName);
+                var currentProperties = _connection.GetPropertyMappings(_indexName, _typeName);
 
                 foreach (var newMappingProperty in properties)
                 {
@@ -72,13 +72,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.Versioning
 	    /// </summary>
 	    /// <param name="deleteExisting">Флаг, показывающий нужно ли удалять версию харнилища, если она уже существует</param>
 	    /// <param name="properties">Первоначальный список полей справочника</param>
-		public void CreateVersion(bool deleteExisting = false, IList<PropertyMapping> properties = null)
+	    public void CreateVersion(bool deleteExisting = false, IList<PropertyMapping> properties = null)
 	    {
-	        _indexStateProvider.CreateIndexType(
-	            _indexName,
-	            _typeName,
-	            deleteExisting,
-	            properties);
+	        _elasticConnection.CreateType(_indexName, _typeName, properties, deleteExisting);
 	    }
 
 	    /// <summary>

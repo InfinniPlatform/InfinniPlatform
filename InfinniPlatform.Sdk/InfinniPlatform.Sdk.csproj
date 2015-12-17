@@ -153,7 +153,6 @@
     <Compile Include="Environment\Index\IFilterBuilder.cs" />
     <Compile Include="Environment\Index\IIndexFactory.cs" />
     <Compile Include="Environment\Index\IIndexQueryExecutor.cs" />
-    <Compile Include="Environment\Index\IIndexStateProvider.cs" />
     <Compile Include="Environment\Index\IIndexTypeMapping.cs" />
     <Compile Include="Environment\Index\IndexItemStrategy.cs" />
     <Compile Include="Environment\Index\IndexStatus.cs" />

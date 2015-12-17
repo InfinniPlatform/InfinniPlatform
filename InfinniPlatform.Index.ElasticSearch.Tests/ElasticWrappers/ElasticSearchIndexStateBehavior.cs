@@ -13,107 +13,96 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
     [Category(TestCategories.IntegrationTest)]
     public class ElasticSearchIndexStateBehavior
     {
-        private IIndexStateProvider _indexStateProvider;
-
         [Test]
         public void ShouldMakeCompleteIndexingProcess()
         {
-            var connection = new ElasticConnection();
+            var elasticConnection = new ElasticConnection();
 
-            _indexStateProvider = new ElasticFactory().BuildIndexStateProvider();
-            _indexStateProvider.DeleteIndex("indexstatebehavior");
-            _indexStateProvider.DeleteIndex("indexstatebehavior1");
+            elasticConnection.DeleteIndex("indexstatebehavior");
+            elasticConnection.DeleteIndex("indexstatebehavior1");
 
-            Assert.AreEqual(IndexStatus.NotExists, _indexStateProvider.GetIndexStatus("indexstatebehavior", "TestPerson"));
+            Assert.AreEqual(IndexStatus.NotExists, elasticConnection.GetIndexStatus("indexstatebehavior", "TestPerson"));
 
-            _indexStateProvider.RecreateIndex("indexstatebehavior", "TestPerson");
+            elasticConnection.DeleteType("indexstatebehavior", "TestPerson");
+            elasticConnection.CreateType("indexstatebehavior", "TestPerson");
 
-            Assert.AreEqual(IndexStatus.Exists, _indexStateProvider.GetIndexStatus("indexstatebehavior", "TestPerson"));
+            Assert.AreEqual(IndexStatus.Exists, elasticConnection.GetIndexStatus("indexstatebehavior", "TestPerson"));
 
             //создаем новую версию типа
 
-            _indexStateProvider.CreateIndexType("indexstatebehavior", "TestPerson");
+            elasticConnection.CreateType("indexstatebehavior", "TestPerson");
 
-            Assert.AreEqual(IndexStatus.Exists, _indexStateProvider.GetIndexStatus("indexstatebehavior", "TestPerson"));
+            Assert.AreEqual(IndexStatus.Exists, elasticConnection.GetIndexStatus("indexstatebehavior", "TestPerson"));
 
             //проверям, что в инедксе существуют 2 версии, со старым маппингом и с новым
-            var typeMappings = connection.GetAllTypesNest("indexstatebehavior", new[] { "testPerson" });
+            var typeMappings = elasticConnection.GetTypeMappings("indexstatebehavior", new[] { "testPerson" }).ToArray();
 
-            Assert.AreEqual(1, typeMappings.Count);
-            Assert.True(typeMappings.First().Value.Any(x => x.TypeName == "testperson_typeschema_0"));
-            Assert.True(typeMappings.First().Value.Any(x => x.TypeName == "testperson_typeschema_1"));
+            Assert.AreEqual(2, typeMappings.Length);
+            Assert.True(typeMappings.Any(x => x.TypeName == "testperson_typeschema_0"));
+            Assert.True(typeMappings.Any(x => x.TypeName == "testperson_typeschema_1"));
 
             //проверяем создание другого типа в том же индексе
-            _indexStateProvider.CreateIndexType("indexstatebehavior", "TestPerson1");
+            elasticConnection.CreateType("indexstatebehavior", "TestPerson1");
 
             //проверям, что в индексе существуют 2 типа
-            typeMappings = connection.GetAllTypesNest("indexstatebehavior", new[] { "testPerson", "TestPerson1" });
+            typeMappings = elasticConnection.GetTypeMappings("indexstatebehavior", new[] { "testPerson", "TestPerson1" }).ToArray();
 
-            Assert.AreEqual(1, typeMappings.Count);
-            Assert.AreEqual(3, typeMappings.First().Value.Count);
-
-            var mappings = typeMappings.First().Value.ToArray();
-
-            Assert.AreEqual("testperson1_typeschema_0", mappings[0].TypeName);
-            Assert.AreEqual("testperson_typeschema_0", mappings[1].TypeName);
-            Assert.AreEqual("testperson_typeschema_1", mappings[2].TypeName);
+            Assert.AreEqual(3, typeMappings.Length);
+            Assert.True(typeMappings.Any(x => x.TypeName == "testperson1_typeschema_0"));
+            Assert.True(typeMappings.Any(x => x.TypeName == "testperson_typeschema_0"));
+            Assert.True(typeMappings.Any(x => x.TypeName == "testperson_typeschema_1"));
 
             //проверяем удаление типа из индекса
-            _indexStateProvider.DeleteIndexType("indexstatebehavior", "TestPerson");
+            elasticConnection.DeleteType("indexstatebehavior", "TestPerson");
             //проверяем, что один из типов удалился
-            typeMappings = connection.GetAllTypesNest("indexstatebehavior", new[] { "testPerson" });
+            typeMappings = elasticConnection.GetTypeMappings("indexstatebehavior", new[] { "testPerson" }).ToArray();
 
-            Assert.AreEqual(0, typeMappings.First().Value.Count);
+            Assert.AreEqual(0, typeMappings.Length);
 
             //проверяем, что второй тип существует
-            typeMappings = connection.GetAllTypesNest("indexstatebehavior", new[] { "testPerson1" });
+            typeMappings = elasticConnection.GetTypeMappings("indexstatebehavior", new[] { "testPerson1" }).ToArray();
 
-            Assert.AreEqual(1, typeMappings.Count);
-            Assert.AreEqual("indexstatebehavior", typeMappings.First().Key);
-            Assert.True(typeMappings.First().GetMappingsBaseTypeNames().Contains("testperson1"));
-            Assert.AreEqual(1, typeMappings.First().Value.Count);
-            Assert.AreEqual("testperson1_typeschema_0", typeMappings.First().GetMappingsTypeNames().First());
+            Assert.AreEqual(1, typeMappings.Length);
+            Assert.True(typeMappings.GetMappingsBaseTypeNames().Contains("testperson1"));
+            Assert.AreEqual("testperson1_typeschema_0", typeMappings.GetMappingsTypeNames().First());
 
             //проверяем создание типа с таким же именем в другом индексе
-            _indexStateProvider.CreateIndexType("indexstatebehavior1", "TestPerson1");
+            elasticConnection.CreateType("indexstatebehavior1", "TestPerson1");
 
-            typeMappings = connection.GetAllTypesNest("indexstatebehavior1", new[] { "testPerson1" });
+            typeMappings = elasticConnection.GetTypeMappings("indexstatebehavior1", new[] { "testPerson1" }).ToArray();
 
-            Assert.AreEqual(1, typeMappings.Count);
-            Assert.AreEqual("indexstatebehavior1", typeMappings.First().Key);
-            Assert.AreEqual("testperson1", typeMappings.First().GetMappingsBaseTypeNames().First());
-            Assert.AreEqual(1, typeMappings.First().Value.Count);
-            Assert.AreEqual("testperson1_typeschema_0", typeMappings.First().GetMappingsTypeNames().First());
+            Assert.AreEqual(1, typeMappings.Length);
+            Assert.AreEqual("testperson1", typeMappings.GetMappingsBaseTypeNames().First());
+            Assert.AreEqual("testperson1_typeschema_0", typeMappings.GetMappingsTypeNames().First());
 
             //проверяем повторное создание того же типа
-            _indexStateProvider.CreateIndexType("indexstatebehavior", "TestPerson");
-            typeMappings = connection.GetAllTypesNest("indexstatebehavior", new[] { "testPerson" });
+            elasticConnection.CreateType("indexstatebehavior", "TestPerson");
+            typeMappings = elasticConnection.GetTypeMappings("indexstatebehavior", new[] { "testPerson" }).ToArray();
 
-            Assert.AreEqual(1, typeMappings.Count);
-            Assert.AreEqual(1, typeMappings.First().Value.Count);
+            Assert.AreEqual(1, typeMappings.Length);
             //проверяем, что создалась версия именно с нулевым индексом
-            Assert.True(typeMappings.First().GetMappingsTypeNames().Contains("testperson_typeschema_0"));
+            Assert.True(typeMappings.GetMappingsTypeNames().Contains("testperson_typeschema_0"));
 
             //проверяем удаление индекса целиком
-            _indexStateProvider.DeleteIndex("indexstatebehavior");
-            typeMappings = connection.GetAllTypesNest("indexstatebehavior", new[] { "testPerson" });
+            elasticConnection.DeleteIndex("indexstatebehavior");
+            typeMappings = elasticConnection.GetTypeMappings("indexstatebehavior", new[] { "testPerson" }).ToArray();
 
-            Assert.AreEqual(0, typeMappings.Count);
+            Assert.AreEqual(0, typeMappings.Length);
 
             //проверяем, что другой индекс не удалился
-            typeMappings = connection.GetAllTypesNest("indexstatebehavior1", new[] { "testPerson1" });
+            typeMappings = elasticConnection.GetTypeMappings("indexstatebehavior1", new[] { "testPerson1" }).ToArray();
 
-            Assert.AreEqual(1, typeMappings.Count);
+            Assert.AreEqual(1, typeMappings.Length);
 
             //проверяем удаление предыдущей версии маппинга при создании новой
-            _indexStateProvider.CreateIndexType("indexstatebehavior1", "testPerson1", true);
+            elasticConnection.CreateType("indexstatebehavior1", "testPerson1", deleteExistingVersion: true);
 
-            typeMappings = connection.GetAllTypesNest("indexstatebehavior1", new[] { "testPerson1" });
+            typeMappings = elasticConnection.GetTypeMappings("indexstatebehavior1", new[] { "testPerson1" }).ToArray();
 
-            Assert.AreEqual(1, typeMappings.Count);
-            Assert.AreEqual("testperson1_typeschema_1", typeMappings.First().GetMappingsTypeNames().First());
+            Assert.AreEqual(1, typeMappings.Length);
+            Assert.AreEqual("testperson1_typeschema_1", typeMappings.GetMappingsTypeNames().First());
 
-            _indexStateProvider.DeleteIndex("indexstatebehavior1");
+            elasticConnection.DeleteIndex("indexstatebehavior1");
         }
     }
 }

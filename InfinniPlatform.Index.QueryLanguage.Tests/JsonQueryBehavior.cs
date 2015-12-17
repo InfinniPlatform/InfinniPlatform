@@ -5,6 +5,7 @@ using System.Linq;
 
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Index.ElasticSearch.Factories;
+using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters.NestFilters;
 using InfinniPlatform.Index.QueryLanguage.Implementation;
@@ -24,7 +25,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
         private JObject _jsonQuery;
 
         private ICrudOperationProvider _elasticSearchProvider;
-        private IIndexStateProvider _indexProvider;
+        private ElasticConnection _elasticConnection;
         private ICrudOperationProvider _elasticSearchProviderMain;
         private readonly IFilterBuilder _filterFactory = FilterBuilderFactory.GetInstance();
 
@@ -33,9 +34,11 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
         {
             var elasticFactory = new ElasticFactory();
 
-            _indexProvider = elasticFactory.BuildIndexStateProvider();
-            _indexProvider.RecreateIndex("TestIndex", "TestIndex");
-            _indexProvider.RecreateIndex("Document", "Document");
+            _elasticConnection = new ElasticConnection();
+            _elasticConnection.DeleteType("TestIndex", "TestIndex");
+            _elasticConnection.CreateType("TestIndex", "TestIndex");
+            _elasticConnection.DeleteType("Document", "Document");
+            _elasticConnection.CreateType("Document", "Document");
 
             _elasticSearchProvider = elasticFactory.BuildCrudOperationProvider("TestIndex", "TestIndex", null);
             _elasticSearchProviderMain = elasticFactory.BuildCrudOperationProvider("Document", "Document", null);
@@ -55,7 +58,8 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 
         private void CreateReferenceIndex()
         {
-            _indexProvider.RecreateIndex("TestIndex", "TestIndex");
+            _elasticConnection.DeleteType("TestIndex", "TestIndex");
+            _elasticConnection.CreateType("TestIndex", "TestIndex");
         }
 
         private void CreateJsonQuery()
@@ -358,8 +362,9 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
             filterableObject.NestedField.NestedFieldValue = "test2";
             filterableObject.ReferenceId = "testid";
 
-            _indexProvider.RecreateIndex("Document", "Document");
-            _indexProvider.Refresh();
+            _elasticConnection.DeleteType("Document", "Document");
+            _elasticConnection.CreateType("Document", "Document");
+            _elasticConnection.Refresh();
             _elasticSearchProviderMain.Set(filterableObject, IndexItemStrategy.Insert);
             _elasticSearchProviderMain.Refresh();
         }

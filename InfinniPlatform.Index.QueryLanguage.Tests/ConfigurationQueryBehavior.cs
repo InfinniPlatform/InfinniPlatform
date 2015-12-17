@@ -4,6 +4,7 @@ using System.Dynamic;
 using System.Linq;
 using InfinniPlatform.Api.Index.SearchOptions;
 using InfinniPlatform.Index.ElasticSearch.Factories;
+using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Index.QueryLanguage.Implementation;
 using InfinniPlatform.Sdk.Dynamic;
@@ -20,7 +21,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 	public class ConfigurationQueryBehavior
 	{
 
-		private IIndexStateProvider _indexProvider;
+		private ElasticConnection _elasticConnection;
 		private ICrudOperationProvider _elasticSearchProviderMain;
 		private ICrudOperationProvider _elasticSearchProviderDoc;
 		private string _indexName = "Configuration";
@@ -40,9 +41,11 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 		{
 			var expando = CreateExpandoConfiguration();
 
-			_indexProvider = _elasticFactory.BuildIndexStateProvider();
-			_indexProvider.RecreateIndex(_indexName,_indexName);
-			_indexProvider.RecreateIndex(_indexJoin, _indexJoin);
+			_elasticConnection = new ElasticConnection();
+			_elasticConnection.DeleteType(_indexName,_indexName);
+			_elasticConnection.CreateType(_indexName,_indexName);
+			_elasticConnection.DeleteType(_indexJoin, _indexJoin);
+			_elasticConnection.CreateType(_indexJoin, _indexJoin);
 
 			_elasticSearchProviderMain = _elasticFactory.BuildCrudOperationProvider(_indexName,_indexName, null);
 			_elasticSearchProviderMain.Set(expando,IndexItemStrategy.Insert);
