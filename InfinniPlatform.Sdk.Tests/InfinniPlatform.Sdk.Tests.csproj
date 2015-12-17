@@ -54,6 +54,9 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="CustomServiceApiTest.cs" />
     <Compile Include="DocumentApiTest.cs" />
     <Compile Include="FileApiTest.cs" />

@@ -1,2 +1,0 @@
-﻿<#@ include file="..\..\Files\Build\AssemblyInfo.tt" #>
-[assembly: AssemblyDescription("InfinniPlatform SDK for .NET")]

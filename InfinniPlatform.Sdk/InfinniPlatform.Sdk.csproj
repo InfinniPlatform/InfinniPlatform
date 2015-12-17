@@ -53,6 +53,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="ApiContracts\IAuthApi.cs" />
     <Compile Include="ApiContracts\ICustomServiceApi.cs" />
     <Compile Include="ApiContracts\IDocumentApi.cs" />
