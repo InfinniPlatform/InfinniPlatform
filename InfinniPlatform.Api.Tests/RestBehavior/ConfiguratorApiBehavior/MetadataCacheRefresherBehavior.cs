@@ -4,7 +4,6 @@ using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.NodeServiceHost;
-using InfinniPlatform.Sdk.Api;
 using InfinniPlatform.Sdk.Dynamic;
 using NUnit.Framework;
 

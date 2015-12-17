@@ -7,7 +7,7 @@ using System.Web.Http;
 using InfinniPlatform.Api.Hosting;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestQuery;
-using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Index;
 using InfinniPlatform.WebApi.ConfigRequestProviders;
 
 using Newtonsoft.Json;
@@ -19,14 +19,18 @@ namespace InfinniPlatform.WebApi.Controllers
     /// </summary>
     public sealed class StandardApiController : ApiController
     {
-        public StandardApiController(IApiControllerFactory apiControllerFactory, IHttpResultHandlerFactory httpResultHandlerFactory)
+        public StandardApiController(IApiControllerFactory apiControllerFactory,
+                                     IHttpResultHandlerFactory httpResultHandlerFactory,
+                                     IElasticConnection elasticConnection)
         {
             _apiControllerFactory = apiControllerFactory;
             _httpResultHandlerFactory = httpResultHandlerFactory;
+            _elasticConnection = elasticConnection;
         }
 
         private readonly IApiControllerFactory _apiControllerFactory;
         private readonly IHttpResultHandlerFactory _httpResultHandlerFactory;
+        private readonly IElasticConnection _elasticConnection;
 
         private IRestVerbsContainer GetMetadata()
         {
@@ -54,6 +58,8 @@ namespace InfinniPlatform.WebApi.Controllers
             var httpResultHandler = _httpResultHandlerFactory.GetResultHandler(verbProcessor.HttpResultHandler);
 
             var result = httpResultHandler.WrapResult(InvokeRestVerb(verbProcessor));
+
+            _elasticConnection.Refresh();
 
             return result;
         }

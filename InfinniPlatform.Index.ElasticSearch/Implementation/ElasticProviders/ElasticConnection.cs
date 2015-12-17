@@ -21,7 +21,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
     /// <summary>
     /// Соединение с ElasticSearch.
     /// </summary>
-    public sealed class ElasticConnection
+    public sealed class ElasticConnection : IElasticConnection
     {
         private static readonly Lazy<ElasticClient> ElasticClient;
         private static Dictionary<string, IList<TypeMapping>> _mappingsCache;

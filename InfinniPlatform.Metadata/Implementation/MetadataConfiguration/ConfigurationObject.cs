@@ -62,7 +62,6 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 
                 if (_elasticConnection.GetIndexStatus(documentIndexName, documentTypeName) == IndexStatus.NotExists)
                 {
-                    _elasticConnection.DeleteType(documentIndexName, documentTypeName);
                     _elasticConnection.CreateType(documentIndexName, documentTypeName);
                 }
 

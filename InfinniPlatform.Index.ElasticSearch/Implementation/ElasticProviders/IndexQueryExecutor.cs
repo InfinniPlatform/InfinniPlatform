@@ -25,7 +25,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         public IndexQueryExecutor(IndexToTypeAccordanceSettings settings)
         {
             _elasticConnection = new ElasticConnection();
-            _indexNames = settings.Accordances.Select(x => x.Key).ToArray();
+            _indexNames = settings.Accordances.Select(x => x.Key.ToLower()).ToArray();
             _typeNames = settings.Accordances.ToArray();
             _searchInAllIndeces = settings.SearchInAllIndeces;
             _searchInAllTypes = settings.SearchInAllTypes;
@@ -64,7 +64,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         {
             var indexName = _indexNames.FirstOrDefault();
 
-            var tenantId = GlobalContext.GetTenantId(indexName.ToLowerInvariant());
+            var tenantId = GlobalContext.GetTenantId(indexName);
 
             if (tenantId != AuthorizationStorageExtensions.AnonymousUser)
             {
@@ -97,7 +97,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         {
             var indexName = _indexNames.FirstOrDefault();
 
-            var tenantId = GlobalContext.GetTenantId(indexName.ToLowerInvariant());
+            var tenantId = GlobalContext.GetTenantId(indexName);
 
             var tenantIdFilter = tenantId == AuthorizationStorageExtensions.AnonymousUser
                                      ? new NestFilter(Filter<dynamic>.Terms(ElasticConstants.TenantIdField, new[] { AuthorizationStorageExtensions.AnonymousUser, AuthorizationStorageExtensions.SystemTenant }))
@@ -107,18 +107,16 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
             searchModel.AddFilter(new NestFilter(Filter<dynamic>.Query(q => q.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid))));
 
-            Func<SearchDescriptor<dynamic>, SearchDescriptor<dynamic>> desc =
+            Func <SearchDescriptor<dynamic>, SearchDescriptor<dynamic>> desc =
                 descriptor => new ElasticSearchQueryBuilder(descriptor)
                                   .BuildSearchDescriptor(searchModel)
                                   .BuildSearchForType(_indexNames, _typeNames == null || !_typeNames.Any()
                                                                        ? null
                                                                        : _typeNames.SelectMany(x => x.GetMappingsTypeNames()),
                                                       _searchInAllIndeces, _searchInAllTypes);
-
-
-
+            
             var documentsResponse = _elasticConnection.Client.Search(desc);
-
+            
             var hitsCount = documentsResponse?.Hits?.Count() ?? 0;
 
             var documentResponseCount = documentsResponse?.Hits?.Select(r => convert(r.Source, r.Index, ToDocumentId(r.Type))).ToList() ?? new List<dynamic>();

@@ -46,7 +46,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             documentApi.SetDocument(ConfigurationId, DocumentType, document);
 
-            var afterSave = documentApi.GetDocument(ConfigurationId, DocumentType, filter => filter.AddCriteria(cr => cr.IsEquals("delete").Property("TestProperty")), 0, 1);
+            var afterSave = documentApi.GetDocument(ConfigurationId, DocumentType, filter => filter.AddCriteria(cr => cr.Property("TestProperty").IsEquals("delete")), 0, 1);
 
             documentApi.DeleteDocument(ConfigurationId, DocumentType, document.Id);
 
@@ -148,49 +148,22 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             var rightDocument1 = new
             {
                 Id = Guid.NewGuid().ToString(),
-                StringProperty = "StringValue1",
-                NumberProperty = 1,
-                DateProperty = DateTime.Now,
-                BoolProperty = true,
-                ObjectProperty = new
-                {
-                    NestedStringProperty = "NestedStringValue1",
-                    NestedNumberPrperty = 2,
-                    NestedDateProperty = DateTime.Now,
-                    NestedBoolProperty = false
-                }
+                TestProperty = "StringValue1",
+                ComplexArray = new[] { new { ValidProperty = 11 } }
             };
 
             var rightDocument2 = new
             {
                 Id = Guid.NewGuid().ToString(),
-                StringProperty = "StringValue2",
-                NumberProperty = 2,
-                DateProperty = DateTime.Now,
-                BoolProperty = true,
-                ObjectProperty = new
-                {
-                    NestedStringProperty = "NestedStringValue2",
-                    NestedNumberPrperty = 3,
-                    NestedDateProperty = DateTime.Now,
-                    NestedBoolProperty = false
-                }
+                TestProperty = "StringValue2",
+                ComplexArray = new[] { new { ValidProperty = 11 } }
             };
 
             var badDocument = new
             {
                 Id = Guid.NewGuid().ToString(),
-                StringProperty = 1,
-                NumberProperty = "1",
-                DateProperty = "Now",
-                BoolProperty = "true",
-                ObjectProperty = new
-                {
-                    NestedStringProperty = 2,
-                    NestedNumberPrperty = "2",
-                    NestedDateProperty = 3,
-                    NestedBoolProperty = "false"
-                }
+                TestProperty = 2,
+                ComplexObject = DateTime.Now
             };
 
             // When

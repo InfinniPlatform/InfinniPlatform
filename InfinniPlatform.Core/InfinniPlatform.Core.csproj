@@ -98,6 +98,7 @@
     <Compile Include="Hosting\ReflectedParameterInfo.cs" />
     <Compile Include="Index\DimensionType.cs" />
     <Compile Include="Index\ICalculatedFieldFactory.cs" />
+    <Compile Include="Index\IElasticConnection.cs" />
     <Compile Include="Index\IndexObject.cs" />
     <Compile Include="Index\IndexObjectStatus.cs" />
     <Compile Include="IoC\CoreContainerModule.cs" />
