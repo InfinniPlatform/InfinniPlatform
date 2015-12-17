@@ -1,21 +1,21 @@
-function Build-Nuspec
+п»їfunction Build-Nuspec
 {
 	<#
 	.Synopsis
-		Создает nuspec-файл по шаблону на основе версии проекта.
+		РЎРѕР·РґР°РµС‚ nuspec-С„Р°Р№Р» РїРѕ С€Р°Р±Р»РѕРЅСѓ РЅР° РѕСЃРЅРѕРІРµ РІРµСЂСЃРёРё РїСЂРѕРµРєС‚Р°.
 	#>
 	param
 	(
-		[Parameter(HelpMessage = "Путь к шаблону nuspec-фала.")]
+		[Parameter(HelpMessage = "РџСѓС‚СЊ Рє С€Р°Р±Р»РѕРЅСѓ nuspec-С„Р°Р»Р°.")]
 		[String] $template = 'Files\Packaging\Templates\InfinniPlatform.Template.nuspec',
 
-		[Parameter(HelpMessage = "Путь к результирующему nuspec-файлу.")]
+		[Parameter(HelpMessage = "РџСѓС‚СЊ Рє СЂРµР·СѓР»СЊС‚РёСЂСѓСЋС‰РµРјСѓ nuspec-С„Р°Р№Р»Сѓ.")]
 		[String] $output = 'Assemblies\InfinniPlatform.nuspec',
 
-		[Parameter(HelpMessage = "Путь к файлу с версией проекта.")]
+		[Parameter(HelpMessage = "РџСѓС‚СЊ Рє С„Р°Р№Р»Сѓ СЃ РІРµСЂСЃРёРµР№ РїСЂРѕРµРєС‚Р°.")]
 		[String] $assemblyInfo = 'Files\Packaging\GlobalAssemblyInfo.cs',
 
-		[Parameter(HelpMessage = "Номер VCS версии проекта.")]
+		[Parameter(HelpMessage = "РќРѕРјРµСЂ VCS РІРµСЂСЃРёРё РїСЂРѕРµРєС‚Р°.")]
 		[String] $commitHash = ''
 	)
 
@@ -33,17 +33,17 @@ function Build-NuspecByValues
 {
 	<#
 	.Synopsis
-		Создает nuspec-файл по шаблону на основе указанных значений.
+		РЎРѕР·РґР°РµС‚ nuspec-С„Р°Р№Р» РїРѕ С€Р°Р±Р»РѕРЅСѓ РЅР° РѕСЃРЅРѕРІРµ СѓРєР°Р·Р°РЅРЅС‹С… Р·РЅР°С‡РµРЅРёР№.
 	#>
 	param
 	(
-		[Parameter(HelpMessage = "Путь к шаблону nuspec-фала.")]
+		[Parameter(HelpMessage = "РџСѓС‚СЊ Рє С€Р°Р±Р»РѕРЅСѓ nuspec-С„Р°Р»Р°.")]
 		[String] $template = 'Files\Packaging\Templates\InfinniPlatform.Template.nuspec',
 
-		[Parameter(HelpMessage = "Путь к результирующему nuspec-файлу.")]
+		[Parameter(HelpMessage = "РџСѓС‚СЊ Рє СЂРµР·СѓР»СЊС‚РёСЂСѓСЋС‰РµРјСѓ nuspec-С„Р°Р№Р»Сѓ.")]
 		[String] $output = 'Assemblies\InfinniPlatform.nuspec',
 
-		[Parameter(HelpMessage = "Значения для подстановок в шаблон nuspec-файла.")]
+		[Parameter(HelpMessage = "Р—РЅР°С‡РµРЅРёСЏ РґР»СЏ РїРѕРґСЃС‚Р°РЅРѕРІРѕРє РІ С€Р°Р±Р»РѕРЅ nuspec-С„Р°Р№Р»Р°.")]
 		[Hashtable] $values = @{ '{VERSION}' = '1.0.0.0'; '{COMMIT}' = '' }
 	)
 
