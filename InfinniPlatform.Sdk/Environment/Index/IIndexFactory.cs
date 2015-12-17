@@ -41,12 +41,6 @@ namespace InfinniPlatform.Sdk.Environment.Index
         ICrudOperationProvider BuildCrudOperationProvider(string indexName, string typeName, string version);
 
         /// <summary>
-        /// Создать провайдер операций для работы с индексами
-        /// </summary>
-        /// <returns>Провайдер операций для работы с индексом</returns>
-        IIndexStateProvider BuildIndexStateProvider();
-
-        /// <summary>
         /// Создать исполнитель запросов к индексу
         /// </summary>
         /// <param name="indexName">

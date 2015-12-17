@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 
 using InfinniPlatform.Factories;
+using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Sdk.Environment.Binary;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Metadata;
@@ -23,23 +24,18 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
 
         public ConfigurationObject(IMetadataConfiguration metadataConfiguration, IIndexFactory indexFactory, IBlobStorageFactory blobStorageFactory)
         {
-            _metadataConfiguration = metadataConfiguration;
+            MetadataConfiguration = metadataConfiguration;
             _indexFactory = indexFactory;
             _blobStorageFactory = blobStorageFactory;
-            _indexStateProvider = _indexFactory.BuildIndexStateProvider();
+            _elasticConnection = new ElasticConnection();
         }
 
-
-        private readonly IMetadataConfiguration _metadataConfiguration;
         private readonly IIndexFactory _indexFactory;
         private readonly IBlobStorageFactory _blobStorageFactory;
-        private readonly IIndexStateProvider _indexStateProvider;
+        private readonly ElasticConnection _elasticConnection;
 
 
-        public IMetadataConfiguration MetadataConfiguration
-        {
-            get { return _metadataConfiguration; }
-        }
+        public IMetadataConfiguration MetadataConfiguration { get; }
 
         /// <summary>
         /// Возвращает провайдер версий документов.
@@ -55,7 +51,7 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
             var documentIndexName = MetadataConfiguration.ConfigurationId;
             var documentTypeName = MetadataConfiguration.GetMetadataIndexType(documentId);
 
-            var versionProviderKey = string.Format("{0},{1}", documentIndexName, documentTypeName);
+            var versionProviderKey = $"{documentIndexName},{documentTypeName}";
 
             if (!VersionProviderCache.TryGetValue(versionProviderKey, out versionProvider))
             {
@@ -64,9 +60,10 @@ namespace InfinniPlatform.Metadata.Implementation.MetadataConfiguration
                 // месте. Как выяснилось, этот код крайне отрицательно сказывается на производительности системы, поэтому
                 // тут предпринята попытка простейшего кэширования результатов его работы.
 
-                if (_indexStateProvider.GetIndexStatus(documentIndexName, documentTypeName) == IndexStatus.NotExists)
+                if (_elasticConnection.GetIndexStatus(documentIndexName, documentTypeName) == IndexStatus.NotExists)
                 {
-                    _indexStateProvider.CreateIndexType(documentIndexName, documentTypeName);
+                    _elasticConnection.DeleteType(documentIndexName, documentTypeName);
+                    _elasticConnection.CreateType(documentIndexName, documentTypeName);
                 }
 
                 versionProvider = _indexFactory.BuildVersionProvider(documentIndexName, documentTypeName);

@@ -19,16 +19,14 @@ namespace InfinniPlatform.WebApi.Controllers
     /// </summary>
     public sealed class StandardApiController : ApiController
     {
-        public StandardApiController(IApiControllerFactory apiControllerFactory, IIndexFactory indexFactory, IHttpResultHandlerFactory httpResultHandlerFactory)
+        public StandardApiController(IApiControllerFactory apiControllerFactory, IHttpResultHandlerFactory httpResultHandlerFactory)
         {
             _apiControllerFactory = apiControllerFactory;
-            _indexFactory = indexFactory;
             _httpResultHandlerFactory = httpResultHandlerFactory;
         }
 
         private readonly IApiControllerFactory _apiControllerFactory;
         private readonly IHttpResultHandlerFactory _httpResultHandlerFactory;
-        private readonly IIndexFactory _indexFactory;
 
         private IRestVerbsContainer GetMetadata()
         {
@@ -36,7 +34,7 @@ namespace InfinniPlatform.WebApi.Controllers
 
             if (metadata == null)
             {
-                throw new ArgumentException(string.Format("Не найдены метаданные для {0}", Request.GetRouteData().Values["metadata"]));
+                throw new ArgumentException($"Не найдены метаданные для {Request.GetRouteData().Values["metadata"]}");
             }
 
             return metadata;
@@ -56,8 +54,6 @@ namespace InfinniPlatform.WebApi.Controllers
             var httpResultHandler = _httpResultHandlerFactory.GetResultHandler(verbProcessor.HttpResultHandler);
 
             var result = httpResultHandler.WrapResult(InvokeRestVerb(verbProcessor));
-
-            _indexFactory.BuildIndexStateProvider().Refresh();
 
             return result;
         }

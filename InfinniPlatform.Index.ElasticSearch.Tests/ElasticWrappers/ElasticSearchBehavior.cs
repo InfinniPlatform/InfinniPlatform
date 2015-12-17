@@ -49,8 +49,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void ShouldReindexWithoutDataLostTest()
         {
-            var indexProvider = new ElasticFactory().BuildIndexStateProvider();
-            indexProvider.RecreateIndex("testperson", "testperson");
+            var elasticConnection = new ElasticConnection();
+            elasticConnection.DeleteType("testperson", "testperson");
+            elasticConnection.CreateType("testperson", "testperson");
 
             var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider("testperson", "testperson", null);
 
@@ -71,7 +72,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 
 
             var queryExecutor = new ElasticFactory().BuildIndexQueryExecutor("testperson", "testperson");
-            indexProvider.Refresh();
+            elasticConnection.Refresh();
 
             Assert.AreEqual(2, queryExecutor.Query(new SearchModel()).HitsCount);
 
@@ -79,8 +80,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             // Количество документов в индексе не должно измениться
             Assert.AreEqual(2, queryExecutor.Query(new SearchModel()).HitsCount);
 
-            indexProvider.RecreateIndex("testperson", "testperson");
-            indexProvider.Refresh();
+            elasticConnection.DeleteType("testperson", "testperson");
+            elasticConnection.CreateType("testperson", "testperson");
+            elasticConnection.Refresh();
 
             // Документы должны пропасть из индекса
             Assert.AreEqual(0, queryExecutor.Query(new SearchModel()).HitsCount);

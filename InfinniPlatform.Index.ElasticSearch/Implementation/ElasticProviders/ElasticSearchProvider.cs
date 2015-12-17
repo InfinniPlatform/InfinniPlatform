@@ -24,8 +24,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 		private readonly string _typeName;
 		private readonly string _version;
 		private readonly ElasticConnection _elasticConnection;
-//		private readonly Lazy<IEnumerable<IndexToTypeAccordance>> _derivedTypeNames;
-	    private readonly Lazy<Dictionary<string, IList<TypeMapping>>> _derivedTypeNamesNest;
+	    private readonly Lazy<IEnumerable<TypeMapping>> _derivedTypeNames;
 
         /// <summary>
         ///     Устанавливает соединение с указанным индексом
@@ -50,10 +49,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 			_version = version;
 			_elasticConnection = new ElasticConnection();
 
-			//все версии типа в индексе
-//			_derivedTypeNames = new Lazy<IEnumerable<IndexToTypeAccordance>>(() => _elasticConnection.GetAllTypes(new[] { _indexName }, new[] { _typeName }));
-            _derivedTypeNamesNest = new Lazy<Dictionary<string, IList<TypeMapping>>>(() => _elasticConnection.GetAllTypesNest(_indexName, new[] { _typeName }));
-        }
+            //все версии типа в индексе
+            _derivedTypeNames = new Lazy<IEnumerable<TypeMapping>>(() => _elasticConnection.GetTypeMappings(_indexName, new[] { _typeName }));
+		}
 
 		/// <summary>
 		///     Обновление позволяет делать запросы к только что добавленным данным
@@ -127,7 +125,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 			// Возможно, маппинг для типа индекса не соответствует типам данных полей 
 			// индексируемого объекта item
 
-			var currentMapping = _elasticConnection.GetIndexTypeMapping(_indexName, _typeName);
+			var currentMapping = _elasticConnection.GetPropertyMappings(_indexName, _typeName);
 
 			var propertiesMismatchMessage = new StringBuilder();
 
@@ -243,7 +241,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 			// Возможно, маппинг для типа индекса не соответствует типам данных полей 
 			// индексируемого объекта item
 
-			var currentMapping = _elasticConnection.GetIndexTypeMapping(_indexName, _typeName);
+			var currentMapping = _elasticConnection.GetPropertyMappings(_indexName, _typeName);
 
 			var propertiesMismatchMessage = new StringBuilder();
 
@@ -303,7 +301,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 			return objectToIndex;
 		}
 
-		public string ActualTypeName => _derivedTypeNamesNest.Value.GetActualTypeNameNest(_typeName);
+		public string ActualTypeName => _derivedTypeNames.Value.GetTypeActualName();
 
 	    /// <summary>
 		///     Удалить объект из индекса
@@ -313,7 +311,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 		{
 			var tenantId = GlobalContext.GetTenantId();
 			// Удаление реализуем через обновление статуса документа.
-			foreach (var indexType in _derivedTypeNamesNest.Value.First().GetMappingsTypeNames())
+			foreach (var indexType in _derivedTypeNames.Value.GetMappingsTypeNames())
 			{
 				var type = indexType;
 				var response = _elasticConnection.Client.Search<dynamic>(
@@ -371,7 +369,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 			var response = _elasticConnection.Client.Search<dynamic>(
 				q => q
 					.Index(_indexName)
-					.Types(_derivedTypeNamesNest.Value.First().GetMappingsTypeNames())
+					.Types(_derivedTypeNames.Value.GetMappingsTypeNames())
 					.Query(
 						f =>
 						{
@@ -416,7 +414,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
 					var searchResponse = _elasticConnection.Client.Search<dynamic>(
 						q => q
-							.BuildSearchForType(new[] { _indexName }, _derivedTypeNamesNest.Value.First().GetMappingsTypeNames(),
+							.BuildSearchForType(new[] { _indexName }, _derivedTypeNames.Value.GetMappingsTypeNames(),
 								false, false)
 							.Size(batchSize)
 							.Filter(
@@ -443,7 +441,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
 			return _elasticConnection.Client
 									 .Search<dynamic>(q => q
-										 .BuildSearchForType(new[] { _indexName }, _derivedTypeNamesNest.Value.First().GetMappingsTypeNames(), false, false)
+										 .BuildSearchForType(new[] { _indexName }, _derivedTypeNames.Value.GetMappingsTypeNames(), false, false)
 										 .Query(qr => qr.Term(ElasticConstants.TenantIdField, tenantId) &&
 													  qr.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid))).Hits.Count();
 		}

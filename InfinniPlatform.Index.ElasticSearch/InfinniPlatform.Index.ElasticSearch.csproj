@@ -65,8 +65,8 @@
     <Compile Include="Implementation\ElasticProviders\ElasticSearchProviderInfo.cs" />
     <Compile Include="Implementation\ElasticProviders\ElasticSearchSettings.cs" />
     <Compile Include="Implementation\ElasticProviders\IndexToTypeAccordanceProvider.cs" />
-    <Compile Include="Implementation\ElasticProviders\SchemaIndexVersion\ElasticSearchMappingProvider.cs" />
     <Compile Include="Implementation\ElasticProviders\SchemaIndexVersion\IndexToTypeAccordance.cs" />
+    <Compile Include="Implementation\ElasticProviders\SchemaIndexVersion\IndexToTypeAccordanceExtensions.cs" />
     <Compile Include="Implementation\ElasticProviders\SchemaIndexVersion\IndexToTypeAccordanceSettings.cs" />
     <Compile Include="Implementation\ElasticProviders\SchemaIndexVersion\IndexTypeMapping.cs" />
     <Compile Include="Implementation\ElasticProviders\SchemaIndexVersion\TypeMappingExtensions.cs" />
@@ -76,7 +76,6 @@
     <Compile Include="Implementation\Filters\ElasticScript.cs" />
     <Compile Include="Implementation\ElasticProviders\ElasticSearchProvider.cs" />
     <Compile Include="Implementation\ElasticProviders\IndexQueryExecutor.cs" />
-    <Compile Include="Implementation\ElasticProviders\IndexStateProvider.cs" />
     <Compile Include="Implementation\Filters\QueryBuilderFactory.cs" />
     <Compile Include="Implementation\Filters\NestQueries\ConcreteFilterBuilders\NestQueryContainsBuilder.cs" />
     <Compile Include="Implementation\Filters\NestQueries\ConcreteFilterBuilders\NestQueryEmptyBuilder.cs" />
@@ -129,7 +128,6 @@
     <Compile Include="Implementation\Filters\FilterBuilderFactory.cs" />
     <Compile Include="Implementation\Filters\NestFilters\ConcreteFilterBuilders\NestFilterScriptBuilder.cs" />
     <Compile Include="Implementation\IndexTypeSelectors\IndexTypeSelectorBase.cs" />
-    <Compile Include="Implementation\IndexTypeVersions\MultipleTypeIndex.cs" />
     <Compile Include="Implementation\IndexTypeVersions\PropertiesDescriptorExtension.cs" />
     <Compile Include="Implementation\SortBuilders\SortContainer.cs" />
     <Compile Include="Implementation\ElasticProviders\DocumentProvider.cs" />

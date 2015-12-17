@@ -20,13 +20,12 @@ namespace InfinniPlatform.RestfulApi.Extensions
             
             indexProvider.CreateVersion(true);
 
-            var provider = elasticFactory.BuildIndexStateProvider();
-            provider.Refresh();
+            new ElasticConnection().Refresh();
         }
 
 		public static bool IndexExists(string indexName,string typeName)
 		{
-			var provider = new ElasticFactory().BuildIndexStateProvider();
+			var provider = new ElasticConnection();
 			return provider.GetIndexStatus(indexName, typeName) == IndexStatus.Exists;
 		}
 

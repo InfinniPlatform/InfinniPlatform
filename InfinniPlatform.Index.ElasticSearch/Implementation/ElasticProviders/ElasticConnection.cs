@@ -6,10 +6,14 @@ using Elasticsearch.Net.ConnectionPool;
 
 using InfinniPlatform.Api.Settings;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
+using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions;
+using InfinniPlatform.Index.ElasticSearch.Properties;
+using InfinniPlatform.Sdk.Environment.Index;
 
 using Nest;
 using Nest.Resolvers;
 
+using IndexStatus = InfinniPlatform.Sdk.Environment.Index.IndexStatus;
 using PropertyMapping = InfinniPlatform.Sdk.Environment.Index.PropertyMapping;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
@@ -19,6 +23,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
     /// </summary>
     public sealed class ElasticConnection
     {
+        private static readonly Lazy<ElasticClient> ElasticClient;
+        private static Dictionary<string, IList<TypeMapping>> _mappingsCache;
+
         static ElasticConnection()
         {
             // TODO: Избавиться от статического конструктора и нормально зарегистрировать все зависимости
@@ -34,21 +41,28 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
             var settings = AppConfiguration.Instance.GetSection<ElasticSearchSettings>(ElasticSearchSettings.SectionName);
 
-            _elasticClient = new Lazy<ElasticClient>(() => CreatElasticClient(settings));
-            _mappingProvider = new ElasticSearchMappingProvider(_elasticClient);
+            ElasticClient = new Lazy<ElasticClient>(() => CreatElasticClient(settings));
+            ResetMappingsCache();
         }
 
+        /// <summary>
+        /// Возвращает клиента для работы с индексом.
+        /// </summary>
+        public ElasticClient Client => ElasticClient.Value;
 
-        private static readonly ElasticSearchMappingProvider _mappingProvider;
-        private static readonly Lazy<ElasticClient> _elasticClient;
+        private static void ResetMappingsCache()
+        {
+            var elasticMappings = ElasticClient.Value.GetMapping(new GetMappingRequest("_all", "_all")).Mappings;
 
+            _mappingsCache = new Dictionary<string, IList<TypeMapping>>(elasticMappings, StringComparer.OrdinalIgnoreCase);
+        }
 
         private static ElasticClient CreatElasticClient(ElasticSearchSettings settings)
         {
             var nodeAddresses = settings.Nodes.Select(node => new Uri(node));
 
             var connectionPool = new SniffingConnectionPool(nodeAddresses);
-            
+
             var connectionSettings = new ConnectionSettings(connectionPool);
 
             if (!string.IsNullOrEmpty(settings.Login) && !string.IsNullOrEmpty(settings.Password))
@@ -64,22 +78,12 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             return client;
         }
 
-        /// <summary>
-        /// Возвращает клиента для работы с индексом.
-        /// </summary>
-        public ElasticClient Client
-        {
-            get { return _elasticClient.Value; }
-        }
-
-
         public void Refresh()
         {
             // TODO: От этого нужно избавиться!!!
 
             Client.Refresh(i => i.Force());
         }
-
 
         /// <summary>
         /// Возвращает все типы, являющиеся версиями указанного типа в индексе
@@ -90,38 +94,81 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         /// <remarks>
         /// Например product_schema_0, product_schema_1 являются версиями типа product и искать данные можно по всем этим типам.
         /// </remarks>
-        public Dictionary<string, IList<TypeMapping>> GetAllTypesNest(string indexName, IEnumerable<string> typeNames)
+        public IList<TypeMapping> GetIndexMappings(string indexName)
         {
-            var typeNamesArray = typeNames.ToArray();
+            indexName = indexName.ToLower();
+
+            //            var actualMappings = ElasticClient.Value.GetMapping(new GetMappingRequest("_all", "_all")).Mappings;
+            if (_mappingsCache.ContainsKey(indexName))
+            {
+                return _mappingsCache[indexName];
+            }
+
+            return new List<TypeMapping>();
+        }
+
+        public IEnumerable<TypeMapping> GetTypeMappings(string indexName, IEnumerable<string> typeNames)
+        {
+            indexName = indexName.ToLower();
+            var typeNamesArray = typeNames.Select(typeName => typeName.ToLower()).ToArray();
+
+
+
             if (typeNames == null || !typeNamesArray.Any())
             {
                 throw new ArgumentException("Type name for index should not be empty.");
             }
+            //            var actualMappings = ElasticClient.Value.GetMapping(new GetMappingRequest("_all", "_all")).Mappings;
+            if (_mappingsCache.ContainsKey(indexName))
+            {
+                var isBaseTypes = !typeNamesArray.All(s => s.Contains(IndexTypeMapper.MappingTypeVersionPattern));
 
-            var mappingsNest = _mappingProvider.FillIndexMappingsNest(indexName, typeNamesArray);
-            // Ищем все маппинги для указанных типов (используем низкоуровневый вызов GetMapping).
-            // Ищем по всем типам и всем указанным индексам.
-            
-            return mappingsNest;
+                return isBaseTypes
+                           ? _mappingsCache[indexName].Where(mapping => typeNamesArray.Contains(mapping.TypeName.GetTypeBaseName()))
+                           : _mappingsCache[indexName].Where(mapping => typeNamesArray.Contains(mapping.TypeName));
+            }
+
+            return Enumerable.Empty<TypeMapping>();
         }
 
         /// <summary>
         /// Возвращает актуальную схему для документов, хранимых в типе.
         /// </summary>
-        public IList<PropertyMapping> GetIndexTypeMapping(string indexName, string typeName)
+        public IList<PropertyMapping> GetPropertyMappings(string indexName, string typeName)
         {
-            var schemaTypesNest = GetAllTypesNest(indexName , new[] { typeName });
+            //TODO Рассмотреть возможность использования типов данных из NEST.
+            var propertyMappings = new List<PropertyMapping>();
 
-            if (schemaTypesNest == null || !schemaTypesNest.Any())
+            //            var actualMappings = ElasticClient.Value.GetMapping(new GetMappingRequest("_all", "_all")).Mappings;
+            if (!_mappingsCache.ContainsKey(indexName.ToLower()))
             {
-                return new PropertyMapping[] { };
+                return propertyMappings;
             }
 
-            var actualTypeNest = schemaTypesNest.GetActualTypeNameNest(typeName);
+            var indexMappings = _mappingsCache[indexName.ToLower()];
 
-            var indexTypeMappingNest = _mappingProvider.GetIndexTypeMappingNest(indexName, actualTypeNest);
+            var isBaseType = !typeName.Contains(IndexTypeMapper.MappingTypeVersionPattern);
 
-            return indexTypeMappingNest;
+            var mappingsByVersion = isBaseType
+                                        ? indexMappings.Where(mapping => mapping.TypeName.GetTypeBaseName() == typeName)
+                                        : indexMappings.Where(mapping => mapping.TypeName == typeName);
+
+            var typeMapping = mappingsByVersion.OrderByDescending(mapping => mapping.TypeName.GetTypeVersion());
+            var rootObjectMapping = typeMapping.FirstOrDefault()?.Mapping;
+
+            if (rootObjectMapping != null && rootObjectMapping.Properties.ContainsKey("Values"))
+            {
+                var properties = (rootObjectMapping?.Properties["Values"] as ObjectMapping)?.Properties;
+
+                if (properties != null)
+                {
+                    propertyMappings.AddRange(properties.Select(ExtractProperty));
+                }
+
+                return propertyMappings;
+            }
+
+            return propertyMappings;
         }
 
         /// <summary>
@@ -130,11 +177,204 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         public string GetStatus()
         {
             var settings = AppConfiguration.Instance.GetSection<ElasticSearchSettings>(ElasticSearchSettings.SectionName);
-            
-            var health = _elasticClient.Value.ClusterHealth();
+
+            var health = ElasticClient.Value.ClusterHealth();
             var nodeAddresses = string.Join("; ", settings.Nodes);
 
             return $"cluster name - {health.ClusterName}, status - {health.Status}, number of nodes: {health.NumberOfNodes}, configured nodes: {nodeAddresses}";
+        }
+
+        private static PropertyMapping ExtractProperty(KeyValuePair<PropertyNameMarker, IElasticType> property)
+        {
+            PropertyDataType dataType;
+            var propertyType = property.Value.Type.Name;
+            var propertyName = property.Key.Name;
+
+            if (propertyType == "string")
+            {
+                dataType = PropertyDataType.String;
+            }
+            else if (propertyType == "date")
+            {
+                dataType = PropertyDataType.Date;
+            }
+            else if (propertyType == "binary")
+            {
+                dataType = PropertyDataType.Object; //в эластике храним только ссылку на бинарные данные, сами бинарные данные хранятся в Cassandra
+            }
+            else if (propertyType == "boolean")
+            {
+                dataType = PropertyDataType.Boolean;
+            }
+            else if (propertyType == "double" || propertyType == "float")
+            {
+                dataType = PropertyDataType.Float;
+            }
+            else if (propertyType == "integer" || propertyType == "long")
+            {
+                dataType = PropertyDataType.Integer;
+            }
+            else if (propertyType == "object")
+            {
+                var objectMapping = property.Value as ObjectMapping;
+
+                if (objectMapping?.Properties != null)
+                {
+                    var propertiesList = objectMapping.Properties.Select(ExtractProperty).ToList();
+
+                    return new PropertyMapping(propertyName, propertiesList);
+                }
+
+                dataType = PropertyDataType.Object;
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
+            var hasSortingFiled = (property.Value as MultiFieldMapping)?.Fields.Any() == true;
+
+            return new PropertyMapping(propertyName, dataType, hasSortingFiled);
+        }
+
+        /// <summary>
+        /// Получить состояние индекса
+        /// </summary>
+        /// <param name="indexName">Наименование индекса, состояние которого получаем</param>
+        /// <param name="typeName">Наименование типа, состояние которого получаем</param>
+        /// <returns>Состояние индекса</returns>
+        public IndexStatus GetIndexStatus(string indexName, string typeName)
+        {
+            if (string.IsNullOrEmpty(typeName))
+            {
+                throw new ArgumentException(Resources.EmptyIndexTypeName);
+            }
+
+            indexName = indexName.ToLowerInvariant();
+
+            var typesNest = GetTypeMappings(indexName, new[] { typeName });
+
+            return typesNest.Any()
+                       ? IndexStatus.Exists
+                       : IndexStatus.NotExists;
+        }
+
+        /// <summary>
+        /// Удалить индекс с указанным наименованием
+        /// </summary>
+        /// <param name="indexName">Наименование индекса</param>
+        /// <param name="typeName">Наименование типа в индексе</param>
+        public void DeleteType(string indexName, string typeName)
+        {
+            indexName = indexName.ToLowerInvariant();
+
+            if (string.IsNullOrEmpty(typeName))
+            {
+                throw new ArgumentException(Resources.EmptyIndexTypeName);
+            }
+
+            var typeMappings = GetTypeMappings(indexName, new[] { typeName });
+
+            foreach (var mapping in typeMappings)
+            {
+                //var mappingIndexName = mappings.Key;
+                //удаляем только маппинги типов в индексе
+                Client.DeleteMapping<dynamic>(d => d.Index(indexName).Type(mapping.TypeName));
+            }
+
+            Refresh();
+            ResetMappingsCache();
+        }
+
+        /// <summary>
+        /// Создает новую версию индекса с указанными настройками маппинга объектов
+        /// </summary>
+        /// <param name="indexName">Наименование индекса</param>
+        /// <param name="typeName">
+        /// Тип документа в индексе, для которого создаем новую версию.
+        /// создается новая версия типа внутри индекса
+        /// </param>
+        /// <param name="properties">Список изменений в маппинге</param>
+        /// <param name="deleteExistingVersion">Удалить существующую версию</param>
+        /// <param name="searchAbility">Возможности поиска по индексу</param>
+        public string CreateType(string indexName, string typeName, IList<PropertyMapping> properties = null, bool deleteExistingVersion = false, SearchAbilityType searchAbility = SearchAbilityType.KeywordBasedSearch)
+        {
+            if (string.IsNullOrEmpty(indexName))
+            {
+                throw new ArgumentException("Index name for creation index can't be empty.");
+            }
+
+            if (string.IsNullOrEmpty(typeName))
+            {
+                throw new ArgumentException("type name for creation type index can't be empty.");
+            }
+
+            indexName = indexName.ToLowerInvariant();
+
+            var typeMappings = GetTypeMappings(indexName, new[] { typeName });
+
+            var schemaTypeVersionNumber = 0;
+
+            //Если существует указанный тип
+            if (typeMappings.Any() && typeMappings.Any())
+            {
+                //TODO вычисляем номер следующей версии маппинга
+                schemaTypeVersionNumber = typeMappings.GetTypeActualVersion(typeName) + 1;
+            }
+
+            if (typeMappings.Any() && deleteExistingVersion)
+            {
+                foreach (var typeMapping in typeMappings)
+                {
+                    Client.DeleteMapping<dynamic>(d => d.Index(indexName).Type(typeMapping.TypeName));
+                }
+            }
+
+            var schemaTypeVersion = (typeName + IndexTypeMapper.MappingTypeVersionPattern + schemaTypeVersionNumber).ToLowerInvariant();
+
+            //если индекса не существует, вначале создаем сам индекс
+            if (!Client.IndexExists(i => i.Index(indexName)).Exists)
+            {
+                var result = Client.CreateIndex(i => i.Index(indexName));
+
+                if (!result.ConnectionStatus.Success)
+                {
+                    if (result.ConnectionStatus.OriginalException != null &&
+                        !result.ConnectionStatus.OriginalException.Message.ToLowerInvariant().Contains("already exists"))
+                    {
+                        throw new Exception($"fail to create index version \"{indexName}\" ");
+                    }
+                }
+            }
+
+            Refresh();
+
+            Client.Map<dynamic>(s => s.Index(indexName)
+                                      .Type(schemaTypeVersion)
+                                      .SearchAnalyzer("string_lowercase")
+                                      .IndexAnalyzer(searchAbility.ToString().ToLowerInvariant()));
+
+            var mapping = Client.GetMapping<dynamic>(d => d.Index(indexName).Type(schemaTypeVersion));
+
+            if (mapping == null)
+            {
+                throw new ArgumentException($"Fail to create type name mapping: \"{typeName}\"");
+            }
+
+            if (properties != null)
+            {
+                IndexTypeMapper.ApplyIndexTypeMapping(Client, indexName, schemaTypeVersion, properties);
+            }
+
+            ResetMappingsCache();
+
+            return schemaTypeVersion;
+        }
+
+        public void DeleteIndex(string indexName)
+        {
+            Client.DeleteIndex(i => i.Index(indexName));
+            ResetMappingsCache();
         }
     }
 }

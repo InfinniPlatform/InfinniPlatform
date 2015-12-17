@@ -5,34 +5,20 @@ using Nest;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion
 {
-	public class IndexToTypeAccordanceSettings
-	{
-	    private readonly bool _indexEmpty;
+    public class IndexToTypeAccordanceSettings
+    {
+        public IndexToTypeAccordanceSettings(Dictionary<string, IEnumerable<TypeMapping>> accordances, bool indexEmpty)
+        {
+            Accordances = accordances;
+            _indexEmpty = indexEmpty;
+        }
 
-		public IndexToTypeAccordanceSettings(Dictionary<string, IList<TypeMapping>> accordances, bool indexEmpty)
-		{
-			Accordances = accordances;
-			_indexEmpty = indexEmpty;
-		}
+        private readonly bool _indexEmpty;
 
-		public bool SearchInAllTypes
-		{
-			get
-			{
-			    return true;
-			    //				return !_indexEmpty && Accordances.Select(s => s.TypeNames).Any();
-			}
-		}
+        public bool SearchInAllTypes => !_indexEmpty && Accordances.Values.Any();
 
-		public bool SearchInAllIndeces
-		{
-			get
-			{
-                return true;
-                //				return _indexEmpty && !Accordances.Select(s => s.TypeNames).Any();
-            }
-		}
+        public bool SearchInAllIndeces => _indexEmpty && !Accordances.Values.Any();
 
-		public Dictionary<string, IList<TypeMapping>> Accordances { get; }
-	}
+        public Dictionary<string, IEnumerable<TypeMapping>> Accordances { get; }
+    }
 }

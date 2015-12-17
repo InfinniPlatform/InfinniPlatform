@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions;
@@ -9,16 +10,30 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
 {
     public static class TypeMappingExtensions
     {
-        public static IEnumerable<string> GetMappingsTypeNames(this KeyValuePair<string, IList<TypeMapping>> elasticMappings)
+        public static IEnumerable<string> GetMappingsTypeNames(this KeyValuePair<string, IEnumerable<TypeMapping>> elasticMappings)
         {
             var baseTypes = elasticMappings.Value.Select(elasticMapping => elasticMapping.TypeName);
 
             return baseTypes;
         }
 
-        public static IEnumerable<string> GetMappingsBaseTypeNames(this KeyValuePair<string, IList<TypeMapping>> elasticMappings)
+        public static IEnumerable<string> GetMappingsTypeNames(this IEnumerable<TypeMapping> elasticMappings)
+        {
+            var baseTypes = elasticMappings.Select(elasticMapping => elasticMapping.TypeName);
+
+            return baseTypes;
+        }
+
+        public static IEnumerable<string> GetMappingsBaseTypeNames(this KeyValuePair<string, IEnumerable<TypeMapping>> elasticMappings)
         {
             var baseTypes = elasticMappings.Value.Select(elasticMapping => elasticMapping.GetTypeBaseName());
+
+            return baseTypes;
+        }
+
+        public static IEnumerable<string> GetMappingsBaseTypeNames(this IEnumerable<TypeMapping> elasticMappings)
+        {
+            var baseTypes = elasticMappings.Select(elasticMapping => elasticMapping.GetTypeBaseName());
 
             return baseTypes;
         }
@@ -35,6 +50,34 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.Sc
             return int.TryParse(typeMapping.TypeName.Split('_').Last(), out version)
                        ? (int?)version
                        : null;
+        }
+
+        public static int GetTypeActualVersion(this IEnumerable<TypeMapping> typeMappings, string typeName)
+        {
+            var actualVersion = typeMappings.Select(mapping => mapping.GetTypeVersion())
+                                            .Max()
+                                            .GetValueOrDefault();
+
+            return actualVersion;
+        }
+
+        public static string GetTypeActualName(this IEnumerable<TypeMapping> typeMappings)
+        {
+            var max = 0;
+            string actualTypeName = null;
+
+            foreach (var typeMapping in typeMappings)
+            {
+                var version = typeMapping.GetTypeVersion().GetValueOrDefault();
+
+                if (version >= max)
+                {
+                    actualTypeName = typeMapping.TypeName;
+                    max = version;
+                }
+            }
+
+            return actualTypeName;
         }
 
         public static string GetTypeBaseName(this string typeName)

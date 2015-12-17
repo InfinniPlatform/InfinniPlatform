@@ -49,7 +49,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 		/// <param name="typeName">Наименование типа</param>
 		public IVersionBuilder BuildVersionBuilder(string indexName, string typeName)
 		{
-			return new VersionBuilder(new IndexStateProvider(), indexName, typeName);
+			return new VersionBuilder(new ElasticConnection(), indexName, typeName);
 		}
 
 	    /// <summary>
@@ -112,15 +112,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 		public IAllIndexesOperationProvider BuildAllIndexesOperationProvider()
 		{
 			return new ElasticSearchProviderAllIndexes();
-		}
-
-		/// <summary>
-		///     Создать провайдер операций для работы с индексами
-		/// </summary>
-		/// <returns>Провайдер операций для работы с индексом</returns>
-		public IIndexStateProvider BuildIndexStateProvider()
-		{
-			return new IndexStateProvider();
 		}
 
 		/// <summary>
