@@ -16,7 +16,8 @@ namespace InfinniPlatform.Reporting.Tests.DataSources
         }
 
         private readonly JArray _data;
-        public Type ProviderType => null;
+
+        public Type ProviderType => typeof(DataProviderInfoStub);
 
         public JArray GetData(DataSourceInfo dataSourceInfo, IEnumerable<ParameterInfo> parameterInfos, IDictionary<string, object> parameterValues)
         {

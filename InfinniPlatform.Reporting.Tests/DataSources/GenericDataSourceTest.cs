@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+
 using InfinniPlatform.Api.Schema;
 using InfinniPlatform.FastReport.Templates.Data;
 using InfinniPlatform.Reporting.DataSources;
@@ -9,41 +10,36 @@ using NUnit.Framework;
 
 namespace InfinniPlatform.Reporting.Tests.DataSources
 {
-	[TestFixture]
-	[Category(TestCategories.UnitTest)]
-	public sealed class GenericDataSourceTest
-	{
-		[Test]
-		public void ShouldInvokeRegisterDataSource()
-		{
-			// Given
+    [TestFixture]
+    [Category(TestCategories.UnitTest)]
+    public sealed class GenericDataSourceTest
+    {
+        [Test]
+        public void ShouldInvokeRegisterDataSource()
+        {
+            // Given
 
-			var dataSourceInfo = new DataSourceInfo
-								 {
-									 Name = "DataSource1",
-									 Provider = new DataProviderInfoStub(),
-									 Schema = new DataSchema()
-								 };
+            var dataSourceInfo = new DataSourceInfo
+                                 {
+                                     Name = "DataSource1",
+                                     Provider = new DataProviderInfoStub(),
+                                     Schema = new DataSchema()
+                                 };
 
-			var parameterInfos = new List<ParameterInfo>();
-			var parameterValues = new Dictionary<string, object>();
+            var parameterInfos = new List<ParameterInfo>();
+            var parameterValues = new Dictionary<string, object>();
 
-			var data = new JArray();
-			var dataSource = new DataSourceStub(data);
+            var data = new JArray();
+            var dataSource = new DataSourceStub(data);
 
-			var target = new GenericDataSource();
-			target.RegisterDataSource(dataSource);
+            var target = new GenericDataSource();
+            target.RegisterDataSource(dataSource);
 
-			// When
-			var result = target.GetData(dataSourceInfo, parameterInfos, parameterValues);
+            // When
+            var result = target.GetData(dataSourceInfo, parameterInfos, parameterValues);
 
-			// Then
-			Assert.AreEqual(data, result);
-		}
-
-
-		class DataProviderInfoStub : IDataProviderInfo
-		{
-		}
-	}
+            // Then
+            Assert.AreEqual(data, result);
+        }
+    }
 }

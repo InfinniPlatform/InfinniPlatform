@@ -34,7 +34,6 @@ namespace InfinniPlatform.Reporting.DataSources
                 throw new ArgumentException(Resources.DataSchemaCannotBeNull, nameof(dataSourceInfo));
             }
 
-
             var dataProviderType = dataSourceInfo.Provider.GetType();
 
             GetDataDelegate getData;

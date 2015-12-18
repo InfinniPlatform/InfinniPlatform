@@ -82,6 +82,7 @@
     <Compile Include="DataProviders\KeyValueDataProviderTest.cs" />
     <Compile Include="DataProviders\ObjectDataProviderTest.cs" />
     <Compile Include="DataProviders\XmlDataProviderTest.cs" />
+    <Compile Include="DataSources\DataProviderInfoStub.cs" />
     <Compile Include="DataSources\FirebirdDataSourceTest.cs" />
     <Compile Include="DataSources\GenericDataSourceTest.cs" />
     <Compile Include="DataSources\RestDataSourceTest.cs" />
