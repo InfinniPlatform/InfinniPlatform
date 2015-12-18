@@ -89,7 +89,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Exchange\ExchangeDirectorSolution.cs" />
     <Compile Include="Views\RegisterDesignerView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -102,7 +101,6 @@
     <Compile Include="Views\StatusDesignerView.Designer.cs">
       <DependentUpon>StatusDesignerView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Exchange\ExchangeDirector.cs" />
     <Compile Include="Views\ProcessTemplates\CustomProcessTemplate.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -141,7 +139,6 @@
       <DependentUpon>DeployDesignerView.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Exchange\AssemblyDiscovery.cs" />
-    <Compile Include="Views\Exchange\ConfigUpdater.cs" />
     <Compile Include="Views\Exchange\SourceAssemblyInfo.cs" />
     <Compile Include="Views\GeneratorDesignerView.cs">
       <SubType>UserControl</SubType>

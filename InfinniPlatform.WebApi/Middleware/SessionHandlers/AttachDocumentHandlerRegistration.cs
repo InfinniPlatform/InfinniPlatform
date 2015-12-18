@@ -1,22 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Routing;
-using InfinniPlatform.Api.RestApi.DataApi;
+﻿using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.WebApi.Middleware.RouteFormatters;
+
 using Microsoft.Owin;
+
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.WebApi.Middleware.SessionHandlers
 {
     public sealed class AttachDocumentHandlerRegistration : HandlerRegistration
     {
-        public AttachDocumentHandlerRegistration() : base(new RouteFormatterSession(), new RequestPathConstructor(), Priority.Standard, "PUT")
+        public AttachDocumentHandlerRegistration(SessionApi sessionApi) : base(new RouteFormatterSession(), new RequestPathConstructor(), Priority.Standard, "PUT")
         {
+            _sessionApi = sessionApi;
         }
+
+        private readonly SessionApi _sessionApi;
 
         protected override PathStringProvider GetPath(IOwinContext context)
         {
@@ -29,7 +28,7 @@ namespace InfinniPlatform.WebApi.Middleware.SessionHandlers
 
             var body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
 
-            return new ValueRequestHandlerResult(new SessionApi().Attach(routeDictionary["sessionId"], body));
+            return new ValueRequestHandlerResult(_sessionApi.Attach(routeDictionary["sessionId"], body));
         }
     }
 }

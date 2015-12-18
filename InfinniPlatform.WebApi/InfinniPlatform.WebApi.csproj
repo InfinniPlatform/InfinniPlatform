@@ -127,8 +127,6 @@
     <Compile Include="Middleware\MultipartFormData\StreamingMultipartFormDataParser.cs" />
     <Compile Include="Middleware\MultipartFormData\SubsequenceFinder.cs" />
     <Compile Include="Middleware\RequestPathConstructor.cs" />
-    <Compile Include="Middleware\RoleAuthHandlers\AddRoleHandlerRegistration.cs" />
-    <Compile Include="Middleware\RoleAuthHandlers\DeleteRoleHandlerRegistration.cs" />
     <Compile Include="Middleware\RouteFormatters\RouteFormatterMetadataDocumentElement.cs" />
     <Compile Include="Middleware\RouteFormatters\RouteFormatterMetadataConfigElement.cs" />
     <Compile Include="Middleware\RouteFormatters\RouteFormatterAuthRole.cs" />
@@ -145,31 +143,18 @@
     <Compile Include="Middleware\SessionHandlers\GetSessionByIdHandlerRegistration.cs" />
     <Compile Include="Middleware\SessionHandlers\SessionRemoveHandlerRegistration.cs" />
     <Compile Include="Middleware\SessionHandlers\SessionCommitHandlerRegistration.cs" />
-    <Compile Include="Middleware\StandardHandlers\ChangePasswordHandlerRegistration.cs" />
     <Compile Include="Middleware\StandardHandlers\CustomServiceRegistrationHandler.cs" />
     <Compile Include="Middleware\StandardHandlers\DeleteDocumentHandlerRegistration.cs" />
-    <Compile Include="Middleware\StandardHandlers\DenyAccessHandlerRegistration.cs" />
     <Compile Include="Middleware\StandardHandlers\FileDownloadHandlerRegistration.cs" />
     <Compile Include="Middleware\StandardHandlers\FileUploadHandlerRegistration.cs" />
     <Compile Include="Middleware\StandardHandlers\GetDocumentByIdHandlerRegistration.cs" />
     <Compile Include="Middleware\StandardHandlers\GetDocumentCountHandlerRegistration.cs" />
     <Compile Include="Middleware\StandardHandlers\GetDocumentHandlerRegistration.cs" />
-    <Compile Include="Middleware\StandardHandlers\GrantAccessHandlerRegistration.cs" />
     <Compile Include="Middleware\StandardHandlers\SetDocumentHandlerRegistration.cs" />
     <Compile Include="Middleware\StandardHandlers\SetDocumentsHandlerRegistration.cs" />
-    <Compile Include="Middleware\StandardHandlers\SignInRegistrationHandler.cs" />
-    <Compile Include="Middleware\StandardHandlers\SignOutRegistrationHandler.cs" />
     <Compile Include="Middleware\StandardHandlers\UpdateDocumentHandlerRegistration.cs" />
     <Compile Include="Middleware\UserAuthHandlers\AddUserClaimHandlerRegistration.cs" />
-    <Compile Include="Middleware\UserAuthHandlers\AddUserHandlerRegistration.cs" />
-    <Compile Include="Middleware\UserAuthHandlers\AddUserRoleHandlerRegistration.cs" />
-    <Compile Include="Middleware\UserAuthHandlers\DeleteUserHandlerRegistration.cs" />
-    <Compile Include="Middleware\UserAuthHandlers\DeleteUserRoleHandlerRegistration.cs" />
     <Compile Include="Middleware\UserAuthHandlers\GetUserClaimHandlerRegistration.cs" />
-    <Compile Include="Middleware\UserAuthHandlers\GetUserHandlerRegistration.cs" />
-    <Compile Include="Middleware\UserAuthHandlers\RemoveUserClaimHandlerRegistration.cs" />
-    <Compile Include="Middleware\VersionHandlers\SetRelevantVersionHandlerRegistration.cs" />
-    <Compile Include="Middleware\VersionHandlers\GetIrrelevantVersionHandlerRegistration.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
@@ -213,6 +198,10 @@
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
       <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Middleware\RoleAuthHandlers\" />
+    <Folder Include="Middleware\VersionHandlers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

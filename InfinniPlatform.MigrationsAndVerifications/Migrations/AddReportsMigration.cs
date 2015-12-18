@@ -4,7 +4,6 @@ using System.Text;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataReaders;
-using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Migrations
@@ -72,8 +71,6 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 
                 resultMessage.AppendLine();
                 resultMessage.AppendFormat("Reports container was added.");
-
-                new UpdateApi().ForceReload(_activeConfiguration);
             }
 
             resultMessage.AppendLine();

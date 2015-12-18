@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers
@@ -62,19 +60,9 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
             return null;
         }
 
-        private static IEnumerable<dynamic> GetSolutionList()
+        private IEnumerable<dynamic> GetSolutionList()
         {
-            dynamic body = new
-                           {
-                               Version = ""
-                           };
-
-            IEnumerable<dynamic> configList = DynamicWrapperExtensions.ToEnumerable(
-                RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getsolutionlist", null, body)
-                            .ToDynamic()
-                            .SolutionList);
-
-            return configList;
+            return null;
         }
     }
 }

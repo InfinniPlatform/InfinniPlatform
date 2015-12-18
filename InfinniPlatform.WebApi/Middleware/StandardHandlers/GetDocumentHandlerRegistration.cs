@@ -1,23 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
+
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.SearchOptions.Converters;
 using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.WebApi.Middleware.RouteFormatters;
+
 using Microsoft.Owin;
 
 namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 {
     public sealed class GetDocumentHandlerRegistration : HandlerRegistration
     {
-        public GetDocumentHandlerRegistration() : base(new RouteFormatterStandard(), new RequestPathConstructor(), Priority.Standard, "GET")
+        public GetDocumentHandlerRegistration(DocumentApi documentApi) : base(new RouteFormatterStandard(), new RequestPathConstructor(), Priority.Standard, "GET")
         {
+            _documentApi = documentApi;
         }
+
+        private readonly DocumentApi _documentApi;
 
         protected override PathStringProvider GetPath(IOwinContext context)
         {
@@ -26,7 +28,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 
         protected override IRequestHandlerResult ExecuteHandler(IOwinContext context)
         {
-            NameValueCollection nameValueCollection = new NameValueCollection();
+            var nameValueCollection = new NameValueCollection();
             if (context.Request.QueryString.HasValue)
             {
                 nameValueCollection = HttpUtility.ParseQueryString(HttpUtility.UrlDecode(context.Request.QueryString.Value));
@@ -49,7 +51,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            IEnumerable<dynamic> result = new DocumentApi().GetDocument(routeDictionary["application"], routeDictionary["documentType"], criteriaList,
+            var result = _documentApi.GetDocument(routeDictionary["application"], routeDictionary["documentType"], criteriaList,
                 Convert.ToInt32(nameValueCollection["pagenumber"]), Convert.ToInt32(nameValueCollection["pageSize"]), null, sortingList);
 
             return new ValueRequestHandlerResult(result);

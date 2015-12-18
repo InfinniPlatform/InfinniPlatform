@@ -1,54 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using InfinniPlatform.Api.Index;
+
 using InfinniPlatform.Api.Index.SearchOptions;
 using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.Profiling;
-using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Metadata;
-using InfinniPlatform.Sdk.Environment.Profiling;
-using InfinniPlatform.Sdk.Environment.Settings;
 
 namespace InfinniPlatform.RestfulApi.Utils
 {
     public sealed class DocumentExecutor
     {
-        private readonly IConfigurationMediatorComponent _configurationMediatorComponent;
-        private readonly InprocessDocumentComponent _documentComponent;
-        private readonly IMetadataComponent _metadataComponent;
-        private readonly IProfilerComponent _profilerComponent;
-        private readonly ILogComponent _logComponent;
-
         public DocumentExecutor(IConfigurationMediatorComponent configurationMediatorComponent,
-                                IMetadataComponent metadataComponent, InprocessDocumentComponent documentComponent,
-                                IProfilerComponent profilerComponent, ILogComponent logComponent)
+                                IMetadataComponent metadataComponent,
+                                InprocessDocumentComponent documentComponent,
+                                IProfilerComponent profilerComponent,
+                                ILogComponent logComponent,
+                                IReferenceResolver referenceResolver)
         {
             _configurationMediatorComponent = configurationMediatorComponent;
             _metadataComponent = metadataComponent;
             _documentComponent = documentComponent;
             _profilerComponent = profilerComponent;
             _logComponent = logComponent;
+            _referenceResolver = referenceResolver;
         }
+
+        private readonly IConfigurationMediatorComponent _configurationMediatorComponent;
+        private readonly InprocessDocumentComponent _documentComponent;
+        private readonly ILogComponent _logComponent;
+        private readonly IMetadataComponent _metadataComponent;
+        private readonly IProfilerComponent _profilerComponent;
+        private readonly IReferenceResolver _referenceResolver;
 
         public dynamic GetBaseDocument(string userName, string instanceId)
         {
-            IAllIndexesOperationProvider documentProvider = _documentComponent.GetAllIndexesOperationProvider();
+            var documentProvider = _documentComponent.GetAllIndexesOperationProvider();
             return documentProvider.GetItem(instanceId);
         }
 
         public dynamic GetCompleteDocument(string version, string configId, string documentId, string userName,
                                            string instanceId)
         {
-            var docsToResolve = new[] {GetBaseDocument(userName, instanceId)};
-            new ReferenceResolver(_metadataComponent).ResolveReferences(version, configId, documentId,
-                                                                        docsToResolve, null);
+            var docsToResolve = new[] { GetBaseDocument(userName, instanceId) };
+            _referenceResolver.ResolveReferences(version, configId, documentId, docsToResolve, null);
             return docsToResolve.FirstOrDefault();
         }
 
@@ -57,13 +55,11 @@ namespace InfinniPlatform.RestfulApi.Utils
                                                          IEnumerable<dynamic> filter, IEnumerable<dynamic> sorting,
                                                          IEnumerable<dynamic> ignoreResolve)
         {
-
-            IVersionProvider documentProvider = _documentComponent.GetDocumentProvider(configId, documentId);
+            var documentProvider = _documentComponent.GetDocumentProvider(configId, documentId);
 
             if (documentProvider != null)
             {
-
-                IMetadataConfiguration metadataConfiguration =
+                var metadataConfiguration =
                     _configurationMediatorComponent
                         .ConfigurationBuilder.GetConfigurationObject(configId)
                         .MetadataConfiguration;
@@ -82,7 +78,7 @@ namespace InfinniPlatform.RestfulApi.Utils
                 {
                     // Ивлекаем информацию о полях, по которым можно проводить сортировку из метаданных документа
                     sortingFields = ExtractSortingProperties(version, "", schema.Properties,
-                                                             _configurationMediatorComponent.ConfigurationBuilder);
+                        _configurationMediatorComponent.ConfigurationBuilder);
                 }
 
                 if (sorting != null && sorting.Any())
@@ -111,12 +107,12 @@ namespace InfinniPlatform.RestfulApi.Utils
                 }
 
 
-                IOperationProfiler profiler = _profilerComponent.GetOperationProfiler("VersionProvider.GetDocument",
-                                                                                      null);
+                var profiler = _profilerComponent.GetOperationProfiler("VersionProvider.GetDocument",
+                    null);
                 profiler.Reset();
 
                 //делаем выборку документов для последующего Resolve и фильтрации по полям Resolved объектов
-                int pageSizeUnresolvedDocuments = Math.Min(pageSize, 1000);
+                var pageSizeUnresolvedDocuments = Math.Min(pageSize, 1000);
 
                 var criteriaInterpreter = new QueryCriteriaInterpreter();
 
@@ -124,11 +120,10 @@ namespace InfinniPlatform.RestfulApi.Utils
 
                 IEnumerable<dynamic> result =
                     documentProvider.GetDocument(queryAnalyzer.GetBeforeResolveCriteriaList(filter), 0,
-                                                 Convert.ToInt32(pageSizeUnresolvedDocuments), sorting,
-                                                 pageNumber > 0 ? pageNumber*pageSize : 0);
+                        Convert.ToInt32(pageSizeUnresolvedDocuments), sorting,
+                        pageNumber > 0 ? pageNumber * pageSize : 0);
 
-                new ReferenceResolver(_metadataComponent).ResolveReferences(version, configId, documentId, result,
-                                                                            ignoreResolve);
+                _referenceResolver.ResolveReferences(version, configId, documentId, result, ignoreResolve);
 
                 result = criteriaInterpreter.ApplyFilter(queryAnalyzer.GetAfterResolveCriteriaList(filter), result);
 
@@ -146,15 +141,16 @@ namespace InfinniPlatform.RestfulApi.Utils
             var sortingProperties = new List<object>();
 
             if (properties != null)
-                foreach (dynamic propertyMapping in properties)
+            {
+                foreach (var propertyMapping in properties)
                 {
                     string formattedPropertyName = string.IsNullOrEmpty(rootName)
-                                                       ? string.Format("{0}", propertyMapping.Key)
-                                                       : string.Format("{0}.{1}", rootName, propertyMapping.Key);
+                        ? string.Format("{0}", propertyMapping.Key)
+                        : string.Format("{0}.{1}", rootName, propertyMapping.Key);
 
                     if (propertyMapping.Value.Type.ToString() == DataType.Object.ToString())
                     {
-                        var childProps = new object[] {};
+                        var childProps = new object[] { };
 
                         if (propertyMapping.Value.TypeInfo != null &&
                             propertyMapping.Value.TypeInfo.DocumentLink != null &&
@@ -177,16 +173,16 @@ namespace InfinniPlatform.RestfulApi.Utils
                                 if (inlineDocumentSchema != null)
                                 {
                                     childProps = ExtractSortingProperties(version, formattedPropertyName,
-                                                                          inlineDocumentSchema.Properties,
-                                                                          configurationObjectBuilder);
+                                        inlineDocumentSchema.Properties,
+                                        configurationObjectBuilder);
                                 }
                             }
                         }
                         else
                         {
                             childProps = ExtractSortingProperties(version, formattedPropertyName,
-                                                                  propertyMapping.Value.Properties,
-                                                                  configurationObjectBuilder);
+                                propertyMapping.Value.Properties,
+                                configurationObjectBuilder);
                         }
 
                         sortingProperties.AddRange(childProps);
@@ -197,13 +193,13 @@ namespace InfinniPlatform.RestfulApi.Utils
                         {
                             sortingProperties.AddRange(
                                 ExtractSortingProperties(version, formattedPropertyName,
-                                                         propertyMapping.Value.Items.Properties,
-                                                         configurationObjectBuilder));
+                                    propertyMapping.Value.Items.Properties,
+                                    configurationObjectBuilder));
                         }
                     }
                     else
                     {
-                        bool isSortingField = false;
+                        var isSortingField = false;
 
                         if (propertyMapping.Value.Sortable != null)
                         {
@@ -213,13 +209,14 @@ namespace InfinniPlatform.RestfulApi.Utils
                         if (isSortingField)
                         {
                             sortingProperties.Add(new
-                                {
-                                    PropertyName = formattedPropertyName,
-                                    SortOrder = SortOrder.Ascending
-                                }.ToDynamic());
+                                                  {
+                                                      PropertyName = formattedPropertyName,
+                                                      SortOrder = SortOrder.Ascending
+                                                  }.ToDynamic());
                         }
                     }
                 }
+            }
 
             return sortingProperties.ToArray();
         }

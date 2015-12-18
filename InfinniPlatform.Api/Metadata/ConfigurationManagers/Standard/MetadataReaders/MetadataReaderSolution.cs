@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataReaders
@@ -10,14 +9,12 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataRe
     {
         public IEnumerable<dynamic> GetItems()
         {
-            return
-                DynamicWrapperExtensions.ToEnumerable(
-                    RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getsolutionlist", null, null).ToDynamic().SolutionList);
+            return Enumerable.Empty<object>();
         }
 
         public dynamic GetItem(string metadataName)
         {
-            return GetItems().FirstOrDefault(g => g.Name.ToLowerInvariant() == metadataName.ToLowerInvariant());
+            return new DynamicWrapper();
         }
     }
 }

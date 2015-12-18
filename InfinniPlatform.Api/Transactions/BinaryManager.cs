@@ -11,10 +11,10 @@ namespace InfinniPlatform.Api.Transactions
     /// </summary>
     public sealed class BinaryManager
     {
-        public BinaryManager(IBlobStorage blobStorage)
+        public BinaryManager(IBlobStorage blobStorage, DocumentApi documentApi)
         {
             _blobStorage = blobStorage;
-            _documentApi = new DocumentApi();
+            _documentApi = documentApi;
         }
 
 

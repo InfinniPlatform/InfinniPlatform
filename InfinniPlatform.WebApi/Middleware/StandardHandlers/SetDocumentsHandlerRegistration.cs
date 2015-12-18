@@ -1,21 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.RestApi.DataApi;
+﻿using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.WebApi.Middleware.RouteFormatters;
+
 using Microsoft.Owin;
+
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 {
     public sealed class SetDocumentsHandlerRegistration : HandlerRegistration
     {
-        public SetDocumentsHandlerRegistration() : base(new RouteFormatterStandard(), new RequestPathConstructor(), Owin.Middleware.Priority.Standard, "PUT")
+        public SetDocumentsHandlerRegistration(DocumentApi documentApi) : base(new RouteFormatterStandard(), new RequestPathConstructor(), Priority.Standard, "PUT")
         {
+            _documentApi = documentApi;
         }
+
+        private readonly DocumentApi _documentApi;
 
         protected override PathStringProvider GetPath(IOwinContext context)
         {
@@ -28,7 +28,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            return new ValueRequestHandlerResult(new DocumentApi().SetDocuments(routeDictionary["application"], routeDictionary["documentType"], body));
+            return new ValueRequestHandlerResult(_documentApi.SetDocuments(routeDictionary["application"], routeDictionary["documentType"], body));
         }
     }
 }

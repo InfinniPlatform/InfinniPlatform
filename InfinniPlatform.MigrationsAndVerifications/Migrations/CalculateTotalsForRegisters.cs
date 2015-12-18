@@ -6,7 +6,6 @@ using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Sdk.Contracts;
-using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Register;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Migrations
@@ -16,6 +15,17 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
     /// </summary>
     public sealed class CalculateTotalsForRegisters : IConfigurationMigration
     {
+        public CalculateTotalsForRegisters(RestQueryApi restQueryApi, IndexApi indexApi, DocumentApi documentApi)
+        {
+            _restQueryApi = restQueryApi;
+            _indexApi = indexApi;
+            _documentApi = documentApi;
+        }
+
+        private readonly RestQueryApi _restQueryApi;
+        private readonly IndexApi _indexApi;
+        private readonly DocumentApi _documentApi;
+
         /// <summary>
         /// Конфигурация, к которой применяется миграция
         /// </summary>
@@ -66,10 +76,10 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         {
             var resultMessage = new StringBuilder();
 
-            if (new IndexApi().IndexExists(_activeConfiguration,
+            if (_indexApi.IndexExists(_activeConfiguration,
                 _activeConfiguration + RegisterConstants.RegistersCommonInfo))
             {
-                var registersInfo = new DocumentApi().GetDocument(_activeConfiguration,
+                var registersInfo = _documentApi.GetDocument(_activeConfiguration,
                     _activeConfiguration +
                     RegisterConstants
                         .RegistersCommonInfo,
@@ -89,20 +99,19 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                         tempDate.Minute,
                         tempDate.Second);
 
-                    var aggregatedData =
-                        RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetRegisterValuesByDate", null,
-                            new
-                            {
-                                Configuration = _activeConfiguration,
-                                Register = registerId,
-                                Date = calculationDate
-                            }).ToDynamicList();
+                    var aggregatedData = _restQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetRegisterValuesByDate", null,
+                        new
+                        {
+                            Configuration = _activeConfiguration,
+                            Register = registerId,
+                            Date = calculationDate
+                        }).ToDynamicList();
 
                     foreach (var item in aggregatedData)
                     {
                         item.Id = Guid.NewGuid().ToString();
                         item[RegisterConstants.DocumentDateProperty] = calculationDate;
-                        new DocumentApi().SetDocument(_activeConfiguration,
+                        _documentApi.SetDocument(_activeConfiguration,
                             RegisterConstants.RegisterTotalNamePrefix + registerId,
                             item);
                     }

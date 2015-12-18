@@ -1,25 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
+
+using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Owin.Middleware;
-using InfinniPlatform.WebApi.Middleware.MultipartFormData;
 using InfinniPlatform.WebApi.Middleware.RouteFormatters;
+
 using Microsoft.Owin;
+
 using Newtonsoft.Json.Linq;
-using InfinniPlatform.Api.Properties;
 
 namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 {
     public sealed class FileDownloadHandlerRegistration : HandlerRegistration
     {
-        public FileDownloadHandlerRegistration() : base(new RouteFormatterStandard(), new RequestPathConstructor(), Priority.Higher,"GET")
+        public FileDownloadHandlerRegistration(UploadApi uploadApi) : base(new RouteFormatterStandard(), new RequestPathConstructor(), Priority.Higher, "GET")
         {
+            _uploadApi = uploadApi;
         }
+
+        private readonly UploadApi _uploadApi;
 
         protected override PathStringProvider GetPath(IOwinContext context)
         {
@@ -30,7 +31,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
         {
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            NameValueCollection nameValueCollection = new NameValueCollection();
+            var nameValueCollection = new NameValueCollection();
             if (context.Request.QueryString.HasValue)
             {
                 nameValueCollection = HttpUtility.ParseQueryString(HttpUtility.UrlDecode(context.Request.QueryString.Value));
@@ -45,8 +46,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
                     throw new ArgumentException(Resources.NotAllRequestParamsAreSpecified);
                 }
 
-                return new ValueRequestHandlerResult(new UploadApi().DownloadBinaryContent(
-                    formData.ContentId.ToString()));
+                return new ValueRequestHandlerResult(_uploadApi.DownloadBinaryContent(formData.ContentId.ToString()));
             }
 
             return new ErrorRequestHandlerResult(Resources.IncorrectDownloadRequest);

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using InfinniPlatform.Api.RestApi.DataApi;
+using System.Linq;
 
 namespace InfinniPlatform.QueryDesigner.Contracts.Implementation
 {
@@ -7,7 +7,7 @@ namespace InfinniPlatform.QueryDesigner.Contracts.Implementation
     {
         public IEnumerable<dynamic> ExecuteQuery(string version, string queryText, bool denormalizeResult = false)
         {
-            return new DocumentApi().GetDocumentByQuery(queryText, denormalizeResult);
+            return Enumerable.Empty<object>();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using InfinniPlatform.FastReport.Templates.Data;
 using InfinniPlatform.Reporting.DataSources;
@@ -7,18 +8,19 @@ using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Reporting.Tests.DataSources
 {
-	sealed class DataSourceStub : IDataSource
-	{
-		private readonly JArray _data;
+    internal sealed class DataSourceStub : IDataSource
+    {
+        public DataSourceStub(JArray data)
+        {
+            _data = data;
+        }
 
-		public DataSourceStub(JArray data)
-		{
-			_data = data;
-		}
+        private readonly JArray _data;
+        public Type ProviderType => null;
 
-		public JArray GetData(DataSourceInfo dataSourceInfo, IEnumerable<ParameterInfo> parameterInfos, IDictionary<string, object> parameterValues)
-		{
-			return _data;
-		}
-	}
+        public JArray GetData(DataSourceInfo dataSourceInfo, IEnumerable<ParameterInfo> parameterInfos, IDictionary<string, object> parameterValues)
+        {
+            return _data;
+        }
+    }
 }

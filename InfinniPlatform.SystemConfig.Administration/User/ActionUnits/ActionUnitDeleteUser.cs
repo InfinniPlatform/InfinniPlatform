@@ -8,6 +8,13 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 {
     public sealed class ActionUnitDeleteUser
     {
+        public ActionUnitDeleteUser(RestQueryApi restQueryApi)
+        {
+            _restQueryApi = restQueryApi;
+        }
+
+        private readonly RestQueryApi _restQueryApi;
+
         public void Action(IApplyContext target)
         {
             var aclApi = target.Context.GetComponent<AuthApi>();
@@ -27,7 +34,7 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
             var api = target.Context.GetComponent<DocumentApi>();
             api.DeleteDocument(AuthorizationStorageExtensions.AdministrationConfigId, "user", user.Id);
 
-            RestQueryApi.QueryPostJsonRaw("AdministrationCustomization", "Common", "OnRemoveUserEvent", null, user);
+            _restQueryApi.QueryPostJsonRaw("AdministrationCustomization", "Common", "OnRemoveUserEvent", null, user);
 
             target.Result = new DynamicWrapper();
             target.Result.IsValid = true;

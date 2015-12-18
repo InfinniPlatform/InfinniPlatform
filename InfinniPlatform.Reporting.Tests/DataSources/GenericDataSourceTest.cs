@@ -32,7 +32,7 @@ namespace InfinniPlatform.Reporting.Tests.DataSources
 			var dataSource = new DataSourceStub(data);
 
 			var target = new GenericDataSource();
-			target.RegisterDataSource<DataProviderInfoStub>(dataSource);
+			target.RegisterDataSource(dataSource);
 
 			// When
 			var result = target.GetData(dataSourceInfo, parameterInfos, parameterValues);

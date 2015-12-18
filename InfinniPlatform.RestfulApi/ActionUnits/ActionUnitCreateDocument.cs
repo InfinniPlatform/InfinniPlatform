@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.Schema;
@@ -12,6 +13,13 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 {
     internal sealed class ActionUnitCreateDocument
     {
+        public ActionUnitCreateDocument(RestQueryApi restQueryApi)
+        {
+            _restQueryApi = restQueryApi;
+        }
+
+        private readonly RestQueryApi _restQueryApi;
+
         public void Action(IApplyContext target)
         {
             string configId = target.Item.Configuration;
@@ -26,12 +34,12 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             if (schema != null)
             {
                 dynamic prefiledInstance = CreatePrefiledInstance(null,
-                                                                  new SchemaProvider(
-                                                                      target.Context.GetComponent<IMetadataComponent>()), schema);
+                    new SchemaProvider(
+                        target.Context.GetComponent<IMetadataComponent>()), schema);
 
                 dynamic metadataProcess = target.Context.GetComponent<IMetadataComponent>()
                                                 .GetMetadata(configId, documentId, MetadataType.Process,
-                                                             "Default");
+                                                    "Default");
 
                 if (metadataProcess != null && metadataProcess.Transitions != null &&
                     metadataProcess.Transitions.Count > 0)
@@ -46,21 +54,21 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                             new SchemaIterator(
                                 new SchemaProvider(target.Context.GetComponent<IMetadataComponent>()));
 
-                        IEnumerable<string> prefillItems =
-                            RestQueryApi.QueryPostJsonRaw("systemconfig", "prefill", "getfillitems", null, null)
-                                        .ToDynamicList()
-                                        .Cast<string>();
+                        var prefillItems =
+                            _restQueryApi.QueryPostJsonRaw("systemconfig", "prefill", "getfillitems", null, null)
+                                         .ToDynamicList()
+                                         .Cast<string>();
 
                         schemaIterator.OnPrimitiveProperty = prefiledField =>
-                            {
-                                prefiledInstance = CheckPrefillForField(target, prefiledInstance, prefiledField,
-                                                                        prefillItems);
-                            };
+                                                             {
+                                                                 prefiledInstance = CheckPrefillForField(target, prefiledInstance, prefiledField,
+                                                                     prefillItems);
+                                                             };
                         schemaIterator.OnObjectProperty = prefiledField =>
-                            {
-                                prefiledInstance = CheckPrefillForField(target, prefiledInstance, prefiledField,
-                                                                        prefillItems);
-                            };
+                                                          {
+                                                              prefiledInstance = CheckPrefillForField(target, prefiledInstance, prefiledField,
+                                                                  prefillItems);
+                                                          };
 
                         schemaIterator.ProcessSchema(null, schemaPrefill);
                     }
@@ -91,17 +99,17 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
             var schemaIterator = new SchemaIterator(schemaProvider);
             Action<SchemaObject> processAction = schemaObject =>
-                {
-                    if (!string.IsNullOrEmpty(schemaObject.ParentPath))
-                    {
-                        dynamic instanceParent = instance[schemaObject.ParentPath];
+                                                 {
+                                                     if (!string.IsNullOrEmpty(schemaObject.ParentPath))
+                                                     {
+                                                         dynamic instanceParent = instance[schemaObject.ParentPath];
 
-                        if (instanceParent != null)
-                        {
-                            instanceParent[schemaObject.Name] = null;
-                        }
-                    }
-                };
+                                                         if (instanceParent != null)
+                                                         {
+                                                             instanceParent[schemaObject.Name] = null;
+                                                         }
+                                                     }
+                                                 };
             schemaIterator.OnPrimitiveProperty = processAction;
             schemaIterator.OnArrayProperty = processAction;
 
@@ -115,34 +123,34 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
         private Action<SchemaObject> FillObjectProperty(string version, ISchemaProvider schemaProvider, dynamic instance)
         {
             return schemaObject =>
-                {
-                    //если обходим метаданные встроенного объекта,
-                    //то создаем умолчательный экземпляр этого объекта и помещаем его в свойство заполняемого экземпляра
-                    dynamic prefiledInnerObjectInstance = null;
-                    if (schemaObject.ObjectSchema != null && schemaObject.Inline)
-                    {
-                        prefiledInnerObjectInstance = CreatePrefiledInstance(version, schemaProvider,
-                                                                             schemaObject.ObjectSchema);
-                    }
+                   {
+                       //если обходим метаданные встроенного объекта,
+                       //то создаем умолчательный экземпляр этого объекта и помещаем его в свойство заполняемого экземпляра
+                       dynamic prefiledInnerObjectInstance = null;
+                       if (schemaObject.ObjectSchema != null && schemaObject.Inline)
+                       {
+                           prefiledInnerObjectInstance = CreatePrefiledInstance(version, schemaProvider,
+                               schemaObject.ObjectSchema);
+                       }
 
-                    if (string.IsNullOrEmpty(schemaObject.ParentPath))
-                    {
-                        instance[schemaObject.Name] = prefiledInnerObjectInstance;
-                    }
-                    else
-                    {
-                        dynamic instanceParent = instance[schemaObject.ParentPath];
+                       if (string.IsNullOrEmpty(schemaObject.ParentPath))
+                       {
+                           instance[schemaObject.Name] = prefiledInnerObjectInstance;
+                       }
+                       else
+                       {
+                           dynamic instanceParent = instance[schemaObject.ParentPath];
 
-                        if (instanceParent != null)
-                        {
-                            instanceParent[schemaObject.Name] = prefiledInnerObjectInstance;
-                        }
-                    }
-                };
+                           if (instanceParent != null)
+                           {
+                               instanceParent[schemaObject.Name] = prefiledInnerObjectInstance;
+                           }
+                       }
+                   };
         }
 
         /// <summary>
-        ///     Заполнить поля документа указанными значениями
+        /// Заполнить поля документа указанными значениями
         /// </summary>
         /// <param name="target">Контекст выполнения скрипта</param>
         /// <param name="prefiledInstance">Заполняемая сущность</param>

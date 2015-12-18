@@ -10,6 +10,13 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
     /// </summary>
     public sealed class ActionUnitGetConfigMetadata
     {
+        public ActionUnitGetConfigMetadata(RestQueryApi restQueryApi)
+        {
+            _restQueryApi = restQueryApi;
+        }
+
+        private readonly RestQueryApi _restQueryApi;
+
         public void Action(IApplyContext target)
         {
             var paramsDoc = target.Item;
@@ -32,7 +39,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                 {
                     target.Result.Version = null;
 
-                    dynamic filterMetadata = RestQueryApi.QueryPostJsonRaw(paramsDoc.Configuration, "Common", "FilterMetadata", null, target.Result).ToDynamic();
+                    dynamic filterMetadata = _restQueryApi.QueryPostJsonRaw(paramsDoc.Configuration, "Common", "FilterMetadata", null, target.Result).ToDynamic();
 
                     if (filterMetadata != null)
                     {

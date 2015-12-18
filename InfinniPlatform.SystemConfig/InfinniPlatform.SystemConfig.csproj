@@ -109,7 +109,6 @@
     <Compile Include="Configurator\ActionUnitChangeMetadata.cs" />
     <Compile Include="Configurator\ActionUnitGetServiceMetadata.cs" />
     <Compile Include="Configurator\ActionUnitGetStandardExtensionPoints.cs" />
-    <Compile Include="Configurator\ActionUnitGetVersionList.cs" />
     <Compile Include="Configurator\ActionUnitRemoveAssembly.cs" />
     <Compile Include="Configurator\ActionUnitShowScript.cs" />
     <Compile Include="Configurator\ActionUnitUpdateConfigFromJson.cs" />
@@ -136,7 +135,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UserStorage\AdminApi.cs" />
     <Compile Include="UserStorage\ApplicationUserStoreCache.cs" />
     <Compile Include="UserStorage\ApplicationUserStorePersistentStorage.cs" />
     <Compile Include="UserStorage\UserStorageSettings.cs" />

@@ -6,11 +6,9 @@ using InfinniPlatform.Api.RestQuery.EventObjects;
 using InfinniPlatform.Api.RestQuery.EventObjects.EventSerializers;
 using InfinniPlatform.Api.RestQuery.RestQueryExecutors;
 using InfinniPlatform.Sdk.Environment.Index;
-using InfinniPlatform.Sdk.Environment.Profiling;
 using InfinniPlatform.Sdk.Events;
 
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 {
@@ -18,15 +16,14 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
     /// Данный класс используется только на самом низком уровне абстракции в платформе
     /// Для выполнения всех без исключения запросов следует использовать RestQueryApi
     /// </summary>
+    [Obsolete]
     public class RestQueryBuilder : IRestQueryBuilder
     {
-        public RestQueryBuilder(string configuration, string metadata, string action,
-                                Func<string, string, string, dynamic, IOperationProfiler> operationProfiler)
+        public RestQueryBuilder(string configuration, string metadata, string action)
         {
             _configuration = configuration;
             _metadata = metadata;
             _action = action;
-            _operationProfiler = operationProfiler;
             _controllerRoutingFactory = ControllerRoutingFactory.Instance;
         }
 
@@ -34,7 +31,6 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
         private readonly string _configuration;
         private readonly ControllerRoutingFactory _controllerRoutingFactory;
         private readonly string _metadata;
-        private readonly Func<string, string, string, dynamic, IOperationProfiler> _operationProfiler;
 
         /// <summary>
         /// Выгрузить файл на сервер
@@ -46,8 +42,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
         {
             var url = _controllerRoutingFactory.BuildRestRoutingUrlUpload(_configuration, _metadata, _action);
 
-            RestQueryResponse response = null;
-            ExecuteProfiledOperation(() => { response = new RestQueryExecutor().QueryPostFile(url, linkedData, filePath); }, null);
+            var response = new RestQueryExecutor().QueryPostFile(url, linkedData, filePath);
 
             return response;
         }
@@ -56,9 +51,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
         {
             var url = _controllerRoutingFactory.BuildRestRoutingUrlUpload(_configuration, _metadata, _action);
 
-            RestQueryResponse response = null;
-
-            ExecuteProfiledOperation(() => { response = new RestQueryExecutor().QueryPostFile(url, linkedData, fileStream); }, null);
+            var response = new RestQueryExecutor().QueryPostFile(url, linkedData, fileStream);
 
             return response;
         }
@@ -77,8 +70,8 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
             {
                 var customSerializer = changesObject as IObjectToEventSerializer;
                 events = customSerializer != null
-                             ? customSerializer.GetEvents()
-                             : new ObjectToEventSerializerStandard(changesObject).GetEvents();
+                    ? customSerializer.GetEvents()
+                    : new ObjectToEventSerializerStandard(changesObject).GetEvents();
             }
 
             var body = new Dictionary<string, object>
@@ -89,9 +82,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 
             var url = _controllerRoutingFactory.BuildRestRoutingUrlStandardApi(_configuration, _metadata, _action);
 
-            RestQueryResponse response = null;
-            ExecuteProfiledOperation(() => { response = new RestQueryExecutor().QueryPost(url, body); },
-                                     body);
+            var response = new RestQueryExecutor().QueryPost(url, body);
 
             return response;
         }
@@ -112,8 +103,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 
             var url = _controllerRoutingFactory.BuildRestRoutingUrlStandardApi(_configuration, _metadata, _action);
 
-            RestQueryResponse response = null;
-            ExecuteProfiledOperation(() => { response = new RestQueryExecutor().QueryPost(url, body); }, body);
+            var response = new RestQueryExecutor().QueryPost(url, body);
 
             return response;
         }
@@ -127,8 +117,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
         {
             var url = _controllerRoutingFactory.BuildRestRoutingUrlUrlEncodedData(_configuration, _metadata, _action);
 
-            RestQueryResponse response = null;
-            ExecuteProfiledOperation(() => { response = new RestQueryExecutor().QueryPostUrlEncodedData(url, linkedData); }, null);
+            var response = new RestQueryExecutor().QueryPostUrlEncodedData(url, linkedData);
 
             return response;
         }
@@ -137,8 +126,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
         {
             var url = _controllerRoutingFactory.BuildRestRoutingUrlUrlEncodedData(_configuration, _metadata, _action);
 
-            RestQueryResponse response = null;
-            ExecuteProfiledOperation(() => { response = new RestQueryExecutor().QueryGetUrlEncodedData(url, linkedData); }, null);
+            var response = new RestQueryExecutor().QueryGetUrlEncodedData(url, linkedData);
 
             return response;
         }
@@ -164,8 +152,7 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
                                  { "SearchType", searchType }
                              };
 
-            RestQueryResponse response = null;
-            ExecuteProfiledOperation(() => { response = new RestQueryExecutor().QueryGet(url, searchBody); }, searchBody);
+            var response = new RestQueryExecutor().QueryGet(url, searchBody);
 
             return response;
         }
@@ -201,8 +188,8 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
                                  { "PageSize", pageSize }
                              };
 
-            RestQueryResponse response = null;
-            ExecuteProfiledOperation(() => { response = new RestQueryExecutor().QueryGet(url, searchBody); }, searchBody);
+            var response = new RestQueryExecutor().QueryGet(url, searchBody);
+
             return response;
         }
 
@@ -215,33 +202,13 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
             var url = _controllerRoutingFactory.BuildRestRoutingUrlStandardApi(_configuration, _metadata, _action);
             var body = new
                        {
-                           version = "", metadataConfigurationId
+                           version = "",
+                           metadataConfigurationId
                        };
 
-            RestQueryResponse response = null;
-            ExecuteProfiledOperation(() => { response = new RestQueryExecutor().QueryPost(url, body); }, body);
+            var response = new RestQueryExecutor().QueryPost(url, body);
+
             return response;
-        }
-
-        private void ExecuteProfiledOperation(Action operation, dynamic body)
-        {
-            if (_operationProfiler != null)
-            {
-                dynamic bodyObject = null;
-                if (body != null)
-                {
-                    bodyObject = JObject.FromObject(body).ToString();
-                }
-
-                var profiler = _operationProfiler(_configuration, _metadata, _action, bodyObject);
-                profiler.Reset();
-                operation();
-                profiler.TakeSnapshot();
-            }
-            else
-            {
-                operation();
-            }
         }
 
         /// <summary>
@@ -257,8 +224,8 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 
             var url = _controllerRoutingFactory.BuildRestRoutingUrlStandardApi(_configuration, _metadata, _action);
 
-            RestQueryResponse response = null;
-            ExecuteProfiledOperation(() => { response = new RestQueryExecutor().QueryGet(url, searchBody); }, null);
+            var response = new RestQueryExecutor().QueryGet(url, searchBody);
+
             return response;
         }
     }

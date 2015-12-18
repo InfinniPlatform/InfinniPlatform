@@ -1,4 +1,7 @@
-﻿using InfinniPlatform.Api.Settings;
+﻿using InfinniPlatform.Api.RestQuery;
+using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
+using InfinniPlatform.Api.Settings;
+using InfinniPlatform.Api.Transactions;
 using InfinniPlatform.Compression;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.Factories;
@@ -68,6 +71,10 @@ namespace InfinniPlatform.IoC
                    .AsSelf()
                    .SingleInstance();
 
+            builder.RegisterType<BinaryManager>()
+                   .AsSelf()
+                   .SingleInstance();
+
             // Log4Net
             builder.OnCreateInstance(new Log4NetContainerParameterResolver());
             builder.OnActivateInstance(new Log4NetContainerInstanceActivator());
@@ -80,10 +87,6 @@ namespace InfinniPlatform.IoC
                    .SingleInstance();
 
             builder.RegisterType<Api.RestApi.DataApi.DocumentApi>()
-                   .AsSelf()
-                   .SingleInstance();
-
-            builder.RegisterType<Api.RestApi.DataApi.DocumentApiUnsecured>()
                    .AsSelf()
                    .SingleInstance();
 
@@ -147,6 +150,24 @@ namespace InfinniPlatform.IoC
             builder.RegisterType<InprocessDocumentComponent>()
                    .AsSelf()
                    .SingleInstance();
+
+            // Fury
+
+            builder.RegisterType<Api.RestApi.DataApi.SessionApi>()
+                   .AsSelf()
+                   .SingleInstance();
+
+            builder.RegisterType<Api.RestApi.CommonApi.IndexApi>()
+                   .AsSelf()
+                   .SingleInstance();
+
+            builder.RegisterType<Api.RestApi.CommonApi.RestQueryApi>()
+                   .AsSelf()
+                   .SingleInstance();
+
+            builder.RegisterType<LocalQueryBuilder>()
+                   .As<IRestQueryBuilder>()
+                   .InstancePerDependency();
         }
     }
 }

@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.RestApi.DataApi;
+﻿using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.WebApi.Middleware.RouteFormatters;
+
 using Microsoft.Owin;
 
 namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 {
     public sealed class DeleteDocumentHandlerRegistration : HandlerRegistration
     {
-        public DeleteDocumentHandlerRegistration() : base(new RouteFormatterStandard(), new RequestPathConstructor(), Owin.Middleware.Priority.Standard, "DELETE")
+        public DeleteDocumentHandlerRegistration(DocumentApi documentApi) : base(new RouteFormatterStandard(), new RequestPathConstructor(), Priority.Standard, "DELETE")
         {
+            _documentApi = documentApi;
         }
+
+        private readonly DocumentApi _documentApi;
 
         protected override PathStringProvider GetPath(IOwinContext context)
         {
@@ -25,8 +24,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
         {
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            return new ValueRequestHandlerResult(new DocumentApi().DeleteDocument(routeDictionary["application"], routeDictionary["documentType"], routeDictionary["instanceId"]));
-
+            return new ValueRequestHandlerResult(_documentApi.DeleteDocument(routeDictionary["application"], routeDictionary["documentType"], routeDictionary["instanceId"]));
         }
     }
 }

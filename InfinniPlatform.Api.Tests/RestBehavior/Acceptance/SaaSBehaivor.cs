@@ -2,7 +2,9 @@
 using System.Linq;
 
 using InfinniPlatform.Api.RestApi.Auth;
+using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
 using InfinniPlatform.Api.Security;
 using InfinniPlatform.NodeServiceHost;
 using InfinniPlatform.Sdk.Api;
@@ -37,7 +39,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // TODO: Пользователь добавляется напрямую в базу данных, так как на текущий момент в тестовой инфраструктуре очень сложно это сделать по всем "правилам".
 
-            var documentApi = new DocumentApi();
+            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
+            var documentApi = new DocumentApi(restQueryApi);
             var passwordHasher = new DefaultApplicationUserPasswordHasher();
 
             var user = new ApplicationUser

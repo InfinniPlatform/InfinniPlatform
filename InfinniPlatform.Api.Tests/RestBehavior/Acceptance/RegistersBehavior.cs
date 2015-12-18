@@ -5,6 +5,7 @@ using System.Linq;
 using InfinniPlatform.Api.Registers;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
 using InfinniPlatform.NodeServiceHost;
 using InfinniPlatform.Sdk.Environment.Register;
 
@@ -54,7 +55,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             // * InfoRegister
             // * AvailableBedsRegister
 
-            var documentApi = new DocumentApi();
+            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
+            var documentApi = new DocumentApi(restQueryApi);
 
             // Регистрация документов регистров
 
@@ -129,7 +131,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             // Given
 
-            var documentApi = new DocumentApi();
+            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
+            var documentApi = new DocumentApi(restQueryApi);
             var infoProperty = Guid.NewGuid().ToString();
 
             // When
@@ -155,7 +158,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         public void ShouldAggregateHospitalData()
         {
             // Given
-            var registerApi = new RegisterApi();
+            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
+            var registerApi = new RegisterApi(restQueryApi, new DocumentApi(restQueryApi));
 
             // When & Then
 
@@ -208,8 +212,9 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var documentApi = new DocumentApi();
-            var registerApi = new RegisterApi();
+            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
+            var documentApi = new DocumentApi(restQueryApi);
+            var registerApi = new RegisterApi(restQueryApi, documentApi);
 
             AddBed(documentApi, new DateTime(2014, 01, 01), "Палата 6", "Койка 1");
             AddBed(documentApi, new DateTime(2014, 01, 01), "Палата 6", "Койка 2");
@@ -236,13 +241,14 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var documentApi = new DocumentApi();
-            var registerApi = new RegisterApi();
+            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
+            var documentApi = new DocumentApi(restQueryApi);
+            var registerApi = new RegisterApi(restQueryApi, documentApi);
 
             // When
 
             // Миграция поместит имеющиеся на данный момент записи в таблицу итогов
-            RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "runmigration", null, new { MigrationName = "CalculateTotalsForRegisters", ConfigurationName = ConfigurationId, Version = "1.0.0.0" });
+            restQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "runmigration", null, new { MigrationName = "CalculateTotalsForRegisters", ConfigurationName = ConfigurationId, Version = "1.0.0.0" });
 
             AddPatientMovement(documentApi, DateTime.Now.AddYears(2), "Иванов", "Палата 33", "Койка 3", "", "");
             AddPatientMovement(documentApi, DateTime.Now.AddYears(2), "Петров", "Палата 33", "Койка 2", "", "");
@@ -263,8 +269,9 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             // Given
 
             var date = new DateTime(2214, 01, 01);
-            var documentApi = new DocumentApi();
-            var registerApi = new RegisterApi();
+            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
+            var documentApi = new DocumentApi(restQueryApi);
+            var registerApi = new RegisterApi(restQueryApi, documentApi);
 
             // When
 

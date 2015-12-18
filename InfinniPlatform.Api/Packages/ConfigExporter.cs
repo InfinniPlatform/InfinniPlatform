@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Api.RestApi.CommonApi;
 
 namespace InfinniPlatform.Api.Packages
 {
@@ -142,11 +141,8 @@ namespace InfinniPlatform.Api.Packages
 
             dynamic config = _exportStructure.GetConfiguration();
 
-            new UpdateApi().UpdateMetadataObject(config.Name, null, config, MetadataType.Configuration);
-
             foreach (var assembly in config.Assemblies)
             {
-                new UpdateApi().UpdateMetadataObject(config.Name, null, assembly, MetadataType.Assembly);
             }
 
             IEnumerable<dynamic> menuList = config.Menu;
@@ -154,7 +150,6 @@ namespace InfinniPlatform.Api.Packages
             foreach (var menu in menuList)
             {
                 dynamic menuFull = _exportStructure.GetMenu(menu.Name);
-                new UpdateApi().UpdateMetadataObject(config.Name, null, menuFull, MetadataType.Menu);
 
                 config.Menu.Add(menuFull);
             }
@@ -166,7 +161,6 @@ namespace InfinniPlatform.Api.Packages
                 foreach (var report in reportList)
                 {
                     dynamic reportFull = _exportStructure.GetReport(report.Name);
-                    new UpdateApi().UpdateMetadataObject(config.Name, null, reportFull, MetadataType.Report);
 
                     config.Reports.Add(reportFull);
                 }
@@ -177,8 +171,6 @@ namespace InfinniPlatform.Api.Packages
             foreach (var document in documents)
             {
                 dynamic documentFull = _exportStructure.GetDocument(document.Name);
-                new UpdateApi().UpdateMetadataObject(config.Name, document.Name, documentFull,
-                    MetadataType.Document);
 
                 config.Documents.Add(documentFull);
 
@@ -197,10 +189,6 @@ namespace InfinniPlatform.Api.Packages
                             {
                                 dynamic metadataTypeObject = _exportStructure.GetDocumentMetadataType(document.Name,
                                     metadataType.Name,
-                                    documentMetadataType);
-
-                                new UpdateApi().UpdateMetadataObject(config.Name, document.Name,
-                                    metadataTypeObject,
                                     documentMetadataType);
 
                                 documentFull[metadataContainer].Add(metadataTypeObject);
@@ -222,8 +210,6 @@ namespace InfinniPlatform.Api.Packages
                 foreach (var register in registers)
                 {
                     dynamic registerFull = _exportStructure.GetRegister(register.Name);
-                    new UpdateApi().UpdateMetadataObject(config.Name, register.Name, registerFull,
-                        MetadataType.Register);
 
                     config.Registers.Add(registerFull);
                 }

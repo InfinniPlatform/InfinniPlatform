@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using InfinniPlatform.FastReport.Templates.Data;
 
@@ -11,12 +12,17 @@ namespace InfinniPlatform.Reporting.DataSources
 	/// </summary>
 	interface IDataSource
 	{
-		/// <summary>
-		/// Получить данные источника.
-		/// </summary>
-		/// <param name="dataSourceInfo">Информация об источнике данных.</param>
-		/// <param name="parameterInfos">Информация о параметрах.</param>
-		/// <param name="parameterValues">Значения параметров.</param>
-		JArray GetData(DataSourceInfo dataSourceInfo, IEnumerable<ParameterInfo> parameterInfos, IDictionary<string, object> parameterValues);
+        /// <summary>
+        /// Описание поставщика данных.
+        /// </summary>
+        Type ProviderType { get; }
+
+        /// <summary>
+        /// Получить данные источника.
+        /// </summary>
+        /// <param name="dataSourceInfo">Информация об источнике данных.</param>
+        /// <param name="parameterInfos">Информация о параметрах.</param>
+        /// <param name="parameterValues">Значения параметров.</param>
+        JArray GetData(DataSourceInfo dataSourceInfo, IEnumerable<ParameterInfo> parameterInfos, IDictionary<string, object> parameterValues);
 	}
 }

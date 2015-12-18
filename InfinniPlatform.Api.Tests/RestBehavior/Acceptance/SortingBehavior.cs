@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
 
+using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
 using InfinniPlatform.NodeServiceHost;
 using InfinniPlatform.Sdk.Environment.Index;
 
@@ -41,7 +43,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var documentApi = new DocumentApi();
+            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
+            var documentApi = new DocumentApi(restQueryApi);
 
             var document1 = new
             {
@@ -84,7 +87,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var documentApi = new DocumentApi();
+            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
+            var documentApi = new DocumentApi(restQueryApi);
 
             var startDate = DateTime.Today;
 
@@ -119,7 +123,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var documentApi = new DocumentApi();
+            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
+            var documentApi = new DocumentApi(restQueryApi);
 
             var document1 = new
             {
@@ -162,7 +167,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var documentApi = new DocumentApi();
+            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
+            var documentApi = new DocumentApi(restQueryApi);
 
             // When
 
@@ -190,7 +196,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var documentApi = new DocumentApi();
+            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
+            var documentApi = new DocumentApi(restQueryApi);
 
             var document1 = new
             {
@@ -233,7 +240,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var documentApi = new DocumentApi();
+            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
+            var documentApi = new DocumentApi(restQueryApi);
 
             // When
 
@@ -261,7 +269,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var documentApi = new DocumentApi();
+            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
+            var documentApi = new DocumentApi(restQueryApi);
 
             var document1 = new
             {

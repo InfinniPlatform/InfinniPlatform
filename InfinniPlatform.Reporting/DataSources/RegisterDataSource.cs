@@ -1,44 +1,58 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.FastReport.Templates.Data;
+
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Reporting.DataSources
 {
-	/// <summary>
-	/// Источник данных для регистров системы.
-	/// </summary>
-	sealed class RegisterDataSource : IDataSource
-	{
-		public JArray GetData(DataSourceInfo dataSourceInfo, IEnumerable<ParameterInfo> parameterInfos, IDictionary<string, object> parameterValues)
-		{
-			var dataProviderInfo = (RegisterDataProviderInfo)dataSourceInfo.Provider;
-			var requestBody = dataProviderInfo.Body;
+    /// <summary>
+    /// Источник данных для регистров системы.
+    /// </summary>
+    internal sealed class RegisterDataSource : IDataSource
+    {
+        public RegisterDataSource(DocumentApi documentApi)
+        {
+            _documentApi = documentApi;
 
-			if (string.IsNullOrEmpty(requestBody) == false && parameterInfos != null)
-			{
-				// Если тело запроса содержит параметры, производится их подстановка. Например, строка "{param1}" будет
-				// заменена на "123", если в отчете был определен параметр "param1" и его значение равно "123".
+            ProviderType = typeof(RegisterDataProviderInfo);
+        }
 
-				foreach (var parameterInfo in parameterInfos)
-				{
-					var parameterName = parameterInfo.Name;
+        private readonly DocumentApi _documentApi;
 
-					object parameterValue = null;
+        public Type ProviderType { get; }
 
-					if (parameterValues != null)
-					{
-						parameterValues.TryGetValue(parameterName, out parameterValue);
-					}
+        public JArray GetData(DataSourceInfo dataSourceInfo, IEnumerable<ParameterInfo> parameterInfos, IDictionary<string, object> parameterValues)
+        {
+            var dataProviderInfo = (RegisterDataProviderInfo)dataSourceInfo.Provider;
+            var requestBody = dataProviderInfo.Body;
 
-					requestBody = requestBody.Replace("{" + parameterName + "}", (parameterValue ?? string.Empty).ToString());
-				}
-			}
+            if (string.IsNullOrEmpty(requestBody) == false && parameterInfos != null)
+            {
+                // Если тело запроса содержит параметры, производится их подстановка. Например, строка "{param1}" будет
+                // заменена на "123", если в отчете был определен параметр "param1" и его значение равно "123".
 
-            IEnumerable<dynamic> result = new DocumentApi().GetDocumentByQuery(requestBody);
+                foreach (var parameterInfo in parameterInfos)
+                {
+                    var parameterName = parameterInfo.Name;
 
-		    return JArray.FromObject(result.Select(r => r.Result));
-		}
-	}
+                    object parameterValue = null;
+
+                    if (parameterValues != null)
+                    {
+                        parameterValues.TryGetValue(parameterName, out parameterValue);
+                    }
+
+                    requestBody = requestBody.Replace("{" + parameterName + "}", (parameterValue ?? string.Empty).ToString());
+                }
+            }
+
+            var result = _documentApi.GetDocumentByQuery(requestBody);
+
+            return JArray.FromObject(result.Select(r => r.Result));
+        }
+    }
 }

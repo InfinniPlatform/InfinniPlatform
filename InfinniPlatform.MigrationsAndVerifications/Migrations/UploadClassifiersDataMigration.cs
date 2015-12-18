@@ -18,7 +18,13 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
     /// </summary>
     public sealed class UploadClassifiersDataMigration : IConfigurationMigration
     {
+        public UploadClassifiersDataMigration(RestQueryApi restQueryApi)
+        {
+            _restQueryApi = restQueryApi;
+        }
+
         private readonly List<MigrationParameter> _parameters = new List<MigrationParameter>();
+        private readonly RestQueryApi _restQueryApi;
         private IMetadataConfiguration _metadataConfiguration;
 
         /// <summary>
@@ -84,7 +90,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                         item.Metadata = containerName;
                         item.FileContent = Convert.ToBase64String(File.ReadAllBytes(classifier));
 
-                        RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "ImportDataFromJson", null, item);
+                        _restQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "ImportDataFromJson", null, item);
                     }
                     else
                     {

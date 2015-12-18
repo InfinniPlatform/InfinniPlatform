@@ -3,7 +3,6 @@
 using InfinniPlatform.Api.Deprecated;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Properties;
-using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Register;
 
@@ -65,11 +64,6 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
                         manager.DeleteItem(item);
                     }
                 }
-
-                RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "deletemetadata", configHeader.Name, new
-                                                                                                               {
-                                                                                                                   Version = ""
-                                                                                                               });
             }
         }
 
@@ -94,7 +88,6 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
 
         private void SetConfiguration(string name, dynamic metadataConfig)
         {
-            RestQueryApi.QueryPostRaw("SystemConfig", "metadata", "changemetadata", name, metadataConfig).ToDynamic();
         }
 
         private dynamic InsertConfiguration(dynamic objectToCreate)

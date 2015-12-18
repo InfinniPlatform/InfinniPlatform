@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.SearchOptions.Builders;
-using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Register;
 
@@ -11,19 +10,28 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 {
     public sealed class RegisterApi
     {
+        public RegisterApi(RestQueryApi restQueryApi, DocumentApi documentApi)
+        {
+            _restQueryApi = restQueryApi;
+            _documentApi = documentApi;
+        }
+
+        private readonly RestQueryApi _restQueryApi;
+        private readonly DocumentApi _documentApi;
+
         /// <summary>
-        ///     Получение результата агрегации по регистру на определенную дату
+        /// Получение результата агрегации по регистру на определенную дату
         /// </summary>
         /// <param name="configuration">Конфигурация, содержащая регистр</param>
         /// <param name="register">Имя регистра, по которому необходимо выполнить агрегацию</param>
         /// <param name="endDate">Дата, на которую проводить агрегацию</param>
         /// <param name="dimensions">
-        ///     Список измерений для агрегации. Если параметр не задан,
-        ///     в качестве измерений будут взяты все свойства регистра, помеченные как Dimension
+        /// Список измерений для агрегации. Если параметр не задан,
+        /// в качестве измерений будут взяты все свойства регистра, помеченные как Dimension
         /// </param>
         /// <param name="valueProperties">
-        ///     Свойства, по которомым будут вычислены агрегирующие значения.
-        ///     Если параметр не задан, в качестве значения будет взяты свойства регистра, помеченные как Value
+        /// Свойства, по которомым будут вычислены агрегирующие значения.
+        /// Если параметр не задан, в качестве значения будет взяты свойства регистра, помеченные как Value
         /// </param>
         /// <param name="valueAggregationTypes">Тип агрегации по значениям (сумма, среднее и тд)</param>
         /// <param name="filter">Фильтр для отбора определенных значений из регистра</param>
@@ -47,18 +55,19 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             return GetValuesByDate(configuration, register, endDate, dimensions, valueProperties, valueAggregationTypes, filter == null ? null : filterBuilder.GetFilter());
         }
 
-        public IEnumerable<dynamic> GetValuesByDate(string configuration, string register, DateTime endDate, IEnumerable<string> dimensions, IEnumerable<string> valueProperties, IEnumerable<AggregationType> valueAggregationTypes, IEnumerable<dynamic> filter)
+        public IEnumerable<dynamic> GetValuesByDate(string configuration, string register, DateTime endDate, IEnumerable<string> dimensions, IEnumerable<string> valueProperties, IEnumerable<AggregationType> valueAggregationTypes,
+                                                    IEnumerable<dynamic> filter)
         {
-            return RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetRegisterValuesByDate", null, new
-            {
-                Configuration = configuration,
-                Register = register,
-                Date = endDate,
-                Dimensions = dimensions,
-                ValueProperties = valueProperties,
-                ValueAggregationTypes = valueAggregationTypes,
-                Filter = filter
-            }).ToDynamicList();
+            return _restQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetRegisterValuesByDate", null, new
+                                                                                                               {
+                                                                                                                   Configuration = configuration,
+                                                                                                                   Register = register,
+                                                                                                                   Date = endDate,
+                                                                                                                   Dimensions = dimensions,
+                                                                                                                   ValueProperties = valueProperties,
+                                                                                                                   ValueAggregationTypes = valueAggregationTypes,
+                                                                                                                   Filter = filter
+                                                                                                               }).ToDynamicList();
         }
 
         public IEnumerable<dynamic> GetValuesBetweenDates(
@@ -67,25 +76,25 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             DateTime startDate,
             DateTime endDate)
         {
-            var response = GetValuesBetweenDates(configuration, register, startDate, endDate, null, null, null, new List<dynamic>() );
+            var response = GetValuesBetweenDates(configuration, register, startDate, endDate, null, null, null, new List<dynamic>());
 
             return response;
         }
 
         /// <summary>
-        ///     Получение результата агрегации по регистру в период между двумя датами
+        /// Получение результата агрегации по регистру в период между двумя датами
         /// </summary>
         /// <param name="configuration">Конфигурация, содержащая регистр</param>
         /// <param name="register">Имя регистра, по которому необходимо выполнить агрегацию</param>
         /// <param name="startDate">Начальная дата агрегации</param>
         /// <param name="endDate">Конечная дата агрегации</param>
         /// <param name="dimensions">
-        ///     Список измерений для агрегации. Если параметр не задан,
-        ///     в качестве измерений будут взяты все свойства регистра, помеченные как Dimension
+        /// Список измерений для агрегации. Если параметр не задан,
+        /// в качестве измерений будут взяты все свойства регистра, помеченные как Dimension
         /// </param>
         /// <param name="valueProperties">
-        ///     Свойства, по которомым будут вычислены агрегирующие значения.
-        ///     Если параметр не задан, в качестве значения будет взяты свойства регистра, помеченные как Value
+        /// Свойства, по которомым будут вычислены агрегирующие значения.
+        /// Если параметр не задан, в качестве значения будет взяты свойства регистра, помеченные как Value
         /// </param>
         /// <param name="valueAggregationTypes">Тип агрегации по значениям (сумма, среднее и тд)</param>
         /// <param name="filter">Фильтр для отбора определенных значений из регистра</param>
@@ -123,17 +132,17 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             IEnumerable<AggregationType> valueAggregationTypes = null,
             IEnumerable<dynamic> filter = null)
         {
-            return RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetRegisterValuesBetweenDates", null, new
-            {
-                Configuration = configuration,
-                Register = register,
-                FromDate = startDate,
-                ToDate = endDate,
-                Dimensions = dimensions,
-                ValueProperties = valueProperties,
-                ValueAggregationTypes = valueAggregationTypes,
-                Filter = filter
-            }).ToDynamicList();             
+            return _restQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetRegisterValuesBetweenDates", null, new
+                                                                                                                     {
+                                                                                                                         Configuration = configuration,
+                                                                                                                         Register = register,
+                                                                                                                         FromDate = startDate,
+                                                                                                                         ToDate = endDate,
+                                                                                                                         Dimensions = dimensions,
+                                                                                                                         ValueProperties = valueProperties,
+                                                                                                                         ValueAggregationTypes = valueAggregationTypes,
+                                                                                                                         Filter = filter
+                                                                                                                     }).ToDynamicList();
         }
 
         public IEnumerable<dynamic> GetValuesByPeriods(
@@ -147,7 +156,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         }
 
         /// <summary>
-        ///     Получение результата агрегации по регистру с разбиением по периодам
+        /// Получение результата агрегации по регистру с разбиением по периодам
         /// </summary>
         /// <param name="configuration">Конфигурация, содержащая регистр</param>
         /// <param name="register">Имя регистра, по которому необходимо выполнить агрегацию</param>
@@ -155,12 +164,12 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         /// <param name="endDate">Конечная дата агрегации</param>
         /// <param name="interval">Интервал агрегации (Year, quarter, month, week, day, hour, minute or second)</param>
         /// <param name="dimensions">
-        ///     Список измерений для агрегации. Если параметр не задан,
-        ///     в качестве измерений будут взяты все свойства регистра, помеченные как Dimension
+        /// Список измерений для агрегации. Если параметр не задан,
+        /// в качестве измерений будут взяты все свойства регистра, помеченные как Dimension
         /// </param>
         /// <param name="valueProperties">
-        ///     Свойства, по которомым будут вычислены агрегирующие значения.
-        ///     Если параметр не задан, в качестве значения будет взяты свойства регистра, помеченные как Value
+        /// Свойства, по которомым будут вычислены агрегирующие значения.
+        /// Если параметр не задан, в качестве значения будет взяты свойства регистра, помеченные как Value
         /// </param>
         /// <param name="timezone">Временная зона (часовой пояс) в формате "+05:00"</param>
         /// <param name="filter">Фильтр для отбора определенных значений из регистра</param>
@@ -187,7 +196,6 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                 timezone, filter == null ? null : filterBuilder.GetFilter());
         }
 
-
         public IEnumerable<dynamic> GetValuesByPeriods(
             string configuration,
             string register,
@@ -199,18 +207,18 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             string timezone = null,
             IEnumerable<dynamic> filter = null)
         {
-            var response = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetRegisterValuesByPeriods", null, new
-            {
-                Configuration = configuration,
-                Register = register,
-                FromDate = startDate,
-                ToDate = endDate,
-                Interval = interval,
-                Dimensions = dimensions,
-                ValueProperty = valueProperties,
-                TimeZone = timezone,
-                Filter = filter
-            });
+            var response = _restQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetRegisterValuesByPeriods", null, new
+                                                                                                                          {
+                                                                                                                              Configuration = configuration,
+                                                                                                                              Register = register,
+                                                                                                                              FromDate = startDate,
+                                                                                                                              ToDate = endDate,
+                                                                                                                              Interval = interval,
+                                                                                                                              Dimensions = dimensions,
+                                                                                                                              ValueProperty = valueProperties,
+                                                                                                                              TimeZone = timezone,
+                                                                                                                              Filter = filter
+                                                                                                                          });
 
             IEnumerable<dynamic> result;
 
@@ -225,20 +233,20 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
             return result;
         }
-              
+
         /// <summary>
-        ///     Получение результата агрегации по документу-регистратору
+        /// Получение результата агрегации по документу-регистратору
         /// </summary>
         /// <param name="configuration">Конфигурация, содержащая регистр</param>
         /// <param name="register">Имя регистра, по которому необходимо выполнить агрегацию</param>
         /// <param name="registrar">Идентификатор регистратора</param>
         /// <param name="dimensions">
-        ///     Список измерений для агрегации. Если параметр не задан,
-        ///     в качестве измерений будут взяты все свойства регистра, помеченные как Dimension
+        /// Список измерений для агрегации. Если параметр не задан,
+        /// в качестве измерений будут взяты все свойства регистра, помеченные как Dimension
         /// </param>
         /// <param name="valueProperties">
-        ///     Свойства, по которомым будут вычислены агрегирующие значения.
-        ///     Если параметр не задан, в качестве значения будет взяты свойства регистра, помеченные как Value
+        /// Свойства, по которомым будут вычислены агрегирующие значения.
+        /// Если параметр не задан, в качестве значения будет взяты свойства регистра, помеченные как Value
         /// </param>
         /// <returns>Результат агрегации</returns>
         public IEnumerable<dynamic> GetValuesBуRegistrar(
@@ -249,31 +257,31 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             IEnumerable<string> valueProperties = null)
         {
             var response =
-                RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetRegisterValuesByRegistrar", null, new
-                    {
-                        Configuration = configuration,
-                        Register = register,
-                        Registrar = registrar,
-                        Dimensions = dimensions,
-                        ValueProperties = valueProperties
-                    });
+                _restQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetRegisterValuesByRegistrar", null, new
+                                                                                                                 {
+                                                                                                                     Configuration = configuration,
+                                                                                                                     Register = register,
+                                                                                                                     Registrar = registrar,
+                                                                                                                     Dimensions = dimensions,
+                                                                                                                     ValueProperties = valueProperties
+                                                                                                                 });
 
             return response.ToDynamicList();
         }
 
         /// <summary>
-        ///     Получение результата агрегации по типу документа-регистратора
+        /// Получение результата агрегации по типу документа-регистратора
         /// </summary>
         /// <param name="configuration">Конфигурация, содержащая регистр</param>
         /// <param name="register">Имя регистра, по которому необходимо выполнить агрегацию</param>
         /// <param name="registrarType">Тип документа-регистратора</param>
         /// <param name="dimensions">
-        ///     Список измерений для агрегации. Если параметр не задан,
-        ///     в качестве измерений будут взяты все свойства регистра, помеченные как Dimension
+        /// Список измерений для агрегации. Если параметр не задан,
+        /// в качестве измерений будут взяты все свойства регистра, помеченные как Dimension
         /// </param>
         /// <param name="valueProperties">
-        ///     Свойства, по которомым будут вычислены агрегирующие значения.
-        ///     Если параметр не задан, в качестве значения будет взяты свойства регистра, помеченные как Value
+        /// Свойства, по которомым будут вычислены агрегирующие значения.
+        /// Если параметр не задан, в качестве значения будет взяты свойства регистра, помеченные как Value
         /// </param>
         /// <returns>Результат агрегации</returns>
         public IEnumerable<dynamic> GetValuesBуRegistrarType(
@@ -284,20 +292,20 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             IEnumerable<string> valueProperties = null)
         {
             var response =
-                RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetRegisterValuesByRegistrarType", null, new
-                    {
-                        Configuration = configuration,
-                        Register = register,
-                        RegistrarType = registrarType,
-                        Dimensions = dimensions,
-                        ValueProperties = valueProperties
-                    });
+                _restQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetRegisterValuesByRegistrarType", null, new
+                                                                                                                     {
+                                                                                                                         Configuration = configuration,
+                                                                                                                         Register = register,
+                                                                                                                         RegistrarType = registrarType,
+                                                                                                                         Dimensions = dimensions,
+                                                                                                                         ValueProperties = valueProperties
+                                                                                                                     });
 
             return response.ToDynamicList();
         }
 
         /// <summary>
-        ///     Получение 'сырых' данных из регистра
+        /// Получение 'сырых' данных из регистра
         /// </summary>
         /// <param name="configuration">Конфигурация, содержащая регистр</param>
         /// <param name="register">Имя регистра, по которому необходимо выполнить агрегацию</param>
@@ -323,25 +331,25 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         }
 
         public IEnumerable<dynamic> GetRegisterEntries(string configuration,
-            string register,
-            IEnumerable<dynamic> filter,
-            int pageNumber,
-            int pageSize)
+                                                       string register,
+                                                       IEnumerable<dynamic> filter,
+                                                       int pageNumber,
+                                                       int pageSize)
         {
-            var response = RestQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getdocument", null, new
-            {
-                Configuration = configuration,
-                Metadata = RegisterConstants.RegisterNamePrefix + register,
-                Filter = filter,
-                PageNumber = pageNumber,
-                PageSize = pageSize
-            });
+            var response = _restQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getdocument", null, new
+                                                                                                              {
+                                                                                                                  Configuration = configuration,
+                                                                                                                  Metadata = RegisterConstants.RegisterNamePrefix + register,
+                                                                                                                  Filter = filter,
+                                                                                                                  PageNumber = pageNumber,
+                                                                                                                  PageSize = pageSize
+                                                                                                              });
 
             return response.ToDynamicList();
-        } 
+        }
 
         /// <summary>
-        ///     Получение значений из таблицы итогов на дату, ближайшую к заданной
+        /// Получение значений из таблицы итогов на дату, ближайшую к заданной
         /// </summary>
         /// <param name="configuration">Конфигурация, содержащая регистр</param>
         /// <param name="register">Имя регистра, по которому необходимо выполнить агрегацию</param>
@@ -353,17 +361,17 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             DateTime totalsDate)
         {
             var closestDate =
-                RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetClosestDateTimeOfTotalCalculation", null,
+                _restQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetClosestDateTimeOfTotalCalculation", null,
                     new
-                        {
-                            Configuration = configuration,
-                            Register = register,
-                            Date = totalsDate
-                        }).ToDynamic();
+                    {
+                        Configuration = configuration,
+                        Register = register,
+                        Date = totalsDate
+                    }).ToDynamic();
 
             if (closestDate != null)
             {
-                return new DocumentApi().GetDocument(
+                return _documentApi.GetDocument(
                     configuration,
                     RegisterConstants.RegisterTotalNamePrefix + register,
                     f => f.AddCriteria(

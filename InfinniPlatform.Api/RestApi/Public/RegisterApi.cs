@@ -10,9 +10,9 @@ namespace InfinniPlatform.Api.RestApi.Public
 {
     public class RegisterApi : IRegisterApi
     {
-        public RegisterApi()
+        public RegisterApi(DataApi.RegisterApi registerApi)
         {
-            _registerApi = new DataApi.RegisterApi();
+            _registerApi = registerApi;
             _filterConverter = new FilterConverter();
         }
 

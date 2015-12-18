@@ -3,74 +3,66 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading;
 
 using InfinniPlatform.Api.LocalRouting;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestQuery.EventObjects;
 using InfinniPlatform.Api.RestQuery.EventObjects.EventSerializers;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
-using InfinniPlatform.Sdk.Environment.Profiling;
 using InfinniPlatform.Sdk.Events;
-
-using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 {
     public sealed class LocalQueryBuilder : IRestQueryBuilder
     {
-        public LocalQueryBuilder(string configuration, string metadata, string action, string userName,
-                                 Func<string, string, string, dynamic, IOperationProfiler> operationProfiler)
+        public LocalQueryBuilder(string configuration, string documentType, string action, IRequestLocal requestLocal)
         {
             _configuration = configuration;
-            _metadata = metadata;
+            _documentType = documentType;
             _action = action;
-            _userName = userName;
-            _operationProfiler = operationProfiler;
+            _requestLocal = requestLocal;
+
+            _userName = string.IsNullOrEmpty(Thread.CurrentPrincipal.Identity.Name) ? AuthorizationStorageExtensions.UnknownUser : Thread.CurrentPrincipal.Identity.Name;
         }
+
 
         private readonly string _action;
         private readonly string _configuration;
-        private readonly string _metadata;
-        private readonly Func<string, string, string, dynamic, IOperationProfiler> _operationProfiler;
+        private readonly string _documentType;
         private readonly string _userName;
+        private readonly IRequestLocal _requestLocal;
 
-        public RestQueryResponse QueryGet(IEnumerable<object> filterObject, int pageNumber, int pageSize,
-                                          int searchType = 1)
+
+        public RestQueryResponse QueryGet(IEnumerable<object> filterObject, int pageNumber, int pageSize, int searchType = 1)
         {
             var searchBody = new Dictionary<string, object>
                              {
-                                 {
-                                     "FilterObject", filterObject != null
-                                                         ? filterObject.Select(f => f.ToDynamic()).ToList()
-                                                         : null
-                                 },
+                                 { "FilterObject", filterObject?.Select(f => f.ToDynamic()).ToList() },
                                  { "PageNumber", pageNumber },
                                  { "PageSize", pageSize },
                                  { "SearchType", searchType }
                              };
 
-            string result = null;
-            ExecuteProfiledOperation(
-                                     () => { result = RequestLocal.InvokeRestOperationGet(_configuration, _metadata, _action, searchBody, _userName); }, searchBody);
+            var result = _requestLocal.InvokeRestOperationGet(_configuration, _documentType, _action, searchBody, _userName);
 
             return new RestQueryResponse
-                   {
-                       Content = result,
-                       HttpStatusCode = HttpStatusCode.OK
-                   };
+            {
+                Content = result,
+                HttpStatusCode = HttpStatusCode.OK
+            };
         }
 
         public RestQueryResponse QueryPostFile(object linkedData, Stream file)
         {
-            string result = null;
-            ExecuteProfiledOperation(
-                                     () => { result = RequestLocal.InvokeRestOperationUpload(_configuration, _metadata, _action, linkedData, file, _userName); }, null);
+            var result = _requestLocal.InvokeRestOperationUpload(_configuration, _documentType, _action, linkedData, file, _userName);
 
             return new RestQueryResponse
-                   {
-                       Content = result,
-                       HttpStatusCode = HttpStatusCode.OK
-                   };
+            {
+                Content = result,
+                HttpStatusCode = HttpStatusCode.OK
+            };
         }
 
         public RestQueryResponse QueryPostUrlEncodedData(object linkedData)
@@ -80,22 +72,15 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 
         public RestQueryResponse QueryGetUrlEncodedData(dynamic linkedData)
         {
-            string result = null;
-
             object body = DynamicWrapperExtensions.ToDynamic(linkedData);
 
-            ExecuteProfiledOperation(
-                                     () =>
-                                     {
-                                         result = RequestLocal.InvokeRestOperationDownload(_configuration, _metadata, _action, body,
-                                                                                           _userName);
-                                     }, body);
+            var result = _requestLocal.InvokeRestOperationDownload(_configuration, _documentType, _action, body, _userName);
 
             return new RestQueryResponse
-                   {
-                       Content = result,
-                       HttpStatusCode = HttpStatusCode.OK
-                   };
+            {
+                Content = result,
+                HttpStatusCode = HttpStatusCode.OK
+            };
         }
 
         public RestQueryResponse QueryPost(string id, object changesObject)
@@ -116,28 +101,24 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
                            { "events", events }
                        };
 
-            string result = null;
-            ExecuteProfiledOperation(
-                                     () => { result = RequestLocal.InvokeRestOperationPost(_configuration, _metadata, _action, body, _userName); }, body);
+            var result = _requestLocal.InvokeRestOperationPost(_configuration, _documentType, _action, body, _userName);
 
             return new RestQueryResponse
-                   {
-                       Content = result,
-                       HttpStatusCode = HttpStatusCode.OK
-                   };
+            {
+                Content = result,
+                HttpStatusCode = HttpStatusCode.OK
+            };
         }
 
         public RestQueryResponse QueryPostFile(object linkedData, string filePath)
         {
-            string result = null;
-            ExecuteProfiledOperation(
-                                     () => { result = RequestLocal.InvokeRestOperationUpload(_configuration, _metadata, _action, linkedData, filePath, _userName); }, null);
+            var result = _requestLocal.InvokeRestOperationUpload(_configuration, _documentType, _action, linkedData, filePath, _userName);
 
             return new RestQueryResponse
-                   {
-                       Content = result,
-                       HttpStatusCode = HttpStatusCode.OK
-                   };
+            {
+                Content = result,
+                HttpStatusCode = HttpStatusCode.OK
+            };
         }
 
         public RestQueryResponse QueryAggregation(string aggregationConfiguration, string aggregationMetadata,
@@ -157,15 +138,13 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
                                  { "PageSize", pageSize }
                              };
 
-            string result = null;
-            ExecuteProfiledOperation(
-                                     () => { result = RequestLocal.InvokeRestOperationGet(_configuration, _metadata, _action, searchBody, _userName); }, searchBody);
+            var result = _requestLocal.InvokeRestOperationGet(_configuration, _documentType, _action, searchBody, _userName);
 
             return new RestQueryResponse
-                   {
-                       Content = result,
-                       HttpStatusCode = HttpStatusCode.OK
-                   };
+            {
+                Content = result,
+                HttpStatusCode = HttpStatusCode.OK
+            };
         }
 
         public RestQueryResponse QueryNotify(string metadataConfigurationId)
@@ -176,15 +155,13 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
                            { "metadataConfigurationId", metadataConfigurationId }
                        };
 
-            string result = null;
-            ExecuteProfiledOperation(
-                                     () => { result = RequestLocal.InvokeRestOperationPost(_configuration, _metadata, _action, body, _userName); }, body);
+            var result = _requestLocal.InvokeRestOperationPost(_configuration, _documentType, _action, body, _userName);
 
             return new RestQueryResponse
-                   {
-                       Content = result,
-                       HttpStatusCode = HttpStatusCode.OK
-                   };
+            {
+                Content = result,
+                HttpStatusCode = HttpStatusCode.OK
+            };
         }
 
         public RestQueryResponse QueryPostJson(string id, object jsonObject)
@@ -195,35 +172,13 @@ namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
                            { "changesObject", jsonObject }
                        };
 
-            string result = null;
-            ExecuteProfiledOperation(
-                                     () => { result = RequestLocal.InvokeRestOperationPost(_configuration, _metadata, _action, body, _userName); }, body);
+            var result = _requestLocal.InvokeRestOperationPost(_configuration, _documentType, _action, body, _userName);
 
             return new RestQueryResponse
-                   {
-                       Content = result,
-                       HttpStatusCode = HttpStatusCode.OK
-                   };
-        }
-
-        private void ExecuteProfiledOperation(Action operation, dynamic body)
-        {
-            dynamic bodyObject = null;
-            if (body != null)
             {
-                bodyObject = JObject.FromObject(body).ToString();
-            }
-            if (_operationProfiler != null)
-            {
-                var profiler = _operationProfiler(_configuration, _metadata, _action, bodyObject);
-                profiler.Reset();
-                operation();
-                profiler.TakeSnapshot();
-            }
-            else
-            {
-                operation();
-            }
+                Content = result,
+                HttpStatusCode = HttpStatusCode.OK
+            };
         }
     }
 }

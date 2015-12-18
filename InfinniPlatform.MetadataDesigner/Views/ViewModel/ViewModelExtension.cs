@@ -14,6 +14,7 @@ using InfinniPlatform.Api.Registers;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.RestQuery;
+using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
 using InfinniPlatform.MetadataDesigner.Views.Exchange;
 using InfinniPlatform.MetadataDesigner.Views.Status;
 using InfinniPlatform.Sdk.Dynamic;
@@ -26,6 +27,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 {
     public static class ViewModelExtension
     {
+        private static readonly RestQueryApi RestQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
         private static readonly IEnumerable<ServiceType> ServiceTypes = ServiceType.GetRegisteredServiceTypes();
 
         private static readonly List<dynamic> RegisteredMigrationsList = new List<dynamic>
@@ -743,9 +745,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
                                            Id = registerName
                                        };
 
-            new DocumentApi().SetDocument(configId, configId + RegisterConstants.RegistersCommonInfo, registerInfoDocument);
-
-            new UpdateApi().ForceReload(configId);
+            new DocumentApi(RestQueryApi).SetDocument(configId, configId + RegisterConstants.RegistersCommonInfo, registerInfoDocument);
 
             return RegisterConstants.RegisterNamePrefix + registerName;
         }

@@ -5,9 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using InfinniPlatform.Api.Metadata;
+
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Api.RestApi.CommonApi;
 
 namespace InfinniPlatform.Api.Packages
 {
@@ -76,8 +75,6 @@ namespace InfinniPlatform.Api.Packages
             _exportStructureSolution.Start();
 
             dynamic solution = _exportStructureSolution.GetSolution();
-
-            new UpdateApi().UpdateMetadataObject(solution.Name, null, solution, MetadataType.Solution);
 
             foreach (var referencedConfig in solution.ReferencedConfigurations)
             {

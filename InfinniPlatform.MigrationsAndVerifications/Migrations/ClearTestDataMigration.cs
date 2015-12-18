@@ -15,6 +15,12 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
     /// </summary>
     public sealed class ClearTestDataMigration : IConfigurationMigration
     {
+        public ClearTestDataMigration(DocumentApi documentApi)
+        {
+            _documentApi = documentApi;
+        }
+
+        private readonly DocumentApi _documentApi;
         private readonly List<MigrationParameter> _parameters = new List<MigrationParameter>();
 
         /// <summary>
@@ -67,8 +73,6 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         /// <param name="parameters"></param>
         public void Up(out string message, object[] parameters)
         {
-            var api = new DocumentApi();
-
             var resultMessage = new StringBuilder();
 
             var containers = configurationContainers.ToArray();
@@ -77,11 +81,11 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
             {
                 if (parameters[i].ToString() == "True")
                 {
-                    var docs = api.GetDocument(_activeConfiguration, containers[i], null, 0, 10000);
+                    var docs = _documentApi.GetDocument(_activeConfiguration, containers[i], null, 0, 10000);
 
                     foreach (var doc in docs)
                     {
-                        api.DeleteDocument(_activeConfiguration, containers[i], doc.Id);
+                        _documentApi.DeleteDocument(_activeConfiguration, containers[i], doc.Id);
                     }
                 }
             }

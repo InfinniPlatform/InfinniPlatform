@@ -1,24 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
+
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.SearchOptions.Converters;
 using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.WebApi.Middleware.RouteFormatters;
+
 using Microsoft.Owin;
 
 namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 {
     public class GetDocumentCountHandlerRegistration : HandlerRegistration
     {
-        public GetDocumentCountHandlerRegistration()
-            : base(new RouteFormatterStandard(), new RequestPathConstructor(), Priority.Standard, "GET")
+        public GetDocumentCountHandlerRegistration(DocumentApi documentApi) : base(new RouteFormatterStandard(), new RequestPathConstructor(), Priority.Standard, "GET")
         {
+            _documentApi = documentApi;
         }
+
+        private readonly DocumentApi _documentApi;
 
         protected override PathStringProvider GetPath(IOwinContext context)
         {
@@ -27,7 +27,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 
         protected override IRequestHandlerResult ExecuteHandler(IOwinContext context)
         {
-            NameValueCollection nameValueCollection = new NameValueCollection();
+            var nameValueCollection = new NameValueCollection();
             if (context.Request.QueryString.HasValue)
             {
                 nameValueCollection = HttpUtility.ParseQueryString(HttpUtility.UrlDecode(context.Request.QueryString.Value));
@@ -42,7 +42,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            var result = new DocumentApi().GetNumberOfDocuments(routeDictionary["application"], routeDictionary["documentType"], criteriaList);
+            var result = _documentApi.GetNumberOfDocuments(routeDictionary["application"], routeDictionary["documentType"], criteriaList);
 
             return new ValueRequestHandlerResult(result);
         }

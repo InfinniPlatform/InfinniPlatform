@@ -5,16 +5,22 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 {
     public sealed class ReportApi
     {
-        public dynamic GetReport(string configuration, string templateName, object[] parameters,
-            ReportFileFormat reportFileFormat)
+        public ReportApi(RestQueryApi restQueryApi)
         {
-            return RestQueryApi.QueryPostJsonRaw("SystemConfig", "Reporting", "getReport", null, new
-                {
-                    Configuration = configuration,
-                    Template = templateName,
-                    Parameters = parameters,
-                    FileFormat = (int) reportFileFormat
-                });
+            _restQueryApi = restQueryApi;
+        }
+
+        private readonly RestQueryApi _restQueryApi;
+
+        public dynamic GetReport(string configuration, string templateName, object[] parameters, ReportFileFormat reportFileFormat)
+        {
+            return _restQueryApi.QueryPostJsonRaw("SystemConfig", "Reporting", "getReport", null, new
+                                                                                                  {
+                                                                                                      Configuration = configuration,
+                                                                                                      Template = templateName,
+                                                                                                      Parameters = parameters,
+                                                                                                      FileFormat = (int)reportFileFormat
+                                                                                                  });
         }
     }
 }

@@ -6,6 +6,13 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
 {
     public sealed class TestRegisterMoveAction
     {
+        public TestRegisterMoveAction(DocumentApi documentApi)
+        {
+            _documentApi = documentApi;
+        }
+
+        private readonly DocumentApi _documentApi;
+
         public void Action(IApplyContext target)
         {
             if (target.Item.RegisterMoveValue != "RegisterMove" &&
@@ -13,7 +20,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
             {
                 dynamic item = new DynamicWrapper();
                 item.RegisterMoveValue = "RegisterMove";
-                new DocumentApi().SetDocument(target.Item.Configuration, target.Item.Metadata, item);
+                _documentApi.SetDocument(target.Item.Configuration, target.Item.Metadata, item);
             }
         }
     }

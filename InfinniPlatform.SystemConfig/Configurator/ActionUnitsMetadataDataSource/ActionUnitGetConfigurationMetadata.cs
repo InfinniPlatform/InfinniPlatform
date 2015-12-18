@@ -8,12 +8,19 @@ namespace InfinniPlatform.SystemConfig.Configurator.ActionUnitsMetadataDataSourc
 {
     public sealed class ActionUnitGetConfigurationMetadata
     {
+        private readonly RestQueryApi _restQueryApi;
+
+        public ActionUnitGetConfigurationMetadata(RestQueryApi restQueryApi)
+        {
+            _restQueryApi = restQueryApi;
+        }
+
         public void Action(IApplyResultContext target)
         {
             dynamic bodyQuery = new DynamicWrapper();
             bodyQuery.ConfigId = target.Item.ConfigId;
 
-            dynamic response = RestQueryApi.QueryPostJsonRaw("systemconfig", "metadata", "getmetadata", null, bodyQuery);
+            dynamic response = _restQueryApi.QueryPostJsonRaw("systemconfig", "metadata", "getmetadata", null, bodyQuery);
             IEnumerable<dynamic> result = DynamicWrapperExtensions.ToEnumerable(response.ToDynamic().QueryResult);
             target.Result = result.Select(r => r.Result).FirstOrDefault();
         }

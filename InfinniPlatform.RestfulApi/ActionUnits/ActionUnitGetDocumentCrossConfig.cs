@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.RestfulApi.Utils;
 using InfinniPlatform.Sdk.ContextComponents;
@@ -24,18 +25,18 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                 foreach (string document in documents)
                 {
                     var executor =
-                        new DocumentExecutor(
-                            target.Context.GetComponent<IConfigurationMediatorComponent>(),
+                        new DocumentExecutor(target.Context.GetComponent<IConfigurationMediatorComponent>(),
                             target.Context.GetComponent<IMetadataComponent>(),
                             target.Context.GetComponent<InprocessDocumentComponent>(),
                             target.Context.GetComponent<IProfilerComponent>(),
-                            target.Context.GetComponent<ILogComponent>());
+                            target.Context.GetComponent<ILogComponent>(),
+                            target.Context.GetComponent<IReferenceResolver>());
 
                     resultDocuments.AddRange(executor.GetCompleteDocuments(null, config, document,
-                                                                           target.UserName,
-                                                                           Convert.ToInt32(target.Item.PageNumber),
-                                                                           Convert.ToInt32(target.Item.PageSize),
-                                                                           filter, sorting, target.Item.IgnoreResolve));
+                        target.UserName,
+                        Convert.ToInt32(target.Item.PageNumber),
+                        Convert.ToInt32(target.Item.PageSize),
+                        filter, sorting, target.Item.IgnoreResolve));
                 }
             }
 

@@ -44,10 +44,12 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IoC\MigrationsAndVerificationsContainerModule.cs" />
     <Compile Include="Migrations\AddReportsMigration.cs" />
     <Compile Include="Migrations\AddRegistersMigration.cs" />
     <Compile Include="Migrations\CalculateTotalsForRegisters.cs" />
     <Compile Include="Migrations\ClearTestDataMigration.cs" />
+    <Compile Include="Migrations\ConfigurationMigrationFactory.cs" />
     <Compile Include="Migrations\UploadClassifiersDataMigration.cs" />
     <Compile Include="Migrations\DownloadClassifiersDataMigration.cs" />
     <Compile Include="Migrations\ExportImportDataMigration.cs" />

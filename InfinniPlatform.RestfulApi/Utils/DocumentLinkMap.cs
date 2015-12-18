@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.SearchOptions.Builders;
@@ -11,14 +12,15 @@ namespace InfinniPlatform.RestfulApi.Utils
 {
     public sealed class DocumentLinkMap
     {
-        private readonly IList<DocumentLink> _links = new List<DocumentLink>();
-        private readonly IMetadataComponent _metadataComponent;
-
-        public DocumentLinkMap(IMetadataComponent metadataComponent)
+        public DocumentLinkMap(IMetadataComponent metadataComponent, DocumentApi documentApi)
         {
             _metadataComponent = metadataComponent;
+            _documentApi = documentApi;
         }
 
+        private readonly DocumentApi _documentApi;
+        private readonly IList<DocumentLink> _links = new List<DocumentLink>();
+        private readonly IMetadataComponent _metadataComponent;
 
         public void RegisterLink(string configId, string documentId, string instanceId, Action<object> valueSetFunc)
         {
@@ -34,10 +36,10 @@ namespace InfinniPlatform.RestfulApi.Utils
         public void ResolveLinks(string version, dynamic resolvingTypeInfo, IEnumerable<dynamic> typeInfoChain)
         {
             var groupsLinks = _links.GroupBy(l => new
-                {
-                    l.ConfigId,
-                    l.DocumentId
-                }).ToList();
+                                                  {
+                                                      l.ConfigId,
+                                                      l.DocumentId
+                                                  }).ToList();
 
 
             foreach (var groupsLink in groupsLinks)
@@ -56,7 +58,7 @@ namespace InfinniPlatform.RestfulApi.Utils
                     continue;
                 }
 
-                List<dynamic> typeInfoChainUpdated = typeInfoChain.ToList();
+                var typeInfoChainUpdated = typeInfoChain.ToList();
                 dynamic typeInfo = new DynamicWrapper();
                 typeInfo.ConfigId = groupsLink.Key.ConfigId;
                 typeInfo.DocumentId = groupsLink.Key.DocumentId;
@@ -65,14 +67,13 @@ namespace InfinniPlatform.RestfulApi.Utils
                 Action<FilterBuilder> builder =
                     f => f.AddCriteria(c => c.Property("Id").IsIdIn(values.Select(i => i.InstanceId).ToList()));
 
-                IEnumerable<dynamic> resolvedLinks =
-                    new DocumentApiUnsecured().GetDocument(groupsLink.Key.ConfigId, groupsLink.Key.DocumentId,
-                                                                  builder, 0, 100000, typeInfoChainUpdated).ToList();
+                var resolvedLinks = _documentApi.GetDocument(groupsLink.Key.ConfigId, groupsLink.Key.DocumentId,
+                    builder, 0, 100000, typeInfoChainUpdated).ToList();
 
-                foreach (dynamic resolvedLink in resolvedLinks)
+                foreach (var resolvedLink in resolvedLinks)
                 {
-                    IEnumerable<DocumentLink> doc = _links.Where(l => l.InstanceId == resolvedLink.Id);
-                    foreach (DocumentLink documentLink in doc)
+                    var doc = _links.Where(l => l.InstanceId == resolvedLink.Id);
+                    foreach (var documentLink in doc)
                     {
                         documentLink.SetValue(resolvedLink);
                     }
@@ -82,15 +83,15 @@ namespace InfinniPlatform.RestfulApi.Utils
 
         private bool HasCircularRefs(string version, string configId, string documentId)
         {
-            IEnumerable<dynamic> metadata = _metadataComponent.GetMetadataList(configId, documentId,
-                                                                               MetadataType.Schema);
+            var metadata = _metadataComponent.GetMetadataList(configId, documentId,
+                MetadataType.Schema);
 
             dynamic schema = metadata.FirstOrDefault();
             if (schema != null)
             {
                 dynamic properties = schema.Properties;
 
-                foreach (dynamic property in properties)
+                foreach (var property in properties)
                 {
                     if ((property.Value.Type != null &&
                          property.Value.Type.ToLowerInvariant() == "object" &&
@@ -135,7 +136,7 @@ namespace InfinniPlatform.RestfulApi.Utils
                 return false;
             }
 
-            foreach (dynamic innerProperty in properties)
+            foreach (var innerProperty in properties)
             {
                 if (innerProperty.Value.TypeInfo != null && innerProperty.Value.TypeInfo.DocumentLink != null &&
                     innerProperty.Value.TypeInfo.DocumentLink.ConfigId == configId &&

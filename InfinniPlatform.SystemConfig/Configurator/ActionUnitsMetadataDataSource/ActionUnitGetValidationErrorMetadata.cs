@@ -7,6 +7,13 @@ namespace InfinniPlatform.SystemConfig.Configurator.ActionUnitsMetadataDataSourc
 {
     public sealed class ActionUnitGetValidationErrorMetadata
     {
+        public ActionUnitGetValidationErrorMetadata(RestQueryApi restQueryApi)
+        {
+            _restQueryApi = restQueryApi;
+        }
+
+        private readonly RestQueryApi _restQueryApi;
+
         public void Action(IApplyResultContext target)
         {
             dynamic bodyQuery = new DynamicWrapper();
@@ -15,8 +22,7 @@ namespace InfinniPlatform.SystemConfig.Configurator.ActionUnitsMetadataDataSourc
             bodyQuery.MetadataType = MetadataType.ValidationError;
             bodyQuery.MetadataName = target.Item.MetadataName;
 
-            target.Result =
-                RestQueryApi.QueryPostJsonRaw("systemconfig", "metadata", "getdocumentelementmetadata", null, bodyQuery).ToDynamic();
+            target.Result = _restQueryApi.QueryPostJsonRaw("systemconfig", "metadata", "getdocumentelementmetadata", null, bodyQuery).ToDynamic();
         }
     }
 }

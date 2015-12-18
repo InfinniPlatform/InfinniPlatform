@@ -50,7 +50,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Builders\FullAggregateBuilder.cs" />
-    <Compile Include="ControllerBehavior.cs" />
     <Compile Include="IoC\SystemConfigTestsContainerModule.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>

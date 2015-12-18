@@ -1,23 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.WebApi.Middleware.RouteFormatters;
+
 using Microsoft.Owin;
+
 using Newtonsoft.Json.Linq;
-using InfinniPlatform.Api.Properties;
 
 namespace InfinniPlatform.WebApi.Middleware.SessionHandlers
 {
     public sealed class FileDetachHandlerRegistration : HandlerRegistration
     {
-        public FileDetachHandlerRegistration()
+        public FileDetachHandlerRegistration(SessionApi sessionApi)
             : base(new RouteFormatterSession(), new RequestPathConstructor(), Priority.Standard, "DELETE")
         {
+            _sessionApi = sessionApi;
         }
+
+        private readonly SessionApi _sessionApi;
 
         protected override PathStringProvider GetPath(IOwinContext context)
         {
@@ -26,12 +26,11 @@ namespace InfinniPlatform.WebApi.Middleware.SessionHandlers
 
         protected override IRequestHandlerResult ExecuteHandler(IOwinContext context)
         {
-
             dynamic body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
 
             if (body.InstanceId != null && body.FieldName != null && body.SessionId != null)
             {
-                return new ValueRequestHandlerResult(new SessionApi().DetachFile(body));
+                return new ValueRequestHandlerResult(_sessionApi.DetachFile(body));
             }
             return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
         }

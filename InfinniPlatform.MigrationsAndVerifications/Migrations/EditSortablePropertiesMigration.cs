@@ -16,7 +16,13 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
     /// </summary>
     public sealed class EditSortablePropertiesMigration : IConfigurationMigration
     {
+        public EditSortablePropertiesMigration(RestQueryApi restQueryApi)
+        {
+            _restQueryApi = restQueryApi;
+        }
+
         private readonly List<MigrationParameter> _parameters = new List<MigrationParameter>();
+        private readonly RestQueryApi _restQueryApi;
 
         /// <summary>
         /// Конфигурация, к которой применяется миграция
@@ -93,9 +99,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                     }
                 }
 
-                new UpdateApi().ForceReload(_activeConfiguration);
-
-                var responce = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "runmigration",
+                var responce = _restQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "runmigration",
                     null,
                     new
                     {
@@ -110,7 +114,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                                                         .Replace("\\n", "\n")
                                                         .Replace("\"", "")
                                                         .Split(new[] { "\r\n", "\n" },
-                                                               StringSplitOptions.RemoveEmptyEntries);
+                                                            StringSplitOptions.RemoveEmptyEntries);
 
                 foreach (var line in updateStoreMigrationLines)
                 {

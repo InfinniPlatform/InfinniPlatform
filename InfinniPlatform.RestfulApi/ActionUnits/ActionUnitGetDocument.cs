@@ -16,7 +16,8 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 					target.Context.GetComponent<IMetadataComponent>(),
 					target.Context.GetComponent<InprocessDocumentComponent>(),
 					target.Context.GetComponent<IProfilerComponent>(),
-					target.Context.GetComponent<ILogComponent>());
+					target.Context.GetComponent<ILogComponent>(),
+				    target.Context.GetComponent<IReferenceResolver>());
 
 			target.Result = executor.GetCompleteDocuments(
 				null,

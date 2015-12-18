@@ -2,6 +2,7 @@
 
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
 using InfinniPlatform.Api.SearchOptions.Builders;
 using InfinniPlatform.NodeServiceHost;
 
@@ -35,7 +36,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var documentApi = new DocumentApi();
+            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
+            var documentApi = new DocumentApi(restQueryApi);
 
             var document = new { TestProperty = Guid.NewGuid() };
 
@@ -56,7 +58,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
                 Query = filter
             };
 
-            var response = RestQueryApi.QueryPostUrlEncodedData("SystemConfig", "Reporting", "GetPrintView", queryParam);
+            var response = restQueryApi.QueryPostUrlEncodedData("SystemConfig", "Reporting", "GetPrintView", queryParam);
 
             // Then
 

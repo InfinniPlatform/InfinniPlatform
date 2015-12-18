@@ -13,15 +13,17 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 {
     internal sealed class ApplicationUserStorePersistentStorage : IApplicationUserStore
     {
-        public ApplicationUserStorePersistentStorage(Lazy<ApplicationUserStoreCache> userCache)
+        public ApplicationUserStorePersistentStorage(Lazy<ApplicationUserStoreCache> userCache, DocumentApi documentApi)
         {
             // Lazy, чтобы подписка на изменения кэша пользователей в кластере не создавалась сразу
 
             _userCache = userCache;
+            _documentApi = documentApi;
         }
 
 
         private readonly Lazy<ApplicationUserStoreCache> _userCache;
+        private readonly DocumentApi _documentApi;
 
 
         public void CreateUser(ApplicationUser user)
@@ -42,7 +44,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             UpdateUserInCache(user);
         }
 
-        private static void InsertUser(ApplicationUser user)
+        private void InsertUser(ApplicationUser user)
         {
             user.SecurityStamp = CreateUnique();
             SetDocument(AuthorizationStorageExtensions.UserStore, ConvertToDynamic(user));
@@ -270,18 +272,18 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             }
         }
 
-        private static object GetDocument(string documentType, string propertyName, string propertyValue)
+        private object GetDocument(string documentType, string propertyName, string propertyValue)
         {
             return GetDocument(documentType, f => f.AddCriteria(cr => cr.Property(propertyName).IsEquals(propertyValue)));
         }
 
-        private static T GetDocument<T>(string documentType, string propertyName, string propertyValue)
+        private T GetDocument<T>(string documentType, string propertyName, string propertyValue)
         {
             var document = GetDocument(documentType, f => f.AddCriteria(cr => cr.Property(propertyName).IsEquals(propertyValue)));
             return ConvertFromDynamic<T>(document);
         }
 
-        private static object GetDocument(string documentType, params string[] documentFilters)
+        private object GetDocument(string documentType, params string[] documentFilters)
         {
             return GetDocument(documentType, f =>
                                              {
@@ -294,23 +296,20 @@ namespace InfinniPlatform.SystemConfig.UserStorage
                                              });
         }
 
-        private static object GetDocument(string documentType, Action<FilterBuilder> documentFilters)
+        private object GetDocument(string documentType, Action<FilterBuilder> documentFilters)
         {
-            var documentApi = new DocumentApiUnsecured();
-            var documents = documentApi.GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId, documentType, documentFilters, 0, 1);
+            var documents = _documentApi.GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId, documentType, documentFilters, 0, 1);
             return (documents != null) ? documents.FirstOrDefault() : null;
         }
 
-        private static void SetDocument(string documentType, object document)
+        private void SetDocument(string documentType, object document)
         {
-            var documentApi = new DocumentApiUnsecured();
-            documentApi.SetDocument(AuthorizationStorageExtensions.AuthorizationConfigId, documentType, document, false, true);
+            _documentApi.SetDocument(AuthorizationStorageExtensions.AuthorizationConfigId, documentType, document, false, true);
         }
 
-        private static void DeleteDocument(string documentType, string documentId)
+        private void DeleteDocument(string documentType, string documentId)
         {
-            var documentApi = new DocumentApiUnsecured();
-            documentApi.DeleteDocument(AuthorizationStorageExtensions.AuthorizationConfigId, documentType, documentId);
+            _documentApi.DeleteDocument(AuthorizationStorageExtensions.AuthorizationConfigId, documentType, documentId);
         }
 
         private static T ConvertFromDynamic<T>(object dynamicObject)

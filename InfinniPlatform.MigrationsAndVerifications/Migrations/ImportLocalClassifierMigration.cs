@@ -15,7 +15,13 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
     /// </summary>
     public sealed class ImportLocalClassifierMigration : IConfigurationMigration
     {
+        public ImportLocalClassifierMigration(RestQueryApi restQueryApi)
+        {
+            _restQueryApi = restQueryApi;
+        }
+
         private readonly List<MigrationParameter> _parameters = new List<MigrationParameter>();
+        private readonly RestQueryApi _restQueryApi;
 
         /// <summary>
         /// Текстовое описание миграции
@@ -83,7 +89,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 
                 item["Overwrite"] = true;
 
-                RestQueryApi.QueryPostJsonRaw("ClassifierLoader", "classifiers", "Publish", null, item);
+                _restQueryApi.QueryPostJsonRaw("ClassifierLoader", "classifiers", "Publish", null, item);
 
                 resultMessage.AppendLine();
                 resultMessage.AppendFormat("Classifier {0} imported", parameters[0]);

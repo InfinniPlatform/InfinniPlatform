@@ -13,6 +13,11 @@ namespace InfinniPlatform.SystemConfig.Configurator
     /// </summary>
     public sealed class ActionUnitGetPrintView
     {
+        public ActionUnitGetPrintView(RestQueryApi restQueryApi)
+        {
+            _restQueryApi = restQueryApi;
+        }
+
         public ActionUnitGetPrintView(DocumentApi documentApi, IMetadataComponent metadataComponent, IPrintViewComponent printViewComponent)
         {
             _documentApi = documentApi;
@@ -23,6 +28,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
         private readonly DocumentApi _documentApi;
         private readonly IMetadataComponent _metadataComponent;
         private readonly IPrintViewComponent _printViewComponent;
+        private readonly RestQueryApi _restQueryApi;
 
         public void Action(IUrlEncodedDataContext target)
         {
@@ -51,7 +57,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
                     requestBody.Parameters = target.FormData;
                     requestBody.PrintViewSource = printViewSource;
 
-                    printViewSource = RestQueryApi.QueryPostJsonRaw(configId, documentId, updateAction, null, requestBody).ToDynamicList();
+                    printViewSource = _restQueryApi.QueryPostJsonRaw(configId, documentId, updateAction, null, requestBody).ToDynamicList();
                 }
 
                 data = _printViewComponent.BuildPrintView(printViewMetadata, printViewSource, PrintViewFileFormat.Pdf);

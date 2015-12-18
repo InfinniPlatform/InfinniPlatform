@@ -4,8 +4,6 @@ using System.Web.Http;
 using System.Web.Http.Dependencies;
 using System.Web.Http.Dispatcher;
 
-using InfinniPlatform.Api.LocalRouting;
-using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Sdk.Environment.Log;
@@ -55,12 +53,7 @@ namespace InfinniPlatform.WebApi.Modules
             SetDependencyResolver(hostConfiguration, _webApiDependencyResolverFactory());
             builder.UseWebApi(hostConfiguration);
 
-            // Устанавливаем локальный роутинг для прохождения запросов внутри серверных потоков обработки запросов
-            RestQueryApi.SetRoutingType(RoutingType.Local);
-            RequestLocal.ApiControllerFactory = _apiControllerFactory;
-
             _applicationHostServer.RegisterServices();
-
         }
 
 

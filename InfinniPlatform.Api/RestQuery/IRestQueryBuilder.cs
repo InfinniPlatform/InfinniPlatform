@@ -5,6 +5,8 @@ using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Api.RestQuery
 {
+    public delegate IRestQueryBuilder RestQueryBuilderFactory(string configuration, string documentType, string action);
+
     /// <summary>
     /// Конструктор запросов к REST сервисам платформы.
     /// </summary>

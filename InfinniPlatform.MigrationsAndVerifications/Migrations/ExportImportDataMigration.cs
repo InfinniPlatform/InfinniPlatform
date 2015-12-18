@@ -15,7 +15,13 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
     /// </summary>
     public sealed class ExportImportDataMigration : IConfigurationMigration
     {
+        public ExportImportDataMigration(RestQueryApi restQueryApi)
+        {
+            _restQueryApi = restQueryApi;
+        }
+
         private readonly List<MigrationParameter> _parameters = new List<MigrationParameter>();
+        private readonly RestQueryApi _restQueryApi;
 
         /// <summary>
         /// Текстовое описание миграции
@@ -78,7 +84,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                 {
                     item["PathToZip"] = parameters[3].ToString();
 
-                    RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "ExportDataToJson", null, item);
+                    _restQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "ExportDataToJson", null, item);
                 }
                 else if (operationType == "Import")
                 {
@@ -86,7 +92,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                         File.ReadAllBytes(Path.Combine(parameters[3].ToString(),
                             string.Format("{0}_{1}.zip", configuration, metadata))));
 
-                    RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "ImportDataFromJson", null, item);
+                    _restQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "ImportDataFromJson", null, item);
                 }
                 else
                 {

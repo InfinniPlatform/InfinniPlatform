@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -6,28 +7,26 @@ namespace InfinniPlatform.RestfulApi.Utils
 {
     public sealed class ReferenceResolver : IReferenceResolver
     {
-        private readonly IMetadataComponent _metadataComponent;
-
-        public ReferenceResolver(IMetadataComponent metadataComponent)
+        public ReferenceResolver(IMetadataComponent metadataComponent, DocumentLinkMap documentLinkMap)
         {
             _metadataComponent = metadataComponent;
+            _documentLinkMap = documentLinkMap;
         }
 
-        public void ResolveReferences(string version, string configId, string documentId, dynamic documents,
-                                      IEnumerable<dynamic> ignoreResolve)
-        {
-            var linkMap = new DocumentLinkMap(_metadataComponent);
+        private readonly DocumentLinkMap _documentLinkMap;
+        private readonly IMetadataComponent _metadataComponent;
 
-            var metadataOperator = new MetadataOperator(_metadataComponent, linkMap, ignoreResolve);
+        public void ResolveReferences(string version, string configId, string documentId, dynamic documents, IEnumerable<dynamic> ignoreResolve)
+        {
+            var metadataOperator = new MetadataOperator(_metadataComponent, _documentLinkMap, ignoreResolve);
 
             dynamic typeInfo = new DynamicWrapper();
             typeInfo.ConfigId = configId;
             typeInfo.DocumentId = documentId;
 
-
             if (documents is IEnumerable<dynamic>)
             {
-                foreach (dynamic doc in documents)
+                foreach (var doc in documents)
                 {
                     metadataOperator.ProcessMetadata(version, doc, typeInfo);
                 }
@@ -36,7 +35,8 @@ namespace InfinniPlatform.RestfulApi.Utils
             {
                 metadataOperator.ProcessMetadata(version, documents, typeInfo);
             }
-            linkMap.ResolveLinks(version, typeInfo, metadataOperator.TypeInfoChain);
+
+            _documentLinkMap.ResolveLinks(version, typeInfo, metadataOperator.TypeInfoChain);
         }
     }
 }

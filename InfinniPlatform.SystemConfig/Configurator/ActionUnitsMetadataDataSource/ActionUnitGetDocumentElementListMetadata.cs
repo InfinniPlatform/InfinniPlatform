@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataReaders;
@@ -11,6 +12,13 @@ namespace InfinniPlatform.SystemConfig.Configurator.ActionUnitsMetadataDataSourc
 {
     public sealed class ActionUnitGetDocumentElementListMetadata
     {
+        public ActionUnitGetDocumentElementListMetadata(RestQueryApi restQueryApi)
+        {
+            _restQueryApi = restQueryApi;
+        }
+
+        private readonly RestQueryApi _restQueryApi;
+
         public void Action(IApplyResultContext target)
         {
             IMetadataContainerInfo containerInfo =
@@ -18,9 +26,9 @@ namespace InfinniPlatform.SystemConfig.Configurator.ActionUnitsMetadataDataSourc
 
             dynamic bodyQuery =
                 QueryMetadata.GetDocumentMetadataShortListIql(target.Item.ConfigId, target.Item.DocumentId,
-                                                              containerInfo.GetMetadataContainerName()).ToDynamic();
+                    containerInfo.GetMetadataContainerName()).ToDynamic();
 
-            dynamic response = RestQueryApi.QueryPostJsonRaw("systemconfig", "metadata", "getmetadata", null, bodyQuery);
+            dynamic response = _restQueryApi.QueryPostJsonRaw("systemconfig", "metadata", "getmetadata", null, bodyQuery);
             IEnumerable<dynamic> queryResult = DynamicWrapperExtensions.ToEnumerable(response.ToDynamic().QueryResult);
 
             target.Result =

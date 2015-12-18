@@ -1,6 +1,8 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 
+using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Api.Transactions;
 using InfinniPlatform.Factories;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Log;
@@ -10,17 +12,17 @@ namespace InfinniPlatform.Transactions
 {
     public sealed class TransactionManager : ITransactionManager
     {
-        public TransactionManager(IIndexFactory indexFactory, IBlobStorageFactory blobStorageFactory, IPerformanceLog performanceLog)
+        public TransactionManager(IIndexFactory indexFactory, BinaryManager binaryManager, IPerformanceLog performanceLog)
         {
             _indexFactory = indexFactory;
-            _blobStorageFactory = blobStorageFactory;
+            _binaryManager = binaryManager;
             _performanceLog = performanceLog;
             _transactions = new ConcurrentDictionary<string, ITransaction>();
         }
 
-        private readonly IBlobStorageFactory _blobStorageFactory;
         private readonly IPerformanceLog _performanceLog;
         private readonly IIndexFactory _indexFactory;
+        private readonly BinaryManager _binaryManager;
         private readonly object _syncTransactions = new object();
         private readonly ConcurrentDictionary<string, ITransaction> _transactions;
 
@@ -62,7 +64,7 @@ namespace InfinniPlatform.Transactions
             }
             else
             {
-                var transactionMaster = new TransactionMaster(_indexFactory, _blobStorageFactory, _performanceLog, transactionMarker, new List<AttachedInstance>())
+                var transactionMaster = new TransactionMaster(_indexFactory, _binaryManager, _performanceLog, transactionMarker, new List<AttachedInstance>())
                 {
                     OnCommit = RemoveTransaction
                 };

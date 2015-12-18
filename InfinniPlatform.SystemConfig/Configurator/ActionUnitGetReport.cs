@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Reporting;
 using InfinniPlatform.BlobStorage;
@@ -13,18 +14,22 @@ namespace InfinniPlatform.SystemConfig.Configurator
 {
     public sealed class ActionUnitGetReport
     {
-        //TODO Добавить остальные форматы
         private static readonly Dictionary<ReportFileFormat, string> Formats
             = new Dictionary<ReportFileFormat, string>
-                {
-                    {ReportFileFormat.Pdf, ".pdf"},
-                };
+              {
+                  { ReportFileFormat.Pdf, ".pdf" }
+              };
+
+        public ActionUnitGetReport(IReportService reportService)
+        {
+            _reportService = reportService;
+        }
+
+        private readonly IReportService _reportService;
 
         public void Action(IUrlEncodedDataContext target)
         {
-            // необходимо избавиться от ссылок на FastReport сборку
-            ReportTemplate reportTemplate = LoadReportTemplate(target.FormData.Configuration,
-                                                               target.FormData.Template);
+            ReportTemplate reportTemplate = LoadReportTemplate(target.FormData.Configuration, target.FormData.Template);
 
             var dict = new Dictionary<string, object>();
             var parameters = target.FormData.Parameters;
@@ -34,9 +39,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
                 dict.Add(parameter.Name, parameter.Value);
             }
 
-            byte[] data = new ReportServiceFactory().CreateReportService()
-                                                    .CreateReportFile(reportTemplate, dict,
-                                                                      (ReportFileFormat) target.FormData.FileFormat);
+            var data = _reportService.CreateReportFile(reportTemplate, dict, (ReportFileFormat)target.FormData.FileFormat);
 
             var fileExtensionTypeProvider = new FileExtensionTypeProvider();
 
@@ -44,14 +47,12 @@ namespace InfinniPlatform.SystemConfig.Configurator
             target.Result.Data = data;
             target.Result.Info = new DynamicWrapper();
             target.Result.Info.Size = data.Length;
-            target.Result.Info.Type =
-                fileExtensionTypeProvider.GetBlobType(Formats[(ReportFileFormat) target.FormData.FileFormat]);
+            target.Result.Info.Type = fileExtensionTypeProvider.GetBlobType(Formats[(ReportFileFormat)target.FormData.FileFormat]);
         }
 
         private static ReportTemplate LoadReportTemplate(string configuration, string report)
         {
-            dynamic reportMetadata =
-                new ManagerFactoryConfiguration(configuration).BuildReportMetadataReader().GetItem(report);
+            dynamic reportMetadata = new ManagerFactoryConfiguration(configuration).BuildReportMetadataReader().GetItem(report);
             return ReportTemplateSerializer.Instance.Deserialize(Convert.FromBase64String(reportMetadata.Content));
         }
     }

@@ -12,10 +12,10 @@ namespace InfinniPlatform.Api.RestApi.Public
 {
     public class DocumentApi : IDocumentApi
     {
-        public DocumentApi()
+        public DocumentApi(DataApi.SessionApi sessionApi, DataApi.DocumentApi documentApi)
         {
-            _sessionApi = new DataApi.SessionApi();
-            _documentApi = new DataApi.DocumentApi();
+            _sessionApi = sessionApi;
+            _documentApi = documentApi;
             _filterConverter = new FilterConverter();
             _sortingConverter = new SortingConverter();
         }

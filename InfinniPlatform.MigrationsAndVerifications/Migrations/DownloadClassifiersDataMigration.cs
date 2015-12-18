@@ -17,7 +17,13 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
     /// </summary>
     public sealed class DownloadClassifiersDataMigration : IConfigurationMigration
     {
+        public DownloadClassifiersDataMigration(RestQueryApi restQueryApi)
+        {
+            _restQueryApi = restQueryApi;
+        }
+
         private readonly List<MigrationParameter> _parameters = new List<MigrationParameter>();
+        private readonly RestQueryApi _restQueryApi;
         private IMetadataConfiguration _metadataConfiguration;
 
         /// <summary>
@@ -82,7 +88,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                     }
 
                     item.Metadata = classifiers[i];
-                    RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "ExportDataToJson", null, item);
+                    _restQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "ExportDataToJson", null, item);
                 }
 
                 resultMessage.AppendLine();

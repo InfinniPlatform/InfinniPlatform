@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+
 using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.Registers;
 using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Api.SearchOptions.Builders;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
@@ -14,10 +13,17 @@ using InfinniPlatform.SystemConfig.Properties;
 namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
 {
     /// <summary>
-    ///     Получение значений ресурсов по документу-регистратору
+    /// Получение значений ресурсов по документу-регистратору
     /// </summary>
     public sealed class ActionUnitGetRegisterValuesByRegistrar
     {
+        public ActionUnitGetRegisterValuesByRegistrar(RestQueryApi restQueryApi)
+        {
+            _restQueryApi = restQueryApi;
+        }
+
+        private readonly RestQueryApi _restQueryApi;
+
         public void Action(IApplyResultContext target)
         {
             var registrar = target.Item.Registrar;
@@ -38,8 +44,8 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
             }
 
             IEnumerable<dynamic> dimensions = specifiedDimensions == null
-                                                  ? AggregationUtils.BuildDimensionsFromRegisterMetadata(registerObject)
-                                                  : AggregationUtils.BuildDimensionsFromProperties(specifiedDimensions);
+                ? AggregationUtils.BuildDimensionsFromRegisterMetadata(registerObject)
+                : AggregationUtils.BuildDimensionsFromProperties(specifiedDimensions);
 
             var valueProperties = target.Item.ValueProperties ??
                                   AggregationUtils.BuildValuePropertyFromRegisterMetadata(registerObject);
@@ -47,7 +53,7 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
             var filetrBuilder = new FilterBuilder();
             filetrBuilder.AddCriteria(c => c.Property(RegisterConstants.RegistrarProperty).IsEquals(registrar));
 
-            IEnumerable<dynamic> aggregationResult = RestQueryApi.QueryAggregationRaw(
+            IEnumerable<dynamic> aggregationResult = _restQueryApi.QueryAggregationRaw(
                 "SystemConfig",
                 "metadata",
                 "aggregate",
@@ -56,17 +62,17 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
                 filetrBuilder.GetFilter(),
                 dimensions,
                 AggregationUtils.BuildAggregationType(AggregationType.Sum,
-                                                      valueProperties is List<string>
-                                                          ? valueProperties.Count
-                                                          : valueProperties.Count()),
+                    valueProperties is List<string>
+                        ? valueProperties.Count
+                        : valueProperties.Count()),
                 valueProperties.ToArray(),
                 0,
                 10000)
-                                                                 .ToDynamicList();
+                                                                  .ToDynamicList();
 
             // Выполняем обработку результата агрегации, чтобы представить полученные данные в табличном виде
             target.Result = AggregationUtils.ProcessBuckets(
-                dimensions.Select(d => (string) d.FieldName).ToArray(),
+                dimensions.Select(d => (string)d.FieldName).ToArray(),
                 valueProperties.ToArray(), aggregationResult);
         }
     }

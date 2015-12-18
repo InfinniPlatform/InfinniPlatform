@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Properties;
@@ -11,14 +10,20 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
     [Obsolete]
     public sealed class SolutionUpdateApi
     {
-        private readonly string _solutionId;
-        private readonly string _version;
+        public SolutionUpdateApi(RestQueryApi restQueryApi)
+        {
+            _restQueryApi = restQueryApi;
+        }
 
         public SolutionUpdateApi(string solutionId, string version)
         {
             _solutionId = solutionId;
             _version = version;
         }
+
+        private readonly RestQueryApi _restQueryApi;
+        private readonly string _solutionId;
+        private readonly string _version;
 
         public dynamic InstallPackages(IEnumerable<dynamic> packages)
         {
@@ -38,8 +43,7 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
 
             foreach (var referencedConfiguration in solution.ReferencedConfigurations)
             {
-                new UpdateApi().InstallPackages(packages.Where(p => p.ConfigurationName == referencedConfiguration.Name && p.Version == referencedConfiguration.Version).ToList());
-                RestQueryApi.QueryPostNotify(referencedConfiguration.Name);
+                _restQueryApi.QueryPostNotify(referencedConfiguration.Name);
             }
 
             result = new DynamicWrapper();

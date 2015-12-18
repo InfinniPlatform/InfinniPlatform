@@ -1,5 +1,7 @@
 ﻿using InfinniPlatform.Modules;
 using InfinniPlatform.RestfulApi.Installers;
+using InfinniPlatform.RestfulApi.Utils;
+using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.RestfulApi.IoC
@@ -10,6 +12,14 @@ namespace InfinniPlatform.RestfulApi.IoC
         {
             builder.RegisterType<RestfulApiInstaller>()
                    .As<IModuleInstaller>()
+                   .SingleInstance();
+
+            builder.RegisterType<DocumentLinkMap>()
+                   .AsSelf()
+                   .SingleInstance();
+
+            builder.RegisterType<ReferenceResolver>()
+                   .As<IReferenceResolver>()
                    .SingleInstance();
 
             // Прикладные скрипты

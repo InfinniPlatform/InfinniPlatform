@@ -103,7 +103,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 			var process = new StatusProcess();
 			process.StartOperation(() =>
 			{
-				var generatorBroker = new GeneratorBroker(_version, _configurationName, _documentName);
+				var generatorBroker = new GeneratorBroker(_configurationName, _documentName);
 
 				var generator = new
 									{

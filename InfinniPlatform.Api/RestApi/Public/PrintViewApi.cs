@@ -7,9 +7,9 @@ namespace InfinniPlatform.Api.RestApi.Public
 {
     public class PrintViewApi : IPrintViewApi
     {
-        public PrintViewApi()
+        public PrintViewApi(DataApi.PrintViewApi printViewApi)
         {
-            _printViewApi = new DataApi.PrintViewApi();
+            _printViewApi = printViewApi;
         }
 
 

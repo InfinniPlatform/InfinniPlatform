@@ -1,6 +1,8 @@
 ﻿using System;
 
+using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
 using InfinniPlatform.NodeServiceHost;
 
 using NUnit.Framework;
@@ -32,7 +34,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         public void ShouldValidateDocumentWithActionUnit()
         {
             // Given
-            var documentApi = new DocumentApi();
+            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
+            var documentApi = new DocumentApi(restQueryApi);
             var document = new { Id = Guid.NewGuid(), LastName = "123" };
 
             // When

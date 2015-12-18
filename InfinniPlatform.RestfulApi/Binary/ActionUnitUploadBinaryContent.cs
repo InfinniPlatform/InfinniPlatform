@@ -12,11 +12,17 @@ namespace InfinniPlatform.RestfulApi.Binary
     /// </summary>
     public sealed class ActionUnitUploadBinaryContent
     {
+        public ActionUnitUploadBinaryContent(BinaryManager binaryManager)
+        {
+            _binaryManager = binaryManager;
+        }
+
+        private readonly BinaryManager _binaryManager;
+
         public void Action(IUploadContext target)
         {
             var documentApi = target.Context.GetComponent<DocumentApi>();
             var blobStorage = target.Context.GetComponent<IBlobStorageComponent>();
-            var binaryManager = new BinaryManager(blobStorage.GetBlobStorage());
 
             string documentId = target.LinkedData.DocumentId;
 
@@ -27,9 +33,9 @@ namespace InfinniPlatform.RestfulApi.Binary
                 string configuration = target.LinkedData.Configuration;
                 string documentType = target.LinkedData.Metadata;
                 string blobProperty = target.LinkedData.FieldName;
-                byte[] blobData = ReadAsBytes(target.FileContent);
+                var blobData = ReadAsBytes(target.FileContent);
 
-                binaryManager.SaveBinary(new[] { document }, configuration, documentType, blobProperty, blobData);
+                _binaryManager.SaveBinary(new[] { document }, configuration, documentType, blobProperty, blobData);
             }
             else
             {

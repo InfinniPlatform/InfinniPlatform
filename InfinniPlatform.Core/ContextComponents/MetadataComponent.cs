@@ -4,7 +4,6 @@ using System.Linq;
 
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -112,83 +111,75 @@ namespace InfinniPlatform.ContextComponents
             {
                 if (predicate == null)
                 {
-                    if (config != null)
-                    {
-                        return config.Documents.Select(c => new
-                                                            {
-                                                                Id = c,
-                                                                Name = c
-                                                            }.ToDynamic()).ToList();
-                    }
+                    return config.Documents.Select(c => new
+                                                        {
+                                                            Id = c,
+                                                            Name = c
+                                                        }.ToDynamic()).ToList();
                 }
-                else
-                {
-                    return config.Documents.Where(predicate).Select(c => new
-                                                                         {
-                                                                             Id = c,
-                                                                             Name = c
-                                                                         }.ToDynamic()).ToList();
-                }
+
+                return config.Documents.Where(predicate).Select(c => new
+                                                                     {
+                                                                         Id = c,
+                                                                         Name = c
+                                                                     }.ToDynamic()).ToList();
             }
 
 
-            if (config != null)
+            if (metadataType == MetadataType.Schema)
             {
-                if (metadataType == MetadataType.Schema)
-                {
-                    return new[] { config.GetSchemaVersion(objectMetadataId) };
-                }
-
-                if (metadataType == MetadataType.View)
-                {
-                    return predicate == null
-                        ? config.GetViews(objectMetadataId)
-                        : config.GetView(objectMetadataId, predicate);
-                }
-                if (metadataType == MetadataType.PrintView)
-                {
-                    return predicate == null
-                        ? config.GetPrintViews(objectMetadataId)
-                        : config.GetPrintView(objectMetadataId, predicate);
-                }
-                if (metadataType == MetadataType.Generator)
-                {
-                    return predicate == null
-                        ? config.GetGenerators(objectMetadataId)
-                        : config.GetGenerator(objectMetadataId, predicate);
-                }
-                if (metadataType == MetadataType.Scenario)
-                {
-                    return predicate == null
-                        ? config.GetScenarios(objectMetadataId)
-                        : config.GetScenario(objectMetadataId, predicate);
-                }
-                if (metadataType == MetadataType.Process)
-                {
-                    return predicate == null
-                        ? config.GetProcesses(objectMetadataId)
-                        : config.GetProcess(objectMetadataId, predicate);
-                }
-                if (metadataType == MetadataType.Service)
-                {
-                    return predicate == null
-                        ? config.GetServices(objectMetadataId)
-                        : config.GetService(objectMetadataId, predicate);
-                }
-                if (metadataType == MetadataType.ValidationError)
-                {
-                    return predicate == null
-                        ? config.GetValidationErrors(objectMetadataId)
-                        : config.GetValidationError(objectMetadataId, predicate);
-                }
-                if (metadataType == MetadataType.ValidationWarning)
-                {
-                    return predicate == null
-                        ? config.GetValidationWarnings(objectMetadataId)
-                        : config.GetValidationWarning(objectMetadataId, predicate);
-                }
-                return null;
+                return new[] { config.GetSchemaVersion(objectMetadataId) };
             }
+
+            if (metadataType == MetadataType.View)
+            {
+                return predicate == null
+                    ? config.GetViews(objectMetadataId)
+                    : config.GetView(objectMetadataId, predicate);
+            }
+            if (metadataType == MetadataType.PrintView)
+            {
+                return predicate == null
+                    ? config.GetPrintViews(objectMetadataId)
+                    : config.GetPrintView(objectMetadataId, predicate);
+            }
+            if (metadataType == MetadataType.Generator)
+            {
+                return predicate == null
+                    ? config.GetGenerators(objectMetadataId)
+                    : config.GetGenerator(objectMetadataId, predicate);
+            }
+            if (metadataType == MetadataType.Scenario)
+            {
+                return predicate == null
+                    ? config.GetScenarios(objectMetadataId)
+                    : config.GetScenario(objectMetadataId, predicate);
+            }
+            if (metadataType == MetadataType.Process)
+            {
+                return predicate == null
+                    ? config.GetProcesses(objectMetadataId)
+                    : config.GetProcess(objectMetadataId, predicate);
+            }
+            if (metadataType == MetadataType.Service)
+            {
+                return predicate == null
+                    ? config.GetServices(objectMetadataId)
+                    : config.GetService(objectMetadataId, predicate);
+            }
+            if (metadataType == MetadataType.ValidationError)
+            {
+                return predicate == null
+                    ? config.GetValidationErrors(objectMetadataId)
+                    : config.GetValidationError(objectMetadataId, predicate);
+            }
+            if (metadataType == MetadataType.ValidationWarning)
+            {
+                return predicate == null
+                    ? config.GetValidationWarnings(objectMetadataId)
+                    : config.GetValidationWarning(objectMetadataId, predicate);
+            }
+
             return null;
         }
 
@@ -237,7 +228,6 @@ namespace InfinniPlatform.ContextComponents
                 else if (metadataType == MetadataType.Service)
                 {
                     config.RegisterService(documentId, metadataReader.GetItem(metadataName));
-                    RestQueryApi.QueryPostNotify(configId); //рестартовать конфигурацию для обновления API
                 }
                 else if (metadataType == MetadataType.ValidationError)
                 {

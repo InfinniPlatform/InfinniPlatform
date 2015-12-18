@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.RestApi.DataApi;
+﻿using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.WebApi.Middleware.RouteFormatters;
+
 using Microsoft.Owin;
 
 namespace InfinniPlatform.WebApi.Middleware.SessionHandlers
 {
     public sealed class DetachDocumentHandlerRegistration : HandlerRegistration
     {
-        public DetachDocumentHandlerRegistration() : base(new RouteFormatterSession(), new RequestPathConstructor(), Priority.Standard, "DELETE")
+        public DetachDocumentHandlerRegistration(SessionApi sessionApi) : base(new RouteFormatterSession(), new RequestPathConstructor(), Priority.Standard, "DELETE")
         {
+            _sessionApi = sessionApi;
         }
+
+        private readonly SessionApi _sessionApi;
 
         protected override PathStringProvider GetPath(IOwinContext context)
         {
@@ -25,7 +24,7 @@ namespace InfinniPlatform.WebApi.Middleware.SessionHandlers
         {
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            return new ValueRequestHandlerResult(new SessionApi().Detach(routeDictionary["sessionId"], routeDictionary["attachmentId"]));
+            return new ValueRequestHandlerResult(_sessionApi.Detach(routeDictionary["sessionId"], routeDictionary["attachmentId"]));
         }
     }
 }

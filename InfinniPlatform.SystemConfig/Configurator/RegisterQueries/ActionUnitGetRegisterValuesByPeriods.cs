@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+
 using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.Registers;
 using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Api.SearchOptions.Builders;
 using InfinniPlatform.Index;
 using InfinniPlatform.Sdk.ContextComponents;
@@ -18,10 +17,17 @@ using InfinniPlatform.SystemConfig.Properties;
 namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
 {
     /// <summary>
-    ///     Получение значений ресурсов в указанном диапазоне дат c разбиением на периоды
+    /// Получение значений ресурсов в указанном диапазоне дат c разбиением на периоды
     /// </summary>
     public sealed class ActionUnitGetRegisterValuesByPeriods
     {
+        public ActionUnitGetRegisterValuesByPeriods(RestQueryApi restQueryApi)
+        {
+            _restQueryApi = restQueryApi;
+        }
+
+        private readonly RestQueryApi _restQueryApi;
+
         public void Action(IApplyResultContext target)
         {
             var startDate = target.Item.FromDate;
@@ -51,13 +57,13 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
             {
                 target.Result.IsValid = false;
                 target.Result.ValidationMessage = string.Format(Resources.SpecifiedIntervalIsInvalidSupportedIntervals,
-                                                                interval);
+                    interval);
                 return;
             }
 
             if (string.IsNullOrEmpty(timezone))
             {
-                double hours = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).TotalHours;
+                var hours = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).TotalHours;
                 timezone = hours > 0 ? "+" + hours.ToString("00") + ":00" : hours.ToString("00") + ":00";
             }
 
@@ -69,20 +75,20 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
             }
 
             var dimensions = new List<dynamic>
-                {
-                    new
-                        {
-                            Label = RegisterConstants.DocumentDateProperty + "_datehistogram",
-                            FieldName = RegisterConstants.DocumentDateProperty,
-                            DimensionType = DimensionType.DateHistogram,
-                            Interval = interval,
-                            TimeZone = timezone
-                        }.ToDynamic()
-                };
+                             {
+                                 new
+                                 {
+                                     Label = RegisterConstants.DocumentDateProperty + "_datehistogram",
+                                     FieldName = RegisterConstants.DocumentDateProperty,
+                                     DimensionType = DimensionType.DateHistogram,
+                                     Interval = interval,
+                                     TimeZone = timezone
+                                 }.ToDynamic()
+                             };
 
             dimensions.AddRange(specifiedDimensions == null
-                                    ? AggregationUtils.BuildDimensionsFromRegisterMetadata(registerObject)
-                                    : AggregationUtils.BuildDimensionsFromProperties(specifiedDimensions));
+                ? AggregationUtils.BuildDimensionsFromRegisterMetadata(registerObject)
+                : AggregationUtils.BuildDimensionsFromProperties(specifiedDimensions));
 
             var valueProperties = target.Item.ValueProperties ??
                                   AggregationUtils.BuildValuePropertyFromRegisterMetadata(registerObject);
@@ -96,9 +102,9 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
             }
 
             resultFilter.AddRange(FilterBuilder.DateRangeCondition(RegisterConstants.DocumentDateProperty, startDate,
-                                                                   stopDate));
+                stopDate));
 
-            IEnumerable<dynamic> aggregationResult = RestQueryApi.QueryAggregationRaw(
+            IEnumerable<dynamic> aggregationResult = _restQueryApi.QueryAggregationRaw(
                 "SystemConfig",
                 "metadata",
                 "aggregate",
@@ -107,24 +113,24 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
                 resultFilter,
                 dimensions,
                 AggregationUtils.BuildAggregationType(AggregationType.Sum,
-                                                      valueProperties is List<string>
-                                                          ? valueProperties.Count
-                                                          : valueProperties.Count()),
+                    valueProperties is List<string>
+                        ? valueProperties.Count
+                        : valueProperties.Count()),
                 valueProperties,
                 0,
                 10000)
-                                                                 .ToDynamicList();
+                                                                  .ToDynamicList();
 
             // Выполняем обработку результата агрегации, чтобы представить полученные данные в табличном виде
             target.Result = AggregationUtils.ProcessBuckets(
-                dimensions.Select(d => (string) d.FieldName).ToArray(),
+                dimensions.Select(d => (string)d.FieldName).ToArray(),
                 valueProperties.ToArray(),
                 aggregationResult);
         }
 
         private static bool CheckInterval(string interval)
         {
-            var validIntervals = new[] {"year", "quarter", "month", "week", "day", "hour", "minute", "second"};
+            var validIntervals = new[] { "year", "quarter", "month", "week", "day", "hour", "minute", "second" };
 
             return validIntervals.Contains(interval.ToLowerInvariant());
         }

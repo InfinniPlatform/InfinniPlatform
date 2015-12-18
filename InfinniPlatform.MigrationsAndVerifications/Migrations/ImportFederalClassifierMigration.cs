@@ -15,7 +15,13 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
     /// </summary>
     public sealed class ImportFederalClassifierMigration : IConfigurationMigration
     {
+        public ImportFederalClassifierMigration(RestQueryApi restQueryApi)
+        {
+            _restQueryApi = restQueryApi;
+        }
+
         private readonly List<MigrationParameter> _parameters = new List<MigrationParameter>();
+        private readonly RestQueryApi _restQueryApi;
         private bool _isInitialized;
 
         /// <summary>
@@ -79,7 +85,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
                 item["ImportSource"] = "Federal";
                 item["Overwrite"] = true;
 
-                RestQueryApi.QueryPostJsonRaw("ClassifierLoader", "classifiers", "Publish", null, item);
+                _restQueryApi.QueryPostJsonRaw("ClassifierLoader", "classifiers", "Publish", null, item);
 
 
                 resultMessage.AppendLine();
@@ -114,7 +120,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         {
             try
             {
-                var oidsresponse = RestQueryApi.QueryGetRaw("ClassifierLoader", "classifiers", "Search",
+                var oidsresponse = _restQueryApi.QueryGetRaw("ClassifierLoader", "classifiers", "Search",
                     null, 0, 600);
 
                 // Необходимо получить идентификаторы всех доступных справочников

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.CommonApi;
@@ -10,6 +11,13 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 {
     public sealed class ActionUnitWrapAddUser
     {
+        public ActionUnitWrapAddUser(RestQueryApi restQueryApi)
+        {
+            _restQueryApi = restQueryApi;
+        }
+
+        private readonly RestQueryApi _restQueryApi;
+
         public void Action(IApplyContext target)
         {
             var aclApi = target.Context.GetComponent<AuthApi>();
@@ -27,7 +35,7 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
 
             var userFound =
                 aclApi.GetUsers(false)
-                    .FirstOrDefault(r => r.UserName.ToLowerInvariant() == user.UserName.ToLowerInvariant());
+                      .FirstOrDefault(r => r.UserName.ToLowerInvariant() == user.UserName.ToLowerInvariant());
 
             if (userFound != null && user.Password != null)
             {
@@ -58,10 +66,10 @@ namespace InfinniPlatform.SystemConfig.Administration.User.ActionUnits
             user.Password = null;
 
             target.Context.GetComponent<DocumentApi>()
-                .SetDocument(AuthorizationStorageExtensions.AdministrationConfigId, "User",
-                    user);
+                  .SetDocument(AuthorizationStorageExtensions.AdministrationConfigId, "User",
+                      user);
 
-            RestQueryApi.QueryPostJsonRaw("AdministrationCustomization", "Common", "OnAddUserEvent", null, user);
+            _restQueryApi.QueryPostJsonRaw("AdministrationCustomization", "Common", "OnAddUserEvent", null, user);
 
             target.Result = new DynamicWrapper();
             target.Result.IsValid = true;

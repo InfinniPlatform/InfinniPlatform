@@ -9,13 +9,15 @@ namespace InfinniPlatform.Api.RestApi.Public
 {
     public class AuthApi : IAuthApi
     {
-        public AuthApi()
+        public AuthApi(Auth.AuthApi authApi, DocumentApi documentApi)
         {
-            _authApi = new Auth.AuthApi();
+            _authApi = authApi;
+            _documentApi = documentApi;
         }
 
 
         private readonly Auth.AuthApi _authApi;
+        private readonly DocumentApi _documentApi;
 
 
         public dynamic AddUser(string userName, string password)
@@ -81,16 +83,14 @@ namespace InfinniPlatform.Api.RestApi.Public
 
         public IEnumerable<object> GetAclList(AclType aclType, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting = null)
         {
-            var docApi = new DocumentApi();
-
             if (aclType == AclType.User)
             {
-                return docApi.GetDocument("Administration", "User", filter, pageNumber, pageSize, sorting);
+                return _documentApi.GetDocument("Administration", "User", filter, pageNumber, pageSize, sorting);
             }
 
             if (aclType == AclType.Role)
             {
-                return docApi.GetDocument("Administration", "Role", filter, pageNumber, pageSize, sorting);
+                return _documentApi.GetDocument("Administration", "Role", filter, pageNumber, pageSize, sorting);
             }
 
             throw new ArgumentException(string.Format("Cant get acl for type {0}", aclType));

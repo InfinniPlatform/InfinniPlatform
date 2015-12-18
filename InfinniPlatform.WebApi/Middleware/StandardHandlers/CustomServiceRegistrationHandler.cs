@@ -14,8 +14,11 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 {
     public sealed class CustomServiceRegistrationHandler : HandlerRegistration
     {
-        public CustomServiceRegistrationHandler() : base(new RouteFormatterCustomService(), new RequestPathConstructor(), Priority.Standard, "POST")
+        private readonly RestQueryApi _restQueryApi;
+
+        public CustomServiceRegistrationHandler(RestQueryApi restQueryApi) : base(new RouteFormatterCustomService(), new RequestPathConstructor(), Priority.Standard, "POST")
         {
+            _restQueryApi = restQueryApi;
         }
 
         protected override PathStringProvider GetPath(IOwinContext context)
@@ -38,8 +41,9 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
                 body = null;
             }
 
-            return new ValueRequestHandlerResult(
-                RestQueryApi.QueryPostJsonRaw(routeDictionary["application"], routeDictionary["documentType"], routeDictionary["service"], null, body).ToDynamic());
+            dynamic result = _restQueryApi.QueryPostJsonRaw(routeDictionary["application"], routeDictionary["documentType"], routeDictionary["service"], null, body).ToDynamic();
+
+            return new ValueRequestHandlerResult(result);
         }
     }
 }

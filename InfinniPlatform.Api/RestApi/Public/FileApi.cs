@@ -6,9 +6,9 @@ namespace InfinniPlatform.Api.RestApi.Public
 {
     public class FileApi : IFileApi
     {
-        public FileApi()
+        public FileApi(DataApi.UploadApi uploadApi)
         {
-            _uploadApi = new DataApi.UploadApi();
+            _uploadApi = uploadApi;
         }
 
 

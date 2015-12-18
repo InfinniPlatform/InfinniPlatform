@@ -145,7 +145,6 @@
             this.ButtonUpdateConfigurationAppliedAssemblies.Size = new System.Drawing.Size(250, 23);
             this.ButtonUpdateConfigurationAppliedAssemblies.TabIndex = 14;
             this.ButtonUpdateConfigurationAppliedAssemblies.Text = "Update configuration applied assemblies";
-            this.ButtonUpdateConfigurationAppliedAssemblies.Click += new System.EventHandler(this.ButtonUpdateConfigurationAppliedAssemblies_Click);
             // 
             // toggleDirectory
             // 

@@ -5,7 +5,6 @@ using System.Linq;
 
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.Transactions;
-using InfinniPlatform.Factories;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Log;
@@ -26,19 +25,19 @@ namespace InfinniPlatform.Transactions
         /// <param name="performanceLog">Сервис протоколирования длительности вызова методов компонентов.</param>
         /// <param name="transactionMarker">Идентификатор создаваемой транзакции</param>
         /// <param name="itemsList">Разделяемый между различными экземплярами ITransaction список присоединенных элементов</param>
-        public TransactionMaster(IIndexFactory indexFactory, IBlobStorageFactory blobStorageFactory, IPerformanceLog performanceLog, string transactionMarker, List<AttachedInstance> itemsList)
+        public TransactionMaster(IIndexFactory indexFactory, BinaryManager binaryManager, IPerformanceLog performanceLog, string transactionMarker, List<AttachedInstance> itemsList)
         {
             _indexFactory = indexFactory;
-            _blobStorageFactory = blobStorageFactory;
+            _binaryManager = binaryManager;
             _performanceLog = performanceLog;
             _transactionMarker = transactionMarker;
             _itemsList = itemsList;
         }
 
-        private readonly IBlobStorageFactory _blobStorageFactory;
-        private readonly IPerformanceLog _performanceLog;
+        private readonly BinaryManager _binaryManager;
         private readonly IIndexFactory _indexFactory;
         private readonly List<AttachedInstance> _itemsList;
+        private readonly IPerformanceLog _performanceLog;
         private readonly string _transactionMarker;
         public Action<ITransaction> OnCommit { get; set; }
 
@@ -66,12 +65,9 @@ namespace InfinniPlatform.Transactions
 
                     if (item.Files != null && item.Files.Count > 0)
                     {
-                        var blobStorage = _blobStorageFactory.CreateBlobStorage();
-                        var binaryManager = new BinaryManager(blobStorage);
-
                         foreach (var fileDescription in item.Files)
                         {
-                            binaryManager.SaveBinary(item.Documents, item.ConfigId, item.DocumentId, fileDescription.FieldName, fileDescription.Bytes);
+                            _binaryManager.SaveBinary(item.Documents, item.ConfigId, item.DocumentId, fileDescription.FieldName, fileDescription.Bytes);
                         }
                     }
                 }

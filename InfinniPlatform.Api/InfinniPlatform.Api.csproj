@@ -73,6 +73,7 @@
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Metadata\IConfigurationMigrationFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ClientNotification\IWebClientNotificationService.cs" />
     <Compile Include="ContextTypes\ContextImpl\ApplyContext.cs">
@@ -105,7 +106,6 @@
     <Compile Include="Linq\LinqExtensions.cs" />
     <Compile Include="LocalRouting\ILocalHostServer.cs" />
     <Compile Include="LocalRouting\IRequestLocal.cs" />
-    <Compile Include="LocalRouting\RequestLocal.cs" />
     <Compile Include="Metadata\ConfigurationManagers\File\JsonFileRegisterReader.cs" />
     <Compile Include="Metadata\ConfigurationManagers\File\MetadataReaders\JsonFileDocumentElementReader.cs" />
     <Compile Include="Metadata\ConfigurationManagers\File\JsonFileDocumentReader.cs" />
@@ -195,13 +195,11 @@
     <Compile Include="Reporting\ReportFileFormat.cs" />
     <Compile Include="RestApi\Auth\AuthApi.cs" />
     <Compile Include="RestApi\Auth\AuthorizationStorageExtensions.cs" />
-    <Compile Include="RestApi\Auth\UsersApi.cs" />
     <Compile Include="RestApi\CommonApi\IRouteTrace.cs" />
     <Compile Include="RestApi\CommonApi\RouteTraces\RouteTraceNoTrace.cs" />
     <Compile Include="RestApi\CommonApi\RouteTraces\RouteTraceSaveQueryLog.cs" />
     <Compile Include="RestApi\CommonApi\RestQueryApi.cs" />
     <Compile Include="RestApi\CommonApi\SolutionUpdateApi.cs" />
-    <Compile Include="RestApi\CommonApi\UpdateApi.cs" />
     <Compile Include="Metadata\IMetadataContainerInfo.cs" />
     <Compile Include="Metadata\MetadataContainers\MetadataContainerDocument.cs" />
     <Compile Include="Metadata\MetadataContainers\MetadataContainerMenu.cs" />
@@ -211,7 +209,6 @@
     <Compile Include="Metadata\ConfigurationManagers\Standard\MetadataReaders\MetadataReader.cs" />
     <Compile Include="Metadata\ConfigurationManagers\Standard\MetadataManagers\MetadataManagerConfiguration.cs" />
     <Compile Include="Metadata\ConfigurationManagers\Standard\MetadataManagers\MetadataManagerElement.cs" />
-    <Compile Include="RestApi\DataApi\DocumentApiUnsecured.cs" />
     <Compile Include="RestApi\DataApi\MetadataApi.cs" />
     <Compile Include="RestApi\DataApi\MetadataLoaderHelper.cs" />
     <Compile Include="RestApi\DataApi\PackageMetadataLoader.cs" />
@@ -244,7 +241,6 @@
     <Compile Include="Schema\Prefill\DefaultPropertyNames.cs" />
     <Compile Include="Schema\Prefill\DefaultValues.cs" />
     <Compile Include="Schema\Prefill\TestDataBuilder.cs" />
-    <Compile Include="Schema\Prefill\TestDocumentGenerator.cs" />
     <Compile Include="Schema\PropertiesFiller.cs" />
     <Compile Include="Schema\SchemaCreator.cs" />
     <Compile Include="Schema\SchemaDataType.cs" />

@@ -1,4 +1,5 @@
 ﻿using System;
+
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestQuery;
@@ -11,6 +12,13 @@ namespace InfinniPlatform.SystemConfig.Configurator.Generators
 {
     public sealed class ActionUnitGenerateMetadata
     {
+        public ActionUnitGenerateMetadata(RestQueryApi restQueryApi)
+        {
+            _restQueryApi = restQueryApi;
+        }
+
+        private readonly RestQueryApi _restQueryApi;
+
         public void Action(IApplyContext target)
         {
             //ищем зарегистрированный генератор
@@ -25,16 +33,16 @@ namespace InfinniPlatform.SystemConfig.Configurator.Generators
             dynamic generatorMetadata =
                 target.Context.GetComponent<IMetadataComponent>()
                       .GetMetadataItem(target.Item.Configuration, target.Item.Metadata,
-                                       MetadataType.Generator, generatorSelector);
-                //generatorReader.GetItem(target.Item.GeneratorName);
+                          MetadataType.Generator, generatorSelector);
+            //generatorReader.GetItem(target.Item.GeneratorName);
 
             if (generatorMetadata != null)
             {
                 //получаем JSON метаданных, сгенерированный соответствующим сервисом, указанным в метаданных генератора
-                RestQueryResponse response = RestQueryApi.QueryPostJsonRaw(target.Item.Configuration,
-                                                                           target.Item.Metadata,
-                                                                           generatorMetadata.Service,
-                                                                           null, target.Item.Parameters);
+                RestQueryResponse response = _restQueryApi.QueryPostJsonRaw(target.Item.Configuration,
+                    target.Item.Metadata,
+                    generatorMetadata.Service,
+                    null, target.Item.Parameters);
                 target.Result = response.Content.ToDynamic();
                 target.ValidationMessage = "Metadata successfully generated.";
             }
@@ -42,7 +50,7 @@ namespace InfinniPlatform.SystemConfig.Configurator.Generators
             {
                 target.Result = new DynamicWrapper();
                 target.Result.ErrorMessage = string.Format(Resources.GeneratorMetadataNotFound,
-                                                           target.Item.GeneratorName);
+                    target.Item.GeneratorName);
             }
         }
     }

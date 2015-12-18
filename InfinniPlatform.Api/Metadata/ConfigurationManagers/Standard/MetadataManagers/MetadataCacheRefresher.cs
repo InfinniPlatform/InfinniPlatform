@@ -24,7 +24,6 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
             body.MetadataType = _metadataType;
             body.MetadataName = metadataName;
             body.Version = "";
-            RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "RefreshMetadataCache", null, body);
         }
 
         public void RefreshMetadataAfterDeleting(string metadataName)
@@ -36,7 +35,6 @@ namespace InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataMa
             body.MetadataName = metadataName;
             body.IsElementDeleted = true;
             body.Version = "";
-            RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "RefreshMetadataCache", null, body);
         }
     }
 }
