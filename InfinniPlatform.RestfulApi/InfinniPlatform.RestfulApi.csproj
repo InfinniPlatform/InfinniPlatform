@@ -112,6 +112,7 @@
     <Compile Include="DefaultProcessUnits\ActionUnitSetCredentials.cs" />
     <Compile Include="DefaultProcessUnits\ActionUnitComplexAuth.cs" />
     <Compile Include="DefaultProcessUnits\ValidationUnitDeleteDocumentError.cs" />
+    <Compile Include="Executors\SetDocumentExecutor.cs" />
     <Compile Include="Extensions\IndexedStorageExtension.cs" />
     <Compile Include="Installers\RestfulApiInstaller.cs" />
     <Compile Include="IoC\RestfulApiContainerModule.cs" />

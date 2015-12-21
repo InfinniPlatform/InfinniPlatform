@@ -744,7 +744,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
                                            Id = registerName
                                        };
 
-            new DocumentApi(RestQueryApi).SetDocument(configId, configId + RegisterConstants.RegistersCommonInfo, registerInfoDocument);
+            //new DocumentApi(RestQueryApi).SetDocument(configId, configId + RegisterConstants.RegistersCommonInfo, registerInfoDocument);
 
             return RegisterConstants.RegisterNamePrefix + registerName;
         }

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
-using InfinniPlatform.Api.Linq;
-using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Api.SearchOptions.Builders;
@@ -13,12 +10,14 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 {
     public class DocumentApi
     {
-        public DocumentApi(RestQueryApi restQueryApi)
+        public DocumentApi(RestQueryApi restQueryApi, ISetDocumentExecutor setDocumentExecutor)
         {
             _restQueryApi = restQueryApi;
+            _setDocumentExecutor = setDocumentExecutor;
         }
 
         private readonly RestQueryApi _restQueryApi;
+        private readonly ISetDocumentExecutor _setDocumentExecutor;
 
         public IEnumerable<dynamic> GetDocumentByQuery(string queryText, bool denormalizeResult = false)
         {
@@ -146,75 +145,14 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             return result.ToDynamic();
         }
 
-        public dynamic SetDocument(string configuration, string metadata, dynamic item, bool ignoreWarnings = false, bool allowNonSchemaProperties = false)
+        public dynamic SetDocument(string configuration, string documentType, dynamic documentInstance, bool ignoreWarnings = false, bool allowNonSchemaProperties = false)
         {
-            object transactionMarker = ObjectHelper.GetProperty(item, "TransactionMarker");
-
-            if (transactionMarker != null && !string.IsNullOrEmpty(transactionMarker.ToString()))
-            {
-                item.TransactionMarker = null;
-            }
-
-            var result = ExecutePost("setdocument", null, new
-                                                          {
-                                                              Configuration = configuration,
-                                                              Metadata = metadata,
-                                                              IgnoreWarnings = ignoreWarnings,
-                                                              AllowNonSchemaProperties = allowNonSchemaProperties,
-                                                              Document = item,
-                                                              TransactionMarker = transactionMarker,
-                                                              Secured = false
-                                                          });
-
-            return result.ToDynamic();
+            return _setDocumentExecutor.SetDocument(configuration, documentType, documentInstance, ignoreWarnings, allowNonSchemaProperties);
         }
 
-        public dynamic SetDocuments(string configuration, string metadata, IEnumerable<object> item, int batchSize = 200, bool allowNonSchemaProperties = false)
+        public dynamic SetDocuments(string configuration, string documentType, IEnumerable<object> documentInstances, int batchSize = 200, bool allowNonSchemaProperties = false)
         {
-            var batches = item.Batch(batchSize);
-
-            foreach (var batch in batches)
-            {
-                object transactionMarker = null;
-
-                foreach (dynamic document in batch.ToArray())
-                {
-                    transactionMarker = ObjectHelper.GetProperty(document, "TransactionMarker");
-
-                    if (transactionMarker != null && !string.IsNullOrEmpty(transactionMarker.ToString()))
-                    {
-                        document.TransactionMarker = null;
-                    }
-                }
-
-                var response = ExecutePost("setdocument", null, new
-                                                                {
-                                                                    Configuration = configuration,
-                                                                    Metadata = metadata,
-                                                                    Documents = batch,
-                                                                    AllowNonSchemaProperties = allowNonSchemaProperties,
-                                                                    TransactionMarker = transactionMarker,
-                                                                    Secured = false
-                                                                });
-
-                if (!string.IsNullOrEmpty(response.Content))
-                {
-                    dynamic dynamicContent = response.ToDynamic();
-
-                    if (dynamicContent != null &&
-                        dynamicContent.IsValid != null &&
-                        dynamicContent.IsValid == false)
-                    {
-                        throw new ArgumentException(response.Content);
-                    }
-                }
-            }
-
-            dynamic result = new DynamicWrapper();
-            result.IsValid = true;
-            result.ValidationMessage = Resources.BatchCompletedSuccessfully;
-
-            return result;
+            return _setDocumentExecutor.SetDocuments(configuration, documentType, documentInstances, batchSize, allowNonSchemaProperties);
         }
 
         private RestQueryResponse ExecutePost(string action, string id, object body)

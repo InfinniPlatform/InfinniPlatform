@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.Modules;
+﻿using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Modules;
+using InfinniPlatform.RestfulApi.Executors;
 using InfinniPlatform.RestfulApi.Installers;
 using InfinniPlatform.RestfulApi.Utils;
 using InfinniPlatform.Sdk.ContextComponents;
@@ -20,6 +22,10 @@ namespace InfinniPlatform.RestfulApi.IoC
 
             builder.RegisterType<ReferenceResolver>()
                    .As<IReferenceResolver>()
+                   .SingleInstance();
+
+            builder.RegisterType<SetDocumentExecutor>()
+                   .As<ISetDocumentExecutor>()
                    .SingleInstance();
 
             // Прикладные скрипты
