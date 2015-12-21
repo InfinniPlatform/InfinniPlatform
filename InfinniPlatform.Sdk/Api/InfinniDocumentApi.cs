@@ -15,8 +15,7 @@ namespace InfinniPlatform.Sdk.Api
     /// </summary>
     public class InfinniDocumentApi : BaseApi, IDocumentApi
     {
-        public InfinniDocumentApi(string server, string port, string route)
-            : base(server, port, route)
+        public InfinniDocumentApi(string server, int port) : base(server, port)
         {
         }
 
@@ -42,11 +41,11 @@ namespace InfinniPlatform.Sdk.Api
         public dynamic Attach(string session, string application, string documentType, string instanceId, dynamic document)
         {
             dynamic changesObject = JObject.FromObject(new
-                                                       {
-                                                           Application = application,
-                                                           DocumentType = documentType,
-                                                           Document = document
-                                                       });
+            {
+                Application = application,
+                DocumentType = documentType,
+                Document = document
+            });
 
             changesObject.Document.Id = instanceId;
 
@@ -79,11 +78,11 @@ namespace InfinniPlatform.Sdk.Api
         public void DetachFile(string session, string instanceId, string fieldName)
         {
             dynamic body = new
-                           {
-                               InstanceId = instanceId,
-                               FieldName = fieldName,
-                               SessionId = session
-                           };
+            {
+                InstanceId = instanceId,
+                FieldName = fieldName,
+                SessionId = session
+            };
 
             var response = RequestExecutor.QueryDelete(RouteBuilder.BuildRestRoutingUrlDefaultSession(), body);
 
@@ -213,8 +212,7 @@ namespace InfinniPlatform.Sdk.Api
 
             var documentId = PrepareDocumentIdentifier(document);
 
-            var response = RequestExecutor.QueryPut(
-                                                    routeBuilder.BuildRestRoutingUrlDefaultById(applicationId, documentType, documentId), document);
+            var response = RequestExecutor.QueryPut(routeBuilder.BuildRestRoutingUrlDefaultById(applicationId, documentType, documentId), document);
 
             return ProcessAsObjectResult(response, string.Format(Resources.UnableToSetDocument, response));
         }
@@ -250,10 +248,10 @@ namespace InfinniPlatform.Sdk.Api
             var routeBuilder = new RouteBuilder(Server, Port, Route);
 
             var parameters = new
-                             {
-                                 Id = instanceId,
-                                 ChangesObject = changesObject
-                             };
+            {
+                Id = instanceId,
+                ChangesObject = changesObject
+            };
 
             var response = RequestExecutor.QueryPost(
                                                      routeBuilder.BuildRestRoutingUrlDefaultById(applicationId, documentType, instanceId),
@@ -282,7 +280,16 @@ namespace InfinniPlatform.Sdk.Api
 
         private static string PrepareDocumentIdentifier(dynamic document)
         {
-            return document.Id ?? (document.Id = ObjectHelper.GetProperty(document, "Id") ?? Guid.NewGuid().ToString());
+            object instanceId = document.Id;
+
+            if (instanceId == null)
+            {
+                instanceId = Guid.NewGuid();
+
+                document.Id = instanceId;
+            }
+
+            return instanceId.ToString();
         }
     }
 }

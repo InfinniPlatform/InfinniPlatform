@@ -2,9 +2,6 @@
 using System.Linq;
 
 using InfinniPlatform.Api.RestApi.Auth;
-using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
 using InfinniPlatform.Api.Security;
 using InfinniPlatform.NodeServiceHost;
 using InfinniPlatform.Sdk.Api;
@@ -39,8 +36,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // TODO: Пользователь добавляется напрямую в базу данных, так как на текущий момент в тестовой инфраструктуре очень сложно это сделать по всем "правилам".
 
-            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
-            var documentApi = new DocumentApi(restQueryApi);
+            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
             var passwordHasher = new DefaultApplicationUserPasswordHasher();
 
             var user = new ApplicationUser
@@ -70,8 +66,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port.ToString(), "1");
-            var signInApi = new InfinniSignInApi(HostingConfig.Default.Name, HostingConfig.Default.Port.ToString(), "1");
+            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var signInApi = new InfinniSignInApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
 
             var tenant1 = Guid.NewGuid().ToString("N");
             var tenant2 = Guid.NewGuid().ToString("N");

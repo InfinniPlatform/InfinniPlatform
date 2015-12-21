@@ -6,9 +6,9 @@ namespace InfinniPlatform.Sdk.Api
 {
     public class InfinniPrintViewApi : BaseApi, IPrintViewApi
     {
-        public InfinniPrintViewApi(string server, string port, string route) : base(server, port, route)
+        public InfinniPrintViewApi(string server, int port) : base(server, port)
         {
-            _customServiceApi = new InfinniCustomServiceApi(server, port, route);
+            _customServiceApi = new InfinniCustomServiceApi(server, port);
         }
 
         private readonly InfinniCustomServiceApi _customServiceApi;

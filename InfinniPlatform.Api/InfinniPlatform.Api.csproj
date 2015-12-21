@@ -286,7 +286,6 @@
     <Compile Include="RestQuery\EventObjects\ObjectMetadataHandler.cs" />
     <Compile Include="RestQuery\IRestQueryBuilder.cs" />
     <Compile Include="RestQuery\IRestQueryExecutor.cs" />
-    <Compile Include="RestQuery\RestQueryBuilders\RestQueryBuilder.cs" />
     <Compile Include="RestQuery\RestQueryExecutors\RestQueryExecutor.cs" />
     <Compile Include="RestQuery\RestQueryResponse.cs" />
     <Compile Include="SearchOptions\SearchType.cs" />

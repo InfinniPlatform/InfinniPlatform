@@ -10,12 +10,12 @@ namespace InfinniPlatform.Sdk.Api
     /// </summary>
     public class BaseApi
     {
-        public BaseApi(string server, string port, string route)
+        public BaseApi(string server, int port)
         {
             Server = server;
             Port = port;
-            Route = route;
-            RouteBuilder = new RouteBuilder(server, port, route);
+            Route = "0";
+            RouteBuilder = new RouteBuilder(server, port, "0");
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace InfinniPlatform.Sdk.Api
         /// <summary>
         /// Порт сервера
         /// </summary>
-        protected string Port { get; }
+        protected int Port { get; }
 
         protected string Route { get; }
 
@@ -42,20 +42,20 @@ namespace InfinniPlatform.Sdk.Api
         /// </summary>
         /// <param name="response">Результат выполнения запроса</param>
         /// <param name="exceptionMessage">Сообщение в случае ошибки выполнения запроса</param>
-        protected dynamic ProcessAsObjectResult(RestQueryResponse response, string exceptionMessage)
+        protected static dynamic ProcessAsObjectResult(RestQueryResponse response, string exceptionMessage)
         {
             if (!string.IsNullOrEmpty(response.Content))
             {
                 return ProcessRequestResult(response, () => response.Content.ToDynamic(), () => Resources.ResultIsNotOfObjectType, () => exceptionMessage);
             }
+
             return null;
         }
 
         /// <summary>
         /// Обработать результат выполнения запроса
         /// </summary>
-        private dynamic ProcessRequestResult(RestQueryResponse response, Func<dynamic> processResultMethod,
-                                             Func<string> getRequestFormatExceptionMessage, Func<string> getRequestExceptionMessage)
+        private static dynamic ProcessRequestResult(RestQueryResponse response, Func<dynamic> processResultMethod, Func<string> getRequestFormatExceptionMessage, Func<string> getRequestExceptionMessage)
         {
             if (response.IsAllOk)
             {
@@ -68,10 +68,11 @@ namespace InfinniPlatform.Sdk.Api
                 }
                 catch
                 {
-                    throw new ApplicationException(getRequestFormatExceptionMessage());
+                    throw new InvalidOperationException(getRequestFormatExceptionMessage());
                 }
             }
-            throw new ApplicationException(getRequestExceptionMessage());
+
+            throw new InvalidOperationException(getRequestExceptionMessage());
         }
     }
 }

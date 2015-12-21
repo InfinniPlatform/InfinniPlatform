@@ -9,11 +9,10 @@ namespace InfinniPlatform.Sdk.Api
 {
     public sealed class InfinniRegisterApi : BaseApi, IRegisterApi
     {
-        public InfinniRegisterApi(string server, string port, string route)
-            : base(server, port, route)
+        public InfinniRegisterApi(string server, int port) : base(server, port)
         {
-            _customServiceApi = new InfinniCustomServiceApi(server, port, route);
-            _documentApi = new InfinniDocumentApi(server, port, route);
+            _customServiceApi = new InfinniCustomServiceApi(server, port);
+            _documentApi = new InfinniDocumentApi(server, port);
         }
 
         private readonly InfinniCustomServiceApi _customServiceApi;

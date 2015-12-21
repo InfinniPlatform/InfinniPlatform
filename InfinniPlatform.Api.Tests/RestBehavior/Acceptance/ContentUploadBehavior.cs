@@ -3,11 +3,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
 using InfinniPlatform.Api.Tests.Properties;
 using InfinniPlatform.NodeServiceHost;
+using InfinniPlatform.Sdk.Api;
 using InfinniPlatform.Sdk.Dynamic;
 
 using NUnit.Framework;
@@ -40,7 +38,9 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
+            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var fileApi = new InfinniFileApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
+
             var contentBytes = Resources.UploadBinaryContent;
             var contentStream = new MemoryStream(contentBytes);
 
@@ -54,17 +54,17 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             // When & Then
 
-            var saveResult = new DocumentApi(restQueryApi).SetDocument(ConfigId, DocumentId, testDocument);
+            var saveResult = documentApi.SetDocument(ConfigId, DocumentId, testDocument);
             Assert.AreNotEqual(saveResult.IsValid, false);
 
             // When & Then
 
-            var uploadResult = new UploadApi(restQueryApi).UploadBinaryContent(ConfigId, DocumentId, testDocument.Id, "ContentField", @"Authorization.zip", contentStream);
+            var uploadResult = fileApi.UploadFile(ConfigId, DocumentId, testDocument.Id, "ContentField", @"Authorization.zip", contentStream);
             Assert.AreNotEqual(uploadResult.IsValid, false);
 
             // When & Then
 
-            var storedDocument = new DocumentApi(restQueryApi).GetDocument(ConfigId, DocumentId, cr => cr.AddCriteria(f => f.Property("Id").IsEquals(testDocument.Id)), 0, 1).FirstOrDefault();
+            var storedDocument = documentApi.GetDocument(ConfigId, DocumentId, cr => cr.AddCriteria(f => f.Property("Id").IsEquals(testDocument.Id)), 0, 1).FirstOrDefault();
             Assert.IsNotNull(storedDocument);
             Assert.IsNotNull(storedDocument.ContentField);
             Assert.IsNotNull(storedDocument.ContentField.Info);
@@ -72,7 +72,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             // When & Then
 
-            var downloadResult = new UploadApi(restQueryApi).DownloadBinaryContent(storedDocument.ContentField.Info.ContentId);
+            var downloadResult = fileApi.DownloadFile(storedDocument.ContentField.Info.ContentId);
             Assert.IsNotNull(downloadResult);
             Assert.IsNotNull(downloadResult.Content);
             Assert.AreEqual(Encoding.UTF8.GetString(contentBytes), downloadResult.Content);

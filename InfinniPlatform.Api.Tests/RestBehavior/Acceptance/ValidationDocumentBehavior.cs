@@ -1,9 +1,7 @@
 ﻿using System;
 
-using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
 using InfinniPlatform.NodeServiceHost;
+using InfinniPlatform.Sdk.Api;
 
 using NUnit.Framework;
 
@@ -34,16 +32,16 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         public void ShouldValidateDocumentWithActionUnit()
         {
             // Given
-            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
-            var documentApi = new DocumentApi(restQueryApi);
+            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
             var document = new { Id = Guid.NewGuid(), LastName = "123" };
 
             // When
             var error = Assert.Catch(() => documentApi.SetDocument(ConfigurationId, DocumentType, document));
+            Console.WriteLine(error.ToString());
 
             // Then
-            Assert.IsTrue(error.Message.Contains("\"IsValid\":false"));
-            Assert.IsTrue(error.Message.Contains("\"TestComplexValidatorMessage\""));
+            Assert.IsTrue(error.Message.Contains(@"\""IsValid\"":false"));
+            Assert.IsTrue(error.Message.Contains(@"\""TestComplexValidatorMessage\"""));
         }
     }
 }

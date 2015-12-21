@@ -16,9 +16,7 @@ namespace InfinniPlatform.Sdk
         {
             get
             {
-                return string.IsNullOrEmpty(Content)
-                           ? 0
-                           : Content.Length;
+                return string.IsNullOrEmpty(Content) ? 0 : Content.Length;
             }
         }
 
@@ -65,6 +63,7 @@ namespace InfinniPlatform.Sdk
         public string GetErrorContent()
         {
             var builder = new StringBuilder();
+
             if (IsBusinessLogicError)
             {
                 builder.Append(Resources.BusinessLogicError);
@@ -81,12 +80,18 @@ namespace InfinniPlatform.Sdk
             {
                 builder.Append(Resources.ServiceNotRegisteredError);
             }
+
             if (!string.IsNullOrEmpty(Content))
             {
-                builder.Append(string.Format("/r/nAdditional info: {0}", Content));
+                builder.AppendFormat("Additional info: {0}", Content);
             }
 
             return builder.ToString();
+        }
+
+        public override string ToString()
+        {
+            return GetErrorContent();
         }
     }
 }

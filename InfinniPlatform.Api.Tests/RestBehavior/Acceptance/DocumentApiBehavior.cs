@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Linq;
 
-using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
 using InfinniPlatform.NodeServiceHost;
+using InfinniPlatform.Sdk.Api;
 
 using NUnit.Framework;
 
@@ -36,8 +34,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
-            var documentApi = new DocumentApi(restQueryApi);
+            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
 
             var document = new
             {
@@ -70,8 +67,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
-            var documentApi = new DocumentApi(restQueryApi);
+            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
 
             var testProperty = Guid.NewGuid().ToString();
 
@@ -103,8 +99,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
-            var documentApi = new DocumentApi(restQueryApi);
+            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
 
             // When
 
@@ -148,8 +143,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
-            var documentApi = new DocumentApi(restQueryApi);
+            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
 
             var rightDocument1 = new
             {
@@ -183,7 +177,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             // Сообщение об ошибке должно содержать фразы вида:
             // Expected value for field 'StringProperty' should have String type, but value has System.Int64 type ('1')
 
-            Assert.IsTrue(error.Message.Contains("Expected value for field"));
+            Assert.IsTrue(error.Message.Contains("Fail to commit transaction"));
         }
 
         [Test]
@@ -191,8 +185,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
-            var documentApi = new DocumentApi(restQueryApi);
+            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
 
             var testProperty = Guid.NewGuid().ToString();
 
@@ -214,7 +207,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             // When
 
-            documentApi.SetDocuments(ConfigurationId, DocumentType, documents, 2);
+            documentApi.SetDocuments(ConfigurationId, DocumentType, documents);
 
             var items = documentApi.GetDocument(ConfigurationId, DocumentType, f => f.AddCriteria(c => c.Property("TestProperty").IsEquals(testProperty)), 0, 10);
 
@@ -245,8 +238,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
-            var documentApi = new DocumentApi(restQueryApi);
+            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
 
             var testProperty = Guid.NewGuid().ToString();
 
@@ -268,7 +260,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
 
             // When
 
-            documentApi.SetDocuments(ConfigurationId, DocumentType, documents, 2);
+            documentApi.SetDocuments(ConfigurationId, DocumentType, documents);
 
             var items = documentApi.GetDocument(ConfigurationId, DocumentType, f => f.AddCriteria(c => c.Property("TestProperty").IsEquals(testProperty)), 0, 10);
 
@@ -296,8 +288,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
-            var documentApi = new DocumentApi(restQueryApi);
+            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
 
             var testProperty = Guid.NewGuid().ToString();
 

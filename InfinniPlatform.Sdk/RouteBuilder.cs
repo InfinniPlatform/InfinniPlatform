@@ -14,12 +14,10 @@ namespace InfinniPlatform.Sdk
         //Шаблон строки формирования адреса сервера
         private const string AppServerAddressFormat = "http://{0}{1}/{2}/{3}";
 
-        public RouteBuilder(string serverName, string serverPort, string route)
+        public RouteBuilder(string serverName, int serverPort, string route)
         {
             _serverName = serverName;
-            _serverPort = string.IsNullOrEmpty(serverPort)
-                              ? null
-                              : $":{serverPort}";
+            _serverPort = (serverPort > 0) ? $":{serverPort}" : "";
             _route = route;
         }
 

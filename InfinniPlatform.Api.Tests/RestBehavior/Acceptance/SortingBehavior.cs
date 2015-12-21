@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Linq;
 
-using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
 using InfinniPlatform.NodeServiceHost;
-using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Api;
 
 using NUnit.Framework;
 
@@ -43,8 +40,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
-            var documentApi = new DocumentApi(restQueryApi);
+            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
 
             var document1 = new
             {
@@ -74,7 +70,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             var ascPage0 = documentApi.GetDocument(ConfigurationId, OneSortingFieldInArrayDocument, null, 0, 10);
 
             // Сортировка по убыванию
-            var descPage0 = documentApi.GetDocument(ConfigurationId, OneSortingFieldInArrayDocument, null, 0, 10, s => s.AddSorting("ArrayProperty.SortableStringProperty", SortOrder.Descending));
+            var descPage0 = documentApi.GetDocument(ConfigurationId, OneSortingFieldInArrayDocument, null, 0, 10, s => s.AddSorting("ArrayProperty.SortableStringProperty", "descending"));
 
             // Then
 
@@ -87,8 +83,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
-            var documentApi = new DocumentApi(restQueryApi);
+            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
 
             var startDate = DateTime.Today;
 
@@ -106,8 +101,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             var ascPage1 = documentApi.GetDocument(ConfigurationId, OneDateSortingFieldDocument, null, 1, 10);
 
             // Сортировка по убыванию
-            var descPage0 = documentApi.GetDocument(ConfigurationId, OneDateSortingFieldDocument, null, 0, 10, s => s.AddSorting("SortableDateProperty", SortOrder.Descending));
-            var descPage1 = documentApi.GetDocument(ConfigurationId, OneDateSortingFieldDocument, null, 1, 10, s => s.AddSorting("SortableDateProperty", SortOrder.Descending));
+            var descPage0 = documentApi.GetDocument(ConfigurationId, OneDateSortingFieldDocument, null, 0, 10, s => s.AddSorting("SortableDateProperty", "descending"));
+            var descPage1 = documentApi.GetDocument(ConfigurationId, OneDateSortingFieldDocument, null, 1, 10, s => s.AddSorting("SortableDateProperty", "descending"));
 
             // Then
 
@@ -123,8 +118,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
-            var documentApi = new DocumentApi(restQueryApi);
+            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
 
             var document1 = new
             {
@@ -154,7 +148,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             var ascPage0 = documentApi.GetDocument(ConfigurationId, InlineSortingDocument, null, 0, 10);
 
             // Сортировка по убыванию
-            var descPage0 = documentApi.GetDocument(ConfigurationId, InlineSortingDocument, null, 0, 10, s => s.AddSorting("ObjectProperty.SortableStringProperty", SortOrder.Descending));
+            var descPage0 = documentApi.GetDocument(ConfigurationId, InlineSortingDocument, null, 0, 10, s => s.AddSorting("ObjectProperty.SortableStringProperty", "descending"));
 
             // Then
 
@@ -167,8 +161,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
-            var documentApi = new DocumentApi(restQueryApi);
+            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
 
             // When
 
@@ -183,7 +176,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             var ascPage0 = documentApi.GetDocument(ConfigurationId, OneIntSortingFieldDocument, null, 0, 10);
 
             // Сортировка по убыванию
-            var descPage0 = documentApi.GetDocument(ConfigurationId, OneIntSortingFieldDocument, null, 0, 10, s => s.AddSorting("SortableIntProperty", SortOrder.Descending));
+            var descPage0 = documentApi.GetDocument(ConfigurationId, OneIntSortingFieldDocument, null, 0, 10, s => s.AddSorting("SortableIntProperty", "descending"));
 
             // Then
 
@@ -196,8 +189,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
-            var documentApi = new DocumentApi(restQueryApi);
+            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
 
             var document1 = new
             {
@@ -227,7 +219,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             var ascPage0 = documentApi.GetDocument(ConfigurationId, OneSortingFieldInNestedObjectDocument, null, 0, 10);
 
             // Сортировка по убыванию
-            var descPage0 = documentApi.GetDocument(ConfigurationId, OneSortingFieldInNestedObjectDocument, null, 0, 10, s => s.AddSorting("ObjectProperty.SortableStringProperty", SortOrder.Descending));
+            var descPage0 = documentApi.GetDocument(ConfigurationId, OneSortingFieldInNestedObjectDocument, null, 0, 10, s => s.AddSorting("ObjectProperty.SortableStringProperty", "descending"));
 
             // Then
 
@@ -240,8 +232,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
-            var documentApi = new DocumentApi(restQueryApi);
+            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
 
             // When
 
@@ -256,7 +247,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             var ascPage0 = documentApi.GetDocument(ConfigurationId, OneStringSortingFieldDocument, null, 0, 10);
 
             // Сортировка по убыванию
-            var descPage0 = documentApi.GetDocument(ConfigurationId, OneStringSortingFieldDocument, null, 0, 10, s => s.AddSorting("SortableStringProperty", SortOrder.Descending));
+            var descPage0 = documentApi.GetDocument(ConfigurationId, OneStringSortingFieldDocument, null, 0, 10, s => s.AddSorting("SortableStringProperty", "descending"));
 
             // Then
 
@@ -269,8 +260,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var restQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
-            var documentApi = new DocumentApi(restQueryApi);
+            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
 
             var document1 = new
             {
@@ -321,7 +311,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             var ascPage0 = documentApi.GetDocument(ConfigurationId, TwoSortingFieldsDocument, null, 0, 10);
 
             // Сортировка по убыванию
-            var descPage0 = documentApi.GetDocument(ConfigurationId, TwoSortingFieldsDocument, null, 0, 10, s => s.AddSorting("SortableStringProperty", SortOrder.Descending).AddSorting("SortableIntProperty"));
+            var descPage0 = documentApi.GetDocument(ConfigurationId, TwoSortingFieldsDocument, null, 0, 10, s => s.AddSorting("SortableStringProperty", "descending").AddSorting("SortableIntProperty"));
 
             // Then
 

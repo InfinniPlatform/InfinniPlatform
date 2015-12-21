@@ -18,7 +18,7 @@ namespace InfinniPlatform.Sdk.Api
     /// </summary>
     public sealed class InfinniAuthApi : BaseApi, IAuthApi
     {
-        public InfinniAuthApi(string server, string port, string route) : base(server, port, route)
+        public InfinniAuthApi(string server, int port) : base(server, port)
         {
         }
 
@@ -236,7 +236,7 @@ namespace InfinniPlatform.Sdk.Api
             int pageSize,
             Action<SortingBuilder> sorting = null)
         {
-            var docApi = new InfinniDocumentApi(Server, Port, Route);
+            var docApi = new InfinniDocumentApi(Server, Port);
 
             //            docApi.CookieContainer = CookieContainer;
 

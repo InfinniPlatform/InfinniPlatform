@@ -18,8 +18,8 @@ namespace InfinniPlatform.Sdk.Tests
         [TestFixtureSetUp]
         public void SetupApi()
         {
-            _fileApi = new InfinniFileApi(HostingConfig.Default.Name, HostingConfig.Default.Port.ToString(), Route);
-            _documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port.ToString(), Route);
+            _fileApi = new InfinniFileApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            _documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
         }
 
         [Test]

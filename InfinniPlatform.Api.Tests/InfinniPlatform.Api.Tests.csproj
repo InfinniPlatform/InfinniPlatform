@@ -75,7 +75,6 @@
     <Compile Include="RestBehavior\Acceptance\SortingBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\RegistersBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\DeleteReferencedDocumentBehavior.cs" />
-    <Compile Include="RestBehavior\Acceptance\PrefillDocumentBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\ReportingBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\ValidationDocumentBehavior.cs" />
     <Compile Include="RestBehavior\ConfiguratorApiBehavior\CrudSettings.cs" />
