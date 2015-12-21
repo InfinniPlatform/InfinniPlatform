@@ -1,33 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
+using InfinniPlatform.Api.Metadata;
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Api.SearchOptions.Builders;
-using InfinniPlatform.RestfulApi.ActionUnits;
-using InfinniPlatform.RestfulApi.DefaultProcessUnits;
+using InfinniPlatform.ContextComponents;
+using InfinniPlatform.RestfulApi.Utils;
+using InfinniPlatform.Sdk.ContextComponents;
 
 namespace InfinniPlatform.RestfulApi.Executors
 {
     public class GetDocumentExecutor : IGetDocumentExecutor
     {
         public GetDocumentExecutor(RestQueryApi restQueryApi,
-                                   ActionUnitSetCredentials actionUnitSetCredentials,
-                                   ActionUnitComplexAuth actionUnitComplexAuth,
-                                   ActionUnitGetDocument actionUnitGetDocument)
+                                   IMetadataComponent metadataComponent,
+                                   IScriptRunnerComponent scriptRunnerComponent,
+                                   IConfigurationMediatorComponent configurationMediatorComponent,
+                                   InprocessDocumentComponent inprocessDocumentComponent,
+                                   IReferenceResolver referenceResolver)
         {
             _restQueryApi = restQueryApi;
-            _actionUnitSetCredentials = actionUnitSetCredentials;
-            _actionUnitComplexAuth = actionUnitComplexAuth;
-            _actionUnitGetDocument = actionUnitGetDocument;
+            _metadataComponent = metadataComponent;
+            _scriptRunnerComponent = scriptRunnerComponent;
+            _configurationMediatorComponent = configurationMediatorComponent;
+            _inprocessDocumentComponent = inprocessDocumentComponent;
+            _referenceResolver = referenceResolver;
         }
 
         private readonly RestQueryApi _restQueryApi;
-        private readonly ActionUnitSetCredentials _actionUnitSetCredentials;
-        private readonly ActionUnitComplexAuth _actionUnitComplexAuth;
-        private readonly ActionUnitGetDocument _actionUnitGetDocument;
+        private readonly IMetadataComponent _metadataComponent;
+        private readonly IScriptRunnerComponent _scriptRunnerComponent;
+        private readonly IConfigurationMediatorComponent _configurationMediatorComponent;
+        private readonly InprocessDocumentComponent _inprocessDocumentComponent;
+        private readonly IReferenceResolver _referenceResolver;
 
         public IEnumerable<dynamic> GetDocumentByQuery(string queryText, bool denormalizeResult = false)
         {
@@ -108,7 +118,7 @@ namespace InfinniPlatform.RestfulApi.Executors
             return GetDocument(configuration, metadata, filterBuilder.GetFilter(), pageNumber, pageSize, ignoreResolve, sortingBuilder.GetSorting());
         }
 
-        public IEnumerable<dynamic> GetDocumentUnfolded(string configuration, string metadata, dynamic filter, int pageNumber, int pageSize, IEnumerable<dynamic> ignoreResolve = null, dynamic sorting = null)
+        public IEnumerable<object> GetDocumentUnfolded(string configuration, string metadata, dynamic filter, int pageNumber, int pageSize, IEnumerable<dynamic> ignoreResolve = null, dynamic sorting = null)
         {
             var document = new
             {
@@ -122,23 +132,75 @@ namespace InfinniPlatform.RestfulApi.Executors
                 Secured = false
             };
 
-            var applyContext = new ApplyContext();
+            var target = new ApplyContext();
+            target.UserName = string.IsNullOrEmpty(Thread.CurrentPrincipal.Identity.Name) ? AuthorizationStorageExtensions.UnknownUser : Thread.CurrentPrincipal.Identity.Name;
+            target.Item = document;
 
-            var actionUnitSetCredentials = _actionUnitSetCredentials;
-            actionUnitSetCredentials.Action(applyContext);
+            //ActionUnitSetCredentials
+            if (document.Configuration != null)
+            {
+                if (target.Item.Configuration.ToLowerInvariant() != "systemconfig" &&
+                target.Item.Configuration.ToLowerInvariant() != "update" &&
+                target.Item.Configuration.ToLowerInvariant() != "restfulapi")
+                {
+                    //ищем метаданные бизнес-процесса по умолчанию документа 
+                    dynamic defaultBusinessProcess = _metadataComponent.GetMetadata(target.Item.Configuration, target.Item.Metadata, MetadataType.Process, "Default");
 
-            //var actionUnitDocumentAuth = new ActionUnitDocumentAuth();
+                    if (defaultBusinessProcess != null && defaultBusinessProcess.Transitions[0].CredentialsType != null)
+                    {
+                        dynamic credentialsType = defaultBusinessProcess.Transitions[0].CredentialsType;
+                        if (credentialsType != null)
+                        {
+                            if (credentialsType == AuthorizationStorageExtensions.AnonimousUserCredentials)
+                            {
+                                target.UserName = AuthorizationStorageExtensions.AnonymousUser;
+                            }
 
-            var actionUnitComplexAuth = _actionUnitComplexAuth;
-            actionUnitComplexAuth.Action(applyContext);
+                            if (credentialsType == AuthorizationStorageExtensions.CustomCredentials)
+                            {
+                                var scriptArguments = new ApplyContext();
+                                scriptArguments.CopyPropertiesFrom(target);
+                                scriptArguments.Item = target.Item.Document;
+                                scriptArguments.Item.Configuration = target.Item.Configuration;
+                                scriptArguments.Item.Metadata = target.Item.Metadata;
 
-            var actionUnitGetDocument = _actionUnitGetDocument;
-            actionUnitGetDocument.Action(applyContext);
+                                _scriptRunnerComponent.InvokeScript(defaultBusinessProcess.Transitions[0].CredentialsPoint.ScenarioId, scriptArguments);
+                            }
+                        }
+                    }
 
-            //var actionUnitFilterAuthDocument = new ActionUnitFilterAuthDocument();
-            var result = ExecutePost("getdocument", null, document);
+                    //ActionUnitComplexAuth
+                    //ищем метаданные бизнес-процесса по умолчанию документа 
+                    if (defaultBusinessProcess != null && defaultBusinessProcess.Transitions[0].ComplexAuthorizationPoint != null)
+                    {
+                        var scriptArguments = new ApplyContext();
+                        scriptArguments.CopyPropertiesFrom(target);
+                        scriptArguments.Item = target.Item.Document;
+                        scriptArguments.Item.Configuration = target.Item.Configuration;
+                        scriptArguments.Item.Metadata = target.Item.Metadata;
 
-            return result.ToDynamicList();
+                        _scriptRunnerComponent.InvokeScript(defaultBusinessProcess.Transitions[0].ComplexAuthorizationPoint.ScenarioId, scriptArguments);
+                    }
+                }
+            }
+
+            //ActionUnitGetDocument
+            var executor = new DocumentExecutor(_configurationMediatorComponent,
+                                                _metadataComponent,
+                                                _inprocessDocumentComponent,
+                                                _referenceResolver);
+
+            target.Result = executor.GetCompleteDocuments(null,
+                                                          document.Configuration,
+                                                          document.Metadata,
+                                                          target.UserName,
+                                                          Convert.ToInt32(document.PageNumber),
+                                                          Convert.ToInt32(document.PageSize),
+                                                          document.Filter,
+                                                          document.Sorting,
+                                                          document.IgnoreResolve);
+
+            return target.Result;
         }
 
         private RestQueryResponse ExecutePost(string action, string id, object body)

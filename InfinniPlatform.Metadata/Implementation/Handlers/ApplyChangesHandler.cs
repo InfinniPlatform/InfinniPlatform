@@ -117,12 +117,12 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
                 Metadata = ConfigRequestProvider.GetMetadataIdentifier(),
                 Action = ConfigRequestProvider.GetServiceName(),
                 UserName = ConfigRequestProvider.GetUserName(),
-                TransactionMarker = target.Item.TransactionMarker ?? Guid.NewGuid().ToString()                
+                TransactionMarker = target.Item.TransactionMarker ?? Guid.NewGuid().ToString()
             };
 
             //получаем менеджер для управления распределенной транзакцией
             var transaction =
-	            _globalContext.GetComponent<ITransactionComponent>()
+                _globalContext.GetComponent<ITransactionComponent>()
                     .GetTransactionManager()
                     .GetTransaction(targetMove.TransactionMarker);
 

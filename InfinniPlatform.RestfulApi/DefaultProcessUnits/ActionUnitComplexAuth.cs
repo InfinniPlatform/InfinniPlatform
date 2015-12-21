@@ -26,33 +26,25 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
 
         public void Action(IApplyContext target)
         {
-            dynamic defaultBusinessProcess = null;
-
             //TODO Игнорировать системные конфигурации при валидации. Пока непонятно, как переделать
             if (target.Item.Configuration.ToLowerInvariant() != "systemconfig" &&
                 target.Item.Configuration.ToLowerInvariant() != "update" &&
                 target.Item.Configuration.ToLowerInvariant() != "restfulapi")
             {
                 //ищем метаданные бизнес-процесса по умолчанию документа 
+                dynamic defaultBusinessProcess = _metadataComponent.GetMetadata(target.Item.Configuration, target.Item.Metadata, MetadataType.Process, "Default");
 
-                defaultBusinessProcess = _metadataComponent.GetMetadata(target.Item.Configuration, target.Item.Metadata, MetadataType.Process, "Default");
-            }
-            else
-            {
-                return;
-            }
+                if (defaultBusinessProcess != null && defaultBusinessProcess.Transitions[0].ComplexAuthorizationPoint != null)
+                {
+                    var scriptArguments = new ApplyContext();
+                    scriptArguments.CopyPropertiesFrom(target);
+                    scriptArguments.Item = target.Item.Document;
+                    scriptArguments.Item.Configuration = target.Item.Configuration;
+                    scriptArguments.Item.Metadata = target.Item.Metadata;
+                    scriptArguments.Context = _customServiceGlobalContext;
 
-            if (defaultBusinessProcess != null &&
-                defaultBusinessProcess.Transitions[0].ComplexAuthorizationPoint != null)
-            {
-                var scriptArguments = new ApplyContext();
-                scriptArguments.CopyPropertiesFrom(target);
-                scriptArguments.Item = target.Item.Document;
-                scriptArguments.Item.Configuration = target.Item.Configuration;
-                scriptArguments.Item.Metadata = target.Item.Metadata;
-                scriptArguments.Context = _customServiceGlobalContext;
-
-                _scriptRunnerComponent.InvokeScript(defaultBusinessProcess.Transitions[0].ComplexAuthorizationPoint.ScenarioId, scriptArguments);
+                    _scriptRunnerComponent.InvokeScript(defaultBusinessProcess.Transitions[0].ComplexAuthorizationPoint.ScenarioId, scriptArguments);
+                }
             }
         }
     }

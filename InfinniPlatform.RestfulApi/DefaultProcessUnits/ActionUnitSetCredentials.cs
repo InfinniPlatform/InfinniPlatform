@@ -3,29 +3,23 @@ using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
-using InfinniPlatform.Sdk.Global;
 
 namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
 {
     public sealed class ActionUnitSetCredentials
     {
         public ActionUnitSetCredentials(IMetadataComponent metadataComponent,
-                                        IScriptRunnerComponent scriptRunnerComponent,
-                                        ICustomServiceGlobalContext customServiceGlobalContext)
+                                        IScriptRunnerComponent scriptRunnerComponent)
         {
             _metadataComponent = metadataComponent;
             _scriptRunnerComponent = scriptRunnerComponent;
-            _customServiceGlobalContext = customServiceGlobalContext;
         }
 
-        private readonly ICustomServiceGlobalContext _customServiceGlobalContext;
         private readonly IMetadataComponent _metadataComponent;
         private readonly IScriptRunnerComponent _scriptRunnerComponent;
 
         public void Action(IApplyContext target)
         {
-            dynamic defaultBusinessProcess;
-
             if (target.Item.Configuration == null)
             {
                 return;
@@ -37,31 +31,30 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                 target.Item.Configuration.ToLowerInvariant() != "restfulapi")
             {
                 //ищем метаданные бизнес-процесса по умолчанию документа 
-                defaultBusinessProcess = _metadataComponent.GetMetadata(target.Item.Configuration, target.Item.Metadata, MetadataType.Process, "Default");
-            }
-            else
-            {
-                return;
-            }
+                dynamic defaultBusinessProcess = _metadataComponent.GetMetadata(target.Item.Configuration, target.Item.Metadata, MetadataType.Process, "Default");
 
-            if (defaultBusinessProcess != null && defaultBusinessProcess.Transitions[0].CredentialsType != null)
-            {
-                dynamic credentialsType = defaultBusinessProcess.Transitions[0].CredentialsType;
-                if (credentialsType != null &&
-                    credentialsType == AuthorizationStorageExtensions.AnonimousUserCredentials)
+                if (defaultBusinessProcess != null && defaultBusinessProcess.Transitions[0].CredentialsType != null)
                 {
-                    target.UserName = AuthorizationStorageExtensions.AnonymousUser;
-                }
-                else if (credentialsType != null && credentialsType == AuthorizationStorageExtensions.CustomCredentials)
-                {
-                    var scriptArguments = new ApplyContext();
-                    scriptArguments.CopyPropertiesFrom(target);
-                    scriptArguments.Item = target.Item.Document;
-                    scriptArguments.Item.Configuration = target.Item.Configuration;
-                    scriptArguments.Item.Metadata = target.Item.Metadata;
-                    scriptArguments.Context = _customServiceGlobalContext;
+                    dynamic credentialsType = defaultBusinessProcess.Transitions[0].CredentialsType;
+                    if (credentialsType != null)
+                    {
+                        if (credentialsType == AuthorizationStorageExtensions.AnonimousUserCredentials)
+                        {
+                            target.UserName = AuthorizationStorageExtensions.AnonymousUser;
+                        }
 
-                    _scriptRunnerComponent.InvokeScript(defaultBusinessProcess.Transitions[0].CredentialsPoint.ScenarioId, scriptArguments);
+                        if (credentialsType == AuthorizationStorageExtensions.CustomCredentials)
+                        {
+                            var scriptArguments = new ApplyContext();
+                            scriptArguments.CopyPropertiesFrom(target);
+                            scriptArguments.Item = target.Item.Document;
+                            scriptArguments.Item.Configuration = target.Item.Configuration;
+                            scriptArguments.Item.Metadata = target.Item.Metadata;
+
+                            _scriptRunnerComponent.InvokeScript(defaultBusinessProcess.Transitions[0].CredentialsPoint.ScenarioId, scriptArguments);
+                        }
+                    }
+
                 }
             }
         }

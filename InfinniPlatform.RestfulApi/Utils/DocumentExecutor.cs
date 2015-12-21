@@ -17,23 +17,17 @@ namespace InfinniPlatform.RestfulApi.Utils
         public DocumentExecutor(IConfigurationMediatorComponent configurationMediatorComponent,
                                 IMetadataComponent metadataComponent,
                                 InprocessDocumentComponent documentComponent,
-                                IProfilerComponent profilerComponent,
-                                ILogComponent logComponent,
                                 IReferenceResolver referenceResolver)
         {
             _configurationMediatorComponent = configurationMediatorComponent;
             _metadataComponent = metadataComponent;
             _documentComponent = documentComponent;
-            _profilerComponent = profilerComponent;
-            _logComponent = logComponent;
             _referenceResolver = referenceResolver;
         }
 
         private readonly IConfigurationMediatorComponent _configurationMediatorComponent;
         private readonly InprocessDocumentComponent _documentComponent;
-        private readonly ILogComponent _logComponent;
         private readonly IMetadataComponent _metadataComponent;
-        private readonly IProfilerComponent _profilerComponent;
         private readonly IReferenceResolver _referenceResolver;
 
         public dynamic GetBaseDocument(string userName, string instanceId)
@@ -107,10 +101,6 @@ namespace InfinniPlatform.RestfulApi.Utils
                 }
 
 
-                var profiler = _profilerComponent.GetOperationProfiler("VersionProvider.GetDocument",
-                    null);
-                profiler.Reset();
-
                 //делаем выборку документов для последующего Resolve и фильтрации по полям Resolved объектов
                 var pageSizeUnresolvedDocuments = Math.Min(pageSize, 1000);
 
@@ -126,8 +116,6 @@ namespace InfinniPlatform.RestfulApi.Utils
                 _referenceResolver.ResolveReferences(version, configId, documentId, result, ignoreResolve);
 
                 result = criteriaInterpreter.ApplyFilter(queryAnalyzer.GetAfterResolveCriteriaList(filter), result);
-
-                profiler.TakeSnapshot();
 
                 return result.Take(pageSize == 0 ? 10 : pageSize);
             }

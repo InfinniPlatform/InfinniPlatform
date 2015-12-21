@@ -12,22 +12,16 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 	    private readonly IConfigurationMediatorComponent _configurationMediatorComponent;
 	    private readonly IMetadataComponent _metadataComponent;
 	    private readonly InprocessDocumentComponent _inprocessDocumentComponent;
-	    private readonly IProfilerComponent _profilerComponent;
-	    private readonly ILogComponent _logComponent;
 	    private readonly IReferenceResolver _referenceResolver;
 
 	    public ActionUnitGetDocument(IConfigurationMediatorComponent configurationMediatorComponent,
 	                                 IMetadataComponent metadataComponent,
 	                                 InprocessDocumentComponent inprocessDocumentComponent,
-	                                 IProfilerComponent profilerComponent,
-	                                 ILogComponent logComponent,
 	                                 IReferenceResolver referenceResolver)
 	    {
 	        _configurationMediatorComponent = configurationMediatorComponent;
 	        _metadataComponent = metadataComponent;
 	        _inprocessDocumentComponent = inprocessDocumentComponent;
-	        _profilerComponent = profilerComponent;
-	        _logComponent = logComponent;
 	        _referenceResolver = referenceResolver;
 	    }
 
@@ -36,8 +30,6 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 	        var executor = new DocumentExecutor(_configurationMediatorComponent,
 	                                            _metadataComponent,
 	                                            _inprocessDocumentComponent,
-	                                            _profilerComponent,
-	                                            _logComponent,
 	                                            _referenceResolver);
 
 	        target.Result = executor.GetCompleteDocuments(null,

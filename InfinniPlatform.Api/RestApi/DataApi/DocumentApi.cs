@@ -45,9 +45,9 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
         public IEnumerable<dynamic> GetDocument(string configuration, string metadata, dynamic filter, int pageNumber, int pageSize, IEnumerable<dynamic> ignoreResolve = null, dynamic sorting = null)
         {
-            var document = _getDocumentExecutor.GetDocument(configuration, metadata, filter, pageNumber, pageSize);
+            //var document = _getDocumentExecutor.GetDocument(configuration, metadata, filter, pageNumber, pageSize);
 
-            var documentUnfolded = _getDocumentExecutor.GetDocumentUnfolded(configuration, metadata, filter, pageNumber, pageSize);
+            var document = _getDocumentExecutor.GetDocumentUnfolded(configuration, metadata, filter, pageNumber, pageSize);
 
             return document;
         }

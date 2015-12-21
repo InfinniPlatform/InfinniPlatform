@@ -18,7 +18,7 @@ namespace InfinniPlatform.RestfulApi.IoC
 
             builder.RegisterType<DocumentLinkMap>()
                    .AsSelf()
-                   .SingleInstance();
+                   .InstancePerDependency();
 
             builder.RegisterType<ReferenceResolver>()
                    .As<IReferenceResolver>()
@@ -30,7 +30,7 @@ namespace InfinniPlatform.RestfulApi.IoC
 
             builder.RegisterType<GetDocumentExecutor>()
                    .As<IGetDocumentExecutor>()
-                   .SingleInstance();
+                   .InstancePerDependency();
 
             // Прикладные скрипты
             builder.RegisterActionUnits(GetType().Assembly);
