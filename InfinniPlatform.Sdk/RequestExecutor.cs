@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 
 using Newtonsoft.Json;
 
@@ -18,7 +19,9 @@ namespace InfinniPlatform.Sdk
         {
             var clientHandler = new HttpClientHandler { CookieContainer = new CookieContainer() };
             var client = new HttpClient(clientHandler);
-
+#if DEBUG
+            client.Timeout = Timeout.InfiniteTimeSpan;
+#endif
             _client = client;
         }
 

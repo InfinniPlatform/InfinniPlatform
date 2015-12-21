@@ -10,92 +10,56 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 {
     public class DocumentApi
     {
-        public DocumentApi(RestQueryApi restQueryApi, ISetDocumentExecutor setDocumentExecutor)
+        public DocumentApi(RestQueryApi restQueryApi,
+                           ISetDocumentExecutor setDocumentExecutor,
+                           IGetDocumentExecutor getDocumentExecutor)
         {
             _restQueryApi = restQueryApi;
             _setDocumentExecutor = setDocumentExecutor;
+            _getDocumentExecutor = getDocumentExecutor;
         }
 
         private readonly RestQueryApi _restQueryApi;
         private readonly ISetDocumentExecutor _setDocumentExecutor;
+        private readonly IGetDocumentExecutor _getDocumentExecutor;
 
         public IEnumerable<dynamic> GetDocumentByQuery(string queryText, bool denormalizeResult = false)
         {
-            var result = ExecutePost("getbyquery", null, new
-                                                         {
-                                                             QueryText = queryText,
-                                                             DenormalizeResult = denormalizeResult
-                                                         });
-
-            return result.ToDynamicList();
+            return _getDocumentExecutor.GetDocumentByQuery(queryText, denormalizeResult);
         }
 
         public dynamic GetDocument(string id)
         {
-            var result = ExecutePost("getdocumentbyid", null, new
-                                                              {
-                                                                  Id = id,
-                                                                  Secured = false
-                                                              });
-
-            return result.ToDynamic();
+            return _getDocumentExecutor.GetDocument(id);
         }
 
         public int GetNumberOfDocuments(string configuration, string metadata, dynamic filter)
         {
-            var result = ExecutePost("getnumberofdocuments", null, new
-                                                                   {
-                                                                       Configuration = configuration,
-                                                                       Metadata = metadata,
-                                                                       Filter = filter,
-                                                                       Secured = false
-                                                                   });
-
-            return Convert.ToInt32(result.ToDynamic().NumberOfDocuments);
+            return _getDocumentExecutor.GetNumberOfDocuments(configuration, metadata, filter);
         }
 
         public int GetNumberOfDocuments(string configuration, string metadata, Action<FilterBuilder> filter)
         {
-            var filterBuilder = new FilterBuilder();
-
-            filter?.Invoke(filterBuilder);
-
-            return GetNumberOfDocuments(configuration, metadata, filterBuilder.GetFilter());
+            return _getDocumentExecutor.GetNumberOfDocuments(configuration, metadata, filter);
         }
 
         public IEnumerable<dynamic> GetDocument(string configuration, string metadata, dynamic filter, int pageNumber, int pageSize, IEnumerable<dynamic> ignoreResolve = null, dynamic sorting = null)
         {
-            var result = ExecutePost("getdocument", null, new
-                                                          {
-                                                              Configuration = configuration,
-                                                              Metadata = metadata,
-                                                              Filter = filter,
-                                                              PageNumber = pageNumber,
-                                                              PageSize = pageSize,
-                                                              IgnoreResolve = ignoreResolve,
-                                                              Sorting = sorting,
-                                                              Secured = false
-                                                          });
+            var document = _getDocumentExecutor.GetDocument(configuration, metadata, filter, pageNumber, pageSize);
 
-            return result.ToDynamicList();
+            var documentUnfolded = _getDocumentExecutor.GetDocumentUnfolded(configuration, metadata, filter, pageNumber, pageSize);
+
+            return document;
         }
 
         public IEnumerable<dynamic> GetDocument(string configuration, string metadata, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting = null)
         {
-            return GetDocument(configuration, metadata, filter, pageNumber, pageSize, null, sorting);
+            return _getDocumentExecutor.GetDocument(configuration, metadata, filter, pageNumber, pageSize, null, sorting);
         }
 
         public IEnumerable<dynamic> GetDocument(string configuration, string metadata, Action<FilterBuilder> filter, int pageNumber, int pageSize, IEnumerable<dynamic> ignoreResolve, Action<SortingBuilder> sorting = null)
         {
-            var filterBuilder = new FilterBuilder();
-
-            filter?.Invoke(filterBuilder);
-
-            var sortingBuilder = new SortingBuilder();
-
-            sorting?.Invoke(sortingBuilder);
-
-            return GetDocument(configuration, metadata, filterBuilder.GetFilter(), pageNumber, pageSize, ignoreResolve, sortingBuilder.GetSorting());
+            return _getDocumentExecutor.GetDocument(configuration, metadata, filter, pageNumber, pageSize, ignoreResolve, sorting);
         }
 
         public dynamic CreateDocument(string configuration, string metadata)

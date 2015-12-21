@@ -9,9 +9,22 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
 {
     public sealed class ActionUnitSetCredentials
     {
+        public ActionUnitSetCredentials(IMetadataComponent metadataComponent,
+                                        IScriptRunnerComponent scriptRunnerComponent,
+                                        ICustomServiceGlobalContext customServiceGlobalContext)
+        {
+            _metadataComponent = metadataComponent;
+            _scriptRunnerComponent = scriptRunnerComponent;
+            _customServiceGlobalContext = customServiceGlobalContext;
+        }
+
+        private readonly ICustomServiceGlobalContext _customServiceGlobalContext;
+        private readonly IMetadataComponent _metadataComponent;
+        private readonly IScriptRunnerComponent _scriptRunnerComponent;
+
         public void Action(IApplyContext target)
         {
-            dynamic defaultBusinessProcess = null;
+            dynamic defaultBusinessProcess;
 
             if (target.Item.Configuration == null)
             {
@@ -24,10 +37,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                 target.Item.Configuration.ToLowerInvariant() != "restfulapi")
             {
                 //ищем метаданные бизнес-процесса по умолчанию документа 
-                defaultBusinessProcess =
-                    target.Context.GetComponent<IMetadataComponent>()
-                          .GetMetadata(target.Item.Configuration, target.Item.Metadata,
-                                       MetadataType.Process, "Default");
+                defaultBusinessProcess = _metadataComponent.GetMetadata(target.Item.Configuration, target.Item.Metadata, MetadataType.Process, "Default");
             }
             else
             {
@@ -49,11 +59,9 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
                     scriptArguments.Item = target.Item.Document;
                     scriptArguments.Item.Configuration = target.Item.Configuration;
                     scriptArguments.Item.Metadata = target.Item.Metadata;
-                    scriptArguments.Context = target.Context.GetComponent<ICustomServiceGlobalContext>();
+                    scriptArguments.Context = _customServiceGlobalContext;
 
-                    target.Context.GetComponent<IScriptRunnerComponent>()
-                          .InvokeScript(defaultBusinessProcess.Transitions[0].CredentialsPoint.ScenarioId,
-                                        scriptArguments);
+                    _scriptRunnerComponent.InvokeScript(defaultBusinessProcess.Transitions[0].CredentialsPoint.ScenarioId, scriptArguments);
                 }
             }
         }
