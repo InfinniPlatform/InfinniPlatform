@@ -107,21 +107,5 @@ namespace InfinniPlatform.Sdk.ApiContracts
         /// <param name="roleName">Роль пользователя</param>
         /// <returns>Результат удаления роли пользователя</returns>
         dynamic DeleteUserRole(string userName, string roleName);
-
-        /// <summary>
-        ///Получить список объектов ACL указанного типа
-        /// </summary>
-        /// <param name="aclType">Тип объекта ACL</param>
-        /// <param name="filter">Фильтр получаемых объектов</param>
-        /// <param name="pageNumber">Номер страницы</param>
-        /// <param name="pageSize">Размер страницы</param>
-        /// <param name="sorting">Порядок сортировки</param>
-        /// <returns>Список объектов ACL</returns>
-        IEnumerable<object> GetAclList(
-            AclType aclType,
-            Action<FilterBuilder> filter,
-            int pageNumber,
-            int pageSize,
-            Action<SortingBuilder> sorting = null);
     }
 }

@@ -1,23 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-
-using InfinniPlatform.Sdk;
-using InfinniPlatform.Sdk.Api;
-using InfinniPlatform.Sdk.ApiContracts;
+﻿using InfinniPlatform.Sdk.ApiContracts;
 
 namespace InfinniPlatform.Api.RestApi.Public
 {
     public class AuthApi : IAuthApi
     {
-        public AuthApi(Auth.AuthApi authApi, DocumentApi documentApi)
+        public AuthApi(Auth.AuthApi authApi)
         {
             _authApi = authApi;
-            _documentApi = documentApi;
         }
 
 
         private readonly Auth.AuthApi _authApi;
-        private readonly DocumentApi _documentApi;
 
 
         public dynamic AddUser(string userName, string password)
@@ -79,21 +72,6 @@ namespace InfinniPlatform.Api.RestApi.Public
         public dynamic DeleteUserRole(string userName, string roleName)
         {
             return _authApi.RemoveUserRole(userName, roleName);
-        }
-
-        public IEnumerable<object> GetAclList(AclType aclType, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting = null)
-        {
-            if (aclType == AclType.User)
-            {
-                return _documentApi.GetDocument("Administration", "User", filter, pageNumber, pageSize, sorting);
-            }
-
-            if (aclType == AclType.Role)
-            {
-                return _documentApi.GetDocument("Administration", "Role", filter, pageNumber, pageSize, sorting);
-            }
-
-            throw new ArgumentException(string.Format("Cant get acl for type {0}", aclType));
         }
     }
 }

@@ -81,11 +81,6 @@ namespace InfinniPlatform.IoC
 
             // DocumentApi
 
-            builder.RegisterType<Api.RestApi.Public.DocumentApi>()
-                   .As<Sdk.ApiContracts.IDocumentApi>()
-                   .AsSelf()
-                   .SingleInstance();
-
             builder.RegisterType<Api.RestApi.DataApi.DocumentApi>()
                    .AsSelf()
                    .SingleInstance();

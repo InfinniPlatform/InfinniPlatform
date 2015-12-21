@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Sdk.ApiContracts;
+﻿using System.Linq;
+
+using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Sdk.Contracts;
-using InfinniPlatform.Sdk.Global;
 
 namespace InfinniPlatform.Sdk.Tests.TestData
 {
@@ -13,14 +9,13 @@ namespace InfinniPlatform.Sdk.Tests.TestData
     {
         public void Action(IApplyContext target)
         {
-            var documentApi = target.Context.GetComponent<IDocumentApi>();
+            var documentApi = target.Context.GetComponent<DocumentApi>();
 
-            dynamic document = documentApi.GetDocumentById("Gameshop","review", target.Item.DocumentId);
+            dynamic document = documentApi.GetDocument("Gameshop", "review", f => f.AddCriteria(c => c.Property("Id").IsEquals(target.Item.DocumentId)), 0, 1).FirstOrDefault();
 
             document.Likes = document.Likes + 1;
 
             documentApi.SetDocument("Gameshop", "review", document);
-
         }
     }
 }

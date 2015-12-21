@@ -216,7 +216,6 @@
     <Compile Include="RestApi\IRestVerbsRegistrator.cs" />
     <Compile Include="RestApi\Public\AuthApi.cs" />
     <Compile Include="RestApi\Public\CustomServiceApi.cs" />
-    <Compile Include="RestApi\Public\DocumentApi.cs" />
     <Compile Include="RestApi\Public\FileApi.cs" />
     <Compile Include="RestApi\Public\PrintViewApi.cs" />
     <Compile Include="RestApi\Public\RegisterApi.cs" />
