@@ -3,15 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
-using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Api.Properties;
+using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Hosting;
-using InfinniPlatform.Metadata.Implementation.Handlers;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
-using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Metadata;
 using InfinniPlatform.Sdk.Environment.Transactions;
 using InfinniPlatform.Sdk.IoC;
 
@@ -19,10 +14,11 @@ namespace InfinniPlatform.RestfulApi.Executors
 {
     internal class SetDocumentExecutor : ISetDocumentExecutor
     {
-        public SetDocumentExecutor(IGlobalContext globalContext, Func<IContainerResolver> containerResolver, IMetadataConfigurationProvider metadataConfigurationProvider)
+        public SetDocumentExecutor(IGlobalContext globalContext, Func<IContainerResolver> containerResolver, IMetadataComponent metadataComponent, IScriptRunnerComponent scriptRunnerComponent)
         {
             _globalContext = globalContext;
-            _metadataConfigurationProvider = metadataConfigurationProvider;
+            _metadataComponent = metadataComponent;
+            _scriptRunnerComponent = scriptRunnerComponent;
 
             // TODO: Сделано именно так, потому что есть циклическая ссылка "SetDocumentExecutor - TransactionManager - BinaryManager - SetDocumentExecutor"
             _transactionManager = new Lazy<ITransactionManager>(() => containerResolver().Resolve<ITransactionComponent>().GetTransactionManager());
@@ -30,7 +26,8 @@ namespace InfinniPlatform.RestfulApi.Executors
 
 
         private readonly IGlobalContext _globalContext;
-        private readonly IMetadataConfigurationProvider _metadataConfigurationProvider;
+        private readonly IMetadataComponent _metadataComponent;
+        private readonly IScriptRunnerComponent _scriptRunnerComponent;
         private readonly Lazy<ITransactionManager> _transactionManager;
 
 
@@ -45,33 +42,109 @@ namespace InfinniPlatform.RestfulApi.Executors
 
             foreach (var documents in documentBatches)
             {
-                dynamic batchResult = ExecuteSetDocument(configuration, documentType, documents);
+                var batchResult = ExecuteSetDocument(configuration, documentType, documents);
 
-                if (batchResult?.IsValid == false)
+                if (batchResult.IsValid == false)
                 {
-                    throw new ArgumentException(batchResult.ToString());
+                    throw new InvalidOperationException(batchResult.ValidationMessage?.ToString());
                 }
             }
 
-            dynamic result = new DynamicWrapper();
-            result.IsValid = true;
-            result.ValidationMessage = Resources.BatchCompletedSuccessfully;
+            var result = new SetDocumentResult { IsValid = true };
 
             return result;
         }
 
-        private object ExecuteSetDocument(string configuration, string documentType, IEnumerable<object> documentInstances)
+        private SetDocumentResult ExecuteSetDocument(string configuration, string documentType, IEnumerable<object> documentInstances)
         {
-            dynamic request = new DynamicWrapper();
-            request.Configuration = configuration;
-            request.Metadata = documentType;
-            request.Documents = documentInstances;
-            request.IgnoreWarnings = false;
-            request.AllowNonSchemaProperties = false;
+            var result = new SetDocumentResult { IsValid = true, ValidationMessage = null };
 
-            var configRequestProvider = new LocalDataProvider("RestfulApi", "configuration", "setdocument");
+            // Бизнес-процесс сохранения документа
+            var businessProcess = _metadataComponent.GetMetadata(configuration, documentType, MetadataType.Process, "Default");
 
-            return ApplyJsonObject(configRequestProvider, request);
+            // Скрипт, который выполняется для проверки документов на корректность
+            string onValidateAction = businessProcess?.Transitions?[0]?.ValidationPointError?.ScenarioId;
+
+            // Скрипт, который выполняется после успешного сохранения документов
+            string onSuccessAction = businessProcess?.Transitions?[0]?.SuccessPoint?.ScenarioId;
+
+            // TODO: Следует заменить на UnitOfWork со стратегией PerRequest
+            var transactionId = Guid.NewGuid().ToString();
+            var transaction = _transactionManager.Value.GetTransaction(transactionId);
+
+            foreach (dynamic documentInstance in documentInstances)
+            {
+                if (documentInstance.Id == null)
+                {
+                    documentInstance.Id = Guid.NewGuid();
+                }
+
+                if (!string.IsNullOrEmpty(onValidateAction))
+                {
+
+                    // Вызов прикладного скрипта для проверки документа
+                    ApplyContext actionContext = CreateActionContext(configuration, documentType, documentInstance);
+                    _scriptRunnerComponent.InvokeScript(onValidateAction, actionContext);
+
+                    if (!CheckActionResult(actionContext, result))
+                    {
+                        break;
+                    }
+                }
+
+                // Добавление документа в транзакцию
+                var transactionEntry = transaction.Attach(configuration, documentType, new[] { documentInstance });
+
+                if (!string.IsNullOrEmpty(onSuccessAction))
+                {
+                    // Вызов скрипта для пост-обработки документа перед его сохранением
+                    ApplyContext actionContext = CreateActionContext(configuration, documentType, documentInstance);
+                    _scriptRunnerComponent.InvokeScript(onSuccessAction, actionContext);
+
+                    // Предполагается, что скрипт может заменить оригинальный документ
+                    transactionEntry.UpdateDocument(documentInstance.Id, actionContext.Item);
+
+                    if (!CheckActionResult(actionContext, result))
+                    {
+                        break;
+                    }
+                }
+            }
+
+            if (result.IsValid)
+            {
+                // Физическое сохранение
+                transaction.CommitTransaction();
+            }
+
+            return result;
+        }
+
+        private ApplyContext CreateActionContext(string configuration, string documentType, object documentInstance)
+        {
+            var actionContext = new ApplyContext { Item = documentInstance, IsValid = true };
+
+            // TODO: Скорей всего, эта информация не нужна
+            actionContext.Configuration = configuration;
+            actionContext.Metadata = documentType;
+
+            // TODO: Эти действия вообще необъяснимы
+            actionContext.Item.Configuration = configuration;
+            actionContext.Item.Metadata = documentType;
+
+            // TODO: Заменить на IoC
+            actionContext.Context = _globalContext;
+
+            return actionContext;
+        }
+
+        private static bool CheckActionResult(ApplyContext actionContext, SetDocumentResult setDocumentResult)
+        {
+            setDocumentResult.IsValid = actionContext.IsValid;
+            setDocumentResult.ValidationMessage = actionContext.ValidationMessage;
+            setDocumentResult.InternalServerError = actionContext.IsValid ? null : "true";
+
+            return actionContext.IsValid;
         }
 
         private static IEnumerable<object>[] GetBatches(IEnumerable<object> items, int batchSize)
@@ -82,71 +155,14 @@ namespace InfinniPlatform.RestfulApi.Executors
                         .ToArray();
         }
 
-        private dynamic ApplyJsonObject(IConfigRequestProvider configRequestProvider, dynamic changesObject)
+
+        private class SetDocumentResult
         {
-            var documentType = configRequestProvider.GetMetadataIdentifier();
+            public bool IsValid { get; set; }
 
-            if (string.IsNullOrEmpty(documentType))
-            {
-                throw new ArgumentException("document type undefined");
-            }
+            public object ValidationMessage { get; set; }
 
-            // Метаданные конфигурации
-            var metadataConfiguration = _metadataConfigurationProvider.GetMetadataConfiguration(configRequestProvider.GetConfiguration());
-
-            // Идентификатор транзакции
-            var transactionMarker = changesObject.TransactionMarker ?? Guid.NewGuid().ToString();
-
-            // Начало транзакции
-            var transaction = _transactionManager.Value.GetTransaction(transactionMarker);
-
-            var moveContext = new ApplyContext
-            {
-                Id = changesObject.Id,
-                Context = _globalContext,
-                Item = changesObject,
-                Type = documentType,
-                Configuration = configRequestProvider.GetConfiguration(),
-                Metadata = configRequestProvider.GetMetadataIdentifier(),
-                Action = configRequestProvider.GetServiceName(),
-                TransactionMarker = transactionMarker
-            };
-
-            if (!ExecuteExtensionPoint(configRequestProvider, metadataConfiguration, documentType, "Move", moveContext))
-            {
-                return AggregateExtensions.PrepareInvalidFilterAggregate(moveContext);
-            }
-
-            var targetResult = new ApplyResultContext
-            {
-                Context = _globalContext,
-                Result = moveContext.Result ?? moveContext.Item,
-                Item = moveContext.Item,
-                Configuration = configRequestProvider.GetConfiguration(),
-                Metadata = configRequestProvider.GetMetadataIdentifier(),
-                Action = configRequestProvider.GetServiceName(),
-            };
-
-            if (!ExecuteExtensionPoint(configRequestProvider, metadataConfiguration, documentType, "GetResult", targetResult))
-            {
-                return AggregateExtensions.PrepareInvalidFilterAggregate(moveContext);
-            }
-
-            transaction.CommitTransaction();
-
-            return AggregateExtensions.PrepareResultAggregate(targetResult.Result);
-        }
-
-        private bool ExecuteExtensionPoint(IConfigRequestProvider configRequestProvider, IMetadataConfiguration metadataConfiguration, string documentType, string extensionPointName, ICommonContext extensionPointContext)
-        {
-            var extensionPoint = metadataConfiguration.GetExtensionPointValue(configRequestProvider, extensionPointName);
-
-            if (!string.IsNullOrEmpty(extensionPoint))
-            {
-                metadataConfiguration.MoveWorkflow(documentType, extensionPoint, extensionPointContext);
-            }
-
-            return extensionPointContext.IsValid;
+            public object InternalServerError { get; set; }
         }
     }
 }

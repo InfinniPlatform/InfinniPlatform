@@ -10,9 +10,6 @@ using InfinniPlatform.Sdk.Global;
 
 namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
 {
-    /// <summary>
-    /// Обработчик успешного сохранения документа (при стандартном сохранении документа)
-    /// </summary>
     public sealed class ActionUnitSuccessSetDocument
     {
         public ActionUnitSuccessSetDocument(IMetadataComponent metadataComponent, ITransactionComponent transactionComponent, IScriptRunnerComponent scriptRunnerComponent, ICustomServiceGlobalContext customServiceGlobalContext)
@@ -40,7 +37,7 @@ namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
             {
                 var defaultBusinessProcess = _metadataComponent.GetMetadata(configuration, documentType, MetadataType.Process, "Default");
 
-                // Скрипты, который выполняется после успешного сохранения документов
+                // Скрипт, который выполняется после успешного сохранения документов
                 string onSuccessAction = defaultBusinessProcess?.Transitions?[0]?.SuccessPoint?.ScenarioId;
 
                 if (onSuccessAction != null)
