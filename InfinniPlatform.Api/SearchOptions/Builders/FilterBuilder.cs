@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Api.SearchOptions.Builders
 {
     /// <summary>
-    ///     Позволяет описать набор критериев
+    /// Позволяет описать набор критериев
     /// </summary>
     public sealed class FilterBuilder
     {
-        private readonly IList<object> _criteriaList;
-
         public FilterBuilder()
         {
             _criteriaList = new List<dynamic>();
         }
+
+        private readonly IList<object> _criteriaList;
 
         public FilterBuilder AddCriteria(Action<CriteriaBuilder> criteria)
         {
@@ -57,156 +58,164 @@ namespace InfinniPlatform.Api.SearchOptions.Builders
             return builder.GetFilter();
         }
 
-        /// <summary>
-        ///     Позволяет задать одно условие
-        /// </summary>
+
         public class CriteriaBuilder
         {
-            private CriteriaType _criteriaType = CriteriaType.IsEquals;
-            private string _property;
-            private object _value;
+            public CriteriaBuilder()
+            {
+                _criteriaFilter = new CriteriaFilter { CriteriaType = CriteriaType.IsEquals };
+            }
+
+
+            private readonly CriteriaFilter _criteriaFilter;
+
 
             public CriteriaBuilder Property(string property)
             {
-                _property = property;
+                _criteriaFilter.Property = property;
                 return this;
             }
 
             public CriteriaBuilder IsEquals(object value)
             {
-                _value = value;
-                _criteriaType = CriteriaType.IsEquals;
+                _criteriaFilter.Value = value;
+                _criteriaFilter.CriteriaType = CriteriaType.IsEquals;
                 return this;
             }
 
             public CriteriaBuilder IsNotEquals(object value)
             {
-                _value = value;
-                _criteriaType = CriteriaType.IsNotEquals;
+                _criteriaFilter.Value = value;
+                _criteriaFilter.CriteriaType = CriteriaType.IsNotEquals;
                 return this;
             }
 
             public CriteriaBuilder IsMoreThan(object value)
             {
-                _value = value;
-                _criteriaType = CriteriaType.IsMoreThan;
+                _criteriaFilter.Value = value;
+                _criteriaFilter.CriteriaType = CriteriaType.IsMoreThan;
                 return this;
             }
 
             public CriteriaBuilder IsLessThan(object value)
             {
-                _value = value;
-                _criteriaType = CriteriaType.IsLessThan;
+                _criteriaFilter.Value = value;
+                _criteriaFilter.CriteriaType = CriteriaType.IsLessThan;
                 return this;
             }
 
             public CriteriaBuilder IsMoreThanOrEquals(object value)
             {
-                _value = value;
-                _criteriaType = CriteriaType.IsMoreThanOrEquals;
+                _criteriaFilter.Value = value;
+                _criteriaFilter.CriteriaType = CriteriaType.IsMoreThanOrEquals;
                 return this;
             }
 
             public CriteriaBuilder IsLessThanOrEquals(object value)
             {
-                _value = value;
-                _criteriaType = CriteriaType.IsLessThanOrEquals;
+                _criteriaFilter.Value = value;
+                _criteriaFilter.CriteriaType = CriteriaType.IsLessThanOrEquals;
                 return this;
             }
 
             public CriteriaBuilder IsContains(string value)
             {
-                _value = value;
-                _criteriaType = CriteriaType.IsContains;
+                _criteriaFilter.Value = value;
+                _criteriaFilter.CriteriaType = CriteriaType.IsContains;
                 return this;
             }
 
             public CriteriaBuilder IsNotContains(string value)
             {
-                _value = value;
-                _criteriaType = CriteriaType.IsNotContains;
+                _criteriaFilter.Value = value;
+                _criteriaFilter.CriteriaType = CriteriaType.IsNotContains;
                 return this;
             }
 
             public CriteriaBuilder IsEmpty()
             {
-                _value = string.Empty;
-                _criteriaType = CriteriaType.IsEmpty;
+                _criteriaFilter.Value = string.Empty;
+                _criteriaFilter.CriteriaType = CriteriaType.IsEmpty;
                 return this;
             }
 
             public CriteriaBuilder IsNotEmpty()
             {
-                _value = string.Empty;
-                _criteriaType = CriteriaType.IsNotEmpty;
+                _criteriaFilter.Value = string.Empty;
+                _criteriaFilter.CriteriaType = CriteriaType.IsNotEmpty;
                 return this;
             }
 
             public CriteriaBuilder IsStartsWith(string value)
             {
-                _value = value;
-                _criteriaType = CriteriaType.IsStartsWith;
+                _criteriaFilter.Value = value;
+                _criteriaFilter.CriteriaType = CriteriaType.IsStartsWith;
                 return this;
             }
 
             public CriteriaBuilder IsNotStartsWith(string value)
             {
-                _value = value;
-                _criteriaType = CriteriaType.IsNotStartsWith;
+                _criteriaFilter.Value = value;
+                _criteriaFilter.CriteriaType = CriteriaType.IsNotStartsWith;
                 return this;
             }
 
             public CriteriaBuilder IsEndsWith(string value)
             {
-                _value = value;
-                _criteriaType = CriteriaType.IsEndsWith;
+                _criteriaFilter.Value = value;
+                _criteriaFilter.CriteriaType = CriteriaType.IsEndsWith;
                 return this;
             }
 
             public CriteriaBuilder IsNotEndsWith(string value)
             {
-                _value = value;
-                _criteriaType = CriteriaType.IsNotEndsWith;
+                _criteriaFilter.Value = value;
+                _criteriaFilter.CriteriaType = CriteriaType.IsNotEndsWith;
                 return this;
             }
 
             public CriteriaBuilder Script(string value)
             {
-                _value = value;
-                _criteriaType = CriteriaType.Script;
+                _criteriaFilter.Value = value;
+                _criteriaFilter.CriteriaType = CriteriaType.Script;
                 return this;
             }
 
             public CriteriaBuilder FullTextSearch(string value)
             {
-                _value = value;
-                _criteriaType = CriteriaType.FullTextSearch;
+                _criteriaFilter.Value = value;
+                _criteriaFilter.CriteriaType = CriteriaType.FullTextSearch;
                 return this;
             }
 
             public CriteriaBuilder IsIn(params object[] values)
             {
-                _value = string.Join("\n", values.Select(v => v.ToString()));
-                _criteriaType = CriteriaType.IsIn;
+                _criteriaFilter.Value = string.Join("\n", values.Select(v => v.ToString()));
+                _criteriaFilter.CriteriaType = CriteriaType.IsIn;
+                return this;
+            }
+
+            public CriteriaBuilder IsIdIn(List<string> idList)
+            {
+                _criteriaFilter.Value = idList;
+                _criteriaFilter.CriteriaType = CriteriaType.IsIdIn;
                 return this;
             }
 
             internal object GetCriteria()
             {
-                return new
-                {
-                    Property = _property,
-                    Value = _value,
-                    CriteriaType = _criteriaType
-                };
+                return _criteriaFilter;
             }
+        }
 
-            public CriteriaBuilder IsIdIn(List<string> idList)
-            {
-                _value = idList;
-                _criteriaType = CriteriaType.IsIdIn;
-                return this;
-            }
+
+        public sealed class CriteriaFilter
+        {
+            public string Property { get; set; }
+
+            public object Value { get; set; }
+
+            public CriteriaType CriteriaType { get; set; }
         }
     }
 }

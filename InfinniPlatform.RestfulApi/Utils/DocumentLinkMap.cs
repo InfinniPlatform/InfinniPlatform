@@ -6,6 +6,8 @@ using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.SearchOptions.Builders;
+using InfinniPlatform.Hosting;
+using InfinniPlatform.Metadata.Implementation.Handlers;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -13,13 +15,15 @@ namespace InfinniPlatform.RestfulApi.Utils
 {
     public sealed class DocumentLinkMap
     {
-        public DocumentLinkMap(IMetadataComponent metadataComponent, RestQueryApi restQueryApi)
+        public DocumentLinkMap(IMetadataComponent metadataComponent, RestQueryApi restQueryApi, Func<ApplyChangesHandler> applyChangesHandlerFactory)
         {
             _metadataComponent = metadataComponent;
             _restQueryApi = restQueryApi;
+            _applyChangesHandlerFactory = applyChangesHandlerFactory;
         }
 
         private readonly RestQueryApi _restQueryApi;
+        private readonly Func<ApplyChangesHandler> _applyChangesHandlerFactory;
         private readonly IList<DocumentLink> _links = new List<DocumentLink>();
         private readonly IMetadataComponent _metadataComponent;
 
@@ -89,20 +93,20 @@ namespace InfinniPlatform.RestfulApi.Utils
 
             filter?.Invoke(filterBuilder);
 
-            var restQueryResult = _restQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getdocument", null, new
-                                                                                                                     {
-                                                                                                                         Configuration = groupsLink.Key.ConfigId,
-                                                                                                                         Metadata = groupsLink.Key.DocumentId,
-                                                                                                                         Filter = filter,
-                                                                                                                         PageNumber = 0,
-                                                                                                                         PageSize = 100000,
-                                                                                                                         IgnoreResolve = typeInfoChainUpdated,
-                                                                                                                         Secured = false
-                                                                                                                     });
+            dynamic request = new DynamicWrapper();
+            request.Configuration = groupsLink.Key.ConfigId;
+            request.Metadata = groupsLink.Key.DocumentId;
+            request.Filter = filterBuilder.GetFilter();
+            request.PageNumber = 0;
+            request.PageSize = 100;
+            request.IgnoreResolve = typeInfoChainUpdated;
 
-            var result = restQueryResult.ToDynamicList();
+            var applyChangesHandler = _applyChangesHandlerFactory();
+            applyChangesHandler.ConfigRequestProvider = new LocalDataProvider("RestfulApi", "configuration", "getdocument");
 
-            var resolvedLinks = result.ToList();
+            var result = applyChangesHandler.ApplyJsonObject(null, request);
+
+            var resolvedLinks = (result != null) ? Enumerable.ToList(result) : null;
 
             return resolvedLinks;
         }
