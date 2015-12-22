@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
 using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
-using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Transactions;
-using InfinniPlatform.Sdk.Environment.Validations;
-using InfinniPlatform.Sdk.Global;
 using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.RestfulApi.Executors
@@ -29,10 +24,12 @@ namespace InfinniPlatform.RestfulApi.Executors
             _transactionManager = new Lazy<ITransactionManager>(() => containerResolver().Resolve<ITransactionComponent>().GetTransactionManager());
         }
 
+
         private readonly IGlobalContext _globalContext;
         private readonly IMetadataComponent _metadataComponent;
         private readonly IScriptRunnerComponent _scriptRunnerComponent;
         private readonly Lazy<ITransactionManager> _transactionManager;
+
 
         public dynamic SetDocument(string configuration, string documentType, object documentInstance)
         {
@@ -45,25 +42,109 @@ namespace InfinniPlatform.RestfulApi.Executors
 
             foreach (var documents in documentBatches)
             {
-                dynamic batchResult = ExecuteSetDocument(configuration, documentType, documents);
+                var batchResult = ExecuteSetDocument(configuration, documentType, documents);
 
-                if (batchResult?.IsValid == false)
+                if (batchResult.IsValid == false)
                 {
-                    throw new ArgumentException(batchResult.ToString());
+                    throw new InvalidOperationException(batchResult.ValidationMessage?.ToString());
                 }
             }
 
-            dynamic result = new DynamicWrapper();
-            result.IsValid = true;
-            result.ValidationMessage = Resources.BatchCompletedSuccessfully;
+            var result = new SetDocumentResult { IsValid = true };
 
             return result;
         }
 
-        private object ExecuteSetDocument(string configuration, string documentType, IEnumerable<object> documentInstances)
+        private SetDocumentResult ExecuteSetDocument(string configuration, string documentType, IEnumerable<object> documentInstances)
         {
+            var result = new SetDocumentResult { IsValid = true, ValidationMessage = null };
 
-            return ApplyJsonObject(configuration, documentType, documentInstances);
+            // Бизнес-процесс сохранения документа
+            var businessProcess = _metadataComponent.GetMetadata(configuration, documentType, MetadataType.Process, "Default");
+
+            // Скрипт, который выполняется для проверки документов на корректность
+            string onValidateAction = businessProcess?.Transitions?[0]?.ValidationPointError?.ScenarioId;
+
+            // Скрипт, который выполняется после успешного сохранения документов
+            string onSuccessAction = businessProcess?.Transitions?[0]?.SuccessPoint?.ScenarioId;
+
+            // TODO: Следует заменить на UnitOfWork со стратегией PerRequest
+            var transactionId = Guid.NewGuid().ToString();
+            var transaction = _transactionManager.Value.GetTransaction(transactionId);
+
+            foreach (dynamic documentInstance in documentInstances)
+            {
+                if (documentInstance.Id == null)
+                {
+                    documentInstance.Id = Guid.NewGuid();
+                }
+
+                if (!string.IsNullOrEmpty(onValidateAction))
+                {
+
+                    // Вызов прикладного скрипта для проверки документа
+                    ApplyContext actionContext = CreateActionContext(configuration, documentType, documentInstance);
+                    _scriptRunnerComponent.InvokeScript(onValidateAction, actionContext);
+
+                    if (!CheckActionResult(actionContext, result))
+                    {
+                        break;
+                    }
+                }
+
+                // Добавление документа в транзакцию
+                var transactionEntry = transaction.Attach(configuration, documentType, new[] { documentInstance });
+
+                if (!string.IsNullOrEmpty(onSuccessAction))
+                {
+                    // Вызов скрипта для пост-обработки документа перед его сохранением
+                    ApplyContext actionContext = CreateActionContext(configuration, documentType, documentInstance);
+                    _scriptRunnerComponent.InvokeScript(onSuccessAction, actionContext);
+
+                    // Предполагается, что скрипт может заменить оригинальный документ
+                    transactionEntry.UpdateDocument(documentInstance.Id, actionContext.Item);
+
+                    if (!CheckActionResult(actionContext, result))
+                    {
+                        break;
+                    }
+                }
+            }
+
+            if (result.IsValid)
+            {
+                // Физическое сохранение
+                transaction.CommitTransaction();
+            }
+
+            return result;
+        }
+
+        private ApplyContext CreateActionContext(string configuration, string documentType, object documentInstance)
+        {
+            var actionContext = new ApplyContext { Item = documentInstance, IsValid = true };
+
+            // TODO: Скорей всего, эта информация не нужна
+            actionContext.Configuration = configuration;
+            actionContext.Metadata = documentType;
+
+            // TODO: Эти действия вообще необъяснимы
+            actionContext.Item.Configuration = configuration;
+            actionContext.Item.Metadata = documentType;
+
+            // TODO: Заменить на IoC
+            actionContext.Context = _globalContext;
+
+            return actionContext;
+        }
+
+        private static bool CheckActionResult(ApplyContext actionContext, SetDocumentResult setDocumentResult)
+        {
+            setDocumentResult.IsValid = actionContext.IsValid;
+            setDocumentResult.ValidationMessage = actionContext.ValidationMessage;
+            setDocumentResult.InternalServerError = actionContext.IsValid ? null : "true";
+
+            return actionContext.IsValid;
         }
 
         private static IEnumerable<object>[] GetBatches(IEnumerable<object> items, int batchSize)
@@ -74,151 +155,14 @@ namespace InfinniPlatform.RestfulApi.Executors
                         .ToArray();
         }
 
-        private dynamic ApplyJsonObject(string configuration, string documentType, IEnumerable<object> documentInstances)
+
+        private class SetDocumentResult
         {
-            // Идентификатор транзакции
-            var transactionId = Guid.NewGuid().ToString();
+            public bool IsValid { get; set; }
 
-            // Начало транзакции
-            var transaction = _transactionManager.Value.GetTransaction(transactionId);
+            public object ValidationMessage { get; set; }
 
-            dynamic result = new DynamicWrapper();
-
-            if (ValidationUnitSetDocumentError(transactionId, configuration, documentType, documentInstances, result)
-                && ActionUnitSetDocument(transactionId, configuration, documentType, documentInstances, result)
-                && ActionUnitSuccessSetDocument(transactionId, configuration, documentType, documentInstances, result))
-            {
-                transaction.CommitTransaction();
-            }
-            else
-            {
-                result.InternalServerError = true;
-            }
-
-            return result;
-        }
-
-        private bool ValidationUnitSetDocumentError(string transactionId, string configuration, string documentType, IEnumerable<object> documentInstances, dynamic result)
-        {
-            var validationResult = new ValidationResult();
-
-            var defaultBusinessProcess = _metadataComponent.GetMetadata(configuration, documentType, MetadataType.Process, "Default");
-
-            // Скрипт, который выполняется для проверки документов на корректность
-            string onValidateAction = defaultBusinessProcess?.Transitions?[0]?.ValidationPointError?.ScenarioId;
-
-            if (onValidateAction != null)
-            {
-                if (documentInstances != null)
-                {
-                    foreach (var document in documentInstances)
-                    {
-                        var actionContext = new ApplyContext();
-                        actionContext.Configuration = configuration;
-                        actionContext.Metadata = documentType;
-                        actionContext.Action = "setdocument";
-                        actionContext.Item = document;
-                        actionContext.Item.Configuration = configuration;
-                        actionContext.Item.Metadata = documentType;
-                        actionContext.Context = _globalContext;
-
-                        _scriptRunnerComponent.InvokeScript(onValidateAction, actionContext);
-
-                        if (actionContext.ValidationMessage != null)
-                        {
-                            if (actionContext.ValidationMessage is IEnumerable && actionContext.ValidationMessage.GetType() != typeof(string))
-                            {
-                                validationResult.Items.AddRange(actionContext.ValidationMessage);
-                            }
-                            else
-                            {
-                                validationResult.Items.Add(actionContext.ValidationMessage);
-                            }
-                        }
-
-                        validationResult.IsValid &= actionContext.IsValid;
-                    }
-                }
-            }
-
-            result.IsValid = validationResult.IsValid;
-            result.ValidationMessage = validationResult.Items;
-
-            return (result.IsValid == true);
-        }
-
-        private bool ActionUnitSetDocument(string transactionId, string configuration, string documentType, IEnumerable<object> documentInstances, dynamic result)
-        {
-            if (documentInstances != null)
-            {
-                foreach (dynamic document in documentInstances)
-                {
-                    if (document.Id == null)
-                    {
-                        document.Id = Guid.NewGuid();
-                    }
-
-                    result.Id = document.Id;
-                }
-
-                if (!string.IsNullOrEmpty(transactionId))
-                {
-                    var transaction = _transactionManager.Value.GetTransaction(transactionId);
-
-                    transaction.Attach(configuration, documentType, documentInstances);
-                }
-            }
-
-            result.IsValid = true;
-            result.ValidationMessage = string.Empty;
-
-            return (result.IsValid == true);
-        }
-
-        private bool ActionUnitSuccessSetDocument(string transactionId, string configuration, string documentType, IEnumerable<object> documentInstances, dynamic result)
-        {
-            var defaultBusinessProcess = _metadataComponent.GetMetadata(configuration, documentType, MetadataType.Process, "Default");
-
-            // Скрипт, который выполняется после успешного сохранения документов
-            string onSuccessAction = defaultBusinessProcess?.Transitions?[0]?.SuccessPoint?.ScenarioId;
-
-            if (onSuccessAction != null)
-            {
-                var documents = documentInstances;
-
-                if (documents != null)
-                {
-                    var transaction = _transactionManager.Value.GetTransaction(transactionId);
-
-                    var transactionItems = transaction.GetTransactionItems();
-
-                    foreach (dynamic document in documents)
-                    {
-                        var documentId = document.Id;
-
-                        var actionContext = new ApplyContext();
-                        actionContext.Configuration = configuration;
-                        actionContext.Metadata = documentType;
-                        actionContext.Action = "setdocument";
-                        actionContext.Item = document;
-                        actionContext.Item.Configuration = configuration;
-                        actionContext.Item.Metadata = documentType;
-                        actionContext.Context = _globalContext;
-
-                        // Выполнение скрипта для очередного документа
-                        _scriptRunnerComponent.InvokeScript(onSuccessAction, actionContext);
-
-                        // Обновление ссылки на документ в транзакции
-                        var attached = transactionItems.FirstOrDefault(i => i.ContainsInstance(documentId));
-                        attached?.UpdateDocument(document.Id, actionContext.Item);
-                    }
-                }
-            }
-
-            result.IsValid = true;
-            result.ValidationMessage = string.Empty;
-
-            return (result.IsValid == true);
+            public object InternalServerError { get; set; }
         }
     }
 }

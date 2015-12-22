@@ -42,7 +42,7 @@ namespace InfinniPlatform.Sdk.Environment.Transactions
         /// <param name="configId">Идентификатор конфигурации</param>
         /// <param name="documentId">Идентификатор типа документа</param>
         /// <param name="documents">Присоединяемые документы</param>
-        void Attach(string configId, string documentId, IEnumerable<dynamic> documents);
+        AttachedInstance Attach(string configId, string documentId, IEnumerable<dynamic> documents);
 
         /// <summary>
         /// Присоединить файл к участнику транзакции, ссылающемуся на документ
