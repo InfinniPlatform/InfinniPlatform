@@ -47,7 +47,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
         {
             //var document = _getDocumentExecutor.GetDocument(configuration, metadata, filter, pageNumber, pageSize);
 
-            var document = _getDocumentExecutor.GetDocumentUnfolded(configuration, metadata, filter, pageNumber, pageSize);
+            var document = _getDocumentExecutor.GetDocumentUnfolded(configuration, metadata, filter, pageNumber, pageSize, sorting: sorting);
 
             return document;
         }
