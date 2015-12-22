@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Api.Metadata;
+using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.SearchOptions.Builders;
 using InfinniPlatform.Sdk.ContextComponents;
@@ -12,23 +13,25 @@ namespace InfinniPlatform.RestfulApi.Utils
 {
     public sealed class DocumentLinkMap
     {
-        public DocumentLinkMap(IMetadataComponent metadataComponent, DocumentApi documentApi)
+        public DocumentLinkMap(IMetadataComponent metadataComponent, RestQueryApi restQueryApi)
         {
             _metadataComponent = metadataComponent;
-            _documentApi = documentApi;
+            _restQueryApi = restQueryApi;
         }
 
-        private readonly DocumentApi _documentApi;
+        private readonly RestQueryApi _restQueryApi;
         private readonly IList<DocumentLink> _links = new List<DocumentLink>();
         private readonly IMetadataComponent _metadataComponent;
 
         public void RegisterLink(string configId, string documentId, string instanceId, Action<object> valueSetFunc)
         {
-            var link = new DocumentLink();
-            link.ConfigId = configId;
-            link.DocumentId = documentId;
-            link.InstanceId = instanceId;
-            link.SetValue = valueSetFunc;
+            var link = new DocumentLink
+                       {
+                           ConfigId = configId,
+                           DocumentId = documentId,
+                           InstanceId = instanceId,
+                           SetValue = valueSetFunc
+                       };
 
             _links.Add(link);
         }
@@ -53,7 +56,7 @@ namespace InfinniPlatform.RestfulApi.Utils
                     continue;
                 }
 
-                if (HasCircularRefs(version, groupsLink.Key.ConfigId, groupsLink.Key.DocumentId))
+                if (HasCircularRefs(groupsLink.Key.ConfigId, groupsLink.Key.DocumentId))
                 {
                     continue;
                 }
@@ -67,9 +70,8 @@ namespace InfinniPlatform.RestfulApi.Utils
                 Action<FilterBuilder> builder =
                     f => f.AddCriteria(c => c.Property("Id").IsIdIn(values.Select(i => i.InstanceId).ToList()));
 
-                var resolvedLinks = _documentApi.GetDocument(groupsLink.Key.ConfigId, groupsLink.Key.DocumentId,
-                    builder, 0, 100000, typeInfoChainUpdated).ToList();
-
+                var resolvedLinks = GetResolvedLinks(groupsLink, builder, typeInfoChainUpdated);
+                
                 foreach (var resolvedLink in resolvedLinks)
                 {
                     var doc = _links.Where(l => l.InstanceId == resolvedLink.Id);
@@ -81,7 +83,31 @@ namespace InfinniPlatform.RestfulApi.Utils
             }
         }
 
-        private bool HasCircularRefs(string version, string configId, string documentId)
+        private List<dynamic> GetResolvedLinks(IGrouping<dynamic, DocumentLink> groupsLink, Action<FilterBuilder> filter, List<dynamic> typeInfoChainUpdated)
+        {
+            var filterBuilder = new FilterBuilder();
+
+            filter?.Invoke(filterBuilder);
+
+            var restQueryResult = _restQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getdocument", null, new
+                                                                                                                     {
+                                                                                                                         Configuration = groupsLink.Key.ConfigId,
+                                                                                                                         Metadata = groupsLink.Key.DocumentId,
+                                                                                                                         Filter = filter,
+                                                                                                                         PageNumber = 0,
+                                                                                                                         PageSize = 100000,
+                                                                                                                         IgnoreResolve = typeInfoChainUpdated,
+                                                                                                                         Secured = false
+                                                                                                                     });
+
+            var result = restQueryResult.ToDynamicList();
+
+            var resolvedLinks = result.ToList();
+
+            return resolvedLinks;
+        }
+
+        private bool HasCircularRefs(string configId, string documentId)
         {
             var metadata = _metadataComponent.GetMetadataList(configId, documentId,
                 MetadataType.Schema);

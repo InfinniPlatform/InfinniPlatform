@@ -18,8 +18,6 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                 new DocumentExecutor(target.Context.GetComponent<IConfigurationMediatorComponent>(),
                     target.Context.GetComponent<IMetadataComponent>(),
                     target.Context.GetComponent<InprocessDocumentComponent>(),
-                    target.Context.GetComponent<IProfilerComponent>(),
-                    target.Context.GetComponent<ILogComponent>(),
                     target.Context.GetComponent<IReferenceResolver>());
 
             if (string.IsNullOrEmpty(target.Item.ConfigId) || string.IsNullOrEmpty(target.Item.DocumentId))

@@ -209,6 +209,7 @@
     <Compile Include="Metadata\ConfigurationManagers\Standard\MetadataReaders\MetadataReader.cs" />
     <Compile Include="Metadata\ConfigurationManagers\Standard\MetadataManagers\MetadataManagerConfiguration.cs" />
     <Compile Include="Metadata\ConfigurationManagers\Standard\MetadataManagers\MetadataManagerElement.cs" />
+    <Compile Include="RestApi\DataApi\IGetDocumentExecutor.cs" />
     <Compile Include="RestApi\DataApi\ISetDocumentExecutor.cs" />
     <Compile Include="RestApi\DataApi\MetadataApi.cs" />
     <Compile Include="RestApi\DataApi\MetadataLoaderHelper.cs" />

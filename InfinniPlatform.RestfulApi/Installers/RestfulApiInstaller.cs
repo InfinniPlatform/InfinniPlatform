@@ -483,14 +483,24 @@ namespace InfinniPlatform.RestfulApi.Installers
                                         "uploadbinarycontent"))
                     )));
 
+            metadataConfiguration.RegisterWorkflow("configuration", "getdocument",
+                                                   f => f.FlowWithoutState(workflowConfig => workflowConfig
+                                                                                                 .Move(stateTransitionConfig => stateTransitionConfig.WithAction(() => actionUnits.GetAction("getdocument"))
+                                                                                                                                                     .WithSimpleAuthorization(() => actionUnits.GetAction("documentauth"))
+                                                                                                                                                     .WithComplexAuthorization(() => actionUnits.GetAction("complexauth"))
+                                                                                                                                                     .OnSuccess(() => actionUnits.GetAction("filterauthdocument"))
+                                                                                                                                                     .OnCredentials(() => actionUnits.GetAction("setcredentials")))));
 
-            metadataConfiguration.RegisterWorkflow("configuration", "getdocument", f => f
-                .FlowWithoutState(wc => wc.Move(ws => ws.WithAction(() => actionUnits.GetAction("getdocument"))
-                                                        .WithSimpleAuthorization(() => actionUnits.GetAction("documentauth"))
-                                                        .WithComplexAuthorization(() => actionUnits.GetAction("complexauth"))
-                                                        .OnSuccess(() => actionUnits.GetAction("filterauthdocument"))
-                                                        .OnCredentials(() => actionUnits.GetAction("setcredentials"))
-                    )));
+            metadataConfiguration.RegisterWorkflow("configuration", "setdocument",
+                                                   f => f.FlowWithoutState(wc => wc
+                                                                                     .Move(ws => ws.WithValidationWarning(() => actionUnits.GetValidator("setdocumentvalidationwarning"))
+                                                                                                   .WithValidationError(() => actionUnits.GetValidator("setdocumentvalidationerror"))
+                                                                                                   .WithAction(() => actionUnits.GetAction("setdocument"))
+                                                                                                   .WithSimpleAuthorization(() => actionUnits.GetAction("documentauth"))
+                                                                                                   .WithComplexAuthorization(() => actionUnits.GetAction("complexauth"))
+                                                                                                   .OnSuccess(() => actionUnits.GetAction("successsetdocument"))
+                                                                                                   .OnFail(() => actionUnits.GetAction("failsetdocument"))
+                                                                                                   .OnCredentials(() => actionUnits.GetAction("setcredentials")))));
 
             metadataConfiguration.RegisterWorkflow("configuration", "getnumberofdocuments",
                 f => f.FlowWithoutState(wc => wc
@@ -519,52 +529,6 @@ namespace InfinniPlatform.RestfulApi.Installers
                                 () =>
                                     actionUnits.GetAction(
                                         "filterupdateevents")))));
-
-            metadataConfiguration.RegisterWorkflow("configuration", "setdocument",
-                f => f.FlowWithoutState(wc => wc
-                    .Move(ws => ws
-                        .WithValidationWarning
-                        (() =>
-                            actionUnits
-                                .GetValidator(
-                                    "setdocumentvalidationwarning"))
-                        .WithValidationError
-                        (() =>
-                            actionUnits
-                                .GetValidator(
-                                    "setdocumentvalidationerror"))
-                        .WithAction(
-                            () =>
-                                actionUnits
-                                    .GetAction(
-                                        "setdocument"))
-                        .WithSimpleAuthorization
-                        (() =>
-                            actionUnits
-                                .GetAction(
-                                    "documentauth"))
-                        .WithComplexAuthorization
-                        (() =>
-                            actionUnits
-                                .GetAction(
-                                    "complexauth"))
-                        .OnSuccess(
-                            () =>
-                                actionUnits
-                                    .GetAction(
-                                        "successsetdocument"))
-                        .OnFail(
-                            () =>
-                                actionUnits
-                                    .GetAction(
-                                        "failsetdocument"))
-                        .OnCredentials(
-                            () =>
-                                actionUnits
-                                    .GetAction(
-                                        "setcredentials"))
-                    )));
-
 
             metadataConfiguration.RegisterWorkflow("configuration", "createdocument",
                 f => f.FlowWithoutState(wc => wc
