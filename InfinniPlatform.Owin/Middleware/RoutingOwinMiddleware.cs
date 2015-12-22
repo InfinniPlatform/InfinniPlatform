@@ -128,8 +128,7 @@ namespace InfinniPlatform.Owin.Middleware
             }
             else
             {
-                throw new ArgumentException(string.Format(Resources.RequestHasUnsupportedContentType,
-                    requestContentType));
+                throw new ArgumentException(string.Format(Resources.RequestHasUnsupportedContentType, requestContentType));
             }
 
             if (result == null)

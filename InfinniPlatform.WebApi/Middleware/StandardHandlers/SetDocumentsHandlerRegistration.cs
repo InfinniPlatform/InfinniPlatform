@@ -4,8 +4,6 @@ using InfinniPlatform.WebApi.Middleware.RouteFormatters;
 
 using Microsoft.Owin;
 
-using Newtonsoft.Json.Linq;
-
 namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 {
     public sealed class SetDocumentsHandlerRegistration : HandlerRegistration
@@ -24,11 +22,11 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 
         protected override IRequestHandlerResult ExecuteHandler(IOwinContext context)
         {
-            dynamic body = JArray.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
+            dynamic body = RoutingOwinMiddleware.ReadRequestBody(context);
 
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            return new ValueRequestHandlerResult(_documentApi.SetDocuments(routeDictionary["application"], routeDictionary["documentType"], body));
+            return new ValueRequestHandlerResult(_documentApi.SetDocuments(routeDictionary["application"], routeDictionary["documentType"], body.Documents));
         }
     }
 }

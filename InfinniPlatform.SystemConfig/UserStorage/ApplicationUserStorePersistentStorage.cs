@@ -304,7 +304,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 
         private void SetDocument(string documentType, object document)
         {
-            _documentApi.SetDocument(AuthorizationStorageExtensions.AuthorizationConfigId, documentType, document, false, true);
+            _documentApi.SetDocument(AuthorizationStorageExtensions.AuthorizationConfigId, documentType, document);
         }
 
         private void DeleteDocument(string documentType, string documentId)

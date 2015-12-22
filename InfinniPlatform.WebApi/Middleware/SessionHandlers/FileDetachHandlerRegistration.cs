@@ -5,8 +5,6 @@ using InfinniPlatform.WebApi.Middleware.RouteFormatters;
 
 using Microsoft.Owin;
 
-using Newtonsoft.Json.Linq;
-
 namespace InfinniPlatform.WebApi.Middleware.SessionHandlers
 {
     public sealed class FileDetachHandlerRegistration : HandlerRegistration
@@ -26,12 +24,13 @@ namespace InfinniPlatform.WebApi.Middleware.SessionHandlers
 
         protected override IRequestHandlerResult ExecuteHandler(IOwinContext context)
         {
-            dynamic body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
+            dynamic body = RoutingOwinMiddleware.ReadRequestBody(context);
 
             if (body.InstanceId != null && body.FieldName != null && body.SessionId != null)
             {
                 return new ValueRequestHandlerResult(_sessionApi.DetachFile(body));
             }
+
             return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
         }
     }

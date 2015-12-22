@@ -15,7 +15,9 @@ using InfinniPlatform.Sdk.Events;
 
 namespace InfinniPlatform.Api.RestQuery.RestQueryBuilders
 {
-    public sealed class LocalQueryBuilder : IRestQueryBuilder
+    public delegate LocalQueryBuilder RestQueryBuilderFactory(string configuration, string documentType, string action);
+
+    public sealed class LocalQueryBuilder
     {
         public LocalQueryBuilder(string configuration, string documentType, string action, IRequestLocal requestLocal)
         {

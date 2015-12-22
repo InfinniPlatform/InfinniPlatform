@@ -1,11 +1,8 @@
 ﻿using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Owin.Middleware;
-using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.WebApi.Middleware.RouteFormatters;
 
 using Microsoft.Owin;
-
-using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 {
@@ -25,7 +22,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 
         protected override IRequestHandlerResult ExecuteHandler(IOwinContext context)
         {
-            var body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString()).ToDynamic();
+            dynamic body = RoutingOwinMiddleware.ReadRequestBody(context);
 
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 

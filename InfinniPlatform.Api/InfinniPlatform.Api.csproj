@@ -284,7 +284,6 @@
     <Compile Include="RestQuery\ControllerRoutingFactory.cs" />
     <Compile Include="RestQuery\EventObjects\EventList.cs" />
     <Compile Include="RestQuery\EventObjects\ObjectMetadataHandler.cs" />
-    <Compile Include="RestQuery\IRestQueryBuilder.cs" />
     <Compile Include="RestQuery\IRestQueryExecutor.cs" />
     <Compile Include="RestQuery\RestQueryExecutors\RestQueryExecutor.cs" />
     <Compile Include="RestQuery\RestQueryResponse.cs" />

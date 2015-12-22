@@ -1,11 +1,10 @@
-﻿using System;
-using InfinniPlatform.Api.Metadata;
+﻿using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.Sdk.Dynamic;
+
 using Microsoft.Owin;
-using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.WebApi.Middleware.Metadata.DocumentElements
 {
@@ -18,17 +17,7 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.DocumentElements
 
         protected override IRequestHandlerResult ExecuteHandler(IOwinContext context)
         {
-            dynamic body = null;
-
-            try
-            {
-                body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
-            }
-            catch (Exception e)
-            {
-                body = null;
-            }
-
+            dynamic body = RoutingOwinMiddleware.ReadRequestBody(context);
 
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 

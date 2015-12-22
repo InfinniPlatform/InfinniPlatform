@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 
 using InfinniPlatform.NodeServiceHost;
@@ -30,6 +31,45 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
         }
 
         [Test]
+        //[Ignore("Manual - Simplification SetDocument()")]
+        public void SimplificationSetDocument()
+        {
+            // Given
+
+            var stopwatch = new Stopwatch();
+            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
+
+            var document = new
+            {
+                Id = Guid.NewGuid().ToString(),
+                TestProperty = "TestValue"
+            };
+
+            // When
+
+            documentApi.SetDocument(ConfigurationId, DocumentType, document);
+
+            stopwatch.Restart();
+            documentApi.SetDocument(ConfigurationId, DocumentType, document);
+            stopwatch.Stop();
+            Console.WriteLine(@"SetDocument: {0}", stopwatch.Elapsed);
+
+            var afterSave = documentApi.GetDocument(ConfigurationId, DocumentType, f => f.AddCriteria(c => c.Property("Id").IsEquals(document.Id)), 0, 1);
+
+            documentApi.DeleteDocument(ConfigurationId, DocumentType, document.Id);
+
+            var afterDelete = documentApi.GetDocument(ConfigurationId, DocumentType, f => f.AddCriteria(c => c.Property("Id").IsEquals(document.Id)), 0, 1);
+
+            // Then
+
+            Assert.IsNotNull(afterSave);
+            Assert.AreEqual(document.Id, afterSave.FirstOrDefault()?.Id);
+
+            Assert.IsNotNull(afterDelete);
+            Assert.AreEqual(0, afterDelete.Count());
+        }
+
+        [Test]
         public void ShouldDeleteDocument()
         {
             // Given
@@ -39,14 +79,14 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             var document = new
             {
                 Id = Guid.NewGuid().ToString(),
-                TestProperty = "delete"
+                TestProperty = "TestValue"
             };
 
             // When
 
             documentApi.SetDocument(ConfigurationId, DocumentType, document);
 
-            var afterSave = documentApi.GetDocument(ConfigurationId, DocumentType, filter => filter.AddCriteria(cr => cr.Property("TestProperty").IsEquals("delete")), 0, 1);
+            var afterSave = documentApi.GetDocument(ConfigurationId, DocumentType, f => f.AddCriteria(c => c.Property("Id").IsEquals(document.Id)), 0, 1);
 
             documentApi.DeleteDocument(ConfigurationId, DocumentType, document.Id);
 
@@ -55,7 +95,6 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             // Then
 
             Assert.IsNotNull(afterSave);
-            Assert.AreEqual(1, afterSave.Count());
             Assert.AreEqual(document.Id, afterSave.FirstOrDefault()?.Id);
 
             Assert.IsNotNull(afterDelete);

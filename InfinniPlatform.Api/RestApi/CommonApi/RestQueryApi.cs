@@ -4,6 +4,7 @@ using System.IO;
 
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Api.RestQuery;
+using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
 using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Api.RestApi.CommonApi

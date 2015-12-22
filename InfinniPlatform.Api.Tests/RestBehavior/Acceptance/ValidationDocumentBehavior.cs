@@ -40,8 +40,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             Console.WriteLine(error.ToString());
 
             // Then
-            Assert.IsTrue(error.Message.Contains(@"\""IsValid\"":false"));
-            Assert.IsTrue(error.Message.Contains(@"\""TestComplexValidatorMessage\"""));
+            Assert.IsTrue(error.Message.Contains(@"TestComplexValidatorMessage"));
         }
     }
 }

@@ -4,8 +4,6 @@ using InfinniPlatform.WebApi.Middleware.RouteFormatters;
 
 using Microsoft.Owin;
 
-using Newtonsoft.Json.Linq;
-
 namespace InfinniPlatform.WebApi.Middleware.UserAuthHandlers
 {
     public sealed class AddUserClaimHandlerRegistration : HandlerRegistration
@@ -26,7 +24,7 @@ namespace InfinniPlatform.WebApi.Middleware.UserAuthHandlers
         {
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            dynamic body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
+            dynamic body = RoutingOwinMiddleware.ReadRequestBody(context);
 
             return new ValueRequestHandlerResult(_authApi.SetSessionData(routeDictionary["userName"], routeDictionary["claimType"], body.ClaimValue != null ? body.ClaimValue.ToString() : null));
         }

@@ -39,7 +39,7 @@ namespace InfinniPlatform.SystemConfig.Configurator
                     documentProvider.SetDocuments(
                         configuration,
                         metadata,
-                        Encoding.UTF8.GetString(buffer).ToDynamicList(), 1000);
+                        Encoding.UTF8.GetString(buffer).ToDynamicList());
                 }
             }
         }

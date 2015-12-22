@@ -145,14 +145,14 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             return result.ToDynamic();
         }
 
-        public dynamic SetDocument(string configuration, string documentType, dynamic documentInstance, bool ignoreWarnings = false, bool allowNonSchemaProperties = false)
+        public dynamic SetDocument(string configuration, string documentType, object documentInstance)
         {
-            return _setDocumentExecutor.SetDocument(configuration, documentType, documentInstance, ignoreWarnings, allowNonSchemaProperties);
+            return _setDocumentExecutor.SetDocument(configuration, documentType, documentInstance);
         }
 
-        public dynamic SetDocuments(string configuration, string documentType, IEnumerable<object> documentInstances, int batchSize = 200, bool allowNonSchemaProperties = false)
+        public dynamic SetDocuments(string configuration, string documentType, IEnumerable<object> documentInstances)
         {
-            return _setDocumentExecutor.SetDocuments(configuration, documentType, documentInstances, batchSize, allowNonSchemaProperties);
+            return _setDocumentExecutor.SetDocuments(configuration, documentType, documentInstances);
         }
 
         private RestQueryResponse ExecutePost(string action, string id, object body)

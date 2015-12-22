@@ -15,12 +15,15 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
 
         public void Action(IApplyContext target)
         {
-            if (target.Item.TestValue != "Test" &&
-                target.Item.RegisterMoveValue != "RegisterMove")
+            if (target.Item.TestValue != "Test" && target.Item.RegisterMoveValue != "RegisterMove")
             {
-                dynamic item = new DynamicWrapper();
-                item.TestValue = "Test";
-                _documentApi.SetDocument(target.Item.Configuration, target.Item.Metadata, item);
+                string configuration = target.Item.Configuration;
+                string documentType = target.Item.Metadata;
+
+                dynamic documentInstance = new DynamicWrapper();
+                documentInstance.TestValue = "Test";
+
+                _documentApi.SetDocument(configuration, documentType, documentInstance);
             }
         }
     }

@@ -1,10 +1,9 @@
-﻿using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
+﻿using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.Sdk.Dynamic;
+
 using Microsoft.Owin;
-using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.WebApi.Middleware.Metadata.ConfigurationElements
 {
@@ -19,7 +18,7 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.ConfigurationElements
         {
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            dynamic body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
+            dynamic body = RoutingOwinMiddleware.ReadRequestBody(context);
 
             if (body.Name == null || body.Id == null)
             {
@@ -28,7 +27,7 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.ConfigurationElements
 
             var managerConfigElement = new ManagerFactoryConfiguration(routeDictionary["configuration"]);
 
-            IDataManager manager = managerConfigElement.BuildManagerByType(routeDictionary["metadataType"]);
+            var manager = managerConfigElement.BuildManagerByType(routeDictionary["metadataType"]);
 
             manager.InsertItem(DynamicWrapperExtensions.ToDynamic(body));
 

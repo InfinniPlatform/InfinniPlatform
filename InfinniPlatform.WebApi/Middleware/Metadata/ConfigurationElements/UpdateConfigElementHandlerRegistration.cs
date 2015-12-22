@@ -1,11 +1,9 @@
-﻿using System;
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
+﻿using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.Sdk.Dynamic;
+
 using Microsoft.Owin;
-using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.WebApi.Middleware.Metadata.ConfigurationElements
 {
@@ -18,23 +16,13 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.ConfigurationElements
 
         protected override IRequestHandlerResult ExecuteHandler(IOwinContext context)
         {
-            dynamic body = null;
-
-            try
-            {
-                body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
-            }
-            catch (Exception e)
-            {
-                body = null;
-            }
+            dynamic body = RoutingOwinMiddleware.ReadRequestBody(context);
 
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-
             var managerConfigElement = new ManagerFactoryConfiguration(routeDictionary["configuration"]);
 
-            IDataManager manager = managerConfigElement.BuildManagerByType(routeDictionary["metadataType"]);
+            var manager = managerConfigElement.BuildManagerByType(routeDictionary["metadataType"]);
 
             if (body != null)
             {
@@ -42,7 +30,6 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.ConfigurationElements
                 {
                     return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
                 }
-
 
                 manager.MergeItem(DynamicWrapperExtensions.ToDynamic(body));
             }

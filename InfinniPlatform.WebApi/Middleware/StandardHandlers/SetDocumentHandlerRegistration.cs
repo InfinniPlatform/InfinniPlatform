@@ -24,7 +24,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 
         protected override IRequestHandlerResult ExecuteHandler(IOwinContext context)
         {
-            dynamic body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
+            dynamic body = RoutingOwinMiddleware.ReadRequestBody(context);
 
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 

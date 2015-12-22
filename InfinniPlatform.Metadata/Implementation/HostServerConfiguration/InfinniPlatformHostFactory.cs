@@ -17,7 +17,7 @@ namespace InfinniPlatform.Metadata.Implementation.HostServerConfiguration
             this IServiceTemplateConfiguration serviceTemplateConfiguration)
         {
             serviceTemplateConfiguration.RegisterServiceTemplate<ApplyChangesHandler>("ApplyEvents",
-                "ApplyEventsWithMetadata",
+                "ApplyJsonObject",
                 new ExtensionPointHandlerConfig()
                     .AddExtensionPoint("FilterEvents", ContextTypeKind.ApplyFilter)
                     .AddExtensionPoint("Move", ContextTypeKind.ApplyMove)

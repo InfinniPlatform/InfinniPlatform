@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -46,34 +47,31 @@ namespace InfinniPlatform.Sdk.Environment.Transactions
         public void AddFile(string fieldName, Stream stream)
         {
             Files.Add(new FileDescription
-                      {
-                          FieldName = fieldName,
-                          Bytes = ReadAllBytes(stream)
-                      });
+            {
+                FieldName = fieldName,
+                Bytes = ReadAllBytes(stream)
+            });
         }
 
-        private byte[] ReadAllBytes(Stream stream)
+        private static byte[] ReadAllBytes(Stream stream)
         {
-            var buffer = new byte[16 * 1024];
-            using (var ms = new MemoryStream())
+            using (var memory = new MemoryStream())
             {
-                int read;
-                while ((read = stream.Read(buffer, 0, buffer.Length)) > 0)
-                {
-                    ms.Write(buffer, 0, read);
-                }
-                return ms.ToArray();
+                stream.CopyTo(memory);
+                memory.Flush();
+
+                return memory.ToArray();
             }
         }
 
         /// <summary>
         /// Содержит ли присоединенный экземпляр документ с указанным идентификатором
         /// </summary>
-        /// <param name="instanceId">Идентификатор документа</param>
+        /// <param name="id">Идентификатор документа</param>
         /// <returns>Признак наличия документа с указанным идентификатором</returns>
-        public bool ContainsInstance(string instanceId)
+        public bool ContainsInstance(object id)
         {
-            return Documents.Any(d => d.Id != null && d.Id.Equals(instanceId));
+            return Documents.Any(i => CompareDocumentIds(i.Id, id));
         }
 
         /// <summary>
@@ -83,6 +81,7 @@ namespace InfinniPlatform.Sdk.Environment.Transactions
         public void RemoveFile(string fieldName)
         {
             var fileDescription = Files.FirstOrDefault(f => f.FieldName == fieldName);
+
             if (fileDescription != null)
             {
                 Files.RemoveItem(fileDescription);
@@ -93,13 +92,19 @@ namespace InfinniPlatform.Sdk.Environment.Transactions
         {
             lock (_syncObject)
             {
-                var doc = Documents.FirstOrDefault(f => f.Id == id);
+                var doc = Documents.FirstOrDefault(i => CompareDocumentIds(i.Id, id));
+
                 if (doc != null)
                 {
-                    Documents = Documents.Where(d => d.Id != id).ToArray();
+                    Documents = Documents.Where(i => !CompareDocumentIds(i.Id, id)).ToArray();
                     Documents = Documents.Concat(new[] { item });
                 }
             }
+        }
+
+        private static bool CompareDocumentIds(object id1, object id2)
+        {
+            return Equals(id1, id2) || (id1 != null && id2 != null && string.Equals(id1.ToString(), id2.ToString(), StringComparison.OrdinalIgnoreCase));
         }
     }
 }

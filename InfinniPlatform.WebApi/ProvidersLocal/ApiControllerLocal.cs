@@ -93,7 +93,7 @@ namespace InfinniPlatform.WebApi.ProvidersLocal
                 var prop = verbProcessor.Target.GetType().GetProperties().FirstOrDefault(p => p.PropertyType.IsAssignableFrom(typeof(IConfigRequestProvider)));
                 if (prop != null)
                 {
-                    prop.SetValue(verbProcessor.Target, new LocalDataProvider(configuration, metadata, action, userName));
+                    prop.SetValue(verbProcessor.Target, new LocalDataProvider(configuration, metadata, action));
                 }
                 return verbProcessor.Invoke();
             }

@@ -4,8 +4,8 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 {
     public interface ISetDocumentExecutor
     {
-        dynamic SetDocument(string configuration, string documentType, dynamic documentInstance, bool ignoreWarnings = false, bool allowNonSchemaProperties = false);
+        dynamic SetDocument(string configuration, string documentType, object documentInstance);
 
-        dynamic SetDocuments(string configuration, string documentType, IEnumerable<object> documentInstances, int batchSize = 200, bool allowNonSchemaProperties = false);
+        dynamic SetDocuments(string configuration, string documentType, IEnumerable<object> documentInstances);
     }
 }

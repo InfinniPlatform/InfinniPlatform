@@ -22,11 +22,5 @@
         /// </summary>
         /// <returns></returns>
         string GetServiceName();
-
-        /// <summary>
-        /// Получить идентификатор авторизованного в системе пользователя
-        /// </summary>
-        /// <returns></returns>
-        string GetUserName();
     }
 }

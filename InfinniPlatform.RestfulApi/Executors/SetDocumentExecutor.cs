@@ -2,85 +2,41 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Api.Linq;
 using InfinniPlatform.Api.Properties;
-using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Api.RestQuery;
+using InfinniPlatform.Hosting;
+using InfinniPlatform.Metadata.Implementation.Handlers;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.RestfulApi.Executors
 {
     internal class SetDocumentExecutor : ISetDocumentExecutor
     {
-        public SetDocumentExecutor(RestQueryApi restQueryApi)
+        public SetDocumentExecutor(Func<ApplyChangesHandler> applyChangesHandlerFactory)
         {
-            _restQueryApi = restQueryApi;
+            _applyChangesHandlerFactory = applyChangesHandlerFactory;
         }
 
-        private readonly RestQueryApi _restQueryApi;
 
-        public dynamic SetDocument(string configuration, string documentType, dynamic documentInstance, bool ignoreWarnings = false, bool allowNonSchemaProperties = false)
+        private readonly Func<ApplyChangesHandler> _applyChangesHandlerFactory;
+
+
+        public dynamic SetDocument(string configuration, string documentType, object documentInstance)
         {
-            object transactionMarker = ObjectHelper.GetProperty(documentInstance, "TransactionMarker");
-
-            if (transactionMarker != null && !string.IsNullOrEmpty(transactionMarker.ToString()))
-            {
-                documentInstance.TransactionMarker = null;
-            }
-
-            var result = ExecutePost("setdocument", null, new
-            {
-                Configuration = configuration,
-                Metadata = documentType,
-                IgnoreWarnings = ignoreWarnings,
-                AllowNonSchemaProperties = allowNonSchemaProperties,
-                Document = documentInstance,
-                TransactionMarker = transactionMarker,
-                Secured = false
-            });
-
-            return result.ToDynamic();
+            return ExecuteSetDocument(configuration, documentType, new[] { documentInstance });
         }
 
-        public dynamic SetDocuments(string configuration, string documentType, IEnumerable<object> documentInstances, int batchSize = 200, bool allowNonSchemaProperties = false)
+        public dynamic SetDocuments(string configuration, string documentType, IEnumerable<object> documentInstances)
         {
-            var batches = documentInstances.Batch(batchSize);
+            var documentBatches = GetBatches(documentInstances, 100);
 
-            foreach (var batch in batches)
+            foreach (var documents in documentBatches)
             {
-                object transactionMarker = null;
+                dynamic batchResult = ExecuteSetDocument(configuration, documentType, documents);
 
-                foreach (dynamic document in batch.ToArray())
+                if (batchResult?.IsValid == false)
                 {
-                    transactionMarker = ObjectHelper.GetProperty(document, "TransactionMarker");
-
-                    if (transactionMarker != null && !string.IsNullOrEmpty(transactionMarker.ToString()))
-                    {
-                        document.TransactionMarker = null;
-                    }
-                }
-
-                var response = ExecutePost("setdocument", null, new
-                {
-                    Configuration = configuration,
-                    Metadata = documentType,
-                    Documents = batch,
-                    AllowNonSchemaProperties = allowNonSchemaProperties,
-                    TransactionMarker = transactionMarker,
-                    Secured = false
-                });
-
-                if (!string.IsNullOrEmpty(response.Content))
-                {
-                    dynamic dynamicContent = response.ToDynamic();
-
-                    if (dynamicContent != null &&
-                        dynamicContent.IsValid != null &&
-                        dynamicContent.IsValid == false)
-                    {
-                        throw new ArgumentException(response.Content);
-                    }
+                    throw new ArgumentException(batchResult.ToString());
                 }
             }
 
@@ -91,11 +47,27 @@ namespace InfinniPlatform.RestfulApi.Executors
             return result;
         }
 
-        private RestQueryResponse ExecutePost(string action, string id, object body)
+        private object ExecuteSetDocument(string configuration, string documentType, IEnumerable<object> documentInstances)
         {
-            var response = _restQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", action, id, body);
+            dynamic request = new DynamicWrapper();
+            request.Configuration = configuration;
+            request.Metadata = documentType;
+            request.Documents = documentInstances;
+            request.IgnoreWarnings = false;
+            request.AllowNonSchemaProperties = false;
 
-            return response;
+            var applyChangesHandler = _applyChangesHandlerFactory();
+            applyChangesHandler.ConfigRequestProvider = new LocalDataProvider("RestfulApi", "configuration", "setdocument");
+
+            return applyChangesHandler.ApplyJsonObject(null, request);
+        }
+
+        private static IEnumerable<object>[] GetBatches(IEnumerable<object> items, int batchSize)
+        {
+            return items.Select((item, index) => new { item, index })
+                        .GroupBy(x => x.index / batchSize)
+                        .Select(g => g.Select(x => x.item))
+                        .ToArray();
         }
     }
 }

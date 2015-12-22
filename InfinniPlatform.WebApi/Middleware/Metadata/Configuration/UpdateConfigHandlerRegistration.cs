@@ -1,11 +1,9 @@
-﻿using System;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
+﻿using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Properties;
 using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.Sdk.Dynamic;
+
 using Microsoft.Owin;
-using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.WebApi.Middleware.Metadata.Configuration
 {
@@ -18,16 +16,7 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.Configuration
 
         protected override IRequestHandlerResult ExecuteHandler(IOwinContext context)
         {
-            dynamic body = null;
-
-            try
-            {
-                body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
-            }
-            catch (Exception e)
-            {
-                body = null;
-            }
+            dynamic body = RoutingOwinMiddleware.ReadRequestBody(context);
 
             if (body != null)
             {
@@ -36,8 +25,7 @@ namespace InfinniPlatform.WebApi.Middleware.Metadata.Configuration
                     return new ErrorRequestHandlerResult(Resources.NotAllRequestParamsAreFiled);
                 }
 
-                MetadataManagerConfiguration managerConfig =
-                    ManagerFactoryConfiguration.BuildConfigurationManager();
+                var managerConfig = ManagerFactoryConfiguration.BuildConfigurationManager();
 
                 managerConfig.MergeItem(DynamicWrapperExtensions.ToDynamic(body));
             }

@@ -161,7 +161,7 @@ namespace InfinniPlatform.IoC
                    .SingleInstance();
 
             builder.RegisterType<LocalQueryBuilder>()
-                   .As<IRestQueryBuilder>()
+                   .AsSelf()
                    .InstancePerDependency();
         }
     }

@@ -4,8 +4,6 @@ using InfinniPlatform.WebApi.Middleware.RouteFormatters;
 
 using Microsoft.Owin;
 
-using Newtonsoft.Json.Linq;
-
 namespace InfinniPlatform.WebApi.Middleware.SessionHandlers
 {
     public sealed class AttachDocumentHandlerRegistration : HandlerRegistration
@@ -26,7 +24,7 @@ namespace InfinniPlatform.WebApi.Middleware.SessionHandlers
         {
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            var body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
+            var body = RoutingOwinMiddleware.ReadRequestBody(context);
 
             return new ValueRequestHandlerResult(_sessionApi.Attach(routeDictionary["sessionId"], body));
         }

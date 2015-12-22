@@ -224,16 +224,13 @@ namespace InfinniPlatform.Sdk.Api
         /// <param name="documentType">Тип документа</param>
         /// <param name="documents">Список сохраняемых документов</param>
         /// <returns>Идентификатор сохраненного документа</returns>
-        public dynamic SetDocuments(string applicationId, string documentType, IEnumerable<dynamic> documents)
+        public dynamic SetDocuments(string applicationId, string documentType, IEnumerable<object> documents)
         {
             var routeBuilder = new RouteBuilder(Server, Port, Route);
 
-            var response = RequestExecutor.QueryPut(
-                                                    routeBuilder.BuildRestRoutingUrlDefault(applicationId, documentType),
-                                                    documents);
+            var response = RequestExecutor.QueryPut(routeBuilder.BuildRestRoutingUrlDefault(applicationId, documentType), new { Documents = documents });
 
-            return ProcessAsObjectResult(response,
-                                         string.Format(Resources.UnableToSetDocument, response));
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToSetDocument, response));
         }
 
         /// <summary>

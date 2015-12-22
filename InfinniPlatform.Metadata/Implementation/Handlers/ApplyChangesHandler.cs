@@ -1,177 +1,106 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
 using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Api.RestQuery.EventObjects.EventSerializers;
-using InfinniPlatform.ContextComponents;
-using InfinniPlatform.Factories;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
-using InfinniPlatform.Sdk.Events;
+using InfinniPlatform.Sdk.Environment.Metadata;
+using InfinniPlatform.Sdk.Environment.Transactions;
 
 namespace InfinniPlatform.Metadata.Implementation.Handlers
 {
     /// <summary>
-    ///     Обработчик http - запросов  обработки событийной модели
+    /// Обработчик HTTP-запросов обработки событийной модели.
     /// </summary>
     public sealed class ApplyChangesHandler : IWebRoutingHandler
     {
-        private readonly IGlobalContext _globalContext;
-
-        public ApplyChangesHandler(IGlobalContext globalContext)
+        public ApplyChangesHandler(IGlobalContext globalContext, ITransactionComponent transactionComponent, IMetadataConfigurationProvider metadataConfigurationProvider)
         {
             _globalContext = globalContext;
+            _transactionManager = transactionComponent.GetTransactionManager();
+            _metadataConfigurationProvider = metadataConfigurationProvider;
         }
+
+
+        private readonly IGlobalContext _globalContext;
+        private readonly ITransactionManager _transactionManager;
+        private readonly IMetadataConfigurationProvider _metadataConfigurationProvider;
+
 
         public IConfigRequestProvider ConfigRequestProvider { get; set; }
 
         /// <summary>
-        ///     Применить изменения, представленные в виде объекта
+        /// Применить изменения, представленные в виде объекта
         /// </summary>
         /// <param name="id">Идентификатор объекта, к которому следует применить изменения</param>
         /// <param name="changesObject">Объект JSON, содержащий события изменения объекта</param>
         /// <returns>Результат обработки JSON объекта</returns>
         public dynamic ApplyJsonObject(string id, dynamic changesObject)
         {
-            IEnumerable<EventDefinition> events = null;
-            if (changesObject != null)
-            {
-                events = new ObjectToEventSerializerStandard(changesObject).GetEvents();
-            }
-            else
-            {
-                events = new List<EventDefinition>();
-            }
-            return ApplyEventsWithMetadata(id, events);
-        }
+            var documentType = ConfigRequestProvider.GetMetadataIdentifier();
 
-        /// <summary>
-        ///     Применить список событий изменения к объекту с указанным идентификатором
-        ///     (К новому объекту, если идентификатор объекта не указан)
-        /// </summary>
-        /// <param name="id">Идентификатор изменяемого объекта</param>
-        /// <param name="events">Список событий на изменение объекта</param>
-        /// <returns>Результат обработки изменений</returns>
-        public dynamic ApplyEventsWithMetadata(string id, IEnumerable<EventDefinition> events)
-        {
-            var documentId = ConfigRequestProvider.GetMetadataIdentifier();
-
-            var appliedConfig =
-                _globalContext.GetComponent<IMetadataConfigurationProvider>()
-                    .GetMetadataConfiguration(ConfigRequestProvider.GetConfiguration());
-
-            if (string.IsNullOrEmpty(documentId))
+            if (string.IsNullOrEmpty(documentType))
             {
                 throw new ArgumentException("document type undefined");
             }
 
-            //заполнение контекста обработчика применения событий
-            var target = new ProcessEventContext();
-            target.Context = _globalContext;
-            target.Id = id;
-            target.IsValid = true;
-            target.Configuration = ConfigRequestProvider.GetConfiguration();
-            target.Metadata = ConfigRequestProvider.GetMetadataIdentifier();
-            target.UserName = ConfigRequestProvider.GetUserName();
-            target.Events = events.ToList();
-            target.Item = new AggregateProvider().CreateAggregate();
+            // Метаданные конфигурации
+            var metadataConfiguration = _metadataConfigurationProvider.GetMetadataConfiguration(ConfigRequestProvider.GetConfiguration());
 
+            // Идентификатор транзакции
+            var transactionMarker = changesObject.TransactionMarker ?? Guid.NewGuid().ToString();
 
-            var profiler =
-                target.Context.GetComponent<IProfilerComponent>()
-                    .GetOperationProfiler("FilterEventsPoint",
-                        string.Format("Config: {0}, Metadata {1}, ActionPoint {2}", target.Configuration,
-                            target.Metadata, appliedConfig.GetExtensionPointValue(ConfigRequestProvider, "FilterEvents")));
-            profiler.Reset();
-            appliedConfig.MoveWorkflow(documentId,
-                appliedConfig.GetExtensionPointValue(ConfigRequestProvider, "FilterEvents"), target);
+            // Начало транзакции
+            var transaction = _transactionManager.GetTransaction(transactionMarker);
 
-            if (!target.IsValid)
+            var moveContext = new ApplyContext
             {
-                return AggregateExtensions.PrepareInvalidFilterAggregate(target);
-            }
-
-            profiler.TakeSnapshot();
-
-
-            //Применение списка событий
-            dynamic item = target.Item;
-            new AggregateProvider().ApplyChanges(ref item, target.Events);
-
-
-            //Перевод объекта в нужное состояние
-            //пытаемся перевести в указанное состояние.
-            //для указанного workflow сконфигурировано в ActionUnits действие на сохранение объекта после выполнения действия по переходу
-
-            var targetMove = new ApplyContext
-            {
-                Id = item.Id,
+                Id = changesObject.Id,
                 Context = _globalContext,
-                Item = item,
-                Type = documentId,
-                DefaultProperties = target.DefaultProperties,
-                Events = target.Events,
+                Item = changesObject,
+                Type = documentType,
                 Configuration = ConfigRequestProvider.GetConfiguration(),
                 Metadata = ConfigRequestProvider.GetMetadataIdentifier(),
                 Action = ConfigRequestProvider.GetServiceName(),
-                UserName = ConfigRequestProvider.GetUserName(),
-                TransactionMarker = target.Item.TransactionMarker ?? Guid.NewGuid().ToString()                
+                TransactionMarker = transactionMarker
             };
 
-            //получаем менеджер для управления распределенной транзакцией
-            var transaction =
-	            _globalContext.GetComponent<ITransactionComponent>()
-                    .GetTransactionManager()
-                    .GetTransaction(targetMove.TransactionMarker);
-
-
-            profiler =
-                target.Context.GetComponent<ProfilerComponent>()
-                    .GetOperationProfiler("MovePoint",
-                        string.Format("Config: {0}, Metadata {1}, ActionPoint {2}", target.Configuration,
-                            target.Metadata, appliedConfig.GetExtensionPointValue(ConfigRequestProvider, "Move")));
-            profiler.Reset();
-            appliedConfig.MoveWorkflow(documentId, appliedConfig.GetExtensionPointValue(ConfigRequestProvider, "Move"),
-                targetMove, target.Item.Status);
-            if (!targetMove.IsValid)
+            if (!ExecuteExtensionPoint(metadataConfiguration, documentType, "Move", moveContext))
             {
-                return AggregateExtensions.PrepareInvalidFilterAggregate(targetMove);
+                return AggregateExtensions.PrepareInvalidFilterAggregate(moveContext);
             }
-            profiler.TakeSnapshot();
 
             var targetResult = new ApplyResultContext
             {
                 Context = _globalContext,
-                Result = targetMove.Result ?? targetMove.Item,
-                Item = targetMove.Item,
+                Result = moveContext.Result ?? moveContext.Item,
+                Item = moveContext.Item,
                 Configuration = ConfigRequestProvider.GetConfiguration(),
                 Metadata = ConfigRequestProvider.GetMetadataIdentifier(),
                 Action = ConfigRequestProvider.GetServiceName(),
-                UserName = ConfigRequestProvider.GetUserName()
             };
 
-            profiler =
-                target.Context.GetComponent<IProfilerComponent>()
-                    .GetOperationProfiler("GetResultEventsPoint",
-                        string.Format("Config: {0}, Metadata {1}, ActionPoint {2}", target.Configuration,
-                            target.Metadata, appliedConfig.GetExtensionPointValue(ConfigRequestProvider, "GetResult")));
-            profiler.Reset();
-            //формируем результат выполнения запроса
-            appliedConfig.MoveWorkflow(documentId,
-                appliedConfig.GetExtensionPointValue(ConfigRequestProvider, "GetResult"), targetResult);
-
-            profiler.TakeSnapshot();
-
-            if (!targetResult.IsValid)
+            if (!ExecuteExtensionPoint(metadataConfiguration, documentType, "GetResult", targetResult))
             {
-                return AggregateExtensions.PrepareInvalidResultAggregate(targetResult);
+                return AggregateExtensions.PrepareInvalidFilterAggregate(moveContext);
             }
 
             transaction.CommitTransaction();
 
             return AggregateExtensions.PrepareResultAggregate(targetResult.Result);
+        }
+
+        private bool ExecuteExtensionPoint(IMetadataConfiguration metadataConfiguration, string documentType, string extensionPointName, ICommonContext extensionPointContext)
+        {
+            var extensionPoint = metadataConfiguration.GetExtensionPointValue(ConfigRequestProvider, extensionPointName);
+
+            if (!string.IsNullOrEmpty(extensionPoint))
+            {
+                metadataConfiguration.MoveWorkflow(documentType, extensionPoint, extensionPointContext);
+            }
+
+            return extensionPointContext.IsValid;
         }
     }
 }

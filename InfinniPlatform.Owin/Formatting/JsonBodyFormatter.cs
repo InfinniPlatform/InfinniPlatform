@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 
 using InfinniPlatform.Api.Serialization;
+using InfinniPlatform.Sdk.Dynamic;
 
 using Microsoft.Owin;
 
@@ -20,7 +21,7 @@ namespace InfinniPlatform.Owin.Formatting
 
         public object ReadBody(IOwinRequest request)
         {
-            return JsonObjectSerializer.Default.Deserialize(request.Body);
+            return JsonObjectSerializer.Default.Deserialize(request.Body, typeof(DynamicWrapper));
         }
 
         public async Task WriteBody(IOwinResponse response, object value)

@@ -1,25 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InfinniPlatform.Api.RestApi.CommonApi;
+﻿using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Owin.Middleware;
-using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.WebApi.Middleware.RouteFormatters;
+
 using Microsoft.Owin;
-using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 {
     public sealed class CustomServiceRegistrationHandler : HandlerRegistration
     {
-        private readonly RestQueryApi _restQueryApi;
-
         public CustomServiceRegistrationHandler(RestQueryApi restQueryApi) : base(new RouteFormatterCustomService(), new RequestPathConstructor(), Priority.Standard, "POST")
         {
             _restQueryApi = restQueryApi;
         }
+
+        private readonly RestQueryApi _restQueryApi;
 
         protected override PathStringProvider GetPath(IOwinContext context)
         {
@@ -30,16 +24,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
         {
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            dynamic body = null;
-
-            try
-            {
-                body = JObject.Parse(RoutingOwinMiddleware.ReadRequestBody(context).ToString());
-            }
-            catch (Exception e)
-            {
-                body = null;
-            }
+            dynamic body = RoutingOwinMiddleware.ReadRequestBody(context);
 
             dynamic result = _restQueryApi.QueryPostJsonRaw(routeDictionary["application"], routeDictionary["documentType"], routeDictionary["service"], null, body).ToDynamic();
 
