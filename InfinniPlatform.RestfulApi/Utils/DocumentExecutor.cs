@@ -36,15 +36,15 @@ namespace InfinniPlatform.RestfulApi.Utils
             return documentProvider.GetItem(instanceId);
         }
 
-        public dynamic GetCompleteDocument(string version, string configId, string documentId, string userName,
+        public dynamic GetCompleteDocument(string configId, string documentId, string userName,
                                            string instanceId)
         {
             var docsToResolve = new[] { GetBaseDocument(userName, instanceId) };
-            _referenceResolver.ResolveReferences(version, configId, documentId, docsToResolve, null);
+            _referenceResolver.ResolveReferences(configId, documentId, docsToResolve, null);
             return docsToResolve.FirstOrDefault();
         }
 
-        public IEnumerable<dynamic> GetCompleteDocuments(string version, string configId, string documentId,
+        public IEnumerable<dynamic> GetCompleteDocuments(string configId, string documentId,
                                                          string userName, int pageNumber, int pageSize,
                                                          IEnumerable<dynamic> filter, IEnumerable<dynamic> sorting,
                                                          IEnumerable<dynamic> ignoreResolve)
@@ -71,7 +71,7 @@ namespace InfinniPlatform.RestfulApi.Utils
                 if (schema != null)
                 {
                     // Ивлекаем информацию о полях, по которым можно проводить сортировку из метаданных документа
-                    sortingFields = ExtractSortingProperties(version, "", schema.Properties,
+                    sortingFields = ExtractSortingProperties("", schema.Properties,
                         _configurationMediatorComponent.ConfigurationBuilder);
                 }
 
@@ -106,14 +106,14 @@ namespace InfinniPlatform.RestfulApi.Utils
 
                 var criteriaInterpreter = new QueryCriteriaInterpreter();
 
-                var queryAnalyzer = new QueryCriteriaAnalyzer(_metadataComponent, version, schema);
+                var queryAnalyzer = new QueryCriteriaAnalyzer(_metadataComponent, schema);
 
                 IEnumerable<dynamic> result =
                     documentProvider.GetDocument(queryAnalyzer.GetBeforeResolveCriteriaList(filter), 0,
                         Convert.ToInt32(pageSizeUnresolvedDocuments), sorting,
                         pageNumber > 0 ? pageNumber * pageSize : 0);
 
-                _referenceResolver.ResolveReferences(version, configId, documentId, result, ignoreResolve);
+                _referenceResolver.ResolveReferences(configId, documentId, result, ignoreResolve);
 
                 result = criteriaInterpreter.ApplyFilter(queryAnalyzer.GetAfterResolveCriteriaList(filter), result);
 
@@ -122,7 +122,7 @@ namespace InfinniPlatform.RestfulApi.Utils
             return new List<dynamic>();
         }
 
-        private static IEnumerable<object> ExtractSortingProperties(string version, string rootName, dynamic properties,
+        private static IEnumerable<object> ExtractSortingProperties(string rootName, dynamic properties,
                                                                     IConfigurationObjectBuilder
                                                                         configurationObjectBuilder)
         {
@@ -160,7 +160,7 @@ namespace InfinniPlatform.RestfulApi.Utils
 
                                 if (inlineDocumentSchema != null)
                                 {
-                                    childProps = ExtractSortingProperties(version, formattedPropertyName,
+                                    childProps = ExtractSortingProperties(formattedPropertyName,
                                         inlineDocumentSchema.Properties,
                                         configurationObjectBuilder);
                                 }
@@ -168,7 +168,7 @@ namespace InfinniPlatform.RestfulApi.Utils
                         }
                         else
                         {
-                            childProps = ExtractSortingProperties(version, formattedPropertyName,
+                            childProps = ExtractSortingProperties(formattedPropertyName,
                                 propertyMapping.Value.Properties,
                                 configurationObjectBuilder);
                         }
@@ -180,7 +180,7 @@ namespace InfinniPlatform.RestfulApi.Utils
                         if (propertyMapping.Value.Items != null)
                         {
                             sortingProperties.AddRange(
-                                ExtractSortingProperties(version, formattedPropertyName,
+                                ExtractSortingProperties(formattedPropertyName,
                                     propertyMapping.Value.Items.Properties,
                                     configurationObjectBuilder));
                         }

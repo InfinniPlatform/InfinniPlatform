@@ -50,7 +50,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                 var profiler = _profilerComponent.GetOperationProfiler("VersionProvider.GetNumberOfDocuments", null);
                 profiler.Reset();
 
-                var queryAnalyzer = new QueryCriteriaAnalyzer(_metadataComponent, null, schema);
+                var queryAnalyzer = new QueryCriteriaAnalyzer(_metadataComponent, schema);
 
                 returnResult.NumberOfDocuments = documentProvider.GetNumberOfDocuments(queryAnalyzer.GetBeforeResolveCriteriaList(filter));
                 

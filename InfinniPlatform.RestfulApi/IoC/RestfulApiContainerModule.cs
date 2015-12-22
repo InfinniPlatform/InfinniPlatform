@@ -32,6 +32,10 @@ namespace InfinniPlatform.RestfulApi.IoC
                    .As<IGetDocumentExecutor>()
                    .InstancePerDependency();
 
+            builder.RegisterType<DocumentExecutor>()
+                   .AsSelf()
+                   .InstancePerDependency();
+
             // Прикладные скрипты
             builder.RegisterActionUnits(GetType().Assembly);
         }

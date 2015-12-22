@@ -97,7 +97,7 @@ namespace InfinniPlatform.DesignControls.PropertyEditors
         {
             if (!string.IsNullOrEmpty(configId))
             {
-                return new MetadataApi().GetMetadataList(null);
+                return new MetadataApi().GetMetadataList();
             }
             return new List<string>();
         }
