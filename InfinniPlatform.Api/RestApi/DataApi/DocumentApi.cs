@@ -33,52 +33,50 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             return _getDocumentExecutor.GetDocument(id);
         }
 
-        public int GetNumberOfDocuments(string configuration, string metadata, dynamic filter)
+        public int GetNumberOfDocuments(string configurationName, string documentType, dynamic filter)
         {
-            return _getDocumentExecutor.GetNumberOfDocuments(configuration, metadata, filter);
+            return _getDocumentExecutor.GetNumberOfDocuments(configurationName, documentType, filter);
         }
 
-        public int GetNumberOfDocuments(string configuration, string metadata, Action<FilterBuilder> filter)
+        public int GetNumberOfDocuments(string configurationName, string documentType, Action<FilterBuilder> filter)
         {
-            return _getDocumentExecutor.GetNumberOfDocuments(configuration, metadata, filter);
+            return _getDocumentExecutor.GetNumberOfDocuments(configurationName, documentType, filter);
         }
 
-        public IEnumerable<dynamic> GetDocument(string configuration, string metadata, dynamic filter, int pageNumber, int pageSize, IEnumerable<dynamic> ignoreResolve = null, dynamic sorting = null)
+        public IEnumerable<dynamic> GetDocument(string configurationName, string documentType, dynamic filter, int pageNumber, int pageSize, IEnumerable<dynamic> ignoreResolve = null, dynamic sorting = null)
         {
-            //var document = _getDocumentExecutor.GetDocument(configuration, metadata, filter, pageNumber, pageSize);
-
-            var document = _getDocumentExecutor.GetDocumentUnfolded(configuration, metadata, filter, pageNumber, pageSize, sorting: sorting);
+            var document = _getDocumentExecutor.GetDocument(configurationName, documentType, filter, pageNumber, pageSize, sorting: sorting);
 
             return document;
         }
 
-        public IEnumerable<dynamic> GetDocument(string configuration, string metadata, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting = null)
+        public IEnumerable<dynamic> GetDocument(string configurationName, string documentType, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting = null)
         {
-            return _getDocumentExecutor.GetDocument(configuration, metadata, filter, pageNumber, pageSize, null, sorting);
+            return _getDocumentExecutor.GetDocument(configurationName, documentType, filter, pageNumber, pageSize, null, sorting);
         }
 
-        public IEnumerable<dynamic> GetDocument(string configuration, string metadata, Action<FilterBuilder> filter, int pageNumber, int pageSize, IEnumerable<dynamic> ignoreResolve, Action<SortingBuilder> sorting = null)
+        public IEnumerable<dynamic> GetDocument(string configurationName, string documentType, Action<FilterBuilder> filter, int pageNumber, int pageSize, IEnumerable<dynamic> ignoreResolve, Action<SortingBuilder> sorting = null)
         {
-            return _getDocumentExecutor.GetDocument(configuration, metadata, filter, pageNumber, pageSize, ignoreResolve, sorting);
+            return _getDocumentExecutor.GetDocument(configurationName, documentType, filter, pageNumber, pageSize, ignoreResolve, sorting);
         }
 
-        public dynamic CreateDocument(string configuration, string metadata)
+        public dynamic CreateDocument(string configurationName, string documentType)
         {
             var result = ExecutePost("createdocument", null, new
                                                              {
-                                                                 Configuration = configuration,
-                                                                 Metadata = metadata
+                                                                 Configuration = configurationName,
+                                                                 Metadata = documentType
                                                              });
 
             return result.ToDynamic();
         }
 
-        public dynamic DeleteDocument(string configuration, string metadata, string documentId)
+        public dynamic DeleteDocument(string configurationName, string documentType, string documentId)
         {
             var result = ExecutePost("deletedocument", null, new
                                                              {
-                                                                 Configuration = configuration,
-                                                                 Metadata = metadata,
+                                                                 Configuration = configurationName,
+                                                                 Metadata = documentType,
                                                                  Id = documentId,
                                                                  Secured = false
                                                              });
@@ -86,7 +84,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             return result.ToDynamic();
         }
 
-        public dynamic UpdateDocument(string configuration, string metadata, dynamic item, bool ignoreWarnings = false, bool allowNonSchemaProperties = false)
+        public dynamic UpdateDocument(string configurationName, string documentType, dynamic item, bool ignoreWarnings = false, bool allowNonSchemaProperties = false)
         {
             object transactionMarker = ObjectHelper.GetProperty(item, "TransactionMarker");
 
@@ -97,8 +95,8 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
             var result = ExecutePost("updatedocument", item.Id, new
                                                                 {
-                                                                    Configuration = configuration,
-                                                                    Metadata = metadata,
+                                                                    Configuration = configurationName,
+                                                                    Metadata = documentType,
                                                                     IgnoreWarnings = ignoreWarnings,
                                                                     AllowNonSchemaProperties = allowNonSchemaProperties,
                                                                     Document = item.ChangesObject,
@@ -109,14 +107,14 @@ namespace InfinniPlatform.Api.RestApi.DataApi
             return result.ToDynamic();
         }
 
-        public dynamic SetDocument(string configuration, string documentType, object documentInstance)
+        public dynamic SetDocument(string configurationName, string documentType, object documentInstance)
         {
-            return _setDocumentExecutor.SetDocument(configuration, documentType, documentInstance);
+            return _setDocumentExecutor.SetDocument(configurationName, documentType, documentInstance);
         }
 
-        public dynamic SetDocuments(string configuration, string documentType, IEnumerable<object> documentInstances)
+        public dynamic SetDocuments(string configurationName, string documentType, IEnumerable<object> documentInstances)
         {
-            return _setDocumentExecutor.SetDocuments(configuration, documentType, documentInstances);
+            return _setDocumentExecutor.SetDocuments(configurationName, documentType, documentInstances);
         }
 
         private RestQueryResponse ExecutePost(string action, string id, object body)

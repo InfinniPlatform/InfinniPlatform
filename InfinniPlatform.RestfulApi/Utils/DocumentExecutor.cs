@@ -30,22 +30,21 @@ namespace InfinniPlatform.RestfulApi.Utils
         private readonly IMetadataComponent _metadataComponent;
         private readonly IReferenceResolver _referenceResolver;
 
-        public dynamic GetBaseDocument(string userName, string instanceId)
+        public dynamic GetBaseDocument(string instanceId)
         {
             var documentProvider = _documentComponent.GetAllIndexesOperationProvider();
             return documentProvider.GetItem(instanceId);
         }
 
-        public dynamic GetCompleteDocument(string configId, string documentId, string userName,
-                                           string instanceId)
+        public dynamic GetCompleteDocument(string configId, string documentId, string instanceId)
         {
-            var docsToResolve = new[] { GetBaseDocument(userName, instanceId) };
+            var docsToResolve = new[] { GetBaseDocument(instanceId) };
             _referenceResolver.ResolveReferences(configId, documentId, docsToResolve, null);
             return docsToResolve.FirstOrDefault();
         }
 
         public IEnumerable<dynamic> GetCompleteDocuments(string configId, string documentId,
-                                                         string userName, int pageNumber, int pageSize,
+                                                         int pageNumber, int pageSize,
                                                          IEnumerable<dynamic> filter, IEnumerable<dynamic> sorting,
                                                          IEnumerable<dynamic> ignoreResolve)
         {
@@ -122,9 +121,7 @@ namespace InfinniPlatform.RestfulApi.Utils
             return new List<dynamic>();
         }
 
-        private static IEnumerable<object> ExtractSortingProperties(string rootName, dynamic properties,
-                                                                    IConfigurationObjectBuilder
-                                                                        configurationObjectBuilder)
+        private static IEnumerable<object> ExtractSortingProperties(string rootName, dynamic properties, IConfigurationObjectBuilder configurationObjectBuilder)
         {
             var sortingProperties = new List<object>();
 

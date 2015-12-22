@@ -34,7 +34,6 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 
 	        target.Result = executor.GetCompleteDocuments(target.Item.Configuration,
 	                                                      target.Item.Metadata,
-	                                                      target.UserName,
 	                                                      Convert.ToInt32(target.Item.PageNumber),
 	                                                      Convert.ToInt32(target.Item.PageSize),
 	                                                      target.Item.Filter,

@@ -196,15 +196,8 @@ namespace InfinniPlatform.RestfulApi.Installers
                                     .GetAction(
                                         "filterauthdocument")))));
 
-
             metadataConfiguration.RegisterWorkflow("configuration", "getbyquery",
-                f => f.FlowWithoutState(wc => wc
-                    .Move(ws => ws
-                        .WithAction(
-                            () =>
-                                actionUnits
-                                    .GetAction(
-                                        "getbyquery")))));
+                                                   f => f.FlowWithoutState(wc => wc.Move(ws => ws.WithAction(() => actionUnits.GetAction("getbyquery")))));
 
 
             metadataConfiguration.RegisterWorkflow("authorization", "applyaccess",
@@ -503,23 +496,14 @@ namespace InfinniPlatform.RestfulApi.Installers
                                                                                                    .OnCredentials(() => actionUnits.GetAction("setcredentials")))));
 
             metadataConfiguration.RegisterWorkflow("configuration", "getnumberofdocuments",
-                f => f.FlowWithoutState(wc => wc
-                    .Move(ws => ws
-                        .WithAction(() => actionUnits.GetAction("getnumberofdocuments"))
-                        .WithSimpleAuthorization(() => actionUnits.GetAction("documentauth"))
-                        .WithComplexAuthorization(() => actionUnits.GetAction("complexauth"))
-                        .OnSuccess(() => actionUnits.GetAction("filterauthdocument"))
-                        .OnCredentials(() => actionUnits.GetAction("setcredentials"))
-                    )));
+                                                   f => f.FlowWithoutState(wc => wc.Move(ws => ws.WithAction(() => actionUnits.GetAction("getnumberofdocuments"))
+                                                                                                 .WithSimpleAuthorization(() => actionUnits.GetAction("documentauth"))
+                                                                                                 .WithComplexAuthorization(() => actionUnits.GetAction("complexauth"))
+                                                                                                 .OnSuccess(() => actionUnits.GetAction("filterauthdocument"))
+                                                                                                 .OnCredentials(() => actionUnits.GetAction("setcredentials")))));
 
             metadataConfiguration.RegisterWorkflow("configuration", "getdocumentbyid",
-                f => f.FlowWithoutState(wc => wc
-                    .Move(
-                        ws =>
-                            ws.WithAction(
-                                () =>
-                                    actionUnits.GetAction(
-                                        "getdocumentbyid")))));
+                                                   f => f.FlowWithoutState(wc => wc.Move(ws => ws.WithAction(() => actionUnits.GetAction("getdocumentbyid")))));
 
             metadataConfiguration.RegisterWorkflow("configuration", "filterupdateevents",
                 f => f.FlowWithoutState(wc => wc
