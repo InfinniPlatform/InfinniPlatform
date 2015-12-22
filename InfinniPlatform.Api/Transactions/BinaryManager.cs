@@ -11,15 +11,15 @@ namespace InfinniPlatform.Api.Transactions
     /// </summary>
     public sealed class BinaryManager
     {
-        public BinaryManager(IBlobStorage blobStorage, DocumentApi documentApi)
+        public BinaryManager(IBlobStorage blobStorage, ISetDocumentExecutor setDocumentExecutor)
         {
             _blobStorage = blobStorage;
-            _documentApi = documentApi;
+            _setDocumentExecutor = setDocumentExecutor;
         }
 
 
         private readonly IBlobStorage _blobStorage;
-        private readonly DocumentApi _documentApi;
+        private readonly ISetDocumentExecutor _setDocumentExecutor;
 
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace InfinniPlatform.Api.Transactions
                     _blobStorage.UpdateBlob(contentId, blobProperty, string.Empty, blobData);
                 }
 
-                _documentApi.SetDocument(configuration, documentType, document);
+                _setDocumentExecutor.SetDocument(configuration, documentType, document);
             }
         }
 
