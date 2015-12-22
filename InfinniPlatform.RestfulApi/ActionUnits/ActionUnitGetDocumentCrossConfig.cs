@@ -30,7 +30,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                             target.Context.GetComponent<InprocessDocumentComponent>(),
                             target.Context.GetComponent<IReferenceResolver>());
 
-                    resultDocuments.AddRange(executor.GetCompleteDocuments(null, config, document,
+                    resultDocuments.AddRange(executor.GetCompleteDocuments(config, document,
                         target.UserName,
                         Convert.ToInt32(target.Item.PageNumber),
                         Convert.ToInt32(target.Item.PageSize),

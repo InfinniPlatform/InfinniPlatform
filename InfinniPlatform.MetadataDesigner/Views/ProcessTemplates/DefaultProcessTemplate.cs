@@ -42,13 +42,13 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 
 		private void ReloadSchema()
 		{
-			_schemaPrefill = new MetadataApi().GetDocumentSchema(Version, ConfigId, DocumentId);
+			_schemaPrefill = new MetadataApi().GetDocumentSchema(ConfigId, DocumentId);
 			FillPropertiesBySchema();
 		}
 
 		private IEnumerable<string> LoadPropertiesNames()
 		{
-            var schema = new MetadataApi().GetDocumentSchema(Version,ConfigId, DocumentId);
+            var schema = new MetadataApi().GetDocumentSchema(ConfigId, DocumentId);
 
 			var properiesNames = new List<string>();
 
@@ -58,7 +58,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 				OnPrimitiveProperty = schemaObject => properiesNames.Add(schemaObject.Name)
 			};
 
-			schemaIterator.ProcessSchema(Version, schema);
+			schemaIterator.ProcessSchema(schema);
 
 			return properiesNames;
 		}
@@ -144,7 +144,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 																								row.Properties.Value = obj.Value.DefaultValue;
 																								return row;
 																							});
-			schemaIterator.ProcessSchema(Version,_schemaPrefill);
+			schemaIterator.ProcessSchema(_schemaPrefill);
 
 
 		}
@@ -195,7 +195,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 			schemaIterator.OnPrimitiveProperty = action;
 			schemaIterator.OnObjectProperty = action;
 
-			schemaIterator.ProcessSchema(Version,_schemaPrefill);
+			schemaIterator.ProcessSchema(_schemaPrefill);
 			return _schemaPrefill;
 		}
 

@@ -32,8 +32,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
 	                                            _inprocessDocumentComponent,
 	                                            _referenceResolver);
 
-	        target.Result = executor.GetCompleteDocuments(null,
-	                                                      target.Item.Configuration,
+	        target.Result = executor.GetCompleteDocuments(target.Item.Configuration,
 	                                                      target.Item.Metadata,
 	                                                      target.UserName,
 	                                                      Convert.ToInt32(target.Item.PageNumber),

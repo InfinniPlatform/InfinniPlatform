@@ -8,22 +8,22 @@ namespace InfinniPlatform.Api.Schema
     /// </summary>
     public sealed class PropertiesFiller
     {
-        private dynamic GetDocumentSchema(string version, string configuration, string document)
+        private dynamic GetDocumentSchema(string configuration, string document)
         {
             if (!string.IsNullOrEmpty(configuration) && !string.IsNullOrEmpty(document))
             {
-                return new SchemaReaderManager().GetSchema(version, configuration, document);
+                return new SchemaReaderManager().GetSchema(configuration, document);
             }
             return null;
         }
 
-        public IEnumerable<SchemaObject> FillProperties(string version, string configuration, string document,
+        public IEnumerable<SchemaObject> FillProperties(string configuration, string document,
             string alias, PathResolveType pathResolveType)
         {
             var propertiesResult = new List<SchemaObject>();
             if (!string.IsNullOrEmpty(configuration) && !string.IsNullOrEmpty(document))
             {
-                var schema = GetDocumentSchema(version, configuration, document);
+                var schema = GetDocumentSchema(configuration, document);
                 if (schema != null)
                 {
                     var metadataIterator = new SchemaIterator(new SchemaReaderManager());
@@ -32,7 +32,7 @@ namespace InfinniPlatform.Api.Schema
                     metadataIterator.OnObjectProperty = propertiesResult.Add;
                     metadataIterator.OnArrayProperty = propertiesResult.Add;
 
-                    metadataIterator.ProcessSchema(version, schema);
+                    metadataIterator.ProcessSchema(schema);
                 }
             }
             return propertiesResult;

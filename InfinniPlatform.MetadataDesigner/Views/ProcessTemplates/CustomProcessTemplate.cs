@@ -55,7 +55,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
                 OnPrimitiveProperty = schemaObject => properiesNames.Add(schemaObject.Name)
             };
 
-            schemaIterator.ProcessSchema(Version, document.Schema);
+            schemaIterator.ProcessSchema(document.Schema);
             
             return properiesNames;
         }

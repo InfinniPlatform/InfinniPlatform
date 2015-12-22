@@ -40,7 +40,7 @@ namespace InfinniPlatform.RestfulApi.Utils
             _links.Add(link);
         }
 
-        public void ResolveLinks(string version, dynamic resolvingTypeInfo, IEnumerable<dynamic> typeInfoChain)
+        public void ResolveLinks(dynamic resolvingTypeInfo, IEnumerable<dynamic> typeInfoChain)
         {
             var groupsLinks = _links.GroupBy(l => new
                                                   {

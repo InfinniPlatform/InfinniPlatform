@@ -70,7 +70,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                                                                   prefillItems);
                                                           };
 
-                        schemaIterator.ProcessSchema(null, schemaPrefill);
+                        schemaIterator.ProcessSchema(schemaPrefill);
                     }
 
 
@@ -116,7 +116,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             schemaIterator.OnObjectProperty = FillObjectProperty(version, schemaProvider, instance);
 
 
-            schemaIterator.ProcessSchema(version, schema);
+            schemaIterator.ProcessSchema(schema);
             return instance;
         }
 

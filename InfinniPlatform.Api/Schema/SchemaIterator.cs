@@ -19,23 +19,23 @@ namespace InfinniPlatform.Api.Schema
         public Action<SchemaObject> OnObjectProperty { get; set; }
         public Action<SchemaObject> OnArrayProperty { get; set; }
 
-        private dynamic GetDocumentSchema(string version, string configuration, string document)
+        private dynamic GetDocumentSchema(string configuration, string document)
         {
-            if (!string.IsNullOrEmpty(version) && !string.IsNullOrEmpty(configuration) &&
+            if (!string.IsNullOrEmpty(configuration) &&
                 !string.IsNullOrEmpty(document))
             {
-                return _schemaProvider.GetSchema(version, configuration, document);
+                return _schemaProvider.GetSchema(configuration, document);
             }
             return null;
         }
 
-        public void ProcessSchema(string version, dynamic schema)
+        public void ProcessSchema(dynamic schema)
         {
             _entries.Clear();
-            ProcessSchema(null, version, schema);
+            ProcessSchema((SchemaObject)null, schema);
         }
 
-        private void ProcessSchema(SchemaObject parentInfo, string version, dynamic schema)
+        private void ProcessSchema(SchemaObject parentInfo, dynamic schema)
         {
             if (schema == null)
             {
@@ -50,7 +50,7 @@ namespace InfinniPlatform.Api.Schema
                 {
                     if (propertyValue.TypeInfo != null && propertyValue.TypeInfo.DocumentLink != null)
                     {
-                        dynamic schemaInner = GetDocumentSchema(version, propertyValue.TypeInfo.DocumentLink.ConfigId,
+                        dynamic schemaInner = GetDocumentSchema(propertyValue.TypeInfo.DocumentLink.ConfigId,
                             propertyValue.TypeInfo.DocumentLink.DocumentId);
 
                         var linkSchemaObject = new SchemaObject(parentInfo, startInfo.Key, propertyValue.Caption,
@@ -102,7 +102,7 @@ namespace InfinniPlatform.Api.Schema
 
                             if (linkSchemaObject.Inline)
                             {
-                                ProcessSchema(linkSchemaObject, version, schemaInner);
+                                ProcessSchema(linkSchemaObject, schemaInner);
                             }
                         }
                         //---
@@ -117,7 +117,7 @@ namespace InfinniPlatform.Api.Schema
                         if (propertyValue.Items.Type == "Object" && propertyValue.Items.TypeInfo != null &&
                             propertyValue.Items.TypeInfo.DocumentLink != null)
                         {
-                            schemaObject = GetDocumentSchema(version, propertyValue.Items.TypeInfo.DocumentLink.ConfigId,
+                            schemaObject = GetDocumentSchema(propertyValue.Items.TypeInfo.DocumentLink.ConfigId,
                                 propertyValue.Items.TypeInfo.DocumentLink.DocumentId);
                         }
 
@@ -142,7 +142,7 @@ namespace InfinniPlatform.Api.Schema
                             if (!linkToObjectIsCycleReference)
                             {
                                 _entries.Add(linkEntry);
-                                ProcessSchema(arraySchemaObject, version, schemaObject);
+                                ProcessSchema(arraySchemaObject, schemaObject);
                             }
                         }
                     }

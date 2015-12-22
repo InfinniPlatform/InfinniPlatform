@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 
 using InfinniPlatform.Api.ContextTypes.ContextImpl;
 using InfinniPlatform.Api.Metadata;
@@ -9,7 +8,6 @@ using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Api.SearchOptions.Builders;
-using InfinniPlatform.ContextComponents;
 using InfinniPlatform.RestfulApi.Utils;
 using InfinniPlatform.Sdk.ContextComponents;
 
@@ -18,26 +16,21 @@ namespace InfinniPlatform.RestfulApi.Executors
     public class GetDocumentExecutor : IGetDocumentExecutor
     {
         public GetDocumentExecutor(RestQueryApi restQueryApi,
+                                   DocumentExecutor documentExecutor,
                                    IMetadataComponent metadataComponent,
-                                   IScriptRunnerComponent scriptRunnerComponent,
-                                   IConfigurationMediatorComponent configurationMediatorComponent,
-                                   InprocessDocumentComponent inprocessDocumentComponent,
-                                   IReferenceResolver referenceResolver)
+                                   IScriptRunnerComponent scriptRunnerComponent)
         {
             _restQueryApi = restQueryApi;
+            _documentExecutor = documentExecutor;
             _metadataComponent = metadataComponent;
             _scriptRunnerComponent = scriptRunnerComponent;
-            _configurationMediatorComponent = configurationMediatorComponent;
-            _inprocessDocumentComponent = inprocessDocumentComponent;
-            _referenceResolver = referenceResolver;
         }
 
-        private readonly RestQueryApi _restQueryApi;
+        private readonly DocumentExecutor _documentExecutor;
         private readonly IMetadataComponent _metadataComponent;
+
+        private readonly RestQueryApi _restQueryApi;
         private readonly IScriptRunnerComponent _scriptRunnerComponent;
-        private readonly IConfigurationMediatorComponent _configurationMediatorComponent;
-        private readonly InprocessDocumentComponent _inprocessDocumentComponent;
-        private readonly IReferenceResolver _referenceResolver;
 
         public IEnumerable<dynamic> GetDocumentByQuery(string queryText, bool denormalizeResult = false)
         {
@@ -121,48 +114,42 @@ namespace InfinniPlatform.RestfulApi.Executors
         public IEnumerable<object> GetDocumentUnfolded(string configuration, string metadata, dynamic filter, int pageNumber, int pageSize, IEnumerable<dynamic> ignoreResolve = null, dynamic sorting = null)
         {
             var document = new
-            {
-                Configuration = configuration,
-                Metadata = metadata,
-                Filter = filter,
-                PageNumber = pageNumber,
-                PageSize = pageSize,
-                IgnoreResolve = ignoreResolve,
-                Sorting = sorting,
-                Secured = false
-            };
-
-            var target = new ApplyContext();
-            target.UserName = string.IsNullOrEmpty(Thread.CurrentPrincipal.Identity.Name) ? AuthorizationStorageExtensions.UnknownUser : Thread.CurrentPrincipal.Identity.Name;
-            target.Item = document;
+                           {
+                               Configuration = configuration,
+                               Metadata = metadata,
+                               Filter = filter,
+                               PageNumber = pageNumber,
+                               PageSize = pageSize,
+                               IgnoreResolve = ignoreResolve,
+                               Sorting = sorting,
+                               Secured = false
+                           };
 
             //ActionUnitSetCredentials
             if (document.Configuration != null)
             {
-                if (target.Item.Configuration.ToLowerInvariant() != "systemconfig" &&
-                target.Item.Configuration.ToLowerInvariant() != "update" &&
-                target.Item.Configuration.ToLowerInvariant() != "restfulapi")
+                if (document.Configuration.ToLowerInvariant() != "systemconfig" &&
+                    document.Configuration.ToLowerInvariant() != "update" &&
+                    document.Configuration.ToLowerInvariant() != "restfulapi")
                 {
                     //ищем метаданные бизнес-процесса по умолчанию документа 
-                    dynamic defaultBusinessProcess = _metadataComponent.GetMetadata(target.Item.Configuration, target.Item.Metadata, MetadataType.Process, "Default");
+                    dynamic defaultBusinessProcess = _metadataComponent.GetMetadata(document.Configuration, document.Metadata, MetadataType.Process, "Default");
 
                     if (defaultBusinessProcess != null && defaultBusinessProcess.Transitions[0].CredentialsType != null)
                     {
                         dynamic credentialsType = defaultBusinessProcess.Transitions[0].CredentialsType;
                         if (credentialsType != null)
                         {
-                            if (credentialsType == AuthorizationStorageExtensions.AnonimousUserCredentials)
-                            {
-                                target.UserName = AuthorizationStorageExtensions.AnonymousUser;
-                            }
-
                             if (credentialsType == AuthorizationStorageExtensions.CustomCredentials)
                             {
-                                var scriptArguments = new ApplyContext();
-                                scriptArguments.CopyPropertiesFrom(target);
-                                scriptArguments.Item = target.Item.Document;
-                                scriptArguments.Item.Configuration = target.Item.Configuration;
-                                scriptArguments.Item.Metadata = target.Item.Metadata;
+                                var scriptArguments = new ApplyContext
+                                                      {
+                                                          Configuration = document.Configuration,
+                                                          Metadata = document.Metadata,
+                                                          Item = document
+                                                      };
+
+                                scriptArguments.Item = document;
 
                                 _scriptRunnerComponent.InvokeScript(defaultBusinessProcess.Transitions[0].CredentialsPoint.ScenarioId, scriptArguments);
                             }
@@ -173,11 +160,12 @@ namespace InfinniPlatform.RestfulApi.Executors
                     //ищем метаданные бизнес-процесса по умолчанию документа 
                     if (defaultBusinessProcess != null && defaultBusinessProcess.Transitions[0].ComplexAuthorizationPoint != null)
                     {
-                        var scriptArguments = new ApplyContext();
-                        scriptArguments.CopyPropertiesFrom(target);
-                        scriptArguments.Item = target.Item.Document;
-                        scriptArguments.Item.Configuration = target.Item.Configuration;
-                        scriptArguments.Item.Metadata = target.Item.Metadata;
+                        var scriptArguments = new ApplyContext
+                                              {
+                                                  Configuration = document.Configuration,
+                                                  Metadata = document.Metadata,
+                                                  Item = document
+                                              };
 
                         _scriptRunnerComponent.InvokeScript(defaultBusinessProcess.Transitions[0].ComplexAuthorizationPoint.ScenarioId, scriptArguments);
                     }
@@ -185,22 +173,16 @@ namespace InfinniPlatform.RestfulApi.Executors
             }
 
             //ActionUnitGetDocument
-            var executor = new DocumentExecutor(_configurationMediatorComponent,
-                                                _metadataComponent,
-                                                _inprocessDocumentComponent,
-                                                _referenceResolver);
+            var result = _documentExecutor.GetCompleteDocuments(document.Configuration,
+                                                                document.Metadata,
+                                                                null,
+                                                                Convert.ToInt32(document.PageNumber),
+                                                                Convert.ToInt32(document.PageSize),
+                                                                document.Filter,
+                                                                document.Sorting,
+                                                                document.IgnoreResolve);
 
-            target.Result = executor.GetCompleteDocuments(null,
-                                                          document.Configuration,
-                                                          document.Metadata,
-                                                          target.UserName,
-                                                          Convert.ToInt32(document.PageNumber),
-                                                          Convert.ToInt32(document.PageSize),
-                                                          document.Filter,
-                                                          document.Sorting,
-                                                          document.IgnoreResolve);
-
-            return target.Result;
+            return result;
         }
 
         private RestQueryResponse ExecutePost(string action, string id, object body)
