@@ -130,7 +130,6 @@
     <Compile Include="Implementation\IndexTypeSelectors\IndexTypeSelectorBase.cs" />
     <Compile Include="Implementation\IndexTypeVersions\PropertiesDescriptorExtension.cs" />
     <Compile Include="Implementation\SortBuilders\SortContainer.cs" />
-    <Compile Include="Implementation\ElasticProviders\DocumentProvider.cs" />
     <Compile Include="Implementation\Versioning\VersionProvider.cs" />
     <Compile Include="Implementation\Versioning\VersionBuilder.cs" />
     <Compile Include="IoC\ElasticSearchContainerModule.cs" />

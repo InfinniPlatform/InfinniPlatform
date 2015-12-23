@@ -32,7 +32,9 @@ namespace InfinniPlatform.ContextComponents
             // получаем конфигурацию, указанную в метаданных запроса
             var config = configBuilder.GetConfigurationObject(configId);
 
-            return config?.GetDocumentProvider(documentType);
+            var documentProvider = config?.GetDocumentProvider(documentType);
+
+            return documentProvider;
         }
     }
 }

@@ -148,7 +148,6 @@
     <Compile Include="Environment\Index\IAllIndexesOperationProvider.cs" />
     <Compile Include="Environment\Index\ICalculatedField.cs" />
     <Compile Include="Environment\Index\ICrudOperationProvider.cs" />
-    <Compile Include="Environment\Index\IDocumentProvider.cs" />
     <Compile Include="Environment\Index\IFilter.cs" />
     <Compile Include="Environment\Index\IFilterBuilder.cs" />
     <Compile Include="Environment\Index\IIndexFactory.cs" />

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
 using InfinniPlatform.Api.Index.SearchOptions;
-using InfinniPlatform.ContextComponents;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.RestfulApi.ActionUnits
 {
@@ -12,16 +12,16 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
     {
         public ActionUnitGetNumberOfDocuments(IConfigurationMediatorComponent configurationMediatorComponent,
                                               IMetadataComponent metadataComponent,
-                                              InprocessDocumentComponent documentComponent)
+                                              IVersionProvider versionProvider)
         {
             _configurationMediatorComponent = configurationMediatorComponent;
             _metadataComponent = metadataComponent;
-            _documentComponent = documentComponent;
+            _versionProvider = versionProvider;
         }
 
         private readonly IConfigurationMediatorComponent _configurationMediatorComponent;
-        private readonly InprocessDocumentComponent _documentComponent;
         private readonly IMetadataComponent _metadataComponent;
+        private readonly IVersionProvider _versionProvider;
 
         public void Action(IApplyContext target)
         {
@@ -33,30 +33,21 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             string documentId = target.Item.Metadata;
             IEnumerable<dynamic> filter = target.Item.Filter;
 
-            var documentProvider = _documentComponent.GetDocumentProvider(configId, documentId);
+            var metadataConfiguration = _configurationMediatorComponent.ConfigurationBuilder.GetConfigurationObject(configId).MetadataConfiguration;
 
-            if (documentProvider != null)
-            {
-                var metadataConfiguration = _configurationMediatorComponent.ConfigurationBuilder.GetConfigurationObject(configId).MetadataConfiguration;
-
-                if (metadataConfiguration == null)
-                {
-                    target.Result = returnResult;
-                    return;
-                }
-
-                var schema = metadataConfiguration.GetSchemaVersion(documentId);
-
-                var queryAnalyzer = new QueryCriteriaAnalyzer(_metadataComponent, schema);
-
-                returnResult.NumberOfDocuments = documentProvider.GetNumberOfDocuments(queryAnalyzer.GetBeforeResolveCriteriaList(filter));
-
-                target.Result = returnResult;
-            }
-            else
+            if (metadataConfiguration == null)
             {
                 target.Result = returnResult;
+                return;
             }
+
+            var schema = metadataConfiguration.GetSchemaVersion(documentId);
+
+            var queryAnalyzer = new QueryCriteriaAnalyzer(_metadataComponent, schema);
+
+            returnResult.NumberOfDocuments = _versionProvider.GetNumberOfDocuments(queryAnalyzer.GetBeforeResolveCriteriaList(filter));
+
+            target.Result = returnResult;
         }
     }
 }

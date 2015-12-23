@@ -60,25 +60,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
 	    public IVersionProvider BuildVersionProvider(string indexName, string typeName)
 		{
 			var elasticSearchProvider = new ElasticSearchProvider(indexName, typeName);
-			var indexSettings = GetIndexTypeAccordanceSettings(indexName, new[] { typeName });
-			var indexQueryExecutor = new IndexQueryExecutor(indexSettings);
-			var documentProvider = new DocumentProvider(indexQueryExecutor);
-
-			return new VersionProvider(elasticSearchProvider, documentProvider);
-		}
-
-		/// <summary>
-		///     Создать провайдер данных для доступа к нескольким индексам
-		/// </summary>
-		/// <param name="indexName">
-		/// Наименование индексов. Если имена не указаны,
-		/// для поиска будут использованы все имеющиеся индексы
-		/// </param>
-		/// <param name="typeNames">Наименования типов</param>
-		public IDocumentProvider BuildMultiIndexDocumentProvider(string indexName = null, IEnumerable<string> typeNames = null)
-		{
-			// Создаём универсальный провайдер для выполнения поисковых запросов ко всем документам конфигурации
-			return new DocumentProvider(new IndexQueryExecutor(GetIndexTypeAccordanceSettings(indexName, typeNames)));
+	        var indexQueryExecutor = new IndexQueryExecutor(GetIndexTypeAccordanceSettings(indexName, new[] {typeName}));
+            
+            return new VersionProvider(elasticSearchProvider, indexQueryExecutor);
 		}
 
 		private readonly List<ElasticSearchProviderInfo> _providersInfo = new List<ElasticSearchProviderInfo>();

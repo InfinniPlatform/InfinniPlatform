@@ -67,31 +67,29 @@ namespace InfinniPlatform.RestfulApi.Executors
 
         public int GetNumberOfDocuments(string configurationName, string documentType, dynamic filter)
         {
-            dynamic returnResult = new DynamicWrapper();
-            returnResult.NumberOfDocuments = 0;
-            returnResult.IsValid = true;
+            var numberOfDocuments = 0;
 
             var documentProvider = _documentComponent.GetDocumentProvider(configurationName, documentType);
 
             if (documentProvider == null)
             {
-                return returnResult;
+                return numberOfDocuments;
             }
 
             var metadataConfiguration = _configurationMediatorComponent.ConfigurationBuilder.GetConfigurationObject(configurationName).MetadataConfiguration;
 
             if (metadataConfiguration == null)
             {
-                return returnResult;
+                return numberOfDocuments;
             }
 
             var schema = metadataConfiguration.GetSchemaVersion(documentType);
 
             var queryAnalyzer = new QueryCriteriaAnalyzer(_metadataComponent, schema);
 
-            returnResult.NumberOfDocuments = documentProvider.GetNumberOfDocuments(queryAnalyzer.GetBeforeResolveCriteriaList(filter));
+            numberOfDocuments = documentProvider.GetNumberOfDocuments(queryAnalyzer.GetBeforeResolveCriteriaList(filter));
 
-            return returnResult;
+            return numberOfDocuments;
         }
 
         public int GetNumberOfDocuments(string configurationName, string documentType, Action<FilterBuilder> filter)

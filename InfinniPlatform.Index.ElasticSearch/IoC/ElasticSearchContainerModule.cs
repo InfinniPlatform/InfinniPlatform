@@ -1,6 +1,7 @@
 ﻿using InfinniPlatform.ContextComponents;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
+using InfinniPlatform.Index.ElasticSearch.Implementation.Versioning;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.IoC;
