@@ -79,6 +79,8 @@ namespace InfinniPlatform.RestfulApi.Executors
                     documentInstance.Id = Guid.NewGuid();
                 }
 
+                result.Id = documentInstance.Id;
+
                 if (!string.IsNullOrEmpty(onValidateAction))
                 {
 
@@ -158,6 +160,8 @@ namespace InfinniPlatform.RestfulApi.Executors
 
         private class SetDocumentResult
         {
+            public object Id { get; set; }
+
             public bool IsValid { get; set; }
 
             public object ValidationMessage { get; set; }
