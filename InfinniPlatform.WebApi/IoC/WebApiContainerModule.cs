@@ -68,8 +68,7 @@ namespace InfinniPlatform.WebApi.IoC
             builder.RegisterType<SetDocumentHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
             builder.RegisterType<SetDocumentsHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
             builder.RegisterType<DeleteDocumentHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
-            builder.RegisterType<UpdateDocumentHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
-
+            
             builder.RegisterType<FileDownloadHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
             builder.RegisterType<FileUploadHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
 

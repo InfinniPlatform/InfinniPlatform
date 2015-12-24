@@ -7,6 +7,7 @@ using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Transactions;
 using InfinniPlatform.Sdk.IoC;
 
@@ -44,20 +45,20 @@ namespace InfinniPlatform.RestfulApi.Executors
             {
                 var batchResult = ExecuteSetDocument(configuration, documentType, documents);
 
-                if (batchResult.IsValid == false)
+                if (Equals(batchResult["IsValid"], false))
                 {
-                    throw new InvalidOperationException(batchResult.ValidationMessage?.ToString());
+                    throw new InvalidOperationException(batchResult["ValidationMessage"]?.ToString());
                 }
             }
 
-            var result = new SetDocumentResult { IsValid = true };
+            var result = new DynamicWrapper { ["IsValid"] = true };
 
             return result;
         }
 
-        private SetDocumentResult ExecuteSetDocument(string configuration, string documentType, IEnumerable<object> documentInstances)
+        private DynamicWrapper ExecuteSetDocument(string configuration, string documentType, IEnumerable<object> documentInstances)
         {
-            var result = new SetDocumentResult { IsValid = true, ValidationMessage = null };
+            var result = new DynamicWrapper { ["IsValid"] = true };
 
             // Бизнес-процесс сохранения документа
             var businessProcess = _metadataComponent.GetMetadata(configuration, documentType, MetadataType.Process, "Default");
@@ -79,7 +80,7 @@ namespace InfinniPlatform.RestfulApi.Executors
                     documentInstance.Id = Guid.NewGuid();
                 }
 
-                result.Id = documentInstance.Id;
+                result["Id"] = documentInstance.Id;
 
                 if (!string.IsNullOrEmpty(onValidateAction))
                 {
@@ -113,7 +114,7 @@ namespace InfinniPlatform.RestfulApi.Executors
                 }
             }
 
-            if (result.IsValid)
+            if (Equals(result["IsValid"], true))
             {
                 // Физическое сохранение
                 transaction.CommitTransaction();
@@ -140,11 +141,11 @@ namespace InfinniPlatform.RestfulApi.Executors
             return actionContext;
         }
 
-        private static bool CheckActionResult(ApplyContext actionContext, SetDocumentResult setDocumentResult)
+        private static bool CheckActionResult(ApplyContext actionContext, DynamicWrapper setDocumentResult)
         {
-            setDocumentResult.IsValid = actionContext.IsValid;
-            setDocumentResult.ValidationMessage = actionContext.ValidationMessage;
-            setDocumentResult.InternalServerError = actionContext.IsValid ? null : "true";
+            setDocumentResult["IsValid"] = actionContext.IsValid;
+            setDocumentResult["ValidationMessage"] = actionContext.ValidationMessage;
+            setDocumentResult["InternalServerError"] = actionContext.IsValid ? null : "true";
 
             return actionContext.IsValid;
         }

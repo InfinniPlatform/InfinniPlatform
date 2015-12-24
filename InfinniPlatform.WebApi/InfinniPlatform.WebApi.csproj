@@ -152,7 +152,6 @@
     <Compile Include="Middleware\StandardHandlers\GetDocumentHandlerRegistration.cs" />
     <Compile Include="Middleware\StandardHandlers\SetDocumentHandlerRegistration.cs" />
     <Compile Include="Middleware\StandardHandlers\SetDocumentsHandlerRegistration.cs" />
-    <Compile Include="Middleware\StandardHandlers\UpdateDocumentHandlerRegistration.cs" />
     <Compile Include="Middleware\UserAuthHandlers\AddUserClaimHandlerRegistration.cs" />
     <Compile Include="Middleware\UserAuthHandlers\GetUserClaimHandlerRegistration.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">

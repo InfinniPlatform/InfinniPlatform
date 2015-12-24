@@ -20,6 +20,10 @@ namespace InfinniPlatform.RestfulApi.IoC
                    .AsSelf()
                    .InstancePerDependency();
 
+            builder.RegisterType<DocumentLinkMapProvider>()
+                   .AsSelf()
+                   .SingleInstance();
+
             builder.RegisterType<ReferenceResolver>()
                    .As<IReferenceResolver>()
                    .SingleInstance();

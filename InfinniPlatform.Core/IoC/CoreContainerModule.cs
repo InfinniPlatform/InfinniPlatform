@@ -1,11 +1,11 @@
-﻿using InfinniPlatform.Api.RestQuery;
-using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
+﻿using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
 using InfinniPlatform.Api.Settings;
 using InfinniPlatform.Api.Transactions;
 using InfinniPlatform.Compression;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.Factories;
 using InfinniPlatform.Logging;
+using InfinniPlatform.Sdk.ApiContracts;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment.Log;
@@ -83,6 +83,7 @@ namespace InfinniPlatform.IoC
 
             builder.RegisterType<Api.RestApi.DataApi.DocumentApi>()
                    .AsSelf()
+                   .As<IDocumentApi>()
                    .SingleInstance();
 
             // PrintViewApi

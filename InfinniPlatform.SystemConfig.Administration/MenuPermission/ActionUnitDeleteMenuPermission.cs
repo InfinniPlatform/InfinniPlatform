@@ -28,9 +28,10 @@ namespace InfinniPlatform.SystemConfig.Administration.MenuPermission
             }
             catch (Exception)
             {
+                var userName = System.Threading.Thread.CurrentPrincipal?.Identity?.Name;
+
                 target.IsValid = false;
-                target.ValidationMessage = string.Format("User {0} access denied to change user access. ",
-                    target.UserName);
+                target.ValidationMessage = $"User {userName} access denied to change user access. ";
                 return;
             }
 

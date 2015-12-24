@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Sdk;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment.Register;
 
@@ -46,12 +47,13 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
             while (true)
             {
                 // Получаем записи из регистра постранично
+                Action<FilterBuilder> filter = f => f.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty)
+                                                                        .IsLessThanOrEquals(endDate));
+
                 var registerEntries = target.Context.GetComponent<DocumentApi>().GetDocument(
                     configurationId,
                     RegisterConstants.RegisterNamePrefix + registerId,
-                    f =>
-                        f.AddCriteria(
-                            c => c.Property(RegisterConstants.DocumentDateProperty).IsLessThanOrEquals(endDate)),
+                    filter,
                     pageNumber++, 1000).ToArray();
 
                 if (registerEntries.Length == 0)
@@ -99,11 +101,12 @@ namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
             }
 
             // Удаляем значения из таблицы итогов
+            Action<FilterBuilder> action = f =>
+                            f.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty).IsLessThanOrEquals(endDate));
             var registerTotalEntries = target.Context.GetComponent<DocumentApi>().GetDocument(
                 configurationId,
                 RegisterConstants.RegisterTotalNamePrefix + registerId,
-                f =>
-                    f.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty).IsLessThanOrEquals(endDate)),
+                action,
                 0, 10000);
 
             foreach (var registerEntry in registerTotalEntries)

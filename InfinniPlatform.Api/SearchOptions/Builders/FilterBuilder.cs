@@ -48,12 +48,12 @@ namespace InfinniPlatform.Api.SearchOptions.Builders
             var builder = new FilterBuilder();
 
             builder.AddCriteria(c => c
-                .Property(propertyName)
-                .IsMoreThanOrEquals(from));
+                                         .Property(propertyName)
+                                         .IsMoreThanOrEquals(from));
 
             builder.AddCriteria(c => c
-                .Property(propertyName)
-                .IsLessThanOrEquals(to));
+                                         .Property(propertyName)
+                                         .IsLessThanOrEquals(to));
 
             return builder.GetFilter();
         }
@@ -66,9 +66,7 @@ namespace InfinniPlatform.Api.SearchOptions.Builders
                 _criteriaFilter = new CriteriaFilter { CriteriaType = CriteriaType.IsEquals };
             }
 
-
             private readonly CriteriaFilter _criteriaFilter;
-
 
             public CriteriaBuilder Property(string property)
             {

@@ -9,12 +9,12 @@ namespace InfinniPlatform.Sdk
     /// </summary>
     public sealed class FilterBuilder
     {
-        private readonly IList<string> _criteriaList;
-
         public FilterBuilder()
         {
             _criteriaList = new List<string>();
         }
+
+        private readonly IList<string> _criteriaList;
 
         public FilterBuilder AddCriteria(Action<CriteriaBuilder> criteria)
         {
@@ -46,26 +46,26 @@ namespace InfinniPlatform.Sdk
             var builder = new FilterBuilder();
 
             builder.AddCriteria(c => c
-                .Property(propertyName)
-                .IsMoreThanOrEquals(from));
+                                         .Property(propertyName)
+                                         .IsMoreThanOrEquals(from));
 
             builder.AddCriteria(c => c
-               .Property(propertyName)
-               .IsLessThanOrEquals(to));
+                                         .Property(propertyName)
+                                         .IsLessThanOrEquals(to));
 
             return builder.GetFilter();
         }
+
 
         /// <summary>
         /// Позволяет задать одно условие
         /// </summary>
         public class CriteriaBuilder
         {
+            private string _criteriaType = "IsEquals";
             private string _property;
 
             private object _value;
-
-            private string _criteriaType = "IsEquals";
 
             public CriteriaBuilder Property(string property)
             {
@@ -75,14 +75,14 @@ namespace InfinniPlatform.Sdk
 
             public CriteriaBuilder IsEquals(object value)
             {
-                _value =  Convert(value);
+                _value = Convert(value);
                 _criteriaType = "IsEquals";
                 return this;
             }
 
             public CriteriaBuilder IsNotEquals(object value)
             {
-                _value =  Convert(value);
+                _value = Convert(value);
                 _criteriaType = "IsNotEquals";
                 return this;
             }
@@ -96,21 +96,21 @@ namespace InfinniPlatform.Sdk
 
             public CriteriaBuilder IsLessThan(object value)
             {
-                _value =  Convert(value);
+                _value = Convert(value);
                 _criteriaType = "IsLessThan";
                 return this;
             }
 
             public CriteriaBuilder IsMoreThanOrEquals(object value)
             {
-                _value =  Convert(value);
+                _value = Convert(value);
                 _criteriaType = "IsMoreThanOrEquals";
                 return this;
             }
 
             public CriteriaBuilder IsLessThanOrEquals(object value)
             {
-                _value =  Convert(value);
+                _value = Convert(value);
                 _criteriaType = "IsLessThanOrEquals";
                 return this;
             }
@@ -194,7 +194,7 @@ namespace InfinniPlatform.Sdk
 
             public CriteriaBuilder IsIdIn(List<string> idList)
             {
-                _value = string.Join("[,]",idList);
+                _value = string.Join("[,]", idList);
                 _criteriaType = "IsIdIn";
                 return this;
             }
