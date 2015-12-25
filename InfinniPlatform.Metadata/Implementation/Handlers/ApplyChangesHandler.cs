@@ -45,6 +45,8 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
                 throw new ArgumentException("document type undefined");
             }
 
+            changesObject.Documents = changesObject.Documents ?? new object[] { changesObject.Document } ;
+
             // Метаданные конфигурации
             var metadataConfiguration = _metadataConfigurationProvider.GetMetadataConfiguration(ConfigRequestProvider.GetConfiguration());
 
