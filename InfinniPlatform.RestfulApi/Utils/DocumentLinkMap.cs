@@ -122,7 +122,7 @@ namespace InfinniPlatform.RestfulApi.Utils
             return resolvedLinks;
         }
 
-        private bool HasCircularRefs(string version, string configId, string documentId)
+        private bool HasCircularRefs(string configId, string documentId)
         {
             var metadata = _metadataComponent.GetMetadataList(configId, documentId,
                 MetadataType.Schema);
