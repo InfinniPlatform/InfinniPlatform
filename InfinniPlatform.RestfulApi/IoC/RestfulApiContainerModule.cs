@@ -41,6 +41,12 @@ namespace InfinniPlatform.RestfulApi.IoC
                    .AsSelf()
                    .InstancePerDependency();
 
+            // UserStorage
+
+            builder.RegisterType<ElasticSearchUserStorage>()
+                   .AsSelf()
+                   .SingleInstance();
+
             // TransactionScope
 
             builder.RegisterType<ElasticDocumentTransactionScope>()

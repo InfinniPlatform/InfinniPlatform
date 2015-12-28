@@ -37,36 +37,28 @@ namespace InfinniPlatform.Transactions
 
         private readonly ISessionManager _sessionManager;
 
-
         public string GetTenantId(string indexName = null)
         {
             string tenantId = null;
 
-            if (indexName != null && SystemConfigurations.Contains(indexName, StringComparer.OrdinalIgnoreCase))
-            {
-                tenantId = AnonymousUser;
-            }
-            else
-            {
-                var currentIdentity = GetCurrentIdentity();
+            var currentIdentity = GetCurrentIdentity();
 
-                if (currentIdentity != null)
+            if (currentIdentity != null)
+            {
+                var sessionManager = _sessionManager;
+
+                if (sessionManager != null)
                 {
-                    var sessionManager = _sessionManager;
+                    tenantId = sessionManager.GetSessionData(TenantId);
+                }
 
-                    if (sessionManager != null)
-                    {
-                        tenantId = sessionManager.GetSessionData(TenantId);
-                    }
+                if (string.IsNullOrEmpty(tenantId))
+                {
+                    tenantId = currentIdentity.FindFirstClaim(DefaultTenantId);
 
                     if (string.IsNullOrEmpty(tenantId))
                     {
-                        tenantId = currentIdentity.FindFirstClaim(DefaultTenantId);
-
-                        if (string.IsNullOrEmpty(tenantId))
-                        {
-                            tenantId = currentIdentity.FindFirstClaim(TenantId);
-                        }
+                        tenantId = currentIdentity.FindFirstClaim(TenantId);
                     }
                 }
 

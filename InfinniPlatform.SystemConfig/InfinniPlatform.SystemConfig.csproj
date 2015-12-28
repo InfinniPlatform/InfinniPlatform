@@ -128,6 +128,10 @@
       <Project>{CDF6744F-CDDE-4A4F-90EA-64286D86695D}</Project>
       <Name>InfinniPlatform.Reporting</Name>
     </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.RestfulApi\InfinniPlatform.RestfulApi.csproj">
+      <Project>{75952d00-54da-419a-8233-91949d74d9e3}</Project>
+      <Name>InfinniPlatform.RestfulApi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
       <Name>InfinniPlatform.Sdk</Name>

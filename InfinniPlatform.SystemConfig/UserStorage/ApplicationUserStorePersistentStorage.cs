@@ -6,6 +6,7 @@ using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Api.SearchOptions.Builders;
 using InfinniPlatform.Api.Security;
 using InfinniPlatform.Api.Serialization;
+using InfinniPlatform.RestfulApi.Executors;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.SystemConfig.Properties;
 
@@ -13,18 +14,19 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 {
     internal sealed class ApplicationUserStorePersistentStorage : IApplicationUserStore
     {
-        public ApplicationUserStorePersistentStorage(Lazy<ApplicationUserStoreCache> userCache, DocumentApi documentApi)
+        public ApplicationUserStorePersistentStorage(Lazy<ApplicationUserStoreCache> userCache, DocumentApi documentApi, ElasticSearchUserStorage userStorage)
         {
             // Lazy, чтобы подписка на изменения кэша пользователей в кластере не создавалась сразу
 
             _userCache = userCache;
             _documentApi = documentApi;
+            _userStorage = userStorage;
         }
 
 
         private readonly Lazy<ApplicationUserStoreCache> _userCache;
         private readonly DocumentApi _documentApi;
-
+        private readonly ElasticSearchUserStorage _userStorage;
 
         public void CreateUser(ApplicationUser user)
         {
@@ -47,43 +49,68 @@ namespace InfinniPlatform.SystemConfig.UserStorage
         private void InsertUser(ApplicationUser user)
         {
             user.SecurityStamp = CreateUnique();
-            SetDocument(AuthorizationStorageExtensions.UserStore, ConvertToDynamic(user));
+
+            _userStorage.Save(user.Id, ConvertToDynamic(user));
+
+            // SetDocument(AuthorizationStorageExtensions.UserStore, ConvertToDynamic(user));
         }
 
         public void DeleteUser(ApplicationUser user)
         {
-            DeleteDocument(AuthorizationStorageExtensions.UserStore, user.Id);
+            _userStorage.Delete(user.Id);
+
+            // DeleteDocument(AuthorizationStorageExtensions.UserStore, user.Id);
+
             RemoveUserFromCache(user.Id);
         }
 
         public ApplicationUser FindUserById(string userId)
         {
-            return FindUserInCache(c => c.FindUserById(userId), () => GetDocument<ApplicationUser>(AuthorizationStorageExtensions.UserStore, "Id", userId));
+            return FindUserInCache(c => c.FindUserById(userId), () => FindUser("Id", userId));
+
+            // return FindUserInCache(c => c.FindUserById(userId), () => GetDocument<ApplicationUser>(AuthorizationStorageExtensions.UserStore, "Id", userId));
         }
 
         public ApplicationUser FindUserByUserName(string userName)
         {
-            return FindUserInCache(c => c.FindUserByUserName(userName), () => GetDocument<ApplicationUser>(AuthorizationStorageExtensions.UserStore, "UserName", userName));
+            return FindUserInCache(c => c.FindUserByUserName(userName), () => FindUser("UserName", userName));
+
+            // return FindUserInCache(c => c.FindUserByUserName(userName), () => GetDocument<ApplicationUser>(AuthorizationStorageExtensions.UserStore, "UserName", userName));
         }
 
         public ApplicationUser FindUserByEmail(string email)
         {
-            return FindUserInCache(c => c.FindUserByEmail(email), () => GetDocument<ApplicationUser>(AuthorizationStorageExtensions.UserStore, "Email", email));
+            return FindUserInCache(c => c.FindUserByEmail(email), () => FindUser("Email", email));
+
+            // return FindUserInCache(c => c.FindUserByEmail(email), () => GetDocument<ApplicationUser>(AuthorizationStorageExtensions.UserStore, "Email", email));
         }
 
         public ApplicationUser FindUserByPhoneNumber(string phoneNumber)
         {
-            return FindUserInCache(c => c.FindUserByPhoneNumber(phoneNumber), () => GetDocument<ApplicationUser>(AuthorizationStorageExtensions.UserStore, "PhoneNumber", phoneNumber));
+            return FindUserInCache(c => c.FindUserByPhoneNumber(phoneNumber), () => FindUser("PhoneNumber", phoneNumber));
+
+            // return FindUserInCache(c => c.FindUserByPhoneNumber(phoneNumber), () => GetDocument<ApplicationUser>(AuthorizationStorageExtensions.UserStore, "PhoneNumber", phoneNumber));
         }
 
         public ApplicationUser FindUserByLogin(ApplicationUserLogin userLogin)
         {
-            return FindUserInCache(c => c.FindUserByLogin(userLogin), () => GetDocument<ApplicationUser>(AuthorizationStorageExtensions.UserStore, "Logins.ProviderKey", userLogin.ProviderKey));
+            return FindUserInCache(c => c.FindUserByLogin(userLogin), () => FindUser("Logins.ProviderKey", userLogin.ProviderKey));
+
+            // return FindUserInCache(c => c.FindUserByLogin(userLogin), () => GetDocument<ApplicationUser>(AuthorizationStorageExtensions.UserStore, "Logins.ProviderKey", userLogin.ProviderKey));
         }
 
         public ApplicationUser FindUserByName(string name)
         {
             return FindUserByUserName(name) ?? FindUserByEmail(name) ?? FindUserByPhoneNumber(name);
+        }
+
+        private ApplicationUser FindUser(string property, object value)
+        {
+            var user = _userStorage.Find(property, value);
+
+            return (user != null)
+                       ? ConvertFromDynamic<ApplicationUser>(user)
+                       : null;
         }
 
         public void AddUserToRole(ApplicationUser user, string roleName)

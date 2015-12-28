@@ -41,9 +41,9 @@ namespace InfinniPlatform.Authentication.InternalIdentity
             return InvokeUserManager((m, u) => Task.FromResult(u), userName);
         }
 
-        public void CreateUser(string userName, string password)
+        public void CreateUser(string userName, string password, string email = null)
         {
-            ThrowIfError(_userManager.CreateAsync(new IdentityApplicationUser { UserName = userName }, password));
+            ThrowIfError(_userManager.CreateAsync(new IdentityApplicationUser { UserName = userName, Email = email }, password));
         }
 
         public void DeleteUser(string userName)

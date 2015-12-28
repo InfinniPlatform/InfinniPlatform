@@ -92,6 +92,7 @@
     <Compile Include="ActionUnits\ActionUnitGetDocumentCrossConfig.cs" />
     <Compile Include="ActionUnits\ActionUnitGetConfigMetadataList.cs" />
     <Compile Include="ActionUnits\AggregationUtils.cs" />
+    <Compile Include="Auth\ActionUnitGetSessionData.cs" />
     <Compile Include="Auth\ActionUnitRemoveSessionData.cs" />
     <Compile Include="Auth\ActionUnitSetSessionData.cs" />
     <Compile Include="Binary\ActionUnitDownloadBinaryContent.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="Executors\DocumentTransactionLog.cs" />
     <Compile Include="Executors\DocumentTransactionAction.cs" />
     <Compile Include="Executors\ElasticDocumentTransactionScope.cs" />
+    <Compile Include="Executors\ElasticSearchUserStorage.cs" />
     <Compile Include="Executors\GetDocumentExecutor.cs" />
     <Compile Include="Executors\SetDocumentExecutor.cs" />
     <Compile Include="Extensions\IndexedStorageExtension.cs" />

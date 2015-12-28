@@ -3,6 +3,7 @@ using System.Linq;
 
 using InfinniPlatform.Index;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Transactions;
 
 using Nest;
@@ -154,6 +155,8 @@ namespace InfinniPlatform.RestfulApi.Executors
         private static IndexObject CreateIndexObject(string tenantId, string indexObjectId, object document)
         {
             // TODO: Нужно переработать структуру заголовка документа
+            //TODO: Нужно избавиться от TenantId на уровне системного кода.
+            tenantId = TryGetDocumentTenantId(document) ?? tenantId;
 
             return new IndexObject
             {
@@ -163,6 +166,18 @@ namespace InfinniPlatform.RestfulApi.Executors
                 Status = "valid",
                 Values = document
             };
+        }
+
+        private static string TryGetDocumentTenantId(object document)
+        {
+            try
+            {
+                return ObjectHelper.GetProperty(document, "TenantId") as string;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         private static void CheckDatabaseResponse(IResponse databaseResponse)

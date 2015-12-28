@@ -71,7 +71,7 @@ namespace InfinniPlatform.RestfulApi.Executors
             {
                 if (documentInstance.Id == null)
                 {
-                    documentInstance.Id = Guid.NewGuid();
+                    documentInstance.Id = Guid.NewGuid().ToString("D");
                 }
 
                 result.Id = documentInstance.Id;

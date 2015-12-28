@@ -97,11 +97,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         {
             var indexName = _indexNames.FirstOrDefault();
 
-            var tenantId = GlobalContext.GetTenantId(indexName);
+            var tenantId = GlobalContext.GetTenantId();
 
-            var tenantIdFilter = tenantId == AuthorizationStorageExtensions.AnonymousUser
-                                     ? new NestFilter(Filter<dynamic>.Terms(ElasticConstants.TenantIdField, new[] { AuthorizationStorageExtensions.AnonymousUser, AuthorizationStorageExtensions.SystemTenant }))
-                                     : new NestFilter(Filter<dynamic>.Terms(ElasticConstants.TenantIdField, new[] { tenantId, AuthorizationStorageExtensions.AnonymousUser }));
+            var tenantIdFilter = new NestFilter(Filter<dynamic>.Terms(ElasticConstants.TenantIdField, new[] { tenantId, AuthorizationStorageExtensions.AnonymousUser, AuthorizationStorageExtensions.SystemTenant }));
 
             searchModel.AddFilter(tenantIdFilter);
 

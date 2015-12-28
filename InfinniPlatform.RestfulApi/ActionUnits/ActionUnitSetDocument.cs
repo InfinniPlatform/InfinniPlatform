@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections;
+using System.Collections.Generic;
 
 using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Sdk.Contracts;
@@ -20,9 +20,9 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
         {
             string configuration = target.Item.Configuration;
             string documentType = target.Item.Metadata;
-            IEnumerable documents = target.Item.Documents;
+            IEnumerable<dynamic> documents = target.Item.Documents;
 
-            var result = _setDocumentExecutor.SaveDocument(configuration, documentType, documents);
+            var result = _setDocumentExecutor.SaveDocuments(configuration, documentType, documents);
 
             target.Result = result;
         }

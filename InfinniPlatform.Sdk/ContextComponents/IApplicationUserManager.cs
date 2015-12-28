@@ -25,7 +25,8 @@ namespace InfinniPlatform.Sdk.ContextComponents
         /// </summary>
         /// <param name="userName">Пользователь системы.</param>
         /// <param name="password">Пароль пользователя.</param>
-        void CreateUser(string userName, string password);
+        /// <param name="email">Электронная почта пользователя.</param>
+        void CreateUser(string userName, string password, string email = null);
 
         /// <summary>
         /// Удаляет пользователя.
