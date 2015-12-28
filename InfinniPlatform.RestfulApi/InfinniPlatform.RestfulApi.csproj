@@ -67,6 +67,7 @@
     <Compile Include="ActionUnits\ActionUnitDeleteRegisterEntry.cs" />
     <Compile Include="ActionUnits\ActionUnitGetClosestDateTimeOfTotalCalculation.cs" />
     <Compile Include="ActionUnits\ActionUnitGetDocumentById.cs" />
+    <Compile Include="ActionUnits\ActionUnitGetManagedMetadata.cs" />
     <Compile Include="ActionUnits\ActionUnitGetRegisterValuesBetweenDates.cs" />
     <Compile Include="ActionUnits\ActionUnitGetRegisterValuesByDate.cs" />
     <Compile Include="ActionUnits\ActionUnitGetRegisterValuesByPeriods.cs" />
