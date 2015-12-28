@@ -1,5 +1,6 @@
 ﻿using System;
 
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.IoC;
@@ -34,7 +35,7 @@ namespace InfinniPlatform.Factories
         [Obsolete("Use ITenantProvider")]
         public static string GetTenantId(string indexName = null)
         {
-            return _tenantProvider?.GetTenantId(indexName);
+            return _tenantProvider?.GetTenantId(indexName) ?? AuthorizationStorageExtensions.AnonymousUser;
         }
     }
 }
