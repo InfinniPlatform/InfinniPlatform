@@ -2,10 +2,13 @@
 using System.Linq;
 
 using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Sdk;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment.Register;
 
-namespace InfinniPlatform.RestfulApi.ActionUnits
+using FilterBuilder = InfinniPlatform.Api.SearchOptions.Builders.FilterBuilder;
+
+namespace InfinniPlatform.SystemConfig.Configurator.RegisterQueries
 {
     /// <summary>
     ///     Получение даты последнего подсчета итогов для регистра накоплений, ближайшей к заданной
@@ -29,12 +32,11 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
             while (true)
             {
                 // Постранично считываем данные и таблицы итогов и ищем итоги с датой, ближайшей к заданной
-                var totals = target.Context.GetComponent<DocumentApi>().GetDocument(
-                    configurationId,
-                    RegisterConstants.RegisterTotalNamePrefix + registerId,
-                    f => f.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty).IsLessThan(requestDate)),
-                    page++,
-                    10000).ToArray();
+                Action<FilterBuilder> filter = f => f.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty)
+                                                                        .IsLessThan(requestDate));
+
+                var totals = target.Context.GetComponent<DocumentApi>().GetDocument(configurationId, RegisterConstants.RegisterTotalNamePrefix + registerId, filter, page++, 10000)
+                                   .ToArray();
 
                 if (totals.Length == 0)
                 {

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
+using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.Versioning
@@ -10,38 +12,57 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.Versioning
 	/// </summary>
 	public sealed class VersionProvider : IVersionProvider
 	{
-		private readonly IDocumentProvider _documentProvider;
-		private readonly ICrudOperationProvider _elasticSearchProvider;
+	    private readonly ICrudOperationProvider _elasticSearchProvider;
+	    private readonly IIndexQueryExecutor _indexQueryExecutor;
 
-		public VersionProvider(ICrudOperationProvider elasticSearchProvider, IDocumentProvider documentProvider)
-		{
-			_elasticSearchProvider = elasticSearchProvider;
-			_documentProvider = documentProvider;
-		}
+	    public VersionProvider(ICrudOperationProvider elasticSearchProvider,
+	                           IIndexQueryExecutor indexQueryExecutor)
+	    {
+	        _elasticSearchProvider = elasticSearchProvider;
+	        _indexQueryExecutor = indexQueryExecutor;
+	    }
 
-		/// <summary>
-		/// Получить актуальные версии объектов, отсортированные по дате вставки в индекс по убыванию
-		/// </summary>
-		/// <param name="filterObject">Фильтр объектов</param>
-		/// <param name="pageNumber">Номер страницы данных</param>
-		/// <param name="pageSize">Размер страницы данных</param>
-		/// <param name="sortingDescription">Описание правил сортировки</param>
-		/// <param name="skipSize"></param>
-		/// <returns>Список актуальных версий</returns>
-		public dynamic GetDocument(IEnumerable<object> filterObject, int pageNumber, int pageSize, IEnumerable<object> sortingDescription = null, int skipSize = 0)
-		{
-			return _documentProvider.GetDocument(filterObject, pageNumber, pageSize, sortingDescription, skipSize);
-		}
+	    /// <summary>
+        ///     Получить актуальные версии объектов, отсортированные по дате вставки в индекс по убыванию
+        /// </summary>
+        /// <param name="filterObject">Фильтр объектов</param>
+        /// <param name="pageNumber">Номер страницы данных</param>
+        /// <param name="pageSize">Размер страницы данных</param>
+        /// <param name="sortingDescription">Описание правил сортировки</param>
+        /// <param name="skipSize"></param>
+        /// <returns>Список актуальных версий</returns>
+        public dynamic GetDocument(IEnumerable<object> filterObject, int pageNumber, int pageSize, IEnumerable<dynamic> sortingDescription = null, int skipSize = 0)
+        {
+            var filterFactory = FilterBuilderFactory.GetInstance();
+            var searchModel = filterObject.ExtractSearchModel(filterFactory);
+            searchModel.SetPageSize(pageSize);
+            searchModel.SetSkip(skipSize);
+            searchModel.SetFromPage(pageNumber);
 
-		/// <summary>
-		/// Получить общее количество объектов по заданному фильтру
-		/// </summary>
-		/// <param name="filterObject">Фильтр объектов</param>
-		/// <returns>Количество объектов</returns>
-		public int GetNumberOfDocuments(IEnumerable<object> filterObject)
-		{
-			return _documentProvider.GetNumberOfDocuments(filterObject);
-		}
+            if (sortingDescription != null)
+            {
+                foreach (var sorting in sortingDescription)
+                {
+                    searchModel.AddSort(sorting.PropertyName, (SortOrder)sorting.SortOrder);
+                }
+            }
+
+            return _indexQueryExecutor.Query(searchModel).Items.ToList();
+        }
+
+        /// <summary>
+        ///     Получить общее количество объектов по заданному фильтру
+        /// </summary>
+        /// <param name="filterObject">Фильтр объектов</param>
+        /// <returns>Количество объектов</returns>
+        public int GetNumberOfDocuments(IEnumerable<object> filterObject)
+        {
+            var queryFactory = QueryBuilderFactory.GetInstance();
+            var searchModel = filterObject.ExtractSearchModel(queryFactory);
+
+            // вряд ли документов в одном индексе будет больше чем 2 147 483 647, конвертируем в int
+            return Convert.ToInt32(_indexQueryExecutor.CalculateCountQuery(searchModel));
+        }
 
 		/// <summary>
 		/// Получить версию по уникальному идентификатору

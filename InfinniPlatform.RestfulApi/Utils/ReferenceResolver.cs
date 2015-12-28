@@ -7,18 +7,20 @@ namespace InfinniPlatform.RestfulApi.Utils
 {
     public sealed class ReferenceResolver : IReferenceResolver
     {
-        public ReferenceResolver(IMetadataComponent metadataComponent, DocumentLinkMap documentLinkMap)
+        public ReferenceResolver(IMetadataComponent metadataComponent, DocumentLinkMapProvider documentLinkMapProvider)
         {
             _metadataComponent = metadataComponent;
-            _documentLinkMap = documentLinkMap;
+            _documentLinkMapProvider = documentLinkMapProvider;
         }
 
-        private readonly DocumentLinkMap _documentLinkMap;
         private readonly IMetadataComponent _metadataComponent;
+        private readonly DocumentLinkMapProvider _documentLinkMapProvider;
 
         public void ResolveReferences(string configId, string documentId, dynamic documents, IEnumerable<dynamic> ignoreResolve)
         {
-            var metadataOperator = new MetadataOperator(_metadataComponent, _documentLinkMap, ignoreResolve);
+            var documentLinkMap = _documentLinkMapProvider.GetDocumentLinkMap();
+
+            var metadataOperator = new MetadataOperator(_metadataComponent, documentLinkMap, ignoreResolve);
 
             dynamic typeInfo = new DynamicWrapper();
             typeInfo.ConfigId = configId;
@@ -36,7 +38,7 @@ namespace InfinniPlatform.RestfulApi.Utils
                 metadataOperator.ProcessMetadata(documents, typeInfo);
             }
 
-            _documentLinkMap.ResolveLinks(typeInfo, metadataOperator.TypeInfoChain);
+            documentLinkMap.ResolveLinks(typeInfo, metadataOperator.TypeInfoChain);
         }
     }
 }

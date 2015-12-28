@@ -10,6 +10,7 @@ using InfinniPlatform.Hosting;
 using InfinniPlatform.Metadata.Implementation.Handlers;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.RestfulApi.Utils
 {
@@ -30,62 +31,72 @@ namespace InfinniPlatform.RestfulApi.Utils
         public void RegisterLink(string configId, string documentId, string instanceId, Action<object> valueSetFunc)
         {
             var link = new DocumentLink
-                       {
-                           ConfigId = configId,
-                           DocumentId = documentId,
-                           InstanceId = instanceId,
-                           SetValue = valueSetFunc
-                       };
+            {
+                ConfigId = configId,
+                DocumentId = documentId,
+                InstanceId = instanceId,
+                SetValue = valueSetFunc
+            };
 
-            _links.Add(link);
+            lock (_links)
+            {
+                _links.Add(link);
+            }
         }
 
         public void ResolveLinks(dynamic resolvingTypeInfo, IEnumerable<dynamic> typeInfoChain)
         {
-            var groupsLinks = _links.GroupBy(l => new
-                                                  {
-                                                      l.ConfigId,
-                                                      l.DocumentId
-                                                  }).ToList();
+            IEnumerable<DocumentLink> links;
 
-
-            foreach (var groupsLink in groupsLinks)
+            lock (_links)
             {
-                IEnumerable<DocumentLink> values = groupsLink.ToList();
+                links = _links.ToArray();
+            }
 
-                if (typeInfoChain != null &&
-                    typeInfoChain.Count(
-                        t => t.ConfigId == groupsLink.Key.ConfigId && t.DocumentId == groupsLink.Key.DocumentId) > 1)
+            var groupsLinks = links.GroupBy(l => new
+                                                      {
+                                                          l.ConfigId,
+                                                          l.DocumentId
+                                                      }).ToList();
+
+
+                foreach (var groupsLink in groupsLinks)
                 {
-                    continue;
-                }
+                    IEnumerable<DocumentLink> values = groupsLink.ToList();
+
+                    if (typeInfoChain != null &&
+                        typeInfoChain.Count(
+                                            t => t.ConfigId == groupsLink.Key.ConfigId && t.DocumentId == groupsLink.Key.DocumentId) > 1)
+                    {
+                        continue;
+                    }
 
                 if (HasCircularRefs(groupsLink.Key.ConfigId, groupsLink.Key.DocumentId))
-                {
-                    continue;
-                }
+                    {
+                        continue;
+                    }
 
-                var typeInfoChainUpdated = typeInfoChain.ToList();
-                dynamic typeInfo = new DynamicWrapper();
-                typeInfo.ConfigId = groupsLink.Key.ConfigId;
-                typeInfo.DocumentId = groupsLink.Key.DocumentId;
-                typeInfoChainUpdated.Add(typeInfo);
+                    var typeInfoChainUpdated = typeInfoChain.ToList();
+                    dynamic typeInfo = new DynamicWrapper();
+                    typeInfo.ConfigId = groupsLink.Key.ConfigId;
+                    typeInfo.DocumentId = groupsLink.Key.DocumentId;
+                    typeInfoChainUpdated.Add(typeInfo);
 
-                Action<FilterBuilder> builder =
-                    f => f.AddCriteria(c => c.Property("Id").IsIdIn(values.Select(i => i.InstanceId).ToList()));
+                    Action<FilterBuilder> builder =
+                        f => f.AddCriteria(c => c.Property("Id").IsIdIn(values.Select(i => i.InstanceId).ToList()));
 
                 var resolvedLinks = GetResolvedLinks(groupsLink, builder, typeInfoChainUpdated);
-                
-                foreach (var resolvedLink in resolvedLinks)
-                {
-                    var doc = _links.Where(l => l.InstanceId == resolvedLink.Id);
-                    foreach (var documentLink in doc)
+
+                    foreach (var resolvedLink in resolvedLinks)
                     {
-                        documentLink.SetValue(resolvedLink);
+                    var doc = links.Where(l => l.InstanceId == resolvedLink.Id);
+                        foreach (var documentLink in doc)
+                        {
+                            documentLink.SetValue(resolvedLink);
+                        }
                     }
                 }
             }
-        }
 
         private List<dynamic> GetResolvedLinks(IGrouping<dynamic, DocumentLink> groupsLink, Action<FilterBuilder> filter, List<dynamic> typeInfoChainUpdated)
         {
@@ -177,6 +188,21 @@ namespace InfinniPlatform.RestfulApi.Utils
                 }
             }
             return false;
+        }
+    }
+
+    public class DocumentLinkMapProvider
+    {
+        public DocumentLinkMapProvider(Func<IContainerResolver> containerFactory)
+        {
+            _documentLinkMapFactory = () => containerFactory().Resolve<DocumentLinkMap>();
+        }
+
+        private readonly Func<DocumentLinkMap> _documentLinkMapFactory;
+
+        public DocumentLinkMap GetDocumentLinkMap()
+        {
+            return _documentLinkMapFactory();
         }
     }
 }

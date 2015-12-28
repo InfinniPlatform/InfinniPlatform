@@ -14,19 +14,19 @@ namespace InfinniPlatform.Sdk.Environment.Index
         /// <param name="typeName">Наименование типа</param>
         IVersionBuilder BuildVersionBuilder(string indexName, string typeName);
 
-        /// <summary>
-        /// Создать провайдер данных
-        /// </summary>
-        /// <param name="indexName">Наименование индекса</param>
-        /// <param name="typeName">Наименование типа</param>
-        IVersionProvider BuildVersionProvider(string indexName, string typeName);
-
-        /// <summary>
-        /// Создать провайдер данных для доступа к нескольким индексам
-        /// </summary>
-        /// <param name="indexName">Наименование индекса</param>
-        /// <param name="typeNames">Имена типов, по которым будет производиться поиск</param>
-        IDocumentProvider BuildMultiIndexDocumentProvider(string indexName = null, IEnumerable<string> typeNames = null);
+//        /// <summary>
+//        /// Создать провайдер данных
+//        /// </summary>
+//        /// <param name="indexName">Наименование индекса</param>
+//        /// <param name="typeName">Наименование типа</param>
+//        IVersionProvider BuildVersionProvider(string indexName, string typeName);
+//
+//        /// <summary>
+//        /// Создать провайдер данных для доступа к нескольким индексам
+//        /// </summary>
+//        /// <param name="indexName">Наименование индекса</param>
+//        /// <param name="typeNames">Имена типов, по которым будет производиться поиск</param>
+//        IDocumentProvider BuildMultiIndexDocumentProvider(string indexName = null, IEnumerable<string> typeNames = null);
 
         /// <summary>
         /// Создать провайдер для поиска данных
@@ -69,5 +69,12 @@ namespace InfinniPlatform.Sdk.Environment.Index
         /// </summary>
         /// <returns>Провайдер операций по всем индексам и типам базы</returns>
         IAllIndexesOperationProvider BuildAllIndexesOperationProvider();
+
+        /// <summary>
+        ///     Создать провайдер данных
+        /// </summary>
+        /// <param name="indexName">Наименование индекса</param>
+        /// <param name="typeName">Наименование типа</param>
+        IVersionProvider BuildVersionProvider(string indexName, string typeName);
     }
 }

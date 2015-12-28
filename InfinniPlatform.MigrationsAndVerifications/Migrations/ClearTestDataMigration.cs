@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Emit;
 using System.Text;
 
 using InfinniPlatform.Api.Metadata;
@@ -81,7 +82,8 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
             {
                 if (parameters[i].ToString() == "True")
                 {
-                    var docs = _documentApi.GetDocument(_activeConfiguration, containers[i], null, 0, 10000);
+                    Action<FieldBuilder> filter = null;
+                    var docs = _documentApi.GetDocument(_activeConfiguration, containers[i], filter, 0, 10000);
 
                     foreach (var doc in docs)
                     {

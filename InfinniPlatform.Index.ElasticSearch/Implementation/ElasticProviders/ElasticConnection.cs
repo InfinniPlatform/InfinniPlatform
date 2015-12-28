@@ -187,16 +187,19 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         /// </summary>
         public IList<PropertyMapping> GetPropertyMappings(string indexName, string typeName)
         {
+            indexName = indexName.ToLower();
+            typeName = typeName.ToLower();
+
             //TODO Рассмотреть возможность использования типов данных из NEST.
             var propertyMappings = new List<PropertyMapping>();
 
             //            var actualMappings = ElasticClient.Value.GetMapping(new GetMappingRequest("_all", "_all")).Mappings;
-            if (!_mappingsCache.ContainsKey(indexName.ToLower()))
+            if (!_mappingsCache.ContainsKey(indexName))
             {
                 return propertyMappings;
             }
 
-            var indexMappings = _mappingsCache[indexName.ToLower()];
+            var indexMappings = _mappingsCache[indexName];
 
             var isBaseType = !typeName.Contains(IndexTypeMapper.MappingTypeVersionPattern);
 
@@ -209,7 +212,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
             if (rootObjectMapping != null && rootObjectMapping.Properties.ContainsKey("Values"))
             {
-                var properties = (rootObjectMapping?.Properties["Values"] as ObjectMapping)?.Properties;
+                var properties = (rootObjectMapping.Properties["Values"] as ObjectMapping)?.Properties;
 
                 if (properties != null)
                 {

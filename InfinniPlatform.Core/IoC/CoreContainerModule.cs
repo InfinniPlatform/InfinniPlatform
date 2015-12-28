@@ -92,6 +92,7 @@ namespace InfinniPlatform.IoC
 
             builder.RegisterType<DocumentApi>()
                    .AsSelf()
+                   .As<IDocumentApi>()
                    .SingleInstance();
 
             // PrintViewApi

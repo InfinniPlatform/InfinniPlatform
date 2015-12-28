@@ -5,6 +5,7 @@ using System.Text;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Sdk;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment.Register;
 
@@ -76,14 +77,10 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         {
             var resultMessage = new StringBuilder();
 
-            if (_indexApi.IndexExists(_activeConfiguration,
-                _activeConfiguration + RegisterConstants.RegistersCommonInfo))
+            if (_indexApi.IndexExists(_activeConfiguration, _activeConfiguration + RegisterConstants.RegistersCommonInfo))
             {
-                var registersInfo = _documentApi.GetDocument(_activeConfiguration,
-                    _activeConfiguration +
-                    RegisterConstants
-                        .RegistersCommonInfo,
-                    null, 0, 1000);
+                Action<FilterBuilder> filter = null;
+                var registersInfo = _documentApi.GetDocument(_activeConfiguration, _activeConfiguration + RegisterConstants.RegistersCommonInfo, filter, 0, 1000);
 
                 foreach (var registerInfo in registersInfo)
                 {

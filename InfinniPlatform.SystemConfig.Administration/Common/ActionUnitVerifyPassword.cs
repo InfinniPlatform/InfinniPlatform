@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Sdk;
 using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.SystemConfig.Administration.Common
@@ -13,8 +15,9 @@ namespace InfinniPlatform.SystemConfig.Administration.Common
             var providedPassword = target.Item.ProvidedPassword;
 
             var api = target.Context.GetComponent<DocumentApi>();
+            object action = null;
             IEnumerable<dynamic> users = api.GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId,
-                "UserStore", null, 0, 1000);
+                "UserStore", action, 0, 1000);
 
             var userWithPassword =
                 users.FirstOrDefault(r => StringHasher.VerifyValue(r.PasswordHash, target.Item.ProvidedPassword));
@@ -23,9 +26,10 @@ namespace InfinniPlatform.SystemConfig.Administration.Common
             //проверяем тупо первого попавшегося пользователя
             if (userWithPassword != null)
             {
+                Action<FilterBuilder> filter = cr => cr.AddCriteria(
+                                                     f => f.Property("User.DisplayName").IsEquals(userWithPassword.UserName));
                 var userLoginAs = api.GetDocument("Administration", "UserLoginAs",
-                    cr => cr.AddCriteria(
-                        f => f.Property("User.DisplayName").IsEquals(userWithPassword.UserName)), 0,
+                    filter, 0,
                     1000).ToList();
                 //проверяем совпадение хэшей паролей
                 foreach (var userLogin in userLoginAs)

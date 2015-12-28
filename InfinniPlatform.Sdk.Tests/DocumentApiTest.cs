@@ -271,7 +271,8 @@ namespace InfinniPlatform.Sdk.Tests
 							  };
 
 			//When
-			string docId = _api.SetDocument("Gameshop", "Comment", comment).Id.ToString();
+		    var document = _api.SetDocument("Gameshop", "Comment", comment);
+		    string docId = document.Id.ToString();
 
 			//Then
 			dynamic documentResult = _api.GetDocumentById("Gameshop", "Comment", docId);
@@ -350,7 +351,8 @@ namespace InfinniPlatform.Sdk.Tests
 									 Price = 1999
 								 };
 
-			var result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
+		    var document = _api.SetDocument("gameshop", "catalogue", documentObject);
+		    var result = document.Id.ToString();
 
 			var docs = _api.GetDocument("gameshop", "catalogue",
 				f => f.AddCriteria(cr => cr.Property("Id").IsEquals(result)), 0, 1);
@@ -394,6 +396,7 @@ namespace InfinniPlatform.Sdk.Tests
 		}
 
 		[Test]
+        [Ignore("Transaction implementation is obsolete")]
 		public void ShouldUseSession()
 		{
 			var session = _api.CreateSession().SessionId;
@@ -452,7 +455,8 @@ namespace InfinniPlatform.Sdk.Tests
 		}
 
 		[Test]
-		public void ShouldRemoveTransaction()
+        [Ignore("Transaction implementation is obsolete")]
+        public void ShouldRemoveTransaction()
 		{
 			var session = _api.CreateSession().SessionId.ToString();
 

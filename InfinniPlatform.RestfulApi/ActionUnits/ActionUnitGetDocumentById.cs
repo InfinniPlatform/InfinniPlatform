@@ -1,6 +1,4 @@
-﻿using InfinniPlatform.ContextComponents;
-using InfinniPlatform.RestfulApi.Utils;
-using InfinniPlatform.Sdk.ContextComponents;
+﻿using InfinniPlatform.RestfulApi.Utils;
 using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.RestfulApi.ActionUnits
@@ -12,23 +10,24 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
     /// </summary>
     public sealed class ActionUnitGetDocumentById
     {
+        public ActionUnitGetDocumentById(DocumentExecutor documentExecutor)
+        {
+            _documentExecutor = documentExecutor;
+        }
+
+        private readonly DocumentExecutor _documentExecutor;
+
         public void Action(IApplyContext target)
         {
-            var executor =
-                new DocumentExecutor(target.Context.GetComponent<IConfigurationMediatorComponent>(),
-                    target.Context.GetComponent<IMetadataComponent>(),
-                    target.Context.GetComponent<InprocessDocumentComponent>(),
-                    target.Context.GetComponent<IReferenceResolver>());
-
-            if (string.IsNullOrEmpty(target.Item.ConfigId) || string.IsNullOrEmpty(target.Item.DocumentId))
+            if (string.IsNullOrEmpty(target.Item.ConfigId) ||
+                string.IsNullOrEmpty(target.Item.DocumentId))
             {
-                target.Result = executor.GetBaseDocument(target.UserName, target.Item.Id);
+                target.Result = _documentExecutor.GetBaseDocument(target.Item.Id);
             }
             else
             {
-                target.Result = executor.GetCompleteDocument(target.Item.ConfigId,
-                    target.Item.DocumentId,
-                    target.UserName, target.Item.Id);
+                target.Result = _documentExecutor.GetCompleteDocument(target.Item.ConfigId,
+                                                                      target.Item.DocumentId, target.Item.Id);
             }
         }
     }

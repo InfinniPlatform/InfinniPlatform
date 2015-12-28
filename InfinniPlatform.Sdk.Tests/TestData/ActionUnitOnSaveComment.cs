@@ -1,5 +1,6 @@
 ﻿using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Sdk.Tests.TestData
 {
@@ -9,7 +10,7 @@ namespace InfinniPlatform.Sdk.Tests.TestData
         {
             target.Item.Text = target.Item.Text + "123";
             var documentApi = target.Context.GetComponent<DocumentApi>();
-            documentApi.SetDocument("gameshop", "review", new { Text = "test" });
+            documentApi.SetDocument("gameshop", "review", new DynamicWrapper  { ["Text"] = "test" });
         }
     }
 }

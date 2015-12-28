@@ -1,30 +1,29 @@
 ﻿using System.Collections.Generic;
-using System.Threading;
 
-using InfinniPlatform.Api.Index.SearchOptions;
-using InfinniPlatform.Api.RestApi.Auth;
-using InfinniPlatform.Api.Security;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Index.QueryLanguage.Implementation;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Index;
+
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.RestfulApi.ActionUnits
 {
     public sealed class ActionUnitGetByQuery
     {
-        private static JsonQueryExecutor _jsonQueryExecutor;
+        private readonly IIndexComponent _indexComponent;
+
+        public ActionUnitGetByQuery(IIndexComponent indexComponent)
+        {
+            _indexComponent = indexComponent;
+        }
 
         public void Action(IApplyResultContext target)
         {
-            IFilterBuilder filterFactory = FilterBuilderFactory.GetInstance();
+            var filterFactory = FilterBuilderFactory.GetInstance();
 
-			_jsonQueryExecutor = new JsonQueryExecutor(target.Context.GetComponent<IIndexComponent>().IndexFactory, filterFactory);
-
-            dynamic query = DynamicWrapperExtensions.ToDynamic((string) target.Item.QueryText);
+            dynamic query = ((string) target.Item.QueryText).ToDynamic();
 
             var denormalizeFlag = target.Item.DenormalizeResult;
 
@@ -40,7 +39,7 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                 query.Where = new List<dynamic>();
             }
 
-            JArray queryResult = _jsonQueryExecutor.ExecuteQuery(JObject.FromObject(query));
+            JArray queryResult = new JsonQueryExecutor(_indexComponent.IndexFactory, filterFactory).ExecuteQuery(JObject.FromObject(query));
 
             target.Result = denormalize
                                 ? new JsonDenormalizer().ProcessIqlResult(queryResult).ToDynamic()

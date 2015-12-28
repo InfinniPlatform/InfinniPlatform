@@ -47,6 +47,7 @@ namespace InfinniPlatform.Sdk.Tests
         }
 
         [Test]
+        [Ignore("Transaction implementation is obsolete")]
         public void ShouldAttachFileInSession()
         {
             var document = new
@@ -77,6 +78,7 @@ namespace InfinniPlatform.Sdk.Tests
 
 
         [Test]
+        [Ignore("Transaction implementation is obsolete")]
         public void ShouldDetachFileInSession()
         {
             var document = new

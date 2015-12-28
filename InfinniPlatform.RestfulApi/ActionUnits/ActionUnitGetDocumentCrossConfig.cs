@@ -31,7 +31,6 @@ namespace InfinniPlatform.RestfulApi.ActionUnits
                             target.Context.GetComponent<IReferenceResolver>());
 
                     resultDocuments.AddRange(executor.GetCompleteDocuments(config, document,
-                        target.UserName,
                         Convert.ToInt32(target.Item.PageNumber),
                         Convert.ToInt32(target.Item.PageSize),
                         filter, sorting, target.Item.IgnoreResolve));

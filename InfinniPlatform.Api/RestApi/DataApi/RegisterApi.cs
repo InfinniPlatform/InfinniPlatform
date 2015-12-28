@@ -371,11 +371,10 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
             if (closestDate != null)
             {
-                return _documentApi.GetDocument(
-                    configuration,
-                    RegisterConstants.RegisterTotalNamePrefix + register,
-                    f => f.AddCriteria(
-                        c => c.Property(RegisterConstants.DocumentDateProperty).IsEquals(closestDate.Date)), 0, 10000);
+                Action<FilterBuilder> action = f => f.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty)
+                                                                        .IsEquals(closestDate.Date));
+
+                return _documentApi.GetDocument(configuration, RegisterConstants.RegisterTotalNamePrefix + register, action, 0, 10000);
             }
 
             return new List<dynamic>();

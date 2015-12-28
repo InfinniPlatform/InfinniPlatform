@@ -175,13 +175,7 @@ namespace InfinniPlatform.RestfulApi.Installers
                     )));
 
             metadataConfiguration.RegisterWorkflow("configuration", "getbyquery",
-                f => f.FlowWithoutState(wc => wc
-                    .Move(ws => ws
-                        .WithAction(
-                            () =>
-                                actionUnits
-                                    .GetAction(
-                                        "getbyquery")))));
+                                                   f => f.FlowWithoutState(wc => wc.Move(ws => ws.WithAction(() => actionUnits.GetAction("getbyquery")))));
 
 
             metadataConfiguration.RegisterWorkflow("authorization", "applyaccess",
@@ -465,13 +459,7 @@ namespace InfinniPlatform.RestfulApi.Installers
                     )));
 
             metadataConfiguration.RegisterWorkflow("configuration", "getdocumentbyid",
-                f => f.FlowWithoutState(wc => wc
-                    .Move(
-                        ws =>
-                            ws.WithAction(
-                                () =>
-                                    actionUnits.GetAction(
-                                        "getdocumentbyid")))));
+                                                   f => f.FlowWithoutState(wc => wc.Move(ws => ws.WithAction(() => actionUnits.GetAction("getdocumentbyid")))));
 
             metadataConfiguration.RegisterWorkflow("configuration", "filterupdateevents",
                 f => f.FlowWithoutState(wc => wc
