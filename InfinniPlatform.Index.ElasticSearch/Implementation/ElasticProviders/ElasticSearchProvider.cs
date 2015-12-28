@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using InfinniPlatform.Api.RestApi.Auth;
 using InfinniPlatform.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeSelectors;
@@ -274,7 +275,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
 		private IndexObject PrepareObjectToIndex(dynamic item, string tenantId)
 		{
-			dynamic jInstance = ((object)item).ToDynamic();
+		    tenantId = AuthorizationStorageExtensions.AnonymousUser;
+
+            dynamic jInstance = ((object)item).ToDynamic();
 
 			if (jInstance.Id == null)
 			{
