@@ -55,7 +55,7 @@ namespace InfinniPlatform.RestfulApi.Utils
                 var metadataConfiguration =
                     _configurationMediatorComponent
                         .ConfigurationBuilder.GetConfigurationObject(configId)
-                        .MetadataConfiguration;
+                                                                           .MetadataConfiguration;
 
                 if (metadataConfiguration == null)
                 {
@@ -70,8 +70,7 @@ namespace InfinniPlatform.RestfulApi.Utils
                 if (schema != null)
                 {
                     // Ивлекаем информацию о полях, по которым можно проводить сортировку из метаданных документа
-                    sortingFields = ExtractSortingProperties("", schema.Properties,
-                        _configurationMediatorComponent.ConfigurationBuilder);
+                    sortingFields = ExtractSortingProperties(string.Empty, schema.Properties,_configurationMediatorComponent.ConfigurationBuilder);
                 }
 
                 if (sorting != null && sorting.Any())
@@ -99,7 +98,6 @@ namespace InfinniPlatform.RestfulApi.Utils
                     sorting = sortingFields;
                 }
 
-
                 //делаем выборку документов для последующего Resolve и фильтрации по полям Resolved объектов
                 var pageSizeUnresolvedDocuments = Math.Min(pageSize, 1000);
 
@@ -116,12 +114,16 @@ namespace InfinniPlatform.RestfulApi.Utils
 
                 result = criteriaInterpreter.ApplyFilter(queryAnalyzer.GetAfterResolveCriteriaList(filter), result);
 
-                return result.Take(pageSize == 0 ? 10 : pageSize);
+                return result.Take(pageSize == 0
+                                       ? 10
+                                       : pageSize);
             }
             return new List<dynamic>();
         }
 
-        private static IEnumerable<object> ExtractSortingProperties(string rootName, dynamic properties, IConfigurationObjectBuilder configurationObjectBuilder)
+        private static IEnumerable<object> ExtractSortingProperties(string rootName, dynamic properties,
+                                                                    IConfigurationObjectBuilder
+                                                                        configurationObjectBuilder)
         {
             var sortingProperties = new List<object>();
 
