@@ -75,15 +75,7 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
         public dynamic DeleteDocument(string configuration, string metadata, string documentId)
         {
-            var result = ExecutePost("deletedocument", null, new
-                                                             {
-                                                                 Configuration = configuration,
-                                                                 Metadata = metadata,
-                                                                 Id = documentId,
-                                                                 Secured = false
-                                                             });
-
-            return result.ToDynamic();
+            return _setDocumentExecutor.DeleteDocument(configuration, metadata, documentId);
         }
 
         public dynamic UpdateDocument(string configuration, string metadata, dynamic item, bool ignoreWarnings = false, bool allowNonSchemaProperties = false)
@@ -111,12 +103,12 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
         public dynamic SetDocument(string configuration, string documentType, object documentInstance)
         {
-            return _setDocumentExecutor.SetDocument(configuration, documentType, documentInstance);
+            return _setDocumentExecutor.SaveDocument(configuration, documentType, documentInstance);
         }
 
         public dynamic SetDocuments(string configuration, string documentType, IEnumerable<object> documentInstances)
         {
-            return _setDocumentExecutor.SetDocuments(configuration, documentType, documentInstances);
+            return _setDocumentExecutor.SaveDocuments(configuration, documentType, documentInstances);
         }
 
         private RestQueryResponse ExecutePost(string action, string id, object body)

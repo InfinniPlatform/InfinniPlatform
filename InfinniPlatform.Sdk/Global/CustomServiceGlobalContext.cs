@@ -7,9 +7,9 @@ namespace InfinniPlatform.Sdk.Global
     [Obsolete("Use IoC")]
     public sealed class CustomServiceGlobalContext : ICustomServiceGlobalContext
     {
-        public CustomServiceGlobalContext(Func<IContainerResolver> containerResolverFactory)
+        public CustomServiceGlobalContext(IContainerResolver containerResolver)
         {
-            _containerResolver = containerResolverFactory();
+            _containerResolver = containerResolver;
         }
 
 

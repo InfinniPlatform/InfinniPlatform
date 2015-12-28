@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.Api.RestQuery;
+﻿using InfinniPlatform.Api.RestApi.CommonApi;
+using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Api.RestApi.Public;
 using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
 using InfinniPlatform.Api.Settings;
 using InfinniPlatform.Api.Transactions;
@@ -6,15 +8,18 @@ using InfinniPlatform.Compression;
 using InfinniPlatform.ContextComponents;
 using InfinniPlatform.Factories;
 using InfinniPlatform.Logging;
+using InfinniPlatform.Sdk.ApiContracts;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment.Log;
 using InfinniPlatform.Sdk.Environment.Settings;
-using InfinniPlatform.Sdk.Environment.Transactions;
 using InfinniPlatform.Sdk.Global;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.SystemInfo;
 using InfinniPlatform.Transactions;
+
+using PrintViewApi = InfinniPlatform.Api.RestApi.Public.PrintViewApi;
+using RegisterApi = InfinniPlatform.Api.RestApi.Public.RegisterApi;
 
 namespace InfinniPlatform.IoC
 {
@@ -42,14 +47,6 @@ namespace InfinniPlatform.IoC
                    .AsSelf()
                    .SingleInstance();
 
-            builder.RegisterType<TransactionManager>()
-                   .As<ITransactionManager>()
-                   .SingleInstance();
-
-            builder.RegisterType<TransactionComponent>()
-                   .As<ITransactionComponent>()
-                   .SingleInstance();
-
             builder.RegisterType<GZipDataCompressor>()
                    .As<IDataCompressor>()
                    .SingleInstance();
@@ -75,20 +72,32 @@ namespace InfinniPlatform.IoC
                    .AsSelf()
                    .SingleInstance();
 
+            // SaaS
+
+            builder.RegisterType<TenantProvider>()
+                   .As<ITenantProvider>()
+                   .SingleInstance();
+
+            // Transaction
+
+            builder.RegisterType<DocumentTransactionScopeProvider>()
+                   .As<IDocumentTransactionScopeProvider>()
+                   .SingleInstance();
+
             // Log4Net
             builder.OnCreateInstance(new Log4NetContainerParameterResolver());
             builder.OnActivateInstance(new Log4NetContainerInstanceActivator());
 
             // DocumentApi
 
-            builder.RegisterType<Api.RestApi.DataApi.DocumentApi>()
+            builder.RegisterType<DocumentApi>()
                    .AsSelf()
                    .SingleInstance();
 
             // PrintViewApi
 
-            builder.RegisterType<Api.RestApi.Public.PrintViewApi>()
-                   .As<Sdk.ApiContracts.IPrintViewApi>()
+            builder.RegisterType<PrintViewApi>()
+                   .As<IPrintViewApi>()
                    .AsSelf()
                    .SingleInstance();
 
@@ -98,8 +107,8 @@ namespace InfinniPlatform.IoC
 
             // RegisterApi
 
-            builder.RegisterType<Api.RestApi.Public.RegisterApi>()
-                   .As<Sdk.ApiContracts.IRegisterApi>()
+            builder.RegisterType<RegisterApi>()
+                   .As<IRegisterApi>()
                    .AsSelf()
                    .SingleInstance();
 
@@ -113,19 +122,19 @@ namespace InfinniPlatform.IoC
 
             // FileApi
 
-            builder.RegisterType<Api.RestApi.Public.FileApi>()
-                   .As<Sdk.ApiContracts.IFileApi>()
+            builder.RegisterType<FileApi>()
+                   .As<IFileApi>()
                    .AsSelf()
                    .SingleInstance();
 
-            builder.RegisterType<Api.RestApi.DataApi.UploadApi>()
+            builder.RegisterType<UploadApi>()
                    .AsSelf()
                    .SingleInstance();
 
             // AuthApi
 
-            builder.RegisterType<Api.RestApi.Public.AuthApi>()
-                   .As<Sdk.ApiContracts.IAuthApi>()
+            builder.RegisterType<AuthApi>()
+                   .As<IAuthApi>()
                    .AsSelf()
                    .SingleInstance();
 
@@ -135,8 +144,8 @@ namespace InfinniPlatform.IoC
 
             // CustomServiceApi
 
-            builder.RegisterType<Api.RestApi.Public.CustomServiceApi>()
-                   .As<Sdk.ApiContracts.ICustomServiceApi>()
+            builder.RegisterType<CustomServiceApi>()
+                   .As<ICustomServiceApi>()
                    .AsSelf()
                    .SingleInstance();
 
@@ -148,15 +157,15 @@ namespace InfinniPlatform.IoC
 
             // Fury
 
-            builder.RegisterType<Api.RestApi.DataApi.SessionApi>()
+            builder.RegisterType<SessionApi>()
                    .AsSelf()
                    .SingleInstance();
 
-            builder.RegisterType<Api.RestApi.CommonApi.IndexApi>()
+            builder.RegisterType<IndexApi>()
                    .AsSelf()
                    .SingleInstance();
 
-            builder.RegisterType<Api.RestApi.CommonApi.RestQueryApi>()
+            builder.RegisterType<RestQueryApi>()
                    .AsSelf()
                    .SingleInstance();
 

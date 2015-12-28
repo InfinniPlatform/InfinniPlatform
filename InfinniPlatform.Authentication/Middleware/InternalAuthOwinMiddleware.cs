@@ -145,7 +145,7 @@ namespace InfinniPlatform.Authentication.Middleware
 
             ThrowIfError(changePasswordTask);
 
-            return new EmptyRequestHandlerResult();
+            return EmptyRequestHandlerResult.Instance;
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace InfinniPlatform.Authentication.Middleware
                 userIdentity.SetClaim(ApplicationClaimTypes.ActiveRole, activeRole);
             }
 
-            return new EmptyRequestHandlerResult();
+            return EmptyRequestHandlerResult.Instance;
         }
 
         /// <summary>
@@ -330,7 +330,7 @@ namespace InfinniPlatform.Authentication.Middleware
             var removeLoginTask = userManager.RemoveLoginAsync(userId, new UserLoginInfo(provider, providerKey));
             ThrowIfError(removeLoginTask);
 
-            return new EmptyRequestHandlerResult();
+            return EmptyRequestHandlerResult.Instance;
         }
 
         /// <summary>
@@ -343,7 +343,7 @@ namespace InfinniPlatform.Authentication.Middleware
             // Выход из системы
             authManager.SignOut();
 
-            return new EmptyRequestHandlerResult();
+            return EmptyRequestHandlerResult.Instance;
         }
 
         // Helpers
@@ -455,7 +455,7 @@ namespace InfinniPlatform.Authentication.Middleware
             var authProperties = new AuthenticationProperties { RedirectUri = callbackUri };
             authManager.Challenge(authProperties, provider);
 
-            return new EmptyRequestHandlerResult();
+            return EmptyRequestHandlerResult.Instance;
         }
 
         private static IRequestHandlerResult ChallengeExternalProviderCallback(IOwinContext context, Action<ExternalLoginInfo> callbackAction)
@@ -511,7 +511,7 @@ namespace InfinniPlatform.Authentication.Middleware
 
             response.Redirect(redirectUrl);
 
-            return new EmptyRequestHandlerResult();
+            return EmptyRequestHandlerResult.Instance;
         }
 
         /// <summary>

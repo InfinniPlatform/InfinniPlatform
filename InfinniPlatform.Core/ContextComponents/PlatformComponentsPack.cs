@@ -11,9 +11,9 @@ namespace InfinniPlatform.ContextComponents
     [Obsolete("Use IoC")]
     public sealed class PlatformComponentsPack : IPlatformComponentsPack
     {
-        public PlatformComponentsPack(Func<IContainerResolver> containerResolverFactory)
+        public PlatformComponentsPack(IContainerResolver containerResolver)
         {
-            _containerResolver = containerResolverFactory();
+            _containerResolver = containerResolver;
         }
 
 

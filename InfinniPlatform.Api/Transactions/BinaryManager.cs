@@ -57,7 +57,7 @@ namespace InfinniPlatform.Api.Transactions
                     _blobStorage.UpdateBlob(contentId, blobProperty, string.Empty, blobData);
                 }
 
-                _setDocumentExecutor.SetDocument(configuration, documentType, document);
+                _setDocumentExecutor.SaveDocument(configuration, documentType, document);
             }
         }
 

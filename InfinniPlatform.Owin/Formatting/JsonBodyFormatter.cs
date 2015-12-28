@@ -14,10 +14,7 @@ namespace InfinniPlatform.Owin.Formatting
     {
         public static readonly JsonBodyFormatter Instance = new JsonBodyFormatter();
 
-        public string ContentType
-        {
-            get { return "application/json"; }
-        }
+        public string ContentType => "application/json";
 
         public object ReadBody(IOwinRequest request)
         {
@@ -28,7 +25,7 @@ namespace InfinniPlatform.Owin.Formatting
         {
             if (value != null)
             {
-                var data = new JsonObjectSerializer(true, null).Serialize(value);
+                var data = JsonObjectSerializer.Default.Serialize(value);
                 response.ContentLength = data.LongLength;
                 response.ContentType = ContentType;
                 await response.WriteAsync(data);

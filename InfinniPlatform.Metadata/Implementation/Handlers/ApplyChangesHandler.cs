@@ -6,7 +6,6 @@ using InfinniPlatform.Hosting;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment.Metadata;
-using InfinniPlatform.Sdk.Environment.Transactions;
 
 namespace InfinniPlatform.Metadata.Implementation.Handlers
 {
@@ -15,16 +14,14 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
     /// </summary>
     public sealed class ApplyChangesHandler : IWebRoutingHandler
     {
-        public ApplyChangesHandler(IGlobalContext globalContext, ITransactionComponent transactionComponent, IMetadataConfigurationProvider metadataConfigurationProvider)
+        public ApplyChangesHandler(IGlobalContext globalContext, IMetadataConfigurationProvider metadataConfigurationProvider)
         {
             _globalContext = globalContext;
-            _transactionManager = transactionComponent.GetTransactionManager();
             _metadataConfigurationProvider = metadataConfigurationProvider;
         }
 
 
         private readonly IGlobalContext _globalContext;
-        private readonly ITransactionManager _transactionManager;
         private readonly IMetadataConfigurationProvider _metadataConfigurationProvider;
 
 
@@ -50,9 +47,6 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
 
             // Идентификатор транзакции
             var transactionMarker = changesObject.TransactionMarker ?? Guid.NewGuid().ToString();
-
-            // Начало транзакции
-            var transaction = _transactionManager.GetTransaction(transactionMarker);
 
             var moveContext = new ApplyContext
             {
@@ -85,8 +79,6 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
             {
                 return AggregateExtensions.PrepareInvalidFilterAggregate(moveContext);
             }
-
-            transaction.CommitTransaction();
 
             return AggregateExtensions.PrepareResultAggregate(targetResult.Result);
         }

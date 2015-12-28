@@ -74,7 +74,6 @@
     <Compile Include="ContextComponents\RegistryComponent.cs" />
     <Compile Include="ContextComponents\ScriptRunnerComponent.cs" />
     <Compile Include="ContextComponents\SystemComponent.cs" />
-    <Compile Include="ContextComponents\TransactionComponent.cs" />
     <Compile Include="ContextComponents\WebClientNotificationComponent.cs" />
     <Compile Include="Factories\ContextRegistration.cs" />
     <Compile Include="Factories\IPrintViewBuilderFactory.cs" />
@@ -189,9 +188,11 @@
     <Compile Include="Hosting\WebRequestHelper.cs" />
     <Compile Include="SystemInfo\ISystemInfoProvider.cs" />
     <Compile Include="SystemInfo\SystemInfoProvider.cs" />
-    <Compile Include="Transactions\TransactionManager.cs" />
-    <Compile Include="Transactions\TransactionMaster.cs" />
-    <Compile Include="Transactions\TransactionSlave.cs" />
+    <Compile Include="Transactions\DocumentTransactionScopeProvider.cs" />
+    <Compile Include="Transactions\IDocumentTransactionScope.cs" />
+    <Compile Include="Transactions\IDocumentTransactionScopeProvider.cs" />
+    <Compile Include="Transactions\ITenantProvider.cs" />
+    <Compile Include="Transactions\TenantProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

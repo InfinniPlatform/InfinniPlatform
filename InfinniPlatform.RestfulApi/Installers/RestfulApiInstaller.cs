@@ -46,10 +46,7 @@ namespace InfinniPlatform.RestfulApi.Installers
             actionUnits.RegisterActionUnitDistributedStorage("successsetdocument", "ActionUnitSuccessSetDocument");
             actionUnits.RegisterActionUnitDistributedStorage("failsetdocument", "ActionUnitFailSetDocument");
             actionUnits.RegisterActionUnitDistributedStorage("successdeletedocument", "ActionUnitSuccessDeleteDocument");
-            actionUnits.RegisterActionUnitDistributedStorage("filterauthdocument", "ActionUnitFilterAuthDocument");
 
-            actionUnits.RegisterActionUnitDistributedStorage("simpleauth", "ActionUnitSimpleAuth");
-            actionUnits.RegisterActionUnitDistributedStorage("complexauth", "ActionUnitComplexAuth");
             actionUnits.RegisterActionUnitDistributedStorage("applyaccess", "ActionUnitApplyAccess");
             actionUnits.RegisterActionUnitDistributedStorage("changepassword", "ActionUnitChangePassword");
 
@@ -175,27 +172,7 @@ namespace InfinniPlatform.RestfulApi.Installers
                                 actionUnits
                                     .GetAction(
                                         "getdocumentcrossconfig"))
-                        .WithSimpleAuthorization
-                        (() =>
-                            actionUnits
-                                .GetAction(
-                                    "documentauth"))
-                        .OnSuccess(
-                            () =>
-                                actionUnits
-                                    .GetAction(
-                                        "filterauthdocument"))
                     )));
-
-            metadataConfiguration.RegisterWorkflow("configuration", "filterauthdocument",
-                f => f.FlowWithoutState(wc => wc
-                    .Move(ws => ws
-                        .WithAction(
-                            () =>
-                                actionUnits
-                                    .GetAction(
-                                        "filterauthdocument")))));
-
 
             metadataConfiguration.RegisterWorkflow("configuration", "getbyquery",
                 f => f.FlowWithoutState(wc => wc
@@ -210,11 +187,6 @@ namespace InfinniPlatform.RestfulApi.Installers
             metadataConfiguration.RegisterWorkflow("authorization", "applyaccess",
                 f => f.FlowWithoutState(wc => wc
                     .Move(ws => ws
-                        .WithSimpleAuthorization
-                        (() =>
-                            actionUnits
-                                .GetAction(
-                                    "adminauth"))
                         .WithAction(
                             () =>
                                 actionUnits
@@ -432,7 +404,6 @@ namespace InfinniPlatform.RestfulApi.Installers
             metadataConfiguration.RegisterWorkflow("authorization", "updateroles",
                 f => f.FlowWithoutState(wc => wc
                     .Move(ws => ws
-                        //.WithSimpleAuthorization(() => actionUnits.GetAction("simpleauth"))
                         .WithAction(
                             () =>
                                 actionUnits
@@ -444,7 +415,6 @@ namespace InfinniPlatform.RestfulApi.Installers
             metadataConfiguration.RegisterWorkflow("authorization", "getacl",
                 f => f.FlowWithoutState(wc => wc
                     .Move(ws => ws
-                        //.WithSimpleAuthorization(() => actionUnits.GetAction("simpleauth"))
                         .WithAction(
                             () =>
                                 actionUnits
@@ -452,16 +422,6 @@ namespace InfinniPlatform.RestfulApi.Installers
                                         "getacl"))
                     )));
 
-
-            metadataConfiguration.RegisterWorkflow("authorization", "simpleauth",
-                f => f.FlowWithoutState(wc => wc
-                    .Move(ws => ws
-                        .WithAction(
-                            () =>
-                                actionUnits
-                                    .GetAction(
-                                        "simpleauth"))
-                    )));
 
             metadataConfiguration.RegisterWorkflow("configuration", "downloadbinarycontent",
                 f => f.FlowWithoutState(wc => wc
@@ -486,9 +446,6 @@ namespace InfinniPlatform.RestfulApi.Installers
             metadataConfiguration.RegisterWorkflow("configuration", "getdocument",
                                                    f => f.FlowWithoutState(workflowConfig => workflowConfig
                                                                                                  .Move(stateTransitionConfig => stateTransitionConfig.WithAction(() => actionUnits.GetAction("getdocument"))
-                                                                                                                                                     .WithSimpleAuthorization(() => actionUnits.GetAction("documentauth"))
-                                                                                                                                                     .WithComplexAuthorization(() => actionUnits.GetAction("complexauth"))
-                                                                                                                                                     .OnSuccess(() => actionUnits.GetAction("filterauthdocument"))
                                                                                                                                                      .OnCredentials(() => actionUnits.GetAction("setcredentials")))));
 
             metadataConfiguration.RegisterWorkflow("configuration", "setdocument",
@@ -496,8 +453,6 @@ namespace InfinniPlatform.RestfulApi.Installers
                                                                                      .Move(ws => ws.WithValidationWarning(() => actionUnits.GetValidator("setdocumentvalidationwarning"))
                                                                                                    .WithValidationError(() => actionUnits.GetValidator("setdocumentvalidationerror"))
                                                                                                    .WithAction(() => actionUnits.GetAction("setdocument"))
-                                                                                                   .WithSimpleAuthorization(() => actionUnits.GetAction("documentauth"))
-                                                                                                   .WithComplexAuthorization(() => actionUnits.GetAction("complexauth"))
                                                                                                    .OnSuccess(() => actionUnits.GetAction("successsetdocument"))
                                                                                                    .OnFail(() => actionUnits.GetAction("failsetdocument"))
                                                                                                    .OnCredentials(() => actionUnits.GetAction("setcredentials")))));
@@ -506,9 +461,6 @@ namespace InfinniPlatform.RestfulApi.Installers
                 f => f.FlowWithoutState(wc => wc
                     .Move(ws => ws
                         .WithAction(() => actionUnits.GetAction("getnumberofdocuments"))
-                        .WithSimpleAuthorization(() => actionUnits.GetAction("documentauth"))
-                        .WithComplexAuthorization(() => actionUnits.GetAction("complexauth"))
-                        .OnSuccess(() => actionUnits.GetAction("filterauthdocument"))
                         .OnCredentials(() => actionUnits.GetAction("setcredentials"))
                     )));
 
@@ -538,16 +490,6 @@ namespace InfinniPlatform.RestfulApi.Installers
                                 actionUnits
                                     .GetAction(
                                         "createdocument"))
-                        .WithSimpleAuthorization
-                        (() =>
-                            actionUnits
-                                .GetAction(
-                                    "documentauth"))
-                        .WithComplexAuthorization
-                        (() =>
-                            actionUnits
-                                .GetAction(
-                                    "complexauth"))
                         .OnCredentials(
                             () =>
                                 actionUnits
@@ -569,16 +511,6 @@ namespace InfinniPlatform.RestfulApi.Installers
                                 actionUnits
                                     .GetAction(
                                         "successdeletedocument"))
-                        .WithSimpleAuthorization
-                        (() =>
-                            actionUnits
-                                .GetAction(
-                                    "documentauth"))
-                        .WithComplexAuthorization
-                        (() =>
-                            actionUnits
-                                .GetAction(
-                                    "complexauth"))
                         .OnCredentials(
                             () =>
                                 actionUnits
@@ -714,12 +646,6 @@ namespace InfinniPlatform.RestfulApi.Installers
                             .RegisterExtensionPoint
                             ("Move",
                                 "applyaccess"))
-                .RegisterHandlerInstance(
-                    "simpleauth",
-                    insance =>
-                        insance
-                            .RegisterExtensionPoint
-                            ("Move", "simpleauth"))
                 .RegisterHandlerInstance(
                     "adduser",
                     insance =>

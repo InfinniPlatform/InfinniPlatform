@@ -14,18 +14,18 @@ namespace InfinniPlatform.WebApi.WebApi
 {
     internal class RestVerbsContainer : IRestVerbsContainer, IRestVerbsRegistrator
     {
-        public RestVerbsContainer(string configId, string documentType, Func<IContainerResolver> containerResolverFactory)
+        public RestVerbsContainer(string configId, string documentType, IContainerResolver containerResolver)
         {
             _configId = configId;
             _documentType = documentType;
-            _containerResolverFactory = containerResolverFactory;
+            _containerResolver = containerResolver;
             _invokationInfoList = new List<MethodInvokationInfo>();
         }
 
 
         private readonly string _configId;
         private readonly string _documentType;
-        private readonly Func<IContainerResolver> _containerResolverFactory;
+        private readonly IContainerResolver _containerResolver;
         private readonly List<MethodInvokationInfo> _invokationInfoList;
 
 
@@ -102,7 +102,7 @@ namespace InfinniPlatform.WebApi.WebApi
             }
 
             var serviceHandlerType = serviceMethodInfo.TargetType.QueryHandlerType;
-            var serviceHandlerInstance = _containerResolverFactory.Invoke().Resolve(serviceHandlerType);
+            var serviceHandlerInstance = _containerResolver.Resolve(serviceHandlerType);
             var serviceResultHandlerType = serviceMethodInfo.TargetType.HttpResultHandlerType;
             var serviceHandlerDelegate = serviceMethodInfo.ConstructDelegate(verbArguments, serviceHandlerInstance, serviceResultHandlerType);
 

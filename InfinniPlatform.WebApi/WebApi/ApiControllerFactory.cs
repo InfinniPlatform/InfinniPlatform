@@ -10,14 +10,14 @@ namespace InfinniPlatform.WebApi.WebApi
 {
     internal sealed class ApiControllerFactory : IApiControllerFactory
     {
-        public ApiControllerFactory(Func<IContainerResolver> containerResolverFactory)
+        public ApiControllerFactory(IContainerResolver containerResolver)
         {
-            _containerResolverFactory = containerResolverFactory;
+            _containerResolver = containerResolver;
             _restVerbsContainers = new List<RestVerbsContainer>();
         }
 
 
-        private readonly Func<IContainerResolver> _containerResolverFactory;
+        private readonly IContainerResolver _containerResolver;
         private readonly List<RestVerbsContainer> _restVerbsContainers;
 
 
@@ -27,7 +27,7 @@ namespace InfinniPlatform.WebApi.WebApi
 
             if (verbsContainer == null)
             {
-                verbsContainer = new RestVerbsContainer(configId, documentType, _containerResolverFactory);
+                verbsContainer = new RestVerbsContainer(configId, documentType, _containerResolver);
 
                 _restVerbsContainers.Add(verbsContainer);
             }

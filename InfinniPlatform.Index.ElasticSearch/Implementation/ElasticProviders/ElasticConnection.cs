@@ -131,6 +131,57 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             return Enumerable.Empty<TypeMapping>();
         }
 
+
+        public string GetIndexName(string configuration)
+        {
+            var indexName = configuration.ToLower();
+
+            return indexName;
+        }
+
+        public string GetBaseTypeName(string documentType)
+        {
+            var baseTypeName = documentType.ToLower() + IndexTypeMapper.MappingTypeVersionPattern;
+
+            return baseTypeName;
+        }
+
+        public string GetActualTypeName(string configuration, string documentType)
+        {
+            // TODO: Данный метод должен возвращать актуальное имя типа для версии приложения.
+            // Вместо этого он возвращает имя последнего созданного типа, что в свою очередь
+            // нарушает работу более ранних версий приложения.
+
+            string actualTypeName = null;
+
+            var indexName = GetIndexName(configuration);
+            var baseTypeName = GetBaseTypeName(documentType);
+
+            IList<TypeMapping> indexMappings;
+
+            if (_mappingsCache.TryGetValue(indexName, out indexMappings))
+            {
+                var maxVersion = 0;
+
+                foreach (var typeMapping in indexMappings)
+                {
+                    if (typeMapping.TypeName.StartsWith(baseTypeName))
+                    {
+                        var version = typeMapping.GetTypeVersion().GetValueOrDefault();
+
+                        if (version >= maxVersion)
+                        {
+                            actualTypeName = typeMapping.TypeName;
+                            maxVersion = version;
+                        }
+                    }
+                }
+            }
+
+            return actualTypeName;
+        }
+
+
         /// <summary>
         /// Возвращает актуальную схему для документов, хранимых в типе.
         /// </summary>

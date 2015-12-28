@@ -15,7 +15,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions.Versions
                 testDoc1.Name = "Name_TestAction_v1";
 
                 target.Context.GetComponent<DocumentApi>()
-                      .SetDocument(target.Item.Configuration, target.Item.Metadata, testDoc1);
+                      .SetDocument(target.Configuration, target.Metadata, testDoc1);
             }
         }
     }

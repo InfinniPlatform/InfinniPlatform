@@ -88,7 +88,6 @@
     <Compile Include="Environment\Settings\AppSettings.cs" />
     <Compile Include="Environment\Settings\ConnectionStrings.cs" />
     <Compile Include="Environment\Settings\IConfigurationManager.cs" />
-    <Compile Include="Environment\Transactions\AttachedInstance.cs" />
     <Compile Include="Environment\Binary\BlobData.cs" />
     <Compile Include="Environment\Binary\BlobInfo.cs" />
     <Compile Include="Environment\Hosting\ContextTypeKind.cs" />
@@ -116,7 +115,6 @@
     <Compile Include="ContextComponents\IRegistryComponent.cs" />
     <Compile Include="ContextComponents\IScriptRunnerComponent.cs" />
     <Compile Include="ContextComponents\ISystemComponent.cs" />
-    <Compile Include="ContextComponents\ITransactionComponent.cs" />
     <Compile Include="ContextComponents\IWebClientNotificationComponent.cs" />
     <Compile Include="Contracts\IApplyContext.cs" />
     <Compile Include="Contracts\IApplyResultContext.cs" />
@@ -169,12 +167,9 @@
     <Compile Include="Environment\Scripts\IScriptProcessor.cs" />
     <Compile Include="Environment\Hosting\IServiceRegistrationContainer.cs" />
     <Compile Include="Environment\Hosting\IServiceTemplateConfiguration.cs" />
-    <Compile Include="Environment\Transactions\ITransaction.cs" />
-    <Compile Include="Environment\Transactions\ITransactionManager.cs" />
     <Compile Include="Environment\Validations\IValidationOperator.cs" />
     <Compile Include="Environment\Validations\IValidationUnitBuilder.cs" />
     <Compile Include="Environment\PrintViewFileFormat.cs" />
-    <Compile Include="Environment\Transactions\FileDescription.cs" />
     <Compile Include="Environment\Validations\ValidationResult.cs" />
     <Compile Include="Environment\Worklow\IStateTransitionCondition.cs" />
     <Compile Include="Environment\Worklow\IStateTransitionConfig.cs" />

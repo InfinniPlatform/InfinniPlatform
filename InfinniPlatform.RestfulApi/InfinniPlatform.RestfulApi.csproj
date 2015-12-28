@@ -62,8 +62,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionUnits\ActionUnitCreateDocument.cs" />
+    <Compile Include="ActionUnits\ActionUnitCreateRegisterEntry.cs" />
     <Compile Include="ActionUnits\ActionUnitDeleteDocument.cs" />
+    <Compile Include="ActionUnits\ActionUnitDeleteRegisterEntry.cs" />
+    <Compile Include="ActionUnits\ActionUnitGetClosestDateTimeOfTotalCalculation.cs" />
     <Compile Include="ActionUnits\ActionUnitGetDocumentById.cs" />
+    <Compile Include="ActionUnits\ActionUnitGetRegisterValuesBetweenDates.cs" />
+    <Compile Include="ActionUnits\ActionUnitGetRegisterValuesByDate.cs" />
+    <Compile Include="ActionUnits\ActionUnitGetRegisterValuesByPeriods.cs" />
+    <Compile Include="ActionUnits\ActionUnitGetRegisterValuesByRegistrar.cs" />
+    <Compile Include="ActionUnits\ActionUnitGetRegisterValuesByRegistrarType.cs" />
+    <Compile Include="ActionUnits\ActionUnitPostRegisterEntries.cs" />
     <Compile Include="ActionUnits\ActionUnitProcessUpdateEvents.cs" />
     <Compile Include="ActionUnits\ActionUnitGetByQuery.cs" />
     <Compile Include="ActionUnits\ActionUnitGetConfigMetadata.cs" />
@@ -74,44 +83,26 @@
     <Compile Include="ActionUnits\ActionUnitIndexWithTimeStamp.cs" />
     <Compile Include="ActionUnits\ActionUnitInsertIndex.cs" />
     <Compile Include="ActionUnits\ActionUnitRebuildIndex.cs" />
+    <Compile Include="ActionUnits\ActionUnitRecarryingRegisterEntries.cs" />
     <Compile Include="ActionUnits\ActionUnitRestIsReady.cs" />
+    <Compile Include="ActionUnits\ActionUnitRunMigration.cs" />
     <Compile Include="ActionUnits\ActionUnitSetDocument.cs" />
     <Compile Include="ActionUnits\ActionUnitIndexExists.cs" />
     <Compile Include="ActionUnits\ActionUnitGetDocumentCrossConfig.cs" />
     <Compile Include="ActionUnits\ActionUnitGetConfigMetadataList.cs" />
-    <Compile Include="Auth\ActionUnitSetSessionData.cs" />
-    <Compile Include="Auth\ActionUnitAddRole.cs" />
-    <Compile Include="Auth\ActionUnitAddUser.cs" />
-    <Compile Include="Auth\ActionUnitAddUserRole.cs" />
-    <Compile Include="Auth\ActionUnitApplyAccess.cs" />
-    <Compile Include="Auth\ActionUnitAdminAuth.cs" />
-    <Compile Include="Auth\ActionUnitChangePassword.cs" />
-    <Compile Include="Auth\ActionUnitGetSessionData.cs" />
-    <Compile Include="Auth\ActionUnitGetUser.cs" />
-    <Compile Include="Auth\ActionUnitGetVersions.cs" />
+    <Compile Include="ActionUnits\AggregationUtils.cs" />
     <Compile Include="Auth\ActionUnitRemoveSessionData.cs" />
-    <Compile Include="Auth\ActionUnitSetDefaultAcl.cs" />
-    <Compile Include="Auth\ActionUnitDocumentAuth.cs" />
-    <Compile Include="Auth\ActionUnitFilterAuthDocument.cs" />
-    <Compile Include="Auth\ActionUnitGetAcl.cs" />
-    <Compile Include="Auth\ActionUnitGetRoles.cs" />
-    <Compile Include="Auth\ActionUnitGetUserRoles.cs" />
-    <Compile Include="Auth\ActionUnitGetUsers.cs" />
-    <Compile Include="Auth\ActionUnitGrantAdminAcl.cs" />
-    <Compile Include="Auth\ActionUnitRemoveAcl.cs" />
-    <Compile Include="Auth\ActionUnitRemoveRole.cs" />
-    <Compile Include="Auth\ActionUnitRemoveUser.cs" />
-    <Compile Include="Auth\ActionUnitRemoveUserRole.cs" />
-    <Compile Include="Auth\ActionUnitSignIn.cs" />
-    <Compile Include="Auth\ActionUnitSignOut.cs" />
-    <Compile Include="Auth\ActionUnitUpdateAcl.cs" />
-    <Compile Include="Auth\ActionUnitUpdateUserRoles.cs" />
+    <Compile Include="Auth\ActionUnitSetSessionData.cs" />
     <Compile Include="Binary\ActionUnitDownloadBinaryContent.cs" />
     <Compile Include="Binary\ActionUnitUploadBinaryContent.cs" />
     <Compile Include="Credentials\ActionUnitSetAnonimousCredentials.cs" />
     <Compile Include="DefaultProcessUnits\ActionUnitSetCredentials.cs" />
     <Compile Include="DefaultProcessUnits\ActionUnitComplexAuth.cs" />
     <Compile Include="DefaultProcessUnits\ValidationUnitDeleteDocumentError.cs" />
+    <Compile Include="Executors\DocumentTransactionCommand.cs" />
+    <Compile Include="Executors\DocumentTransactionLog.cs" />
+    <Compile Include="Executors\DocumentTransactionAction.cs" />
+    <Compile Include="Executors\ElasticDocumentTransactionScope.cs" />
     <Compile Include="Executors\GetDocumentExecutor.cs" />
     <Compile Include="Executors\SetDocumentExecutor.cs" />
     <Compile Include="Extensions\IndexedStorageExtension.cs" />
@@ -126,15 +117,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Auth\ActionUnitSimpleAuth.cs" />
-    <Compile Include="Session\ActionUnitAttachDocumentSession.cs" />
-    <Compile Include="Session\ActionUnitAttachFile.cs" />
-    <Compile Include="Session\ActionUnitCreateSession.cs" />
-    <Compile Include="Session\ActionUnitDetachFile.cs" />
-    <Compile Include="Session\ActionUnitRemoveSession.cs" />
-    <Compile Include="Session\ActionUnitDetachDocumentSession.cs" />
-    <Compile Include="Session\ActionUnitGetSession.cs" />
-    <Compile Include="Session\ActionUnitSaveSession.cs" />
     <Compile Include="Utils\DocumentExecutor.cs" />
     <Compile Include="Utils\DocumentLink.cs" />
     <Compile Include="Utils\DocumentLinkMap.cs" />
@@ -146,7 +128,6 @@
     <Compile Include="DefaultProcessUnits\ActionUnitSuccessDeleteDocument.cs" />
     <Compile Include="DefaultProcessUnits\ValidationUnitSetDocumentError.cs" />
     <Compile Include="DefaultProcessUnits\ValidationUnitSetDocumentWarning.cs" />
-    <Compile Include="Utils\TransactionUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

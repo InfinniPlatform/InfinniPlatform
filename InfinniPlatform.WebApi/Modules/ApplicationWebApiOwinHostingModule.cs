@@ -1,14 +1,12 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Dependencies;
 using System.Web.Http.Dispatcher;
 
-using InfinniPlatform.Api.RestQuery;
 using InfinniPlatform.Owin.Modules;
-using InfinniPlatform.Sdk.Environment.Log;
+using InfinniPlatform.Transactions;
 using InfinniPlatform.WebApi.Factories;
-using InfinniPlatform.WebApi.Logging;
+using InfinniPlatform.WebApi.Filters;
 using InfinniPlatform.WebApi.WebApi;
 
 using Newtonsoft.Json;
@@ -25,19 +23,17 @@ namespace InfinniPlatform.WebApi.Modules
     /// </remarks>
     internal sealed class ApplicationWebApiOwinHostingModule : IOwinHostingModule
     {
-        public ApplicationWebApiOwinHostingModule(ILog log, ApplicationHostServer applicationHostServer, IApiControllerFactory apiControllerFactory, Func<IDependencyResolver> webApiDependencyResolverFactory)
+        public ApplicationWebApiOwinHostingModule(ApplicationHostServer applicationHostServer, IDependencyResolver webApiDependencyResolver, IDocumentTransactionScopeProvider transactionScopeProvider)
         {
-            _log = log;
             _applicationHostServer = applicationHostServer;
-            _apiControllerFactory = apiControllerFactory;
-            _webApiDependencyResolverFactory = webApiDependencyResolverFactory;
+            _webApiDependencyResolver = webApiDependencyResolver;
+            _transactionScopeProvider = transactionScopeProvider;
         }
 
 
-        private readonly ILog _log;
         private readonly ApplicationHostServer _applicationHostServer;
-        private readonly IApiControllerFactory _apiControllerFactory;
-        private readonly Func<IDependencyResolver> _webApiDependencyResolverFactory;
+        private readonly IDependencyResolver _webApiDependencyResolver;
+        private readonly IDocumentTransactionScopeProvider _transactionScopeProvider;
 
 
         public OwinHostingModuleType ModuleType => OwinHostingModuleType.Application;
@@ -49,8 +45,8 @@ namespace InfinniPlatform.WebApi.Modules
             SetCustomRoutes(hostConfiguration);
             SetControllerSelector(hostConfiguration);
             SetMediaTypeFormatters(hostConfiguration);
-            SetExceptionLogger(hostConfiguration, _log);
-            SetDependencyResolver(hostConfiguration, _webApiDependencyResolverFactory());
+            SetDependencyResolver(hostConfiguration, _webApiDependencyResolver);
+            SetTransactionScopeFilter(hostConfiguration, _transactionScopeProvider);
             builder.UseWebApi(hostConfiguration);
 
             _applicationHostServer.RegisterServices();
@@ -74,9 +70,9 @@ namespace InfinniPlatform.WebApi.Modules
             hostConfiguration.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
         }
 
-        private static void SetExceptionLogger(HttpConfiguration hostConfiguration, ILog log)
+        private static void SetTransactionScopeFilter(HttpConfiguration hostConfiguration, IDocumentTransactionScopeProvider transactionScopeProvider)
         {
-            hostConfiguration.Filters.Add(new LogExceptionFilterAttribute(log));
+            hostConfiguration.Filters.Add(new DocumentTransactionScopeFilterAttribute(transactionScopeProvider));
         }
 
         private static void SetCustomRoutes(HttpConfiguration hostConfiguration)

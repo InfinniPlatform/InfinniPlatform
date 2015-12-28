@@ -20,7 +20,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
             {
                 dynamic item = new DynamicWrapper();
                 item.RegisterMoveValue = "RegisterMove";
-                _documentApi.SetDocument(target.Item.Configuration, target.Item.Metadata, item);
+                _documentApi.SetDocument(target.Configuration, target.Metadata, item);
             }
         }
     }

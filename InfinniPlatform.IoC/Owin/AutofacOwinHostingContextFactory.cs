@@ -39,26 +39,29 @@ namespace InfinniPlatform.IoC.Owin
             // ReSharper disable AccessToModifiedClosure
 
             // Регистрация самого Autofac-контейнера
-            IContainer autofacContainer = null;
-            Func<IContainer> autofacContainerFactory = () => autofacContainer;
-            autofacContainerBuilder.RegisterInstance(autofacContainerFactory);
+            IContainer autofacRootContainer = null;
+            Func<IContainer> autofacRootContainerFactory = () => autofacRootContainer;
+            autofacContainerBuilder.RegisterInstance(autofacRootContainerFactory);
+            autofacContainerBuilder.Register(r => r.Resolve<Func<IContainer>>()()).As<IContainer>().SingleInstance();
 
             // Регистрация обертки над контейнером
             IContainerResolver containerResolver = null;
             Func<IContainerResolver> containerResolverFactory = () => containerResolver;
             autofacContainerBuilder.RegisterInstance(containerResolverFactory);
+            autofacContainerBuilder.Register(r => r.Resolve<Func<IContainerResolver>>()()).As<IContainerResolver>().SingleInstance();
 
             // Регистрация контейнера для WebApi
             IDependencyResolver webApiDependencyResolver = null;
             Func<IDependencyResolver> webApiDependencyResolverFactory = () => webApiDependencyResolver;
             autofacContainerBuilder.RegisterInstance(webApiDependencyResolverFactory);
+            autofacContainerBuilder.Register(r => r.Resolve<Func<IDependencyResolver>>()()).As<IDependencyResolver>().SingleInstance();
 
             // ReSharper restore AccessToModifiedClosure
 
             // Построение контейнера зависимостей
-            autofacContainer = autofacContainerBuilder.Build();
-            containerResolver = new AutofacContainerResolver(autofacContainer);
-            webApiDependencyResolver = new AutofacWebApiDependencyResolver(autofacContainer);
+            autofacRootContainer = autofacContainerBuilder.Build();
+            containerResolver = new AutofacContainerResolver(autofacRootContainer, Middleware.AutofacRequestLifetimeScopeOwinMiddleware.TryGetRequestContainer);
+            webApiDependencyResolver = new AutofacWebApiDependencyResolver(autofacRootContainer);
 
             return new OwinHostingContext(hostingConfig, containerResolver, new AutofacOwinMiddlewareResolver());
         }

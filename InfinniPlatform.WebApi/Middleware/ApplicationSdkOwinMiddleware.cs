@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using InfinniPlatform.Owin.Middleware;
+using InfinniPlatform.Sdk.Environment.Log;
+using InfinniPlatform.Transactions;
 
 using Microsoft.Owin;
 
@@ -11,13 +14,46 @@ namespace InfinniPlatform.WebApi.Middleware
     /// </summary>
     internal sealed class ApplicationSdkOwinMiddleware : RoutingOwinMiddleware
     {
-        public ApplicationSdkOwinMiddleware(OwinMiddleware next, IEnumerable<IHandlerRegistration> handlers)
-            : base(next)
+        public ApplicationSdkOwinMiddleware(OwinMiddleware next, IDocumentTransactionScopeProvider transactionScopeProvider, IEnumerable<IHandlerRegistration> handlers) : base(next)
         {
+            _transactionScopeProvider = transactionScopeProvider;
+
             foreach (var handler in handlers)
             {
                 RegisterHandler(handler);
             }
+        }
+
+        private readonly IDocumentTransactionScopeProvider _transactionScopeProvider;
+
+        protected override IRequestHandlerResult OnRequestExecuted(IRequestHandlerResult result)
+        {
+            var transactionScope = _transactionScopeProvider.GetTransactionScope();
+
+            if (transactionScope != null)
+            {
+                // Если запрос завершился успешно
+                if (result.IsSuccess)
+                {
+                    try
+                    {
+                        // Попытка фиксация транзакции
+                        transactionScope.Complete();
+                    }
+                    catch (Exception exception)
+                    {
+                        // Обработка ошибки фиксации транзакции
+                        result = new ErrorRequestHandlerResult(exception.GetMessage());
+                    }
+                }
+                else
+                {
+                    // Отмена транзакции
+                    transactionScope.Rollback();
+                }
+            }
+
+            return base.OnRequestExecuted(result);
         }
     }
 }

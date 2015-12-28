@@ -1,62 +1,55 @@
-﻿using System.Linq;
-using InfinniPlatform.Api.ContextTypes.ContextImpl;
+﻿using InfinniPlatform.Api.ContextTypes.ContextImpl;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
-using InfinniPlatform.Sdk.Global;
+using InfinniPlatform.Transactions;
 
 namespace InfinniPlatform.RestfulApi.DefaultProcessUnits
 {
     /// <summary>
-    ///     Обработчик занесения данных документа в регистр после успешного сохранения документа (при стандартном сохранении документа)
+    /// Обработчик занесения данных документа в регистр после успешного сохранения документа (при стандартном сохранении
+    /// документа)
     /// </summary>
     public sealed class ActionUnitRegisterSetDocument
     {
+        public ActionUnitRegisterSetDocument(IMetadataComponent metadataComponent, IDocumentTransactionScopeProvider transactionScopeProvider, IScriptRunnerComponent scriptRunnerComponent, IGlobalContext globalContext)
+        {
+            _metadataComponent = metadataComponent;
+            _transactionScopeProvider = transactionScopeProvider;
+            _scriptRunnerComponent = scriptRunnerComponent;
+            _globalContext = globalContext;
+        }
+
+        private readonly IGlobalContext _globalContext;
+        private readonly IMetadataComponent _metadataComponent;
+        private readonly IScriptRunnerComponent _scriptRunnerComponent;
+        private readonly IDocumentTransactionScopeProvider _transactionScopeProvider;
+
         public void Action(IApplyContext target)
         {
-            dynamic defaultBusinessProcess = null;
+            string configuration = target.Item.Configuration;
+            string documentType = target.Item.Metadata;
 
-            //TODO Игнорировать системные конфигурации при валидации. Пока непонятно, как переделать
-            if (target.Item.Configuration.ToLowerInvariant() != "systemconfig" &&
-                target.Item.Configuration.ToLowerInvariant() != "update" &&
-                target.Item.Configuration.ToLowerInvariant() != "restfulapi")
-            {
-                //ищем метаданные бизнес-процесса по умолчанию документа 
-                defaultBusinessProcess =
-                    target.Context.GetComponent<IMetadataComponent>()
-                          .GetMetadata(target.Item.Configuration, target.Item.Metadata,
-                                       MetadataType.Process, "Default");
-            }
-            else
-            {
-                return;
-            }
+            var defaultBusinessProcess = _metadataComponent.GetMetadata(configuration, documentType, MetadataType.Process, "Default");
 
+            var registerPoint = defaultBusinessProcess?.Transitions?[0]?.RegisterPoint;
 
-            if (defaultBusinessProcess != null && defaultBusinessProcess.Transitions[0].RegisterPoint != null)
+            if (registerPoint != null)
             {
                 var scriptArguments = new ApplyContext();
                 scriptArguments.CopyPropertiesFrom(target);
                 scriptArguments.Item = target.Item.Document;
-                scriptArguments.Item.Configuration = target.Item.Configuration;
-                scriptArguments.Item.Metadata = target.Item.Metadata;
-                scriptArguments.Context = target.Context.GetComponent<ICustomServiceGlobalContext>();
+                scriptArguments.Item.Configuration = configuration;
+                scriptArguments.Item.Metadata = documentType;
+                scriptArguments.Context = _globalContext;
 
-                target.Context.GetComponent<IScriptRunnerComponent>()
-                      .InvokeScript(defaultBusinessProcess.Transitions[0].RegisterPoint.ScenarioId, scriptArguments);
+                _scriptRunnerComponent.InvokeScript(registerPoint.ScenarioId, scriptArguments);
 
                 if (target.Item.Document != null && target.Item.Document.Id != null)
                 {
-                    var attached = target.Context.GetComponent<ITransactionComponent>()
-                        .GetTransactionManager()
-                        .GetTransaction(target.TransactionMarker)
-                        .GetTransactionItems()
-                        .FirstOrDefault(d => d.ContainsInstance(target.Item.Document.Id));
+                    var transactionScope = _transactionScopeProvider.GetTransactionScope();
 
-                    if (attached != null)
-                    {
-                        attached.UpdateDocument(target.Item.Document.Id, scriptArguments.Item);
-                    }
+                    transactionScope.SaveDocument(configuration, documentType, target.Item.Document.Id, scriptArguments.Item);
                 }
             }
         }

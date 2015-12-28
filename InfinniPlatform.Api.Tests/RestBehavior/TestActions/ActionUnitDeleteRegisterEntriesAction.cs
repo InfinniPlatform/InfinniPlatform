@@ -10,8 +10,8 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
         {
             // После удаления документа, удаляем соответствующие записи в регистрах
             var registryComponent = target.Context.GetComponent<IRegistryComponent>();
-            registryComponent.DeleteRegisterEntry(target.Item.Configuration, RegistersBehavior.AvailableBedsRegister, target.Item.Id);
-            registryComponent.DeleteRegisterEntry(target.Item.Configuration, RegistersBehavior.InfoRegister, target.Item.Id);
+            registryComponent.DeleteRegisterEntry(target.Configuration, RegistersBehavior.AvailableBedsRegister, target.Item);
+            registryComponent.DeleteRegisterEntry(target.Configuration, RegistersBehavior.InfoRegister, target.Item);
         }
     }
 }

@@ -47,7 +47,7 @@ namespace InfinniPlatform.Owin.Middleware
         /// </summary>
         private static IRequestHandlerResult GetFavicon(IOwinContext context)
         {
-            return new EmptyRequestHandlerResult();
+            return EmptyRequestHandlerResult.Instance;
         }
     }
 }

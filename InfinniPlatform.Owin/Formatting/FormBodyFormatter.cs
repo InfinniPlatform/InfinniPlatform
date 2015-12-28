@@ -11,16 +11,14 @@ using Microsoft.Owin.Helpers;
 namespace InfinniPlatform.Owin.Formatting
 {
     /// <summary>
-    /// Предоставляет методы чтения и записи тела запроса и ответа, представленных в формате "application/x-www-form-urlencoded".
+    /// Предоставляет методы чтения и записи тела запроса и ответа, представленных в формате
+    /// "application/x-www-form-urlencoded".
     /// </summary>
     public sealed class FormBodyFormatter : IBodyFormatter
     {
         public static readonly FormBodyFormatter Instance = new FormBodyFormatter();
 
-        public string ContentType
-        {
-            get { return "application/x-www-form-urlencoded"; }
-        }
+        public string ContentType => "application/x-www-form-urlencoded";
 
         public object ReadBody(IOwinRequest request)
         {

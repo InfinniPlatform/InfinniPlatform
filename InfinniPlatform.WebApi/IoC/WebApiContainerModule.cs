@@ -6,7 +6,6 @@ using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.WebApi.Controllers;
 using InfinniPlatform.WebApi.Factories;
 using InfinniPlatform.WebApi.Middleware;
-using InfinniPlatform.WebApi.Middleware.SessionHandlers;
 using InfinniPlatform.WebApi.Middleware.StandardHandlers;
 using InfinniPlatform.WebApi.Middleware.UserAuthHandlers;
 using InfinniPlatform.WebApi.Modules;
@@ -74,15 +73,6 @@ namespace InfinniPlatform.WebApi.IoC
             builder.RegisterType<FileUploadHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
 
             builder.RegisterType<CustomServiceRegistrationHandler>().As<IHandlerRegistration>().SingleInstance();
-
-            builder.RegisterType<CreateSessionHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
-            builder.RegisterType<GetSessionByIdHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
-            builder.RegisterType<SessionCommitHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
-            builder.RegisterType<SessionRemoveHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
-            builder.RegisterType<FileAttachHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
-            builder.RegisterType<FileDetachHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
-            builder.RegisterType<AttachDocumentHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
-            builder.RegisterType<DetachDocumentHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
 
             builder.RegisterType<AddUserClaimHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
             builder.RegisterType<GetUserClaimHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();

@@ -21,6 +21,7 @@ namespace InfinniPlatform.Index.ElasticSearch.IoC
 
             builder.RegisterType<ElasticConnection>()
                    .As<IElasticConnection>()
+                   .AsSelf()
                    .SingleInstance();
         }
     }

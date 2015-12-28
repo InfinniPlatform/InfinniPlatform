@@ -216,7 +216,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.Acceptance
             // Сообщение об ошибке должно содержать фразы вида:
             // Expected value for field 'StringProperty' should have String type, but value has System.Int64 type ('1')
 
-            Assert.IsTrue(error.Message.Contains("Fail to commit transaction"));
+            Assert.IsTrue(error.Message.Contains("Cannot complete transaction"));
         }
 
         [Test]

@@ -17,20 +17,18 @@ namespace InfinniPlatform.Runtime.Implementation
         private const string ValidationUnitPrefix = "ValidationUnit";
 
 
-        public ActionUnitFactory(Func<IContainerResolver> containerResolverFactory)
+        public ActionUnitFactory(IContainerResolver containerResolver)
         {
-            _actionUnits = new Lazy<Dictionary<string, Action<object>>>(() => FindActionUnits(containerResolverFactory));
+            _actionUnits = new Lazy<Dictionary<string, Action<object>>>(() => FindActionUnits(containerResolver));
         }
 
 
         private readonly Lazy<Dictionary<string, Action<object>>> _actionUnits;
 
 
-        private static Dictionary<string, Action<object>> FindActionUnits(Func<IContainerResolver> containerResolverFactory)
+        private static Dictionary<string, Action<object>> FindActionUnits(IContainerResolver containerResolver)
         {
             var result = new Dictionary<string, Action<object>>(StringComparer.OrdinalIgnoreCase);
-
-            var containerResolver = containerResolverFactory();
 
             foreach (var type in containerResolver.Services)
             {

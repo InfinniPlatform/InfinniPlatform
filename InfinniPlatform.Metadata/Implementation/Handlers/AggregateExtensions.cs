@@ -9,7 +9,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
         {
             dynamic result = new DynamicWrapper();
             result.IsValid = target.IsValid;
-            result.IsInternalServerError = target.IsInternalServerError;
+            result.IsInternalServerError = target.IsInternalServerError ? true : (bool?)null;
             result.ValidationMessage = target.ValidationMessage;
             return result;
         }
@@ -32,7 +32,7 @@ namespace InfinniPlatform.Metadata.Implementation.Handlers
         {
             dynamic response = new DynamicWrapper();
             response.ValidationMessage = targetResult.ValidationMessage;
-            response.IsInternalServerError = targetResult.IsInternalServerError;
+            response.IsInternalServerError = targetResult.IsInternalServerError ? true : (bool?)null;
             response.IsValid = false;
             return response;
         }

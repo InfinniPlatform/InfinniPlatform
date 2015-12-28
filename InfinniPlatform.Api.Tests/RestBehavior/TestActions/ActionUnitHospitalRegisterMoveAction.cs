@@ -16,7 +16,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
 
             if (target.Item.OldRoom != null && target.Item.OldBed != null)
             {
-                incomeEntry = registryComponent.CreateAccumulationRegisterEntry(target.Item.Configuration, RegistersBehavior.AvailableBedsRegister, target.Item.Metadata, target.Item, target.Item.Date);
+                incomeEntry = registryComponent.CreateAccumulationRegisterEntry(target.Configuration, RegistersBehavior.AvailableBedsRegister, target.Item.Metadata, target.Item, target.Item.Date);
                 incomeEntry.Value = 1; // Изменение количества на единицу
 
                 // Койка освободилась - income
@@ -27,7 +27,7 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
 
             if (target.Item.NewRoom != null && target.Item.NewBed != null)
             {
-                consumptionEntry = registryComponent.CreateAccumulationRegisterEntry(target.Item.Configuration, RegistersBehavior.AvailableBedsRegister, target.Item.Metadata, target.Item, target.Item.Date);
+                consumptionEntry = registryComponent.CreateAccumulationRegisterEntry(target.Configuration, RegistersBehavior.AvailableBedsRegister, target.Item.Metadata, target.Item, target.Item.Date);
                 consumptionEntry.Value = 1; // Изменение количества на единицу
 
                 // Койку заняли - consumption
@@ -38,12 +38,12 @@ namespace InfinniPlatform.Api.Tests.RestBehavior.TestActions
 
             if (incomeEntry != null)
             {
-                registryComponent.PostRegisterEntries(target.Item.Configuration, RegistersBehavior.AvailableBedsRegister, new[] { incomeEntry });
+                registryComponent.PostRegisterEntries(target.Configuration, RegistersBehavior.AvailableBedsRegister, new[] { incomeEntry });
             }
 
             if (consumptionEntry != null)
             {
-                registryComponent.PostRegisterEntries(target.Item.Configuration, RegistersBehavior.AvailableBedsRegister, new[] { consumptionEntry });
+                registryComponent.PostRegisterEntries(target.Configuration, RegistersBehavior.AvailableBedsRegister, new[] { consumptionEntry });
             }
         }
     }

@@ -5,6 +5,7 @@ using InfinniPlatform.RestfulApi.Installers;
 using InfinniPlatform.RestfulApi.Utils;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Transactions;
 
 namespace InfinniPlatform.RestfulApi.IoC
 {
@@ -35,6 +36,12 @@ namespace InfinniPlatform.RestfulApi.IoC
             builder.RegisterType<DocumentExecutor>()
                    .AsSelf()
                    .InstancePerDependency();
+
+            // TransactionScope
+
+            builder.RegisterType<ElasticDocumentTransactionScope>()
+                   .As<IDocumentTransactionScope>()
+                   .InstancePerRequest();
 
             // Прикладные скрипты
             builder.RegisterActionUnits(GetType().Assembly);

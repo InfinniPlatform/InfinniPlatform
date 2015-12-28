@@ -375,9 +375,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 						{
 							var tenantId = GlobalContext.GetTenantId();
 
-							return f.Term(ElasticConstants.IndexObjectPath + ElasticConstants.IndexObjectIdentifierField, key.ToLowerInvariant())
-								   && f.Term(ElasticConstants.TenantIdField, tenantId)
-								   && f.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid);
+						    return f.Term(ElasticConstants.IndexObjectPath + ElasticConstants.IndexObjectIdentifierField, key.ToLowerInvariant())
+						           && f.Term(ElasticConstants.TenantIdField, tenantId)
+						    && f.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid);
 						})
 				);
 
@@ -420,7 +420,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 							.Filter(
 								m => m.Terms(ElasticConstants.IndexObjectPath + ElasticConstants.IndexObjectIdentifierField, itemsToIndex.Select(batchItem => batchItem.ToLowerInvariant()))
 									 && m.Term(ElasticConstants.TenantIdField, tenantId)
-									 && m.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid)));
+									 && m.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid)
+                                     ));
 
 					indexObjects.AddRange(searchResponse.Documents);
 					i++;
@@ -442,8 +443,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 			return _elasticConnection.Client
 									 .Search<dynamic>(q => q
 										 .BuildSearchForType(new[] { _indexName }, _derivedTypeNames.Value.GetMappingsTypeNames(), false, false)
-										 .Query(qr => qr.Term(ElasticConstants.TenantIdField, tenantId) &&
-													  qr.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid))).Hits.Count();
+										 .Query(qr => qr.Term(ElasticConstants.TenantIdField, tenantId) 
+                                         && qr.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid)
+                                         )).Hits.Count();
 		}
 
 		/// <summary>

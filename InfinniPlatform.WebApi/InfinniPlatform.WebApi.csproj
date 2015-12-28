@@ -94,30 +94,9 @@
     <Compile Include="HttpResultHandlers\HttpResultHandlerStandard.cs" />
     <Compile Include="HttpResultHandlers\IHttpResultHandler.cs" />
     <Compile Include="IHttpResultHandlerFactory.cs" />
-    <Compile Include="Logging\LogExceptionFilterAttribute.cs" />
-    <Compile Include="Logging\LogExtensions.cs" />
+    <Compile Include="Filters\DocumentTransactionScopeFilterAttribute.cs" />
     <Compile Include="Middleware\HandlerRegistration.cs" />
     <Compile Include="Middleware\IRouteFormatter.cs" />
-    <Compile Include="Middleware\Metadata\Configuration\DeleteConfigHandlerRegistration.cs" />
-    <Compile Include="Middleware\Metadata\Configuration\GetConfigHandlerRegistration.cs" />
-    <Compile Include="Middleware\Metadata\Configuration\InsertConfigHandlerRegistration.cs" />
-    <Compile Include="Middleware\Metadata\Configuration\ConfigHandlerRegistration.cs" />
-    <Compile Include="Middleware\Metadata\Configuration\UpdateConfigHandlerRegistration.cs" />
-    <Compile Include="Middleware\Metadata\ConfigurationElements\ConfigElementHandlerRegistration.cs" />
-    <Compile Include="Middleware\Metadata\ConfigurationElements\DeleteConfigElementHandlerRegistration.cs" />
-    <Compile Include="Middleware\Metadata\ConfigurationElements\GetConfigElementHandlerRegistration.cs" />
-    <Compile Include="Middleware\Metadata\ConfigurationElements\InsertConfigElementHandlerRegistration.cs" />
-    <Compile Include="Middleware\Metadata\ConfigurationElements\UpdateConfigElementHandlerRegistration.cs" />
-    <Compile Include="Middleware\Metadata\DocumentElements\DeleteConfigElementHandlerRegistration.cs" />
-    <Compile Include="Middleware\Metadata\DocumentElements\GetDocumentElementHandlerRegistration.cs" />
-    <Compile Include="Middleware\Metadata\DocumentElements\InsertDocumentElementHandlerRegistration.cs" />
-    <Compile Include="Middleware\Metadata\DocumentElements\DocumentElementHandlerRegistration.cs" />
-    <Compile Include="Middleware\Metadata\DocumentElements\UpdateConfigElementHandlerRegistration.cs" />
-    <Compile Include="Middleware\Metadata\Solution\DeleteSolutionHandlerRegistration.cs" />
-    <Compile Include="Middleware\Metadata\Solution\GetSolutionHandlerRegistration.cs" />
-    <Compile Include="Middleware\Metadata\Solution\InsertSolutionHandlerRegistration.cs" />
-    <Compile Include="Middleware\Metadata\Solution\SolutionHandlerRegistration.cs" />
-    <Compile Include="Middleware\Metadata\Solution\UpdateSolutionHandlerRegistration.cs" />
     <Compile Include="Middleware\MultipartFormData\BinaryStreamStack.cs" />
     <Compile Include="Middleware\MultipartFormData\FilePart.cs" />
     <Compile Include="Middleware\MultipartFormData\MultipartFormDataParser.cs" />
@@ -135,14 +114,6 @@
     <Compile Include="Middleware\RouteFormatters\RouteFormatterSession.cs" />
     <Compile Include="Middleware\RouteFormatters\RouteFormatterCustomService.cs" />
     <Compile Include="Middleware\RouteFormatters\RouteFormatterStandard.cs" />
-    <Compile Include="Middleware\SessionHandlers\AttachDocumentHandlerRegistration.cs" />
-    <Compile Include="Middleware\SessionHandlers\CreateSessionHandlerRegistration.cs" />
-    <Compile Include="Middleware\SessionHandlers\DetachDocumentHandlerRegistration.cs" />
-    <Compile Include="Middleware\SessionHandlers\FileAttachHandlerRegistration.cs" />
-    <Compile Include="Middleware\SessionHandlers\FileDetachHandlerRegistration.cs" />
-    <Compile Include="Middleware\SessionHandlers\GetSessionByIdHandlerRegistration.cs" />
-    <Compile Include="Middleware\SessionHandlers\SessionRemoveHandlerRegistration.cs" />
-    <Compile Include="Middleware\SessionHandlers\SessionCommitHandlerRegistration.cs" />
     <Compile Include="Middleware\StandardHandlers\CustomServiceRegistrationHandler.cs" />
     <Compile Include="Middleware\StandardHandlers\DeleteDocumentHandlerRegistration.cs" />
     <Compile Include="Middleware\StandardHandlers\FileDownloadHandlerRegistration.cs" />
@@ -199,10 +170,7 @@
       <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Middleware\RoleAuthHandlers\" />
-    <Folder Include="Middleware\VersionHandlers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
