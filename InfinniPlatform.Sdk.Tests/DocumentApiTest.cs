@@ -362,7 +362,6 @@ namespace InfinniPlatform.Sdk.Tests
 			dynamic deleteResult = _api.DeleteDocument("gameshop", "catalogue", result);
 
 			Assert.AreEqual(deleteResult.IsValid, true);
-			Assert.AreEqual(deleteResult.ValidationMessage, string.Format("Document with identifier \"{0}\" deleted successfully", result));
 
 			docs = _api.GetDocument("gameshop", "catalogue",
 				f => f.AddCriteria(cr => cr.Property("Id").IsEquals(result)), 0, 1);
