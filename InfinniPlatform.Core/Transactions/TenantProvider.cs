@@ -61,11 +61,11 @@ namespace InfinniPlatform.Transactions
                         tenantId = currentIdentity.FindFirstClaim(TenantId);
                     }
                 }
+            }
 
-                if (string.IsNullOrEmpty(tenantId))
-                {
-                    tenantId = AnonymousUser;
-                }
+            if (string.IsNullOrEmpty(tenantId))
+            {
+                tenantId = AnonymousUser;
             }
 
             return tenantId;
