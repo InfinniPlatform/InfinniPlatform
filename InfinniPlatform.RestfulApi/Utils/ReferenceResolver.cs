@@ -16,7 +16,7 @@ namespace InfinniPlatform.RestfulApi.Utils
         private readonly DocumentLinkMap _documentLinkMap;
         private readonly IMetadataComponent _metadataComponent;
 
-        public void ResolveReferences(string version, string configId, string documentId, dynamic documents, IEnumerable<dynamic> ignoreResolve)
+        public void ResolveReferences(string configId, string documentId, dynamic documents, IEnumerable<dynamic> ignoreResolve)
         {
             var metadataOperator = new MetadataOperator(_metadataComponent, _documentLinkMap, ignoreResolve);
 
@@ -28,15 +28,15 @@ namespace InfinniPlatform.RestfulApi.Utils
             {
                 foreach (var doc in documents)
                 {
-                    metadataOperator.ProcessMetadata(version, doc, typeInfo);
+                    metadataOperator.ProcessMetadata(doc, typeInfo);
                 }
             }
             else if (documents != null)
             {
-                metadataOperator.ProcessMetadata(version, documents, typeInfo);
+                metadataOperator.ProcessMetadata(documents, typeInfo);
             }
 
-            _documentLinkMap.ResolveLinks(version, typeInfo, metadataOperator.TypeInfoChain);
+            _documentLinkMap.ResolveLinks(typeInfo, metadataOperator.TypeInfoChain);
         }
     }
 }
