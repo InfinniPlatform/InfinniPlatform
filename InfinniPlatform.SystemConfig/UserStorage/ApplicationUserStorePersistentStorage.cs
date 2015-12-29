@@ -104,7 +104,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             return FindUserByUserName(name) ?? FindUserByEmail(name) ?? FindUserByPhoneNumber(name);
         }
 
-        private ApplicationUser FindUser(string property, object value)
+        private ApplicationUser FindUser(string property, string value)
         {
             var user = _userStorage.Find(property, value);
 

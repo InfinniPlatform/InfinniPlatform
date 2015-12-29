@@ -17,17 +17,16 @@ namespace InfinniPlatform.RestfulApi.Executors
             _transactionScopeProvider = transactionScopeProvider;
         }
 
-        public object Find(string property, object value)
+        public object Find(string property, string value)
         {
             var indexName = _elasticConnection.GetIndexName(AuthorizationStorageExtensions.AuthorizationConfigId);
-            var indexType = _elasticConnection.GetActualTypeName(AuthorizationStorageExtensions.AuthorizationConfigId, AuthorizationStorageExtensions.UserStore);
 
-            //TODO Partial get.
+            // TODO: Load only UserInfo (without header)
             var searchResponse = _elasticConnection
                 .Client.Search<dynamic>(d => d.Index(indexName)
-                                                  .Type(indexType)
-                                                  .Filter(f => f.Term(ElasticConstants.IndexObjectPath + property, value))
-                                                  .Size(1));
+                                              .AllTypes()
+                                              .Filter(f => f.Term(ElasticConstants.IndexObjectPath + property, value.ToLower()))
+                                              .Size(1));
 
             return (searchResponse.Total > 0)
                        ? searchResponse.Documents?.FirstOrDefault()?.Values
