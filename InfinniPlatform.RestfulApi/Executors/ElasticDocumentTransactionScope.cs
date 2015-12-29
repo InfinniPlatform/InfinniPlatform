@@ -4,6 +4,7 @@ using System.Linq;
 using InfinniPlatform.Index;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Log;
 using InfinniPlatform.Transactions;
 
 using Nest;
@@ -15,16 +16,22 @@ namespace InfinniPlatform.RestfulApi.Executors
     /// </summary>
     internal sealed class ElasticDocumentTransactionScope : IDocumentTransactionScope
     {
-        public ElasticDocumentTransactionScope(ITenantProvider tenantProvider, ElasticConnection elasticConnection)
+        private const string PerformanceLogComponent = "TransactionScope";
+        private const string PerformanceLogComplete = "Complete";
+
+
+        public ElasticDocumentTransactionScope(ITenantProvider tenantProvider, ElasticConnection elasticConnection, IPerformanceLog performanceLog)
         {
             _tenantProvider = tenantProvider;
             _elasticConnection = elasticConnection;
+            _performanceLog = performanceLog;
             _transactionLog = new DocumentTransactionLog();
         }
 
 
         private readonly ITenantProvider _tenantProvider;
         private readonly ElasticConnection _elasticConnection;
+        private readonly IPerformanceLog _performanceLog;
         private readonly DocumentTransactionLog _transactionLog;
 
 
@@ -57,73 +64,38 @@ namespace InfinniPlatform.RestfulApi.Executors
 
             if (transactionEntries.Length > 0)
             {
-                var tenantId = _tenantProvider.GetTenantId();
+                var startTime = DateTime.Now;
 
-                var saveCommands = transactionEntries
-                    .Where(i => i.Action == DocumentTransactionAction.Save)
-                    .ToArray();
-
-                var deleteCommands = transactionEntries
-                    .Where(i => i.Action == DocumentTransactionAction.Delete)
-                    .ToArray();
-
-                if (saveCommands.Length > 0)
+                try
                 {
-                    // Сохранение документов можно сделать за один запрос, так как имя типа для каждого документа известно
+                    var tenantId = _tenantProvider.GetTenantId();
 
-                    var saveResponse = _elasticConnection
-                        .Client.Bulk(d =>
-                                     {
-                                         foreach (var command in saveCommands)
-                                         {
-                                             var indexName = _elasticConnection.GetIndexName(command.Configuration);
-                                             var indexTypeName = _elasticConnection.GetActualTypeName(command.Configuration, command.DocumentType);
+                    var saveCommands = transactionEntries
+                        .Where(i => i.Action == DocumentTransactionAction.Save)
+                        .ToArray();
 
-                                             var indexObjectId = CreateIndexObjectId(command.DocumentId);
-                                             var indexObject = CreateIndexObject(tenantId, indexObjectId, command.Document);
+                    var deleteCommands = transactionEntries
+                        .Where(i => i.Action == DocumentTransactionAction.Delete)
+                        .ToArray();
 
-                                             d.Index<IndexObject>(i => i.Index(indexName)
-                                                                        .Type(indexTypeName)
-                                                                        .Document(indexObject));
-                                         }
-
-                                         if (_needRefresh)
-                                         {
-                                             d.Refresh();
-                                         }
-
-                                         return d;
-                                     });
-
-                    CheckDatabaseResponse(saveResponse);
-                }
-
-                if (deleteCommands.Length > 0)
-                {
-                    // Удаление документов вынуждено делается за два этапа: определение типа удаляемого документа, затем удаление
-
-                    var indexNames = deleteCommands.Select(i => _elasticConnection.GetIndexName(i.Configuration));
-                    var indexObjectIds = deleteCommands.Select(i => CreateIndexObjectId(i.DocumentId));
-
-                    var searchResponse = _elasticConnection
-                        .Client.Search<IndexObject>(d => d.Indices(indexNames)
-                                                          .AllTypes()
-                                                          .Filter(f => f.Terms(i => i.Id, indexObjectIds) && f.Term(i => i.TenantId, tenantId))
-                                                          .Size(deleteCommands.Length)
-                                                          .Source(false));
-
-                    CheckDatabaseResponse(searchResponse);
-
-                    if (searchResponse.Total > 0 && searchResponse.Hits != null)
+                    if (saveCommands.Length > 0)
                     {
-                        var deleteResponse = _elasticConnection
+                        // Сохранение документов можно сделать за один запрос, так как имя типа для каждого документа известно
+
+                        var saveResponse = _elasticConnection
                             .Client.Bulk(d =>
                                          {
-                                             foreach (var hit in searchResponse.Hits)
+                                             foreach (var command in saveCommands)
                                              {
-                                                 d.Delete<IndexObject>(i => i.Index(hit.Index)
-                                                                             .Type(hit.Type)
-                                                                             .Id(hit.Id));
+                                                 var indexName = _elasticConnection.GetIndexName(command.Configuration);
+                                                 var indexTypeName = _elasticConnection.GetActualTypeName(command.Configuration, command.DocumentType);
+
+                                                 var indexObjectId = CreateIndexObjectId(command.DocumentId);
+                                                 var indexObject = CreateIndexObject(tenantId, indexObjectId, command.Document);
+
+                                                 d.Index<IndexObject>(i => i.Index(indexName)
+                                                                            .Type(indexTypeName)
+                                                                            .Document(indexObject));
                                              }
 
                                              if (_needRefresh)
@@ -134,8 +106,56 @@ namespace InfinniPlatform.RestfulApi.Executors
                                              return d;
                                          });
 
-                        CheckDatabaseResponse(deleteResponse);
+                        CheckDatabaseResponse(saveResponse);
                     }
+
+                    if (deleteCommands.Length > 0)
+                    {
+                        // Удаление документов вынуждено делается за два этапа: определение типа удаляемого документа, затем удаление
+
+                        var indexNames = deleteCommands.Select(i => _elasticConnection.GetIndexName(i.Configuration));
+                        var indexObjectIds = deleteCommands.Select(i => CreateIndexObjectId(i.DocumentId));
+
+                        var searchResponse = _elasticConnection
+                            .Client.Search<IndexObject>(d => d.Indices(indexNames)
+                                                              .AllTypes()
+                                                              .Filter(f => f.Terms(i => i.Id, indexObjectIds) && f.Term(i => i.TenantId, tenantId))
+                                                              .Size(deleteCommands.Length)
+                                                              .Source(false));
+
+                        CheckDatabaseResponse(searchResponse);
+
+                        if (searchResponse.Total > 0 && searchResponse.Hits != null)
+                        {
+                            var deleteResponse = _elasticConnection
+                                .Client.Bulk(d =>
+                                             {
+                                                 foreach (var hit in searchResponse.Hits)
+                                                 {
+                                                     d.Delete<IndexObject>(i => i.Index(hit.Index)
+                                                                                 .Type(hit.Type)
+                                                                                 .Id(hit.Id));
+                                                 }
+
+                                                 if (_needRefresh)
+                                                 {
+                                                     d.Refresh();
+                                                 }
+
+                                                 return d;
+                                             });
+
+                            CheckDatabaseResponse(deleteResponse);
+                        }
+                    }
+
+                    _performanceLog.Log(PerformanceLogComponent, PerformanceLogComplete, startTime, null);
+                }
+                catch (Exception exception)
+                {
+                    _performanceLog.Log(PerformanceLogComponent, PerformanceLogComplete, startTime, exception.GetMessage());
+
+                    throw;
                 }
             }
         }
@@ -155,7 +175,7 @@ namespace InfinniPlatform.RestfulApi.Executors
         private static IndexObject CreateIndexObject(string tenantId, string indexObjectId, object document)
         {
             // TODO: Нужно переработать структуру заголовка документа
-            //TODO: Нужно избавиться от TenantId на уровне системного кода.
+            // TODO: Нужно избавиться от этой эвристики определения TenantId
             tenantId = TryGetDocumentTenantId(document) ?? tenantId;
 
             return new IndexObject
