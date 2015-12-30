@@ -2,9 +2,11 @@
 using InfinniPlatform.Modules;
 using InfinniPlatform.RestfulApi.Executors;
 using InfinniPlatform.RestfulApi.Installers;
+using InfinniPlatform.RestfulApi.SystemInfo;
 using InfinniPlatform.RestfulApi.Utils;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.SystemInfo;
 using InfinniPlatform.Transactions;
 
 namespace InfinniPlatform.RestfulApi.IoC
@@ -13,6 +15,10 @@ namespace InfinniPlatform.RestfulApi.IoC
     {
         public void Load(IContainerBuilder builder)
         {
+            builder.RegisterType<SystemInfoProvider>()
+                   .As<ISystemInfoProvider>()
+                   .SingleInstance();
+
             builder.RegisterType<RestfulApiInstaller>()
                    .As<IModuleInstaller>()
                    .SingleInstance();

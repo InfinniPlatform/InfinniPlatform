@@ -1,11 +1,8 @@
-﻿using System;
-
-using InfinniPlatform.Api.RestApi.DataApi;
+﻿using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.RestfulApi.ActionUnits
 {
-    [Obsolete]
     public sealed class ActionUnitDeleteDocument
     {
         public ActionUnitDeleteDocument(ISetDocumentExecutor setDocumentExecutor)

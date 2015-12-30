@@ -39,10 +39,6 @@ namespace InfinniPlatform.IoC
             builder.RegisterType<CustomServiceGlobalContext>()
                    .As<ICustomServiceGlobalContext>();
 
-            builder.RegisterType<SystemInfoProvider>()
-                   .As<ISystemInfoProvider>()
-                   .SingleInstance();
-
             builder.RegisterType<ScriptContext>()
                    .AsSelf()
                    .SingleInstance();
@@ -157,14 +153,6 @@ namespace InfinniPlatform.IoC
                    .SingleInstance();
 
             // Fury
-
-            builder.RegisterType<SessionApi>()
-                   .AsSelf()
-                   .SingleInstance();
-
-            builder.RegisterType<IndexApi>()
-                   .AsSelf()
-                   .SingleInstance();
 
             builder.RegisterType<RestQueryApi>()
                    .AsSelf()

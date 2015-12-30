@@ -1,9 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 
-using InfinniPlatform.Api.RestApi.CommonApi;
+using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
+using InfinniPlatform.SystemInfo;
 
-namespace InfinniPlatform.SystemInfo
+namespace InfinniPlatform.RestfulApi.SystemInfo
 {
     /// <summary>
     /// Провайдер информации о системе.
@@ -11,18 +12,18 @@ namespace InfinniPlatform.SystemInfo
     /// <remarks>
     /// Предоставляет базовую информацию о системе, например, версия, номер сборки, состояние окружения и самой системы и т.д.
     /// </remarks>
-    public sealed class SystemInfoProvider : ISystemInfoProvider
+    internal sealed class SystemInfoProvider : ISystemInfoProvider
     {
-        public SystemInfoProvider(RestQueryApi restQueryApi)
+        public SystemInfoProvider(ElasticConnection elasticConnection)
         {
-            _restQueryApi = restQueryApi;
+            _elasticConnection = elasticConnection;
         }
 
-        private readonly RestQueryApi _restQueryApi;
+        private readonly ElasticConnection _elasticConnection;
 
         public object GetSystemInfo()
         {
-            // Todo: Подумать над составом информации
+            // TODO: Подумать над составом информации
 
             return new
                    {
@@ -40,9 +41,7 @@ namespace InfinniPlatform.SystemInfo
 
         private string GetElasticSearchStatus()
         {
-            var response = _restQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getindexstorageinfo", null, null);
-
-            return response.ToDynamic().ToString();
+            return _elasticConnection.GetStatus();
         }
     }
 }

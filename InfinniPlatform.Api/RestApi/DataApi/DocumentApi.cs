@@ -1,22 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.SearchOptions.Converters;
 using InfinniPlatform.Sdk;
 using InfinniPlatform.Sdk.ApiContracts;
 
-using RestQueryResponse = InfinniPlatform.Api.RestQuery.RestQueryResponse;
-
 namespace InfinniPlatform.Api.RestApi.DataApi
 {
-    public class DocumentApi : IDocumentApi
+    public sealed class DocumentApi : IDocumentApi
     {
-        public DocumentApi(RestQueryApi restQueryApi,
-                           ISetDocumentExecutor setDocumentExecutor,
-                           IGetDocumentExecutor getDocumentExecutor)
+        public DocumentApi(ISetDocumentExecutor setDocumentExecutor, IGetDocumentExecutor getDocumentExecutor)
         {
-            _restQueryApi = restQueryApi;
             _setDocumentExecutor = setDocumentExecutor;
             _getDocumentExecutor = getDocumentExecutor;
             _filterConverter = new FilterConverter();
@@ -25,7 +19,6 @@ namespace InfinniPlatform.Api.RestApi.DataApi
 
         private readonly FilterConverter _filterConverter;
         private readonly IGetDocumentExecutor _getDocumentExecutor;
-        private readonly RestQueryApi _restQueryApi;
         private readonly ISetDocumentExecutor _setDocumentExecutor;
         private readonly SortingConverter _sortingConverter;
 
@@ -101,24 +94,6 @@ namespace InfinniPlatform.Api.RestApi.DataApi
                                                 Action<SearchOptions.Builders.SortingBuilder> sorting = null)
         {
             return _getDocumentExecutor.GetDocument(configurationName, documentType, filter, pageNumber, pageSize, ignoreResolve, sorting);
-        }
-
-        public dynamic CreateDocument(string configurationName, string documentType)
-        {
-            var result = ExecutePost("createdocument", null, new
-                                                             {
-                                                                 Configuration = configurationName,
-                                                                 Metadata = documentType
-                                                             });
-
-            return result.ToDynamic();
-        }
-
-        private RestQueryResponse ExecutePost(string action, string id, object body)
-        {
-            var response = _restQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", action, id, body);
-
-            return response;
         }
     }
 }

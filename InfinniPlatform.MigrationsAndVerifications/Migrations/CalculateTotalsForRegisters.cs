@@ -16,16 +16,14 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
     /// </summary>
     public sealed class CalculateTotalsForRegisters : IConfigurationMigration
     {
-        public CalculateTotalsForRegisters(RestQueryApi restQueryApi, IndexApi indexApi, DocumentApi documentApi)
+        public CalculateTotalsForRegisters(RestQueryApi restQueryApi, DocumentApi documentApi)
         {
             _restQueryApi = restQueryApi;
-            _indexApi = indexApi;
             _documentApi = documentApi;
         }
 
-        private readonly RestQueryApi _restQueryApi;
-        private readonly IndexApi _indexApi;
         private readonly DocumentApi _documentApi;
+        private readonly RestQueryApi _restQueryApi;
 
         /// <summary>
         /// Конфигурация, к которой применяется миграция
@@ -77,46 +75,39 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         {
             var resultMessage = new StringBuilder();
 
-            if (_indexApi.IndexExists(_activeConfiguration, _activeConfiguration + RegisterConstants.RegistersCommonInfo))
+            Action<FilterBuilder> filter = null;
+            var registersInfo = _documentApi.GetDocument(_activeConfiguration, _activeConfiguration + RegisterConstants.RegistersCommonInfo, filter, 0, 1000);
+
+            foreach (var registerInfo in registersInfo)
             {
-                Action<FilterBuilder> filter = null;
-                var registersInfo = _documentApi.GetDocument(_activeConfiguration, _activeConfiguration + RegisterConstants.RegistersCommonInfo, filter, 0, 1000);
+                dynamic registerId = registerInfo.Id;
 
-                foreach (var registerInfo in registersInfo)
-                {
-                    dynamic registerId = registerInfo.Id;
+                var tempDate = DateTime.Now;
 
-                    var tempDate = DateTime.Now;
+                var calculationDate = new DateTime(
+                    tempDate.Year,
+                    tempDate.Month,
+                    tempDate.Day,
+                    tempDate.Hour,
+                    tempDate.Minute,
+                    tempDate.Second);
 
-                    var calculationDate = new DateTime(
-                        tempDate.Year,
-                        tempDate.Month,
-                        tempDate.Day,
-                        tempDate.Hour,
-                        tempDate.Minute,
-                        tempDate.Second);
-
-                    var aggregatedData = _restQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetRegisterValuesByDate", null,
-                        new
-                        {
-                            Configuration = _activeConfiguration,
-                            Register = registerId,
-                            Date = calculationDate
-                        }).ToDynamicList();
-
-                    foreach (var item in aggregatedData)
+                var aggregatedData = _restQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetRegisterValuesByDate", null,
+                    new
                     {
-                        item.Id = Guid.NewGuid().ToString();
-                        item[RegisterConstants.DocumentDateProperty] = calculationDate;
-                        _documentApi.SetDocument(_activeConfiguration,
-                            RegisterConstants.RegisterTotalNamePrefix + registerId,
-                            item);
-                    }
+                        Configuration = _activeConfiguration,
+                        Register = registerId,
+                        Date = calculationDate
+                    }).ToDynamicList();
+
+                foreach (var item in aggregatedData)
+                {
+                    item.Id = Guid.NewGuid().ToString();
+                    item[RegisterConstants.DocumentDateProperty] = calculationDate;
+                    _documentApi.SetDocument(_activeConfiguration,
+                        RegisterConstants.RegisterTotalNamePrefix + registerId,
+                        item);
                 }
-            }
-            else
-            {
-                resultMessage.AppendLine("Nothing to calculate (registers not found).");
             }
 
             resultMessage.AppendLine();

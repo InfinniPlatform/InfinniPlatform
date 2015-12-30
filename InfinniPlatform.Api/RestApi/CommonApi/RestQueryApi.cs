@@ -42,33 +42,11 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
             return response;
         }
 
-        public RestQueryResponse QueryPostUrlEncodedData(string configuration, string documentType, string action, object linkedData)
-        {
-            var builder = _queryBuilderFactory(configuration, documentType, action);
-
-            var response = builder.QueryPostUrlEncodedData(linkedData);
-
-            CheckResponse(response);
-
-            return response;
-        }
-
         public RestQueryResponse QueryGetUrlEncodedData(string configuration, string documentType, string action, object linkedData)
         {
             var builder = _queryBuilderFactory(configuration, documentType, action);
 
             var response = builder.QueryGetUrlEncodedData(linkedData);
-
-            CheckResponse(response);
-
-            return response;
-        }
-
-        public RestQueryResponse QueryPostRaw(string configuration, string documentType, string action, string id, object body)
-        {
-            var builder = _queryBuilderFactory(configuration, documentType, action);
-
-            var response = builder.QueryPost(id, body);
 
             CheckResponse(response);
 
@@ -110,17 +88,6 @@ namespace InfinniPlatform.Api.RestApi.CommonApi
                 aggregationFields,
                 pageNumber,
                 pageSize);
-
-            CheckResponse(response);
-
-            return response;
-        }
-
-        public RestQueryResponse QueryPostNotify(string configurationId)
-        {
-            var builder = _queryBuilderFactory("Update", "Package", "Notify");
-
-            var response = builder.QueryNotify(configurationId);
 
             CheckResponse(response);
 

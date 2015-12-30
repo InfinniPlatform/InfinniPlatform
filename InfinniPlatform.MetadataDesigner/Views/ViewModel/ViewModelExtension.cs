@@ -515,8 +515,6 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
         public static RestQueryResponse RunMigration(string version, string configId, string migrationName, object[] parameters)
         {
-            RestQueryApi.QueryPostNotify(configId);
-
             var body = new
                        {
                            MigrationName = migrationName,
@@ -530,8 +528,6 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
         public static RestQueryResponse RevertMigration(string version, string configId, string migrationName, object[] parameters)
         {
-            RestQueryApi.QueryPostNotify(configId);
-
             var body = new
                        {
                            MigrationName = migrationName,
@@ -558,8 +554,6 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
         public static RestQueryResponse RunVerification(string version, string configId, string verificationName)
         {
-            RestQueryApi.QueryPostNotify(configId);
-
             var body = new
                        {
                            VerificationName = verificationName,

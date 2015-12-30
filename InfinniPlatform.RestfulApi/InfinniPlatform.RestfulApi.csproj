@@ -61,7 +61,6 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionUnits\ActionUnitCreateDocument.cs" />
     <Compile Include="ActionUnits\ActionUnitCreateRegisterEntry.cs" />
     <Compile Include="ActionUnits\ActionUnitDeleteDocument.cs" />
     <Compile Include="ActionUnits\ActionUnitDeleteRegisterEntry.cs" />
@@ -74,23 +73,13 @@
     <Compile Include="ActionUnits\ActionUnitGetRegisterValuesByRegistrar.cs" />
     <Compile Include="ActionUnits\ActionUnitGetRegisterValuesByRegistrarType.cs" />
     <Compile Include="ActionUnits\ActionUnitPostRegisterEntries.cs" />
-    <Compile Include="ActionUnits\ActionUnitProcessUpdateEvents.cs" />
     <Compile Include="ActionUnits\ActionUnitGetByQuery.cs" />
-    <Compile Include="ActionUnits\ActionUnitGetConfigMetadata.cs" />
-    <Compile Include="ActionUnits\ActionUnitGetIndexStorageInfo.cs" />
     <Compile Include="ActionUnits\ActionUnitGetNumberOfDocuments.cs" />
     <Compile Include="ActionUnits\ActionUnitGetDocument.cs" />
-    <Compile Include="ActionUnits\ActionUnitGetFromIndex.cs" />
-    <Compile Include="ActionUnits\ActionUnitIndexWithTimeStamp.cs" />
-    <Compile Include="ActionUnits\ActionUnitInsertIndex.cs" />
-    <Compile Include="ActionUnits\ActionUnitRebuildIndex.cs" />
     <Compile Include="ActionUnits\ActionUnitRecarryingRegisterEntries.cs" />
-    <Compile Include="ActionUnits\ActionUnitRestIsReady.cs" />
     <Compile Include="ActionUnits\ActionUnitRunMigration.cs" />
     <Compile Include="ActionUnits\ActionUnitSetDocument.cs" />
-    <Compile Include="ActionUnits\ActionUnitIndexExists.cs" />
     <Compile Include="ActionUnits\ActionUnitGetDocumentCrossConfig.cs" />
-    <Compile Include="ActionUnits\ActionUnitGetConfigMetadataList.cs" />
     <Compile Include="ActionUnits\AggregationUtils.cs" />
     <Compile Include="Auth\ActionUnitGetSessionData.cs" />
     <Compile Include="Auth\ActionUnitRemoveSessionData.cs" />
@@ -98,7 +87,6 @@
     <Compile Include="Binary\ActionUnitDownloadBinaryContent.cs" />
     <Compile Include="Binary\ActionUnitUploadBinaryContent.cs" />
     <Compile Include="Credentials\ActionUnitSetAnonimousCredentials.cs" />
-    <Compile Include="DefaultProcessUnits\ActionUnitSetCredentials.cs" />
     <Compile Include="DefaultProcessUnits\ActionUnitComplexAuth.cs" />
     <Compile Include="DefaultProcessUnits\ValidationUnitDeleteDocumentError.cs" />
     <Compile Include="Executors\DocumentTransactionCommand.cs" />
@@ -108,7 +96,6 @@
     <Compile Include="Executors\ElasticSearchUserStorage.cs" />
     <Compile Include="Executors\GetDocumentExecutor.cs" />
     <Compile Include="Executors\SetDocumentExecutor.cs" />
-    <Compile Include="Extensions\IndexedStorageExtension.cs" />
     <Compile Include="Installers\RestfulApiInstaller.cs" />
     <Compile Include="IoC\RestfulApiContainerModule.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
@@ -120,6 +107,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SystemInfo\SystemInfoProvider.cs" />
     <Compile Include="Utils\DocumentExecutor.cs" />
     <Compile Include="Utils\DocumentLink.cs" />
     <Compile Include="Utils\DocumentLinkMap.cs" />
@@ -169,7 +157,9 @@
       <Name>InfinniPlatform.Index.QueryLanguage</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

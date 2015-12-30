@@ -6,7 +6,6 @@ using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.RestfulApi.ActionUnits
 {
-    [Obsolete]
     public sealed class ActionUnitSetDocument
     {
         public ActionUnitSetDocument(ISetDocumentExecutor setDocumentExecutor)

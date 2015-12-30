@@ -187,7 +187,6 @@
     </Compile>
     <Compile Include="Hosting\WebRequestHelper.cs" />
     <Compile Include="SystemInfo\ISystemInfoProvider.cs" />
-    <Compile Include="SystemInfo\SystemInfoProvider.cs" />
     <Compile Include="Transactions\DocumentTransactionScopeProvider.cs" />
     <Compile Include="Transactions\IDocumentTransactionScope.cs" />
     <Compile Include="Transactions\IDocumentTransactionScopeProvider.cs" />

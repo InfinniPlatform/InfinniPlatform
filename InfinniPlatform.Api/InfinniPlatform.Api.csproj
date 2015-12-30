@@ -199,7 +199,6 @@
     <Compile Include="RestApi\CommonApi\RouteTraces\RouteTraceNoTrace.cs" />
     <Compile Include="RestApi\CommonApi\RouteTraces\RouteTraceSaveQueryLog.cs" />
     <Compile Include="RestApi\CommonApi\RestQueryApi.cs" />
-    <Compile Include="RestApi\CommonApi\SolutionUpdateApi.cs" />
     <Compile Include="Metadata\IMetadataContainerInfo.cs" />
     <Compile Include="Metadata\MetadataContainers\MetadataContainerDocument.cs" />
     <Compile Include="Metadata\MetadataContainers\MetadataContainerMenu.cs" />
@@ -215,7 +214,6 @@
     <Compile Include="RestApi\DataApi\MetadataApi.cs" />
     <Compile Include="RestApi\DataApi\MetadataLoaderHelper.cs" />
     <Compile Include="RestApi\DataApi\PackageMetadataLoader.cs" />
-    <Compile Include="RestApi\DataApi\SessionApi.cs" />
     <Compile Include="RestApi\IRestVerbsRegistrator.cs" />
     <Compile Include="RestApi\Public\AuthApi.cs" />
     <Compile Include="RestApi\Public\CustomServiceApi.cs" />
@@ -282,7 +280,6 @@
     <Compile Include="RestQuery\EventObjects\EventSerializers\UpdatePropertyItem.cs" />
     <Compile Include="RestQuery\EventObjects\IObjectToEventSerializer.cs" />
     <Compile Include="RestApi\DataApi\DocumentApi.cs" />
-    <Compile Include="RestApi\CommonApi\IndexApi.cs" />
     <Compile Include="RestQuery\ControllerRoutingFactory.cs" />
     <Compile Include="RestQuery\EventObjects\EventList.cs" />
     <Compile Include="RestQuery\EventObjects\ObjectMetadataHandler.cs" />
