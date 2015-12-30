@@ -65,9 +65,6 @@
     <Compile Include="Initializers\PackageJsonConfigurationInstaller.cs" />
     <Compile Include="Initializers\PackageJsonConfigurationsInitializer.cs" />
     <Compile Include="Initializers\SystemConfigApplicationEventHandler.cs" />
-    <Compile Include="HelpSystem\ActionUnitGenerateHelpConfiguration.cs" />
-    <Compile Include="HelpSystem\ActionUnitHelpConfiguration.cs" />
-    <Compile Include="Installers\ActionUnitsEntryList.cs" />
     <Compile Include="Installers\SystemConfigInstaller.cs" />
     <Compile Include="Initializers\DocumentIndexTypeInitializer.cs" />
     <Compile Include="IoC\SystemConfigContainerModule.cs" />
@@ -291,6 +288,9 @@
     <MetadataFiles Include=".metadata\**\*.*">
       <Visible>false</Visible>
     </MetadataFiles>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="HelpSystem\" />
   </ItemGroup>
   <Target Name="AfterBuild">
     <Copy SourceFiles="@(MetadataFiles)" DestinationFolder="$(OutDir)content\$(SolutionName)\metadata\%(RecursiveDir)" />
