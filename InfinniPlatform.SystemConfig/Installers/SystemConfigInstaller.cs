@@ -83,6 +83,14 @@ namespace InfinniPlatform.SystemConfig.Installers
                     RegisterHandler(serviceRegistration, MoveExtensionPoint, "runmigration");
                     serviceRegistration.SetResultHandler(HttpResultHandlerType.BadRequest);
                 });
+
+            // Для регистров
+            servicesConfiguration.AddRegistration("metadata", "Aggregation",
+                serviceRegistration =>
+                {
+                    serviceRegistration.RegisterHandlerInstance("aggregate");
+                    serviceRegistration.SetResultHandler(HttpResultHandlerType.BadRequest);
+                });
         }
 
         private static void RegisterHandler(IServiceRegistration serviceRegistration, string extensionName, string action)
