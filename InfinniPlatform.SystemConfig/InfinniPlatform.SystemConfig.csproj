@@ -40,6 +40,14 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Elasticsearch.Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elasticsearch.Net.1.7.1\lib\net45\Elasticsearch.Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Nest, Version=1.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
+      <HintPath>..\packages\NEST.1.7.1\lib\net45\Nest.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -60,13 +68,56 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionUnits\ActionUnitCreateRegisterEntry.cs" />
+    <Compile Include="ActionUnits\ActionUnitDeleteDocument.cs" />
+    <Compile Include="ActionUnits\ActionUnitDeleteRegisterEntry.cs" />
+    <Compile Include="ActionUnits\ActionUnitGetByQuery.cs" />
+    <Compile Include="ActionUnits\ActionUnitGetClosestDateTimeOfTotalCalculation.cs" />
+    <Compile Include="ActionUnits\ActionUnitGetDocument.cs" />
+    <Compile Include="ActionUnits\ActionUnitGetDocumentById.cs" />
+    <Compile Include="ActionUnits\ActionUnitGetDocumentCrossConfig.cs" />
+    <Compile Include="ActionUnits\ActionUnitGetManagedMetadata.cs" />
+    <Compile Include="ActionUnits\ActionUnitGetNumberOfDocuments.cs" />
+    <Compile Include="ActionUnits\ActionUnitGetRegisterValuesBetweenDates.cs" />
+    <Compile Include="ActionUnits\ActionUnitGetRegisterValuesByDate.cs" />
+    <Compile Include="ActionUnits\ActionUnitGetRegisterValuesByPeriods.cs" />
+    <Compile Include="ActionUnits\ActionUnitGetRegisterValuesByRegistrar.cs" />
+    <Compile Include="ActionUnits\ActionUnitGetRegisterValuesByRegistrarType.cs" />
+    <Compile Include="ActionUnits\ActionUnitPostRegisterEntries.cs" />
+    <Compile Include="ActionUnits\ActionUnitRecarryingRegisterEntries.cs" />
+    <Compile Include="ActionUnits\ActionUnitRunMigration.cs" />
+    <Compile Include="ActionUnits\ActionUnitSetDocument.cs" />
+    <Compile Include="ActionUnits\AggregationUtils.cs" />
+    <Compile Include="Auth\ActionUnitGetSessionData.cs" />
+    <Compile Include="Auth\ActionUnitRemoveSessionData.cs" />
+    <Compile Include="Auth\ActionUnitSetSessionData.cs" />
+    <Compile Include="Binary\ActionUnitDownloadBinaryContent.cs" />
+    <Compile Include="Binary\ActionUnitUploadBinaryContent.cs" />
+    <Compile Include="Credentials\ActionUnitSetAnonimousCredentials.cs" />
+    <Compile Include="DefaultProcessUnits\ActionUnitComplexAuth.cs" />
+    <Compile Include="DefaultProcessUnits\ActionUnitFailSetDocument.cs" />
+    <Compile Include="DefaultProcessUnits\ActionUnitRegisterSetDocument.cs" />
+    <Compile Include="DefaultProcessUnits\ActionUnitSuccessDeleteDocument.cs" />
+    <Compile Include="DefaultProcessUnits\ActionUnitSuccessSetDocument.cs" />
+    <Compile Include="DefaultProcessUnits\ValidationUnitDeleteDocumentError.cs" />
+    <Compile Include="DefaultProcessUnits\ValidationUnitSetDocumentError.cs" />
+    <Compile Include="DefaultProcessUnits\ValidationUnitSetDocumentWarning.cs" />
+    <Compile Include="Executors\DocumentTransactionAction.cs" />
+    <Compile Include="Executors\DocumentTransactionCommand.cs" />
+    <Compile Include="Executors\DocumentTransactionLog.cs" />
+    <Compile Include="Executors\ElasticDocumentTransactionScope.cs" />
+    <Compile Include="Executors\ElasticSearchUserStorage.cs" />
+    <Compile Include="Executors\GetDocumentExecutor.cs" />
+    <Compile Include="Executors\SetDocumentExecutor.cs" />
     <Compile Include="Initializers\FileHistoryHelper.cs" />
     <Compile Include="Initializers\IStartupInitializer.cs" />
     <Compile Include="Initializers\PackageJsonConfigurationInstaller.cs" />
     <Compile Include="Initializers\PackageJsonConfigurationsInitializer.cs" />
     <Compile Include="Initializers\SystemConfigApplicationEventHandler.cs" />
+    <Compile Include="Installers\RestfulApiInstaller.cs" />
     <Compile Include="Installers\SystemConfigInstaller.cs" />
     <Compile Include="Initializers\DocumentIndexTypeInitializer.cs" />
+    <Compile Include="IoC\RestfulApiContainerModule.cs" />
     <Compile Include="IoC\SystemConfigContainerModule.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
@@ -77,9 +128,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SystemInfo\SystemInfoProvider.cs" />
     <Compile Include="UserStorage\ApplicationUserStoreCache.cs" />
     <Compile Include="UserStorage\ApplicationUserStorePersistentStorage.cs" />
     <Compile Include="UserStorage\UserStorageSettings.cs" />
+    <Compile Include="Utils\DocumentExecutor.cs" />
+    <Compile Include="Utils\DocumentLink.cs" />
+    <Compile Include="Utils\DocumentLinkMap.cs" />
+    <Compile Include="Utils\MetadataOperator.cs" />
+    <Compile Include="Utils\ReferenceResolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -93,10 +150,6 @@
       <Project>{7ca0f96c-7ff4-44b2-9d44-851984df4532}</Project>
       <Name>InfinniPlatform.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.BlobStorage\InfinniPlatform.BlobStorage.csproj">
-      <Project>{3BCBCD4C-1155-464E-B020-51FA57B5E9B3}</Project>
-      <Name>InfinniPlatform.BlobStorage</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Caching\InfinniPlatform.Caching.csproj">
       <Project>{BD628B04-C2DF-458A-8406-6BB60729FC1C}</Project>
       <Name>InfinniPlatform.Caching</Name>
@@ -104,10 +157,6 @@
     <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
       <Project>{ebc684b7-b72a-475f-bbc1-b6293b607b9b}</Project>
       <Name>InfinniPlatform.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.FastReport\InfinniPlatform.FastReport.csproj">
-      <Project>{774D0E71-1848-4074-B537-F182FEFED717}</Project>
-      <Name>InfinniPlatform.FastReport</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Hosting\InfinniPlatform.Hosting.csproj">
       <Project>{D6FBC1D7-48E7-4819-8C8B-DD7FA398D2CC}</Project>
@@ -121,13 +170,9 @@
       <Project>{25CCB048-C239-4A2D-8090-39AE34514884}</Project>
       <Name>InfinniPlatform.Index.QueryLanguage</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Reporting\InfinniPlatform.Reporting.csproj">
-      <Project>{CDF6744F-CDDE-4A4F-90EA-64286D86695D}</Project>
-      <Name>InfinniPlatform.Reporting</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.RestfulApi\InfinniPlatform.RestfulApi.csproj">
-      <Project>{75952d00-54da-419a-8233-91949d74d9e3}</Project>
-      <Name>InfinniPlatform.RestfulApi</Name>
+    <ProjectReference Include="..\InfinniPlatform.Metadata\InfinniPlatform.Metadata.csproj">
+      <Project>{F1239C4B-CA5F-4B5E-83AC-DA686E81030F}</Project>
+      <Name>InfinniPlatform.Metadata</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
@@ -289,9 +334,7 @@
       <Visible>false</Visible>
     </MetadataFiles>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="HelpSystem\" />
-  </ItemGroup>
+  <ItemGroup />
   <Target Name="AfterBuild">
     <Copy SourceFiles="@(MetadataFiles)" DestinationFolder="$(OutDir)content\$(SolutionName)\metadata\%(RecursiveDir)" />
   </Target>

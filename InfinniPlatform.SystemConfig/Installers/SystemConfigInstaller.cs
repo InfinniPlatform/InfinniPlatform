@@ -1,10 +1,9 @@
 ﻿using InfinniPlatform.Hosting.Implementation.ExtensionPointHandling;
 using InfinniPlatform.Hosting.Implementation.Modules;
-using InfinniPlatform.RestfulApi.ActionUnits;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment.Hosting;
 using InfinniPlatform.Sdk.Environment.Metadata;
-using InfinniPlatform.SystemConfig.Configurator.RegisterQueries;
+using InfinniPlatform.SystemConfig.ActionUnits;
 
 namespace InfinniPlatform.SystemConfig.Installers
 {

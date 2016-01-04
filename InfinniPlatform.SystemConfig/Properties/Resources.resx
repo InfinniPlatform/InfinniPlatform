@@ -207,4 +207,25 @@
   <data name="SubscribingOnUserStorageCacheHasCompletedWithError" xml:space="preserve">
     <value>Subscribing on UserStorage cache has completed with error.</value>
   </data>
+  <data name="BlobStorageAlreadyCreated" xml:space="preserve">
+    <value>Blob storage already created.</value>
+  </data>
+  <data name="BlobStorageCreated" xml:space="preserve">
+    <value>Blob storage created.</value>
+  </data>
+  <data name="CannotStartTestServer" xml:space="preserve">
+    <value>Cannot run test server.</value>
+  </data>
+  <data name="ConfigurationCreated" xml:space="preserve">
+    <value>Configuration created: {0}</value>
+  </data>
+  <data name="ConfigurationFileNotFound" xml:space="preserve">
+    <value>Configuration {0} not found in: {1}. See AppSettings.ConfigurationPath setting and set to directory where config files stored.</value>
+  </data>
+  <data name="EventStorageAlreadyCreated" xml:space="preserve">
+    <value>Event storage already created.</value>
+  </data>
+  <data name="EventStorageCreated" xml:space="preserve">
+    <value>Event storage created.</value>
+  </data>
 </root>

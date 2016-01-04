@@ -61,6 +61,33 @@ namespace InfinniPlatform.SystemConfig.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Blob storage already created..
+        /// </summary>
+        internal static string BlobStorageAlreadyCreated {
+            get {
+                return ResourceManager.GetString("BlobStorageAlreadyCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blob storage created..
+        /// </summary>
+        internal static string BlobStorageCreated {
+            get {
+                return ResourceManager.GetString("BlobStorageCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot run test server..
+        /// </summary>
+        internal static string CannotStartTestServer {
+            get {
+                return ResourceManager.GetString("CannotStartTestServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Can&apos;t add unsaved user to role..
         /// </summary>
         internal static string CantAddUnsavedUserToRole {
@@ -93,6 +120,24 @@ namespace InfinniPlatform.SystemConfig.Properties {
         internal static string ClaimNotFound {
             get {
                 return ResourceManager.GetString("ClaimNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration created: {0}.
+        /// </summary>
+        internal static string ConfigurationCreated {
+            get {
+                return ResourceManager.GetString("ConfigurationCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration {0} not found in: {1}. See AppSettings.ConfigurationPath setting and set to directory where config files stored..
+        /// </summary>
+        internal static string ConfigurationFileNotFound {
+            get {
+                return ResourceManager.GetString("ConfigurationFileNotFound", resourceCulture);
             }
         }
         
@@ -210,6 +255,24 @@ namespace InfinniPlatform.SystemConfig.Properties {
         internal static string ErrorParsingJsonConfiguration {
             get {
                 return ResourceManager.GetString("ErrorParsingJsonConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Event storage already created..
+        /// </summary>
+        internal static string EventStorageAlreadyCreated {
+            get {
+                return ResourceManager.GetString("EventStorageAlreadyCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Event storage created..
+        /// </summary>
+        internal static string EventStorageCreated {
+            get {
+                return ResourceManager.GetString("EventStorageCreated", resourceCulture);
             }
         }
         
