@@ -1,6 +1,6 @@
 ﻿using InfinniPlatform.Sdk.IoC;
 
-namespace InfinniPlatform.SystemConfig.AdministrationCustomization.IoC
+namespace InfinniPlatform.SystemConfig.IoC
 {
     internal sealed class SystemConfigAdministrationCustomizationContainerModule : IContainerModule
     {

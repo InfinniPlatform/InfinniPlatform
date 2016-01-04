@@ -88,6 +88,9 @@
     <Compile Include="ActionUnits\ActionUnitRunMigration.cs" />
     <Compile Include="ActionUnits\ActionUnitSetDocument.cs" />
     <Compile Include="ActionUnits\AggregationUtils.cs" />
+    <Compile Include="AdministrationCustomization\ActionUnits\ActionUnitGetCredentials.cs" />
+    <Compile Include="AdministrationCustomization\ActionUnits\ActionUnitOnAddUserEvent.cs" />
+    <Compile Include="AdministrationCustomization\ActionUnits\ActionUnitOnRemoveUserEvent.cs" />
     <Compile Include="Administration\Common\ActionUnitVerifyPassword.cs" />
     <Compile Include="Administration\Common\StringHasher.cs" />
     <Compile Include="Administration\MenuPermission\ActionUnitDeleteMenuPermission.cs" />
@@ -141,6 +144,7 @@
     <Compile Include="IoC\MetadataContainerModule.cs" />
     <Compile Include="IoC\RestfulApiContainerModule.cs" />
     <Compile Include="IoC\SystemConfigAdministrationContainerModule.cs" />
+    <Compile Include="IoC\SystemConfigAdministrationCustomizationContainerModule.cs" />
     <Compile Include="IoC\SystemConfigContainerModule.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
