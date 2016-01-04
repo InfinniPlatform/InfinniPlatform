@@ -88,6 +88,27 @@
     <Compile Include="ActionUnits\ActionUnitRunMigration.cs" />
     <Compile Include="ActionUnits\ActionUnitSetDocument.cs" />
     <Compile Include="ActionUnits\AggregationUtils.cs" />
+    <Compile Include="Administration\Common\ActionUnitVerifyPassword.cs" />
+    <Compile Include="Administration\Common\StringHasher.cs" />
+    <Compile Include="Administration\MenuPermission\ActionUnitDeleteMenuPermission.cs" />
+    <Compile Include="Administration\MenuPermission\ActionUnitSaveMenuPermission.cs" />
+    <Compile Include="Administration\Menu\ActionUnits\ActionUnitDeleteMenu.cs" />
+    <Compile Include="Administration\Menu\ActionUnits\ActionUnitGetMenu.cs" />
+    <Compile Include="Administration\Menu\ActionUnits\ActionUnitSaveMenu.cs" />
+    <Compile Include="Administration\Menu\MenuCache.cs" />
+    <Compile Include="Administration\Menu\MenuHelper.cs" />
+    <Compile Include="Administration\RolePermissions\ActionUnits\ActionUnitCreatePermissionsForRole.cs" />
+    <Compile Include="Administration\RolePermissions\ActionUnits\ActionUnitDenySection.cs" />
+    <Compile Include="Administration\RolePermissions\ActionUnits\ActionUnitEnableSection.cs" />
+    <Compile Include="Administration\UserRoleStore\ActionUnits\ActionUnitGetFilteredUserRoles.cs" />
+    <Compile Include="Administration\User\ActionUnits\ActionUnitDeleteRole.cs" />
+    <Compile Include="Administration\User\ActionUnits\ActionUnitDeleteUser.cs" />
+    <Compile Include="Administration\User\ActionUnits\ActionUnitDeleteUserRole.cs" />
+    <Compile Include="Administration\User\ActionUnits\ActionUnitWrapAddRole.cs" />
+    <Compile Include="Administration\User\ActionUnits\ActionUnitWrapAddUser.cs" />
+    <Compile Include="Administration\User\ActionUnits\ActionUnitWrapAddUserRole.cs" />
+    <Compile Include="Administration\User\ActionUnits\ActionUnitWrapChangePassword.cs" />
+    <Compile Include="Administration\User\ActionUnits\ActionUnitWrapGetUser.cs" />
     <Compile Include="Auth\ActionUnitGetSessionData.cs" />
     <Compile Include="Auth\ActionUnitRemoveSessionData.cs" />
     <Compile Include="Auth\ActionUnitSetSessionData.cs" />
@@ -119,6 +140,7 @@
     <Compile Include="Initializers\DocumentIndexTypeInitializer.cs" />
     <Compile Include="IoC\MetadataContainerModule.cs" />
     <Compile Include="IoC\RestfulApiContainerModule.cs" />
+    <Compile Include="IoC\SystemConfigAdministrationContainerModule.cs" />
     <Compile Include="IoC\SystemConfigContainerModule.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>

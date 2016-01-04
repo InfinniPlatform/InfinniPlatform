@@ -3,16 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.SystemConfig.Administration.Menu.ActionUnits
 {
 	public sealed class ActionUnitSaveMenu
 	{
-		public void Action(IApplyContext target)
+	    private readonly DocumentApi _documentApi;
+
+	    public ActionUnitSaveMenu(DocumentApi documentApi)
+	    {
+	        _documentApi = documentApi;
+	    }
+
+	    public void Action(IApplyContext target)
 		{
 			var isUpdated = false;
 			var editMenuItem = target.Item.Document;
@@ -36,7 +43,7 @@ namespace InfinniPlatform.SystemConfig.Administration.Menu.ActionUnits
 			target.Result = isUpdated;
 		}
 
-		private static bool UpdateMenuItem(dynamic editMenuItem)
+		private bool UpdateMenuItem(dynamic editMenuItem)
 		{
 			dynamic editMenu;
 			dynamic parentMenuItem;
@@ -107,7 +114,6 @@ namespace InfinniPlatform.SystemConfig.Administration.Menu.ActionUnits
 				{
 					var newIndex = Math.Min(Math.Max(Convert.ToInt32(editMenuItem.Index), 0), countSubItems);
 
-					var api = new DocumentApi();
 					var rolesUpdate = new List<dynamic>();
 					for (int menuItemIndex = newIndex; menuItemIndex < countSubItems; menuItemIndex++)
 					{
@@ -116,7 +122,7 @@ namespace InfinniPlatform.SystemConfig.Administration.Menu.ActionUnits
 						var subItemId = MenuHelper.GetMenuItemId(editMenuItem.ConfigId, editMenuItem.MenuId, editMenuItem.Level,
 																 menuItemIndex, editMenuItem.ParentId);
 
-						var roles = api.GetDocument("Administration", "MenuItemSettings",
+						var roles = _documentApi.GetDocument("Administration", "MenuItemSettings",
 																  f =>
 																  f.AddCriteria(
 																	  cr => cr.IsEquals(subItemId).Property("MenuItemId")), 0, 100).ToList();
@@ -130,7 +136,7 @@ namespace InfinniPlatform.SystemConfig.Administration.Menu.ActionUnits
 
 					foreach (dynamic role in rolesUpdate)
 					{
-						api.SetDocument("Administration", "MenuItemSettings", role);
+                        _documentApi.SetDocument("Administration", "MenuItemSettings", role);
 					}
 
 					ObjectHelper.MoveItem(menuItems, subItemInfo, newIndex - countSubItems);
@@ -141,7 +147,7 @@ namespace InfinniPlatform.SystemConfig.Administration.Menu.ActionUnits
 				parentMenuItem.Items = menuItems;
 
 				// Сохранение меню
-				var menuManager = new ManagerFactoryConfiguration(TODO, editMenuItem.ConfigId).BuildMenuManager();
+				var menuManager = new ManagerFactoryConfiguration(editMenuItem.ConfigId).BuildMenuManager();
 				menuManager.MergeItem(editMenu);
 
 				// Сохранение ролей
@@ -163,7 +169,7 @@ namespace InfinniPlatform.SystemConfig.Administration.Menu.ActionUnits
 			// Конфигурация является корневым пунктом меню
 			var configMenuItemId = "/PatientEhr__0_0";
 
-			var configFactory = new ManagerFactoryConfiguration(TODO, "PatientEhr");
+			var configFactory = new ManagerFactoryConfiguration("PatientEhr");
 			var menuReader = configFactory.BuildMenuMetadataReader();
 			var menuInfoItems = MenuHelper.GetMenuInfoItems(menuReader);
 

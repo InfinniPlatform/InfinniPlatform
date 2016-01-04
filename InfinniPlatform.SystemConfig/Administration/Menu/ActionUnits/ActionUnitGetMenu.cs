@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Text;
 
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Dynamic;
 using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Api.Serialization;
+using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.SystemConfig.Administration.Menu.ActionUnits
 {
@@ -47,7 +47,7 @@ namespace InfinniPlatform.SystemConfig.Administration.Menu.ActionUnits
             // Конфигурация является корневым пунктом меню
             var configMenuItem = CreateMenuItem(configId, null, 0, configIndex++, "Система", null);
 
-            var menuReader = new ManagerFactoryConfiguration(TODO, configId).BuildMenuMetadataReader();
+            var menuReader = new ManagerFactoryConfiguration(configId).BuildMenuMetadataReader();
             var menuInfoItems = GetMenuInfoItems(menuReader);
 
             foreach (var menuInfo in menuInfoItems)
