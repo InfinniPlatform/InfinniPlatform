@@ -61,6 +61,15 @@ namespace InfinniPlatform.SystemConfig.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to В регистрируемом классе скрипта отсутствует объявление метода Action.
+        /// </summary>
+        internal static string ActionMethodNotSpecified {
+            get {
+                return ResourceManager.GetString("ActionMethodNotSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Blob storage already created..
         /// </summary>
         internal static string BlobStorageAlreadyCreated {
@@ -165,6 +174,15 @@ namespace InfinniPlatform.SystemConfig.Properties {
         internal static string ConfigurationVersionShouldSpecified {
             get {
                 return ResourceManager.GetString("ConfigurationVersionShouldSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Document provider not registered for metadata: &quot;{0}&quot;.
+        /// </summary>
+        internal static string DocumentProviderNotRegisteredError {
+            get {
+                return ResourceManager.GetString("DocumentProviderNotRegisteredError", resourceCulture);
             }
         }
         

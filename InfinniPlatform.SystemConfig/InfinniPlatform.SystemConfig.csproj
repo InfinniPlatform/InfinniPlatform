@@ -117,11 +117,46 @@
     <Compile Include="Installers\RestfulApiInstaller.cs" />
     <Compile Include="Installers\SystemConfigInstaller.cs" />
     <Compile Include="Initializers\DocumentIndexTypeInitializer.cs" />
+    <Compile Include="IoC\MetadataContainerModule.cs" />
     <Compile Include="IoC\RestfulApiContainerModule.cs" />
     <Compile Include="IoC\SystemConfigContainerModule.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Metadata\Handlers\AggregateExtensions.cs" />
+    <Compile Include="Metadata\Handlers\ApplyChangesHandler.cs" />
+    <Compile Include="Metadata\Handlers\CustomServiceHandler.cs" />
+    <Compile Include="Metadata\Handlers\SearchDocumentAggregationHandler.cs" />
+    <Compile Include="Metadata\Handlers\SearchHandler.cs" />
+    <Compile Include="Metadata\Handlers\SystemEventsHandler.cs" />
+    <Compile Include="Metadata\Handlers\UploadHandler.cs" />
+    <Compile Include="Metadata\Handlers\UrlEncodedDataHandler.cs" />
+    <Compile Include="Metadata\HostServerConfiguration\InfinniPlatformHostFactory.cs" />
+    <Compile Include="Metadata\MetadataConfiguration\ConfigurationObject.cs" />
+    <Compile Include="Metadata\MetadataConfiguration\ConfigurationObjectBuilder.cs" />
+    <Compile Include="Metadata\MetadataConfiguration\CrossConfigSearcher.cs" />
+    <Compile Include="Metadata\MetadataConfiguration\MetadataConfiguration.cs" />
+    <Compile Include="Metadata\MetadataConfiguration\MetadataConfigurationProvider.cs" />
+    <Compile Include="Metadata\MetadataConfiguration\MetadataContainer.cs" />
+    <Compile Include="Metadata\MetadataConfiguration\ScriptConfiguration.cs" />
+    <Compile Include="Metadata\Modules\StandardTemplatesInstaller.cs" />
+    <Compile Include="Metadata\StateMachine\ActionUnits\ActionOperatorBuilders\ActionOperator.cs" />
+    <Compile Include="Metadata\StateMachine\ActionUnits\ActionOperatorBuilders\ActionOperatorBuilderEmbedded.cs" />
+    <Compile Include="Metadata\StateMachine\ActionUnits\ActionOperatorBuilders\ActionOperatorBuilderScript.cs" />
+    <Compile Include="Metadata\StateMachine\ActionUnits\ActionUnit.cs" />
+    <Compile Include="Metadata\StateMachine\ExecutedScriptBuilderFactory.cs" />
+    <Compile Include="Metadata\StateMachine\Statuses\StateTransition.cs" />
+    <Compile Include="Metadata\StateMachine\Statuses\StateTransitionConditions\StateTransitionConditionNone.cs" />
+    <Compile Include="Metadata\StateMachine\Statuses\StateTransitionConditions\StateTransitionConditionObjectStatus.cs" />
+    <Compile Include="Metadata\StateMachine\Statuses\StateTransitionConfig.cs" />
+    <Compile Include="Metadata\StateMachine\Statuses\StateWorkflow.cs" />
+    <Compile Include="Metadata\StateMachine\Statuses\StateWorkflowConfig.cs" />
+    <Compile Include="Metadata\StateMachine\Statuses\StateWorkflowRegister.cs" />
+    <Compile Include="Metadata\StateMachine\Statuses\StateWorkflowStartingPointConfig.cs" />
+    <Compile Include="Metadata\StateMachine\ValidationUnits\ValidationUnit.cs" />
+    <Compile Include="Metadata\StateMachine\ValidationUnits\ValidationUnitBuilders\ValidationOperator.cs" />
+    <Compile Include="Metadata\StateMachine\ValidationUnits\ValidationUnitBuilders\ValidationOperatorBuilderEmbedded.cs" />
+    <Compile Include="Metadata\StateMachine\ValidationUnits\ValidationUnitBuilders\ValidationOperatorBuilderScript.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -169,10 +204,6 @@
     <ProjectReference Include="..\InfinniPlatform.Index.QueryLanguage\InfinniPlatform.Index.QueryLanguage.csproj">
       <Project>{25CCB048-C239-4A2D-8090-39AE34514884}</Project>
       <Name>InfinniPlatform.Index.QueryLanguage</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Metadata\InfinniPlatform.Metadata.csproj">
-      <Project>{F1239C4B-CA5F-4B5E-83AC-DA686E81030F}</Project>
-      <Name>InfinniPlatform.Metadata</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>

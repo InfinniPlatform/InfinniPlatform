@@ -228,4 +228,10 @@
   <data name="EventStorageCreated" xml:space="preserve">
     <value>Event storage created.</value>
   </data>
+  <data name="ActionMethodNotSpecified" xml:space="preserve">
+    <value>В регистрируемом классе скрипта отсутствует объявление метода Action</value>
+  </data>
+  <data name="DocumentProviderNotRegisteredError" xml:space="preserve">
+    <value>Document provider not registered for metadata: "{0}"</value>
+  </data>
 </root>

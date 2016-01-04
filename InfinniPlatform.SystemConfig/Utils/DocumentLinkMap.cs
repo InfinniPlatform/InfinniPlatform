@@ -6,10 +6,11 @@ using InfinniPlatform.Api.Metadata;
 using InfinniPlatform.Api.RestApi.CommonApi;
 using InfinniPlatform.Api.SearchOptions.Builders;
 using InfinniPlatform.Hosting;
-using InfinniPlatform.Metadata.Implementation.Handlers;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.IoC;
+
+using ApplyChangesHandler = InfinniPlatform.SystemConfig.Metadata.Handlers.ApplyChangesHandler;
 
 namespace InfinniPlatform.SystemConfig.Utils
 {
