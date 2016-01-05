@@ -1,8 +1,7 @@
 ﻿using System;
 using System.IO;
 
-using InfinniPlatform.Api.Serialization;
-using InfinniPlatform.Logging;
+using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.Sdk.Environment.Binary;
 using InfinniPlatform.Sdk.Environment.Log;
 

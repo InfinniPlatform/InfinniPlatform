@@ -3,9 +3,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
 
-using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Api.RestApi.Auth;
-using InfinniPlatform.Api.RestQuery;
+using InfinniPlatform.Core.Hosting;
+using InfinniPlatform.Core.RestApi.Auth;
+using InfinniPlatform.Core.RestQuery;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.WebApi.ConfigRequestProviders;
 

@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Metadata
+﻿namespace InfinniPlatform.Core.Metadata
 {
     /// <summary>
     ///     Контракт для конструирования событий изменения объектов

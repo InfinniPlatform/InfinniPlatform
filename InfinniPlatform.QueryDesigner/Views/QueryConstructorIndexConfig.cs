@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 
-using InfinniPlatform.Api.RestQuery;
+using InfinniPlatform.Core.RestQuery;
 using InfinniPlatform.QueryDesigner.Contracts;
 using InfinniPlatform.Sdk.Api;
 

@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DevExpress.XtraEditors.Controls;
-using InfinniPlatform.Api.Context;
+
+using InfinniPlatform.Core.Context;
 
 namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 {

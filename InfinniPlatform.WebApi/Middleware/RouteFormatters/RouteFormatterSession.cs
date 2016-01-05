@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using InfinniPlatform.Api.Properties;
+using InfinniPlatform.Core.Properties;
 using InfinniPlatform.Owin.Middleware;
 using Microsoft.Owin;
 

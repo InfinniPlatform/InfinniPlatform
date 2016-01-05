@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Api.Security;
-using InfinniPlatform.Modules;
+﻿using InfinniPlatform.Core.Modules;
+using InfinniPlatform.Core.Security;
 using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.Sdk.IoC;

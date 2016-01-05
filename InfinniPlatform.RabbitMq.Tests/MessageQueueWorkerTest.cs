@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-using InfinniPlatform.MessageQueue;
+using InfinniPlatform.Core.MessageQueue;
 
 using Moq;
 

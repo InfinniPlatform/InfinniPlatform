@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.MessageQueue;
+﻿using InfinniPlatform.Core.MessageQueue;
 
 namespace InfinniPlatform.RabbitMq
 {

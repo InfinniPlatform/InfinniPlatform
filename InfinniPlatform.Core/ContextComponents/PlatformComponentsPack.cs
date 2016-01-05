@@ -3,7 +3,7 @@
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.IoC;
 
-namespace InfinniPlatform.ContextComponents
+namespace InfinniPlatform.Core.ContextComponents
 {
     /// <summary>
     /// Пакет компонентов платформы

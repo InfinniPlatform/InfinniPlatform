@@ -2,7 +2,8 @@
 using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraEditors.Controls;
-using InfinniPlatform.Api.Schema;
+
+using InfinniPlatform.Core.Schema;
 using InfinniPlatform.QueryDesigner.Contracts;
 
 namespace InfinniPlatform.QueryDesigner.Views

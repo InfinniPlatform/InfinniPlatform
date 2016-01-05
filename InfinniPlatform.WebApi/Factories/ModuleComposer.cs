@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.Api.RestQuery;
-using InfinniPlatform.Modules;
+using InfinniPlatform.Core.Modules;
+using InfinniPlatform.Core.RestQuery;
 
 namespace InfinniPlatform.WebApi.Factories
 {

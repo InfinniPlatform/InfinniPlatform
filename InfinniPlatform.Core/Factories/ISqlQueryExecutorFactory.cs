@@ -1,6 +1,6 @@
-﻿using InfinniPlatform.Sql;
+﻿using InfinniPlatform.Core.Sql;
 
-namespace InfinniPlatform.Factories
+namespace InfinniPlatform.Core.Factories
 {
     /// <summary>
     ///     Фабрика для создания исполнителя SQL-команд.

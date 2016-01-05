@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace InfinniPlatform.MessageQueue
+namespace InfinniPlatform.Core.MessageQueue
 {
     /// <summary>
     ///     Заголовок сообщения.

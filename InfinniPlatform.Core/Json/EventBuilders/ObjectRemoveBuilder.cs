@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Logging;
-using InfinniPlatform.Sdk.Environment.Log;
+using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Sdk.Events;
 
 using Newtonsoft.Json.Linq;
 
-namespace InfinniPlatform.Json.EventBuilders
+namespace InfinniPlatform.Core.Json.EventBuilders
 {
     public class ObjectRemoveBuilder : IJsonObjectBuilder
     {

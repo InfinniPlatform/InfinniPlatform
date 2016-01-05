@@ -2,7 +2,8 @@
 using System.Data;
 using System.Data.Sql;
 using System.Data.SqlClient;
-using InfinniPlatform.Api.Schema;
+
+using InfinniPlatform.Core.Schema;
 using InfinniPlatform.FastReport.Templates.Data;
 
 namespace InfinniPlatform.ReportDesigner.Services

@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using InfinniPlatform.Api.RestQuery;
-using InfinniPlatform.Hosting;
+
 using InfinniPlatform.Sdk.Environment.Hosting;
 using InfinniPlatform.WebApi.HttpResultHandlers;
 

@@ -4,7 +4,7 @@ using InfinniPlatform.Sdk.Environment.Log;
 
 using ILog = log4net.ILog;
 
-namespace InfinniPlatform.Logging
+namespace InfinniPlatform.Core.Logging
 {
     public class PerformanceLog : IPerformanceLog
     {

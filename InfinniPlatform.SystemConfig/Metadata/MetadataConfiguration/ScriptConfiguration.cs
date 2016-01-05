@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Runtime;
+using InfinniPlatform.Core.Runtime;
 using InfinniPlatform.Sdk.Environment.Actions;
 using InfinniPlatform.Sdk.Environment.Scripts;
 using InfinniPlatform.Sdk.Environment.Validations;

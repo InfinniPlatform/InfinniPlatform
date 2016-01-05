@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Factories;
+﻿using InfinniPlatform.Core.Factories;
 using InfinniPlatform.Hosting.Implementation.ServiceRegistration;
 using InfinniPlatform.Hosting.Implementation.ServiceTemplates;
 using InfinniPlatform.Sdk.Environment.Hosting;

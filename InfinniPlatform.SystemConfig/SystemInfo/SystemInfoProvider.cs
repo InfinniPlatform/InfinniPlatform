@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 
+using InfinniPlatform.Core.SystemInfo;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
-using InfinniPlatform.SystemInfo;
 
 namespace InfinniPlatform.SystemConfig.SystemInfo
 {

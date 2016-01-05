@@ -2,10 +2,11 @@
 using System.ComponentModel.Composition;
 using System.Threading;
 
-using InfinniPlatform.Api.Settings;
+using InfinniPlatform.Core.Hosting;
+using InfinniPlatform.Core.Logging;
+using InfinniPlatform.Core.Settings;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.IoC.Owin;
-using InfinniPlatform.Logging;
 using InfinniPlatform.NodeServiceHost.Properties;
 using InfinniPlatform.Sdk.Api;
 

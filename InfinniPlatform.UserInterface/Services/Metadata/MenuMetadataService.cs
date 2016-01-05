@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Api.Serialization;
+using InfinniPlatform.Core.RestApi.DataApi;
+using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata

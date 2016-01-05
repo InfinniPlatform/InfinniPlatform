@@ -3,8 +3,8 @@ using System.Web.Http;
 using System.Web.Http.Dependencies;
 using System.Web.Http.Dispatcher;
 
+using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Owin.Modules;
-using InfinniPlatform.Transactions;
 using InfinniPlatform.WebApi.Factories;
 using InfinniPlatform.WebApi.Filters;
 using InfinniPlatform.WebApi.WebApi;

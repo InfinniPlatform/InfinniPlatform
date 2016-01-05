@@ -1,5 +1,6 @@
 ﻿using System.Linq;
-using InfinniPlatform.Api.RestApi.Auth;
+
+using InfinniPlatform.Core.RestApi.Auth;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 

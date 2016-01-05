@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Metadata
+﻿namespace InfinniPlatform.Core.Metadata
 {
     public interface IStateTransitionApprover
     {

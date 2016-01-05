@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using InfinniPlatform.Api.Schema;
+
+using InfinniPlatform.Core.Schema;
 using InfinniPlatform.FastReport.Templates.Data;
 using InfinniPlatform.FastReport.TemplatesFluent.Reports;
 using InfinniPlatform.Reporting.DataSources;

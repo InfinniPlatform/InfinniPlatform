@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Factories;
+﻿using InfinniPlatform.Core.Factories;
 using InfinniPlatform.Sdk.Environment.Binary;
 using InfinniPlatform.Sdk.Environment.Log;
 using InfinniPlatform.Sdk.Environment.Settings;

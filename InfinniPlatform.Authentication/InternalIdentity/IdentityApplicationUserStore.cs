@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using InfinniPlatform.Api.Security;
+using InfinniPlatform.Core.Security;
 
 using Microsoft.AspNet.Identity;
 

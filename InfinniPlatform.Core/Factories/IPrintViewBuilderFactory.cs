@@ -1,6 +1,6 @@
-﻿using InfinniPlatform.Api.PrintView;
+﻿using InfinniPlatform.Core.PrintView;
 
-namespace InfinniPlatform.Factories
+namespace InfinniPlatform.Core.Factories
 {
     /// <summary>
     ///     Фабрика для создания построителя печатного представления.

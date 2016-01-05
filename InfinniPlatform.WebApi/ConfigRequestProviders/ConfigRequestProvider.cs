@@ -1,6 +1,6 @@
 ﻿using System.Web.Http.Routing;
-using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Hosting;
+
+using InfinniPlatform.Core.Hosting;
 
 namespace InfinniPlatform.WebApi.ConfigRequestProviders
 {

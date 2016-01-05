@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Api.Index.SearchOptions;
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.ContextComponents;
+using InfinniPlatform.Core.ContextComponents;
+using InfinniPlatform.Core.Index.SearchOptions;
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;

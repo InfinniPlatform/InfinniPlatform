@@ -1,6 +1,6 @@
 ﻿using System;
-using InfinniPlatform.Api.Validation;
-using InfinniPlatform.Api.Validation.BooleanValidators;
+
+using InfinniPlatform.Core.Validation.BooleanValidators;
 using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Validations;
 

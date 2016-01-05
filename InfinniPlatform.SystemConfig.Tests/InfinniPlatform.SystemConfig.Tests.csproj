@@ -76,10 +76,6 @@
     <None Include="TestData\test.json" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
-      <Project>{7ca0f96c-7ff4-44b2-9d44-851984df4532}</Project>
-      <Name>InfinniPlatform.Api</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.NodeServiceHost\InfinniPlatform.NodeServiceHost.csproj">
       <Project>{DCB067DB-E581-4F90-85DF-ACF9C6B42AD4}</Project>
       <Name>InfinniPlatform.NodeServiceHost</Name>

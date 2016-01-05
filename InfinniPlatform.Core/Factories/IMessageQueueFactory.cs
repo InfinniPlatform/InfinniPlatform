@@ -1,6 +1,6 @@
-﻿using InfinniPlatform.MessageQueue;
+﻿using InfinniPlatform.Core.MessageQueue;
 
-namespace InfinniPlatform.Factories
+namespace InfinniPlatform.Core.Factories
 {
     /// <summary>
     ///     Фабрика для создания инфраструктурных сервисов очереди сообщений.

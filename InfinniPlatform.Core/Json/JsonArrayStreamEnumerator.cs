@@ -2,10 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace InfinniPlatform.Json
+namespace InfinniPlatform.Core.Json
 {
     /// <summary>
     ///     Предоставляет методы для перебора элементов JSON-массива из потока.

@@ -1,9 +1,9 @@
-﻿using InfinniPlatform.Api.Profiling.Implementation;
+﻿using InfinniPlatform.Core.Profiling.Implementation;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment.Log;
 using InfinniPlatform.Sdk.Environment.Profiling;
 
-namespace InfinniPlatform.ContextComponents
+namespace InfinniPlatform.Core.ContextComponents
 {
     /// <summary>
     /// Компонент для получения профайлера операций

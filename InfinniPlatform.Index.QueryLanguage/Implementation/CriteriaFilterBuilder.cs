@@ -1,6 +1,8 @@
 ﻿using System.Linq;
-using InfinniPlatform.Api.Index.SearchOptions;
-using InfinniPlatform.Json;
+
+using InfinniPlatform.Core.Index.SearchOptions;
+using InfinniPlatform.Core.Json;
+
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Index.QueryLanguage.Implementation

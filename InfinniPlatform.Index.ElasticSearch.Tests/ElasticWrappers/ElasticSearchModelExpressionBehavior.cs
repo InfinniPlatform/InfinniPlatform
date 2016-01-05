@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using InfinniPlatform.Api.RestApi.Auth;
+
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Index.ElasticSearch.Tests.Builders;

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
-using InfinniPlatform.Factories;
+using InfinniPlatform.Core.Factories;
+using InfinniPlatform.Core.Index;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters.NestFilters;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeSelectors;

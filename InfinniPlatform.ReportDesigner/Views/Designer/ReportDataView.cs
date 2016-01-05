@@ -4,7 +4,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using FastReport;
-using InfinniPlatform.Api.Schema;
+
+using InfinniPlatform.Core.Schema;
 using InfinniPlatform.FastReport.Templates.Data;
 using InfinniPlatform.ReportDesigner.Properties;
 using InfinniPlatform.ReportDesigner.Views.DataSources;

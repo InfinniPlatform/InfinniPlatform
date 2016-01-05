@@ -1,4 +1,6 @@
-﻿namespace InfinniPlatform.QueryDesigner.Views
+﻿using InfinniPlatform.Core.Schema;
+
+namespace InfinniPlatform.QueryDesigner.Views
 {
 	partial class QueryConstructorWhereCondition
 	{
@@ -110,7 +112,7 @@
             this.FieldPart.DataProvider = null;
             this.FieldPart.Location = new System.Drawing.Point(2, 2);
             this.FieldPart.Name = "FieldPart";
-            this.FieldPart.PathResolveType = InfinniPlatform.Api.Schema.PathResolveType.Select;
+            this.FieldPart.PathResolveType = PathResolveType.Select;
             this.FieldPart.Size = new System.Drawing.Size(451, 33);
             this.FieldPart.TabIndex = 4;
             // 

@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Api.Schema;
+﻿using InfinniPlatform.Core.Schema;
 
 namespace InfinniPlatform.FastReport.Templates.Data
 {

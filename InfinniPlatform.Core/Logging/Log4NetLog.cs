@@ -8,7 +8,7 @@ using log4net;
 using ILog = InfinniPlatform.Sdk.Environment.Log.ILog;
 using ILog4NetLog = log4net.ILog;
 
-namespace InfinniPlatform.Logging
+namespace InfinniPlatform.Core.Logging
 {
     /// <summary>
     /// Сервис <see cref="Sdk.Environment.Log.ILog" /> на базе log4net.

@@ -1,7 +1,7 @@
 ﻿using System.Text;
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataReaders;
-using InfinniPlatform.Metadata;
+
+using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.MetadataReaders;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 

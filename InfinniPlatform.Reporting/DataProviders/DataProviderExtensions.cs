@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
-using InfinniPlatform.Api.Schema;
+
+using InfinniPlatform.Core.Schema;
 using InfinniPlatform.FastReport.Templates.Data;
 
 using Newtonsoft.Json.Linq;

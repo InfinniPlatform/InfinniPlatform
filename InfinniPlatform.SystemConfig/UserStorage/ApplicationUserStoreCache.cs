@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Runtime.Caching;
 using System.Threading;
 
-using InfinniPlatform.Api.Security;
 using InfinniPlatform.Caching;
+using InfinniPlatform.Core.Security;
 using InfinniPlatform.Sdk.Environment.Log;
 using InfinniPlatform.SystemConfig.Properties;
 

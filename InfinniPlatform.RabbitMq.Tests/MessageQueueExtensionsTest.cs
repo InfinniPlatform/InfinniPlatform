@@ -1,6 +1,6 @@
 ﻿using System;
 
-using InfinniPlatform.MessageQueue;
+using InfinniPlatform.Core.MessageQueue;
 
 using NUnit.Framework;
 

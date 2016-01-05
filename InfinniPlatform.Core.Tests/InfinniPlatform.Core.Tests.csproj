@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C4ECB85D-AD08-45D3-9FDF-F0FE9A797644}</ProjectGuid>
+    <ProjectGuid>{A8285E35-48F8-45CC-961C-282678230221}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>InfinniPlatform.Core.Tests</RootNamespace>
@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>false</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -54,10 +55,14 @@
     <Reference Include="System.IO.Compression" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builders\ConfigurationBuilder.cs" />
+    <Compile Include="Builders\SampleMetadataBuilder.cs" />
     <Compile Include="Compression\GZipDataCompressorMemoryTest.cs" />
     <Compile Include="Compression\GZipDataCompressorPerformanceTest.cs" />
     <Compile Include="Compression\GZipDataCompressorTest.cs" />
-    <Compile Include="Events\EventBuildersTests.cs" />
+    <Compile Include="Dynamic\DynamicWrapperJsonConverterTest.cs" />
+    <Compile Include="Dynamic\DynamicWrapperTest.cs" />
+    <Compile Include="Dynamic\ObjectHelperTest.cs" />
     <Compile Include="Events\AggregateBehavior.cs" />
     <Compile Include="Events\Builders\Entities\FieldMetadataRecord.cs" />
     <Compile Include="Events\Builders\Entities\FieldRecord.cs" />
@@ -85,23 +90,92 @@
     <Compile Include="Events\Builders\Models\ProductUsingType.cs" />
     <Compile Include="Events\Builders\VidalExtension.cs" />
     <Compile Include="Events\EventBehavior.cs" />
-    <Compile Include="Events\PerformanceBehavior.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Events\EventBuildersTests.cs" />
+    <Compile Include="Events\PerformanceBehavior.cs" />
     <Compile Include="Events\TestStatus.cs" />
+    <Compile Include="Extensions\CommonExtensionsTest.cs" />
+    <Compile Include="Extensions\ReflectionExtensionsTest.cs" />
+    <Compile Include="IoC\ApiTestsContainerModule.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="RestBehavior\Acceptance\AfterDocumentSaveEventsBehavior.cs" />
+    <Compile Include="RestBehavior\Acceptance\ActionUnitExceptionHandlingBehavior.cs" />
+    <Compile Include="RestBehavior\Acceptance\ContentUploadBehavior.cs" />
+    <Compile Include="RestBehavior\Acceptance\SaaSBehaivor.cs" />
+    <Compile Include="RestBehavior\Acceptance\SortingBehavior.cs" />
+    <Compile Include="RestBehavior\Acceptance\RegistersBehavior.cs" />
+    <Compile Include="RestBehavior\Acceptance\DeleteReferencedDocumentBehavior.cs" />
+    <Compile Include="RestBehavior\Acceptance\ReportingBehavior.cs" />
+    <Compile Include="RestBehavior\Acceptance\ValidationDocumentBehavior.cs" />
+    <Compile Include="RestBehavior\ConfiguratorApiBehavior\CrudSettings.cs" />
+    <Compile Include="Dynamic\DynamicWrapperBehavior.cs" />
+    <Compile Include="Events\EventListBuilderBehavior.cs" />
+    <Compile Include="Events\ObjectToEventSerializerBehavior.cs" />
+    <Compile Include="Metadata\MetadataBuilderBehavior.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RestBehavior\Acceptance\DocumentApiBehavior.cs" />
+    <Compile Include="RestBehavior\TestActions\ActionUnitGeneratorTest.cs" />
+    <Compile Include="RestBehavior\TestActions\ActionUnitAddNewBedToRoomMoveAction.cs" />
+    <Compile Include="RestBehavior\TestActions\ActionUnitWithException.cs" />
+    <Compile Include="RestBehavior\TestActions\ActionUnitDeleteRegisterEntriesAction.cs" />
+    <Compile Include="RestBehavior\TestActions\ActionUnitHospitalRegisterMoveAction.cs" />
+    <Compile Include="RestBehavior\TestActions\TestRegisterMoveAction.cs" />
+    <Compile Include="RestBehavior\TestActions\Versions\TestAction_v2.cs" />
+    <Compile Include="RestBehavior\TestActions\Versions\TestAction_v1.cs" />
+    <Compile Include="RestBehavior\TestActions\Versions\TestAction.cs" />
+    <Compile Include="RestBehavior\TestActions\ActionUnitTestComplexAction.cs" />
+    <Compile Include="RestBehavior\TestActions\ActionUnitTestComplexFillDocumentAction.cs" />
+    <Compile Include="RestBehavior\TestActions\ValidationUnitTestComplexValidator.cs" />
+    <Compile Include="RestBehavior\TestActions\TestSignalRAction.cs" />
+    <Compile Include="RestBehavior\TestActions\YetAnotherTestComplexAction.cs" />
+    <Compile Include="Schema\SchemaCreatorBehavior.cs" />
+    <Compile Include="Serialization\JsonObjectSerializerTest.cs" />
+    <Compile Include="Validation\BaseValidationOperatorTest.cs" />
+    <Compile Include="Validation\BooleanValidators\AndValidatorTest.cs" />
+    <Compile Include="Validation\BooleanValidators\NotValidatorTest.cs" />
+    <Compile Include="Validation\BooleanValidators\OrValidatorTest.cs" />
+    <Compile Include="Validation\CollectionValidators\AllCollectionValidatorTest.cs" />
+    <Compile Include="Validation\CollectionValidators\AnyCollectionValidatorTest.cs" />
+    <Compile Include="Validation\CollectionValidators\ContainsCollectionValidatorTest.cs" />
+    <Compile Include="Validation\CollectionValidators\NullOrEmptyCollectionValidatorTest.cs" />
+    <Compile Include="Validation\FaseValidationOperator.cs" />
+    <Compile Include="Validation\ObjectValidators\AbsoluteUriValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\ContainsValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\DefaultValueValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\EndsWithValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\EqualValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\GuidValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\InValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\LessThanOrEqualValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\LessThanValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\MoreThanOrEqualValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\MoreThanValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\NullOrEmptyValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\NullOrWhiteSpaceValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\NullValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\RegexValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\RelativeUriValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\StartsWithValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\UriValidatorTest.cs" />
+    <Compile Include="Validation\ObjectValidators\ValidatorTestCase.cs" />
+    <Compile Include="Validation\PredicateValidationOperator.cs" />
+    <Compile Include="Validation\Serialization\ValidationOperatorSerializerTest.cs" />
+    <Compile Include="Validation\TrueValidationOperator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
-      <Project>{7CA0F96C-7FF4-44B2-9D44-851984DF4532}</Project>
-      <Name>InfinniPlatform.Api</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
-      <Project>{ebc684b7-b72a-475f-bbc1-b6293b607b9b}</Project>
+      <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
       <Name>InfinniPlatform.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.NodeServiceHost\InfinniPlatform.NodeServiceHost.csproj">
+      <Project>{DCB067DB-E581-4F90-85DF-ACF9C6B42AD4}</Project>
+      <Name>InfinniPlatform.NodeServiceHost</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
@@ -115,10 +189,70 @@
   <ItemGroup>
     <None Include="..\Files\Config\App.config">
       <Link>App.config</Link>
+      <SubType>Designer</SubType>
     </None>
+    <None Include=".metadata\TestConfiguration\Configuration.json" />
+    <None Include=".metadata\TestConfiguration\Documents\AddressDocument\AddressDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\AfterDocumentSaveDocument\AfterDocumentSaveDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\AfterDocumentSaveDocument\Processes\Default.json" />
+    <None Include=".metadata\TestConfiguration\Documents\AfterDocumentSaveDocument\Scenarios\TestComplexAction.json" />
+    <None Include=".metadata\TestConfiguration\Documents\ContentUploadDocument\ContentUploadDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\DeleteReferencedDocument\DeleteReferencedDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\ExceptionHandlingDocument\ExceptionHandlingDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\ExceptionHandlingDocument\Processes\Default.json" />
+    <None Include=".metadata\TestConfiguration\Documents\ExceptionHandlingDocument\Scenarios\ActionWithException.json" />
+    <None Include=".metadata\TestConfiguration\Documents\InlineSortingDocument\InlineSortingDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\OneDateSortingFieldDocument\OneDateSortingFieldDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\OneIntSortingFieldDocument\OneIntSortingFieldDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\OneSortingFieldInArrayDocument\OneSortingFieldInArrayDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\OneSortingFieldInNestedObjectDocument\OneSortingFieldInNestedObjectDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\OneStringSortingFieldDocument\OneStringSortingFieldDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\PrefillDocument\PrefillDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\PrefillDocument\Processes\Default.json" />
+    <None Include=".metadata\TestConfiguration\Documents\PrefillDocument\Scenarios\TestComplexFillDocumentAction.json" />
+    <None Include=".metadata\TestConfiguration\Documents\RegisterTest_AvailableBedsRegister\RegisterTest_AvailableBedsRegister.json" />
+    <None Include=".metadata\TestConfiguration\Documents\RegisterTest_BedsRegistrationDocument\Processes\Default.json" />
+    <None Include=".metadata\TestConfiguration\Documents\RegisterTest_BedsRegistrationDocument\RegisterTest_BedsRegistrationDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\RegisterTest_BedsRegistrationDocument\Scenarios\AddNewBedToRoomMoveAction.json" />
+    <None Include=".metadata\TestConfiguration\Documents\RegisterTest_BedsRegistrationDocument\Scenarios\DeleteRegisterEntriesAction.json" />
+    <None Include=".metadata\TestConfiguration\Documents\RegisterTest_InfoRegister\RegisterTest_InfoRegister.json" />
+    <None Include=".metadata\TestConfiguration\Documents\RegisterTest_PatientMovementDocument\Processes\Default.json" />
+    <None Include=".metadata\TestConfiguration\Documents\RegisterTest_PatientMovementDocument\RegisterTest_PatientMovementDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\RegisterTest_PatientMovementDocument\Scenarios\HospitalRegisterMoveAction.json" />
+    <None Include=".metadata\TestConfiguration\Documents\RegisterTotals_RegisterTest_AvailableBedsRegister\RegisterTotals_RegisterTest_AvailableBedsRegister.json" />
+    <None Include=".metadata\TestConfiguration\Documents\RegisterTotals_RegisterTest_InfoRegister\RegisterTotals_RegisterTest_InfoRegister.json" />
+    <None Include=".metadata\TestConfiguration\Documents\Register_RegisterTest_AvailableBedsRegister\Register_RegisterTest_AvailableBedsRegister.json" />
+    <None Include=".metadata\TestConfiguration\Documents\Register_RegisterTest_InfoRegister\Register_RegisterTest_InfoRegister.json" />
+    <None Include=".metadata\TestConfiguration\Documents\TestConfiguration_Registers\TestConfiguration_Registers.json" />
+    <None Include=".metadata\TestConfiguration\Documents\TestDocument\PrintViews\TestPrintView.json" />
+    <None Include=".metadata\TestConfiguration\Documents\TestDocument\TestDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\TwoSortingFieldsDocument\TwoSortingFieldsDocument.json" />
+    <None Include=".metadata\TestConfiguration\Documents\ValidationDocument\Processes\Default.json" />
+    <None Include=".metadata\TestConfiguration\Documents\ValidationDocument\Scenarios\TestComplexValidator.json" />
+    <None Include=".metadata\TestConfiguration\Documents\ValidationDocument\ValidationDocument.json" />
+    <None Include=".metadata\TestConfiguration\Registers\RegisterTest_InfoRegister.json" />
+    <None Include=".metadata\TestConfiguration\Registers\RegisterTest_AvailableBedsRegister.json" />
     <None Include="packages.config" />
+    <None Include="TestData\UploadBinaryContent.zip" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="RestBehavior\DataSources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <MetadataFiles Include=".metadata\**\*.*">
+      <Visible>false</Visible>
+    </MetadataFiles>
+  </ItemGroup>
+  <Target Name="AfterBuild">
+    <Copy SourceFiles="@(MetadataFiles)" DestinationFolder="$(OutDir)content\$(SolutionName)\metadata\%(RecursiveDir)" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

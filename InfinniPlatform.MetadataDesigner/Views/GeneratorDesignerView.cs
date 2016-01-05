@@ -4,11 +4,10 @@ using System.Windows.Forms;
 
 using DevExpress.XtraEditors.Controls;
 
-
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
-using InfinniPlatform.Api.RestApi.CommonApi.RouteTraces;
+using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.Factories;
+using InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.MetadataManagers;
+using InfinniPlatform.Core.RestApi.CommonApi.RouteTraces;
 using InfinniPlatform.MetadataDesigner.Views.Exchange;
 using InfinniPlatform.MetadataDesigner.Views.GeneratorResult;
 using InfinniPlatform.MetadataDesigner.Views.JsonEditor;

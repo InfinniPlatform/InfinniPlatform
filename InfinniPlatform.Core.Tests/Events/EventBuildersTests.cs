@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.RestQuery.EventObjects;
-using InfinniPlatform.Json;
+
+using InfinniPlatform.Core.RestQuery.EventObjects;
+
 using NUnit.Framework;
 using Newtonsoft.Json;
 

@@ -1,5 +1,4 @@
-﻿using InfinniPlatform.Api.Index.SearchOptions;
-using InfinniPlatform.Sdk.Environment.Index;
+﻿using InfinniPlatform.Sdk.Environment.Index;
 using Nest;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticSearchModels

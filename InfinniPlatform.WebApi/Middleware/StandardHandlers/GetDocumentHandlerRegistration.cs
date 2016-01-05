@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Web;
 
-using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Api.SearchOptions.Converters;
+using InfinniPlatform.Core.RestApi.DataApi;
+using InfinniPlatform.Core.SearchOptions.Converters;
 using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.WebApi.Middleware.RouteFormatters;
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
-using InfinniPlatform.Api.Reporting;
+
+using InfinniPlatform.Core.Reporting;
 using InfinniPlatform.FastReport.Templates.Reports;
 using InfinniPlatform.ReportDesigner.Properties;
 using InfinniPlatform.ReportDesigner.Services;

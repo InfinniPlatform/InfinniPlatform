@@ -2,8 +2,8 @@
 using System.Security.Claims;
 using System.Threading;
 
-using InfinniPlatform.Api.Security;
 using InfinniPlatform.Caching.Properties;
+using InfinniPlatform.Core.Security;
 using InfinniPlatform.Sdk.ContextComponents;
 
 namespace InfinniPlatform.Caching.Session

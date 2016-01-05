@@ -1,4 +1,5 @@
-﻿using InfinniPlatform.Hosting;
+﻿using InfinniPlatform.Core.Hosting;
+using InfinniPlatform.Hosting;
 using InfinniPlatform.Sdk.Environment.Hosting;
 using InfinniPlatform.SystemConfig.Metadata.Handlers;
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 
+using InfinniPlatform.Core.Index;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;

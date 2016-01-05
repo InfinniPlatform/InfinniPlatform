@@ -1,6 +1,6 @@
 ﻿using InfinniPlatform.Sdk.Environment.Hosting;
 
-namespace InfinniPlatform.Factories
+namespace InfinniPlatform.Core.Factories
 {
     public interface IServiceRegistrationContainerFactory
     {

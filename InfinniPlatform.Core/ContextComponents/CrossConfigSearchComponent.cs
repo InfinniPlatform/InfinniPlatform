@@ -1,7 +1,7 @@
 ﻿using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment;
 
-namespace InfinniPlatform.ContextComponents
+namespace InfinniPlatform.Core.ContextComponents
 {
     /// <summary>
     ///     Компонент контекста для поиска документов между различными конфигурациями

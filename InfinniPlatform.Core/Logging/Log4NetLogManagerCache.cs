@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 
 using log4net;
 
-namespace InfinniPlatform.Logging
+namespace InfinniPlatform.Core.Logging
 {
     internal static class Log4NetLogManagerCache
     {

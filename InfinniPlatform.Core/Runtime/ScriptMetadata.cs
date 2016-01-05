@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Runtime
+﻿namespace InfinniPlatform.Core.Runtime
 {
     public sealed class ScriptMetadata
     {

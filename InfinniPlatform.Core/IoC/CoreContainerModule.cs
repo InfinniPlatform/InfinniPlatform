@@ -1,13 +1,13 @@
-﻿using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Api.RestApi.Public;
-using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
-using InfinniPlatform.Api.Settings;
-using InfinniPlatform.Api.Transactions;
-using InfinniPlatform.Compression;
-using InfinniPlatform.ContextComponents;
-using InfinniPlatform.Factories;
-using InfinniPlatform.Logging;
+﻿using InfinniPlatform.Core.Compression;
+using InfinniPlatform.Core.ContextComponents;
+using InfinniPlatform.Core.Factories;
+using InfinniPlatform.Core.Logging;
+using InfinniPlatform.Core.RestApi.CommonApi;
+using InfinniPlatform.Core.RestApi.DataApi;
+using InfinniPlatform.Core.RestApi.Public;
+using InfinniPlatform.Core.RestQuery.RestQueryBuilders;
+using InfinniPlatform.Core.Settings;
+using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Sdk.ApiContracts;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
@@ -15,13 +15,11 @@ using InfinniPlatform.Sdk.Environment.Log;
 using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.Sdk.Global;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.SystemInfo;
-using InfinniPlatform.Transactions;
 
-using PrintViewApi = InfinniPlatform.Api.RestApi.Public.PrintViewApi;
-using RegisterApi = InfinniPlatform.Api.RestApi.Public.RegisterApi;
+using PrintViewApi = InfinniPlatform.Core.RestApi.Public.PrintViewApi;
+using RegisterApi = InfinniPlatform.Core.RestApi.Public.RegisterApi;
 
-namespace InfinniPlatform.IoC
+namespace InfinniPlatform.Core.IoC
 {
     internal class CoreContainerModule : IContainerModule
     {
@@ -98,7 +96,7 @@ namespace InfinniPlatform.IoC
                    .AsSelf()
                    .SingleInstance();
 
-            builder.RegisterType<Api.RestApi.DataApi.PrintViewApi>()
+            builder.RegisterType<RestApi.DataApi.PrintViewApi>()
                    .AsSelf()
                    .SingleInstance();
 
@@ -109,7 +107,7 @@ namespace InfinniPlatform.IoC
                    .AsSelf()
                    .SingleInstance();
 
-            builder.RegisterType<Api.RestApi.DataApi.RegisterApi>()
+            builder.RegisterType<RestApi.DataApi.RegisterApi>()
                    .AsSelf()
                    .SingleInstance();
 
@@ -135,7 +133,7 @@ namespace InfinniPlatform.IoC
                    .AsSelf()
                    .SingleInstance();
 
-            builder.RegisterType<Api.RestApi.Auth.AuthApi>()
+            builder.RegisterType<RestApi.Auth.AuthApi>()
                    .AsSelf()
                    .SingleInstance();
 

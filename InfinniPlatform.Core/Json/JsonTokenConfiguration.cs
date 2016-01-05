@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace InfinniPlatform.Json
+namespace InfinniPlatform.Core.Json
 {
     public sealed class JsonTokenConfiguration
     {

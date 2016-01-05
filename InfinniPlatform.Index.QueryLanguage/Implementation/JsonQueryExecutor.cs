@@ -1,9 +1,6 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using System.Text.RegularExpressions;
-using InfinniPlatform.Api.Index;
-using InfinniPlatform.Api.Index.SearchOptions;
+using InfinniPlatform.Core.Index.SearchOptions;
 using InfinniPlatform.Sdk.Environment.Index;
 
 using Newtonsoft.Json.Linq;

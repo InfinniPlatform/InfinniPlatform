@@ -1,7 +1,4 @@
-﻿using InfinniPlatform.Api.ModelRepository.DataConverters;
-using InfinniPlatform.Api.ModelRepository.MetadataObjectModel;
-
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 
 using System;
 using System.Collections.Generic;
@@ -9,6 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+
+using InfinniPlatform.Core.ModelRepository.DataConverters;
+using InfinniPlatform.Core.ModelRepository.MetadataObjectModel;
 
 namespace InfinniPlatform.ModelRepository.OpenEhrDataConverter
 {

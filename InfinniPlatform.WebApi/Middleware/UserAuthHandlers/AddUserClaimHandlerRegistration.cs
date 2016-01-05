@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Api.RestApi.Auth;
+﻿using InfinniPlatform.Core.RestApi.Auth;
 using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.WebApi.Middleware.RouteFormatters;
 

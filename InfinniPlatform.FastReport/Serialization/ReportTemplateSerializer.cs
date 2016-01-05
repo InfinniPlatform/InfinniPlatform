@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Api.Serialization;
+﻿using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.FastReport.Templates.Data;
 using InfinniPlatform.FastReport.Templates.Elements;
 using InfinniPlatform.FastReport.Templates.Formats;

@@ -61,10 +61,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
-      <Project>{7CA0F96C-7FF4-44B2-9D44-851984DF4532}</Project>
-      <Name>InfinniPlatform.Api</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.ClientNotification\InfinniPlatform.ClientNotification.csproj">
       <Project>{2a8817d6-a7d4-4aa7-885f-11a789c80975}</Project>
       <Name>InfinniPlatform.ClientNotification</Name>

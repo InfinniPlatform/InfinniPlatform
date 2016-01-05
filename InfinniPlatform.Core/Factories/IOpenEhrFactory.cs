@@ -1,7 +1,7 @@
-﻿using InfinniPlatform.Api.ModelRepository;
-using InfinniPlatform.Api.ModelRepository.DataConverters;
+﻿using InfinniPlatform.Core.ModelRepository;
+using InfinniPlatform.Core.ModelRepository.DataConverters;
 
-namespace InfinniPlatform.Factories
+namespace InfinniPlatform.Core.Factories
 {
     /// <summary>
     ///     Фабрика моделей OpenEHR

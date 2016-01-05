@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace InfinniPlatform.Sql
+namespace InfinniPlatform.Core.Sql
 {
     /// <summary>
     ///     Исполнитель SQL-команд.

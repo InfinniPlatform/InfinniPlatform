@@ -4,9 +4,9 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.Registers;
-using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Core.Registers;
+using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment.Register;

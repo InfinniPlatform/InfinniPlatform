@@ -2,7 +2,7 @@
 using System.Net.Sockets;
 using System.Reflection;
 
-using InfinniPlatform.Api.RestQuery;
+using InfinniPlatform.Core.RestQuery;
 
 namespace InfinniPlatform.NodeServiceHost
 {

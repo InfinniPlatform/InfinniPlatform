@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 
-namespace InfinniPlatform.Runtime
+namespace InfinniPlatform.Core.Runtime
 {
     public static class ReflectionExtensions
     {

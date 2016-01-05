@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Api.RestApi.CommonApi;
+using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.Factories;
+using InfinniPlatform.Core.RestApi.CommonApi;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment.Metadata;

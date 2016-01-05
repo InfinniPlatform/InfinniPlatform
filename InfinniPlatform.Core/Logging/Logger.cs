@@ -2,7 +2,7 @@
 
 using ILog = InfinniPlatform.Sdk.Environment.Log.ILog;
 
-namespace InfinniPlatform.Logging
+namespace InfinniPlatform.Core.Logging
 {
     /// <summary>
     /// Предоставляет статическую точку доступа к <see cref="Sdk.Environment.Log.ILog" />.

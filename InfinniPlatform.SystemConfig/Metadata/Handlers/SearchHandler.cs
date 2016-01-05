@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Api.ContextTypes.ContextImpl;
-using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Api.SearchOptions;
+using InfinniPlatform.Core.ContextTypes.ContextImpl;
+using InfinniPlatform.Core.Hosting;
+using InfinniPlatform.Core.SearchOptions;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;

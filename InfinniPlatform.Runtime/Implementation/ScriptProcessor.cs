@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using InfinniPlatform.Core.Runtime;
 using InfinniPlatform.Runtime.Properties;
 using InfinniPlatform.Sdk.Environment.Log;
 using InfinniPlatform.Sdk.Environment.Scripts;

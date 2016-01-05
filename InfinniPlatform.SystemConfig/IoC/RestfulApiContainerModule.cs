@@ -1,13 +1,13 @@
-﻿using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Modules;
+﻿using InfinniPlatform.Core.Modules;
+using InfinniPlatform.Core.RestApi.DataApi;
+using InfinniPlatform.Core.SystemInfo;
+using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.SystemConfig.Executors;
 using InfinniPlatform.SystemConfig.Installers;
 using InfinniPlatform.SystemConfig.SystemInfo;
 using InfinniPlatform.SystemConfig.Utils;
-using InfinniPlatform.SystemInfo;
-using InfinniPlatform.Transactions;
 
 namespace InfinniPlatform.SystemConfig.IoC
 {

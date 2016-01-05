@@ -1,4 +1,7 @@
 ﻿using System;
+
+using InfinniPlatform.Core.Runtime;
+
 using NUnit.Framework;
 
 namespace InfinniPlatform.Runtime.Tests

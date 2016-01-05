@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.Repository;
-using InfinniPlatform.Api.SearchOptions;
+
 using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.DesignControls.PropertyEditors

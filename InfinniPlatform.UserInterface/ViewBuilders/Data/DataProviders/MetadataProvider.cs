@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using InfinniPlatform.Api.Metadata;
+
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.UserInterface.Services.Metadata;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Data.DataProviders

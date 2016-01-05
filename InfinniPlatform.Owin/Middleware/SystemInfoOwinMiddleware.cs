@@ -1,6 +1,6 @@
 ﻿using System;
 
-using InfinniPlatform.SystemInfo;
+using InfinniPlatform.Core.SystemInfo;
 
 using Microsoft.Owin;
 

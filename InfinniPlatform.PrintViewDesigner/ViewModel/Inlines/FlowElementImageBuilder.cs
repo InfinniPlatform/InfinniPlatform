@@ -4,7 +4,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-using InfinniPlatform.Api.Extensions;
+using InfinniPlatform.Core.Extensions;
 using InfinniPlatform.FlowDocument;
 using InfinniPlatform.FlowDocument.Model.Inlines;
 

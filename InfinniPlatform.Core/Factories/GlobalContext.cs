@@ -1,12 +1,12 @@
 ﻿using System;
 
-using InfinniPlatform.Api.RestApi.Auth;
+using InfinniPlatform.Core.RestApi.Auth;
+using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Transactions;
 
-namespace InfinniPlatform.Factories
+namespace InfinniPlatform.Core.Factories
 {
     /// <summary>
     /// Реализация контекста компонентов платформы

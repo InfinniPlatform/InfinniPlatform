@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Api.Metadata;
+using InfinniPlatform.Core.Metadata;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 {

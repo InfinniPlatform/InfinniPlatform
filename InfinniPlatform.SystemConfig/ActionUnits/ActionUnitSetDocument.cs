@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.SystemConfig.ActionUnits

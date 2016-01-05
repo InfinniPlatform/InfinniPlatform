@@ -1,8 +1,8 @@
 ﻿using System;
-using InfinniPlatform.Api.Validation;
-using InfinniPlatform.Api.Validation.BooleanValidators;
-using InfinniPlatform.Api.Validation.CollectionValidators;
-using InfinniPlatform.Api.Validation.ObjectValidators;
+
+using InfinniPlatform.Core.Validation.BooleanValidators;
+using InfinniPlatform.Core.Validation.CollectionValidators;
+using InfinniPlatform.Core.Validation.ObjectValidators;
 using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Validations;
 

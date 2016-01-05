@@ -1,5 +1,7 @@
 ﻿using System.Threading;
 
+using InfinniPlatform.Core.MessageQueue;
+
 namespace InfinniPlatform.MessageQueue.Tests
 {
 	sealed class CountdownConsumer : IQueueConsumer

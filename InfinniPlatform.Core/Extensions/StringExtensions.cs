@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace InfinniPlatform.Extensions
+namespace InfinniPlatform.Core.Extensions
 {
     public static class StringExtensions
     {

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Api.ContextTypes.ContextImpl;
-using InfinniPlatform.Api.Hosting;
+using InfinniPlatform.Core.ContextTypes.ContextImpl;
+using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Sdk.ContextComponents;

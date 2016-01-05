@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.RestQuery.EventObjects;
+
+using InfinniPlatform.Core.RestQuery.EventObjects;
 using InfinniPlatform.Sdk.Events;
+
 using Newtonsoft.Json.Linq;
 
-namespace InfinniPlatform.Json
+namespace InfinniPlatform.Core.Json
 {
     public class ParsedTokenContainer
     {

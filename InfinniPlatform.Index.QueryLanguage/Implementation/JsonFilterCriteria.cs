@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using InfinniPlatform.Api.Validation;
-using InfinniPlatform.Json;
+
+using InfinniPlatform.Core.Json;
 using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Validations;
 using Newtonsoft.Json.Linq;

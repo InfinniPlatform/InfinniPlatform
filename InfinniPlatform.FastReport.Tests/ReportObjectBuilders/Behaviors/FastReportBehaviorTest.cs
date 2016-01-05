@@ -5,7 +5,8 @@ using System.IO;
 using FastReport;
 using FastReport.Table;
 using FastReport.Utils;
-using InfinniPlatform.Api.Schema;
+
+using InfinniPlatform.Core.Schema;
 using InfinniPlatform.FastReport.ReportObjectBuilders;
 using InfinniPlatform.FastReport.Serialization;
 using InfinniPlatform.FastReport.Templates.Bands;

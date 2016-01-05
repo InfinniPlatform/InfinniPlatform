@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 using DevExpress.XtraEditors.Controls;
-using InfinniPlatform.Api.SearchOptions;
+
 using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.QueryDesigner.Views

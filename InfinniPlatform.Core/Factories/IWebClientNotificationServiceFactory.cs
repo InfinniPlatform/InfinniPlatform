@@ -1,6 +1,6 @@
-﻿using InfinniPlatform.Api.ClientNotification;
+﻿using InfinniPlatform.Core.ClientNotification;
 
-namespace InfinniPlatform.Factories
+namespace InfinniPlatform.Core.Factories
 {
     /// <summary>
     ///     Фабрика для создания сервиса оповещения Web-клиентов.

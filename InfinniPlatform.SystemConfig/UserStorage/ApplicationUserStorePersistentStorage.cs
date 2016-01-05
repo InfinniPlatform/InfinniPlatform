@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 
-using InfinniPlatform.Api.RestApi.Auth;
-using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Api.SearchOptions.Builders;
-using InfinniPlatform.Api.Security;
-using InfinniPlatform.Api.Serialization;
+using InfinniPlatform.Core.RestApi.Auth;
+using InfinniPlatform.Core.RestApi.DataApi;
+using InfinniPlatform.Core.SearchOptions.Builders;
+using InfinniPlatform.Core.Security;
+using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.SystemConfig.Executors;
 using InfinniPlatform.SystemConfig.Properties;

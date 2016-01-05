@@ -1,7 +1,7 @@
 ﻿using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment.Log;
 
-namespace InfinniPlatform.ContextComponents
+namespace InfinniPlatform.Core.ContextComponents
 {
     /// <summary>
     /// Компонент для логирования из глобального контекста

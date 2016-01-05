@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.ModelRepository.MetadataObjectModel;
-using InfinniPlatform.Extensions;
+
+using InfinniPlatform.Core.Extensions;
+using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Core.ModelRepository.MetadataObjectModel;
+
 using OpenEhr.V1.Its.Xml.AM;
 
 namespace InfinniPlatform.OceanInformatics.DataModelLoader

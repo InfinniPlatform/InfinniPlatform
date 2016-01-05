@@ -103,10 +103,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
-      <Project>{7CA0F96C-7FF4-44B2-9D44-851984DF4532}</Project>
-      <Name>InfinniPlatform.Api</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.FlowDocument\InfinniPlatform.FlowDocument.csproj">
       <Project>{e47f0c5b-f775-44b4-9e2e-e4c044864125}</Project>
       <Name>InfinniPlatform.FlowDocument</Name>

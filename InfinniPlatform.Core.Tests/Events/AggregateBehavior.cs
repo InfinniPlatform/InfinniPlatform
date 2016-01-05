@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Api.RestQuery.EventObjects;
-using InfinniPlatform.Api.RestQuery.EventObjects.EventSerializers;
-using InfinniPlatform.Factories;
-using InfinniPlatform.Json;
+using InfinniPlatform.Core.Factories;
+using InfinniPlatform.Core.Json;
+using InfinniPlatform.Core.RestQuery.EventObjects;
+using InfinniPlatform.Core.RestQuery.EventObjects.EventSerializers;
 using InfinniPlatform.Sdk.Events;
 
 using Newtonsoft.Json.Linq;

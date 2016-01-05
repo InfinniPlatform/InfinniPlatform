@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace InfinniPlatform.Runtime
+namespace InfinniPlatform.Core.Runtime
 {
 	/// <summary>
 	/// Список кэшей прикладный скриптов конфигурации для вызова точек расширения бизнес-логики.

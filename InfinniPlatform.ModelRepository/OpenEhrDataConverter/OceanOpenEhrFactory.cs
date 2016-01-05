@@ -1,6 +1,6 @@
-﻿using InfinniPlatform.Api.ModelRepository;
-using InfinniPlatform.Api.ModelRepository.DataConverters;
-using InfinniPlatform.Factories;
+﻿using InfinniPlatform.Core.Factories;
+using InfinniPlatform.Core.ModelRepository;
+using InfinniPlatform.Core.ModelRepository.DataConverters;
 using InfinniPlatform.OceanInformatics.DataModelLoader;
 
 namespace InfinniPlatform.ModelRepository.OpenEhrDataConverter

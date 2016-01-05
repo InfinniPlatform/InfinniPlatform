@@ -1,11 +1,10 @@
-﻿using InfinniPlatform.Api.Security;
-using InfinniPlatform.Authentication.InternalIdentity;
+﻿using InfinniPlatform.Authentication.InternalIdentity;
 using InfinniPlatform.Authentication.Middleware;
 using InfinniPlatform.Authentication.Modules;
+using InfinniPlatform.Core.Security;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Security;
 
 using Microsoft.AspNet.Identity;
 

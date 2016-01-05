@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace InfinniPlatform.Runtime
+namespace InfinniPlatform.Core.Runtime
 {
     /// <summary>
     ///     Кэш объектов

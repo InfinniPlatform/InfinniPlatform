@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Api.Hosting;
+﻿using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Hosting;
 
 namespace InfinniPlatform.SystemConfig.Metadata.Handlers

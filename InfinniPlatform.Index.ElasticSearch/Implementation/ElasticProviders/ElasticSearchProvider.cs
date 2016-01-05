@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using InfinniPlatform.Api.RestApi.Auth;
-using InfinniPlatform.Factories;
+using InfinniPlatform.Core.Factories;
+using InfinniPlatform.Core.Index;
+using InfinniPlatform.Core.RestApi.Auth;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeSelectors;
 using InfinniPlatform.Sdk.Dynamic;

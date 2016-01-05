@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Api.ContextTypes.ContextImpl;
-using InfinniPlatform.Api.Metadata;
+﻿using InfinniPlatform.Core.ContextTypes.ContextImpl;
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Global;

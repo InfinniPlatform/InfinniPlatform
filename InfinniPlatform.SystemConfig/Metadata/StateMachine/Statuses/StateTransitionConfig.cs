@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Api.Properties;
+using InfinniPlatform.Core.Properties;
 using InfinniPlatform.Sdk.Environment.Actions;
 using InfinniPlatform.Sdk.Environment.Validations;
 using InfinniPlatform.Sdk.Environment.Worklow;

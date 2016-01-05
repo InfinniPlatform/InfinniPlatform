@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace InfinniPlatform.Json
+namespace InfinniPlatform.Core.Json
 {
     public interface IJsonTokenProvider
     {

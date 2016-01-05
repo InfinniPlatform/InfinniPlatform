@@ -1,6 +1,6 @@
 ﻿using System;
 
-using InfinniPlatform.Api.Metadata;
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 

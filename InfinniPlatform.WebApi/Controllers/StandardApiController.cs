@@ -4,10 +4,10 @@ using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
 
-using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Api.RestApi.Auth;
-using InfinniPlatform.Api.RestQuery;
-using InfinniPlatform.Index;
+using InfinniPlatform.Core.Hosting;
+using InfinniPlatform.Core.Index;
+using InfinniPlatform.Core.RestApi.Auth;
+using InfinniPlatform.Core.RestQuery;
 using InfinniPlatform.WebApi.ConfigRequestProviders;
 
 using Newtonsoft.Json;

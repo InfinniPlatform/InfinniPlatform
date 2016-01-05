@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using InfinniPlatform.Api.Validation;
 using InfinniPlatform.DesignControls.Controls.Properties;
 using InfinniPlatform.DesignControls.Layout;
 using InfinniPlatform.DesignControls.ObjectInspector;

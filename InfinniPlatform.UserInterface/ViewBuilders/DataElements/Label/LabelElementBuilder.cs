@@ -1,5 +1,6 @@
 ﻿using System;
-using InfinniPlatform.Api.Extensions;
+
+using InfinniPlatform.Core.Extensions;
 using InfinniPlatform.UserInterface.ViewBuilders.Data;
 using InfinniPlatform.UserInterface.ViewBuilders.Elements;
 using InfinniPlatform.UserInterface.ViewBuilders.Views;

@@ -1,6 +1,4 @@
-﻿using InfinniPlatform.Api.Hosting;
-
-namespace InfinniPlatform.Hosting
+﻿namespace InfinniPlatform.Core.Hosting
 {
     /// <summary>
     ///     Интерфейс обработчика web-роутинга

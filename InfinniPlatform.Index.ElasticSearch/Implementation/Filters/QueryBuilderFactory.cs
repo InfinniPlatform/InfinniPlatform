@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading;
-using InfinniPlatform.Api.Index.SearchOptions;
+
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters.NestQueries;
 using InfinniPlatform.Sdk.Environment.Index;
 

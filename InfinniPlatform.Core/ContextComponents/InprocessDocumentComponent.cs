@@ -1,7 +1,7 @@
 ﻿using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment.Index;
 
-namespace InfinniPlatform.ContextComponents
+namespace InfinniPlatform.Core.ContextComponents
 {
     /// <summary>
     /// Провайдер получения документов внутри серверного процесса (без обращения по REST)

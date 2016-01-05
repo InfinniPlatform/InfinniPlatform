@@ -6,14 +6,14 @@ using System.Linq;
 
 using DevExpress.XtraEditors.Controls;
 
-using InfinniPlatform.Api.Context;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Api.Registers;
-using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Api.RestQuery;
+using InfinniPlatform.Core.Context;
+using InfinniPlatform.Core.ContextTypes;
+using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.Factories;
+using InfinniPlatform.Core.Registers;
+using InfinniPlatform.Core.RestApi.CommonApi;
+using InfinniPlatform.Core.RestApi.DataApi;
+using InfinniPlatform.Core.RestQuery;
 using InfinniPlatform.MetadataDesigner.Views.Exchange;
 using InfinniPlatform.MetadataDesigner.Views.Status;
 using InfinniPlatform.Sdk.Dynamic;

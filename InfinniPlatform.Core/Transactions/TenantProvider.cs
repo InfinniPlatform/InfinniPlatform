@@ -1,13 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading;
 
-using InfinniPlatform.Api.Security;
+using InfinniPlatform.Core.Security;
 using InfinniPlatform.Sdk.ContextComponents;
 
-namespace InfinniPlatform.Transactions
+namespace InfinniPlatform.Core.Transactions
 {
     /// <summary>
     /// Предоставляет методы определения пользователя системы по модели SaaS.

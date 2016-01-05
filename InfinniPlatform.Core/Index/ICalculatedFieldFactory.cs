@@ -1,7 +1,6 @@
-﻿using InfinniPlatform.Api.Index;
-using InfinniPlatform.Sdk.Environment.Index;
+﻿using InfinniPlatform.Sdk.Environment.Index;
 
-namespace InfinniPlatform.Index
+namespace InfinniPlatform.Core.Index
 {
     public interface ICalculatedFieldFactory
     {

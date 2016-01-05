@@ -5,8 +5,9 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using DevExpress.XtraEditors.Controls;
-using InfinniPlatform.Api.Context;
-using InfinniPlatform.Api.Deprecated;
+
+using InfinniPlatform.Core.Context;
+using InfinniPlatform.Core.Deprecated;
 using InfinniPlatform.MetadataDesigner.Views.Exchange;
 using InfinniPlatform.MetadataDesigner.Views.Status;
 using InfinniPlatform.MetadataDesigner.Views.ViewModel;

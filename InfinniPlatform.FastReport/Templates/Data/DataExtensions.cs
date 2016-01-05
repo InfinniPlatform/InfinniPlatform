@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 
-using InfinniPlatform.Api.Schema;
+using InfinniPlatform.Core.Schema;
 
 namespace InfinniPlatform.FastReport.Templates.Data
 {

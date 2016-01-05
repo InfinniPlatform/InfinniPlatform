@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraEditors.Controls;
-using InfinniPlatform.Api.Properties;
-using InfinniPlatform.Api.Validation;
+using InfinniPlatform.Core.Properties;
 using InfinniPlatform.DesignControls.Controls.Properties;
 using InfinniPlatform.DesignControls.Layout;
 using InfinniPlatform.DesignControls.ObjectInspector;
+using InfinniPlatform.DesignControls.Properties;
 using InfinniPlatform.DesignControls.PropertyDesigner;
 using InfinniPlatform.DesignControls.PropertyEditors;
 using InfinniPlatform.Sdk.Dynamic;
@@ -187,7 +187,7 @@ namespace InfinniPlatform.DesignControls.Controls.LayoutPanels.GridPanels
             if (PropertiesNodes.Any())
             {
                 if (MessageBox.Show("Attention! If proceed, all inner layout will be destroyed. Continue?",
-                    Resources.NeedConfirm,
+                    "Confirm",
                     MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
                 {
                     return;

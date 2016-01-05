@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using InfinniPlatform.Api.Validation;
 using InfinniPlatform.DesignControls.PropertyEditors;
-using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Validations;
 
 namespace InfinniPlatform.DesignControls.PropertyDesigner

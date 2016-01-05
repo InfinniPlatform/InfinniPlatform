@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.Sdk.Tests.TestData

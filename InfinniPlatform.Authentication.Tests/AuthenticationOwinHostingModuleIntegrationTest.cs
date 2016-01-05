@@ -7,15 +7,14 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Api.Security;
 using InfinniPlatform.Authentication.InternalIdentity;
 using InfinniPlatform.Authentication.Modules;
+using InfinniPlatform.Core.Security;
 using InfinniPlatform.Owin.Hosting;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Sdk.Api;
 using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Security;
 
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin;

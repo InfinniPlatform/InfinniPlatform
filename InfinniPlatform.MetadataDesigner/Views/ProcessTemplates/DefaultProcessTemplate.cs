@@ -1,19 +1,20 @@
 ﻿using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraVerticalGrid.Rows;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.SchemaReaders;
-using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Api.Schema;
+
 using InfinniPlatform.MetadataDesigner.Views.ViewModel;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using InfinniPlatform.Api.RestApi.Auth;
+
+using InfinniPlatform.Core.ContextTypes;
+using InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.Factories;
+using InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.SchemaReaders;
+using InfinniPlatform.Core.RestApi.Auth;
+using InfinniPlatform.Core.RestApi.DataApi;
+using InfinniPlatform.Core.Schema;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates

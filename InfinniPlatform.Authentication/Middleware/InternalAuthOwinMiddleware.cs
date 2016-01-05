@@ -5,9 +5,9 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Api.Security;
 using InfinniPlatform.Authentication.InternalIdentity;
 using InfinniPlatform.Authentication.Properties;
+using InfinniPlatform.Core.Security;
 using InfinniPlatform.Owin;
 using InfinniPlatform.Owin.Middleware;
 

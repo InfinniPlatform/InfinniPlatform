@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using InfinniPlatform.Api.Index;
-using InfinniPlatform.Api.Index.SearchOptions;
-using InfinniPlatform.Api.RestApi.Auth;
-using InfinniPlatform.Api.SearchOptions;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Index.QueryLanguage.Implementation;
 using InfinniPlatform.Sdk.Environment.Index;

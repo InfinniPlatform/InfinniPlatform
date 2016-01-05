@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Api.Registers;
+using InfinniPlatform.Core.Index;
+using InfinniPlatform.Core.Registers;
 using InfinniPlatform.Index;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;

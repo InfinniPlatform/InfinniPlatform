@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Hosting;
+
 using InfinniPlatform.Sdk.Environment.Hosting;
 
-namespace InfinniPlatform.Hosting
+namespace InfinniPlatform.Core.Hosting
 {
     /// <summary>
     ///     Конфигурация метаданных сервисов

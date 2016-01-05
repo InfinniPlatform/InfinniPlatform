@@ -1,13 +1,13 @@
-﻿using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.ModelRepository;
-using InfinniPlatform.Api.ModelRepository.MetadataObjectModel;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Serialization;
+
+using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Core.ModelRepository;
+using InfinniPlatform.Core.ModelRepository.MetadataObjectModel;
 
 namespace InfinniPlatform.OceanInformatics.DataModelLoader
 {

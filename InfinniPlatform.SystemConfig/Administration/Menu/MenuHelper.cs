@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.Serialization;
+
+using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Core.Serialization;
 
 namespace InfinniPlatform.SystemConfig.Administration.Menu
 {

@@ -1,5 +1,4 @@
-﻿using InfinniPlatform.Api.Index.SearchOptions;
-using InfinniPlatform.Api.SearchOptions;
+﻿using InfinniPlatform.Core.Index.SearchOptions;
 using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Index.QueryLanguage.Implementation

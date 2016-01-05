@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
-using InfinniPlatform.Api.Index.SearchOptions;
+
+using InfinniPlatform.Core.Index.SearchOptions;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;

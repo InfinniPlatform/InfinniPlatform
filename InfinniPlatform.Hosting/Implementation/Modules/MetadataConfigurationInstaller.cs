@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Modules;
+﻿using InfinniPlatform.Core.Modules;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment.Hosting;
 using InfinniPlatform.Sdk.Environment.Metadata;

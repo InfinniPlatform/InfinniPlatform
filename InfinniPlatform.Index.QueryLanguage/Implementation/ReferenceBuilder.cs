@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Factories;
-using InfinniPlatform.Json;
+using InfinniPlatform.Core.Factories;
+using InfinniPlatform.Core.Json;
 using InfinniPlatform.Sdk.Environment.Index;
 using Newtonsoft.Json.Linq;
 

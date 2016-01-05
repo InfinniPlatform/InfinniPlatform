@@ -681,9 +681,9 @@
     <Resource Include="Images\System\Help_16x16.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
-      <Project>{7CA0F96C-7FF4-44B2-9D44-851984DF4532}</Project>
-      <Name>InfinniPlatform.Api</Name>
+    <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
+      <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
+      <Name>InfinniPlatform.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.MetadataDesigner\InfinniPlatform.MetadataDesigner.csproj">
       <Project>{b5108924-dda4-4857-8e15-1abb0d49c6f6}</Project>

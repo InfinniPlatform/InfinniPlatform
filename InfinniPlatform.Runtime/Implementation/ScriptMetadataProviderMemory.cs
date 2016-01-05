@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using InfinniPlatform.Core.Runtime;
+
 namespace InfinniPlatform.Runtime.Implementation
 {
     /// <summary>

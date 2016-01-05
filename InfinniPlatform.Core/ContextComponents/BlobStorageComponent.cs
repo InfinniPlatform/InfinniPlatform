@@ -1,7 +1,7 @@
 ﻿using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment.Binary;
 
-namespace InfinniPlatform.ContextComponents
+namespace InfinniPlatform.Core.ContextComponents
 {
     public sealed class BlobStorageComponent : IBlobStorageComponent
     {

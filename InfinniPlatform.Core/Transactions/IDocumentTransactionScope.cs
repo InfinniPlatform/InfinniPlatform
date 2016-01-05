@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Transactions
+﻿namespace InfinniPlatform.Core.Transactions
 {
     /// <summary>
     /// Предоставляет методы управления транзакцией.

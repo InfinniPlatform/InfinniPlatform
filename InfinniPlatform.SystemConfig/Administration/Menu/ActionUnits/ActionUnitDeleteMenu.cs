@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
+using InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 

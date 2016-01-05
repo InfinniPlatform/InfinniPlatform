@@ -5,7 +5,8 @@ using System.Linq;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.Repository;
-using InfinniPlatform.Api.RestApi.DataApi;
+
+using InfinniPlatform.Core.RestApi.DataApi;
 
 namespace InfinniPlatform.DesignControls.PropertyEditors
 {

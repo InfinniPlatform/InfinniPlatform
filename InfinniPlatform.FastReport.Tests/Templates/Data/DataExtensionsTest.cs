@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading;
-using InfinniPlatform.Api.Schema;
+
+using InfinniPlatform.Core.Schema;
 using InfinniPlatform.FastReport.Templates.Data;
 
 using NUnit.Framework;

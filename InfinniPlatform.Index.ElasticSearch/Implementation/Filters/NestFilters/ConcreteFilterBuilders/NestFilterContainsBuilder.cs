@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Api.Index.SearchOptions;
+﻿using InfinniPlatform.Core.Index;
 using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.Filters.NestFilters.ConcreteFilterBuilders

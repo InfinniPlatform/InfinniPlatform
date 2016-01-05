@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using InfinniPlatform.Api.Metadata;
+
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.UserInterface.Properties;
 using InfinniPlatform.UserInterface.ViewBuilders.Commands;

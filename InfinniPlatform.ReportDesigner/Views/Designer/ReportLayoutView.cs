@@ -12,7 +12,8 @@ using FastReport.Design.ToolWindows;
 using FastReport.DevComponents.DotNetBar;
 using FastReport.Table;
 using FastReport.Utils;
-using InfinniPlatform.Api.Schema;
+
+using InfinniPlatform.Core.Schema;
 using InfinniPlatform.FastReport.Templates.Data;
 using InfinniPlatform.ReportDesigner.Properties;
 using InfinniPlatform.ReportDesigner.Views.Bands;

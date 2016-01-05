@@ -1,6 +1,6 @@
 ﻿using System;
 
-using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment.Register;
 

@@ -73,10 +73,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
-      <Project>{7ca0f96c-7ff4-44b2-9d44-851984df4532}</Project>
-      <Name>InfinniPlatform.Api</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Authentication\InfinniPlatform.Authentication.csproj">
       <Project>{9FEC0071-8A7C-44C1-91C7-9C1219601B34}</Project>
       <Name>InfinniPlatform.Authentication</Name>

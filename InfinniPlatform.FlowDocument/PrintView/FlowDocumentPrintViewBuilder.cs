@@ -2,7 +2,8 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using InfinniPlatform.Api.PrintView;
+
+using InfinniPlatform.Core.PrintView;
 using InfinniPlatform.Sdk.Environment;
 
 namespace InfinniPlatform.FlowDocument.PrintView

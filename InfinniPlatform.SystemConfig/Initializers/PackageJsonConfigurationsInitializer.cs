@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-using InfinniPlatform.Api.Serialization;
-using InfinniPlatform.Logging;
+using InfinniPlatform.Core.Logging;
+using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.WebApi.Factories;

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 
+using InfinniPlatform.Core.MessageQueue;
 using InfinniPlatform.Helpers;
 
 using NUnit.Framework;

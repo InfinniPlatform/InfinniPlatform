@@ -1,8 +1,8 @@
-﻿using InfinniPlatform.Api.Metadata;
+﻿using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment.Metadata;
 
-namespace InfinniPlatform.ContextComponents
+namespace InfinniPlatform.Core.ContextComponents
 {
     /// <summary>
     /// Компонент, используемый для работы с зависимостями системного уровня

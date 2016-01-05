@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using InfinniPlatform.Api.Schema;
-using InfinniPlatform.Api.SearchOptions;
+
+using InfinniPlatform.Core.Schema;
 using InfinniPlatform.QueryDesigner.Contracts;
 using InfinniPlatform.Sdk.Environment.Index;
 

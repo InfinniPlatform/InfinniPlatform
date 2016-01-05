@@ -1,5 +1,4 @@
-﻿using InfinniPlatform.Api.Index;
-using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
+﻿using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using InfinniPlatform.Sdk.Environment.Index;

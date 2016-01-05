@@ -1,5 +1,6 @@
 ﻿using System;
-using InfinniPlatform.Api.Schema;
+
+using InfinniPlatform.Core.Schema;
 using InfinniPlatform.FastReport.Templates.Data;
 
 namespace InfinniPlatform.FastReport.TemplatesFluent.Data

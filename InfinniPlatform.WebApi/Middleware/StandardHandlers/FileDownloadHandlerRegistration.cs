@@ -2,8 +2,8 @@
 using System.Collections.Specialized;
 using System.Web;
 
-using InfinniPlatform.Api.Properties;
-using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Core.RestApi.DataApi;
+using InfinniPlatform.Core.Properties;
 using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.WebApi.Middleware.RouteFormatters;
 

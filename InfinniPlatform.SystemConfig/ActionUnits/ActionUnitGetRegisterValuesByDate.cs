@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Api.SearchOptions.Builders;
+using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Core.RestApi.CommonApi;
+using InfinniPlatform.Core.RestApi.DataApi;
+using InfinniPlatform.Core.SearchOptions.Builders;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;

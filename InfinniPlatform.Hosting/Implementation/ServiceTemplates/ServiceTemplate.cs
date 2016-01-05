@@ -1,5 +1,5 @@
 ﻿using System;
-using InfinniPlatform.Api.Hosting;
+
 using InfinniPlatform.Sdk.Environment.Hosting;
 
 namespace InfinniPlatform.Hosting.Implementation.ServiceTemplates

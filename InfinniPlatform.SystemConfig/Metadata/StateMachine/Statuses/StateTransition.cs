@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 
-using InfinniPlatform.Api.Properties;
+using InfinniPlatform.Core.Properties;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Actions;
 using InfinniPlatform.Sdk.Environment.Validations;

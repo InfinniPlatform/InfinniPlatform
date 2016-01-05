@@ -1,8 +1,7 @@
-﻿using InfinniPlatform.EventStorage;
-using InfinniPlatform.Sdk.Environment;
+﻿using InfinniPlatform.Core.EventStorage;
 using InfinniPlatform.Sdk.Environment.Binary;
 
-namespace InfinniPlatform.Factories
+namespace InfinniPlatform.Core.Factories
 {
     /// <summary>
     ///     Фабрика для создания хранилища событий.

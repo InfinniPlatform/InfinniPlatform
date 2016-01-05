@@ -9,7 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using InfinniPlatform.Api.Deprecated;
+
+using InfinniPlatform.Core.Deprecated;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.MetadataDesigner.Views

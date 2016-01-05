@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Api.SearchOptions.Builders;
+using InfinniPlatform.Core.Index;
+using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Core.RestApi.CommonApi;
+using InfinniPlatform.Core.SearchOptions.Builders;
 using InfinniPlatform.Index;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;

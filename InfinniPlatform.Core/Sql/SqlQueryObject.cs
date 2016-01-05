@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.Sql
+namespace InfinniPlatform.Core.Sql
 {
     /// <summary>
     ///     Объект SQL-запроса.

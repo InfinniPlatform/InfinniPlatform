@@ -1,6 +1,6 @@
 ﻿using System;
 
-using InfinniPlatform.ContextComponents;
+using InfinniPlatform.Core.ContextComponents;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.SystemConfig.Utils;

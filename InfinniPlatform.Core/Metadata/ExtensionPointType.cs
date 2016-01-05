@@ -1,7 +1,6 @@
-﻿using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Sdk.Environment.Hosting;
+﻿using InfinniPlatform.Sdk.Environment.Hosting;
 
-namespace InfinniPlatform.Metadata
+namespace InfinniPlatform.Core.Metadata
 {
     public class ExtensionPointType
     {

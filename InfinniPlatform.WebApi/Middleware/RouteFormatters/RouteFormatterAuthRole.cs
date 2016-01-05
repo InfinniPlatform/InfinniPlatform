@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Owin;
-using InfinniPlatform.Api.Properties;
+using InfinniPlatform.Core.Properties;
 using InfinniPlatform.Owin.Middleware;
 
 namespace InfinniPlatform.WebApi.Middleware.RouteFormatters

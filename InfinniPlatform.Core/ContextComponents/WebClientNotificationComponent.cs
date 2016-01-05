@@ -1,8 +1,8 @@
-﻿using InfinniPlatform.Api.ClientNotification;
-using InfinniPlatform.Factories;
+﻿using InfinniPlatform.Core.ClientNotification;
+using InfinniPlatform.Core.Factories;
 using InfinniPlatform.Sdk.ContextComponents;
 
-namespace InfinniPlatform.ContextComponents
+namespace InfinniPlatform.Core.ContextComponents
 {
     /// <summary>
     /// Компонент для осуществления клиентской нотификации из контекста

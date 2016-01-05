@@ -1,6 +1,6 @@
 ﻿using InfinniPlatform.Sdk.Environment.Metadata;
 
-namespace InfinniPlatform.Modules
+namespace InfinniPlatform.Core.Modules
 {
     /// <summary>
     /// Модуль установки сервисов конфигурации

@@ -1,6 +1,4 @@
-﻿using InfinniPlatform.Api.Security;
-
-namespace InfinniPlatform.Security
+﻿namespace InfinniPlatform.Core.Security
 {
 	public sealed class CustomApplicationUserPasswordHasher : IApplicationUserPasswordHasher
 	{

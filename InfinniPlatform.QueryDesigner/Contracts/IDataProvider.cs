@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using InfinniPlatform.Api.Schema;
+
+using InfinniPlatform.Core.Schema;
 
 namespace InfinniPlatform.QueryDesigner.Contracts
 {

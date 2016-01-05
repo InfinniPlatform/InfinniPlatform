@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Extensions;
-using InfinniPlatform.MessageQueue;
+using InfinniPlatform.Core.Extensions;
+using InfinniPlatform.Core.MessageQueue;
 
 namespace InfinniPlatform.RabbitMq
 {

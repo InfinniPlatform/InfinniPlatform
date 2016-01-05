@@ -7,8 +7,8 @@ using System.Windows.Forms;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Views.Base;
 
-using InfinniPlatform.Api.Deprecated;
-using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Core.Deprecated;
+using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.MetadataDesigner.Views.ViewModel;
 using InfinniPlatform.Sdk.Dynamic;
 

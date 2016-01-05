@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Api.Extensions;
+﻿using InfinniPlatform.Core.Extensions;
 using InfinniPlatform.UserInterface.Configurations;
 using InfinniPlatform.UserInterface.ViewBuilders.Data;
 using InfinniPlatform.UserInterface.ViewBuilders.Parameter;

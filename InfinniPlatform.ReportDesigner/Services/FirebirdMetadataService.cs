@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using FirebirdSql.Data.FirebirdClient;
-using InfinniPlatform.Api.Schema;
+
+using InfinniPlatform.Core.Schema;
 using InfinniPlatform.FastReport.Templates.Data;
 
 namespace InfinniPlatform.ReportDesigner.Services

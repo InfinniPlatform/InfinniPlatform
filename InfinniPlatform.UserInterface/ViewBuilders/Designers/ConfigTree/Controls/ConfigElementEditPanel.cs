@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using InfinniPlatform.Api.Metadata;
+
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.UserInterface.ViewBuilders.Actions;
 using InfinniPlatform.UserInterface.ViewBuilders.Data;
 using InfinniPlatform.UserInterface.ViewBuilders.LinkViews;

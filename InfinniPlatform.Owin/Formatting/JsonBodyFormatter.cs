@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-using InfinniPlatform.Api.Serialization;
+using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
 
 using Microsoft.Owin;

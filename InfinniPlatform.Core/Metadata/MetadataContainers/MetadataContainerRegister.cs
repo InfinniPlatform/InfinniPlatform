@@ -1,0 +1,15 @@
+﻿namespace InfinniPlatform.Core.Metadata.MetadataContainers
+{
+    public sealed class MetadataContainerRegister : IMetadataContainerInfo
+    {
+        public string GetMetadataContainerName()
+        {
+            return MetadataType.RegisterContainer;
+        }
+
+        public string GetMetadataTypeName()
+        {
+            return MetadataType.Register;
+        }
+    }
+}

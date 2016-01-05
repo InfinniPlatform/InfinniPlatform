@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using InfinniPlatform.Api.Reporting;
+
+using InfinniPlatform.Core.Reporting;
 using InfinniPlatform.FastReport.ReportObjectBuilders;
 using InfinniPlatform.FastReport.Templates.Data;
 using InfinniPlatform.FastReport.Templates.Reports;

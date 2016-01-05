@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.RestApi.Auth;
-using InfinniPlatform.Logging;
+using InfinniPlatform.Core.ContextTypes;
+using InfinniPlatform.Core.Logging;
+using InfinniPlatform.Core.RestApi.Auth;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Hosting;
 using InfinniPlatform.Sdk.Environment.Index;

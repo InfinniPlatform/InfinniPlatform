@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Factories;
+﻿using InfinniPlatform.Core.Factories;
 using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.Sql.IoC

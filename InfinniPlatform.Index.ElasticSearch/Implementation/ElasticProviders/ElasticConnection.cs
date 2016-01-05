@@ -4,7 +4,8 @@ using System.Linq;
 
 using Elasticsearch.Net.ConnectionPool;
 
-using InfinniPlatform.Api.Settings;
+using InfinniPlatform.Core.Index;
+using InfinniPlatform.Core.Settings;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeVersions;
 using InfinniPlatform.Index.ElasticSearch.Properties;

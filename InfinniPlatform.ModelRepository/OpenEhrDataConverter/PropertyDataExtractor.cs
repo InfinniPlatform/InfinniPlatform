@@ -1,12 +1,12 @@
-﻿using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.ModelRepository.MetadataObjectModel;
-
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
+
+using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Core.ModelRepository.MetadataObjectModel;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.ModelRepository.OpenEhrDataConverter

@@ -1,7 +1,8 @@
 ﻿using InfinniPlatform.Sdk.Events;
+
 using Newtonsoft.Json.Linq;
 
-namespace InfinniPlatform.Json
+namespace InfinniPlatform.Core.Json
 {
     public interface IJsonObjectBuilder
     {

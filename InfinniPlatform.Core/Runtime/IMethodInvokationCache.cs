@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace InfinniPlatform.Runtime
+namespace InfinniPlatform.Core.Runtime
 {
 	/// <summary>
 	/// Кэш прикладный скриптов конфигурации для вызова точек расширения бизнес-логики.

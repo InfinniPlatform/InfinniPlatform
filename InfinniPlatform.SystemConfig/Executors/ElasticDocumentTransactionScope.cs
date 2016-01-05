@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Linq;
 
+using InfinniPlatform.Core.Index;
+using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Index;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Log;
-using InfinniPlatform.Transactions;
 
 using Nest;
 

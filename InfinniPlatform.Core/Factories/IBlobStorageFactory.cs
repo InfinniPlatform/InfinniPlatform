@@ -1,6 +1,6 @@
 ﻿using InfinniPlatform.Sdk.Environment.Binary;
 
-namespace InfinniPlatform.Factories
+namespace InfinniPlatform.Core.Factories
 {
     /// <summary>
     /// Фабрика для создания сервисов по работе с BLOB (Binary Large OBject).

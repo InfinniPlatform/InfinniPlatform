@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace InfinniPlatform.Json
+namespace InfinniPlatform.Core.Json
 {
     /// <summary>
     ///     Предоставляет перечисление с поддержкой перебора элементов JSON-массива из потока.

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 
+using InfinniPlatform.Core.MessageQueue;
 using InfinniPlatform.Helpers;
 
 using NUnit.Framework;

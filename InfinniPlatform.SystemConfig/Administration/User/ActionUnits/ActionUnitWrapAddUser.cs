@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 
-using InfinniPlatform.Api.Properties;
-using InfinniPlatform.Api.RestApi.Auth;
-using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Core.RestApi.Auth;
+using InfinniPlatform.Core.RestApi.CommonApi;
+using InfinniPlatform.Core.RestApi.DataApi;
+using InfinniPlatform.Core.Properties;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 

@@ -1,5 +1,6 @@
 ﻿using System.Windows.Forms;
-using InfinniPlatform.Api.Schema;
+
+using InfinniPlatform.Core.Schema;
 using InfinniPlatform.ReportDesigner.Properties;
 
 namespace InfinniPlatform.ReportDesigner.Views.DataSources

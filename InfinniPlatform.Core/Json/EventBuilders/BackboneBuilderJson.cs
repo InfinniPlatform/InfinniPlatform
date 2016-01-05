@@ -1,6 +1,6 @@
 ﻿using InfinniPlatform.Sdk.Events;
 
-namespace InfinniPlatform.Json.EventBuilders
+namespace InfinniPlatform.Core.Json.EventBuilders
 {
     public class BackboneBuilderJson : BackboneBuilder
     {

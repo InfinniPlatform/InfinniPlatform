@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-using InfinniPlatform.Api.Metadata;
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;

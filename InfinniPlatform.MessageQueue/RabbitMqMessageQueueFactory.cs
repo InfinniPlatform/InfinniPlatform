@@ -1,7 +1,8 @@
 ﻿using System;
 
-using InfinniPlatform.Factories;
-using InfinniPlatform.Logging;
+using InfinniPlatform.Core.Factories;
+using InfinniPlatform.Core.Logging;
+using InfinniPlatform.Core.MessageQueue;
 using InfinniPlatform.RabbitMq;
 using InfinniPlatform.RabbitMq.Client;
 using InfinniPlatform.RabbitMq.Policies;

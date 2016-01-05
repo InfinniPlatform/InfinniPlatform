@@ -5,11 +5,13 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+
 using InfinniPlatform.Sdk.Dynamic;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace InfinniPlatform.Hosting
+namespace InfinniPlatform.Core.Hosting
 {
     public sealed class ReflectedParameterInfo
     {

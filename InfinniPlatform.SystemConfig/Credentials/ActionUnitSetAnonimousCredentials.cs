@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Api.RestApi.Auth;
+﻿using InfinniPlatform.Core.RestApi.Auth;
 using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.SystemConfig.Credentials

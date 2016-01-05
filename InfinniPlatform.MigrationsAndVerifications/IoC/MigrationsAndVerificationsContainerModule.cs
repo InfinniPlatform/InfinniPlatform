@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Api.Metadata;
+﻿using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.MigrationsAndVerifications.Migrations;
 using InfinniPlatform.Sdk.IoC;
 

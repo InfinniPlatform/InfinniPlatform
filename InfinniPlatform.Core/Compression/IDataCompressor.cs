@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO;
-using InfinniPlatform.Json;
 
-namespace InfinniPlatform.Compression
+using InfinniPlatform.Core.Json;
+
+namespace InfinniPlatform.Core.Compression
 {
     /// <summary>
     ///     Компрессор данных.

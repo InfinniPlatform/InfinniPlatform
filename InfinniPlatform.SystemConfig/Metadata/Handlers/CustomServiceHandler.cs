@@ -1,6 +1,6 @@
 ﻿using System;
 
-using InfinniPlatform.Api.Hosting;
+using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Global;

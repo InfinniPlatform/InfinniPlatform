@@ -1,8 +1,8 @@
-﻿using InfinniPlatform.Api.ContextTypes.ContextImpl;
-using InfinniPlatform.Api.Metadata;
+﻿using InfinniPlatform.Core.ContextTypes.ContextImpl;
+using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
-using InfinniPlatform.Transactions;
 
 namespace InfinniPlatform.SystemConfig.DefaultProcessUnits
 {

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.Registers;
+using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Core.Registers;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;

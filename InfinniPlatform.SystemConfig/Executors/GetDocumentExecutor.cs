@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Api.Index.SearchOptions;
-using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Api.SearchOptions.Builders;
-using InfinniPlatform.ContextComponents;
+using InfinniPlatform.Core.ContextComponents;
+using InfinniPlatform.Core.Index.SearchOptions;
+using InfinniPlatform.Core.RestApi.DataApi;
+using InfinniPlatform.Core.SearchOptions.Builders;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Index.QueryLanguage.Implementation;
 using InfinniPlatform.Sdk.ContextComponents;

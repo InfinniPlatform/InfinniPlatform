@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Api.RestApi.CommonApi;
+using InfinniPlatform.Core.RestApi.CommonApi;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
 
-namespace InfinniPlatform.ContextComponents
+namespace InfinniPlatform.Core.ContextComponents
 {
     /// <summary>
     /// Компонент работы с регистрами для глобального контекста

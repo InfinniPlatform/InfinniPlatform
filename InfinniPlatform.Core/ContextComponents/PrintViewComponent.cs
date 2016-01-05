@@ -1,9 +1,9 @@
-﻿using InfinniPlatform.Api.PrintView;
-using InfinniPlatform.Factories;
+﻿using InfinniPlatform.Core.Factories;
+using InfinniPlatform.Core.PrintView;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment;
 
-namespace InfinniPlatform.ContextComponents
+namespace InfinniPlatform.Core.ContextComponents
 {
     /// <summary>
     /// Компонент для получения печатных форм из контекста

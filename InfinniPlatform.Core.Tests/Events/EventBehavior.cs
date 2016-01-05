@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Api.RestQuery.EventObjects;
-using InfinniPlatform.Json;
-using InfinniPlatform.Json.EventBuilders;
+using InfinniPlatform.Core.Json;
+using InfinniPlatform.Core.Json.EventBuilders;
+using InfinniPlatform.Core.RestQuery.EventObjects;
 using InfinniPlatform.Sdk.Events;
 
 using Newtonsoft.Json;

@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Api.RestQuery;
+﻿using InfinniPlatform.Core.RestQuery;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment.Hosting;
 using InfinniPlatform.Sdk.Environment.Metadata;

@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 
-namespace InfinniPlatform.Security
+namespace InfinniPlatform.Core.Security
 {
     /// <summary>
     ///     Предоставляет методы хэширования.

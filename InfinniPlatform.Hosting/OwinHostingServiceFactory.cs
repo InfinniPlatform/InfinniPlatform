@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.Api.RestQuery;
-using InfinniPlatform.Factories;
+using InfinniPlatform.Core.Factories;
+using InfinniPlatform.Core.Hosting;
+using InfinniPlatform.Core.RestQuery;
 using InfinniPlatform.Owin.Hosting;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Sdk.Environment;

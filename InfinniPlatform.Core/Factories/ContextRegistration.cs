@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.Factories
+namespace InfinniPlatform.Core.Factories
 {
     internal sealed class ContextRegistration
     {

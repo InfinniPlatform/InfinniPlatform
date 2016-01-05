@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.EventStorage
+﻿namespace InfinniPlatform.Core.EventStorage
 {
     /// <summary>
     ///     Represents manager of the event storage.

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 
-using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment.Register;
 
-using FilterBuilder = InfinniPlatform.Api.SearchOptions.Builders.FilterBuilder;
+using FilterBuilder = InfinniPlatform.Core.SearchOptions.Builders.FilterBuilder;
 
 namespace InfinniPlatform.SystemConfig.ActionUnits
 {

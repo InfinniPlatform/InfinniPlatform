@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Metadata
+﻿namespace InfinniPlatform.Core.Metadata
 {
     /// <summary>
     ///     Провайдер наименований индексов метаданных

@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Api.LocalRouting;
-using InfinniPlatform.Api.RestQuery;
-using InfinniPlatform.Hosting;
+using InfinniPlatform.Core.Hosting;
+using InfinniPlatform.Core.LocalRouting;
+using InfinniPlatform.Core.RestQuery;
 using InfinniPlatform.WebApi.Factories;
 
 namespace InfinniPlatform.WebApi.ProvidersLocal

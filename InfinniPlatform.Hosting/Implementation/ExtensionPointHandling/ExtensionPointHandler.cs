@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Metadata;
+
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.Environment.Hosting;
 
 namespace InfinniPlatform.Hosting.Implementation.ExtensionPointHandling

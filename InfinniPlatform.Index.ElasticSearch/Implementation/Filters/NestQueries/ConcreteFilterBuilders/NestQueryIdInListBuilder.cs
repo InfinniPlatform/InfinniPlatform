@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.Index.SearchOptions;
-using InfinniPlatform.Api.Properties;
+
+using InfinniPlatform.Core.Properties;
 using InfinniPlatform.Sdk.Environment.Index;
 using Newtonsoft.Json.Linq;
 

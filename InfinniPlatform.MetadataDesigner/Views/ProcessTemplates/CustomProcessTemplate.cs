@@ -5,12 +5,13 @@ using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.SchemaReaders;
+
+using InfinniPlatform.Core.ContextTypes;
+using InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.Factories;
+using InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.SchemaReaders;
+using InfinniPlatform.Core.RestApi.Auth;
+using InfinniPlatform.Core.Schema;
 using InfinniPlatform.MetadataDesigner.Views.ViewModel;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Api.RestApi.Auth;
-using InfinniPlatform.Api.Schema;
 
 namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 {

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms.VisualStyles;
-using InfinniPlatform.Api.Deprecated;
+
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.UserInterface.ViewBuilders.Scripts;
 using InfinniPlatform.UserInterface.ViewBuilders.Views;

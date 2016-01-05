@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Api.Security;
-
-namespace InfinniPlatform.Security
+namespace InfinniPlatform.Core.Security
 {
 	/// <summary>
 	/// Виртуальное хранилище сведений о пользователях системы.

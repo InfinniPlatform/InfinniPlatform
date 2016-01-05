@@ -1,6 +1,7 @@
-﻿using InfinniPlatform.ContextComponents;
+﻿using InfinniPlatform.Core.ContextComponents;
+using InfinniPlatform.Core.Hosting;
+using InfinniPlatform.Core.Modules;
 using InfinniPlatform.Hosting;
-using InfinniPlatform.Modules;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Metadata;

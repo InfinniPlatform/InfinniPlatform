@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Text;
 
-namespace InfinniPlatform.Json
+namespace InfinniPlatform.Core.Json
 {
     public static class JsonStringExtensions
     {

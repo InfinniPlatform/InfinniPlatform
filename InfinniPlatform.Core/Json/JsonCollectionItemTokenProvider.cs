@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Newtonsoft.Json.Linq;
 
-namespace InfinniPlatform.Json
+namespace InfinniPlatform.Core.Json
 {
     public class JsonCollectionItemTokenProvider : IJsonTokenProvider
     {

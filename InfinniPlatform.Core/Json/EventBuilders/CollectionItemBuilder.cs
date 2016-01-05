@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
+
 using InfinniPlatform.Sdk.Events;
+
 using Newtonsoft.Json.Linq;
 
-namespace InfinniPlatform.Json.EventBuilders
+namespace InfinniPlatform.Core.Json.EventBuilders
 {
     public class CollectionItemBuilder : IJsonObjectBuilder
     {

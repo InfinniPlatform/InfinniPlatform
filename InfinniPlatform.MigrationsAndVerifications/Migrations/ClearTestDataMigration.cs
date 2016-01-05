@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Reflection.Emit;
 using System.Text;
 
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment.Metadata;

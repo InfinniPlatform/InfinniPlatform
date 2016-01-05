@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Api.RestQuery;
+
 using InfinniPlatform.Sdk.Environment.Hosting;
 
-namespace InfinniPlatform.Hosting
+namespace InfinniPlatform.Core.Hosting
 {
     /// <summary>
     ///     Обработчик веб-реквеста

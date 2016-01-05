@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Runtime;
+﻿using InfinniPlatform.Core.Runtime;
 using InfinniPlatform.Sdk.Environment.Scripts;
 using InfinniPlatform.SystemConfig.Metadata.StateMachine.ActionUnits.ActionOperatorBuilders;
 using InfinniPlatform.SystemConfig.Metadata.StateMachine.ValidationUnits.ValidationUnitBuilders;

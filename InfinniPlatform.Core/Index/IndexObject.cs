@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.Index
+namespace InfinniPlatform.Core.Index
 {
     public class IndexObject
     {

@@ -1,6 +1,4 @@
-﻿using InfinniPlatform.Api.Security;
-
-namespace InfinniPlatform.Security
+﻿namespace InfinniPlatform.Core.Security
 {
     /// <summary>
     ///     Предоставляет методы хэширования пароля.

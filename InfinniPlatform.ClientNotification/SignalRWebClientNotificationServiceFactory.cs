@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Api.ClientNotification;
-using InfinniPlatform.Factories;
+﻿using InfinniPlatform.Core.ClientNotification;
+using InfinniPlatform.Core.Factories;
 
 namespace InfinniPlatform.ClientNotification
 {

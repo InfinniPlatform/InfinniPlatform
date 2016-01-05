@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.SystemInfo
+﻿namespace InfinniPlatform.Core.SystemInfo
 {
     /// <summary>
     /// Провайдер информации о системе.

@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Api.PrintView;
-using InfinniPlatform.Factories;
+﻿using InfinniPlatform.Core.Factories;
+using InfinniPlatform.Core.PrintView;
 using InfinniPlatform.FlowDocument;
 using InfinniPlatform.FlowDocument.PrintView;
 using InfinniPlatform.Sdk.Environment.Settings;

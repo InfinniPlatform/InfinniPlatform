@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Modules
+﻿namespace InfinniPlatform.Core.Modules
 {
     /// <summary>
     /// Контракт регистрации шаблонов обработчиков

@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Api.ClientNotification;
+﻿using InfinniPlatform.Core.ClientNotification;
 using InfinniPlatform.SignalR;
 using InfinniPlatform.SignalR.Modules;
 

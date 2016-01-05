@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Api.RestQuery;
+﻿using InfinniPlatform.Core.RestQuery;
 using InfinniPlatform.Sdk.Api;
 
 namespace InfinniPlatform.MetadataDesigner.Views.Update

@@ -1,10 +1,11 @@
-﻿using InfinniPlatform.Api.Registers;
-using InfinniPlatform.MetadataDesigner.Views.Status;
+﻿using InfinniPlatform.MetadataDesigner.Views.Status;
 using InfinniPlatform.MetadataDesigner.Views.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+
+using InfinniPlatform.Core.Registers;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Register;
 

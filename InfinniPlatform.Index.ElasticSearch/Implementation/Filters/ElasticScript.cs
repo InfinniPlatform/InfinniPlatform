@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using InfinniPlatform.Api.Index;
+using InfinniPlatform.Core.Index;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters.Extensions;
 using InfinniPlatform.Sdk.Environment.Index;
 

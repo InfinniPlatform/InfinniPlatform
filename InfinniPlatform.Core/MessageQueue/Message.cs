@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.MessageQueue
+﻿namespace InfinniPlatform.Core.MessageQueue
 {
     /// <summary>
     ///     Сообщение очереди.

@@ -2,7 +2,7 @@
 
 using InfinniPlatform.Sdk.IoC;
 
-namespace InfinniPlatform.Transactions
+namespace InfinniPlatform.Core.Transactions
 {
     internal sealed class DocumentTransactionScopeProvider : IDocumentTransactionScopeProvider
     {

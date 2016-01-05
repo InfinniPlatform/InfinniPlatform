@@ -1,6 +1,6 @@
 ﻿using System;
-using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Api.RestQuery;
+
+using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Sdk.Environment.Hosting;
 
 namespace InfinniPlatform.Hosting.Implementation.ServiceRegistration

@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Core", "Inf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.MessageQueue", "InfinniPlatform.MessageQueue\InfinniPlatform.MessageQueue.csproj", "{E14CCE42-2563-4C36-919F-B389FF87EA65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Api", "InfinniPlatform.Api\InfinniPlatform.Api.csproj", "{7CA0F96C-7FF4-44B2-9D44-851984DF4532}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Index.ElasticSearch", "InfinniPlatform.Index.ElasticSearch\InfinniPlatform.Index.ElasticSearch.csproj", "{2B2F3FA6-F434-4FCF-A4C7-323FFC602F0C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{86AB4502-9B73-43B5-8A20-F01AADE0EDA4} = {86AB4502-9B73-43B5-8A20-F01AADE0EDA4}
@@ -26,9 +24,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Sql", "Infi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.ModelRepository", "InfinniPlatform.ModelRepository\InfinniPlatform.ModelRepository.csproj", "{AFB709E2-71C1-4712-AA8D-4A9621939279}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Api.Tests", "InfinniPlatform.Api.Tests\InfinniPlatform.Api.Tests.csproj", "{A8285E35-48F8-45CC-961C-282678230221}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Core.Tests", "InfinniPlatform.Core.Tests\InfinniPlatform.Core.Tests.csproj", "{C4ECB85D-AD08-45D3-9FDF-F0FE9A797644}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Core.Tests", "InfinniPlatform.Core.Tests\InfinniPlatform.Core.Tests.csproj", "{A8285E35-48F8-45CC-961C-282678230221}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Sql.Tests", "InfinniPlatform.Sql.Tests\InfinniPlatform.Sql.Tests.csproj", "{6A39EA44-58CA-4536-8AD1-58DA2C081E46}"
 EndProject
@@ -212,10 +208,6 @@ Global
 		{E14CCE42-2563-4C36-919F-B389FF87EA65}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E14CCE42-2563-4C36-919F-B389FF87EA65}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E14CCE42-2563-4C36-919F-B389FF87EA65}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7CA0F96C-7FF4-44B2-9D44-851984DF4532}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7CA0F96C-7FF4-44B2-9D44-851984DF4532}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7CA0F96C-7FF4-44B2-9D44-851984DF4532}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7CA0F96C-7FF4-44B2-9D44-851984DF4532}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2B2F3FA6-F434-4FCF-A4C7-323FFC602F0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2B2F3FA6-F434-4FCF-A4C7-323FFC602F0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B2F3FA6-F434-4FCF-A4C7-323FFC602F0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -244,10 +236,6 @@ Global
 		{A8285E35-48F8-45CC-961C-282678230221}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8285E35-48F8-45CC-961C-282678230221}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8285E35-48F8-45CC-961C-282678230221}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C4ECB85D-AD08-45D3-9FDF-F0FE9A797644}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C4ECB85D-AD08-45D3-9FDF-F0FE9A797644}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C4ECB85D-AD08-45D3-9FDF-F0FE9A797644}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C4ECB85D-AD08-45D3-9FDF-F0FE9A797644}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6A39EA44-58CA-4536-8AD1-58DA2C081E46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6A39EA44-58CA-4536-8AD1-58DA2C081E46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A39EA44-58CA-4536-8AD1-58DA2C081E46}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -498,9 +486,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EBC684B7-B72A-475F-BBC1-B6293B607B9B} = {D2A3ECA9-064A-44A1-95EE-37AB350D303C}
-		{7CA0F96C-7FF4-44B2-9D44-851984DF4532} = {D2A3ECA9-064A-44A1-95EE-37AB350D303C}
 		{A8285E35-48F8-45CC-961C-282678230221} = {D2A3ECA9-064A-44A1-95EE-37AB350D303C}
-		{C4ECB85D-AD08-45D3-9FDF-F0FE9A797644} = {D2A3ECA9-064A-44A1-95EE-37AB350D303C}
 		{A46F638C-C9C5-49BE-BC8D-8144E8C8F87A} = {D2A3ECA9-064A-44A1-95EE-37AB350D303C}
 		{EE5AD8E7-4D3E-462D-AF0B-38430185396F} = {89D37C8B-9A73-45AB-A4C0-E91DC1A6D5CA}
 		{EC8E01A2-76C8-453A-B957-F83265778971} = {76075218-7249-4C01-A184-35E066952A8F}

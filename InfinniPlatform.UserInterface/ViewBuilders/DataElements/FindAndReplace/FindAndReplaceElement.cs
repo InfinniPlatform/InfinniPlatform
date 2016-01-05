@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Windows.Controls;
 using System.Windows.Input;
-using InfinniPlatform.Api.Extensions;
+
+using InfinniPlatform.Core.Extensions;
 using InfinniPlatform.UserInterface.Properties;
 using InfinniPlatform.UserInterface.ViewBuilders.ActionElements.ToolBar;
 using InfinniPlatform.UserInterface.ViewBuilders.DataElements.CheckBox;

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Api.ContextTypes.ContextImpl;
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.RestApi.DataApi;
+using InfinniPlatform.Core.ContextTypes.ContextImpl;
+using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Core.RestApi.DataApi;
+using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
-using InfinniPlatform.Transactions;
 
 namespace InfinniPlatform.SystemConfig.Executors
 {

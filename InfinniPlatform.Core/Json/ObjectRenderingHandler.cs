@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
-using InfinniPlatform.Json.EventBuilders;
+
+using InfinniPlatform.Core.Json.EventBuilders;
 using InfinniPlatform.Sdk.Events;
 
-namespace InfinniPlatform.Json
+namespace InfinniPlatform.Core.Json
 {
     public class ObjectRenderingHandler
     {

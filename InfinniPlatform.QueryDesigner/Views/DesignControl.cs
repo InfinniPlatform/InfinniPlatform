@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Api.Schema;
+
+using InfinniPlatform.Core.Schema;
 using InfinniPlatform.QueryDesigner.Contracts;
 using InfinniPlatform.QueryDesigner.Forms;
 using InfinniPlatform.Sdk.Api;

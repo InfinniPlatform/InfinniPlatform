@@ -1,6 +1,7 @@
 ﻿using System;
 using InfinniPlatform.Cassandra;
-using InfinniPlatform.Factories;
+using InfinniPlatform.Core.EventStorage;
+using InfinniPlatform.Core.Factories;
 using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Binary;
 
