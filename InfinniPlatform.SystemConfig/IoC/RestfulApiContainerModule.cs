@@ -1,11 +1,9 @@
-﻿using InfinniPlatform.Core.Modules;
-using InfinniPlatform.Core.RestApi.DataApi;
+﻿using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Core.SystemInfo;
 using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.SystemConfig.Executors;
-using InfinniPlatform.SystemConfig.Installers;
 using InfinniPlatform.SystemConfig.SystemInfo;
 using InfinniPlatform.SystemConfig.Utils;
 
@@ -17,10 +15,6 @@ namespace InfinniPlatform.SystemConfig.IoC
         {
             builder.RegisterType<SystemInfoProvider>()
                    .As<ISystemInfoProvider>()
-                   .SingleInstance();
-
-            builder.RegisterType<RestfulApiInstaller>()
-                   .As<IModuleInstaller>()
                    .SingleInstance();
 
             builder.RegisterType<DocumentLinkMap>()

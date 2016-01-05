@@ -7,9 +7,8 @@ using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Metadata;
 using InfinniPlatform.Sdk.Environment.Scripts;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.SystemConfig.Metadata.Handlers;
-using InfinniPlatform.SystemConfig.Metadata.MetadataConfiguration;
-using InfinniPlatform.SystemConfig.Metadata.Modules;
+using InfinniPlatform.SystemConfig.Metadata;
+using InfinniPlatform.SystemConfig.RequestHandlers;
 
 namespace InfinniPlatform.SystemConfig.IoC
 {
@@ -45,8 +44,8 @@ namespace InfinniPlatform.SystemConfig.IoC
                    .As<ICrossConfigSearcher>()
                    .SingleInstance();
 
-            builder.RegisterType<StandardTemplatesInstaller>()
-                   .As<ITemplateInstaller>()
+            builder.RegisterType<RequestHandlerInstaller>()
+                   .As<IRequestHandlerInstaller>()
                    .SingleInstance();
 
             // Обработчики HTTP-запросов

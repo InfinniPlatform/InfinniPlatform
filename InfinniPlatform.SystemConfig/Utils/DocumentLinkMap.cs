@@ -11,7 +11,7 @@ using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.IoC;
 
-using ApplyChangesHandler = InfinniPlatform.SystemConfig.Metadata.Handlers.ApplyChangesHandler;
+using ApplyChangesHandler = InfinniPlatform.SystemConfig.RequestHandlers.ApplyChangesHandler;
 
 namespace InfinniPlatform.SystemConfig.Utils
 {
@@ -114,7 +114,7 @@ namespace InfinniPlatform.SystemConfig.Utils
             request.IgnoreResolve = typeInfoChainUpdated;
 
             var applyChangesHandler = _applyChangesHandlerFactory();
-            applyChangesHandler.ConfigRequestProvider = new LocalDataProvider("RestfulApi", "configuration", "getdocument");
+            applyChangesHandler.ConfigRequestProvider = new LocalDataProvider("SystemConfig", "configuration", "getdocument");
 
             var result = applyChangesHandler.ApplyJsonObject(null, request);
 

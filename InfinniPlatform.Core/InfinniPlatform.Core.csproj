@@ -236,7 +236,7 @@
     <Compile Include="ModelRepository\MetadataObjectModel\DataSchema.cs" />
     <Compile Include="ModelRepository\MetadataObjectModel\DocumentLink.cs" />
     <Compile Include="Modules\IModuleInstaller.cs" />
-    <Compile Include="Modules\ITemplateInstaller.cs" />
+    <Compile Include="Modules\IRequestHandlerInstaller.cs" />
     <Compile Include="Packages\ConfigExporter.cs" />
     <Compile Include="Packages\ConfigStructure\ConfigurationFixtureNames.cs" />
     <Compile Include="Packages\ConfigStructure\DirectoryStructure.cs" />

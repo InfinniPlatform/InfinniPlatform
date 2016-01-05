@@ -50,8 +50,8 @@ namespace InfinniPlatform.Conventions
                          || project.EndsWith("InfinniPlatform.QueryDesigner")
                          || project.EndsWith("InfinniPlatform.ReportDesigner")
                          || project.EndsWith("InfinniPlatform.PrintViewDesigner")
-                         || project.EndsWith("InfinniPlatform.Utils")
-                         || project.Contains(".SystemConfig.")
+                         || project.EndsWith("InfinniPlatform.DesignControls")
+                         || project.EndsWith("InfinniPlatform.UserInterface")
                          || SolutionTestProjects.Any(testProject => string.Equals(testProject, expectedTestProject, StringComparison.InvariantCultureIgnoreCase));
 
             // Then

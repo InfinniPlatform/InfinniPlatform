@@ -7,7 +7,7 @@ namespace InfinniPlatform.WebApi.Factories
 {
     public class ModuleComposer
     {
-        public ModuleComposer(IApiControllerFactory apiControllerFactory, IEnumerable<IModuleInstaller> moduleInstallers, IEnumerable<ITemplateInstaller> templateInstallers)
+        public ModuleComposer(IApiControllerFactory apiControllerFactory, IEnumerable<IModuleInstaller> moduleInstallers, IEnumerable<IRequestHandlerInstaller> templateInstallers)
         {
             _apiControllerFactory = apiControllerFactory;
             _moduleInstallers = moduleInstallers;
@@ -17,7 +17,7 @@ namespace InfinniPlatform.WebApi.Factories
 
         private readonly IApiControllerFactory _apiControllerFactory;
         private readonly IEnumerable<IModuleInstaller> _moduleInstallers;
-        private readonly IEnumerable<ITemplateInstaller> _templateInstallers;
+        private readonly IEnumerable<IRequestHandlerInstaller> _templateInstallers;
 
 
         public void RegisterModules()

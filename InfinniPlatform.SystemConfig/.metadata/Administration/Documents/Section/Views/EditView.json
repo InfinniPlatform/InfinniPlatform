@@ -244,7 +244,7 @@
               {
                 "DocumentDataSource": {
                   "Name": "MetadataDataSource",
-                  "ConfigId": "RestfulApi",
+                  "ConfigId": "SystemConfig",
                   "DocumentId": "Configuration",
                   "UpdateAction": "GetConfigMetadataList"
                 }

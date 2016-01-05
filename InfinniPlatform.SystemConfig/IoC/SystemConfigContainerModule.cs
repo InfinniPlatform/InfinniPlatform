@@ -3,8 +3,8 @@ using InfinniPlatform.Core.Security;
 using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.SystemConfig.Initializers;
-using InfinniPlatform.SystemConfig.Installers;
+using InfinniPlatform.SystemConfig.RequestHandlers;
+using InfinniPlatform.SystemConfig.StartupInitializers;
 using InfinniPlatform.SystemConfig.UserStorage;
 
 namespace InfinniPlatform.SystemConfig.IoC

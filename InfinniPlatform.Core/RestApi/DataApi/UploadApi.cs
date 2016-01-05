@@ -36,7 +36,7 @@ namespace InfinniPlatform.Core.RestApi.DataApi
                              };
 
             return
-                _restQueryApi.QueryPostFile("RestfulApi", "configuration", "uploadbinarycontent", linkedData, filePath).ToDynamic();
+                _restQueryApi.QueryPostFile("SystemConfig", "configuration", "uploadbinarycontent", linkedData, filePath).ToDynamic();
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace InfinniPlatform.Core.RestApi.DataApi
                              };
 
             return
-                _restQueryApi.QueryPostFile("RestfulApi", "configuration", "uploadbinarycontent", linkedData, stream).ToDynamic();
+                _restQueryApi.QueryPostFile("SystemConfig", "configuration", "uploadbinarycontent", linkedData, stream).ToDynamic();
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace InfinniPlatform.Core.RestApi.DataApi
         /// <returns>Данные бинарного контента</returns>
         public dynamic DownloadBinaryContent(string contentId)
         {
-            return _restQueryApi.QueryGetUrlEncodedData("RestfulApi", "configuration", "downloadbinarycontent", new
+            return _restQueryApi.QueryGetUrlEncodedData("SystemConfig", "configuration", "downloadbinarycontent", new
                                                                                                                 {
                                                                                                                     ContentId = contentId
                                                                                                                 });

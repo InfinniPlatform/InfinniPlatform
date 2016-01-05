@@ -336,7 +336,7 @@ namespace InfinniPlatform.Core.RestApi.DataApi
                                                        int pageNumber,
                                                        int pageSize)
         {
-            var response = _restQueryApi.QueryPostJsonRaw("RestfulApi", "configuration", "getdocument", null, new
+            var response = _restQueryApi.QueryPostJsonRaw("SystemConfig", "configuration", "getdocument", null, new
                                                                                                               {
                                                                                                                   Configuration = configuration,
                                                                                                                   Metadata = RegisterConstants.RegisterNamePrefix + register,
