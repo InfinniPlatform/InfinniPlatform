@@ -27,12 +27,10 @@ namespace InfinniPlatform.SystemConfig.Metadata
             MetadataConfiguration = metadataConfiguration;
             _indexFactory = indexFactory;
             _blobStorageFactory = blobStorageFactory;
-            _elasticConnection = new ElasticConnection();
         }
 
         private readonly IIndexFactory _indexFactory;
         private readonly IBlobStorageFactory _blobStorageFactory;
-        private readonly ElasticConnection _elasticConnection;
 
 
         public IMetadataConfiguration MetadataConfiguration { get; }
@@ -55,16 +53,6 @@ namespace InfinniPlatform.SystemConfig.Metadata
 
             if (!VersionProviderCache.TryGetValue(versionProviderKey, out versionProvider))
             {
-                // Проверка наличия индекса занимает очень много времени. На данный момент эту логику можно осуществлять
-                // при старте системы. Не понятно, почему этого нельзя было сделать раньше или, во всяком случае, в другом
-                // месте. Как выяснилось, этот код крайне отрицательно сказывается на производительности системы, поэтому
-                // тут предпринята попытка простейшего кэширования результатов его работы.
-
-                if (_elasticConnection.GetIndexStatus(documentIndexName, documentTypeName) == IndexStatus.NotExists)
-                {
-                    _elasticConnection.CreateType(documentIndexName, documentTypeName);
-                }
-
                 versionProvider = _indexFactory.BuildVersionProvider(documentIndexName, documentTypeName);
 
                 VersionProviderCache[versionProviderKey] = versionProvider;

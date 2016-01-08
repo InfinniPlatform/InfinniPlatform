@@ -7,20 +7,27 @@ using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.SystemConfig.RequestHandlers
 {
-    public class SearchDocumentAggregationHandler : IWebRoutingHandler
+    public sealed class SearchDocumentAggregationHandler : IWebRoutingHandler
     {
-        private readonly IFilterBuilder _filterFactory = FilterBuilderFactory.GetInstance();
-        private readonly IGlobalContext _globalContext;
-
-        public SearchDocumentAggregationHandler(IGlobalContext globalContext)
+        public SearchDocumentAggregationHandler(IMetadataConfigurationProvider metadataConfigurationProvider, IIndexComponent indexComponent)
         {
-            _globalContext = globalContext;
+            _metadataConfigurationProvider = metadataConfigurationProvider;
+            _indexFactory = indexComponent.IndexFactory;
+            _filterFactory = FilterBuilderFactory.GetInstance();
         }
 
+
+        private readonly IMetadataConfigurationProvider _metadataConfigurationProvider;
+        private readonly IIndexFactory _indexFactory;
+        private readonly IFilterBuilder _filterFactory;
+
+
         public IConfigRequestProvider ConfigRequestProvider { get; set; }
+
 
         public dynamic GetAggregationDocumentResult(
             string aggregationConfiguration,
@@ -32,38 +39,47 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
             int pageNumber,
             int pageSize)
         {
-            //получаем тип метаданных/индекс, по которому выполняем поиск документов
-            var idType = ConfigRequestProvider.GetMetadataIdentifier();
+            var сonfiguration = ConfigRequestProvider.GetConfiguration();
+            var documentType = ConfigRequestProvider.GetMetadataIdentifier();
 
-            var metadataConfig =
-                _globalContext.GetComponent<IMetadataConfigurationProvider>()
-                    .GetMetadataConfiguration(ConfigRequestProvider.GetConfiguration());
+            // Метаданные конфигурации
+            var metadataConfiguration = _metadataConfigurationProvider.GetMetadataConfiguration(сonfiguration);
 
-            var target = new SearchContext();
-            target.Context = _globalContext;
-            target.Index = metadataConfig.ConfigurationId;
-            target.IndexType = metadataConfig.GetMetadataIndexType(idType);
-            target.IsValid = true;
-            target.Configuration = ConfigRequestProvider.GetConfiguration();
-            target.Metadata = ConfigRequestProvider.GetMetadataIdentifier();
+            var target = new SearchContext
+            {
+                Index = metadataConfiguration.ConfigurationId,
+                IndexType = metadataConfiguration.GetMetadataIndexType(documentType),
+                Configuration = сonfiguration,
+                Metadata = documentType,
+                IsValid = true
+            };
 
-            metadataConfig.MoveWorkflow(idType, metadataConfig.GetExtensionPointValue(ConfigRequestProvider, "Join"),
-                target);
+            ExecuteExtensionPoint(metadataConfiguration, documentType, "Join", target);
 
-			var executor = target.Context.GetComponent<IIndexComponent>().IndexFactory.BuildAggregationProvider(aggregationConfiguration, aggregationMetadata);
-			
-			//заполняем предварительные результаты поиска
-			target.SearchResult = executor.ExecuteAggregation(
+            var executor = _indexFactory.BuildAggregationProvider(aggregationConfiguration, aggregationMetadata);
+
+            // Заполняем предварительные результаты поиска
+            target.SearchResult = executor.ExecuteAggregation(
                 dimensions.ToArray(),
                 aggregationTypes.ToArray(),
                 aggregationFields.ToArray(),
-                filterObject.ExtractSearchModel(_filterFactory)); 
+                filterObject.ExtractSearchModel(_filterFactory));
 
-            //выполняем постобработку результатов
-            metadataConfig.MoveWorkflow(idType,
-                metadataConfig.GetExtensionPointValue(ConfigRequestProvider, "TransformResult"), target);
+            ExecuteExtensionPoint(metadataConfiguration, documentType, "TransformResult", target);
 
             return target.SearchResult;
+        }
+
+        private bool ExecuteExtensionPoint(IMetadataConfiguration metadataConfiguration, string documentType, string extensionPointName, ICommonContext extensionPointContext)
+        {
+            var extensionPoint = metadataConfiguration.GetExtensionPointValue(ConfigRequestProvider, extensionPointName);
+
+            if (!string.IsNullOrEmpty(extensionPoint))
+            {
+                metadataConfiguration.MoveWorkflow(documentType, extensionPoint, extensionPointContext);
+            }
+
+            return extensionPointContext.IsValid;
         }
     }
 }

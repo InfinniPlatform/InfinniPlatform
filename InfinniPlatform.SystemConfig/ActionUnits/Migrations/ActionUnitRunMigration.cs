@@ -28,7 +28,7 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Migrations
             {
                 string configurationName = target.Item.ConfigurationName;
 
-                migration.AssignActiveConfiguration(configurationName, target.Context);
+                migration.AssignActiveConfiguration(configurationName);
 
                 string message;
 

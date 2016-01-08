@@ -24,7 +24,7 @@ namespace InfinniPlatform.Sdk.Environment.Index
 			if (schema != null)
 			{
 				// convert document schema to index mapping
-				props = DocumentSchemaHelper.ExtractProperties(null, schema.Properties, configurationObjectBuilder);
+				props = DocumentSchemaHelper.ExtractProperties(schema.Properties, configurationObjectBuilder);
 			}
 
 			var indexTypeMapping = props.Count > 0
@@ -70,8 +70,7 @@ namespace InfinniPlatform.Sdk.Environment.Index
 						if (DocumentSchemaHelper.CheckObjectForSpecifiedInline(schema, configId, documentId))
 						{
 							// convert document schema to index mapping
-							List<PropertyMapping> props = DocumentSchemaHelper.ExtractProperties(null,
-																								 schema.Properties,
+							List<PropertyMapping> props = DocumentSchemaHelper.ExtractProperties(schema.Properties,
 																								 configurationObjectBuilder);
 
 							versionBuilder.CreateVersion(false, props.Count > 0

@@ -20,12 +20,14 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Registers
     /// </summary>
     public sealed class ActionUnitGetRegisterValuesByPeriods
     {
-        public ActionUnitGetRegisterValuesByPeriods(RestQueryApi restQueryApi)
+        public ActionUnitGetRegisterValuesByPeriods(RestQueryApi restQueryApi, IMetadataComponent metadataComponent)
         {
             _restQueryApi = restQueryApi;
+            _metadataComponent = metadataComponent;
         }
 
         private readonly RestQueryApi _restQueryApi;
+        private readonly IMetadataComponent _metadataComponent;
 
         public void Action(IApplyResultContext target)
         {
@@ -37,8 +39,7 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Registers
             string registerId = target.Item.Register.ToString();
             var specifiedDimensions = target.Item.Dimensions;
 
-            var registerObject =
-                target.Context.GetComponent<IMetadataComponent>()
+            var registerObject = _metadataComponent
                       .GetMetadataList(configurationId, registerId, MetadataType.Register)
                       .FirstOrDefault();
 

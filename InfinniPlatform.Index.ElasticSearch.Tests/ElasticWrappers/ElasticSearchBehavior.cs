@@ -52,7 +52,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             elasticConnection.DeleteType("testperson", "testperson");
             elasticConnection.CreateType("testperson", "testperson");
 
-            var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider("testperson", "testperson", null);
+            var elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider("testperson", "testperson");
 
             dynamic person1 = new DynamicWrapper();
             person1.Id = "11111";
@@ -70,7 +70,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             elasticSearchProvider.Set(person2);
 
 
-            var queryExecutor = new ElasticFactory().BuildIndexQueryExecutor("testperson", "testperson");
+            var queryExecutor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor("testperson", "testperson");
             elasticConnection.Refresh();
 
             Assert.AreEqual(2, queryExecutor.Query(new SearchModel()).HitsCount);

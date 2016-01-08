@@ -2,18 +2,24 @@
 using System.Linq;
 
 using InfinniPlatform.Core.RestApi.DataApi;
+using InfinniPlatform.Core.SearchOptions.Builders;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment.Register;
-
-using FilterBuilder = InfinniPlatform.Core.SearchOptions.Builders.FilterBuilder;
 
 namespace InfinniPlatform.SystemConfig.ActionUnits.Registers
 {
     /// <summary>
-    ///     Получение даты последнего подсчета итогов для регистра накоплений, ближайшей к заданной
+    /// Получение даты последнего подсчета итогов для регистра накоплений, ближайшей к заданной
     /// </summary>
     public sealed class ActionUnitGetClosestDateTimeOfTotalCalculation
     {
+        public ActionUnitGetClosestDateTimeOfTotalCalculation(DocumentApi documentApi)
+        {
+            _documentApi = documentApi;
+        }
+
+        private readonly DocumentApi _documentApi;
+
         public void Action(IApplyResultContext target)
         {
             var requestDate = target.Item.Date;
@@ -23,19 +29,18 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Registers
             // В таблице итогов нужно найти итог, ближайший к requestDate
             var dateToReturn = new DateTime();
 
-            long min = long.MaxValue;
-            bool isDateFound = false;
+            var min = long.MaxValue;
+            var isDateFound = false;
 
-            int page = 0;
+            var page = 0;
 
             while (true)
             {
                 // Постранично считываем данные и таблицы итогов и ищем итоги с датой, ближайшей к заданной
-                Action<FilterBuilder> filter = f => f.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty)
-                                                                        .IsLessThan(requestDate));
+                Action<FilterBuilder> filter = f => f.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty).IsLessThan(requestDate));
 
-                var totals = target.Context.GetComponent<DocumentApi>().GetDocument(configurationId, RegisterConstants.RegisterTotalNamePrefix + registerId, filter, page++, 10000)
-                                   .ToArray();
+                var totals = _documentApi.GetDocument(configurationId, RegisterConstants.RegisterTotalNamePrefix + registerId, filter, page++, 10000)
+                                         .ToArray();
 
                 if (totals.Length == 0)
                 {
@@ -56,7 +61,7 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Registers
                 }
             }
 
-            target.Result = isDateFound ? new {Date = dateToReturn} : null;
+            target.Result = isDateFound ? new { Date = dateToReturn } : null;
         }
     }
 }

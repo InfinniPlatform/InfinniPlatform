@@ -49,7 +49,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             _elasticConnection = new ElasticConnection();
 
             _elasticConnection.CreateType(IndexName,IndexName, deleteExistingVersion: true);
-			_elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
+			_elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
 
             foreach (var school in SchoolsFactory.CreateSchools())
             {
@@ -77,7 +77,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsEqualsCriteriaUnderStringFieldTest()
         {
-			var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+			var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("Principal.LastName", "Monakhov", CriteriaType.IsEquals));
@@ -92,7 +92,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsNotEqualsCriteriaUnderStringFieldTest()
         {
-			var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+			var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("Principal.LastName", "Monakhov", CriteriaType.IsNotEquals));
@@ -105,7 +105,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void CountOfDocumentsTest()
         {
-            var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+            var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_queryFactory.Get("Principal.LastName", "Monakhov", CriteriaType.IsNotEquals));
@@ -118,7 +118,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsContainsCriteriaUnderStringFieldTest()
         {
-			var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+			var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("Principal.LastName", "nak", CriteriaType.IsContains));
@@ -133,7 +133,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsNotContainsCriteriaUnderStringFieldTest()
         {
-			var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+			var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("Principal.LastName", "nak", CriteriaType.IsNotContains));
@@ -146,7 +146,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsEmptyCriteriaUnderStringFieldTest()
         {
-			var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+			var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("Principal.Name", "put any string here", CriteriaType.IsEmpty));
@@ -159,7 +159,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsNotEmptyCriteriaUnderStringFieldTest()
         {
-			var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+			var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("Principal.Name", "put any string here", CriteriaType.IsNotEmpty));
@@ -172,7 +172,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsStartsWithCriteriaUnderStringFieldTest()
         {
-			var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+			var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("Principal.LastName", "Mon", CriteriaType.IsStartsWith));
@@ -187,7 +187,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsNotStartsWithCriteriaUnderStringFieldTest()
         {
-			var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+			var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("Principal.LastName", "Mon", CriteriaType.IsNotStartsWith));
@@ -200,7 +200,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsEndsWithCriteriaUnderStringFieldTest()
         {
-			var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+			var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("Principal.LastName", "akhov", CriteriaType.IsEndsWith));
@@ -215,7 +215,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsNotEndsWithCriteriaUnderStringFieldTest()
         {
-			var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+			var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("Principal.LastName", "akhov", CriteriaType.IsNotEndsWith));
@@ -228,7 +228,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsEqualsCriteriaUnderDoubleFieldTest()
         {
-			var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+			var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("Rating", 3.1, CriteriaType.IsEquals));
@@ -243,7 +243,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsNotEqualsCriteriaUnderDoubleFieldTest()
         {
-			var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+			var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("Rating", 3.1, CriteriaType.IsNotEquals));
@@ -256,7 +256,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsMoreThanCriteriaUnderDoubleFieldTest()
         {
-			var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+			var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("Rating", 3.1, CriteriaType.IsMoreThan));
@@ -270,7 +270,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsLessThanCriteriaUnderDoubleFieldTest()
         {
-			var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+			var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("Rating", 3.1, CriteriaType.IsLessThan));
@@ -284,7 +284,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsMoreThanOrEqualsCriteriaUnderDoubleFieldTest()
         {
-			var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+			var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("Rating", 3.1, CriteriaType.IsMoreThanOrEquals));
@@ -297,7 +297,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsLessThanOrEqualsCriteriaUnderDoubleFieldTest()
         {
-			var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+			var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("Rating", 3.1, CriteriaType.IsLessThanOrEquals));
@@ -310,7 +310,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsEqualsCriteriaUnderIntegerFieldTest()
         {
-			var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+			var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("HouseNumber", 31, CriteriaType.IsEquals));
@@ -325,7 +325,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsNotEqualsCriteriaUnderIntegerFieldTest()
         {
-			var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+			var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("HouseNumber", 31, CriteriaType.IsNotEquals));
@@ -338,7 +338,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsMoreThanCriteriaUnderIntegerFieldTest()
         {
-			var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+			var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("HouseNumber", 31, CriteriaType.IsMoreThan));
@@ -352,7 +352,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsLessThanCriteriaUnderIntegerFieldTest()
         {
-			var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+			var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("HouseNumber", 31, CriteriaType.IsLessThan));
@@ -366,7 +366,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsMoreThanOrEqualsCriteriaUnderIntegerFieldTest()
         {
-			var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+			var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("HouseNumber", 31, CriteriaType.IsMoreThanOrEquals));
@@ -379,7 +379,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsLessThanOrEqualsCriteriaUnderIntegerFieldTest()
         {
-            var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+            var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("HouseNumber", 31, CriteriaType.IsLessThanOrEquals));
@@ -392,7 +392,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsEqualsCriteriaUnderDateTimeFieldTest()
         {
-            var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+            var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("FoundationDate", new DateTime(1988, 11, 1), CriteriaType.IsLessThan));
@@ -405,7 +405,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsNotEqualsCriteriaUnderDateTimeFieldTest()
         {
-            var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+            var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("FoundationDate", new DateTime(1988, 10, 1), CriteriaType.IsNotEquals));
@@ -418,7 +418,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsMoreThanCriteriaUnderDateTimeFieldTest()
         {
-            var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+            var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("FoundationDate", new DateTime(1988, 10, 1), CriteriaType.IsMoreThan));
@@ -432,7 +432,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsLessThanCriteriaUnderDateTimeFieldTest()
         {
-            var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+            var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("FoundationDate", new DateTime(1988, 10, 1), CriteriaType.IsLessThan));
@@ -446,7 +446,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsMoreThanOrEqualsCriteriaUnderDateTimeFieldTest()
         {
-            var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+            var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("FoundationDate", new DateTime(1988, 10, 1), CriteriaType.IsMoreThanOrEquals));
@@ -459,7 +459,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsLessThanOrEqualsCriteriaUnderDateTimeFieldTest()
         {
-            var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+            var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("FoundationDate", new DateTime(1988, 10, 1), CriteriaType.IsLessThanOrEquals));
@@ -472,7 +472,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsMoreThanCriteriaUnderSetOfFieldsTest()
         {
-            var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+            var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
 
@@ -490,7 +490,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void DifferentCriteriaUnderSetOfFieldsTest()
         {
-            var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+            var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
 
@@ -508,7 +508,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 		[Test]
 		public void IsFullTextSearchCriteriaUnderStringFieldTest()
 		{
-			var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+			var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
 			var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("Street", "away", CriteriaType.FullTextSearch));
@@ -523,7 +523,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void IsFullTextSearchCriteriaByTwoWordsTest()
         {
-            var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+            var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
 			searchModel.AddFilter(_filterFactory.Get("", "Lenina-Avenue", CriteriaType.FullTextSearch));

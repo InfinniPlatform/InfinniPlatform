@@ -4,7 +4,6 @@ namespace InfinniPlatform.Core.ContextTypes.ContextImpl
 {
     public sealed class UrlEncodedDataContext : IUrlEncodedDataContext
     {
-        public IGlobalContext Context { get; set; }
         public dynamic ValidationMessage { get; set; }
         public bool IsValid { get; set; }
         public bool IsInternalServerError { get; set; }

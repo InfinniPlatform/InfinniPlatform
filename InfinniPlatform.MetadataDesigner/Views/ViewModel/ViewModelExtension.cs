@@ -826,13 +826,6 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
                                                         new ExtensionPoint("Move", 2, "Document move context"),
                                                         new ExtensionPoint("GetResult", 8, "Document move result context")
                                                     }),
-                       new ServiceType("apiapplyjson", new List<ExtensionPoint>
-                                                       {
-                                                           new ExtensionPoint("FilterEvents", 4, "Document filter events context"),
-                                                           new ExtensionPoint("Move", 2, "Document move context"),
-                                                           new ExtensionPoint("GetResult", 8, "Document move result context")
-                                                       }),
-                       new ServiceType("notify", new List<ExtensionPoint>()),
                        new ServiceType("search", new List<ExtensionPoint>
                                                  {
                                                      new ExtensionPoint("ValidateFilter", 16, "Document search context"),

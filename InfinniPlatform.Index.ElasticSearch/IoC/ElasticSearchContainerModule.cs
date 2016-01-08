@@ -13,10 +13,6 @@ namespace InfinniPlatform.Index.ElasticSearch.IoC
     {
         public void Load(IContainerBuilder builder)
         {
-            builder.RegisterType<ElasticFactory>()
-                   .As<IIndexFactory>()
-                   .SingleInstance();
-
             builder.RegisterType<IndexComponent>()
                    .As<IIndexComponent>()
                    .SingleInstance();
@@ -24,6 +20,36 @@ namespace InfinniPlatform.Index.ElasticSearch.IoC
             builder.RegisterType<ElasticConnection>()
                    .As<IElasticConnection>()
                    .AsSelf()
+                   .SingleInstance();
+
+            // For ElasticFactory
+
+            builder.RegisterType<ElasticFactory>()
+                   .As<IIndexFactory>()
+                   .SingleInstance();
+
+            builder.RegisterType<IndexQueryExecutor>()
+                   .As<IIndexQueryExecutor>()
+                   .InstancePerDependency();
+
+            builder.RegisterType<VersionBuilder>()
+                   .As<IVersionBuilder>()
+                   .InstancePerDependency();
+
+            builder.RegisterType<ElasticSearchProvider>()
+                   .As<ICrudOperationProvider>()
+                   .InstancePerDependency();
+
+            builder.RegisterType<ElasticSearchAggregationProvider>()
+                   .As<IAggregationProvider>()
+                   .InstancePerDependency();
+
+            builder.RegisterType<IndexToTypeAccordanceProvider>()
+                   .AsSelf()
+                   .SingleInstance();
+
+            builder.RegisterType<ElasticSearchProviderAllIndexes>()
+                   .As<IAllIndexesOperationProvider>()
                    .SingleInstance();
         }
     }

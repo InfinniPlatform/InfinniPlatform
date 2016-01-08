@@ -36,9 +36,8 @@ namespace InfinniPlatform.Sdk.Environment.Index
         /// Наименование типа для выполнения операций с данными. Если не указан, осуществляется выборка всех
         /// существующих в индексе типов
         /// </param>
-        /// <param name="version"></param>
         /// <returns>Провайдер для поиска данных</returns>
-        ICrudOperationProvider BuildCrudOperationProvider(string indexName, string typeName, string version);
+        ICrudOperationProvider BuildCrudOperationProvider(string indexName, string typeName);
 
         /// <summary>
         /// Создать исполнитель запросов к индексу

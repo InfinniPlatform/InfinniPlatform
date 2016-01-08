@@ -17,13 +17,15 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
     /// </summary>
     public sealed class DownloadClassifiersDataMigration : IConfigurationMigration
     {
-        public DownloadClassifiersDataMigration(RestQueryApi restQueryApi)
+        public DownloadClassifiersDataMigration(RestQueryApi restQueryApi, IConfigurationMediatorComponent configurationMediatorComponent)
         {
             _restQueryApi = restQueryApi;
+            _configurationMediatorComponent = configurationMediatorComponent;
         }
 
         private readonly List<MigrationParameter> _parameters = new List<MigrationParameter>();
         private readonly RestQueryApi _restQueryApi;
+        private readonly IConfigurationMediatorComponent _configurationMediatorComponent;
         private IMetadataConfiguration _metadataConfiguration;
 
         /// <summary>
@@ -123,13 +125,11 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         /// <summary>
         /// Устанавливает активную конфигурацию для миграции
         /// </summary>
-        public void AssignActiveConfiguration(string configurationId, IGlobalContext context)
+        public void AssignActiveConfiguration(string configurationId)
         {
             _parameters.Add(new MigrationParameter { Caption = "Path to folder" });
 
-            var configObject =
-                context.GetComponent<IConfigurationMediatorComponent>()
-                       .ConfigurationBuilder.GetConfigurationObject("classifierstorage");
+            var configObject = _configurationMediatorComponent.ConfigurationBuilder.GetConfigurationObject("classifierstorage");
 
             if (configObject != null)
             {

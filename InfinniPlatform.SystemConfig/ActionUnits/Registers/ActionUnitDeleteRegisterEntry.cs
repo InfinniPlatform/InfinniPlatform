@@ -7,10 +7,19 @@ using InfinniPlatform.Sdk.Environment.Register;
 namespace InfinniPlatform.SystemConfig.ActionUnits.Registers
 {
     /// <summary>
-    ///     Точка расширения для удаления записи регистра по идентификатору документа-регистратора
+    /// Точка расширения для удаления записи регистра по идентификатору документа-регистратора
     /// </summary>
     public sealed class ActionUnitDeleteRegisterEntry
     {
+        public ActionUnitDeleteRegisterEntry(DocumentApi documentApi, RegisterApi registerApi)
+        {
+            _documentApi = documentApi;
+            _registerApi = registerApi;
+        }
+
+        private readonly DocumentApi _documentApi;
+        private readonly RegisterApi _registerApi;
+
         public void Action(IApplyContext target)
         {
             string configuration = target.Item.Configuration;
@@ -32,20 +41,19 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Registers
                 throw new ArgumentException("registar should be specified via 'Registar' property");
             }
 
-            var api = target.Context.GetComponent<DocumentApi>();
-
             // Находим все записи в регистре, соответствующие регистратору
-            var registerEntries = target.Context.GetComponent<RegisterApi>().GetRegisterEntries(
+            var registerEntries = _registerApi.GetRegisterEntries(
                 configuration,
                 registerId,
-                f => f.AddCriteria(
-                    c => c.Property(RegisterConstants.RegistrarProperty).IsEquals(registar)), 0, 10000);
+                f => f.AddCriteria(c => c.Property(RegisterConstants.RegistrarProperty).IsEquals(registar)),
+                0,
+                10000);
 
-            DateTime earliestDocumentDate = DateTime.MaxValue;
+            var earliestDocumentDate = DateTime.MaxValue;
 
             foreach (var registerEntry in registerEntries)
             {
-                api.DeleteDocument(configuration, RegisterConstants.RegisterNamePrefix + registerId, registerEntry.Id);
+                _documentApi.DeleteDocument(configuration, RegisterConstants.RegisterNamePrefix + registerId, registerEntry.Id);
 
                 var documentDate = registerEntry[RegisterConstants.DocumentDateProperty];
                 if (documentDate < earliestDocumentDate)
@@ -55,16 +63,16 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Registers
             }
 
             // Необходимо удалить все записи регистра после earliestDocumentDate
-            var notActualRegisterEntries = target.Context.GetComponent<RegisterApi>().GetRegisterEntries(
+            var notActualRegisterEntries = _registerApi.GetRegisterEntries(
                 configuration,
                 registerId,
-                f => f.AddCriteria(
-                    c => c.Property(RegisterConstants.DocumentDateProperty).IsMoreThanOrEquals(earliestDocumentDate)), 0,
+                f => f.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty).IsMoreThanOrEquals(earliestDocumentDate)),
+                0,
                 10000);
 
             foreach (var registerEntry in notActualRegisterEntries)
             {
-                api.DeleteDocument(configuration, RegisterConstants.RegisterNamePrefix + registerId, registerEntry.Id);
+                _documentApi.DeleteDocument(configuration, RegisterConstants.RegisterNamePrefix + registerId, registerEntry.Id);
             }
         }
     }

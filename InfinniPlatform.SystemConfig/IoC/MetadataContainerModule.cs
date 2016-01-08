@@ -1,7 +1,6 @@
 ﻿using InfinniPlatform.Core.ContextComponents;
 using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Core.Modules;
-using InfinniPlatform.Hosting;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Metadata;
@@ -58,19 +57,11 @@ namespace InfinniPlatform.SystemConfig.IoC
                    .As<IWebRoutingHandler>()
                    .AsSelf();
 
-            builder.RegisterType<SystemEventsHandler>()
-                   .As<IWebRoutingHandler>()
-                   .AsSelf();
-
             builder.RegisterType<UploadHandler>()
                    .As<IWebRoutingHandler>()
                    .AsSelf();
 
             builder.RegisterType<UrlEncodedDataHandler>()
-                   .As<IWebRoutingHandler>()
-                   .AsSelf();
-
-            builder.RegisterType<CustomServiceHandler>()
                    .As<IWebRoutingHandler>()
                    .AsSelf();
 

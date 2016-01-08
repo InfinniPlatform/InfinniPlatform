@@ -4,58 +4,61 @@ using System.Linq;
 
 using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Core.SearchOptions.Builders;
-using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Binary;
 
 namespace InfinniPlatform.SystemConfig.ActionUnits.Binary
 {
-    /// <summary>
-    /// Модуль загрузки двоичного контекта
-    /// </summary>
     public sealed class ActionUnitDownloadBinaryContent
     {
-        public ActionUnitDownloadBinaryContent(DocumentApi documentApi)
+        public ActionUnitDownloadBinaryContent(DocumentApi documentApi, IBlobStorage blobStorage)
         {
             _documentApi = documentApi;
+            _blobStorage = blobStorage;
         }
 
+
         private readonly DocumentApi _documentApi;
+        private readonly IBlobStorage _blobStorage;
+
 
         public void Action(IUrlEncodedDataContext target)
         {
             if (target.FormData.ContentId != null)
             {
-                target.Result = LoadBlobData(target.Context.GetComponent<IBlobStorageComponent>(), target.FormData.ContentId);
+                target.Result = _blobStorage.GetBlobData(target.FormData.ContentId);
             }
             else
             {
-                target.Result = FillContentByDocumentId(target.Context.GetComponent<IBlobStorageComponent>(), target.FormData);
+                target.Result = FillContentByDocumentId(target.FormData);
             }
         }
 
-        private dynamic LoadBlobData(IBlobStorageComponent blobStorageComponent, string contentId)
+        private object FillContentByDocumentId(dynamic formData)
         {
-            var blobStorage = blobStorageComponent.GetBlobStorage();
-            var blobData = blobStorage.GetBlobData(contentId);
-            return blobData;
-        }
+            string configuration = formData.Configuration;
+            string documentType = formData.Metadata;
+            object documentId = formData.DocumentId;
 
-        private dynamic FillContentByDocumentId(IBlobStorageComponent blobStorageComponent, dynamic formData)
-        {
-            Action<FilterBuilder> builder = f => f.AddCriteria(cr => cr.Property("Id").IsEquals(formData.DocumentId));
-            IEnumerable<dynamic> documents = _documentApi.GetDocument(formData.Configuration, formData.Metadata, builder, 0, 1);
-            dynamic document = documents.FirstOrDefault();
+            Action<FilterBuilder> filter = f => f.AddCriteria(cr => cr.Property("Id").IsEquals(documentId));
+            IEnumerable<dynamic> documents = _documentApi.GetDocument(configuration, documentType, filter, 0, 1);
+
+            var document = documents.FirstOrDefault();
 
             if (document != null)
             {
-                var linkValue = ObjectHelper.GetProperty(document, formData.FieldName);
-                if (linkValue != null)
+                string blobFieldName = formData.FieldName;
+                dynamic blobFieldValue = ObjectHelper.GetProperty(document, blobFieldName);
+
+                if (blobFieldValue != null)
                 {
-                    return LoadBlobData(blobStorageComponent, linkValue.Info.ContentId);
+                    return _blobStorage.GetBlobData(blobFieldValue.Info.ContentId);
                 }
+
                 return null;
             }
+
             return null;
         }
     }

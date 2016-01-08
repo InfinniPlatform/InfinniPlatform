@@ -1,6 +1,4 @@
-﻿using System;
-
-using InfinniPlatform.Core.ContextTypes.ContextImpl;
+﻿using InfinniPlatform.Core.ContextTypes.ContextImpl;
 using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
@@ -13,18 +11,17 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
     /// </summary>
     public sealed class ApplyChangesHandler : IWebRoutingHandler
     {
-        public ApplyChangesHandler(IGlobalContext globalContext, IMetadataConfigurationProvider metadataConfigurationProvider)
+        public ApplyChangesHandler(IMetadataConfigurationProvider metadataConfigurationProvider)
         {
-            _globalContext = globalContext;
             _metadataConfigurationProvider = metadataConfigurationProvider;
         }
 
 
-        private readonly IGlobalContext _globalContext;
         private readonly IMetadataConfigurationProvider _metadataConfigurationProvider;
 
 
         public IConfigRequestProvider ConfigRequestProvider { get; set; }
+
 
         /// <summary>
         /// Применить изменения, представленные в виде объекта
@@ -34,54 +31,45 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
         /// <returns>Результат обработки JSON объекта</returns>
         public dynamic ApplyJsonObject(string id, dynamic changesObject)
         {
+            var сonfiguration = ConfigRequestProvider.GetConfiguration();
             var documentType = ConfigRequestProvider.GetMetadataIdentifier();
+            var serviceName = ConfigRequestProvider.GetServiceName();
 
-            if (string.IsNullOrEmpty(documentType))
-            {
-                throw new ArgumentException("document type undefined");
-            }
-
-            changesObject.Documents = changesObject.Documents ?? new object[] { changesObject.Document } ;
+            changesObject.Documents = changesObject.Documents ?? new object[] { changesObject.Document };
 
             // Метаданные конфигурации
-            var metadataConfiguration = _metadataConfigurationProvider.GetMetadataConfiguration(ConfigRequestProvider.GetConfiguration());
-
-            // Идентификатор транзакции
-            var transactionMarker = changesObject.TransactionMarker ?? Guid.NewGuid().ToString();
+            var metadataConfiguration = _metadataConfigurationProvider.GetMetadataConfiguration(сonfiguration);
 
             var moveContext = new ApplyContext
             {
                 Id = changesObject.Id,
-                Context = _globalContext,
                 Item = changesObject,
                 Type = documentType,
-                Configuration = ConfigRequestProvider.GetConfiguration(),
-                Metadata = ConfigRequestProvider.GetMetadataIdentifier(),
-                Action = ConfigRequestProvider.GetServiceName(),
-                TransactionMarker = transactionMarker
+                Configuration = сonfiguration,
+                Metadata = documentType,
+                Action = serviceName
             };
 
             if (!ExecuteExtensionPoint(metadataConfiguration, documentType, "Move", moveContext))
             {
-                return AggregateExtensions.PrepareInvalidFilterAggregate(moveContext);
+                return AggregateExtensions.PrepareInvalidResult(moveContext);
             }
 
             var targetResult = new ApplyResultContext
             {
-                Context = _globalContext,
                 Result = moveContext.Result ?? moveContext.Item,
                 Item = moveContext.Item,
-                Configuration = ConfigRequestProvider.GetConfiguration(),
-                Metadata = ConfigRequestProvider.GetMetadataIdentifier(),
-                Action = ConfigRequestProvider.GetServiceName(),
+                Configuration = сonfiguration,
+                Metadata = documentType,
+                Action = serviceName
             };
 
             if (!ExecuteExtensionPoint(metadataConfiguration, documentType, "GetResult", targetResult))
             {
-                return AggregateExtensions.PrepareInvalidFilterAggregate(moveContext);
+                return AggregateExtensions.PrepareInvalidResult(moveContext);
             }
 
-            return AggregateExtensions.PrepareResultAggregate(targetResult.Result);
+            return targetResult.Result;
         }
 
         private bool ExecuteExtensionPoint(IMetadataConfiguration metadataConfiguration, string documentType, string extensionPointName, ICommonContext extensionPointContext)

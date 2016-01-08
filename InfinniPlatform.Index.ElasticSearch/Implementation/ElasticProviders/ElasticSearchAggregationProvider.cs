@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
-using InfinniPlatform.Core.Factories;
 using InfinniPlatform.Core.Index;
+using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters.NestFilters;
 using InfinniPlatform.Index.ElasticSearch.Implementation.IndexTypeSelectors;
@@ -19,17 +19,18 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 {
     public sealed class ElasticSearchAggregationProvider : IAggregationProvider
     {
-        private readonly string _indexName;
-        private readonly IEnumerable<TypeMapping> _typeMappings;
-        private IFilter _filters;
-        private readonly ElasticConnection _elasticConnection;
-
-        public ElasticSearchAggregationProvider(string indexName, string typeName)
+        public ElasticSearchAggregationProvider(ElasticConnection elasticConnection, ITenantProvider tenantProvider, string indexName, string typeName)
         {
+            _elasticConnection = elasticConnection;
+            _tenantProvider = tenantProvider;
             _indexName = indexName.ToLowerInvariant();
-            _elasticConnection = new ElasticConnection();
             _typeMappings = _elasticConnection.GetTypeMappings(_indexName, new[] { typeName });
         }
+
+        private readonly ElasticConnection _elasticConnection;
+        private readonly string _indexName;
+        private readonly ITenantProvider _tenantProvider;
+        private readonly IEnumerable<TypeMapping> _typeMappings;
 
         /// <summary>
         /// Выполнение агрегирующего запроса
@@ -197,19 +198,19 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             {
                 filters = new SearchModel();
             }
-	        var tenantId = GlobalContext.GetTenantId();
+            var tenantId = _tenantProvider.GetTenantId();
             filters.AddFilter(new NestFilter(Filter<dynamic>.Query(q =>
                 q.Term(ElasticConstants.TenantIdField, tenantId) &&
                 q.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid))));
 
-            _filters = filters.Filter;
-            var hasFilter = _filters is IFilter<FilterContainer>;
+            var searchFilters = filters.Filter;
+            var hasFilter = searchFilters is IFilter<FilterContainer>;
             if (hasFilter)
             {
                 var filterAggregation = activeAggregation;
                 activeAggregation =
                     s => s.Filter("aggrfilter", f => f
-                        .Filter(GetFilter)
+                        .Filter(d => GetFilter(searchFilters))
                         .Aggregations(filterAggregation));
             }
 
@@ -251,11 +252,11 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             SearchModel filters = null)
         {
             var dimensions = termFields.Select(termField => new
-            {
-                Label = "term_on_" + termField.ToLowerInvariant().Replace(".", ""),
-                FieldName = termField,
-                DimensionType = DimensionType.Term
-            }.ToDynamic());
+                                                            {
+                                                                Label = "term_on_" + termField.ToLowerInvariant().Replace(".", ""),
+                                                                FieldName = termField,
+                                                                DimensionType = DimensionType.Term
+                                                            }.ToDynamic());
 
             return ExecuteAggregation(
                 dimensions.ToArray(),
@@ -275,11 +276,11 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             {
                 // срезы куба не заданы, вычисляем результат измерения
                 var entryResult = new AggregationResult
-                {
-                    Name = string.Join("_", measureTypes.Select(mt => mt.ToString())),
-                    Values = ExtractCalculations(measureTypes, aggregation),
-                    MeasureTypes = measureTypes
-                };
+                                  {
+                                      Name = string.Join("_", measureTypes.Select(mt => mt.ToString())),
+                                      Values = ExtractCalculations(measureTypes, aggregation),
+                                      MeasureTypes = measureTypes
+                                  };
                 entryResultToModify.Buckets.Add(entryResult);
             }
             else
@@ -292,13 +293,13 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
                         {
                             var item = aggregation.Range(dimension.Label).Items[i];
                             var entryResult = new AggregationResult
-                            {
-                                Name = RangeToString(item),
-                                DocCount = item.DocCount,
-                                // по умолчанию MeasureType = Count, если задан другой тип измерения,
-                                // то значение перезапишется
-                                Values = new double[] { item.DocCount }
-                            };
+                                              {
+                                                  Name = RangeToString(item),
+                                                  DocCount = item.DocCount,
+                                                  // по умолчанию MeasureType = Count, если задан другой тип измерения,
+                                                  // то значение перезапишется
+                                                  Values = new double[] { item.DocCount }
+                                              };
 
                             var nextDim = NextDimension(queryDimensions, dimension);
 
@@ -325,13 +326,13 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
                         {
                             var item = aggregation.DateHistogram(dimension.Label).Items[i];
                             var entryResult = new AggregationResult
-                            {
-                                Name = item.KeyAsString,
-                                DocCount = item.DocCount,
-                                // по умолчанию MeasureType = Count, если задан другой тип измерения,
-                                // то значение перезапишется
-                                Values = new double[] { item.DocCount }
-                            };
+                                              {
+                                                  Name = item.KeyAsString,
+                                                  DocCount = item.DocCount,
+                                                  // по умолчанию MeasureType = Count, если задан другой тип измерения,
+                                                  // то значение перезапишется
+                                                  Values = new double[] { item.DocCount }
+                                              };
 
                             var nextDim = NextDimension(queryDimensions, dimension);
 
@@ -357,13 +358,13 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
                         foreach (var item in aggregation.Terms(dimension.Label).Items)
                         {
                             var entryResult = new AggregationResult
-                            {
-                                Name = item.Key,
-                                DocCount = item.DocCount,
-                                // по умолчанию MeasureType = Count, если задан другой тип измерения,
-                                // то значение перезапишется
-                                Values = new double[] { item.DocCount }
-                            };
+                                              {
+                                                  Name = item.Key,
+                                                  DocCount = item.DocCount,
+                                                  // по умолчанию MeasureType = Count, если задан другой тип измерения,
+                                                  // то значение перезапишется
+                                                  Values = new double[] { item.DocCount }
+                                              };
 
                             var nextDim = NextDimension(queryDimensions, dimension);
 
@@ -389,14 +390,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             }
         }
 
-        private FilterContainer GetFilter(FilterDescriptor<dynamic> filterDescriptor)
+        private static FilterContainer GetFilter(IFilter filters)
         {
-            var filter = (IFilter<FilterContainer>)_filters;
-            if (filter == null)
-            {
-                return null;
-            }
-            return filter.GetFilterObject();
+            return (filters as IFilter<FilterContainer>)?.GetFilterObject();
         }
 
         /// <summary>
@@ -551,10 +547,10 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             for (var i = 1; i < points.Count; i++)
             {
                 innerRanges.Add(new
-                {
-                    From = points[i - 1],
-                    To = points[i]
-                }.ToDynamic());
+                                {
+                                    From = points[i - 1],
+                                    To = points[i]
+                                }.ToDynamic());
             }
 
             innerRanges.Add(new { From = points[points.Count - 1] }.ToDynamic());

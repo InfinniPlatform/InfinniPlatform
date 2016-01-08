@@ -137,7 +137,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         /// <summary>
         /// Устанавливает активную конфигурацию для миграции
         /// </summary>
-        public void AssignActiveConfiguration(string configurationId, IGlobalContext context)
+        public void AssignActiveConfiguration(string configurationId)
         {
             _activeConfiguration = configurationId;
         }

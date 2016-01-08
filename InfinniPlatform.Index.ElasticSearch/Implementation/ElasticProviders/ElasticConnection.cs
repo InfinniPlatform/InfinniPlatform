@@ -27,6 +27,11 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         private static readonly Lazy<ElasticClient> ElasticClient;
         private static Dictionary<string, IList<TypeMapping>> _mappingsCache;
 
+        public ElasticConnection()
+        {
+            
+        }
+
         static ElasticConnection()
         {
             // TODO: Избавиться от статического конструктора и нормально зарегистрировать все зависимости

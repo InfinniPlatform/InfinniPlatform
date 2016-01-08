@@ -1,6 +1,5 @@
 ﻿using InfinniPlatform.Core.Compression;
 using InfinniPlatform.Core.ContextComponents;
-using InfinniPlatform.Core.Factories;
 using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Core.RestApi.CommonApi;
 using InfinniPlatform.Core.RestApi.DataApi;
@@ -10,7 +9,6 @@ using InfinniPlatform.Core.Settings;
 using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Sdk.ApiContracts;
 using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment.Log;
 using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.Sdk.Global;
@@ -27,15 +25,6 @@ namespace InfinniPlatform.Core.IoC
         {
             builder.RegisterInstance(AppConfiguration.Instance)
                    .As<IAppConfiguration>();
-
-            builder.RegisterType<GlobalContext>()
-                   .As<IGlobalContext>();
-
-            builder.RegisterType<PlatformComponentsPack>()
-                   .As<IPlatformComponentsPack>();
-
-            builder.RegisterType<CustomServiceGlobalContext>()
-                   .As<ICustomServiceGlobalContext>();
 
             builder.RegisterType<ScriptContext>()
                    .AsSelf()

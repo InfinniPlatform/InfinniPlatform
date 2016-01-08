@@ -7,16 +7,21 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
 {
     public sealed class ActionUnitHospitalRegisterMoveAction
     {
+        public ActionUnitHospitalRegisterMoveAction(IRegistryComponent registryComponent)
+        {
+            _registryComponent = registryComponent;
+        }
+
+        private readonly IRegistryComponent _registryComponent;
+
         public void Action(IApplyContext target)
         {
             dynamic incomeEntry = null;
             dynamic consumptionEntry = null;
 
-            var registryComponent = target.Context.GetComponent<IRegistryComponent>();
-
             if (target.Item.OldRoom != null && target.Item.OldBed != null)
             {
-                incomeEntry = registryComponent.CreateAccumulationRegisterEntry(target.Configuration, RegistersBehavior.AvailableBedsRegister, target.Item.Metadata, target.Item, target.Item.Date);
+                incomeEntry = _registryComponent.CreateAccumulationRegisterEntry(target.Configuration, RegistersBehavior.AvailableBedsRegister, target.Item.Metadata, target.Item, target.Item.Date);
                 incomeEntry.Value = 1; // Изменение количества на единицу
 
                 // Койка освободилась - income
@@ -27,7 +32,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
 
             if (target.Item.NewRoom != null && target.Item.NewBed != null)
             {
-                consumptionEntry = registryComponent.CreateAccumulationRegisterEntry(target.Configuration, RegistersBehavior.AvailableBedsRegister, target.Item.Metadata, target.Item, target.Item.Date);
+                consumptionEntry = _registryComponent.CreateAccumulationRegisterEntry(target.Configuration, RegistersBehavior.AvailableBedsRegister, target.Item.Metadata, target.Item, target.Item.Date);
                 consumptionEntry.Value = 1; // Изменение количества на единицу
 
                 // Койку заняли - consumption
@@ -38,12 +43,12 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
 
             if (incomeEntry != null)
             {
-                registryComponent.PostRegisterEntries(target.Configuration, RegistersBehavior.AvailableBedsRegister, new[] { incomeEntry });
+                _registryComponent.PostRegisterEntries(target.Configuration, RegistersBehavior.AvailableBedsRegister, new[] { incomeEntry });
             }
 
             if (consumptionEntry != null)
             {
-                registryComponent.PostRegisterEntries(target.Configuration, RegistersBehavior.AvailableBedsRegister, new[] { consumptionEntry });
+                _registryComponent.PostRegisterEntries(target.Configuration, RegistersBehavior.AvailableBedsRegister, new[] { consumptionEntry });
             }
         }
     }

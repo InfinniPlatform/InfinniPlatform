@@ -18,11 +18,15 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Registers
     /// </summary>
     public sealed class ActionUnitGetRegisterValuesByDate
     {
-        public ActionUnitGetRegisterValuesByDate(RestQueryApi restQueryApi)
+        public ActionUnitGetRegisterValuesByDate(RestQueryApi restQueryApi, DocumentApi documentApi, IMetadataComponent metadataComponent)
         {
             _restQueryApi = restQueryApi;
+            _documentApi = documentApi;
+            _metadataComponent = metadataComponent;
         }
 
+        private readonly DocumentApi _documentApi;
+        private readonly IMetadataComponent _metadataComponent;
         private readonly RestQueryApi _restQueryApi;
 
         public void Action(IApplyResultContext target)
@@ -32,10 +36,9 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Registers
             string registerId = target.Item.Register.ToString();
             var specifiedDimensions = target.Item.Dimensions;
 
-            var registerObject =
-                target.Context.GetComponent<IMetadataComponent>()
-                      .GetMetadataList(configurationId, registerId, MetadataType.Register)
-                      .FirstOrDefault();
+            var registerObject = _metadataComponent
+                .GetMetadataList(configurationId, registerId, MetadataType.Register)
+                .FirstOrDefault();
 
             if (registerObject == null)
             {
@@ -62,7 +65,7 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Registers
 
             if (closestDate != null)
             {
-                aggregatedTotals = target.Context.GetComponent<DocumentApi>().GetDocument(
+                aggregatedTotals = _documentApi.GetDocument(
                     configurationId,
                     RegisterConstants.RegisterTotalNamePrefix + registerId,
                     f => f.AddCriteria(

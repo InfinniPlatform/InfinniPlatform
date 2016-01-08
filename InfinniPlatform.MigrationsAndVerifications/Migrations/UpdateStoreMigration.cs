@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using InfinniPlatform.Core.Metadata;
-using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Metadata;
 
@@ -16,19 +14,19 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
     /// </summary>
     public sealed class UpdateStoreMigration : IConfigurationMigration
     {
-        public UpdateStoreMigration()
+        public UpdateStoreMigration(IIndexFactory indexFactory, IConfigurationMediatorComponent configurationMediatorComponent)
         {
-            _indexFactory = new ElasticFactory();
+            _indexFactory = indexFactory;
+            _configurationMediatorComponent = configurationMediatorComponent;
         }
 
+        private readonly IConfigurationMediatorComponent _configurationMediatorComponent;
         private readonly IIndexFactory _indexFactory;
 
         /// <summary>
         /// Конфигурация, к которой применяется миграция
         /// </summary>
         private string _activeConfiguration;
-
-        private IGlobalContext _context;
 
         /// <summary>
         /// Текстовое описание миграции
@@ -75,8 +73,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         {
             var resultMessage = new StringBuilder();
 
-            var configObject = _context.GetComponent<IConfigurationMediatorComponent>()
-                                       .ConfigurationBuilder.GetConfigurationObject(_activeConfiguration);
+            var configObject = _configurationMediatorComponent.ConfigurationBuilder.GetConfigurationObject(_activeConfiguration);
 
             IMetadataConfiguration metadataConfiguration = null;
             if (configObject != null)
@@ -86,8 +83,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 
             if (metadataConfiguration != null)
             {
-                var configurationObjectBuilder = _context.GetComponent<IConfigurationMediatorComponent>()
-                                                         .ConfigurationBuilder;
+                var configurationObjectBuilder = _configurationMediatorComponent.ConfigurationBuilder;
 
                 var documents = metadataConfiguration.Documents;
                 foreach (var documentId in documents)
@@ -126,10 +122,9 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         /// <summary>
         /// Устанавливает активную конфигурацию для миграции
         /// </summary>
-        public void AssignActiveConfiguration(string configurationId, IGlobalContext context)
+        public void AssignActiveConfiguration(string configurationId)
         {
             _activeConfiguration = configurationId;
-            _context = context;
         }
     }
 }

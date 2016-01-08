@@ -6,51 +6,64 @@ using InfinniPlatform.Core.Properties;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.SystemConfig.RequestHandlers
 {
     public sealed class UploadHandler : IWebRoutingHandler
     {
-        private readonly IGlobalContext _globalContext;
-
-        public UploadHandler(IGlobalContext globalContext)
+        public UploadHandler(IMetadataConfigurationProvider metadataConfigurationProvider)
         {
-            _globalContext = globalContext;
+            _metadataConfigurationProvider = metadataConfigurationProvider;
         }
+
+
+        private readonly IMetadataConfigurationProvider _metadataConfigurationProvider;
+
 
         public IConfigRequestProvider ConfigRequestProvider { get; set; }
 
+
         public dynamic UploadFile(dynamic linkedData, Stream uploadStream)
         {
-            var config = ConfigRequestProvider.GetConfiguration();
-            var metadata = ConfigRequestProvider.GetMetadataIdentifier();
+            var сonfiguration = ConfigRequestProvider.GetConfiguration();
+            var documentType = ConfigRequestProvider.GetMetadataIdentifier();
 
             var target = new UploadContext
             {
                 IsValid = true,
                 LinkedData = linkedData,
-                Configuration = config,
-                Metadata = metadata,
-                FileContent = uploadStream,
-                Context = _globalContext,
+                Configuration = сonfiguration,
+                Metadata = documentType,
+                FileContent = uploadStream
             };
 
-            var metadataConfig =
-                _globalContext.GetComponent<IMetadataConfigurationProvider>()
-                    .GetMetadataConfiguration(ConfigRequestProvider.GetConfiguration());
+            // Метаданные конфигурации
+            var metadataConfiguration = _metadataConfigurationProvider.GetMetadataConfiguration(сonfiguration);
 
-            metadataConfig.MoveWorkflow(metadata, metadataConfig.GetExtensionPointValue(ConfigRequestProvider, "Upload"),
-                target);
-
-            if (target.IsValid)
+            if (ExecuteExtensionPoint(metadataConfiguration, documentType, "Upload", target))
             {
                 dynamic item = new DynamicWrapper();
                 item.IsValid = true;
                 item.ValidationMessage = Resources.DocumentContentSuccessfullyUploaded;
                 item.Result = target.Result;
-                return AggregateExtensions.PrepareResultAggregate(item);
+
+                return item;
             }
-            return AggregateExtensions.PrepareInvalidResultAggregate(target);
+
+            return AggregateExtensions.PrepareInvalidResult(target);
+        }
+
+        private bool ExecuteExtensionPoint(IMetadataConfiguration metadataConfiguration, string documentType, string extensionPointName, ICommonContext extensionPointContext)
+        {
+            var extensionPoint = metadataConfiguration.GetExtensionPointValue(ConfigRequestProvider, extensionPointName);
+
+            if (!string.IsNullOrEmpty(extensionPoint))
+            {
+                metadataConfiguration.MoveWorkflow(documentType, extensionPoint, extensionPointContext);
+            }
+
+            return extensionPointContext.IsValid;
         }
     }
 }

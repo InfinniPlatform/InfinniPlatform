@@ -10,9 +10,7 @@ namespace InfinniPlatform.Sdk.Environment.Index
         /// <summary>
         ///     Метод преобразует схему данных документа в схему, применимую к контейнеру документов
         /// </summary>
-        public static IEnumerable<PropertyMapping> ExtractProperties(string version,
-																	 dynamic schemaProperties,
-																	 IConfigurationObjectBuilder configurationObjectBuilder)
+        public static IEnumerable<PropertyMapping> ExtractProperties(dynamic schemaProperties, IConfigurationObjectBuilder configurationObjectBuilder)
         {
             var properties = new List<PropertyMapping>();
 
@@ -78,8 +76,7 @@ namespace InfinniPlatform.Sdk.Environment.Index
                                 if (inlineDocumentSchema != null)
                                 {
                                     properties.Add(new PropertyMapping(propertyModel.Key,
-                                                                       ExtractProperties(version,
-                                                                                         inlineDocumentSchema.Properties,
+                                                                       ExtractProperties(inlineDocumentSchema.Properties,
                                                                                          configurationObjectBuilder)));
                                 }
                             }
@@ -87,15 +84,14 @@ namespace InfinniPlatform.Sdk.Environment.Index
                         else
                         {
                             properties.Add(new PropertyMapping(propertyModel.Key,
-                                                               ExtractProperties(version, propertyModel.Value.Properties,
+                                                               ExtractProperties(propertyModel.Value.Properties,
                                                                                  configurationObjectBuilder)));
                         }
                     }
                     else if (propertyModel.Value.Type.ToString() == "Array")
                     {
                         properties.Add(new PropertyMapping(propertyModel.Key,
-                                                           ExtractProperties(version,
-                                                                             propertyModel.Value.Items.Properties,
+                                                           ExtractProperties(propertyModel.Value.Items.Properties,
                                                                              configurationObjectBuilder)));
                     }
                 }

@@ -16,13 +16,15 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
     /// </summary>
     public sealed class EditSortablePropertiesMigration : IConfigurationMigration
     {
-        public EditSortablePropertiesMigration(RestQueryApi restQueryApi)
+        public EditSortablePropertiesMigration(RestQueryApi restQueryApi, IConfigurationMediatorComponent configurationMediatorComponent)
         {
             _restQueryApi = restQueryApi;
+            _configurationMediatorComponent = configurationMediatorComponent;
         }
 
         private readonly List<MigrationParameter> _parameters = new List<MigrationParameter>();
         private readonly RestQueryApi _restQueryApi;
+        private readonly IConfigurationMediatorComponent _configurationMediatorComponent;
 
         /// <summary>
         /// Конфигурация, к которой применяется миграция
@@ -149,12 +151,10 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         /// <summary>
         /// Устанавливает активную конфигурацию для миграции
         /// </summary>
-        public void AssignActiveConfiguration(string configurationId, IGlobalContext context)
+        public void AssignActiveConfiguration(string configurationId)
         {
             _activeConfiguration = configurationId;
-            var configObject =
-                context.GetComponent<IConfigurationMediatorComponent>()
-                       .ConfigurationBuilder.GetConfigurationObject(_activeConfiguration);
+            var configObject = _configurationMediatorComponent.ConfigurationBuilder.GetConfigurationObject(_activeConfiguration);
 
             if (configObject != null)
             {

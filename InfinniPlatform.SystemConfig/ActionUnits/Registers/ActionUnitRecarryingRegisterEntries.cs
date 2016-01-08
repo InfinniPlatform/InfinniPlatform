@@ -50,7 +50,7 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Registers
                 Action<FilterBuilder> filter = f => f.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty)
                                                                         .IsLessThanOrEquals(endDate));
 
-                var registerEntries = target.Context.GetComponent<DocumentApi>().GetDocument(
+                var registerEntries = _documentApi.GetDocument(
                     configurationId,
                     RegisterConstants.RegisterNamePrefix + registerId,
                     filter,
@@ -72,7 +72,7 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Registers
                     string registrarId = registerEntry.Registrar;
                     string registrarType = registerEntry.RegistrarType;
                     var documentRegistrar =
-                        target.Context.GetComponent<DocumentApi>()
+                        _documentApi
                               .GetDocument(configurationId, registrarType,
                                   f => f.AddCriteria(c => c.Property("Id").IsEquals(registrarId)), 0, 1)
                               .FirstOrDefault();
@@ -95,7 +95,7 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Registers
                 foreach (var document in documentsToRecarry)
                 {
                     // Перепроводка документа
-                    target.Context.GetComponent<DocumentApi>()
+                    _documentApi
                           .SetDocument(configurationId, document.Item1, document.Item2);
                 }
             }
@@ -103,7 +103,7 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Registers
             // Удаляем значения из таблицы итогов
             Action<FilterBuilder> action = f =>
                             f.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty).IsLessThanOrEquals(endDate));
-            var registerTotalEntries = target.Context.GetComponent<DocumentApi>().GetDocument(
+            var registerTotalEntries = _documentApi.GetDocument(
                 configurationId,
                 RegisterConstants.RegisterTotalNamePrefix + registerId,
                 action,

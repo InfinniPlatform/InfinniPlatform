@@ -117,10 +117,8 @@
     </Compile>
     <Compile Include="RequestHandlers\AggregateExtensions.cs" />
     <Compile Include="RequestHandlers\ApplyChangesHandler.cs" />
-    <Compile Include="RequestHandlers\CustomServiceHandler.cs" />
     <Compile Include="RequestHandlers\SearchDocumentAggregationHandler.cs" />
     <Compile Include="RequestHandlers\SearchHandler.cs" />
-    <Compile Include="RequestHandlers\SystemEventsHandler.cs" />
     <Compile Include="RequestHandlers\UploadHandler.cs" />
     <Compile Include="RequestHandlers\UrlEncodedDataHandler.cs" />
     <Compile Include="Metadata\ConfigurationObject.cs" />

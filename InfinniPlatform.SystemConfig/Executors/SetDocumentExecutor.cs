@@ -12,16 +12,14 @@ namespace InfinniPlatform.SystemConfig.Executors
 {
     internal class SetDocumentExecutor : ISetDocumentExecutor
     {
-        public SetDocumentExecutor(IGlobalContext globalContext, IDocumentTransactionScopeProvider transactionScopeProvider, IMetadataComponent metadataComponent, IScriptRunnerComponent scriptRunnerComponent)
+        public SetDocumentExecutor(IDocumentTransactionScopeProvider transactionScopeProvider, IMetadataComponent metadataComponent, IScriptRunnerComponent scriptRunnerComponent)
         {
-            _globalContext = globalContext;
             _transactionScopeProvider = transactionScopeProvider;
             _metadataComponent = metadataComponent;
             _scriptRunnerComponent = scriptRunnerComponent;
         }
 
 
-        private readonly IGlobalContext _globalContext;
         private readonly IDocumentTransactionScopeProvider _transactionScopeProvider;
         private readonly IMetadataComponent _metadataComponent;
         private readonly IScriptRunnerComponent _scriptRunnerComponent;
@@ -171,9 +169,6 @@ namespace InfinniPlatform.SystemConfig.Executors
             // TODO: Скорей всего, эта информация не нужна
             actionContext.Configuration = configuration;
             actionContext.Metadata = documentType;
-
-            // TODO: Заменить на IoC
-            actionContext.Context = _globalContext;
 
             return actionContext;
         }

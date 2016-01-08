@@ -6,13 +6,19 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
 {
     public sealed class TestSignalRAction
     {
+        public TestSignalRAction(IWebClientNotificationComponent webClientNotificationComponent)
+        {
+            _webClientNotificationComponent = webClientNotificationComponent;
+        }
+
+        private readonly IWebClientNotificationComponent _webClientNotificationComponent;
+
         public void Action(IApplyContext target)
         {
             dynamic testObject = new DynamicWrapper();
             testObject.TestProperty = "Hello world";
 
-            target.Context.GetComponent<IWebClientNotificationComponent>()
-                  .Notify("routingKey", testObject.ToString());
+            _webClientNotificationComponent.Notify("routingKey", testObject.ToString());
         }
     }
 }

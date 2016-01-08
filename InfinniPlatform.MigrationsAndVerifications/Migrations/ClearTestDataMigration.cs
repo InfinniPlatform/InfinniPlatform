@@ -16,12 +16,14 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
     /// </summary>
     public sealed class ClearTestDataMigration : IConfigurationMigration
     {
-        public ClearTestDataMigration(DocumentApi documentApi)
+        public ClearTestDataMigration(DocumentApi documentApi, IConfigurationMediatorComponent configurationMediatorComponent)
         {
             _documentApi = documentApi;
+            _configurationMediatorComponent = configurationMediatorComponent;
         }
 
         private readonly DocumentApi _documentApi;
+        private readonly IConfigurationMediatorComponent _configurationMediatorComponent;
         private readonly List<MigrationParameter> _parameters = new List<MigrationParameter>();
 
         /// <summary>
@@ -122,13 +124,11 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         /// <summary>
         /// Устанавливает активную конфигурацию для миграции
         /// </summary>
-        public void AssignActiveConfiguration(string configurationId, IGlobalContext context)
+        public void AssignActiveConfiguration(string configurationId)
         {
             _activeConfiguration = configurationId;
 
-            var configObject =
-                context.GetComponent<IConfigurationMediatorComponent>()
-                       .ConfigurationBuilder.GetConfigurationObject(_activeConfiguration);
+            var configObject = _configurationMediatorComponent.ConfigurationBuilder.GetConfigurationObject(_activeConfiguration);
 
             IMetadataConfiguration metadataConfiguration = null;
             if (configObject != null)

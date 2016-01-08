@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Core.Factories;
 using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.RestApi.Auth;
+using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticSearchModels;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters.NestFilters;
@@ -23,9 +23,11 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
     /// </summary>
     public sealed class IndexQueryExecutor : IIndexQueryExecutor
     {
-        public IndexQueryExecutor(IndexToTypeAccordanceSettings settings)
+        public IndexQueryExecutor(ElasticConnection elasticConnection, ITenantProvider tenantProvider, IndexToTypeAccordanceSettings settings)
         {
-            _elasticConnection = new ElasticConnection();
+            _elasticConnection = elasticConnection;
+            _tenantProvider = tenantProvider;
+
             _indexNames = settings.Accordances.Select(x => x.Key.ToLower()).ToArray();
             _typeNames = settings.Accordances.ToArray();
             _searchInAllIndeces = settings.SearchInAllIndeces;
@@ -33,7 +35,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         }
 
         private readonly ElasticConnection _elasticConnection;
-        // Имена индексов, использующиеся при поисковых запросах по нескольким индексам
+        private readonly ITenantProvider _tenantProvider;
         private readonly IEnumerable<string> _indexNames;
         private readonly bool _searchInAllIndeces;
         private readonly bool _searchInAllTypes;
@@ -65,7 +67,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         {
             var indexName = _indexNames.FirstOrDefault();
 
-            var tenantId = GlobalContext.GetTenantId(indexName);
+            var tenantId = _tenantProvider.GetTenantId(indexName);
 
             if (tenantId != AuthorizationStorageExtensions.AnonymousUser)
             {
@@ -76,12 +78,12 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
             Func<CountDescriptor<dynamic>, CountDescriptor<dynamic>> desc =
                 descriptor => new ElasticCountQueryBuilder(descriptor)
-                                  .BuildCountQueryDescriptor(searchModel)
-                                  .BuildSearchForType(_indexNames,
-                                                      _typeNames == null || !_typeNames.Any()
-                                                          ? null
-                                                          : _typeNames.SelectMany(x => x.GetMappingsTypeNames()),
-                                                      _searchInAllIndeces, _searchInAllTypes);
+                    .BuildCountQueryDescriptor(searchModel)
+                    .BuildSearchForType(_indexNames,
+                        _typeNames == null || !_typeNames.Any()
+                            ? null
+                            : _typeNames.SelectMany(x => x.GetMappingsTypeNames()),
+                        _searchInAllIndeces, _searchInAllTypes);
 
             var documentsResponse = _elasticConnection.Client.Count(desc);
 
@@ -96,9 +98,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
         /// <returns>Результаты поиска</returns>
         public SearchViewModel QueryOverObject(SearchModel searchModel, Func<dynamic, string, string, object> convert)
         {
-            var indexName = _indexNames.FirstOrDefault();
-
-            var tenantId = GlobalContext.GetTenantId();
+            var tenantId = _tenantProvider.GetTenantId();
 
             var tenantIdFilter = new NestFilter(Filter<dynamic>.Terms(ElasticConstants.TenantIdField, new[] { tenantId, AuthorizationStorageExtensions.AnonymousUser, AuthorizationStorageExtensions.SystemTenant }));
 
@@ -106,16 +106,16 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 
             searchModel.AddFilter(new NestFilter(Filter<dynamic>.Query(q => q.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid))));
 
-            Func <SearchDescriptor<dynamic>, SearchDescriptor<dynamic>> desc =
+            Func<SearchDescriptor<dynamic>, SearchDescriptor<dynamic>> desc =
                 descriptor => new ElasticSearchQueryBuilder(descriptor)
-                                  .BuildSearchDescriptor(searchModel)
-                                  .BuildSearchForType(_indexNames, _typeNames == null || !_typeNames.Any()
-                                                                       ? null
-                                                                       : _typeNames.SelectMany(x => x.GetMappingsTypeNames()),
-                                                      _searchInAllIndeces, _searchInAllTypes);
-            
+                    .BuildSearchDescriptor(searchModel)
+                    .BuildSearchForType(_indexNames, _typeNames == null || !_typeNames.Any()
+                        ? null
+                        : _typeNames.SelectMany(x => x.GetMappingsTypeNames()),
+                        _searchInAllIndeces, _searchInAllTypes);
+
             var documentsResponse = _elasticConnection.Client.Search(desc);
-            
+
             var hitsCount = documentsResponse?.Hits?.Count() ?? 0;
 
             var documentResponseCount = documentsResponse?.Hits?.Select(r => convert(r.Source, r.Index, ToDocumentId(r.Type))).ToList() ?? new List<dynamic>();

@@ -18,10 +18,10 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Registers
     /// </summary>
     public sealed class ActionUnitPostRegisterEntries
     {
-        public ActionUnitPostRegisterEntries(IMetadataComponent metadataComponent, DocumentApi documentApi)
+        public ActionUnitPostRegisterEntries(DocumentApi documentApi, IMetadataComponent metadataComponent)
         {
-            _metadataComponent = metadataComponent;
             _documentApi = documentApi;
+            _metadataComponent = metadataComponent;
         }
 
         private readonly DocumentApi _documentApi;

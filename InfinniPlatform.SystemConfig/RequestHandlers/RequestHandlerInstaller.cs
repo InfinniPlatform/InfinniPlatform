@@ -36,17 +36,6 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
                     .AddExtensionPoint("GetResult", ContextTypeKind.ApplyResult)
                     .AsVerb(VerbType.Post));
 
-            //регистрация обработчика пользовательского сервиса, предназначенного для работы с SDK API
-            _serviceTemplateConfiguration.RegisterServiceTemplate<CustomServiceHandler>("ApiApplyJson", "ApplyJsonObject",
-                new ExtensionPointHandlerConfig()
-                    .AddExtensionPoint("FilterEvents", ContextTypeKind.ApplyFilter)
-                    .AddExtensionPoint("Move", ContextTypeKind.ApplyMove)
-                    .AddExtensionPoint("GetResult", ContextTypeKind.ApplyResult)
-                    .AsVerb(VerbType.Post));
-
-            _serviceTemplateConfiguration.RegisterServiceTemplate<SystemEventsHandler>("Notify", "Notify",
-                new ExtensionPointHandlerConfig().AsVerb(VerbType.Post));
-
             _serviceTemplateConfiguration.RegisterServiceTemplate<SearchHandler>("Search", "GetSearchResult",
                 new ExtensionPointHandlerConfig().AsVerb(VerbType.Get)
                                                  .AddExtensionPoint("ValidateFilter", ContextTypeKind.SearchContext)

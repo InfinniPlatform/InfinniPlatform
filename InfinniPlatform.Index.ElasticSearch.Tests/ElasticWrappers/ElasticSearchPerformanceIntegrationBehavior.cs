@@ -6,6 +6,7 @@ using System.Linq;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
+using InfinniPlatform.Index.ElasticSearch.Tests.Builders;
 using InfinniPlatform.Sdk.Environment.Index;
 
 using NUnit.Framework;
@@ -24,7 +25,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 			var elasticConnection = new ElasticConnection();
             elasticConnection.DeleteType("testindex", "testindex");
             elasticConnection.CreateType("testindex", "testindex");
-            var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider("testindex", "testindex", null);
+            var elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider("testindex", "testindex");
 
 			dynamic expandoObject = new ExpandoObject();
 
@@ -49,7 +50,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 			var elasticConnection = new ElasticConnection();
             elasticConnection.DeleteType("testindex", "testindex");
             elasticConnection.CreateType("testindex", "testindex");
-            var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider("testindex", "testindex");
+            var elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider("testindex", "testindex");
 
 			dynamic expandoObject = new ExpandoObject();
 			expandoObject.Id = 1;
@@ -74,8 +75,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 			var indexProvider = new ElasticConnection();
             indexProvider.DeleteType("testindex", "testindex");
             indexProvider.CreateType("testindex", "testindex");
-            var queryWrapper = new IndexQueryExecutor(new IndexToTypeAccordanceProvider().GetIndexTypeAccordances("testindex", new[] { "testindex" }));
-			var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider("testindex", "testindex");
+		    var factory = ElasticFactoryBuilder.GetElasticFactory();
+            var queryWrapper = factory.BuildIndexQueryExecutor("testindex", "testindex");
+			var elasticSearchProvider = factory.BuildCrudOperationProvider("testindex", "testindex");
             
 			for (int i = 0; i < recordCount; i++)
 			{

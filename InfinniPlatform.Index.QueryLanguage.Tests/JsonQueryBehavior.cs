@@ -7,6 +7,7 @@ using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters.NestFilters;
+using InfinniPlatform.Index.ElasticSearch.Tests.Builders;
 using InfinniPlatform.Index.QueryLanguage.Implementation;
 using InfinniPlatform.Sdk.Environment.Index;
 
@@ -31,7 +32,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
         [TestFixtureSetUp]
         public void TestFixtureSetup()
         {
-            var elasticFactory = new ElasticFactory();
+            var elasticFactory = ElasticFactoryBuilder.GetElasticFactory();
 
             _elasticConnection = new ElasticConnection();
             _elasticConnection.DeleteType("TestIndex", "TestIndex");
@@ -39,8 +40,8 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
             _elasticConnection.DeleteType("Document", "Document");
             _elasticConnection.CreateType("Document", "Document");
 
-            _elasticSearchProvider = elasticFactory.BuildCrudOperationProvider("TestIndex", "TestIndex", null);
-            _elasticSearchProviderMain = elasticFactory.BuildCrudOperationProvider("Document", "Document", null);
+            _elasticSearchProvider = elasticFactory.BuildCrudOperationProvider("TestIndex", "TestIndex");
+            _elasticSearchProviderMain = elasticFactory.BuildCrudOperationProvider("Document", "Document");
         }
 
         private void CreateReferencedEntity()
@@ -176,7 +177,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
                                  }
                              };
 
-            var referenceBuilder = new ReferenceBuilder(new ElasticFactory());
+            var referenceBuilder = new ReferenceBuilder(ElasticFactoryBuilder.GetElasticFactory());
             referenceBuilder.FillReference(_selectingJson, references.ToArray(), new List<WhereObject>(), new NestFilterBuilder());
 
             Assert.AreEqual(
@@ -202,7 +203,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
                                  }
                              };
 
-            var referenceBuilder = new ReferenceBuilder(new ElasticFactory());
+            var referenceBuilder = new ReferenceBuilder(ElasticFactoryBuilder.GetElasticFactory());
             referenceBuilder.FillReference(_selectingJson, references.ToArray(), new List<WhereObject>(), new NestFilterBuilder());
 
             Assert.AreEqual(
@@ -228,7 +229,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
                                  }
                              };
 
-            var referenceBuilder = new ReferenceBuilder(new ElasticFactory());
+            var referenceBuilder = new ReferenceBuilder(ElasticFactoryBuilder.GetElasticFactory());
             referenceBuilder.FillReference(_selectingJson, references.ToArray(), new List<WhereObject>(), new NestFilterBuilder());
 
             Assert.AreEqual(
@@ -411,7 +412,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
                                                             }
                                                });
 
-            var result = new JsonQueryExecutor(new ElasticFactory(), _filterFactory).ExecuteQuery(jsonQuery);
+            var result = new JsonQueryExecutor(ElasticFactoryBuilder.GetElasticFactory(), _filterFactory).ExecuteQuery(jsonQuery);
             var compareResult = new[]
                                 {
                                     new
@@ -475,7 +476,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
                                                             }
                                                });
 
-            var result = new JsonQueryExecutor(new ElasticFactory(), _filterFactory).ExecuteQuery(jsonQuery);
+            var result = new JsonQueryExecutor(ElasticFactoryBuilder.GetElasticFactory(), _filterFactory).ExecuteQuery(jsonQuery);
 
             var compareResult = new[]
                                 {
@@ -533,7 +534,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
                                                             }
                                                });
 
-            var result = new JsonQueryExecutor(new ElasticFactory(), _filterFactory).ExecuteQuery(jsonQuery);
+            var result = new JsonQueryExecutor(ElasticFactoryBuilder.GetElasticFactory(), _filterFactory).ExecuteQuery(jsonQuery);
 
             var compareResult = new[]
                                 {

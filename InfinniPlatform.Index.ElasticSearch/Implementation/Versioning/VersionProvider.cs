@@ -7,23 +7,22 @@ using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.Versioning
 {
-	/// <summary>
-	/// Провайдер операций с версионными данными без использования истории
-	/// </summary>
-	public sealed class VersionProvider : IVersionProvider
-	{
-	    private readonly ICrudOperationProvider _elasticSearchProvider;
-	    private readonly IIndexQueryExecutor _indexQueryExecutor;
+    /// <summary>
+    /// Провайдер операций с версионными данными без использования истории
+    /// </summary>
+    public sealed class VersionProvider : IVersionProvider
+    {
+        public VersionProvider(ICrudOperationProvider elasticSearchProvider, IIndexQueryExecutor indexQueryExecutor)
+        {
+            _elasticSearchProvider = elasticSearchProvider;
+            _indexQueryExecutor = indexQueryExecutor;
+        }
 
-	    public VersionProvider(ICrudOperationProvider elasticSearchProvider,
-	                           IIndexQueryExecutor indexQueryExecutor)
-	    {
-	        _elasticSearchProvider = elasticSearchProvider;
-	        _indexQueryExecutor = indexQueryExecutor;
-	    }
+        private readonly ICrudOperationProvider _elasticSearchProvider;
+        private readonly IIndexQueryExecutor _indexQueryExecutor;
 
-	    /// <summary>
-        ///     Получить актуальные версии объектов, отсортированные по дате вставки в индекс по убыванию
+        /// <summary>
+        /// Получить актуальные версии объектов, отсортированные по дате вставки в индекс по убыванию
         /// </summary>
         /// <param name="filterObject">Фильтр объектов</param>
         /// <param name="pageNumber">Номер страницы данных</param>
@@ -51,7 +50,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.Versioning
         }
 
         /// <summary>
-        ///     Получить общее количество объектов по заданному фильтру
+        /// Получить общее количество объектов по заданному фильтру
         /// </summary>
         /// <param name="filterObject">Фильтр объектов</param>
         /// <returns>Количество объектов</returns>
@@ -64,69 +63,69 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.Versioning
             return Convert.ToInt32(_indexQueryExecutor.CalculateCountQuery(searchModel));
         }
 
-		/// <summary>
-		/// Получить версию по уникальному идентификатору
-		/// </summary>
-		/// <param name="id">Уникальный идентификатор версии</param>
-		/// <returns>Версия объекта</returns>
-		public dynamic GetDocument(string id)
-		{
-			return _elasticSearchProvider.GetItem(id);
-		}
+        /// <summary>
+        /// Получить версию по уникальному идентификатору
+        /// </summary>
+        /// <param name="id">Уникальный идентификатор версии</param>
+        /// <returns>Версия объекта</returns>
+        public dynamic GetDocument(string id)
+        {
+            return _elasticSearchProvider.GetItem(id);
+        }
 
-		/// <summary>
-		/// Получить список версий по уникальному идентификатору
-		/// </summary>
-		/// <param name="ids">Список идентификаторов версий</param>
-		/// <returns>Список версий</returns>
-		public IEnumerable<dynamic> GetDocuments(IEnumerable<string> ids)
-		{
-			return _elasticSearchProvider.GetItems(ids);
-		}
+        /// <summary>
+        /// Получить список версий по уникальному идентификатору
+        /// </summary>
+        /// <param name="ids">Список идентификаторов версий</param>
+        /// <returns>Список версий</returns>
+        public IEnumerable<dynamic> GetDocuments(IEnumerable<string> ids)
+        {
+            return _elasticSearchProvider.GetItems(ids);
+        }
 
-		/// <summary>
-		/// Удалить документ
-		/// </summary>
-		/// <param name="id">Идентификатор версии</param>
-		public void DeleteDocument(string id)
-		{
-			_elasticSearchProvider.Remove(id);
-			_elasticSearchProvider.Refresh();
-		}
+        /// <summary>
+        /// Удалить документ
+        /// </summary>
+        /// <param name="id">Идентификатор версии</param>
+        public void DeleteDocument(string id)
+        {
+            _elasticSearchProvider.Remove(id);
+            _elasticSearchProvider.Refresh();
+        }
 
-		/// <summary>
-		///     Удалить документы с идентификаторами из списка
-		/// </summary>
-		/// <param name="ids">Список идентификаторов</param>
-		public void DeleteDocuments(IEnumerable<string> ids)
-		{
-			_elasticSearchProvider.RemoveItems(ids);
-			_elasticSearchProvider.Refresh();
-		}
+        /// <summary>
+        /// Удалить документы с идентификаторами из списка
+        /// </summary>
+        /// <param name="ids">Список идентификаторов</param>
+        public void DeleteDocuments(IEnumerable<string> ids)
+        {
+            _elasticSearchProvider.RemoveItems(ids);
+            _elasticSearchProvider.Refresh();
+        }
 
-		/// <summary>
-		/// Записать версию объекта в индекс
-		/// </summary>
-		/// <param name="version">Обновляемая версия объекта</param>
-		public void SetDocument(dynamic version)
-		{
-			if (version.Id == null)
-			{
-				version.Id = Guid.NewGuid().ToString();
-			}
+        /// <summary>
+        /// Записать версию объекта в индекс
+        /// </summary>
+        /// <param name="version">Обновляемая версия объекта</param>
+        public void SetDocument(dynamic version)
+        {
+            if (version.Id == null)
+            {
+                version.Id = Guid.NewGuid().ToString();
+            }
 
-			_elasticSearchProvider.Set(version);
-			_elasticSearchProvider.Refresh();
-		}
+            _elasticSearchProvider.Set(version);
+            _elasticSearchProvider.Refresh();
+        }
 
-		/// <summary>
-		/// Вставить список версий в индекс
-		/// </summary>
-		/// <param name="versions">Список версий</param>
-		public void SetDocuments(IEnumerable<dynamic> versions)
-		{
-			_elasticSearchProvider.SetItems(versions);
-			_elasticSearchProvider.Refresh();
-		}
-	}
+        /// <summary>
+        /// Вставить список версий в индекс
+        /// </summary>
+        /// <param name="versions">Список версий</param>
+        public void SetDocuments(IEnumerable<dynamic> versions)
+        {
+            _elasticSearchProvider.SetItems(versions);
+            _elasticSearchProvider.Refresh();
+        }
+    }
 }

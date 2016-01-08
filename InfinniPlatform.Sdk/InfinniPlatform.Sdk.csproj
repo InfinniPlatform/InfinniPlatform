@@ -102,7 +102,6 @@
     <Compile Include="Environment\Hosting\VerbType.cs" />
     <Compile Include="Environment\Binary\IBlobStorage.cs" />
     <Compile Include="ContextComponents\IBlobStorageComponent.cs" />
-    <Compile Include="ContextComponents\IComponentContainer.cs" />
     <Compile Include="ContextComponents\IConfigurationMediatorComponent.cs" />
     <Compile Include="ContextComponents\ICrossConfigSearchComponent.cs" />
     <Compile Include="ContextComponents\IIndexComponent.cs" />
@@ -119,8 +118,6 @@
     <Compile Include="Contracts\IApplyContext.cs" />
     <Compile Include="Contracts\IApplyResultContext.cs" />
     <Compile Include="Contracts\ICommonContext.cs" />
-    <Compile Include="Contracts\IGlobalContext.cs" />
-    <Compile Include="Contracts\IPlatformComponentsPack.cs" />
     <Compile Include="Contracts\IProcessEventContext.cs" />
     <Compile Include="Contracts\ISearchContext.cs" />
     <Compile Include="Contracts\IUploadContext.cs" />
@@ -183,8 +180,6 @@
     <Compile Include="FilterBuilder.cs" />
     <Compile Include="Api\InfinniDocumentApi.cs" />
     <Compile Include="Api\InfinniFileApi.cs" />
-    <Compile Include="Global\CustomServiceGlobalContext.cs" />
-    <Compile Include="Global\ICustomServiceGlobalContext.cs" />
     <Compile Include="Global\ScriptContext.cs" />
     <Compile Include="IoC\ContainerExtensions.cs" />
     <Compile Include="IoC\IContainerBuilder.cs" />

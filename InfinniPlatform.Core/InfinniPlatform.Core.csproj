@@ -71,7 +71,6 @@
     <Compile Include="ContextComponents\InprocessDocumentComponent.cs" />
     <Compile Include="ContextComponents\LogComponent.cs" />
     <Compile Include="ContextComponents\MetadataComponent.cs" />
-    <Compile Include="ContextComponents\PlatformComponentsPack.cs" />
     <Compile Include="ContextComponents\PrintViewComponent.cs" />
     <Compile Include="ContextComponents\ProfilerComponent.cs" />
     <Compile Include="ContextComponents\RegistryComponent.cs" />
@@ -96,7 +95,6 @@
     <Compile Include="Hosting\ExtensionPointHandlerConfig.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Factories\AggregateProvider.cs" />
-    <Compile Include="Factories\GlobalContext.cs" />
     <Compile Include="Factories\IBlobStorageFactory.cs" />
     <Compile Include="Factories\IEventStorageFactory.cs" />
     <Compile Include="Factories\IHostingServiceFactory.cs" />

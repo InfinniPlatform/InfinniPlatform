@@ -4,49 +4,48 @@ using InfinniPlatform.Core.Properties;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.SystemConfig.RequestHandlers
 {
     public sealed class UrlEncodedDataHandler : IWebRoutingHandler
     {
-        private readonly IGlobalContext _globalContext;
-
-        public UrlEncodedDataHandler(IGlobalContext globalContext)
+        public UrlEncodedDataHandler(IMetadataConfigurationProvider metadataConfigurationProvider)
         {
-            _globalContext = globalContext;
+            _metadataConfigurationProvider = metadataConfigurationProvider;
         }
+
+
+        private readonly IMetadataConfigurationProvider _metadataConfigurationProvider;
+
 
         public IConfigRequestProvider ConfigRequestProvider { get; set; }
 
+
         public dynamic Process(dynamic parameters)
         {
-            var config = ConfigRequestProvider.GetConfiguration();
-            var metadata = ConfigRequestProvider.GetMetadataIdentifier();
+            var сonfiguration = ConfigRequestProvider.GetConfiguration();
+            var documentType = ConfigRequestProvider.GetMetadataIdentifier();
 
             var target = new UrlEncodedDataContext
             {
                 IsValid = true,
                 FormData = parameters,
-                Configuration = config,
-                Metadata = metadata,
-                Context = _globalContext,
+                Configuration = сonfiguration,
+                Metadata = documentType
             };
 
-            var metadataConfig =
-                _globalContext.GetComponent<IMetadataConfigurationProvider>()
-                    .GetMetadataConfiguration(ConfigRequestProvider.GetConfiguration());
+            // Метаданные конфигурации
+            var metadataConfiguration = _metadataConfigurationProvider.GetMetadataConfiguration(сonfiguration);
 
-            metadataConfig.MoveWorkflow(metadata,
-                metadataConfig.GetExtensionPointValue(ConfigRequestProvider, "ProcessUrlEncodedData"), target);
-
-            if (target.IsValid)
+            if (ExecuteExtensionPoint(metadataConfiguration, documentType, "ProcessUrlEncodedData", target))
             {
                 dynamic item = new DynamicWrapper();
                 item.IsValid = true;
                 item.ValidationMessage = Resources.UrlEncodedDataProcessingComplete;
 
-
                 dynamic result = new DynamicWrapper();
+
                 if (target.Result != null)
                 {
                     result.Data = target.Result.Data;
@@ -59,9 +58,23 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
                 }
 
                 item.Result = result;
-                return AggregateExtensions.PrepareResultAggregate(item);
+
+                return item;
             }
-            return AggregateExtensions.PrepareInvalidResultAggregate(target);
+
+            return AggregateExtensions.PrepareInvalidResult(target);
+        }
+
+        private bool ExecuteExtensionPoint(IMetadataConfiguration metadataConfiguration, string documentType, string extensionPointName, ICommonContext extensionPointContext)
+        {
+            var extensionPoint = metadataConfiguration.GetExtensionPointValue(ConfigRequestProvider, extensionPointName);
+
+            if (!string.IsNullOrEmpty(extensionPoint))
+            {
+                metadataConfiguration.MoveWorkflow(documentType, extensionPoint, extensionPointContext);
+            }
+
+            return extensionPointContext.IsValid;
         }
     }
 }

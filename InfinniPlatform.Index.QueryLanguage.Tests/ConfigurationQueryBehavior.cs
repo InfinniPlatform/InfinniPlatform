@@ -7,6 +7,7 @@ using InfinniPlatform.Core.Index.SearchOptions;
 using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
+using InfinniPlatform.Index.ElasticSearch.Tests.Builders;
 using InfinniPlatform.Index.QueryLanguage.Implementation;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
@@ -33,7 +34,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 		[TestFixtureSetUp]
 		public void SetupFixture()
 		{
-			_elasticFactory = new ElasticFactory();
+			_elasticFactory = ElasticFactoryBuilder.GetElasticFactory();
 
 
 		}
@@ -48,12 +49,12 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 			_elasticConnection.DeleteType(_indexJoin, _indexJoin);
 			_elasticConnection.CreateType(_indexJoin, _indexJoin);
 
-			_elasticSearchProviderMain = _elasticFactory.BuildCrudOperationProvider(_indexName,_indexName, null);
+			_elasticSearchProviderMain = _elasticFactory.BuildCrudOperationProvider(_indexName,_indexName);
 			_elasticSearchProviderMain.Set(expando,IndexItemStrategy.Insert);
 			_elasticSearchProviderMain.Refresh();
 
 
-			_elasticSearchProviderDoc = _elasticFactory.BuildCrudOperationProvider(_indexJoin,_indexJoin, null);
+			_elasticSearchProviderDoc = _elasticFactory.BuildCrudOperationProvider(_indexJoin,_indexJoin);
 			_elasticSearchProviderDoc.Set(CreateDoc1(), IndexItemStrategy.Insert);
 			_elasticSearchProviderDoc.Set(CreateDoc2(), IndexItemStrategy.Insert);
 			_elasticSearchProviderDoc.Refresh();
@@ -339,7 +340,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 																 }
 												});
 
-			var indexQueryExecutor = new JsonQueryExecutor(new ElasticFactory(), _filterFactory);
+			var indexQueryExecutor = new JsonQueryExecutor(ElasticFactoryBuilder.GetElasticFactory(), _filterFactory);
 			var result = indexQueryExecutor.ExecuteQuery(jquery);
 
 			//[
@@ -431,7 +432,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
                                                                  }
 												});
 
-			var indexQueryExecutor = new JsonQueryExecutor(new ElasticFactory(), _filterFactory);
+			var indexQueryExecutor = new JsonQueryExecutor(ElasticFactoryBuilder.GetElasticFactory(), _filterFactory);
 			var result = indexQueryExecutor.ExecuteQuery(jquery);
 
 
@@ -527,7 +528,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 																 }
 												});
 
-			var indexQueryExecutor = new JsonQueryExecutor(new ElasticFactory(), _filterFactory);
+			var indexQueryExecutor = new JsonQueryExecutor(ElasticFactoryBuilder.GetElasticFactory(), _filterFactory);
 			var result = indexQueryExecutor.ExecuteQuery(jquery);
 
 
@@ -598,7 +599,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 																 }
 												});
 
-			var indexQueryExecutor = new JsonQueryExecutor(new ElasticFactory(), _filterFactory);
+			var indexQueryExecutor = new JsonQueryExecutor(ElasticFactoryBuilder.GetElasticFactory(), _filterFactory);
 			var result = indexQueryExecutor.ExecuteQuery(jquery);
 
 			var compareResult = JArray.FromObject(new[]
@@ -640,7 +641,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 																 }
 												});
 
-			var indexQueryExecutor = new JsonQueryExecutor(new ElasticFactory(), _filterFactory);
+			var indexQueryExecutor = new JsonQueryExecutor(ElasticFactoryBuilder.GetElasticFactory(), _filterFactory);
 			var result = indexQueryExecutor.ExecuteQuery(jquery);
 
 			var compareResult = JArray.FromObject(new[]
@@ -668,7 +669,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 															   },
 												});
 
-			var indexQueryExecutor = new JsonQueryExecutor(new ElasticFactory(), _filterFactory);
+			var indexQueryExecutor = new JsonQueryExecutor(ElasticFactoryBuilder.GetElasticFactory(), _filterFactory);
 			var result = indexQueryExecutor.ExecuteQuery(jquery);
 
 			var compareResult = JArray.FromObject(new[]
@@ -696,7 +697,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 																 }
 												});
 
-			var indexQueryExecutor = new JsonQueryExecutor(new ElasticFactory(), _filterFactory);
+			var indexQueryExecutor = new JsonQueryExecutor(ElasticFactoryBuilder.GetElasticFactory(), _filterFactory);
 			var result = indexQueryExecutor.ExecuteQuery(jquery);
 
 			var compareResult = JArray.FromObject(new[]
@@ -1458,7 +1459,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 					Select = select
 				});
 
-				var indexQueryExecutor = new JsonQueryExecutor(new ElasticFactory(), _filterFactory);
+				var indexQueryExecutor = new JsonQueryExecutor(ElasticFactoryBuilder.GetElasticFactory(), _filterFactory);
 				var result = indexQueryExecutor.ExecuteQuery(query);
 
 				if (result.ToString() != clause.Item3.ToString())

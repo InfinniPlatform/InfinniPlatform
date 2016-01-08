@@ -5,80 +5,75 @@ using InfinniPlatform.Sdk.Contracts;
 namespace InfinniPlatform.Core.ContextTypes.ContextImpl
 {
     /// <summary>
-    ///     Контекст поиска документов
+    /// Контекст поиска документов
     /// </summary>
     public sealed class SearchContext : ISearchContext
     {
         /// <summary>
-        ///     Глобальный контекст обработки
+        /// Наименование типа в индексе, соответствующем конфигурации
         /// </summary>
-        public IGlobalContext Context { get; set; }
+        public string IndexType { get; set; }
 
         /// <summary>
-        ///     Наименование индекса
+        /// Наименование индекса
         /// </summary>
         public string Index { get; set; }
 
         /// <summary>
-        ///     Результат обработки документа
+        /// Результат обработки документа
         /// </summary>
         public dynamic Result { get; set; }
 
         /// <summary>
-        ///     Фильтр данных
+        /// Фильтр данных
         /// </summary>
         public List<dynamic> Filter { get; set; }
 
         /// <summary>
-        ///     Номер страницы
+        /// Номер страницы
         /// </summary>
         public int PageNumber { get; set; }
 
         /// <summary>
-        ///     Размер страницы
+        /// Размер страницы
         /// </summary>
         public int PageSize { get; set; }
 
         /// <summary>
-        ///     Результат поиска
+        /// Результат поиска
         /// </summary>
         public IEnumerable<dynamic> SearchResult { get; set; }
 
         public bool IsInternalServerError { get; set; }
 
         /// <summary>
-        ///     Конфигурация текущего запроса
+        /// Конфигурация текущего запроса
         /// </summary>
         public string Configuration { get; set; }
 
         /// <summary>
-        ///     Метаданные текущего запроса
+        /// Метаданные текущего запроса
         /// </summary>
         public string Metadata { get; set; }
 
         /// <summary>
-        ///     Действие текущего запроса
+        /// Действие текущего запроса
         /// </summary>
         public string Action { get; set; }
 
         /// <summary>
-        ///     Авторизованный пользователь системы
+        /// Авторизованный пользователь системы
         /// </summary>
         public string UserName { get; set; }
 
         /// <summary>
-        ///     Результат фильтрации событий
+        /// Результат фильтрации событий
         /// </summary>
         public dynamic ValidationMessage { get; set; }
 
         /// <summary>
-        ///     Признак успешности обработки события фильтрации событий
+        /// Признак успешности обработки события фильтрации событий
         /// </summary>
         public bool IsValid { get; set; }
-
-        /// <summary>
-        ///     Наименование типа в индексе, соответствующем конфигурации
-        /// </summary>
-        public string IndexType { get; set; }
     }
 }

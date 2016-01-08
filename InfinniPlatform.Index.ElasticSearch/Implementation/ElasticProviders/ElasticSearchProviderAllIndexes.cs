@@ -9,19 +9,19 @@ using InfinniPlatform.Sdk.Environment.Index;
 namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 {
     /// <summary>
-    ///   Провайдер для поиска данных по всем индексам и типам, существующим в базе
+    /// Провайдер для поиска данных по всем индексам и типам, существующим в базе
     /// </summary>
     public sealed class ElasticSearchProviderAllIndexes : IAllIndexesOperationProvider
     {
-        private readonly ElasticConnection _elasticConnection;
-
-        public ElasticSearchProviderAllIndexes()
+        public ElasticSearchProviderAllIndexes(ElasticConnection elasticConnection)
         {
-            _elasticConnection = new ElasticConnection();
+            _elasticConnection = elasticConnection;
         }
 
+        private readonly ElasticConnection _elasticConnection;
+
         /// <summary>
-        ///   Получить объект по идентификатору
+        /// Получить объект по идентификатору
         /// </summary>
         /// <param name="key">Идентификатор индексируемого объекта</param>
         /// <returns>Индексируемый объект</returns>
@@ -39,10 +39,10 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
                     .AllTypes()
                     .Query(
                         f => f.Term(ElasticConstants.IndexObjectPath + ElasticConstants.IndexObjectIdentifierField, key.ToLowerInvariant())
-                            && f.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid)
+                             && f.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid)
                     )
                 );
-			
+
             dynamic indexObject =
                 response.Documents.FirstOrDefault();
 
@@ -51,7 +51,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
                 var index = response.Hits.First().Index;
                 var type = response.Hits.First().Type;
 
-                var typeName = type.Substring(0,type.LastIndexOf(IndexTypeMapper.MappingTypeVersionPattern,
+                var typeName = type.Substring(0, type.LastIndexOf(IndexTypeMapper.MappingTypeVersionPattern,
                     StringComparison.Ordinal));
 
                 dynamic result = DynamicWrapperExtensions.ToDynamic(indexObject.Values);

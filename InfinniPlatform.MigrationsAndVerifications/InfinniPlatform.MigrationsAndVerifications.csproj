@@ -66,7 +66,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Verifications\ScenariosVerification.cs" />
     <Compile Include="Verifications\ChangingMappingVerification.cs" />
     <Compile Include="Verifications\ConfigurationStructureVerification.cs" />
   </ItemGroup>

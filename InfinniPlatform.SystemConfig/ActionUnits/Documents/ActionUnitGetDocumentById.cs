@@ -26,8 +26,7 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Documents
             }
             else
             {
-                target.Result = _documentExecutor.GetCompleteDocument(target.Item.ConfigId,
-                                                                      target.Item.DocumentId, target.Item.Id);
+                target.Result = _documentExecutor.GetCompleteDocument(target.Item.ConfigId, target.Item.DocumentId, target.Item.Id);
             }
         }
     }

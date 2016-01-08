@@ -6,11 +6,18 @@ namespace InfinniPlatform.Sdk.Tests.TestData
 {
     public sealed class ActionUnitOnSaveComment
     {
+        public ActionUnitOnSaveComment(DocumentApi documentApi)
+        {
+            _documentApi = documentApi;
+        }
+
+        private readonly DocumentApi _documentApi;
+
         public void Action(IApplyContext target)
         {
             target.Item.Text = target.Item.Text + "123";
-            var documentApi = target.Context.GetComponent<DocumentApi>();
-            documentApi.SetDocument("gameshop", "review", new DynamicWrapper  { ["Text"] = "test" });
+
+            _documentApi.SetDocument("gameshop", "review", new DynamicWrapper { ["Text"] = "test" });
         }
     }
 }

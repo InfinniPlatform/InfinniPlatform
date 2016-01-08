@@ -50,7 +50,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             _elasticConnection.CreateType(IndexName,IndexName, initialMapping);
             
             // Пробуем добавить в индекс объект с корректной схемой данных
-			var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
+			var elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
 
             
             var hobby = new DynamicWrapper
@@ -104,7 +104,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 
             _elasticConnection.CreateType(IndexName, IndexName, initialMapping);
 
-			var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
+			var elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
 
             IDictionary<string, object> expando = new ExpandoObject();
             IDictionary<string, object> hobby = new ExpandoObject();
@@ -181,7 +181,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             _elasticConnection.CreateType(IndexName,IndexName, initialMapping);
 
             // Пробуем добавить в индекс объект с корректной схемой данных
-			var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
+			var elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
 
             IDictionary<string, object> expando = new ExpandoObject();
             IDictionary<string, object> hobby = new ExpandoObject();
@@ -227,7 +227,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             dynamic dynObject2 = (ExpandoObject)expando2;
             dynObject2.Id = Guid.NewGuid().ToString().ToLowerInvariant();
 
-			elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
+			elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
 			// Вызов метода не должен привести к исключению
             elasticSearchProvider.Set(dynObject2);
             elasticSearchProvider.Refresh();
@@ -271,7 +271,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 
             _elasticConnection.CreateType(IndexName, IndexName, initialMapping);
 
-			var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
+			var elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
 
             foreach (var school in SchoolsFactory.CreateSchools())
             {
@@ -288,7 +288,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 
             elasticSearchProvider.Refresh();
 
-			var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+			var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
 
             var searchModel = new SearchModel();
             var filterFactory = FilterBuilderFactory.GetInstance();
@@ -335,7 +335,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 
             _elasticConnection.CreateType(IndexName, IndexName, initialMapping);
 
-			var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
+			var elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
 
             var school = SchoolsFactory.CreateSchools().FirstOrDefault();
             
@@ -384,7 +384,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 
             _elasticConnection.CreateType(IndexName, IndexName, initialMapping);
 
-            var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
+            var elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
 
             foreach (var school in SchoolsFactory.CreateSchools())
             {
@@ -403,7 +403,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             elasticSearchProvider.Refresh();
 
 
-            var executor = new ElasticFactory().BuildIndexQueryExecutor(IndexName,IndexName);
+            var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName,IndexName);
 
             var searchModel = new SearchModel();
             var filterFactory = FilterBuilderFactory.GetInstance();
@@ -539,7 +539,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         {
             _elasticConnection = new ElasticConnection();
 
-            var versionBuilder = new ElasticFactory().BuildVersionBuilder(IndexName, IndexName);
+            var versionBuilder = ElasticFactoryBuilder.GetElasticFactory().BuildVersionBuilder(IndexName, IndexName);
 
             var initialMapping = new List<PropertyMapping>
             {
@@ -559,7 +559,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             versionBuilder.CreateVersion(false, initialMapping);
             
             // Пробуем добавить в индекс объект с корректной схемой данных
-			var elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
+			var elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
 
             var hobby = new DynamicWrapper
                         {
@@ -612,7 +612,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             dynObject2["Hobbies"] = hobby;
             dynObject2["Id"] = Guid.NewGuid().ToString().ToLowerInvariant();
             
-			elasticSearchProvider = new ElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
+			elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
             // Вызов метода не должен привести к исключению
             elasticSearchProvider.Set(dynObject2);
 

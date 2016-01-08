@@ -17,7 +17,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.Builders
 
         public void BuildTestPersonIndex(string indexName)
         {
-            var factory = new ElasticFactory();
+            var factory = ElasticFactoryBuilder.GetElasticFactory();
             _elasticConnection = new ElasticConnection();
 			_elasticConnection.DeleteType(indexName, indexName);
             _elasticConnection.CreateType(indexName, indexName);

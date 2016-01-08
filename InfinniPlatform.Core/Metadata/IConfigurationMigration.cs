@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.Sdk.Contracts;
-
 namespace InfinniPlatform.Core.Metadata
 {
     /// <summary>
@@ -55,6 +53,6 @@ namespace InfinniPlatform.Core.Metadata
         /// <summary>
         /// Устанавливает активную конфигурацию для миграции
         /// </summary>
-        void AssignActiveConfiguration(string configurationId, IGlobalContext globalContext);
+        void AssignActiveConfiguration(string configurationId);
     }
 }

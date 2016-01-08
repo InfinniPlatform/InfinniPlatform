@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Core.ContextTypes.ContextImpl;
@@ -8,35 +7,49 @@ using InfinniPlatform.Core.SearchOptions;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Metadata;
+using InfinniPlatform.SystemConfig.Properties;
 
 namespace InfinniPlatform.SystemConfig.RequestHandlers
 {
     public sealed class SearchHandler : IWebRoutingHandler
     {
-        private readonly IGlobalContext _globalContext;
-
-        public SearchHandler(IGlobalContext globalContext)
+        public SearchHandler(IConfigurationMediatorComponent configurationMediatorComponent)
         {
-            _globalContext = globalContext;
+            _configurationMediatorComponent = configurationMediatorComponent;
         }
+
+
+        private readonly IConfigurationMediatorComponent _configurationMediatorComponent;
+
 
         public IConfigRequestProvider ConfigRequestProvider { get; set; }
 
+
         /// <summary>
-        ///     Найти список объектов, удовлетворяющих указанным критериям
+        /// Найти список объектов, удовлетворяющих указанным критериям
         /// </summary>
         /// <param name="filterObject">Фильтр поиска объектов</param>
         /// <param name="pageNumber">Номер страницы результатов поиска</param>
         /// <param name="pageSize">Размер страницы результатов</param>
         /// <param name="searchType">Искать только актуальную версию объектов</param>
         /// <returns>Список результатов поиска</returns>
-        public object GetSearchResult(IEnumerable<dynamic> filterObject, int pageNumber, int pageSize,
+        public object GetSearchResult(
+            IEnumerable<dynamic> filterObject,
+            int pageNumber,
+            int pageSize,
             SearchType searchType = SearchType.All)
         {
+            var сonfiguration = ConfigRequestProvider.GetConfiguration();
+            var documentType = ConfigRequestProvider.GetMetadataIdentifier();
+            var serviceName = ConfigRequestProvider.GetServiceName();
+
             List<dynamic> filters = null;
+
             if (filterObject != null)
             {
                 filters = filterObject.ToList();
+
                 foreach (var filter in filters)
                 {
                     if (filter.CriteriaType == null)
@@ -46,74 +59,65 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
                 }
             }
 
-            var idType = ConfigRequestProvider.GetMetadataIdentifier();
-            var config =
-                _globalContext.GetComponent<IConfigurationMediatorComponent>()
-                    .ConfigurationBuilder.GetConfigurationObject(ConfigRequestProvider.GetConfiguration())
-                    .MetadataConfiguration;
-
-            //устанавливаем контекст прикладной конфигурации. В ходе рефакторинга необходимо обдумать, как вынести это на более высокий уровень абстракции
-            var appliedConfig =
-                _globalContext.GetComponent<IConfigurationMediatorComponent>()
-                    .GetConfiguration(ConfigRequestProvider.GetConfiguration());
-
-
-            if (string.IsNullOrEmpty(idType))
-            {
-                throw new ArgumentException("index type undefined");
-            }
+            var metadataConfiguration = _configurationMediatorComponent.ConfigurationBuilder.GetConfigurationObject(сonfiguration).MetadataConfiguration;
 
             var target = new SearchContext
-            {
-                Filter = filters,
-                IsValid = true,
-                Index = ConfigRequestProvider.GetConfiguration(),
-                IndexType = ConfigRequestProvider.GetMetadataIdentifier(),
-                Context = _globalContext,
-                Configuration = ConfigRequestProvider.GetConfiguration(),
-                Metadata = ConfigRequestProvider.GetMetadataIdentifier(),
-                Action = ConfigRequestProvider.GetServiceName(),                
-                PageNumber = pageNumber,
-                PageSize = pageSize
-            };
-            //1. Выполняем валидацию фильтров перед фильтрацией
-            config.MoveWorkflow(idType, config.GetExtensionPointValue(ConfigRequestProvider, "validatefilter"), target);
+                         {
+                             Filter = filters,
+                             IsValid = true,
+                             Index = сonfiguration,
+                             IndexType = documentType,
+                             Configuration = сonfiguration,
+                             Metadata = documentType,
+                             Action = serviceName,
+                             PageNumber = pageNumber,
+                             PageSize = pageSize
+                         };
 
-
+            // 1. Выполняем валидацию фильтров перед фильтрацией
+            ExecuteExtensionPoint(metadataConfiguration, documentType, "validatefilter", target);
+            
             if (target.IsValid)
             {
-                string configVersion = null;
-                if (searchType != SearchType.All)
-                {
-                    configVersion = appliedConfig.GetConfigurationVersion();
-                }
+                // Устанавливаем контекст прикладной конфигурации
+                var appliedConfig = _configurationMediatorComponent.GetConfiguration(сonfiguration);
 
-				var documentProvider = appliedConfig.GetDocumentProvider(ConfigRequestProvider.GetMetadataIdentifier());
+                var documentProvider = appliedConfig.GetDocumentProvider(documentType);
 
-                dynamic sr = null;
+                dynamic searchResult = null;
+
                 if (documentProvider != null)
                 {
-                    //2. Выполняем поиск объектов
-                    sr = documentProvider
-                        .GetDocument(filters, pageNumber, pageSize);
+                    // 2. Выполняем поиск объектов
+                    searchResult = documentProvider.GetDocument(filters, pageNumber, pageSize);
                 }
 
-                //3. Получаем проекцию данных
-                if (sr != null)
+                // 3. Получаем проекцию данных
+                if (searchResult != null)
                 {
-                    var context = target;
-                    context.SearchResult = sr;
-                    config.MoveWorkflow(idType, config.GetExtensionPointValue(ConfigRequestProvider, "searchmodel"),
-                        context);
-                    return context.SearchResult;
+                    target.SearchResult = searchResult;
+
+                    ExecuteExtensionPoint(metadataConfiguration, documentType, "searchmodel", target);
+
+                    return target.SearchResult;
                 }
 
-                target.ValidationMessage = string.Format(InfinniPlatform.SystemConfig.Properties.Resources.DocumentProviderNotRegisteredError,
-                    ConfigRequestProvider.GetMetadataIdentifier());
+                target.ValidationMessage = string.Format(Resources.DocumentProviderNotRegisteredError, documentType);
+            }
+            
+            return AggregateExtensions.PrepareInvalidResult(target);
+        }
+
+        private bool ExecuteExtensionPoint(IMetadataConfiguration metadataConfiguration, string documentType, string extensionPointName, ICommonContext extensionPointContext)
+        {
+            var extensionPoint = metadataConfiguration.GetExtensionPointValue(ConfigRequestProvider, extensionPointName);
+
+            if (!string.IsNullOrEmpty(extensionPoint))
+            {
+                metadataConfiguration.MoveWorkflow(documentType, extensionPoint, extensionPointContext);
             }
 
-
-            return AggregateExtensions.PrepareInvalidFilterAggregate(target);
+            return extensionPointContext.IsValid;
         }
     }
 }

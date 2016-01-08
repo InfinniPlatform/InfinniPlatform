@@ -8,9 +8,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 {
     public class IndexToTypeAccordanceProvider
     {
-        public IndexToTypeAccordanceProvider()
+        public IndexToTypeAccordanceProvider(ElasticConnection elasticConnection)
         {
-            _elasticConnection = new ElasticConnection();
+            _elasticConnection = elasticConnection;
         }
 
         private readonly ElasticConnection _elasticConnection;

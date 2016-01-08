@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using InfinniPlatform.Core.Properties;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
+using InfinniPlatform.Index.ElasticSearch.Tests.Builders;
 using InfinniPlatform.Sdk.Dynamic;
 using NUnit.Framework;
 
@@ -24,11 +25,11 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             elasticConnection.CreateType("elasticcrudbehavior1", "testtype");
             elasticConnection.DeleteType("elasticcrudbehavior1", "testtype_another");
             elasticConnection.CreateType("elasticcrudbehavior1", "testtype_another");
-
-            var elasticProvider1 = new ElasticSearchProvider("elasticcrudbehavior", "testtype");
-            var elasticProvider2 = new ElasticSearchProvider("elasticcrudbehavior", "testtype1");
-            var elasticProvider3 = new ElasticSearchProvider("elasticcrudbehavior1", "testtype");
-            var elasticProvider4 = new ElasticSearchProvider("elasticcrudbehavior1", "testtype_another");
+            
+            var elasticProvider1 = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider("elasticcrudbehavior", "testtype");
+            var elasticProvider2 = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider("elasticcrudbehavior", "testtype1");
+            var elasticProvider3 = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider("elasticcrudbehavior1", "testtype");
+            var elasticProvider4 = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider("elasticcrudbehavior1", "testtype_another");
 
             dynamic instance1 = new DynamicWrapper();
             string instance1Id = "1elasticcrudbehavior_testtype_first";
@@ -141,7 +142,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             elasticConnection.CreateType("elasticcrudbehavior", "testtype");
 
             //успешно добавляем в него инстанс, который ранее выдавал ошибку маппинга
-			elasticProvider1 = new ElasticSearchProvider("elasticcrudbehavior", "testtype");
+			elasticProvider1 = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider("elasticcrudbehavior", "testtype");
 			elasticProvider1.Set(failInstance);
             elasticProvider1.Refresh();
 
