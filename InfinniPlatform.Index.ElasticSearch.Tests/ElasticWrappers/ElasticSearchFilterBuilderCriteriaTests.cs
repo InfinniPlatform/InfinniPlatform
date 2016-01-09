@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Linq;
 
-using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
 using InfinniPlatform.Index.ElasticSearch.Tests.Builders;
@@ -39,16 +38,16 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         private const string IndexName = "filterunittestindex";
 
         private ICrudOperationProvider _elasticSearchProvider;
-        private ElasticConnection _elasticConnection;
+        private ElasticTypeManager _elasticTypeManager;
         private readonly IFilterBuilder _filterFactory = FilterBuilderFactory.GetInstance();
         private readonly IFilterBuilder _queryFactory = QueryBuilderFactory.GetInstance();
 
         [SetUp]
         public void InitializeElasticSearch()
         {
-            _elasticConnection = new ElasticConnection();
+            _elasticTypeManager = ElasticFactoryBuilder.ElasticTypeManager.Value;
 
-            _elasticConnection.CreateType(IndexName,IndexName, deleteExistingVersion: true);
+            _elasticTypeManager.CreateType(IndexName,IndexName, deleteExistingVersion: true);
 			_elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
 
             foreach (var school in SchoolsFactory.CreateSchools())
@@ -70,7 +69,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [TearDown]
         public void DeleteIndex()
         {
-            _elasticConnection.DeleteType(IndexName, IndexName);
+            _elasticTypeManager.DeleteType(IndexName, IndexName);
         }
 
 

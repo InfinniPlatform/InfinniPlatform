@@ -28,8 +28,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [SetUp]
         public void InitializeElasticSearch()
         {
-            _elasticConnection = new ElasticConnection();
-            _elasticConnection.CreateType(IndexName, IndexName);
+            ElasticFactoryBuilder.ElasticTypeManager.Value.CreateType(IndexName, IndexName);
 			_elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
 
             foreach (var school in SchoolsFactory.CreateSchoolsForFacetsTesting())
@@ -132,11 +131,12 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         {
             const string aggrindex = "aggrperfomancetest";
 
-            var indexStateProvider = new ElasticConnection();
+            var elasticTypeManager = ElasticFactoryBuilder.ElasticTypeManager.Value;
 
-            if (indexStateProvider.GetIndexStatus(aggrindex, aggrindex) == IndexStatus.NotExists)
+            if (!elasticTypeManager.TypeExists(aggrindex, aggrindex))
             {
-                indexStateProvider.CreateType(aggrindex, aggrindex);
+                elasticTypeManager.CreateType(aggrindex, aggrindex);
+
 				var elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider(aggrindex, aggrindex);
 
                 foreach (var school in SchoolsFactory.CreateRandomSchools(300000))
@@ -411,7 +411,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [TearDown]
         public void DeleteIndex()
         {
-            _elasticConnection.DeleteType(IndexName, IndexName);
+            ElasticFactoryBuilder.ElasticTypeManager.Value.DeleteType(IndexName, IndexName);
         }
     }
 }

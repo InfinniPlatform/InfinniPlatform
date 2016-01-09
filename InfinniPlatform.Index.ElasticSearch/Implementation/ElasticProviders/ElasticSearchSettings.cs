@@ -3,8 +3,11 @@
     /// <summary>
     /// Настройки подключения к ElasticSearch.
     /// </summary>
-	internal sealed class ElasticSearchSettings
+	public sealed class ElasticSearchSettings
     {
+        public static readonly ElasticSearchSettings Default = new ElasticSearchSettings();
+
+
         public const string SectionName = "elasticSearch";
 
 

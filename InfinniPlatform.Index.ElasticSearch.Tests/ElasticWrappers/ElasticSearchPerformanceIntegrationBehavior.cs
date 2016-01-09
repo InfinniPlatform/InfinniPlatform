@@ -22,9 +22,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 		//[TestCase(100000)]
 		public void ShouldWriteToEmptyIndex(int recordCount)
 		{
-			var elasticConnection = new ElasticConnection();
-            elasticConnection.DeleteType("testindex", "testindex");
-            elasticConnection.CreateType("testindex", "testindex");
+		    var elasticTypeManager = ElasticFactoryBuilder.ElasticTypeManager.Value;
+            elasticTypeManager.DeleteType("testindex", "testindex");
+            elasticTypeManager.CreateType("testindex", "testindex");
             var elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider("testindex", "testindex");
 
 			dynamic expandoObject = new ExpandoObject();
@@ -47,9 +47,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 		[TestCase(10)]
 		public void ShouldUpdateExistingItems(int recordCount)
 		{
-			var elasticConnection = new ElasticConnection();
-            elasticConnection.DeleteType("testindex", "testindex");
-            elasticConnection.CreateType("testindex", "testindex");
+		    var elasticTypeManager = ElasticFactoryBuilder.ElasticTypeManager.Value;
+            elasticTypeManager.DeleteType("testindex", "testindex");
+            elasticTypeManager.CreateType("testindex", "testindex");
             var elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider("testindex", "testindex");
 
 			dynamic expandoObject = new ExpandoObject();
@@ -72,9 +72,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 		[TestCase(1)]		
 		public void ShouldSearchExistingItems(int recordCount)
 		{
-			var indexProvider = new ElasticConnection();
-            indexProvider.DeleteType("testindex", "testindex");
-            indexProvider.CreateType("testindex", "testindex");
+		    var elasticTypeManager = ElasticFactoryBuilder.ElasticTypeManager.Value;
+            elasticTypeManager.DeleteType("testindex", "testindex");
+            elasticTypeManager.CreateType("testindex", "testindex");
 		    var factory = ElasticFactoryBuilder.GetElasticFactory();
             var queryWrapper = factory.BuildIndexQueryExecutor("testindex", "testindex");
 			var elasticSearchProvider = factory.BuildCrudOperationProvider("testindex", "testindex");

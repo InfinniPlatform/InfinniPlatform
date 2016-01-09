@@ -25,7 +25,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
         private JObject _jsonQuery;
 
         private ICrudOperationProvider _elasticSearchProvider;
-        private ElasticConnection _elasticConnection;
+        private ElasticTypeManager _elasticTypeManager;
         private ICrudOperationProvider _elasticSearchProviderMain;
         private readonly IFilterBuilder _filterFactory = FilterBuilderFactory.GetInstance();
 
@@ -34,11 +34,11 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
         {
             var elasticFactory = ElasticFactoryBuilder.GetElasticFactory();
 
-            _elasticConnection = new ElasticConnection();
-            _elasticConnection.DeleteType("TestIndex", "TestIndex");
-            _elasticConnection.CreateType("TestIndex", "TestIndex");
-            _elasticConnection.DeleteType("Document", "Document");
-            _elasticConnection.CreateType("Document", "Document");
+            _elasticTypeManager = ElasticFactoryBuilder.ElasticTypeManager.Value;
+            _elasticTypeManager.DeleteType("TestIndex", "TestIndex");
+            _elasticTypeManager.CreateType("TestIndex", "TestIndex");
+            _elasticTypeManager.DeleteType("Document", "Document");
+            _elasticTypeManager.CreateType("Document", "Document");
 
             _elasticSearchProvider = elasticFactory.BuildCrudOperationProvider("TestIndex", "TestIndex");
             _elasticSearchProviderMain = elasticFactory.BuildCrudOperationProvider("Document", "Document");
@@ -58,8 +58,8 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 
         private void CreateReferenceIndex()
         {
-            _elasticConnection.DeleteType("TestIndex", "TestIndex");
-            _elasticConnection.CreateType("TestIndex", "TestIndex");
+            _elasticTypeManager.DeleteType("TestIndex", "TestIndex");
+            _elasticTypeManager.CreateType("TestIndex", "TestIndex");
         }
 
         private void CreateJsonQuery()
@@ -362,9 +362,9 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
             filterableObject.NestedField.NestedFieldValue = "test2";
             filterableObject.ReferenceId = "testid";
 
-            _elasticConnection.DeleteType("Document", "Document");
-            _elasticConnection.CreateType("Document", "Document");
-            _elasticConnection.Refresh();
+            _elasticTypeManager.DeleteType("Document", "Document");
+            _elasticTypeManager.CreateType("Document", "Document");
+            ElasticFactoryBuilder.ElasticConnection.Value.Refresh();
             _elasticSearchProviderMain.Set(filterableObject, IndexItemStrategy.Insert);
             _elasticSearchProviderMain.Refresh();
         }

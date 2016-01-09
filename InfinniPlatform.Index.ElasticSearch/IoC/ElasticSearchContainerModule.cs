@@ -5,6 +5,7 @@ using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Index.ElasticSearch.Implementation.Versioning;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.Index.ElasticSearch.IoC
@@ -20,6 +21,14 @@ namespace InfinniPlatform.Index.ElasticSearch.IoC
             builder.RegisterType<ElasticConnection>()
                    .As<IElasticConnection>()
                    .AsSelf()
+                   .SingleInstance();
+
+            builder.RegisterType<ElasticTypeManager>()
+                   .AsSelf()
+                   .SingleInstance();
+
+            builder.RegisterFactory(r => r.Resolve<IAppConfiguration>().GetSection<ElasticSearchSettings>(ElasticSearchSettings.SectionName))
+                   .As<ElasticSearchSettings>()
                    .SingleInstance();
 
             // For ElasticFactory

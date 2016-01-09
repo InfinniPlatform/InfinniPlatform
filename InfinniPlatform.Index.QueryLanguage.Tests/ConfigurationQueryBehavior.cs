@@ -23,7 +23,7 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 	public class ConfigurationQueryBehavior
 	{
 
-		private ElasticConnection _elasticConnection;
+		private ElasticTypeManager _elasticTypeManager;
 		private ICrudOperationProvider _elasticSearchProviderMain;
 		private ICrudOperationProvider _elasticSearchProviderDoc;
 		private string _indexName = "Configuration";
@@ -43,11 +43,11 @@ namespace InfinniPlatform.Index.QueryLanguage.Tests
 		{
 			var expando = CreateExpandoConfiguration();
 
-			_elasticConnection = new ElasticConnection();
-			_elasticConnection.DeleteType(_indexName,_indexName);
-			_elasticConnection.CreateType(_indexName,_indexName);
-			_elasticConnection.DeleteType(_indexJoin, _indexJoin);
-			_elasticConnection.CreateType(_indexJoin, _indexJoin);
+			_elasticTypeManager = ElasticFactoryBuilder.ElasticTypeManager.Value;
+			_elasticTypeManager.DeleteType(_indexName,_indexName);
+			_elasticTypeManager.CreateType(_indexName,_indexName);
+			_elasticTypeManager.DeleteType(_indexJoin, _indexJoin);
+			_elasticTypeManager.CreateType(_indexJoin, _indexJoin);
 
 			_elasticSearchProviderMain = _elasticFactory.BuildCrudOperationProvider(_indexName,_indexName);
 			_elasticSearchProviderMain.Set(expando,IndexItemStrategy.Insert);

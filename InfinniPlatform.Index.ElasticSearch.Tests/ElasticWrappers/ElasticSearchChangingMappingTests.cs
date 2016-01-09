@@ -26,12 +26,18 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         private const string IndexName = "mapping_unit_tests_index";
         
         private ElasticConnection _elasticConnection;
-        
+        private ElasticTypeManager _elasticTypeManager;
+
+        [TestFixtureSetUp]
+        public void SetUp()
+        {
+            _elasticConnection = ElasticFactoryBuilder.ElasticConnection.Value;
+            _elasticTypeManager = ElasticFactoryBuilder.ElasticTypeManager.Value;
+        }
+
         [Test]
         public void AddingObjectWithCorrectMappingTest()
         {
-            _elasticConnection = new ElasticConnection();
-
             var initialMapping = new List<PropertyMapping>
             {
                 new PropertyMapping("FirstName", PropertyDataType.String),
@@ -47,7 +53,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
                     })
             };
 
-            _elasticConnection.CreateType(IndexName,IndexName, initialMapping);
+            _elasticTypeManager.CreateType(IndexName,IndexName, initialMapping);
             
             // Пробуем добавить в индекс объект с корректной схемой данных
 			var elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
@@ -86,8 +92,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [ExpectedException(typeof(ArgumentException))]
         public void AddingObjectWithIncorrectMappingTest()
         {
-            _elasticConnection = new ElasticConnection();
-
             var initialMapping = new List<PropertyMapping>
             {
                 new PropertyMapping("FirstName", PropertyDataType.String),
@@ -102,7 +106,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
                     })
             };
 
-            _elasticConnection.CreateType(IndexName, IndexName, initialMapping);
+            _elasticTypeManager.CreateType(IndexName, IndexName, initialMapping);
 
 			var elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
 
@@ -127,8 +131,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void GetIndexTypeMappingTest()
         {
-            _elasticConnection = new ElasticConnection();
-
             var initialMapping = new List<PropertyMapping>
             {
                 new PropertyMapping("FirstName", PropertyDataType.String),
@@ -144,9 +146,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
                     })
             };
 
-            _elasticConnection.CreateType(IndexName, IndexName, initialMapping);
+            _elasticTypeManager.CreateType(IndexName, IndexName, initialMapping);
 
-            var mapping = new ElasticConnection().GetPropertyMappings(IndexName, IndexName);
+            var mapping = _elasticTypeManager.GetPropertyMappings(IndexName, IndexName);
 
             var firstNameProp = mapping.FirstOrDefault(p => p.Name == "FirstName");
 
@@ -162,8 +164,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void ChangingIndexMappingTest()
         {
-			_elasticConnection = new ElasticConnection();
-
             var initialMapping = new List<PropertyMapping>
             {
                 new PropertyMapping("FirstName", PropertyDataType.String, true),
@@ -178,7 +178,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
                     })
             };
 
-            _elasticConnection.CreateType(IndexName,IndexName, initialMapping);
+            _elasticTypeManager.CreateType(IndexName,IndexName, initialMapping);
 
             // Пробуем добавить в индекс объект с корректной схемой данных
 			var elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
@@ -214,7 +214,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
                     })
             };
 
-            _elasticConnection.CreateType(IndexName, IndexName, newMapping);
+            _elasticTypeManager.CreateType(IndexName, IndexName, newMapping);
             
 
             IDictionary<string, object> expando2 = new ExpandoObject();
@@ -241,8 +241,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void QueryOnIndexWithInitialMappingSet()
         {
-			_elasticConnection = new ElasticConnection();
-
             var initialMapping = new List<PropertyMapping>
             {
                 new PropertyMapping("FoundationDate", PropertyDataType.Date),
@@ -269,7 +267,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
                     })
             };
 
-            _elasticConnection.CreateType(IndexName, IndexName, initialMapping);
+            _elasticTypeManager.CreateType(IndexName, IndexName, initialMapping);
 
 			var elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
 
@@ -305,8 +303,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [ExpectedException(typeof(ArgumentException))]
         public void QueryOnIndexWithIncorrectInitialMapping()
         {
-			_elasticConnection = new ElasticConnection();
-
             var initialMapping = new List<PropertyMapping>
             {
                 new PropertyMapping("FoundationDate", PropertyDataType.Date),
@@ -333,7 +329,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
                     })
             };
 
-            _elasticConnection.CreateType(IndexName, IndexName, initialMapping);
+            _elasticTypeManager.CreateType(IndexName, IndexName, initialMapping);
 
 			var elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
 
@@ -353,8 +349,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void QueryOnIndexWithChangedMapping()
         {
-            _elasticConnection = new ElasticConnection();
-
             var initialMapping = new List<PropertyMapping>
             {
                 new PropertyMapping("ExtraField", PropertyDataType.String),
@@ -382,7 +376,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
                     })
             };
 
-            _elasticConnection.CreateType(IndexName, IndexName, initialMapping);
+            _elasticTypeManager.CreateType(IndexName, IndexName, initialMapping);
 
             var elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
 
@@ -441,7 +435,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
                     })
             };
 
-            _elasticConnection.CreateType(IndexName, IndexName, changedMapping);
+            _elasticTypeManager.CreateType(IndexName, IndexName, changedMapping);
 
             foreach (var school in SchoolsFactory.CreateSchools())
             {
@@ -486,8 +480,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void ChangingIndexTypeMappingTest()
         {
-            _elasticConnection = new ElasticConnection();
-
             var initialMapping = new List<PropertyMapping>
             {
                 new PropertyMapping("FirstName", PropertyDataType.String),
@@ -502,11 +494,11 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
                     })
             };
 
-            _elasticConnection.CreateType(IndexName, IndexName, initialMapping);
+            _elasticTypeManager.CreateType(IndexName, IndexName, initialMapping);
 
             _elasticConnection.Refresh();
 
-            var vbuilder = new VersionBuilder(_elasticConnection, IndexName, IndexName);
+            var vbuilder = new VersionBuilder(_elasticTypeManager, IndexName, IndexName);
 
             Assert.IsTrue(vbuilder.VersionExists(initialMapping));
 
@@ -537,8 +529,6 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void ChangingIndexWithVersionHistoryMappingTest()
         {
-            _elasticConnection = new ElasticConnection();
-
             var versionBuilder = ElasticFactoryBuilder.GetElasticFactory().BuildVersionBuilder(IndexName, IndexName);
 
             var initialMapping = new List<PropertyMapping>
@@ -634,7 +624,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [TearDown]
         public void DeleteIndex()
         {
-            _elasticConnection.DeleteType(IndexName,IndexName);
+            _elasticTypeManager.DeleteType(IndexName,IndexName);
         }
 
     }

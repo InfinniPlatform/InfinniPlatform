@@ -22,24 +22,30 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
     /// </summary>
     public sealed class ElasticSearchProvider : ICrudOperationProvider
     {
-        public ElasticSearchProvider(ElasticConnection elasticConnection, ITenantProvider tenantProvider, string indexName, string typeName)
+        public ElasticSearchProvider(ElasticConnection elasticConnection, ElasticTypeManager elasticTypeManager, ITenantProvider tenantProvider, string indexName, string typeName)
         {
             _elasticConnection = elasticConnection;
+            _elasticTypeManager = elasticTypeManager;
             _tenantProvider = tenantProvider;
             _indexName = indexName.ToLowerInvariant();
             _typeName = typeName.ToLowerInvariant();
 
-            //все версии типа в индексе
-            _derivedTypeNames = new Lazy<IEnumerable<TypeMapping>>(() => _elasticConnection.GetTypeMappings(_indexName, new[] { _typeName }));
+            // все версии типа в индексе
+            _derivedTypeNames = new Lazy<IEnumerable<TypeMapping>>(() => elasticTypeManager.GetTypeMappings(_indexName, _typeName));
         }
 
-        private readonly Lazy<IEnumerable<TypeMapping>> _derivedTypeNames;
+
         private readonly ElasticConnection _elasticConnection;
+        private readonly ElasticTypeManager _elasticTypeManager;
         private readonly ITenantProvider _tenantProvider;
         private readonly string _indexName;
         private readonly string _typeName;
 
+        private readonly Lazy<IEnumerable<TypeMapping>> _derivedTypeNames;
+
+
         private string ActualTypeName => _derivedTypeNames.Value.GetTypeActualName();
+
 
         /// <summary>
         /// Обновление позволяет делать запросы к только что добавленным данным
@@ -113,7 +119,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             // Возможно, маппинг для типа индекса не соответствует типам данных полей 
             // индексируемого объекта item
 
-            var currentMapping = _elasticConnection.GetPropertyMappings(_indexName, _typeName);
+            var currentMapping = _elasticTypeManager.GetPropertyMappings(_indexName, _typeName);
 
             var propertiesMismatchMessage = new StringBuilder();
 
@@ -229,7 +235,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
             // Возможно, маппинг для типа индекса не соответствует типам данных полей 
             // индексируемого объекта item
 
-            var currentMapping = _elasticConnection.GetPropertyMappings(_indexName, _typeName);
+            var currentMapping = _elasticTypeManager.GetPropertyMappings(_indexName, _typeName);
 
             var propertiesMismatchMessage = new StringBuilder();
 

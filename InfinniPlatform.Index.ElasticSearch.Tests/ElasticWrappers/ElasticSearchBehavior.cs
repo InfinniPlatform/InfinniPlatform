@@ -20,7 +20,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [TestFixtureSetUp]
         public void SetUp()
         {
-            _elasticClient = new ElasticConnection().Client;
+            _elasticClient = ElasticFactoryBuilder.ElasticConnection.Value.Client;
         }
 
 
@@ -48,9 +48,9 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void ShouldReindexWithoutDataLostTest()
         {
-            var elasticConnection = new ElasticConnection();
-            elasticConnection.DeleteType("testperson", "testperson");
-            elasticConnection.CreateType("testperson", "testperson");
+            var elasticTypeManager = ElasticFactoryBuilder.ElasticTypeManager.Value;
+            elasticTypeManager.DeleteType("testperson", "testperson");
+            elasticTypeManager.CreateType("testperson", "testperson");
 
             var elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider("testperson", "testperson");
 
@@ -71,6 +71,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
 
 
             var queryExecutor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor("testperson", "testperson");
+            var elasticConnection = ElasticFactoryBuilder.ElasticConnection.Value;
             elasticConnection.Refresh();
 
             Assert.AreEqual(2, queryExecutor.Query(new SearchModel()).HitsCount);
@@ -79,8 +80,8 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
             // Количество документов в индексе не должно измениться
             Assert.AreEqual(2, queryExecutor.Query(new SearchModel()).HitsCount);
 
-            elasticConnection.DeleteType("testperson", "testperson");
-            elasticConnection.CreateType("testperson", "testperson");
+            elasticTypeManager.DeleteType("testperson", "testperson");
+            elasticTypeManager.CreateType("testperson", "testperson");
             elasticConnection.Refresh();
 
             // Документы должны пропасть из индекса

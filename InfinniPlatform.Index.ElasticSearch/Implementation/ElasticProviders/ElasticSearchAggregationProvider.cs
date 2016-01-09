@@ -19,17 +19,17 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 {
     public sealed class ElasticSearchAggregationProvider : IAggregationProvider
     {
-        public ElasticSearchAggregationProvider(ElasticConnection elasticConnection, ITenantProvider tenantProvider, string indexName, string typeName)
+        public ElasticSearchAggregationProvider(ElasticConnection elasticConnection, ElasticTypeManager elasticTypeManager, ITenantProvider tenantProvider, string indexName, string typeName)
         {
             _elasticConnection = elasticConnection;
             _tenantProvider = tenantProvider;
             _indexName = indexName.ToLowerInvariant();
-            _typeMappings = _elasticConnection.GetTypeMappings(_indexName, new[] { typeName });
+            _typeMappings = elasticTypeManager.GetTypeMappings(_indexName, typeName);
         }
 
         private readonly ElasticConnection _elasticConnection;
-        private readonly string _indexName;
         private readonly ITenantProvider _tenantProvider;
+        private readonly string _indexName;
         private readonly IEnumerable<TypeMapping> _typeMappings;
 
         /// <summary>

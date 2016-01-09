@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using InfinniPlatform.Core.Properties;
+using InfinniPlatform.Index.ElasticSearch.Factories;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Index.ElasticSearch.Tests.Builders;
 using InfinniPlatform.Sdk.Dynamic;
@@ -16,20 +17,21 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void ShouldCrudOperations()
         {
-            var elasticConnection = new ElasticConnection();
-            elasticConnection.DeleteType("elasticcrudbehavior", "testtype");
-            elasticConnection.CreateType("elasticcrudbehavior", "testtype");
-            elasticConnection.DeleteType("elasticcrudbehavior", "testtype1");
-            elasticConnection.CreateType("elasticcrudbehavior", "testtype1");
-            elasticConnection.DeleteType("elasticcrudbehavior1", "testtype");
-            elasticConnection.CreateType("elasticcrudbehavior1", "testtype");
-            elasticConnection.DeleteType("elasticcrudbehavior1", "testtype_another");
-            elasticConnection.CreateType("elasticcrudbehavior1", "testtype_another");
-            
-            var elasticProvider1 = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider("elasticcrudbehavior", "testtype");
-            var elasticProvider2 = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider("elasticcrudbehavior", "testtype1");
-            var elasticProvider3 = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider("elasticcrudbehavior1", "testtype");
-            var elasticProvider4 = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider("elasticcrudbehavior1", "testtype_another");
+            var elasticTypeManager = ElasticFactoryBuilder.ElasticTypeManager.Value;
+            elasticTypeManager.DeleteType("elasticcrudbehavior", "testtype");
+            elasticTypeManager.CreateType("elasticcrudbehavior", "testtype");
+            elasticTypeManager.DeleteType("elasticcrudbehavior", "testtype1");
+            elasticTypeManager.CreateType("elasticcrudbehavior", "testtype1");
+            elasticTypeManager.DeleteType("elasticcrudbehavior1", "testtype");
+            elasticTypeManager.CreateType("elasticcrudbehavior1", "testtype");
+            elasticTypeManager.DeleteType("elasticcrudbehavior1", "testtype_another");
+            elasticTypeManager.CreateType("elasticcrudbehavior1", "testtype_another");
+
+            var elasticFactory = ElasticFactoryBuilder.GetElasticFactory();
+            var elasticProvider1 = elasticFactory.BuildCrudOperationProvider("elasticcrudbehavior", "testtype");
+            var elasticProvider2 = elasticFactory.BuildCrudOperationProvider("elasticcrudbehavior", "testtype1");
+            var elasticProvider3 = elasticFactory.BuildCrudOperationProvider("elasticcrudbehavior1", "testtype");
+            var elasticProvider4 = elasticFactory.BuildCrudOperationProvider("elasticcrudbehavior1", "testtype_another");
 
             dynamic instance1 = new DynamicWrapper();
             string instance1Id = "1elasticcrudbehavior_testtype_first";
@@ -139,10 +141,10 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.ElasticWrappers
                                              Resources.InappropriateItemMapping);
 
             //создаем новую версию маппинга для elasticcrudbehavior, testtype
-            elasticConnection.CreateType("elasticcrudbehavior", "testtype");
+            elasticTypeManager.CreateType("elasticcrudbehavior", "testtype");
 
             //успешно добавляем в него инстанс, который ранее выдавал ошибку маппинга
-			elasticProvider1 = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider("elasticcrudbehavior", "testtype");
+            elasticProvider1 = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider("elasticcrudbehavior", "testtype");
 			elasticProvider1.Set(failInstance);
             elasticProvider1.Refresh();
 

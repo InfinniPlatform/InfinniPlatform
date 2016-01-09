@@ -3,7 +3,6 @@ using System.Linq;
 
 using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Transactions;
-using InfinniPlatform.Index;
 using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Log;
@@ -21,10 +20,11 @@ namespace InfinniPlatform.SystemConfig.Executors
         private const string PerformanceLogComplete = "Complete";
 
 
-        public ElasticDocumentTransactionScope(ITenantProvider tenantProvider, ElasticConnection elasticConnection, IPerformanceLog performanceLog)
+        public ElasticDocumentTransactionScope(ITenantProvider tenantProvider, ElasticConnection elasticConnection, ElasticTypeManager elasticTypeManager, IPerformanceLog performanceLog)
         {
             _tenantProvider = tenantProvider;
             _elasticConnection = elasticConnection;
+            _elasticTypeManager = elasticTypeManager;
             _performanceLog = performanceLog;
             _transactionLog = new DocumentTransactionLog();
         }
@@ -32,6 +32,7 @@ namespace InfinniPlatform.SystemConfig.Executors
 
         private readonly ITenantProvider _tenantProvider;
         private readonly ElasticConnection _elasticConnection;
+        private readonly ElasticTypeManager _elasticTypeManager;
         private readonly IPerformanceLog _performanceLog;
         private readonly DocumentTransactionLog _transactionLog;
 
@@ -89,7 +90,7 @@ namespace InfinniPlatform.SystemConfig.Executors
                                              foreach (var command in saveCommands)
                                              {
                                                  var indexName = _elasticConnection.GetIndexName(command.Configuration);
-                                                 var indexTypeName = _elasticConnection.GetActualTypeName(command.Configuration, command.DocumentType);
+                                                 var indexTypeName = _elasticTypeManager.GetActualTypeName(command.Configuration, command.DocumentType);
 
                                                  var indexObjectId = CreateIndexObjectId(command.DocumentId);
                                                  var indexObject = CreateIndexObject(tenantId, indexObjectId, command.Document);

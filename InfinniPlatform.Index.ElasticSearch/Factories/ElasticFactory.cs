@@ -66,7 +66,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
         /// <param name="typeName">Наименование типа</param>
         public IVersionProvider BuildVersionProvider(string indexName, string typeName)
         {
-            var indexToTypeAccordanceSettings = GetIndexTypeAccordanceSettings(indexName, new[] { typeName });
+            var indexToTypeAccordanceSettings = GetIndexTypeAccordanceSettings(indexName, typeName);
 
             var elasticSearchProvider = _crudOperationProviderFactory(indexName, typeName);
             var indexQueryExecutor = _indexQueryExecutorFactory(indexToTypeAccordanceSettings);
@@ -118,7 +118,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
         /// <returns></returns>
         public IIndexQueryExecutor BuildIndexQueryExecutor(string indexName, string typeName)
         {
-            var indexToTypeAccordanceSettings = GetIndexTypeAccordanceSettings(indexName, new[] { typeName });
+            var indexToTypeAccordanceSettings = GetIndexTypeAccordanceSettings(indexName, typeName);
 
             return _indexQueryExecutorFactory(indexToTypeAccordanceSettings);
         }
@@ -136,20 +136,20 @@ namespace InfinniPlatform.Index.ElasticSearch.Factories
             return _aggregationProviderFactory(indexName, typeName);
         }
 
-        private static string CreateKey(string indexName, IEnumerable<string> typeNames)
+        private static string CreateKey(string indexName, string typeName)
         {
-            return $"Indexes:{indexName};TypeNames:{string.Join("_", typeNames)}";
+            return $"Index:{indexName};TypeName:{typeName}";
         }
 
-        private IndexToTypeAccordanceSettings GetIndexTypeAccordanceSettings(string indexName, string[] typeNames)
+        private IndexToTypeAccordanceSettings GetIndexTypeAccordanceSettings(string indexName, string typeName)
         {
-            var key = CreateKey(indexName, typeNames);
+            var key = CreateKey(indexName, typeName);
 
             IndexToTypeAccordanceSettings indexSettings;
 
             if (!_settings.TryGetValue(key, out indexSettings))
             {
-                indexSettings = _accordanceProvider.GetIndexTypeAccordances(indexName, typeNames);
+                indexSettings = _accordanceProvider.GetIndexTypeAccordances(indexName, typeName);
                 _settings[key] = indexSettings;
             }
 

@@ -16,29 +16,36 @@ namespace InfinniPlatform.Index.ElasticSearch.Tests.Builders
         static ElasticFactoryBuilder()
         {
             ElasticConnection = new Lazy<ElasticConnection>(CreateElasticConnection);
+            ElasticTypeManager = new Lazy<ElasticTypeManager>(CreateElasticTypeManager);
             TenantProvider = new Lazy<ITenantProvider>(CreateTenantProvider);
         }
 
 
-        private static readonly Lazy<ElasticConnection> ElasticConnection;
-        private static readonly Lazy<ITenantProvider> TenantProvider;
+        public static readonly Lazy<ElasticConnection> ElasticConnection;
+        public static readonly Lazy<ElasticTypeManager> ElasticTypeManager;
+        public static readonly Lazy<ITenantProvider> TenantProvider;
 
 
         public static ElasticFactory GetElasticFactory()
         {
             return new ElasticFactory(
                 settings => new IndexQueryExecutor(ElasticConnection.Value, TenantProvider.Value, settings),
-                (indexName, typeName) => new VersionBuilder(ElasticConnection.Value, indexName, typeName),
-                (indexName, typeName) => new ElasticSearchProvider(ElasticConnection.Value, TenantProvider.Value, indexName, typeName),
-                (indexName, typeName) => new ElasticSearchAggregationProvider(ElasticConnection.Value, TenantProvider.Value, indexName, typeName),
-                new IndexToTypeAccordanceProvider(ElasticConnection.Value),
+                (indexName, typeName) => new VersionBuilder(ElasticTypeManager.Value, indexName, typeName),
+                (indexName, typeName) => new ElasticSearchProvider(ElasticConnection.Value, ElasticTypeManager.Value, TenantProvider.Value, indexName, typeName),
+                (indexName, typeName) => new ElasticSearchAggregationProvider(ElasticConnection.Value, ElasticTypeManager.Value, TenantProvider.Value, indexName, typeName),
+                new IndexToTypeAccordanceProvider(ElasticTypeManager.Value),
                 new ElasticSearchProviderAllIndexes(ElasticConnection.Value));
         }
 
 
         private static ElasticConnection CreateElasticConnection()
         {
-            return new ElasticConnection();
+            return new ElasticConnection(ElasticSearchSettings.Default);
+        }
+
+        private static ElasticTypeManager CreateElasticTypeManager()
+        {
+            return new ElasticTypeManager(ElasticConnection.Value);
         }
 
         private static ITenantProvider CreateTenantProvider()

@@ -8,16 +8,16 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders
 {
     public class IndexToTypeAccordanceProvider
     {
-        public IndexToTypeAccordanceProvider(ElasticConnection elasticConnection)
+        public IndexToTypeAccordanceProvider(ElasticTypeManager elasticTypeManager)
         {
-            _elasticConnection = elasticConnection;
+            _elasticTypeManager = elasticTypeManager;
         }
 
-        private readonly ElasticConnection _elasticConnection;
+        private readonly ElasticTypeManager _elasticTypeManager;
 
-        public IndexToTypeAccordanceSettings GetIndexTypeAccordances(string indexName, IEnumerable<string> typeNames)
+        public IndexToTypeAccordanceSettings GetIndexTypeAccordances(string indexName, string typeName)
         {
-            var indexTypesNest = _elasticConnection.GetTypeMappings(indexName, typeNames);
+            var indexTypesNest = _elasticTypeManager.GetTypeMappings(indexName, typeName);
 
             var indexEmpty = string.IsNullOrEmpty(indexName);
 

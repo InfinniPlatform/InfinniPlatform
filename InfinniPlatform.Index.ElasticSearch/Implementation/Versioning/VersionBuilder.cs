@@ -11,14 +11,14 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.Versioning
     /// </summary>
     internal sealed class VersionBuilder : IVersionBuilder
     {
-        public VersionBuilder(ElasticConnection elasticConnection, string indexName, string typeName)
+        public VersionBuilder(ElasticTypeManager elasticTypeManager, string indexName, string typeName)
         {
-            _elasticConnection = elasticConnection;
+            _elasticTypeManager = elasticTypeManager;
             _indexName = indexName;
             _typeName = typeName;
         }
 
-        private readonly ElasticConnection _elasticConnection;
+        private readonly ElasticTypeManager _elasticTypeManager;
         private readonly string _indexName;
         private readonly string _typeName;
 
@@ -30,13 +30,13 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.Versioning
         /// </summary>
         public bool VersionExists(IList<PropertyMapping> properties = null)
         {
-            var isTypeExists = _elasticConnection.GetIndexStatus(_indexName, _typeName) == IndexStatus.Exists;
+            var isTypeExists = _elasticTypeManager.TypeExists(_indexName, _typeName);
 
             var isPropertiesMatch = true;
 
             if (properties != null && isTypeExists)
             {
-                var currentProperties = _elasticConnection.GetPropertyMappings(_indexName, _typeName);
+                var currentProperties = _elasticTypeManager.GetPropertyMappings(_indexName, _typeName);
 
                 foreach (var newMappingProperty in properties)
                 {
@@ -68,7 +68,7 @@ namespace InfinniPlatform.Index.ElasticSearch.Implementation.Versioning
         /// <param name="properties">Первоначальный список полей справочника</param>
         public void CreateVersion(bool deleteExisting = false, IList<PropertyMapping> properties = null)
         {
-            _elasticConnection.CreateType(_indexName, _typeName, properties, deleteExisting);
+            _elasticTypeManager.CreateType(_indexName, _typeName, properties, deleteExisting);
         }
 
         /// <summary>
