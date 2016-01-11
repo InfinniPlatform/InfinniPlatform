@@ -71,7 +71,6 @@
     <Compile Include="ActionUnits\Registers\ActionUnitCreateRegisterEntry.cs" />
     <Compile Include="ActionUnits\Documents\ActionUnitDeleteDocument.cs" />
     <Compile Include="ActionUnits\Registers\ActionUnitDeleteRegisterEntry.cs" />
-    <Compile Include="ActionUnits\Documents\ActionUnitGetByQuery.cs" />
     <Compile Include="ActionUnits\Registers\ActionUnitGetClosestDateTimeOfTotalCalculation.cs" />
     <Compile Include="ActionUnits\Documents\ActionUnitGetDocument.cs" />
     <Compile Include="ActionUnits\Documents\ActionUnitGetDocumentById.cs" />
@@ -152,6 +151,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="StateMachine\WorkflowTypes.cs" />
     <Compile Include="SystemInfo\SystemInfoProvider.cs" />
     <Compile Include="UserStorage\ApplicationUserStoreCache.cs" />
     <Compile Include="UserStorage\ApplicationUserStorePersistentStorage.cs" />

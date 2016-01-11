@@ -1,9 +1,7 @@
-﻿using InfinniPlatform.Core.ContextComponents;
-using InfinniPlatform.Core.Index;
+﻿using InfinniPlatform.Core.Index;
 using InfinniPlatform.ElasticSearch.ElasticProviders;
 using InfinniPlatform.ElasticSearch.Factories;
 using InfinniPlatform.ElasticSearch.Versioning;
-using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.Sdk.IoC;
@@ -14,10 +12,6 @@ namespace InfinniPlatform.ElasticSearch.IoC
     {
         public void Load(IContainerBuilder builder)
         {
-            builder.RegisterType<IndexComponent>()
-                   .As<IIndexComponent>()
-                   .SingleInstance();
-
             builder.RegisterType<ElasticConnection>()
                    .As<IElasticConnection>()
                    .AsSelf()

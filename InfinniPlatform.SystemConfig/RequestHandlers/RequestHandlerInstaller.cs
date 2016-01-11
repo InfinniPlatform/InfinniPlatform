@@ -1,5 +1,4 @@
 ﻿using InfinniPlatform.Core.Hosting;
-using InfinniPlatform.Core.Modules;
 using InfinniPlatform.Sdk.Environment.Hosting;
 
 namespace InfinniPlatform.SystemConfig.RequestHandlers

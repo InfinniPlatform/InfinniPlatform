@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Core.ContextTypes.ContextImpl;
+using InfinniPlatform.Core.ContextTypes;
 using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Core.SearchOptions;
-using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Metadata;
@@ -14,13 +13,13 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
 {
     public sealed class SearchHandler : IWebRoutingHandler
     {
-        public SearchHandler(IConfigurationMediatorComponent configurationMediatorComponent)
+        public SearchHandler(IConfigurationObjectBuilder configurationObjectBuilder)
         {
-            _configurationMediatorComponent = configurationMediatorComponent;
+            _configurationObjectBuilder = configurationObjectBuilder;
         }
 
 
-        private readonly IConfigurationMediatorComponent _configurationMediatorComponent;
+        private readonly IConfigurationObjectBuilder _configurationObjectBuilder;
 
 
         public IConfigRequestProvider ConfigRequestProvider { get; set; }
@@ -59,7 +58,7 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
                 }
             }
 
-            var metadataConfiguration = _configurationMediatorComponent.ConfigurationBuilder.GetConfigurationObject(сonfiguration).MetadataConfiguration;
+            var metadataConfiguration = _configurationObjectBuilder.GetConfigurationObject(сonfiguration).MetadataConfiguration;
 
             var target = new SearchContext
                          {
@@ -80,7 +79,7 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
             if (target.IsValid)
             {
                 // Устанавливаем контекст прикладной конфигурации
-                var appliedConfig = _configurationMediatorComponent.GetConfiguration(сonfiguration);
+                var appliedConfig = _configurationObjectBuilder.GetConfigurationObject(сonfiguration);
 
                 var documentProvider = appliedConfig.GetDocumentProvider(documentType);
 

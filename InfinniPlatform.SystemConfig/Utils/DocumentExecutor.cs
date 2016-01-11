@@ -14,18 +14,18 @@ namespace InfinniPlatform.SystemConfig.Utils
 {
     public sealed class DocumentExecutor
     {
-        public DocumentExecutor(IConfigurationMediatorComponent configurationMediatorComponent,
+        public DocumentExecutor(IConfigurationObjectBuilder configurationObjectBuilder,
                                 IMetadataComponent metadataComponent,
                                 InprocessDocumentComponent documentComponent,
                                 IReferenceResolver referenceResolver)
         {
-            _configurationMediatorComponent = configurationMediatorComponent;
+            _configurationObjectBuilder = configurationObjectBuilder;
             _metadataComponent = metadataComponent;
             _documentComponent = documentComponent;
             _referenceResolver = referenceResolver;
         }
 
-        private readonly IConfigurationMediatorComponent _configurationMediatorComponent;
+        private readonly IConfigurationObjectBuilder _configurationObjectBuilder;
         private readonly InprocessDocumentComponent _documentComponent;
         private readonly IMetadataComponent _metadataComponent;
         private readonly IReferenceResolver _referenceResolver;
@@ -52,10 +52,7 @@ namespace InfinniPlatform.SystemConfig.Utils
 
             if (documentProvider != null)
             {
-                var metadataConfiguration =
-                    _configurationMediatorComponent
-                        .ConfigurationBuilder.GetConfigurationObject(configId)
-                                                                           .MetadataConfiguration;
+                var metadataConfiguration = _configurationObjectBuilder.GetConfigurationObject(configId).MetadataConfiguration;
 
                 if (metadataConfiguration == null)
                 {
@@ -70,7 +67,7 @@ namespace InfinniPlatform.SystemConfig.Utils
                 if (schema != null)
                 {
                     // Ивлекаем информацию о полях, по которым можно проводить сортировку из метаданных документа
-                    sortingFields = ExtractSortingProperties(string.Empty, schema.Properties,_configurationMediatorComponent.ConfigurationBuilder);
+                    sortingFields = ExtractSortingProperties(string.Empty, schema.Properties, _configurationObjectBuilder);
                 }
 
                 if (sorting != null && sorting.Any())

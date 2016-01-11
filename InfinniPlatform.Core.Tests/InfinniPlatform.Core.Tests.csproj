@@ -55,15 +55,12 @@
     <Reference Include="System.IO.Compression" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Builders\ConfigurationBuilder.cs" />
-    <Compile Include="Builders\SampleMetadataBuilder.cs" />
     <Compile Include="Compression\GZipDataCompressorMemoryTest.cs" />
     <Compile Include="Compression\GZipDataCompressorPerformanceTest.cs" />
     <Compile Include="Compression\GZipDataCompressorTest.cs" />
     <Compile Include="Dynamic\DynamicWrapperJsonConverterTest.cs" />
     <Compile Include="Dynamic\DynamicWrapperTest.cs" />
     <Compile Include="Dynamic\ObjectHelperTest.cs" />
-    <Compile Include="Events\AggregateBehavior.cs" />
     <Compile Include="Events\Builders\Entities\FieldMetadataRecord.cs" />
     <Compile Include="Events\Builders\Entities\FieldRecord.cs" />
     <Compile Include="Events\Builders\Entities\IndexMetadataRecord.cs" />
@@ -89,9 +86,6 @@
     <Compile Include="Events\Builders\Models\DrugCategoryUsing.cs" />
     <Compile Include="Events\Builders\Models\ProductUsingType.cs" />
     <Compile Include="Events\Builders\VidalExtension.cs" />
-    <Compile Include="Events\EventBehavior.cs" />
-    <Compile Include="Events\EventBuildersTests.cs" />
-    <Compile Include="Events\PerformanceBehavior.cs" />
     <Compile Include="Events\TestStatus.cs" />
     <Compile Include="Extensions\CommonExtensionsTest.cs" />
     <Compile Include="Extensions\ReflectionExtensionsTest.cs" />
@@ -112,9 +106,6 @@
     <Compile Include="RestBehavior\Acceptance\ValidationDocumentBehavior.cs" />
     <Compile Include="RestBehavior\ConfiguratorApiBehavior\CrudSettings.cs" />
     <Compile Include="Dynamic\DynamicWrapperBehavior.cs" />
-    <Compile Include="Events\EventListBuilderBehavior.cs" />
-    <Compile Include="Events\ObjectToEventSerializerBehavior.cs" />
-    <Compile Include="Metadata\MetadataBuilderBehavior.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
@@ -236,6 +227,8 @@
     <None Include="TestData\UploadBinaryContent.zip" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Builders\" />
+    <Folder Include="Metadata\" />
     <Folder Include="RestBehavior\DataSources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

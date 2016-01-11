@@ -69,7 +69,7 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
                 throw new ArgumentException($"Actual index type not found. Type: '{_typeName}'.");
             }
 
-            var tenantId = _tenantProvider.GetTenantId(_indexName);
+            var tenantId = _tenantProvider.GetTenantId();
 
             var objectsToIndex = itemsToIndex.Select(item => PrepareObjectToIndex(item, tenantId)).Cast<IndexObject>().ToList();
 

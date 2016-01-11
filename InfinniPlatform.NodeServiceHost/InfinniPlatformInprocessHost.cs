@@ -2,8 +2,6 @@
 using System.Net.Sockets;
 using System.Reflection;
 
-using InfinniPlatform.Core.RestQuery;
-
 namespace InfinniPlatform.NodeServiceHost
 {
     public static class InfinniPlatformInprocessHost
@@ -34,8 +32,6 @@ namespace InfinniPlatform.NodeServiceHost
             try
             {
                 ServerInstance.Start();
-
-                ControllerRoutingFactory.Instance = new ControllerRoutingFactory(InfinniPlatformServiceHost.GetHostingConfig());
             }
             catch (TargetInvocationException e)
             {

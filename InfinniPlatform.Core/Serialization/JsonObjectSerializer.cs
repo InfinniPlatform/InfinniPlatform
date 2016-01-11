@@ -9,33 +9,30 @@ using Newtonsoft.Json.Serialization;
 namespace InfinniPlatform.Core.Serialization
 {
     /// <summary>
-    ///     JSON-сериализатор объектов.
+    /// JSON-сериализатор объектов.
     /// </summary>
     public sealed class JsonObjectSerializer : IObjectSerializer
     {
         private const int BufferSize = 1024;
 
         /// <summary>
-        ///     Экземпляр с настройками по умолчанию.
+        /// Экземпляр с настройками по умолчанию.
         /// </summary>
         public static readonly JsonObjectSerializer Default = new JsonObjectSerializer();
-		/// <summary>
-		///		Экземпляр с настройками форматирования.
-		/// </summary>
-		public static readonly JsonObjectSerializer Formated = new JsonObjectSerializer(true);
 
-        private readonly JsonSerializer _serializer;
+        /// <summary>
+        /// Экземпляр с настройками форматирования.
+        /// </summary>
+        public static readonly JsonObjectSerializer Formated = new JsonObjectSerializer(true);
 
         public JsonObjectSerializer(bool withFormatting = false, KnownTypesContainer knownTypes = null)
         {
             var serializer = new JsonSerializer
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-				Formatting = withFormatting
-								 ? Formatting.Indented
-								 : Formatting.None
-            };
+                             {
+                                 NullValueHandling = NullValueHandling.Ignore,
+                                 ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
+                                 Formatting = withFormatting ? Formatting.Indented : Formatting.None
+                             };
 
             // При сериализации будут учитываться приватные поля
             var contractResolver = new DefaultContractResolver();
@@ -49,8 +46,10 @@ namespace InfinniPlatform.Core.Serialization
             _serializer = serializer;
         }
 
+        private readonly JsonSerializer _serializer;
+
         /// <summary>
-        ///     Сериализовать объект.
+        /// Сериализовать объект.
         /// </summary>
         /// <param name="value">Объект.</param>
         /// <returns>Сериализованное представление объекта.</returns>
@@ -75,7 +74,7 @@ namespace InfinniPlatform.Core.Serialization
         }
 
         /// <summary>
-        ///     Сериализовать объект.
+        /// Сериализовать объект.
         /// </summary>
         /// <param name="data">Поток для записи сериализованного представление объекта.</param>
         /// <param name="value">Объект.</param>
@@ -93,7 +92,7 @@ namespace InfinniPlatform.Core.Serialization
         }
 
         /// <summary>
-        ///     Десериализовать объект.
+        /// Десериализовать объект.
         /// </summary>
         /// <param name="data">Сериализованное представление объекта.</param>
         /// <param name="type">Тип объекта.</param>
@@ -115,7 +114,7 @@ namespace InfinniPlatform.Core.Serialization
         }
 
         /// <summary>
-        ///     Десериализовать объект.
+        /// Десериализовать объект.
         /// </summary>
         /// <param name="data">Поток для чтения сериализованного представление объекта.</param>
         /// <param name="type">Тип объекта.</param>
@@ -134,7 +133,7 @@ namespace InfinniPlatform.Core.Serialization
         }
 
         /// <summary>
-        ///     Преобразовать строготипизированный объект в динамический.
+        /// Преобразовать строготипизированный объект в динамический.
         /// </summary>
         public object ConvertToDynamic(object value)
         {
@@ -165,7 +164,7 @@ namespace InfinniPlatform.Core.Serialization
         }
 
         /// <summary>
-        ///     Преобразовать динамический объект в строготипизированный.
+        /// Преобразовать динамический объект в строготипизированный.
         /// </summary>
         public object ConvertFromDynamic(object value, Type type)
         {
@@ -186,7 +185,7 @@ namespace InfinniPlatform.Core.Serialization
         }
 
         /// <summary>
-        ///     Десериализовать объект.
+        /// Десериализовать объект.
         /// </summary>
         /// <param name="data">Сериализованное представление объекта.</param>
         /// <returns>Объект.</returns>
@@ -210,7 +209,7 @@ namespace InfinniPlatform.Core.Serialization
         }
 
         /// <summary>
-        ///     Десериализовать объект.
+        /// Десериализовать объект.
         /// </summary>
         /// <param name="data">Поток для чтения сериализованного представление объекта.</param>
         /// <returns>Объект.</returns>

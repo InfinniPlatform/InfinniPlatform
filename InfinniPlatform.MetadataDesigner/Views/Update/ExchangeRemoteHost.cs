@@ -1,6 +1,5 @@
 ﻿using System.Windows.Forms;
 
-using InfinniPlatform.Core.RestQuery;
 using InfinniPlatform.Sdk.Api;
 
 namespace InfinniPlatform.MetadataDesigner.Views.Update
@@ -36,9 +35,6 @@ namespace InfinniPlatform.MetadataDesigner.Views.Update
 
                 HostingConfig = HostingConfig.Default;
             }
-
-
-			ControllerRoutingFactory.Instance = new ControllerRoutingFactory(HostingConfig.Default);
 
             return true;
         }

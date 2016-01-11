@@ -5,8 +5,6 @@ using System.Text;
 
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.RestApi.DataApi;
-using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Migrations
@@ -16,14 +14,14 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
     /// </summary>
     public sealed class ClearTestDataMigration : IConfigurationMigration
     {
-        public ClearTestDataMigration(DocumentApi documentApi, IConfigurationMediatorComponent configurationMediatorComponent)
+        public ClearTestDataMigration(DocumentApi documentApi, IConfigurationObjectBuilder configurationObjectBuilder)
         {
             _documentApi = documentApi;
-            _configurationMediatorComponent = configurationMediatorComponent;
+            _configurationObjectBuilder = configurationObjectBuilder;
         }
 
+        private readonly IConfigurationObjectBuilder _configurationObjectBuilder;
         private readonly DocumentApi _documentApi;
-        private readonly IConfigurationMediatorComponent _configurationMediatorComponent;
         private readonly List<MigrationParameter> _parameters = new List<MigrationParameter>();
 
         /// <summary>
@@ -128,7 +126,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         {
             _activeConfiguration = configurationId;
 
-            var configObject = _configurationMediatorComponent.ConfigurationBuilder.GetConfigurationObject(_activeConfiguration);
+            var configObject = _configurationObjectBuilder.GetConfigurationObject(_activeConfiguration);
 
             IMetadataConfiguration metadataConfiguration = null;
             if (configObject != null)

@@ -8,6 +8,6 @@
         /// <summary>
         /// Возвращает идентификатор пользователя системы по модели SaaS.
         /// </summary>
-        string GetTenantId(string indexName = null);
+        string GetTenantId();
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.Core.Factories;
 using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Environment.Binary;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Metadata;
 
@@ -14,14 +14,14 @@ namespace InfinniPlatform.SystemConfig.Metadata
     /// </summary>
     public sealed class ConfigurationObjectBuilder : IConfigurationObjectBuilder
     {
-        public ConfigurationObjectBuilder(IIndexFactory indexFactory, IBlobStorageFactory blobStorageFactory, IMetadataConfigurationProvider metadataConfigurationProvider)
+        public ConfigurationObjectBuilder(IIndexFactory indexFactory, IBlobStorage blobStorage, IMetadataConfigurationProvider metadataConfigurationProvider)
         {
             _indexFactory = indexFactory;
-            _blobStorageFactory = blobStorageFactory;
+            _blobStorage = blobStorage;
             _metadataConfigurationProvider = metadataConfigurationProvider;
         }
 
-        private readonly IBlobStorageFactory _blobStorageFactory;
+        private readonly IBlobStorage _blobStorage;
         private readonly IIndexFactory _indexFactory;
         private readonly IMetadataConfigurationProvider _metadataConfigurationProvider;
 
@@ -40,7 +40,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
                 // Logger.Log.Error(string.Format("Metadata configuration not registered: \"{0}\"", metadataIdentifier));
                 // return null;
             }
-            return new ConfigurationObject(metadataConfiguration, _indexFactory, _blobStorageFactory);
+            return new ConfigurationObject(metadataConfiguration, _indexFactory, _blobStorage);
         }
 
         /// <summary>

@@ -11,6 +11,7 @@ using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Metadata;
 using InfinniPlatform.Sdk.Environment.Scripts;
 using InfinniPlatform.Sdk.Environment.Worklow;
+using InfinniPlatform.SystemConfig.StateMachine;
 
 namespace InfinniPlatform.SystemConfig.Metadata
 {

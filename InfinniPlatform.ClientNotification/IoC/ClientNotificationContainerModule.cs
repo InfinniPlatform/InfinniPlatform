@@ -1,6 +1,4 @@
-﻿using InfinniPlatform.Core.ContextComponents;
-using InfinniPlatform.Core.Factories;
-using InfinniPlatform.Sdk.ContextComponents;
+﻿using InfinniPlatform.Core.ClientNotification;
 using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.ClientNotification.IoC
@@ -9,12 +7,8 @@ namespace InfinniPlatform.ClientNotification.IoC
     {
         public void Load(IContainerBuilder builder)
         {
-            builder.RegisterType<SignalRWebClientNotificationServiceFactory>()
-                   .As<IWebClientNotificationServiceFactory>()
-                   .SingleInstance();
-
-            builder.RegisterType<WebClientNotificationComponent>()
-                   .As<IWebClientNotificationComponent>()
+            builder.RegisterType<SignalRWebClientNotificationService>()
+                   .As<IWebClientNotificationService>()
                    .SingleInstance();
         }
     }

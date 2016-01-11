@@ -5,60 +5,29 @@ using InfinniPlatform.Core.ContextComponents;
 using InfinniPlatform.Core.Index.SearchOptions;
 using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Core.SearchOptions.Builders;
-using InfinniPlatform.ElasticSearch.Filters;
-using InfinniPlatform.ElasticSearch.QueryLanguage;
 using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Metadata;
 using InfinniPlatform.SystemConfig.Utils;
-
-using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.SystemConfig.Executors
 {
     public class GetDocumentExecutor : IGetDocumentExecutor
     {
         public GetDocumentExecutor(DocumentExecutor documentExecutor,
-                                   IIndexComponent indexComponent,
-                                   IConfigurationMediatorComponent configurationMediatorComponent,
+                                   IConfigurationObjectBuilder configurationObjectBuilder,
                                    IMetadataComponent metadataComponent,
                                    InprocessDocumentComponent documentComponent)
         {
             _documentExecutor = documentExecutor;
-            _indexComponent = indexComponent;
-            _configurationMediatorComponent = configurationMediatorComponent;
+            _configurationObjectBuilder = configurationObjectBuilder;
             _metadataComponent = metadataComponent;
             _documentComponent = documentComponent;
         }
 
-        private readonly DocumentExecutor _documentExecutor;
-        private readonly IIndexComponent _indexComponent;
-        private readonly IConfigurationMediatorComponent _configurationMediatorComponent;
-        private readonly IMetadataComponent _metadataComponent;
+        private readonly IConfigurationObjectBuilder _configurationObjectBuilder;
         private readonly InprocessDocumentComponent _documentComponent;
-
-        public IEnumerable<dynamic> GetDocumentByQuery(string queryText, bool denormalizeResult = false)
-        {
-            dynamic query = queryText.ToDynamic();
-
-            if (query.Select == null)
-            {
-                query.Select = new List<dynamic>();
-            }
-
-            if (query.Where == null)
-            {
-                query.Where = new List<dynamic>();
-            }
-
-            var jsonQueryExecutor = new JsonQueryExecutor(_indexComponent.IndexFactory, FilterBuilderFactory.GetInstance());
-            JArray queryResult = jsonQueryExecutor.ExecuteQuery(JObject.FromObject(query));
-
-            var result = denormalizeResult
-                             ? new JsonDenormalizer().ProcessIqlResult(queryResult).ToDynamic()
-                             : queryResult.ToDynamic();
-
-            return result;
-        }
+        private readonly DocumentExecutor _documentExecutor;
+        private readonly IMetadataComponent _metadataComponent;
 
         public dynamic GetDocument(string id)
         {
@@ -76,7 +45,7 @@ namespace InfinniPlatform.SystemConfig.Executors
                 return numberOfDocuments;
             }
 
-            var metadataConfiguration = _configurationMediatorComponent.ConfigurationBuilder.GetConfigurationObject(configurationName).MetadataConfiguration;
+            var metadataConfiguration = _configurationObjectBuilder.GetConfigurationObject(configurationName).MetadataConfiguration;
 
             if (metadataConfiguration == null)
             {
@@ -104,12 +73,12 @@ namespace InfinniPlatform.SystemConfig.Executors
         public IEnumerable<object> GetDocument(string configurationName, string documentType, dynamic filter, int pageNumber, int pageSize, IEnumerable<dynamic> ignoreResolve = null, dynamic sorting = null)
         {
             var result = _documentExecutor.GetCompleteDocuments(configurationName,
-                                                                documentType,
-                                                                pageNumber,
-                                                                pageSize,
-                                                                filter,
-                                                                sorting,
-                                                                ignoreResolve);
+                documentType,
+                pageNumber,
+                pageSize,
+                filter,
+                sorting,
+                ignoreResolve);
 
             return result;
         }

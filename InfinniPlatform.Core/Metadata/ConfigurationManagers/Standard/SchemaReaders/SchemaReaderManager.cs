@@ -13,7 +13,7 @@ namespace InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.SchemaRea
         /// <returns>Схема документа</returns>
         public dynamic GetSchema(string configId, string documentId)
         {
-            return new MetadataApi().GetDocumentSchema(configId, documentId);
+            return null;
         }
     }
 }

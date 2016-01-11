@@ -1,7 +1,5 @@
-﻿using InfinniPlatform.Core.ContextComponents;
-using InfinniPlatform.Core.Runtime;
+﻿using InfinniPlatform.Core.Runtime;
 using InfinniPlatform.Runtime.Implementation;
-using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment.Scripts;
 using InfinniPlatform.Sdk.IoC;
 
@@ -11,10 +9,6 @@ namespace InfinniPlatform.Runtime.IoC
     {
         public void Load(IContainerBuilder builder)
         {
-            builder.RegisterType<ScriptRunnerComponent>()
-                   .As<IScriptRunnerComponent>()
-                   .SingleInstance();
-
             builder.RegisterType<ScriptMetadataProviderMemory>()
                    .As<IScriptMetadataProvider>()
                    .SingleInstance();

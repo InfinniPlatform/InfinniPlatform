@@ -5,8 +5,6 @@ using System.Text;
 
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.RestApi.CommonApi;
-using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Metadata;
 
@@ -17,15 +15,15 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
     /// </summary>
     public sealed class DownloadClassifiersDataMigration : IConfigurationMigration
     {
-        public DownloadClassifiersDataMigration(RestQueryApi restQueryApi, IConfigurationMediatorComponent configurationMediatorComponent)
+        public DownloadClassifiersDataMigration(RestQueryApi restQueryApi, IConfigurationObjectBuilder configurationObjectBuilder)
         {
             _restQueryApi = restQueryApi;
-            _configurationMediatorComponent = configurationMediatorComponent;
+            _configurationObjectBuilder = configurationObjectBuilder;
         }
 
+        private readonly IConfigurationObjectBuilder _configurationObjectBuilder;
         private readonly List<MigrationParameter> _parameters = new List<MigrationParameter>();
         private readonly RestQueryApi _restQueryApi;
-        private readonly IConfigurationMediatorComponent _configurationMediatorComponent;
         private IMetadataConfiguration _metadataConfiguration;
 
         /// <summary>
@@ -129,7 +127,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         {
             _parameters.Add(new MigrationParameter { Caption = "Path to folder" });
 
-            var configObject = _configurationMediatorComponent.ConfigurationBuilder.GetConfigurationObject("classifierstorage");
+            var configObject = _configurationObjectBuilder.GetConfigurationObject("classifierstorage");
 
             if (configObject != null)
             {

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 
 using InfinniPlatform.Core.Metadata;
-using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Metadata;
 
@@ -14,13 +13,13 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
     /// </summary>
     public sealed class UpdateStoreMigration : IConfigurationMigration
     {
-        public UpdateStoreMigration(IIndexFactory indexFactory, IConfigurationMediatorComponent configurationMediatorComponent)
+        public UpdateStoreMigration(IIndexFactory indexFactory, IConfigurationObjectBuilder configurationObjectBuilder)
         {
             _indexFactory = indexFactory;
-            _configurationMediatorComponent = configurationMediatorComponent;
+            _configurationObjectBuilder = configurationObjectBuilder;
         }
 
-        private readonly IConfigurationMediatorComponent _configurationMediatorComponent;
+        private readonly IConfigurationObjectBuilder _configurationObjectBuilder;
         private readonly IIndexFactory _indexFactory;
 
         /// <summary>
@@ -73,7 +72,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         {
             var resultMessage = new StringBuilder();
 
-            var configObject = _configurationMediatorComponent.ConfigurationBuilder.GetConfigurationObject(_activeConfiguration);
+            var configObject = _configurationObjectBuilder.GetConfigurationObject(_activeConfiguration);
 
             IMetadataConfiguration metadataConfiguration = null;
             if (configObject != null)
@@ -83,12 +82,10 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
 
             if (metadataConfiguration != null)
             {
-                var configurationObjectBuilder = _configurationMediatorComponent.ConfigurationBuilder;
-
                 var documents = metadataConfiguration.Documents;
                 foreach (var documentId in documents)
                 {
-                    resultMessage.AppendFormat(MigrationHelper.TryUpdateDocumentMappings(metadataConfiguration, configurationObjectBuilder, _indexFactory, documentId));
+                    resultMessage.AppendFormat(MigrationHelper.TryUpdateDocumentMappings(metadataConfiguration, _configurationObjectBuilder, _indexFactory, documentId));
                 }
 
                 resultMessage.AppendLine();

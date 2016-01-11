@@ -1,5 +1,6 @@
-﻿using InfinniPlatform.Core.RestApi.Auth;
-using InfinniPlatform.Owin.Middleware;
+﻿using InfinniPlatform.Owin.Middleware;
+using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.WebApi.Middleware.RouteFormatters;
 
 using Microsoft.Owin;
@@ -8,12 +9,12 @@ namespace InfinniPlatform.WebApi.Middleware.UserAuthHandlers
 {
     public sealed class GetUserClaimHandlerRegistration : HandlerRegistration
     {
-        public GetUserClaimHandlerRegistration(AuthApi authApi) : base(new RouteFormatterAuthUser(), new RequestPathConstructor(), Priority.Higher, "GET")
+        public GetUserClaimHandlerRegistration(ISessionManager sessionManager) : base(new RouteFormatterAuthUser(), new RequestPathConstructor(), Priority.Higher, "GET")
         {
-            _authApi = authApi;
+            _sessionManager = sessionManager;
         }
 
-        private readonly AuthApi _authApi;
+        private readonly ISessionManager _sessionManager;
 
         protected override PathStringProvider GetPath(IOwinContext context)
         {
@@ -24,7 +25,12 @@ namespace InfinniPlatform.WebApi.Middleware.UserAuthHandlers
         {
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
-            return new ValueRequestHandlerResult(_authApi.GetSessionData(routeDictionary["userName"], routeDictionary["claimType"]));
+            var sessionDataKey = routeDictionary["claimType"];
+            var sessionDataValue = _sessionManager.GetSessionData(sessionDataKey);
+
+            var result = new DynamicWrapper { ["IsValid"] = true, ["ClaimValue"] = sessionDataValue };
+
+            return new ValueRequestHandlerResult(result);
         }
     }
 }

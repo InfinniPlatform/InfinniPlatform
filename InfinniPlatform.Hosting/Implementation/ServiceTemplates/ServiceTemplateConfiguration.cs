@@ -69,7 +69,6 @@ namespace InfinniPlatform.Hosting.Implementation.ServiceTemplates
                     dynamic extensionPoint = new DynamicWrapper();
                     extensionPoint.Name = workflowExtensionPoint.Key;
                     extensionPoint.ContextType = workflowExtensionPoint.Value;
-                    extensionPoint.Caption = workflowExtensionPoint.Value.GetContextTypeDisplayByKind();
                     templateInfo.WorkflowExtensionPoints.Add(extensionPoint);
                 }
                 result.Add(templateInfo);

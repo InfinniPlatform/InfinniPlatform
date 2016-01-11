@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Environment.Index;
+﻿using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.Core.ContextComponents
 {
@@ -8,14 +8,14 @@ namespace InfinniPlatform.Core.ContextComponents
     /// </summary>
     public sealed class InprocessDocumentComponent
     {
-        public InprocessDocumentComponent(IConfigurationMediatorComponent configurationMediatorComponent, IIndexFactory indexFactory)
+        public InprocessDocumentComponent(IConfigurationObjectBuilder configurationObjectBuilder, IIndexFactory indexFactory)
         {
-            _configurationMediatorComponent = configurationMediatorComponent;
+            _configurationObjectBuilder = configurationObjectBuilder;
             _indexFactory = indexFactory;
         }
 
 
-        private readonly IConfigurationMediatorComponent _configurationMediatorComponent;
+        private readonly IConfigurationObjectBuilder _configurationObjectBuilder;
         private readonly IIndexFactory _indexFactory;
 
 
@@ -26,11 +26,7 @@ namespace InfinniPlatform.Core.ContextComponents
 
         public IVersionProvider GetDocumentProvider(string configId, string documentType)
         {
-            // получаем конструктор метаданных конфигураций
-            var configBuilder = _configurationMediatorComponent.ConfigurationBuilder;
-
-            // получаем конфигурацию, указанную в метаданных запроса
-            var config = configBuilder.GetConfigurationObject(configId);
+            var config = _configurationObjectBuilder.GetConfigurationObject(configId);
 
             var documentProvider = config?.GetDocumentProvider(documentType);
 

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.Core.Modules;
-using InfinniPlatform.Core.RestQuery;
+using InfinniPlatform.Core.Hosting;
 
 namespace InfinniPlatform.WebApi.Factories
 {

@@ -82,22 +82,12 @@
     <Compile Include="ElasticWrappers\ElasticSearchModelExpressionBehavior.cs" />
     <Compile Include="ElasticWrappers\ElasticSearchPerformanceIntegrationBehavior.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueryLanguage\ConfigurationQueryBehavior.cs" />
-    <Compile Include="QueryLanguage\JsonDenormalizerBehavior.cs" />
-    <Compile Include="QueryLanguage\JsonQueryBehavior.cs" />
-    <Compile Include="QueryLanguage\PerformanceBehavior.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Files\Config\App.config">
       <Link>App.config</Link>
     </None>
     <None Include="packages.config" />
-    <None Include="QueryLanguage\IqlBigResult.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="QueryLanguage\IqlResult.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">

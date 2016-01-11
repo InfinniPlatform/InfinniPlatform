@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-using InfinniPlatform.Core.ContextTypes.ContextImpl;
+using InfinniPlatform.Core.ContextTypes;
 using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Core.Properties;
 using InfinniPlatform.Sdk.ContextComponents;

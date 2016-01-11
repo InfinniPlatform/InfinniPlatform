@@ -4,8 +4,6 @@ using System.IO;
 using System.Linq;
 
 using InfinniPlatform.Core.Hosting;
-using InfinniPlatform.Core.LocalRouting;
-using InfinniPlatform.Core.RestQuery;
 using InfinniPlatform.WebApi.Factories;
 
 namespace InfinniPlatform.WebApi.ProvidersLocal

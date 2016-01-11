@@ -56,7 +56,6 @@
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="ApiContracts\IAuthApi.cs" />
     <Compile Include="ApiContracts\ICustomServiceApi.cs" />
     <Compile Include="ApiContracts\IDocumentApi.cs" />
     <Compile Include="ApiContracts\IPrintViewApi.cs" />
@@ -101,24 +100,15 @@
     <Compile Include="Environment\Hosting\IServiceTemplate.cs" />
     <Compile Include="Environment\Hosting\VerbType.cs" />
     <Compile Include="Environment\Binary\IBlobStorage.cs" />
-    <Compile Include="ContextComponents\IBlobStorageComponent.cs" />
-    <Compile Include="ContextComponents\IConfigurationMediatorComponent.cs" />
-    <Compile Include="ContextComponents\ICrossConfigSearchComponent.cs" />
-    <Compile Include="ContextComponents\IIndexComponent.cs" />
     <Compile Include="ContextComponents\ILogComponent.cs" />
     <Compile Include="ContextComponents\IMetadataComponent.cs" />
     <Compile Include="ContextComponents\IMetadataConfigurationProvider.cs" />
     <Compile Include="ContextComponents\IPrintViewComponent.cs" />
-    <Compile Include="ContextComponents\IProfilerComponent.cs" />
     <Compile Include="ContextComponents\IReferenceResolver.cs" />
     <Compile Include="ContextComponents\IRegistryComponent.cs" />
-    <Compile Include="ContextComponents\IScriptRunnerComponent.cs" />
-    <Compile Include="ContextComponents\ISystemComponent.cs" />
-    <Compile Include="ContextComponents\IWebClientNotificationComponent.cs" />
     <Compile Include="Contracts\IApplyContext.cs" />
     <Compile Include="Contracts\IApplyResultContext.cs" />
     <Compile Include="Contracts\ICommonContext.cs" />
-    <Compile Include="Contracts\IProcessEventContext.cs" />
     <Compile Include="Contracts\ISearchContext.cs" />
     <Compile Include="Contracts\IUploadContext.cs" />
     <Compile Include="Contracts\IUrlEncodedDataContext.cs" />

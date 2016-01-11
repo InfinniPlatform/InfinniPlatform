@@ -16,16 +16,6 @@ namespace InfinniPlatform.Core.Transactions
         private const string AnonymousUser = "anonimous";
         private const string DefaultTenantId = "defaulttenantid";
 
-        private static readonly string[] SystemConfigurations =
-        {
-            "administration",
-            "administrationcustomization",
-            "authorization",
-            "restfulapi",
-            "systemconfig",
-            "update"
-        };
-
 
         public TenantProvider(ISessionManager sessionManager)
         {
@@ -35,7 +25,8 @@ namespace InfinniPlatform.Core.Transactions
 
         private readonly ISessionManager _sessionManager;
 
-        public string GetTenantId(string indexName = null)
+
+        public string GetTenantId()
         {
             string tenantId = null;
 
@@ -68,6 +59,7 @@ namespace InfinniPlatform.Core.Transactions
 
             return tenantId;
         }
+
 
         private static IIdentity GetCurrentIdentity()
         {

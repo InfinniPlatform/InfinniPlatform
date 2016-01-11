@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 
-using InfinniPlatform.Core.Deprecated;
 using InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Core.Properties;
 using InfinniPlatform.Sdk.Dynamic;
@@ -27,7 +27,18 @@ namespace InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.MetadataM
         /// <returns>Предзаполненный объект метаданных</returns>
         public dynamic CreateItem(string name)
         {
-            return MetadataBuilderExtensions.BuildConfiguration(name, name, name);
+            dynamic result = new DynamicWrapper();
+
+            result.Name = name;
+            result.Caption = name;
+            result.Description = name;
+            result.Menu = new List<dynamic>();
+            result.Registers = new List<dynamic>();
+            result.Documents = new List<dynamic>();
+            result.Assemblies = new List<dynamic>();
+            result.Reports = new List<dynamic>();
+
+            return result;
         }
 
         /// <summary>
@@ -102,11 +113,16 @@ namespace InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.MetadataM
                 throw new ArgumentException(Resources.IncorrectConfigurationName);
             }
 
-            var metadataConfig = MetadataBuilderExtensions.BuildConfiguration(objectToCreate.Name,
-                objectToCreate.Caption,
-                objectToCreate.Description);
-
+            dynamic metadataConfig = new DynamicWrapper();
             metadataConfig.Id = objectToCreate.Id;
+            metadataConfig.Name = objectToCreate.Name;
+            metadataConfig.Caption = objectToCreate.Caption;
+            metadataConfig.Description = objectToCreate.Description;
+            metadataConfig.Menu = new List<dynamic>();
+            metadataConfig.Registers = new List<dynamic>();
+            metadataConfig.Documents = new List<dynamic>();
+            metadataConfig.Assemblies = new List<dynamic>();
+            metadataConfig.Reports = new List<dynamic>();
 
             if (updatingConfiguration != null)
             {
@@ -121,8 +137,22 @@ namespace InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.MetadataM
         {
             var manager = new ManagerFactoryConfiguration(configurationId).BuildDocumentManager();
 
-            var document = MetadataBuilderExtensions.BuildDocument("Common", "Common options", "Common options",
-                "Common");
+            dynamic document = new DynamicWrapper();
+
+            document.Id = Guid.NewGuid().ToString();
+            document.Name = "Common";
+            document.Caption = "Common";
+            document.Description = "Common";
+            document.Versioning = 2;
+            document.MetadataIndex = "Common";
+            document.Services = new List<dynamic>();
+            document.Processes = new List<dynamic>();
+            document.Scenarios = new List<dynamic>();
+            document.Generators = new List<dynamic>();
+            document.Views = new List<dynamic>();
+            document.PrintViews = new List<dynamic>();
+            document.ValidationWarnings = new List<dynamic>();
+            document.ValidationErrors = new List<dynamic>();
 
             manager.InsertItem(document);
         }
@@ -131,16 +161,28 @@ namespace InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.MetadataM
         {
             // В конфигурации должен быть один документ, хранящий общие сведения по всем регистрам
             var manager = new ManagerFactoryConfiguration(configurationId).BuildDocumentManager();
-            var document = MetadataBuilderExtensions.BuildDocument(
-                configurationId + RegisterConstants.RegistersCommonInfo,
-                "Registers common options",
-                "Storage for register's common information (e.g. actual date)",
-                configurationId + RegisterConstants.RegistersCommonInfo);
 
-            document.SearchAbility = 0; // SearchAbilityType.KeywordBasedSearch;
-            document.Versioning = 4;
+            var registerName = configurationId + RegisterConstants.RegistersCommonInfo;
 
-            manager.InsertItem(document);
+            dynamic registerDocument = new DynamicWrapper();
+            registerDocument.Id = Guid.NewGuid().ToString();
+            registerDocument.Name = registerName;
+            registerDocument.Caption = registerName;
+            registerDocument.Description = registerName;
+            registerDocument.Versioning = 2;
+            registerDocument.MetadataIndex = registerName;
+            registerDocument.Services = new List<dynamic>();
+            registerDocument.Processes = new List<dynamic>();
+            registerDocument.Scenarios = new List<dynamic>();
+            registerDocument.Generators = new List<dynamic>();
+            registerDocument.Views = new List<dynamic>();
+            registerDocument.PrintViews = new List<dynamic>();
+            registerDocument.ValidationWarnings = new List<dynamic>();
+            registerDocument.ValidationErrors = new List<dynamic>();
+            registerDocument.SearchAbility = 0; // SearchAbilityType.KeywordBasedSearch;
+            registerDocument.Versioning = 4;
+
+            manager.InsertItem(registerDocument);
         }
     }
 }

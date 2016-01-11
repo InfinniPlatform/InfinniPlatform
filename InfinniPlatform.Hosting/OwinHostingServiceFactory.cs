@@ -2,7 +2,6 @@
 
 using InfinniPlatform.Core.Factories;
 using InfinniPlatform.Core.Hosting;
-using InfinniPlatform.Core.RestQuery;
 using InfinniPlatform.Owin.Hosting;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Sdk.Environment;
@@ -16,8 +15,6 @@ namespace InfinniPlatform.Hosting
     {
         public OwinHostingServiceFactory(IOwinHostingContext hostingContext)
         {
-            ControllerRoutingFactory.Instance = new ControllerRoutingFactory(hostingContext.Configuration);
-
             // Создание сервиса хостинга приложения на базе OWIN
             var hostingService = new OwinHostingService(hostingContext);
 

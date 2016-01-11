@@ -3,19 +3,19 @@
 namespace InfinniPlatform.Core.Sql
 {
     /// <summary>
-    ///     Исполнитель SQL-команд.
+    /// Исполнитель SQL-команд.
     /// </summary>
     public interface ISqlQueryExecutor
     {
         /// <summary>
-        ///     Получить данные по указанному запросу.
+        /// Получить данные по указанному запросу.
         /// </summary>
         /// <param name="databaseName">Наименование строки подключения.</param>
         /// <returns>Строка подключения.</returns>
         string GetConnectionString(string databaseName);
 
         /// <summary>
-        ///     Получить данные, удовлетворяющие запросу.
+        /// Получить данные, удовлетворяющие запросу.
         /// </summary>
         /// <typeparam name="T">Тип данных.</typeparam>
         /// <param name="databaseName">Наименование строки подключения.</param>
@@ -25,7 +25,7 @@ namespace InfinniPlatform.Core.Sql
         IEnumerable<T> Query<T>(string databaseName, SqlQueryObject query, int? timeout = null);
 
         /// <summary>
-        ///     Получить данные по указанному запросу.
+        /// Получить данные по указанному запросу.
         /// </summary>
         /// <param name="databaseName">Наименование строки подключения.</param>
         /// <param name="query">Объект запроса.</param>
@@ -34,7 +34,7 @@ namespace InfinniPlatform.Core.Sql
         IEnumerable<dynamic> Query(string databaseName, SqlQueryObject query, int? timeout = null);
 
         /// <summary>
-        ///     Выполнить указанный запрос.
+        /// Выполнить указанный запрос.
         /// </summary>
         /// <param name="databaseName">Наименование строки подключения.</param>
         /// <param name="query">Объект запроса.</param>

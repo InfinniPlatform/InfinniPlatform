@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 
-using InfinniPlatform.Core.Deprecated;
 using InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.MetadataReaders;
 using InfinniPlatform.Core.Metadata.MetadataContainers;
@@ -30,7 +30,24 @@ namespace InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.MetadataM
 
         public dynamic CreateItem(string name)
         {
-            return MetadataBuilderExtensions.BuildDocument(name, name, name, name);
+            dynamic document = new DynamicWrapper();
+
+            document.Id = Guid.NewGuid().ToString();
+            document.Name = name;
+            document.Caption = name;
+            document.Description = name;
+            document.Versioning = 2;
+            document.MetadataIndex = name;
+            document.Services = new List<dynamic>();
+            document.Processes = new List<dynamic>();
+            document.Scenarios = new List<dynamic>();
+            document.Generators = new List<dynamic>();
+            document.Views = new List<dynamic>();
+            document.PrintViews = new List<dynamic>();
+            document.ValidationWarnings = new List<dynamic>();
+            document.ValidationErrors = new List<dynamic>();
+
+            return document;
         }
 
         public void InsertItem(dynamic objectToCreate)

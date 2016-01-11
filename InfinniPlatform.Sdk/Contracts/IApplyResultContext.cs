@@ -1,24 +1,18 @@
 ﻿namespace InfinniPlatform.Sdk.Contracts
 {
     /// <summary>
-    ///   Контекст применения результата 
+    /// Контекст применения результата
     /// </summary>
     public interface IApplyResultContext : ICommonContext
     {
         /// <summary>
-        ///   Объект, к которому применены изменения
+        /// Объект, к которому применены изменения
         /// </summary>
         dynamic Item { get; set; }
 
         /// <summary>
-        ///  Статус обработки документа 
-        /// </summary>
-        object Status { get; set; }
-
-        /// <summary>
-        ///  Результат бизнес-обработки документа
+        /// Результат бизнес-обработки документа
         /// </summary>
         dynamic Result { get; set; }
-
     }
 }

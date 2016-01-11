@@ -6,41 +6,38 @@
     public interface ICommonContext
     {
         /// <summary>
-        /// Результат фильтрации событий
-        /// </summary>
-        dynamic ValidationMessage { get; set; }
-
-        /// <summary>
-        /// Признак успешности обработки события фильтрации событий
-        /// </summary>
-        bool IsValid { get; set; }
-
-        /// <summary>
-        /// Признак системной ошибки сервера
-        /// </summary>
-        bool IsInternalServerError { get; set; }
-
-        /// <summary>
-        /// Версия исполняемой точки расширения
-        /// </summary>
-        /// <summary>
-        /// Конфигурация текущего запроса
+        /// Конфигурация текущего запроса.
         /// </summary>
         string Configuration { get; set; }
 
         /// <summary>
-        /// Метаданные текущего запроса
+        /// Тип документа текущего запроса.
         /// </summary>
         string Metadata { get; set; }
 
         /// <summary>
-        /// Действие текущего запроса
+        /// Тип действия текущего запроса.
         /// </summary>
         string Action { get; set; }
 
         /// <summary>
-        /// Авторизованный пользователь системы
+        /// Признак успешности обработки.
         /// </summary>
-        string UserName { get; set; }
+        bool IsValid { get; set; }
+
+        /// <summary>
+        /// Признак системной ошибки сервера.
+        /// </summary>
+        bool IsInternalServerError { get; set; }
+
+        /// <summary>
+        /// Результат фильтрации событий.
+        /// </summary>
+        dynamic ValidationMessage { get; set; }
+
+        /// <summary>
+        /// Результат обработки.
+        /// </summary>
+        dynamic Result { get; set; }
     }
 }

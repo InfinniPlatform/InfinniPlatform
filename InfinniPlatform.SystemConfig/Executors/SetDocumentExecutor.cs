@@ -1,28 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Core.ContextTypes.ContextImpl;
+using InfinniPlatform.Core.ContextTypes;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Environment.Scripts;
 
 namespace InfinniPlatform.SystemConfig.Executors
 {
     internal class SetDocumentExecutor : ISetDocumentExecutor
     {
-        public SetDocumentExecutor(IDocumentTransactionScopeProvider transactionScopeProvider, IMetadataComponent metadataComponent, IScriptRunnerComponent scriptRunnerComponent)
+        public SetDocumentExecutor(IDocumentTransactionScopeProvider transactionScopeProvider, IMetadataComponent metadataComponent, IScriptProcessor scriptProcessor)
         {
             _transactionScopeProvider = transactionScopeProvider;
             _metadataComponent = metadataComponent;
-            _scriptRunnerComponent = scriptRunnerComponent;
+            _scriptProcessor = scriptProcessor;
         }
 
 
         private readonly IDocumentTransactionScopeProvider _transactionScopeProvider;
         private readonly IMetadataComponent _metadataComponent;
-        private readonly IScriptRunnerComponent _scriptRunnerComponent;
+        private readonly IScriptProcessor _scriptProcessor;
 
 
         public DocumentExecutorResult SaveDocument(string configuration, string documentType, object documentInstance)
@@ -78,7 +78,7 @@ namespace InfinniPlatform.SystemConfig.Executors
                 {
                     // Вызов прикладного скрипта для проверки документа
                     ApplyContext actionContext = CreateActionContext(configuration, documentType, documentInstance);
-                    _scriptRunnerComponent.InvokeScript(onValidateAction, actionContext);
+                    _scriptProcessor.InvokeScript(onValidateAction, actionContext);
 
                     if (!CheckActionResult(actionContext, result))
                     {
@@ -92,7 +92,7 @@ namespace InfinniPlatform.SystemConfig.Executors
                 {
                     // Вызов скрипта для пост-обработки документа перед его сохранением
                     ApplyContext actionContext = CreateActionContext(configuration, documentType, documentInstance);
-                    _scriptRunnerComponent.InvokeScript(onSuccessAction, actionContext);
+                    _scriptProcessor.InvokeScript(onSuccessAction, actionContext);
 
                     // Предполагается, что скрипт может заменить оригинальный документ
                     documentToSave = actionContext.Item;
@@ -134,7 +134,7 @@ namespace InfinniPlatform.SystemConfig.Executors
                 {
                     // Вызов прикладного скрипта для проверки документа
                     ApplyContext actionContext = CreateActionContext(configuration, documentType, documentId);
-                    _scriptRunnerComponent.InvokeScript(onValidateAction, actionContext);
+                    _scriptProcessor.InvokeScript(onValidateAction, actionContext);
 
                     if (!CheckActionResult(actionContext, result))
                     {
@@ -149,7 +149,7 @@ namespace InfinniPlatform.SystemConfig.Executors
                 {
                     // Вызов скрипта для пост-обработки документа перед его сохранением
                     ApplyContext actionContext = CreateActionContext(configuration, documentType, documentId);
-                    _scriptRunnerComponent.InvokeScript(onSuccessAction, actionContext);
+                    _scriptProcessor.InvokeScript(onSuccessAction, actionContext);
 
                     if (!CheckActionResult(actionContext, result))
                     {

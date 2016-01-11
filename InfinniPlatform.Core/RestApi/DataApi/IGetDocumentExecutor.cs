@@ -7,8 +7,6 @@ namespace InfinniPlatform.Core.RestApi.DataApi
 {
     public interface IGetDocumentExecutor
     {
-        IEnumerable<object> GetDocumentByQuery(string queryText, bool denormalizeResult = false);
-
         dynamic GetDocument(string id);
 
         int GetNumberOfDocuments(string configurationName, string documentType, dynamic filter);

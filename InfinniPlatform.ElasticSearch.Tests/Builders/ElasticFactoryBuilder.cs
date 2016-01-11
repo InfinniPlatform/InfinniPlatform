@@ -51,7 +51,7 @@ namespace InfinniPlatform.ElasticSearch.Tests.Builders
         private static ITenantProvider CreateTenantProvider()
         {
             var tenantProviderMock = new Mock<ITenantProvider>();
-            tenantProviderMock.Setup(i => i.GetTenantId(It.IsAny<string>())).Returns("anonimous");
+            tenantProviderMock.Setup(i => i.GetTenantId()).Returns("anonimous");
             return tenantProviderMock.Object;
         }
     }

@@ -139,18 +139,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="QueryLanguage\CriteriaFilterBuilder.cs" />
-    <Compile Include="QueryLanguage\JsonDenormalizer.cs" />
-    <Compile Include="QueryLanguage\JsonFilterCriteria.cs" />
-    <Compile Include="QueryLanguage\JsonQueryExecutor.cs" />
-    <Compile Include="QueryLanguage\ProjectionBuilder.cs" />
-    <Compile Include="QueryLanguage\ProjectionObject.cs" />
-    <Compile Include="QueryLanguage\QuerySyntaxChecker.cs" />
-    <Compile Include="QueryLanguage\QuerySyntaxTree.cs" />
-    <Compile Include="QueryLanguage\ReferenceBuilder.cs" />
-    <Compile Include="QueryLanguage\ReferencedObject.cs" />
-    <Compile Include="QueryLanguage\ResultLimits.cs" />
-    <Compile Include="QueryLanguage\WhereObject.cs" />
     <Compile Include="SortBuilders\SortContainer.cs" />
     <Compile Include="Versioning\VersionBuilder.cs" />
     <Compile Include="Versioning\VersionProvider.cs" />

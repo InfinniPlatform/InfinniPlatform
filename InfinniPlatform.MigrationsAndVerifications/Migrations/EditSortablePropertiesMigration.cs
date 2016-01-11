@@ -5,8 +5,6 @@ using System.Text;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Core.RestApi.CommonApi;
-using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Migrations
@@ -16,15 +14,15 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
     /// </summary>
     public sealed class EditSortablePropertiesMigration : IConfigurationMigration
     {
-        public EditSortablePropertiesMigration(RestQueryApi restQueryApi, IConfigurationMediatorComponent configurationMediatorComponent)
+        public EditSortablePropertiesMigration(RestQueryApi restQueryApi, IConfigurationObjectBuilder configurationObjectBuilder)
         {
             _restQueryApi = restQueryApi;
-            _configurationMediatorComponent = configurationMediatorComponent;
+            _configurationObjectBuilder = configurationObjectBuilder;
         }
 
+        private readonly IConfigurationObjectBuilder _configurationObjectBuilder;
         private readonly List<MigrationParameter> _parameters = new List<MigrationParameter>();
         private readonly RestQueryApi _restQueryApi;
-        private readonly IConfigurationMediatorComponent _configurationMediatorComponent;
 
         /// <summary>
         /// Конфигурация, к которой применяется миграция
@@ -154,7 +152,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         public void AssignActiveConfiguration(string configurationId)
         {
             _activeConfiguration = configurationId;
-            var configObject = _configurationMediatorComponent.ConfigurationBuilder.GetConfigurationObject(_activeConfiguration);
+            var configObject = _configurationObjectBuilder.GetConfigurationObject(_activeConfiguration);
 
             if (configObject != null)
             {

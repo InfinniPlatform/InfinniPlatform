@@ -4,9 +4,9 @@ using System.Text;
 
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.MigrationsAndVerifications.Verifications
 {
@@ -15,13 +15,13 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
     /// </summary>
     public sealed class ChangingMappingVerification : IConfigurationVerification
     {
-        public ChangingMappingVerification(IIndexFactory indexFactory, IConfigurationMediatorComponent configurationMediatorComponent)
+        public ChangingMappingVerification(IIndexFactory indexFactory, IConfigurationObjectBuilder configurationObjectBuilder)
         {
             _indexFactory = indexFactory;
-            _configurationMediatorComponent = configurationMediatorComponent;
+            _configurationObjectBuilder = configurationObjectBuilder;
         }
 
-        private readonly IConfigurationMediatorComponent _configurationMediatorComponent;
+        private readonly IConfigurationObjectBuilder _configurationObjectBuilder;
         private readonly IIndexFactory _indexFactory;
 
         /// <summary>
@@ -67,11 +67,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
             var result = true;
             var resultMessage = new StringBuilder();
 
-            var metadataConfiguration = _configurationMediatorComponent
-                .ConfigurationBuilder.GetConfigurationObject(_activeConfiguration)
-                .MetadataConfiguration;
-            //_metadataConfigurationProvider.Configurations.FirstOrDefault(
-            //	c => c.ConfigurationId == _activeConfiguration);
+            var metadataConfiguration = _configurationObjectBuilder.GetConfigurationObject(_activeConfiguration).MetadataConfiguration;
 
             if (metadataConfiguration != null)
             {
@@ -89,7 +85,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Verifications
                     if (schema != null)
                     {
                         // convert document schema to index mapping
-                        props = DocumentSchemaHelper.ExtractProperties(schema.Properties, _configurationMediatorComponent.ConfigurationBuilder);
+                        props = DocumentSchemaHelper.ExtractProperties(schema.Properties, _configurationObjectBuilder);
                     }
 
                     if (!versionBuilder.VersionExists(props.Count > 0

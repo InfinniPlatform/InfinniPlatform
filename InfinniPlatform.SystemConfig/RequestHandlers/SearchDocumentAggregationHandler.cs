@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Core.ContextTypes.ContextImpl;
+using InfinniPlatform.Core.ContextTypes;
 using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.ElasticSearch.Filters;
 using InfinniPlatform.Sdk.ContextComponents;
@@ -13,10 +13,10 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
 {
     public sealed class SearchDocumentAggregationHandler : IWebRoutingHandler
     {
-        public SearchDocumentAggregationHandler(IMetadataConfigurationProvider metadataConfigurationProvider, IIndexComponent indexComponent)
+        public SearchDocumentAggregationHandler(IMetadataConfigurationProvider metadataConfigurationProvider, IIndexFactory indexFactory)
         {
             _metadataConfigurationProvider = metadataConfigurationProvider;
-            _indexFactory = indexComponent.IndexFactory;
+            _indexFactory = indexFactory;
             _filterFactory = FilterBuilderFactory.GetInstance();
         }
 

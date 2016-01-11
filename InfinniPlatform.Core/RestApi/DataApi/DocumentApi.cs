@@ -58,11 +58,6 @@ namespace InfinniPlatform.Core.RestApi.DataApi
             return _setDocumentExecutor.SaveDocuments(configuration, documentType, documentInstances);
         }
 
-        public IEnumerable<dynamic> GetDocumentByQuery(string queryText, bool denormalizeResult = false)
-        {
-            return _getDocumentExecutor.GetDocumentByQuery(queryText, denormalizeResult);
-        }
-
         public dynamic GetDocument(string id)
         {
             return _getDocumentExecutor.GetDocument(id);

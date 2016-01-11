@@ -1,5 +1,4 @@
-﻿using InfinniPlatform.Core.LocalRouting;
-using InfinniPlatform.Core.RestQuery;
+﻿using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Sdk.IoC;

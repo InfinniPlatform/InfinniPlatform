@@ -7,7 +7,7 @@ using InfinniPlatform.Core.Properties;
 namespace InfinniPlatform.Core.Serialization
 {
     /// <summary>
-    ///     Контейнер известных типов для сериализации.
+    /// Контейнер известных типов для сериализации.
     /// </summary>
     public sealed class KnownTypesContainer
     {
@@ -18,7 +18,7 @@ namespace InfinniPlatform.Core.Serialization
             = new Dictionary<Type, string>();
 
         /// <summary>
-        ///     Содержит указанный тип.
+        /// Содержит указанный тип.
         /// </summary>
         /// <param name="type">Тип.</param>
         public bool HasType(Type type)
@@ -27,7 +27,7 @@ namespace InfinniPlatform.Core.Serialization
         }
 
         /// <summary>
-        ///     Содержит тип с указанным именем.
+        /// Содержит тип с указанным именем.
         /// </summary>
         /// <param name="name">Имя типа.</param>
         public bool HasName(string name)
@@ -36,7 +36,7 @@ namespace InfinniPlatform.Core.Serialization
         }
 
         /// <summary>
-        ///     Получить тип по имени типа.
+        /// Получить тип по имени типа.
         /// </summary>
         /// <param name="name">Имя типа.</param>
         /// <returns>Тип.</returns>
@@ -50,7 +50,7 @@ namespace InfinniPlatform.Core.Serialization
         }
 
         /// <summary>
-        ///     Получить имя типа по типу.
+        /// Получить имя типа по типу.
         /// </summary>
         /// <param name="type">Тип.</param>
         /// <returns>Имя типа.</returns>
@@ -64,7 +64,7 @@ namespace InfinniPlatform.Core.Serialization
         }
 
         /// <summary>
-        ///     Добавить тип.
+        /// Добавить тип.
         /// </summary>
         /// <param name="type">Тип.</param>
         /// <param name="name">Имя типа.</param>
@@ -111,7 +111,7 @@ namespace InfinniPlatform.Core.Serialization
         }
 
         /// <summary>
-        ///     Добавить тип.
+        /// Добавить тип.
         /// </summary>
         /// <typeparam name="T">Тип.</typeparam>
         /// <param name="name">Имя типа.</param>
@@ -119,7 +119,7 @@ namespace InfinniPlatform.Core.Serialization
         /// <exception cref="ArgumentException"></exception>
         public KnownTypesContainer Add<T>(string name)
         {
-            return Add(typeof (T), name);
+            return Add(typeof(T), name);
         }
     }
 }

@@ -43,25 +43,8 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 
 		private void ReloadSchema()
 		{
-			_schemaPrefill = new MetadataApi().GetDocumentSchema(ConfigId, DocumentId);
+			_schemaPrefill = null;
 			FillPropertiesBySchema();
-		}
-
-		private IEnumerable<string> LoadPropertiesNames()
-		{
-            var schema = new MetadataApi().GetDocumentSchema(ConfigId, DocumentId);
-
-			var properiesNames = new List<string>();
-
-			var schemaIterator = new SchemaIterator(new SchemaReaderManager())
-			{
-				OnObjectProperty = schemaObject => properiesNames.Add(schemaObject.Name),
-				OnPrimitiveProperty = schemaObject => properiesNames.Add(schemaObject.Name)
-			};
-
-			schemaIterator.ProcessSchema(schema);
-
-			return properiesNames;
 		}
 
 		private void FillControlsItems()
@@ -145,9 +128,6 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 																								row.Properties.Value = obj.Value.DefaultValue;
 																								return row;
 																							});
-			schemaIterator.ProcessSchema(_schemaPrefill);
-
-
 		}
 
 		private void FillNewRow(SchemaObject schemaObject, Func<SchemaObject, BaseRow> rowConstructor)
@@ -196,7 +176,6 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 			schemaIterator.OnPrimitiveProperty = action;
 			schemaIterator.OnObjectProperty = action;
 
-			schemaIterator.ProcessSchema(_schemaPrefill);
 			return _schemaPrefill;
 		}
 
@@ -349,8 +328,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 		{
 			if (TextEditProcessCaption.EditValue != null && TextEditProcessName.EditValue != null)
 			{
-				ProcessBuilder.BuildProcess(Guid.NewGuid().ToString(), TextEditProcessName.EditValue.ToString(), TextEditProcessCaption.EditValue.ToString(),
-					(int)WorkflowTypes.WithoutState);
+				ProcessBuilder.BuildProcess(Guid.NewGuid().ToString(), TextEditProcessName.EditValue.ToString(), TextEditProcessCaption.EditValue.ToString(), 2 /* WithoutState */);
 
 				EditMode = EditMode.ModeUpdate;
 

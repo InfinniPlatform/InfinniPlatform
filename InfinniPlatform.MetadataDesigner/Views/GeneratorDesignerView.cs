@@ -7,16 +7,12 @@ using DevExpress.XtraEditors.Controls;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.MetadataManagers;
-using InfinniPlatform.Core.RestApi.CommonApi.RouteTraces;
 using InfinniPlatform.MetadataDesigner.Views.Exchange;
 using InfinniPlatform.MetadataDesigner.Views.GeneratorResult;
 using InfinniPlatform.MetadataDesigner.Views.JsonEditor;
 using InfinniPlatform.MetadataDesigner.Views.Status;
-using InfinniPlatform.MetadataDesigner.Views.Update;
 using InfinniPlatform.MetadataDesigner.Views.ViewModel;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Settings;
-using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.MetadataDesigner.Views
 {
@@ -137,16 +133,14 @@ namespace InfinniPlatform.MetadataDesigner.Views
 
 			}
 
-			var tracer = new RouteTraceSaveQueryLog();
-
 			var result = ViewModelExtension.CheckGetView(Version(), ConfigId(), DocumentId(), "", ComboBoxSelectViewType.EditValue.ToString(), jsonParams);
 
 
 			var checkForm = new CheckForm
 							{
 								MemoText = result,
-								BodyText = tracer.GetCatchedData().Select(r => r.Body).FirstOrDefault(),
-								UrlText = tracer.GetCatchedData().Select(r => r.Url).FirstOrDefault()
+								BodyText = "",
+								UrlText = ""
 							};
 
 			checkForm.ShowDialog();

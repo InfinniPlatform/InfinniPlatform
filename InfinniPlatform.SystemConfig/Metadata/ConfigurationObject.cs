@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 
-using InfinniPlatform.Core.Factories;
 using InfinniPlatform.Sdk.Environment.Binary;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Metadata;
@@ -21,15 +20,15 @@ namespace InfinniPlatform.SystemConfig.Metadata
         private static readonly ConcurrentDictionary<string, IVersionProvider> VersionProviderCache;
 
 
-        public ConfigurationObject(IMetadataConfiguration metadataConfiguration, IIndexFactory indexFactory, IBlobStorageFactory blobStorageFactory)
+        public ConfigurationObject(IMetadataConfiguration metadataConfiguration, IIndexFactory indexFactory, IBlobStorage blobStorage)
         {
             MetadataConfiguration = metadataConfiguration;
             _indexFactory = indexFactory;
-            _blobStorageFactory = blobStorageFactory;
+            _blobStorage = blobStorage;
         }
 
         private readonly IIndexFactory _indexFactory;
-        private readonly IBlobStorageFactory _blobStorageFactory;
+        private readonly IBlobStorage _blobStorage;
 
 
         public IMetadataConfiguration MetadataConfiguration { get; }
@@ -76,7 +75,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
         /// </summary>
         public IBlobStorage GetBlobStorage()
         {
-            return _blobStorageFactory.CreateBlobStorage();
+            return _blobStorage;
         }
 
         /// <summary>
