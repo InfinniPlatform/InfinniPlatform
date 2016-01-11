@@ -80,10 +80,6 @@
       <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
       <Name>InfinniPlatform.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Index.ElasticSearch\InfinniPlatform.Index.ElasticSearch.csproj">
-      <Project>{2B2F3FA6-F434-4FCF-A4C7-323FFC602F0C}</Project>
-      <Name>InfinniPlatform.Index.ElasticSearch</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
       <Name>InfinniPlatform.Sdk</Name>

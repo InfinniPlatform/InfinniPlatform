@@ -9,13 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Core", "Inf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.MessageQueue", "InfinniPlatform.MessageQueue\InfinniPlatform.MessageQueue.csproj", "{E14CCE42-2563-4C36-919F-B389FF87EA65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Index.ElasticSearch", "InfinniPlatform.Index.ElasticSearch\InfinniPlatform.Index.ElasticSearch.csproj", "{2B2F3FA6-F434-4FCF-A4C7-323FFC602F0C}"
-	ProjectSection(ProjectDependencies) = postProject
-		{86AB4502-9B73-43B5-8A20-F01AADE0EDA4} = {86AB4502-9B73-43B5-8A20-F01AADE0EDA4}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Index.QueryLanguage", "InfinniPlatform.Index.QueryLanguage\InfinniPlatform.Index.QueryLanguage.csproj", "{25CCB048-C239-4A2D-8090-39AE34514884}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Hosting", "InfinniPlatform.Hosting\InfinniPlatform.Hosting.csproj", "{D6FBC1D7-48E7-4819-8C8B-DD7FA398D2CC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Runtime", "InfinniPlatform.Runtime\InfinniPlatform.Runtime.csproj", "{CDF22217-5452-4D4C-8F00-9601FD367050}"
@@ -27,10 +20,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Sql.Tests", "InfinniPlatform.Sql.Tests\InfinniPlatform.Sql.Tests.csproj", "{6A39EA44-58CA-4536-8AD1-58DA2C081E46}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Hosting.Tests", "InfinniPlatform.Hosting.Tests\InfinniPlatform.Hosting.Tests.csproj", "{5AAAF1B1-B28F-44AC-8CA2-8F475DF3B898}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Index.ElasticSearch.Tests", "InfinniPlatform.Index.ElasticSearch.Tests\InfinniPlatform.Index.ElasticSearch.Tests.csproj", "{A45E33C7-6DD7-471E-8870-FBC881C83733}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Index.QueryLanguage.Tests", "InfinniPlatform.Index.QueryLanguage.Tests\InfinniPlatform.Index.QueryLanguage.Tests.csproj", "{50DEADF6-50F4-4D61-80B1-A156DE88FD14}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.MessageQueue.Tests", "InfinniPlatform.MessageQueue.Tests\InfinniPlatform.MessageQueue.Tests.csproj", "{21B5752E-D14B-45FF-B13E-9F435B9283AF}"
 EndProject
@@ -194,14 +183,6 @@ Global
 		{E14CCE42-2563-4C36-919F-B389FF87EA65}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E14CCE42-2563-4C36-919F-B389FF87EA65}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E14CCE42-2563-4C36-919F-B389FF87EA65}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2B2F3FA6-F434-4FCF-A4C7-323FFC602F0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2B2F3FA6-F434-4FCF-A4C7-323FFC602F0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2B2F3FA6-F434-4FCF-A4C7-323FFC602F0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2B2F3FA6-F434-4FCF-A4C7-323FFC602F0C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{25CCB048-C239-4A2D-8090-39AE34514884}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{25CCB048-C239-4A2D-8090-39AE34514884}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{25CCB048-C239-4A2D-8090-39AE34514884}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{25CCB048-C239-4A2D-8090-39AE34514884}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D6FBC1D7-48E7-4819-8C8B-DD7FA398D2CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D6FBC1D7-48E7-4819-8C8B-DD7FA398D2CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6FBC1D7-48E7-4819-8C8B-DD7FA398D2CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -226,14 +207,6 @@ Global
 		{5AAAF1B1-B28F-44AC-8CA2-8F475DF3B898}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AAAF1B1-B28F-44AC-8CA2-8F475DF3B898}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AAAF1B1-B28F-44AC-8CA2-8F475DF3B898}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A45E33C7-6DD7-471E-8870-FBC881C83733}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A45E33C7-6DD7-471E-8870-FBC881C83733}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A45E33C7-6DD7-471E-8870-FBC881C83733}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A45E33C7-6DD7-471E-8870-FBC881C83733}.Release|Any CPU.Build.0 = Release|Any CPU
-		{50DEADF6-50F4-4D61-80B1-A156DE88FD14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{50DEADF6-50F4-4D61-80B1-A156DE88FD14}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{50DEADF6-50F4-4D61-80B1-A156DE88FD14}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{50DEADF6-50F4-4D61-80B1-A156DE88FD14}.Release|Any CPU.Build.0 = Release|Any CPU
 		{21B5752E-D14B-45FF-B13E-9F435B9283AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{21B5752E-D14B-45FF-B13E-9F435B9283AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21B5752E-D14B-45FF-B13E-9F435B9283AF}.Release|Any CPU.ActiveCfg = Release|Any CPU

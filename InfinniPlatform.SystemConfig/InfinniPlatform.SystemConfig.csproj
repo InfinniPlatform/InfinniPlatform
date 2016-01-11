@@ -178,17 +178,13 @@
       <Project>{ebc684b7-b72a-475f-bbc1-b6293b607b9b}</Project>
       <Name>InfinniPlatform.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.ElasticSearch\InfinniPlatform.ElasticSearch.csproj">
+      <Project>{F7EC0A7A-49CD-4D63-B755-BF539ADCF688}</Project>
+      <Name>InfinniPlatform.ElasticSearch</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Hosting\InfinniPlatform.Hosting.csproj">
       <Project>{D6FBC1D7-48E7-4819-8C8B-DD7FA398D2CC}</Project>
       <Name>InfinniPlatform.Hosting</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Index.ElasticSearch\InfinniPlatform.Index.ElasticSearch.csproj">
-      <Project>{2B2F3FA6-F434-4FCF-A4C7-323FFC602F0C}</Project>
-      <Name>InfinniPlatform.Index.ElasticSearch</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Index.QueryLanguage\InfinniPlatform.Index.QueryLanguage.csproj">
-      <Project>{25CCB048-C239-4A2D-8090-39AE34514884}</Project>
-      <Name>InfinniPlatform.Index.QueryLanguage</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>

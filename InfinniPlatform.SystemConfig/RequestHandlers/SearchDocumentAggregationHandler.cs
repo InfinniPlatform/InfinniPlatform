@@ -3,7 +3,7 @@ using System.Linq;
 
 using InfinniPlatform.Core.ContextTypes.ContextImpl;
 using InfinniPlatform.Core.Hosting;
-using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
+using InfinniPlatform.ElasticSearch.Filters;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment.Index;

@@ -2,7 +2,6 @@
 using System.Collections.Concurrent;
 
 using InfinniPlatform.Core.Factories;
-using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
 using InfinniPlatform.Sdk.Environment.Binary;
 using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Metadata;

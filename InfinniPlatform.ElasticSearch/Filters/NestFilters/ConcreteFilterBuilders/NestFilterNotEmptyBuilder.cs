@@ -1,0 +1,12 @@
+﻿using InfinniPlatform.Sdk.Environment.Index;
+
+namespace InfinniPlatform.ElasticSearch.Filters.NestFilters.ConcreteFilterBuilders
+{
+    internal sealed class NestFilterNotEmptyBuilder : IConcreteFilterBuilder
+    {
+        public IFilter Get(string field, object value)
+        {
+            return new NestFilter(Nest.Filter<dynamic>.Query(q => q.Wildcard(field, "?*")));
+        }
+    }
+}

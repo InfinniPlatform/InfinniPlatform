@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.Index.ElasticSearch.Implementation.Filters;
-using InfinniPlatform.Index.QueryLanguage.Implementation;
+using InfinniPlatform.ElasticSearch.Filters;
+using InfinniPlatform.ElasticSearch.QueryLanguage;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;

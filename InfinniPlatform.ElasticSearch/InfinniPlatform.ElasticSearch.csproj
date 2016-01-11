@@ -39,6 +39,19 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Elasticsearch.Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elasticsearch.Net.1.7.1\lib\net45\Elasticsearch.Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Nest, Version=1.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
+      <HintPath>..\packages\NEST.1.7.1\lib\net45\Nest.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
@@ -46,21 +59,132 @@
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ElasticProviders\ElasticConnection.cs" />
+    <Compile Include="ElasticProviders\ElasticConstants.cs" />
+    <Compile Include="ElasticProviders\ElasticSearchAggregationProvider.cs" />
+    <Compile Include="ElasticProviders\ElasticSearchProvider.cs" />
+    <Compile Include="ElasticProviders\ElasticSearchProviderAllIndexes.cs" />
+    <Compile Include="ElasticProviders\ElasticSearchProviderInfo.cs" />
+    <Compile Include="ElasticProviders\ElasticSearchSettings.cs" />
+    <Compile Include="ElasticProviders\ElasticTypeManager.cs" />
+    <Compile Include="ElasticProviders\IndexQueryExecutor.cs" />
+    <Compile Include="ElasticProviders\IndexToTypeAccordanceProvider.cs" />
+    <Compile Include="ElasticProviders\SchemaIndexVersion\IndexToTypeAccordance.cs" />
+    <Compile Include="ElasticProviders\SchemaIndexVersion\IndexToTypeAccordanceExtensions.cs" />
+    <Compile Include="ElasticProviders\SchemaIndexVersion\IndexToTypeAccordanceSettings.cs" />
+    <Compile Include="ElasticProviders\SchemaIndexVersion\IndexTypeMapping.cs" />
+    <Compile Include="ElasticProviders\SchemaIndexVersion\TypeMappingExtensions.cs" />
+    <Compile Include="ElasticSearchModels\CountModelFilterDescriptor.cs" />
+    <Compile Include="ElasticSearchModels\ElasticCountQueryBuilder.cs" />
+    <Compile Include="ElasticSearchModels\ElasticSearchQueryBuilder.cs" />
+    <Compile Include="ElasticSearchModels\SearchModelFilterDescriptor.cs" />
+    <Compile Include="ElasticSearchModels\SearchModelFromDescriptor.cs" />
+    <Compile Include="ElasticSearchModels\SearchModelPageSizeDescriptor.cs" />
+    <Compile Include="ElasticSearchModels\SearchModelSkipDescriptor.cs" />
+    <Compile Include="ElasticSearchModels\SearchModelSortDescriptor.cs" />
+    <Compile Include="Factories\ElasticFactory.cs" />
+    <Compile Include="Filters\ElasticScript.cs" />
+    <Compile Include="Filters\Extensions\NestFilterExtensions.cs" />
+    <Compile Include="Filters\Extensions\ObjectExtension.cs" />
+    <Compile Include="Filters\Extensions\StringExtensions.cs" />
+    <Compile Include="Filters\FilterBuilderFactory.cs" />
+    <Compile Include="Filters\IConcreteFilterBuilder.cs" />
+    <Compile Include="Filters\NestFilters\ConcreteFilterBuilders\NestFilterContainsBuilder.cs" />
+    <Compile Include="Filters\NestFilters\ConcreteFilterBuilders\NestFilterEmptyBuilder.cs" />
+    <Compile Include="Filters\NestFilters\ConcreteFilterBuilders\NestFilterEndsWithBuilder.cs" />
+    <Compile Include="Filters\NestFilters\ConcreteFilterBuilders\NestFilterEqualsBuilder.cs" />
+    <Compile Include="Filters\NestFilters\ConcreteFilterBuilders\NestFilterFullTextSearchBuilder.cs" />
+    <Compile Include="Filters\NestFilters\ConcreteFilterBuilders\NestFilterIdInListBuilder.cs" />
+    <Compile Include="Filters\NestFilters\ConcreteFilterBuilders\NestFilterIsInBuilder.cs" />
+    <Compile Include="Filters\NestFilters\ConcreteFilterBuilders\NestFilterLessThanBuilder.cs" />
+    <Compile Include="Filters\NestFilters\ConcreteFilterBuilders\NestFilterLessThanOrEqualsBuilder.cs" />
+    <Compile Include="Filters\NestFilters\ConcreteFilterBuilders\NestFilterMoreThanBuilder.cs" />
+    <Compile Include="Filters\NestFilters\ConcreteFilterBuilders\NestFilterMoreThanOrEqualsBuilder.cs" />
+    <Compile Include="Filters\NestFilters\ConcreteFilterBuilders\NestFilterNotContainsBuilder.cs" />
+    <Compile Include="Filters\NestFilters\ConcreteFilterBuilders\NestFilterNotEmptyBuilder.cs" />
+    <Compile Include="Filters\NestFilters\ConcreteFilterBuilders\NestFilterNotEndsWithBuilder.cs" />
+    <Compile Include="Filters\NestFilters\ConcreteFilterBuilders\NestFilterNotEqualsBuilder.cs" />
+    <Compile Include="Filters\NestFilters\ConcreteFilterBuilders\NestFilterNotStartsWithBuilder.cs" />
+    <Compile Include="Filters\NestFilters\ConcreteFilterBuilders\NestFilterScriptBuilder.cs" />
+    <Compile Include="Filters\NestFilters\ConcreteFilterBuilders\NestFilterStartsWithBuilder.cs" />
+    <Compile Include="Filters\NestFilters\NestFilter.cs" />
+    <Compile Include="Filters\NestFilters\NestFilterBuilder.cs" />
+    <Compile Include="Filters\NestQueries\ConcreteFilterBuilders\NestQueryContainsBuilder.cs" />
+    <Compile Include="Filters\NestQueries\ConcreteFilterBuilders\NestQueryEmptyBuilder.cs" />
+    <Compile Include="Filters\NestQueries\ConcreteFilterBuilders\NestQueryEndsWithBuilder.cs" />
+    <Compile Include="Filters\NestQueries\ConcreteFilterBuilders\NestQueryEqualsBuilder.cs" />
+    <Compile Include="Filters\NestQueries\ConcreteFilterBuilders\NestQueryFullTextSearchBuilder.cs" />
+    <Compile Include="Filters\NestQueries\ConcreteFilterBuilders\NestQueryIdInListBuilder.cs" />
+    <Compile Include="Filters\NestQueries\ConcreteFilterBuilders\NestQueryIsInBuilder.cs" />
+    <Compile Include="Filters\NestQueries\ConcreteFilterBuilders\NestQueryLessThanBuilder.cs" />
+    <Compile Include="Filters\NestQueries\ConcreteFilterBuilders\NestQueryLessThanOrEqualsBuilder.cs" />
+    <Compile Include="Filters\NestQueries\ConcreteFilterBuilders\NestQueryMoreThanBuilder.cs" />
+    <Compile Include="Filters\NestQueries\ConcreteFilterBuilders\NestQueryMoreThanOrEqualsBuilder.cs" />
+    <Compile Include="Filters\NestQueries\ConcreteFilterBuilders\NestQueryNotContainsBuilder.cs" />
+    <Compile Include="Filters\NestQueries\ConcreteFilterBuilders\NestQueryNotEmptyBuilder.cs" />
+    <Compile Include="Filters\NestQueries\ConcreteFilterBuilders\NestQueryNotEndsWithBuilder.cs" />
+    <Compile Include="Filters\NestQueries\ConcreteFilterBuilders\NestQueryNotEqualsBuilder.cs" />
+    <Compile Include="Filters\NestQueries\ConcreteFilterBuilders\NestQueryNotStartsWithBuilder.cs" />
+    <Compile Include="Filters\NestQueries\ConcreteFilterBuilders\NestQueryStartsWithBuilder.cs" />
+    <Compile Include="Filters\NestQueries\NestQuery.cs" />
+    <Compile Include="Filters\NestQueries\NestQueryBuilder.cs" />
+    <Compile Include="Filters\QueryBuilderFactory.cs" />
+    <Compile Include="IndexTypeSelectors\IndexTypeSelectorBase.cs" />
+    <Compile Include="IndexTypeVersions\IndexTypeMapper.cs" />
+    <Compile Include="IndexTypeVersions\PropertiesDescriptorExtension.cs" />
+    <Compile Include="IoC\ElasticSearchContainerModule.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="QueryLanguage\CriteriaFilterBuilder.cs" />
+    <Compile Include="QueryLanguage\JsonDenormalizer.cs" />
+    <Compile Include="QueryLanguage\JsonFilterCriteria.cs" />
+    <Compile Include="QueryLanguage\JsonQueryExecutor.cs" />
+    <Compile Include="QueryLanguage\ProjectionBuilder.cs" />
+    <Compile Include="QueryLanguage\ProjectionObject.cs" />
+    <Compile Include="QueryLanguage\QuerySyntaxChecker.cs" />
+    <Compile Include="QueryLanguage\QuerySyntaxTree.cs" />
+    <Compile Include="QueryLanguage\ReferenceBuilder.cs" />
+    <Compile Include="QueryLanguage\ReferencedObject.cs" />
+    <Compile Include="QueryLanguage\ResultLimits.cs" />
+    <Compile Include="QueryLanguage\WhereObject.cs" />
+    <Compile Include="SortBuilders\SortContainer.cs" />
+    <Compile Include="Versioning\VersionBuilder.cs" />
+    <Compile Include="Versioning\VersionProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="obj\Debug\InfinniPlatform.ElasticSearch.Properties.Resources.resources" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <None Include="obj\Debug\InfinniPlatform.ElasticSearch.csproj.GenerateResource.Cache" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="obj\Debug\InfinniPlatform.ElasticSearch.csproj.FileListAbsolute.txt" />
+    <Content Include="obj\Debug\InfinniPlatform.ElasticSearch.dll" />
+    <Content Include="obj\Debug\InfinniPlatform.ElasticSearch.pdb" />
+    <Content Include="obj\Debug\TempPE\Properties.Resources.Designer.cs.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
+      <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
+      <Name>InfinniPlatform.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
+      <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
+      <Name>InfinniPlatform.Sdk</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

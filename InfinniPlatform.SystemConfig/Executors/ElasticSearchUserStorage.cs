@@ -2,7 +2,7 @@
 
 using InfinniPlatform.Core.RestApi.Auth;
 using InfinniPlatform.Core.Transactions;
-using InfinniPlatform.Index.ElasticSearch.Implementation.ElasticProviders;
+using InfinniPlatform.ElasticSearch.ElasticProviders;
 
 namespace InfinniPlatform.SystemConfig.Executors
 {
