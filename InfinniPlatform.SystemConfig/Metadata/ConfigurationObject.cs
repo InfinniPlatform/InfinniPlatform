@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Concurrent;
 
+using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.BlobStorage;
-using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.SystemConfig.Metadata
 {

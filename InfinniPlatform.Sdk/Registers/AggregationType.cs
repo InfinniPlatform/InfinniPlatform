@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Sdk.Environment.Index
+﻿namespace InfinniPlatform.Sdk.Registers
 {
     public enum AggregationType
     {

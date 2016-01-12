@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 
+using InfinniPlatform.Core.Index;
 using InfinniPlatform.ElasticSearch.Filters.Extensions;
-using InfinniPlatform.Sdk.Environment.Index;
 
 using Nest;
 
-using SortOrder = InfinniPlatform.Sdk.Environment.Index.SortOrder;
+using SortOrder = InfinniPlatform.Core.Index.SortOrder;
 
 namespace InfinniPlatform.ElasticSearch.SortBuilders
 {

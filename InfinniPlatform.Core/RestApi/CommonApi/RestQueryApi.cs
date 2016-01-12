@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 
 using InfinniPlatform.Core.Hosting;
+using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Properties;
-using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Registers;
 
 namespace InfinniPlatform.Core.RestApi.CommonApi
 {

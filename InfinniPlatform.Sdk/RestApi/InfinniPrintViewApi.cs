@@ -1,5 +1,7 @@
 ﻿using System;
 
+using InfinniPlatform.Sdk.Documents;
+
 namespace InfinniPlatform.Sdk.RestApi
 {
     public class InfinniPrintViewApi : BaseApi, IPrintViewApi

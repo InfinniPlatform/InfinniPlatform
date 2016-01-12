@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Documents;
+using InfinniPlatform.Sdk.Registers;
 
 namespace InfinniPlatform.Sdk.RestApi
 {

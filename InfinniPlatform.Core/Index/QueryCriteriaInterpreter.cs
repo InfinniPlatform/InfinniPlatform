@@ -6,10 +6,10 @@ using System.Linq;
 using InfinniPlatform.Core.Validation;
 using InfinniPlatform.Core.Validation.BooleanValidators;
 using InfinniPlatform.Core.Validation.ObjectValidators;
+using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Index;
 
-namespace InfinniPlatform.Core.Index.SearchOptions
+namespace InfinniPlatform.Core.Index
 {
     /// <summary>
     ///     Интерпретатор критериев запроса

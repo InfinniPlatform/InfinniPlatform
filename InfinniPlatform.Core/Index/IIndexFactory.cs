@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace InfinniPlatform.Sdk.Environment.Index
+﻿namespace InfinniPlatform.Core.Index
 {
     /// <summary>
     /// Фабрика провайдеров для операций с данными индексов

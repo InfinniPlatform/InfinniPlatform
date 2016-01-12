@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace InfinniPlatform.Sdk.Environment.Index
+using InfinniPlatform.Sdk.Documents;
+
+namespace InfinniPlatform.Core.Index
 {
     /// <summary>
     ///     Модель данных для формирования поиска средствами

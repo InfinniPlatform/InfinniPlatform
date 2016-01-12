@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
+using InfinniPlatform.Core.Index;
 using InfinniPlatform.ElasticSearch.SortBuilders;
-using InfinniPlatform.Sdk.Environment.Index;
 
 using Nest;
 

@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 
 using InfinniPlatform.ElasticSearch.ElasticProviders;
-using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Documents;
 
 namespace InfinniPlatform.ElasticSearch.Filters.Extensions
 {

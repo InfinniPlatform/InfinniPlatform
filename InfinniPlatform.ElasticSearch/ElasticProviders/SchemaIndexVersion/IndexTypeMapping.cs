@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Core.Index;
 
 namespace InfinniPlatform.ElasticSearch.ElasticProviders.SchemaIndexVersion
 {

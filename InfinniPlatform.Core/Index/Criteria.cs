@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 
-using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Documents;
 
-namespace InfinniPlatform.Core.Index.SearchOptions
+namespace InfinniPlatform.Core.Index
 {
     /// <summary>
     ///     Критерий отбора по свойству объекта

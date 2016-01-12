@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Core.Index;
 
 using Nest;
 
-using PropertyMapping = InfinniPlatform.Sdk.Environment.Index.PropertyMapping;
+using PropertyMapping = InfinniPlatform.Core.Index.PropertyMapping;
 
 namespace InfinniPlatform.ElasticSearch.IndexTypeVersions
 {

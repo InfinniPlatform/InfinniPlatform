@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Core.Properties;
-using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Documents;
 
 using Newtonsoft.Json.Linq;
 

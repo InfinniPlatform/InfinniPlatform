@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using InfinniPlatform.Core.Index;
 using InfinniPlatform.ElasticSearch.Filters;
-using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.ElasticSearch.Versioning
 {

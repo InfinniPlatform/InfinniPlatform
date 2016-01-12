@@ -6,6 +6,7 @@ using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Core.Security;
 using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.Sdk;
+using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.SystemConfig.Executors;
 using InfinniPlatform.SystemConfig.Properties;

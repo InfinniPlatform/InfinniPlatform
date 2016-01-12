@@ -3,10 +3,12 @@ using System.Linq;
 
 using InfinniPlatform.Core.ContextTypes;
 using InfinniPlatform.Core.Hosting;
+using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.ElasticSearch.Filters;
 using InfinniPlatform.Sdk.Contracts;
-using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Documents;
+using InfinniPlatform.Sdk.Registers;
 
 namespace InfinniPlatform.SystemConfig.RequestHandlers
 {

@@ -4,9 +4,10 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 
+using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.RestApi.Auth;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Registers;
 
 namespace InfinniPlatform.Core.Hosting
 {

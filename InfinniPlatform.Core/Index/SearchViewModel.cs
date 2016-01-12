@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace InfinniPlatform.Sdk.Environment.Index
+namespace InfinniPlatform.Core.Index
 {
     /// <summary>
     ///     Page search view model

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace InfinniPlatform.Sdk.Environment.Index
+using InfinniPlatform.Sdk.Registers;
+
+namespace InfinniPlatform.Core.Index
 {
     /// <summary>
     ///     Провайдер для выполнения агрегаций

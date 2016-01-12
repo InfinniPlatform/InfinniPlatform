@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
+using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.SystemConfig.StartupInitializers
 {

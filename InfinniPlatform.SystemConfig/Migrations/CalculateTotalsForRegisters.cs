@@ -6,6 +6,7 @@ using InfinniPlatform.Core.Registers;
 using InfinniPlatform.Core.RestApi.CommonApi;
 using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Sdk;
+using InfinniPlatform.Sdk.Documents;
 
 namespace InfinniPlatform.SystemConfig.Migrations
 {

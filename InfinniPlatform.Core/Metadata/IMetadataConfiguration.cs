@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Runtime;
-using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Core.Metadata
 {

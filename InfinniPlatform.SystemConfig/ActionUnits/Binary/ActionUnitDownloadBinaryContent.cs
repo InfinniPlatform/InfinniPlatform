@@ -6,6 +6,7 @@ using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Sdk;
 using InfinniPlatform.Sdk.BlobStorage;
 using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.SystemConfig.ActionUnits.Binary

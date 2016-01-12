@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace InfinniPlatform.Sdk.Environment.Index
+namespace InfinniPlatform.Core.Index
 {
     /// <summary>
     ///     Стратегия хранения, получения и обновления истории объектов индекса

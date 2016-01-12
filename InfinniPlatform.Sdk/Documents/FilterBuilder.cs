@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Sdk.Environment.Index;
-
 using Newtonsoft.Json;
 
-namespace InfinniPlatform.Sdk
+namespace InfinniPlatform.Sdk.Documents
 {
     /// <summary>
     /// Позволяет описать набор критериев

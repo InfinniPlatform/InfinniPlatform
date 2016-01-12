@@ -4,7 +4,7 @@ using Nest;
 
 using Newtonsoft.Json;
 
-using IFilter = InfinniPlatform.Sdk.Environment.Index.IFilter;
+using IFilter = InfinniPlatform.Sdk.Documents.IFilter;
 
 namespace InfinniPlatform.ElasticSearch.Filters.NestFilters.ConcreteFilterBuilders
 {

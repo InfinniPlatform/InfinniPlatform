@@ -1,10 +1,10 @@
 ﻿using System;
 
-using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Documents;
 
 using Nest;
 
-using IFilter = InfinniPlatform.Sdk.Environment.Index.IFilter;
+using IFilter = InfinniPlatform.Sdk.Documents.IFilter;
 
 
 namespace InfinniPlatform.ElasticSearch.Filters.NestQueries

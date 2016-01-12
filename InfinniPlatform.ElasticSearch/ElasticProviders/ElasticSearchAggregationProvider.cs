@@ -8,12 +8,13 @@ using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.ElasticSearch.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.ElasticSearch.Filters.NestFilters;
 using InfinniPlatform.ElasticSearch.IndexTypeSelectors;
+using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Registers;
 
 using Nest;
 
-using IFilter = InfinniPlatform.Sdk.Environment.Index.IFilter;
+using IFilter = InfinniPlatform.Sdk.Documents.IFilter;
 
 namespace InfinniPlatform.ElasticSearch.ElasticProviders
 {

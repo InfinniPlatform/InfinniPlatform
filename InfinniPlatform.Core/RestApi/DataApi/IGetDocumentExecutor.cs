@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using InfinniPlatform.Sdk;
+using InfinniPlatform.Sdk.Documents;
 
 namespace InfinniPlatform.Core.RestApi.DataApi
 {

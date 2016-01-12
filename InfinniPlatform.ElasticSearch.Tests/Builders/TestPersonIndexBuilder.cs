@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using InfinniPlatform.Core.Index;
 using InfinniPlatform.ElasticSearch.ElasticProviders;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.ElasticSearch.Tests.Builders
 {

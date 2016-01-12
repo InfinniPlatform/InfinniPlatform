@@ -1,5 +1,5 @@
 ﻿using InfinniPlatform.Core.Index;
-using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Documents;
 
 namespace InfinniPlatform.ElasticSearch.Filters.NestQueries.ConcreteFilterBuilders
 {

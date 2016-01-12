@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Core.ContextComponents;
-using InfinniPlatform.Core.Index.SearchOptions;
+using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Sdk;
+using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.SystemConfig.Utils;
 
 using Newtonsoft.Json.Linq;

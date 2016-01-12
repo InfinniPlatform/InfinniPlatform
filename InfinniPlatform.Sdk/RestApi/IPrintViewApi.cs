@@ -1,5 +1,7 @@
 ﻿using System;
 
+using InfinniPlatform.Sdk.Documents;
+
 namespace InfinniPlatform.Sdk.RestApi
 {
     /// <summary>

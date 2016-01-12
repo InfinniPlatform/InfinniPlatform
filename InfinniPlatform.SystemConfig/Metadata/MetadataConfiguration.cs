@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Core.Hosting;
+using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.RestApi.Auth;
 using InfinniPlatform.Core.Runtime;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.SystemConfig.StateMachine;
 
 namespace InfinniPlatform.SystemConfig.Metadata

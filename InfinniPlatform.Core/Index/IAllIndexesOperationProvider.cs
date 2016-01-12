@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Sdk.Environment.Index
+﻿namespace InfinniPlatform.Core.Index
 {
     /// <summary>
     ///     Реализация провайдера для выполнения операций без уточнения индекса и типа

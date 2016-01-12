@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.Sdk.Environment.Index
+namespace InfinniPlatform.Core.Index
 {
     /// <summary>
     ///     Исполнитель запросов к ES

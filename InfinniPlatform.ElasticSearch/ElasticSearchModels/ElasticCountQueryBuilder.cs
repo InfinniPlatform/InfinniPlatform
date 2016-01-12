@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Sdk.Environment.Index;
+﻿using InfinniPlatform.Core.Index;
 
 using Nest;
 

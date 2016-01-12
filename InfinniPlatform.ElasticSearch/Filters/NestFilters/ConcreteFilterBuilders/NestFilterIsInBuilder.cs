@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Sdk.Environment.Index;
+﻿using InfinniPlatform.Sdk.Documents;
 
 namespace InfinniPlatform.ElasticSearch.Filters.NestFilters.ConcreteFilterBuilders
 {

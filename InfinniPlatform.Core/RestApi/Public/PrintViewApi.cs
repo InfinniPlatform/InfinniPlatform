@@ -1,6 +1,7 @@
 ﻿using System;
 
 using InfinniPlatform.Sdk;
+using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.RestApi;
 
 namespace InfinniPlatform.Core.RestApi.Public

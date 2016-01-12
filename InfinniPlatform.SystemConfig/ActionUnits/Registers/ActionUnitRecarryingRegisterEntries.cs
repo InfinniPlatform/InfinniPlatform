@@ -6,6 +6,7 @@ using InfinniPlatform.Core.Registers;
 using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Sdk;
 using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Documents;
 
 namespace InfinniPlatform.SystemConfig.ActionUnits.Registers
 {

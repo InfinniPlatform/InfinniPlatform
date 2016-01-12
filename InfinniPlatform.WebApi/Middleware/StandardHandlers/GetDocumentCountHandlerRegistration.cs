@@ -6,6 +6,7 @@ using System.Web;
 using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.Sdk;
+using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.WebApi.Middleware.RouteFormatters;
 
 using Microsoft.Owin;
@@ -39,7 +40,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
             var filter = nameValueCollection.Get("$filter");
             var filterStringsList = JsonConvert.DeserializeObject<string[]>(filter);
 
-            IEnumerable<dynamic> criteriaList = filterStringsList.Select(JsonConvert.DeserializeObject<SortingBuilder.CriteriaSorting>);
+            IEnumerable<dynamic> criteriaList = filterStringsList.Select(JsonConvert.DeserializeObject<CriteriaSorting>);
 
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 

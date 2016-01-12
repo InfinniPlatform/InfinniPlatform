@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.Core.Index.SearchOptions;
+using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.SystemConfig.ActionUnits.Documents
 {

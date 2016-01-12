@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace InfinniPlatform.Sdk.RestApi
+namespace InfinniPlatform.Sdk.Documents
 {
     public interface IDocumentApi
     {

@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using InfinniPlatform.Sdk.Documents;
+
 using Newtonsoft.Json;
 
 namespace InfinniPlatform.Sdk.RestApi
 {
     public static class RequestExecutorExtensions
     {
-        public static string CreateQueryString(IEnumerable<FilterBuilder.CriteriaBuilder.CriteriaFilter> filter, int pageNumber, int pageSize, IEnumerable<SortingBuilder.CriteriaSorting> sorting)
+        public static string CreateQueryString(IEnumerable<FilterBuilder.CriteriaBuilder.CriteriaFilter> filter, int pageNumber, int pageSize, IEnumerable<CriteriaSorting> sorting)
         {
             var jsonFilterStrings = JsonConvert.SerializeObject(filter);
             var jsonSortingStrings = JsonConvert.SerializeObject(sorting);

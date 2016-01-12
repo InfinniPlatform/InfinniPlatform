@@ -4,7 +4,7 @@ using System.Linq;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Schema;
 
-namespace InfinniPlatform.Core.Index.SearchOptions
+namespace InfinniPlatform.Core.Index
 {
     /// <summary>
     ///     Анализатор критериев запроса данных

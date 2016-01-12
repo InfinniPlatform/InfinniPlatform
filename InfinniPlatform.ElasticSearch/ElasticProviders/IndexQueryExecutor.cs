@@ -12,7 +12,6 @@ using InfinniPlatform.ElasticSearch.Filters.NestQueries;
 using InfinniPlatform.ElasticSearch.IndexTypeSelectors;
 using InfinniPlatform.ElasticSearch.IndexTypeVersions;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Index;
 
 using Nest;
 

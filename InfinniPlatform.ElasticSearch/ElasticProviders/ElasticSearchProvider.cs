@@ -9,11 +9,10 @@ using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.ElasticSearch.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.ElasticSearch.IndexTypeSelectors;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Index;
 
 using Nest;
 
-using PropertyMapping = InfinniPlatform.Sdk.Environment.Index.PropertyMapping;
+using PropertyMapping = InfinniPlatform.Core.Index.PropertyMapping;
 
 namespace InfinniPlatform.ElasticSearch.ElasticProviders
 {

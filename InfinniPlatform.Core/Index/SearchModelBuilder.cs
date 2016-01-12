@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Documents;
 
-namespace InfinniPlatform.Core.Index.SearchOptions
+namespace InfinniPlatform.Core.Index
 {
     public class SearchModelBuilder
     {

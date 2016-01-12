@@ -7,6 +7,7 @@ using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Core.RestApi.Public;
 using InfinniPlatform.Core.Settings;
 using InfinniPlatform.Core.Transactions;
+using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Registers;

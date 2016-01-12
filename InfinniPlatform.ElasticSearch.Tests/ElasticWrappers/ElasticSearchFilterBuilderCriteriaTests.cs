@@ -2,11 +2,12 @@
 using System.ComponentModel;
 using System.Linq;
 
+using InfinniPlatform.Core.Index;
 using InfinniPlatform.ElasticSearch.ElasticProviders;
 using InfinniPlatform.ElasticSearch.Filters;
 using InfinniPlatform.ElasticSearch.Tests.Builders;
+using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Index;
 
 using NUnit.Framework;
 

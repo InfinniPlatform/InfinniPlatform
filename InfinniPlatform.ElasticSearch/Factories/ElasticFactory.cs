@@ -1,10 +1,10 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 
+using InfinniPlatform.Core.Index;
 using InfinniPlatform.ElasticSearch.ElasticProviders;
 using InfinniPlatform.ElasticSearch.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.ElasticSearch.Versioning;
-using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.ElasticSearch.Factories
 {

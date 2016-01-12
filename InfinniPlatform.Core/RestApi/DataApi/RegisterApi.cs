@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Registers;
 using InfinniPlatform.Core.RestApi.CommonApi;
 using InfinniPlatform.Sdk;
-using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Documents;
+using InfinniPlatform.Sdk.Registers;
 
 namespace InfinniPlatform.Core.RestApi.DataApi
 {

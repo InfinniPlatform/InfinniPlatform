@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Core.Hosting;
+using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Hosting.Implementation.ExtensionPointHandling;
-using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.SystemConfig.StartupInitializers
 {

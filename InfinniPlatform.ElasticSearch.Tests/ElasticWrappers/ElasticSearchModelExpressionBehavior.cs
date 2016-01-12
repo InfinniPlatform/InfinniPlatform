@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 
+using InfinniPlatform.Core.Index;
 using InfinniPlatform.ElasticSearch.Filters;
 using InfinniPlatform.ElasticSearch.Tests.Builders;
-using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Documents;
 
 using NUnit.Framework;
 

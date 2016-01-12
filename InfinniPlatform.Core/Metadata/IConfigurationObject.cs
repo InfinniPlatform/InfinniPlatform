@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Sdk.BlobStorage;
-using InfinniPlatform.Sdk.Environment.Index;
+﻿using InfinniPlatform.Core.Index;
+using InfinniPlatform.Sdk.BlobStorage;
 
 namespace InfinniPlatform.Core.Metadata
 {

@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Sdk.Environment.Index
+﻿namespace InfinniPlatform.Core.Index
 {
     public enum IndexItemStrategy
     {

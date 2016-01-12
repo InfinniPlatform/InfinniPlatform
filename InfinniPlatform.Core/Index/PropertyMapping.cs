@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq.Expressions;
 
-namespace InfinniPlatform.Sdk.Environment.Index
+namespace InfinniPlatform.Core.Index
 {
     /// <summary>
     ///     Тип данных поля документа, используемый для хранения проиндексированного объекта

@@ -6,7 +6,7 @@ using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.SearchOptions;
 using InfinniPlatform.Sdk.Contracts;
-using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.SystemConfig.Properties;
 
 namespace InfinniPlatform.SystemConfig.RequestHandlers
