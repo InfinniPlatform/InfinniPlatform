@@ -6,8 +6,11 @@ using InfinniPlatform.Core.ContextComponents;
 using InfinniPlatform.Core.Index.SearchOptions;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.RestApi.DataApi;
-using InfinniPlatform.Core.SearchOptions.Builders;
+using InfinniPlatform.ElasticSearch.Filters;
+using InfinniPlatform.Sdk;
 using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Metadata;
 using InfinniPlatform.SystemConfig.Utils;
 
@@ -18,50 +21,23 @@ namespace InfinniPlatform.SystemConfig.Executors
     public class GetDocumentExecutor : IGetDocumentExecutor
     {
         public GetDocumentExecutor(DocumentExecutor documentExecutor,
-                                   IIndexComponent indexComponent,
-                                   IConfigurationMediatorComponent configurationMediatorComponent,
+                                   IConfigurationObjectBuilder configurationObjectBuilder,
                                    IMetadataComponent metadataComponent,
                                    InprocessDocumentComponent documentComponent,
                                    IReferenceResolver referenceResolver)
         {
             _documentExecutor = documentExecutor;
-            _indexComponent = indexComponent;
-            _configurationMediatorComponent = configurationMediatorComponent;
+            _configurationObjectBuilder = configurationObjectBuilder;
             _metadataComponent = metadataComponent;
             _documentComponent = documentComponent;
             _referenceResolver = referenceResolver;
         }
 
-        private readonly DocumentExecutor _documentExecutor;
-        private readonly IIndexComponent _indexComponent;
-        private readonly IConfigurationMediatorComponent _configurationMediatorComponent;
-        private readonly IMetadataComponent _metadataComponent;
+        private readonly IConfigurationObjectBuilder _configurationObjectBuilder;
         private readonly InprocessDocumentComponent _documentComponent;
         private readonly IReferenceResolver _referenceResolver;
-
-        public IEnumerable<dynamic> GetDocumentByQuery(string queryText, bool denormalizeResult = false)
-        {
-            dynamic query = queryText.ToDynamic();
-
-            if (query.Select == null)
-            {
-                query.Select = new List<dynamic>();
-            }
-
-            if (query.Where == null)
-            {
-                query.Where = new List<dynamic>();
-            }
-
-            var jsonQueryExecutor = new JsonQueryExecutor(_indexComponent.IndexFactory, FilterBuilderFactory.GetInstance());
-            JArray queryResult = jsonQueryExecutor.ExecuteQuery(JObject.FromObject(query));
-
-            var result = denormalizeResult
-                             ? new JsonDenormalizer().ProcessIqlResult(queryResult).ToDynamic()
-                             : queryResult.ToDynamic();
-
-            return result;
-        }
+        private readonly DocumentExecutor _documentExecutor;
+        private readonly IMetadataComponent _metadataComponent;
 
         public dynamic GetDocument(string id)
         {
@@ -79,7 +55,7 @@ namespace InfinniPlatform.SystemConfig.Executors
                 return numberOfDocuments;
             }
 
-            var metadataConfiguration = _configurationMediatorComponent.ConfigurationBuilder.GetConfigurationObject(configurationName).MetadataConfiguration;
+            var metadataConfiguration = _configurationObjectBuilder.GetConfigurationObject(configurationName).MetadataConfiguration;
 
             if (metadataConfiguration == null)
             {
@@ -110,9 +86,8 @@ namespace InfinniPlatform.SystemConfig.Executors
 
             if (documentProvider != null)
             {
-                var metadataConfiguration = _configurationMediatorComponent.ConfigurationBuilder
-                                                                           .GetConfigurationObject(configurationName)
-                                                                           .MetadataConfiguration;
+                var metadataConfiguration = _configurationObjectBuilder.GetConfigurationObject(configurationName)
+                                                                       .MetadataConfiguration;
 
                 if (metadataConfiguration == null)
                 {
@@ -126,7 +101,7 @@ namespace InfinniPlatform.SystemConfig.Executors
                 if (schema != null)
                 {
                     // Извлекаем информацию о полях, по которым можно проводить сортировку из метаданных документа
-                    sortingFields = ExtractSortingProperties(string.Empty, schema.Properties, _configurationMediatorComponent.ConfigurationBuilder);
+                    sortingFields = ExtractSortingProperties(string.Empty, schema.Properties, _configurationObjectBuilder);
                 }
 
                 if (sorting != null && sorting.Count > 0)
