@@ -14,7 +14,7 @@ using Newtonsoft.Json.Schema;
 namespace InfinniPlatform.Core.Metadata.Validation
 {
     /// <summary>
-    ///     Предоставляет метод для получения JSON-схемы объекта метаданных.
+    /// Предоставляет метод для получения JSON-схемы объекта метаданных.
     /// </summary>
     internal sealed class MetadataJsonSchemaResolver : JsonSchemaResolver
     {
@@ -27,11 +27,11 @@ namespace InfinniPlatform.Core.Metadata.Validation
             // Схемы метаданных берутся из ресурсов текущей сборки
 
             SchemaAssembly = Assembly.GetExecutingAssembly();
-            SchemaNamespace = string.Format("{0}.MetadataSchema.", SchemaAssembly.GetName().Name);
+            SchemaNamespace = $"{SchemaAssembly.GetName().Name}..schema.";
         }
 
         /// <summary>
-        ///     Возвращает агрегированную схему.
+        /// Возвращает агрегированную схему.
         /// </summary>
         private static JsonSchema AggregatedSchema
         {
@@ -39,7 +39,7 @@ namespace InfinniPlatform.Core.Metadata.Validation
             {
                 if (_aggregatedSchema == null)
                 {
-                    lock (typeof (MetadataJsonSchemaResolver))
+                    lock (typeof(MetadataJsonSchemaResolver))
                     {
                         if (_aggregatedSchema == null)
                         {
@@ -53,7 +53,7 @@ namespace InfinniPlatform.Core.Metadata.Validation
         }
 
         /// <summary>
-        ///     Возаращет схему объекта метаданных по ссылке.
+        /// Возаращет схему объекта метаданных по ссылке.
         /// </summary>
         public override JsonSchema GetSchema(string reference)
         {
@@ -62,7 +62,7 @@ namespace InfinniPlatform.Core.Metadata.Validation
         }
 
         /// <summary>
-        ///     Возвращает идентификатор схемы по ссылке.
+        /// Возвращает идентификатор схемы по ссылке.
         /// </summary>
         private static string GetSchemaIdByReference(string reference)
         {
@@ -75,7 +75,7 @@ namespace InfinniPlatform.Core.Metadata.Validation
         }
 
         /// <summary>
-        ///     Загружает агрегированную схему.
+        /// Загружает агрегированную схему.
         /// </summary>
         private static JsonSchema LoadAggregatedSchema()
         {
@@ -139,7 +139,7 @@ namespace InfinniPlatform.Core.Metadata.Validation
         }
 
         /// <summary>
-        ///     Загружает информацию о схемах.
+        /// Загружает информацию о схемах.
         /// </summary>
         private static IEnumerable<SchemaInfo> LoadSchemaInfos()
         {
@@ -148,7 +148,7 @@ namespace InfinniPlatform.Core.Metadata.Validation
             // Имена файлов ресурсов со схемами
             var schemaResourceNames =
                 SchemaAssembly.GetManifestResourceNames()
-                    .Where(i => i.StartsWith(SchemaNamespace) && i.EndsWith(".resjson"));
+                              .Where(i => i.StartsWith(SchemaNamespace) && i.EndsWith(".resjson"));
 
             foreach (var schemaResource in schemaResourceNames)
             {
@@ -170,17 +170,17 @@ namespace InfinniPlatform.Core.Metadata.Validation
                 }
 
                 schemaInfos.Add(schemaId, new SchemaInfo
-                {
-                    SchemaObject = schemaObject,
-                    SchemaId = schemaId
-                });
+                                          {
+                                              SchemaObject = schemaObject,
+                                              SchemaId = schemaId
+                                          });
             }
 
             return schemaInfos.Values;
         }
 
         /// <summary>
-        ///     Загружает объект схемы.
+        /// Загружает объект схемы.
         /// </summary>
         private static JObject LoadSchemaObject(string schemaResource)
         {
@@ -217,7 +217,7 @@ namespace InfinniPlatform.Core.Metadata.Validation
         }
 
         /// <summary>
-        ///     Загружает идентификатор схемы.
+        /// Загружает идентификатор схемы.
         /// </summary>
         private static string LoadSchemaId(JObject schemaObject)
         {
@@ -227,10 +227,10 @@ namespace InfinniPlatform.Core.Metadata.Validation
         }
 
         /// <summary>
-        ///     Разрешает зависимости схемы.
+        /// Разрешает зависимости схемы.
         /// </summary>
         /// <remarks>
-        ///     Вызвано недоработкой текущей реализации <see cref="JsonSchema" />.
+        /// Вызвано недоработкой текущей реализации <see cref="JsonSchema" />.
         /// </remarks>
         private static void ResolveExtend(JsonSchema schema)
         {
@@ -272,8 +272,9 @@ namespace InfinniPlatform.Core.Metadata.Validation
             }
         }
 
+
         /// <summary>
-        ///     Информация о схеме.
+        /// Информация о схеме.
         /// </summary>
         private class SchemaInfo
         {
@@ -281,8 +282,9 @@ namespace InfinniPlatform.Core.Metadata.Validation
             public JObject SchemaObject;
         }
 
+
         /// <summary>
-        ///     Находит схему по ссылке.
+        /// Находит схему по ссылке.
         /// </summary>
         private class InternalJsonSchemaResolver : JsonSchemaResolver
         {

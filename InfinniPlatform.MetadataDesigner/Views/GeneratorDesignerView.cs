@@ -5,8 +5,6 @@ using System.Windows.Forms;
 using DevExpress.XtraEditors.Controls;
 
 using InfinniPlatform.Core.Metadata;
-using InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.MetadataManagers;
 using InfinniPlatform.MetadataDesigner.Views.Exchange;
 using InfinniPlatform.MetadataDesigner.Views.GeneratorResult;
 using InfinniPlatform.MetadataDesigner.Views.JsonEditor;
@@ -95,30 +93,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 				return;
 			}
 
-			var process = new StatusProcess();
-			process.StartOperation(() =>
-			{
-				var generatorBroker = new GeneratorBroker(_configurationName, _documentName);
-
-				var generator = new
-									{
-										GeneratorName = TextEditGeneratorName.Text,
-										ActionUnit = ((ScriptDescription)ComboBoxSelectGeneratorScenario.EditValue).TypeName,
-										MetadataType = ComboBoxSelectViewType.EditValue.ToString(),
-									};
-
-
-				generatorBroker.CreateGenerator(generator);
-
-				var manager =
-					new ManagerFactoryDocument(_configurationName, _documentName).BuildManagerByType(MetadataType.Generator);
-
-				_generator = manager.MetadataReader.GetItem(TextEditGeneratorName.Text);
-				
-
-			});
-			process.EndOperation();
-			OnValueChanged(_generator, new EventArgs());
+            OnValueChanged(_generator, new EventArgs());
 		}
 
 

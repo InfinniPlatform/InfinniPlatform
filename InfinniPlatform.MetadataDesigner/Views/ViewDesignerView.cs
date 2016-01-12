@@ -4,7 +4,6 @@ using System.Windows.Forms;
 
 using DevExpress.XtraEditors.Controls;
 
-using InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Core.Properties;
 using InfinniPlatform.DesignControls;
 using InfinniPlatform.MetadataDesigner.Views.GeneratorResult;
@@ -107,48 +106,6 @@ namespace InfinniPlatform.MetadataDesigner.Views
 
 		private void RenderValue()
 		{
-			if (_pendingRenderValue)
-			{
-				try
-				{
-				var metadataManager = new ManagerFactoryDocument(ConfigId(), DocumentId());
-				var generatorItemsDocument = metadataManager.BuildGeneratorMetadataReader().GetItems();
-
-                var metadataManagerCommon = new ManagerFactoryDocument(ConfigId(), "Common");
-				var generatorItemsCommon = metadataManagerCommon.BuildGeneratorMetadataReader().GetItems();
-
-				MetadataGeneratorSelect.Properties.Items.Clear();
-				MetadataGeneratorSelect.Properties.Items.AddRange(generatorItemsDocument.Select(g => new ImageComboBoxItem(string.Format("{0} ({1})", g.Name, DocumentId()),CreateItem(g.Name,DocumentId()))).ToList());
-				MetadataGeneratorSelect.Properties.Items.AddRange(generatorItemsCommon.Select(g => new ImageComboBoxItem(string.Format("{0} ({1})", g.Name, "Common"),CreateItem(g.Name, "Common"))).ToList());
-
-				ComboBoxSelectViewType.Properties.Items.Clear();
-				ComboBoxSelectViewType.Properties.Items.AddRange(ViewModelExtension.BuildViewTypes().BuildImageComboBoxItemsString().ToList());
-                    
-				if (!string.IsNullOrEmpty(_view.Name))
-				{									
-					NameEditor.EditValue = _view.Name;
-					CaptionEditor.EditValue = _view.Caption;
-					DescriptionEditor.EditValue = _view.Description;
-					NameEditor.Enabled = false;
-					ComboBoxSelectViewType.EditValue = _view.MetadataType;
-					ComboBoxSelectViewType.Enabled = false;
-
-					_designerControl.ProcessJson(_view);
-				}
-				}
-				finally
-				{
-					_pendingRenderValue = false;
-				}
-			}
-		}
-
-		private static dynamic CreateItem(string generatorName, string documentId)
-		{
-			dynamic item = new DynamicWrapper();
-			item.Name = generatorName;
-			item.DocumentId = documentId;
-			return item;
 		}
 
 		public event EventHandler OnValueChanged;

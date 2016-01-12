@@ -261,10 +261,6 @@
     <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\DocumentContainerNodeFactory.cs" />
     <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\DocumentElementNodeFactory.cs" />
     <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\FactoryHelper.cs" />
-    <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\GeneratorContainerNodeFactory.cs" />
-    <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\GeneratorElementNodeFactory.cs" />
-    <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\AssemblyContainerNodeFactory.cs" />
-    <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\AssemblyElementNodeFactory.cs" />
     <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\PrintViewContainerNodeFactory.cs" />
     <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\PrintViewElementNodeFactory.cs" />
     <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\ProcessContainerNodeFactory.cs" />
@@ -273,12 +269,6 @@
     <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\ScenarioElementNodeFactory.cs" />
     <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\ServiceContainerNodeFactory.cs" />
     <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\ServiceElementNodeFactory.cs" />
-    <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\StatusContainerNodeFactory.cs" />
-    <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\StatusElementNodeFactory.cs" />
-    <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\ValidationErrorContainerNodeFactory.cs" />
-    <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\ValidationErrorElementNodeFactory.cs" />
-    <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\ValidationWarningContainerNodeFactory.cs" />
-    <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\ValidationWarningElementNodeFactory.cs" />
     <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\ViewContainerNodeFactory.cs" />
     <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\ViewElementNodeFactory.cs" />
     <Compile Include="ViewBuilders\Designers\ConfigTree\IConfigElementNodeFactory.cs" />

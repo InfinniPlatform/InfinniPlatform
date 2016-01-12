@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace InfinniPlatform.Core.Metadata
+namespace InfinniPlatform.SystemConfig.Migrations
 {
     /// <summary>
     /// Базовый интерфейс для всех миграций.

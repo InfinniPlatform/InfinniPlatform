@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 
-using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.ContextComponents;
 
 namespace InfinniPlatform.Core.Schema
@@ -22,7 +21,7 @@ namespace InfinniPlatform.Core.Schema
         /// <returns>Схема документа</returns>
         public dynamic GetSchema(string configId, string documentId)
         {
-            var schemaMetadata = _metadataComponent.GetMetadataList(configId, documentId, MetadataType.Schema);
+            var schemaMetadata = _metadataComponent.GetMetadataList(configId, documentId, "Schema");
 			return schemaMetadata?.FirstOrDefault();
         }
     }

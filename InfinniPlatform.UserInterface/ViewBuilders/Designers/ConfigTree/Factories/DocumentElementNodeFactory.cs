@@ -15,13 +15,10 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Factor
             MetadataType.PrintView,
             MetadataType.Scenario,
             MetadataType.Process,
-            MetadataType.Service,
-            MetadataType.Generator,
-            MetadataType.Status
+            MetadataType.Service
         };
 
-        public void Create(ConfigElementNodeBuilder builder, ICollection<ConfigElementNode> elements,
-            ConfigElementNode elementNode)
+        public void Create(ConfigElementNodeBuilder builder, ICollection<ConfigElementNode> elements, ConfigElementNode elementNode)
         {
             elementNode.DocumentId = elementNode.ElementMetadata.Name;
             elementNode.ElementId = FactoryHelper.BuildId(elementNode);
@@ -34,24 +31,11 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Factor
             elementNode.CopyCommand = FactoryHelper.NoCopyCommand;
             elementNode.RegisterPasteCommand(builder);
 
-            builder.BuildElement(elements, elementNode, elementNode.ElementMetadata,
-                ViewContainerNodeFactory.ElementType);
-            builder.BuildElement(elements, elementNode, elementNode.ElementMetadata,
-                PrintViewContainerNodeFactory.ElementType);
-            builder.BuildElement(elements, elementNode, elementNode.ElementMetadata,
-                ValidationErrorContainerNodeFactory.ElementType);
-            builder.BuildElement(elements, elementNode, elementNode.ElementMetadata,
-                ValidationWarningContainerNodeFactory.ElementType);
-            builder.BuildElement(elements, elementNode, elementNode.ElementMetadata,
-                ScenarioContainerNodeFactory.ElementType);
-            builder.BuildElement(elements, elementNode, elementNode.ElementMetadata,
-                ProcessContainerNodeFactory.ElementType);
-            builder.BuildElement(elements, elementNode, elementNode.ElementMetadata,
-                ServiceContainerNodeFactory.ElementType);
-            builder.BuildElement(elements, elementNode, elementNode.ElementMetadata,
-                GeneratorContainerNodeFactory.ElementType);
-            builder.BuildElement(elements, elementNode, elementNode.ElementMetadata,
-                StatusContainerNodeFactory.ElementType);
+            builder.BuildElement(elements, elementNode, elementNode.ElementMetadata, ViewContainerNodeFactory.ElementType);
+            builder.BuildElement(elements, elementNode, elementNode.ElementMetadata, PrintViewContainerNodeFactory.ElementType);
+            builder.BuildElement(elements, elementNode, elementNode.ElementMetadata, ScenarioContainerNodeFactory.ElementType);
+            builder.BuildElement(elements, elementNode, elementNode.ElementMetadata, ProcessContainerNodeFactory.ElementType);
+            builder.BuildElement(elements, elementNode, elementNode.ElementMetadata, ServiceContainerNodeFactory.ElementType);
         }
     }
 }

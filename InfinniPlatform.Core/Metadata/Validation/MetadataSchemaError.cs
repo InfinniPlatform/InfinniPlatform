@@ -5,33 +5,13 @@ using InfinniPlatform.Core.Properties;
 namespace InfinniPlatform.Core.Metadata.Validation
 {
     /// <summary>
-    ///     Ошибка в схеме объекта метаданных.
+    /// Ошибка в схеме объекта метаданных.
     /// </summary>
     [Serializable]
     public sealed class MetadataSchemaError
     {
         /// <summary>
-        ///     Номер столбца.
-        /// </summary>
-        public readonly int LineColumn;
-
-        /// <summary>
-        ///     Номер строки.
-        /// </summary>
-        public readonly int LineNumber;
-
-        /// <summary>
-        ///     Сообщение об ошибке.
-        /// </summary>
-        public readonly string Message;
-
-        /// <summary>
-        ///     Путь к свойству.
-        /// </summary>
-        public readonly string Path;
-
-        /// <summary>
-        ///     Конструктор.
+        /// Конструктор.
         /// </summary>
         /// <param name="message">Сообщение об ошибке.</param>
         /// <param name="path">Путь к свойству.</param>
@@ -54,5 +34,25 @@ namespace InfinniPlatform.Core.Metadata.Validation
             LineNumber = lineNumber;
             LineColumn = lineColumn;
         }
+
+        /// <summary>
+        /// Номер столбца.
+        /// </summary>
+        public readonly int LineColumn;
+
+        /// <summary>
+        /// Номер строки.
+        /// </summary>
+        public readonly int LineNumber;
+
+        /// <summary>
+        /// Сообщение об ошибке.
+        /// </summary>
+        public readonly string Message;
+
+        /// <summary>
+        /// Путь к свойству.
+        /// </summary>
+        public readonly string Path;
     }
 }

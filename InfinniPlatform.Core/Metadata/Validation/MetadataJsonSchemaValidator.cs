@@ -9,16 +9,14 @@ using Newtonsoft.Json.Schema;
 namespace InfinniPlatform.Core.Metadata.Validation
 {
     /// <summary>
-    ///     Сервис проверки корректности JSON-схемы объекта метаданных.
+    /// Сервис проверки корректности JSON-схемы объекта метаданных.
     /// </summary>
     internal sealed class MetadataJsonSchemaValidator : IMetadataSchemaValidator
     {
         private static readonly MetadataJsonSchemaResolver MetadataSchemaResolver = new MetadataJsonSchemaResolver();
-        private readonly bool _detailedErrors;
-        private readonly JsonSchema _metadataSchema;
 
         /// <summary>
-        ///     Конструктор.
+        /// Конструктор.
         /// </summary>
         /// <param name="metadataType">Тип метаданных.</param>
         /// <param name="detailedErrors">Детализированные ошибки.</param>
@@ -33,8 +31,11 @@ namespace InfinniPlatform.Core.Metadata.Validation
             _detailedErrors = detailedErrors;
         }
 
+        private readonly bool _detailedErrors;
+        private readonly JsonSchema _metadataSchema;
+
         /// <summary>
-        ///     Проверяет корректность схемы объекта метаданных.
+        /// Проверяет корректность схемы объекта метаданных.
         /// </summary>
         /// <param name="metadataValue">Объект метаданных.</param>
         /// <exception cref="MetadataSchemaException"></exception>

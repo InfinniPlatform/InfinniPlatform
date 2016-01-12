@@ -1,8 +1,10 @@
 ﻿using InfinniPlatform.Core.Hosting;
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Security;
 using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.SystemConfig.Migrations;
 using InfinniPlatform.SystemConfig.RequestHandlers;
 using InfinniPlatform.SystemConfig.StartupInitializers;
 using InfinniPlatform.SystemConfig.UserStorage;
@@ -45,6 +47,16 @@ namespace InfinniPlatform.SystemConfig.IoC
             // Обработчики сервисов системной конфигурации
             builder.RegisterType<SystemConfigInstaller>()
                    .As<IModuleInstaller>()
+                   .SingleInstance();
+
+            // Migrations
+
+            builder.RegisterType<CalculateTotalsForRegisters>()
+                   .As<IConfigurationMigration>()
+                   .SingleInstance();
+
+            builder.RegisterType<ConfigurationMigrationFactory>()
+                   .As<IConfigurationMigrationFactory>()
                    .SingleInstance();
 
             // Прикладные скрипты

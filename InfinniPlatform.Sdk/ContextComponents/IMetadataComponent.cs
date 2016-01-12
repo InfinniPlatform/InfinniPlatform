@@ -25,24 +25,6 @@ namespace InfinniPlatform.Sdk.ContextComponents
         dynamic GetConfigMetadata();
 
         /// <summary>
-        /// Обновить метаданные конфигурации
-        /// </summary>
-        /// <param name="configId">Идентификатор конфигурации</param>
-        /// <param name="documentId">Идентификатор документа</param>
-        /// <param name="metadataType">Идентификатор типа метаданных</param>
-        /// <param name="metadataName">Идентификатор изменяемых метаданных</param>
-        void UpdateMetadata(string configId, string documentId, string metadataType, string metadataName);
-
-        /// <summary>
-        /// Удалить метаданные конфигурации
-        /// </summary>
-        /// <param name="configId">Идентификатор конфигурации</param>
-        /// <param name="documentId">Идентификатор документа</param>
-        /// <param name="metadataType">Идентификатор типа метаданных</param>
-        /// <param name="metadataName">Идентификатор удаляемых метаданных</param>
-        void DeleteMetadata(string configId, string documentId, string metadataType, string metadataName);
-
-        /// <summary>
         /// Получить метаданные конфигурации
         /// </summary>
         /// <param name="configId">Идентификатор конфигурации</param>

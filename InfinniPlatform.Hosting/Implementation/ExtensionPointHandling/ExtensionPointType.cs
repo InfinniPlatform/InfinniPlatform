@@ -1,12 +1,10 @@
 ﻿using InfinniPlatform.Sdk.Environment.Hosting;
 
-namespace InfinniPlatform.Core.Metadata
+namespace InfinniPlatform.Hosting.Implementation.ExtensionPointHandling
 {
     public class ExtensionPointType
     {
         public string Name { get; set; }
-        public string Caption { get; set; }
-        public string Description { get; set; }
         public ContextTypeKind ContextTypeKind { get; set; }
     }
 }

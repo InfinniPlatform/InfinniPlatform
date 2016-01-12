@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -49,9 +48,7 @@ namespace InfinniPlatform.SystemConfig.Utils
             }
 
 
-            IEnumerable<dynamic> metadataList = _metadataComponent.GetMetadataList(typeInfo.ConfigId,
-                                                                                   typeInfo.DocumentId,
-                                                                                   MetadataType.Schema);
+            IEnumerable<dynamic> metadataList = _metadataComponent.GetMetadataList(typeInfo.ConfigId, typeInfo.DocumentId, "Schema");
 
             dynamic schema = metadataList.FirstOrDefault();
 

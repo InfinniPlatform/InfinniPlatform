@@ -1,7 +1,7 @@
-namespace InfinniPlatform.SystemConfig.StateMachine
+п»їnamespace InfinniPlatform.SystemConfig.StateMachine
 {
     /// <summary>
-    ///     Типы потоков выполнения
+    ///     РўРёРїС‹ РїРѕС‚РѕРєРѕРІ РІС‹РїРѕР»РЅРµРЅРёСЏ
     /// </summary>
     public enum WorkflowTypes
     {

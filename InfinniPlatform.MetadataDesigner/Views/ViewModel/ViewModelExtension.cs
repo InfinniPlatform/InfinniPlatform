@@ -7,7 +7,6 @@ using DevExpress.XtraEditors.Controls;
 
 using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Core.Metadata;
-using InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.Factories;
 using InfinniPlatform.Core.Registers;
 using InfinniPlatform.Core.RestApi.CommonApi;
 using InfinniPlatform.Core.RestApi.DataApi;
@@ -34,8 +33,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
                                                                                  Description = "Migration updates store mapping after changing configuration documents data schema",
                                                                                  IsUndoable = false,
                                                                                  ConfigurationId = string.Empty,
-                                                                                 ConfigVersion = string.Empty,
-                                                                                 Parameters = new MigrationParameter[0]
+                                                                                 ConfigVersion = string.Empty
                                                                              }
                                                                          };
 
@@ -156,10 +154,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
         private static IEnumerable<dynamic> GetDocumentScenarios(string configurationId, string documentId)
         {
-            var reader = new ManagerFactoryDocument(configurationId, documentId).BuildScenarioMetadataReader();
-            var scenarios =
-                reader.GetItems().ToEnumerable();
-            return scenarios;
+            return Enumerable.Empty<dynamic>();
         }
 
         public static string CheckGetView(string version, string configId, string documentId, string viewName, string viewType, string jsonBody)
@@ -283,7 +278,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
         public static IEnumerable<string> BuildViewTypes()
         {
-            return ViewType.GetViewTypes();
+            return Enumerable.Empty<string>();
         }
 
         public static IEnumerable<string> BuildRegisterPeriods()
@@ -384,9 +379,8 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
         public static string CreateRegisterDocuments(string version, string configId, string registerName)
         {
-            var managerDocument = new ManagerFactoryConfiguration(configId).BuildDocumentManager();
-
-            dynamic documentMetadata = managerDocument.CreateItem(RegisterConstants.RegisterNamePrefix + registerName);
+            dynamic documentMetadata = new DynamicWrapper();
+            documentMetadata.Name = RegisterConstants.RegisterNamePrefix + registerName;
             documentMetadata.Id = Guid.NewGuid().ToString();
             documentMetadata.SearchAbility = 0; // SearchAbilityType.KeywordBasedSearch;
             documentMetadata.Description = string.Format("Storage for register {0} data", registerName);
@@ -423,12 +417,10 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
             documentMetadata.Schema.Description = "Register document schema";
             documentMetadata.Schema.Properties = schemaProperties;
 
-            managerDocument.MergeItem(documentMetadata);
-
-
             // Создаём документ для подсчета промежуточных итогов
 
-            dynamic documentTotalMetadata = managerDocument.CreateItem(RegisterConstants.RegisterTotalNamePrefix + registerName);
+            dynamic documentTotalMetadata = new DynamicWrapper();
+            documentTotalMetadata.Name = RegisterConstants.RegisterTotalNamePrefix + registerName;
             documentMetadata.Id = Guid.NewGuid().ToString();
             documentMetadata.SearchAbility = 0; // SearchAbilityType.KeywordBasedSearch;
             documentMetadata.Description = string.Format("Storage for register {0} totals", registerName);
@@ -447,8 +439,6 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
             documentTotalMetadata.Schema.Description = "Register document schema";
             documentTotalMetadata.Schema.Properties = schemaProperties;
 
-            managerDocument.MergeItem(documentTotalMetadata);
-
             return RegisterConstants.RegisterNamePrefix + registerName;
         }
 
@@ -466,39 +456,15 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
         public static void UpdateRegisterDocumentSchema(string version, string configId, string registerName, dynamic documentSchema)
         {
-            var managerDocument = new ManagerFactoryConfiguration(configId).BuildDocumentManager();
-            var registerDocument = managerDocument.MetadataReader.GetItem(RegisterConstants.RegisterNamePrefix + registerName);
-
-            registerDocument.Schema = documentSchema;
-
-            managerDocument.MergeItem(registerDocument);
-
-            // UpdateApi.ForceReload(configId);
         }
 
         public static dynamic GetRegisterDocumentTotalSchema(string version, string configId, string registerName)
         {
-            var managerDocument = new ManagerFactoryConfiguration(configId).BuildDocumentManager();
-            var registerDocumentTotal = managerDocument.MetadataReader.GetItem(RegisterConstants.RegisterTotalNamePrefix + registerName);
-
-            if (registerDocumentTotal != null)
-            {
-                return registerDocumentTotal.Schema;
-            }
-
             return null;
         }
 
         public static void UpdateRegisterDocumentTotalSchema(string version, string configId, string registerName, dynamic documentSchema)
         {
-            var managerDocument = new ManagerFactoryConfiguration(configId).BuildDocumentManager();
-            var registerDocumentTotal = managerDocument.MetadataReader.GetItem(RegisterConstants.RegisterTotalNamePrefix + registerName);
-
-            registerDocumentTotal.Schema = documentSchema;
-
-            managerDocument.MergeItem(registerDocumentTotal);
-
-            // UpdateApi.ForceReload(configId);
         }
     }
 

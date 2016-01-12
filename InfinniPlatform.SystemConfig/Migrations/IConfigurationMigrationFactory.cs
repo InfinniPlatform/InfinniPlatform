@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.Metadata
+﻿namespace InfinniPlatform.SystemConfig.Migrations
 {
     public interface IConfigurationMigrationFactory
     {

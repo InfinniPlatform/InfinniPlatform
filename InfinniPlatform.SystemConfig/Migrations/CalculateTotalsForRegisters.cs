@@ -1,18 +1,31 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
-using InfinniPlatform.Core.Metadata;
-using InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.MetadataManagers;
-using InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.MetadataReaders;
-using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Core.RestApi.CommonApi;
+using InfinniPlatform.Core.RestApi.DataApi;
+using InfinniPlatform.Sdk;
+using InfinniPlatform.Sdk.Environment.Register;
 
-namespace InfinniPlatform.MigrationsAndVerifications.Migrations
+namespace InfinniPlatform.SystemConfig.Migrations
 {
     /// <summary>
-    /// Миграция добавляет контейнер Registers к конфигурации
+    /// Миграция позволяет рассчитать итоги для регистров накопления на текущую дату
     /// </summary>
-    public sealed class AddRegistersMigration : IConfigurationMigration
+    public sealed class CalculateTotalsForRegisters : IConfigurationMigration
     {
+        public CalculateTotalsForRegisters(RestQueryApi restQueryApi, DocumentApi documentApi)
+        {
+            _restQueryApi = restQueryApi;
+            _documentApi = documentApi;
+        }
+
+        private readonly DocumentApi _documentApi;
+        private readonly RestQueryApi _restQueryApi;
+
+        /// <summary>
+        /// Конфигурация, к которой применяется миграция
+        /// </summary>
         private string _activeConfiguration;
 
         /// <summary>
@@ -20,7 +33,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         /// </summary>
         public string Description
         {
-            get { return "Migration adds \"Registers\" container to configuration"; }
+            get { return "Migration calculates totals for all configuration registers"; }
         }
 
         /// <summary>
@@ -48,7 +61,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         /// </summary>
         public bool IsUndoable
         {
-            get { return true; }
+            get { return false; }
         }
 
         /// <summary>
@@ -60,17 +73,39 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         {
             var resultMessage = new StringBuilder();
 
-            var configReader = new MetadataReaderConfiguration();
+            Action<FilterBuilder> filter = null;
+            var registersInfo = _documentApi.GetDocument(_activeConfiguration, _activeConfiguration + RegisterConstants.RegistersCommonInfo, filter, 0, 1000);
 
-            dynamic configMetadata = configReader.GetItem(_activeConfiguration);
-
-            if (configMetadata.Registers == null)
+            foreach (var registerInfo in registersInfo)
             {
-                configMetadata.Registers = new List<dynamic>();
-                new MetadataManagerConfiguration(configReader).MergeItem(configMetadata);
+                dynamic registerId = registerInfo.Id;
 
-                resultMessage.AppendLine();
-                resultMessage.AppendFormat("Registers container was added.");
+                var tempDate = DateTime.Now;
+
+                var calculationDate = new DateTime(
+                    tempDate.Year,
+                    tempDate.Month,
+                    tempDate.Day,
+                    tempDate.Hour,
+                    tempDate.Minute,
+                    tempDate.Second);
+
+                var aggregatedData = _restQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "GetRegisterValuesByDate", null,
+                    new
+                    {
+                        Configuration = _activeConfiguration,
+                        Register = registerId,
+                        Date = calculationDate
+                    }).ToDynamicList();
+
+                foreach (var item in aggregatedData)
+                {
+                    item.Id = Guid.NewGuid().ToString();
+                    item[RegisterConstants.DocumentDateProperty] = calculationDate;
+                    _documentApi.SetDocument(_activeConfiguration,
+                        RegisterConstants.RegisterTotalNamePrefix + registerId,
+                        item);
+                }
             }
 
             resultMessage.AppendLine();
@@ -86,9 +121,7 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
         /// <param name="parameters">Параметры миграции</param>
         public void Down(out string message, object[] parameters)
         {
-            // TODO: действия по удалению метаданных регистров
-
-            message = "Not implemented";
+            throw new NotSupportedException();
         }
 
         /// <summary>

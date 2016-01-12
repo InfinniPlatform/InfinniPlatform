@@ -4,7 +4,7 @@ using System.Linq;
 
 using InfinniPlatform.Core.Metadata;
 
-namespace InfinniPlatform.MigrationsAndVerifications.Migrations
+namespace InfinniPlatform.SystemConfig.Migrations
 {
     internal sealed class ConfigurationMigrationFactory : IConfigurationMigrationFactory
     {
@@ -20,7 +20,6 @@ namespace InfinniPlatform.MigrationsAndVerifications.Migrations
             if (!string.IsNullOrEmpty(migrationName))
             {
                 return _migrations.FirstOrDefault(i => string.Equals(i.GetType().Name, migrationName, StringComparison.OrdinalIgnoreCase));
-
             }
 
             return null;

@@ -99,6 +99,11 @@
     <Compile Include="Executors\ElasticSearchUserStorage.cs" />
     <Compile Include="Executors\GetDocumentExecutor.cs" />
     <Compile Include="Executors\SetDocumentExecutor.cs" />
+    <Compile Include="Migrations\CalculateTotalsForRegisters.cs" />
+    <Compile Include="Migrations\ConfigurationMigrationFactory.cs" />
+    <Compile Include="Migrations\IConfigurationMigration.cs" />
+    <Compile Include="Migrations\IConfigurationMigrationFactory.cs" />
+    <Compile Include="Migrations\MigrationParameter.cs" />
     <Compile Include="StartupInitializers\FileHistoryHelper.cs" />
     <Compile Include="StartupInitializers\IStartupInitializer.cs" />
     <Compile Include="StartupInitializers\PackageJsonConfigurationInstaller.cs" />

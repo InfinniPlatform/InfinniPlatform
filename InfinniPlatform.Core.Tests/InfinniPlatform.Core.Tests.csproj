@@ -104,7 +104,6 @@
     <Compile Include="RestBehavior\Acceptance\DeleteReferencedDocumentBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\ReportingBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\ValidationDocumentBehavior.cs" />
-    <Compile Include="RestBehavior\ConfiguratorApiBehavior\CrudSettings.cs" />
     <Compile Include="Dynamic\DynamicWrapperBehavior.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
@@ -229,6 +228,7 @@
   <ItemGroup>
     <Folder Include="Builders\" />
     <Folder Include="Metadata\" />
+    <Folder Include="RestBehavior\ConfiguratorApiBehavior\" />
     <Folder Include="RestBehavior\DataSources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
