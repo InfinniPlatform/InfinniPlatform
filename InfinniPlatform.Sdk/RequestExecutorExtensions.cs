@@ -1,17 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+
+using Newtonsoft.Json;
 
 namespace InfinniPlatform.Sdk
 {
     public static class RequestExecutorExtensions
     {
-        public static string CreateQueryString(IEnumerable<string> filter, int pageNumber, int pageSize, IEnumerable<string> sorting)
+        public static string CreateQueryString(IEnumerable<FilterBuilder.CriteriaBuilder.CriteriaFilter> filter, int pageNumber, int pageSize, IEnumerable<SortingBuilder.CriteriaSorting> sorting)
         {
-            return string.Format("filter={0}&pageNumber={1}&pageSize={2}&sorting={3}",string.Join(" and ", filter), pageNumber, pageSize, string.Join(" and ", sorting));
+            var jsonFilterStrings = JsonConvert.SerializeObject(filter);
+            var jsonSortingStrings = JsonConvert.SerializeObject(sorting);
+
+            return $"filter={Uri.EscapeUriString(jsonFilterStrings)}&pageNumber={pageNumber}&pageSize={pageSize}&sorting={Uri.EscapeUriString(jsonSortingStrings)}";
         }
 
-        public static string CreateQueryStringCount(IEnumerable<string> filter)
+        public static string CreateQueryStringCount(IEnumerable<FilterBuilder.CriteriaBuilder.CriteriaFilter> filter)
         {
-            return string.Format("$filter={0}", string.Join(" and ", filter));
+            var jsonFilterStrings = JsonConvert.SerializeObject(filter);
+
+            return $"$filter={Uri.EscapeUriString(jsonFilterStrings)}";
         }
     }
 }

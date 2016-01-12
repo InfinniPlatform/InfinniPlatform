@@ -4,6 +4,8 @@ using System.IO;
 
 using InfinniPlatform.Sdk.Dynamic;
 
+using Newtonsoft.Json.Linq;
+
 namespace InfinniPlatform.Core.Schema.Prefill
 {
 	public sealed class DefaultValues
@@ -54,12 +56,10 @@ namespace InfinniPlatform.Core.Schema.Prefill
 		    }
 
 		    var enumerable = value as IEnumerable<dynamic>;
-		    if (enumerable != null)
-		    {
-                return enumerable.DynamicEnumerableToString();
-		    }
-            
-			return value.ToString();
+
+		    return enumerable != null
+		               ? JArray.FromObject(enumerable).ToString()
+		               : value.ToString();
 		}
 
 		public object GetRandomValue(string settingName, int times)

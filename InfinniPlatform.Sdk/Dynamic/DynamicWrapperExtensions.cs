@@ -52,11 +52,6 @@ namespace InfinniPlatform.Sdk.Dynamic
             return new List<dynamic> { ToDynamic(objectInstance) };
         }
 
-        public static string DynamicEnumerableToString(this IEnumerable<dynamic> sourceObject)
-        {
-            return JArray.FromObject(sourceObject).ToString();
-        }
-
         public static object ConvertFromJsonObject(JObject value)
         {
             DynamicWrapper result = null;

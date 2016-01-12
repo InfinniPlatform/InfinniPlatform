@@ -3,7 +3,7 @@ using System.Linq;
 
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.RestApi.CommonApi;
-using InfinniPlatform.Core.SearchOptions.Builders;
+using InfinniPlatform.Sdk;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment.Index;

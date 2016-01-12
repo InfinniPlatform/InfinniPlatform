@@ -7,23 +7,42 @@ namespace InfinniPlatform.Sdk
     /// </summary>
     public sealed class SortingBuilder
     {
-        private readonly IList<string> _sortingList;
-
         public SortingBuilder()
         {
-            _sortingList = new List<string>();
+            _sortingList = new List<CriteriaSorting>();
         }
 
-        public SortingBuilder AddSorting(string property, string sortOrder = "ascending")
+        private readonly IList<CriteriaSorting> _sortingList;
+
+        public SortingBuilder AddSorting(string property, string sortingOrder = "ascending")
         {
-            _sortingList.Add(string.Format("{0} {1}",property,sortOrder));
+            _sortingList.Add(new CriteriaSorting(property, sortingOrder));
 
             return this;
         }
 
-        public IEnumerable<string> GetSorting()
+        public IEnumerable<CriteriaSorting> GetSorting()
         {
             return _sortingList;
+        }
+
+
+        public sealed class CriteriaSorting
+        {
+            public CriteriaSorting(string property, string sortingOrder)
+            {
+                Property = property;
+                SortingOrder = sortingOrder;
+            }
+
+            public string Property { get; set; }
+
+            public string SortingOrder { get; set; }
+
+            public override string ToString()
+            {
+                return $"{Property} {SortingOrder}";
+            }
         }
     }
 }

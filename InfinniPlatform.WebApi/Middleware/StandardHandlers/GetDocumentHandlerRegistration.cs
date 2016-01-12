@@ -4,11 +4,13 @@ using System.Collections.Specialized;
 using System.Web;
 
 using InfinniPlatform.Core.RestApi.DataApi;
-using InfinniPlatform.Core.SearchOptions.Converters;
 using InfinniPlatform.Owin.Middleware;
+using InfinniPlatform.Sdk;
 using InfinniPlatform.WebApi.Middleware.RouteFormatters;
 
 using Microsoft.Owin;
+
+using Newtonsoft.Json;
 
 namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 {
@@ -35,19 +37,10 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
             }
 
             var filter = nameValueCollection.Get("filter");
-            IEnumerable<dynamic> criteriaList = new List<dynamic>();
-            if (filter != null)
-            {
-                criteriaList = new FilterConverter().ConvertFilter(filter);
-            }
+            var criteriaList = JsonConvert.DeserializeObject<IEnumerable<FilterBuilder.CriteriaBuilder.CriteriaFilter>>(filter);
 
             var sorting = nameValueCollection.Get("sorting");
-            IEnumerable<dynamic> sortingList = new List<dynamic>();
-            if (sorting != null)
-            {
-                sortingList = new SortingConverter().Convert(sorting);
-            }
-
+            var sortingList = JsonConvert.DeserializeObject<IEnumerable<SortingBuilder.CriteriaSorting>>(sorting);
 
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 

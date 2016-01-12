@@ -2,7 +2,7 @@
 using System.Linq;
 
 using InfinniPlatform.Core.RestApi.DataApi;
-using InfinniPlatform.Core.SearchOptions.Builders;
+using InfinniPlatform.Sdk;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Environment.Register;
 
