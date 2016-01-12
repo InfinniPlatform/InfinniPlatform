@@ -100,7 +100,7 @@
     <Compile Include="Documents\CriteriaType.cs" />
     <Compile Include="Documents\ICalculatedField.cs" />
     <Compile Include="Documents\IFilter.cs" />
-    <Compile Include="Documents\IFilterBuilder.cs" />
+    <Compile Include="Documents\INestFilterBuilder.cs" />
     <Compile Include="PrintView\PrintViewFileFormat.cs" />
     <Compile Include="Dynamic\ReflectionCache.cs" />
     <Compile Include="Dynamic\ReflectionExtensions.cs" />
