@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Sdk.Environment.Index;
-using InfinniPlatform.Sdk.Environment.Metadata;
+﻿using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Core.ContextComponents
 {

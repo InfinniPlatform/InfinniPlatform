@@ -3,8 +3,8 @@ using InfinniPlatform.Core.Factories;
 using InfinniPlatform.Reporting.DataSources;
 using InfinniPlatform.Reporting.PrintView;
 using InfinniPlatform.Reporting.Services;
-using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Sdk.PrintView;
 
 namespace InfinniPlatform.Reporting.IoC
 {

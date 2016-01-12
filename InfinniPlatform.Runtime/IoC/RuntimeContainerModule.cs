@@ -1,6 +1,5 @@
 ﻿using InfinniPlatform.Core.Runtime;
 using InfinniPlatform.Runtime.Implementation;
-using InfinniPlatform.Sdk.Environment.Scripts;
 using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.Runtime.IoC

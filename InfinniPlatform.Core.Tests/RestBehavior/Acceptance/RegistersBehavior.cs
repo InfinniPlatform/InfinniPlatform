@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 
+using InfinniPlatform.Core.Registers;
 using InfinniPlatform.NodeServiceHost;
-using InfinniPlatform.Sdk.Api;
-using InfinniPlatform.Sdk.Environment.Register;
+using InfinniPlatform.Sdk.RestApi;
 
 using NUnit.Framework;
 

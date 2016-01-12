@@ -1,7 +1,6 @@
 ﻿using System;
 
 using InfinniPlatform.Core.Metadata;
-using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 
 namespace InfinniPlatform.SystemConfig.ActionUnits.Metadata

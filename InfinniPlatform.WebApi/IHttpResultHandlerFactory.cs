@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Sdk.Environment.Hosting;
+using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.WebApi.HttpResultHandlers;
 
 namespace InfinniPlatform.WebApi

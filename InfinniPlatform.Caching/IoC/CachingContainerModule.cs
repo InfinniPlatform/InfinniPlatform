@@ -4,9 +4,9 @@ using InfinniPlatform.Caching.Memory;
 using InfinniPlatform.Caching.Redis;
 using InfinniPlatform.Caching.Session;
 using InfinniPlatform.Caching.TwoLayer;
-using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Sdk.Session;
+using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.Caching.IoC
 {

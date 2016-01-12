@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Core.Validation.BooleanValidators;
-using InfinniPlatform.Sdk.Environment.Validations;
+﻿using InfinniPlatform.Core.Validation;
+using InfinniPlatform.Core.Validation.BooleanValidators;
 
 using NUnit.Framework;
 

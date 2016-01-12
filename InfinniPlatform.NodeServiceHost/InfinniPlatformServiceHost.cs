@@ -8,7 +8,7 @@ using InfinniPlatform.Core.Settings;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.IoC.Owin;
 using InfinniPlatform.NodeServiceHost.Properties;
-using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.RestApi;
 
 namespace InfinniPlatform.NodeServiceHost
 {

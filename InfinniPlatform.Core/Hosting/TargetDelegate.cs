@@ -1,7 +1,5 @@
 ﻿using System.Reflection;
 
-using InfinniPlatform.Sdk.Environment.Hosting;
-
 namespace InfinniPlatform.Core.Hosting
 {
     public sealed class TargetDelegate

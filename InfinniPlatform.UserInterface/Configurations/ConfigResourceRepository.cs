@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.UserInterface.Services.Metadata;
 
 using Newtonsoft.Json;

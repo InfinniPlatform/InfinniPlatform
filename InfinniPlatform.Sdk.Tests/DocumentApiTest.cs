@@ -4,8 +4,8 @@ using System.Dynamic;
 using System.Linq;
 
 using InfinniPlatform.NodeServiceHost;
-using InfinniPlatform.Sdk.Api;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.RestApi;
 
 using Newtonsoft.Json;
 

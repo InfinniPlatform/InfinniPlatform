@@ -1,5 +1,5 @@
 ﻿using InfinniPlatform.Owin.Modules;
-using InfinniPlatform.Sdk.Environment.Settings;
+using InfinniPlatform.Sdk.Settings;
 
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.WsFederation;

@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Sdk.Api;
-using InfinniPlatform.Sdk.IoC;
+﻿using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Sdk.RestApi;
 
 namespace InfinniPlatform.Owin.Modules
 {

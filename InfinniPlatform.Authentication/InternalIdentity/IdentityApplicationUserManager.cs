@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Authentication.Properties;
 using InfinniPlatform.Core.Security;
-using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Security;
 
 using Microsoft.AspNet.Identity;
 

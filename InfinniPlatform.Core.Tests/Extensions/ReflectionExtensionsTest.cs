@@ -1,6 +1,6 @@
 ﻿using System;
 
-using InfinniPlatform.Sdk.Extensions;
+using InfinniPlatform.Sdk.Dynamic;
 
 using NUnit.Framework;
 

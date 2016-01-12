@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 
 using InfinniPlatform.Core.Logging;
-using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.Environment.Index;
-using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.SystemConfig.StartupInitializers
 {

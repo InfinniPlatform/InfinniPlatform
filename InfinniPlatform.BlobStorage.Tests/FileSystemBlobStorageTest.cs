@@ -1,7 +1,7 @@
 ﻿using System;
 
-using InfinniPlatform.Sdk.Environment.Binary;
-using InfinniPlatform.Sdk.Environment.Log;
+using InfinniPlatform.Sdk.BlobStorage;
+using InfinniPlatform.Sdk.Logging;
 
 using Moq;
 

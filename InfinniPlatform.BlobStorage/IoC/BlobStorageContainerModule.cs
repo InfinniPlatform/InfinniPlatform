@@ -1,6 +1,6 @@
-﻿using InfinniPlatform.Sdk.Environment.Binary;
-using InfinniPlatform.Sdk.Environment.Settings;
+﻿using InfinniPlatform.Sdk.BlobStorage;
 using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.BlobStorage.IoC
 {

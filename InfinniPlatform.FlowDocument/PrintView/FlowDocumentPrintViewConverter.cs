@@ -8,6 +8,7 @@ using InfinniPlatform.FlowDocument.Converters.Pdf;
 using InfinniPlatform.FlowDocument.Model.Views;
 using InfinniPlatform.FlowDocument.Properties;
 using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.PrintView;
 
 namespace InfinniPlatform.FlowDocument.PrintView
 {

@@ -1,6 +1,4 @@
-﻿using InfinniPlatform.Sdk.Environment.Hosting;
-
-namespace InfinniPlatform.Core.Hosting
+﻿namespace InfinniPlatform.Core.Hosting
 {
     public interface IRestVerbsRegistrator
     {

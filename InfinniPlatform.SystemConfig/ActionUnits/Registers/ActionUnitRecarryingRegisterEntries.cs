@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using InfinniPlatform.Core.Registers;
 using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Sdk;
 using InfinniPlatform.Sdk.Contracts;
-using InfinniPlatform.Sdk.Environment.Register;
 
 namespace InfinniPlatform.SystemConfig.ActionUnits.Registers
 {

@@ -6,7 +6,6 @@ using System.Linq;
 using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Core.RestApi;
 using InfinniPlatform.Core.Properties;
-using InfinniPlatform.Sdk.Environment.Hosting;
 using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.WebApi.WebApi

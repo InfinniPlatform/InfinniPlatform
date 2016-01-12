@@ -1,7 +1,6 @@
 ﻿using InfinniPlatform.Core.Factories;
 using InfinniPlatform.Core.PrintView;
-using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.PrintView;
 
 namespace InfinniPlatform.Core.ContextComponents
 {

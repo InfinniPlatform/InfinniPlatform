@@ -2,7 +2,6 @@
 
 using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Settings;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Commands
 {

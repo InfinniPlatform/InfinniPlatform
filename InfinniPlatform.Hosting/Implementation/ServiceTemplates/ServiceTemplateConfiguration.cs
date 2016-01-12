@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Core.ContextTypes;
+using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Hosting;
 
 namespace InfinniPlatform.Hosting.Implementation.ServiceTemplates
 {

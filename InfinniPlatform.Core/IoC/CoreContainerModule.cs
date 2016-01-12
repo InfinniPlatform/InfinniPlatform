@@ -7,12 +7,11 @@ using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Core.RestApi.Public;
 using InfinniPlatform.Core.Settings;
 using InfinniPlatform.Core.Transactions;
-using InfinniPlatform.Sdk.ApiContracts;
-using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Environment.Log;
-using InfinniPlatform.Sdk.Environment.Settings;
-using InfinniPlatform.Sdk.Global;
 using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Registers;
+using InfinniPlatform.Sdk.RestApi;
+using InfinniPlatform.Sdk.Settings;
 
 using PrintViewApi = InfinniPlatform.Core.RestApi.Public.PrintViewApi;
 using RegisterApi = InfinniPlatform.Core.RestApi.Public.RegisterApi;
@@ -25,10 +24,6 @@ namespace InfinniPlatform.Core.IoC
         {
             builder.RegisterInstance(AppConfiguration.Instance)
                    .As<IAppConfiguration>();
-
-            builder.RegisterType<ScriptContext>()
-                   .AsSelf()
-                   .SingleInstance();
 
             builder.RegisterType<GZipDataCompressor>()
                    .As<IDataCompressor>()

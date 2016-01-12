@@ -1,7 +1,7 @@
 ﻿using InfinniPlatform.Core.Factories;
+using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Hosting.Implementation.ServiceRegistration;
 using InfinniPlatform.Hosting.Implementation.ServiceTemplates;
-using InfinniPlatform.Sdk.Environment.Hosting;
 using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.Hosting.IoC

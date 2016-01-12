@@ -1,5 +1,6 @@
 ﻿using System;
-using InfinniPlatform.Sdk.Environment.Validations;
+
+using InfinniPlatform.Core.Validation;
 
 namespace InfinniPlatform.DesignControls.Controls.Properties
 {

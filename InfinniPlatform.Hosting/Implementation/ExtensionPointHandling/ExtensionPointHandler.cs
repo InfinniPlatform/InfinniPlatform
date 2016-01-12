@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Core.Metadata;
-using InfinniPlatform.Sdk.Environment.Hosting;
 
 namespace InfinniPlatform.Hosting.Implementation.ExtensionPointHandling
 {

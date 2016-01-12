@@ -1,4 +1,5 @@
 ﻿using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.PrintView;
 
 namespace InfinniPlatform.Core.PrintView
 {

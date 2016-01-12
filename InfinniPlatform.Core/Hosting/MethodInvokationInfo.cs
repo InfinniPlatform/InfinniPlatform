@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using InfinniPlatform.Sdk.Environment.Hosting;
-
 namespace InfinniPlatform.Core.Hosting
 {
     public class MethodInvokationInfo

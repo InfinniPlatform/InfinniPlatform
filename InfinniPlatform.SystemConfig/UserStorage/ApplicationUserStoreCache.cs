@@ -6,7 +6,7 @@ using System.Threading;
 
 using InfinniPlatform.Caching;
 using InfinniPlatform.Core.Security;
-using InfinniPlatform.Sdk.Environment.Log;
+using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.SystemConfig.Properties;
 
 namespace InfinniPlatform.SystemConfig.UserStorage

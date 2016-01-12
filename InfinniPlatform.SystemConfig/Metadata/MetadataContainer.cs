@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Sdk.Environment.Index;
-using InfinniPlatform.Sdk.Environment.Worklow;
-using InfinniPlatform.SystemConfig.StateMachine.Statuses;
+using InfinniPlatform.SystemConfig.StateMachine;
 
 namespace InfinniPlatform.SystemConfig.Metadata
 {

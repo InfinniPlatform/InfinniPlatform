@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System;
 
+using InfinniPlatform.Core.Validation;
 using InfinniPlatform.Core.Validation.BooleanValidators;
 using InfinniPlatform.Core.Validation.ObjectValidators;
 using InfinniPlatform.Sdk.Environment;
-using InfinniPlatform.Sdk.Environment.Validations;
 
 namespace InfinniPlatform.MetadataDesigner.Views.Validation.Builders
 {

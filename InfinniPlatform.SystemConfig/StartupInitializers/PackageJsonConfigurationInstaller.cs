@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using InfinniPlatform.Core.Hosting;
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Hosting.Implementation.ExtensionPointHandling;
-using InfinniPlatform.Sdk.Environment.Hosting;
 using InfinniPlatform.Sdk.Environment.Index;
-using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.SystemConfig.StartupInitializers
 {
@@ -120,7 +120,7 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
         {
             metadataCacheManager.RegisterScenario(documentId, scenario);
 
-            metadataCacheManager.ScriptConfiguration.RegisterActionUnitDistributedStorage(scenario.Id, scenario.ScenarioId);
+            metadataCacheManager.ScriptConfiguration.RegisterAction(scenario.Id, scenario.ScenarioId);
         }
 
         private static void RegisterService(IMetadataConfiguration metadataCacheManager, string documentId, dynamic service)

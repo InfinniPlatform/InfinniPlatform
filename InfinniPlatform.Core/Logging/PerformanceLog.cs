@@ -1,6 +1,6 @@
 ﻿using System;
 
-using InfinniPlatform.Sdk.Environment.Log;
+using InfinniPlatform.Sdk.Logging;
 
 using ILog = log4net.ILog;
 

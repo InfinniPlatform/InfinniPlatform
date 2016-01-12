@@ -5,7 +5,7 @@ using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.ElasticSearch.ElasticProviders;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Log;
+using InfinniPlatform.Sdk.Logging;
 
 using Nest;
 

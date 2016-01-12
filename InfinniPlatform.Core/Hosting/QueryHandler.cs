@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Sdk.Environment.Hosting;
-
 namespace InfinniPlatform.Core.Hosting
 {
     /// <summary>

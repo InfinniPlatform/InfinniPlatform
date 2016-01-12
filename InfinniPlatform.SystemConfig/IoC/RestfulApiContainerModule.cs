@@ -1,7 +1,6 @@
 ﻿using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Core.SystemInfo;
 using InfinniPlatform.Core.Transactions;
-using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.SystemConfig.Executors;
 using InfinniPlatform.SystemConfig.SystemInfo;

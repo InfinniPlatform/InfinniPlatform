@@ -1,7 +1,7 @@
 ﻿using System;
 
 using InfinniPlatform.NodeServiceHost;
-using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.RestApi;
 
 using NUnit.Framework;
 

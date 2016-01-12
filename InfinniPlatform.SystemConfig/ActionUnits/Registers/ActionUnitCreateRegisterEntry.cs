@@ -3,10 +3,8 @@ using System.Linq;
 
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Registers;
-using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Register;
 
 namespace InfinniPlatform.SystemConfig.ActionUnits.Registers
 {

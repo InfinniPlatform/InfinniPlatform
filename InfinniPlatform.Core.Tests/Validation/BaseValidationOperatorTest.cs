@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Sdk.Environment.Validations;
+﻿using InfinniPlatform.Core.Validation;
 
 using NUnit.Framework;
 

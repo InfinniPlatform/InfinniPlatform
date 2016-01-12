@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Sdk.Environment.Hosting;
+﻿using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.WebApi.HttpResultHandlers;
 
 namespace InfinniPlatform.WebApi.Factories

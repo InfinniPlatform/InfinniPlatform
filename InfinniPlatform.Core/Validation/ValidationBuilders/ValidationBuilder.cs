@@ -1,7 +1,5 @@
 ﻿using System;
 
-using InfinniPlatform.Sdk.Environment.Validations;
-
 namespace InfinniPlatform.Core.Validation.ValidationBuilders
 {
     public static class ValidationBuilder

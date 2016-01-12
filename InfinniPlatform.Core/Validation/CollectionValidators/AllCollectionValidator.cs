@@ -1,8 +1,6 @@
 ﻿using System.Globalization;
 using System.Linq;
 
-using InfinniPlatform.Sdk.Environment.Validations;
-
 namespace InfinniPlatform.Core.Validation.CollectionValidators
 {
     /// <summary>

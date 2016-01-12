@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 
 using InfinniPlatform.Core.RestApi.CommonApi;
-using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Registers;
 
 namespace InfinniPlatform.Core.ContextComponents
 {

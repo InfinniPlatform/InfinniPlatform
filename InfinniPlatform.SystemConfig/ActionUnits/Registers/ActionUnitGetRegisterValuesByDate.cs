@@ -2,14 +2,13 @@
 using System.Linq;
 
 using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Core.Registers;
 using InfinniPlatform.Core.RestApi.CommonApi;
 using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Core.SearchOptions.Builders;
-using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
-using InfinniPlatform.Sdk.Environment.Register;
 
 namespace InfinniPlatform.SystemConfig.ActionUnits.Registers
 {

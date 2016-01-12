@@ -3,7 +3,7 @@ using System.Security.Principal;
 using System.Threading;
 
 using InfinniPlatform.Core.Security;
-using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Session;
 
 namespace InfinniPlatform.Core.Transactions
 {

@@ -3,10 +3,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 using InfinniPlatform.Core.Factories;
-using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Environment.Hosting;
-using InfinniPlatform.Sdk.Environment.Metadata;
-using InfinniPlatform.Sdk.Environment.Scripts;
+using InfinniPlatform.Core.Hosting;
+using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Core.Runtime;
 
 namespace InfinniPlatform.SystemConfig.Metadata
 {

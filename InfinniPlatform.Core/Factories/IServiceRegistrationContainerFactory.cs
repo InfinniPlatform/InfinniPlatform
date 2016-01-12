@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Sdk.Environment.Hosting;
+﻿using InfinniPlatform.Core.Hosting;
 
 namespace InfinniPlatform.Core.Factories
 {

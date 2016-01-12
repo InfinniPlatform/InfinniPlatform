@@ -2,7 +2,7 @@
 
 using InfinniPlatform.FastReport.Serialization;
 using InfinniPlatform.FastReport.Templates.Reports;
-using InfinniPlatform.Sdk.Environment.Binary;
+using InfinniPlatform.Sdk.BlobStorage;
 
 namespace InfinniPlatform.Reporting.Services
 {

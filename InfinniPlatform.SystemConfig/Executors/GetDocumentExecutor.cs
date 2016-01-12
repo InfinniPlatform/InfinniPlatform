@@ -3,10 +3,9 @@ using System.Collections.Generic;
 
 using InfinniPlatform.Core.ContextComponents;
 using InfinniPlatform.Core.Index.SearchOptions;
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Core.SearchOptions.Builders;
-using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Environment.Metadata;
 using InfinniPlatform.SystemConfig.Utils;
 
 namespace InfinniPlatform.SystemConfig.Executors

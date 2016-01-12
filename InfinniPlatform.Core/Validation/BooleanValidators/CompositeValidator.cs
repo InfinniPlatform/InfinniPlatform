@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.Sdk.Environment.Validations;
-
 namespace InfinniPlatform.Core.Validation.BooleanValidators
 {
     /// <summary>

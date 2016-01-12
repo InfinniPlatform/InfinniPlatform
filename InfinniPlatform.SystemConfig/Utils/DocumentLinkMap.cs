@@ -6,8 +6,6 @@ using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.RestApi.CommonApi;
 using InfinniPlatform.Core.SearchOptions.Builders;
-using InfinniPlatform.Hosting;
-using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.IoC;
 

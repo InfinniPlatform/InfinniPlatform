@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Environment.Binary;
+using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Sdk.BlobStorage;
 using InfinniPlatform.Sdk.Environment.Index;
-using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.SystemConfig.Metadata
 {

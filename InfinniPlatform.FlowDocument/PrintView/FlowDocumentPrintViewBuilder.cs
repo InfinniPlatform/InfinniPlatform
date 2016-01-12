@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Core.PrintView;
 using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.PrintView;
 
 namespace InfinniPlatform.FlowDocument.PrintView
 {

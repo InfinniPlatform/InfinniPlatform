@@ -1,5 +1,4 @@
-﻿using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Environment.Log;
+﻿using InfinniPlatform.Sdk.Logging;
 
 namespace InfinniPlatform.Core.ContextComponents
 {

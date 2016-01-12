@@ -4,9 +4,9 @@ using System.Linq;
 
 using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Core.SearchOptions.Builders;
+using InfinniPlatform.Sdk.BlobStorage;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Binary;
 
 namespace InfinniPlatform.SystemConfig.ActionUnits.Binary
 {

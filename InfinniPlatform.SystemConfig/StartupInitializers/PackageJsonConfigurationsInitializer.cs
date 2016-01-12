@@ -6,7 +6,7 @@ using System.Linq;
 using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Settings;
+using InfinniPlatform.Sdk.Settings;
 using InfinniPlatform.WebApi.Factories;
 
 namespace InfinniPlatform.SystemConfig.StartupInitializers

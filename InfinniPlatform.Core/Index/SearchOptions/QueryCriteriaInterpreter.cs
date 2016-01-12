@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+using InfinniPlatform.Core.Validation;
 using InfinniPlatform.Core.Validation.BooleanValidators;
 using InfinniPlatform.Core.Validation.ObjectValidators;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
-using InfinniPlatform.Sdk.Environment.Validations;
 
 namespace InfinniPlatform.Core.Index.SearchOptions
 {

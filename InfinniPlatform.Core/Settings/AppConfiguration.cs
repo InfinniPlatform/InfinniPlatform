@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-using InfinniPlatform.Sdk.Environment.Settings;
+using InfinniPlatform.Sdk.Settings;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

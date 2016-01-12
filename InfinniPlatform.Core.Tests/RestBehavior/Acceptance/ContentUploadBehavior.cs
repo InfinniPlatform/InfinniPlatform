@@ -5,8 +5,8 @@ using System.Text;
 
 using InfinniPlatform.Core.Tests.Properties;
 using InfinniPlatform.NodeServiceHost;
-using InfinniPlatform.Sdk.Api;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.RestApi;
 
 using NUnit.Framework;
 

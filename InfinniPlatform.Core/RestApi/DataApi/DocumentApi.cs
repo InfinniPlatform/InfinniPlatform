@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using InfinniPlatform.Core.SearchOptions.Converters;
 using InfinniPlatform.Sdk;
-using InfinniPlatform.Sdk.ApiContracts;
+using InfinniPlatform.Sdk.RestApi;
 
 namespace InfinniPlatform.Core.RestApi.DataApi
 {

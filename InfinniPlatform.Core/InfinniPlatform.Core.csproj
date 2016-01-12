@@ -56,11 +56,28 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Web" />
     <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientNotification\IWebClientNotificationService.cs" />
     <Compile Include="Compression\GZipDataCompressor.cs" />
     <Compile Include="Compression\IDataCompressor.cs" />
+    <Compile Include="Hosting\ContextTypeKind.cs" />
+    <Compile Include="Hosting\ExtensionPointValue.cs" />
+    <Compile Include="Hosting\HttpResultHandlerType.cs" />
+    <Compile Include="Hosting\IExtensionPointHandler.cs" />
+    <Compile Include="Hosting\IExtensionPointHandlerConfig.cs" />
+    <Compile Include="Hosting\IExtensionPointHandlerInstance.cs" />
+    <Compile Include="Hosting\IQueryHandler.cs" />
+    <Compile Include="Hosting\IServiceRegistration.cs" />
+    <Compile Include="Hosting\IServiceRegistrationContainer.cs" />
+    <Compile Include="Hosting\IServiceTemplate.cs" />
+    <Compile Include="Hosting\IServiceTemplateConfiguration.cs" />
+    <Compile Include="Hosting\VerbType.cs" />
+    <Compile Include="Metadata\IConfigurationObject.cs" />
+    <Compile Include="Metadata\IConfigurationObjectBuilder.cs" />
+    <Compile Include="Metadata\IMetadataComponent.cs" />
+    <Compile Include="Metadata\IMetadataConfigurationProvider.cs" />
     <Compile Include="ContextComponents\InprocessDocumentComponent.cs" />
     <Compile Include="ContextComponents\LogComponent.cs" />
     <Compile Include="ContextComponents\MetadataComponent.cs" />
@@ -108,6 +125,8 @@
     <Compile Include="MessageQueue\Integration\IntegrationBusMessage.cs" />
     <Compile Include="MessageQueue\Integration\IntegrationBusSubscription.cs" />
     <Compile Include="Metadata\DataType.cs" />
+    <Compile Include="Metadata\IMetadataConfiguration.cs" />
+    <Compile Include="Metadata\IModule.cs" />
     <Compile Include="Metadata\MetadataType.cs" />
     <Compile Include="Metadata\Validation\IMetadataSchemaValidator.cs" />
     <Compile Include="Metadata\Validation\IMetadataSchemaValidatorFactory.cs" />
@@ -119,6 +138,8 @@
     <Compile Include="Hosting\IModuleInstaller.cs" />
     <Compile Include="Hosting\IRequestHandlerInstaller.cs" />
     <Compile Include="PrintView\IPrintViewBuilder.cs" />
+    <Compile Include="Registers\RegisterConstants.cs" />
+    <Compile Include="Registers\RegisterEntryType.cs" />
     <Compile Include="Registers\RegisterPeriod.cs" />
     <Compile Include="Registers\RegisterPropertyType.cs" />
     <Compile Include="Registers\RegisterType.cs" />
@@ -145,7 +166,9 @@
     <Compile Include="Hosting\LocalQueryBuilder.cs" />
     <Compile Include="Hosting\RestQueryResponse.cs" />
     <Compile Include="Hosting\TargetDelegate.cs" />
+    <Compile Include="Runtime\IScriptConfiguration.cs" />
     <Compile Include="Runtime\IScriptMetadataProvider.cs" />
+    <Compile Include="Runtime\IScriptProcessor.cs" />
     <Compile Include="Runtime\ScriptMetadata.cs" />
     <Compile Include="Extensions\CommonExtensions.cs" />
     <Compile Include="Schema\DataSchema.cs" />
@@ -180,6 +203,8 @@
     <Compile Include="Serialization\KnownTypesContainer.cs" />
     <Compile Include="Serialization\KnownTypesJsonConverter.cs" />
     <Compile Include="Settings\AppConfiguration.cs" />
+    <Compile Include="Settings\AppSettings.cs" />
+    <Compile Include="Settings\ConnectionStrings.cs" />
     <Compile Include="Sql\ISqlQueryExecutor.cs" />
     <Compile Include="Sql\SqlQueryObject.cs" />
     <Compile Include="Factories\IMessageQueueFactory.cs" />
@@ -226,6 +251,8 @@
     <Compile Include="Validation\CollectionValidators\AnyCollectionValidator.cs" />
     <Compile Include="Validation\CollectionValidators\ContainsCollectionValidator.cs" />
     <Compile Include="Validation\CollectionValidators\NullOrEmptyCollectionValidator.cs" />
+    <Compile Include="Validation\IValidationOperator.cs" />
+    <Compile Include="Validation\IValidationUnitBuilder.cs" />
     <Compile Include="Validation\ObjectValidators\AbsoluteUriValidator.cs" />
     <Compile Include="Validation\ObjectValidators\ContainsValidator.cs" />
     <Compile Include="Validation\ObjectValidators\DefaultValueValidator.cs" />
@@ -258,6 +285,7 @@
     <Compile Include="Validation\ValidationBuilders\ReflectionExtensions.cs" />
     <Compile Include="Validation\ValidationBuilders\ValidationBuilder.cs" />
     <Compile Include="Validation\ValidationExtensions.cs" />
+    <Compile Include="Validation\ValidationResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

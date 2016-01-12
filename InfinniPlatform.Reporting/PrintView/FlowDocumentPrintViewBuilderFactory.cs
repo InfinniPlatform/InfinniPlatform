@@ -2,7 +2,7 @@
 using InfinniPlatform.Core.PrintView;
 using InfinniPlatform.FlowDocument;
 using InfinniPlatform.FlowDocument.PrintView;
-using InfinniPlatform.Sdk.Environment.Settings;
+using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.Reporting.PrintView
 {

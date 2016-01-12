@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using InfinniPlatform.Sdk.Api;
+
+using InfinniPlatform.Sdk.RestApi;
 using InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Factories;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Controls

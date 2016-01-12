@@ -3,7 +3,7 @@
 using InfinniPlatform.Authentication.DataProtectors;
 using InfinniPlatform.Authentication.Middleware;
 using InfinniPlatform.Owin.Modules;
-using InfinniPlatform.Sdk.Environment.Settings;
+using InfinniPlatform.Sdk.Settings;
 
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security.Cookies;

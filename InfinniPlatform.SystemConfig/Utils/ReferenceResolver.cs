@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.SystemConfig.Utils

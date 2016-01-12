@@ -3,8 +3,7 @@ using System.Collections.Generic;
 
 using InfinniPlatform.Core.Runtime;
 using InfinniPlatform.Runtime.Properties;
-using InfinniPlatform.Sdk.Environment.Log;
-using InfinniPlatform.Sdk.Environment.Scripts;
+using InfinniPlatform.Sdk.Logging;
 
 namespace InfinniPlatform.Runtime.Implementation
 {

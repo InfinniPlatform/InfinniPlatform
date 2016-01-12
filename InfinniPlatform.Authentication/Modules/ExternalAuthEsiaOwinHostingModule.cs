@@ -1,6 +1,6 @@
 ﻿using InfinniPlatform.Esia.Middleware;
 using InfinniPlatform.Owin.Modules;
-using InfinniPlatform.Sdk.Environment.Settings;
+using InfinniPlatform.Sdk.Settings;
 
 using Owin;
 

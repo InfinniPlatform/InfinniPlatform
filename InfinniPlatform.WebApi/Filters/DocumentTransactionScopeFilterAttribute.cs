@@ -8,7 +8,7 @@ using System.Web.Http.Filters;
 using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Log;
+using InfinniPlatform.Sdk.Logging;
 
 namespace InfinniPlatform.WebApi.Filters
 {

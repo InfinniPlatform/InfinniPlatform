@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-using InfinniPlatform.Sdk.ApiContracts;
+using InfinniPlatform.Sdk.RestApi;
 
 namespace InfinniPlatform.Core.RestApi.Public
 {

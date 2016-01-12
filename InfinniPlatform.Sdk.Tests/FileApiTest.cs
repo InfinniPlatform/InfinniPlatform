@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.RestApi;
 using InfinniPlatform.Sdk.Tests.Properties;
 
 using NUnit.Framework;

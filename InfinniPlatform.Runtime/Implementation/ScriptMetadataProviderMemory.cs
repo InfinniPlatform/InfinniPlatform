@@ -33,7 +33,7 @@ namespace InfinniPlatform.Runtime.Implementation
         /// <param name="scriptMetadata">Метаданные скрипта</param>
         public void SetScriptMetadata(ScriptMetadata scriptMetadata)
         {
-            var scriptIdentifier = scriptMetadata.Identifier;
+            var scriptIdentifier = scriptMetadata.Id;
 
             _scriptMetadataList[scriptIdentifier] = scriptMetadata;
         }

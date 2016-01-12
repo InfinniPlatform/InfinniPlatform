@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Sdk.Environment.Log;
+using InfinniPlatform.Sdk.Logging;
 
 using log4net;
 
-using ILog = InfinniPlatform.Sdk.Environment.Log.ILog;
+using ILog = InfinniPlatform.Sdk.Logging.ILog;
 using ILog4NetLog = log4net.ILog;
 
 namespace InfinniPlatform.Core.Logging
 {
     /// <summary>
-    /// Сервис <see cref="Sdk.Environment.Log.ILog" /> на базе log4net.
+    /// Сервис <see cref="ILog" /> на базе log4net.
     /// </summary>
-    public sealed class Log4NetLog : ILog
+    public sealed class Log4NetLog : Sdk.Logging.ILog
     {
         /// <summary>
         /// Конструктор.

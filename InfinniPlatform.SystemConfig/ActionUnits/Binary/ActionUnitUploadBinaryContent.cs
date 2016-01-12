@@ -1,9 +1,9 @@
 ﻿using System.IO;
 
 using InfinniPlatform.Core.RestApi.DataApi;
+using InfinniPlatform.Sdk.BlobStorage;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Binary;
 
 namespace InfinniPlatform.SystemConfig.ActionUnits.Binary
 {

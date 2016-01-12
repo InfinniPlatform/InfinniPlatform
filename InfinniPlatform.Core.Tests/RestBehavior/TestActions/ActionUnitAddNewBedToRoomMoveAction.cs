@@ -1,9 +1,9 @@
 ﻿using System;
 
+using InfinniPlatform.Core.Registers;
 using InfinniPlatform.Core.Tests.RestBehavior.Acceptance;
-using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
-using InfinniPlatform.Sdk.Environment.Register;
+using InfinniPlatform.Sdk.Registers;
 
 namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
 {

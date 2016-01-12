@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Sdk.Extensions;
+﻿using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Core.Validation.ObjectValidators
 {

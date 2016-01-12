@@ -1,6 +1,4 @@
-﻿using InfinniPlatform.Sdk.Environment.Validations;
-
-namespace InfinniPlatform.Core.Validation.BooleanValidators
+﻿namespace InfinniPlatform.Core.Validation.BooleanValidators
 {
     /// <summary>
     ///     Объект не должен удовлетворять заданному условию.

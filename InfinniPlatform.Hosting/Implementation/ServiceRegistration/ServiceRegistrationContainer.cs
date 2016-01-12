@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Hosting.Implementation.ExtensionPointHandling;
 using InfinniPlatform.Sdk.Environment;
-using InfinniPlatform.Sdk.Environment.Hosting;
 
 namespace InfinniPlatform.Hosting.Implementation.ServiceRegistration
 {

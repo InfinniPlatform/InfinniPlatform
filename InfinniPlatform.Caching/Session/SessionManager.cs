@@ -4,7 +4,7 @@ using System.Threading;
 
 using InfinniPlatform.Caching.Properties;
 using InfinniPlatform.Core.Security;
-using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Sdk.Session;
 
 namespace InfinniPlatform.Caching.Session
 {

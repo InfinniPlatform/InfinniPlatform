@@ -1,9 +1,7 @@
 ﻿using InfinniPlatform.Core.ContextComponents;
 using InfinniPlatform.Core.Hosting;
-using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Environment;
-using InfinniPlatform.Sdk.Environment.Metadata;
-using InfinniPlatform.Sdk.Environment.Scripts;
+using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Core.Runtime;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.SystemConfig.Metadata;
 using InfinniPlatform.SystemConfig.RequestHandlers;

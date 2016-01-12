@@ -2,110 +2,76 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Core.ContextTypes;
+using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Core.Logging;
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.RestApi.Auth;
+using InfinniPlatform.Core.Runtime;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Hosting;
 using InfinniPlatform.Sdk.Environment.Index;
-using InfinniPlatform.Sdk.Environment.Metadata;
-using InfinniPlatform.Sdk.Environment.Scripts;
-using InfinniPlatform.Sdk.Environment.Worklow;
 using InfinniPlatform.SystemConfig.StateMachine;
 
 namespace InfinniPlatform.SystemConfig.Metadata
 {
     /// <summary>
-    ///     Метаданные конфигурации
+    /// Метаданные конфигурации
     /// </summary>
     public class MetadataConfiguration : IMetadataConfiguration
     {
-        private readonly Dictionary<string, MetadataContainer> _documents = new Dictionary<string, MetadataContainer>(StringComparer.OrdinalIgnoreCase);
-
-        /// <summary>
-        ///     Является ли конфигурация встроенной в код C#
-        /// </summary>
-        private readonly bool _isEmbeddedConfiguration;
-
-        private readonly List<dynamic> _menuList = new List<dynamic>();
-        private readonly List<dynamic> _registers = new List<dynamic>();
-        private readonly IScriptConfiguration _scriptConfiguration;
-        private readonly IServiceRegistrationContainer _serviceRegistrationContainer;
-        private readonly IServiceTemplateConfiguration _serviceTemplateConfiguration;
-
         public MetadataConfiguration(
             IScriptConfiguration scriptConfiguration,
             IServiceRegistrationContainer serviceRegistrationContainer,
             IServiceTemplateConfiguration serviceTemplateConfiguration,
             bool isEmbeddedConfiguration)
         {
-            _scriptConfiguration = scriptConfiguration;
+            ScriptConfiguration = scriptConfiguration;
 
-            _serviceRegistrationContainer = serviceRegistrationContainer;
+            ServiceRegistrationContainer = serviceRegistrationContainer;
 
-            _serviceTemplateConfiguration = serviceTemplateConfiguration;
+            ServiceTemplateConfiguration = serviceTemplateConfiguration;
 
             _isEmbeddedConfiguration = isEmbeddedConfiguration;
         }
 
-        private MetadataContainer RegisterContainer(string documentId)
-        {
-            MetadataContainer metadataContainer;
-
-            if (!_documents.TryGetValue(documentId, out metadataContainer))
-            {
-                metadataContainer = new MetadataContainer(documentId) { ContainerId = documentId };
-
-                _documents[documentId] = metadataContainer;
-            }
-
-            return metadataContainer;
-        }
-
-        private MetadataContainer GetMetadataContainer(string documentId)
-        {
-            return RegisterContainer(documentId);
-        }
-
+        private readonly Dictionary<string, MetadataContainer> _documents = new Dictionary<string, MetadataContainer>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
-        ///     Идентификатор конфигурации
+        /// Является ли конфигурация встроенной в код C#
+        /// </summary>
+        private readonly bool _isEmbeddedConfiguration;
+
+        private readonly List<dynamic> _menuList = new List<dynamic>();
+        private readonly List<dynamic> _registers = new List<dynamic>();
+
+        /// <summary>
+        /// Идентификатор конфигурации
         /// </summary>
         public string ConfigurationId { get; set; }
 
         /// <summary>
-        ///     Конфигурация прикладных скриптов
+        /// Конфигурация прикладных скриптов
         /// </summary>
-        public IScriptConfiguration ScriptConfiguration
-        {
-            get { return _scriptConfiguration; }
-        }
+        public IScriptConfiguration ScriptConfiguration { get; }
 
         /// <summary>
-        ///     Контейнер регистрации сервисов конфигурации
+        /// Контейнер регистрации сервисов конфигурации
         /// </summary>
-        public IServiceRegistrationContainer ServiceRegistrationContainer
-        {
-            get { return _serviceRegistrationContainer; }
-        }
+        public IServiceRegistrationContainer ServiceRegistrationContainer { get; }
 
         /// <summary>
-        ///     Контейнер шаблонов обработчиков для модуля
+        /// Контейнер шаблонов обработчиков для модуля
         /// </summary>
-        public IServiceTemplateConfiguration ServiceTemplateConfiguration
-        {
-            get { return _serviceTemplateConfiguration; }
-        }
+        public IServiceTemplateConfiguration ServiceTemplateConfiguration { get; }
 
         /// <summary>
-        ///     Актуальная версия конфигурации метаданных
+        /// Актуальная версия конфигурации метаданных
         /// </summary>
         public string Version { get; set; }
 
         /// <summary>
-        ///     Признак того, что конфигурация является встроенной в код C# (не хранится в JSON)
-        ///     Например, конфигурация "Справочники НСИ" является встроенной в код.
-        ///     Это важно для некоторых операций, в частности операций доступа к метаданным конфигурации
+        /// Признак того, что конфигурация является встроенной в код C# (не хранится в JSON)
+        /// Например, конфигурация "Справочники НСИ" является встроенной в код.
+        /// Это важно для некоторых операций, в частности операций доступа к метаданным конфигурации
         /// </summary>
         public bool IsEmbeddedConfiguration
         {
@@ -113,7 +79,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Список индексов метаданных
+        /// Список индексов метаданных
         /// </summary>
         public IEnumerable<string> Documents
         {
@@ -121,7 +87,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Выполнить указанный поток работы для указанных метаданных
+        /// Выполнить указанный поток работы для указанных метаданных
         /// </summary>
         /// <param name="documentId">Метаданные контейнера</param>
         /// <param name="workflowId">Идентификатор потока</param>
@@ -134,19 +100,18 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Зарегистрировать поток выполнения
+        /// Зарегистрировать поток выполнения
         /// </summary>
         /// <param name="documentId">Идентификатор контейнера метаданных</param>
         /// <param name="workflowId">Идентификатор потока работы</param>
         /// <param name="actionConfiguration">Конфигурация выполняемых действий</param>
-        public void RegisterWorkflow(string documentId, string workflowId,
-                                     Action<IStateWorkflowStartingPointConfig> actionConfiguration)
+        public void RegisterWorkflow(string documentId, string workflowId, object actionConfiguration)
         {
-            GetMetadataContainer(documentId).RegisterWorkflow(workflowId, actionConfiguration);
+            GetMetadataContainer(documentId).RegisterWorkflow(workflowId, (Action<IStateWorkflowStartingPointConfig>)actionConfiguration);
         }
 
         /// <summary>
-        ///     Зарегистрировать список меню
+        /// Зарегистрировать список меню
         /// </summary>
         /// <param name="menuList">список меню</param>
         public void RegisterMenu(IEnumerable<dynamic> menuList)
@@ -165,10 +130,10 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Возвращает тип документа для индекса
-        ///     По умолчанию - пустая строка, в этом случае для
-        ///     документа не создается собственный тип и найти его можно
-        ///     только используя поиск по всему индексу
+        /// Возвращает тип документа для индекса
+        /// По умолчанию - пустая строка, в этом случае для
+        /// документа не создается собственный тип и найти его можно
+        /// только используя поиск по всему индексу
         /// </summary>
         /// <param name="documentId">Идентификатор объекта метаданных</param>
         /// <returns>Тип для данных индекса</returns>
@@ -179,10 +144,10 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Установить тип документа для индекса
-        ///     По умолчанию - пустая строка, в этом случае для
-        ///     документа не создается собственный тип и найти его можно
-        ///     только используя поиск по всему индексу
+        /// Установить тип документа для индекса
+        /// По умолчанию - пустая строка, в этом случае для
+        /// документа не создается собственный тип и найти его можно
+        /// только используя поиск по всему индексу
         /// </summary>
         /// <param name="documentId">Идентификатор объекта метаданных</param>
         /// <param name="indexType">Наименование создаваемого индекса</param>
@@ -192,7 +157,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Установить схему данных для указанного документа
+        /// Установить схему данных для указанного документа
         /// </summary>
         /// <param name="documentId">Идентификатор объекта метаданных</param>
         /// <param name="schema">Модель данных документа</param>
@@ -202,7 +167,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Получить схему данных для указанного документа
+        /// Получить схему данных для указанного документа
         /// </summary>
         /// <param name="documentId">Идентификатор объекта метаданных</param>
         /// <returns>Модель данных</returns>
@@ -212,7 +177,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Зарегистрировать объект метаданных бизнес-процесса
+        /// Зарегистрировать объект метаданных бизнес-процесса
         /// </summary>
         /// <param name="documentId"></param>
         /// <param name="process"></param>
@@ -223,193 +188,8 @@ namespace InfinniPlatform.SystemConfig.Metadata
             LoadProcess(documentId, process);
         }
 
-        private void LoadProcess(string documentId, dynamic processFull)
-        {
-            var context = new Dictionary<string, object>
-                          {
-                              { "configurationId", ConfigurationId },
-                              { "documentId", documentId },
-                              { "processFullName", processFull.Name },
-                          };
-
-            try
-            {
-                Action<IStateWorkflowStartingPointConfig> workflowConfig = null;
-                if (processFull.Transitions == null || processFull.Transitions.Count == 0)
-                {
-                    Logger.Log.Error("No transition defined for the process.", context);
-
-                    return;
-                }
-
-                if (processFull.Type == null)
-                {
-                    processFull.Type = WorkflowTypes.WithoutState;
-                }
-
-                if ((WorkflowTypes)processFull.Type == WorkflowTypes.WithoutState)
-                {
-                    var transition = processFull.Transitions[0];
-                    Action<IStateTransitionConfig> configTransition = ws =>
-                                                                      {
-                                                                          if (transition.ValidationPointError != null)
-                                                                          {
-                                                                              ws.WithValidationError(() => ScriptConfiguration.GetValidator(transition.ValidationPointError.ScenarioId));
-                                                                          }
-                                                                          if (transition.ValidationPointWarning != null)
-                                                                          {
-                                                                              ws.WithValidationWarning(() => ScriptConfiguration.GetValidator(transition.ValidationPointWarning.ScenarioId));
-                                                                          }
-                                                                          if (transition.DeletingDocumentValidationPoint != null)
-                                                                          {
-                                                                              ws.WithValidationError(() => ScriptConfiguration.GetValidator(transition.DeletingDocumentValidationPoint.ScenarioId));
-                                                                          }
-                                                                          //TODO: Необходимо переработать механизм подключения валидаций для бизнес-процессов без состояния
-                                                                          //if (transition.ValidationRuleError != null)
-                                                                          //{
-                                                                          //	ws.WithValidationError(() => ValidationExtensions.CreateValidatorFromConfigValidator(transition.ValidationRuleError.ValidationOperator));
-                                                                          //}
-                                                                          //if (transition.ValidationRuleWarning != null)
-                                                                          //{
-                                                                          //	ws.WithValidationWarning(() => ValidationExtensions.CreateValidatorFromConfigValidator(transition.ValidationRuleWarning.ValidationOperator));
-                                                                          //}
-                                                                          if (transition.ActionPoint != null)
-                                                                          {
-                                                                              ws.WithAction(() => ScriptConfiguration.GetAction(transition.ActionPoint.ScenarioId));
-                                                                          }
-                                                                          if (transition.SuccessPoint != null)
-                                                                          {
-                                                                              ws.OnSuccess(() => ScriptConfiguration.GetAction(transition.SuccessPoint.ScenarioId));
-                                                                          }
-                                                                          if (transition.FailPoint != null)
-                                                                          {
-                                                                              ws.OnFail(() => ScriptConfiguration.GetAction(transition.FailPoint.ScenarioId));
-                                                                          }
-                                                                          if (transition.DeletePoint != null)
-                                                                          {
-                                                                              ws.OnDelete(() => ScriptConfiguration.GetAction(transition.DeletePoint.ScenarioId));
-                                                                          }
-                                                                          if (transition.AuthorizationPoint != null)
-                                                                          {
-                                                                              ws.WithSimpleAuthorization(
-                                                                                  () => ScriptConfiguration.GetAction(transition.AuthorizationPoint.ScenarioId));
-                                                                          }
-                                                                          if (transition.ComplexAuthorizationPoint != null)
-                                                                          {
-                                                                              ws.WithComplexAuthorization(
-                                                                                  () => ScriptConfiguration.GetAction(transition.ComplexAuthorizationPoint.ScenarioId));
-                                                                          }
-                                                                          if (transition.CredentialsType == AuthorizationStorageExtensions.CustomCredentials)
-                                                                          {
-                                                                              ws.OnCredentials(() => ScriptConfiguration.GetAction(transition.CredentialsPoint.ScenarioId));
-                                                                          }
-                                                                          if (transition.CredentialsType == AuthorizationStorageExtensions.AnonimousUserCredentials)
-                                                                          {
-                                                                              ws.OnCredentials(() => ScriptConfiguration.GetAction("SetAnonimousCredentials"));
-                                                                          }
-                                                                      };
-
-
-                    workflowConfig = wf => wf.FlowWithoutState(wc => wc.Move(configTransition));
-                }
-
-                if ((WorkflowTypes)processFull.Type == WorkflowTypes.WithState)
-                {
-                    if (processFull.Transitions.Count == 0)
-                    {
-                        Logger.Log.Error("No transition found for process.", new Dictionary<string, object>
-                                                                             {
-                                                                                 { "processFullName", processFull.Name },
-                                                                             });
-                    }
-                    var initialStateFrom = processFull.Transitions[0].StateFrom != null ? processFull.Transitions[0].StateFrom.Name.ToString() : null;
-
-                    dynamic process1 = processFull;
-                    Action<IStateWorkflowConfig> configWorkFlow = wc =>
-                                                                  {
-                                                                      foreach (var transition in DynamicWrapperExtensions.ToEnumerable(process1.Transitions))
-                                                                      {
-                                                                          dynamic transition1 = transition;
-                                                                          Action<IStateTransitionConfig> configTransition = ws =>
-                                                                                                                            {
-                                                                                                                                if (transition1.ValidationPointError != null)
-                                                                                                                                {
-                                                                                                                                    ws.WithValidationError(() => ScriptConfiguration.GetValidator(transition1.ValidationPointError.ScenarioId));
-                                                                                                                                }
-                                                                                                                                if (transition1.ValidationPointWarning != null)
-                                                                                                                                {
-                                                                                                                                    ws.WithValidationWarning(
-                                                                                                                                        () => ScriptConfiguration.GetValidator(transition1.ValidationPointWarning.ScenarioId));
-                                                                                                                                }
-                                                                                                                                if (transition1.DeletingDocumentValidationPoint != null)
-                                                                                                                                {
-                                                                                                                                    ws.WithValidationError(
-                                                                                                                                        () => ScriptConfiguration.GetValidator(transition1.DeletingDocumentValidationPoint.ScenarioId));
-                                                                                                                                }
-
-                                                                                                                                //TODO: Необходимо переработать механизм подключения валидаций для кастомных бизнес-процессов
-                                                                                                                                //if (transition1.ValidationRuleError != null)
-                                                                                                                                //{
-                                                                                                                                //	ws.WithValidationError(() => ValidationExtensions.CreateValidatorFromConfigValidator(transition1.ValidationRuleError.ValidationOperator));
-                                                                                                                                //}
-                                                                                                                                //if (transition1.ValidationRuleWarning != null)
-                                                                                                                                //{
-                                                                                                                                //	ws.WithValidationWarning(() => ValidationExtensions.CreateValidatorFromConfigValidator(transition1.ValidationRuleWarning.ValidationOperator));
-                                                                                                                                //}
-
-                                                                                                                                if (transition1.ActionPoint != null)
-                                                                                                                                {
-                                                                                                                                    ws.WithAction(() => ScriptConfiguration.GetAction(transition1.ActionPoint.ScenarioId));
-                                                                                                                                }
-                                                                                                                                if (transition1.SuccessPoint != null)
-                                                                                                                                {
-                                                                                                                                    ws.OnSuccess(() => ScriptConfiguration.GetAction(transition1.SuccessPoint.ScenarioId));
-                                                                                                                                }
-                                                                                                                                if (transition1.FailPoint != null)
-                                                                                                                                {
-                                                                                                                                    ws.OnFail(() => ScriptConfiguration.GetAction(transition1.FailPoint.ScenarioId));
-                                                                                                                                }
-                                                                                                                                if (transition1.DeletePoint != null)
-                                                                                                                                {
-                                                                                                                                    ws.OnDelete(() => ScriptConfiguration.GetAction(transition1.DeletePoint.ScenarioId));
-                                                                                                                                }
-                                                                                                                                if (transition1.AuthorizationPoint != null)
-                                                                                                                                {
-                                                                                                                                    ws.WithSimpleAuthorization(
-                                                                                                                                        () => ScriptConfiguration.GetAction(transition1.AuthorizationPoint.ScenarioId));
-                                                                                                                                }
-                                                                                                                                if (transition1.ComplexAuthorizationPoint != null)
-                                                                                                                                {
-                                                                                                                                    ws.WithComplexAuthorization(
-                                                                                                                                        () => ScriptConfiguration.GetAction(transition1.ComplexAuthorizationPoint.ScenarioId));
-                                                                                                                                }
-                                                                                                                                if (transition1.CredentialsType == AuthorizationStorageExtensions.CustomCredentials)
-                                                                                                                                {
-                                                                                                                                    ws.OnCredentials(() => ScriptConfiguration.GetAction(transition.CredentialsPoint.ScenarioId));
-                                                                                                                                }
-                                                                                                                                if (transition1.CredentialsType == AuthorizationStorageExtensions.AnonimousUserCredentials)
-                                                                                                                                {
-                                                                                                                                    ws.OnCredentials(() => ScriptConfiguration.GetAction("SetAnonimousCredentials"));
-                                                                                                                                }
-                                                                                                                            };
-                                                                          wc.Move(configTransition);
-                                                                      }
-                                                                  };
-                    workflowConfig = wf => wf.ForState(initialStateFrom, configWorkFlow);
-                }
-
-                RegisterWorkflow(documentId, processFull.Name, workflowConfig);
-
-                Logger.Log.Debug("Item registered.", context);
-            }
-            catch (Exception e)
-            {
-                Logger.Log.Error("Item registration error.", context, e);
-            }
-        }
-
         /// <summary>
-        ///     Регистрация метаданных сервиса
+        /// Регистрация метаданных сервиса
         /// </summary>
         /// <param name="documentId"></param>
         /// <param name="service"></param>
@@ -419,7 +199,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Регистрация метаданных сценария
+        /// Регистрация метаданных сценария
         /// </summary>
         /// <param name="documentId"></param>
         /// <param name="scenario"></param>
@@ -429,7 +209,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Регистрация генератора представлений
+        /// Регистрация генератора представлений
         /// </summary>
         /// <param name="documentId">Идентификатор контейнера метаданных</param>
         /// <param name="generator">Метаданные генератора</param>
@@ -439,7 +219,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Регистрация метаданных представления
+        /// Регистрация метаданных представления
         /// </summary>
         /// <param name="documentId">Идентификатор контейнера метаданных</param>
         /// <param name="view">Метаданные генератора</param>
@@ -449,7 +229,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Регистрация метаданных печатного представления.
+        /// Регистрация метаданных печатного представления.
         /// </summary>
         /// <param name="documentId">Идентификатор контейнера метаданных.</param>
         /// <param name="printView">Метаданные печатного представления.</param>
@@ -459,7 +239,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Регистрация метаданных предупреждений валидации
+        /// Регистрация метаданных предупреждений валидации
         /// </summary>
         /// <param name="documentId">Идентификатор контейнера метаданных</param>
         /// <param name="warning">Метаданные генератора</param>
@@ -469,7 +249,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Регистрация метаданных ошибок валидации
+        /// Регистрация метаданных ошибок валидации
         /// </summary>
         /// <param name="documentId">Идентификатор контейнера метаданных</param>
         /// <param name="error">Метаданные генератора</param>
@@ -479,7 +259,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Регистрация метаданных статусов
+        /// Регистрация метаданных статусов
         /// </summary>
         /// <param name="documentId">Идентификатор контейнера метаданных</param>
         /// <param name="status">Метаданные генератора</param>
@@ -489,8 +269,8 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Регистрация регистра (регистр представляет собой особый тип документа, хранящий
-        ///     сведения, которые зачастую являются функциональным отражением состояния объектов)
+        /// Регистрация регистра (регистр представляет собой особый тип документа, хранящий
+        /// сведения, которые зачастую являются функциональным отражением состояния объектов)
         /// </summary>
         public void RegisterRegister(dynamic register)
         {
@@ -498,7 +278,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Удалить объект метаданных бизнес-процесса
+        /// Удалить объект метаданных бизнес-процесса
         /// </summary>
         /// <param name="documentId"></param>
         /// <param name="processName"></param>
@@ -508,7 +288,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Удалить метаданные сервиса
+        /// Удалить метаданные сервиса
         /// </summary>
         /// <param name="documentId"></param>
         /// <param name="serviceName"></param>
@@ -518,7 +298,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Удалить метаданные сценария
+        /// Удалить метаданные сценария
         /// </summary>
         /// <param name="documentId"></param>
         /// <param name="scenarioName"></param>
@@ -528,7 +308,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Удалить генератор представлений
+        /// Удалить генератор представлений
         /// </summary>
         /// <param name="documentId">Идентификатор контейнера метаданных</param>
         /// <param name="generatorName">Метаданные генератора</param>
@@ -538,7 +318,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Удалить метаданные представления
+        /// Удалить метаданные представления
         /// </summary>
         /// <param name="documentId">Идентификатор контейнера метаданных</param>
         /// <param name="viewName">Метаданные генератора</param>
@@ -548,7 +328,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Удалить метаданные печатного представления.
+        /// Удалить метаданные печатного представления.
         /// </summary>
         /// <param name="documentId">Идентификатор контейнера метаданных.</param>
         /// <param name="printViewName">Метаданные печатного представления.</param>
@@ -558,7 +338,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Удалить метаданные предупреждений валидации
+        /// Удалить метаданные предупреждений валидации
         /// </summary>
         /// <param name="documentId">Идентификатор контейнера метаданных</param>
         /// <param name="warningName">Метаданные генератора</param>
@@ -568,7 +348,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Удалить метаданные ошибок валидации
+        /// Удалить метаданные ошибок валидации
         /// </summary>
         /// <param name="documentId">Идентификатор контейнера метаданных</param>
         /// <param name="errorName">Метаданные генератора</param>
@@ -578,7 +358,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Удалить метаданные статусов
+        /// Удалить метаданные статусов
         /// </summary>
         /// <param name="documentId">Идентификатор контейнера метаданных</param>
         /// <param name="statusName">Метаданные генератора</param>
@@ -588,8 +368,8 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Удалить регистр (регистр представляет собой особый тип документа, хранящий
-        ///     сведения, которые зачастую являются функциональным отражением состояния объектов)
+        /// Удалить регистр (регистр представляет собой особый тип документа, хранящий
+        /// сведения, которые зачастую являются функциональным отражением состояния объектов)
         /// </summary>
         public void UnregisterRegister(string registerName)
         {
@@ -672,8 +452,8 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Возвращает регистр по имени (регистр представляет собой особый тип документа, хранящий
-        ///     сведения, которые зачастую являются функциональным отражением состояния объектов)
+        /// Возвращает регистр по имени (регистр представляет собой особый тип документа, хранящий
+        /// сведения, которые зачастую являются функциональным отражением состояния объектов)
         /// </summary>
         public dynamic GetRegister(string registerName)
         {
@@ -726,7 +506,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Получить список меню для конфигурации
+        /// Получить список меню для конфигурации
         /// </summary>
         /// <returns>Список меню</returns>
         public IEnumerable<dynamic> GetMenuList()
@@ -736,7 +516,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
 
         //For example: metadataId = "metadata", instanceName = "Save", extensionPointTypeName = "FilterEvents"
         /// <summary>
-        ///     Получить идентификатор точки расширения для указанных метаданных
+        /// Получить идентификатор точки расширения для указанных метаданных
         /// </summary>
         /// <param name="metadataId">Идентификатор метаданных</param>
         /// <param name="actionInstanceName">Идентификатор экземпляра обработчика действия</param>
@@ -764,7 +544,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Получить для указанного контейнера допустимый тип поиска
+        /// Получить для указанного контейнера допустимый тип поиска
         /// </summary>
         /// <param name="documentId">Идентификатор контейнера метаданных</param>
         /// <returns>Возможности поиска по контейнеру</returns>
@@ -774,13 +554,191 @@ namespace InfinniPlatform.SystemConfig.Metadata
         }
 
         /// <summary>
-        ///     Установить доступный тип поиска для провайдера
+        /// Установить доступный тип поиска для провайдера
         /// </summary>
         /// <param name="documentId">Идентификатор контейнера</param>
         /// <param name="searchAbility">Возможности поиска по контейнеру</param>
         public void SetSearchAbilityType(string documentId, SearchAbilityType searchAbility)
         {
             GetMetadataContainer(documentId).UpdateSearchAbilityType(searchAbility);
+        }
+
+        private MetadataContainer RegisterContainer(string documentId)
+        {
+            MetadataContainer metadataContainer;
+
+            if (!_documents.TryGetValue(documentId, out metadataContainer))
+            {
+                metadataContainer = new MetadataContainer(documentId) { ContainerId = documentId };
+
+                _documents[documentId] = metadataContainer;
+            }
+
+            return metadataContainer;
+        }
+
+        private MetadataContainer GetMetadataContainer(string documentId)
+        {
+            return RegisterContainer(documentId);
+        }
+
+        private void LoadProcess(string documentId, dynamic processFull)
+        {
+            var context = new Dictionary<string, object>
+                          {
+                              { "configurationId", ConfigurationId },
+                              { "documentId", documentId },
+                              { "processFullName", processFull.Name }
+                          };
+
+            try
+            {
+                Action<IStateWorkflowStartingPointConfig> workflowConfig = null;
+                if (processFull.Transitions == null || processFull.Transitions.Count == 0)
+                {
+                    Logger.Log.Error("No transition defined for the process.", context);
+
+                    return;
+                }
+
+                if (processFull.Type == null)
+                {
+                    processFull.Type = WorkflowTypes.WithoutState;
+                }
+
+                if ((WorkflowTypes)processFull.Type == WorkflowTypes.WithoutState)
+                {
+                    var transition = processFull.Transitions[0];
+                    Action<IStateTransitionConfig> configTransition = ws =>
+                                                                      {
+                                                                          if (transition.ValidationPointError != null)
+                                                                          {
+                                                                              ws.WithValidationError(() => ScriptConfiguration.GetAction(transition.ValidationPointError.ScenarioId));
+                                                                          }
+                                                                          if (transition.ValidationPointWarning != null)
+                                                                          {
+                                                                              ws.WithValidationWarning(() => ScriptConfiguration.GetAction(transition.ValidationPointWarning.ScenarioId));
+                                                                          }
+                                                                          if (transition.DeletingDocumentValidationPoint != null)
+                                                                          {
+                                                                              ws.WithValidationError(() => ScriptConfiguration.GetAction(transition.DeletingDocumentValidationPoint.ScenarioId));
+                                                                          }
+                                                                          if (transition.ActionPoint != null)
+                                                                          {
+                                                                              ws.WithAction(() => ScriptConfiguration.GetAction(transition.ActionPoint.ScenarioId));
+                                                                          }
+                                                                          if (transition.SuccessPoint != null)
+                                                                          {
+                                                                              ws.OnSuccess(() => ScriptConfiguration.GetAction(transition.SuccessPoint.ScenarioId));
+                                                                          }
+                                                                          if (transition.FailPoint != null)
+                                                                          {
+                                                                              ws.OnFail(() => ScriptConfiguration.GetAction(transition.FailPoint.ScenarioId));
+                                                                          }
+                                                                          if (transition.DeletePoint != null)
+                                                                          {
+                                                                              ws.OnDelete(() => ScriptConfiguration.GetAction(transition.DeletePoint.ScenarioId));
+                                                                          }
+                                                                          if (transition.AuthorizationPoint != null)
+                                                                          {
+                                                                              ws.WithSimpleAuthorization(() => ScriptConfiguration.GetAction(transition.AuthorizationPoint.ScenarioId));
+                                                                          }
+                                                                          if (transition.ComplexAuthorizationPoint != null)
+                                                                          {
+                                                                              ws.WithComplexAuthorization(() => ScriptConfiguration.GetAction(transition.ComplexAuthorizationPoint.ScenarioId));
+                                                                          }
+                                                                          if (transition.CredentialsType == AuthorizationStorageExtensions.CustomCredentials)
+                                                                          {
+                                                                              ws.OnCredentials(() => ScriptConfiguration.GetAction(transition.CredentialsPoint.ScenarioId));
+                                                                          }
+                                                                          if (transition.CredentialsType == AuthorizationStorageExtensions.AnonimousUserCredentials)
+                                                                          {
+                                                                              ws.OnCredentials(() => ScriptConfiguration.GetAction("SetAnonimousCredentials"));
+                                                                          }
+                                                                      };
+
+
+                    workflowConfig = wf => wf.FlowWithoutState(wc => wc.Move(configTransition));
+                }
+
+                if ((WorkflowTypes)processFull.Type == WorkflowTypes.WithState)
+                {
+                    if (processFull.Transitions.Count == 0)
+                    {
+                        Logger.Log.Error("No transition found for process.", new Dictionary<string, object>
+                                                                             {
+                                                                                 { "processFullName", processFull.Name }
+                                                                             });
+                    }
+                    var initialStateFrom = processFull.Transitions[0].StateFrom != null ? processFull.Transitions[0].StateFrom.Name.ToString() : null;
+
+                    dynamic process1 = processFull;
+                    Action<IStateWorkflowConfig> configWorkFlow = wc =>
+                                                                  {
+                                                                      foreach (var transition in DynamicWrapperExtensions.ToEnumerable(process1.Transitions))
+                                                                      {
+                                                                          dynamic transition1 = transition;
+                                                                          Action<IStateTransitionConfig> configTransition = ws =>
+                                                                                                                            {
+                                                                                                                                if (transition1.ValidationPointError != null)
+                                                                                                                                {
+                                                                                                                                    ws.WithValidationError(() => ScriptConfiguration.GetAction(transition1.ValidationPointError.ScenarioId));
+                                                                                                                                }
+                                                                                                                                if (transition1.ValidationPointWarning != null)
+                                                                                                                                {
+                                                                                                                                    ws.WithValidationWarning(() => ScriptConfiguration.GetAction(transition1.ValidationPointWarning.ScenarioId));
+                                                                                                                                }
+                                                                                                                                if (transition1.DeletingDocumentValidationPoint != null)
+                                                                                                                                {
+                                                                                                                                    ws.WithValidationError(() => ScriptConfiguration.GetAction(transition1.DeletingDocumentValidationPoint.ScenarioId));
+                                                                                                                                }
+                                                                                                                                if (transition1.ActionPoint != null)
+                                                                                                                                {
+                                                                                                                                    ws.WithAction(() => ScriptConfiguration.GetAction(transition1.ActionPoint.ScenarioId));
+                                                                                                                                }
+                                                                                                                                if (transition1.SuccessPoint != null)
+                                                                                                                                {
+                                                                                                                                    ws.OnSuccess(() => ScriptConfiguration.GetAction(transition1.SuccessPoint.ScenarioId));
+                                                                                                                                }
+                                                                                                                                if (transition1.FailPoint != null)
+                                                                                                                                {
+                                                                                                                                    ws.OnFail(() => ScriptConfiguration.GetAction(transition1.FailPoint.ScenarioId));
+                                                                                                                                }
+                                                                                                                                if (transition1.DeletePoint != null)
+                                                                                                                                {
+                                                                                                                                    ws.OnDelete(() => ScriptConfiguration.GetAction(transition1.DeletePoint.ScenarioId));
+                                                                                                                                }
+                                                                                                                                if (transition1.AuthorizationPoint != null)
+                                                                                                                                {
+                                                                                                                                    ws.WithSimpleAuthorization(() => ScriptConfiguration.GetAction(transition1.AuthorizationPoint.ScenarioId));
+                                                                                                                                }
+                                                                                                                                if (transition1.ComplexAuthorizationPoint != null)
+                                                                                                                                {
+                                                                                                                                    ws.WithComplexAuthorization(() => ScriptConfiguration.GetAction(transition1.ComplexAuthorizationPoint.ScenarioId));
+                                                                                                                                }
+                                                                                                                                if (transition1.CredentialsType == AuthorizationStorageExtensions.CustomCredentials)
+                                                                                                                                {
+                                                                                                                                    ws.OnCredentials(() => ScriptConfiguration.GetAction(transition.CredentialsPoint.ScenarioId));
+                                                                                                                                }
+                                                                                                                                if (transition1.CredentialsType == AuthorizationStorageExtensions.AnonimousUserCredentials)
+                                                                                                                                {
+                                                                                                                                    ws.OnCredentials(() => ScriptConfiguration.GetAction("SetAnonimousCredentials"));
+                                                                                                                                }
+                                                                                                                            };
+                                                                          wc.Move(configTransition);
+                                                                      }
+                                                                  };
+                    workflowConfig = wf => wf.ForState(initialStateFrom, configWorkFlow);
+                }
+
+                RegisterWorkflow(documentId, processFull.Name, workflowConfig);
+
+                Logger.Log.Debug("Item registered.", context);
+            }
+            catch (Exception e)
+            {
+                Logger.Log.Error("Item registration error.", context, e);
+            }
         }
 
         public void UnregisterDocument(string documentName)

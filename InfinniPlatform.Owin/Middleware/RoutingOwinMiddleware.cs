@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Owin.Formatting;
 using InfinniPlatform.Owin.Properties;
-using InfinniPlatform.Sdk.Environment.Log;
+using InfinniPlatform.Sdk.Logging;
 
 using Microsoft.Owin;
 

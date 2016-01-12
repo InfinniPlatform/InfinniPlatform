@@ -1,6 +1,6 @@
-﻿using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Contracts;
+﻿using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Session;
 
 namespace InfinniPlatform.SystemConfig.ActionUnits.Session
 {

@@ -3,8 +3,8 @@ using InfinniPlatform.ElasticSearch.ElasticProviders;
 using InfinniPlatform.ElasticSearch.Factories;
 using InfinniPlatform.ElasticSearch.Versioning;
 using InfinniPlatform.Sdk.Environment.Index;
-using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.ElasticSearch.IoC
 {

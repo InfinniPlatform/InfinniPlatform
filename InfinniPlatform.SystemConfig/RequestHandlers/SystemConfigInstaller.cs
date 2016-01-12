@@ -1,14 +1,16 @@
-﻿using InfinniPlatform.Hosting.Implementation.ExtensionPointHandling;
+﻿using System;
+
+using InfinniPlatform.Core.Hosting;
+using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Hosting.Implementation.ExtensionPointHandling;
 using InfinniPlatform.Hosting.Implementation.Modules;
-using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Environment.Hosting;
-using InfinniPlatform.Sdk.Environment.Metadata;
 using InfinniPlatform.SystemConfig.ActionUnits.Binary;
 using InfinniPlatform.SystemConfig.ActionUnits.Documents;
 using InfinniPlatform.SystemConfig.ActionUnits.Metadata;
 using InfinniPlatform.SystemConfig.ActionUnits.Migrations;
 using InfinniPlatform.SystemConfig.ActionUnits.Registers;
 using InfinniPlatform.SystemConfig.ActionUnits.Session;
+using InfinniPlatform.SystemConfig.StateMachine;
 
 namespace InfinniPlatform.SystemConfig.RequestHandlers
 {
@@ -72,8 +74,10 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
         {
             var actionUnit = typeof(TActionUnit).Name;
             var actionUnits = metadataConfiguration.ScriptConfiguration;
-            actionUnits.RegisterActionUnitDistributedStorage(action, actionUnit);
-            metadataConfiguration.RegisterWorkflow(configuration, action, f => f.FlowWithoutState(wc => wc.Move(ws => ws.WithAction(() => actionUnits.GetAction(action)))));
+            actionUnits.RegisterAction(action, actionUnit);
+
+            Action<IStateWorkflowStartingPointConfig> actionConfiguration = f => f.FlowWithoutState(wc => wc.Move(ws => ws.WithAction(() => actionUnits.GetAction(action))));
+            metadataConfiguration.RegisterWorkflow(configuration, action, actionConfiguration);
         }
 
 

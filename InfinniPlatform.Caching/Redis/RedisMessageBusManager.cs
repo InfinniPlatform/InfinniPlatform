@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 using InfinniPlatform.Caching.Properties;
-using InfinniPlatform.Sdk.Environment.Log;
+using InfinniPlatform.Sdk.Logging;
 
 namespace InfinniPlatform.Caching.Redis
 {

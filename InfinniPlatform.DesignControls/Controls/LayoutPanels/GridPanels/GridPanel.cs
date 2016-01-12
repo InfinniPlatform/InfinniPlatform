@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraEditors.Controls;
 using InfinniPlatform.Core.Properties;
+using InfinniPlatform.Core.Validation;
 using InfinniPlatform.DesignControls.Controls.Properties;
 using InfinniPlatform.DesignControls.Layout;
 using InfinniPlatform.DesignControls.ObjectInspector;
@@ -13,7 +14,6 @@ using InfinniPlatform.DesignControls.PropertyDesigner;
 using InfinniPlatform.DesignControls.PropertyEditors;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment;
-using InfinniPlatform.Sdk.Environment.Validations;
 
 namespace InfinniPlatform.DesignControls.Controls.LayoutPanels.GridPanels
 {

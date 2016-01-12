@@ -12,9 +12,9 @@ using InfinniPlatform.Authentication.Modules;
 using InfinniPlatform.Core.Security;
 using InfinniPlatform.Owin.Hosting;
 using InfinniPlatform.Owin.Modules;
-using InfinniPlatform.Sdk.Api;
-using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Sdk.RestApi;
+using InfinniPlatform.Sdk.Settings;
 
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin;

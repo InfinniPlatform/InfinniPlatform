@@ -1,8 +1,7 @@
 ﻿using InfinniPlatform.Core.ContextTypes;
 using InfinniPlatform.Core.Hosting;
-using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.Contracts;
-using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.SystemConfig.RequestHandlers
 {

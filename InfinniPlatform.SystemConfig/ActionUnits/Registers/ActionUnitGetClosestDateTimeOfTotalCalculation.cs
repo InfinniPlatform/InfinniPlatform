@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 
+using InfinniPlatform.Core.Registers;
 using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Core.SearchOptions.Builders;
 using InfinniPlatform.Sdk.Contracts;
-using InfinniPlatform.Sdk.Environment.Register;
 
 namespace InfinniPlatform.SystemConfig.ActionUnits.Registers
 {

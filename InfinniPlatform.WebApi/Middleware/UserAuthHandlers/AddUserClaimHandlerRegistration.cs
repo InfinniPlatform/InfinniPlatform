@@ -1,6 +1,6 @@
 ﻿using InfinniPlatform.Owin.Middleware;
-using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Session;
 using InfinniPlatform.WebApi.Middleware.RouteFormatters;
 
 using Microsoft.Owin;

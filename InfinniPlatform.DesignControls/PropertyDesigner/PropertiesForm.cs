@@ -10,9 +10,10 @@ using DevExpress.XtraEditors.ViewInfo;
 using DevExpress.XtraVerticalGrid.Events;
 using DevExpress.XtraVerticalGrid.Rows;
 using DevExpress.XtraVerticalGrid.ViewInfo;
+
+using InfinniPlatform.Core.Validation;
 using InfinniPlatform.DesignControls.PropertyEditors;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Validations;
 
 namespace InfinniPlatform.DesignControls.PropertyDesigner
 {

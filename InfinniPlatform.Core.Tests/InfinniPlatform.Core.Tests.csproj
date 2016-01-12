@@ -86,7 +86,6 @@
     <Compile Include="Events\Builders\Models\DrugCategoryUsing.cs" />
     <Compile Include="Events\Builders\Models\ProductUsingType.cs" />
     <Compile Include="Events\Builders\VidalExtension.cs" />
-    <Compile Include="Events\TestStatus.cs" />
     <Compile Include="Extensions\CommonExtensionsTest.cs" />
     <Compile Include="Extensions\ReflectionExtensionsTest.cs" />
     <Compile Include="IoC\ApiTestsContainerModule.cs" />

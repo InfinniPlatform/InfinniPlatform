@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Owin.Middleware;
-using InfinniPlatform.Sdk.Environment.Log;
+using InfinniPlatform.Sdk.Logging;
 
 using Microsoft.Owin;
 

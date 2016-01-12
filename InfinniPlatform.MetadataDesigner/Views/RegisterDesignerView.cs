@@ -7,7 +7,6 @@ using System.Windows.Forms;
 
 using InfinniPlatform.Core.Registers;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Register;
 
 namespace InfinniPlatform.MetadataDesigner.Views
 {

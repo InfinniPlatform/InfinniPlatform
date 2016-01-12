@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Core.Metadata;
-using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Core.ContextComponents

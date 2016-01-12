@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Reflection;
 
-using InfinniPlatform.Sdk.Environment.Settings;
-
 namespace InfinniPlatform.Sdk.IoC
 {
     public static class ContainerExtensions
@@ -30,11 +28,6 @@ namespace InfinniPlatform.Sdk.IoC
                     builder.RegisterType(type).AsSelf().SingleInstance();
                 }
             }
-        }
-
-        public static void RegisterActionUnits(this IContainerBuilder builder)
-        {
-            
         }
     }
 }

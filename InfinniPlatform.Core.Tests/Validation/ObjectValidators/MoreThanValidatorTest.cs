@@ -1,7 +1,7 @@
 ﻿using System;
 
+using InfinniPlatform.Core.Validation;
 using InfinniPlatform.Core.Validation.ObjectValidators;
-using InfinniPlatform.Sdk.Environment.Validations;
 
 using NUnit.Framework;
 

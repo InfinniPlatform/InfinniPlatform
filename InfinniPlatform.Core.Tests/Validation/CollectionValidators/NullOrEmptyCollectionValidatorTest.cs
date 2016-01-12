@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Core.Validation.CollectionValidators;
-using InfinniPlatform.Sdk.Environment.Validations;
+﻿using InfinniPlatform.Core.Validation;
+using InfinniPlatform.Core.Validation.CollectionValidators;
 
 using NUnit.Framework;
 

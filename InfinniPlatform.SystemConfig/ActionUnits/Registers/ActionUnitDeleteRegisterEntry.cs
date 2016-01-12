@@ -1,8 +1,8 @@
 ﻿using System;
 
+using InfinniPlatform.Core.Registers;
 using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Sdk.Contracts;
-using InfinniPlatform.Sdk.Environment.Register;
 
 namespace InfinniPlatform.SystemConfig.ActionUnits.Registers
 {

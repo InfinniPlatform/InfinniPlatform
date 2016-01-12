@@ -1,11 +1,13 @@
-﻿using log4net;
+﻿using InfinniPlatform.Sdk.Logging;
 
-using ILog = InfinniPlatform.Sdk.Environment.Log.ILog;
+using log4net;
+
+using ILog = InfinniPlatform.Sdk.Logging.ILog;
 
 namespace InfinniPlatform.Core.Logging
 {
     /// <summary>
-    /// Предоставляет статическую точку доступа к <see cref="Sdk.Environment.Log.ILog" />.
+    /// Предоставляет статическую точку доступа к <see cref="ILog" />.
     /// </summary>
     public static class Logger
     {

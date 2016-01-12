@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+
+using InfinniPlatform.Core.Validation;
 using InfinniPlatform.DesignControls.Controls.LayoutPanels.GridPanels;
 using InfinniPlatform.DesignControls.Controls.Properties;
 using InfinniPlatform.DesignControls.Layout;
@@ -10,7 +12,6 @@ using InfinniPlatform.DesignControls.ObjectInspector;
 using InfinniPlatform.DesignControls.PropertyDesigner;
 using InfinniPlatform.DesignControls.PropertyEditors;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Validations;
 
 namespace InfinniPlatform.DesignControls.Controls.DataElements
 {

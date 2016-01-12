@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Dynamic;
 using System.Linq.Expressions;
-using InfinniPlatform.Sdk.Extensions;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -19,12 +19,12 @@ namespace InfinniPlatform.Sdk.Dynamic
     /// можно будет подменить у конкретного экземпляра - наследника прототипа. Другой способ создания наследника прототипа - клонирование
     /// с использованием метода <see cref="Clone"/> с дальнейшей подменой нужных членов.
     /// </remarks>
-    [JsonConverter(typeof (DynamicWrapperJsonConverter))]
+    [JsonConverter(typeof(DynamicWrapperJsonConverter))]
     public class DynamicWrapper : IDynamicMetaObjectProvider, IEnumerable, ICloneable, ICustomTypeDescriptor
     {
         public DynamicWrapper()
         {
-            _isBaseClass = GetType() == typeof (DynamicWrapper);
+            _isBaseClass = GetType() == typeof(DynamicWrapper);
         }
 
         private readonly bool _isBaseClass;
@@ -99,7 +99,7 @@ namespace InfinniPlatform.Sdk.Dynamic
             {
                 if (memberValue is Delegate)
                 {
-                    invokeResult = ((Delegate) memberValue).FastDynamicInvoke(invokeArguments);
+                    invokeResult = ((Delegate)memberValue).FastDynamicInvoke(invokeArguments);
                     success = true;
                 }
             }
@@ -133,16 +133,16 @@ namespace InfinniPlatform.Sdk.Dynamic
         }
 
 
-		/// <summary>
-		/// Удаляет динамические свойства объекта.
-		/// </summary>
-	    public void Clear()
-	    {
-			_properties.Clear();
-	    }
+        /// <summary>
+        /// Удаляет динамические свойства объекта.
+        /// </summary>
+        public void Clear()
+        {
+            _properties.Clear();
+        }
 
 
-	    #region ICloneable
+        #region ICloneable
 
         /// <summary>
         /// Осуществляет клонирование объекта.
@@ -179,7 +179,7 @@ namespace InfinniPlatform.Sdk.Dynamic
                 clones.Add(target, targetClone);
                 clone = targetClone;
 
-                foreach (KeyValuePair<string, object> property in ((DynamicWrapper) target))
+                foreach (KeyValuePair<string, object> property in ((DynamicWrapper)target))
                 {
                     targetClone[property.Key] = CloneObject(property.Value, clones);
                 }
@@ -200,7 +200,7 @@ namespace InfinniPlatform.Sdk.Dynamic
                 clones.Add(target, targetClone);
                 clone = targetClone;
 
-                foreach (var item in ((IEnumerable) target))
+                foreach (var item in ((IEnumerable)target))
                 {
                     var cloneItem = CloneObject(item, clones);
                     targetClone.Add(cloneItem);
@@ -211,14 +211,14 @@ namespace InfinniPlatform.Sdk.Dynamic
 
             return false;
         }
-        
+
         private static bool TryCloneAsCloneable(object target, Dictionary<object, object> clones, out object clone)
         {
             clone = null;
 
             if (target is ICloneable)
             {
-                var targetClone = ((ICloneable) target).Clone();
+                var targetClone = ((ICloneable)target).Clone();
                 clones.Add(target, targetClone);
                 clone = targetClone;
 
@@ -291,7 +291,7 @@ namespace InfinniPlatform.Sdk.Dynamic
 
         PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties(Attribute[] attributes)
         {
-            return ((ICustomTypeDescriptor) this).GetProperties();
+            return ((ICustomTypeDescriptor)this).GetProperties();
         }
 
         object ICustomTypeDescriptor.GetPropertyOwner(PropertyDescriptor pd)

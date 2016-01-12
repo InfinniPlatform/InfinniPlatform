@@ -1,7 +1,7 @@
 ﻿using Duke.Owin.VkontakteMiddleware;
 
 using InfinniPlatform.Owin.Modules;
-using InfinniPlatform.Sdk.Environment.Settings;
+using InfinniPlatform.Sdk.Settings;
 
 using Owin;
 
