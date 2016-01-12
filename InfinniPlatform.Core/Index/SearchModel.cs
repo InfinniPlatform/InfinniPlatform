@@ -82,7 +82,7 @@ namespace InfinniPlatform.Core.Index
     public static class SearchModelExtensions
     {
         public static SearchModel ExtractSearchModel(this IEnumerable<dynamic> filterObject,
-            IFilterBuilder filterFactory)
+            INestFilterBuilder filterFactory)
         {
             var searchModel = new SearchModel();
             

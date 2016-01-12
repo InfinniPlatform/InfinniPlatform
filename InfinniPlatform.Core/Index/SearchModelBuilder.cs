@@ -7,10 +7,10 @@ namespace InfinniPlatform.Core.Index
 {
     public class SearchModelBuilder
     {
-        private readonly IFilterBuilder _filterFactory;
+        private readonly INestFilterBuilder _filterFactory;
         private readonly IList<Action<SearchModel>> _modelActions = new List<Action<SearchModel>>();
 
-        public SearchModelBuilder(IFilterBuilder filterFactory)
+        public SearchModelBuilder(INestFilterBuilder filterFactory)
         {
             _filterFactory = filterFactory;
         }

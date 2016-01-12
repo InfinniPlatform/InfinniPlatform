@@ -9,7 +9,7 @@ namespace InfinniPlatform.ElasticSearch.Filters.NestQueries
     /// <summary>
     /// Фабрика для создания объектов, реализующих интерфейс <see cref="IFilter"/> для использования с Nest
     /// </summary>
-    public sealed class NestQueryBuilder : IFilterBuilder
+    public sealed class NestQueryBuilder : INestFilterBuilder
     {
         private const CriteriaType DefaultCriteriaType = CriteriaType.IsEquals;
 
