@@ -4,6 +4,9 @@ using System.Globalization;
 
 using InfinniPlatform.Sdk.Dynamic;
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 namespace InfinniPlatform.ElasticSearch.Filters.Extensions
 {
 	public static class ObjectExtension
@@ -36,7 +39,7 @@ namespace InfinniPlatform.ElasticSearch.Filters.Extensions
 			var enumerable = filterValue as IEnumerable<dynamic>;
 			if (enumerable != null)
 			{
-				return enumerable.DynamicEnumerableToString();
+                return JsonConvert.SerializeObject(enumerable);
 			}
 
 			//поскольку установлен режим поиска по умолчанию lower_case (в настройках конфига elasticsearch - config.yml), приводим к нижнему регистру строку запроса

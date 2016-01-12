@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using InfinniPlatform.Sdk.Environment.Index;
+
+using Newtonsoft.Json;
+
 namespace InfinniPlatform.Sdk
 {
     /// <summary>
@@ -11,10 +15,10 @@ namespace InfinniPlatform.Sdk
     {
         public FilterBuilder()
         {
-            _criteriaList = new List<string>();
+            _criteriaList = new List<CriteriaBuilder.CriteriaFilter>();
         }
 
-        private readonly IList<string> _criteriaList;
+        private readonly IList<CriteriaBuilder.CriteriaFilter> _criteriaList;
 
         public FilterBuilder AddCriteria(Action<CriteriaBuilder> criteria)
         {
@@ -27,7 +31,7 @@ namespace InfinniPlatform.Sdk
             return this;
         }
 
-        public IEnumerable<string> GetFilter()
+        public IEnumerable<CriteriaBuilder.CriteriaFilter> GetFilter()
         {
             return _criteriaList;
         }
@@ -45,13 +49,11 @@ namespace InfinniPlatform.Sdk
         {
             var builder = new FilterBuilder();
 
-            builder.AddCriteria(c => c
-                                         .Property(propertyName)
-                                         .IsMoreThanOrEquals(from));
+            builder.AddCriteria(c => c.Property(propertyName)
+                                      .IsMoreThanOrEquals(from));
 
-            builder.AddCriteria(c => c
-                                         .Property(propertyName)
-                                         .IsLessThanOrEquals(to));
+            builder.AddCriteria(c => c.Property(propertyName)
+                                      .IsLessThanOrEquals(to));
 
             return builder.GetFilter();
         }
@@ -62,7 +64,7 @@ namespace InfinniPlatform.Sdk
         /// </summary>
         public class CriteriaBuilder
         {
-            private string _criteriaType = "IsEquals";
+            private CriteriaType _criteriaType = CriteriaType.IsEquals;
             private string _property;
 
             private object _value;
@@ -76,139 +78,163 @@ namespace InfinniPlatform.Sdk
             public CriteriaBuilder IsEquals(object value)
             {
                 _value = Convert(value);
-                _criteriaType = "IsEquals";
+                _criteriaType = CriteriaType.IsEquals;
                 return this;
             }
 
             public CriteriaBuilder IsNotEquals(object value)
             {
                 _value = Convert(value);
-                _criteriaType = "IsNotEquals";
+                _criteriaType = CriteriaType.IsNotEquals;
                 return this;
             }
 
             public CriteriaBuilder IsMoreThan(object value)
             {
                 _value = Convert(value);
-                _criteriaType = "IsMoreThan";
+                _criteriaType = CriteriaType.IsMoreThan;
                 return this;
             }
 
             public CriteriaBuilder IsLessThan(object value)
             {
                 _value = Convert(value);
-                _criteriaType = "IsLessThan";
+                _criteriaType = CriteriaType.IsLessThan;
                 return this;
             }
 
             public CriteriaBuilder IsMoreThanOrEquals(object value)
             {
                 _value = Convert(value);
-                _criteriaType = "IsMoreThanOrEquals";
+                _criteriaType = CriteriaType.IsMoreThanOrEquals;
                 return this;
             }
 
             public CriteriaBuilder IsLessThanOrEquals(object value)
             {
                 _value = Convert(value);
-                _criteriaType = "IsLessThanOrEquals";
+                _criteriaType = CriteriaType.IsLessThanOrEquals;
                 return this;
             }
 
             public CriteriaBuilder IsContains(string value)
             {
                 _value = value;
-                _criteriaType = "IsContains";
+                _criteriaType = CriteriaType.IsContains;
                 return this;
             }
 
             public CriteriaBuilder IsNotContains(string value)
             {
                 _value = value;
-                _criteriaType = "IsNotContains";
+                _criteriaType = CriteriaType.IsNotContains;
                 return this;
             }
 
             public CriteriaBuilder IsEmpty()
             {
                 _value = string.Empty;
-                _criteriaType = "IsEmpty";
+                _criteriaType = CriteriaType.IsEmpty;
                 return this;
             }
 
             public CriteriaBuilder IsNotEmpty()
             {
                 _value = string.Empty;
-                _criteriaType = "IsNotEmpty";
+                _criteriaType = CriteriaType.IsNotEmpty;
                 return this;
             }
 
             public CriteriaBuilder IsStartsWith(string value)
             {
                 _value = value;
-                _criteriaType = "IsStartsWith";
+                _criteriaType = CriteriaType.IsStartsWith;
                 return this;
             }
 
             public CriteriaBuilder IsNotStartsWith(string value)
             {
                 _value = value;
-                _criteriaType = "IsNotStartsWith";
+                _criteriaType = CriteriaType.IsNotStartsWith;
                 return this;
             }
 
             public CriteriaBuilder IsEndsWith(string value)
             {
                 _value = value;
-                _criteriaType = "IsEndsWith";
+                _criteriaType = CriteriaType.IsEndsWith;
                 return this;
             }
 
             public CriteriaBuilder IsNotEndsWith(string value)
             {
                 _value = value;
-                _criteriaType = "IsNotEndsWith";
+                _criteriaType = CriteriaType.IsNotEndsWith;
                 return this;
             }
 
             public CriteriaBuilder Script(string value)
             {
                 _value = value;
-                _criteriaType = "Script";
+                _criteriaType = CriteriaType.Script;
                 return this;
             }
 
             public CriteriaBuilder FullTextSearch(string value)
             {
                 _value = value;
-                _criteriaType = "FullTextSearch";
+                _criteriaType = CriteriaType.FullTextSearch;
                 return this;
             }
 
             public CriteriaBuilder IsIn(params object[] values)
             {
                 _value = string.Join("\n", values.Select(v => v.ToString()));
-                _criteriaType = "ValueSet";
+                _criteriaType = CriteriaType.IsIn;
                 return this;
             }
 
             public CriteriaBuilder IsIdIn(List<string> idList)
             {
-                _value = string.Join("[,]", idList);
-                _criteriaType = "IsIdIn";
+                _value = idList;
+                _criteriaType = CriteriaType.IsIdIn;
                 return this;
             }
 
-            internal string GetCriteria()
+            internal CriteriaFilter GetCriteria()
             {
-                return string.Format("{0} {1} {2}", _property, _criteriaType, _value ?? "null");
+                return new CriteriaFilter(_property, _value, _criteriaType);
             }
 
-            private object Convert(object value)
+            [Serializable]
+            public sealed class CriteriaFilter
+            {
+                public CriteriaFilter(string property, object value, CriteriaType criteriaType)
+                {
+                    Property = property;
+                    Value = value;
+                    CriteriaType = criteriaType;
+                }
+
+                public string Property { get; set; }
+
+                public object Value { get; set; }
+
+                public CriteriaType CriteriaType { get; set; }
+
+                public string ToJsonString()
+                {
+                    var serializeObject = JsonConvert.SerializeObject(new CriteriaFilter(Property, Value, CriteriaType));
+                    
+                    return serializeObject;
+                }
+            }
+
+            private static object Convert(object value)
             {
                 if (value is DateTime)
                 {
-                    return string.Format("datetime'{0}'", ((DateTime)value).ToString("O"));
+                    return $"{((DateTime) value).ToString("O")}";
                 }
                 return value;
             }

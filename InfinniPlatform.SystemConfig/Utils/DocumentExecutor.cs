@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Core.ContextComponents;
-using InfinniPlatform.Core.Index.SearchOptions;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
@@ -13,19 +12,16 @@ namespace InfinniPlatform.SystemConfig.Utils
     public sealed class DocumentExecutor
     {
         public DocumentExecutor(IConfigurationObjectBuilder configurationObjectBuilder,
-                                IMetadataComponent metadataComponent,
                                 InprocessDocumentComponent documentComponent,
                                 IReferenceResolver referenceResolver)
         {
             _configurationObjectBuilder = configurationObjectBuilder;
-            _metadataComponent = metadataComponent;
             _documentComponent = documentComponent;
             _referenceResolver = referenceResolver;
         }
 
         private readonly IConfigurationObjectBuilder _configurationObjectBuilder;
         private readonly InprocessDocumentComponent _documentComponent;
-        private readonly IMetadataComponent _metadataComponent;
         private readonly IReferenceResolver _referenceResolver;
 
         public dynamic GetBaseDocument(string instanceId)
@@ -50,13 +46,13 @@ namespace InfinniPlatform.SystemConfig.Utils
 
             if (documentProvider != null)
             {
-                var metadataConfiguration = _configurationObjectBuilder.GetConfigurationObject(configId).MetadataConfiguration;
+                var metadataConfiguration = _configurationObjectBuilder.GetConfigurationObject(configId)
+                                                                       .MetadataConfiguration;
 
                 if (metadataConfiguration == null)
                 {
                     return new List<dynamic>();
                 }
-
 
                 dynamic schema = metadataConfiguration.GetSchemaVersion(documentId);
 
@@ -96,18 +92,13 @@ namespace InfinniPlatform.SystemConfig.Utils
                 //делаем выборку документов для последующего Resolve и фильтрации по полям Resolved объектов
                 var pageSizeUnresolvedDocuments = Math.Min(pageSize, 1000);
 
-                var criteriaInterpreter = new QueryCriteriaInterpreter();
+                var filterArray = filter.ToArray();
 
-                var queryAnalyzer = new QueryCriteriaAnalyzer(_metadataComponent, schema);
-
-                IEnumerable<dynamic> result =
-                    documentProvider.GetDocument(queryAnalyzer.GetBeforeResolveCriteriaList(filter), 0,
-                        Convert.ToInt32(pageSizeUnresolvedDocuments), sorting,
-                        pageNumber > 0 ? pageNumber * pageSize : 0);
+                IEnumerable<dynamic> result = documentProvider.GetDocument(filterArray, 0, Convert.ToInt32(pageSizeUnresolvedDocuments), sorting, pageNumber > 0
+                                                                                                                                                      ? pageNumber * pageSize
+                                                                                                                                                      : 0);
 
                 _referenceResolver.ResolveReferences(configId, documentId, result, ignoreResolve);
-
-                result = criteriaInterpreter.ApplyFilter(queryAnalyzer.GetAfterResolveCriteriaList(filter), result);
 
                 return result.Take(pageSize == 0
                                        ? 10
@@ -116,9 +107,7 @@ namespace InfinniPlatform.SystemConfig.Utils
             return new List<dynamic>();
         }
 
-        private static IEnumerable<object> ExtractSortingProperties(string rootName, dynamic properties,
-                                                                    IConfigurationObjectBuilder
-                                                                        configurationObjectBuilder)
+        private static IEnumerable<object> ExtractSortingProperties(string rootName, dynamic properties, IConfigurationObjectBuilder configurationObjectBuilder)
         {
             var sortingProperties = new List<object>();
 

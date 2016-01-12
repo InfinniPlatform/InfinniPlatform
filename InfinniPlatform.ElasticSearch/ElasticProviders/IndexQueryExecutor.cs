@@ -101,16 +101,16 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
             var tenantIdFilter = new NestFilter(Filter<dynamic>.Terms(ElasticConstants.TenantIdField, new[] { tenantId, AuthorizationStorageExtensions.AnonymousUser, AuthorizationStorageExtensions.SystemTenant }));
 
             searchModel.AddFilter(tenantIdFilter);
-
             searchModel.AddFilter(new NestFilter(Filter<dynamic>.Query(q => q.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid))));
 
-            Func<SearchDescriptor<dynamic>, SearchDescriptor<dynamic>> desc =
-                descriptor => new ElasticSearchQueryBuilder(descriptor)
-                    .BuildSearchDescriptor(searchModel)
-                    .BuildSearchForType(_indexNames, _typeNames == null || !_typeNames.Any()
-                        ? null
-                        : _typeNames.SelectMany(x => x.GetMappingsTypeNames()),
-                        _searchInAllIndeces, _searchInAllTypes);
+            Func<SearchDescriptor<dynamic>, SearchDescriptor<dynamic>> desc = descriptor => new ElasticSearchQueryBuilder(descriptor)
+                                                                                                .BuildSearchDescriptor(searchModel)
+                                                                                                .BuildSearchForType(_indexNames,
+                                                                                                                    _typeNames == null || !_typeNames.Any()
+                                                                                                                        ? null
+                                                                                                                        : _typeNames.SelectMany(x => x.GetMappingsTypeNames()),
+                                                                                                                    _searchInAllIndeces,
+                                                                                                                    _searchInAllTypes);
 
             var documentsResponse = _elasticConnection.Client.Search(desc);
 

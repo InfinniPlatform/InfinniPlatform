@@ -18,7 +18,7 @@ namespace InfinniPlatform.Core.RestApi.DataApi
         public dynamic GetPrintView(string configId, string documentId, string printViewId, string printViewType,
                                     int pageNumber, int pageSize, Action<FilterBuilder> filter)
         {
-            var filterBuilder = new SearchOptions.Builders.FilterBuilder();
+            var filterBuilder = new FilterBuilder();
 
             return _restQueryApi.QueryPostJsonRaw("SystemConfig", "Reporting", "GetPrintView", null, new
                                                                                                      {

@@ -1,13 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Web;
 
 using InfinniPlatform.Core.RestApi.DataApi;
-using InfinniPlatform.Core.SearchOptions.Converters;
 using InfinniPlatform.Owin.Middleware;
+using InfinniPlatform.Sdk;
 using InfinniPlatform.WebApi.Middleware.RouteFormatters;
 
 using Microsoft.Owin;
+
+using Newtonsoft.Json;
 
 namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
 {
@@ -34,11 +37,9 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
             }
 
             var filter = nameValueCollection.Get("$filter");
-            IEnumerable<dynamic> criteriaList = new List<dynamic>();
-            if (filter != null)
-            {
-                criteriaList = new FilterConverter().ConvertFilter(filter);
-            }
+            var filterStringsList = JsonConvert.DeserializeObject<string[]>(filter);
+
+            IEnumerable<dynamic> criteriaList = filterStringsList.Select(JsonConvert.DeserializeObject<SortingBuilder.CriteriaSorting>);
 
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 

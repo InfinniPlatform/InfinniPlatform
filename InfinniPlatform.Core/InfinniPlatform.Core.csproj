@@ -180,10 +180,6 @@
     <Compile Include="Schema\SchemaIterator.cs" />
     <Compile Include="Schema\SchemaObject.cs" />
     <Compile Include="Schema\SchemaProvider.cs" />
-    <Compile Include="SearchOptions\Builders\FilterBuilder.cs" />
-    <Compile Include="SearchOptions\Builders\SortingBuilder.cs" />
-    <Compile Include="SearchOptions\Converters\FilterConverter.cs" />
-    <Compile Include="SearchOptions\Converters\SortingConverter.cs" />
     <Compile Include="SearchOptions\SearchType.cs" />
     <Compile Include="Security\ApplicationClaimType.cs" />
     <Compile Include="Security\ApplicationClaimTypes.cs" />

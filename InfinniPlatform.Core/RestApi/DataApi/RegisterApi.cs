@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using InfinniPlatform.Core.Registers;
 using InfinniPlatform.Core.RestApi.CommonApi;
-using InfinniPlatform.Core.SearchOptions.Builders;
+using InfinniPlatform.Sdk;
 using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Core.RestApi.DataApi
@@ -47,10 +47,7 @@ namespace InfinniPlatform.Core.RestApi.DataApi
         {
             var filterBuilder = new FilterBuilder();
 
-            if (filter != null)
-            {
-                filter.Invoke(filterBuilder);
-            }
+            filter?.Invoke(filterBuilder);
 
             return GetValuesByDate(configuration, register, endDate, dimensions, valueProperties, valueAggregationTypes, filter == null ? null : filterBuilder.GetFilter());
         }
@@ -111,10 +108,7 @@ namespace InfinniPlatform.Core.RestApi.DataApi
         {
             var filterBuilder = new FilterBuilder();
 
-            if (filter != null)
-            {
-                filter.Invoke(filterBuilder);
-            }
+            filter?.Invoke(filterBuilder);
 
             var response = GetValuesBetweenDates(configuration, register, startDate, endDate, dimensions,
                 valueProperties, valueAggregationTypes, filter == null ? null : filterBuilder.GetFilter());
@@ -187,10 +181,7 @@ namespace InfinniPlatform.Core.RestApi.DataApi
         {
             var filterBuilder = new FilterBuilder();
 
-            if (filter != null)
-            {
-                filter.Invoke(filterBuilder);
-            }
+            filter?.Invoke(filterBuilder);
 
             return GetValuesByPeriods(configuration, register, startDate, endDate, interval, dimensions, valueProperties,
                 timezone, filter == null ? null : filterBuilder.GetFilter());
@@ -322,10 +313,7 @@ namespace InfinniPlatform.Core.RestApi.DataApi
         {
             var filterBuilder = new FilterBuilder();
 
-            if (filter != null)
-            {
-                filter.Invoke(filterBuilder);
-            }
+            filter?.Invoke(filterBuilder);
 
             return GetRegisterEntries(configuration, register, filterBuilder.GetFilter(), pageNumber, pageSize);
         }

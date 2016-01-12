@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Core.SearchOptions.Builders;
+using InfinniPlatform.Sdk;
 
 namespace InfinniPlatform.Core.RestApi.DataApi
 {
