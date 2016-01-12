@@ -14,7 +14,7 @@ namespace InfinniPlatform.Sdk.RestApi
             var jsonFilterStrings = JsonConvert.SerializeObject(filter);
             var jsonSortingStrings = JsonConvert.SerializeObject(sorting);
 
-            return $"filter={Uri.EscapeUriString(jsonFilterStrings)}&pageNumber={pageNumber}&pageSize={pageSize}&sorting={Uri.EscapeUriString(jsonSortingStrings)}";
+            return $"filter={Uri.EscapeDataString(jsonFilterStrings)}&pageNumber={pageNumber}&pageSize={pageSize}&sorting={Uri.EscapeDataString(jsonSortingStrings)}";
         }
 
         public static string CreateQueryStringCount(IEnumerable<FilterBuilder.CriteriaBuilder.CriteriaFilter> filter)
@@ -23,5 +23,10 @@ namespace InfinniPlatform.Sdk.RestApi
 
             return $"$filter={Uri.EscapeUriString(jsonFilterStrings)}";
         }
+
+//        private static string EscapeServiceSymbols(this string uri)
+//        {
+//            return 
+//        }
     }
 }

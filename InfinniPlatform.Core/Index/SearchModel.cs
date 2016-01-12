@@ -56,6 +56,13 @@ namespace InfinniPlatform.Core.Index
             SortOptions.Add(new SortOption(propertyName, sortOrder));
         }
 
+        public void AddSort(string propertyName, string sortOrder)
+        {
+            SortOptions.Add(new SortOption(propertyName, sortOrder == "descending"
+                                                             ? SortOrder.Descending
+                                                             : SortOrder.Ascending));
+        }
+
         public void SetFromPage(int fromPage)
         {
             FromPage = fromPage;

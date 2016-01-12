@@ -4,6 +4,7 @@ using System.Linq;
 
 using InfinniPlatform.Core.Index;
 using InfinniPlatform.ElasticSearch.Filters;
+using InfinniPlatform.Sdk.Documents;
 
 namespace InfinniPlatform.ElasticSearch.Versioning
 {
@@ -30,7 +31,7 @@ namespace InfinniPlatform.ElasticSearch.Versioning
         /// <param name="sortingDescription">Описание правил сортировки</param>
         /// <param name="skipSize"></param>
         /// <returns>Список актуальных версий</returns>
-        public dynamic GetDocument(IEnumerable<object> filterObject, int pageNumber, int pageSize, IEnumerable<dynamic> sortingDescription = null, int skipSize = 0)
+        public dynamic GetDocument(IEnumerable<object> filterObject, int pageNumber, int pageSize, IEnumerable<CriteriaSorting> sortingDescription = null, int skipSize = 0)
         {
             var filterFactory = FilterBuilderFactory.GetInstance();
             var searchModel = filterObject.ExtractSearchModel(filterFactory);
@@ -42,7 +43,7 @@ namespace InfinniPlatform.ElasticSearch.Versioning
             {
                 foreach (var sorting in sortingDescription)
                 {
-                    searchModel.AddSort(sorting.PropertyName, (SortOrder)sorting.SortOrder);
+                    searchModel.AddSort(sorting.PropertyName, sorting.SortingOrder);
                 }
             }
 

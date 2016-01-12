@@ -5,6 +5,7 @@ using System.Linq;
 using InfinniPlatform.Core.ContextComponents;
 using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.SystemConfig.Utils
@@ -37,16 +38,16 @@ namespace InfinniPlatform.SystemConfig.Utils
             return docsToResolve.FirstOrDefault();
         }
 
-        public IEnumerable<dynamic> GetCompleteDocuments(string configId, string documentId,
+        public IEnumerable<dynamic> GetCompleteDocuments(string configurationName, string documentType,
                                                          int pageNumber, int pageSize,
-                                                         IEnumerable<dynamic> filter, IEnumerable<dynamic> sorting,
+                                                         dynamic filter, dynamic sorting,
                                                          IEnumerable<dynamic> ignoreResolve)
         {
-            var documentProvider = _documentComponent.GetDocumentProvider(configId, documentId);
+            var documentProvider = _documentComponent.GetDocumentProvider(configurationName, documentType);
 
             if (documentProvider != null)
             {
-                var metadataConfiguration = _configurationObjectBuilder.GetConfigurationObject(configId)
+                var metadataConfiguration = _configurationObjectBuilder.GetConfigurationObject(configurationName)
                                                                        .MetadataConfiguration;
 
                 if (metadataConfiguration == null)
@@ -54,29 +55,26 @@ namespace InfinniPlatform.SystemConfig.Utils
                     return new List<dynamic>();
                 }
 
-                dynamic schema = metadataConfiguration.GetSchemaVersion(documentId);
+                dynamic schema = metadataConfiguration.GetSchemaVersion(documentType);
 
                 IEnumerable<dynamic> sortingFields = null;
 
                 if (schema != null)
                 {
-                    // Ивлекаем информацию о полях, по которым можно проводить сортировку из метаданных документа
+                    // Извлекаем информацию о полях, по которым можно проводить сортировку из метаданных документа
                     sortingFields = ExtractSortingProperties(string.Empty, schema.Properties, _configurationObjectBuilder);
                 }
 
-                if (sorting != null && sorting.Any())
+                if (sorting != null && sorting.Count > 0)
                 {
                     // Поля сортировки заданы в запросе. 
                     // Берем только те поля, которые разрешены в соответствии с метаданными
 
                     var filteredSortingFields = new List<object>();
 
-                    foreach (var sortingProperty in sorting.ToEnumerable())
+                    foreach (var sortingProperty in sorting)
                     {
-                        if (
-                            sortingFields.ToEnumerable()
-                                         .Any(
-                                             validProperty => validProperty.PropertyName == sortingProperty.PropertyName))
+                        if (sortingFields.Any(validProperty => validProperty.PropertyName == sortingProperty.PropertyName))
                         {
                             filteredSortingFields.Add(sortingProperty);
                         }
@@ -98,12 +96,13 @@ namespace InfinniPlatform.SystemConfig.Utils
                                                                                                                                                       ? pageNumber * pageSize
                                                                                                                                                       : 0);
 
-                _referenceResolver.ResolveReferences(configId, documentId, result, ignoreResolve);
+                _referenceResolver.ResolveReferences(configurationName, documentType, result, ignoreResolve);
 
                 return result.Take(pageSize == 0
                                        ? 10
                                        : pageSize);
             }
+
             return new List<dynamic>();
         }
 
@@ -179,11 +178,7 @@ namespace InfinniPlatform.SystemConfig.Utils
 
                         if (isSortingField)
                         {
-                            sortingProperties.Add(new
-                                                  {
-                                                      PropertyName = formattedPropertyName,
-                                                      SortOrder = SortOrder.Ascending
-                                                  }.ToDynamic());
+                            sortingProperties.Add(new CriteriaSorting(formattedPropertyName, SortOrder.Ascending.ToString()));
                         }
                     }
                 }
