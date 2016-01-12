@@ -10,18 +10,18 @@ using Newtonsoft.Json.Linq;
 namespace InfinniPlatform.Core.Serialization
 {
     /// <summary>
-    ///     Осуществляет преобразование объекта в JSON-представление и обратно на основе списка известных типов.
+    /// Осуществляет преобразование объекта в JSON-представление и обратно на основе списка известных типов.
     /// </summary>
     internal sealed class KnownTypesJsonConverter : JsonConverter
     {
-        private readonly Type _enumerableType;
-        private readonly KnownTypesContainer _knownTypes;
-
         public KnownTypesJsonConverter(KnownTypesContainer knownTypes)
         {
-            _enumerableType = typeof (IEnumerable);
+            _enumerableType = typeof(IEnumerable);
             _knownTypes = knownTypes ?? new KnownTypesContainer();
         }
+
+        private readonly Type _enumerableType;
+        private readonly KnownTypesContainer _knownTypes;
 
         public override bool CanRead
         {
@@ -49,9 +49,9 @@ namespace InfinniPlatform.Core.Serialization
                 var objTypeName = _knownTypes.GetName(objType);
 
                 var jObjProperty = new JProperty(objTypeName, jObj);
-                var jObjWrapper = new JObject {jObjProperty};
+                var jObjWrapper = new JObject { jObjProperty };
 
-                WrapObjectProperties((JObject) jObj, value, serializer);
+                WrapObjectProperties((JObject)jObj, value, serializer);
 
                 jObj = jObjWrapper;
             }
@@ -79,8 +79,7 @@ namespace InfinniPlatform.Core.Serialization
             }
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
-            JsonSerializer serializer)
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var jObjWrapper = JObject.Load(reader);
             var jObjProperty = jObjWrapper.Properties().FirstOrDefault();

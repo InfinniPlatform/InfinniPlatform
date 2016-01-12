@@ -5,21 +5,22 @@ using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Environment.Index;
+using InfinniPlatform.Sdk.Environment.Metadata;
 
 namespace InfinniPlatform.SystemConfig.ActionUnits.Documents
 {
     public sealed class ActionUnitGetNumberOfDocuments
     {
-        public ActionUnitGetNumberOfDocuments(IConfigurationMediatorComponent configurationMediatorComponent,
+        public ActionUnitGetNumberOfDocuments(IConfigurationObjectBuilder configurationObjectBuilder,
                                               IMetadataComponent metadataComponent,
                                               IVersionProvider versionProvider)
         {
-            _configurationMediatorComponent = configurationMediatorComponent;
+            _configurationObjectBuilder = configurationObjectBuilder;
             _metadataComponent = metadataComponent;
             _versionProvider = versionProvider;
         }
 
-        private readonly IConfigurationMediatorComponent _configurationMediatorComponent;
+        private readonly IConfigurationObjectBuilder _configurationObjectBuilder;
         private readonly IMetadataComponent _metadataComponent;
         private readonly IVersionProvider _versionProvider;
 
@@ -33,7 +34,7 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Documents
             string documentId = target.Item.Metadata;
             IEnumerable<dynamic> filter = target.Item.Filter;
 
-            var metadataConfiguration = _configurationMediatorComponent.ConfigurationBuilder.GetConfigurationObject(configId).MetadataConfiguration;
+            var metadataConfiguration = _configurationObjectBuilder.GetConfigurationObject(configId).MetadataConfiguration;
 
             if (metadataConfiguration == null)
             {

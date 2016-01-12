@@ -73,25 +73,6 @@
             }
         }
 
-        public string ConfigId
-        {
-            get
-            {
-                return Value != null && Value.TypeInfo != null && Value.TypeInfo.DocumentLink != null
-                    ? Value.TypeInfo.DocumentLink.ConfigId
-                    : null;
-            }
-        }
-
-        public string DocumentId
-        {
-            get
-            {
-                return Value != null && Value.TypeInfo != null && Value.TypeInfo.DocumentLink != null
-                    ? Value.TypeInfo.DocumentLink.DocumentId
-                    : null;
-            }
-        }
 
         public string Type
         {

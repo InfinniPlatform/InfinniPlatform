@@ -28,8 +28,7 @@ namespace InfinniPlatform.ClientNotification.Tests
         public void ShouldNotifyClients()
         {
             // Given
-            var notificationServiceFactory = new SignalRWebClientNotificationServiceFactory();
-            var notificationService = notificationServiceFactory.CreateClientNotificationService();
+            var notificationService = new SignalRWebClientNotificationService();
 
             // When
             TestDelegate notifyClients = () => notificationService.Notify("someEvent1", "eventBody1");

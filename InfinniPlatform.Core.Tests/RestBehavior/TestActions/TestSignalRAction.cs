@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Sdk.ContextComponents;
+﻿using InfinniPlatform.Core.ClientNotification;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -6,12 +6,12 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
 {
     public sealed class TestSignalRAction
     {
-        public TestSignalRAction(IWebClientNotificationComponent webClientNotificationComponent)
+        public TestSignalRAction(IWebClientNotificationService webClientNotificationComponent)
         {
             _webClientNotificationComponent = webClientNotificationComponent;
         }
 
-        private readonly IWebClientNotificationComponent _webClientNotificationComponent;
+        private readonly IWebClientNotificationService _webClientNotificationComponent;
 
         public void Action(IApplyContext target)
         {

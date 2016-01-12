@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Core.RestApi;
-using InfinniPlatform.Core.RestQuery;
 using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.WebApi.WebApi

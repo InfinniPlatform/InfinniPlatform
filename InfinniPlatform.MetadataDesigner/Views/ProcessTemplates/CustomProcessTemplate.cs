@@ -6,11 +6,7 @@ using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 
-using InfinniPlatform.Core.ContextTypes;
-using InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.SchemaReaders;
 using InfinniPlatform.Core.RestApi.Auth;
-using InfinniPlatform.Core.Schema;
 using InfinniPlatform.MetadataDesigner.Views.ViewModel;
 
 namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
@@ -43,24 +39,6 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 			}
 			return ViewModelExtension.BuildStateTransitions(_process.Transitions);
 		}
-
-        private IEnumerable<string> LoadPropertiesNames()
-        {
-            var document = new ManagerFactoryConfiguration(ConfigId).BuildDocumentMetadataReader().GetItem(DocumentId);
-            
-            var properiesNames = new List<string>();
-
-            var schemaIterator = new SchemaIterator(new SchemaReaderManager())
-            {
-                OnObjectProperty = schemaObject => properiesNames.Add(schemaObject.Name),
-                OnPrimitiveProperty = schemaObject => properiesNames.Add(schemaObject.Name)
-            };
-
-            schemaIterator.ProcessSchema(document.Schema);
-            
-            return properiesNames;
-        }
-
 
 		void FocusedRowChanged(object sender, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
 		{
@@ -156,10 +134,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 
 		private void CreateProcessFromControls()
 		{
-			ProcessBuilder.BuildProcess(Guid.NewGuid().ToString(), TextEditProcessName.Text, TextEditProcessCaption.Text,
-						 (bool)CheckEditWithState.EditValue
-							 ? (int)WorkflowTypes.WithState
-							 : (int)WorkflowTypes.WithoutState);
+			ProcessBuilder.BuildProcess(Guid.NewGuid().ToString(), TextEditProcessName.Text, TextEditProcessCaption.Text, 2 /* WithoutState */);
 		}
 
 

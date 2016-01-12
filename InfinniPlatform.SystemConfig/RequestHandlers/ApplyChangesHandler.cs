@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Core.ContextTypes.ContextImpl;
+﻿using InfinniPlatform.Core.ContextTypes;
 using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Contracts;

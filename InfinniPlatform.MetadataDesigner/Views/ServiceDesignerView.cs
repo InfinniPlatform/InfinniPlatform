@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Views.Base;
 
-using InfinniPlatform.Core.Deprecated;
 using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.MetadataDesigner.Views.ViewModel;
 using InfinniPlatform.Sdk.Dynamic;
@@ -26,7 +25,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 
 		private List<dynamic> _extensionPoints = new List<dynamic>();
 		private dynamic _selectedExtensionPoint;
-		private object _service;
+		private dynamic _service;
 
 		public Func<string> Version { get; set; }
 
@@ -89,9 +88,11 @@ namespace InfinniPlatform.MetadataDesigner.Views
 			dynamic point = null;
 			try
 			{
-				point = new DynamicWrapper().BuildProperty("TypeName", ComboBoxExtensionPoint.EditValue)
-											.BuildProperty("ScenarioId", ((ProcessDescription)ComboBoxScenarioId.EditValue).Name);
-				_extensionPoints.Add(point);
+				point = new DynamicWrapper();
+                point.TypeName = ComboBoxExtensionPoint.EditValue;
+                point.ScenarioId = ((ProcessDescription)ComboBoxScenarioId.EditValue).Name;
+
+                _extensionPoints.Add(point);
 			}
 			catch
 			{
@@ -146,10 +147,11 @@ namespace InfinniPlatform.MetadataDesigner.Views
 				{
 					serviceId = service.Id;
 				}
-				_service = new DynamicWrapper().BuildId(serviceId ?? Guid.NewGuid().ToString())
-											   .BuildName(TextEditServiceName.Text)
-											   .BuildProperty("Type", ViewModelExtension.BuildCompleteServiceType(ComboBoxServiceType.EditValue.ToString()))
-											   .BuildCaption(TextEditServiceCaption.Text);
+				_service = new DynamicWrapper();
+                _service.Id = serviceId ?? Guid.NewGuid().ToString();
+			    _service.Name = TextEditServiceName.Text;
+			    _service.Caption = TextEditServiceCaption.Text;
+                _service.Type = ViewModelExtension.BuildCompleteServiceType(ComboBoxServiceType.EditValue.ToString());
 				foreach (var extensionPoint in _extensionPoints)
 				{
 					_service.BuildCollectionItem("ExtensionPoints", (object)extensionPoint);

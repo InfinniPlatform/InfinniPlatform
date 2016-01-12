@@ -80,7 +80,7 @@ namespace InfinniPlatform.SystemConfig.Utils
                         if (
                             sortingFields.ToEnumerable()
                                          .Any(
-                                              validProperty => validProperty.PropertyName == sortingProperty.PropertyName))
+                                             validProperty => validProperty.PropertyName == sortingProperty.PropertyName))
                         {
                             filteredSortingFields.Add(sortingProperty);
                         }
@@ -120,8 +120,8 @@ namespace InfinniPlatform.SystemConfig.Utils
                 foreach (var propertyMapping in properties)
                 {
                     string formattedPropertyName = string.IsNullOrEmpty(rootName)
-                                                       ? string.Format("{0}", propertyMapping.Key)
-                                                       : string.Format("{0}.{1}", rootName, propertyMapping.Key);
+                        ? string.Format("{0}", propertyMapping.Key)
+                        : string.Format("{0}.{1}", rootName, propertyMapping.Key);
 
                     if (propertyMapping.Value.Type.ToString() == DataType.Object.ToString())
                     {
@@ -143,21 +143,21 @@ namespace InfinniPlatform.SystemConfig.Utils
                             {
                                 dynamic inlineDocumentSchema =
                                     inlineMetadataConfiguration.GetSchemaVersion(
-                                                                                 propertyMapping.Value.TypeInfo.DocumentLink.DocumentId);
+                                        propertyMapping.Value.TypeInfo.DocumentLink.DocumentId);
 
                                 if (inlineDocumentSchema != null)
                                 {
                                     childProps = ExtractSortingProperties(formattedPropertyName,
-                                                                          inlineDocumentSchema.Properties,
-                                                                          configurationObjectBuilder);
+                                        inlineDocumentSchema.Properties,
+                                        configurationObjectBuilder);
                                 }
                             }
                         }
                         else
                         {
                             childProps = ExtractSortingProperties(formattedPropertyName,
-                                                                  propertyMapping.Value.Properties,
-                                                                  configurationObjectBuilder);
+                                propertyMapping.Value.Properties,
+                                configurationObjectBuilder);
                         }
 
                         sortingProperties.AddRange(childProps);
@@ -167,9 +167,9 @@ namespace InfinniPlatform.SystemConfig.Utils
                         if (propertyMapping.Value.Items != null)
                         {
                             sortingProperties.AddRange(
-                                                       ExtractSortingProperties(formattedPropertyName,
-                                                                                propertyMapping.Value.Items.Properties,
-                                                                                configurationObjectBuilder));
+                                ExtractSortingProperties(formattedPropertyName,
+                                    propertyMapping.Value.Items.Properties,
+                                    configurationObjectBuilder));
                         }
                     }
                     else

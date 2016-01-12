@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 
+using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Core.Properties;
-using InfinniPlatform.Core.RestQuery;
-using InfinniPlatform.Core.RestQuery.RestQueryBuilders;
 using InfinniPlatform.Sdk.Environment.Index;
 
 namespace InfinniPlatform.Core.RestApi.CommonApi
 {
+    [Obsolete]
     public sealed class RestQueryApi
     {
         public RestQueryApi(RestQueryBuilderFactory queryBuilderFactory)
@@ -16,9 +16,7 @@ namespace InfinniPlatform.Core.RestApi.CommonApi
             _queryBuilderFactory = queryBuilderFactory;
         }
 
-
         private readonly RestQueryBuilderFactory _queryBuilderFactory;
-
 
         public RestQueryResponse QueryPostFile(string configuration, string documentType, string action, object linkedData, string filePath)
         {
@@ -75,7 +73,8 @@ namespace InfinniPlatform.Core.RestApi.CommonApi
             return response;
         }
 
-        public RestQueryResponse QueryAggregationRaw(string configuration, string documentType, string action, string aggregationConfiguration, string aggregationdocumentType, IEnumerable<object> filterObject, IEnumerable<dynamic> dimensions, IEnumerable<AggregationType> aggregationTypes, IEnumerable<string> aggregationFields, int pageNumber, int pageSize, IRouteTrace routeTrace = null)
+        public RestQueryResponse QueryAggregationRaw(string configuration, string documentType, string action, string aggregationConfiguration, string aggregationdocumentType, IEnumerable<object> filterObject,
+                                                     IEnumerable<dynamic> dimensions, IEnumerable<AggregationType> aggregationTypes, IEnumerable<string> aggregationFields, int pageNumber, int pageSize)
         {
             var builder = _queryBuilderFactory(configuration, documentType, action);
 

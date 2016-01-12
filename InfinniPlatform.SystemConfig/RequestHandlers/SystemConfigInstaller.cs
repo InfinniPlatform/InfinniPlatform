@@ -41,7 +41,6 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
             RegisterWorkflow<ActionUnitSetDocument>(metadataConfiguration, DefaultConfig, "setdocument");
             RegisterWorkflow<ActionUnitDeleteDocument>(metadataConfiguration, DefaultConfig, "deletedocument");
             RegisterWorkflow<ActionUnitGetDocumentCrossConfig>(metadataConfiguration, DefaultConfig, "getdocumentcrossconfig");
-            RegisterWorkflow<ActionUnitGetByQuery>(metadataConfiguration, DefaultConfig, "getbyquery");
             RegisterWorkflow<ActionUnitDownloadBinaryContent>(metadataConfiguration, DefaultConfig, "downloadbinarycontent");
             RegisterWorkflow<ActionUnitUploadBinaryContent>(metadataConfiguration, DefaultConfig, "uploadbinarycontent");
             RegisterWorkflow<ActionUnitGetDocument>(metadataConfiguration, DefaultConfig, "getdocument");

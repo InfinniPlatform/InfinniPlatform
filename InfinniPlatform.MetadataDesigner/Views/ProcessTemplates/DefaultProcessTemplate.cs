@@ -9,11 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-using InfinniPlatform.Core.ContextTypes;
-using InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Core.Metadata.ConfigurationManagers.Standard.SchemaReaders;
 using InfinniPlatform.Core.RestApi.Auth;
-using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Core.Schema;
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -43,25 +39,8 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 
 		private void ReloadSchema()
 		{
-			_schemaPrefill = new MetadataApi().GetDocumentSchema(ConfigId, DocumentId);
+			_schemaPrefill = null;
 			FillPropertiesBySchema();
-		}
-
-		private IEnumerable<string> LoadPropertiesNames()
-		{
-            var schema = new MetadataApi().GetDocumentSchema(ConfigId, DocumentId);
-
-			var properiesNames = new List<string>();
-
-			var schemaIterator = new SchemaIterator(new SchemaReaderManager())
-			{
-				OnObjectProperty = schemaObject => properiesNames.Add(schemaObject.Name),
-				OnPrimitiveProperty = schemaObject => properiesNames.Add(schemaObject.Name)
-			};
-
-			schemaIterator.ProcessSchema(schema);
-
-			return properiesNames;
 		}
 
 		private void FillControlsItems()
@@ -110,44 +89,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 
 		private void FillPropertiesBySchema()
 		{
-			var schemaIterator = new SchemaIterator(new SchemaReaderManager());
 			PropertyGridControl.Rows.Clear();
-			schemaIterator.OnObjectProperty = schemaObject => FillNewRow(schemaObject, obj =>
-																						   {
-																							   if (!string.IsNullOrEmpty(obj.ParentPath))
-																							   {
-																								   return null;
-																							   }
-
-																							   var row = new EditorRow()
-																							   {
-																								   Name = obj.Name,
-																							   };
-																							   row.Properties.Caption = string.Format("{0} ({1})", obj.Caption, obj.Name);
-																							   row.Properties.RowEdit = RepositoryItemComboBoxEdit;
-																							   row.Properties.Value = obj.Value.DefaultValue;
-																							   return row;
-																						   });
-			schemaIterator.OnPrimitiveProperty = schemaObject => FillNewRow(schemaObject, obj =>
-																							{
-																								if (!string.IsNullOrEmpty(obj.ParentPath))
-																								{
-																									return null;
-																								}
-
-
-																								var row = new EditorRow()
-																								{
-																									Name = obj.Name,
-																								};
-																								row.Properties.Caption = string.Format("{0} ({1})", obj.Caption, obj.Name);
-																								row.Properties.RowEdit = RepositoryItemComboBoxEdit;
-																								row.Properties.Value = obj.Value.DefaultValue;
-																								return row;
-																							});
-			schemaIterator.ProcessSchema(_schemaPrefill);
-
-
 		}
 
 		private void FillNewRow(SchemaObject schemaObject, Func<SchemaObject, BaseRow> rowConstructor)
@@ -183,20 +125,6 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 
 		private dynamic CreatePrefilledSchema()
 		{
-			var schemaIterator = new SchemaIterator(new SchemaReaderManager());
-			Action<SchemaObject> action = schemaObject =>
-			{
-				var row = PropertyGridControl.GetRowByName(schemaObject.Name);
-				if (row != null)
-				{
-					schemaObject.Value.DefaultValue = row.Properties.Value;
-				}
-			};
-
-			schemaIterator.OnPrimitiveProperty = action;
-			schemaIterator.OnObjectProperty = action;
-
-			schemaIterator.ProcessSchema(_schemaPrefill);
 			return _schemaPrefill;
 		}
 
@@ -349,8 +277,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 		{
 			if (TextEditProcessCaption.EditValue != null && TextEditProcessName.EditValue != null)
 			{
-				ProcessBuilder.BuildProcess(Guid.NewGuid().ToString(), TextEditProcessName.EditValue.ToString(), TextEditProcessCaption.EditValue.ToString(),
-					(int)WorkflowTypes.WithoutState);
+				ProcessBuilder.BuildProcess(Guid.NewGuid().ToString(), TextEditProcessName.EditValue.ToString(), TextEditProcessCaption.EditValue.ToString(), 2 /* WithoutState */);
 
 				EditMode = EditMode.ModeUpdate;
 
@@ -366,10 +293,6 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 		private void ButtonCreateMetadata_Click(object sender, EventArgs e)
 		{
 			ProcessBuilder.EditTransition(GetTransition());
-
-			var processManager = new ManagerFactoryDocument(ConfigId, DocumentId).BuildProcessManager();
-			processManager.DeleteItem(_process);
-			processManager.MergeItem(_process);
 
 			MessageBox.Show("Process metadata created successfully.");
 		}

@@ -3,7 +3,7 @@
 namespace InfinniPlatform.Core.Sql
 {
     /// <summary>
-    ///     Объект SQL-запроса.
+    /// Объект SQL-запроса.
     /// </summary>
     public sealed class SqlQueryObject
     {
@@ -11,7 +11,7 @@ namespace InfinniPlatform.Core.Sql
         {
             if (string.IsNullOrWhiteSpace(text))
             {
-                throw new ArgumentNullException("text");
+                throw new ArgumentNullException(nameof(text));
             }
 
             Text = text;
@@ -19,12 +19,12 @@ namespace InfinniPlatform.Core.Sql
         }
 
         /// <summary>
-        ///     Текст запроса.
+        /// Текст запроса.
         /// </summary>
         public string Text { get; private set; }
 
         /// <summary>
-        ///     Список параметров.
+        /// Список параметров.
         /// </summary>
         public object Params { get; private set; }
     }

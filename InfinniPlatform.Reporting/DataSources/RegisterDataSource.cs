@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.FastReport.Templates.Data;
@@ -50,9 +49,11 @@ namespace InfinniPlatform.Reporting.DataSources
                 }
             }
 
-            var result = _documentApi.GetDocumentByQuery(requestBody);
+            // TODO
+            // var result = _documentApi.GetDocumentByQuery(requestBody);
+            // return JArray.FromObject(result.Select(r => r.Result));
 
-            return JArray.FromObject(result.Select(r => r.Result));
+            return new JArray();
         }
     }
 }

@@ -6,7 +6,6 @@ using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 
-using InfinniPlatform.Core.RestQuery;
 using InfinniPlatform.QueryDesigner.Contracts;
 using InfinniPlatform.Sdk.Api;
 
@@ -76,7 +75,6 @@ namespace InfinniPlatform.QueryDesigner.Views
 
         public void InitRouting(HostingConfig hostingConfig)
         {
-			ControllerRoutingFactory.Instance = new ControllerRoutingFactory(HostingConfig.Default);
         }
 
         private void ComboBoxConfigurationEditValueChanged(object sender, EventArgs e)

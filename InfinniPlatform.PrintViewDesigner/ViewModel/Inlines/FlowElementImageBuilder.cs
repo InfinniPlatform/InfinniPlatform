@@ -4,7 +4,6 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-using InfinniPlatform.Core.Extensions;
 using InfinniPlatform.FlowDocument;
 using InfinniPlatform.FlowDocument.Model.Inlines;
 
@@ -28,8 +27,8 @@ namespace InfinniPlatform.PrintViewDesigner.ViewModel.Inlines
             var imageControl = new Image();
 
             imageControl.BeginInit();
-            imageControl.Width = element.Size.Maybe(s => s.Width) ?? imageSource.Width;
-            imageControl.Height = element.Size.Maybe(s => s.Height) ?? imageSource.Height;
+            imageControl.Width = element.Size?.Width ?? imageSource.Width;
+            imageControl.Height = element.Size?.Height ?? imageSource.Height;
             imageControl.Source = imageSource;
             imageControl.Stretch = Stretch.Fill;
             imageControl.EndInit();

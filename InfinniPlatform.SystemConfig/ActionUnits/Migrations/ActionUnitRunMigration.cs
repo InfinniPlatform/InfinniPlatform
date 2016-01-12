@@ -2,6 +2,7 @@
 
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.SystemConfig.Migrations;
 
 namespace InfinniPlatform.SystemConfig.ActionUnits.Migrations
 {

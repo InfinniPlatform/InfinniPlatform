@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="FileExtensionTypeProvider.cs" />
     <Compile Include="FileSystemBlobStorage.cs" />
-    <Compile Include="FileSystemBlobStorageFactory.cs" />
     <Compile Include="FileSystemBlobStorageSettings.cs" />
     <Compile Include="IoC\BlobStorageContainerModule.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">

@@ -1,10 +1,10 @@
 ﻿using InfinniPlatform.Core.Compression;
 using InfinniPlatform.Core.ContextComponents;
+using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Core.RestApi.CommonApi;
 using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Core.RestApi.Public;
-using InfinniPlatform.Core.RestQuery.RestQueryBuilders;
 using InfinniPlatform.Core.Settings;
 using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Sdk.ApiContracts;
@@ -44,15 +44,6 @@ namespace InfinniPlatform.Core.IoC
 
             builder.RegisterType<LogComponent>()
                    .As<ILogComponent>()
-                   .SingleInstance();
-
-            builder.RegisterType<ProfilerComponent>()
-                   .As<IProfilerComponent>()
-                   .AsSelf()
-                   .SingleInstance();
-
-            builder.RegisterType<BinaryManager>()
-                   .AsSelf()
                    .SingleInstance();
 
             // SaaS
@@ -112,17 +103,6 @@ namespace InfinniPlatform.Core.IoC
                    .SingleInstance();
 
             builder.RegisterType<UploadApi>()
-                   .AsSelf()
-                   .SingleInstance();
-
-            // AuthApi
-
-            builder.RegisterType<AuthApi>()
-                   .As<IAuthApi>()
-                   .AsSelf()
-                   .SingleInstance();
-
-            builder.RegisterType<RestApi.Auth.AuthApi>()
                    .AsSelf()
                    .SingleInstance();
 

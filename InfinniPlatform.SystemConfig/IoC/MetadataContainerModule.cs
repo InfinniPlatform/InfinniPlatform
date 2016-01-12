@@ -1,6 +1,5 @@
 ﻿using InfinniPlatform.Core.ContextComponents;
 using InfinniPlatform.Core.Hosting;
-using InfinniPlatform.Core.Modules;
 using InfinniPlatform.Sdk.ContextComponents;
 using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.Environment.Metadata;
@@ -27,16 +26,8 @@ namespace InfinniPlatform.SystemConfig.IoC
                    .As<IConfigurationObjectBuilder>()
                    .SingleInstance();
 
-            builder.RegisterType<ConfigurationMediatorComponent>()
-                   .As<IConfigurationMediatorComponent>()
-                   .SingleInstance();
-
             builder.RegisterType<ScriptConfiguration>()
                    .As<IScriptConfiguration>()
-                   .SingleInstance();
-
-            builder.RegisterType<CrossConfigSearchComponent>()
-                   .As<ICrossConfigSearchComponent>()
                    .SingleInstance();
 
             builder.RegisterType<CrossConfigSearcher>()

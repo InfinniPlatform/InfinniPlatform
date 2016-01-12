@@ -6,12 +6,8 @@ using InfinniPlatform.Core.ContextComponents;
 using InfinniPlatform.Core.Index.SearchOptions;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.RestApi.DataApi;
-using InfinniPlatform.ElasticSearch.Filters;
-using InfinniPlatform.ElasticSearch.QueryLanguage;
-using InfinniPlatform.Sdk;
+using InfinniPlatform.Core.SearchOptions.Builders;
 using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Index;
 using InfinniPlatform.Sdk.Environment.Metadata;
 using InfinniPlatform.SystemConfig.Utils;
 

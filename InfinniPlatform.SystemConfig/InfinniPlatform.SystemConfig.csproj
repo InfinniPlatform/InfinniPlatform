@@ -71,7 +71,6 @@
     <Compile Include="ActionUnits\Registers\ActionUnitCreateRegisterEntry.cs" />
     <Compile Include="ActionUnits\Documents\ActionUnitDeleteDocument.cs" />
     <Compile Include="ActionUnits\Registers\ActionUnitDeleteRegisterEntry.cs" />
-    <Compile Include="ActionUnits\Documents\ActionUnitGetByQuery.cs" />
     <Compile Include="ActionUnits\Registers\ActionUnitGetClosestDateTimeOfTotalCalculation.cs" />
     <Compile Include="ActionUnits\Documents\ActionUnitGetDocument.cs" />
     <Compile Include="ActionUnits\Documents\ActionUnitGetDocumentById.cs" />
@@ -100,6 +99,11 @@
     <Compile Include="Executors\ElasticSearchUserStorage.cs" />
     <Compile Include="Executors\GetDocumentExecutor.cs" />
     <Compile Include="Executors\SetDocumentExecutor.cs" />
+    <Compile Include="Migrations\CalculateTotalsForRegisters.cs" />
+    <Compile Include="Migrations\ConfigurationMigrationFactory.cs" />
+    <Compile Include="Migrations\IConfigurationMigration.cs" />
+    <Compile Include="Migrations\IConfigurationMigrationFactory.cs" />
+    <Compile Include="Migrations\MigrationParameter.cs" />
     <Compile Include="StartupInitializers\FileHistoryHelper.cs" />
     <Compile Include="StartupInitializers\IStartupInitializer.cs" />
     <Compile Include="StartupInitializers\PackageJsonConfigurationInstaller.cs" />
@@ -152,6 +156,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="StateMachine\WorkflowTypes.cs" />
     <Compile Include="SystemInfo\SystemInfoProvider.cs" />
     <Compile Include="UserStorage\ApplicationUserStoreCache.cs" />
     <Compile Include="UserStorage\ApplicationUserStorePersistentStorage.cs" />

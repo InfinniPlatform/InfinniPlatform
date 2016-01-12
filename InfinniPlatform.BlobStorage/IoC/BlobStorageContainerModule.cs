@@ -1,7 +1,5 @@
-﻿using InfinniPlatform.Core.ContextComponents;
-using InfinniPlatform.Core.Factories;
-using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Environment.Binary;
+﻿using InfinniPlatform.Sdk.Environment.Binary;
+using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.BlobStorage.IoC
@@ -10,16 +8,12 @@ namespace InfinniPlatform.BlobStorage.IoC
     {
         public void Load(IContainerBuilder builder)
         {
-            builder.RegisterType<FileSystemBlobStorageFactory>()
-                   .As<IBlobStorageFactory>()
+            builder.RegisterFactory(r => r.Resolve<IAppConfiguration>().GetSection<FileSystemBlobStorageSettings>(FileSystemBlobStorageSettings.SectionName))
+                   .As<FileSystemBlobStorageSettings>()
                    .SingleInstance();
 
-            builder.RegisterFactory(r => r.Resolve<IBlobStorageFactory>().CreateBlobStorage())
+            builder.RegisterType<FileSystemBlobStorage>()
                    .As<IBlobStorage>()
-                   .SingleInstance();
-
-            builder.RegisterType<BlobStorageComponent>()
-                   .As<IBlobStorageComponent>()
                    .SingleInstance();
         }
     }

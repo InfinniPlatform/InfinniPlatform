@@ -4,12 +4,12 @@ using System.Text.RegularExpressions;
 namespace InfinniPlatform.Core.Extensions
 {
     /// <summary>
-    ///     Содержит общие и часто используемые методы расширения.
+    /// Содержит общие и часто используемые методы расширения.
     /// </summary>
     public static class CommonExtensions
     {
         /// <summary>
-        ///     Выполнить действие над объектом с подавлением возможных исключений.
+        /// Выполнить действие над объектом с подавлением возможных исключений.
         /// </summary>
         /// <typeparam name="T">Тип объекта.</typeparam>
         /// <param name="target">Вызываемый объкт.</param>
@@ -32,53 +32,7 @@ namespace InfinniPlatform.Core.Extensions
         }
 
         /// <summary>
-        ///     Выполнить действие над объектом с подавлением возможных исключений.
-        /// </summary>
-        /// <typeparam name="T">Тип объекта.</typeparam>
-        /// <typeparam name="TResult">Тип результата.</typeparam>
-        /// <param name="target">Вызываемый объкт.</param>
-        /// <param name="action">Действие над объектом.</param>
-        /// <param name="result">Результат работы.</param>
-        /// <returns>Возвращает true, если действие выполнено без ошибок; иначе false.</returns>
-        public static bool ExecuteSilent<T, TResult>(this T target, Func<T, TResult> action, out TResult result)
-        {
-            var success = false;
-
-            result = default(TResult);
-
-            try
-            {
-                result = action(target);
-                success = true;
-            }
-            catch
-            {
-            }
-
-            return success;
-        }
-
-        /// <summary>
-        ///     Определяет, является ли значение числом.
-        /// </summary>
-        public static bool IsNumber(this object target)
-        {
-            return (target != null)
-                   && (target is byte
-                       || target is sbyte
-                       || target is short
-                       || target is ushort
-                       || target is int
-                       || target is uint
-                       || target is long
-                       || target is ulong
-                       || target is float
-                       || target is double
-                       || target is decimal);
-        }
-
-        /// <summary>
-        ///     Преобразует строку в перечисление заданного типа.
+        /// Преобразует строку в перечисление заданного типа.
         /// </summary>
         public static TEnum ToEnum<TEnum>(this string target, TEnum defaultValue = default(TEnum)) where TEnum : struct
         {
@@ -93,7 +47,7 @@ namespace InfinniPlatform.Core.Extensions
         }
 
         /// <summary>
-        ///     Проверяет, содержится ли подстрока в строке.
+        /// Проверяет, содержится ли подстрока в строке.
         /// </summary>
         public static bool Contains(this string target, string value, StringComparison comparisonType)
         {
@@ -101,10 +55,9 @@ namespace InfinniPlatform.Core.Extensions
         }
 
         /// <summary>
-        ///     Заменяет в строке одну подстроку на другую.
+        /// Заменяет в строке одну подстроку на другую.
         /// </summary>
-        public static string Replace(this string target, string oldValue, string newValue, bool matchCase = false,
-            bool wholeWord = false)
+        public static string Replace(this string target, string oldValue, string newValue, bool matchCase = false, bool wholeWord = false)
         {
             if (!string.IsNullOrEmpty(target) && !string.IsNullOrEmpty(oldValue))
             {
@@ -121,8 +74,7 @@ namespace InfinniPlatform.Core.Extensions
                         var targetCopy = target;
                         var evaluator = new MatchEvaluator(match => WholeWordEvaluator(match, targetCopy, newValue));
 
-                        target = Regex.Replace(target, oldValue, evaluator,
-                            matchCase ? RegexOptions.None : RegexOptions.IgnoreCase);
+                        target = Regex.Replace(target, oldValue, evaluator, matchCase ? RegexOptions.None : RegexOptions.IgnoreCase);
                     }
                     else
                     {
@@ -135,10 +87,9 @@ namespace InfinniPlatform.Core.Extensions
         }
 
         /// <summary>
-        ///     Возвращает индекс первого вхождения подстроки в строку.
+        /// Возвращает индекс первого вхождения подстроки в строку.
         /// </summary>
-        public static int FindNextIndexOf(this string target, string value, int startIndex = 0, bool matchCase = false,
-            bool wholeWord = false)
+        public static int FindNextIndexOf(this string target, string value, int startIndex = 0, bool matchCase = false, bool wholeWord = false)
         {
             var index = -1;
 
@@ -171,10 +122,9 @@ namespace InfinniPlatform.Core.Extensions
         }
 
         /// <summary>
-        ///     Возвращает индекс последнего вхождения подстроки в строку.
+        /// Возвращает индекс последнего вхождения подстроки в строку.
         /// </summary>
-        public static int FindPreviousIndexOf(this string target, string value, int startIndex = 0,
-            bool matchCase = false, bool wholeWord = false)
+        public static int FindPreviousIndexOf(this string target, string value, int startIndex = 0, bool matchCase = false, bool wholeWord = false)
         {
             var index = -1;
 
@@ -228,9 +178,8 @@ namespace InfinniPlatform.Core.Extensions
 
             return (match.Length == target.Length)
                    || ((match.Index == 0 || !char.IsLetterOrDigit(target[match.Index - 1]))
-                       &&
-                       (match.Index + match.Length == target.Length ||
-                        !char.IsLetterOrDigit(target[match.Index + match.Length])));
+                       && (match.Index + match.Length == target.Length ||
+                           !char.IsLetterOrDigit(target[match.Index + match.Length])));
         }
     }
 }

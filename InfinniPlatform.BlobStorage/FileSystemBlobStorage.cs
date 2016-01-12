@@ -29,14 +29,14 @@ namespace InfinniPlatform.BlobStorage
     /// судить о том, какое распределенное хранилище (из тех, которые не имеют FUSE) подойдет
     /// лучше других.
     /// </returns>
-    public sealed class FileSystemBlobStorage : IBlobStorage
+    internal sealed class FileSystemBlobStorage : IBlobStorage
     {
         private const string LogComponentName = "FileSystemBlobStorage";
 
 
-        public FileSystemBlobStorage(string baseDirectory, IPerformanceLog performanceLog)
+        public FileSystemBlobStorage(FileSystemBlobStorageSettings settings, IPerformanceLog performanceLog)
         {
-            _baseDirectory = baseDirectory;
+            _baseDirectory = settings.BaseDirectory;
             _performanceLog = performanceLog;
 
             // TODO: Refactor

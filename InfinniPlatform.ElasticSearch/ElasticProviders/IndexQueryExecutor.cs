@@ -65,9 +65,7 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
         /// <returns>Количество объектов, удовлетворяющих условиям поиска</returns>
         public long CalculateCountQuery(SearchModel searchModel)
         {
-            var indexName = _indexNames.FirstOrDefault();
-
-            var tenantId = _tenantProvider.GetTenantId(indexName);
+            var tenantId = _tenantProvider.GetTenantId();
 
             if (tenantId != AuthorizationStorageExtensions.AnonymousUser)
             {

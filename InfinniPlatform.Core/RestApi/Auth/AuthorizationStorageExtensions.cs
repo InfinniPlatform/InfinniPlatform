@@ -8,18 +8,15 @@
         public const string UserRoleStore = "UserRoleStore";
         public const string RoleStore = "RoleStore";
         public const string ClaimStore = "ClaimStore";
-        public const string AclStore = "AclStore";
-        public const string VersionStore = "VersionStore";
         public const string AdminRole = "System administrator";
-        public const string AdminUser = "Admin";
         public const string Default = "Default";
-        public const string FilterRoles = "FilterRolesScript";
+        public const string AnonimousUserCredentials = "AnonimousCredentials";
+        public const string CustomCredentials = "CustomCredentials";
+
+        public const string SystemTenant = "system";
         public const string AnonymousUser = "anonimous";
         public const string UnknownUser = "unknown";
-        public const string AnonimousUserCredentials = "AnonimousCredentials";
-        public const string CurrentUserCredentials = "UserCredentials";
-        public const string CustomCredentials = "CustomCredentials";
-        public const string SystemTenant = "system";
+
         public const string TenantId = "tenantid";
         public const string DefaultTenantId = "defaulttenantid";
     }
