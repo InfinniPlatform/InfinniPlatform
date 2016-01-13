@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 
 using InfinniPlatform.Sdk.Services;
 
@@ -7,7 +7,7 @@ using Nancy;
 namespace InfinniPlatform.Owin.Services
 {
     /// <summary>
-    /// Регистратор правил маршрутизации запросов.
+    /// Р РµРіРёСЃС‚СЂР°С‚РѕСЂ РїСЂР°РІРёР» РјР°СЂС€СЂСѓС‚РёР·Р°С†РёРё Р·Р°РїСЂРѕСЃРѕРІ.
     /// </summary>
     internal sealed class HttpRouteBuilder : IHttpRouteBuilder
     {

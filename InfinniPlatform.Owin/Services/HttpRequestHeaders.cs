@@ -1,4 +1,4 @@
-using System.Collections;
+п»їusing System.Collections;
 using System.Collections.Generic;
 
 using InfinniPlatform.Sdk.Services;
@@ -8,7 +8,7 @@ using Nancy;
 namespace InfinniPlatform.Owin.Services
 {
     /// <summary>
-    /// Заголовок запроса.
+    /// Р—Р°РіРѕР»РѕРІРѕРє Р·Р°РїСЂРѕСЃР°.
     /// </summary>
     internal sealed class HttpRequestHeaders : IHttpRequestHeaders
     {

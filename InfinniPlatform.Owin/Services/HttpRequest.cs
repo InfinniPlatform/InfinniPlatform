@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,7 +12,7 @@ using Nancy;
 namespace InfinniPlatform.Owin.Services
 {
     /// <summary>
-    /// Запрос.
+    /// Р—Р°РїСЂРѕСЃ.
     /// </summary>
     internal sealed class HttpRequest : IHttpRequest
     {

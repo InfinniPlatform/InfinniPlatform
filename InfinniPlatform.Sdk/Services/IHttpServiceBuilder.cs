@@ -1,44 +1,44 @@
-using System;
+п»їusing System;
 
 namespace InfinniPlatform.Sdk.Services
 {
     /// <summary>
-    /// Регистратор обработчиков запросов сервиса.
+    /// Р РµРіРёСЃС‚СЂР°С‚РѕСЂ РѕР±СЂР°Р±РѕС‚С‡РёРєРѕРІ Р·Р°РїСЂРѕСЃРѕРІ СЃРµСЂРІРёСЃР°.
     /// </summary>
     public interface IHttpServiceBuilder
     {
         /// <summary>
-        /// Правила обработки GET-запросов.
+        /// РџСЂР°РІРёР»Р° РѕР±СЂР°Р±РѕС‚РєРё GET-Р·Р°РїСЂРѕСЃРѕРІ.
         /// </summary>
         IHttpRouteBuilder Get { get; }
 
         /// <summary>
-        /// Правила обработки POST-запросов.
+        /// РџСЂР°РІРёР»Р° РѕР±СЂР°Р±РѕС‚РєРё POST-Р·Р°РїСЂРѕСЃРѕРІ.
         /// </summary>
         IHttpRouteBuilder Post { get; }
 
         /// <summary>
-        /// Правила обработки PUT-запросов.
+        /// РџСЂР°РІРёР»Р° РѕР±СЂР°Р±РѕС‚РєРё PUT-Р·Р°РїСЂРѕСЃРѕРІ.
         /// </summary>
         IHttpRouteBuilder Put { get; }
 
         /// <summary>
-        /// Правила обработки PATCH-запросов.
+        /// РџСЂР°РІРёР»Р° РѕР±СЂР°Р±РѕС‚РєРё PATCH-Р·Р°РїСЂРѕСЃРѕРІ.
         /// </summary>
         IHttpRouteBuilder Patch { get; }
 
         /// <summary>
-        /// Правила обработки DELETE-запросов.
+        /// РџСЂР°РІРёР»Р° РѕР±СЂР°Р±РѕС‚РєРё DELETE-Р·Р°РїСЂРѕСЃРѕРІ.
         /// </summary>
         IHttpRouteBuilder Delete { get; }
 
         /// <summary>
-        /// Предобработчик запросов.
+        /// РџСЂРµРґРѕР±СЂР°Р±РѕС‚С‡РёРє Р·Р°РїСЂРѕСЃРѕРІ.
         /// </summary>
         Action<IHttpRequest> OnBefore { get; set; }
 
         /// <summary>
-        /// Постобработчик запросов.
+        /// РџРѕСЃС‚РѕР±СЂР°Р±РѕС‚С‡РёРє Р·Р°РїСЂРѕСЃРѕРІ.
         /// </summary>
         Action<IHttpRequest, IHttpResponse> OnAfter { get; set; }
     }

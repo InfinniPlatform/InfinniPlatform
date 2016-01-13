@@ -1,17 +1,17 @@
-using System;
+п»їusing System;
 
 namespace InfinniPlatform.Sdk.Services
 {
     /// <summary>
-    /// Регистратор правил маршрутизации запросов.
+    /// Р РµРіРёСЃС‚СЂР°С‚РѕСЂ РїСЂР°РІРёР» РјР°СЂС€СЂСѓС‚РёР·Р°С†РёРё Р·Р°РїСЂРѕСЃРѕРІ.
     /// </summary>
     public interface IHttpRouteBuilder
     {
         /// <summary>
-        /// Устанавливает обработчик запросов.
+        /// РЈСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ РѕР±СЂР°Р±РѕС‚С‡РёРє Р·Р°РїСЂРѕСЃРѕРІ.
         /// </summary>
-        /// <param name="path">Путь запроса.</param>
-        /// <returns>Обработчик запроса.</returns>
+        /// <param name="path">РџСѓС‚СЊ Р·Р°РїСЂРѕСЃР°.</param>
+        /// <returns>РћР±СЂР°Р±РѕС‚С‡РёРє Р·Р°РїСЂРѕСЃР°.</returns>
         Func<IHttpRequest, IHttpResponse> this[string path] { set; }
     }
 }

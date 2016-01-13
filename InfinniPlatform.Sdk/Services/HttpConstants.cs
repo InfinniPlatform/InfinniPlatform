@@ -1,14 +1,14 @@
-namespace InfinniPlatform.Sdk.Services
+п»їnamespace InfinniPlatform.Sdk.Services
 {
     public static class HttpConstants
     {
         /// <summary>
-        /// Тип содержимого 'text/plain'.
+        /// РўРёРї СЃРѕРґРµСЂР¶РёРјРѕРіРѕ 'text/plain'.
         /// </summary>
         public const string TextContentType = "text/plain";
 
         /// <summary>
-        /// Тип содержимого 'application/json'.
+        /// РўРёРї СЃРѕРґРµСЂР¶РёРјРѕРіРѕ 'application/json'.
         /// </summary>
         public const string JsonContentType = "application/json";
     }

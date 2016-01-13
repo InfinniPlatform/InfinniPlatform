@@ -1,35 +1,35 @@
-using System.Collections.Generic;
+п»їusing System.Collections.Generic;
 
 namespace InfinniPlatform.Sdk.Services
 {
     /// <summary>
-    /// Заголовок запроса.
+    /// Р—Р°РіРѕР»РѕРІРѕРє Р·Р°РїСЂРѕСЃР°.
     /// </summary>
     public interface IHttpRequestHeaders : IEnumerable<KeyValuePair<string, IEnumerable<string>>>
     {
         /// <summary>
-        /// Список ключей заголовка.
+        /// РЎРїРёСЃРѕРє РєР»СЋС‡РµР№ Р·Р°РіРѕР»РѕРІРєР°.
         /// </summary>
         IEnumerable<string> Keys { get; }
 
         /// <summary>
-        /// Список значений заголовка.
+        /// РЎРїРёСЃРѕРє Р·РЅР°С‡РµРЅРёР№ Р·Р°РіРѕР»РѕРІРєР°.
         /// </summary>
         IEnumerable<IEnumerable<string>> Values { get; }
 
         /// <summary>
-        /// Возвращает значение заголовка по ключу.
+        /// Р’РѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ Р·Р°РіРѕР»РѕРІРєР° РїРѕ РєР»СЋС‡Сѓ.
         /// </summary>
         IEnumerable<string> this[string key] { get; }
 
 
         /// <summary>
-        /// Тип содержимого тела запроса.
+        /// РўРёРї СЃРѕРґРµСЂР¶РёРјРѕРіРѕ С‚РµР»Р° Р·Р°РїСЂРѕСЃР°.
         /// </summary>
         string ContentType { get; }
 
         /// <summary>
-        /// Размер тела запроса.
+        /// Р Р°Р·РјРµСЂ С‚РµР»Р° Р·Р°РїСЂРѕСЃР°.
         /// </summary>
         long ContentLength { get; }
     }

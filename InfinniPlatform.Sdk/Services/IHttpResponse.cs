@@ -1,36 +1,36 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.IO;
 
 namespace InfinniPlatform.Sdk.Services
 {
     /// <summary>
-    /// Ответ.
+    /// РћС‚РІРµС‚.
     /// </summary>
     public interface IHttpResponse
     {
         /// <summary>
-        /// Код состояния.
+        /// РљРѕРґ СЃРѕСЃС‚РѕСЏРЅРёСЏ.
         /// </summary>
         int StatusCode { get; set; }
 
         /// <summary>
-        /// Описание состояния.
+        /// РћРїРёСЃР°РЅРёРµ СЃРѕСЃС‚РѕСЏРЅРёСЏ.
         /// </summary>
         string ReasonPhrase { get; set; }
 
         /// <summary>
-        /// Заголовок ответа.
+        /// Р—Р°РіРѕР»РѕРІРѕРє РѕС‚РІРµС‚Р°.
         /// </summary>
         IDictionary<string, string> Headers { get; set; }
 
         /// <summary>
-        /// Тип содержимого тела ответа.
+        /// РўРёРї СЃРѕРґРµСЂР¶РёРјРѕРіРѕ С‚РµР»Р° РѕС‚РІРµС‚Р°.
         /// </summary>
         string ContentType { get; set; }
 
         /// <summary>
-        /// Содержимое тела ответа.
+        /// РЎРѕРґРµСЂР¶РёРјРѕРµ С‚РµР»Р° РѕС‚РІРµС‚Р°.
         /// </summary>
         Action<Stream> Content { get; set; }
     }

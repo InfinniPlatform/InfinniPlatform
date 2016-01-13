@@ -1,4 +1,4 @@
-namespace InfinniPlatform.Sdk.Services
+﻿namespace InfinniPlatform.Sdk.Services
 {
     public sealed class NotFoundHttpResponse : HttpResponse
     {

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+п»їusing System.Collections.Generic;
 
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Sdk.Services;
@@ -10,7 +10,7 @@ using Owin;
 namespace InfinniPlatform.Owin.Services
 {
     /// <summary>
-    /// Модуль хостинга для обработки запросов приложения.
+    /// РњРѕРґСѓР»СЊ С…РѕСЃС‚РёРЅРіР° РґР»СЏ РѕР±СЂР°Р±РѕС‚РєРё Р·Р°РїСЂРѕСЃРѕРІ РїСЂРёР»РѕР¶РµРЅРёСЏ.
     /// </summary>
     public sealed class ApplicationOwinHostingModule : IOwinHostingModule
     {

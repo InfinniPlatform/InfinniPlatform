@@ -1,29 +1,29 @@
-using System.IO;
+п»їusing System.IO;
 
 namespace InfinniPlatform.Sdk.Services
 {
     /// <summary>
-    /// Информация о файле запроса.
+    /// РРЅС„РѕСЂРјР°С†РёСЏ Рѕ С„Р°Р№Р»Рµ Р·Р°РїСЂРѕСЃР°.
     /// </summary>
     public interface IHttpRequestFile
     {
         /// <summary>
-        /// Тип содержимого файла.
+        /// РўРёРї СЃРѕРґРµСЂР¶РёРјРѕРіРѕ С„Р°Р№Р»Р°.
         /// </summary>
         string ContentType { get; }
 
         /// <summary>
-        /// Наименование файла.
+        /// РќР°РёРјРµРЅРѕРІР°РЅРёРµ С„Р°Р№Р»Р°.
         /// </summary>
         string Name { get; }
 
         /// <summary>
-        /// Элемент формы.
+        /// Р­Р»РµРјРµРЅС‚ С„РѕСЂРјС‹.
         /// </summary>
         string Key { get; }
 
         /// <summary>
-        /// Поток с файлом.
+        /// РџРѕС‚РѕРє СЃ С„Р°Р№Р»РѕРј.
         /// </summary>
         Stream Value { get; }
     }

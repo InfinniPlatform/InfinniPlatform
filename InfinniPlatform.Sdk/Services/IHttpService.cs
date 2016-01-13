@@ -1,14 +1,14 @@
-namespace InfinniPlatform.Sdk.Services
+п»їnamespace InfinniPlatform.Sdk.Services
 {
     /// <summary>
-    /// Модуль регистрации обработчиков запросов сервиса.
+    /// РњРѕРґСѓР»СЊ СЂРµРіРёСЃС‚СЂР°С†РёРё РѕР±СЂР°Р±РѕС‚С‡РёРєРѕРІ Р·Р°РїСЂРѕСЃРѕРІ СЃРµСЂРІРёСЃР°.
     /// </summary>
     public interface IHttpService
     {
         /// <summary>
-        /// Загружает модуль.
+        /// Р—Р°РіСЂСѓР¶Р°РµС‚ РјРѕРґСѓР»СЊ.
         /// </summary>
-        /// <param name="builder">Регистратор обработчиков запросов.</param>
+        /// <param name="builder">Р РµРіРёСЃС‚СЂР°С‚РѕСЂ РѕР±СЂР°Р±РѕС‚С‡РёРєРѕРІ Р·Р°РїСЂРѕСЃРѕРІ.</param>
         void Load(IHttpServiceBuilder builder);
     }
 }

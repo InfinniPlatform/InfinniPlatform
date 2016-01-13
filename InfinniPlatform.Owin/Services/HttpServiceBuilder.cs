@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 
 using InfinniPlatform.Sdk.Services;
 
@@ -7,7 +7,7 @@ using Nancy;
 namespace InfinniPlatform.Owin.Services
 {
     /// <summary>
-    /// Регистратор обработчиков запросов сервиса.
+    /// Р РµРіРёСЃС‚СЂР°С‚РѕСЂ РѕР±СЂР°Р±РѕС‚С‡РёРєРѕРІ Р·Р°РїСЂРѕСЃРѕРІ СЃРµСЂРІРёСЃР°.
     /// </summary>
     internal sealed class HttpServiceBuilder : IHttpServiceBuilder
     {

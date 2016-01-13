@@ -1,50 +1,50 @@
-using System.Collections.Generic;
+п»їusing System.Collections.Generic;
 using System.IO;
 
 namespace InfinniPlatform.Sdk.Services
 {
     /// <summary>
-    /// Запрос.
+    /// Р—Р°РїСЂРѕСЃ.
     /// </summary>
     public interface IHttpRequest
     {
         /// <summary>
-        /// Метод запроса.
+        /// РњРµС‚РѕРґ Р·Р°РїСЂРѕСЃР°.
         /// </summary>
         string Method { get; }
 
         /// <summary>
-        /// Путь запроса.
+        /// РџСѓС‚СЊ Р·Р°РїСЂРѕСЃР°.
         /// </summary>
         string Path { get; }
 
         /// <summary>
-        /// Заголовок запроса.
+        /// Р—Р°РіРѕР»РѕРІРѕРє Р·Р°РїСЂРѕСЃР°.
         /// </summary>
         IHttpRequestHeaders Headers { get; }
 
         /// <summary>
-        /// Параметры строки запроса.
+        /// РџР°СЂР°РјРµС‚СЂС‹ СЃС‚СЂРѕРєРё Р·Р°РїСЂРѕСЃР°.
         /// </summary>
         dynamic Parameters { get; }
 
         /// <summary>
-        /// Данные строки запроса.
+        /// Р”Р°РЅРЅС‹Рµ СЃС‚СЂРѕРєРё Р·Р°РїСЂРѕСЃР°.
         /// </summary>
         dynamic Query { get; }
 
         /// <summary>
-        /// Данные тела запроса.
+        /// Р”Р°РЅРЅС‹Рµ С‚РµР»Р° Р·Р°РїСЂРѕСЃР°.
         /// </summary>
         dynamic Form { get; }
 
         /// <summary>
-        /// Список файлов запроса.
+        /// РЎРїРёСЃРѕРє С„Р°Р№Р»РѕРІ Р·Р°РїСЂРѕСЃР°.
         /// </summary>
         IEnumerable<IHttpRequestFile> Files { get; }
 
         /// <summary>
-        /// Содержимое тела запроса.
+        /// РЎРѕРґРµСЂР¶РёРјРѕРµ С‚РµР»Р° Р·Р°РїСЂРѕСЃР°.
         /// </summary>
         Stream Content { get; }
     }
