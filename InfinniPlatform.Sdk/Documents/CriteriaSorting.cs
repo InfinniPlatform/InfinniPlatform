@@ -1,5 +1,8 @@
-﻿namespace InfinniPlatform.Sdk.Documents
+﻿using System;
+
+namespace InfinniPlatform.Sdk.Documents
 {
+    [Serializable]
     public sealed class CriteriaSorting
     {
         public CriteriaSorting(string propertyName, string sortingOrder)

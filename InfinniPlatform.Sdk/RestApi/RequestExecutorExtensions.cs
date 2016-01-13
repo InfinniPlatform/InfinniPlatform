@@ -9,7 +9,7 @@ namespace InfinniPlatform.Sdk.RestApi
 {
     public static class RequestExecutorExtensions
     {
-        public static string CreateQueryString(IEnumerable<FilterBuilder.CriteriaBuilder.CriteriaFilter> filter, int pageNumber, int pageSize, IEnumerable<CriteriaSorting> sorting)
+        public static string CreateQueryString(IEnumerable<CriteriaFilter> filter, int pageNumber, int pageSize, IEnumerable<CriteriaSorting> sorting)
         {
             var jsonFilterStrings = JsonConvert.SerializeObject(filter);
             var jsonSortingStrings = JsonConvert.SerializeObject(sorting);
@@ -17,16 +17,11 @@ namespace InfinniPlatform.Sdk.RestApi
             return $"filter={Uri.EscapeDataString(jsonFilterStrings)}&pageNumber={pageNumber}&pageSize={pageSize}&sorting={Uri.EscapeDataString(jsonSortingStrings)}";
         }
 
-        public static string CreateQueryStringCount(IEnumerable<FilterBuilder.CriteriaBuilder.CriteriaFilter> filter)
+        public static string CreateQueryStringCount(IEnumerable<CriteriaFilter> filter)
         {
             var jsonFilterStrings = JsonConvert.SerializeObject(filter);
 
             return $"$filter={Uri.EscapeUriString(jsonFilterStrings)}";
         }
-
-//        private static string EscapeServiceSymbols(this string uri)
-//        {
-//            return 
-//        }
     }
 }

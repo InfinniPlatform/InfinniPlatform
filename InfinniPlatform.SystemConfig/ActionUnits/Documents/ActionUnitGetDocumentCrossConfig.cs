@@ -1,25 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.SystemConfig.Utils;
 
 namespace InfinniPlatform.SystemConfig.ActionUnits.Documents
 {
     public sealed class ActionUnitGetDocumentCrossConfig
     {
-        public ActionUnitGetDocumentCrossConfig(DocumentExecutor documentExecutor)
+        public ActionUnitGetDocumentCrossConfig(IGetDocumentExecutor getDocumentExecutor)
         {
-            _documentExecutor = documentExecutor;
+            _getDocumentExecutor = getDocumentExecutor;
         }
 
-        private readonly DocumentExecutor _documentExecutor;
+        private readonly IGetDocumentExecutor _getDocumentExecutor;
 
         public void Action(IApplyContext target)
         {
-            IEnumerable<object> filter = DynamicWrapperExtensions.ToEnumerable(target.Item.Filter);
-            IEnumerable<object> sorting = DynamicWrapperExtensions.ToEnumerable(target.Item.Sorting);
             IEnumerable<object> configs = DynamicWrapperExtensions.ToEnumerable(target.Item.Configurations);
             IEnumerable<object> documents = DynamicWrapperExtensions.ToEnumerable(target.Item.Documents);
 
@@ -29,14 +27,13 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Documents
             {
                 foreach (string document in documents)
                 {
-                    IEnumerable<dynamic> completeDocuments = _documentExecutor.GetCompleteDocuments(
-                        config,
-                        document,
-                        Convert.ToInt32(target.Item.PageNumber),
-                        Convert.ToInt32(target.Item.PageSize),
-                        filter,
-                        sorting,
-                        target.Item.IgnoreResolve);
+                    IEnumerable<dynamic> completeDocuments = _getDocumentExecutor.GetDocument(config,
+                                                                                              document,
+                                                                                              Convert.ToInt32(target.Item.PageNumber),
+                                                                                              Convert.ToInt32(target.Item.PageSize),
+                                                                                              target.Item.Filter,
+                                                                                              target.Item.Sorting,
+                                                                                              target.Item.IgnoreResolve);
 
                     resultDocuments.AddRange(completeDocuments);
                 }

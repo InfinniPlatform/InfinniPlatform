@@ -95,7 +95,6 @@
     <Compile Include="Metadata\IConfigurationObjectBuilder.cs" />
     <Compile Include="Metadata\IMetadataComponent.cs" />
     <Compile Include="Metadata\IMetadataConfigurationProvider.cs" />
-    <Compile Include="ContextComponents\InprocessDocumentComponent.cs" />
     <Compile Include="ContextComponents\LogComponent.cs" />
     <Compile Include="ContextComponents\MetadataComponent.cs" />
     <Compile Include="ContextComponents\PrintViewComponent.cs" />

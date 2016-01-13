@@ -38,7 +38,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
             }
 
             var filter = nameValueCollection.Get("filter");
-            var criteriaList = JsonConvert.DeserializeObject<IEnumerable<FilterBuilder.CriteriaBuilder.CriteriaFilter>>(filter);
+            var criteriaList = JsonConvert.DeserializeObject<IEnumerable<CriteriaFilter>>(filter);
 
             var sorting = nameValueCollection.Get("sorting");
             var sortingList = JsonConvert.DeserializeObject<IEnumerable<CriteriaSorting>>(sorting);

@@ -109,12 +109,6 @@ namespace InfinniPlatform.Core.IoC
                    .AsSelf()
                    .SingleInstance();
 
-            // ХЗ
-
-            builder.RegisterType<InprocessDocumentComponent>()
-                   .AsSelf()
-                   .SingleInstance();
-
             // Fury
 
             builder.RegisterType<RestQueryApi>()

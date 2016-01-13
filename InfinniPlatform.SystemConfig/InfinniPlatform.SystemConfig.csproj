@@ -161,12 +161,12 @@
     <Compile Include="UserStorage\ApplicationUserStoreCache.cs" />
     <Compile Include="UserStorage\ApplicationUserStorePersistentStorage.cs" />
     <Compile Include="UserStorage\UserStorageSettings.cs" />
-    <Compile Include="Utils\DocumentExecutor.cs" />
     <Compile Include="Utils\DocumentLink.cs" />
     <Compile Include="Utils\DocumentLinkMap.cs" />
     <Compile Include="Utils\IReferenceResolver.cs" />
     <Compile Include="Utils\MetadataOperator.cs" />
     <Compile Include="Utils\ReferenceResolver.cs" />
+    <Compile Include="Utils\SortingPropertiesExtractor.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

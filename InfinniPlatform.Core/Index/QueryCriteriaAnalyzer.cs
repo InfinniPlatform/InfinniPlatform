@@ -3,6 +3,7 @@ using System.Linq;
 
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Schema;
+using InfinniPlatform.Sdk.Documents;
 
 namespace InfinniPlatform.Core.Index
 {
@@ -20,21 +21,23 @@ namespace InfinniPlatform.Core.Index
         /// <param name="schema">Схема данных документа, к которому выполняется запрос</param>
         public QueryCriteriaAnalyzer(IMetadataComponent metadataComponent, dynamic schema)
         {
-            var metadataIterator = new SchemaIterator(new SchemaProvider(metadataComponent));
-            metadataIterator.OnObjectProperty = schemaObject =>
-            {
-                if (schemaObject.IsResolve)
-                {
-                    _resolveProperties.Add(schemaObject);
-                }
-            };
-            metadataIterator.OnArrayProperty = schemaObject =>
-            {
-                if (schemaObject.IsDocumentArray)
-                {
-                    _resolveProperties.Add(schemaObject);
-                }
-            };
+            var metadataIterator = new SchemaIterator(new SchemaProvider(metadataComponent))
+                                   {
+                                       OnObjectProperty = schemaObject =>
+                                                          {
+                                                              if (schemaObject.IsResolve)
+                                                              {
+                                                                  _resolveProperties.Add(schemaObject);
+                                                              }
+                                                          },
+                                       OnArrayProperty = schemaObject =>
+                                                         {
+                                                             if (schemaObject.IsDocumentArray)
+                                                             {
+                                                                 _resolveProperties.Add(schemaObject);
+                                                             }
+                                                         }
+                                   };
             metadataIterator.ProcessSchema(schema);
         }
 
@@ -43,18 +46,9 @@ namespace InfinniPlatform.Core.Index
         /// </summary>
         /// <param name="filter">Список критериев запроса</param>
         /// <returns>Список критериев</returns>
-        public IEnumerable<dynamic> GetBeforeResolveCriteriaList(IEnumerable<dynamic> filter)
+        public IEnumerable<CriteriaFilter> GetBeforeResolveCriteriaList(IEnumerable<CriteriaFilter> filter)
         {
-            var result = new List<dynamic>();
-            foreach (var criteria in filter)
-            {
-                if (_resolveProperties.Any(r => ((string) criteria.Property).StartsWith(r.GetFullPath())))
-                {
-                    continue;
-                }
-                result.Add(criteria);
-            }
-            return result;
+            return filter.Where(criteria => !_resolveProperties.Any(r => criteria.Property.StartsWith(r.GetFullPath())));
         }
 
         /// <summary>
@@ -62,11 +56,12 @@ namespace InfinniPlatform.Core.Index
         /// </summary>
         /// <param name="filter">Список критериев запроса</param>
         /// <returns>Список критериев</returns>
-        public IEnumerable<dynamic> GetAfterResolveCriteriaList(IEnumerable<dynamic> filter)
+        public IEnumerable<CriteriaFilter> GetAfterResolveCriteriaList(IEnumerable<CriteriaFilter> filter)
         {
             var filtersArray = filter.ToArray();
+            var beforeResolveCriteriaList = GetBeforeResolveCriteriaList(filtersArray);
 
-            return filtersArray.Except(GetBeforeResolveCriteriaList(filtersArray));
+            return filtersArray.Except(beforeResolveCriteriaList);
         }
     }
 }

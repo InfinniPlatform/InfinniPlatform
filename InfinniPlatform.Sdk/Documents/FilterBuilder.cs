@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Newtonsoft.Json;
-
 namespace InfinniPlatform.Sdk.Documents
 {
     /// <summary>
@@ -13,10 +11,10 @@ namespace InfinniPlatform.Sdk.Documents
     {
         public FilterBuilder()
         {
-            _criteriaList = new List<CriteriaBuilder.CriteriaFilter>();
+            _criteriaList = new List<CriteriaFilter>();
         }
 
-        private readonly IList<CriteriaBuilder.CriteriaFilter> _criteriaList;
+        private readonly IList<CriteriaFilter> _criteriaList;
 
         public FilterBuilder AddCriteria(Action<CriteriaBuilder> criteria)
         {
@@ -29,7 +27,7 @@ namespace InfinniPlatform.Sdk.Documents
             return this;
         }
 
-        public IEnumerable<CriteriaBuilder.CriteriaFilter> GetFilter()
+        public IEnumerable<CriteriaFilter> GetFilter()
         {
             return _criteriaList;
         }
@@ -202,30 +200,6 @@ namespace InfinniPlatform.Sdk.Documents
             internal CriteriaFilter GetCriteria()
             {
                 return new CriteriaFilter(_property, _value, _criteriaType);
-            }
-
-            [Serializable]
-            public sealed class CriteriaFilter
-            {
-                public CriteriaFilter(string property, object value, CriteriaType criteriaType)
-                {
-                    Property = property;
-                    Value = value;
-                    CriteriaType = criteriaType;
-                }
-
-                public string Property { get; set; }
-
-                public object Value { get; set; }
-
-                public CriteriaType CriteriaType { get; set; }
-
-                public string ToJsonString()
-                {
-                    var serializeObject = JsonConvert.SerializeObject(new CriteriaFilter(Property, Value, CriteriaType));
-                    
-                    return serializeObject;
-                }
             }
         }
     }
