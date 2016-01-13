@@ -34,7 +34,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
             var nameValueCollection = new NameValueCollection();
             if (context.Request.QueryString.HasValue)
             {
-                nameValueCollection = HttpUtility.ParseQueryString(HttpUtility.UrlDecode(context.Request.QueryString.Value));
+                nameValueCollection = HttpUtility.ParseQueryString(context.Request.QueryString.Value);
             }
 
             var filter = nameValueCollection.Get("filter");

@@ -6,12 +6,8 @@ using InfinniPlatform.Core.ContextComponents;
 using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.RestApi.DataApi;
-using InfinniPlatform.Sdk;
 using InfinniPlatform.Sdk.Documents;
-using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.SystemConfig.Utils;
-
-using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.SystemConfig.Executors
 {
@@ -32,9 +28,9 @@ namespace InfinniPlatform.SystemConfig.Executors
 
         private readonly IConfigurationObjectBuilder _configurationObjectBuilder;
         private readonly InprocessDocumentComponent _documentComponent;
-        private readonly IReferenceResolver _referenceResolver;
         private readonly DocumentExecutor _documentExecutor;
         private readonly IMetadataComponent _metadataComponent;
+        private readonly IReferenceResolver _referenceResolver;
 
         public dynamic GetDocument(string id)
         {
@@ -77,7 +73,7 @@ namespace InfinniPlatform.SystemConfig.Executors
             return GetNumberOfDocuments(configurationName, documentType, filterBuilder.GetFilter());
         }
 
-        public IEnumerable<object> GetDocument(string configurationName, string documentType, dynamic filter, int pageNumber, int pageSize, IEnumerable<dynamic> ignoreResolve = null, dynamic sorting = null)
+        public IEnumerable<object> GetDocument(string configurationName, string documentType, IEnumerable<FilterBuilder.CriteriaBuilder.CriteriaFilter> filter, int pageNumber, int pageSize, IEnumerable<dynamic> ignoreResolve = null, IEnumerable<CriteriaSorting> sorting = null)
         {
             var documentProvider = _documentComponent.GetDocumentProvider(configurationName, documentType);
 
@@ -93,7 +89,7 @@ namespace InfinniPlatform.SystemConfig.Executors
 
                 dynamic schema = metadataConfiguration.GetSchemaVersion(documentType);
 
-                IEnumerable<dynamic> sortingFields = null;
+                CriteriaSorting[] sortingFields = null;
 
                 if (schema != null)
                 {
@@ -101,16 +97,16 @@ namespace InfinniPlatform.SystemConfig.Executors
                     sortingFields = ExtractSortingProperties(string.Empty, schema.Properties, _configurationObjectBuilder);
                 }
 
-                if (sorting != null && sorting.Count > 0)
+                if (sorting != null && sorting.Any())
                 {
                     // Поля сортировки заданы в запросе. 
                     // Берем только те поля, которые разрешены в соответствии с метаданными
 
-                    var filteredSortingFields = new List<object>();
+                    var filteredSortingFields = new List<CriteriaSorting>();
 
-                    foreach (var sortingProperty in sorting.ToEnumerable())
+                    foreach (var sortingProperty in sorting)
                     {
-                        if (sortingFields.ToEnumerable().Any(validProperty => validProperty.PropertyName == sortingProperty.PropertyName))
+                        if (sortingFields.Any(validProperty => validProperty.PropertyName == sortingProperty.PropertyName))
                         {
                             filteredSortingFields.Add(sortingProperty);
                         }
@@ -160,9 +156,9 @@ namespace InfinniPlatform.SystemConfig.Executors
             return GetDocument(configurationName, documentType, filterBuilder.GetFilter(), pageNumber, pageSize, ignoreResolve, sortingBuilder.GetSorting());
         }
 
-        private static IEnumerable<object> ExtractSortingProperties(string rootName, dynamic properties, IConfigurationObjectBuilder configurationObjectBuilder)
+        private static CriteriaSorting[] ExtractSortingProperties(string rootName, dynamic properties, IConfigurationObjectBuilder configurationObjectBuilder)
         {
-            var sortingProperties = new List<object>();
+            var sortingProperties = new List<CriteriaSorting>();
 
             if (properties != null)
             {
@@ -174,7 +170,7 @@ namespace InfinniPlatform.SystemConfig.Executors
 
                     if (propertyMapping.Value.Type.ToString() == DataType.Object.ToString())
                     {
-                        var childProps = new object[] { };
+                        var childProps = new CriteriaSorting[] { };
 
                         if (propertyMapping.Value.TypeInfo != null &&
                             propertyMapping.Value.TypeInfo.DocumentLink != null &&
@@ -232,11 +228,7 @@ namespace InfinniPlatform.SystemConfig.Executors
 
                         if (isSortingField)
                         {
-                            sortingProperties.Add(new
-                            {
-                                PropertyName = formattedPropertyName,
-                                SortOrder = SortOrder.Ascending
-                            }.ToDynamic());
+                            sortingProperties.Add(new CriteriaSorting(formattedPropertyName, SortOrder.Ascending.ToString()));
                         }
                     }
                 }

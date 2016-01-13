@@ -3,7 +3,7 @@
     /// <summary>
     /// Интерфейс для создания экземпляров <see cref="IFilter" />
     /// </summary>
-    public interface IFilterBuilder
+    public interface INestFilterBuilder
     {
         /// <summary>
         /// Создать фильтр для одного поля с указанным значением и методом сравнения

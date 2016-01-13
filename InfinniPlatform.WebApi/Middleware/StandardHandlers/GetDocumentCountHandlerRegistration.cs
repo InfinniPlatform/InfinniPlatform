@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
 using System.Web;
 
 using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Owin.Middleware;
-using InfinniPlatform.Sdk;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.WebApi.Middleware.RouteFormatters;
 
@@ -34,14 +32,12 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
             var nameValueCollection = new NameValueCollection();
             if (context.Request.QueryString.HasValue)
             {
-                nameValueCollection = HttpUtility.ParseQueryString(HttpUtility.UrlDecode(context.Request.QueryString.Value));
+                nameValueCollection = HttpUtility.ParseQueryString(context.Request.QueryString.Value);
             }
 
             var filter = nameValueCollection.Get("$filter");
-            var filterStringsList = JsonConvert.DeserializeObject<string[]>(filter);
-
-            IEnumerable<dynamic> criteriaList = filterStringsList.Select(JsonConvert.DeserializeObject<CriteriaSorting>);
-
+            var criteriaList = JsonConvert.DeserializeObject<IEnumerable<FilterBuilder.CriteriaBuilder.CriteriaFilter>>(filter);
+            
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 
             var result = _documentApi.GetNumberOfDocuments(routeDictionary["application"], routeDictionary["documentType"], criteriaList);

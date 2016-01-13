@@ -13,7 +13,7 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
 	[Category(TestCategories.IntegrationTest)]
 	public class ElasticSearchModelExpressionBehavior
 	{
-        private readonly IFilterBuilder _filterFactory = FilterBuilderFactory.GetInstance();
+        private readonly INestFilterBuilder _filterFactory = FilterBuilderFactory.GetInstance();
 
 		[TestFixtureSetUp]
 		public void SetupFixture()

@@ -75,42 +75,42 @@ namespace InfinniPlatform.Sdk.Documents
 
             public CriteriaBuilder IsEquals(object value)
             {
-                _value = Convert(value);
+                _value = value;
                 _criteriaType = CriteriaType.IsEquals;
                 return this;
             }
 
             public CriteriaBuilder IsNotEquals(object value)
             {
-                _value = Convert(value);
+                _value = value;
                 _criteriaType = CriteriaType.IsNotEquals;
                 return this;
             }
 
             public CriteriaBuilder IsMoreThan(object value)
             {
-                _value = Convert(value);
+                _value = value;
                 _criteriaType = CriteriaType.IsMoreThan;
                 return this;
             }
 
             public CriteriaBuilder IsLessThan(object value)
             {
-                _value = Convert(value);
+                _value = value;
                 _criteriaType = CriteriaType.IsLessThan;
                 return this;
             }
 
             public CriteriaBuilder IsMoreThanOrEquals(object value)
             {
-                _value = Convert(value);
+                _value = value;
                 _criteriaType = CriteriaType.IsMoreThanOrEquals;
                 return this;
             }
 
             public CriteriaBuilder IsLessThanOrEquals(object value)
             {
-                _value = Convert(value);
+                _value = value;
                 _criteriaType = CriteriaType.IsLessThanOrEquals;
                 return this;
             }
@@ -226,15 +226,6 @@ namespace InfinniPlatform.Sdk.Documents
                     
                     return serializeObject;
                 }
-            }
-
-            private static object Convert(object value)
-            {
-                if (value is DateTime)
-                {
-                    return $"{((DateTime) value).ToString("O")}";
-                }
-                return value;
             }
         }
     }

@@ -11,9 +11,9 @@ namespace InfinniPlatform.ElasticSearch.Filters
     /// </summary>
     public static class QueryBuilderFactory
     {
-        private static readonly Lazy<IFilterBuilder> Instance = new Lazy<IFilterBuilder>(() => new NestQueryBuilder(), LazyThreadSafetyMode.ExecutionAndPublication);
+        private static readonly Lazy<INestFilterBuilder> Instance = new Lazy<INestFilterBuilder>(() => new NestQueryBuilder(), LazyThreadSafetyMode.ExecutionAndPublication);
 
-        public static IFilterBuilder GetInstance()
+        public static INestFilterBuilder GetInstance()
         {
             return Instance.Value;
         }

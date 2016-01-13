@@ -17,8 +17,6 @@ namespace InfinniPlatform.Sdk.Tests
 	[Category(TestCategories.AcceptanceTest)]
 	public class DocumentApiTest
 	{
-		private const string Route = "1";
-
 		private IDisposable _server;
 		private InfinniDocumentApi _api;
 
@@ -76,16 +74,18 @@ namespace InfinniPlatform.Sdk.Tests
 		[Test]
 		public void ShouldGetDocumentByDateTime()
 		{
-			dynamic documentObject = new DynamicWrapper();
+            var saleStartDate = DateTime.Now;
+
+            dynamic documentObject = new DynamicWrapper();
 			documentObject.Availability = new DynamicWrapper();
-			documentObject.Availability.SaleStartDate = DateTime.Now;
+		    documentObject.Availability.SaleStartDate = saleStartDate;
 
 			var result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
 
 			var resultDoc = _api.GetDocument("gameshop", "catalogue",
 				f => f.AddCriteria(cr => cr.Property("Id").IsEquals(result))
-					  .AddCriteria(cr => cr.Property("Availability.SaleStartDate").IsMoreThanOrEquals(DateTime.Now.Date))
-					  .AddCriteria(cr => cr.Property("Availability.SaleStartDate").IsLessThanOrEquals(DateTime.Now.Date.AddDays(1))), 0, 100);
+					  .AddCriteria(cr => cr.Property("Availability.SaleStartDate").IsMoreThanOrEquals(saleStartDate.Date))
+					  .AddCriteria(cr => cr.Property("Availability.SaleStartDate").IsLessThanOrEquals(saleStartDate.Date.AddDays(1))), 0, 100);
 			Assert.AreEqual(1, resultDoc.Count(r => r.Id == result));
 		}
 

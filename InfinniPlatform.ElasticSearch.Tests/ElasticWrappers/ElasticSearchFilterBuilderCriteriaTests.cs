@@ -40,8 +40,8 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
 
         private ICrudOperationProvider _elasticSearchProvider;
         private ElasticTypeManager _elasticTypeManager;
-        private readonly IFilterBuilder _filterFactory = FilterBuilderFactory.GetInstance();
-        private readonly IFilterBuilder _queryFactory = QueryBuilderFactory.GetInstance();
+        private readonly INestFilterBuilder _filterFactory = FilterBuilderFactory.GetInstance();
+        private readonly INestFilterBuilder _queryFactory = QueryBuilderFactory.GetInstance();
 
         [SetUp]
         public void InitializeElasticSearch()

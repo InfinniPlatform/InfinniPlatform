@@ -24,7 +24,7 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
 
         private readonly IMetadataConfigurationProvider _metadataConfigurationProvider;
         private readonly IIndexFactory _indexFactory;
-        private readonly IFilterBuilder _filterFactory;
+        private readonly INestFilterBuilder _filterFactory;
 
 
         public IConfigRequestProvider ConfigRequestProvider { get; set; }

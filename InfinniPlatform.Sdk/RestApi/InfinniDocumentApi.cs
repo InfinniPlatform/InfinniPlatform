@@ -190,8 +190,10 @@ namespace InfinniPlatform.Sdk.RestApi
             var filterBuilder = new FilterBuilder();
             filter?.Invoke(filterBuilder);
 
-            var response = RequestExecutor.QueryGet(routeBuilder.BuildRestRoutingUrlDefaultCount(applicationId, documentType),
-                                                    RequestExecutorExtensions.CreateQueryStringCount(filterBuilder.GetFilter()));
+            var buildRestRoutingUrlDefaultCount = routeBuilder.BuildRestRoutingUrlDefaultCount(applicationId, documentType);
+            var queryStringCount = RequestExecutorExtensions.CreateQueryStringCount(filterBuilder.GetFilter());
+
+            var response = RequestExecutor.QueryGet(buildRestRoutingUrlDefaultCount, queryStringCount);
 
             return ProcessAsObjectResult(response,
                                          string.Format(Resources.UnableToGetDocument, response));

@@ -2,19 +2,19 @@
 {
     public sealed class CriteriaSorting
     {
-        public CriteriaSorting(string property, string sortingOrder)
+        public CriteriaSorting(string propertyName, string sortingOrder)
         {
-            Property = property;
+            PropertyName = propertyName;
             SortingOrder = sortingOrder;
         }
 
-        public string Property { get; set; }
+        public string PropertyName { get; set; }
 
         public string SortingOrder { get; set; }
 
         public override string ToString()
         {
-            return $"{Property} {SortingOrder}";
+            return $"{PropertyName} {SortingOrder}";
         }
     }
 }

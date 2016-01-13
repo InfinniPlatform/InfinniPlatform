@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 
+using InfinniPlatform.Sdk.Documents;
+
 namespace InfinniPlatform.Core.Index
 {
     /// <summary>
@@ -16,7 +18,7 @@ namespace InfinniPlatform.Core.Index
         /// <param name="sortingDescription">Описание правил сортировки</param>
         /// <param name="skipSize"></param>
         /// <returns>Список актуальных версий</returns>
-        dynamic GetDocument(IEnumerable<object> filterObject, int pageNumber, int pageSize, IEnumerable<object> sortingDescription = null, int skipSize = 0);
+        dynamic GetDocument(IEnumerable<object> filterObject, int pageNumber, int pageSize, IEnumerable<CriteriaSorting> sortingDescription = null, int skipSize = 0);
 
         /// <summary>
         ///     Получить общее количество объектов по заданному фильтру
