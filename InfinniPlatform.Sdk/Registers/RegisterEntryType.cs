@@ -1,22 +1,22 @@
-namespace InfinniPlatform.Sdk.Registers
+п»їnamespace InfinniPlatform.Sdk.Registers
 {
     /// <summary>
-    /// Тип движения ресурсов в рамках регистра
+    /// РўРёРї РґРІРёР¶РµРЅРёСЏ СЂРµСЃСѓСЂСЃРѕРІ РІ СЂР°РјРєР°С… СЂРµРіРёСЃС‚СЂР°
     /// </summary>
     public static class RegisterEntryType
     {
         /// <summary>
-        /// Приход (увеличение хранимых ресурсов)
+        /// РџСЂРёС…РѕРґ (СѓРІРµР»РёС‡РµРЅРёРµ С…СЂР°РЅРёРјС‹С… СЂРµСЃСѓСЂСЃРѕРІ)
         /// </summary>
         public const string Income = "Income";
 
         /// <summary>
-        /// Расход (уменьшение хранимых ресурсов)
+        /// Р Р°СЃС…РѕРґ (СѓРјРµРЅСЊС€РµРЅРёРµ С…СЂР°РЅРёРјС‹С… СЂРµСЃСѓСЂСЃРѕРІ)
         /// </summary>
         public const string Consumption = "Consumption";
 
         /// <summary>
-        /// Другое (тип движения не определен, допустимо для регистра сведений)
+        /// Р”СЂСѓРіРѕРµ (С‚РёРї РґРІРёР¶РµРЅРёСЏ РЅРµ РѕРїСЂРµРґРµР»РµРЅ, РґРѕРїСѓСЃС‚РёРјРѕ РґР»СЏ СЂРµРіРёСЃС‚СЂР° СЃРІРµРґРµРЅРёР№)
         /// </summary>
         public const string Other = "Other";
     }
