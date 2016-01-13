@@ -101,7 +101,7 @@ namespace InfinniPlatform.ElasticSearch.Filters.NestFilters
 
         private static IFilter BuildEndsWithFilter(string field, object value)
         {
-            return new NestFilter(Filter<dynamic>.Query(q => q.Wildcard(field, $"*value".ToLower())));
+            return new NestFilter(Filter<dynamic>.Query(q => q.Wildcard(field, $"*{value}".ToLower())));
         }
 
         private static IFilter BuildEqualsFilter(string field, object value)
