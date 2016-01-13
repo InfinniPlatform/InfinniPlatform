@@ -28,13 +28,13 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
         /// <summary>
         /// Найти список объектов, удовлетворяющих указанным критериям
         /// </summary>
-        /// <param name="filterObject">Фильтр поиска объектов</param>
+        /// <param name="filterCriteria">Фильтр поиска объектов</param>
         /// <param name="pageNumber">Номер страницы результатов поиска</param>
         /// <param name="pageSize">Размер страницы результатов</param>
         /// <param name="searchType">Искать только актуальную версию объектов</param>
         /// <returns>Список результатов поиска</returns>
         public object GetSearchResult(
-            IEnumerable<dynamic> filterObject,
+            IEnumerable<FilterCriteria> filterCriteria,
             int pageNumber,
             int pageSize,
             SearchType searchType = SearchType.All)
@@ -43,19 +43,11 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
             var documentType = ConfigRequestProvider.GetMetadataIdentifier();
             var serviceName = ConfigRequestProvider.GetServiceName();
 
-            List<dynamic> filters = null;
+            List<FilterCriteria> filters = null;
 
-            if (filterObject != null)
+            if (filterCriteria != null)
             {
-                filters = filterObject.ToList();
-
-                foreach (var filter in filters)
-                {
-                    if (filter.CriteriaType == null)
-                    {
-                        filter.CriteriaType = CriteriaType.IsEquals;
-                    }
-                }
+                filters = filterCriteria.ToList();
             }
 
             var metadataConfiguration = _configurationObjectBuilder.GetConfigurationObject(сonfiguration).MetadataConfiguration;

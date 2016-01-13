@@ -33,7 +33,7 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
         public dynamic GetAggregationDocumentResult(
             string aggregationConfiguration,
             string aggregationMetadata,
-            IEnumerable<dynamic> filterObject,
+            IEnumerable<FilterCriteria> filterCriteria,
             IEnumerable<dynamic> dimensions,
             IEnumerable<AggregationType> aggregationTypes,
             IEnumerable<string> aggregationFields,
@@ -64,7 +64,7 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
                 dimensions.ToArray(),
                 aggregationTypes.ToArray(),
                 aggregationFields.ToArray(),
-                filterObject.ExtractSearchModel(_filterFactory));
+                filterCriteria.ExtractSearchModel(_filterFactory));
 
             ExecuteExtensionPoint(metadataConfiguration, documentType, "TransformResult", target);
 
