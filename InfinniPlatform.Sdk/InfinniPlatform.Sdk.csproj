@@ -60,6 +60,7 @@
     <Compile Include="Documents\FilterCriteria.cs" />
     <Compile Include="Documents\SortingCriteria.cs" />
     <Compile Include="Registers\AggregationType.cs" />
+    <Compile Include="Registers\RegisterEntryType.cs" />
     <Compile Include="RestApi\ICustomServiceApi.cs" />
     <Compile Include="Documents\IDocumentApi.cs" />
     <Compile Include="RestApi\IPrintViewApi.cs" />

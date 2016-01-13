@@ -47,14 +47,17 @@ namespace InfinniPlatform.ElasticSearch.Filters.NestFilters
         /// </summary>
         public IFilter Get(string field, object value, CriteriaType compareMethod)
         {
-            if (value == null && compareMethod == CriteriaType.IsEquals)
+            if (value == null)
             {
-                compareMethod = CriteriaType.IsEmpty;
-            }
+                if (compareMethod == CriteriaType.IsEquals)
+                {
+                    compareMethod = CriteriaType.IsEmpty;
+                }
 
-            if (value == null && compareMethod == CriteriaType.IsNotEquals)
-            {
-                compareMethod = CriteriaType.IsNotEmpty;
+                if (compareMethod == CriteriaType.IsNotEquals)
+                {
+                    compareMethod = CriteriaType.IsNotEmpty;
+                }
             }
 
             var elasticField = field.AsElasticField();
@@ -98,7 +101,7 @@ namespace InfinniPlatform.ElasticSearch.Filters.NestFilters
 
         private static IFilter BuildEndsWithFilter(string field, object value)
         {
-            return new NestFilter(Filter<dynamic>.Query(q => q.Wildcard(field, "*" + value.ToString().ToLowerInvariant())));
+            return new NestFilter(Filter<dynamic>.Query(q => q.Wildcard(field, $"*value".ToLower())));
         }
 
         private static IFilter BuildEqualsFilter(string field, object value)
