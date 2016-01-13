@@ -38,10 +38,6 @@ namespace InfinniPlatform.Core.IoC
                    .As<IPerformanceLog>()
                    .SingleInstance();
 
-            builder.RegisterType<LogComponent>()
-                   .As<ILogComponent>()
-                   .SingleInstance();
-
             // SaaS
 
             builder.RegisterType<TenantProvider>()

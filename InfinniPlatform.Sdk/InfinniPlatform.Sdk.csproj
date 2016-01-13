@@ -84,7 +84,6 @@
     <Compile Include="BlobStorage\BlobData.cs" />
     <Compile Include="BlobStorage\BlobInfo.cs" />
     <Compile Include="BlobStorage\IBlobStorage.cs" />
-    <Compile Include="Logging\ILogComponent.cs" />
     <Compile Include="PrintView\IPrintViewComponent.cs" />
     <Compile Include="Registers\IRegistryComponent.cs" />
     <Compile Include="Contracts\IApplyContext.cs" />
