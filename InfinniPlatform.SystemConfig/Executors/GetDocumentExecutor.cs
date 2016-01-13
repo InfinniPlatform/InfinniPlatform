@@ -68,7 +68,7 @@ namespace InfinniPlatform.SystemConfig.Executors
 
             filter?.Invoke(filterBuilder);
 
-            return GetNumberOfDocuments(configurationName, documentType, filterBuilder.GetFilter());
+            return GetNumberOfDocuments(configurationName, documentType, filterBuilder.CriteriaList);
         }
 
         public IEnumerable<object> GetDocument(string configurationName, string documentType, IEnumerable<CriteriaFilter> filter, int pageNumber, int pageSize, IEnumerable<dynamic> ignoreResolve = null, IEnumerable<CriteriaSorting> sorting = null)
@@ -153,7 +153,7 @@ namespace InfinniPlatform.SystemConfig.Executors
 
             sorting?.Invoke(sortingBuilder);
 
-            return GetDocument(configurationName, documentType, filterBuilder.GetFilter(), pageNumber, pageSize, ignoreResolve, sortingBuilder.GetSorting());
+            return GetDocument(configurationName, documentType, filterBuilder.CriteriaList, pageNumber, pageSize, ignoreResolve, sortingBuilder.SortingList);
         }
     }
 }

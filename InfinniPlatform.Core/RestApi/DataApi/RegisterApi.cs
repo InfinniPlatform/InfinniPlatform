@@ -51,7 +51,7 @@ namespace InfinniPlatform.Core.RestApi.DataApi
 
             filter?.Invoke(filterBuilder);
 
-            return GetValuesByDate(configuration, register, endDate, dimensions, valueProperties, valueAggregationTypes, filter == null ? null : filterBuilder.GetFilter());
+            return GetValuesByDate(configuration, register, endDate, dimensions, valueProperties, valueAggregationTypes, filter == null ? null : filterBuilder.CriteriaList);
         }
 
         public IEnumerable<dynamic> GetValuesByDate(string configuration, string register, DateTime endDate, IEnumerable<string> dimensions, IEnumerable<string> valueProperties, IEnumerable<AggregationType> valueAggregationTypes,
@@ -113,7 +113,7 @@ namespace InfinniPlatform.Core.RestApi.DataApi
             filter?.Invoke(filterBuilder);
 
             var response = GetValuesBetweenDates(configuration, register, startDate, endDate, dimensions,
-                valueProperties, valueAggregationTypes, filter == null ? null : filterBuilder.GetFilter());
+                valueProperties, valueAggregationTypes, filter == null ? null : filterBuilder.CriteriaList);
 
             return response;
         }
@@ -186,7 +186,7 @@ namespace InfinniPlatform.Core.RestApi.DataApi
             filter?.Invoke(filterBuilder);
 
             return GetValuesByPeriods(configuration, register, startDate, endDate, interval, dimensions, valueProperties,
-                timezone, filter == null ? null : filterBuilder.GetFilter());
+                timezone, filter == null ? null : filterBuilder.CriteriaList);
         }
 
         public IEnumerable<dynamic> GetValuesByPeriods(
@@ -317,7 +317,7 @@ namespace InfinniPlatform.Core.RestApi.DataApi
 
             filter?.Invoke(filterBuilder);
 
-            return GetRegisterEntries(configuration, register, filterBuilder.GetFilter(), pageNumber, pageSize);
+            return GetRegisterEntries(configuration, register, filterBuilder.CriteriaList, pageNumber, pageSize);
         }
 
         public IEnumerable<dynamic> GetRegisterEntries(string configuration,

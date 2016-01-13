@@ -177,7 +177,7 @@ namespace InfinniPlatform.Sdk.RestApi
             sorting?.Invoke(sortingBuilder);
 
             var response = RequestExecutor.QueryGet(routeBuilder.BuildRestRoutingUrlDefault(applicationId, documentType),
-                                                    RequestExecutorExtensions.CreateQueryString(filterBuilder.GetFilter(), pageNumber, pageSize, sortingBuilder.GetSorting()));
+                                                    RequestExecutorExtensions.CreateQueryString(filterBuilder.CriteriaList, pageNumber, pageSize, sortingBuilder.SortingList));
 
             return ProcessAsObjectResult(response,
                                          string.Format(Resources.UnableToGetDocument, response));
@@ -191,7 +191,7 @@ namespace InfinniPlatform.Sdk.RestApi
             filter?.Invoke(filterBuilder);
 
             var buildRestRoutingUrlDefaultCount = routeBuilder.BuildRestRoutingUrlDefaultCount(applicationId, documentType);
-            var queryStringCount = RequestExecutorExtensions.CreateQueryStringCount(filterBuilder.GetFilter());
+            var queryStringCount = RequestExecutorExtensions.CreateQueryStringCount(filterBuilder.CriteriaList);
 
             var response = RequestExecutor.QueryGet(buildRestRoutingUrlDefaultCount, queryStringCount);
 

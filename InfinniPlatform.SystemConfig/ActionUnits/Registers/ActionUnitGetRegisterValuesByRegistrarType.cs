@@ -60,7 +60,7 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Registers
                 "aggregate",
                 configurationId,
                 RegisterConstants.RegisterNamePrefix + registerId,
-                filetrBuilder.GetFilter(),
+                (IEnumerable<CriteriaFilter>)filetrBuilder.CriteriaList,
                 dimensions,
                 AggregationUtils.BuildAggregationType(AggregationType.Sum,
                     valueProperties is List<string>

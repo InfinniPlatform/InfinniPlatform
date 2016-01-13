@@ -100,7 +100,7 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Registers
                 resultFilter.AddRange(filter);
             }
 
-            resultFilter.AddRange(filetrBuilder.GetFilter());
+            resultFilter.AddRange(filetrBuilder.CriteriaList);
 
             IEnumerable<AggregationType> aggregationTypes;
 

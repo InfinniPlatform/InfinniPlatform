@@ -105,7 +105,7 @@ namespace InfinniPlatform.SystemConfig.Utils
             dynamic request = new DynamicWrapper();
             request.Configuration = groupsLink.Key.ConfigId;
             request.Metadata = groupsLink.Key.DocumentId;
-            request.Filter = filterBuilder.GetFilter();
+            request.Filter = filterBuilder.CriteriaList;
             request.PageNumber = 0;
             request.PageSize = 100;
             request.IgnoreResolve = typeInfoChainUpdated;
