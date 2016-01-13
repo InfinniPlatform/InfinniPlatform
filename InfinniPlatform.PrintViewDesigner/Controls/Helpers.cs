@@ -3,9 +3,9 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 
-using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.PrintViewDesigner.Properties;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.PrintViewDesigner.Controls
 {

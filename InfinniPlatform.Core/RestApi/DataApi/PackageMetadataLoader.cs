@@ -3,8 +3,8 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 
-using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.Core.RestApi.DataApi
 {

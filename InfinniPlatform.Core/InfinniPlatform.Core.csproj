@@ -211,10 +211,6 @@
     <Compile Include="Security\MemoryApplicationUserStore.cs" />
     <Compile Include="Security\SecurityExtensions.cs" />
     <Compile Include="Security\StringHasher.cs" />
-    <Compile Include="Serialization\IObjectSerializer.cs" />
-    <Compile Include="Serialization\JsonObjectSerializer.cs" />
-    <Compile Include="Serialization\KnownTypesContainer.cs" />
-    <Compile Include="Serialization\KnownTypesJsonConverter.cs" />
     <Compile Include="Settings\AppConfiguration.cs" />
     <Compile Include="Settings\AppSettings.cs" />
     <Compile Include="Settings\ConnectionStrings.cs" />

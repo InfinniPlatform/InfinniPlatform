@@ -159,9 +159,6 @@
   <data name="CannotAttachToTestServer" xml:space="preserve">
     <value>Cannot attach to test server.</value>
   </data>
-  <data name="CannotDeserializeTypeError" xml:space="preserve">
-    <value>Cannot deserialize type '{0}'.</value>
-  </data>
   <data name="CannotProcessGetRequest" xml:space="preserve">
     <value>Cannot process GET-request. StatusCode: '{0}', Content: '{1}'.</value>
   </data>
@@ -363,9 +360,6 @@
   <data name="MetadataTypeForGeneratorShouldNotBeEmpty" xml:space="preserve">
     <value>Metadata type for generator should not be empty.</value>
   </data>
-  <data name="NameIsAlreadyAdded" xml:space="preserve">
-    <value>Name is already added.</value>
-  </data>
   <data name="NeedConfirm" xml:space="preserve">
     <value>Need confirm</value>
   </data>
@@ -446,15 +440,6 @@
   </data>
   <data name="TargetObjectCannotBeNull" xml:space="preserve">
     <value>Target object cannot be null.</value>
-  </data>
-  <data name="TypeIsAlreadyAdded" xml:space="preserve">
-    <value>Type is already added.</value>
-  </data>
-  <data name="TypeShouldHaveDefaultConstructor" xml:space="preserve">
-    <value>Type should have default constructor.</value>
-  </data>
-  <data name="TypeShouldNotBeAbstract" xml:space="preserve">
-    <value>Type should not be abstract.</value>
   </data>
   <data name="UnableToFindUser" xml:space="preserve">
     <value>Unable to find user with user name: {0}</value>

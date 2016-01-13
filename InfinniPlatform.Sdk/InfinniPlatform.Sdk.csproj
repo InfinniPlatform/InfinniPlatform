@@ -57,6 +57,20 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Documents\CriteriaSorting.cs" />
+    <Compile Include="Services\HttpConstants.cs" />
+    <Compile Include="Services\HttpResponse.cs" />
+    <Compile Include="Services\IHttpService.cs" />
+    <Compile Include="Services\IHttpServiceBuilder.cs" />
+    <Compile Include="Services\IHttpRequest.cs" />
+    <Compile Include="Services\IHttpRequestFile.cs" />
+    <Compile Include="Services\IHttpRequestHeaders.cs" />
+    <Compile Include="Services\IHttpResponse.cs" />
+    <Compile Include="Services\IHttpRouteBuilder.cs" />
+    <Compile Include="Services\JsonHttpResponse.cs" />
+    <Compile Include="Services\NotFoundHttpResponse.cs" />
+    <Compile Include="Services\RedirectHttpResponse.cs" />
+    <Compile Include="Services\StreamHttpResponse.cs" />
+    <Compile Include="Services\TextHttpResponse.cs" />
     <Compile Include="Registers\AggregationType.cs" />
     <Compile Include="RestApi\ICustomServiceApi.cs" />
     <Compile Include="Documents\IDocumentApi.cs" />
@@ -72,6 +86,10 @@
     <Compile Include="RestApi\InfinniSignInApi.cs" />
     <Compile Include="RestApi\InfinniPrintViewApi.cs" />
     <Compile Include="Security\IApplicationUserManager.cs" />
+    <Compile Include="Serialization\IObjectSerializer.cs" />
+    <Compile Include="Serialization\JsonObjectSerializer.cs" />
+    <Compile Include="Serialization\KnownTypesContainer.cs" />
+    <Compile Include="Serialization\KnownTypesJsonConverter.cs" />
     <Compile Include="Session\ISessionManager.cs" />
     <Compile Include="Environment\IApplicationEventHandler.cs" />
     <Compile Include="Logging\ExceptionExtensions.cs" />

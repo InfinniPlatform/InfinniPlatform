@@ -225,8 +225,6 @@
     <None Include="TestData\UploadBinaryContent.zip" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Builders\" />
-    <Folder Include="Metadata\" />
     <Folder Include="RestBehavior\ConfiguratorApiBehavior\" />
     <Folder Include="RestBehavior\DataSources\" />
   </ItemGroup>

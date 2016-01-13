@@ -4,8 +4,8 @@ using System.IO;
 using System.Linq;
 
 using InfinniPlatform.Core.Logging;
-using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Settings;
 using InfinniPlatform.WebApi.Factories;
 

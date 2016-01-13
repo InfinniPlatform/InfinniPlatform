@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
-namespace InfinniPlatform.Core.Serialization
+namespace InfinniPlatform.Sdk.Serialization
 {
     /// <summary>
     /// JSON-сериализатор объектов.

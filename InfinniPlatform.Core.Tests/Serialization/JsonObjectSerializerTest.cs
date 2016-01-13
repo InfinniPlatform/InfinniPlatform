@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-using InfinniPlatform.Core.Serialization;
+using InfinniPlatform.Sdk.Serialization;
 
 using NUnit.Framework;
 

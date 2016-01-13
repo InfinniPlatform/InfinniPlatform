@@ -5,10 +5,10 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Web.Http.Filters;
 
-using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.WebApi.Filters
 {

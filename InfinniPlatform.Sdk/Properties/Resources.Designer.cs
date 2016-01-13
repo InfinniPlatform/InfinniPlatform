@@ -70,6 +70,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot deserialize type &apos;{0}&apos;..
+        /// </summary>
+        internal static string CannotDeserializeTypeError {
+            get {
+                return ResourceManager.GetString("CannotDeserializeTypeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot process DELETE-request. StatusCode: &apos;{0}&apos;, Content: &apos;{1}&apos;..
         /// </summary>
         internal static string CannotProcessDeleteRequest {
@@ -169,6 +178,15 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name is already added..
+        /// </summary>
+        internal static string NameIsAlreadyAdded {
+            get {
+                return ResourceManager.GetString("NameIsAlreadyAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Property path cannot be null or empty..
         /// </summary>
         internal static string PropertyPathCannotBeNullOrEmpty {
@@ -237,6 +255,33 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static string TargetObjectCannotBeNull {
             get {
                 return ResourceManager.GetString("TargetObjectCannotBeNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type is already added..
+        /// </summary>
+        internal static string TypeIsAlreadyAdded {
+            get {
+                return ResourceManager.GetString("TypeIsAlreadyAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type should have default constructor..
+        /// </summary>
+        internal static string TypeShouldHaveDefaultConstructor {
+            get {
+                return ResourceManager.GetString("TypeShouldHaveDefaultConstructor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type should not be abstract..
+        /// </summary>
+        internal static string TypeShouldNotBeAbstract {
+            get {
+                return ResourceManager.GetString("TypeShouldNotBeAbstract", resourceCulture);
             }
         }
         
