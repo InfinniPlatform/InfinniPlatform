@@ -29,11 +29,11 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Documents
                 {
                     IEnumerable<dynamic> completeDocuments = _getDocumentExecutor.GetDocument(config,
                                                                                               document,
+                                                                                              target.Item.Filter,
                                                                                               Convert.ToInt32(target.Item.PageNumber),
                                                                                               Convert.ToInt32(target.Item.PageSize),
-                                                                                              target.Item.Filter,
-                                                                                              target.Item.Sorting,
-                                                                                              target.Item.IgnoreResolve);
+                                                                                              target.Item.IgnoreResolve,
+                                                                                              target.Item.Sorting);
 
                     resultDocuments.AddRange(completeDocuments);
                 }

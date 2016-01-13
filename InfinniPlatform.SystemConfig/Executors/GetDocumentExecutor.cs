@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Core.ContextComponents;
 using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.RestApi.DataApi;
@@ -31,7 +30,7 @@ namespace InfinniPlatform.SystemConfig.Executors
 
         public dynamic GetDocument(string id)
         {
-            var documentProvider = _indexFactory.BuildAllIndexesOperationProvider(); ;
+            var documentProvider = _indexFactory.BuildAllIndexesOperationProvider();
             return documentProvider.GetItem(id);
         }
 
@@ -95,7 +94,7 @@ namespace InfinniPlatform.SystemConfig.Executors
                     sortingFields = SortingPropertiesExtractor.ExtractSortingProperties(string.Empty, schema.Properties, _configurationObjectBuilder);
                 }
 
-                var sortingArray = sorting.ToArray();
+                var sortingArray = sorting?.ToArray() ?? new CriteriaSorting[] {};
 
                 if (sortingArray.Any())
                 {

@@ -274,7 +274,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             var registerEntries1 = registerApi.GetRegisterEntries(ConfigurationId, AvailableBedsRegister,
                 f => f.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty).IsMoreThanOrEquals(date)), 0, 10);
 
-            documentApi.DeleteDocument(ConfigurationId, BedsRegistrationDocument, documentId);
+            var deleteDocument = documentApi.DeleteDocument(ConfigurationId, BedsRegistrationDocument, documentId);
 
             var registerEntries2 = registerApi.GetRegisterEntries(ConfigurationId, AvailableBedsRegister,
                 f => f.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty).IsMoreThanOrEquals(date)), 0, 10);
