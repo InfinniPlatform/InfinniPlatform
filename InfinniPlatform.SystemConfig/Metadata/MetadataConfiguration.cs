@@ -535,7 +535,8 @@ namespace InfinniPlatform.SystemConfig.Metadata
             if (actionHandlerInstance != null)
             {
                 var extensionPoint = actionHandlerInstance.GetExtensionPoint(extensionPointTypeName);
-                return extensionPoint != null ? extensionPoint.StateMachineReference : null;
+//Logger.Log.Info($"XXXXX: {ConfigurationId} / {metadataId} / {actionInstanceName} / {extensionPointTypeName} => {extensionPoint?.StateMachineReference}");
+                return extensionPoint?.StateMachineReference;
             }
 
             throw new ArgumentException(
@@ -615,10 +616,6 @@ namespace InfinniPlatform.SystemConfig.Metadata
                                                                           {
                                                                               ws.WithValidationError(() => ScriptConfiguration.GetAction(transition.ValidationPointError.ScenarioId));
                                                                           }
-                                                                          if (transition.ValidationPointWarning != null)
-                                                                          {
-                                                                              ws.WithValidationWarning(() => ScriptConfiguration.GetAction(transition.ValidationPointWarning.ScenarioId));
-                                                                          }
                                                                           if (transition.DeletingDocumentValidationPoint != null)
                                                                           {
                                                                               ws.WithValidationError(() => ScriptConfiguration.GetAction(transition.DeletingDocumentValidationPoint.ScenarioId));
@@ -638,22 +635,6 @@ namespace InfinniPlatform.SystemConfig.Metadata
                                                                           if (transition.DeletePoint != null)
                                                                           {
                                                                               ws.OnDelete(() => ScriptConfiguration.GetAction(transition.DeletePoint.ScenarioId));
-                                                                          }
-                                                                          if (transition.AuthorizationPoint != null)
-                                                                          {
-                                                                              ws.WithSimpleAuthorization(() => ScriptConfiguration.GetAction(transition.AuthorizationPoint.ScenarioId));
-                                                                          }
-                                                                          if (transition.ComplexAuthorizationPoint != null)
-                                                                          {
-                                                                              ws.WithComplexAuthorization(() => ScriptConfiguration.GetAction(transition.ComplexAuthorizationPoint.ScenarioId));
-                                                                          }
-                                                                          if (transition.CredentialsType == AuthorizationStorageExtensions.CustomCredentials)
-                                                                          {
-                                                                              ws.OnCredentials(() => ScriptConfiguration.GetAction(transition.CredentialsPoint.ScenarioId));
-                                                                          }
-                                                                          if (transition.CredentialsType == AuthorizationStorageExtensions.AnonimousUserCredentials)
-                                                                          {
-                                                                              ws.OnCredentials(() => ScriptConfiguration.GetAction("SetAnonimousCredentials"));
                                                                           }
                                                                       };
 
@@ -684,10 +665,6 @@ namespace InfinniPlatform.SystemConfig.Metadata
                                                                                                                                 {
                                                                                                                                     ws.WithValidationError(() => ScriptConfiguration.GetAction(transition1.ValidationPointError.ScenarioId));
                                                                                                                                 }
-                                                                                                                                if (transition1.ValidationPointWarning != null)
-                                                                                                                                {
-                                                                                                                                    ws.WithValidationWarning(() => ScriptConfiguration.GetAction(transition1.ValidationPointWarning.ScenarioId));
-                                                                                                                                }
                                                                                                                                 if (transition1.DeletingDocumentValidationPoint != null)
                                                                                                                                 {
                                                                                                                                     ws.WithValidationError(() => ScriptConfiguration.GetAction(transition1.DeletingDocumentValidationPoint.ScenarioId));
@@ -707,22 +684,6 @@ namespace InfinniPlatform.SystemConfig.Metadata
                                                                                                                                 if (transition1.DeletePoint != null)
                                                                                                                                 {
                                                                                                                                     ws.OnDelete(() => ScriptConfiguration.GetAction(transition1.DeletePoint.ScenarioId));
-                                                                                                                                }
-                                                                                                                                if (transition1.AuthorizationPoint != null)
-                                                                                                                                {
-                                                                                                                                    ws.WithSimpleAuthorization(() => ScriptConfiguration.GetAction(transition1.AuthorizationPoint.ScenarioId));
-                                                                                                                                }
-                                                                                                                                if (transition1.ComplexAuthorizationPoint != null)
-                                                                                                                                {
-                                                                                                                                    ws.WithComplexAuthorization(() => ScriptConfiguration.GetAction(transition1.ComplexAuthorizationPoint.ScenarioId));
-                                                                                                                                }
-                                                                                                                                if (transition1.CredentialsType == AuthorizationStorageExtensions.CustomCredentials)
-                                                                                                                                {
-                                                                                                                                    ws.OnCredentials(() => ScriptConfiguration.GetAction(transition.CredentialsPoint.ScenarioId));
-                                                                                                                                }
-                                                                                                                                if (transition1.CredentialsType == AuthorizationStorageExtensions.AnonimousUserCredentials)
-                                                                                                                                {
-                                                                                                                                    ws.OnCredentials(() => ScriptConfiguration.GetAction("SetAnonimousCredentials"));
                                                                                                                                 }
                                                                                                                             };
                                                                           wc.Move(configTransition);
