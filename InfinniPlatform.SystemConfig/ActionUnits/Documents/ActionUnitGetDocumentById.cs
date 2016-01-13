@@ -1,4 +1,7 @@
-﻿using InfinniPlatform.Sdk.Contracts;
+﻿using System.Linq;
+
+using InfinniPlatform.Core.Index;
+using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.SystemConfig.Utils;
 
 namespace InfinniPlatform.SystemConfig.ActionUnits.Documents
@@ -10,23 +13,31 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Documents
     /// </summary>
     public sealed class ActionUnitGetDocumentById
     {
-        public ActionUnitGetDocumentById(DocumentExecutor documentExecutor)
+        public ActionUnitGetDocumentById(IReferenceResolver referenceResolver,
+                                         IIndexFactory indexFactory)
         {
-            _documentExecutor = documentExecutor;
+            _referenceResolver = referenceResolver;
+            _indexFactory = indexFactory;
         }
 
-        private readonly DocumentExecutor _documentExecutor;
+        private readonly IIndexFactory _indexFactory;
+        private readonly IReferenceResolver _referenceResolver;
 
         public void Action(IApplyContext target)
         {
+            var documentProvider = _indexFactory.BuildAllIndexesOperationProvider();
+
             if (string.IsNullOrEmpty(target.Item.ConfigId) ||
                 string.IsNullOrEmpty(target.Item.DocumentId))
             {
-                target.Result = _documentExecutor.GetBaseDocument(target.Item.Id);
+                target.Result = documentProvider.GetItem(target.Item.Id);
             }
             else
             {
-                target.Result = _documentExecutor.GetCompleteDocument(target.Item.ConfigId, target.Item.DocumentId, target.Item.Id);
+                var docsToResolve = new[] { documentProvider.GetItem(target.Item.Id) };
+                _referenceResolver.ResolveReferences(target.Item.ConfigId, target.Item.DocumentId, docsToResolve, null);
+
+                target.Result = docsToResolve.FirstOrDefault();
             }
         }
     }

@@ -74,7 +74,7 @@ namespace InfinniPlatform.Core.RestApi.CommonApi
             return response;
         }
 
-        public RestQueryResponse QueryAggregationRaw(string configuration, string documentType, string action, string aggregationConfiguration, string aggregationdocumentType, IEnumerable<object> filterObject,
+        public RestQueryResponse QueryAggregationRaw(string configuration, string documentType, string action, string aggregationConfiguration, string aggregationdocumentType, IEnumerable<object> filterCriteria,
                                                      IEnumerable<dynamic> dimensions, IEnumerable<AggregationType> aggregationTypes, IEnumerable<string> aggregationFields, int pageNumber, int pageSize)
         {
             var builder = _queryBuilderFactory(configuration, documentType, action);
@@ -82,7 +82,7 @@ namespace InfinniPlatform.Core.RestApi.CommonApi
             var response = builder.QueryAggregation(
                 aggregationConfiguration,
                 aggregationdocumentType,
-                filterObject,
+                filterCriteria,
                 dimensions,
                 aggregationTypes,
                 aggregationFields,

@@ -36,10 +36,6 @@ namespace InfinniPlatform.SystemConfig.IoC
                    .As<IGetDocumentExecutor>()
                    .InstancePerDependency();
 
-            builder.RegisterType<DocumentExecutor>()
-                   .AsSelf()
-                   .InstancePerDependency();
-
             // UserStorage
 
             builder.RegisterType<ElasticSearchUserStorage>()

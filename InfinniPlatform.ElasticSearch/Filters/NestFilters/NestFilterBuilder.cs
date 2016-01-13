@@ -38,7 +38,6 @@ namespace InfinniPlatform.ElasticSearch.Filters.NestFilters
                 { CriteriaType.IsMoreThan, BuildMoreThanFilter },
                 { CriteriaType.IsMoreThanOrEquals, BuildMoreThanOrEqualsFilter },
                 { CriteriaType.IsIn, BuildIsInFilter },
-                { CriteriaType.Script, BuildScriptFilter },
                 { CriteriaType.FullTextSearch, BuildFullTextSearchFilter },
                 { CriteriaType.IsIdIn, BuildIdInListFilter }
             };
@@ -48,14 +47,17 @@ namespace InfinniPlatform.ElasticSearch.Filters.NestFilters
         /// </summary>
         public IFilter Get(string field, object value, CriteriaType compareMethod)
         {
-            if (value == null && compareMethod == CriteriaType.IsEquals)
+            if (value == null)
             {
-                compareMethod = CriteriaType.IsEmpty;
-            }
+                if (compareMethod == CriteriaType.IsEquals)
+                {
+                    compareMethod = CriteriaType.IsEmpty;
+                }
 
-            if (value == null && compareMethod == CriteriaType.IsNotEquals)
-            {
-                compareMethod = CriteriaType.IsNotEmpty;
+                if (compareMethod == CriteriaType.IsNotEquals)
+                {
+                    compareMethod = CriteriaType.IsNotEmpty;
+                }
             }
 
             var elasticField = field.AsElasticField();
@@ -81,10 +83,10 @@ namespace InfinniPlatform.ElasticSearch.Filters.NestFilters
 
         public IFilter Get(ICalculatedField script, object value)
         {
-            var factory = Factories[CriteriaType.Script];
+            var rawScript = script.GetRawScript();
             var elasticValue = value.AsElasticValue();
 
-            return factory.Invoke(script.GetRawScript(), elasticValue);
+            return BuildScriptFilter(rawScript, elasticValue);
         }
 
         private static IFilter BuildContainsFilter(string field, object value)
@@ -99,7 +101,7 @@ namespace InfinniPlatform.ElasticSearch.Filters.NestFilters
 
         private static IFilter BuildEndsWithFilter(string field, object value)
         {
-            return new NestFilter(Filter<dynamic>.Query(q => q.Wildcard(field, "*" + value.ToString().ToLowerInvariant())));
+            return new NestFilter(Filter<dynamic>.Query(q => q.Wildcard(field, $"*{value}".ToLower())));
         }
 
         private static IFilter BuildEqualsFilter(string field, object value)
@@ -122,19 +124,13 @@ namespace InfinniPlatform.ElasticSearch.Filters.NestFilters
 
             if (string.IsNullOrEmpty(field))
             {
-                return new NestFilter(
-                    Filter<dynamic>.Query(q => q
-                                                   .QueryString(qs => qs
-                                                                          .Analyzer("fulltextquery")
-                                                                          .Query(processedValue))));
+                return new NestFilter(Filter<dynamic>.Query(q => q.QueryString(qs => qs.Analyzer("fulltextquery")
+                                                                                       .Query(processedValue))));
             }
 
-            return new NestFilter(
-                Filter<dynamic>.Query(q => q
-                                               .QueryString(qs => qs
-                                                                      .Analyzer("fulltextquery")
-                                                                      .OnFields(field.Split('\n'))
-                                                                      .Query(processedValue))));
+            return new NestFilter(Filter<dynamic>.Query(q => q.QueryString(qs => qs.Analyzer("fulltextquery")
+                                                                                   .OnFields(field.Split('\n'))
+                                                                                   .Query(processedValue))));
         }
 
         private static IFilter BuildIdInListFilter(string field, object value)

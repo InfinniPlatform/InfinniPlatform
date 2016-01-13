@@ -88,7 +88,7 @@ namespace InfinniPlatform.Core.Hosting
         }
 
         public RestQueryResponse QueryAggregation(string aggregationConfiguration, string aggregationMetadata,
-                                                  IEnumerable<object> filterObject, IEnumerable<object> dimensions,
+                                                  IEnumerable<object> filterCriteria, IEnumerable<object> dimensions,
                                                   IEnumerable<AggregationType> aggregationTypes, IEnumerable<string> aggregationFields, int pageNumber,
                                                   int pageSize)
         {
@@ -96,7 +96,7 @@ namespace InfinniPlatform.Core.Hosting
                              {
                                  { "AggregationConfiguration", aggregationConfiguration },
                                  { "AggregationMetadata", aggregationMetadata },
-                                 { "FilterObject", filterObject },
+                                 { "FilterCriteria", filterCriteria },
                                  { "Dimensions", dimensions },
                                  { "AggregationTypes", aggregationTypes },
                                  { "AggregationFields", aggregationFields },

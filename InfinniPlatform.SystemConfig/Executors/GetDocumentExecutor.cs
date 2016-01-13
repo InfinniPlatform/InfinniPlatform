@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Core.ContextComponents;
 using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.RestApi.DataApi;
@@ -13,35 +12,33 @@ namespace InfinniPlatform.SystemConfig.Executors
 {
     public class GetDocumentExecutor : IGetDocumentExecutor
     {
-        public GetDocumentExecutor(DocumentExecutor documentExecutor,
-                                   IConfigurationObjectBuilder configurationObjectBuilder,
+        public GetDocumentExecutor(IConfigurationObjectBuilder configurationObjectBuilder,
                                    IMetadataComponent metadataComponent,
-                                   InprocessDocumentComponent documentComponent,
-                                   IReferenceResolver referenceResolver)
+                                   IReferenceResolver referenceResolver,
+                                   IIndexFactory indexFactory)
         {
-            _documentExecutor = documentExecutor;
             _configurationObjectBuilder = configurationObjectBuilder;
             _metadataComponent = metadataComponent;
-            _documentComponent = documentComponent;
             _referenceResolver = referenceResolver;
+            _indexFactory = indexFactory;
         }
 
         private readonly IConfigurationObjectBuilder _configurationObjectBuilder;
-        private readonly InprocessDocumentComponent _documentComponent;
-        private readonly DocumentExecutor _documentExecutor;
         private readonly IMetadataComponent _metadataComponent;
         private readonly IReferenceResolver _referenceResolver;
+        private readonly IIndexFactory _indexFactory;
 
         public dynamic GetDocument(string id)
         {
-            return _documentExecutor.GetBaseDocument(id);
+            var documentProvider = _indexFactory.BuildAllIndexesOperationProvider();
+            return documentProvider.GetItem(id);
         }
 
-        public int GetNumberOfDocuments(string configurationName, string documentType, dynamic filter)
+        public int GetNumberOfDocuments(string configurationName, string documentType, IEnumerable<FilterCriteria> filter)
         {
             var numberOfDocuments = 0;
 
-            var documentProvider = _documentComponent.GetDocumentProvider(configurationName, documentType);
+            var documentProvider = _configurationObjectBuilder.GetConfigurationObject(configurationName)?.GetDocumentProvider(documentType);
 
             if (documentProvider == null)
             {
@@ -70,12 +67,12 @@ namespace InfinniPlatform.SystemConfig.Executors
 
             filter?.Invoke(filterBuilder);
 
-            return GetNumberOfDocuments(configurationName, documentType, filterBuilder.GetFilter());
+            return GetNumberOfDocuments(configurationName, documentType, filterBuilder.CriteriaList);
         }
 
-        public IEnumerable<object> GetDocument(string configurationName, string documentType, IEnumerable<FilterBuilder.CriteriaBuilder.CriteriaFilter> filter, int pageNumber, int pageSize, IEnumerable<dynamic> ignoreResolve = null, IEnumerable<CriteriaSorting> sorting = null)
+        public IEnumerable<object> GetDocument(string configurationName, string documentType, IEnumerable<FilterCriteria> filter, int pageNumber, int pageSize, IEnumerable<dynamic> ignoreResolve = null, IEnumerable<SortingCriteria> sorting = null)
         {
-            var documentProvider = _documentComponent.GetDocumentProvider(configurationName, documentType);
+            var documentProvider = _configurationObjectBuilder.GetConfigurationObject(configurationName)?.GetDocumentProvider(documentType);
 
             if (documentProvider != null)
             {
@@ -89,24 +86,26 @@ namespace InfinniPlatform.SystemConfig.Executors
 
                 dynamic schema = metadataConfiguration.GetSchemaVersion(documentType);
 
-                CriteriaSorting[] sortingFields = null;
+                SortingCriteria[] sortingFields = null;
 
                 if (schema != null)
                 {
                     // Извлекаем информацию о полях, по которым можно проводить сортировку из метаданных документа
-                    sortingFields = ExtractSortingProperties(string.Empty, schema.Properties, _configurationObjectBuilder);
+                    sortingFields = SortingPropertiesExtractor.ExtractSortingProperties(string.Empty, schema.Properties, _configurationObjectBuilder);
                 }
 
-                if (sorting != null && sorting.Any())
+                var sortingArray = sorting?.ToArray() ?? new SortingCriteria[] {};
+
+                if (sortingArray.Any())
                 {
                     // Поля сортировки заданы в запросе. 
                     // Берем только те поля, которые разрешены в соответствии с метаданными
 
-                    var filteredSortingFields = new List<CriteriaSorting>();
+                    var filteredSortingFields = new List<SortingCriteria>();
 
-                    foreach (var sortingProperty in sorting)
+                    foreach (var sortingProperty in sortingArray)
                     {
-                        if (sortingFields.Any(validProperty => validProperty.PropertyName == sortingProperty.PropertyName))
+                        if (sortingFields != null && sortingFields.Any(validProperty => validProperty.PropertyName == sortingProperty.PropertyName))
                         {
                             filteredSortingFields.Add(sortingProperty);
                         }
@@ -153,88 +152,7 @@ namespace InfinniPlatform.SystemConfig.Executors
 
             sorting?.Invoke(sortingBuilder);
 
-            return GetDocument(configurationName, documentType, filterBuilder.GetFilter(), pageNumber, pageSize, ignoreResolve, sortingBuilder.GetSorting());
-        }
-
-        private static CriteriaSorting[] ExtractSortingProperties(string rootName, dynamic properties, IConfigurationObjectBuilder configurationObjectBuilder)
-        {
-            var sortingProperties = new List<CriteriaSorting>();
-
-            if (properties != null)
-            {
-                foreach (var propertyMapping in properties)
-                {
-                    string formattedPropertyName = string.IsNullOrEmpty(rootName)
-                                                       ? string.Format("{0}", propertyMapping.Key)
-                                                       : string.Format("{0}.{1}", rootName, propertyMapping.Key);
-
-                    if (propertyMapping.Value.Type.ToString() == DataType.Object.ToString())
-                    {
-                        var childProps = new CriteriaSorting[] { };
-
-                        if (propertyMapping.Value.TypeInfo != null &&
-                            propertyMapping.Value.TypeInfo.DocumentLink != null &&
-                            propertyMapping.Value.TypeInfo.DocumentLink.Inline != null &&
-                            propertyMapping.Value.TypeInfo.DocumentLink.Inline == true)
-                        {
-                            // inline ссылка на документ: необходимо получить схему документа, на который сделана ссылка,
-                            // чтобы получить сортировочные поля 
-                            dynamic inlineMetadataConfiguration =
-                                configurationObjectBuilder.GetConfigurationObject(propertyMapping.Value.TypeInfo
-                                                                                                 .DocumentLink.ConfigId)
-                                                          .MetadataConfiguration;
-
-                            if (inlineMetadataConfiguration != null)
-                            {
-                                dynamic inlineDocumentSchema =
-                                    inlineMetadataConfiguration.GetSchemaVersion(
-                                                                                 propertyMapping.Value.TypeInfo.DocumentLink.DocumentId);
-
-                                if (inlineDocumentSchema != null)
-                                {
-                                    childProps = ExtractSortingProperties(formattedPropertyName,
-                                                                          inlineDocumentSchema.Properties,
-                                                                          configurationObjectBuilder);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            childProps = ExtractSortingProperties(formattedPropertyName,
-                                                                  propertyMapping.Value.Properties,
-                                                                  configurationObjectBuilder);
-                        }
-
-                        sortingProperties.AddRange(childProps);
-                    }
-                    else if (propertyMapping.Value.Type.ToString() == DataType.Array.ToString())
-                    {
-                        if (propertyMapping.Value.Items != null)
-                        {
-                            sortingProperties.AddRange(
-                                                       ExtractSortingProperties(formattedPropertyName,
-                                                                                propertyMapping.Value.Items.Properties,
-                                                                                configurationObjectBuilder));
-                        }
-                    }
-                    else
-                    {
-                        var isSortingField = false;
-
-                        if (propertyMapping.Value.Sortable != null)
-                        {
-                            isSortingField = propertyMapping.Value.Sortable;
-                        }
-
-                        if (isSortingField)
-                        {
-                            sortingProperties.Add(new CriteriaSorting(formattedPropertyName, SortOrder.Ascending.ToString()));
-                        }
-                    }
-                }
-            }
-
-            return sortingProperties.ToArray();
+            return GetDocument(configurationName, documentType, filterBuilder.CriteriaList, pageNumber, pageSize, ignoreResolve, sortingBuilder.SortingList);
         }
     }
 }

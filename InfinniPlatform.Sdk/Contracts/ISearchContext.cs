@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using InfinniPlatform.Sdk.Documents;
+
 namespace InfinniPlatform.Sdk.Contracts
 {
     /// <summary>
@@ -11,7 +13,7 @@ namespace InfinniPlatform.Sdk.Contracts
         /// <summary>
         /// Фильтр данных
         /// </summary>
-        List<dynamic> Filter { get; set; }
+        List<FilterCriteria> Filter { get; set; }
 
         /// <summary>
         /// Номер страницы

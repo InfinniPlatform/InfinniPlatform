@@ -9,21 +9,16 @@ namespace InfinniPlatform.Sdk.Documents
     {
         public SortingBuilder()
         {
-            _sortingList = new List<CriteriaSorting>();
+            SortingList = new List<SortingCriteria>();
         }
 
-        private readonly IList<CriteriaSorting> _sortingList;
+        public IList<SortingCriteria> SortingList { get; }
 
         public SortingBuilder AddSorting(string property, string sortingOrder = "ascending")
         {
-            _sortingList.Add(new CriteriaSorting(property, sortingOrder));
+            SortingList.Add(new SortingCriteria(property, sortingOrder));
 
             return this;
-        }
-
-        public IEnumerable<CriteriaSorting> GetSorting()
-        {
-            return _sortingList;
         }
     }
 }

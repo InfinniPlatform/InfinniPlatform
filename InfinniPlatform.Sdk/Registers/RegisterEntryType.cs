@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.Registers
+﻿namespace InfinniPlatform.Sdk.Registers
 {
     /// <summary>
     /// Тип движения ресурсов в рамках регистра

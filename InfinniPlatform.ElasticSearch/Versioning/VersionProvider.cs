@@ -13,7 +13,8 @@ namespace InfinniPlatform.ElasticSearch.Versioning
     /// </summary>
     public sealed class VersionProvider : IVersionProvider
     {
-        public VersionProvider(ICrudOperationProvider elasticSearchProvider, IIndexQueryExecutor indexQueryExecutor)
+        public VersionProvider(ICrudOperationProvider elasticSearchProvider,
+                               IIndexQueryExecutor indexQueryExecutor)
         {
             _elasticSearchProvider = elasticSearchProvider;
             _indexQueryExecutor = indexQueryExecutor;
@@ -25,23 +26,23 @@ namespace InfinniPlatform.ElasticSearch.Versioning
         /// <summary>
         /// Получить актуальные версии объектов, отсортированные по дате вставки в индекс по убыванию
         /// </summary>
-        /// <param name="filterObject">Фильтр объектов</param>
+        /// <param name="filterCriteria">Фильтр объектов</param>
         /// <param name="pageNumber">Номер страницы данных</param>
         /// <param name="pageSize">Размер страницы данных</param>
-        /// <param name="sortingDescription">Описание правил сортировки</param>
+        /// <param name="sortingCriteria">Описание правил сортировки</param>
         /// <param name="skipSize"></param>
         /// <returns>Список актуальных версий</returns>
-        public dynamic GetDocument(IEnumerable<object> filterObject, int pageNumber, int pageSize, IEnumerable<CriteriaSorting> sortingDescription = null, int skipSize = 0)
+        public dynamic GetDocument(IEnumerable<FilterCriteria> filterCriteria, int pageNumber, int pageSize, IEnumerable<SortingCriteria> sortingCriteria = null, int skipSize = 0)
         {
             var filterFactory = FilterBuilderFactory.GetInstance();
-            var searchModel = filterObject.ExtractSearchModel(filterFactory);
+            var searchModel = filterCriteria.ExtractSearchModel(filterFactory);
             searchModel.SetPageSize(pageSize);
             searchModel.SetSkip(skipSize);
             searchModel.SetFromPage(pageNumber);
 
-            if (sortingDescription != null)
+            if (sortingCriteria != null)
             {
-                foreach (var sorting in sortingDescription)
+                foreach (var sorting in sortingCriteria)
                 {
                     searchModel.AddSort(sorting.PropertyName, sorting.SortingOrder);
                 }
@@ -53,12 +54,12 @@ namespace InfinniPlatform.ElasticSearch.Versioning
         /// <summary>
         /// Получить общее количество объектов по заданному фильтру
         /// </summary>
-        /// <param name="filterObject">Фильтр объектов</param>
+        /// <param name="filterCriteria">Фильтр объектов</param>
         /// <returns>Количество объектов</returns>
-        public int GetNumberOfDocuments(IEnumerable<object> filterObject)
+        public int GetNumberOfDocuments(IEnumerable<FilterCriteria> filterCriteria)
         {
             var queryFactory = QueryBuilderFactory.GetInstance();
-            var searchModel = filterObject.ExtractSearchModel(queryFactory);
+            var searchModel = filterCriteria.ExtractSearchModel(queryFactory);
 
             // вряд ли документов в одном индексе будет больше чем 2 147 483 647, конвертируем в int
             return Convert.ToInt32(_indexQueryExecutor.CalculateCountQuery(searchModel));

@@ -3,6 +3,7 @@
 using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.SystemConfig.ActionUnits.Documents
@@ -30,7 +31,7 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Documents
 
             string configId = target.Item.Configuration;
             string documentId = target.Item.Metadata;
-            IEnumerable<dynamic> filter = target.Item.Filter;
+            IEnumerable<FilterCriteria> filter = target.Item.Filter;
 
             var metadataConfiguration = _configurationObjectBuilder.GetConfigurationObject(configId).MetadataConfiguration;
 

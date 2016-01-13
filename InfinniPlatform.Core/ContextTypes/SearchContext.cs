@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
 using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Documents;
 
 namespace InfinniPlatform.Core.ContextTypes
 {
@@ -22,7 +23,7 @@ namespace InfinniPlatform.Core.ContextTypes
         /// <summary>
         /// Фильтр данных
         /// </summary>
-        public List<dynamic> Filter { get; set; }
+        public List<FilterCriteria> Filter { get; set; }
 
         /// <summary>
         /// Номер страницы

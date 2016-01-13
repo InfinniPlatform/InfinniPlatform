@@ -38,10 +38,6 @@ namespace InfinniPlatform.Core.IoC
                    .As<IPerformanceLog>()
                    .SingleInstance();
 
-            builder.RegisterType<LogComponent>()
-                   .As<ILogComponent>()
-                   .SingleInstance();
-
             // SaaS
 
             builder.RegisterType<TenantProvider>()
@@ -106,12 +102,6 @@ namespace InfinniPlatform.Core.IoC
 
             builder.RegisterType<CustomServiceApi>()
                    .As<ICustomServiceApi>()
-                   .AsSelf()
-                   .SingleInstance();
-
-            // ХЗ
-
-            builder.RegisterType<InprocessDocumentComponent>()
                    .AsSelf()
                    .SingleInstance();
 

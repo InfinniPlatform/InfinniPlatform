@@ -5,6 +5,7 @@ using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Registers;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Registers;
 
 namespace InfinniPlatform.SystemConfig.ActionUnits.Registers
 {

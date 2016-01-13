@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using InfinniPlatform.Sdk.Documents;
 
@@ -26,7 +27,7 @@ namespace InfinniPlatform.Sdk.RestApi
                                                                                                     PrintViewType = printViewType,
                                                                                                     PageNumber = pageNumber,
                                                                                                     PageSize = pageSize,
-                                                                                                    Filter = filterBuilder.GetFilter()
+                                                                                                    Filter = (IEnumerable<FilterCriteria>)filterBuilder.CriteriaList
                                                                                                 }).ToDynamic();
         }
     }
