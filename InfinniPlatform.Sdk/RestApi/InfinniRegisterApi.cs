@@ -59,7 +59,7 @@ namespace InfinniPlatform.Sdk.RestApi
                                                                                                            ValueAggregationTypes = valueAggregationTypes,
                                                                                                            Filter = filter == null
                                                                                                                         ? null
-                                                                                                                        : (IEnumerable<CriteriaFilter>)filterBuilder.CriteriaList
+                                                                                                                        : (IEnumerable<FilterCriteria>)filterBuilder.CriteriaList
                                                                                                        });
         }
 
@@ -102,7 +102,7 @@ namespace InfinniPlatform.Sdk.RestApi
                                                                                                                  ValueAggregationTypes = valueAggregationTypes,
                                                                                                                  Filter = filter == null
                                                                                                                               ? null
-                                                                                                                              : (IEnumerable<CriteriaFilter>)filterBuilder.CriteriaList
+                                                                                                                              : (IEnumerable<FilterCriteria>)filterBuilder.CriteriaList
                                                                                                              });
         }
 

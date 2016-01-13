@@ -31,7 +31,7 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Documents
 
             string configId = target.Item.Configuration;
             string documentId = target.Item.Metadata;
-            IEnumerable<CriteriaFilter> filter = target.Item.Filter;
+            IEnumerable<FilterCriteria> filter = target.Item.Filter;
 
             var metadataConfiguration = _configurationObjectBuilder.GetConfigurationObject(configId).MetadataConfiguration;
 

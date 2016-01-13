@@ -12,20 +12,20 @@ namespace InfinniPlatform.Core.Index
         /// <summary>
         ///     Получить актуальные версии объектов, отсортированные по дате вставки в индекс по убыванию
         /// </summary>
-        /// <param name="filterObject">Фильтр объектов</param>
+        /// <param name="filterCriteria">Фильтр объектов</param>
         /// <param name="pageNumber">Номер страницы данных</param>
         /// <param name="pageSize">Размер страницы данных</param>
-        /// <param name="sortingDescription">Описание правил сортировки</param>
+        /// <param name="sortingCriteria">Описание правил сортировки</param>
         /// <param name="skipSize"></param>
         /// <returns>Список актуальных версий</returns>
-        dynamic GetDocument(IEnumerable<object> filterObject, int pageNumber, int pageSize, IEnumerable<CriteriaSorting> sortingDescription = null, int skipSize = 0);
+        dynamic GetDocument(IEnumerable<FilterCriteria> filterCriteria, int pageNumber, int pageSize, IEnumerable<SortingCriteria> sortingCriteria = null, int skipSize = 0);
 
         /// <summary>
         ///     Получить общее количество объектов по заданному фильтру
         /// </summary>
-        /// <param name="filterObject">Фильтр объектов</param>
+        /// <param name="filterCriteria">Фильтр объектов</param>
         /// <returns>Количество объектов</returns>
-        int GetNumberOfDocuments(IEnumerable<object> filterObject);
+        int GetNumberOfDocuments(IEnumerable<FilterCriteria> filterCriteria);
 
         /// <summary>
         /// Получить версию по уникальному идентификатору

@@ -9,7 +9,7 @@ namespace InfinniPlatform.Sdk.RestApi
 {
     public static class RequestExecutorExtensions
     {
-        public static string CreateQueryString(IEnumerable<CriteriaFilter> filter, int pageNumber, int pageSize, IEnumerable<CriteriaSorting> sorting)
+        public static string CreateQueryString(IEnumerable<FilterCriteria> filter, int pageNumber, int pageSize, IEnumerable<SortingCriteria> sorting)
         {
             var jsonFilterStrings = JsonConvert.SerializeObject(filter);
             var jsonSortingStrings = JsonConvert.SerializeObject(sorting);
@@ -17,7 +17,7 @@ namespace InfinniPlatform.Sdk.RestApi
             return $"filter={Uri.EscapeDataString(jsonFilterStrings)}&pageNumber={pageNumber}&pageSize={pageSize}&sorting={Uri.EscapeDataString(jsonSortingStrings)}";
         }
 
-        public static string CreateQueryStringCount(IEnumerable<CriteriaFilter> filter)
+        public static string CreateQueryStringCount(IEnumerable<FilterCriteria> filter)
         {
             var jsonFilterStrings = JsonConvert.SerializeObject(filter);
 

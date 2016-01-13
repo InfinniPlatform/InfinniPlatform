@@ -36,7 +36,7 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
             }
 
             var filter = nameValueCollection.Get("$filter");
-            var criteriaList = JsonConvert.DeserializeObject<IEnumerable<CriteriaFilter>>(filter);
+            var criteriaList = JsonConvert.DeserializeObject<IEnumerable<FilterCriteria>>(filter);
             
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 

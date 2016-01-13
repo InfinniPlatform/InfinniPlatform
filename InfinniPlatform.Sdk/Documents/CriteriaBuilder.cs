@@ -145,9 +145,9 @@ namespace InfinniPlatform.Sdk.Documents
             return this;
         }
 
-        internal CriteriaFilter GetCriteria()
+        internal FilterCriteria GetCriteria()
         {
-            return new CriteriaFilter(_property, _value, _criteriaType);
+            return new FilterCriteria(_property, _value, _criteriaType);
         }
     }
 }

@@ -88,6 +88,7 @@
     <Compile Include="Index\PropertyMapping.cs" />
     <Compile Include="Index\SearchAbilityType.cs" />
     <Compile Include="Index\SearchModel.cs" />
+    <Compile Include="Index\SearchModelExtensions.cs" />
     <Compile Include="Index\SearchViewModel.cs" />
     <Compile Include="Index\SortOption.cs" />
     <Compile Include="Index\SortOrder.cs" />

@@ -22,8 +22,8 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Documents
             var criteriaFilters = target.Item.Filter as IEnumerable<dynamic>;
             var criteriaSortings = target.Item.Sorting as IEnumerable<dynamic>;
 
-            var enumerableFilters = criteriaFilters?.Select(o => new CriteriaFilter(o.Property, o.Value, (CriteriaType)o.CriteriaType));
-            var enumerableSortings = criteriaSortings?.Select(o => new CriteriaSorting(o.PropertyName, o.SortingOrder));
+            var enumerableFilters = criteriaFilters?.Select(o => new FilterCriteria(o.Property, o.Value, (CriteriaType)o.CriteriaType));
+            var enumerableSortings = criteriaSortings?.Select(o => new SortingCriteria(o.PropertyName, o.SortingOrder));
 
             target.Result = _getDocumentExecutor.GetDocument(target.Item.Configuration,
                                                              target.Item.Metadata,

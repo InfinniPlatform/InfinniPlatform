@@ -38,10 +38,10 @@ namespace InfinniPlatform.WebApi.Middleware.StandardHandlers
             }
 
             var filter = nameValueCollection.Get("filter");
-            var criteriaList = JsonConvert.DeserializeObject<IEnumerable<CriteriaFilter>>(filter);
+            var criteriaList = JsonConvert.DeserializeObject<IEnumerable<FilterCriteria>>(filter);
 
             var sorting = nameValueCollection.Get("sorting");
-            var sortingList = JsonConvert.DeserializeObject<IEnumerable<CriteriaSorting>>(sorting);
+            var sortingList = JsonConvert.DeserializeObject<IEnumerable<SortingCriteria>>(sorting);
 
             var routeDictionary = RouteFormatter.GetRouteDictionary(context);
 

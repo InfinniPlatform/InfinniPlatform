@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 using InfinniPlatform.Sdk.Documents;
 
@@ -14,8 +12,6 @@ namespace InfinniPlatform.Core.Index
     /// </summary>
     public sealed class SearchModel
     {
-        private readonly IList<SortOption> _criteriaOrder = new List<SortOption>();
-
         /// <summary>
         ///     Возвращать данные, начиная со страницы...
         /// </summary>
@@ -34,21 +30,28 @@ namespace InfinniPlatform.Core.Index
         /// <summary>
         ///     Список критериев для упорядочивания
         /// </summary>
-        public IList<SortOption> SortOptions
-        {
-            get { return _criteriaOrder; }
-        }
+        public IList<SortOption> SortOptions { get; } = new List<SortOption>();
 
         /// <summary>
         ///     Список критериев для поиска
         /// </summary>
         public IFilter Filter { get; private set; }
 
-        public void AddFilter(IFilter criteria)
+        public void AddFilter(IFilter filterCriteria)
         {
             Filter = Filter == null
-                ? criteria
-                : Filter.And(criteria);
+                ? filterCriteria
+                : Filter.And(filterCriteria);
+        }
+
+        public void AddFilters(IEnumerable<IFilter> filterCriterias)
+        {
+            foreach (var criteria in filterCriterias)
+            {
+                Filter = Filter == null
+                             ? criteria
+                             : Filter.And(criteria);
+            }
         }
 
         public void AddSort(string propertyName, SortOrder sortOrder)
@@ -76,59 +79,6 @@ namespace InfinniPlatform.Core.Index
         public void SetSkip(int skip)
         {
             Skip = skip;
-        }
-    }
-
-    public static class SearchModelExtensions
-    {
-        public static SearchModel ExtractSearchModel(this IEnumerable<dynamic> filterObject,
-            INestFilterBuilder filterFactory)
-        {
-            var searchModel = new SearchModel();
-            
-            if (filterObject == null)
-                return searchModel;
-
-            var filters = filterObject
-                .Select(x => filterFactory.Get((string) x.Property, (object) x.Value, ParseCriteriaType(x.CriteriaType)))
-                .ToList();
-
-            foreach (var filter in filters)
-            {
-                searchModel.AddFilter(filter);
-            }
-
-            return searchModel;
-        }
-
-        private static CriteriaType ParseCriteriaType(object value)
-        {
-            // TODO: Избавиться от этого после рефакторинга уровня доступа к данным
-
-            CriteriaType result;
-
-            if (value is CriteriaType)
-            {
-                result = (CriteriaType)value;
-            }
-            else if (value is long)
-            {
-                result = (CriteriaType)((long)value);
-            }
-            else if (value is int)
-            {
-                result = (CriteriaType)((int)value);
-            }
-            else if (value is string)
-            {
-                Enum.TryParse((string)value, true, out result);
-            }
-            else
-            {
-                result = default(CriteriaType);
-            }
-
-            return result;
         }
     }
 }

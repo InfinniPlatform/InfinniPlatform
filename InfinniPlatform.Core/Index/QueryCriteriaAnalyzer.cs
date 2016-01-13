@@ -46,7 +46,7 @@ namespace InfinniPlatform.Core.Index
         /// </summary>
         /// <param name="filter">Список критериев запроса</param>
         /// <returns>Список критериев</returns>
-        public IEnumerable<CriteriaFilter> GetBeforeResolveCriteriaList(IEnumerable<CriteriaFilter> filter)
+        public IEnumerable<FilterCriteria> GetBeforeResolveCriteriaList(IEnumerable<FilterCriteria> filter)
         {
             return filter.Where(criteria => !_resolveProperties.Any(r => criteria.Property.StartsWith(r.GetFullPath())));
         }
@@ -56,7 +56,7 @@ namespace InfinniPlatform.Core.Index
         /// </summary>
         /// <param name="filter">Список критериев запроса</param>
         /// <returns>Список критериев</returns>
-        public IEnumerable<CriteriaFilter> GetAfterResolveCriteriaList(IEnumerable<CriteriaFilter> filter)
+        public IEnumerable<FilterCriteria> GetAfterResolveCriteriaList(IEnumerable<FilterCriteria> filter)
         {
             var filtersArray = filter.ToArray();
             var beforeResolveCriteriaList = GetBeforeResolveCriteriaList(filtersArray);

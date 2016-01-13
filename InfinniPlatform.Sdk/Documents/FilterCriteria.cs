@@ -5,9 +5,9 @@ using Newtonsoft.Json;
 namespace InfinniPlatform.Sdk.Documents
 {
     [Serializable]
-    public sealed class CriteriaFilter
+    public sealed class FilterCriteria
     {
-        public CriteriaFilter(string property, object value, CriteriaType criteriaType)
+        public FilterCriteria(string property, object value, CriteriaType criteriaType)
         {
             Property = property;
             Value = value;
@@ -22,7 +22,7 @@ namespace InfinniPlatform.Sdk.Documents
 
         public string ToJsonString()
         {
-            var criteriaFilter = new CriteriaFilter(Property, Value, CriteriaType);
+            var criteriaFilter = new FilterCriteria(Property, Value, CriteriaType);
             var serializeObject = JsonConvert.SerializeObject(criteriaFilter);
 
             return serializeObject;

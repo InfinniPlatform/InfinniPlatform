@@ -38,7 +38,6 @@ namespace InfinniPlatform.ElasticSearch.Filters.NestFilters
                 { CriteriaType.IsMoreThan, BuildMoreThanFilter },
                 { CriteriaType.IsMoreThanOrEquals, BuildMoreThanOrEqualsFilter },
                 { CriteriaType.IsIn, BuildIsInFilter },
-                { CriteriaType.Script, BuildScriptFilter },
                 { CriteriaType.FullTextSearch, BuildFullTextSearchFilter },
                 { CriteriaType.IsIdIn, BuildIdInListFilter }
             };
@@ -81,10 +80,10 @@ namespace InfinniPlatform.ElasticSearch.Filters.NestFilters
 
         public IFilter Get(ICalculatedField script, object value)
         {
-            var factory = Factories[CriteriaType.Script];
+            var rawScript = script.GetRawScript();
             var elasticValue = value.AsElasticValue();
 
-            return factory.Invoke(script.GetRawScript(), elasticValue);
+            return BuildScriptFilter(rawScript, elasticValue);
         }
 
         private static IFilter BuildContainsFilter(string field, object value)
@@ -122,19 +121,13 @@ namespace InfinniPlatform.ElasticSearch.Filters.NestFilters
 
             if (string.IsNullOrEmpty(field))
             {
-                return new NestFilter(
-                    Filter<dynamic>.Query(q => q
-                                                   .QueryString(qs => qs
-                                                                          .Analyzer("fulltextquery")
-                                                                          .Query(processedValue))));
+                return new NestFilter(Filter<dynamic>.Query(q => q.QueryString(qs => qs.Analyzer("fulltextquery")
+                                                                                       .Query(processedValue))));
             }
 
-            return new NestFilter(
-                Filter<dynamic>.Query(q => q
-                                               .QueryString(qs => qs
-                                                                      .Analyzer("fulltextquery")
-                                                                      .OnFields(field.Split('\n'))
-                                                                      .Query(processedValue))));
+            return new NestFilter(Filter<dynamic>.Query(q => q.QueryString(qs => qs.Analyzer("fulltextquery")
+                                                                                   .OnFields(field.Split('\n'))
+                                                                                   .Query(processedValue))));
         }
 
         private static IFilter BuildIdInListFilter(string field, object value)

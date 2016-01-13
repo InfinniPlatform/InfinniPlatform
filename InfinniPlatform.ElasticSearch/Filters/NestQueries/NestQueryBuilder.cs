@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using InfinniPlatform.Core.Index;
-using InfinniPlatform.Core.Properties;
 using InfinniPlatform.ElasticSearch.Filters.Extensions;
-using InfinniPlatform.ElasticSearch.Filters.NestFilters;
 using InfinniPlatform.Sdk.Documents;
 
 using Nest;
 
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 using IFilter = InfinniPlatform.Sdk.Documents.IFilter;
 
@@ -42,7 +38,6 @@ namespace InfinniPlatform.ElasticSearch.Filters.NestQueries
                 { CriteriaType.IsMoreThan, BuildMoreThanQuery },
                 { CriteriaType.IsMoreThanOrEquals, BuildMoreThanOrEqualsQuery },
                 { CriteriaType.IsIn, BuildIsInQuery },
-                //{CriteriaType.Script, BuildScriptQuery},
                 { CriteriaType.FullTextSearch, BuildFullTextSearchQuery },
                 { CriteriaType.IsIdIn, BuildIdInListQuery }
             };
@@ -85,10 +80,7 @@ namespace InfinniPlatform.ElasticSearch.Filters.NestQueries
 
         public IFilter Get(ICalculatedField script, object value)
         {
-            var factory = Factories[CriteriaType.Script];
-            var elasticValue = value.AsElasticValue();
-
-            return factory.Invoke(script.GetRawScript(), elasticValue);
+            throw new NotImplementedException();
         }
 
         private static IFilter BuildContainsQuery(string field, object value)

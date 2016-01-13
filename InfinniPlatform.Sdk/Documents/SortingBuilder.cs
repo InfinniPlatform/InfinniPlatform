@@ -9,14 +9,14 @@ namespace InfinniPlatform.Sdk.Documents
     {
         public SortingBuilder()
         {
-            SortingList = new List<CriteriaSorting>();
+            SortingList = new List<SortingCriteria>();
         }
 
-        public IList<CriteriaSorting> SortingList { get; }
+        public IList<SortingCriteria> SortingList { get; }
 
         public SortingBuilder AddSorting(string property, string sortingOrder = "ascending")
         {
-            SortingList.Add(new CriteriaSorting(property, sortingOrder));
+            SortingList.Add(new SortingCriteria(property, sortingOrder));
 
             return this;
         }

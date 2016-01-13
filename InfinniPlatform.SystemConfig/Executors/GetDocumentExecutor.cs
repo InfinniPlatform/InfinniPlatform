@@ -34,7 +34,7 @@ namespace InfinniPlatform.SystemConfig.Executors
             return documentProvider.GetItem(id);
         }
 
-        public int GetNumberOfDocuments(string configurationName, string documentType, IEnumerable<CriteriaFilter> filter)
+        public int GetNumberOfDocuments(string configurationName, string documentType, IEnumerable<FilterCriteria> filter)
         {
             var numberOfDocuments = 0;
 
@@ -70,7 +70,7 @@ namespace InfinniPlatform.SystemConfig.Executors
             return GetNumberOfDocuments(configurationName, documentType, filterBuilder.CriteriaList);
         }
 
-        public IEnumerable<object> GetDocument(string configurationName, string documentType, IEnumerable<CriteriaFilter> filter, int pageNumber, int pageSize, IEnumerable<dynamic> ignoreResolve = null, IEnumerable<CriteriaSorting> sorting = null)
+        public IEnumerable<object> GetDocument(string configurationName, string documentType, IEnumerable<FilterCriteria> filter, int pageNumber, int pageSize, IEnumerable<dynamic> ignoreResolve = null, IEnumerable<SortingCriteria> sorting = null)
         {
             var documentProvider = _configurationObjectBuilder.GetConfigurationObject(configurationName)?.GetDocumentProvider(documentType);
 
@@ -86,7 +86,7 @@ namespace InfinniPlatform.SystemConfig.Executors
 
                 dynamic schema = metadataConfiguration.GetSchemaVersion(documentType);
 
-                CriteriaSorting[] sortingFields = null;
+                SortingCriteria[] sortingFields = null;
 
                 if (schema != null)
                 {
@@ -94,14 +94,14 @@ namespace InfinniPlatform.SystemConfig.Executors
                     sortingFields = SortingPropertiesExtractor.ExtractSortingProperties(string.Empty, schema.Properties, _configurationObjectBuilder);
                 }
 
-                var sortingArray = sorting?.ToArray() ?? new CriteriaSorting[] {};
+                var sortingArray = sorting?.ToArray() ?? new SortingCriteria[] {};
 
                 if (sortingArray.Any())
                 {
                     // Поля сортировки заданы в запросе. 
                     // Берем только те поля, которые разрешены в соответствии с метаданными
 
-                    var filteredSortingFields = new List<CriteriaSorting>();
+                    var filteredSortingFields = new List<SortingCriteria>();
 
                     foreach (var sortingProperty in sortingArray)
                     {

@@ -3,9 +3,9 @@
 namespace InfinniPlatform.Sdk.Documents
 {
     [Serializable]
-    public sealed class CriteriaSorting
+    public sealed class SortingCriteria
     {
-        public CriteriaSorting(string propertyName, string sortingOrder)
+        public SortingCriteria(string propertyName, string sortingOrder)
         {
             PropertyName = propertyName;
             SortingOrder = sortingOrder;
@@ -14,7 +14,7 @@ namespace InfinniPlatform.Sdk.Documents
         public string PropertyName { get; set; }
 
         public string SortingOrder { get; set; }
-
+        
         public override string ToString()
         {
             return $"{PropertyName} {SortingOrder}";

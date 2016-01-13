@@ -10,10 +10,10 @@ namespace InfinniPlatform.Sdk.Documents
     {
         public FilterBuilder()
         {
-            CriteriaList = new List<CriteriaFilter>();
+            CriteriaList = new List<FilterCriteria>();
         }
 
-        public IList<CriteriaFilter> CriteriaList { get; }
+        public IList<FilterCriteria> CriteriaList { get; }
 
         public FilterBuilder AddCriteria(Action<CriteriaBuilder> criteria)
         {

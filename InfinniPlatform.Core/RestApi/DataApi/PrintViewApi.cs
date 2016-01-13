@@ -30,7 +30,7 @@ namespace InfinniPlatform.Core.RestApi.DataApi
                                                                                                          PrintViewType = printViewType,
                                                                                                          PageNumber = pageNumber,
                                                                                                          PageSize = pageSize,
-                                                                                                         Filter = (IEnumerable<CriteriaFilter>)filterBuilder.CriteriaList
+                                                                                                         Filter = (IEnumerable<FilterCriteria>)filterBuilder.CriteriaList
                                                                                                      });
         }
     }

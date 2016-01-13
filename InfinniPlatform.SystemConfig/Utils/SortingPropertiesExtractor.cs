@@ -8,9 +8,9 @@ namespace InfinniPlatform.SystemConfig.Utils
 {
     public static class SortingPropertiesExtractor
     {
-        public static IEnumerable<CriteriaSorting> ExtractSortingProperties(string rootName, dynamic properties, IConfigurationObjectBuilder configurationObjectBuilder)
+        public static IEnumerable<SortingCriteria> ExtractSortingProperties(string rootName, dynamic properties, IConfigurationObjectBuilder configurationObjectBuilder)
         {
-            var sortingProperties = new List<CriteriaSorting>();
+            var sortingProperties = new List<SortingCriteria>();
 
             if (properties != null)
             {
@@ -22,7 +22,7 @@ namespace InfinniPlatform.SystemConfig.Utils
 
                     if (propertyMapping.Value.Type.ToString() == DataType.Object.ToString())
                     {
-                        var childProps = new CriteriaSorting[] { };
+                        var childProps = new SortingCriteria[] { };
 
                         if (propertyMapping.Value.TypeInfo != null &&
                             propertyMapping.Value.TypeInfo.DocumentLink != null &&
@@ -80,7 +80,7 @@ namespace InfinniPlatform.SystemConfig.Utils
 
                         if (isSortingField)
                         {
-                            sortingProperties.Add(new CriteriaSorting(formattedPropertyName, SortOrder.Ascending.ToString()));
+                            sortingProperties.Add(new SortingCriteria(formattedPropertyName, SortOrder.Ascending.ToString()));
                         }
                     }
                 }
