@@ -137,9 +137,7 @@ namespace InfinniPlatform.ElasticSearch.Filters.NestFilters
         {
             var values = JsonConvert.DeserializeObject<IEnumerable<string>>((string)value);
 
-            var nestFilter = new NestFilter(Filter<dynamic>.Ids(values));
-
-            return nestFilter;
+            return new NestFilter(Filter<dynamic>.Ids(values));
         }
 
         private static IFilter BuildIsInFilter(string field, object value)

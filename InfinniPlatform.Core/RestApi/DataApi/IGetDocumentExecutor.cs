@@ -13,10 +13,8 @@ namespace InfinniPlatform.Core.RestApi.DataApi
 
         int GetNumberOfDocuments(string configurationName, string documentType, Action<FilterBuilder> filter);
 
-        IEnumerable<object> GetDocument(string configurationName, string documentType, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting = null);
+        IEnumerable<object> GetDocument(string configurationName, string documentType, IEnumerable<FilterCriteria> filter, int pageNumber, int pageSize, IEnumerable<SortingCriteria> sorting = null, IEnumerable<dynamic> ignoreResolve = null);
 
-        IEnumerable<object> GetDocument(string configurationName, string documentType, IEnumerable<FilterCriteria> filter, int pageNumber, int pageSize, IEnumerable<dynamic> ignoreResolve = null, IEnumerable<SortingCriteria> sorting = null);
-
-        IEnumerable<object> GetDocument(string configurationName, string documentType, Action<FilterBuilder> filter, int pageNumber, int pageSize, IEnumerable<object> ignoreResolve, Action<SortingBuilder> sorting = null);
+        IEnumerable<object> GetDocument(string configurationName, string documentType, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting = null, IEnumerable<object> ignoreResolve = null);
     }
 }
