@@ -22,19 +22,23 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
     /// </summary>
     public sealed class IndexQueryExecutor : IIndexQueryExecutor
     {
-        public IndexQueryExecutor(ElasticConnection elasticConnection, ITenantProvider tenantProvider, Dictionary<string, IEnumerable<TypeMapping>> accordances)
+        public IndexQueryExecutor(ElasticConnection elasticConnection,
+                                  ITenantProvider tenantProvider,
+                                  ElasticTypeManager elasticTypeManager,
+                                  string indexName,
+                                  string typeName)
         {
             _elasticConnection = elasticConnection;
             _tenantProvider = tenantProvider;
-
-            _indexNames = accordances.Select(x => x.Key.ToLower()).ToArray();
-            _typeNames = accordances.ToArray();
+            _indexName = indexName.ToLower();
+            _typeNames = elasticTypeManager.GetTypeMappings(indexName, typeName)
+                                           .GetMappingsTypeNames();
         }
 
         private readonly ElasticConnection _elasticConnection;
-        private readonly IEnumerable<string> _indexNames;
+        private readonly string _indexName;
         private readonly ITenantProvider _tenantProvider;
-        private readonly KeyValuePair<string, IEnumerable<TypeMapping>>[] _typeNames;
+        private readonly IEnumerable<string> _typeNames;
 
         /// <summary>
         /// Найти список объектов в индексе по указанной модели поиска
@@ -71,10 +75,7 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
 
             Func<CountDescriptor<dynamic>, CountDescriptor<dynamic>> desc =
                 descriptor => new ElasticCountQueryBuilder(descriptor).BuildCountQueryDescriptor(searchModel)
-                                                                      .BuildSearchForType(_indexNames,
-                                                                                          _typeNames == null || !_typeNames.Any()
-                                                                                              ? null
-                                                                                              : _typeNames.SelectMany(x => x.GetMappingsTypeNames()));
+                                                                      .BuildSearchForType(_indexName, _typeNames);
 
             var documentsResponse = _elasticConnection.Client.Count(desc);
 
@@ -98,10 +99,7 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
 
             Func<SearchDescriptor<dynamic>, SearchDescriptor<dynamic>> desc =
                 descriptor => new ElasticSearchQueryBuilder(descriptor).BuildSearchDescriptor(searchModel)
-                                                                       .BuildSearchForType(_indexNames,
-                                                                                           _typeNames == null || !_typeNames.Any()
-                                                                                               ? null
-                                                                                               : _typeNames.SelectMany(x => x.GetMappingsTypeNames()));
+                                                                       .BuildSearchForType(_indexName, _typeNames);
 
             var documentsResponse = _elasticConnection.Client.Search(desc);
 
