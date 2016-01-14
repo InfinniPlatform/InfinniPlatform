@@ -1,8 +1,8 @@
-﻿using InfinniPlatform.Core.Serialization;
-using InfinniPlatform.FastReport.Templates.Data;
+﻿using InfinniPlatform.FastReport.Templates.Data;
 using InfinniPlatform.FastReport.Templates.Elements;
 using InfinniPlatform.FastReport.Templates.Formats;
 using InfinniPlatform.FastReport.Templates.Reports;
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.FastReport.Serialization
 {

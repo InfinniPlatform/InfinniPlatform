@@ -396,4 +396,19 @@
   <data name="CannotProcessPutRequest" xml:space="preserve">
     <value>Cannot process PUT-request. StatusCode: '{0}', Content: '{1}'.</value>
   </data>
+  <data name="NameIsAlreadyAdded" xml:space="preserve">
+    <value>Name is already added.</value>
+  </data>
+  <data name="TypeIsAlreadyAdded" xml:space="preserve">
+    <value>Type is already added.</value>
+  </data>
+  <data name="TypeShouldHaveDefaultConstructor" xml:space="preserve">
+    <value>Type should have default constructor.</value>
+  </data>
+  <data name="TypeShouldNotBeAbstract" xml:space="preserve">
+    <value>Type should not be abstract.</value>
+  </data>
+  <data name="CannotDeserializeTypeError" xml:space="preserve">
+    <value>Cannot deserialize type '{0}'.</value>
+  </data>
 </root>

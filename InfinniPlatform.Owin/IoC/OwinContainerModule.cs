@@ -1,5 +1,6 @@
 ﻿using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.Owin.Modules;
+using InfinniPlatform.Owin.Services;
 using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.Owin.IoC
@@ -21,6 +22,10 @@ namespace InfinniPlatform.Owin.IoC
                    .SingleInstance();
 
             builder.RegisterType<SystemInfoOwinMiddleware>()
+                   .AsSelf()
+                   .SingleInstance();
+
+            builder.RegisterType<ApplicationOwinHostingModule>()
                    .AsSelf()
                    .SingleInstance();
         }

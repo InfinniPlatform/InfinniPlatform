@@ -1,8 +1,8 @@
-﻿using InfinniPlatform.Core.Serialization;
-using InfinniPlatform.Core.Validation.BooleanValidators;
+﻿using InfinniPlatform.Core.Validation.BooleanValidators;
 using InfinniPlatform.Core.Validation.CollectionValidators;
 using InfinniPlatform.Core.Validation.ObjectValidators;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.Core.Validation.Serialization
 {

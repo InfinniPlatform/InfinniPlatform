@@ -2,12 +2,12 @@
 using System.Collections;
 using System.Linq;
 
-using InfinniPlatform.Core.Properties;
+using InfinniPlatform.Sdk.Properties;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace InfinniPlatform.Core.Serialization
+namespace InfinniPlatform.Sdk.Serialization
 {
     /// <summary>
     /// Осуществляет преобразование объекта в JSON-представление и обратно на основе списка известных типов.
@@ -23,15 +23,9 @@ namespace InfinniPlatform.Core.Serialization
         private readonly Type _enumerableType;
         private readonly KnownTypesContainer _knownTypes;
 
-        public override bool CanRead
-        {
-            get { return true; }
-        }
+        public override bool CanRead => true;
 
-        public override bool CanWrite
-        {
-            get { return true; }
-        }
+        public override bool CanWrite => true;
 
         public override bool CanConvert(Type objectType)
         {
@@ -67,14 +61,11 @@ namespace InfinniPlatform.Core.Serialization
             {
                 var objProperty = objType.GetProperty(jProperty.Name);
 
-                if (objProperty != null)
-                {
-                    var objPropertyValue = objProperty.GetValue(value);
+                var objPropertyValue = objProperty?.GetValue(value);
 
-                    if (objPropertyValue != null)
-                    {
-                        jProperty.Value = JToken.FromObject(objPropertyValue, serializer);
-                    }
+                if (objPropertyValue != null)
+                {
+                    jProperty.Value = JToken.FromObject(objPropertyValue, serializer);
                 }
             }
         }

@@ -4,7 +4,7 @@ using System.IO.Compression;
 using System.Net;
 using System.Web;
 
-using InfinniPlatform.Core.Serialization;
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.Core.Hosting
 {

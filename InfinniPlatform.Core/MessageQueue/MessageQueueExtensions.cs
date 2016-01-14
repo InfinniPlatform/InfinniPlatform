@@ -1,6 +1,6 @@
 ﻿using System;
 
-using InfinniPlatform.Core.Serialization;
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.Core.MessageQueue
 {

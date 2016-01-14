@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-using InfinniPlatform.Core.Properties;
+using InfinniPlatform.Sdk.Properties;
 
-namespace InfinniPlatform.Core.Serialization
+namespace InfinniPlatform.Sdk.Serialization
 {
     /// <summary>
     /// Контейнер известных типов для сериализации.
@@ -74,34 +74,34 @@ namespace InfinniPlatform.Core.Serialization
         {
             if (type == null)
             {
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             }
 
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
             }
 
             if (_types.ContainsKey(type))
             {
-                throw new ArgumentException(Resources.TypeIsAlreadyAdded, "type");
+                throw new ArgumentException(Resources.TypeIsAlreadyAdded, nameof(type));
             }
 
             if (_names.ContainsKey(name))
             {
-                throw new ArgumentException(Resources.NameIsAlreadyAdded, "name");
+                throw new ArgumentException(Resources.NameIsAlreadyAdded, nameof(name));
             }
 
             if (type.IsInterface || type.IsAbstract)
             {
-                throw new ArgumentException(Resources.TypeShouldNotBeAbstract, "type");
+                throw new ArgumentException(Resources.TypeShouldNotBeAbstract, nameof(type));
             }
 
             if (
                 type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null,
                     Type.EmptyTypes, null) == null)
             {
-                throw new ArgumentException(Resources.TypeShouldHaveDefaultConstructor, "type");
+                throw new ArgumentException(Resources.TypeShouldHaveDefaultConstructor, nameof(type));
             }
 
             _types.Add(type, name);

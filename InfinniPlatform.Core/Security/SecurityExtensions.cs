@@ -5,7 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 
-using InfinniPlatform.Core.Serialization;
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.Core.Security
 {

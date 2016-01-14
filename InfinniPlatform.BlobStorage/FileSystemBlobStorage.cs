@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 
-using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.Sdk.BlobStorage;
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.BlobStorage
 {

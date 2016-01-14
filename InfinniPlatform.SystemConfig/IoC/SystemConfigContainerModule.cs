@@ -60,6 +60,9 @@ namespace InfinniPlatform.SystemConfig.IoC
 
             // Прикладные скрипты
             builder.RegisterActionUnits(GetType().Assembly);
+
+            // Прикладные сервисы
+            builder.RegisterHttpServices(GetType().Assembly);
         }
     }
 }
