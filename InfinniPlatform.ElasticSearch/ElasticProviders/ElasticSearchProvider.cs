@@ -376,8 +376,7 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
 
                     var searchResponse = _elasticConnection.Client.Search<dynamic>(
                         q => q
-                            .BuildSearchForType(new[] { _indexName }, _derivedTypeNames.Value.GetMappingsTypeNames(),
-                                false, false)
+                            .BuildSearchForType(new[] { _indexName }, _derivedTypeNames.Value.GetMappingsTypeNames())
                             .Size(batchSize)
                             .Filter(
                                 m => m.Terms(ElasticConstants.IndexObjectPath + ElasticConstants.IndexObjectIdentifierField, itemsToIndex.Select(batchItem => batchItem.ToLowerInvariant()))
@@ -403,7 +402,7 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
 
             return _elasticConnection.Client
                                      .Search<dynamic>(q => q
-                                         .BuildSearchForType(new[] { _indexName }, _derivedTypeNames.Value.GetMappingsTypeNames(), false, false)
+                                         .BuildSearchForType(new[] { _indexName }, _derivedTypeNames.Value.GetMappingsTypeNames())
                                          .Query(qr => qr.Term(ElasticConstants.TenantIdField, tenantId)
                                                       && qr.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid)
                                          )).Hits.Count();

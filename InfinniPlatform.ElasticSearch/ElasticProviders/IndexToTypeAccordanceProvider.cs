@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.ElasticSearch.ElasticProviders.SchemaIndexVersion;
-
 using Nest;
 
 namespace InfinniPlatform.ElasticSearch.ElasticProviders
@@ -15,13 +13,11 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
 
         private readonly ElasticTypeManager _elasticTypeManager;
 
-        public IndexToTypeAccordanceSettings GetIndexTypeAccordances(string indexName, string typeName)
+        public Dictionary<string, IEnumerable<TypeMapping>> GetIndexTypeAccordances(string indexName, string typeName)
         {
             var indexTypesNest = _elasticTypeManager.GetTypeMappings(indexName, typeName);
 
-            var indexEmpty = string.IsNullOrEmpty(indexName);
-
-            return new IndexToTypeAccordanceSettings(new Dictionary<string, IEnumerable<TypeMapping>> { { indexName, indexTypesNest } }, indexEmpty);
+            return new Dictionary<string, IEnumerable<TypeMapping>> { { indexName, indexTypesNest } };
         }
     }
 }

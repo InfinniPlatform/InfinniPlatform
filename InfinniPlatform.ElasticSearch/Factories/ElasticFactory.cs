@@ -3,8 +3,9 @@ using System.Collections.Generic;
 
 using InfinniPlatform.Core.Index;
 using InfinniPlatform.ElasticSearch.ElasticProviders;
-using InfinniPlatform.ElasticSearch.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.ElasticSearch.Versioning;
+
+using Nest;
 
 namespace InfinniPlatform.ElasticSearch.Factories
 {
@@ -13,7 +14,7 @@ namespace InfinniPlatform.ElasticSearch.Factories
     /// </summary>
     public sealed class ElasticFactory : IIndexFactory
     {
-        public delegate IIndexQueryExecutor IndexQueryExecutorFactory(IndexToTypeAccordanceSettings settings);
+        public delegate IIndexQueryExecutor IndexQueryExecutorFactory(Dictionary<string, IEnumerable<TypeMapping>> settings);
         public delegate IVersionBuilder VersionBuilderFactory(string indexName, string typeName);
         public delegate ICrudOperationProvider CrudOperationProviderFactory(string indexName, string typeName);
         public delegate IAggregationProvider AggregationProviderFactory(string indexName, string typeName);
@@ -34,7 +35,7 @@ namespace InfinniPlatform.ElasticSearch.Factories
             _allIndexesOperationProvider = allIndexesOperationProvider;
 
             _providersInfo = new List<ElasticSearchProviderInfo>();
-            _settings = new ConcurrentDictionary<string, IndexToTypeAccordanceSettings>();
+            _settings = new ConcurrentDictionary<string, Dictionary<string, IEnumerable<TypeMapping>>>();
         }
 
 
@@ -46,7 +47,7 @@ namespace InfinniPlatform.ElasticSearch.Factories
         private readonly IAllIndexesOperationProvider _allIndexesOperationProvider;
 
         private readonly List<ElasticSearchProviderInfo> _providersInfo;
-        private readonly ConcurrentDictionary<string, IndexToTypeAccordanceSettings> _settings;
+        private readonly ConcurrentDictionary<string, Dictionary<string, IEnumerable<TypeMapping>>> _settings;
 
 
         /// <summary>
@@ -141,11 +142,11 @@ namespace InfinniPlatform.ElasticSearch.Factories
             return $"Index:{indexName};TypeName:{typeName}";
         }
 
-        private IndexToTypeAccordanceSettings GetIndexTypeAccordanceSettings(string indexName, string typeName)
+        private Dictionary<string, IEnumerable<TypeMapping>> GetIndexTypeAccordanceSettings(string indexName, string typeName)
         {
             var key = CreateKey(indexName, typeName);
 
-            IndexToTypeAccordanceSettings indexSettings;
+            Dictionary<string, IEnumerable<TypeMapping>> indexSettings;
 
             if (!_settings.TryGetValue(key, out indexSettings))
             {
