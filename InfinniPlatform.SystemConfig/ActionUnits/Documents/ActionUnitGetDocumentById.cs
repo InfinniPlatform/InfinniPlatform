@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 
 using InfinniPlatform.Core.Index;
+using InfinniPlatform.ElasticSearch.Factories;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.SystemConfig.Utils;
 

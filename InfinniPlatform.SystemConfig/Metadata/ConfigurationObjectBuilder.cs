@@ -2,6 +2,7 @@
 
 using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.ElasticSearch.Factories;
 using InfinniPlatform.Sdk.BlobStorage;
 
 namespace InfinniPlatform.SystemConfig.Metadata

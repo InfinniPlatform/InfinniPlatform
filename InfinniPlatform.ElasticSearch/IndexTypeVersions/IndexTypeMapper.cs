@@ -19,41 +19,36 @@ namespace InfinniPlatform.ElasticSearch.IndexTypeVersions
             ElasticTypeFactories = new Dictionary<PropertyDataType, Func<PropertyMapping, IElasticType>>
                                    {
                                        {
-                                           PropertyDataType.String, GetStringElasticFieldMapping
+                                           PropertyDataType.String, propertyMapping => propertyMapping.AddSortField
+                                                                                           ? new MultiFieldMapping
+                                                                                             {
+                                                                                                 Type = propertyMapping.DataType.ToString(),
+                                                                                                 Fields = new Dictionary<PropertyNameMarker, IElasticCoreType> { { SortFieldName, new StringMapping { Index = FieldIndexOption.NotAnalyzed } } }
+                                                                                             }
+                                                                                           : new StringMapping()
                                        },
                                        {
-                                           PropertyDataType.Binary, mapping => new ObjectMapping
-                                                                               {
-                                                                                   Properties = new Dictionary<PropertyNameMarker, IElasticType> { { "Info", new ObjectMapping() } }
-                                                                               }
+                                           PropertyDataType.Binary, propertyMapping => new ObjectMapping
+                                                                                       {
+                                                                                           Properties = new Dictionary<PropertyNameMarker, IElasticType> { { "Info", new ObjectMapping() } }
+                                                                                       }
                                        },
                                        {
-                                           PropertyDataType.Object, mapping =>
+                                           PropertyDataType.Object, propertyMapping =>
                                                                     {
                                                                         // Поле является контейнером для других полей
                                                                         return new ObjectMapping
                                                                                {
-                                                                                   Properties = mapping.ChildProperties
-                                                                                                       .ToDictionary<PropertyMapping, PropertyNameMarker, IElasticType>(property => property.Name, GetElasticType)
+                                                                                   Properties = propertyMapping.ChildProperties
+                                                                                                               .ToDictionary<PropertyMapping, PropertyNameMarker, IElasticType>(property => property.Name, GetElasticType)
                                                                                };
                                                                     }
                                        },
-                                       { PropertyDataType.Integer, propertyMapping => GetElasticFieldMapping(propertyMapping, new NumberMapping { Type = PropertyDataType.Integer.ToString() }) },
-                                       { PropertyDataType.Float, propertyMapping => GetElasticFieldMapping(propertyMapping, new NumberMapping { Type = PropertyDataType.Float.ToString() }) },
-                                       { PropertyDataType.Date, propertyMapping => GetElasticFieldMapping(propertyMapping, new DateMapping()) },
-                                       { PropertyDataType.Boolean, propertyMapping => GetElasticFieldMapping(propertyMapping, new BooleanMapping()) }
+                                       { PropertyDataType.Integer, propertyMapping => CorrectElasticFieldMapping(new NumberMapping { Type = PropertyDataType.Integer.ToString() }, propertyMapping) },
+                                       { PropertyDataType.Float, propertyMapping => CorrectElasticFieldMapping(new NumberMapping { Type = PropertyDataType.Float.ToString() }, propertyMapping) },
+                                       { PropertyDataType.Date, propertyMapping => CorrectElasticFieldMapping(new DateMapping(), propertyMapping) },
+                                       { PropertyDataType.Boolean, propertyMapping => CorrectElasticFieldMapping(new BooleanMapping(), propertyMapping) }
                                    };
-
-        private static MultiFieldMapping GetStringElasticFieldMapping(PropertyMapping mapping)
-        {
-            return mapping.AddSortField
-                       ? new MultiFieldMapping
-                         {
-                             Type = mapping.DataType.ToString(),
-                             Fields = new Dictionary<PropertyNameMarker, IElasticCoreType> { { SortFieldName, new StringMapping { Index = FieldIndexOption.NotAnalyzed } } }
-                         }
-                       : new StringMapping();
-        }
 
         /// <summary>
         /// Задание схемы для документов, хранимых в индексе
@@ -97,8 +92,26 @@ namespace InfinniPlatform.ElasticSearch.IndexTypeVersions
         }
 
         /// <summary>
-        /// Рекурсивный метод получения значения свойства по схеме
+        /// Коректирует маппинг поля соответственно типу данных и необходимости сортировки.
         /// </summary>
+        /// <param name="propertyMapping">Обобщенный маппинг поля документа</param>
+        /// <param name="elasticFieldMapping">Маппинг поля в elasticsearch</param>
+        private static IElasticType CorrectElasticFieldMapping(IElasticCoreType elasticFieldMapping, PropertyMapping propertyMapping)
+        {
+            return propertyMapping.AddSortField
+                       ? (IElasticType)new MultiFieldMapping
+                                       {
+                                           Type = propertyMapping.DataType.ToString(),
+                                           Fields = new Dictionary<PropertyNameMarker, IElasticCoreType> { { SortFieldName, elasticFieldMapping } }
+                                       }
+                       : elasticFieldMapping;
+        }
+
+        /// <summary>
+        /// Получает маппинг поля соответственно типу данных поля.
+        /// </summary>
+        /// <param name="propertyMapping">Обобщенный маппинг поля документа</param>
+        /// <returns>Маппинг поля в elasticsearch</returns>
         private static IElasticType GetElasticType(PropertyMapping propertyMapping)
         {
             Func<PropertyMapping, IElasticType> elasticTypeFactory;
@@ -111,17 +124,6 @@ namespace InfinniPlatform.ElasticSearch.IndexTypeVersions
             elasticType.Name = propertyMapping.Name;
 
             return elasticType;
-        }
-
-        private static IElasticType GetElasticFieldMapping(PropertyMapping propertyMapping, IElasticCoreType elasticFieldMapping)
-        {
-            return propertyMapping.AddSortField
-                       ? (IElasticType)new MultiFieldMapping
-                                       {
-                                           Type = propertyMapping.DataType.ToString(),
-                                           Fields = new Dictionary<PropertyNameMarker, IElasticCoreType> { { SortFieldName, elasticFieldMapping } }
-                                       }
-                       : elasticFieldMapping;
         }
     }
 }

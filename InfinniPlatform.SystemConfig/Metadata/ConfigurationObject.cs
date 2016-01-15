@@ -3,6 +3,8 @@ using System.Collections.Concurrent;
 
 using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.ElasticSearch.Factories;
+using InfinniPlatform.ElasticSearch.Versioning;
 using InfinniPlatform.Sdk.BlobStorage;
 
 namespace InfinniPlatform.SystemConfig.Metadata

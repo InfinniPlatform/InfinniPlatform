@@ -35,7 +35,7 @@ namespace InfinniPlatform.Core.Metadata
         /// </summary>
         /// <param name="documentId">Метаданные</param>
         /// <returns>Конструктор версий</returns>
-        IVersionBuilder GetVersionBuilder(string documentId);
+//        IVersionBuilder GetVersionBuilder(string documentId);
 
         /// <summary>
         ///     Получить идентификатор конфигурации метаданных

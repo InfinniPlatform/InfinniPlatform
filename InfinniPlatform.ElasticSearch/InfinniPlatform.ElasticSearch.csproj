@@ -78,6 +78,7 @@
     <Compile Include="ElasticSearchModels\SearchModelSkipDescriptor.cs" />
     <Compile Include="ElasticSearchModels\SearchModelSortDescriptor.cs" />
     <Compile Include="Factories\ElasticFactory.cs" />
+    <Compile Include="Factories\IIndexFactory.cs" />
     <Compile Include="Filters\ElasticScript.cs" />
     <Compile Include="Filters\Extensions\NestFilterExtensions.cs" />
     <Compile Include="Filters\Extensions\ObjectExtension.cs" />
@@ -99,6 +100,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SortBuilders\SortContainer.cs" />
+    <Compile Include="Versioning\IVersionBuilder.cs" />
     <Compile Include="Versioning\VersionBuilder.cs" />
     <Compile Include="Versioning\VersionProvider.cs" />
   </ItemGroup>

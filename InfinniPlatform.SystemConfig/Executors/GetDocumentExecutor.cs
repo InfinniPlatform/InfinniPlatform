@@ -5,6 +5,7 @@ using System.Linq;
 using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.RestApi.DataApi;
+using InfinniPlatform.ElasticSearch.Factories;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.SystemConfig.Utils;
 

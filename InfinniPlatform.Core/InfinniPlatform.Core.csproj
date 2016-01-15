@@ -78,12 +78,10 @@
     <Compile Include="Index\IAggregationProvider.cs" />
     <Compile Include="Index\IAllIndexesOperationProvider.cs" />
     <Compile Include="Index\ICrudOperationProvider.cs" />
-    <Compile Include="Index\IIndexFactory.cs" />
     <Compile Include="Index\IIndexQueryExecutor.cs" />
     <Compile Include="Index\IIndexTypeMapping.cs" />
     <Compile Include="Index\IndexItemStrategy.cs" />
     <Compile Include="Index\IndexStatus.cs" />
-    <Compile Include="Index\IVersionBuilder.cs" />
     <Compile Include="Index\IVersionProvider.cs" />
     <Compile Include="Index\PropertyMapping.cs" />
     <Compile Include="Index\SearchAbilityType.cs" />

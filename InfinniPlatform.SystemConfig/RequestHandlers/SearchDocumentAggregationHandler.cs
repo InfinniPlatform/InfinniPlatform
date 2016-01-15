@@ -5,6 +5,7 @@ using InfinniPlatform.Core.ContextTypes;
 using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.ElasticSearch.Factories;
 using InfinniPlatform.ElasticSearch.Filters;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Documents;
