@@ -8,11 +8,12 @@ using InfinniPlatform.Core.RestApi.Auth;
 using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.ElasticSearch.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.ElasticSearch.IndexTypeSelectors;
+using InfinniPlatform.ElasticSearch.IndexTypeVersions;
 using InfinniPlatform.Sdk.Dynamic;
 
 using Nest;
 
-using PropertyMapping = InfinniPlatform.Core.Index.PropertyMapping;
+using PropertyMapping = InfinniPlatform.ElasticSearch.IndexTypeVersions.PropertyMapping;
 
 namespace InfinniPlatform.ElasticSearch.ElasticProviders
 {
@@ -398,14 +399,12 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
         /// <returns>Количество записей в индексе</returns>
         public int GetTotalCount()
         {
-            var tenantId = _tenantProvider.GetTenantId();
-
             return _elasticConnection.Client
-                                     .Search<dynamic>(q => q
-                                         .BuildSearchForType(_indexName, _derivedTypeNames.Value.GetMappingsTypeNames())
-                                         .Query(qr => qr.Term(ElasticConstants.TenantIdField, tenantId)
-                                                      && qr.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid)
-                                         )).Hits.Count();
+                                     .Search<dynamic>(q => q.BuildSearchForType(_indexName, _derivedTypeNames.Value.GetMappingsTypeNames())
+                                                            .Query(qr => qr.Term(ElasticConstants.TenantIdField, _tenantProvider.GetTenantId())
+                                                                         && qr.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid)))
+                                     .Hits
+                                     .Count();
         }
 
         private IndexObject PrepareObjectToIndex(dynamic item, string tenantId)
@@ -472,7 +471,7 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
                     {
                         switch (currentMappingProperty.DataType)
                         {
-                            case PropertyDataType.String:
+                            case FieldType.String:
                                 try
                                 {
                                     var value = (string)itemValue;
@@ -482,7 +481,7 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
                                     valueHasCorrectType = false;
                                 }
                                 break;
-                            case PropertyDataType.Integer:
+                            case FieldType.Integer:
                                 try
                                 {
                                     var value = (int)itemValue;
@@ -492,7 +491,7 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
                                     valueHasCorrectType = false;
                                 }
                                 break;
-                            case PropertyDataType.Float:
+                            case FieldType.Float:
                                 try
                                 {
                                     var value = (double)itemValue;
@@ -502,7 +501,7 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
                                     valueHasCorrectType = false;
                                 }
                                 break;
-                            case PropertyDataType.Date:
+                            case FieldType.Date:
                                 try
                                 {
                                     var value = (DateTime)itemValue;
@@ -512,7 +511,7 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
                                     valueHasCorrectType = false;
                                 }
                                 break;
-                            case PropertyDataType.Boolean:
+                            case FieldType.Boolean:
                                 try
                                 {
                                     var value = (bool)itemValue;
@@ -522,8 +521,8 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
                                     valueHasCorrectType = false;
                                 }
                                 break;
-                            case PropertyDataType.Binary:
-                            case PropertyDataType.Object:
+                            case FieldType.Binary:
+                            case FieldType.Object:
                                 // always ok
                                 break;
                             default:

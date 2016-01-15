@@ -92,6 +92,7 @@
     <Compile Include="IndexTypeSelectors\IndexTypeSelectorBase.cs" />
     <Compile Include="IndexTypeVersions\IndexTypeMapper.cs" />
     <Compile Include="IndexTypeVersions\PropertiesDescriptorExtension.cs" />
+    <Compile Include="IndexTypeVersions\PropertyMapping.cs" />
     <Compile Include="IoC\ElasticSearchContainerModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

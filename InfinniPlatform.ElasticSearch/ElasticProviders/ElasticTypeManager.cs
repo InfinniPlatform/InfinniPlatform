@@ -8,7 +8,7 @@ using InfinniPlatform.ElasticSearch.IndexTypeVersions;
 
 using Nest;
 
-using PropertyMapping = InfinniPlatform.Core.Index.PropertyMapping;
+using PropertyMapping = InfinniPlatform.ElasticSearch.IndexTypeVersions.PropertyMapping;
 
 namespace InfinniPlatform.ElasticSearch.ElasticProviders
 {
@@ -27,17 +27,17 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
         private readonly object _mappingsCacheSync = new object();
         private volatile Dictionary<string, IList<TypeMapping>> _mappingsCache;
 
-        private static readonly Dictionary<string, PropertyDataType> DataTypes = new Dictionary<string, PropertyDataType>(StringComparer.OrdinalIgnoreCase)
+        private static readonly Dictionary<string, FieldType> DataTypes = new Dictionary<string, FieldType>(StringComparer.OrdinalIgnoreCase)
                                                        {
-                                                           { "string", PropertyDataType.String },
-                                                           { "date", PropertyDataType.Date },
-                                                           { "binary", PropertyDataType.Object },
-                                                           { "boolean", PropertyDataType.Boolean },
-                                                           { "double", PropertyDataType.Float },
-                                                           { "float", PropertyDataType.Float },
-                                                           { "integer", PropertyDataType.Integer },
-                                                           { "long", PropertyDataType.Integer },
-                                                           { "object", PropertyDataType.Object }
+                                                           { "string", FieldType.String },
+                                                           { "date", FieldType.Date },
+                                                           { "binary", FieldType.Object },
+                                                           { "boolean", FieldType.Boolean },
+                                                           { "double", FieldType.Float },
+                                                           { "float", FieldType.Float },
+                                                           { "integer", FieldType.Integer },
+                                                           { "long", FieldType.Integer },
+                                                           { "object", FieldType.Object }
                                                        };
 
         // INDEXES
@@ -215,11 +215,11 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
             var propertyType = property.Value.Type.Name;
             var propertyName = property.Key.Name;
 
-            PropertyDataType dataType;
+            FieldType dataType;
 
             if (DataTypes.TryGetValue(propertyType, out dataType))
             {
-                if (dataType == PropertyDataType.Object)
+                if (dataType == FieldType.Object)
                 {
                     var objectMapping = property.Value as ObjectMapping;
 
@@ -230,7 +230,7 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
                         return new PropertyMapping(propertyName, propertiesList);
                     }
 
-                    dataType = PropertyDataType.Object;
+                    dataType = FieldType.Object;
                 }
             }
             else

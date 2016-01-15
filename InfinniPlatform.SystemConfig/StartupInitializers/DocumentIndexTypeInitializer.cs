@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.ElasticSearch.Factories;

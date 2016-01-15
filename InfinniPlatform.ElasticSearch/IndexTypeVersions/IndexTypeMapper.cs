@@ -6,8 +6,6 @@ using InfinniPlatform.Core.Index;
 
 using Nest;
 
-using PropertyMapping = InfinniPlatform.Core.Index.PropertyMapping;
-
 namespace InfinniPlatform.ElasticSearch.IndexTypeVersions
 {
     public static class IndexTypeMapper
@@ -15,11 +13,11 @@ namespace InfinniPlatform.ElasticSearch.IndexTypeVersions
         public const string MappingTypeVersionPattern = "_typeschema_";
         private const string SortFieldName = "sort";
 
-        private static readonly Dictionary<PropertyDataType, Func<PropertyMapping, IElasticType>>
-            ElasticTypeFactories = new Dictionary<PropertyDataType, Func<PropertyMapping, IElasticType>>
+        private static readonly Dictionary<FieldType, Func<PropertyMapping, IElasticType>>
+            ElasticTypeFactories = new Dictionary<FieldType, Func<PropertyMapping, IElasticType>>
                                    {
                                        {
-                                           PropertyDataType.String, propertyMapping => propertyMapping.AddSortField
+                                           FieldType.String, propertyMapping => propertyMapping.AddSortField
                                                                                            ? new MultiFieldMapping
                                                                                              {
                                                                                                  Type = propertyMapping.DataType.ToString(),
@@ -28,13 +26,13 @@ namespace InfinniPlatform.ElasticSearch.IndexTypeVersions
                                                                                            : new StringMapping()
                                        },
                                        {
-                                           PropertyDataType.Binary, propertyMapping => new ObjectMapping
+                                           FieldType.Binary, propertyMapping => new ObjectMapping
                                                                                        {
                                                                                            Properties = new Dictionary<PropertyNameMarker, IElasticType> { { "Info", new ObjectMapping() } }
                                                                                        }
                                        },
                                        {
-                                           PropertyDataType.Object, propertyMapping =>
+                                           FieldType.Object, propertyMapping =>
                                                                     {
                                                                         // Поле является контейнером для других полей
                                                                         return new ObjectMapping
@@ -44,10 +42,10 @@ namespace InfinniPlatform.ElasticSearch.IndexTypeVersions
                                                                                };
                                                                     }
                                        },
-                                       { PropertyDataType.Integer, propertyMapping => CorrectElasticFieldMapping(new NumberMapping { Type = PropertyDataType.Integer.ToString() }, propertyMapping) },
-                                       { PropertyDataType.Float, propertyMapping => CorrectElasticFieldMapping(new NumberMapping { Type = PropertyDataType.Float.ToString() }, propertyMapping) },
-                                       { PropertyDataType.Date, propertyMapping => CorrectElasticFieldMapping(new DateMapping(), propertyMapping) },
-                                       { PropertyDataType.Boolean, propertyMapping => CorrectElasticFieldMapping(new BooleanMapping(), propertyMapping) }
+                                       { FieldType.Integer, propertyMapping => CorrectElasticFieldMapping(new NumberMapping { Type = FieldType.Integer.ToString() }, propertyMapping) },
+                                       { FieldType.Float, propertyMapping => CorrectElasticFieldMapping(new NumberMapping { Type = FieldType.Float.ToString() }, propertyMapping) },
+                                       { FieldType.Date, propertyMapping => CorrectElasticFieldMapping(new DateMapping(), propertyMapping) },
+                                       { FieldType.Boolean, propertyMapping => CorrectElasticFieldMapping(new BooleanMapping(), propertyMapping) }
                                    };
 
         /// <summary>

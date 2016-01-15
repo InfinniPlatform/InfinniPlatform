@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.Dynamic;
+
+using Nest;
+
+using PropertyMapping = InfinniPlatform.ElasticSearch.IndexTypeVersions.PropertyMapping;
 
 namespace InfinniPlatform.SystemConfig.StartupInitializers
 {
@@ -28,13 +31,13 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 
                 var simpleMappings = new Dictionary<string, PropertyMapping>(StringComparer.OrdinalIgnoreCase)
                                      {
-                                         { "float", new PropertyMapping(propertyModel.Key, PropertyDataType.Float, sortable) },
-                                         { "integer", new PropertyMapping(propertyModel.Key, PropertyDataType.Integer, sortable) },
-                                         { "bool", new PropertyMapping(propertyModel.Key, PropertyDataType.Boolean, sortable) },
-                                         { "string", new PropertyMapping(propertyModel.Key, PropertyDataType.String, sortable) },
-                                         { "uuid", new PropertyMapping(propertyModel.Key, PropertyDataType.String, sortable) },
-                                         { "dateTime", new PropertyMapping(propertyModel.Key, PropertyDataType.Date, sortable) },
-                                         { "binary", new PropertyMapping(propertyModel.Key, PropertyDataType.Binary, false) }
+                                         { "float", new PropertyMapping(propertyModel.Key, FieldType.Float, sortable) },
+                                         { "integer", new PropertyMapping(propertyModel.Key, FieldType.Integer, sortable) },
+                                         { "bool", new PropertyMapping(propertyModel.Key, FieldType.Boolean, sortable) },
+                                         { "string", new PropertyMapping(propertyModel.Key, FieldType.String, sortable) },
+                                         { "uuid", new PropertyMapping(propertyModel.Key, FieldType.String, sortable) },
+                                         { "dateTime", new PropertyMapping(propertyModel.Key, FieldType.Date, sortable) },
+                                         { "binary", new PropertyMapping(propertyModel.Key, FieldType.Binary, false) }
                                      };
 
                 PropertyMapping propertyMapping;

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.ElasticSearch.Factories;
+using InfinniPlatform.ElasticSearch.IndexTypeVersions;
 
 namespace InfinniPlatform.SystemConfig.StartupInitializers
 {

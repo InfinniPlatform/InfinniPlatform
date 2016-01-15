@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Core.Index;
 using InfinniPlatform.ElasticSearch.ElasticProviders;
+
+using Nest;
+
+using PropertyMapping = InfinniPlatform.ElasticSearch.IndexTypeVersions.PropertyMapping;
 
 namespace InfinniPlatform.ElasticSearch.Versioning
 {
@@ -24,8 +27,8 @@ namespace InfinniPlatform.ElasticSearch.Versioning
 
         /// <summary>
         /// Проверяет, что версия индекса метаданных существует.
-        /// Если в параметрах указан маппинг, то дополнительно будет проверено соответствие имеющиегося маппинга с новым.
-        /// Считается, что версия существует, если все свойства переданного маппинга соответсвуют по типу всем имеющимся свойствам,
+        /// Если в параметрах указан маппинг, то дополнительно будет проверено соответствие имеющегося маппинга с новым.
+        /// Считается, что версия существует, если все свойства переданного маппинга соответствуют по типу всем имеющимся свойствам,
         /// в противном случае нужно создавать новую версию.
         /// </summary>
         public bool VersionExists(IList<PropertyMapping> properties = null)
@@ -64,7 +67,7 @@ namespace InfinniPlatform.ElasticSearch.Versioning
         /// <summary>
         /// Создать версию индекса метаданных
         /// </summary>
-        /// <param name="deleteExisting">Флаг, показывающий нужно ли удалять версию харнилища, если она уже существует</param>
+        /// <param name="deleteExisting">Флаг, показывающий нужно ли удалять версию хранилища, если она уже существует</param>
         /// <param name="properties">Первоначальный список полей справочника</param>
         public void CreateVersion(bool deleteExisting = false, IList<PropertyMapping> properties = null)
         {
@@ -88,7 +91,7 @@ namespace InfinniPlatform.ElasticSearch.Versioning
                 return false;
             }
 
-            if (propertyToCheck.DataType == PropertyDataType.Object)
+            if (propertyToCheck.DataType == FieldType.Object)
             {
                 foreach (var childProperty in newMappingProperty.ChildProperties)
                 {
@@ -114,11 +117,9 @@ namespace InfinniPlatform.ElasticSearch.Versioning
 
         private static bool CheckTypePropertyEquality(PropertyMapping propertyToCheck, PropertyMapping newMappingProperty)
         {
-            if (newMappingProperty.DataType == PropertyDataType.Binary)
-            {
-                return propertyToCheck.DataType == PropertyDataType.Object;
-            }
-            return propertyToCheck.DataType == newMappingProperty.DataType;
+            return newMappingProperty.DataType == FieldType.Binary
+                       ? propertyToCheck.DataType == FieldType.Object
+                       : propertyToCheck.DataType == newMappingProperty.DataType;
         }
     }
 }
