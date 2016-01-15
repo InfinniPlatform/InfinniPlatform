@@ -15,85 +15,77 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
         {
             var properties = new List<PropertyMapping>();
 
-            if (schemaProperties != null)
+            if (schemaProperties == null)
             {
-                foreach (var propertyModel in schemaProperties)
+                return properties;
+            }
+
+            foreach (var propertyModel in schemaProperties)
+            {
+                var sortable = false;
+
+                if (propertyModel.Value.Sortable != null)
                 {
-                    var sortable = false;
+                    sortable = propertyModel.Value.Sortable;
+                }
 
-                    if (propertyModel.Value.Sortable != null)
-                    {
-                        sortable = propertyModel.Value.Sortable;
-                    }
+                string typeName = propertyModel.Value.Type.ToString();
 
-                    if (propertyModel.Value.Type.ToString() == "Float")
+                var simpleMappings = new Dictionary<string, PropertyMapping>
+                                       {
+                                           { "Float", new PropertyMapping(propertyModel.Key, PropertyDataType.Float, sortable) },
+                                           { "Integer", new PropertyMapping(propertyModel.Key, PropertyDataType.Integer, sortable) },
+                                           { "Bool", new PropertyMapping(propertyModel.Key, PropertyDataType.Boolean, sortable) },
+                                           { "String", new PropertyMapping(propertyModel.Key, PropertyDataType.String, sortable) },
+                                           { "Uuid", new PropertyMapping(propertyModel.Key, PropertyDataType.String, sortable) },
+                                           { "DateTime", new PropertyMapping(propertyModel.Key, PropertyDataType.Date, sortable) },
+                                           { "Binary", new PropertyMapping(propertyModel.Key, PropertyDataType.Binary, false) }
+                                       };
+
+                PropertyMapping propertyMapping;
+
+                if (simpleMappings.TryGetValue(typeName, out propertyMapping))
+                {
+                    properties.Add(propertyMapping);
+                }
+
+                if (typeName == "Object")
+                {
+                    // Свойство типа 'объект' может являться inline ссылкой на документ
+                    if (propertyModel.Value.TypeInfo != null &&
+                        propertyModel.Value.TypeInfo.DocumentLink != null &&
+                        propertyModel.Value.TypeInfo.DocumentLink.Inline != null &&
+                        propertyModel.Value.TypeInfo.DocumentLink.Inline == true)
                     {
-                        properties.Add(new PropertyMapping(propertyModel.Key, PropertyDataType.Float, sortable));
-                    }
-                    else if (propertyModel.Value.Type.ToString() == "Integer")
-                    {
-                        properties.Add(new PropertyMapping(propertyModel.Key, PropertyDataType.Integer, sortable));
-                    }
-                    else if (propertyModel.Value.Type.ToString() == "Bool")
-                    {
-                        properties.Add(new PropertyMapping(propertyModel.Key, PropertyDataType.Boolean, sortable));
-                    }
-                    else if (propertyModel.Value.Type.ToString() == "String" ||
-                             propertyModel.Value.Type.ToString() == "Uuid")
-                    {
-                        properties.Add(new PropertyMapping(propertyModel.Key, PropertyDataType.String, sortable));
-                    }
-                    else if (propertyModel.Value.Type.ToString() == "DateTime")
-                    {
-                        properties.Add(new PropertyMapping(propertyModel.Key, PropertyDataType.Date, sortable));
-                    }
-                    else if (propertyModel.Value.Type.ToString() == "Binary")
-                    {
-                        properties.Add(new PropertyMapping(propertyModel.Key, PropertyDataType.Binary, false));
-                    }
-                    else if (propertyModel.Value.Type.ToString() == "Object")
-                    {
-                        // Свойство типа 'объект' может являться inline ссылкой на документ
-                        if (propertyModel.Value.TypeInfo != null &&
-                            propertyModel.Value.TypeInfo.DocumentLink != null &&
-                            propertyModel.Value.TypeInfo.DocumentLink.Inline != null &&
-                            propertyModel.Value.TypeInfo.DocumentLink.Inline == true)
+                        // inline ссылка на документ: необходимо получить схему документа, на который сделана ссылка,
+                        // чтобы получить сортировочные поля 
+                        string metadataIdentifier = propertyModel.Value.TypeInfo.DocumentLink.ConfigId.ToString();
+                        var builder = configurationObjectBuilder.GetConfigurationObject(metadataIdentifier);
+                        //.Configurations.FirstOrDefault(
+                        //c => c.ConfigurationId == propertyModel.Value.TypeInfo.DocumentLink.ConfigId);
+                        var inlineMetadataConfiguration = builder.MetadataConfiguration;
+
+                        if (inlineMetadataConfiguration != null)
                         {
-                            // inline ссылка на документ: необходимо получить схему документа, на который сделана ссылка,
-                            // чтобы получить сортировочные поля 
-                            dynamic builder =
-                                configurationObjectBuilder.GetConfigurationObject(propertyModel.Value.TypeInfo
-                                                                                               .DocumentLink.ConfigId);
-                            //.Configurations.FirstOrDefault(
-                            //c => c.ConfigurationId == propertyModel.Value.TypeInfo.DocumentLink.ConfigId);
-                            dynamic inlineMetadataConfiguration = builder.MetadataConfiguration;
+                            string documentId = propertyModel.Value.TypeInfo.DocumentLink.DocumentId.ToString();
+                            dynamic inlineDocumentSchema = inlineMetadataConfiguration.GetSchemaVersion(documentId);
 
-                            if (inlineMetadataConfiguration != null)
+                            if (inlineDocumentSchema != null)
                             {
-                                dynamic inlineDocumentSchema =
-                                    inlineMetadataConfiguration.GetSchemaVersion(
-                                        propertyModel.Value.TypeInfo.DocumentLink.DocumentId);
-
-                                if (inlineDocumentSchema != null)
-                                {
-                                    properties.Add(new PropertyMapping(propertyModel.Key,
-                                        ExtractProperties(inlineDocumentSchema.Properties,
-                                            configurationObjectBuilder)));
-                                }
+                                properties.Add(new PropertyMapping(propertyModel.Key, ExtractProperties(inlineDocumentSchema.Properties, configurationObjectBuilder)));
                             }
                         }
-                        else
-                        {
-                            properties.Add(new PropertyMapping(propertyModel.Key,
-                                ExtractProperties(propertyModel.Value.Properties,
-                                    configurationObjectBuilder)));
-                        }
                     }
-                    else if (propertyModel.Value.Type.ToString() == "Array")
+                    else
                     {
-                        properties.Add(new PropertyMapping(propertyModel.Key,
-                            ExtractProperties(propertyModel.Value.Items.Properties,
-                                configurationObjectBuilder)));
+                        properties.Add(new PropertyMapping(propertyModel.Key, ExtractProperties(propertyModel.Value.Properties, configurationObjectBuilder)));
+                    }
+                }
+                else
+                {
+                    if (typeName == "Array")
+                    {
+                        properties.Add(new PropertyMapping(propertyModel.Key, ExtractProperties(propertyModel.Value.Items.Properties, configurationObjectBuilder)));
                     }
                 }
             }

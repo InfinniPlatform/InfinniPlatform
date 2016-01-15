@@ -13,6 +13,47 @@ namespace InfinniPlatform.ElasticSearch.IndexTypeVersions
     public static class IndexTypeMapper
     {
         public const string MappingTypeVersionPattern = "_typeschema_";
+        private const string SortFieldName = "sort";
+
+        private static readonly Dictionary<PropertyDataType, Func<PropertyMapping, IElasticType>>
+            ElasticTypeFactories = new Dictionary<PropertyDataType, Func<PropertyMapping, IElasticType>>
+                                   {
+                                       {
+                                           PropertyDataType.String, GetStringElasticFieldMapping
+                                       },
+                                       {
+                                           PropertyDataType.Binary, mapping => new ObjectMapping
+                                                                               {
+                                                                                   Properties = new Dictionary<PropertyNameMarker, IElasticType> { { "Info", new ObjectMapping() } }
+                                                                               }
+                                       },
+                                       {
+                                           PropertyDataType.Object, mapping =>
+                                                                    {
+                                                                        // Поле является контейнером для других полей
+                                                                        return new ObjectMapping
+                                                                               {
+                                                                                   Properties = mapping.ChildProperties
+                                                                                                       .ToDictionary<PropertyMapping, PropertyNameMarker, IElasticType>(property => property.Name, GetElasticType)
+                                                                               };
+                                                                    }
+                                       },
+                                       { PropertyDataType.Integer, propertyMapping => GetElasticFieldMapping(propertyMapping, new NumberMapping { Type = PropertyDataType.Integer.ToString() }) },
+                                       { PropertyDataType.Float, propertyMapping => GetElasticFieldMapping(propertyMapping, new NumberMapping { Type = PropertyDataType.Float.ToString() }) },
+                                       { PropertyDataType.Date, propertyMapping => GetElasticFieldMapping(propertyMapping, new DateMapping()) },
+                                       { PropertyDataType.Boolean, propertyMapping => GetElasticFieldMapping(propertyMapping, new BooleanMapping()) }
+                                   };
+
+        private static MultiFieldMapping GetStringElasticFieldMapping(PropertyMapping mapping)
+        {
+            return mapping.AddSortField
+                       ? new MultiFieldMapping
+                         {
+                             Type = mapping.DataType.ToString(),
+                             Fields = new Dictionary<PropertyNameMarker, IElasticCoreType> { { SortFieldName, new StringMapping { Index = FieldIndexOption.NotAnalyzed } } }
+                         }
+                       : new StringMapping();
+        }
 
         /// <summary>
         /// Задание схемы для документов, хранимых в индексе
@@ -21,36 +62,32 @@ namespace InfinniPlatform.ElasticSearch.IndexTypeVersions
         {
             indexName = indexName.ToLowerInvariant();
 
+            //TODO: Это можно делать и непосредственно при создании индекса
             // Для корректной работы маппера в настройках ElasticSearch должны быть
             // определены необходимые фильтры и анализаторы:
-            /*
-             
+            /*             
             index:
                 analysis:
                     analyzer:
             #стандартный анализатор, использующийся для поиска по умолчанию
                         string_lowercase:
                             filter: lowercase
-                            tokenizer: keyword  
+                            tokenizer: keyword
             #стандартный анализатор, использующийся для индексирования по умолчанию
                         keywordbasedsearch: 
                             filter: lowercase
-                            tokenizer: keyword				
-            #полнотекстовый анализатор, использующийся для индексирования 				
+                            tokenizer: keyword
+            #полнотекстовый анализатор, использующийся для индексирования
                         fulltextsearch:  
                             filter: lowercase
                             tokenizer: standard
             #Анализатор с разбиением на слова, использующийся для полнотекстового поиска
                         fulltextquery: 
                             filter: lowercase
-                            tokenizer: whitespace  
-             
-             
+                            tokenizer: whitespace
              */
 
-            var props = properties ?? new List<PropertyMapping>();
-
-            var propertiesDictionary = props.ToDictionary<PropertyMapping, PropertyNameMarker, IElasticType>(property => property.Name, GetElasticTypeByMapping);
+            var propertiesDictionary = properties?.ToDictionary<PropertyMapping, PropertyNameMarker, IElasticType>(property => property.Name, GetElasticType) ?? new Dictionary<PropertyNameMarker, IElasticType>();
 
             elasticClient.Map<dynamic>(m => m.Index(indexName)
                                              .Type(schemaversionname)
@@ -62,98 +99,29 @@ namespace InfinniPlatform.ElasticSearch.IndexTypeVersions
         /// <summary>
         /// Рекурсивный метод получения значения свойства по схеме
         /// </summary>
-        private static IElasticType GetElasticTypeByMapping(PropertyMapping mapping)
+        private static IElasticType GetElasticType(PropertyMapping propertyMapping)
         {
-            IElasticType resultType;
-
-            switch (mapping.DataType)
+            Func<PropertyMapping, IElasticType> elasticTypeFactory;
+            if (!ElasticTypeFactories.TryGetValue(propertyMapping.DataType, out elasticTypeFactory))
             {
-                case PropertyDataType.String:
-                    if (mapping.AddSortField)
-                    {
-                        var multifield = new MultiFieldMapping { Type = "string" };
-                        multifield.Fields.Add("sort", new StringMapping { Index = FieldIndexOption.NotAnalyzed });
-                        resultType = multifield;
-                    }
-                    else
-                    {
-                        resultType = new StringMapping();
-                    }
-                    break;
-                case PropertyDataType.Integer:
-                    if (mapping.AddSortField)
-                    {
-                        var multifield = new MultiFieldMapping { Type = "integer" };
-                        multifield.Fields.Add("sort", new NumberMapping { Type = "integer" });
-                        resultType = multifield;
-                    }
-                    else
-                    {
-                        resultType = new NumberMapping { Type = "integer" };
-                    }
-                    break;
-                case PropertyDataType.Float:
-                    if (mapping.AddSortField)
-                    {
-                        var multifield = new MultiFieldMapping { Type = "float" };
-                        multifield.Fields.Add("sort", new NumberMapping { Type = "float" });
-                        resultType = multifield;
-                    }
-                    else
-                    {
-                        resultType = new NumberMapping { Type = "float" };
-                    }
-                    break;
-                case PropertyDataType.Date:
-                    if (mapping.AddSortField)
-                    {
-                        var multifield = new MultiFieldMapping { Type = "date" };
-                        multifield.Fields.Add("sort", new DateMapping());
-                        resultType = multifield;
-                    }
-                    else
-                    {
-                        resultType = new DateMapping();
-                    }
-                    break;
-                case PropertyDataType.Boolean:
-                    if (mapping.AddSortField)
-                    {
-                        var multifield = new MultiFieldMapping { Type = "boolean" };
-                        multifield.Fields.Add("sort", new BooleanMapping());
-                        resultType = multifield;
-                    }
-                    else
-                    {
-                        resultType = new BooleanMapping();
-                    }
-                    break;
-                case PropertyDataType.Binary:
-                    resultType = new ObjectMapping
-                                 {
-                                     Properties = new Dictionary<PropertyNameMarker, IElasticType>()
-                                 };
-                    (resultType as ObjectMapping).Properties.Add("Info", new ObjectMapping());
-                    break;
-                case PropertyDataType.Object:
-
-                    // Поле является контейнером для других полей
-                    resultType = new ObjectMapping
-                                 {
-                                     Properties = new Dictionary<PropertyNameMarker, IElasticType>()
-                                 };
-
-                    foreach (var property in mapping.ChildProperties)
-                    {
-                        (resultType as ObjectMapping).Properties.Add(property.Name, GetElasticTypeByMapping(property));
-                    }
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException();
             }
 
-            resultType.Name = mapping.Name;
-            return resultType;
+            var elasticType = elasticTypeFactory.Invoke(propertyMapping);
+            elasticType.Name = propertyMapping.Name;
+
+            return elasticType;
+        }
+
+        private static IElasticType GetElasticFieldMapping(PropertyMapping propertyMapping, IElasticCoreType elasticFieldMapping)
+        {
+            return propertyMapping.AddSortField
+                       ? (IElasticType)new MultiFieldMapping
+                                       {
+                                           Type = propertyMapping.DataType.ToString(),
+                                           Fields = new Dictionary<PropertyNameMarker, IElasticCoreType> { { SortFieldName, elasticFieldMapping } }
+                                       }
+                       : elasticFieldMapping;
         }
     }
 }

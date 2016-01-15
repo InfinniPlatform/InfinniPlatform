@@ -22,12 +22,25 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
             _elasticConnection = elasticConnection;
         }
 
-
         private readonly ElasticConnection _elasticConnection;
 
+        private readonly object _mappingsCacheSync = new object();
+        private volatile Dictionary<string, IList<TypeMapping>> _mappingsCache;
+
+        private static readonly Dictionary<string, PropertyDataType> DataTypes = new Dictionary<string, PropertyDataType>(StringComparer.OrdinalIgnoreCase)
+                                                       {
+                                                           { "string", PropertyDataType.String },
+                                                           { "date", PropertyDataType.Date },
+                                                           { "binary", PropertyDataType.Object },
+                                                           { "boolean", PropertyDataType.Boolean },
+                                                           { "double", PropertyDataType.Float },
+                                                           { "float", PropertyDataType.Float },
+                                                           { "integer", PropertyDataType.Integer },
+                                                           { "long", PropertyDataType.Integer },
+                                                           { "object", PropertyDataType.Object }
+                                                       };
 
         // INDEXES
-
 
         public bool IndexExists(string indexName)
         {
@@ -40,7 +53,8 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
         {
             indexName = indexName.ToLower();
 
-            _elasticConnection.Client.CreateIndex(i => i.Index(indexName));
+            var indicesOperationResponse = _elasticConnection.Client.CreateIndex(i => i.Index(indexName));
+            var indexSettingsResponse = _elasticConnection.Client.GetIndexSettings(i => i.Index(indexName));
 
             ResetIndexMappings();
         }
@@ -54,9 +68,7 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
             ResetIndexMappings();
         }
 
-
         // TYPES
-
 
         public bool TypeExists(string indexName, string typeName)
         {
@@ -138,7 +150,6 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
             ResetIndexMappings();
         }
 
-
         // MAPPINGS
 
         public IEnumerable<TypeMapping> GetTypeMappings(string indexName, string typeName)
@@ -153,8 +164,8 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
                 var isBaseTypes = !typeName.Contains(IndexTypeMapper.MappingTypeVersionPattern);
 
                 return isBaseTypes
-                    ? indexMappings.Where(mapping => typeName == mapping.TypeName.GetTypeBaseName())
-                    : indexMappings.Where(mapping => typeName == mapping.TypeName);
+                           ? indexMappings.Where(mapping => typeName == mapping.TypeName.GetTypeBaseName())
+                           : indexMappings.Where(mapping => typeName == mapping.TypeName);
             }
 
             return Enumerable.Empty<TypeMapping>();
@@ -178,8 +189,8 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
             var isBaseType = !typeName.Contains(IndexTypeMapper.MappingTypeVersionPattern);
 
             var mappingsByVersion = isBaseType
-                ? indexMappings.Where(mapping => mapping.TypeName.GetTypeBaseName() == typeName)
-                : indexMappings.Where(mapping => mapping.TypeName == typeName);
+                                        ? indexMappings.Where(mapping => mapping.TypeName.GetTypeBaseName() == typeName)
+                                        : indexMappings.Where(mapping => mapping.TypeName == typeName);
 
             var typeMapping = mappingsByVersion.OrderByDescending(mapping => mapping.TypeName.GetTypeVersion());
             var rootObjectMapping = typeMapping.FirstOrDefault()?.Mapping;
@@ -201,57 +212,36 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
 
         private static PropertyMapping ExtractProperty(KeyValuePair<PropertyNameMarker, IElasticType> property)
         {
-            PropertyDataType dataType;
             var propertyType = property.Value.Type.Name;
             var propertyName = property.Key.Name;
 
-            if (propertyType == "string")
-            {
-                dataType = PropertyDataType.String;
-            }
-            else if (propertyType == "date")
-            {
-                dataType = PropertyDataType.Date;
-            }
-            else if (propertyType == "binary")
-            {
-                dataType = PropertyDataType.Object;
-            }
-            else if (propertyType == "boolean")
-            {
-                dataType = PropertyDataType.Boolean;
-            }
-            else if (propertyType == "double" || propertyType == "float")
-            {
-                dataType = PropertyDataType.Float;
-            }
-            else if (propertyType == "integer" || propertyType == "long")
-            {
-                dataType = PropertyDataType.Integer;
-            }
-            else if (propertyType == "object")
-            {
-                var objectMapping = property.Value as ObjectMapping;
+            PropertyDataType dataType;
 
-                if (objectMapping?.Properties != null)
+            if (DataTypes.TryGetValue(propertyType, out dataType))
+            {
+                if (dataType == PropertyDataType.Object)
                 {
-                    var propertiesList = objectMapping.Properties.Select(ExtractProperty).ToList();
+                    var objectMapping = property.Value as ObjectMapping;
 
-                    return new PropertyMapping(propertyName, propertiesList);
+                    if (objectMapping?.Properties != null)
+                    {
+                        var propertiesList = objectMapping.Properties.Select(ExtractProperty).ToList();
+
+                        return new PropertyMapping(propertyName, propertiesList);
+                    }
+
+                    dataType = PropertyDataType.Object;
                 }
-
-                dataType = PropertyDataType.Object;
             }
             else
             {
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException($"Не найдено соответствие для типа {propertyType}.");
             }
 
             var hasSortingFiled = (property.Value as MultiFieldMapping)?.Fields.Any() == true;
 
             return new PropertyMapping(propertyName, dataType, hasSortingFiled);
         }
-
 
         public string GetActualTypeName(string configuration, string documentType)
         {
@@ -287,10 +277,6 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
 
             return actualTypeName;
         }
-
-
-        private readonly object _mappingsCacheSync = new object();
-        private volatile Dictionary<string, IList<TypeMapping>> _mappingsCache;
 
         private IList<TypeMapping> GetIndexMappings(string indexName)
         {

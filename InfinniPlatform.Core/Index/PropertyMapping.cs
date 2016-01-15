@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace InfinniPlatform.Core.Index
@@ -20,7 +21,7 @@ namespace InfinniPlatform.Core.Index
     /// <summary>
     ///     Определяет параметры маппинга для поля типа, хранящегося в индексе
     /// </summary>
-    [DebuggerDisplay("{Name}, {DataType}")]
+    [DebuggerDisplay("{Name}, {DataType}, {NestType}")]
     public sealed class PropertyMapping
     {
         public PropertyMapping()
@@ -35,11 +36,12 @@ namespace InfinniPlatform.Core.Index
             Name = name;
         }
 
-        public PropertyMapping(string name, PropertyDataType dataType, bool addSortField = false)
+        public PropertyMapping(string name, PropertyDataType dataType, bool addSortField = false, Type nestType = null)
         {
             ChildProperties = new PropertyMapping[0];
             Name = name;
             DataType = dataType;
+            NestType = nestType;
             AddSortField = addSortField;
         }
 
@@ -51,6 +53,7 @@ namespace InfinniPlatform.Core.Index
         ///     Возвращает тип свойства
         /// </summary>
         public PropertyDataType DataType { get; set; }
+        public Type NestType { get; set; }
 
         /// <summary>
         ///     True если необходимо добавить дополнительное поле сортировки

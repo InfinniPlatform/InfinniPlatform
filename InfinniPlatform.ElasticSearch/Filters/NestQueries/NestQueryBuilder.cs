@@ -20,7 +20,7 @@ namespace InfinniPlatform.ElasticSearch.Filters.NestQueries
     {
         private const CriteriaType DefaultCriteriaType = CriteriaType.IsEquals;
 
-        private static readonly Dictionary<CriteriaType, Func<string, object, IFilter>> Factories =
+        private static readonly Dictionary<CriteriaType, Func<string, object, IFilter>> QueryFactories =
             new Dictionary<CriteriaType, Func<string, object, IFilter>>
             {
                 { CriteriaType.IsEquals, BuildEqualsQuery },
@@ -63,14 +63,14 @@ namespace InfinniPlatform.ElasticSearch.Filters.NestQueries
             Func<string, object, IFilter> factory;
 
             // пробуем найти в словаре фабрику для указанного типа сравнения
-            if (Factories.TryGetValue(compareMethod, out factory))
+            if (QueryFactories.TryGetValue(compareMethod, out factory))
             {
                 return factory.Invoke(elasticField, elasticValue);
             }
 
             // если получить фабрику для данного типа сравнения не удалось и тип сравнения не совпадает с указанным по умолчанию
             // пытаемся получить фабрику для типа сравнения по умолчанию
-            if (compareMethod != DefaultCriteriaType && Factories.TryGetValue(DefaultCriteriaType, out factory))
+            if (compareMethod != DefaultCriteriaType && QueryFactories.TryGetValue(DefaultCriteriaType, out factory))
             {
                 return factory.Invoke(elasticField, elasticValue);
             }
