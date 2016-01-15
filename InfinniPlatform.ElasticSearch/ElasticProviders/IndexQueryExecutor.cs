@@ -64,7 +64,8 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
         /// <returns>Количество объектов, удовлетворяющих условиям поиска</returns>
         public long CalculateCountQuery(SearchModel searchModel)
         {
-            SetDefaultFilters(searchModel);
+            searchModel.AddFilter(new NestQuery(Query<dynamic>.Terms(ElasticConstants.TenantIdField, _tenantProvider.GetTenantId(), AuthorizationStorageExtensions.AnonymousUser)));
+            searchModel.AddFilter(new NestQuery(Query<dynamic>.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid)));
 
             Func<CountDescriptor<dynamic>, CountDescriptor<dynamic>> desc =
                 descriptor => new ElasticCountQueryBuilder(descriptor).BuildCountQueryDescriptor(searchModel)
@@ -83,7 +84,8 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
         /// <returns>Результаты поиска</returns>
         public SearchViewModel QueryOverObject(SearchModel searchModel, Func<dynamic, string, string, object> convert)
         {
-            SetDefaultFilters(searchModel);
+            searchModel.AddFilter(new NestFilter(Filter<dynamic>.Terms(ElasticConstants.TenantIdField, new[] { _tenantProvider.GetTenantId(), AuthorizationStorageExtensions.AnonymousUser })));
+            searchModel.AddFilter(new NestFilter(Filter<dynamic>.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid)));
 
             Func<SearchDescriptor<dynamic>, SearchDescriptor<dynamic>> desc =
                 descriptor => new ElasticSearchQueryBuilder(descriptor).BuildSearchDescriptor(searchModel)
@@ -96,16 +98,6 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
             var documentResponseCount = documentsResponse?.Hits?.Select(r => convert(r.Source, r.Index, ToDocumentId(r.Type))).ToList() ?? new List<dynamic>();
 
             return new SearchViewModel(searchModel.FromPage, searchModel.PageSize, hitsCount, documentResponseCount);
-        }
-
-        /// <summary>
-        ///     Добавляет к модели поиска стандартные фильтры (от которых НЕОБХОДИМО избавиться).
-        /// </summary>
-        /// <param name="searchModel"></param>
-        private void SetDefaultFilters(SearchModel searchModel)
-        {
-            searchModel.AddFilter(new NestFilter(Filter<dynamic>.Terms(ElasticConstants.TenantIdField, new[] { _tenantProvider.GetTenantId(), AuthorizationStorageExtensions.AnonymousUser, AuthorizationStorageExtensions.SystemTenant })));
-            searchModel.AddFilter(new NestFilter(Filter<dynamic>.Term(ElasticConstants.IndexObjectStatusField, IndexObjectStatus.Valid)));
         }
 
         /// <summary>

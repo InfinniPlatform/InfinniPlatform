@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Metadata;
@@ -22,25 +23,19 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 
             foreach (var propertyModel in schemaProperties)
             {
-                var sortable = false;
-
-                if (propertyModel.Value.Sortable != null)
-                {
-                    sortable = propertyModel.Value.Sortable;
-                }
-
+                bool sortable = propertyModel.Value.Sortable ?? false;
                 string typeName = propertyModel.Value.Type.ToString();
 
-                var simpleMappings = new Dictionary<string, PropertyMapping>
-                                       {
-                                           { "Float", new PropertyMapping(propertyModel.Key, PropertyDataType.Float, sortable) },
-                                           { "Integer", new PropertyMapping(propertyModel.Key, PropertyDataType.Integer, sortable) },
-                                           { "Bool", new PropertyMapping(propertyModel.Key, PropertyDataType.Boolean, sortable) },
-                                           { "String", new PropertyMapping(propertyModel.Key, PropertyDataType.String, sortable) },
-                                           { "Uuid", new PropertyMapping(propertyModel.Key, PropertyDataType.String, sortable) },
-                                           { "DateTime", new PropertyMapping(propertyModel.Key, PropertyDataType.Date, sortable) },
-                                           { "Binary", new PropertyMapping(propertyModel.Key, PropertyDataType.Binary, false) }
-                                       };
+                var simpleMappings = new Dictionary<string, PropertyMapping>(StringComparer.OrdinalIgnoreCase)
+                                     {
+                                         { "float", new PropertyMapping(propertyModel.Key, PropertyDataType.Float, sortable) },
+                                         { "integer", new PropertyMapping(propertyModel.Key, PropertyDataType.Integer, sortable) },
+                                         { "bool", new PropertyMapping(propertyModel.Key, PropertyDataType.Boolean, sortable) },
+                                         { "string", new PropertyMapping(propertyModel.Key, PropertyDataType.String, sortable) },
+                                         { "uuid", new PropertyMapping(propertyModel.Key, PropertyDataType.String, sortable) },
+                                         { "dateTime", new PropertyMapping(propertyModel.Key, PropertyDataType.Date, sortable) },
+                                         { "binary", new PropertyMapping(propertyModel.Key, PropertyDataType.Binary, false) }
+                                     };
 
                 PropertyMapping propertyMapping;
 
@@ -52,22 +47,22 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
                 if (typeName == "Object")
                 {
                     // Свойство типа 'объект' может являться inline ссылкой на документ
-                    if (propertyModel.Value.TypeInfo != null &&
-                        propertyModel.Value.TypeInfo.DocumentLink != null &&
-                        propertyModel.Value.TypeInfo.DocumentLink.Inline != null &&
-                        propertyModel.Value.TypeInfo.DocumentLink.Inline == true)
+                    var documentLink = propertyModel.Value.TypeInfo?.DocumentLink;
+
+                    if (documentLink != null &&
+                        documentLink.Inline != null &&
+                        documentLink.Inline == true)
                     {
                         // inline ссылка на документ: необходимо получить схему документа, на который сделана ссылка,
                         // чтобы получить сортировочные поля 
-                        string metadataIdentifier = propertyModel.Value.TypeInfo.DocumentLink.ConfigId.ToString();
+                        string metadataIdentifier = documentLink.ConfigId.ToString();
+
                         var builder = configurationObjectBuilder.GetConfigurationObject(metadataIdentifier);
-                        //.Configurations.FirstOrDefault(
-                        //c => c.ConfigurationId == propertyModel.Value.TypeInfo.DocumentLink.ConfigId);
                         var inlineMetadataConfiguration = builder.MetadataConfiguration;
 
                         if (inlineMetadataConfiguration != null)
                         {
-                            string documentId = propertyModel.Value.TypeInfo.DocumentLink.DocumentId.ToString();
+                            string documentId = documentLink.DocumentId.ToString();
                             dynamic inlineDocumentSchema = inlineMetadataConfiguration.GetSchemaVersion(documentId);
 
                             if (inlineDocumentSchema != null)
@@ -113,14 +108,13 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
                         linkInfoToCheck = propertyModel.Value.Items;
                     }
 
-                    if (linkInfoToCheck != null &&
-                        linkInfoToCheck.TypeInfo != null &&
-                        linkInfoToCheck.TypeInfo.DocumentLink != null &&
-                        linkInfoToCheck.TypeInfo.DocumentLink.Inline != null)
+                    var documentLink = linkInfoToCheck?.TypeInfo?.DocumentLink;
+
+                    if (documentLink?.Inline != null)
                     {
-                        if (linkInfoToCheck.TypeInfo.DocumentLink.Inline == true &&
-                            linkInfoToCheck.TypeInfo.DocumentLink.ConfigId == configId &&
-                            linkInfoToCheck.TypeInfo.DocumentLink.DocumentId == documentId)
+                        if (documentLink.Inline == true &&
+                            documentLink.ConfigId == configId &&
+                            documentLink.DocumentId == documentId)
                         {
                             return true;
                         }
