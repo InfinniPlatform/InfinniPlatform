@@ -5,7 +5,7 @@ namespace InfinniPlatform.Sdk.RestApi
     /// <summary>
     /// API для вызова кастомного сервиса
     /// </summary>
-    public sealed class InfinniCustomServiceApi : BaseApi, ICustomServiceApi
+    public sealed class InfinniCustomServiceApi : BaseApi
     {
         public InfinniCustomServiceApi(string server, int port) : base(server, port)
         {

@@ -8,7 +8,6 @@ using DevExpress.XtraEditors.Controls;
 using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Registers;
-using InfinniPlatform.Core.RestApi.CommonApi;
 using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.MetadataDesigner.Views.Exchange;
 using InfinniPlatform.MetadataDesigner.Views.Status;
@@ -20,7 +19,6 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 {
     public static class ViewModelExtension
     {
-        private static readonly RestQueryApi RestQueryApi = null;
         private static readonly IEnumerable<ServiceType> ServiceTypes = ServiceType.GetRegisteredServiceTypes();
 
         private static readonly List<dynamic> RegisteredMigrationsList = new List<dynamic>
@@ -183,10 +181,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
             }
 
 
-            var process = new StatusProcess();
             var result = string.Empty;
-            process.StartOperation(() => { result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getmanagedmetadata", null, dynamicBody).Content; });
-            process.EndOperation();
             return result;
         }
 
@@ -222,31 +217,14 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
             return RegisteredMigrationsList.FirstOrDefault(m => m.Name == migrationName);
         }
 
-        public static RestQueryResponse RunMigration(string version, string configId, string migrationName, object[] parameters)
+        public static dynamic RunMigration(string version, string configId, string migrationName, object[] parameters)
         {
-            var body = new
-                       {
-                           MigrationName = migrationName,
-                           ConfigurationName = configId,
-                           Parameters = parameters
-                       };
-
-            var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "runmigration", null, body);
-            return result;
+            return null;
         }
 
-        public static RestQueryResponse RevertMigration(string version, string configId, string migrationName, object[] parameters)
+        public static dynamic RevertMigration(string version, string configId, string migrationName, object[] parameters)
         {
-            var body = new
-                       {
-                           MigrationName = migrationName,
-                           ConfigurationName = configId,
-                           Parameters = parameters
-                       };
-
-            var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "revertmigration", null, body);
-
-            return result;
+            return null;
         }
 
         public static object[] BuildVerifications()
@@ -256,22 +234,12 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
         public static dynamic BuildVerificationDetails(string verifiecationName)
         {
-            var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getverifications", null, null);
-
-            return result.ToDynamicList().FirstOrDefault(verification => verification.Name.ToString() == verifiecationName);
+            return null;
         }
 
-        public static RestQueryResponse RunVerification(string version, string configId, string verificationName)
+        public static dynamic RunVerification(string version, string configId, string verificationName)
         {
-            var body = new
-                       {
-                           VerificationName = verificationName,
-                           ConfigurationName = configId
-                       };
-
-            var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "runverification", null, body);
-
-            return result;
+            return null;
         }
 
         public static IEnumerable<string> BuildViewTypes()
@@ -519,5 +487,16 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
                                                       })
                    };
         }
+    }
+
+    public enum ContextTypeKind
+    {
+        None = 1, //не является точкой расширения
+        ApplyMove = 2, //точка расширения применения изменений
+        ApplyFilter = 4, //точка расширения применения фильтра
+        ApplyResult = 8, //точка расширения получения результата применения изменений
+        SearchContext = 16, //точка расширения результата поиска
+        Upload = 32, //точка расширения загрузки файла
+        UrlEncodedData = 64 //точка расширения для загрузки параметров формы (key-value)
     }
 }

@@ -5,9 +5,9 @@ using System.Threading;
 using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Core.Settings;
-using InfinniPlatform.Hosting;
 using InfinniPlatform.IoC.Owin;
 using InfinniPlatform.NodeServiceHost.Properties;
+using InfinniPlatform.Owin.Hosting;
 using InfinniPlatform.Sdk.RestApi;
 
 namespace InfinniPlatform.NodeServiceHost

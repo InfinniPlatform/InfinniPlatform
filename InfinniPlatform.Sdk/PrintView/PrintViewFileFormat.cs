@@ -1,7 +1,7 @@
 ﻿namespace InfinniPlatform.Sdk.PrintView
 {
     /// <summary>
-    ///     Формат файла печатного представления.
+    /// Формат файла печатного представления.
     /// </summary>
     public enum PrintViewFileFormat
     {
@@ -13,6 +13,6 @@
         /// <summary>
         /// HTML.
         /// </summary>
-        Html = 1,
+        Html = 1
     }
 }

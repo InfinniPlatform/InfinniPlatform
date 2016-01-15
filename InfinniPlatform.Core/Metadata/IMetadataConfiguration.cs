@@ -9,7 +9,7 @@ namespace InfinniPlatform.Core.Metadata
     /// <summary>
     /// Конфигурация метаданных модуля
     /// </summary>
-    public interface IMetadataConfiguration : IModule
+    public interface IMetadataConfiguration
     {
         /// <summary>
         /// Идентификатор конфигурации
@@ -42,15 +42,6 @@ namespace InfinniPlatform.Core.Metadata
         /// <param name="state">Состояние, в которое выполняется перевод</param>
         /// <returns>Результат выполнения потока</returns>
         dynamic MoveWorkflow(string documentId, string workflowId, dynamic target, object state = null);
-
-        /// <summary>
-        /// Получить идентификатор точки расширения для указанных метаданных
-        /// </summary>
-        /// <param name="metadataId">Идентификатор метаданных</param>
-        /// <param name="actionInstanceName">Идентификатор экземпляра обработчика действия</param>
-        /// <param name="extensionPointTypeName">Идентификатор типа точки расширения</param>
-        /// <returns>Значение идентификатора точки расширения логики</returns>
-        string GetExtensionPointValue(string metadataId, string actionInstanceName, string extensionPointTypeName);
 
         /// <summary>
         /// Получить для указанного контейнера допустимый тип поиска

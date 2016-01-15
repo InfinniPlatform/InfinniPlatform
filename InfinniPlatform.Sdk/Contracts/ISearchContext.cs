@@ -13,7 +13,7 @@ namespace InfinniPlatform.Sdk.Contracts
         /// <summary>
         /// Фильтр данных
         /// </summary>
-        List<FilterCriteria> Filter { get; set; }
+        IList<FilterCriteria> Filter { get; set; }
 
         /// <summary>
         /// Номер страницы

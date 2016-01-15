@@ -73,7 +73,6 @@
     <Compile Include="DataSources\SqlDataSource.cs" />
     <Compile Include="ParameterValueProviders\ParameterDataSourceValueProvider.cs" />
     <Compile Include="ParameterValueProviders\GenericParameterValueProvider.cs" />
-    <Compile Include="PrintView\FlowDocumentPrintViewBuilderFactory.cs" />
     <Compile Include="Services\IReportService.cs" />
     <Compile Include="Services\IReportServiceFactory.cs" />
     <Compile Include="Services\IReportTemplateRepository.cs" />
@@ -117,6 +116,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PrintView\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -35,7 +35,7 @@ namespace InfinniPlatform.Sdk.Documents
             return builder.CriteriaList;
         }
 
-        public static IEnumerable<object> DateRangeCondition(string propertyName, DateTime from, DateTime to)
+        public static IEnumerable<FilterCriteria> DateRangeCondition(string propertyName, DateTime from, DateTime to)
         {
             var builder = new FilterBuilder();
 

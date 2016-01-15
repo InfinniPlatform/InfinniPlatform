@@ -28,11 +28,11 @@ namespace InfinniPlatform.Sdk.Serialization
         public JsonObjectSerializer(bool withFormatting = false, KnownTypesContainer knownTypes = null)
         {
             var serializer = new JsonSerializer
-                             {
-                                 NullValueHandling = NullValueHandling.Ignore,
-                                 ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-                                 Formatting = withFormatting ? Formatting.Indented : Formatting.None
-                             };
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
+                Formatting = withFormatting ? Formatting.Indented : Formatting.None
+            };
 
             // При сериализации будут учитываться приватные поля
             var contractResolver = new DefaultContractResolver();
@@ -46,7 +46,12 @@ namespace InfinniPlatform.Sdk.Serialization
             _serializer = serializer;
         }
 
+
         private readonly JsonSerializer _serializer;
+
+
+        // IObjectSerializer
+
 
         /// <summary>
         /// Сериализовать объект.
@@ -132,57 +137,9 @@ namespace InfinniPlatform.Sdk.Serialization
             return null;
         }
 
-        /// <summary>
-        /// Преобразовать строготипизированный объект в динамический.
-        /// </summary>
-        public object ConvertToDynamic(object value)
-        {
-            if (value != null)
-            {
-                using (var stream = new MemoryStream())
-                {
-                    using (var writer = CreateWriter(stream, true))
-                    {
-                        _serializer.Serialize(writer, value);
 
-                        writer.Flush();
-                    }
+        // Dynamic
 
-                    stream.Position = 0;
-
-                    using (var reader = CreateReader(stream, true))
-                    {
-                        using (var jReader = new JsonTextReader(reader))
-                        {
-                            return _serializer.Deserialize(jReader);
-                        }
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Преобразовать динамический объект в строготипизированный.
-        /// </summary>
-        public object ConvertFromDynamic(object value, Type type)
-        {
-            if (value != null)
-            {
-                var jValue = JObject.FromObject(value);
-
-                if (jValue != null)
-                {
-                    using (var jReader = new JTokenReader(jValue))
-                    {
-                        return _serializer.Deserialize(jReader, type);
-                    }
-                }
-            }
-
-            return null;
-        }
 
         /// <summary>
         /// Десериализовать объект.
@@ -228,6 +185,103 @@ namespace InfinniPlatform.Sdk.Serialization
 
             return null;
         }
+
+        /// <summary>
+        /// Десериализовать объект.
+        /// </summary>
+        /// <param name="data">Сериализованное представление объекта.</param>
+        /// <returns>Объект.</returns>
+        public object Deserialize(string data)
+        {
+            if (data != null)
+            {
+                using (var reader = new StringReader(data))
+                {
+                    using (var jReader = new JsonTextReader(reader))
+                    {
+                        return _serializer.Deserialize(jReader);
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Десериализовать объект.
+        /// </summary>
+        /// <param name="data">Поток для чтения сериализованного представление объекта.</param>
+        /// <param name="type">Тип объекта.</param>
+        /// <returns>Объект.</returns>
+        public object Deserialize(string data, Type type)
+        {
+            if (data != null)
+            {
+                using (var reader = new StringReader(data))
+                {
+                    return _serializer.Deserialize(reader, type);
+                }
+            }
+
+            return null;
+        }
+
+
+        /// <summary>
+        /// Преобразовать строготипизированный объект в динамический.
+        /// </summary>
+        public object ConvertToDynamic(object value)
+        {
+            if (value != null)
+            {
+                using (var stream = new MemoryStream())
+                {
+                    using (var writer = CreateWriter(stream, true))
+                    {
+                        _serializer.Serialize(writer, value);
+
+                        writer.Flush();
+                    }
+
+                    stream.Position = 0;
+
+                    using (var reader = CreateReader(stream, true))
+                    {
+                        using (var jReader = new JsonTextReader(reader))
+                        {
+                            return _serializer.Deserialize(jReader);
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Преобразовать динамический объект в строготипизированный.
+        /// </summary>
+        public object ConvertFromDynamic(object value, Type type)
+        {
+            if (value != null)
+            {
+                var jValue = JToken.FromObject(value);
+
+                if (jValue != null)
+                {
+                    using (var jReader = new JTokenReader(jValue))
+                    {
+                        return _serializer.Deserialize(jReader, type);
+                    }
+                }
+            }
+
+            return null;
+        }
+
+
+        // Helpers
+
 
         private static StreamReader CreateReader(Stream stream, bool leaveOpen)
         {

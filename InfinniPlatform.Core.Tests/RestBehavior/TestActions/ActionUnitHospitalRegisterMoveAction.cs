@@ -1,5 +1,4 @@
-﻿using InfinniPlatform.Core.Registers;
-using InfinniPlatform.Core.Tests.RestBehavior.Acceptance;
+﻿using InfinniPlatform.Core.Tests.RestBehavior.Acceptance;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Registers;
 
@@ -7,12 +6,12 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
 {
     public sealed class ActionUnitHospitalRegisterMoveAction
     {
-        public ActionUnitHospitalRegisterMoveAction(IRegistryComponent registryComponent)
+        public ActionUnitHospitalRegisterMoveAction(IRegisterApi registerApi)
         {
-            _registryComponent = registryComponent;
+            _registerApi = registerApi;
         }
 
-        private readonly IRegistryComponent _registryComponent;
+        private readonly IRegisterApi _registerApi;
 
         public void Action(IApplyContext target)
         {
@@ -21,7 +20,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
 
             if (target.Item.OldRoom != null && target.Item.OldBed != null)
             {
-                incomeEntry = _registryComponent.CreateAccumulationRegisterEntry(target.Configuration, RegistersBehavior.AvailableBedsRegister, target.Item.Metadata, target.Item, target.Item.Date);
+                incomeEntry = _registerApi.CreateEntry(target.Configuration, RegistersBehavior.AvailableBedsRegister, target.Item.Metadata, target.Item, target.Item.Date, false);
                 incomeEntry.Value = 1; // Изменение количества на единицу
 
                 // Койка освободилась - income
@@ -32,7 +31,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
 
             if (target.Item.NewRoom != null && target.Item.NewBed != null)
             {
-                consumptionEntry = _registryComponent.CreateAccumulationRegisterEntry(target.Configuration, RegistersBehavior.AvailableBedsRegister, target.Item.Metadata, target.Item, target.Item.Date);
+                consumptionEntry = _registerApi.CreateEntry(target.Configuration, RegistersBehavior.AvailableBedsRegister, target.Item.Metadata, target.Item, target.Item.Date, false);
                 consumptionEntry.Value = 1; // Изменение количества на единицу
 
                 // Койку заняли - consumption
@@ -43,12 +42,12 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
 
             if (incomeEntry != null)
             {
-                _registryComponent.PostRegisterEntries(target.Configuration, RegistersBehavior.AvailableBedsRegister, new[] { incomeEntry });
+                _registerApi.PostEntries(target.Configuration, RegistersBehavior.AvailableBedsRegister, new[] { incomeEntry });
             }
 
             if (consumptionEntry != null)
             {
-                _registryComponent.PostRegisterEntries(target.Configuration, RegistersBehavior.AvailableBedsRegister, new[] { consumptionEntry });
+                _registerApi.PostEntries(target.Configuration, RegistersBehavior.AvailableBedsRegister, new[] { consumptionEntry });
             }
         }
     }

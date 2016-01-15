@@ -1,6 +1,5 @@
 ﻿using System;
 
-using InfinniPlatform.Core.Registers;
 using InfinniPlatform.Core.Tests.RestBehavior.Acceptance;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Registers;
@@ -9,47 +8,38 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
 {
     public sealed class ActionUnitAddNewBedToRoomMoveAction
     {
-        public ActionUnitAddNewBedToRoomMoveAction(IRegistryComponent registryComponent)
+        public ActionUnitAddNewBedToRoomMoveAction(IRegisterApi registerApi)
         {
-            _registryComponent = registryComponent;
+            _registerApi = registerApi;
         }
 
-        private readonly IRegistryComponent _registryComponent;
+        private readonly IRegisterApi _registerApi;
 
         public void Action(IApplyContext target)
         {
-            if (target.Item.Info == null)
-            {
-                CreateRegisterEntry(target, RegistersBehavior.AvailableBedsRegister,
-                    r => r.CreateAccumulationRegisterEntry(
-                        target.Configuration,
-                        RegistersBehavior.AvailableBedsRegister,
-                        target.Metadata,
-                        target.Item,
-                        target.Item.Date));
-            }
-            else
-            {
-                CreateRegisterEntry(target, RegistersBehavior.InfoRegister,
-                    r => r.CreateInfoRegisterEntry(
-                        target.Configuration,
-                        RegistersBehavior.InfoRegister,
-                        target.Metadata,
-                        target.Item,
-                        target.Item.Date));
-            }
+            var isInfoRegister = (target.Item.Info != null);
+            var registerName = isInfoRegister ? RegistersBehavior.InfoRegister : RegistersBehavior.AvailableBedsRegister;
+
+            CreateRegisterEntry(target, registerName,
+                r => r.CreateEntry(
+                    target.Configuration,
+                    RegistersBehavior.AvailableBedsRegister,
+                    target.Metadata,
+                    target.Item,
+                    target.Item.Date,
+                    isInfoRegister));
         }
 
-        private void CreateRegisterEntry(IApplyContext target, string registerName, Func<IRegistryComponent, dynamic> createEntry)
+        private void CreateRegisterEntry(IApplyContext target, string registerName, Func<IRegisterApi, dynamic> createEntry)
         {
-            var registerEntry = createEntry(_registryComponent);
+            var registerEntry = createEntry(_registerApi);
             registerEntry.EntryType = RegisterEntryType.Income;
             registerEntry.Info = target.Item.Info;
             registerEntry.Room = target.Item.Room;
             registerEntry.Bed = target.Item.Bed;
             registerEntry.Value = 1; // Изменение количества на единицу
 
-            _registryComponent.PostRegisterEntries(target.Configuration, registerName, new[] { registerEntry });
+            _registerApi.PostEntries(target.Configuration, registerName, new[] { registerEntry });
         }
     }
 }

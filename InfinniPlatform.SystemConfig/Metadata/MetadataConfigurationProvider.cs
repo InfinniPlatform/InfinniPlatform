@@ -2,8 +2,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
-using InfinniPlatform.Core.Factories;
-using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Runtime;
 
@@ -14,21 +12,16 @@ namespace InfinniPlatform.SystemConfig.Metadata
     /// </summary>
     internal sealed class MetadataConfigurationProvider : IMetadataConfigurationProvider
     {
-        public MetadataConfigurationProvider(IServiceRegistrationContainerFactory serviceRegistrationContainerFactory, IServiceTemplateConfiguration serviceTemplateConfiguration, IScriptConfiguration scriptConfiguration)
+        public MetadataConfigurationProvider(IScriptConfiguration scriptConfiguration)
         {
-            _serviceRegistrationContainerFactory = serviceRegistrationContainerFactory;
-            _serviceTemplateConfiguration = serviceTemplateConfiguration;
             _scriptConfiguration = scriptConfiguration;
 
             _configurations = new ConcurrentDictionary<string, IMetadataConfiguration>(StringComparer.OrdinalIgnoreCase);
         }
 
 
-        private readonly IServiceRegistrationContainerFactory _serviceRegistrationContainerFactory;
-        private readonly IServiceTemplateConfiguration _serviceTemplateConfiguration;
-        private readonly IScriptConfiguration _scriptConfiguration;
-
         private readonly ConcurrentDictionary<string, IMetadataConfiguration> _configurations;
+        private readonly IScriptConfiguration _scriptConfiguration;
 
 
         public IEnumerable<IMetadataConfiguration> Configurations => _configurations.Values;
@@ -71,12 +64,10 @@ namespace InfinniPlatform.SystemConfig.Metadata
 
             if (!_configurations.TryGetValue(metadataConfigurationId, out metadataConfiguration))
             {
-                var buildServiceRegistrationContainer = _serviceRegistrationContainerFactory.BuildServiceRegistrationContainer(metadataConfigurationId);
-
-                metadataConfiguration = new MetadataConfiguration(_scriptConfiguration, buildServiceRegistrationContainer, _serviceTemplateConfiguration, isEmbeddedConfiguration)
-                {
-                    ConfigurationId = metadataConfigurationId,
-                };
+                metadataConfiguration = new MetadataConfiguration(_scriptConfiguration, isEmbeddedConfiguration)
+                                        {
+                                            ConfigurationId = metadataConfigurationId
+                                        };
 
                 _configurations.TryAdd(metadataConfigurationId, metadataConfiguration);
             }

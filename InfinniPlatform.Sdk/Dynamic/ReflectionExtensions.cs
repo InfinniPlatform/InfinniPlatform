@@ -304,8 +304,7 @@ namespace InfinniPlatform.Sdk.Dynamic
         /// </summary>
         public static Delegate GetMethodDelegate(this object target, MethodInfo memberInfo)
         {
-            var parameters =
-                memberInfo.GetParameters().Select(p => p.ParameterType).Concat(new[] { memberInfo.ReturnType }).ToArray();
+            var parameters = memberInfo.GetParameters().Select(p => p.ParameterType).Concat(new[] { memberInfo.ReturnType }).ToArray();
             return memberInfo.CreateDelegate(Expression.GetDelegateType(parameters), memberInfo.IsStatic ? null : target);
         }
 

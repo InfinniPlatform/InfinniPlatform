@@ -7,7 +7,7 @@ namespace InfinniPlatform.Sdk.RestApi
     /// <summary>
     /// API для работы с файлами
     /// </summary>
-    public sealed class InfinniFileApi : BaseApi, IFileApi
+    public sealed class InfinniFileApi : BaseApi //, IFileApi
     {
         public InfinniFileApi(string server, int port) : base(server, port)
         {

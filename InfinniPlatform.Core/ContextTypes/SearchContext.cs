@@ -23,7 +23,7 @@ namespace InfinniPlatform.Core.ContextTypes
         /// <summary>
         /// Фильтр данных
         /// </summary>
-        public List<FilterCriteria> Filter { get; set; }
+        public IList<FilterCriteria> Filter { get; set; }
 
         /// <summary>
         /// Номер страницы

@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Core.Metadata;
-using InfinniPlatform.Core.RestApi.Auth;
 using InfinniPlatform.Core.Runtime;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.SystemConfig.StateMachine;
@@ -18,17 +16,9 @@ namespace InfinniPlatform.SystemConfig.Metadata
     /// </summary>
     public class MetadataConfiguration : IMetadataConfiguration
     {
-        public MetadataConfiguration(
-            IScriptConfiguration scriptConfiguration,
-            IServiceRegistrationContainer serviceRegistrationContainer,
-            IServiceTemplateConfiguration serviceTemplateConfiguration,
-            bool isEmbeddedConfiguration)
+        public MetadataConfiguration(IScriptConfiguration scriptConfiguration, bool isEmbeddedConfiguration)
         {
             ScriptConfiguration = scriptConfiguration;
-
-            ServiceRegistrationContainer = serviceRegistrationContainer;
-
-            ServiceTemplateConfiguration = serviceTemplateConfiguration;
 
             _isEmbeddedConfiguration = isEmbeddedConfiguration;
         }
@@ -52,21 +42,6 @@ namespace InfinniPlatform.SystemConfig.Metadata
         /// Конфигурация прикладных скриптов
         /// </summary>
         public IScriptConfiguration ScriptConfiguration { get; }
-
-        /// <summary>
-        /// Контейнер регистрации сервисов конфигурации
-        /// </summary>
-        public IServiceRegistrationContainer ServiceRegistrationContainer { get; }
-
-        /// <summary>
-        /// Контейнер шаблонов обработчиков для модуля
-        /// </summary>
-        public IServiceTemplateConfiguration ServiceTemplateConfiguration { get; }
-
-        /// <summary>
-        /// Актуальная версия конфигурации метаданных
-        /// </summary>
-        public string Version { get; set; }
 
         /// <summary>
         /// Признак того, что конфигурация является встроенной в код C# (не хранится в JSON)
@@ -514,36 +489,6 @@ namespace InfinniPlatform.SystemConfig.Metadata
             return _menuList;
         }
 
-        //For example: metadataId = "metadata", instanceName = "Save", extensionPointTypeName = "FilterEvents"
-        /// <summary>
-        /// Получить идентификатор точки расширения для указанных метаданных
-        /// </summary>
-        /// <param name="metadataId">Идентификатор метаданных</param>
-        /// <param name="actionInstanceName">Идентификатор экземпляра обработчика действия</param>
-        /// <param name="extensionPointTypeName">Идентификатор типа точки расширения</param>
-        /// <returns>Значение идентификатора точки расширения логики</returns>
-        public string GetExtensionPointValue(string metadataId, string actionInstanceName, string extensionPointTypeName)
-        {
-            if (string.IsNullOrEmpty(actionInstanceName))
-            {
-                return null;
-            }
-
-            var actionHandlerInstance = ServiceRegistrationContainer.GetRegistrationByInstanceName(metadataId,
-                actionInstanceName);
-
-            if (actionHandlerInstance != null)
-            {
-                var extensionPoint = actionHandlerInstance.GetExtensionPoint(extensionPointTypeName);
-//Logger.Log.Info($"XXXXX: {ConfigurationId} / {metadataId} / {actionInstanceName} / {extensionPointTypeName} => {extensionPoint?.StateMachineReference}");
-                return extensionPoint?.StateMachineReference;
-            }
-
-            throw new ArgumentException(
-                string.Format("Metadata extension point for point: {0} and container: {1} not registered",
-                    extensionPointTypeName, metadataId));
-        }
-
         /// <summary>
         /// Получить для указанного контейнера допустимый тип поиска
         /// </summary>
@@ -667,7 +612,8 @@ namespace InfinniPlatform.SystemConfig.Metadata
                                                                                                                                 }
                                                                                                                                 if (transition1.DeletingDocumentValidationPoint != null)
                                                                                                                                 {
-                                                                                                                                    ws.WithValidationError(() => ScriptConfiguration.GetAction(transition1.DeletingDocumentValidationPoint.ScenarioId));
+                                                                                                                                    ws.WithValidationError(
+                                                                                                                                        () => ScriptConfiguration.GetAction(transition1.DeletingDocumentValidationPoint.ScenarioId));
                                                                                                                                 }
                                                                                                                                 if (transition1.ActionPoint != null)
                                                                                                                                 {

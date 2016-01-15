@@ -1,9 +1,12 @@
-﻿using InfinniPlatform.Core.Hosting;
-using InfinniPlatform.Core.Security;
+﻿using InfinniPlatform.Core.Security;
 using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Sdk.PrintView;
+using InfinniPlatform.Sdk.Registers;
+using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Sdk.Settings;
-using InfinniPlatform.SystemConfig.Migrations;
+using InfinniPlatform.SystemConfig.PrintView;
+using InfinniPlatform.SystemConfig.Registers;
 using InfinniPlatform.SystemConfig.RequestHandlers;
 using InfinniPlatform.SystemConfig.StartupInitializers;
 using InfinniPlatform.SystemConfig.UserStorage;
@@ -43,25 +46,29 @@ namespace InfinniPlatform.SystemConfig.IoC
                    .As<IApplicationEventHandler>()
                    .SingleInstance();
 
-            // Обработчики сервисов системной конфигурации
-            builder.RegisterType<SystemConfigInstaller>()
-                   .As<IModuleInstaller>()
+            // Печатные представления
+
+            builder.RegisterType<PrintViewApi>()
+                   .As<IPrintViewApi>()
                    .SingleInstance();
 
-            // Migrations
+            // Регистры
 
-            builder.RegisterType<CalculateTotalsForRegisters>()
-                   .As<IConfigurationMigration>()
-                   .SingleInstance();
-
-            builder.RegisterType<ConfigurationMigrationFactory>()
-                   .As<IConfigurationMigrationFactory>()
+            builder.RegisterType<RegisterApi>()
+                   .As<IRegisterApi>()
                    .SingleInstance();
 
             // Прикладные скрипты
             builder.RegisterActionUnits(GetType().Assembly);
 
             // Прикладные сервисы
+            builder.RegisterType<ChangeHttpRequestHandler>().AsSelf().SingleInstance();
+            builder.RegisterType<SearchHttpRequestHandler>().AsSelf().SingleInstance();
+            builder.RegisterType<CustomHttpRequestHandler>().AsSelf().SingleInstance();
+            builder.RegisterType<AttachHttpRequestHandler>().AsSelf().SingleInstance();
+            builder.RegisterType<DownloadHttpRequestHandler>().AsSelf().SingleInstance();
+            builder.RegisterType<ReportHttpRequestHandler>().AsSelf().SingleInstance();
+            builder.RegisterType<DocumentTransactionScopeOnAfterHandler>().AsSelf().SingleInstance();
             builder.RegisterHttpServices(GetType().Assembly);
         }
     }

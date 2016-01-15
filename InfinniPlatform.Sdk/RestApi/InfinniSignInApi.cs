@@ -3,7 +3,7 @@
     /// <summary>
     /// API для аутентификации пользователей.
     /// </summary>
-    public sealed class InfinniSignInApi : BaseApi, ISignInApi
+    public sealed class InfinniSignInApi : BaseApi
     {
         public InfinniSignInApi(string server, int port) : base(server, port)
         {

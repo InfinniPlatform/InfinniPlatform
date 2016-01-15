@@ -1,21 +1,12 @@
 ﻿using InfinniPlatform.Core.Compression;
-using InfinniPlatform.Core.ContextComponents;
-using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Core.Logging;
-using InfinniPlatform.Core.RestApi.CommonApi;
 using InfinniPlatform.Core.RestApi.DataApi;
-using InfinniPlatform.Core.RestApi.Public;
 using InfinniPlatform.Core.Settings;
 using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Registers;
-using InfinniPlatform.Sdk.RestApi;
 using InfinniPlatform.Sdk.Settings;
-
-using PrintViewApi = InfinniPlatform.Core.RestApi.Public.PrintViewApi;
-using RegisterApi = InfinniPlatform.Core.RestApi.Public.RegisterApi;
 
 namespace InfinniPlatform.Core.IoC
 {
@@ -60,60 +51,6 @@ namespace InfinniPlatform.Core.IoC
                    .AsSelf()
                    .As<IDocumentApi>()
                    .SingleInstance();
-
-            // PrintViewApi
-
-            builder.RegisterType<PrintViewApi>()
-                   .As<IPrintViewApi>()
-                   .AsSelf()
-                   .SingleInstance();
-
-            builder.RegisterType<RestApi.DataApi.PrintViewApi>()
-                   .AsSelf()
-                   .SingleInstance();
-
-            // RegisterApi
-
-            builder.RegisterType<RegisterApi>()
-                   .As<IRegisterApi>()
-                   .AsSelf()
-                   .SingleInstance();
-
-            builder.RegisterType<RestApi.DataApi.RegisterApi>()
-                   .AsSelf()
-                   .SingleInstance();
-
-            builder.RegisterType<RegistryComponent>()
-                   .As<IRegistryComponent>()
-                   .SingleInstance();
-
-            // FileApi
-
-            builder.RegisterType<FileApi>()
-                   .As<IFileApi>()
-                   .AsSelf()
-                   .SingleInstance();
-
-            builder.RegisterType<UploadApi>()
-                   .AsSelf()
-                   .SingleInstance();
-
-            // CustomServiceApi
-
-            builder.RegisterType<CustomServiceApi>()
-                   .As<ICustomServiceApi>()
-                   .AsSelf()
-                   .SingleInstance();
-
-            // Fury
-
-            builder.RegisterType<RestQueryApi>()
-                   .AsSelf()
-                   .SingleInstance();
-
-            builder.RegisterType<LocalQueryBuilder>()
-                   .AsSelf()
-                   .InstancePerDependency();
         }
     }
 }

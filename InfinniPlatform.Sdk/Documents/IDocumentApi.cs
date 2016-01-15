@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace InfinniPlatform.Sdk.Documents
 {
@@ -25,6 +26,18 @@ namespace InfinniPlatform.Sdk.Documents
         /// <param name="sorting">Выражение для сортировки документов</param>
         /// <returns>Список документов, удовлетворяющих указанному фильтру</returns>
         IEnumerable<dynamic> GetDocument(string applicationId, string documentType, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting = null);
+
+        /// <summary>
+        /// Получить документы по указанным фильтрам
+        /// </summary>
+        /// <param name="applicationId">Идентификатор приложения</param>
+        /// <param name="documentType">Тип документа</param>
+        /// <param name="filter">Выражение для фильтрации документов</param>
+        /// <param name="pageNumber">Номер страницы</param>
+        /// <param name="pageSize">Размер страницы</param>
+        /// <param name="sorting">Выражение для сортировки документов</param>
+        /// <returns>Список документов, удовлетворяющих указанному фильтру</returns>
+        IEnumerable<dynamic> GetDocuments(string applicationId, string documentType, IEnumerable<FilterCriteria> filter, int pageNumber, int pageSize, IEnumerable<SortingCriteria> sorting = null);
 
         /// <summary>
         /// Вставить или полностью заменить существующий документ
@@ -61,5 +74,10 @@ namespace InfinniPlatform.Sdk.Documents
         /// <param name="filter">Фильтр документов</param>
         /// <returns>Количество документов</returns>
         long GetNumberOfDocuments(string applicationId, string documentType, Action<FilterBuilder> filter);
+
+        /// <summary>
+        /// Прикрепляет файл к свойству документа.
+        /// </summary>
+        void AttachFile(string configuration, string documentType, string documentId, string fileProperty, Stream fileStream);
     }
 }

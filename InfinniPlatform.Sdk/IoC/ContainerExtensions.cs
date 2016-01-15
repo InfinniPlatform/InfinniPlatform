@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Reflection;
 
-using InfinniPlatform.Sdk.Services;
-
 namespace InfinniPlatform.Sdk.IoC
 {
     public static class ContainerExtensions
@@ -17,7 +15,9 @@ namespace InfinniPlatform.Sdk.IoC
         /// Прикладные скрипты будут зарегистрированы со стратегией SingleInstance().
         /// </remarks>
         /// <example>
+        /// <code>
         /// RegisterActionUnits(GetType().Assembly)
+        /// </code>
         /// </example>
         public static void RegisterActionUnits(this IContainerBuilder builder, Assembly assembly)
         {
@@ -28,28 +28,14 @@ namespace InfinniPlatform.Sdk.IoC
         }
 
         /// <summary>
-        /// Регистрирует все прикладные сервисы текущей сборки.
-        /// </summary>
-        /// <remarks>
-        /// Прикладные скрипты будут зарегистрированы со стратегией SingleInstance().
-        /// </remarks>
-        /// <example>
-        /// RegisterHttpServices(GetType().Assembly)
-        /// </example>
-        public static void RegisterHttpServices(this IContainerBuilder builder, Assembly assembly)
-        {
-            RegisterAssemblyTypes(builder, assembly, 
-                t => typeof(IHttpService).IsAssignableFrom(t),
-                r => r.As<IHttpService>().SingleInstance());
-        }
-
-        /// <summary>
         /// Регистрирует указанные типы текущей сборки.
         /// </summary>
         /// <example>
-        /// RegisterAssemblyTypes(builder, assembly,
-        ///    t => typeof(IHttpService).IsAssignableFrom(t),
-        ///    r => r.As&lt;IHttpService&gt;().SingleInstance());
+        /// <code>
+        /// RegisterAssemblyTypes(assembly,
+        ///   t => typeof(IHttpService).IsAssignableFrom(t),
+        ///   r => r.As&lt;IHttpService&gt;().SingleInstance());
+        /// </code>
         /// </example>
         public static void RegisterAssemblyTypes(this IContainerBuilder builder, Assembly assembly, Func<Type, bool> typeSelector, Action<IContainerRegistrationRule> registrationRule = null)
         {

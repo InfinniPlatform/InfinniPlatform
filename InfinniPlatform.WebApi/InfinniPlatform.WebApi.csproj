@@ -79,22 +79,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Modules\ApplicationSdkOwinHostingModule.cs" />
-    <Compile Include="HttpResultHandlers\HttpResultHandlerSignIn.cs" />
     <Compile Include="IoC\WebApiContainerModule.cs" />
     <Compile Include="Middleware\ApplicationSdkOwinMiddleware.cs" />
-    <Compile Include="ConfigRequestProviders\ConfigRequestProvider.cs" />
-    <Compile Include="Controllers\UploadController.cs" />
-    <Compile Include="Controllers\UrlEncodedDataController.cs" />
-    <Compile Include="Factories\HttpResultHandlerFactory.cs" />
-    <Compile Include="Factories\ApplicationHostServer.cs" />
-    <Compile Include="Factories\ModuleComposer.cs" />
-    <Compile Include="HttpResultHandlers\HttpResultHandlerBadRequest.cs" />
-    <Compile Include="HttpResultHandlers\HttpResultHandlerByteContent.cs" />
-    <Compile Include="HttpResultHandlers\HttpResultHandlerHtml.cs" />
-    <Compile Include="HttpResultHandlers\HttpResultHandlerStandard.cs" />
-    <Compile Include="HttpResultHandlers\IHttpResultHandler.cs" />
-    <Compile Include="IHttpResultHandlerFactory.cs" />
-    <Compile Include="Filters\DocumentTransactionScopeFilterAttribute.cs" />
     <Compile Include="Middleware\HandlerRegistration.cs" />
     <Compile Include="Middleware\IRouteFormatter.cs" />
     <Compile Include="Middleware\MultipartFormData\BinaryStreamStack.cs" />
@@ -114,10 +100,7 @@
     <Compile Include="Middleware\RouteFormatters\RouteFormatterSession.cs" />
     <Compile Include="Middleware\RouteFormatters\RouteFormatterCustomService.cs" />
     <Compile Include="Middleware\RouteFormatters\RouteFormatterStandard.cs" />
-    <Compile Include="Middleware\StandardHandlers\CustomServiceRegistrationHandler.cs" />
     <Compile Include="Middleware\StandardHandlers\DeleteDocumentHandlerRegistration.cs" />
-    <Compile Include="Middleware\StandardHandlers\FileDownloadHandlerRegistration.cs" />
-    <Compile Include="Middleware\StandardHandlers\FileUploadHandlerRegistration.cs" />
     <Compile Include="Middleware\StandardHandlers\GetDocumentByIdHandlerRegistration.cs" />
     <Compile Include="Middleware\StandardHandlers\GetDocumentCountHandlerRegistration.cs" />
     <Compile Include="Middleware\StandardHandlers\GetDocumentHandlerRegistration.cs" />
@@ -134,12 +117,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="ProvidersLocal\ApiControllerLocal.cs" />
-    <Compile Include="Modules\ApplicationWebApiOwinHostingModule.cs" />
-    <Compile Include="WebApi\ApiControllerFactory.cs" />
-    <Compile Include="Controllers\StandardApiController.cs" />
-    <Compile Include="WebApi\HttpControllerSelector.cs" />
-    <Compile Include="WebApi\RestVerbsContainer.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

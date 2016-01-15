@@ -6,7 +6,7 @@ using InfinniPlatform.Sdk.Registers;
 
 namespace InfinniPlatform.Sdk.RestApi
 {
-    public sealed class InfinniRegisterApi : BaseApi, IRegisterApi
+    public sealed class InfinniRegisterApi : BaseApi //, IRegisterApi
     {
         /// <summary>
         /// Префикс имени служебного документа регистра
@@ -15,11 +15,9 @@ namespace InfinniPlatform.Sdk.RestApi
 
         public InfinniRegisterApi(string server, int port) : base(server, port)
         {
-            _customServiceApi = new InfinniCustomServiceApi(server, port);
             _documentApi = new InfinniDocumentApi(server, port);
         }
 
-        private readonly InfinniCustomServiceApi _customServiceApi;
         private readonly InfinniDocumentApi _documentApi;
 
         /// <summary>
@@ -48,19 +46,20 @@ namespace InfinniPlatform.Sdk.RestApi
                 filter.Invoke(filterBuilder);
             }
 
-            return
-                _customServiceApi.ExecuteAction("SystemConfig", "metadata", "GetRegisterValuesByDate", new
-                                                                                                       {
-                                                                                                           Configuration = configuration,
-                                                                                                           Register = register,
-                                                                                                           Date = endDate,
-                                                                                                           Dimensions = dimensions,
-                                                                                                           ValueProperties = valueProperties,
-                                                                                                           ValueAggregationTypes = valueAggregationTypes,
-                                                                                                           Filter = filter == null
-                                                                                                                        ? null
-                                                                                                                        : (IEnumerable<FilterCriteria>)filterBuilder.CriteriaList
-                                                                                                       });
+            //return
+            //    _customServiceApi.ExecuteAction("SystemConfig", "metadata", "GetRegisterValuesByDate", new
+            //                                                                                           {
+            //                                                                                               Configuration = configuration,
+            //                                                                                               Register = register,
+            //                                                                                               Date = endDate,
+            //                                                                                               Dimensions = dimensions,
+            //                                                                                               ValueProperties = valueProperties,
+            //                                                                                               ValueAggregationTypes = valueAggregationTypes,
+            //                                                                                               Filter = filter == null
+            //                                                                                                            ? null
+            //                                                                                                            : (IEnumerable<FilterCriteria>)filterBuilder.CriteriaList
+            //                                                                                           });
+            return null;
         }
 
         /// <summary>
@@ -90,20 +89,21 @@ namespace InfinniPlatform.Sdk.RestApi
                 filter.Invoke(filterBuilder);
             }
 
-            return
-                _customServiceApi.ExecuteAction("SystemConfig", "metadata", "GetRegisterValuesBetweenDates", new
-                                                                                                             {
-                                                                                                                 Configuration = configuration,
-                                                                                                                 Register = register,
-                                                                                                                 FromDate = startDate,
-                                                                                                                 ToDate = endDate,
-                                                                                                                 Dimensions = dimensions,
-                                                                                                                 ValueProperties = valueProperties,
-                                                                                                                 ValueAggregationTypes = valueAggregationTypes,
-                                                                                                                 Filter = filter == null
-                                                                                                                              ? null
-                                                                                                                              : (IEnumerable<FilterCriteria>)filterBuilder.CriteriaList
-                                                                                                             });
+            //return
+            //    _customServiceApi.ExecuteAction("SystemConfig", "metadata", "GetRegisterValuesBetweenDates", new
+            //                                                                                                 {
+            //                                                                                                     Configuration = configuration,
+            //                                                                                                     Register = register,
+            //                                                                                                     FromDate = startDate,
+            //                                                                                                     ToDate = endDate,
+            //                                                                                                     Dimensions = dimensions,
+            //                                                                                                     ValueProperties = valueProperties,
+            //                                                                                                     ValueAggregationTypes = valueAggregationTypes,
+            //                                                                                                     Filter = filter == null
+            //                                                                                                                  ? null
+            //                                                                                                                  : (IEnumerable<FilterCriteria>)filterBuilder.CriteriaList
+            //                                                                                                 });
+            return null;
         }
 
         /// <summary>

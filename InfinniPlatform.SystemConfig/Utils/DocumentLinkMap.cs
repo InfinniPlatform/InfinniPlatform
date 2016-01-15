@@ -2,41 +2,43 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Core.Metadata;
-using InfinniPlatform.Core.RestApi.CommonApi;
-using InfinniPlatform.Sdk;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.IoC;
-
-using ApplyChangesHandler = InfinniPlatform.SystemConfig.RequestHandlers.ApplyChangesHandler;
 
 namespace InfinniPlatform.SystemConfig.Utils
 {
     public sealed class DocumentLinkMap
     {
-        public DocumentLinkMap(IMetadataComponent metadataComponent, RestQueryApi restQueryApi, Func<ApplyChangesHandler> applyChangesHandlerFactory)
+        public delegate IEnumerable<dynamic> GetDocumentsDelegate(
+            string configurationName,
+            string documentType,
+            IEnumerable<FilterCriteria> filter,
+            int pageNumber,
+            int pageSize,
+            IEnumerable<SortingCriteria> sorting = null);
+
+
+        public DocumentLinkMap(IMetadataComponent metadataComponent, GetDocumentsDelegate getDocuments)
         {
             _metadataComponent = metadataComponent;
-            _restQueryApi = restQueryApi;
-            _applyChangesHandlerFactory = applyChangesHandlerFactory;
+            _getDocuments = getDocuments;
         }
 
-        private readonly RestQueryApi _restQueryApi;
-        private readonly Func<ApplyChangesHandler> _applyChangesHandlerFactory;
         private readonly IList<DocumentLink> _links = new List<DocumentLink>();
         private readonly IMetadataComponent _metadataComponent;
+        private readonly GetDocumentsDelegate _getDocuments;
 
         public void RegisterLink(string configId, string documentId, string instanceId, Action<object> valueSetFunc)
         {
             var link = new DocumentLink
-            {
-                ConfigId = configId,
-                DocumentId = documentId,
-                InstanceId = instanceId,
-                SetValue = valueSetFunc
-            };
+                       {
+                           ConfigId = configId,
+                           DocumentId = documentId,
+                           InstanceId = instanceId,
+                           SetValue = valueSetFunc
+                       };
 
             lock (_links)
             {
@@ -96,24 +98,16 @@ namespace InfinniPlatform.SystemConfig.Utils
             }
         }
 
-        private List<dynamic> GetResolvedLinks(IGrouping<dynamic, DocumentLink> groupsLink, Action<FilterBuilder> filter, List<dynamic> typeInfoChainUpdated)
+        private List<dynamic> GetResolvedLinks(IGrouping<dynamic, DocumentLink> groupsLink, Action<FilterBuilder> filterAction, List<dynamic> typeInfoChainUpdated)
         {
             var filterBuilder = new FilterBuilder();
+            filterAction?.Invoke(filterBuilder);
 
-            filter?.Invoke(filterBuilder);
+            string configuration = groupsLink.Key.ConfigId;
+            string documentType = groupsLink.Key.DocumentId;
+            var filter = filterBuilder.CriteriaList;
 
-            dynamic request = new DynamicWrapper();
-            request.Configuration = groupsLink.Key.ConfigId;
-            request.Metadata = groupsLink.Key.DocumentId;
-            request.Filter = filterBuilder.CriteriaList;
-            request.PageNumber = 0;
-            request.PageSize = 100;
-            request.IgnoreResolve = typeInfoChainUpdated;
-
-            var applyChangesHandler = _applyChangesHandlerFactory();
-            applyChangesHandler.ConfigRequestProvider = new LocalDataProvider("SystemConfig", "configuration", "getdocument");
-
-            var result = applyChangesHandler.ApplyJsonObject(null, request);
+            IEnumerable<dynamic> result = _getDocuments(configuration, documentType, filter, 0, 100);
 
             var resolvedLinks = (result != null) ? Enumerable.ToList(result) : null;
 
@@ -188,11 +182,15 @@ namespace InfinniPlatform.SystemConfig.Utils
         }
     }
 
-    public class DocumentLinkMapProvider
+
+    public sealed class DocumentLinkMapProvider
     {
-        public DocumentLinkMapProvider(Func<IContainerResolver> containerFactory)
+        public DocumentLinkMapProvider(IContainerResolver containerResolver)
         {
-            _documentLinkMapFactory = () => containerFactory().Resolve<DocumentLinkMap>();
+            var documentApi = containerResolver.Resolve<IDocumentApi>();
+            var metadataComponent = containerResolver.Resolve<IMetadataComponent>();
+
+            _documentLinkMapFactory = () => new DocumentLinkMap(metadataComponent, documentApi.GetDocuments);
         }
 
         private readonly Func<DocumentLinkMap> _documentLinkMapFactory;

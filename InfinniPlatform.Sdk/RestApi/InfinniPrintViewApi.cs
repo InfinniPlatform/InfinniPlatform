@@ -5,7 +5,7 @@ using InfinniPlatform.Sdk.Documents;
 
 namespace InfinniPlatform.Sdk.RestApi
 {
-    public class InfinniPrintViewApi : BaseApi, IPrintViewApi
+    public class InfinniPrintViewApi : BaseApi //, IPrintViewApi
     {
         public InfinniPrintViewApi(string server, int port) : base(server, port)
         {

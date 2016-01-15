@@ -61,6 +61,26 @@ namespace InfinniPlatform.Runtime.Implementation
             }
         }
 
+        public void InvokeScriptByType(string actionUnitType, object actionUnitContext)
+        {
+            var start = DateTime.Now;
+
+            try
+            {
+                var actionUnit = _actionUnitFactory.CreateActionUnit(actionUnitType);
+
+                actionUnit(actionUnitContext);
+
+                LogSuccessComplete(actionUnitType, actionUnitType, start);
+            }
+            catch (Exception e)
+            {
+                LogErrorComplete(actionUnitType, actionUnitType, start, Resources.ScriptCompletedWithError, e);
+
+                throw;
+            }
+        }
+
 
         private void LogSuccessComplete(string actionUnitId, string actionUnitType, DateTime start)
         {

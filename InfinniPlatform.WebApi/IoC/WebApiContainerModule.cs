@@ -1,15 +1,10 @@
-﻿using InfinniPlatform.Core.Hosting;
-using InfinniPlatform.Owin.Middleware;
+﻿using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.WebApi.Controllers;
-using InfinniPlatform.WebApi.Factories;
 using InfinniPlatform.WebApi.Middleware;
 using InfinniPlatform.WebApi.Middleware.StandardHandlers;
 using InfinniPlatform.WebApi.Middleware.UserAuthHandlers;
 using InfinniPlatform.WebApi.Modules;
-using InfinniPlatform.WebApi.ProvidersLocal;
-using InfinniPlatform.WebApi.WebApi;
 
 namespace InfinniPlatform.WebApi.IoC
 {
@@ -17,23 +12,7 @@ namespace InfinniPlatform.WebApi.IoC
     {
         public void Load(IContainerBuilder builder)
         {
-            builder.RegisterType<ModuleComposer>()
-                   .AsSelf()
-                   .SingleInstance();
-
-            builder.RegisterType<ApiControllerFactory>()
-                   .As<IApiControllerFactory>()
-                   .SingleInstance();
-
-            builder.RegisterType<ApplicationHostServer>()
-                   .AsSelf()
-                   .SingleInstance();
-
             // Модули обработки прикладных запросов
-
-            builder.RegisterType<ApplicationWebApiOwinHostingModule>()
-                   .As<IOwinHostingModule>()
-                   .SingleInstance();
 
             builder.RegisterType<ApplicationSdkOwinHostingModule>()
                    .As<IOwinHostingModule>()
@@ -43,21 +22,6 @@ namespace InfinniPlatform.WebApi.IoC
                    .AsSelf()
                    .SingleInstance();
 
-            builder.RegisterType<HttpResultHandlerFactory>()
-                   .As<IHttpResultHandlerFactory>()
-                   .SingleInstance();
-
-            // Универсальные контроллеры
-
-            builder.RegisterType<StandardApiController>()
-                   .AsSelf();
-
-            builder.RegisterType<UploadController>()
-                   .AsSelf();
-
-            builder.RegisterType<UrlEncodedDataController>()
-                   .AsSelf();
-
             // Обработчики для ApplicationSdkOwinMiddleware
 
             builder.RegisterType<GetDocumentByIdHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
@@ -66,20 +30,8 @@ namespace InfinniPlatform.WebApi.IoC
             builder.RegisterType<SetDocumentHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
             builder.RegisterType<SetDocumentsHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
             builder.RegisterType<DeleteDocumentHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
-            
-            builder.RegisterType<FileDownloadHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
-            builder.RegisterType<FileUploadHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
-
-            builder.RegisterType<CustomServiceRegistrationHandler>().As<IHandlerRegistration>().SingleInstance();
-
             builder.RegisterType<AddUserClaimHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
             builder.RegisterType<GetUserClaimHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
-
-            // Fury
-
-            builder.RegisterType<ApiControllerLocal>()
-                   .As<IRequestLocal>()
-                   .SingleInstance();
         }
     }
 }

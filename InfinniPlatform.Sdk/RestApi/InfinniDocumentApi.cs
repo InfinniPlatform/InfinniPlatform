@@ -168,7 +168,6 @@ namespace InfinniPlatform.Sdk.RestApi
         /// <returns>Список документов, удовлетворяющих указанному фильтру</returns>
         public IEnumerable<dynamic> GetDocument(string applicationId, string documentType, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting = null)
         {
-            var routeBuilder = new RouteBuilder(Server, Port, Route);
 
             var filterBuilder = new FilterBuilder();
             filter?.Invoke(filterBuilder);
@@ -176,11 +175,15 @@ namespace InfinniPlatform.Sdk.RestApi
             var sortingBuilder = new SortingBuilder();
             sorting?.Invoke(sortingBuilder);
 
-            var response = RequestExecutor.QueryGet(routeBuilder.BuildRestRoutingUrlDefault(applicationId, documentType),
-                                                    RequestExecutorExtensions.CreateQueryString(filterBuilder.CriteriaList, pageNumber, pageSize, sortingBuilder.SortingList));
+            return GetDocuments(applicationId, documentType, filterBuilder.CriteriaList, pageNumber, pageSize, sortingBuilder.SortingList);
+        }
 
-            return ProcessAsObjectResult(response,
-                                         string.Format(Resources.UnableToGetDocument, response));
+        public IEnumerable<dynamic> GetDocuments(string applicationId, string documentType, IEnumerable<FilterCriteria> filter, int pageNumber, int pageSize, IEnumerable<SortingCriteria> sorting = null)
+        {
+            var routeBuilder = new RouteBuilder(Server, Port, Route);
+            var queryString = RequestExecutorExtensions.CreateQueryString(filter, pageNumber, pageSize, sorting);
+            var response = RequestExecutor.QueryGet(routeBuilder.BuildRestRoutingUrlDefault(applicationId, documentType), queryString);
+            return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetDocument, response));
         }
 
         public long GetNumberOfDocuments(string applicationId, string documentType, Action<FilterBuilder> filter)
@@ -197,6 +200,11 @@ namespace InfinniPlatform.Sdk.RestApi
 
             return ProcessAsObjectResult(response,
                                          string.Format(Resources.UnableToGetDocument, response));
+        }
+
+        public void AttachFile(string configuration, string documentType, string documentId, string fileProperty, Stream fileStream)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

@@ -4,10 +4,10 @@ using System.IO;
 using System.Linq;
 
 using InfinniPlatform.Core.Logging;
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Settings;
-using InfinniPlatform.WebApi.Factories;
 
 namespace InfinniPlatform.SystemConfig.StartupInitializers
 {
@@ -16,11 +16,11 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
     /// </summary>
     internal sealed class PackageJsonConfigurationsInitializer : IStartupInitializer
     {
-        public PackageJsonConfigurationsInitializer(IAppConfiguration appConfiguration, ApplicationHostServer applicationHostServer)
+        public PackageJsonConfigurationsInitializer(IMetadataConfigurationProvider metadataConfigurationProvider, IAppConfiguration appConfiguration)
         {
-            _contentDirectory = appConfiguration.GetSection("metadata")?.ContentDirectory as string ?? "content";
-            _applicationHostServer = applicationHostServer;
+            _metadataConfigurationProvider = metadataConfigurationProvider;
 
+            _contentDirectory = appConfiguration.GetSection("metadata")?.ContentDirectory as string ?? "content";
             _configurations = new Lazy<IEnumerable<DynamicWrapper>>(LoadConfigsMetadata);
 
             var watcher = new FileSystemWatcher(_contentDirectory, "*.json")
@@ -37,8 +37,8 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 
 
         private readonly string _contentDirectory;
-        private readonly ApplicationHostServer _applicationHostServer;
         private readonly Lazy<IEnumerable<DynamicWrapper>> _configurations;
+        private readonly IMetadataConfigurationProvider _metadataConfigurationProvider;
 
 
         public int Order => 0;
@@ -98,22 +98,16 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
             var metadataCacheFiller = LoadConfigurationMetadata(configuration);
 
             // Создание менеджера кэша метаданных конфигураций
-            var metadataCacheManager = _applicationHostServer.CreateConfiguration(configId, false);
+            var metadataCacheManager = _metadataConfigurationProvider.AddConfiguration(configId, false);
 
             // Загрузка метаданных конфигурации в кэш
             metadataCacheFiller.InstallConfiguration(metadataCacheManager);
-
-            // Создание сервисов конфигурации
-            _applicationHostServer.InstallServices(metadataCacheManager.ServiceRegistrationContainer);
         }
 
         private void RemoveConfiguration(string configurationName)
         {
-            // Удаление сервисов конфигурации
-            _applicationHostServer.UninstallServices(configurationName);
-
             // Удаление метаданных конфигурации из кэша
-            _applicationHostServer.RemoveConfiguration(configurationName);
+            _metadataConfigurationProvider.RemoveConfiguration(configurationName);
         }
 
         private static PackageJsonConfigurationInstaller LoadConfigurationMetadata(dynamic configuration)
@@ -122,26 +116,16 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
             IEnumerable<dynamic> registers = configuration.Registers;
             IEnumerable<dynamic> documents = configuration.Documents;
             IEnumerable<dynamic> scenarios = documents.SelectMany(i => (IEnumerable<dynamic>)i.Scenarios).ToArray();
-            IEnumerable<dynamic> processes = documents.SelectMany(i => (IEnumerable<dynamic>)i.Processes).ToArray();
-            IEnumerable<dynamic> services = documents.SelectMany(i => (IEnumerable<dynamic>)i.Services).ToArray();
-            IEnumerable<dynamic> generators = documents.SelectMany(i => (IEnumerable<dynamic>)i.Generators).ToArray();
             IEnumerable<dynamic> views = documents.SelectMany(i => (IEnumerable<dynamic>)i.Views).ToArray();
             IEnumerable<dynamic> printViews = documents.SelectMany(i => (IEnumerable<dynamic>)i.PrintViews).ToArray();
-            IEnumerable<dynamic> validationErrors = documents.SelectMany(i => (IEnumerable<dynamic>)i.ValidationErrors).ToArray();
-            IEnumerable<dynamic> validationWarnings = documents.SelectMany(i => (IEnumerable<dynamic>)i.ValidationWarnings).ToArray();
 
             return new PackageJsonConfigurationInstaller(
-                documents,
                 menu,
+                registers,
+                documents,
                 scenarios,
-                processes,
-                services,
-                generators,
                 views,
-                printViews,
-                validationErrors,
-                validationWarnings,
-                registers);
+                printViews);
         }
 
         private IEnumerable<DynamicWrapper> LoadConfigsMetadata()

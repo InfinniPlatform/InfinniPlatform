@@ -2,7 +2,6 @@
 
 using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Metadata;
-using InfinniPlatform.Sdk.BlobStorage;
 
 namespace InfinniPlatform.SystemConfig.Metadata
 {
@@ -13,14 +12,12 @@ namespace InfinniPlatform.SystemConfig.Metadata
     /// </summary>
     public sealed class ConfigurationObjectBuilder : IConfigurationObjectBuilder
     {
-        public ConfigurationObjectBuilder(IIndexFactory indexFactory, IBlobStorage blobStorage, IMetadataConfigurationProvider metadataConfigurationProvider)
+        public ConfigurationObjectBuilder(IIndexFactory indexFactory, IMetadataConfigurationProvider metadataConfigurationProvider)
         {
             _indexFactory = indexFactory;
-            _blobStorage = blobStorage;
             _metadataConfigurationProvider = metadataConfigurationProvider;
         }
 
-        private readonly IBlobStorage _blobStorage;
         private readonly IIndexFactory _indexFactory;
         private readonly IMetadataConfigurationProvider _metadataConfigurationProvider;
 
@@ -39,7 +36,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
                 // Logger.Log.Error(string.Format("Metadata configuration not registered: \"{0}\"", metadataIdentifier));
                 // return null;
             }
-            return new ConfigurationObject(metadataConfiguration, _indexFactory, _blobStorage);
+            return new ConfigurationObject(metadataConfiguration, _indexFactory);
         }
 
         /// <summary>

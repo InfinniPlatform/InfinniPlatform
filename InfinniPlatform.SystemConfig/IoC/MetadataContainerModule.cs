@@ -1,10 +1,8 @@
 ﻿using InfinniPlatform.Core.ContextComponents;
-using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Runtime;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.SystemConfig.Metadata;
-using InfinniPlatform.SystemConfig.RequestHandlers;
 
 namespace InfinniPlatform.SystemConfig.IoC
 {
@@ -31,32 +29,6 @@ namespace InfinniPlatform.SystemConfig.IoC
             builder.RegisterType<CrossConfigSearcher>()
                    .As<ICrossConfigSearcher>()
                    .SingleInstance();
-
-            builder.RegisterType<RequestHandlerInstaller>()
-                   .As<IRequestHandlerInstaller>()
-                   .SingleInstance();
-
-            // Обработчики HTTP-запросов
-
-            builder.RegisterType<ApplyChangesHandler>()
-                   .As<IWebRoutingHandler>()
-                   .AsSelf();
-
-            builder.RegisterType<SearchHandler>()
-                   .As<IWebRoutingHandler>()
-                   .AsSelf();
-
-            builder.RegisterType<UploadHandler>()
-                   .As<IWebRoutingHandler>()
-                   .AsSelf();
-
-            builder.RegisterType<UrlEncodedDataHandler>()
-                   .As<IWebRoutingHandler>()
-                   .AsSelf();
-
-            builder.RegisterType<SearchDocumentAggregationHandler>()
-                   .As<IWebRoutingHandler>()
-                   .AsSelf();
 
             // Прикладные скрипты
             builder.RegisterActionUnits(GetType().Assembly);

@@ -1,10 +1,10 @@
-﻿using InfinniPlatform.Core.ContextComponents;
-using InfinniPlatform.Core.Factories;
+﻿using InfinniPlatform.Core.PrintView;
+using InfinniPlatform.FlowDocument;
+using InfinniPlatform.FlowDocument.PrintView;
 using InfinniPlatform.Reporting.DataSources;
-using InfinniPlatform.Reporting.PrintView;
 using InfinniPlatform.Reporting.Services;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.PrintView;
+using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.Reporting.IoC
 {
@@ -14,12 +14,20 @@ namespace InfinniPlatform.Reporting.IoC
         {
             // PrintView (wkhtmltopdf)
 
-            builder.RegisterType<FlowDocumentPrintViewBuilderFactory>()
-                   .As<IPrintViewBuilderFactory>()
+            builder.RegisterFactory(r => r.Resolve<IAppConfiguration>().GetSection<PrintViewSettings>(PrintViewSettings.SectionName))
+                   .As<PrintViewSettings>()
                    .SingleInstance();
 
-            builder.RegisterType<PrintViewComponent>()
-                   .As<IPrintViewComponent>()
+            builder.RegisterType<FlowDocumentPrintViewConverter>()
+                   .As<IFlowDocumentPrintViewConverter>()
+                   .SingleInstance();
+
+            builder.RegisterType<FlowDocumentPrintViewFactory>()
+                   .As<IFlowDocumentPrintViewFactory>()
+                   .SingleInstance();
+
+            builder.RegisterType<FlowDocumentPrintViewBuilder>()
+                   .As<IPrintViewBuilder>()
                    .SingleInstance();
 
             // Report (FastReport)

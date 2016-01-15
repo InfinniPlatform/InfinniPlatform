@@ -6,9 +6,9 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
 {
     public sealed class ActionUnitDeleteRegisterEntriesAction
     {
-        private readonly IRegistryComponent _registryComponent;
+        private readonly IRegisterApi _registryComponent;
 
-        public ActionUnitDeleteRegisterEntriesAction(IRegistryComponent registryComponent)
+        public ActionUnitDeleteRegisterEntriesAction(IRegisterApi registryComponent)
         {
             _registryComponent = registryComponent;
         }
@@ -16,8 +16,8 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
         public void Action(IApplyContext target)
         {
             // После удаления документа, удаляем соответствующие записи в регистрах
-            _registryComponent.DeleteRegisterEntry(target.Configuration, RegistersBehavior.AvailableBedsRegister, target.Item);
-            _registryComponent.DeleteRegisterEntry(target.Configuration, RegistersBehavior.InfoRegister, target.Item);
+            _registryComponent.DeleteEntry(target.Configuration, RegistersBehavior.AvailableBedsRegister, target.Item);
+            _registryComponent.DeleteEntry(target.Configuration, RegistersBehavior.InfoRegister, target.Item);
         }
     }
 }

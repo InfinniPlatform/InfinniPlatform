@@ -5,73 +5,138 @@ using InfinniPlatform.Sdk.Documents;
 
 namespace InfinniPlatform.Sdk.Registers
 {
+    /// <summary>
+    /// Предоставляет методы для работы с регистрами.
+    /// </summary>
     public interface IRegisterApi
     {
         /// <summary>
-        /// Получение результата агрегации по регистру на определенную дату
+        /// Создает (но не сохраняет) запись регистра.
         /// </summary>
-        /// <param name="configuration">Конфигурация, содержащая регистр</param>
-        /// <param name="register">Имя регистра, по которому необходимо выполнить агрегацию</param>
-        /// <param name="endDate">Дата, на которую проводить агрегацию</param>
-        /// <param name="dimensions">
-        /// Список измерений для агрегации. Если параметр не задан,
-        /// в качестве измерений будут взяты все свойства регистра, помеченные как Dimension
-        /// </param>
-        /// <param name="valueProperties">
-        /// Свойства, по которомым будут вычислены агрегирующие значения.
-        /// Если параметр не задан, в качестве значения будет взяты свойства регистра, помеченные как Value
-        /// </param>
-        /// <param name="valueAggregationTypes">Тип агрегации по значениям (сумма, среднее и тд)</param>
-        /// <param name="filter">Фильтр для отбора определенных значений из регистра</param>
-        /// <returns>Результат агрегации</returns>
-        IEnumerable<dynamic> GetValuesByDate(string configuration,
-                                             string register,
-                                             DateTime endDate,
-                                             IEnumerable<string> dimensions = null,
-                                             IEnumerable<string> valueProperties = null,
-                                             IEnumerable<AggregationType> valueAggregationTypes = null,
-                                             Action<FilterBuilder> filter = null);
+        dynamic CreateEntry(
+            string configuration,
+            string registerName,
+            string documentId,
+            DateTime? documentDate,
+            dynamic document,
+            bool isInfoRegister);
 
         /// <summary>
-        /// Получение результата агрегации по регистру в период между двумя датами
+        /// Выполняет проведение данных документа в регистр.
         /// </summary>
-        /// <param name="configuration">Конфигурация, содержащая регистр</param>
-        /// <param name="register">Имя регистра, по которому необходимо выполнить агрегацию</param>
-        /// <param name="startDate">Начальная дата агрегации</param>
-        /// <param name="endDate">Конечная дата агрегации</param>
-        /// <param name="dimensions">
-        /// Список измерений для агрегации. Если параметр не задан,
-        /// в качестве измерений будут взяты все свойства регистра, помеченные как Dimension
-        /// </param>
-        /// <param name="valueProperties">
-        /// Свойства, по которомым будут вычислены агрегирующие значения.
-        /// Если параметр не задан, в качестве значения будет взяты свойства регистра, помеченные как Value
-        /// </param>
-        /// <param name="valueAggregationTypes">Тип агрегации по значениям (сумма, среднее и тд)</param>
-        /// <param name="filter">Фильтр для отбора определенных значений из регистра</param>
-        /// <returns>Результат агрегации</returns>
-        IEnumerable<dynamic> GetValuesBetweenDates(string configuration,
-                                                   string register,
-                                                   DateTime startDate,
-                                                   DateTime endDate,
-                                                   IEnumerable<string> dimensions = null,
-                                                   IEnumerable<string> valueProperties = null,
-                                                   IEnumerable<AggregationType> valueAggregationTypes = null,
-                                                   Action<FilterBuilder> filter = null);
+        void PostEntries(
+            string configuration,
+            string registerName,
+            IEnumerable<object> registerEntries);
 
         /// <summary>
-        /// Получение 'сырых' данных из регистра
+        /// Выполняет перепроведение документов до указанной даты.
         /// </summary>
-        /// <param name="configuration">Конфигурация, содержащая регистр</param>
-        /// <param name="register">Имя регистра, по которому необходимо выполнить агрегацию</param>
-        /// <param name="filter">Фильтр для отбора определенных значений из регистра</param>
-        /// <param name="pageNumber">Номер страницы</param>
-        /// <param name="pageSize">Размер страницы</param>
-        /// <returns>Набор записей регистра</returns>
-        IEnumerable<dynamic> GetRegisterEntries(string configuration,
-                                                string register,
-                                                Action<FilterBuilder> filter,
-                                                int pageNumber,
-                                                int pageSize);
+        void RecarryingEntries(
+            string configuration,
+            string registerName,
+            DateTime aggregationDate,
+            bool deteleExistingRegisterEntries = true
+            );
+
+        /// <summary>
+        /// Рассчитывает итоги для регистров накопления на текущую дату.
+        /// </summary>
+        void RecalculateTotals(
+            string configuration,
+            string registerName);
+
+        /// <summary>
+        /// Удаляет запись регистра.
+        /// </summary>
+        void DeleteEntry(
+            string configuration,
+            string registerName,
+            string registar);
+
+        /// <summary>
+        /// Возвращает записи регистра.
+        /// </summary>
+        IEnumerable<object> GetEntries(
+            string configuration,
+            string registerName,
+            IEnumerable<FilterCriteria> filter,
+            int pageNumber,
+            int pageSize);
+
+        /// <summary>
+        /// Возвращает записи регистра.
+        /// </summary>
+        IEnumerable<object> GetValuesByDate(
+            string configuration,
+            string registerName,
+            DateTime aggregationDate,
+            IEnumerable<FilterCriteria> filter,
+            IEnumerable<string> dimensionsProperties,
+            IEnumerable<string> valueProperties,
+            IEnumerable<AggregationType> aggregationTypes);
+
+        /// <summary>
+        /// Возвращает значения ресурсов в указанном диапазоне дат для регистра.
+        /// </summary>
+        IEnumerable<object> GetValuesBetweenDates(
+            string configuration,
+            string registerName,
+            DateTime beginDate,
+            DateTime endDate,
+            IEnumerable<FilterCriteria> filter,
+            IEnumerable<string> dimensionsProperties = null,
+            IEnumerable<string> valueProperties = null,
+            IEnumerable<AggregationType> aggregationTypes = null);
+
+        /// <summary>
+        /// Возвращает значения ресурсов в указанном диапазоне дат c разбиением на периоды.
+        /// </summary>
+        IEnumerable<object> GetValuesByPeriods(
+            string configuration,
+            string registerName,
+            DateTime beginDate,
+            DateTime endDate,
+            string interval,
+            IEnumerable<FilterCriteria> filter,
+            IEnumerable<string> dimensionsProperties = null,
+            IEnumerable<string> valueProperties = null,
+            string timezone = null);
+
+        /// <summary>
+        /// Получение значений ресурсов по документу-регистратору.
+        /// </summary>
+        IEnumerable<object> GetValuesByRegistrar(
+            string configuration,
+            string registerName,
+            string registrar,
+            IEnumerable<string> dimensionsProperties = null,
+            IEnumerable<string> valueProperties = null);
+
+        /// <summary>
+        /// Получение значений ресурсов по типу документа-регистратора.
+        /// </summary>
+        IEnumerable<object> GetValuesByRegistrarType(
+            string configuration,
+            string registerName,
+            string registrar,
+            IEnumerable<string> dimensionsProperties = null,
+            IEnumerable<string> valueProperties = null);
+
+        /// <summary>
+        /// Получение значений из таблицы итогов на дату, ближайшую к заданной
+        /// </summary>
+        IEnumerable<object> GetTotals(
+            string configuration,
+            string registerName,
+            DateTime aggregationDate);
+
+        /// <summary>
+        /// Возвращает дату последнего подсчета итогов для регистра накоплений, ближайшей к заданной.
+        /// </summary>
+        DateTime? GetClosestDateTimeOfTotalCalculation(
+            string configuration,
+            string registerName,
+            DateTime aggregationDate);
     }
 }
