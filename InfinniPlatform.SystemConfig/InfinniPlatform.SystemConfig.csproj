@@ -179,10 +179,6 @@
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
       <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.WebApi\InfinniPlatform.WebApi.csproj">
-      <Project>{86AB4502-9B73-43B5-8A20-F01AADE0EDA4}</Project>
-      <Name>InfinniPlatform.WebApi</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Files\Config\App.config">

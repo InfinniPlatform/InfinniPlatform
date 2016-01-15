@@ -105,10 +105,6 @@
       <Project>{6EFC2069-AFEB-453D-AD2C-3E170486A4F1}</Project>
       <Name>InfinniPlatform.SystemConfig</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.WebApi\InfinniPlatform.WebApi.csproj">
-      <Project>{86AB4502-9B73-43B5-8A20-F01AADE0EDA4}</Project>
-      <Name>InfinniPlatform.WebApi</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
