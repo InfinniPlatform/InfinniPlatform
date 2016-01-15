@@ -9,7 +9,6 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 {
     [TestFixture]
     [Category(TestCategories.AcceptanceTest)]
-    [Ignore("TODO: InfinniPrintViewApi does not work!")]
     public sealed class ReportingBehavior
     {
         private const string ConfigurationId = "TestConfiguration";

@@ -1,7 +1,9 @@
-﻿namespace InfinniPlatform.Sdk.RestApi
+﻿using InfinniPlatform.Sdk.Dynamic;
+
+namespace InfinniPlatform.Sdk.RestApi
 {
     /// <summary>
-    /// API для аутентификации пользователей.
+    /// REST-клиент для AuthApi.
     /// </summary>
     public sealed class InfinniSignInApi : BaseApi
     {
@@ -15,9 +17,18 @@
         /// <param name="userName">Имя пользователя.</param>
         /// <param name="password">Пароль пользователя.</param>
         /// <param name="remember">Запомнить пользователя.</param>
-        public object SignInInternal(string userName, string password, bool remember = true)
+        public void SignInInternal(string userName, string password, bool remember = true)
         {
-            return RequestExecutor.QueryPost($"http://{Server}:{Port}/Auth/SignInInternal", new { UserName = userName, Password = password, Remember = remember });
+            var requestUri = BuildRequestUri("/Auth/SignInInternal");
+
+            var requestData = new DynamicWrapper
+                              {
+                                  ["UserName"] = userName,
+                                  ["Password"] = password,
+                                  ["Remember"] = remember
+                              };
+
+            RequestExecutor.PostObject(requestUri, requestData);
         }
 
         /// <summary>
@@ -25,17 +36,27 @@
         /// </summary>
         /// <param name="oldPassword">Старый пароль пользователя.</param>
         /// <param name="newPassword">Новый пароль пользователя.</param>
-        public object ChangePassword(string oldPassword, string newPassword)
+        public void ChangePassword(string oldPassword, string newPassword)
         {
-            return RequestExecutor.QueryPost($"http://{Server}:{Port}/Auth/ChangePassword", new { OldPassword = oldPassword, NewPassword = newPassword });
+            var requestUri = BuildRequestUri("/Auth/ChangePassword");
+
+            var requestData = new DynamicWrapper
+                              {
+                                  ["OldPassword"] = oldPassword,
+                                  ["NewPassword"] = newPassword
+                              };
+
+            RequestExecutor.PostObject(requestUri, requestData);
         }
 
         /// <summary>
         /// Осуществляет выход пользователя из системы.
         /// </summary>
-        public object SignOut()
+        public void SignOut()
         {
-            return RequestExecutor.QueryPost($"http://{Server}:{Port}/Auth/SignOut");
+            var requestUri = BuildRequestUri("/Auth/SignOut");
+
+            RequestExecutor.PostObject(requestUri);
         }
     }
 }

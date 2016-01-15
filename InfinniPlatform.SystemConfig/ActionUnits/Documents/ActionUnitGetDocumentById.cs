@@ -1,44 +1,27 @@
-﻿using System.Linq;
-
-using InfinniPlatform.Core.Index;
-using InfinniPlatform.Sdk.Contracts;
-using InfinniPlatform.SystemConfig.Utils;
+﻿using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Documents;
 
 namespace InfinniPlatform.SystemConfig.ActionUnits.Documents
 {
     /// <summary>
     /// Модуль для получения документа по указанному идентификатору
-    /// Особенность: при выполнении запроса по идентификатору НЕ выполняется проверка прав (неизвестен индекс и тип получаемого
-    /// документа)
     /// </summary>
     public sealed class ActionUnitGetDocumentById
     {
-        public ActionUnitGetDocumentById(IReferenceResolver referenceResolver,
-                                         IIndexFactory indexFactory)
+        public ActionUnitGetDocumentById(IDocumentApi documentApi)
         {
-            _referenceResolver = referenceResolver;
-            _indexFactory = indexFactory;
+            _documentApi = documentApi;
         }
 
-        private readonly IIndexFactory _indexFactory;
-        private readonly IReferenceResolver _referenceResolver;
+        private readonly IDocumentApi _documentApi;
 
         public void Action(IApplyContext target)
         {
-            var documentProvider = _indexFactory.BuildAllIndexesOperationProvider();
+            string configuration = target.Item.ConfigId;
+            string documentType = target.Item.DocumentId;
+            string documentId = target.Item.Id;
 
-            if (string.IsNullOrEmpty(target.Item.ConfigId) ||
-                string.IsNullOrEmpty(target.Item.DocumentId))
-            {
-                target.Result = documentProvider.GetItem(target.Item.Id);
-            }
-            else
-            {
-                var docsToResolve = new[] { documentProvider.GetItem(target.Item.Id) };
-                _referenceResolver.ResolveReferences(target.Item.ConfigId, target.Item.DocumentId, docsToResolve, null);
-
-                target.Result = docsToResolve.FirstOrDefault();
-            }
+            target.Result = _documentApi.GetDocumentById(configuration, documentType, documentId);
         }
     }
 }

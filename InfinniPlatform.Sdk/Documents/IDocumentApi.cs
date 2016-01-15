@@ -76,6 +76,15 @@ namespace InfinniPlatform.Sdk.Documents
         long GetNumberOfDocuments(string applicationId, string documentType, Action<FilterBuilder> filter);
 
         /// <summary>
+        /// Получить количество документов по указанному фильтру
+        /// </summary>
+        /// <param name="applicationId">Идентификатор приложения</param>
+        /// <param name="documentType">Идентификатор типа документа</param>
+        /// <param name="filter">Фильтр документов</param>
+        /// <returns>Количество документов</returns>
+        long GetNumberOfDocuments(string applicationId, string documentType, IEnumerable<FilterCriteria> filter);
+
+        /// <summary>
         /// Прикрепляет файл к свойству документа.
         /// </summary>
         void AttachFile(string configuration, string documentType, string documentId, string fileProperty, Stream fileStream);

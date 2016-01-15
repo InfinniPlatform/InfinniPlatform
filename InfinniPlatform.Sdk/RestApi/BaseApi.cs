@@ -16,7 +16,18 @@ namespace InfinniPlatform.Sdk.RestApi
             Port = port;
             Route = "0";
             RouteBuilder = new RouteBuilder(server, port, "0");
+
+            var baseUri = $"http://{server}";
+
+            if (port > 0)
+            {
+                baseUri += $":{port}";
+            }
+
+            _baseUri = baseUri;
         }
+
+        private readonly string _baseUri;
 
         /// <summary>
         /// Конструктор роутинга запросов API
@@ -44,7 +55,7 @@ namespace InfinniPlatform.Sdk.RestApi
         /// <param name="exceptionMessage">Сообщение в случае ошибки выполнения запроса</param>
         protected static dynamic ProcessAsObjectResult(RestQueryResponse response, string exceptionMessage)
         {
-            if (!string.IsNullOrEmpty(response.Content))
+            if (!String.IsNullOrEmpty(response.Content))
             {
                 return ProcessRequestResult(response, () => response.Content.ToDynamic(), () => Resources.ResultIsNotOfObjectType, () => exceptionMessage);
             }
@@ -61,7 +72,7 @@ namespace InfinniPlatform.Sdk.RestApi
             {
                 try
                 {
-                    if (!string.IsNullOrEmpty(response.Content))
+                    if (!String.IsNullOrEmpty(response.Content))
                     {
                         return processResultMethod();
                     }
@@ -73,6 +84,12 @@ namespace InfinniPlatform.Sdk.RestApi
             }
 
             throw new InvalidOperationException(getRequestExceptionMessage());
+        }
+
+
+        protected string BuildRequestUri(string path)
+        {
+            return $"{_baseUri}{path}";
         }
     }
 }

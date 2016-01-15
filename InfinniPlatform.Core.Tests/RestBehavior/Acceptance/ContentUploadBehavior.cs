@@ -59,8 +59,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             // When & Then
 
-            var uploadResult = fileApi.UploadFile(ConfigId, DocumentId, testDocument.Id, "ContentField", @"Authorization.zip", contentStream);
-            Assert.AreNotEqual(uploadResult.IsValid, false);
+            documentApi.AttachFile(ConfigId, DocumentId, testDocument.Id, "ContentField", contentStream);
 
             // When & Then
 
@@ -72,10 +71,14 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             // When & Then
 
-            var downloadResult = fileApi.DownloadFile(storedDocument.ContentField.Info.ContentId);
+            Stream downloadResult = fileApi.DownloadFile(storedDocument.ContentField.Info.ContentId);
             Assert.IsNotNull(downloadResult);
-            Assert.IsNotNull(downloadResult.Content);
-            Assert.AreEqual(Encoding.UTF8.GetString(contentBytes), downloadResult.Content);
+            Assert.AreEqual(Encoding.UTF8.GetString(contentBytes), ReadAsString(downloadResult));
+        }
+
+        private static string ReadAsString(Stream stream)
+        {
+            return new StreamReader(stream, Encoding.UTF8).ReadToEnd();
         }
     }
 }

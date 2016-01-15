@@ -116,6 +116,7 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
             IEnumerable<dynamic> registers = configuration.Registers;
             IEnumerable<dynamic> documents = configuration.Documents;
             IEnumerable<dynamic> scenarios = documents.SelectMany(i => (IEnumerable<dynamic>)i.Scenarios).ToArray();
+            IEnumerable<dynamic> processes = documents.SelectMany(i => (IEnumerable<dynamic>)i.Processes).ToArray();
             IEnumerable<dynamic> views = documents.SelectMany(i => (IEnumerable<dynamic>)i.Views).ToArray();
             IEnumerable<dynamic> printViews = documents.SelectMany(i => (IEnumerable<dynamic>)i.PrintViews).ToArray();
 
@@ -124,6 +125,7 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
                 registers,
                 documents,
                 scenarios,
+                processes,
                 views,
                 printViews);
         }

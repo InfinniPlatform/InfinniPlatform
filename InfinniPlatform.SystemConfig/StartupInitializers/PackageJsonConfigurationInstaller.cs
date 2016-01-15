@@ -17,23 +17,28 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
             IEnumerable<dynamic> registers,
             IEnumerable<dynamic> documents,
             IEnumerable<dynamic> scenario,
+            IEnumerable<dynamic> processes,
             IEnumerable<dynamic> views,
             IEnumerable<dynamic> printViews)
         {
-            _documents = documents;
             _menu = menu;
+            _registers = registers;
+            _documents = documents;
             _scenario = scenario;
+            _processes = processes;
             _views = views;
             _printViews = printViews;
-            _registers = registers;
         }
 
-        private readonly IEnumerable<dynamic> _documents;
+
         private readonly IEnumerable<dynamic> _menu;
-        private readonly IEnumerable<dynamic> _printViews;
         private readonly IEnumerable<dynamic> _registers;
+        private readonly IEnumerable<dynamic> _documents;
         private readonly IEnumerable<dynamic> _scenario;
+        private readonly IEnumerable<dynamic> _processes;
         private readonly IEnumerable<dynamic> _views;
+        private readonly IEnumerable<dynamic> _printViews;
+
 
         public void InstallConfiguration(IMetadataConfiguration metadataCacheManager)
         {
@@ -45,6 +50,7 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
                 RegisterSchema(metadataCacheManager, document);
 
                 RegisterDocumentMetadataItems(metadataCacheManager, documentId, _scenario, RegisterScenario);
+                RegisterDocumentMetadataItems(metadataCacheManager, documentId, _processes, (c, d, i) => c.RegisterProcess(d, i));
                 RegisterDocumentMetadataItems(metadataCacheManager, documentId, _views, (c, d, i) => c.RegisterView(d, i));
                 RegisterDocumentMetadataItems(metadataCacheManager, documentId, _printViews, (c, d, i) => c.RegisterPrintView(d, i));
             }

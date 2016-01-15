@@ -36,6 +36,11 @@ namespace InfinniPlatform.Core.RestApi.DataApi
             return GetNumberOfDocuments(applicationId, documentType, filter);
         }
 
+        long IDocumentApi.GetNumberOfDocuments(string applicationId, string documentType, IEnumerable<FilterCriteria> filter)
+        {
+            return _getDocumentExecutor.GetNumberOfDocuments(applicationId, documentType, filter);
+        }
+
         public IEnumerable<dynamic> GetDocuments(string configurationName, string documentType, IEnumerable<FilterCriteria> filter, int pageNumber, int pageSize, IEnumerable<SortingCriteria> sorting = null)
         {
             return _getDocumentExecutor.GetDocument(configurationName, documentType, filter, pageNumber, pageSize, null, sorting);
@@ -88,7 +93,7 @@ namespace InfinniPlatform.Core.RestApi.DataApi
         {
             // Получение документа
 
-            var document = GetDocumentById(configuration, documentType, documentId);
+            object document = GetDocumentById(configuration, documentType, documentId);
 
             // Получение свойства
 

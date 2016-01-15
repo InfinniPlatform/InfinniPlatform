@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
-using System.Threading;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Authentication.Properties;
@@ -19,12 +18,14 @@ namespace InfinniPlatform.Authentication.InternalIdentity
         private const int TaskTimeout = 60 * 1000;
 
 
-        public IdentityApplicationUserManager(UserManager<IdentityApplicationUser> userManager)
+        public IdentityApplicationUserManager(IUserIdentityProvider userIdentityProvider, UserManager<IdentityApplicationUser> userManager)
         {
+            _userIdentityProvider = userIdentityProvider;
             _userManager = userManager;
         }
 
 
+        private readonly IUserIdentityProvider _userIdentityProvider;
         private readonly UserManager<IdentityApplicationUser> _userManager;
 
 
@@ -358,7 +359,7 @@ namespace InfinniPlatform.Authentication.InternalIdentity
         }
 
 
-        private static void AddRolesToClaims(params string[] roles)
+        private void AddRolesToClaims(params string[] roles)
         {
             var currentIdentity = GetCurrentIdentity();
 
@@ -421,7 +422,7 @@ namespace InfinniPlatform.Authentication.InternalIdentity
         }
 
 
-        private static void RemoveRolesFromClaims(params string[] roles)
+        private void RemoveRolesFromClaims(params string[] roles)
         {
             var currentIdentity = GetCurrentIdentity();
             currentIdentity.RemoveClaims(ClaimTypes.Role, roles.Contains);
@@ -475,16 +476,16 @@ namespace InfinniPlatform.Authentication.InternalIdentity
         }
 
 
-        private static string GetCurrentUserId()
+        private string GetCurrentUserId()
         {
             var currentIdentity = GetCurrentIdentity();
             var currentUserId = currentIdentity.FindFirstClaim(ClaimTypes.NameIdentifier);
             return currentUserId;
         }
 
-        private static IIdentity GetCurrentIdentity()
+        private IIdentity GetCurrentIdentity()
         {
-            var currentIdentity = Thread.CurrentPrincipal?.Identity;
+            var currentIdentity = _userIdentityProvider.GetCurrentUserIdentity();
             var currentUserId = currentIdentity?.FindFirstClaim(ClaimTypes.NameIdentifier);
             var isNotAuthenticated = string.IsNullOrEmpty(currentUserId);
 

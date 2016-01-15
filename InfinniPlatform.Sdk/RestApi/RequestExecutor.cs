@@ -1,9 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
+
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Serialization;
+using InfinniPlatform.Sdk.Services;
 
 using Newtonsoft.Json;
 
@@ -31,6 +37,83 @@ namespace InfinniPlatform.Sdk.RestApi
         public static RequestExecutor Instance => _instance ?? (_instance = new RequestExecutor());
 
 
+        public Stream GetDownload(string uri)
+        {
+            var response = _client.GetAsync(uri).Result;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new InvalidOperationException(response.ReasonPhrase);
+            }
+
+            return response.Content.ReadAsStreamAsync().Result;
+        }
+
+        public Stream PostDownload(string uri, object content = null)
+        {
+            var jsonContent = CreateJsonContent(content);
+
+            var response = _client.PostAsync(uri, jsonContent).Result;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new InvalidOperationException(response.ReasonPhrase);
+            }
+
+            return response.Content.ReadAsStreamAsync().Result;
+        }
+
+        public object PostObject(string uri, object content = null)
+        {
+            var jsonContent = CreateJsonContent(content);
+
+            var response = _client.PostAsync(uri, jsonContent).Result;
+
+            var result = response.Content.ReadAsStringAsync().Result;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new InvalidOperationException(result);
+            }
+
+            return DeserializeObject(result);
+        }
+
+        public IEnumerable<object> PostArray(string uri, object content = null)
+        {
+            var jsonContent = CreateJsonContent(content);
+
+            var response = _client.PostAsync(uri, jsonContent).Result;
+
+            var result = response.Content.ReadAsStringAsync().Result;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new InvalidOperationException(result);
+            }
+
+            return DeserializeArray(result);
+        }
+
+        public void PostFile(string uri, string fileName, Stream fileContent)
+        {
+            var streamContent = new MultipartFormDataContent { { new StreamContent(fileContent), fileName, fileName } };
+
+            var response = _client.PostAsync(uri, streamContent).Result;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var result = response.Content.ReadAsStringAsync().Result;
+
+                throw new InvalidOperationException(result);
+            }
+        }
+
+
+
+
+
+
         public RestQueryResponse QueryGet(string url, string arguments = null)
         {
             var urlBuilder = new StringBuilder(url.Trim('/'));
@@ -52,7 +135,7 @@ namespace InfinniPlatform.Sdk.RestApi
 
         public RestQueryResponse QueryPost(string url, object body = null)
         {
-            var jsonRequestContent = CreateJsonHttpContent(body);
+            var jsonRequestContent = CreateJsonContent(body);
 
             var response = _client.PostAsync(url, jsonRequestContent).Result;
             var content = response.Content.ReadAsStringAsync().Result;
@@ -72,7 +155,7 @@ namespace InfinniPlatform.Sdk.RestApi
         /// <returns>Результат выполнения запроса</returns>
         public RestQueryResponse QueryPut(string url, object body = null)
         {
-            var jsonRequestContent = CreateJsonHttpContent(body);
+            var jsonRequestContent = CreateJsonContent(body);
 
             var response = _client.PutAsync(url, jsonRequestContent).Result;
             var content = response.Content.ReadAsStringAsync().Result;
@@ -139,7 +222,7 @@ namespace InfinniPlatform.Sdk.RestApi
 
         public RestQueryResponse QueryGetUrlEncodedData(string url, object formData)
         {
-            var formDataJson = SerializeObjectToJson(formData);
+            var formDataJson = SerializeObject(formData);
 
             var urlBuilder = new StringBuilder(url.Trim('/'));
             urlBuilder.Append($"/?Form={formDataJson}");
@@ -153,22 +236,26 @@ namespace InfinniPlatform.Sdk.RestApi
                    };
         }
 
-        private static StringContent CreateJsonHttpContent(object body)
+        private static StringContent CreateJsonContent(object body)
         {
-            var jsonRequestBody = body != null
-                ? SerializeObjectToJson(body)
-                : string.Empty;
+            var bodyString = SerializeObject(body);
 
-            var jsonRequestContent = new StringContent(jsonRequestBody, Encoding.UTF8, "application/json");
-
-            return jsonRequestContent;
+            return new StringContent(bodyString ?? string.Empty, Encoding.UTF8, HttpConstants.JsonContentType);
         }
 
-        private static string SerializeObjectToJson(object target)
+        private static string SerializeObject(object target)
         {
-            return target != null
-                ? JsonConvert.SerializeObject(target)
-                : null;
+            return JsonObjectSerializer.Default.ConvertToString(target);
+        }
+
+        private static object DeserializeObject(string value)
+        {
+            return JsonObjectSerializer.Default.Deserialize<DynamicWrapper>(value);
+        }
+
+        private static IEnumerable<object> DeserializeArray(string value)
+        {
+            return JsonObjectSerializer.Default.Deserialize<DynamicWrapper[]>(value);
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System.Security.Claims;
 using System.Security.Principal;
-using System.Threading;
 
 using InfinniPlatform.Core.Security;
+using InfinniPlatform.Sdk.Security;
 using InfinniPlatform.Sdk.Session;
 
 namespace InfinniPlatform.Core.Transactions
@@ -17,13 +17,15 @@ namespace InfinniPlatform.Core.Transactions
         private const string DefaultTenantId = "defaulttenantid";
 
 
-        public TenantProvider(ISessionManager sessionManager)
+        public TenantProvider(ISessionManager sessionManager, IUserIdentityProvider userIdentityProvider)
         {
             _sessionManager = sessionManager;
+            _userIdentityProvider = userIdentityProvider;
         }
 
 
         private readonly ISessionManager _sessionManager;
+        private readonly IUserIdentityProvider _userIdentityProvider;
 
 
         public string GetTenantId()
@@ -61,9 +63,9 @@ namespace InfinniPlatform.Core.Transactions
         }
 
 
-        private static IIdentity GetCurrentIdentity()
+        private IIdentity GetCurrentIdentity()
         {
-            var currentIdentity = Thread.CurrentPrincipal?.Identity;
+            var currentIdentity = _userIdentityProvider.GetCurrentUserIdentity();
             var currentUserId = currentIdentity?.FindFirstClaim(ClaimTypes.NameIdentifier);
             var isNotAuthenticated = string.IsNullOrEmpty(currentUserId);
             return isNotAuthenticated ? null : currentIdentity;

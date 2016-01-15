@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 using InfinniPlatform.Sdk.Documents;
+using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.SystemConfig.RequestHandlers
@@ -16,7 +18,21 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
 
         protected override object ActionResult(IHttpRequest request)
         {
-            dynamic linkedData = request.Query.LinkedData;
+            string linkedDataString = request.Query.LinkedData;
+
+            dynamic linkedData = null;
+
+            if (!string.IsNullOrWhiteSpace(linkedDataString))
+            {
+                linkedDataString = Uri.UnescapeDataString(linkedDataString);
+                linkedData = JsonObjectSerializer.Default.Deserialize(linkedDataString);
+            }
+
+            if (linkedData == null)
+            {
+                throw new ArgumentException(@"LinkedData");
+            }
+
             string configuration = linkedData.Configuration;
             string documentType = linkedData.Metadata;
             string documentId = linkedData.DocumentId;

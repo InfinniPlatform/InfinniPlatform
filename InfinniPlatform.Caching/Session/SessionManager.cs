@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Security.Claims;
-using System.Threading;
 
 using InfinniPlatform.Caching.Properties;
 using InfinniPlatform.Core.Security;
+using InfinniPlatform.Sdk.Security;
 using InfinniPlatform.Sdk.Session;
 
 namespace InfinniPlatform.Caching.Session
 {
     internal sealed class SessionManager : ISessionManager
     {
-        public SessionManager(ICache cache)
+        public SessionManager(ICache cache, IUserIdentityProvider userIdentityProvider)
         {
             _cache = cache;
+            _userIdentityProvider = userIdentityProvider;
         }
 
 
         private readonly ICache _cache;
+        private readonly IUserIdentityProvider _userIdentityProvider;
 
 
         public void SetSessionData(string key, string value)
@@ -50,16 +52,16 @@ namespace InfinniPlatform.Caching.Session
             return _cache.Get(sessionKey);
         }
 
-        private static string GetSessionKey(string key)
+        private string GetSessionKey(string key)
         {
             var userId = GetCurrentUserId();
 
             return $"{userId}{key}";
         }
 
-        private static string GetCurrentUserId()
+        private string GetCurrentUserId()
         {
-            var currentIdentity = Thread.CurrentPrincipal?.Identity;
+            var currentIdentity = _userIdentityProvider.GetCurrentUserIdentity();
             var currentUserId = currentIdentity?.FindFirstClaim(ClaimTypes.NameIdentifier);
             var isNotAuthenticated = string.IsNullOrEmpty(currentUserId);
 

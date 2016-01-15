@@ -40,6 +40,6 @@ namespace InfinniPlatform.Sdk.Services
         /// <summary>
         /// Постобработчик запросов.
         /// </summary>
-        Action<IHttpRequest, IHttpResponse> OnAfter { get; set; }
+        Action<IHttpRequest, IHttpResponse, Exception> OnAfter { get; set; }
     }
 }

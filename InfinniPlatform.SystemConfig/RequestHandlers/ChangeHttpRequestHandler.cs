@@ -35,7 +35,6 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
 
             _action(context);
 
-
             if (!context.IsValid)
             {
                 return RequestHandlerHelper.BadRequest((string)context.ValidationMessage);

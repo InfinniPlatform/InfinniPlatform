@@ -12,26 +12,26 @@ namespace InfinniPlatform.WebApi.IoC
     {
         public void Load(IContainerBuilder builder)
         {
-            // Модули обработки прикладных запросов
+            //// Модули обработки прикладных запросов
 
-            builder.RegisterType<ApplicationSdkOwinHostingModule>()
-                   .As<IOwinHostingModule>()
-                   .SingleInstance();
+            //builder.RegisterType<ApplicationSdkOwinHostingModule>()
+            //       .As<IOwinHostingModule>()
+            //       .SingleInstance();
 
-            builder.RegisterType<ApplicationSdkOwinMiddleware>()
-                   .AsSelf()
-                   .SingleInstance();
+            //builder.RegisterType<ApplicationSdkOwinMiddleware>()
+            //       .AsSelf()
+            //       .SingleInstance();
 
-            // Обработчики для ApplicationSdkOwinMiddleware
+            //// Обработчики для ApplicationSdkOwinMiddleware
 
-            builder.RegisterType<GetDocumentByIdHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
-            builder.RegisterType<GetDocumentHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
-            builder.RegisterType<GetDocumentCountHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
-            builder.RegisterType<SetDocumentHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
-            builder.RegisterType<SetDocumentsHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
-            builder.RegisterType<DeleteDocumentHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
-            builder.RegisterType<AddUserClaimHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
-            builder.RegisterType<GetUserClaimHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
+            //builder.RegisterType<GetDocumentByIdHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
+            //builder.RegisterType<GetDocumentHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
+            //builder.RegisterType<GetDocumentCountHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
+            //builder.RegisterType<SetDocumentHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
+            //builder.RegisterType<SetDocumentsHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
+            //builder.RegisterType<DeleteDocumentHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
+            //builder.RegisterType<AddUserClaimHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
+            //builder.RegisterType<GetUserClaimHandlerRegistration>().As<IHandlerRegistration>().SingleInstance();
         }
     }
 }

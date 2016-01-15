@@ -22,6 +22,8 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Documents
 
             var result = _setDocumentExecutor.SaveDocuments(configuration, documentType, documents);
 
+            target.IsValid = result.IsValid;
+            target.ValidationMessage = result.ValidationMessage;
             target.Result = result;
         }
     }

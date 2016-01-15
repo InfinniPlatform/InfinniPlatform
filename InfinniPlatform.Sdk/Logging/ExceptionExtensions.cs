@@ -34,12 +34,19 @@ namespace InfinniPlatform.Sdk.Logging
 
             var aggregateException = exception as AggregateException;
 
-            if (aggregateException?.InnerExceptions != null && aggregateException.InnerExceptions.Count > 0)
+            if (aggregateException != null)
             {
-                foreach (var innerException in aggregateException.InnerExceptions)
+                if (aggregateException.InnerExceptions != null && aggregateException.InnerExceptions.Count > 0)
                 {
-                    GetMessage(innerException, message);
+                    foreach (var innerException in aggregateException.InnerExceptions)
+                    {
+                        GetMessage(innerException, message);
+                    }
                 }
+            }
+            else if (exception.InnerException != null)
+            {
+                GetMessage(exception.InnerException, message);
             }
         }
     }

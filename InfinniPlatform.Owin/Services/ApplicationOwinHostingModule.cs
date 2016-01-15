@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
 using InfinniPlatform.Owin.Modules;
+using InfinniPlatform.Sdk.Security;
 using InfinniPlatform.Sdk.Services;
 
 using Nancy;
@@ -14,8 +15,9 @@ namespace InfinniPlatform.Owin.Services
     /// </summary>
     public sealed class ApplicationOwinHostingModule : IOwinHostingModule
     {
-        public ApplicationOwinHostingModule(IEnumerable<IHttpService> httpModules)
+        public ApplicationOwinHostingModule(IUserIdentityProvider userIdentityProvider,IEnumerable<IHttpService> httpModules)
         {
+            ApplicationNancyModule.UserIdentityProvider = userIdentityProvider;
             ApplicationNancyModule.HttpModules = httpModules;
         }
 
@@ -31,6 +33,8 @@ namespace InfinniPlatform.Owin.Services
 
         public sealed class ApplicationNancyModule : NancyModule
         {
+            public static IUserIdentityProvider UserIdentityProvider { get; set; }
+
             public static IEnumerable<IHttpService> HttpModules { get; set; }
 
 
@@ -40,7 +44,7 @@ namespace InfinniPlatform.Owin.Services
 
                 if (httpModules != null)
                 {
-                    var httpModuleBuilder = new HttpServiceBuilder(this);
+                    var httpModuleBuilder = new HttpServiceBuilder(this, UserIdentityProvider.GetCurrentUserIdentity);
 
                     foreach (var httpModule in httpModules)
                     {

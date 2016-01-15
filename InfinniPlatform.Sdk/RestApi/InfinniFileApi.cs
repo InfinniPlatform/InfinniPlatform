@@ -1,51 +1,31 @@
-﻿using System.IO;
+﻿using System;
 
-using InfinniPlatform.Sdk.Properties;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.Sdk.RestApi
 {
     /// <summary>
-    /// API для работы с файлами
+    /// REST-клиент для BlobStorageApi.
     /// </summary>
-    public sealed class InfinniFileApi : BaseApi //, IFileApi
+    public sealed class InfinniFileApi : BaseApi
     {
         public InfinniFileApi(string server, int port) : base(server, port)
         {
         }
 
-        /// <summary>
-        /// Загрузить файл на сервер
-        /// </summary>
-        /// <param name="application">Приложение</param>
-        /// <param name="documentType">Идентификатор документа</param>
-        /// <param name="documentId"></param>
-        /// <param name="fieldName">Наименование поля в документе, хранящее ссылку на файл</param>
-        /// <param name="fileName">Наименование файла</param>
-        /// <param name="fileStream">Файловый поток</param>
-        /// <returns>Результат загрузки файла на сервер</returns>
-        public dynamic UploadFile(string application, string documentType, string documentId, string fieldName, string fileName, Stream fileStream)
-        {
-            var response = RequestExecutor.QueryPostFile(RouteBuilder.BuildRestRoutingUploadFile(), application, documentType, documentId, fieldName, fileName, fileStream);
-
-            return ProcessAsObjectResult(response, string.Format(Resources.UnableToUploadFileOnServer, response));
-        }
-
-        /// <summary>
-        /// Загрузить файл с сервера
-        /// </summary>
-        /// <param name="contentId"></param>
-        /// <returns>Выгруженный контент</returns>
         public dynamic DownloadFile(string contentId)
         {
-            var linkedData = new
-                             {
-                                 ContentId = contentId
-                             };
+            var requestUri = BuildRequestUri("/SystemConfig/UrlEncodedData/configuration/DownloadBinaryContent");
 
-            var response = RequestExecutor.QueryGetUrlEncodedData(
-                                                                  RouteBuilder.BuildRestRoutingDownloadFile(), linkedData);
+            var requestData = new DynamicWrapper
+                              {
+                                  ["ContentId"] = contentId
+                              };
 
-            return ProcessAsObjectResult(response, string.Format(Resources.UnableToDownloadFileFromServer, response));
+            var pathArguments = $"/?Form={Uri.EscapeDataString(JsonObjectSerializer.Default.ConvertToString(requestData))}";
+
+            return RequestExecutor.GetDownload(requestUri + pathArguments);
         }
     }
 }

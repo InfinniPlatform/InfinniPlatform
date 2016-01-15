@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Security.Principal;
 
 namespace InfinniPlatform.Sdk.Services
 {
@@ -47,5 +48,10 @@ namespace InfinniPlatform.Sdk.Services
         /// Содержимое тела запроса.
         /// </summary>
         Stream Content { get; }
+
+        /// <summary>
+        /// Пользователь запроса.
+        /// </summary>
+        IIdentity User { get; }
     }
 }

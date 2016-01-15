@@ -1,53 +1,32 @@
-﻿using System.Collections.Generic;
-
-using InfinniPlatform.Core.Index;
-using InfinniPlatform.Core.Metadata;
-using InfinniPlatform.Sdk.Contracts;
+﻿using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.SystemConfig.ActionUnits.Documents
 {
     public sealed class ActionUnitGetNumberOfDocuments
     {
-        public ActionUnitGetNumberOfDocuments(IConfigurationObjectBuilder configurationObjectBuilder,
-                                              IMetadataComponent metadataComponent,
-                                              IVersionProvider versionProvider)
+        public ActionUnitGetNumberOfDocuments(IDocumentApi documentApi)
         {
-            _configurationObjectBuilder = configurationObjectBuilder;
-            _metadataComponent = metadataComponent;
-            _versionProvider = versionProvider;
+            _documentApi = documentApi;
         }
 
-        private readonly IConfigurationObjectBuilder _configurationObjectBuilder;
-        private readonly IMetadataComponent _metadataComponent;
-        private readonly IVersionProvider _versionProvider;
+        private readonly IDocumentApi _documentApi;
 
         public void Action(IApplyContext target)
         {
-            dynamic returnResult = new DynamicWrapper();
-            returnResult.NumberOfDocuments = 0;
-            returnResult.IsValid = true;
+            string configuration = target.Item.Configuration;
+            string documentType = target.Item.Metadata;
+            object filter = target.Item.Filter;
 
-            string configId = target.Item.Configuration;
-            string documentId = target.Item.Metadata;
-            IEnumerable<FilterCriteria> filter = target.Item.Filter;
+            var filterCriterias = JsonObjectSerializer.Default.ConvertFromDynamic<FilterCriteria[]>(filter);
 
-            var metadataConfiguration = _configurationObjectBuilder.GetConfigurationObject(configId).MetadataConfiguration;
+            var numberOfDocuments = _documentApi.GetNumberOfDocuments(configuration, documentType, filterCriterias);
 
-            if (metadataConfiguration == null)
-            {
-                target.Result = returnResult;
-                return;
-            }
-
-            var schema = metadataConfiguration.GetSchemaVersion(documentId);
-
-            var queryAnalyzer = new QueryCriteriaAnalyzer(_metadataComponent, schema);
-
-            returnResult.NumberOfDocuments = _versionProvider.GetNumberOfDocuments(queryAnalyzer.GetBeforeResolveCriteriaList(filter));
-
-            target.Result = returnResult;
+            target.Result = new DynamicWrapper();
+            target.Result.IsValid = true;
+            target.Result.NumberOfDocuments = numberOfDocuments;
         }
     }
 }

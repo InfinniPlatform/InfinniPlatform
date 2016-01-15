@@ -4,299 +4,169 @@ using System.IO;
 
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Properties;
-
-using Newtonsoft.Json.Linq;
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.Sdk.RestApi
 {
     /// <summary>
-    /// API для работы с документами
+    /// REST-клиент для DocumentApi.
     /// </summary>
-    public class InfinniDocumentApi : BaseApi, IDocumentApi
+    public sealed class InfinniDocumentApi : BaseApi
     {
         public InfinniDocumentApi(string server, int port) : base(server, port)
         {
         }
 
-        /// <summary>
-        /// Создать клиентскую сессию
-        /// </summary>
-        /// <returns>Клиентская сессия</returns>
-        public dynamic CreateSession()
+        public dynamic GetDocumentById(string configuration, string documentType, string instanceId)
         {
-            var response = RequestExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlDefaultSession());
+            var requestUri = BuildRequestUri("/SystemConfig/StandardApi/configuration/GetDocumentById");
 
-            return ProcessAsObjectResult(response, string.Format(Resources.UnableToCreateNewSession, response));
+            var requestData = new DynamicWrapper
+                              {
+                                  ["changesObject"] = new DynamicWrapper
+                                                      {
+                                                          ["ConfigId"] = configuration,
+                                                          ["DocumentId"] = documentType,
+                                                          ["Id"] = instanceId
+                                                      }
+                              };
+
+            return RequestExecutor.PostObject(requestUri, requestData);
         }
 
-        /// <summary>
-        /// Присоединить документ к указанной сессии
-        /// </summary>
-        /// <param name="session">Идентификатор сессии</param>
-        /// <param name="application">Идентификатор приложения</param>
-        /// <param name="documentType">Идентификатор документа</param>
-        /// <param name="instanceId">Идентификатор экземпляра документа</param>
-        /// <param name="document">Экземпляр документа</param>
-        public dynamic Attach(string session, string application, string documentType, string instanceId, dynamic document)
+        public IEnumerable<dynamic> GetDocument(string configuration, string documentType, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting = null)
         {
-            dynamic changesObject = JObject.FromObject(new
+            IEnumerable<FilterCriteria> filterCriterias = null;
+
+            if (filter != null)
             {
-                Application = application,
-                DocumentType = documentType,
-                Document = document
-            });
+                var filterBuilder = new FilterBuilder();
+                filter(filterBuilder);
 
-            changesObject.Document.Id = instanceId;
-
-            var response = RequestExecutor.QueryPut(RouteBuilder.BuildRestRoutingUrlDefaultSessionById(session), changesObject);
-
-            return ProcessAsObjectResult(response, string.Format(Resources.UnableToAttachDocumentToSession, response));
-        }
-
-        /// <summary>
-        /// Присоединить к сессии файл, возвращая идентификатор ссылки
-        /// </summary>
-        /// <param name="session">Идентификатор сессии</param>
-        /// <param name="instanceId">Идентификатор документа</param>
-        /// <param name="fieldName">Наименование поля для присоединения</param>
-        /// <param name="fileName">Наименование файла</param>
-        /// <param name="fileStream">Файловый поток</param>
-        public void AttachFile(string session, string application, string documentType, string instanceId, string fieldName, string fileName, Stream fileStream)
-        {
-            var response = RequestExecutor.QueryPostFile(RouteBuilder.BuildRestRoutingUrlDefaultSession(), application, documentType, instanceId, fieldName, fileName, fileStream, session);
-
-            ProcessAsObjectResult(response, string.Format(Resources.UnableToAttachFileToSession, response));
-        }
-
-        /// <summary>
-        /// Отсоединить от сессии указанный файл
-        /// </summary>
-        /// <param name="session">Идентификатор сессии</param>
-        /// <param name="instanceId">Идентификатор документа</param>
-        /// <param name="fieldName">Наименование поля для присоединения</param>
-        public void DetachFile(string session, string instanceId, string fieldName)
-        {
-            dynamic body = new
-            {
-                InstanceId = instanceId,
-                FieldName = fieldName,
-                SessionId = session
-            };
-
-            var response = RequestExecutor.QueryDelete(RouteBuilder.BuildRestRoutingUrlDefaultSession(), body);
-
-            ProcessAsObjectResult(response, string.Format(Resources.UnableToDetachFileFromSession, response));
-        }
-
-        /// <summary>
-        /// Отсоединить документ от указанной сессии
-        /// </summary>
-        /// <param name="session">Идентификатор сессии</param>
-        /// <param name="instanceId">Идентификатор отсоединяемого документа</param>
-        public dynamic Detach(string session, string instanceId)
-        {
-            if (string.IsNullOrEmpty(instanceId))
-            {
-                throw new ArgumentException(Resources.DocumentToDetachShouldntBeEmpty);
+                filterCriterias = filterBuilder.CriteriaList;
             }
 
-            var response = RequestExecutor.QueryDelete(RouteBuilder.BuildRestRoutingUrlDetachDocument(session, instanceId));
+            IEnumerable<SortingCriteria> sortingCriterias = null;
 
-            return ProcessAsObjectResult(response, string.Format(Resources.UnableToDetachDocument, response));
+            if (sorting != null)
+            {
+                var sortingBuilder = new SortingBuilder();
+                sorting(sortingBuilder);
+
+                sortingCriterias = sortingBuilder.SortingList;
+            }
+
+            return GetDocuments(configuration, documentType, filterCriterias, pageNumber, pageSize, sortingCriterias);
         }
 
-        /// <summary>
-        /// Удалить клиентскую сессию
-        /// </summary>
-        /// <param name="sessionId">Идентификатор сессии</param>
-        /// <returns>Результат удаления сессии</returns>
-        public dynamic RemoveSession(string sessionId)
+        public IEnumerable<dynamic> GetDocuments(string configuration, string documentType, IEnumerable<FilterCriteria> filter, int pageNumber, int pageSize, IEnumerable<SortingCriteria> sorting = null)
         {
-            var response = RequestExecutor.QueryDelete(RouteBuilder.BuildRestRoutingUrlDefaultSessionById(sessionId));
+            var requestUri = BuildRequestUri("/SystemConfig/StandardApi/configuration/GetDocument");
 
-            return ProcessAsObjectResult(response, string.Format(Resources.UnableToRemoveSession, response));
+            var requestData = new DynamicWrapper
+                              {
+                                  ["changesObject"] = new DynamicWrapper
+                                                      {
+                                                          ["Configuration"] = configuration,
+                                                          ["Metadata"] = documentType,
+                                                          ["Filter"] = filter,
+                                                          ["PageNumber"] = pageNumber,
+                                                          ["PageSize"] = pageSize,
+                                                          ["Sorting"] = sorting
+                                                      }
+                              };
+
+            return RequestExecutor.PostArray(requestUri, requestData);
         }
 
-        /// <summary>
-        /// Получить список документов сессии
-        /// </summary>
-        /// <param name="sessionId">Идентификатор клиентской сессии</param>
-        /// <returns>Объект сессии</returns>
-        public dynamic GetSession(string sessionId)
+        public dynamic SetDocument(string configuration, string documentType, object document)
         {
-            var response = RequestExecutor.QueryGetById(RouteBuilder.BuildRestRoutingUrlDefaultSessionById(sessionId));
-
-            return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetSession, response));
+            return SetDocuments(configuration, documentType, new[] { document });
         }
 
-        /// <summary>
-        /// Выполнить фиксацию клиентской сессии
-        /// </summary>
-        /// <param name="sessionId">Идентификатор клиентской сессии</param>
-        /// <returns>Список результатов фиксации клиентской сессии</returns>
-        public dynamic SaveSession(string sessionId)
+        public dynamic SetDocuments(string configuration, string documentType, IEnumerable<object> documents)
         {
-            var response = RequestExecutor.QueryPost(RouteBuilder.BuildRestRoutingUrlDefaultSessionById(sessionId));
+            var requestUri = BuildRequestUri("/SystemConfig/StandardApi/configuration/SetDocument");
 
-            return ProcessAsObjectResult(response, string.Format(Resources.UnableToCommitException, response));
+            var requestData = new DynamicWrapper
+                              {
+                                  ["changesObject"] = new DynamicWrapper
+                                                      {
+                                                          ["Configuration"] = configuration,
+                                                          ["Metadata"] = documentType,
+                                                          ["Documents"] = documents
+                                                      }
+                              };
+
+            return RequestExecutor.PostObject(requestUri, requestData);
         }
 
-        /// <summary>
-        /// Получить документ по указанному идентификатору
-        /// </summary>
-        /// <param name="applicationId">Идентификатор приложения</param>
-        /// <param name="documentType">Тип документа</param>
-        /// <param name="instanceId">Идентификатор документа</param>
-        /// <returns>Документ с указанным идентификатором</returns>
-        public dynamic GetDocumentById(string applicationId, string documentType, string instanceId)
+        public dynamic DeleteDocument(string configuration, string documentType, string instanceId)
         {
-            var response = RequestExecutor.QueryGetById(RouteBuilder.BuildRestRoutingUrlDefaultById(applicationId, documentType, instanceId));
+            var requestUri = BuildRequestUri("/SystemConfig/StandardApi/configuration/DeleteDocument");
 
-            return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetDocument, response));
+            var requestData = new DynamicWrapper
+                              {
+                                  ["changesObject"] = new DynamicWrapper
+                                                      {
+                                                          ["Configuration"] = configuration,
+                                                          ["Metadata"] = documentType,
+                                                          ["Id"] = instanceId
+                                                      }
+                              };
+
+            return RequestExecutor.PostObject(requestUri, requestData);
         }
 
-        /// <summary>
-        /// Получить документы по указанным фильтрам
-        /// </summary>
-        /// <param name="applicationId">Идентификатор приложения</param>
-        /// <param name="documentType">Тип документа</param>
-        /// <param name="filter">Выражение для фильтрации документов</param>
-        /// <param name="pageNumber">Номер страницы</param>
-        /// <param name="pageSize">Размер страницы</param>
-        /// <param name="sorting">Выражение для сортировки документов</param>
-        /// <returns>Список документов, удовлетворяющих указанному фильтру</returns>
-        public IEnumerable<dynamic> GetDocument(string applicationId, string documentType, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting = null)
+        public long GetNumberOfDocuments(string configuration, string documentType, Action<FilterBuilder> filter)
         {
+            IEnumerable<FilterCriteria> filterCriterias = null;
 
-            var filterBuilder = new FilterBuilder();
-            filter?.Invoke(filterBuilder);
+            if (filter != null)
+            {
+                var filterBuilder = new FilterBuilder();
+                filter(filterBuilder);
 
-            var sortingBuilder = new SortingBuilder();
-            sorting?.Invoke(sortingBuilder);
+                filterCriterias = filterBuilder.CriteriaList;
+            }
 
-            return GetDocuments(applicationId, documentType, filterBuilder.CriteriaList, pageNumber, pageSize, sortingBuilder.SortingList);
+            return GetNumberOfDocuments(configuration, documentType, filterCriterias);
         }
 
-        public IEnumerable<dynamic> GetDocuments(string applicationId, string documentType, IEnumerable<FilterCriteria> filter, int pageNumber, int pageSize, IEnumerable<SortingCriteria> sorting = null)
+        public long GetNumberOfDocuments(string configuration, string documentType, IEnumerable<FilterCriteria> filter)
         {
-            var routeBuilder = new RouteBuilder(Server, Port, Route);
-            var queryString = RequestExecutorExtensions.CreateQueryString(filter, pageNumber, pageSize, sorting);
-            var response = RequestExecutor.QueryGet(routeBuilder.BuildRestRoutingUrlDefault(applicationId, documentType), queryString);
-            return ProcessAsObjectResult(response, string.Format(Resources.UnableToGetDocument, response));
-        }
+            var requestUri = BuildRequestUri("/SystemConfig/StandardApi/configuration/GetNumberOfDocuments");
 
-        public long GetNumberOfDocuments(string applicationId, string documentType, Action<FilterBuilder> filter)
-        {
-            var routeBuilder = new RouteBuilder(Server, Port, Route);
+            var requestData = new DynamicWrapper
+                              {
+                                  ["changesObject"] = new DynamicWrapper
+                                                      {
+                                                          ["Configuration"] = configuration,
+                                                          ["Metadata"] = documentType,
+                                                          ["Filter"] = filter
+                                                      }
+                              };
 
-            var filterBuilder = new FilterBuilder();
-            filter?.Invoke(filterBuilder);
+            dynamic result = RequestExecutor.PostObject(requestUri, requestData);
 
-            var buildRestRoutingUrlDefaultCount = routeBuilder.BuildRestRoutingUrlDefaultCount(applicationId, documentType);
-            var queryStringCount = RequestExecutorExtensions.CreateQueryStringCount(filterBuilder.CriteriaList);
-
-            var response = RequestExecutor.QueryGet(buildRestRoutingUrlDefaultCount, queryStringCount);
-
-            return ProcessAsObjectResult(response,
-                                         string.Format(Resources.UnableToGetDocument, response));
+            return result?.NumberOfDocuments;
         }
 
         public void AttachFile(string configuration, string documentType, string documentId, string fileProperty, Stream fileStream)
         {
-            throw new NotImplementedException();
-        }
+            var requestUri = BuildRequestUri("/SystemConfig/Upload/configuration/UploadBinaryContent");
 
-        /// <summary>
-        /// Вставить или полностью заменить существующий документ
-        /// </summary>
-        /// <param name="applicationId">Идентификатор приложения</param>
-        /// <param name="documentType">Тип документа</param>
-        /// <param name="document">Экземпляр сохраняемого документа</param>
-        /// <returns>Идентификатор сохраненного документа</returns>
-        public dynamic SetDocument(string applicationId, string documentType, object document)
-        {
-            var routeBuilder = new RouteBuilder(Server, Port, Route);
+            var requestData = new DynamicWrapper
+                              {
+                                  ["Configuration"] = configuration,
+                                  ["Metadata"] = documentType,
+                                  ["DocumentId"] = documentId,
+                                  ["FieldName"] = fileProperty
+                              };
 
-            document = document.ToDynamic();
+            var pathArguments = $"/?linkedData={Uri.EscapeDataString(JsonObjectSerializer.Default.ConvertToString(requestData))}";
 
-            var documentId = PrepareDocumentIdentifier(document);
-
-            var response = RequestExecutor.QueryPut(routeBuilder.BuildRestRoutingUrlDefaultById(applicationId, documentType, documentId), document);
-
-            return ProcessAsObjectResult(response, string.Format(Resources.UnableToSetDocument, response));
-        }
-
-        /// <summary>
-        /// Вставить или полностью заменить документы в переданном списке
-        /// </summary>
-        /// <param name="applicationId">Идентификатор приложения</param>
-        /// <param name="documentType">Тип документа</param>
-        /// <param name="documents">Список сохраняемых документов</param>
-        /// <returns>Идентификатор сохраненного документа</returns>
-        public dynamic SetDocuments(string applicationId, string documentType, IEnumerable<object> documents)
-        {
-            var routeBuilder = new RouteBuilder(Server, Port, Route);
-
-            var response = RequestExecutor.QueryPut(routeBuilder.BuildRestRoutingUrlDefault(applicationId, documentType), new { Documents = documents });
-
-            return ProcessAsObjectResult(response, string.Format(Resources.UnableToSetDocument, response));
-        }
-
-        /// <summary>
-        /// Внести частичные изменения в документ
-        /// </summary>
-        /// <param name="applicationId">Идентификатор приложения</param>
-        /// <param name="documentType">Тип документа</param>
-        /// <param name="instanceId">Идентификатор изменяемого документа</param>
-        /// <param name="changesObject">Объект, содержащий изменения</param>
-        public void UpdateDocument(string applicationId, string documentType, string instanceId, object changesObject)
-        {
-            var routeBuilder = new RouteBuilder(Server, Port, Route);
-
-            var parameters = new
-            {
-                Id = instanceId,
-                ChangesObject = changesObject
-            };
-
-            var response = RequestExecutor.QueryPost(
-                                                     routeBuilder.BuildRestRoutingUrlDefaultById(applicationId, documentType, instanceId),
-                                                     parameters);
-
-            ProcessAsObjectResult(response, string.Format(Resources.UnableToUpdateDocument, response));
-        }
-
-        /// <summary>
-        /// Удалить документ
-        /// </summary>
-        /// <param name="applicationId">Идентификатор приложения</param>
-        /// <param name="documentType">Идентификатор типа документа</param>
-        /// <param name="instanceId">Идентификатор экземпляра документа</param>
-        /// <returns>Результат удаления документа</returns>
-        public dynamic DeleteDocument(string applicationId, string documentType, string instanceId)
-        {
-            var routeBuilder = new RouteBuilder(Server, Port, Route);
-
-            var response = RequestExecutor.QueryDelete(
-                                                       routeBuilder.BuildRestRoutingUrlDefaultById(applicationId, documentType, instanceId));
-
-            return ProcessAsObjectResult(response,
-                                         string.Format(Resources.UnableToDeleteDocument, response));
-        }
-
-        private static string PrepareDocumentIdentifier(dynamic document)
-        {
-            object instanceId = document.Id;
-
-            if (instanceId == null)
-            {
-                instanceId = Guid.NewGuid();
-
-                document.Id = instanceId;
-            }
-
-            return instanceId.ToString();
+            RequestExecutor.PostFile(requestUri + pathArguments, fileProperty, fileStream);
         }
     }
 }

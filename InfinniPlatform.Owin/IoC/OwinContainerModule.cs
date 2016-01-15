@@ -1,7 +1,9 @@
 ﻿using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.Owin.Modules;
+using InfinniPlatform.Owin.Security;
 using InfinniPlatform.Owin.Services;
 using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Sdk.Security;
 
 namespace InfinniPlatform.Owin.IoC
 {
@@ -9,6 +11,11 @@ namespace InfinniPlatform.Owin.IoC
     {
         public void Load(IContainerBuilder builder)
         {
+            // Сервис получения идентификационных данных текущего пользователя
+            builder.RegisterType<OwinUserIdentityProvider>()
+                   .As<IUserIdentityProvider>()
+                   .SingleInstance();
+
             builder.RegisterType<ErrorHandlingOwinHostingModule>()
                    .As<IOwinHostingModule>()
                    .SingleInstance();
@@ -26,7 +33,7 @@ namespace InfinniPlatform.Owin.IoC
                    .SingleInstance();
 
             builder.RegisterType<ApplicationOwinHostingModule>()
-                   .AsSelf()
+                   .As<IOwinHostingModule>()
                    .SingleInstance();
         }
     }

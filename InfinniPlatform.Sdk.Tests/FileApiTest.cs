@@ -10,10 +10,8 @@ namespace InfinniPlatform.Sdk.Tests
 {
     public sealed class FileApiTest
     {
-        private const string Route = "1";
-
-        private InfinniFileApi _fileApi;
         private InfinniDocumentApi _documentApi;
+        private InfinniFileApi _fileApi;
 
         [TestFixtureSetUp]
         public void SetupApi()
@@ -26,85 +24,51 @@ namespace InfinniPlatform.Sdk.Tests
         public void ShouldUploadAndDownloadFile()
         {
             var document = new
-            {
-                FirstName = "Ronald",
-                LastName = "McDonald",
-            };
+                           {
+                               FirstName = "Ronald",
+                               LastName = "McDonald"
+                           };
 
             var profileId = _documentApi.SetDocument("Gameshop", "UserProfile", document).Id.ToString();
 
             using (var fileStream = new MemoryStream(Resources.Avatar))
             {
-                _fileApi.UploadFile("Gameshop", "UserProfile", profileId, "Avatar", "Avatar.gif", fileStream);
+                _documentApi.AttachFile("Gameshop", "UserProfile", profileId, "Avatar", fileStream);
             }
 
-            var documentSaved = _documentApi.GetDocumentById("Gameshop", "UserProfile",profileId);
+            var documentSaved = _documentApi.GetDocumentById("Gameshop", "UserProfile", profileId);
 
-            var result = _fileApi.DownloadFile(documentSaved.Avatar.Info.ContentId);
+            Stream result = _fileApi.DownloadFile(documentSaved.Avatar.Info.ContentId);
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(((string)result.Content.ToString()).Length, 9928);
         }
 
         [Test]
-        [Ignore("Transaction implementation is obsolete")]
         public void ShouldAttachFileInSession()
         {
             var document = new
-            {
-                FirstName = "Ronald",
-                LastName = "McDonald",
-            };
+                           {
+                               Id = Guid.NewGuid().ToString(),
+                               FirstName = "Ronald",
+                               LastName = "McDonald"
+                           };
 
-            var sessionId = _documentApi.CreateSession().SessionId.ToString();
-
-            var instanceId = _documentApi.Attach(sessionId, "Gameshop", "UserProfile", Guid.NewGuid().ToString(), document).Id.ToString();
-
+            _documentApi.SetDocument("Gameshop", "UserProfile", document);
 
             using (var fileStream = new MemoryStream(Resources.Avatar))
             {
-                _documentApi.AttachFile(sessionId, "Gameshop", "UserProfile", instanceId, "Avatar", "Avatar.gif", fileStream);
+                _documentApi.AttachFile("Gameshop", "UserProfile", document.Id, "Avatar", fileStream);
             }
 
-            _documentApi.SaveSession(sessionId);
+            dynamic actualDocument = _documentApi.GetDocumentById("Gameshop", "UserProfile", document.Id);
 
-            var contentId = _documentApi.GetDocumentById("Gameshop", "UserProfile", instanceId).Avatar.Info.ContentId;
+            Assert.IsNotNull(actualDocument?.Avatar?.Info?.ContentId);
 
-            var result = _fileApi.DownloadFile(contentId);
+            var contentId = actualDocument.Avatar.Info.ContentId;
+
+            Stream result = _fileApi.DownloadFile(contentId);
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(((string)result.Content.ToString()).Length, 9928);
-        }
-
-
-        [Test]
-        [Ignore("Transaction implementation is obsolete")]
-        public void ShouldDetachFileInSession()
-        {
-            var document = new
-            {
-                FirstName = "Ronald",
-                LastName = "McDonald",
-            };
-
-            var sessionId = _documentApi.CreateSession().SessionId.ToString();
-
-            var instanceId = _documentApi.Attach(sessionId, "Gameshop", "UserProfile", Guid.NewGuid().ToString(), document).Id.ToString();
-
-
-            using (var fileStream = new MemoryStream(Resources.Avatar))
-            {
-                _documentApi.AttachFile(sessionId, "Gameshop", "UserProfile", instanceId, "Avatar", "Avatar.gif", fileStream);
-            }
-
-            _documentApi.DetachFile(sessionId, instanceId, "Avatar");
-
-            _documentApi.SaveSession(sessionId);
-
-            var contentId = _documentApi.GetDocumentById("Gameshop", "UserProfile", instanceId).Avatar;
-
-            Assert.AreEqual(null, contentId);
-
         }
     }
 }

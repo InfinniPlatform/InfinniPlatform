@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Principal;
 
 using InfinniPlatform.Sdk.Services;
 
@@ -11,15 +12,13 @@ namespace InfinniPlatform.Owin.Services
     /// </summary>
     internal sealed class HttpServiceBuilder : IHttpServiceBuilder
     {
-        public HttpServiceBuilder(NancyModule nancyModule)
+        public HttpServiceBuilder(NancyModule nancyModule, Func<IIdentity> userIdentityProvider)
         {
-            Func<NancyContext> nancyContext = () => nancyModule.Context;
-
-            Get = new HttpRouteBuilder(nancyModule.Get, nancyContext, () => OnBefore, () => OnAfter);
-            Post = new HttpRouteBuilder(nancyModule.Post, nancyContext, () => OnBefore, () => OnAfter);
-            Put = new HttpRouteBuilder(nancyModule.Put, nancyContext, () => OnBefore, () => OnAfter);
-            Patch = new HttpRouteBuilder(nancyModule.Patch, nancyContext, () => OnBefore, () => OnAfter);
-            Delete = new HttpRouteBuilder(nancyModule.Delete, nancyContext, () => OnBefore, () => OnAfter);
+            Get = CreateHttpRouteBuilder(nancyModule.Get, nancyModule, userIdentityProvider);
+            Post = CreateHttpRouteBuilder(nancyModule.Post, nancyModule, userIdentityProvider);
+            Put = CreateHttpRouteBuilder(nancyModule.Put, nancyModule, userIdentityProvider);
+            Patch = CreateHttpRouteBuilder(nancyModule.Patch, nancyModule, userIdentityProvider);
+            Delete = CreateHttpRouteBuilder(nancyModule.Delete, nancyModule, userIdentityProvider);
         }
 
 
@@ -35,6 +34,12 @@ namespace InfinniPlatform.Owin.Services
 
         public Action<IHttpRequest> OnBefore { get; set; }
 
-        public Action<IHttpRequest, IHttpResponse> OnAfter { get; set; }
+        public Action<IHttpRequest, IHttpResponse, Exception> OnAfter { get; set; }
+
+
+        private IHttpRouteBuilder CreateHttpRouteBuilder(NancyModule.RouteBuilder nancyRouteBuilder, NancyModule nancyModule, Func<IIdentity> userIdentityProvider)
+        {
+            return new HttpRouteBuilder(nancyRouteBuilder, () => nancyModule.Context, userIdentityProvider, () => OnBefore, () => OnAfter);
+        }
     }
 }

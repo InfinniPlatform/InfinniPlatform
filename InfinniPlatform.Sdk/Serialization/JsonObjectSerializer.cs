@@ -228,6 +228,26 @@ namespace InfinniPlatform.Sdk.Serialization
 
 
         /// <summary>
+        /// Преобразовать объект в строку.
+        /// </summary>
+        public string ConvertToString(object value)
+        {
+            if (value != null)
+            {
+                using (var writer = new StringWriter())
+                {
+                    _serializer.Serialize(writer, value);
+
+                    writer.Flush();
+
+                    return writer.ToString();
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Преобразовать строготипизированный объект в динамический.
         /// </summary>
         public object ConvertToDynamic(object value)

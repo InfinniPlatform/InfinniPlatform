@@ -37,7 +37,6 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             // When
             var error = Assert.Catch(() => documentApi.SetDocument(ConfigurationId, DocumentType, document));
-            Console.WriteLine(error.ToString());
 
             // Then
             Assert.IsTrue(error.Message.Contains(@"TestComplexValidatorMessage"));

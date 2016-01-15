@@ -62,7 +62,7 @@ namespace InfinniPlatform.SystemConfig.IoC
             builder.RegisterActionUnits(GetType().Assembly);
 
             // Прикладные сервисы
-            builder.RegisterType<ChangeHttpRequestHandler>().AsSelf().SingleInstance();
+            builder.RegisterType<ChangeHttpRequestHandler>().AsSelf().InstancePerDependency();
             builder.RegisterType<SearchHttpRequestHandler>().AsSelf().SingleInstance();
             builder.RegisterType<CustomHttpRequestHandler>().AsSelf().SingleInstance();
             builder.RegisterType<AttachHttpRequestHandler>().AsSelf().SingleInstance();

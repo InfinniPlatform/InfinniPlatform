@@ -33,12 +33,12 @@ namespace InfinniPlatform.SystemConfig.Utils
         public void RegisterLink(string configId, string documentId, string instanceId, Action<object> valueSetFunc)
         {
             var link = new DocumentLink
-                       {
-                           ConfigId = configId,
-                           DocumentId = documentId,
-                           InstanceId = instanceId,
-                           SetValue = valueSetFunc
-                       };
+            {
+                ConfigId = configId,
+                DocumentId = documentId,
+                InstanceId = instanceId,
+                SetValue = valueSetFunc
+            };
 
             lock (_links)
             {
@@ -56,10 +56,10 @@ namespace InfinniPlatform.SystemConfig.Utils
             }
 
             var groupsLinks = links.GroupBy(l => new
-                                                 {
-                                                     l.ConfigId,
-                                                     l.DocumentId
-                                                 })
+            {
+                l.ConfigId,
+                l.DocumentId
+            })
                                    .ToList();
 
             foreach (var groupsLink in groupsLinks)
@@ -187,10 +187,12 @@ namespace InfinniPlatform.SystemConfig.Utils
     {
         public DocumentLinkMapProvider(IContainerResolver containerResolver)
         {
-            var documentApi = containerResolver.Resolve<IDocumentApi>();
-            var metadataComponent = containerResolver.Resolve<IMetadataComponent>();
-
-            _documentLinkMapFactory = () => new DocumentLinkMap(metadataComponent, documentApi.GetDocuments);
+            _documentLinkMapFactory = () =>
+                                      {
+                                          var documentApi = containerResolver.Resolve<IDocumentApi>();
+                                          var metadataComponent = containerResolver.Resolve<IMetadataComponent>();
+                                          return new DocumentLinkMap(metadataComponent, documentApi.GetDocuments);
+                                      };
         }
 
         private readonly Func<DocumentLinkMap> _documentLinkMapFactory;
