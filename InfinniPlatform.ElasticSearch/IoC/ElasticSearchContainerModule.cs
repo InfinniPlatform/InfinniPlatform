@@ -46,10 +46,6 @@ namespace InfinniPlatform.ElasticSearch.IoC
                    .As<IAggregationProvider>()
                    .InstancePerDependency();
 
-            builder.RegisterType<IndexToTypeAccordanceProvider>()
-                   .AsSelf()
-                   .SingleInstance();
-
             builder.RegisterType<ElasticSearchProviderAllIndexes>()
                    .As<IAllIndexesOperationProvider>()
                    .SingleInstance();

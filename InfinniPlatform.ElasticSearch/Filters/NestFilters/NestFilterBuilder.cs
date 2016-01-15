@@ -20,7 +20,7 @@ namespace InfinniPlatform.ElasticSearch.Filters.NestFilters
     {
         private const CriteriaType DefaultCriteriaType = CriteriaType.IsEquals;
 
-        private static readonly Dictionary<CriteriaType, Func<string, object, IFilter>> Factories =
+        private static readonly Dictionary<CriteriaType, Func<string, object, IFilter>> FilterFactories =
             new Dictionary<CriteriaType, Func<string, object, IFilter>>
             {
                 { CriteriaType.IsEquals, BuildEqualsFilter },
@@ -66,14 +66,14 @@ namespace InfinniPlatform.ElasticSearch.Filters.NestFilters
             Func<string, object, IFilter> factory;
 
             // пробуем найти в словаре фабрику для указанного типа сравнения
-            if (Factories.TryGetValue(compareMethod, out factory))
+            if (FilterFactories.TryGetValue(compareMethod, out factory))
             {
                 return factory.Invoke(elasticField, elasticValue);
             }
 
             // если получить фабрику для данного типа сравнения не удалось и тип сравнения не совпадает с указанным по умолчанию
             // пытаемся получить фабрику для типа сравнения по умолчанию
-            if (compareMethod != DefaultCriteriaType && Factories.TryGetValue(DefaultCriteriaType, out factory))
+            if (compareMethod != DefaultCriteriaType && FilterFactories.TryGetValue(DefaultCriteriaType, out factory))
             {
                 return factory.Invoke(elasticField, elasticValue);
             }
@@ -137,9 +137,7 @@ namespace InfinniPlatform.ElasticSearch.Filters.NestFilters
         {
             var values = JsonConvert.DeserializeObject<IEnumerable<string>>((string)value);
 
-            var nestFilter = new NestFilter(Filter<dynamic>.Ids(values));
-
-            return nestFilter;
+            return new NestFilter(Filter<dynamic>.Ids(values));
         }
 
         private static IFilter BuildIsInFilter(string field, object value)

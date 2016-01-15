@@ -5,6 +5,7 @@ using System.Linq;
 using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.RestApi.DataApi;
+using InfinniPlatform.ElasticSearch.Factories;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.SystemConfig.Utils;
 
@@ -70,7 +71,7 @@ namespace InfinniPlatform.SystemConfig.Executors
             return GetNumberOfDocuments(configurationName, documentType, filterBuilder.CriteriaList);
         }
 
-        public IEnumerable<object> GetDocument(string configurationName, string documentType, IEnumerable<FilterCriteria> filter, int pageNumber, int pageSize, IEnumerable<dynamic> ignoreResolve = null, IEnumerable<SortingCriteria> sorting = null)
+        public IEnumerable<object> GetDocument(string configurationName, string documentType, IEnumerable<FilterCriteria> filter, int pageNumber, int pageSize, IEnumerable<SortingCriteria> sorting = null, IEnumerable<dynamic> ignoreResolve = null)
         {
             var documentProvider = _configurationObjectBuilder.GetConfigurationObject(configurationName)?.GetDocumentProvider(documentType);
 
@@ -137,12 +138,7 @@ namespace InfinniPlatform.SystemConfig.Executors
             return new List<dynamic>();
         }
 
-        public IEnumerable<dynamic> GetDocument(string configurationName, string documentType, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting = null)
-        {
-            return GetDocument(configurationName, documentType, filter, pageNumber, pageSize, null, sorting);
-        }
-
-        public IEnumerable<dynamic> GetDocument(string configurationName, string documentType, Action<FilterBuilder> filter, int pageNumber, int pageSize, IEnumerable<dynamic> ignoreResolve, Action<SortingBuilder> sorting = null)
+        public IEnumerable<dynamic> GetDocument(string configurationName, string documentType, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting = null, IEnumerable<dynamic> ignoreResolve = null)
         {
             var filterBuilder = new FilterBuilder();
 
@@ -152,7 +148,7 @@ namespace InfinniPlatform.SystemConfig.Executors
 
             sorting?.Invoke(sortingBuilder);
 
-            return GetDocument(configurationName, documentType, filterBuilder.CriteriaList, pageNumber, pageSize, ignoreResolve, sortingBuilder.SortingList);
+            return GetDocument(configurationName, documentType, filterBuilder.CriteriaList, pageNumber, pageSize, sortingBuilder.SortingList, ignoreResolve);
         }
     }
 }

@@ -34,7 +34,7 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
             var connectionPool = new SniffingConnectionPool(nodeAddresses);
 
             var connectionSettings = new ConnectionSettings(connectionPool);
-
+            
             if (!string.IsNullOrEmpty(settings.Login) && !string.IsNullOrEmpty(settings.Password))
             {
                 connectionSettings.SetBasicAuthentication(settings.Login, settings.Password);

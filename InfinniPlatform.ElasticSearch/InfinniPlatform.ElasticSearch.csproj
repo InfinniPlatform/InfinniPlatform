@@ -68,11 +68,6 @@
     <Compile Include="ElasticProviders\ElasticSearchSettings.cs" />
     <Compile Include="ElasticProviders\ElasticTypeManager.cs" />
     <Compile Include="ElasticProviders\IndexQueryExecutor.cs" />
-    <Compile Include="ElasticProviders\IndexToTypeAccordanceProvider.cs" />
-    <Compile Include="ElasticProviders\SchemaIndexVersion\IndexToTypeAccordance.cs" />
-    <Compile Include="ElasticProviders\SchemaIndexVersion\IndexToTypeAccordanceExtensions.cs" />
-    <Compile Include="ElasticProviders\SchemaIndexVersion\IndexToTypeAccordanceSettings.cs" />
-    <Compile Include="ElasticProviders\SchemaIndexVersion\IndexTypeMapping.cs" />
     <Compile Include="ElasticProviders\SchemaIndexVersion\TypeMappingExtensions.cs" />
     <Compile Include="ElasticSearchModels\CountModelFilterDescriptor.cs" />
     <Compile Include="ElasticSearchModels\ElasticCountQueryBuilder.cs" />
@@ -83,6 +78,7 @@
     <Compile Include="ElasticSearchModels\SearchModelSkipDescriptor.cs" />
     <Compile Include="ElasticSearchModels\SearchModelSortDescriptor.cs" />
     <Compile Include="Factories\ElasticFactory.cs" />
+    <Compile Include="Factories\IIndexFactory.cs" />
     <Compile Include="Filters\ElasticScript.cs" />
     <Compile Include="Filters\Extensions\NestFilterExtensions.cs" />
     <Compile Include="Filters\Extensions\ObjectExtension.cs" />
@@ -96,6 +92,7 @@
     <Compile Include="IndexTypeSelectors\IndexTypeSelectorBase.cs" />
     <Compile Include="IndexTypeVersions\IndexTypeMapper.cs" />
     <Compile Include="IndexTypeVersions\PropertiesDescriptorExtension.cs" />
+    <Compile Include="IndexTypeVersions\PropertyMapping.cs" />
     <Compile Include="IoC\ElasticSearchContainerModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -104,6 +101,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SortBuilders\SortContainer.cs" />
+    <Compile Include="Versioning\IVersionBuilder.cs" />
     <Compile Include="Versioning\VersionBuilder.cs" />
     <Compile Include="Versioning\VersionProvider.cs" />
   </ItemGroup>

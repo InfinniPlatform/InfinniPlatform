@@ -78,12 +78,12 @@ namespace InfinniPlatform.Core.RestApi.DataApi
 
         public IEnumerable<dynamic> GetDocument(string configurationName, string documentType, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting = null)
         {
-            return _getDocumentExecutor.GetDocument(configurationName, documentType, filter, pageNumber, pageSize, null, sorting);
+            return _getDocumentExecutor.GetDocument(configurationName, documentType, filter, pageNumber, pageSize, sorting, null);
         }
 
         IEnumerable<dynamic> IDocumentApi.GetDocument(string configurationName, string documentType, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting)
         {
-            return _getDocumentExecutor.GetDocument(configurationName, documentType, filter, pageNumber, pageSize, null, sorting);
+            return _getDocumentExecutor.GetDocument(configurationName, documentType, filter, pageNumber, pageSize, sorting, null);
         }
 
         /// <summary>

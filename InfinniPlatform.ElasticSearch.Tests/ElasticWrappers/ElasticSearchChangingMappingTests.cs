@@ -12,7 +12,11 @@ using InfinniPlatform.ElasticSearch.Versioning;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
 
+using Nest;
+
 using NUnit.Framework;
+
+using PropertyMapping = InfinniPlatform.ElasticSearch.IndexTypeVersions.PropertyMapping;
 
 namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
 {
@@ -40,16 +44,16 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
         {
             var initialMapping = new List<PropertyMapping>
             {
-                new PropertyMapping("FirstName", PropertyDataType.String),
-                new PropertyMapping("IsActive", PropertyDataType.Boolean),
-                new PropertyMapping("Birthdate", PropertyDataType.Date),
-                new PropertyMapping("Int", PropertyDataType.Integer),
-                new PropertyMapping("Float", PropertyDataType.Float),
-                new PropertyMapping("AttachedData", PropertyDataType.Binary),
+                new PropertyMapping("FirstName", FieldType.String),
+                new PropertyMapping("IsActive", FieldType.Boolean),
+                new PropertyMapping("Birthdate", FieldType.Date),
+                new PropertyMapping("Int", FieldType.Integer),
+                new PropertyMapping("Float", FieldType.Float),
+                new PropertyMapping("AttachedData", FieldType.Binary),
                 new PropertyMapping("Hobbies", new[]
                     {
-                        new PropertyMapping("ActivityName", PropertyDataType.String),
-                        new PropertyMapping("StartingDate", PropertyDataType.Date)
+                        new PropertyMapping("ActivityName", FieldType.String),
+                        new PropertyMapping("StartingDate", FieldType.Date)
                     })
             };
 
@@ -94,15 +98,15 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
         {
             var initialMapping = new List<PropertyMapping>
             {
-                new PropertyMapping("FirstName", PropertyDataType.String),
-                new PropertyMapping("IsActive", PropertyDataType.Boolean),
-                new PropertyMapping("Birthdate", PropertyDataType.Date),
-                new PropertyMapping("Int", PropertyDataType.Integer),
-                new PropertyMapping("Float", PropertyDataType.Float),
+                new PropertyMapping("FirstName", FieldType.String),
+                new PropertyMapping("IsActive", FieldType.Boolean),
+                new PropertyMapping("Birthdate", FieldType.Date),
+                new PropertyMapping("Int", FieldType.Integer),
+                new PropertyMapping("Float", FieldType.Float),
                 new PropertyMapping("Hobbies", new[]
                     {
-                        new PropertyMapping("ActivityName", PropertyDataType.String),
-                        new PropertyMapping("StartingDate", PropertyDataType.Date)
+                        new PropertyMapping("ActivityName", FieldType.String),
+                        new PropertyMapping("StartingDate", FieldType.Date)
                     })
             };
 
@@ -133,16 +137,16 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
         {
             var initialMapping = new List<PropertyMapping>
             {
-                new PropertyMapping("FirstName", PropertyDataType.String),
-                new PropertyMapping("IsActive", PropertyDataType.Boolean),
-                new PropertyMapping("Birthdate", PropertyDataType.Date),
-                new PropertyMapping("Int", PropertyDataType.Integer),
-                new PropertyMapping("Float", PropertyDataType.Float),
-                new PropertyMapping("AttachedData", PropertyDataType.Binary),
+                new PropertyMapping("FirstName", FieldType.String),
+                new PropertyMapping("IsActive", FieldType.Boolean),
+                new PropertyMapping("Birthdate", FieldType.Date),
+                new PropertyMapping("Int", FieldType.Integer),
+                new PropertyMapping("Float", FieldType.Float),
+                new PropertyMapping("AttachedData", FieldType.Binary),
                 new PropertyMapping("Hobbies", new[]
                     {
-                        new PropertyMapping("ActivityName", PropertyDataType.String),
-                        new PropertyMapping("StartingDate", PropertyDataType.Date)
+                        new PropertyMapping("ActivityName", FieldType.String),
+                        new PropertyMapping("StartingDate", FieldType.Date)
                     })
             };
 
@@ -153,7 +157,7 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
             var firstNameProp = mapping.FirstOrDefault(p => p.Name == "FirstName");
 
             Assert.IsNotNull(firstNameProp);
-            Assert.AreEqual(PropertyDataType.String, firstNameProp.DataType);
+            Assert.AreEqual(FieldType.String, firstNameProp.DataType);
 
             var hobbiesProp = mapping.FirstOrDefault(p => p.Name == "Hobbies");
 
@@ -166,15 +170,15 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
         {
             var initialMapping = new List<PropertyMapping>
             {
-                new PropertyMapping("FirstName", PropertyDataType.String, true),
-                new PropertyMapping("IsActive", PropertyDataType.Boolean, true),
-                new PropertyMapping("Birthdate", PropertyDataType.Date, true),
-                new PropertyMapping("Int", PropertyDataType.Integer),
-                new PropertyMapping("Float", PropertyDataType.Float),
+                new PropertyMapping("FirstName", FieldType.String, true),
+                new PropertyMapping("IsActive", FieldType.Boolean, true),
+                new PropertyMapping("Birthdate", FieldType.Date, true),
+                new PropertyMapping("Int", FieldType.Integer),
+                new PropertyMapping("Float", FieldType.Float),
                 new PropertyMapping("Hobbies", new[]
                     {
-                        new PropertyMapping("ActivityName", PropertyDataType.String, true),
-                        new PropertyMapping("StartingDate", PropertyDataType.Date, true)
+                        new PropertyMapping("ActivityName", FieldType.String, true),
+                        new PropertyMapping("StartingDate", FieldType.Date, true)
                     })
             };
 
@@ -203,14 +207,14 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
             
             var newMapping = new List<PropertyMapping>
             {
-                new PropertyMapping("FirstName", PropertyDataType.String),
-                new PropertyMapping("IsActive", PropertyDataType.Boolean),
-                new PropertyMapping("Birthdate", PropertyDataType.Date),
-                new PropertyMapping("Int", PropertyDataType.String), // was int
+                new PropertyMapping("FirstName", FieldType.String),
+                new PropertyMapping("IsActive", FieldType.Boolean),
+                new PropertyMapping("Birthdate", FieldType.Date),
+                new PropertyMapping("Int", FieldType.String), // was int
                 new PropertyMapping("Hobbies", new[]
                     {
-                        new PropertyMapping("ActivityName", PropertyDataType.String),
-                        new PropertyMapping("StartingDate", PropertyDataType.Date)
+                        new PropertyMapping("ActivityName", FieldType.String),
+                        new PropertyMapping("StartingDate", FieldType.Date)
                     })
             };
 
@@ -243,27 +247,27 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
         {
             var initialMapping = new List<PropertyMapping>
             {
-                new PropertyMapping("FoundationDate", PropertyDataType.Date),
-                new PropertyMapping("Street", PropertyDataType.String),
-                new PropertyMapping("HouseNumber", PropertyDataType.Integer),
-                new PropertyMapping("Name", PropertyDataType.String),
-                new PropertyMapping("Rating", PropertyDataType.Float),
+                new PropertyMapping("FoundationDate", FieldType.Date),
+                new PropertyMapping("Street", FieldType.String),
+                new PropertyMapping("HouseNumber", FieldType.Integer),
+                new PropertyMapping("Name", FieldType.String),
+                new PropertyMapping("Rating", FieldType.Float),
                 new PropertyMapping("Principal", new[]
                     {
-                        new PropertyMapping("Name", PropertyDataType.String),
-                        new PropertyMapping("LastName", PropertyDataType.String),
-                        new PropertyMapping("BirthDate", PropertyDataType.Date),
-                        new PropertyMapping("Grade", PropertyDataType.Integer),
-                        new PropertyMapping("KnowledgeRating", PropertyDataType.Float)
+                        new PropertyMapping("Name", FieldType.String),
+                        new PropertyMapping("LastName", FieldType.String),
+                        new PropertyMapping("BirthDate", FieldType.Date),
+                        new PropertyMapping("Grade", FieldType.Integer),
+                        new PropertyMapping("KnowledgeRating", FieldType.Float)
                     }),
                 new PropertyMapping("Students", new[]
                     {
-                        new PropertyMapping("Name", PropertyDataType.String),
-                        new PropertyMapping("LastName", PropertyDataType.String),
-                        new PropertyMapping("BirthDate", PropertyDataType.Date),
-                        new PropertyMapping("FavoriteSubject", PropertyDataType.String),
-                        new PropertyMapping("KnowledgeRating", PropertyDataType.Float),
-                        new PropertyMapping("CountOfFriends", PropertyDataType.Integer)
+                        new PropertyMapping("Name", FieldType.String),
+                        new PropertyMapping("LastName", FieldType.String),
+                        new PropertyMapping("BirthDate", FieldType.Date),
+                        new PropertyMapping("FavoriteSubject", FieldType.String),
+                        new PropertyMapping("KnowledgeRating", FieldType.Float),
+                        new PropertyMapping("CountOfFriends", FieldType.Integer)
                     })
             };
 
@@ -305,27 +309,27 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
         {
             var initialMapping = new List<PropertyMapping>
             {
-                new PropertyMapping("FoundationDate", PropertyDataType.Date),
-                new PropertyMapping("Street", PropertyDataType.String),
-                new PropertyMapping("HouseNumber", PropertyDataType.Integer),
-                new PropertyMapping("Name", PropertyDataType.Integer), // should be string here
-                new PropertyMapping("Rating", PropertyDataType.Float),
+                new PropertyMapping("FoundationDate", FieldType.Date),
+                new PropertyMapping("Street", FieldType.String),
+                new PropertyMapping("HouseNumber", FieldType.Integer),
+                new PropertyMapping("Name", FieldType.Integer), // should be string here
+                new PropertyMapping("Rating", FieldType.Float),
                 new PropertyMapping("Principal", new[]
                     {
-                        new PropertyMapping("Name", PropertyDataType.String),
-                        new PropertyMapping("LastName", PropertyDataType.String),
-                        new PropertyMapping("BirthDate", PropertyDataType.Date),
-                        new PropertyMapping("Grade", PropertyDataType.Integer),
-                        new PropertyMapping("KnowledgeRating", PropertyDataType.Float)
+                        new PropertyMapping("Name", FieldType.String),
+                        new PropertyMapping("LastName", FieldType.String),
+                        new PropertyMapping("BirthDate", FieldType.Date),
+                        new PropertyMapping("Grade", FieldType.Integer),
+                        new PropertyMapping("KnowledgeRating", FieldType.Float)
                     }),
                 new PropertyMapping("Students", new[]
                     {
-                        new PropertyMapping("Name", PropertyDataType.String),
-                        new PropertyMapping("LastName", PropertyDataType.String),
-                        new PropertyMapping("BirthDate", PropertyDataType.Date),
-                        new PropertyMapping("FavoriteSubject", PropertyDataType.String),
-                        new PropertyMapping("KnowledgeRating", PropertyDataType.Float),
-                        new PropertyMapping("CountOfFriends", PropertyDataType.Integer)
+                        new PropertyMapping("Name", FieldType.String),
+                        new PropertyMapping("LastName", FieldType.String),
+                        new PropertyMapping("BirthDate", FieldType.Date),
+                        new PropertyMapping("FavoriteSubject", FieldType.String),
+                        new PropertyMapping("KnowledgeRating", FieldType.Float),
+                        new PropertyMapping("CountOfFriends", FieldType.Integer)
                     })
             };
 
@@ -351,28 +355,28 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
         {
             var initialMapping = new List<PropertyMapping>
             {
-                new PropertyMapping("ExtraField", PropertyDataType.String),
-                new PropertyMapping("FoundationDate", PropertyDataType.Date),
-                new PropertyMapping("Street", PropertyDataType.String),
-                new PropertyMapping("HouseNumber", PropertyDataType.Integer),
-                new PropertyMapping("Name", PropertyDataType.String),
-                new PropertyMapping("Rating", PropertyDataType.Float),
+                new PropertyMapping("ExtraField", FieldType.String),
+                new PropertyMapping("FoundationDate", FieldType.Date),
+                new PropertyMapping("Street", FieldType.String),
+                new PropertyMapping("HouseNumber", FieldType.Integer),
+                new PropertyMapping("Name", FieldType.String),
+                new PropertyMapping("Rating", FieldType.Float),
                 new PropertyMapping("Principal", new[]
                     {
-                        new PropertyMapping("Name", PropertyDataType.String),
-                        new PropertyMapping("LastName", PropertyDataType.String),
-                        new PropertyMapping("BirthDate", PropertyDataType.Date),
-                        new PropertyMapping("Grade", PropertyDataType.Integer),
-                        new PropertyMapping("KnowledgeRating", PropertyDataType.Float)
+                        new PropertyMapping("Name", FieldType.String),
+                        new PropertyMapping("LastName", FieldType.String),
+                        new PropertyMapping("BirthDate", FieldType.Date),
+                        new PropertyMapping("Grade", FieldType.Integer),
+                        new PropertyMapping("KnowledgeRating", FieldType.Float)
                     }),
                 new PropertyMapping("Students", new[]
                     {
-                        new PropertyMapping("Name", PropertyDataType.String),
-                        new PropertyMapping("LastName", PropertyDataType.String),
-                        new PropertyMapping("BirthDate", PropertyDataType.Date),
-                        new PropertyMapping("FavoriteSubject", PropertyDataType.String),
-                        new PropertyMapping("KnowledgeRating", PropertyDataType.Float),
-                        new PropertyMapping("CountOfFriends", PropertyDataType.Integer)
+                        new PropertyMapping("Name", FieldType.String),
+                        new PropertyMapping("LastName", FieldType.String),
+                        new PropertyMapping("BirthDate", FieldType.Date),
+                        new PropertyMapping("FavoriteSubject", FieldType.String),
+                        new PropertyMapping("KnowledgeRating", FieldType.Float),
+                        new PropertyMapping("CountOfFriends", FieldType.Integer)
                     })
             };
 
@@ -410,28 +414,28 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
             // Change mapping 
             var changedMapping = new List<PropertyMapping>
             {
-                new PropertyMapping("ExtraField", PropertyDataType.Integer),
-                new PropertyMapping("FoundationDate", PropertyDataType.Date),
-                new PropertyMapping("Street", PropertyDataType.String),
-                new PropertyMapping("HouseNumber", PropertyDataType.Integer),
-                new PropertyMapping("Name", PropertyDataType.String),
-                new PropertyMapping("Rating", PropertyDataType.Float),
+                new PropertyMapping("ExtraField", FieldType.Integer),
+                new PropertyMapping("FoundationDate", FieldType.Date),
+                new PropertyMapping("Street", FieldType.String),
+                new PropertyMapping("HouseNumber", FieldType.Integer),
+                new PropertyMapping("Name", FieldType.String),
+                new PropertyMapping("Rating", FieldType.Float),
                 new PropertyMapping("Principal", new[]
                     {
-                        new PropertyMapping("Name", PropertyDataType.String),
-                        new PropertyMapping("LastName", PropertyDataType.String),
-                        new PropertyMapping("BirthDate", PropertyDataType.Date),
-                        new PropertyMapping("Grade", PropertyDataType.Integer),
-                        new PropertyMapping("KnowledgeRating", PropertyDataType.Float)
+                        new PropertyMapping("Name", FieldType.String),
+                        new PropertyMapping("LastName", FieldType.String),
+                        new PropertyMapping("BirthDate", FieldType.Date),
+                        new PropertyMapping("Grade", FieldType.Integer),
+                        new PropertyMapping("KnowledgeRating", FieldType.Float)
                     }),
                 new PropertyMapping("Students", new[]
                     {
-                        new PropertyMapping("Name", PropertyDataType.String),
-                        new PropertyMapping("LastName", PropertyDataType.String),
-                        new PropertyMapping("BirthDate", PropertyDataType.Date),
-                        new PropertyMapping("FavoriteSubject", PropertyDataType.String),
-                        new PropertyMapping("KnowledgeRating", PropertyDataType.Float),
-                        new PropertyMapping("CountOfFriends", PropertyDataType.Integer)
+                        new PropertyMapping("Name", FieldType.String),
+                        new PropertyMapping("LastName", FieldType.String),
+                        new PropertyMapping("BirthDate", FieldType.Date),
+                        new PropertyMapping("FavoriteSubject", FieldType.String),
+                        new PropertyMapping("KnowledgeRating", FieldType.Float),
+                        new PropertyMapping("CountOfFriends", FieldType.Integer)
                     })
             };
 
@@ -482,15 +486,15 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
         {
             var initialMapping = new List<PropertyMapping>
             {
-                new PropertyMapping("FirstName", PropertyDataType.String),
-                new PropertyMapping("IsActive", PropertyDataType.Boolean),
-                new PropertyMapping("Birthdate", PropertyDataType.Date),
-                new PropertyMapping("Number", PropertyDataType.Integer),
-                new PropertyMapping("AttachedData", PropertyDataType.Binary),
+                new PropertyMapping("FirstName", FieldType.String),
+                new PropertyMapping("IsActive", FieldType.Boolean),
+                new PropertyMapping("Birthdate", FieldType.Date),
+                new PropertyMapping("Number", FieldType.Integer),
+                new PropertyMapping("AttachedData", FieldType.Binary),
                 new PropertyMapping("Hobbies", new[]
                     {
-                        new PropertyMapping("ActivityName", PropertyDataType.String),
-                        new PropertyMapping("StartingDate", PropertyDataType.Date)
+                        new PropertyMapping("ActivityName", FieldType.String),
+                        new PropertyMapping("StartingDate", FieldType.Date)
                     })
             };
 
@@ -504,7 +508,7 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
 
             var conflictMapping1 = new List<PropertyMapping>
             {
-                new PropertyMapping("FirstName", PropertyDataType.Date)
+                new PropertyMapping("FirstName", FieldType.Date)
             };
             Assert.IsFalse(vbuilder.VersionExists(conflictMapping1));
 
@@ -512,16 +516,16 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
             {
                 new PropertyMapping("AttachedData", new[]
                     {
-                        new PropertyMapping("ActivityName", PropertyDataType.String),
-                        new PropertyMapping("StartingDate", PropertyDataType.Date)
+                        new PropertyMapping("ActivityName", FieldType.String),
+                        new PropertyMapping("StartingDate", FieldType.Date)
                     })
             };
             Assert.IsFalse(vbuilder.VersionExists(conflictMapping2));
 
             var conflictMapping3 = new List<PropertyMapping>
             {
-                new PropertyMapping("FirstName", PropertyDataType.Integer),
-                new PropertyMapping("NewProperty", PropertyDataType.Date)
+                new PropertyMapping("FirstName", FieldType.Integer),
+                new PropertyMapping("NewProperty", FieldType.Date)
             };
             Assert.IsFalse(vbuilder.VersionExists(conflictMapping3));
         }
@@ -533,14 +537,14 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
 
             var initialMapping = new List<PropertyMapping>
             {
-                new PropertyMapping("FirstName", PropertyDataType.String),
-                new PropertyMapping("IsActive", PropertyDataType.Object),
-                new PropertyMapping("Birthdate", PropertyDataType.Date),
-                new PropertyMapping("Number", PropertyDataType.Integer),
+                new PropertyMapping("FirstName", FieldType.String),
+                new PropertyMapping("IsActive", FieldType.Object),
+                new PropertyMapping("Birthdate", FieldType.Date),
+                new PropertyMapping("Number", FieldType.Integer),
                 new PropertyMapping("Hobbies", new[]
                     {
-                        new PropertyMapping("ActivityName", PropertyDataType.String),
-                        new PropertyMapping("StartingDate", PropertyDataType.Date)
+                        new PropertyMapping("ActivityName", FieldType.String),
+                        new PropertyMapping("StartingDate", FieldType.Date)
                     })
             };
 
@@ -574,14 +578,14 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
 
             var newMapping = new List<PropertyMapping>
             {
-                new PropertyMapping("FirstName", PropertyDataType.String),
-                new PropertyMapping("IsActive", PropertyDataType.Boolean), // was object
-                new PropertyMapping("Birthdate", PropertyDataType.Date),
-                new PropertyMapping("Number", PropertyDataType.Integer), 
+                new PropertyMapping("FirstName", FieldType.String),
+                new PropertyMapping("IsActive", FieldType.Boolean), // was object
+                new PropertyMapping("Birthdate", FieldType.Date),
+                new PropertyMapping("Number", FieldType.Integer), 
                 new PropertyMapping("Hobbies", new[]
                     {
-                        new PropertyMapping("ActivityName", PropertyDataType.String),
-                        new PropertyMapping("StartingDate", PropertyDataType.Date)
+                        new PropertyMapping("ActivityName", FieldType.String),
+                        new PropertyMapping("StartingDate", FieldType.Date)
                     })
             };
 
@@ -613,7 +617,7 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
 
             Assert.AreEqual(2, elasticSearchProvider.GetTotalCount());
 
-            newMapping.Add(new PropertyMapping("ObjectProperty", PropertyDataType.Object));
+            newMapping.Add(new PropertyMapping("ObjectProperty", FieldType.Object));
 
             Assert.IsFalse(versionBuilder.VersionExists(newMapping));
 

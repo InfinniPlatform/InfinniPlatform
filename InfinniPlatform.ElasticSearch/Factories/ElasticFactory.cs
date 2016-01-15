@@ -1,10 +1,10 @@
-﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using InfinniPlatform.Core.Index;
 using InfinniPlatform.ElasticSearch.ElasticProviders;
-using InfinniPlatform.ElasticSearch.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.ElasticSearch.Versioning;
+
+using Nest;
 
 namespace InfinniPlatform.ElasticSearch.Factories
 {
@@ -13,7 +13,7 @@ namespace InfinniPlatform.ElasticSearch.Factories
     /// </summary>
     public sealed class ElasticFactory : IIndexFactory
     {
-        public delegate IIndexQueryExecutor IndexQueryExecutorFactory(IndexToTypeAccordanceSettings settings);
+        public delegate IIndexQueryExecutor IndexQueryExecutorFactory(string indexName, string typeName);
         public delegate IVersionBuilder VersionBuilderFactory(string indexName, string typeName);
         public delegate ICrudOperationProvider CrudOperationProviderFactory(string indexName, string typeName);
         public delegate IAggregationProvider AggregationProviderFactory(string indexName, string typeName);
@@ -23,18 +23,15 @@ namespace InfinniPlatform.ElasticSearch.Factories
                               VersionBuilderFactory versionBuilderFactory,
                               CrudOperationProviderFactory crudOperationProviderFactory,
                               AggregationProviderFactory aggregationProviderFactory,
-                              IndexToTypeAccordanceProvider accordanceProvider,
                               IAllIndexesOperationProvider allIndexesOperationProvider)
         {
             _indexQueryExecutorFactory = indexQueryExecutorFactory;
             _versionBuilderFactory = versionBuilderFactory;
             _crudOperationProviderFactory = crudOperationProviderFactory;
             _aggregationProviderFactory = aggregationProviderFactory;
-            _accordanceProvider = accordanceProvider;
             _allIndexesOperationProvider = allIndexesOperationProvider;
 
             _providersInfo = new List<ElasticSearchProviderInfo>();
-            _settings = new ConcurrentDictionary<string, IndexToTypeAccordanceSettings>();
         }
 
 
@@ -42,13 +39,10 @@ namespace InfinniPlatform.ElasticSearch.Factories
         private readonly VersionBuilderFactory _versionBuilderFactory;
         private readonly CrudOperationProviderFactory _crudOperationProviderFactory;
         private readonly AggregationProviderFactory _aggregationProviderFactory;
-        private readonly IndexToTypeAccordanceProvider _accordanceProvider;
         private readonly IAllIndexesOperationProvider _allIndexesOperationProvider;
 
         private readonly List<ElasticSearchProviderInfo> _providersInfo;
-        private readonly ConcurrentDictionary<string, IndexToTypeAccordanceSettings> _settings;
-
-
+        
         /// <summary>
         /// Создать конструктор версий хранилища документов
         /// </summary>
@@ -66,10 +60,8 @@ namespace InfinniPlatform.ElasticSearch.Factories
         /// <param name="typeName">Наименование типа</param>
         public IVersionProvider BuildVersionProvider(string indexName, string typeName)
         {
-            var indexToTypeAccordanceSettings = GetIndexTypeAccordanceSettings(indexName, typeName);
-
             var elasticSearchProvider = _crudOperationProviderFactory(indexName, typeName);
-            var indexQueryExecutor = _indexQueryExecutorFactory(indexToTypeAccordanceSettings);
+            var indexQueryExecutor = _indexQueryExecutorFactory(indexName, typeName);
 
             return new VersionProvider(elasticSearchProvider, indexQueryExecutor);
         }
@@ -118,9 +110,7 @@ namespace InfinniPlatform.ElasticSearch.Factories
         /// <returns></returns>
         public IIndexQueryExecutor BuildIndexQueryExecutor(string indexName, string typeName)
         {
-            var indexToTypeAccordanceSettings = GetIndexTypeAccordanceSettings(indexName, typeName);
-
-            return _indexQueryExecutorFactory(indexToTypeAccordanceSettings);
+            return _indexQueryExecutorFactory(indexName, typeName);
         }
 
         /// <summary>
@@ -134,26 +124,6 @@ namespace InfinniPlatform.ElasticSearch.Factories
         public IAggregationProvider BuildAggregationProvider(string indexName, string typeName)
         {
             return _aggregationProviderFactory(indexName, typeName);
-        }
-
-        private static string CreateKey(string indexName, string typeName)
-        {
-            return $"Index:{indexName};TypeName:{typeName}";
-        }
-
-        private IndexToTypeAccordanceSettings GetIndexTypeAccordanceSettings(string indexName, string typeName)
-        {
-            var key = CreateKey(indexName, typeName);
-
-            IndexToTypeAccordanceSettings indexSettings;
-
-            if (!_settings.TryGetValue(key, out indexSettings))
-            {
-                indexSettings = _accordanceProvider.GetIndexTypeAccordances(indexName, typeName);
-                _settings[key] = indexSettings;
-            }
-
-            return indexSettings;
         }
     }
 }

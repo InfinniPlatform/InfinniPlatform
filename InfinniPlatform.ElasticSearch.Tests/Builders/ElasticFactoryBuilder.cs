@@ -29,11 +29,10 @@ namespace InfinniPlatform.ElasticSearch.Tests.Builders
         public static ElasticFactory GetElasticFactory()
         {
             return new ElasticFactory(
-                settings => new IndexQueryExecutor(ElasticConnection.Value, TenantProvider.Value, settings),
+                (indexName, typeName) => new IndexQueryExecutor(ElasticConnection.Value, TenantProvider.Value, ElasticTypeManager.Value, indexName, typeName),
                 (indexName, typeName) => new VersionBuilder(ElasticTypeManager.Value, indexName, typeName),
                 (indexName, typeName) => new ElasticSearchProvider(ElasticConnection.Value, ElasticTypeManager.Value, TenantProvider.Value, indexName, typeName),
                 (indexName, typeName) => new ElasticSearchAggregationProvider(ElasticConnection.Value, ElasticTypeManager.Value, TenantProvider.Value, indexName, typeName),
-                new IndexToTypeAccordanceProvider(ElasticTypeManager.Value),
                 new ElasticSearchProviderAllIndexes(ElasticConnection.Value));
         }
 

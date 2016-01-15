@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.ElasticSearch.Factories;
 
 namespace InfinniPlatform.SystemConfig.Metadata
 {

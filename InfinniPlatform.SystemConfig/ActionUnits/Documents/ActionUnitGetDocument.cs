@@ -30,8 +30,8 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Documents
                                                              enumerableFilters,
                                                              Convert.ToInt32(target.Item.PageNumber),
                                                              Convert.ToInt32(target.Item.PageSize),
-                                                             target.Item.IgnoreResolve,
-                                                             enumerableSortings);
+                                                             enumerableSortings,
+                                                             target.Item.IgnoreResolve);
         }
     }
 }

@@ -21,7 +21,7 @@ namespace InfinniPlatform.Sdk.Documents
 
             criteria.Invoke(criteriaBuilder);
 
-            CriteriaList.Add(criteriaBuilder.GetCriteria());
+            CriteriaList.Add(criteriaBuilder.Criteria);
 
             return this;
         }

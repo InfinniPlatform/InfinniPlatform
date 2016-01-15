@@ -216,7 +216,7 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
             }
 
             var rawResult = _elasticConnection.Client.Search<dynamic>(s => s
-                .BuildSearchForType(new[] { _indexName }, _typeMappings.GetMappingsTypeNames(), false, false)
+                .BuildSearchForType(_indexName, _typeMappings.GetMappingsTypeNames())
                 .Size(0) // Нас интересуют только агрегации, исключаем результаты поискового запроса
                 .Aggregations(activeAggregation)
                 );

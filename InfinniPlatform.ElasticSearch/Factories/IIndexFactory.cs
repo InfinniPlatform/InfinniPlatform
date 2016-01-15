@@ -1,4 +1,7 @@
-﻿namespace InfinniPlatform.Core.Index
+﻿using InfinniPlatform.Core.Index;
+using InfinniPlatform.ElasticSearch.Versioning;
+
+namespace InfinniPlatform.ElasticSearch.Factories
 {
     /// <summary>
     /// Фабрика провайдеров для операций с данными индексов

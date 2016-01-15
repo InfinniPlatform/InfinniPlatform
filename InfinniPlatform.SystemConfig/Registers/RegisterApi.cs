@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Registers;
+using InfinniPlatform.ElasticSearch.Factories;
 using InfinniPlatform.ElasticSearch.Filters;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
