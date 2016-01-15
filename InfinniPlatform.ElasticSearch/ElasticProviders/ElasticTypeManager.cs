@@ -17,6 +17,19 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
     /// </summary>
     public class ElasticTypeManager
     {
+        private static readonly Dictionary<string, FieldType> DataTypes = new Dictionary<string, FieldType>(StringComparer.OrdinalIgnoreCase)
+                                                                          {
+                                                                              { "string", FieldType.String },
+                                                                              { "date", FieldType.Date },
+                                                                              { "binary", FieldType.Object },
+                                                                              { "boolean", FieldType.Boolean },
+                                                                              { "double", FieldType.Float },
+                                                                              { "float", FieldType.Float },
+                                                                              { "integer", FieldType.Integer },
+                                                                              { "long", FieldType.Integer },
+                                                                              { "object", FieldType.Object }
+                                                                          };
+
         public ElasticTypeManager(ElasticConnection elasticConnection)
         {
             _elasticConnection = elasticConnection;
@@ -26,19 +39,6 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
 
         private readonly object _mappingsCacheSync = new object();
         private volatile Dictionary<string, IList<TypeMapping>> _mappingsCache;
-
-        private static readonly Dictionary<string, FieldType> DataTypes = new Dictionary<string, FieldType>(StringComparer.OrdinalIgnoreCase)
-                                                       {
-                                                           { "string", FieldType.String },
-                                                           { "date", FieldType.Date },
-                                                           { "binary", FieldType.Object },
-                                                           { "boolean", FieldType.Boolean },
-                                                           { "double", FieldType.Float },
-                                                           { "float", FieldType.Float },
-                                                           { "integer", FieldType.Integer },
-                                                           { "long", FieldType.Integer },
-                                                           { "object", FieldType.Object }
-                                                       };
 
         // INDEXES
 
@@ -53,10 +53,102 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
         {
             indexName = indexName.ToLower();
 
-            var indicesOperationResponse = _elasticConnection.Client.CreateIndex(i => i.Index(indexName));
-            var indexSettingsResponse = _elasticConnection.Client.GetIndexSettings(i => i.Index(indexName));
+            _elasticConnection.Client.CreateIndex(i => i.Index(indexName)
+                                                 .Analysis(ad => ad.Analyzers(SetDefaultAnalyzers)));
 
             ResetIndexMappings();
+        }
+
+        private static FluentDictionary<string, AnalyzerBase> SetDefaultAnalyzers(FluentDictionary<string, AnalyzerBase> ab)
+        {
+            // Для корректной работы маппера в настройках ElasticSearch должны быть
+            // определены необходимые фильтры и анализаторы:
+            /*             
+            index:
+                analysis:
+                    filter:
+                        lengthfilter :
+                            type : length
+                            min: 0          
+                            max: 4000          
+                    analyzer:
+            #стандартный анализатор, использующийся для поиска по умолчанию
+                        string_lowercase:
+                            filter: [ lowercase, lengthfilter]
+                            tokenizer: keyword                      
+            #стандартный анализатор, использующийся для индексирования по умолчанию
+                        keywordbasedsearch:
+                            filter: [ lowercase, lengthfilter]
+                            tokenizer:  keyword
+            #полнотекстовый анализатор, использующийся для индексирования
+                        fulltextsearch:
+                            filter: [ lowercase, lengthfilter]
+                            tokenizer: standard
+            #Анализатор с разбиением на слова, использующийся для полнотекстового поиска
+                        fulltextquery:
+                            filter: [ lowercase, lengthfilter]
+                            tokenizer: whitespace
+            #анализаторы по умолчанию
+                        default:
+                            filter: [ lowercase, lengthfilter]
+                            tokenizer:  keyword
+                        default_index:
+                            filter: [ lowercase, lengthfilter]
+                            tokenizer:  keyword
+             */
+            var defaultFilter = new List<string> { "lowercase", "lengthfilter" };
+            var defaultAnalyzers = new Dictionary<string, AnalyzerBase>
+                                   {
+                                       {
+                                           "string_lowercase", new CustomAnalyzer
+                                                               {
+                                                                   Filter = defaultFilter,
+                                                                   Tokenizer = "keyword"
+                                                               }
+                                       },
+                                       {
+                                           "keywordbasedsearch", new CustomAnalyzer
+                                                                 {
+                                                                     Filter = defaultFilter,
+                                                                     Tokenizer = "keyword"
+                                                                 }
+                                       },
+                                       {
+                                           "fulltextsearch", new CustomAnalyzer
+                                                             {
+                                                                 Filter = defaultFilter,
+                                                                 Tokenizer = "standard"
+                                                             }
+                                       },
+                                       {
+                                           "fulltextquery", new CustomAnalyzer
+                                                            {
+                                                                Filter = defaultFilter,
+                                                                Tokenizer = "whitespace"
+                                                            }
+                                       },
+                                       {
+                                           "default", new CustomAnalyzer
+                                                      {
+                                                          Filter = defaultFilter,
+                                                          Tokenizer = "keyword"
+                                                      }
+                                       },
+                                       {
+                                           "default_index", new CustomAnalyzer
+                                                            {
+                                                                Filter = defaultFilter,
+                                                                Tokenizer = "keyword"
+                                                            }
+                                       }
+                                   };
+
+            foreach (var analyzer in defaultAnalyzers)
+            {
+                ab.Add(analyzer.Key, analyzer.Value);
+            }
+
+            return ab;
         }
 
         public void DeleteIndex(string indexName)

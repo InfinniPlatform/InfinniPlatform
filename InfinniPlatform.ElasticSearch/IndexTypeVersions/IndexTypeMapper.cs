@@ -53,36 +53,9 @@ namespace InfinniPlatform.ElasticSearch.IndexTypeVersions
         /// </summary>
         public static void ApplyIndexTypeMapping(ElasticClient elasticClient, string indexName, string schemaversionname, IList<PropertyMapping> properties, SearchAbilityType searchAbility = SearchAbilityType.KeywordBasedSearch)
         {
-            indexName = indexName.ToLowerInvariant();
-
-            //TODO: Это можно делать и непосредственно при создании индекса
-            // Для корректной работы маппера в настройках ElasticSearch должны быть
-            // определены необходимые фильтры и анализаторы:
-            /*             
-            index:
-                analysis:
-                    analyzer:
-            #стандартный анализатор, использующийся для поиска по умолчанию
-                        string_lowercase:
-                            filter: lowercase
-                            tokenizer: keyword
-            #стандартный анализатор, использующийся для индексирования по умолчанию
-                        keywordbasedsearch: 
-                            filter: lowercase
-                            tokenizer: keyword
-            #полнотекстовый анализатор, использующийся для индексирования
-                        fulltextsearch:  
-                            filter: lowercase
-                            tokenizer: standard
-            #Анализатор с разбиением на слова, использующийся для полнотекстового поиска
-                        fulltextquery: 
-                            filter: lowercase
-                            tokenizer: whitespace
-             */
-
             var propertiesDictionary = properties?.ToDictionary<PropertyMapping, PropertyNameMarker, IElasticType>(property => property.Name, GetElasticType) ?? new Dictionary<PropertyNameMarker, IElasticType>();
 
-            elasticClient.Map<dynamic>(m => m.Index(indexName)
+            elasticClient.Map<dynamic>(m => m.Index(indexName.ToLowerInvariant())
                                              .Type(schemaversionname)
                                              .SearchAnalyzer("string_lowercase")
                                              .IndexAnalyzer(searchAbility.ToString().ToLowerInvariant())
@@ -90,7 +63,7 @@ namespace InfinniPlatform.ElasticSearch.IndexTypeVersions
         }
 
         /// <summary>
-        /// Коректирует маппинг поля соответственно типу данных и необходимости сортировки.
+        /// Корректирует маппинг поля соответственно типу данных и необходимости сортировки.
         /// </summary>
         /// <param name="propertyMapping">Обобщенный маппинг поля документа</param>
         /// <param name="elasticFieldMapping">Маппинг поля в elasticsearch</param>
