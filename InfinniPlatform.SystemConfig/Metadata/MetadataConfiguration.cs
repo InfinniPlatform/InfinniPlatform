@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Core.Index;
-using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Runtime;
-using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.SystemConfig.StateMachine;
 
 namespace InfinniPlatform.SystemConfig.Metadata
 {
@@ -59,30 +56,6 @@ namespace InfinniPlatform.SystemConfig.Metadata
         public IEnumerable<string> Documents
         {
             get { return _documents.Keys; }
-        }
-
-        /// <summary>
-        /// Выполнить указанный поток работы для указанных метаданных
-        /// </summary>
-        /// <param name="documentId">Метаданные контейнера</param>
-        /// <param name="workflowId">Идентификатор потока</param>
-        /// <param name="target">Объект, над которым выполняется переход</param>
-        /// <param name="state">Состояние, в которое выполняется перевод</param>
-        /// <returns>Результат выполнения потока</returns>
-        public dynamic MoveWorkflow(string documentId, string workflowId, dynamic target, object state = null)
-        {
-            return GetMetadataContainer(documentId).MoveWorkflow(workflowId, target, state);
-        }
-
-        /// <summary>
-        /// Зарегистрировать поток выполнения
-        /// </summary>
-        /// <param name="documentId">Идентификатор контейнера метаданных</param>
-        /// <param name="workflowId">Идентификатор потока работы</param>
-        /// <param name="actionConfiguration">Конфигурация выполняемых действий</param>
-        public void RegisterWorkflow(string documentId, string workflowId, object actionConfiguration)
-        {
-            GetMetadataContainer(documentId).RegisterWorkflow(workflowId, (Action<IStateWorkflowStartingPointConfig>)actionConfiguration);
         }
 
         /// <summary>
@@ -159,8 +132,6 @@ namespace InfinniPlatform.SystemConfig.Metadata
         public void RegisterProcess(string documentId, dynamic process)
         {
             GetMetadataContainer(documentId).RegisterProcess(process);
-
-            LoadProcess(documentId, process);
         }
 
         /// <summary>
@@ -526,126 +497,6 @@ namespace InfinniPlatform.SystemConfig.Metadata
         private MetadataContainer GetMetadataContainer(string documentId)
         {
             return RegisterContainer(documentId);
-        }
-
-        private void LoadProcess(string documentId, dynamic processFull)
-        {
-            var context = new Dictionary<string, object>
-                          {
-                              { "configurationId", ConfigurationId },
-                              { "documentId", documentId },
-                              { "processFullName", processFull.Name }
-                          };
-
-            try
-            {
-                Action<IStateWorkflowStartingPointConfig> workflowConfig = null;
-                if (processFull.Transitions == null || processFull.Transitions.Count == 0)
-                {
-                    Logger.Log.Error("No transition defined for the process.", context);
-
-                    return;
-                }
-
-                if (processFull.Type == null)
-                {
-                    processFull.Type = WorkflowTypes.WithoutState;
-                }
-
-                if ((WorkflowTypes)processFull.Type == WorkflowTypes.WithoutState)
-                {
-                    var transition = processFull.Transitions[0];
-                    Action<IStateTransitionConfig> configTransition = ws =>
-                                                                      {
-                                                                          if (transition.ValidationPointError != null)
-                                                                          {
-                                                                              ws.WithValidationError(() => ScriptConfiguration.GetAction(transition.ValidationPointError.ScenarioId));
-                                                                          }
-                                                                          if (transition.DeletingDocumentValidationPoint != null)
-                                                                          {
-                                                                              ws.WithValidationError(() => ScriptConfiguration.GetAction(transition.DeletingDocumentValidationPoint.ScenarioId));
-                                                                          }
-                                                                          if (transition.ActionPoint != null)
-                                                                          {
-                                                                              ws.WithAction(() => ScriptConfiguration.GetAction(transition.ActionPoint.ScenarioId));
-                                                                          }
-                                                                          if (transition.SuccessPoint != null)
-                                                                          {
-                                                                              ws.OnSuccess(() => ScriptConfiguration.GetAction(transition.SuccessPoint.ScenarioId));
-                                                                          }
-                                                                          if (transition.FailPoint != null)
-                                                                          {
-                                                                              ws.OnFail(() => ScriptConfiguration.GetAction(transition.FailPoint.ScenarioId));
-                                                                          }
-                                                                          if (transition.DeletePoint != null)
-                                                                          {
-                                                                              ws.OnDelete(() => ScriptConfiguration.GetAction(transition.DeletePoint.ScenarioId));
-                                                                          }
-                                                                      };
-
-
-                    workflowConfig = wf => wf.FlowWithoutState(wc => wc.Move(configTransition));
-                }
-
-                if ((WorkflowTypes)processFull.Type == WorkflowTypes.WithState)
-                {
-                    if (processFull.Transitions.Count == 0)
-                    {
-                        Logger.Log.Error("No transition found for process.", new Dictionary<string, object>
-                                                                             {
-                                                                                 { "processFullName", processFull.Name }
-                                                                             });
-                    }
-                    var initialStateFrom = processFull.Transitions[0].StateFrom != null ? processFull.Transitions[0].StateFrom.Name.ToString() : null;
-
-                    dynamic process1 = processFull;
-                    Action<IStateWorkflowConfig> configWorkFlow = wc =>
-                                                                  {
-                                                                      foreach (var transition in DynamicWrapperExtensions.ToEnumerable(process1.Transitions))
-                                                                      {
-                                                                          dynamic transition1 = transition;
-                                                                          Action<IStateTransitionConfig> configTransition = ws =>
-                                                                                                                            {
-                                                                                                                                if (transition1.ValidationPointError != null)
-                                                                                                                                {
-                                                                                                                                    ws.WithValidationError(() => ScriptConfiguration.GetAction(transition1.ValidationPointError.ScenarioId));
-                                                                                                                                }
-                                                                                                                                if (transition1.DeletingDocumentValidationPoint != null)
-                                                                                                                                {
-                                                                                                                                    ws.WithValidationError(
-                                                                                                                                        () => ScriptConfiguration.GetAction(transition1.DeletingDocumentValidationPoint.ScenarioId));
-                                                                                                                                }
-                                                                                                                                if (transition1.ActionPoint != null)
-                                                                                                                                {
-                                                                                                                                    ws.WithAction(() => ScriptConfiguration.GetAction(transition1.ActionPoint.ScenarioId));
-                                                                                                                                }
-                                                                                                                                if (transition1.SuccessPoint != null)
-                                                                                                                                {
-                                                                                                                                    ws.OnSuccess(() => ScriptConfiguration.GetAction(transition1.SuccessPoint.ScenarioId));
-                                                                                                                                }
-                                                                                                                                if (transition1.FailPoint != null)
-                                                                                                                                {
-                                                                                                                                    ws.OnFail(() => ScriptConfiguration.GetAction(transition1.FailPoint.ScenarioId));
-                                                                                                                                }
-                                                                                                                                if (transition1.DeletePoint != null)
-                                                                                                                                {
-                                                                                                                                    ws.OnDelete(() => ScriptConfiguration.GetAction(transition1.DeletePoint.ScenarioId));
-                                                                                                                                }
-                                                                                                                            };
-                                                                          wc.Move(configTransition);
-                                                                      }
-                                                                  };
-                    workflowConfig = wf => wf.ForState(initialStateFrom, configWorkFlow);
-                }
-
-                RegisterWorkflow(documentId, processFull.Name, workflowConfig);
-
-                Logger.Log.Debug("Item registered.", context);
-            }
-            catch (Exception e)
-            {
-                Logger.Log.Error("Item registration error.", context, e);
-            }
         }
 
         public void UnregisterDocument(string documentName)

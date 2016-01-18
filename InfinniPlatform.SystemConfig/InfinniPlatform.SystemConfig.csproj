@@ -111,27 +111,12 @@
     <Compile Include="Metadata\MetadataConfigurationProvider.cs" />
     <Compile Include="Metadata\MetadataContainer.cs" />
     <Compile Include="Metadata\ScriptConfiguration.cs" />
-    <Compile Include="StateMachine\IStateTransitionCondition.cs" />
-    <Compile Include="StateMachine\IStateTransitionConfig.cs" />
-    <Compile Include="StateMachine\IStateWorkflow.cs" />
-    <Compile Include="StateMachine\IStateWorkflowConfig.cs" />
-    <Compile Include="StateMachine\IStateWorkflowRegister.cs" />
-    <Compile Include="StateMachine\IStateWorkflowStartingPointConfig.cs" />
-    <Compile Include="StateMachine\StateTransition.cs" />
-    <Compile Include="StateMachine\StateTransitionConditionNone.cs" />
-    <Compile Include="StateMachine\StateTransitionConditionObjectStatus.cs" />
-    <Compile Include="StateMachine\StateTransitionConfig.cs" />
-    <Compile Include="StateMachine\StateWorkflow.cs" />
-    <Compile Include="StateMachine\StateWorkflowConfig.cs" />
-    <Compile Include="StateMachine\StateWorkflowRegister.cs" />
-    <Compile Include="StateMachine\StateWorkflowStartingPointConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="StateMachine\WorkflowTypes.cs" />
     <Compile Include="SystemInfo\SystemInfoProvider.cs" />
     <Compile Include="UserStorage\ApplicationUserStoreCache.cs" />
     <Compile Include="UserStorage\ApplicationUserStorePersistentStorage.cs" />

@@ -34,16 +34,6 @@ namespace InfinniPlatform.Core.Metadata
         bool IsEmbeddedConfiguration { get; }
 
         /// <summary>
-        /// Выполнить указанный поток работы для указанных метаданных
-        /// </summary>
-        /// <param name="documentId">Метаданные контейнера</param>
-        /// <param name="workflowId">Идентификатор потока</param>
-        /// <param name="target">Объект, над которым выполняется переход</param>
-        /// <param name="state">Состояние, в которое выполняется перевод</param>
-        /// <returns>Результат выполнения потока</returns>
-        dynamic MoveWorkflow(string documentId, string workflowId, dynamic target, object state = null);
-
-        /// <summary>
         /// Получить для указанного контейнера допустимый тип поиска
         /// </summary>
         /// <param name="documentId">Идентификатор контейнера метаданных</param>
@@ -56,14 +46,6 @@ namespace InfinniPlatform.Core.Metadata
         /// <param name="documentId">Идентификатор контейнера</param>
         /// <param name="searchAbility">Возможности поиска по контейнеру</param>
         void SetSearchAbilityType(string documentId, SearchAbilityType searchAbility);
-
-        /// <summary>
-        /// Зарегистрировать поток выполнения
-        /// </summary>
-        /// <param name="documentId">Идентификатор контейнера метаданных</param>
-        /// <param name="workflowId">Идентификатор потока работы</param>
-        /// <param name="actionConfiguration">Конфигурация выполняемых действий</param>
-        void RegisterWorkflow(string documentId, string workflowId, object actionConfiguration);
 
         /// <summary>
         /// Зарегистрировать список меню
