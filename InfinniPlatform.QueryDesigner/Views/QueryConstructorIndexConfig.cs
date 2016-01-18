@@ -7,6 +7,7 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 
 using InfinniPlatform.QueryDesigner.Contracts;
+using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.RestApi;
 
 using IRequestExecutor = InfinniPlatform.QueryDesigner.Contracts.IRequestExecutor;

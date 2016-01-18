@@ -3,6 +3,7 @@ using System.Linq;
 
 using InfinniPlatform.Core.Registers;
 using InfinniPlatform.NodeServiceHost;
+using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.RestApi;
 
 using NUnit.Framework;
@@ -14,7 +15,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
     /// </summary>
     [TestFixture]
     [Category(TestCategories.AcceptanceTest)]
-    [Ignore("Temporary because InfinniRegisterApi")]
+    [Ignore("Temporary because RegisterApiClient")]
     public sealed class RegistersBehavior
     {
         public const string ConfigurationId = "TestConfiguration";
@@ -52,7 +53,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             // * InfoRegister
             // * AvailableBedsRegister
 
-            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
 
             // Регистрация документов регистров
 
@@ -88,11 +89,11 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             AddPatientMovement(documentApi, new DateTime(2014, 09, 12), "Сидоров", "Палата 33", "Койка 3", "", "");
         }
 
-        private static void AddBed(InfinniDocumentApi documentApi, DateTime date, string room, string bed, string info = null)
+        private static void AddBed(DocumentApiClient documentApiClient, DateTime date, string room, string bed, string info = null)
         {
             var documentId = Guid.NewGuid().ToString();
 
-            documentApi.SetDocument(ConfigurationId, BedsRegistrationDocument, new
+            documentApiClient.SetDocument(ConfigurationId, BedsRegistrationDocument, new
             {
                 Id = documentId,
                 Room = room,
@@ -102,11 +103,11 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             });
         }
 
-        private static string AddPatientMovement(InfinniDocumentApi documentApi, DateTime date, string patient, string oldRoom, string oldBed, string newRoom, string newBed)
+        private static string AddPatientMovement(DocumentApiClient documentApiClient, DateTime date, string patient, string oldRoom, string oldBed, string newRoom, string newBed)
         {
             var documentId = Guid.NewGuid().ToString();
 
-            documentApi.SetDocument(ConfigurationId, PatientMovementDocument, new
+            documentApiClient.SetDocument(ConfigurationId, PatientMovementDocument, new
             {
                 Id = documentId,
                 PatientName = patient,
@@ -127,7 +128,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             // Given
 
-            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
             var infoProperty = Guid.NewGuid().ToString();
 
             // When
@@ -153,7 +154,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
         public void ShouldAggregateHospitalData()
         {
             // Given
-            var registerApi = new InfinniRegisterApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var registerApi = new RegisterApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
 
 
             // When & Then
@@ -207,8 +208,8 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
-            var registerApi = new InfinniRegisterApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var registerApi = new RegisterApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
 
             AddBed(documentApi, new DateTime(2014, 01, 01), "Палата 6", "Койка 1");
             AddBed(documentApi, new DateTime(2014, 01, 01), "Палата 6", "Койка 2");
@@ -235,9 +236,9 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
-            var registerApi = new InfinniRegisterApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
-            var restQueryApi = new InfinniCustomServiceApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var registerApi = new RegisterApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var restQueryApi = new CustomApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
 
             // When
 
@@ -263,8 +264,8 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             // Given
 
             var date = new DateTime(2214, 01, 01);
-            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
-            var registerApi = new InfinniRegisterApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var registerApi = new RegisterApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
 
             // When
 

@@ -1,6 +1,7 @@
 ﻿using System;
 
 using InfinniPlatform.NodeServiceHost;
+using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.RestApi;
 
 using NUnit.Framework;
@@ -14,15 +15,15 @@ namespace InfinniPlatform.Sdk.Tests
 		private const string Route = "1";
 
 		private IDisposable _server;
-		private InfinniCustomServiceApi _customServiceApi;
-		private InfinniDocumentApi _documentApi;
+		private CustomApiClient _customApiClient;
+		private DocumentApiClient _documentApiClient;
 
 		[TestFixtureSetUp]
 		public void SetUp()
 		{
 			_server = InfinniPlatformInprocessHost.Start();
-			_customServiceApi = new InfinniCustomServiceApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
-			_documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
+			_customApiClient = new CustomApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
+			_documentApiClient = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
 		}
 
 		[TestFixtureTearDown]
@@ -45,16 +46,16 @@ namespace InfinniPlatform.Sdk.Tests
 				Likes = 0
 			};
 
-			string docId = _documentApi.SetDocument("Gameshop", "review", review).Id.ToString();
+			string docId = _documentApiClient.SetDocument("Gameshop", "review", review).Id.ToString();
 
 			//When
-			_customServiceApi.ExecuteAction("Gameshop", "Review", "Like", new
+			_customApiClient.ExecuteAction("Gameshop", "Review", "Like", new
 			{
 				DocumentId = docId
 			});
 
 			//Then
-			dynamic documentResult = _documentApi.GetDocumentById("Gameshop", "review", docId);
+			dynamic documentResult = _documentApiClient.GetDocumentById("Gameshop", "review", docId);
 			Assert.AreEqual(documentResult.Likes, 1);
 		}
 

@@ -1,6 +1,7 @@
 ﻿using System;
 
 using InfinniPlatform.NodeServiceHost;
+using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.RestApi;
 
 using NUnit.Framework;
@@ -32,7 +33,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
         public void ShouldFormatExceptionMessage()
         {
             // Given
-            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
             var document = new { Id = Guid.NewGuid(), LastName = "123" };
 
             // When

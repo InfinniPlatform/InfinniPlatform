@@ -6,11 +6,11 @@ using InfinniPlatform.Sdk.Serialization;
 namespace InfinniPlatform.Sdk.RestApi
 {
     /// <summary>
-    /// REST-клиент для BlobStorageApi.
+    /// Реализует REST-клиент для FileApi.
     /// </summary>
-    public sealed class InfinniFileApi : BaseApi
+    public sealed class FileApiClient : BaseRestClient
     {
-        public InfinniFileApi(string server, int port) : base(server, port)
+        public FileApiClient(string server, int port) : base(server, port)
         {
         }
 

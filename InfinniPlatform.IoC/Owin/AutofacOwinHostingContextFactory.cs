@@ -7,6 +7,7 @@ using InfinniPlatform.IoC.Owin.Modules;
 using InfinniPlatform.IoC.Properties;
 using InfinniPlatform.IoC.WebApi;
 using InfinniPlatform.Owin.Modules;
+using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.RestApi;
 

@@ -8,11 +8,11 @@ using InfinniPlatform.Sdk.Dynamic;
 namespace InfinniPlatform.Sdk.RestApi
 {
     /// <summary>
-    /// REST-клиент для PrintViewApi.
+    /// Реализует REST-клиент для PrintViewApi.
     /// </summary>
-    public class InfinniPrintViewApi : BaseApi
+    public class PrintViewApiClient : BaseRestClient
     {
-        public InfinniPrintViewApi(string server, int port) : base(server, port)
+        public PrintViewApiClient(string server, int port) : base(server, port)
         {
         }
 

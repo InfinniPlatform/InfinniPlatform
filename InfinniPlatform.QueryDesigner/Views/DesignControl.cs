@@ -7,6 +7,7 @@ using InfinniPlatform.Core.Schema;
 using InfinniPlatform.QueryDesigner.Contracts;
 using InfinniPlatform.QueryDesigner.Forms;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.RestApi;
 
 namespace InfinniPlatform.QueryDesigner.Views

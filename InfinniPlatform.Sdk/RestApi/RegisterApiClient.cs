@@ -6,19 +6,22 @@ using InfinniPlatform.Sdk.Registers;
 
 namespace InfinniPlatform.Sdk.RestApi
 {
-    public sealed class InfinniRegisterApi : BaseApi //, IRegisterApi
+    /// <summary>
+    /// Реализует REST-клиент для RegisterApi.
+    /// </summary>
+    public sealed class RegisterApiClient : BaseRestClient
     {
         /// <summary>
         /// Префикс имени служебного документа регистра
         /// </summary>
         public const string RegisterNamePrefix = "Register_";
 
-        public InfinniRegisterApi(string server, int port) : base(server, port)
+        public RegisterApiClient(string server, int port) : base(server, port)
         {
-            _documentApi = new InfinniDocumentApi(server, port);
+            _documentApiClient = new DocumentApiClient(server, port);
         }
 
-        private readonly InfinniDocumentApi _documentApi;
+        private readonly DocumentApiClient _documentApiClient;
 
         /// <summary>
         /// Получение результата агрегации по регистру на определенную дату
@@ -117,7 +120,7 @@ namespace InfinniPlatform.Sdk.RestApi
         /// <returns>Набор записей регистра</returns>
         public IEnumerable<dynamic> GetRegisterEntries(string configuration, string register, Action<FilterBuilder> filter, int pageNumber, int pageSize)
         {
-            return _documentApi.GetDocument(configuration, RegisterNamePrefix + register, filter, pageNumber, pageSize);
+            return _documentApiClient.GetDocument(configuration, RegisterNamePrefix + register, filter, pageNumber, pageSize);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using InfinniPlatform.Sdk.RestApi;
+﻿using InfinniPlatform.Sdk.Hosting;
+using InfinniPlatform.Sdk.RestApi;
 
 namespace InfinniPlatform.QueryDesigner.Contracts
 {

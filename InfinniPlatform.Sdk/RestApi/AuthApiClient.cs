@@ -3,11 +3,11 @@
 namespace InfinniPlatform.Sdk.RestApi
 {
     /// <summary>
-    /// REST-клиент для AuthApi.
+    /// Реализует REST-клиент для AuthApi.
     /// </summary>
-    public sealed class InfinniSignInApi : BaseApi
+    public sealed class AuthApiClient : BaseRestClient
     {
-        public InfinniSignInApi(string server, int port) : base(server, port)
+        public AuthApiClient(string server, int port) : base(server, port)
         {
         }
 

@@ -5,6 +5,7 @@ using System.Linq;
 
 using InfinniPlatform.NodeServiceHost;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.RestApi;
 
 using Newtonsoft.Json;
@@ -18,13 +19,13 @@ namespace InfinniPlatform.Sdk.Tests
     public class DocumentApiTest
     {
         private IDisposable _server;
-        private InfinniDocumentApi _api;
+        private DocumentApiClient _documentApiClient;
 
         [TestFixtureSetUp]
         public void SetUp()
         {
             _server = InfinniPlatformInprocessHost.Start();
-            _api = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            _documentApiClient = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
         }
 
         [TestFixtureTearDown]
@@ -46,9 +47,9 @@ namespace InfinniPlatform.Sdk.Tests
                                                     }
                                  };
 
-            string result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
+            string result = _documentApiClient.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
 
-            dynamic document = _api.GetDocument("gameshop", "catalogue", null, 0, 1).FirstOrDefault();
+            dynamic document = _documentApiClient.GetDocument("gameshop", "catalogue", null, 0, 1).FirstOrDefault();
 
             Assert.IsNotNull(document);
 
@@ -62,9 +63,9 @@ namespace InfinniPlatform.Sdk.Tests
                                                    }
                                 };
 
-            _api.SetDocument("gameshop", "catalogue", changesObject);
+            _documentApiClient.SetDocument("gameshop", "catalogue", changesObject);
 
-            document = _api.GetDocument("gameshop", "catalogue",
+            document = _documentApiClient.GetDocument("gameshop", "catalogue",
                 f => f.AddCriteria(cr => cr.Property("Id").IsEquals(result)), 0, 1).FirstOrDefault();
 
             Assert.IsNotNull(document);
@@ -82,19 +83,19 @@ namespace InfinniPlatform.Sdk.Tests
                                      Price = 1999
                                  };
 
-            var document = _api.SetDocument("gameshop", "catalogue", documentObject);
+            var document = _documentApiClient.SetDocument("gameshop", "catalogue", documentObject);
             var result = document.Id.ToString();
 
-            var docs = _api.GetDocument("gameshop", "catalogue",
+            var docs = _documentApiClient.GetDocument("gameshop", "catalogue",
                 f => f.AddCriteria(cr => cr.Property("Id").IsEquals(result)), 0, 1);
 
             Assert.True(docs.Any());
 
-            dynamic deleteResult = _api.DeleteDocument("gameshop", "catalogue", result);
+            dynamic deleteResult = _documentApiClient.DeleteDocument("gameshop", "catalogue", result);
 
             Assert.AreEqual(deleteResult.IsValid, true);
 
-            docs = _api.GetDocument("gameshop", "catalogue",
+            docs = _documentApiClient.GetDocument("gameshop", "catalogue",
                 f => f.AddCriteria(cr => cr.Property("Id").IsEquals(result)), 0, 1);
 
             Assert.False(docs.Any());
@@ -109,9 +110,9 @@ namespace InfinniPlatform.Sdk.Tests
                                      Price = 100.50
                                  };
 
-            var result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
+            var result = _documentApiClient.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
 
-            var resultDoc = _api.GetDocument("gameshop", "catalogue",
+            var resultDoc = _documentApiClient.GetDocument("gameshop", "catalogue",
                 f => f.AddCriteria(cr => cr.Property("Id").IsEquals(result)), 0, 100,
                 s => s.AddSorting("Price", "descending"));
 
@@ -127,9 +128,9 @@ namespace InfinniPlatform.Sdk.Tests
             documentObject.Availability = new DynamicWrapper();
             documentObject.Availability.SaleStartDate = saleStartDate;
 
-            var result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
+            var result = _documentApiClient.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
 
-            var resultDoc = _api.GetDocument("gameshop", "catalogue",
+            var resultDoc = _documentApiClient.GetDocument("gameshop", "catalogue",
                 f => f.AddCriteria(cr => cr.Property("Id").IsEquals(result))
                       .AddCriteria(cr => cr.Property("Availability.SaleStartDate").IsMoreThanOrEquals(saleStartDate.Date))
                       .AddCriteria(cr => cr.Property("Availability.SaleStartDate").IsLessThanOrEquals(saleStartDate.Date.AddDays(1))), 0, 100);
@@ -145,9 +146,9 @@ namespace InfinniPlatform.Sdk.Tests
                                      Price = 1499
                                  };
 
-            var result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
+            var result = _documentApiClient.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
 
-            dynamic persistentDocument = _api.GetDocumentById("gameshop", "catalogue", result);
+            dynamic persistentDocument = _documentApiClient.GetDocumentById("gameshop", "catalogue", result);
 
             Assert.IsNotNull(persistentDocument);
             Assert.AreEqual(persistentDocument.Name, "Bioshock:Infinite");
@@ -162,9 +163,9 @@ namespace InfinniPlatform.Sdk.Tests
                                      Price = 100.50
                                  };
 
-            var result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
+            var result = _documentApiClient.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
 
-            var resultDoc = _api.GetDocument("gameshop", "catalogue",
+            var resultDoc = _documentApiClient.GetDocument("gameshop", "catalogue",
                 f => f.AddCriteria(cr => cr.Property("Id").IsIdIn(new List<string> { result })), 0, 100,
                 s => s.AddSorting("Price", "descending"));
 
@@ -174,7 +175,7 @@ namespace InfinniPlatform.Sdk.Tests
         [Test]
         public void ShouldGetDocumentByIdInEmpty()
         {
-            var resultDoc = _api.GetDocument("gameshop", "catalogue",
+            var resultDoc = _documentApiClient.GetDocument("gameshop", "catalogue",
                 f => f.AddCriteria(cr => cr.Property("Id").IsIdIn(new List<string>())), 0, 100,
                 s => s.AddSorting("Price", "descending"));
 
@@ -190,9 +191,9 @@ namespace InfinniPlatform.Sdk.Tests
                                      Price = 100.50
                                  };
 
-            var result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
+            var result = _documentApiClient.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
 
-            var resultDoc = _api.GetDocument("gameshop", "catalogue",
+            var resultDoc = _documentApiClient.GetDocument("gameshop", "catalogue",
                 f => f.AddCriteria(cr => cr.Property("Id").IsIn(result)), 0, 100,
                 s => s.AddSorting("Price", "descending"));
 
@@ -207,9 +208,9 @@ namespace InfinniPlatform.Sdk.Tests
                                      Price = 100.50
                                  };
 
-            var result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
+            var result = _documentApiClient.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
 
-            var resultDoc = _api.GetDocument("gameshop", "catalogue",
+            var resultDoc = _documentApiClient.GetDocument("gameshop", "catalogue",
                 f => f.AddCriteria(cr => cr.Property("Name").IsEmpty()), 0, 10000,
                 s => s.AddSorting("Price", "descending"));
 
@@ -225,9 +226,9 @@ namespace InfinniPlatform.Sdk.Tests
                                      Price = 100.50
                                  };
 
-            _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
+            _documentApiClient.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
 
-            var resultDoc = _api.GetDocument("gameshop", "catalogue",
+            var resultDoc = _documentApiClient.GetDocument("gameshop", "catalogue",
                 f => f.AddCriteria(cr => cr.Property("Id").IsNotEmpty()), 0, 1,
                 s => s.AddSorting("Price", "descending"));
 
@@ -243,9 +244,9 @@ namespace InfinniPlatform.Sdk.Tests
                                      Price = 1000.50
                                  };
 
-            var result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
+            var result = _documentApiClient.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
 
-            var resultDoc = _api.GetDocument("gameshop", "catalogue",
+            var resultDoc = _documentApiClient.GetDocument("gameshop", "catalogue",
                 f => f
                     .AddCriteria(cr => cr.Property("Id").IsEquals(result))
                     .AddCriteria(cr => cr.Property("Price").IsMoreThanOrEquals(1000))
@@ -264,9 +265,9 @@ namespace InfinniPlatform.Sdk.Tests
                                      Price = 1000.50
                                  };
 
-            var result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
+            var result = _documentApiClient.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
 
-            var resultDoc = _api.GetDocument("gameshop", "catalogue",
+            var resultDoc = _documentApiClient.GetDocument("gameshop", "catalogue",
                 f => f
                     .AddCriteria(cr => cr.Property("Id").IsEquals(result))
                     .AddCriteria(cr => cr.Property("Price").IsMoreThanOrEquals(1000)), 0, 100
@@ -289,10 +290,10 @@ namespace InfinniPlatform.Sdk.Tests
                                           }
                              };
 
-            string reviewId = _api.SetDocument("gameshop", "review", review).Id.ToString();
+            string reviewId = _documentApiClient.SetDocument("gameshop", "review", review).Id.ToString();
 
             //When
-            dynamic item = _api.GetDocumentById("gameshop", "review", reviewId);
+            dynamic item = _documentApiClient.GetDocumentById("gameshop", "review", reviewId);
 
             //Then
             Assert.IsNotNull(item);
@@ -321,9 +322,9 @@ namespace InfinniPlatform.Sdk.Tests
                                           }
                               };
 
-            string lotteryId = _api.SetDocument("gameshop", "lottery", lottery).Id.ToString();
+            string lotteryId = _documentApiClient.SetDocument("gameshop", "lottery", lottery).Id.ToString();
             //When
-            dynamic item = _api.GetDocumentById("gameshop", "lottery", lotteryId);
+            dynamic item = _documentApiClient.GetDocumentById("gameshop", "lottery", lotteryId);
             //Then
             Assert.IsNotNull(item);
             Assert.AreEqual(item.Users.Count, 2);
@@ -356,9 +357,9 @@ namespace InfinniPlatform.Sdk.Tests
                                                   }
                              };
 
-            string reviewId = _api.SetDocument("gameshop", "review", review).Id.ToString();
+            string reviewId = _documentApiClient.SetDocument("gameshop", "review", review).Id.ToString();
             //When
-            dynamic item = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetDocumentById("gameshop", "review", reviewId).ToString());
+            dynamic item = JsonConvert.DeserializeObject<ExpandoObject>(_documentApiClient.GetDocumentById("gameshop", "review", reviewId).ToString());
             //Then
             Assert.IsNotNull(item);
             Assert.AreEqual(item.AdditionalInfo.Count, 2);
@@ -378,7 +379,7 @@ namespace InfinniPlatform.Sdk.Tests
                                       Text = "I am first!"
                                   };
 
-            string rootCommentId = _api.SetDocument("gameshop", "comment", rootComment).Id.ToString();
+            string rootCommentId = _documentApiClient.SetDocument("gameshop", "comment", rootComment).Id.ToString();
 
             dynamic childComment = new
                                    {
@@ -391,7 +392,7 @@ namespace InfinniPlatform.Sdk.Tests
                                                        }
                                    };
 
-            string childCommentId = _api.SetDocument("gameshop", "comment", childComment).Id.ToString();
+            string childCommentId = _documentApiClient.SetDocument("gameshop", "comment", childComment).Id.ToString();
 
             dynamic childOfChildComment = new
                                           {
@@ -404,7 +405,7 @@ namespace InfinniPlatform.Sdk.Tests
                                                               }
                                           };
 
-            string childOfChildCommentId = _api.SetDocument("gameshop", "comment", childOfChildComment).Id.ToString();
+            string childOfChildCommentId = _documentApiClient.SetDocument("gameshop", "comment", childOfChildComment).Id.ToString();
 
             dynamic review = new
                              {
@@ -425,10 +426,10 @@ namespace InfinniPlatform.Sdk.Tests
                                             }
                              };
 
-            string reviewId = _api.SetDocument("gameshop", "review", review).Id.ToString();
+            string reviewId = _documentApiClient.SetDocument("gameshop", "review", review).Id.ToString();
 
             //When
-            dynamic item = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetDocumentById("gameshop", "review", reviewId).ToString());
+            dynamic item = JsonConvert.DeserializeObject<ExpandoObject>(_documentApiClient.GetDocumentById("gameshop", "review", reviewId).ToString());
             //Then
             Assert.IsNotNull(item);
             Assert.AreEqual(item.Comments.Count, 3);
@@ -444,7 +445,7 @@ namespace InfinniPlatform.Sdk.Tests
                                       Text = "I am first!"
                                   };
 
-            string rootCommentId = _api.SetDocument("gameshop", "comment", rootComment).Id.ToString();
+            string rootCommentId = _documentApiClient.SetDocument("gameshop", "comment", rootComment).Id.ToString();
 
             dynamic childComment = new
                                    {
@@ -457,7 +458,7 @@ namespace InfinniPlatform.Sdk.Tests
                                                        }
                                    };
 
-            string childCommentId = _api.SetDocument("gameshop", "comment", childComment).Id.ToString();
+            string childCommentId = _documentApiClient.SetDocument("gameshop", "comment", childComment).Id.ToString();
 
             dynamic childOfChildComment = new
                                           {
@@ -470,7 +471,7 @@ namespace InfinniPlatform.Sdk.Tests
                                                               }
                                           };
 
-            string childOfChildCommentId = _api.SetDocument("gameshop", "comment", childOfChildComment).Id.ToString();
+            string childOfChildCommentId = _documentApiClient.SetDocument("gameshop", "comment", childOfChildComment).Id.ToString();
 
             dynamic review = new
                              {
@@ -491,10 +492,10 @@ namespace InfinniPlatform.Sdk.Tests
                                             }
                              };
 
-            _api.SetDocument("gameshop", "review", review).Id.ToString();
+            _documentApiClient.SetDocument("gameshop", "review", review).Id.ToString();
 
             //When
-            dynamic item = _api.GetDocument("gameshop", "review", f => f.AddCriteria(cr => cr.Property("Comments.Id").IsEquals(childCommentId)), 0, 1).FirstOrDefault();
+            dynamic item = _documentApiClient.GetDocument("gameshop", "review", f => f.AddCriteria(cr => cr.Property("Comments.Id").IsEquals(childCommentId)), 0, 1).FirstOrDefault();
             //Then
             Assert.AreEqual(item?.Comments?.Count, 3);
         }
@@ -525,10 +526,10 @@ namespace InfinniPlatform.Sdk.Tests
 
 
             //When
-            _api.SetDocument("gameshop", "catalogue", game).Id.ToString();
-            _api.SetDocument("gameshop", "catalogue", game1).Id.ToString();
+            _documentApiClient.SetDocument("gameshop", "catalogue", game).Id.ToString();
+            _documentApiClient.SetDocument("gameshop", "catalogue", game1).Id.ToString();
 
-            dynamic item = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetDocumentById("gameshop", "catalogue", game1.Id).ToString());
+            dynamic item = JsonConvert.DeserializeObject<ExpandoObject>(_documentApiClient.GetDocumentById("gameshop", "catalogue", game1.Id).ToString());
             //Then
             Assert.IsNotNull(item);
             Assert.AreEqual(item.SimilarGames.Count, 1);
@@ -546,7 +547,7 @@ namespace InfinniPlatform.Sdk.Tests
                                Price = 1900
                            };
 
-            string id = _api.SetDocument("gameshop", "catalogue", game).Id.ToString();
+            string id = _documentApiClient.SetDocument("gameshop", "catalogue", game).Id.ToString();
 
             dynamic review = new
                              {
@@ -557,10 +558,10 @@ namespace InfinniPlatform.Sdk.Tests
                                         }
                              };
 
-            string reviewId = _api.SetDocument("gameshop", "review", review).Id.ToString();
+            string reviewId = _documentApiClient.SetDocument("gameshop", "review", review).Id.ToString();
 
             //When
-            dynamic item = _api.GetDocumentById("gameshop", "review", reviewId);
+            dynamic item = _documentApiClient.GetDocumentById("gameshop", "review", reviewId);
 
             //Then
             Assert.IsNotNull(item);
@@ -583,7 +584,7 @@ namespace InfinniPlatform.Sdk.Tests
                                ReviewRate = 95
                            };
 
-            string rateId = _api.SetDocument("gameshop", "gamerating", rate).Id.ToString();
+            string rateId = _documentApiClient.SetDocument("gameshop", "gamerating", rate).Id.ToString();
 
 
             dynamic review = new
@@ -595,10 +596,10 @@ namespace InfinniPlatform.Sdk.Tests
                                         }
                              };
 
-            string reviewId = _api.SetDocument("gameshop", "review", review).Id.ToString();
+            string reviewId = _documentApiClient.SetDocument("gameshop", "review", review).Id.ToString();
 
             //When
-            dynamic item = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetDocumentById("gameshop", "review", reviewId).ToString());
+            dynamic item = JsonConvert.DeserializeObject<ExpandoObject>(_documentApiClient.GetDocumentById("gameshop", "review", reviewId).ToString());
 
             //Then
             Assert.IsNotNull(item);
@@ -637,11 +638,11 @@ namespace InfinniPlatform.Sdk.Tests
                                   };
 
 
-            _api.SetDocument("gameshop", "catalogue", documentObject1);
-            _api.SetDocument("gameshop", "catalogue", documentObject2);
-            _api.SetDocument("gameshop", "catalogue", documentObject3);
+            _documentApiClient.SetDocument("gameshop", "catalogue", documentObject1);
+            _documentApiClient.SetDocument("gameshop", "catalogue", documentObject2);
+            _documentApiClient.SetDocument("gameshop", "catalogue", documentObject3);
 
-            var resultDoc = _api.GetDocument("gameshop", "catalogue",
+            var resultDoc = _documentApiClient.GetDocument("gameshop", "catalogue",
                 f => f.AddCriteria(cr => cr.Property("Id").IsIdIn(new List<string> { documentObject1.Id, documentObject2.Id, documentObject3.Id })), 0, 100,
                 s => s.AddSorting("Name", "descending")).ToArray();
 
@@ -667,10 +668,10 @@ namespace InfinniPlatform.Sdk.Tests
                              };
 
 
-            string reviewId = _api.SetDocument("gameshop", "review", review).Id.ToString();
+            string reviewId = _documentApiClient.SetDocument("gameshop", "review", review).Id.ToString();
 
             //When
-            dynamic item = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetDocumentById("gameshop", "review", reviewId).ToString());
+            dynamic item = JsonConvert.DeserializeObject<ExpandoObject>(_documentApiClient.GetDocumentById("gameshop", "review", reviewId).ToString());
 
             //Then
             Assert.IsNotNull(item);
@@ -688,9 +689,9 @@ namespace InfinniPlatform.Sdk.Tests
                                      Price = 1000.50
                                  };
 
-            var result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
+            var result = _documentApiClient.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
 
-            var docCount = _api.GetNumberOfDocuments("gameshop", "catalogue",
+            var docCount = _documentApiClient.GetNumberOfDocuments("gameshop", "catalogue",
                 f => f.AddCriteria(cr => cr.Property("Id").IsEquals(result)));
 
             Assert.AreEqual(1, docCount);
@@ -699,7 +700,7 @@ namespace InfinniPlatform.Sdk.Tests
         [Test]
         public void ShouldMakeGetRequestWithNullValueInFilter()
         {
-            var result = _api.GetDocument("gameshop", "catalogue",
+            var result = _documentApiClient.GetDocument("gameshop", "catalogue",
                 f => f.AddCriteria(cr => cr.Property("Id").IsEquals(null)), 0, 1);
 
             Assert.IsNotNull(result);
@@ -708,7 +709,7 @@ namespace InfinniPlatform.Sdk.Tests
         [Test]
         public void ShouldNotGetDocumentByNonExistingId()
         {
-            dynamic persistentDocument = _api.GetDocumentById("gameshop", "catalogue", Guid.NewGuid().ToString());
+            dynamic persistentDocument = _documentApiClient.GetDocumentById("gameshop", "catalogue", Guid.NewGuid().ToString());
 
             Assert.IsNull(persistentDocument);
         }
@@ -724,10 +725,10 @@ namespace InfinniPlatform.Sdk.Tests
                                SomeFieldWhichMissingInSchema = 1111
                            };
 
-            string gameId = _api.SetDocument("gameshop", "catalogue", game).Id.ToString();
+            string gameId = _documentApiClient.SetDocument("gameshop", "catalogue", game).Id.ToString();
 
             //When
-            dynamic item = JsonConvert.DeserializeObject<ExpandoObject>(_api.GetDocumentById("gameshop", "catalogue", gameId).ToString());
+            dynamic item = JsonConvert.DeserializeObject<ExpandoObject>(_documentApiClient.GetDocumentById("gameshop", "catalogue", gameId).ToString());
             //Then
             Assert.IsNotNull(item);
             Assert.False(((IDictionary<string, object>)item).ContainsKey("DisplayName"));
@@ -742,7 +743,7 @@ namespace InfinniPlatform.Sdk.Tests
                                      Price = 100.50
                                  };
 
-            var result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
+            var result = _documentApiClient.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
             Assert.True(!string.IsNullOrEmpty(result));
         }
 
@@ -756,11 +757,11 @@ namespace InfinniPlatform.Sdk.Tests
                               };
 
             //When
-            var document = _api.SetDocument("Gameshop", "Comment", comment);
+            var document = _documentApiClient.SetDocument("Gameshop", "Comment", comment);
             string docId = document.Id.ToString();
 
             //Then
-            dynamic documentResult = _api.GetDocumentById("Gameshop", "Comment", docId);
+            dynamic documentResult = _documentApiClient.GetDocumentById("Gameshop", "Comment", docId);
             Assert.AreEqual(documentResult.Text, "some text123");
         }
 
@@ -781,10 +782,10 @@ namespace InfinniPlatform.Sdk.Tests
                                       Price = 400
                                   };
 
-            _api.SetDocuments("gameshop", "catalogue", new[] { documentObject1, documentObject2 });
+            _documentApiClient.SetDocuments("gameshop", "catalogue", new[] { documentObject1, documentObject2 });
 
-            var savedObject1 = _api.GetDocumentById("gameshop", "catalogue", documentObject1.Id);
-            var savedObject2 = _api.GetDocumentById("gameshop", "catalogue", documentObject2.Id);
+            var savedObject1 = _documentApiClient.GetDocumentById("gameshop", "catalogue", documentObject1.Id);
+            var savedObject2 = _documentApiClient.GetDocumentById("gameshop", "catalogue", documentObject2.Id);
 
 
             Assert.IsNotNull(savedObject1);
@@ -800,9 +801,9 @@ namespace InfinniPlatform.Sdk.Tests
                                      Price = 100.50
                                  };
 
-            var result = _api.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
+            var result = _documentApiClient.SetDocument("gameshop", "catalogue", documentObject).Id.ToString();
 
-            var resultGet = _api.GetDocumentById("gameshop", "catalogue", result);
+            var resultGet = _documentApiClient.GetDocumentById("gameshop", "catalogue", result);
             Assert.IsNotNull(resultGet);
         }
     }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.Sdk.RestApi
+namespace InfinniPlatform.Sdk.Hosting
 {
     /// <summary>
     /// Настройки подсистемы хостинга.

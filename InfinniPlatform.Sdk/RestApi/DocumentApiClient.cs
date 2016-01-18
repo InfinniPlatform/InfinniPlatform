@@ -9,11 +9,11 @@ using InfinniPlatform.Sdk.Serialization;
 namespace InfinniPlatform.Sdk.RestApi
 {
     /// <summary>
-    /// REST-клиент для DocumentApi.
+    /// Реализует REST-клиент для DocumentApi.
     /// </summary>
-    public sealed class InfinniDocumentApi : BaseApi
+    public sealed class DocumentApiClient : BaseRestClient
     {
-        public InfinniDocumentApi(string server, int port) : base(server, port)
+        public DocumentApiClient(string server, int port) : base(server, port)
         {
         }
 

@@ -85,13 +85,13 @@
     <Compile Include="Documents\IDocumentApi.cs" />
     <Compile Include="PrintView\IPrintViewApi.cs" />
     <Compile Include="Registers\IRegisterApi.cs" />
-    <Compile Include="RestApi\BaseApi.cs" />
-    <Compile Include="RestApi\HostingConfig.cs" />
-    <Compile Include="RestApi\InfinniAuthApi.cs" />
-    <Compile Include="RestApi\InfinniCustomServiceApi.cs" />
-    <Compile Include="RestApi\InfinniRegisterApi.cs" />
-    <Compile Include="RestApi\InfinniSignInApi.cs" />
-    <Compile Include="RestApi\InfinniPrintViewApi.cs" />
+    <Compile Include="RestApi\BaseRestClient.cs" />
+    <Compile Include="Hosting\HostingConfig.cs" />
+    <Compile Include="RestApi\SessionApiClient.cs" />
+    <Compile Include="RestApi\CustomApiClient.cs" />
+    <Compile Include="RestApi\RegisterApiClient.cs" />
+    <Compile Include="RestApi\AuthApiClient.cs" />
+    <Compile Include="RestApi\PrintViewApiClient.cs" />
     <Compile Include="Security\IApplicationUserManager.cs" />
     <Compile Include="Serialization\IObjectSerializer.cs" />
     <Compile Include="Serialization\JsonObjectSerializer.cs" />
@@ -122,8 +122,8 @@
     <Compile Include="Dynamic\ReflectionCache.cs" />
     <Compile Include="Dynamic\ReflectionExtensions.cs" />
     <Compile Include="Documents\FilterBuilder.cs" />
-    <Compile Include="RestApi\InfinniDocumentApi.cs" />
-    <Compile Include="RestApi\InfinniFileApi.cs" />
+    <Compile Include="RestApi\DocumentApiClient.cs" />
+    <Compile Include="RestApi\FileApiClient.cs" />
     <Compile Include="IoC\ContainerExtensions.cs" />
     <Compile Include="IoC\IContainerBuilder.cs" />
     <Compile Include="IoC\IContainerInstanceActivator.cs" />
@@ -138,9 +138,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="RestApi\RequestExecutor.cs" />
-    <Compile Include="RestApi\RequestExecutorExtensions.cs" />
-    <Compile Include="RestApi\RestQueryResponse.cs" />
-    <Compile Include="RestApi\RouteBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Documents\SortingBuilder.cs" />
   </ItemGroup>

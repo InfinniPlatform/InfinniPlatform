@@ -1,6 +1,7 @@
 ﻿using System;
 
 using InfinniPlatform.NodeServiceHost;
+using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.RestApi;
 
 using NUnit.Framework;
@@ -33,8 +34,8 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var documentApi = new InfinniDocumentApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
-            var printViewApi = new InfinniPrintViewApi(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var printViewApi = new PrintViewApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
 
             var document = new { TestProperty = Guid.NewGuid() };
 
