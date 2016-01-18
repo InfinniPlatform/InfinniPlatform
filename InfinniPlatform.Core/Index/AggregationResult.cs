@@ -43,5 +43,11 @@ namespace InfinniPlatform.Core.Index
         {
             get { return _backets; }
         }
+
+        //TODO Избавиться в процессе рефакторинга регистров.
+        /// <remarks>
+        /// Раньше появлялось только в динамическом контексте. Поведение до конца не изучено.
+        /// </remarks>
+        public List<AggregationResult> DenormalizationResult { get; set; }
     }
 }
