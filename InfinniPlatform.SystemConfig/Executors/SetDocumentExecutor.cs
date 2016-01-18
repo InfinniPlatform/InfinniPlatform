@@ -166,7 +166,7 @@ namespace InfinniPlatform.SystemConfig.Executors
             var actionContext = new ActionContext
                                 {
                                     Configuration = configuration,
-                                    Metadata = documentType,
+                                    DocumentType = documentType,
                                     Item = actionItem
                                 };
 

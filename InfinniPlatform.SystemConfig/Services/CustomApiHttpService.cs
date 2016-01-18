@@ -36,7 +36,7 @@ namespace InfinniPlatform.SystemConfig.Services
             var context = new ActionContext
                           {
                               Configuration = configuration,
-                              Metadata = documentType,
+                              DocumentType = documentType,
                               Item = changesObject,
                               Result = changesObject
                           };

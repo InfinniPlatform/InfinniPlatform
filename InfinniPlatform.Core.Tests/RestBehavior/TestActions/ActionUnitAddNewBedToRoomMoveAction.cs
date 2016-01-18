@@ -24,7 +24,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
                 r => r.CreateEntry(
                     target.Configuration,
                     RegistersBehavior.AvailableBedsRegister,
-                    target.Metadata,
+                    target.DocumentType,
                     target.Item,
                     target.Item.Date,
                     isInfoRegister));

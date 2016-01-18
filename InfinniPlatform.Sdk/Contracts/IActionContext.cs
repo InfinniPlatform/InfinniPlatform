@@ -8,17 +8,17 @@
         /// <summary>
         /// Конфигурация текущего запроса.
         /// </summary>
-        string Configuration { get; set; }
+        string Configuration { get; }
 
         /// <summary>
         /// Тип документа текущего запроса.
         /// </summary>
-        string Metadata { get; set; }
+        string DocumentType { get; }
 
         /// <summary>
         /// Данные для обработки.
         /// </summary>
-        dynamic Item { get; set; }
+        dynamic Item { get; }
 
         /// <summary>
         /// Признак успешности обработки.

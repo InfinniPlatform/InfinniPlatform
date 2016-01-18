@@ -11,7 +11,7 @@ namespace InfinniPlatform.Core.Contracts
 
         public string Configuration { get; set; }
 
-        public string Metadata { get; set; }
+        public string DocumentType { get; set; }
 
         public dynamic Item { get; set; }
 

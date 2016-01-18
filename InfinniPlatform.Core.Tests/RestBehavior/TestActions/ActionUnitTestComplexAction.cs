@@ -18,7 +18,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
             if (target.Item.TestValue != "Test" && target.Item.RegisterMoveValue != "RegisterMove")
             {
                 string configuration = target.Configuration;
-                string documentType = target.Metadata;
+                string documentType = target.DocumentType;
 
                 dynamic documentInstance = new DynamicWrapper();
                 documentInstance.TestValue = "Test";
