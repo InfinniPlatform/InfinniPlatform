@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Registers;
 
 namespace InfinniPlatform.Core.Index
@@ -48,6 +49,6 @@ namespace InfinniPlatform.Core.Index
         /// <remarks>
         /// Раньше появлялось только в динамическом контексте. Поведение до конца не изучено.
         /// </remarks>
-        public List<AggregationResult> DenormalizationResult { get; set; }
+        public DynamicWrapper DenormalizationResult { get; set; }
     }
 }
