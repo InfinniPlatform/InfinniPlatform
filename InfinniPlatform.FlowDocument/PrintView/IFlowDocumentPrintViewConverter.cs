@@ -1,7 +1,6 @@
 ﻿using System.IO;
 
 using InfinniPlatform.FlowDocument.Model.Views;
-using InfinniPlatform.Sdk.Environment;
 using InfinniPlatform.Sdk.PrintView;
 
 namespace InfinniPlatform.FlowDocument.PrintView

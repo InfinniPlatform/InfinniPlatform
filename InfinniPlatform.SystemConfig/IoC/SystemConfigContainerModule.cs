@@ -1,5 +1,5 @@
 ﻿using InfinniPlatform.Core.Security;
-using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.PrintView;
 using InfinniPlatform.Sdk.Registers;

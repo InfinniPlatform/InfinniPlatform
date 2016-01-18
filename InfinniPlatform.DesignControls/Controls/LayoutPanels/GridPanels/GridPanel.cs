@@ -13,7 +13,6 @@ using InfinniPlatform.DesignControls.Properties;
 using InfinniPlatform.DesignControls.PropertyDesigner;
 using InfinniPlatform.DesignControls.PropertyEditors;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment;
 
 namespace InfinniPlatform.DesignControls.Controls.LayoutPanels.GridPanels
 {

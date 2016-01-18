@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Sdk.Environment
+﻿namespace InfinniPlatform.Sdk.Hosting
 {
     /// <summary>
     /// Обработчик событий приложения.

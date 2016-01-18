@@ -14,12 +14,20 @@ namespace InfinniPlatform.Core.IoC
     {
         public void Load(IContainerBuilder builder)
         {
+            // Configuration
+
             builder.RegisterInstance(AppConfiguration.Instance)
                    .As<IAppConfiguration>();
+
+            builder.RegisterFactory(r => r.Resolve<IAppConfiguration>().GetSection<AppEnvironment>(AppEnvironment.SectionName))
+                   .As<IAppEnvironment>()
+                   .SingleInstance();
 
             builder.RegisterType<GZipDataCompressor>()
                    .As<IDataCompressor>()
                    .SingleInstance();
+
+            // Logging
 
             builder.RegisterType<Log4NetLog>()
                    .As<ILog>()
@@ -28,6 +36,10 @@ namespace InfinniPlatform.Core.IoC
             builder.RegisterType<PerformanceLog>()
                    .As<IPerformanceLog>()
                    .SingleInstance();
+
+
+            builder.OnCreateInstance(new Log4NetContainerParameterResolver());
+            builder.OnActivateInstance(new Log4NetContainerInstanceActivator());
 
             // SaaS
 
@@ -40,10 +52,6 @@ namespace InfinniPlatform.Core.IoC
             builder.RegisterType<DocumentTransactionScopeProvider>()
                    .As<IDocumentTransactionScopeProvider>()
                    .SingleInstance();
-
-            // Log4Net
-            builder.OnCreateInstance(new Log4NetContainerParameterResolver());
-            builder.OnActivateInstance(new Log4NetContainerInstanceActivator());
 
             // DocumentApi
 

@@ -1,7 +1,6 @@
 ﻿using System;
 
 using InfinniPlatform.Core.Validation;
-using InfinniPlatform.Sdk.Environment;
 
 namespace InfinniPlatform.MetadataDesigner.Views.Validation.Builders
 {

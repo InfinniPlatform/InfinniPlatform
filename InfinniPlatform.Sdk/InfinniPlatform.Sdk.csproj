@@ -56,6 +56,7 @@
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Settings\IAppEnvironment.cs" />
     <Compile Include="Security\IUserIdentityProvider.cs" />
     <Compile Include="Serialization\SerializationExtensions.cs" />
     <Compile Include="Services\HttpConstants.cs" />
@@ -97,7 +98,7 @@
     <Compile Include="Serialization\KnownTypesContainer.cs" />
     <Compile Include="Serialization\KnownTypesJsonConverter.cs" />
     <Compile Include="Session\ISessionManager.cs" />
-    <Compile Include="Environment\IApplicationEventHandler.cs" />
+    <Compile Include="Hosting\IApplicationEventHandler.cs" />
     <Compile Include="Logging\ExceptionExtensions.cs" />
     <Compile Include="Logging\IPerformanceLog.cs" />
     <Compile Include="Logging\JsonEvent.cs" />

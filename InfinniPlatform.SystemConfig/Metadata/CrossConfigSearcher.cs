@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using InfinniPlatform.Core.Index;
 using InfinniPlatform.ElasticSearch.Factories;
-using InfinniPlatform.Sdk.Environment;
 
 namespace InfinniPlatform.SystemConfig.Metadata
 {

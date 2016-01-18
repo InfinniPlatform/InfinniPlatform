@@ -106,11 +106,12 @@ namespace InfinniPlatform.Caching.IoC
 
         private static ICache GetCache(IContainerResolver resolver)
         {
+            var appSettings = resolver.Resolve<IAppEnvironment>();
             var cacheSettings = resolver.Resolve<CacheSettings>();
 
             ICache cache;
 
-            var keyspace = cacheSettings.Name;
+            var keyspace = appSettings.Name;
 
             if (string.Equals(cacheSettings.Type, CacheSettings.RedisCacheKey, StringComparison.OrdinalIgnoreCase))
             {
@@ -138,9 +139,10 @@ namespace InfinniPlatform.Caching.IoC
 
         private static IMessageBusManager GetMessageBusManager(IContainerResolver resolver)
         {
+            var appSettings = resolver.Resolve<IAppEnvironment>();
             var cacheSettings = resolver.Resolve<CacheSettings>();
 
-            var keyspace = cacheSettings.Name;
+            var keyspace = appSettings.Name;
 
             IMessageBusManager messageBusManager;
 
@@ -161,9 +163,10 @@ namespace InfinniPlatform.Caching.IoC
 
         private static IMessageBusPublisher GetMessageBusPublisher(IContainerResolver resolver)
         {
+            var appSettings = resolver.Resolve<IAppEnvironment>();
             var cacheSettings = resolver.Resolve<CacheSettings>();
 
-            var keyspace = cacheSettings.Name;
+            var keyspace = appSettings.Name;
 
             IMessageBusPublisher messageBusPublisher;
 

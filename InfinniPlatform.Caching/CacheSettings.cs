@@ -16,15 +16,9 @@
 
         public CacheSettings()
         {
-            Name = "InfinniPlatform";
             Type = MemoryCacheKey;
         }
 
-
-        /// <summary>
-        /// Имя кэша для приложения.
-        /// </summary>
-        public string Name { get; set; }
 
         /// <summary>
         /// Тип кэша для приложения.

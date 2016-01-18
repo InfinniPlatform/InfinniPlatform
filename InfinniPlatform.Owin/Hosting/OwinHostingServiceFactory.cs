@@ -3,7 +3,7 @@
 using InfinniPlatform.Core.Factories;
 using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Owin.Modules;
-using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Hosting;
 
 namespace InfinniPlatform.Owin.Hosting
 {

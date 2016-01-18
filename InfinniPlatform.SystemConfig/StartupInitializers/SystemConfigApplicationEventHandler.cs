@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.Hosting;
 
 namespace InfinniPlatform.SystemConfig.StartupInitializers
 {

@@ -9,7 +9,6 @@ using InfinniPlatform.DesignControls.ObjectInspector;
 using InfinniPlatform.DesignControls.PropertyDesigner;
 using InfinniPlatform.DesignControls.PropertyEditors;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment;
 
 namespace InfinniPlatform.DesignControls.Controls.ActionElements
 {
