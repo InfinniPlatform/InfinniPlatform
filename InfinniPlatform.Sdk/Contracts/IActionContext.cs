@@ -1,7 +1,7 @@
 ﻿namespace InfinniPlatform.Sdk.Contracts
 {
     /// <summary>
-    /// Контекст обработчика бизнес-логики.
+    /// Контекст прикладного обработчика.
     /// </summary>
     public interface IActionContext
     {

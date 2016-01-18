@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using InfinniPlatform.Core.Runtime;
 using InfinniPlatform.Runtime.Properties;
+using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Logging;
 
 namespace InfinniPlatform.Runtime.Implementation
@@ -28,7 +29,7 @@ namespace InfinniPlatform.Runtime.Implementation
         private readonly ILog _log;
 
 
-        public void InvokeScript(string actionUnitId, object actionUnitContext)
+        public void InvokeScript(string actionUnitId, IActionContext actionUnitContext)
         {
             var start = DateTime.Now;
 
@@ -61,7 +62,7 @@ namespace InfinniPlatform.Runtime.Implementation
             }
         }
 
-        public void InvokeScriptByType(string actionUnitType, object actionUnitContext)
+        public void InvokeScriptByType(string actionUnitType, IActionContext actionUnitContext)
         {
             var start = DateTime.Now;
 
