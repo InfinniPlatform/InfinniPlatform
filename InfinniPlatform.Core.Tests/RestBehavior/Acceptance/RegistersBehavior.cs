@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Core.Registers;
 using InfinniPlatform.NodeServiceHost;
-using InfinniPlatform.Sdk.Hosting;
-using InfinniPlatform.Sdk.RestApi;
+using InfinniPlatform.Sdk.Documents;
+using InfinniPlatform.Sdk.Registers;
 
 using NUnit.Framework;
 
@@ -15,7 +16,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
     /// </summary>
     [TestFixture]
     [Category(TestCategories.AcceptanceTest)]
-    [Ignore("Temporary because RegisterApiClient")]
+    [Ignore("Temporary because it works in REST context only")]
     public sealed class RegistersBehavior
     {
         public const string ConfigurationId = "TestConfiguration";
@@ -27,23 +28,21 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
         public const string AvailableBedsRegister = "RegisterTest_AvailableBedsRegister";
         public const string ConfigurationRegistersCommonInfo = ConfigurationId + RegisterConstants.RegistersCommonInfo;
 
-        private IDisposable _server;
+        private IDocumentApi _documentApi;
+        private IRegisterApi _registerApi;
 
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-            _server = InfinniPlatformInprocessHost.Start();
+            var containerResolver = InfinniPlatformInprocessHost.CreateContainerResolver();
+
+            _documentApi = containerResolver.Resolve<IDocumentApi>();
+            _registerApi = containerResolver.Resolve<IRegisterApi>();
 
             InitTestData();
         }
 
-        [TestFixtureTearDown]
-        public void FixtureTearDown()
-        {
-            _server.Dispose();
-        }
-
-        private static void InitTestData()
+        private void InitTestData()
         {
             // Тестовая конфигурация содержит документы двух типов: 
             // * BedsRegistrationDocument (Реестр коек)
@@ -53,47 +52,45 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             // * InfoRegister
             // * AvailableBedsRegister
 
-            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
-
             // Регистрация документов регистров
 
-            documentApi.SetDocuments(ConfigurationId, ConfigurationRegistersCommonInfo, new[] { new { Id = InfoRegister } });
-            documentApi.SetDocuments(ConfigurationId, ConfigurationRegistersCommonInfo, new[] { new { Id = AvailableBedsRegister } });
+            _documentApi.SetDocuments(ConfigurationId, ConfigurationRegistersCommonInfo, new[] { new { Id = InfoRegister } });
+            _documentApi.SetDocuments(ConfigurationId, ConfigurationRegistersCommonInfo, new[] { new { Id = AvailableBedsRegister } });
 
             // Регистрация коек
 
-            AddBed(documentApi, new DateTime(2014, 01, 01), "Палата 33", "Койка 1");
-            AddBed(documentApi, new DateTime(2014, 01, 01), "Палата 33", "Койка 2");
-            AddBed(documentApi, new DateTime(2014, 01, 01), "Палата 33", "Койка 3");
+            AddBed(new DateTime(2014, 01, 01), "Палата 33", "Койка 1");
+            AddBed(new DateTime(2014, 01, 01), "Палата 33", "Койка 2");
+            AddBed(new DateTime(2014, 01, 01), "Палата 33", "Койка 3");
 
-            AddBed(documentApi, new DateTime(2014, 01, 01), "Палата 54", "Койка 1");
-            AddBed(documentApi, new DateTime(2014, 01, 01), "Палата 54", "Койка 2");
-            AddBed(documentApi, new DateTime(2014, 01, 01), "Палата 54", "Койка 3");
+            AddBed(new DateTime(2014, 01, 01), "Палата 54", "Койка 1");
+            AddBed(new DateTime(2014, 01, 01), "Палата 54", "Койка 2");
+            AddBed(new DateTime(2014, 01, 01), "Палата 54", "Койка 3");
 
             // Поступление новых пациентов
 
-            AddPatientMovement(documentApi, new DateTime(2014, 08, 10), "Иванов", "", "", "Палата 54", "Койка 3");
-            AddPatientMovement(documentApi, new DateTime(2014, 08, 10), "Петров", "", "", "Палата 54", "Койка 2");
-            AddPatientMovement(documentApi, new DateTime(2014, 08, 10), "Сидоров", "", "", "Палата 54", "Койка 1");
+            AddPatientMovement(new DateTime(2014, 08, 10), "Иванов", "", "", "Палата 54", "Койка 3");
+            AddPatientMovement(new DateTime(2014, 08, 10), "Петров", "", "", "Палата 54", "Койка 2");
+            AddPatientMovement(new DateTime(2014, 08, 10), "Сидоров", "", "", "Палата 54", "Койка 1");
 
-            // Переводы пациентов в другие палаты
+            // Переводы пациентов
 
-            AddPatientMovement(documentApi, new DateTime(2014, 08, 11), "Иванов", "Палата 54", "Койка 3", "Палата 33", "Койка 1");
-            AddPatientMovement(documentApi, new DateTime(2014, 08, 11), "Петров", "Палата 54", "Койка 2", "Палата 33", "Койка 2");
-            AddPatientMovement(documentApi, new DateTime(2014, 08, 11), "Сидоров", "Палата 54", "Койка 1", "Палата 33", "Койка 3");
+            AddPatientMovement(new DateTime(2014, 08, 11), "Иванов", "Палата 54", "Койка 3", "Палата 33", "Койка 1");
+            AddPatientMovement(new DateTime(2014, 08, 11), "Петров", "Палата 54", "Койка 2", "Палата 33", "Койка 2");
+            AddPatientMovement(new DateTime(2014, 08, 11), "Сидоров", "Палата 54", "Койка 1", "Палата 33", "Койка 3");
 
             // Выписка пациентов
 
-            AddPatientMovement(documentApi, new DateTime(2014, 08, 12), "Иванов", "Палата 33", "Койка 1", "", "");
-            AddPatientMovement(documentApi, new DateTime(2014, 09, 12), "Петорв", "Палата 33", "Койка 2", "", "");
-            AddPatientMovement(documentApi, new DateTime(2014, 09, 12), "Сидоров", "Палата 33", "Койка 3", "", "");
+            AddPatientMovement(new DateTime(2014, 08, 12), "Иванов", "Палата 33", "Койка 1", "", "");
+            AddPatientMovement(new DateTime(2014, 09, 12), "Петорв", "Палата 33", "Койка 2", "", "");
+            AddPatientMovement(new DateTime(2014, 09, 12), "Сидоров", "Палата 33", "Койка 3", "", "");
         }
 
-        private static void AddBed(DocumentApiClient documentApiClient, DateTime date, string room, string bed, string info = null)
+        private void AddBed(DateTime date, string room, string bed, string info = null)
         {
             var documentId = Guid.NewGuid().ToString();
 
-            documentApiClient.SetDocument(ConfigurationId, BedsRegistrationDocument, new
+            _documentApi.SetDocument(ConfigurationId, BedsRegistrationDocument, new
             {
                 Id = documentId,
                 Room = room,
@@ -103,11 +100,11 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             });
         }
 
-        private static string AddPatientMovement(DocumentApiClient documentApiClient, DateTime date, string patient, string oldRoom, string oldBed, string newRoom, string newBed)
+        private string AddPatientMovement(DateTime date, string patient, string oldRoom, string oldBed, string newRoom, string newBed)
         {
             var documentId = Guid.NewGuid().ToString();
 
-            documentApiClient.SetDocument(ConfigurationId, PatientMovementDocument, new
+            _documentApi.SetDocument(ConfigurationId, PatientMovementDocument, new
             {
                 Id = documentId,
                 PatientName = patient,
@@ -128,19 +125,18 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             // Given
 
-            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
             var infoProperty = Guid.NewGuid().ToString();
 
             // When
 
-            AddBed(documentApi, new DateTime(2114, 01, 01, 9, 1, 1), "Палата 33", "Койка 1", infoProperty);
-            AddBed(documentApi, new DateTime(2114, 01, 15, 1, 2, 3), "Палата 33", "Койка 1", infoProperty);
-            AddBed(documentApi, new DateTime(2114, 02, 01, 7, 6, 5), "Палата 1", "Койка 3", infoProperty);
-            AddBed(documentApi, new DateTime(2114, 02, 02, 4, 4, 4), "Палата 1", "Койка 3", infoProperty);
-            AddBed(documentApi, new DateTime(2114, 02, 04, 3, 2, 1), "Палата 1", "Койка 3", infoProperty);
-            AddBed(documentApi, new DateTime(2114, 03, 01, 3, 2, 1), "Палата 1", "Койка 6", infoProperty);
+            AddBed(new DateTime(2114, 01, 01, 9, 1, 1), "Палата 33", "Койка 1", infoProperty);
+            AddBed(new DateTime(2114, 01, 15, 1, 2, 3), "Палата 33", "Койка 1", infoProperty);
+            AddBed(new DateTime(2114, 02, 01, 7, 6, 5), "Палата 1", "Койка 3", infoProperty);
+            AddBed(new DateTime(2114, 02, 02, 4, 4, 4), "Палата 1", "Койка 3", infoProperty);
+            AddBed(new DateTime(2114, 02, 04, 3, 2, 1), "Палата 1", "Койка 3", infoProperty);
+            AddBed(new DateTime(2114, 03, 01, 3, 2, 1), "Палата 1", "Койка 6", infoProperty);
 
-            var registerEntries = documentApi.GetDocument(ConfigurationId, infoRegisterDocument, f => f.AddCriteria(c => c.Property("Info").IsEquals(infoProperty)), 0, 10);
+            var registerEntries = _documentApi.GetDocument(ConfigurationId, infoRegisterDocument, f => f.AddCriteria(c => c.Property("Info").IsEquals(infoProperty)), 0, 10);
 
             // Then
 
@@ -153,30 +149,26 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
         [Test]
         public void ShouldAggregateHospitalData()
         {
-            // Given
-            var registerApi = new RegisterApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
-
-
             // When & Then
 
             // 01.02.2014 - Все койки свободны, ни одного пациента еще не было
-            var aggregationInfo1 = registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 2, 1), new[] { "Room", "Bed" }).ToArray();
+            IEnumerable<dynamic> aggregationInfo1 = _registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 2, 1), dimensionsProperties: new[] { "Room", "Bed" }).ToArray();
             Assert.AreEqual(1d, aggregationInfo1.FirstOrDefault(i => i.Room == "палата 54" && i.Bed == "койка 3")?.Value);
             Assert.AreEqual(1d, aggregationInfo1.FirstOrDefault(i => i.Room == "палата 33" && i.Bed == "койка 3")?.Value);
 
             // 12.08.2014 - Свободные койки по палатам: "Палата 33" - 2 пациента, "Палата 54" - свободна
-            var aggregationInfo2 = registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 08, 12), new[] { "Room" }).ToArray();
+            IEnumerable<dynamic> aggregationInfo2 = _registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 08, 12), dimensionsProperties: new[] { "Room" }).ToArray();
             Assert.AreEqual(3d, aggregationInfo2.FirstOrDefault(i => i.Room == "палата 54")?.Value);
             Assert.AreEqual(1d, aggregationInfo2.FirstOrDefault(i => i.Room == "палата 33")?.Value);
 
             // 12.08.2014 - Свободные койки по номерам
-            var aggregationInfo3 = registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 08, 12), new[] { "Bed" }, new[] { "Value" }).ToArray();
+            IEnumerable<dynamic> aggregationInfo3 = _registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 08, 12), dimensionsProperties: new[] { "Bed" }, valueProperties: new[] { "Value" }).ToArray();
             Assert.AreEqual(2d, aggregationInfo3.FirstOrDefault(i => i.Bed == "койка 1")?.Value);
             Assert.AreEqual(1d, aggregationInfo3.FirstOrDefault(i => i.Bed == "койка 2")?.Value);
             Assert.AreEqual(1d, aggregationInfo3.FirstOrDefault(i => i.Bed == "койка 3")?.Value);
 
             // 12-14.08.2014 - Изменение занятости коек за период - освободилась "Койка 1" в "Палата 33"
-            var aggregationInfo4 = registerApi.GetValuesBetweenDates(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 08, 12), new DateTime(2014, 08, 14));
+            IEnumerable<dynamic> aggregationInfo4 = _registerApi.GetValuesBetweenDates(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 08, 12), new DateTime(2014, 08, 14));
             Assert.AreEqual(1, aggregationInfo4.FirstOrDefault(a => a.Room == "палата 33" && a.Bed == "койка 1")?.Value);
 
             // Получение информации по типу регистратора - были добавлены все койки
@@ -185,12 +177,12 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             //Assert.AreEqual(1d, aggregationInfo5.FirstOrDefault(i => i.Room == "палата 33" && i.Bed == "койка 3")?.Value);
 
             // 18.08.2014 - "Палата 54" свободна, в "Палата 33" занято 2 койки
-            var aggregationInfo6 = registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 8, 18)).ToArray();
+            IEnumerable<dynamic> aggregationInfo6 = _registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 8, 18)).ToArray();
             Assert.AreEqual(1d, aggregationInfo6.FirstOrDefault(a => a.Room == "палата 54" && a.Bed == "койка 3")?.Value);
             Assert.AreEqual(0d, aggregationInfo6.FirstOrDefault(a => a.Room == "палата 33" && a.Bed == "койка 3")?.Value);
 
             // 01.10.2014 - Все койки свободны
-            var aggregationInfo7 = registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 10, 1)).ToArray();
+            IEnumerable<dynamic> aggregationInfo7 = _registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 10, 1)).ToArray();
             Assert.AreEqual(1d, aggregationInfo7.FirstOrDefault(i => i.Room == "палата 54" && i.Bed == "койка 3")?.Value);
             Assert.AreEqual(1d, aggregationInfo7.FirstOrDefault(i => i.Room == "палата 33" && i.Bed == "койка 3")?.Value);
 
@@ -208,49 +200,40 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
-            var registerApi = new RegisterApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
-
-            AddBed(documentApi, new DateTime(2014, 01, 01), "Палата 6", "Койка 1");
-            AddBed(documentApi, new DateTime(2014, 01, 01), "Палата 6", "Койка 2");
-            AddBed(documentApi, new DateTime(2014, 01, 01), "Палата 6", "Койка 3");
+            AddBed(new DateTime(2014, 01, 01), "Палата 6", "Койка 1");
+            AddBed(new DateTime(2014, 01, 01), "Палата 6", "Койка 2");
+            AddBed(new DateTime(2014, 01, 01), "Палата 6", "Койка 3");
 
             // When & Then
 
             // 01.02.2014 - Все койки свободны, ни одного пациента еще не было
-            var aggregationInfo1 = registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 2, 1), new[] { "Room", "Bed" }).ToArray();
+            IEnumerable<dynamic> aggregationInfo1 = _registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 2, 1), dimensionsProperties: new[] { "Room", "Bed" }).ToArray();
             Assert.AreEqual(1d, aggregationInfo1.FirstOrDefault(i => i.Room == "палата 54" && i.Bed == "койка 3")?.Value);
             Assert.AreEqual(1d, aggregationInfo1.FirstOrDefault(i => i.Room == "палата 33" && i.Bed == "койка 3")?.Value);
 
             // When & Then
 
-            AddPatientMovement(documentApi, new DateTime(2014, 08, 10), "Иванов", "", "", "Палата 6", "Койка 1");
+            AddPatientMovement(new DateTime(2014, 08, 10), "Иванов", "", "", "Палата 6", "Койка 1");
 
             // 12.08.2014 - Занята только первая койка в "Палата 6"
-            var aggregationInfo2 = registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 08, 12), new[] { "Room" }).ToArray();
+            IEnumerable<dynamic> aggregationInfo2 = _registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 08, 12), dimensionsProperties: new[] { "Room" }).ToArray();
             Assert.AreEqual(2, aggregationInfo2.FirstOrDefault(i => i.Room == "палата 6")?.Value);
         }
 
         [Test(Description = "Тестирование функционала таблицы итогов")]
         public void ShouldCalculateTotals()
         {
-            // Given
-
-            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
-            var registerApi = new RegisterApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
-            var restQueryApi = new CustomApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
-
             // When
 
             // Миграция поместит имеющиеся на данный момент записи в таблицу итогов
-            restQueryApi.ExecuteAction("SystemConfig", "metadata", "runmigration", new { MigrationName = "CalculateTotalsForRegisters", ConfigurationName = ConfigurationId, Version = "1.0.0.0" });
+            _registerApi.RecalculateTotals(ConfigurationId);
 
-            AddPatientMovement(documentApi, DateTime.Now.AddYears(2), "Иванов", "Палата 33", "Койка 3", "", "");
-            AddPatientMovement(documentApi, DateTime.Now.AddYears(2), "Петров", "Палата 33", "Койка 2", "", "");
-            AddPatientMovement(documentApi, DateTime.Now.AddYears(2), "Сидоров", "Палата 33", "Койка 1", "", "");
+            AddPatientMovement(DateTime.Now.AddYears(2), "Иванов", "Палата 33", "Койка 3", "", "");
+            AddPatientMovement(DateTime.Now.AddYears(2), "Петров", "Палата 33", "Койка 2", "", "");
+            AddPatientMovement(DateTime.Now.AddYears(2), "Сидоров", "Палата 33", "Койка 1", "", "");
 
             // В данном случае расчет будет произведен с учетом данных из таблицы итогов
-            var aggregationInfo = registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, DateTime.Now.AddYears(3)).ToArray();
+            IEnumerable<dynamic> aggregationInfo = _registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, DateTime.Now.AddYears(3)).ToArray();
 
             // Then
 
@@ -264,22 +247,20 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             // Given
 
             var date = new DateTime(2214, 01, 01);
-            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
-            var registerApi = new RegisterApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
 
             // When
 
-            AddBed(documentApi, date, "Палата 123", "Койка 321");
+            AddBed(date, "Палата 123", "Койка 321");
 
-            var documentId = AddPatientMovement(documentApi, date, "Иванов", "", "", "Палата 123", "Койка 321");
+            var documentId = AddPatientMovement(date, "Иванов", "", "", "Палата 123", "Койка 321");
 
-            var registerEntries1 = registerApi.GetRegisterEntries(ConfigurationId, AvailableBedsRegister,
-                f => f.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty).IsMoreThanOrEquals(date)), 0, 10);
+            var registerEntries1 = _registerApi.GetEntries(ConfigurationId, AvailableBedsRegister,
+                new[] { new FilterCriteria(RegisterConstants.DocumentDateProperty, date, CriteriaType.IsMoreThanOrEquals) }, 0, 10);
 
-            var deleteDocument = documentApi.DeleteDocument(ConfigurationId, BedsRegistrationDocument, documentId);
+            _documentApi.DeleteDocument(ConfigurationId, BedsRegistrationDocument, documentId);
 
-            var registerEntries2 = registerApi.GetRegisterEntries(ConfigurationId, AvailableBedsRegister,
-                f => f.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty).IsMoreThanOrEquals(date)), 0, 10);
+            var registerEntries2 = _registerApi.GetEntries(ConfigurationId, AvailableBedsRegister,
+                new[] { new FilterCriteria(RegisterConstants.DocumentDateProperty, date, CriteriaType.IsMoreThanOrEquals) }, 0, 10);
 
             // Then
 

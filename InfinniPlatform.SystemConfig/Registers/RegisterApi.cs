@@ -280,10 +280,11 @@ namespace InfinniPlatform.SystemConfig.Registers
         /// Рассчитывает итоги для регистров накопления на текущую дату.
         /// </summary>
         public void RecalculateTotals(
-            string configuration,
-            string registerName)
+            string configuration)
         {
-            var registersInfo = _documentApi.GetDocument(configuration, configuration + RegisterConstants.RegistersCommonInfo, null, 0, 1000);
+            var registerName = configuration + RegisterConstants.RegistersCommonInfo;
+
+            var registersInfo = _documentApi.GetDocument(configuration, registerName, null, 0, 1000);
 
             var tempDate = DateTime.Now;
 
@@ -299,7 +300,7 @@ namespace InfinniPlatform.SystemConfig.Registers
             {
                 dynamic registerId = registerInfo.Id;
 
-                var aggregatedData = GetValuesByDate(configuration, registerName, calculationDate);
+                var aggregatedData = GetValuesByDate(configuration, registerId, calculationDate);
 
                 foreach (var item in aggregatedData)
                 {
@@ -477,7 +478,7 @@ namespace InfinniPlatform.SystemConfig.Registers
             string registerName,
             DateTime beginDate,
             DateTime endDate,
-            IEnumerable<FilterCriteria> filter,
+            IEnumerable<FilterCriteria> filter = null,
             IEnumerable<string> dimensionsProperties = null,
             IEnumerable<string> valueProperties = null,
             IEnumerable<AggregationType> aggregationTypes = null)

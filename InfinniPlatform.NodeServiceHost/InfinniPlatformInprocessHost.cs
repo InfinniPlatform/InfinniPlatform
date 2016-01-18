@@ -2,6 +2,8 @@
 using System.Net.Sockets;
 using System.Reflection;
 
+using InfinniPlatform.Sdk.IoC;
+
 namespace InfinniPlatform.NodeServiceHost
 {
     public static class InfinniPlatformInprocessHost
@@ -24,6 +26,13 @@ namespace InfinniPlatform.NodeServiceHost
             TryStart();
 
             return FakeDisposableServer.Instance;
+        }
+
+
+        public static IContainerResolver CreateContainerResolver()
+        {
+            var hostingContext = InfinniPlatformServiceHost.GetOwinHostingContext();
+            return hostingContext.ContainerResolver;
         }
 
 

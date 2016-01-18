@@ -10,7 +10,6 @@ using InfinniPlatform.Core.Schema;
 using InfinniPlatform.FastReport.TemplatesFluent.Reports;
 using InfinniPlatform.Reporting.DataSources;
 using InfinniPlatform.Sdk.Hosting;
-using InfinniPlatform.Sdk.RestApi;
 
 using Newtonsoft.Json.Linq;
 

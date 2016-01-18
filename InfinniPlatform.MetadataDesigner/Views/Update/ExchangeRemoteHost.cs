@@ -1,7 +1,6 @@
 ﻿using System.Windows.Forms;
 
 using InfinniPlatform.Sdk.Hosting;
-using InfinniPlatform.Sdk.RestApi;
 
 namespace InfinniPlatform.MetadataDesigner.Views.Update
 {

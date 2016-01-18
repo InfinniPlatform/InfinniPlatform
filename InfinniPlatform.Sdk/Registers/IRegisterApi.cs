@@ -43,8 +43,7 @@ namespace InfinniPlatform.Sdk.Registers
         /// Рассчитывает итоги для регистров накопления на текущую дату.
         /// </summary>
         void RecalculateTotals(
-            string configuration,
-            string registerName);
+            string configuration);
 
         /// <summary>
         /// Удаляет запись регистра.
@@ -71,10 +70,10 @@ namespace InfinniPlatform.Sdk.Registers
             string configuration,
             string registerName,
             DateTime aggregationDate,
-            IEnumerable<FilterCriteria> filter,
-            IEnumerable<string> dimensionsProperties,
-            IEnumerable<string> valueProperties,
-            IEnumerable<AggregationType> aggregationTypes);
+            IEnumerable<FilterCriteria> filter = null,
+            IEnumerable<string> dimensionsProperties = null,
+            IEnumerable<string> valueProperties = null,
+            IEnumerable<AggregationType> aggregationTypes = null);
 
         /// <summary>
         /// Возвращает значения ресурсов в указанном диапазоне дат для регистра.
@@ -84,7 +83,7 @@ namespace InfinniPlatform.Sdk.Registers
             string registerName,
             DateTime beginDate,
             DateTime endDate,
-            IEnumerable<FilterCriteria> filter,
+            IEnumerable<FilterCriteria> filter = null,
             IEnumerable<string> dimensionsProperties = null,
             IEnumerable<string> valueProperties = null,
             IEnumerable<AggregationType> aggregationTypes = null);

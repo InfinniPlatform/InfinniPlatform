@@ -12,8 +12,6 @@ namespace InfinniPlatform.Sdk.Tests
 	[Category(TestCategories.IntegrationTest)]
 	public sealed class CustomServiceApiTest
 	{
-		private const string Route = "1";
-
 		private IDisposable _server;
 		private CustomApiClient _customApiClient;
 		private DocumentApiClient _documentApiClient;

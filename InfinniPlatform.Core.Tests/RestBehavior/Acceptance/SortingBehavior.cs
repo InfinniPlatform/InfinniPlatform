@@ -2,7 +2,6 @@
 using System.Linq;
 
 using InfinniPlatform.NodeServiceHost;
-using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.RestApi;
 

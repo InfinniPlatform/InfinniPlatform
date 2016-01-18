@@ -10,7 +10,6 @@ using InfinniPlatform.Owin.Hosting;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.RestApi;
 
 using Microsoft.Owin;
 

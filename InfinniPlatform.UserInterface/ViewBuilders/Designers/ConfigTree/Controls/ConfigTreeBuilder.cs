@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 
 using InfinniPlatform.Sdk.Hosting;
-using InfinniPlatform.Sdk.RestApi;
 using InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Factories;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Controls
