@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Core.Index;
-using InfinniPlatform.SystemConfig.StateMachine;
 
 namespace InfinniPlatform.SystemConfig.Metadata
 {
@@ -17,7 +16,6 @@ namespace InfinniPlatform.SystemConfig.Metadata
         private readonly List<dynamic> _processes = new List<dynamic>();
         private readonly List<dynamic> _scenario = new List<dynamic>();
         private readonly List<dynamic> _services = new List<dynamic>();
-        private readonly StateWorkflowRegister _stateWorkflowRegister = new StateWorkflowRegister();
         private readonly List<dynamic> _statuses = new List<dynamic>();
         private readonly List<dynamic> _validationErrors = new List<dynamic>();
         private readonly List<dynamic> _validationWarnings = new List<dynamic>();
@@ -52,28 +50,6 @@ namespace InfinniPlatform.SystemConfig.Metadata
         public void UpdateSearchAbilityType(SearchAbilityType searchAbility)
         {
             SearchAbility = searchAbility;
-        }
-
-        /// <summary>
-        ///     Зарегистрировать поток выполнения
-        /// </summary>
-        /// <param name="workflowId">Идентификатор потока</param>
-        /// <param name="actionConfiguration">Конфигурация зарегистрированных действий</param>
-        public void RegisterWorkflow(string workflowId, Action<IStateWorkflowStartingPointConfig> actionConfiguration)
-        {
-            _stateWorkflowRegister.DefineWorkflow(workflowId, actionConfiguration);
-        }
-
-        /// <summary>
-        ///     Выполнить поток работы
-        /// </summary>
-        /// <param name="workflowId">Идентификатор потока</param>
-        /// <param name="target">Объект, для которого применить поток</param>
-        /// <param name="state">Состояние, в которое осуществляется переход</param>
-        /// <returns>Переведенный в состояние объект</returns>
-        public dynamic MoveWorkflow(string workflowId, dynamic target, object state)
-        {
-            return _stateWorkflowRegister.MoveWorkflow(workflowId, target, state);
         }
 
         public void RegisterProcess(dynamic process)
