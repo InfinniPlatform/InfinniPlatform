@@ -12,15 +12,14 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
     /// </summary>
     public static class MigrationHelper
     {
-        public static string TryUpdateDocumentMappings(IMetadataConfiguration metadataConfiguration,
+        public static string TryUpdateDocumentMappings(IConfigurationMetadata configurationMetadata,
                                                        IConfigurationObjectBuilder configurationObjectBuilder,
                                                        IIndexFactory indexFactory,
                                                        string documentId)
         {
-            var versionBuilder = indexFactory.BuildVersionBuilder(metadataConfiguration.ConfigurationId,
-                metadataConfiguration.GetMetadataIndexType(documentId));
+            var versionBuilder = indexFactory.BuildVersionBuilder(configurationMetadata.Configuration, documentId);
 
-            dynamic schema = metadataConfiguration.GetSchemaVersion(documentId);
+            dynamic schema = configurationMetadata.GetDocumentSchema(documentId);
 
             var props = new List<PropertyMapping>();
 
@@ -43,7 +42,7 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
                 versionBuilder.CreateVersion(false, indexTypeMapping);
 
                 // Необходимо создать новые версии для контейнеров документов, имеющих inline ссылки на измененный документ
-                resultMessage += UpdateContainersWithInlineLinks(configurationObjectBuilder, indexFactory, metadataConfiguration.ConfigurationId, documentId);
+                resultMessage += UpdateContainersWithInlineLinks(configurationObjectBuilder, indexFactory, configurationMetadata.Configuration, documentId);
             }
 
             return resultMessage;
@@ -58,13 +57,13 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 
             foreach (var metadataConfiguration in configList)
             {
-                var documents = metadataConfiguration.Documents;
-                foreach (var containerId in documents)
-                {
-                    var versionBuilder = indexFactory.BuildVersionBuilder(metadataConfiguration.ConfigurationId,
-                        metadataConfiguration.GetMetadataIndexType(containerId));
+                var documents = metadataConfiguration.GetDocumentNames();
 
-                    var schema = metadataConfiguration.GetSchemaVersion(containerId);
+                foreach (var documentName in documents)
+                {
+                    var versionBuilder = indexFactory.BuildVersionBuilder(metadataConfiguration.Configuration, documentName);
+
+                    var schema = metadataConfiguration.GetDocumentSchema(documentName);
 
                     if (schema != null)
                     {
@@ -81,7 +80,7 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
                                 : null);
 
                             return string.Format("{3}Created new version of {0} document from configuration {1} due inline link on {2}.",
-                                containerId,
+                                documentName,
                                 configId,
                                 documentId,
                                 Environment.NewLine);

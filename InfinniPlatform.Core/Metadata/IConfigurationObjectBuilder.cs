@@ -18,6 +18,6 @@ namespace InfinniPlatform.Core.Metadata
         /// Получить список зарегистрированных конфигураций
         /// </summary>
         /// <returns></returns>
-        IEnumerable<IMetadataConfiguration> GetConfigurationList();
+        IEnumerable<IConfigurationMetadata> GetConfigurationList();
     }
 }

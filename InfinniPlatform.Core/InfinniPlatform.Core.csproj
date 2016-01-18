@@ -62,6 +62,7 @@
     <Compile Include="ClientNotification\IWebClientNotificationService.cs" />
     <Compile Include="Compression\GZipDataCompressor.cs" />
     <Compile Include="Compression\IDataCompressor.cs" />
+    <Compile Include="Metadata\IMetadataApi.cs" />
     <Compile Include="Settings\AppEnvironment.cs" />
     <Compile Include="Index\AggregationResult.cs" />
     <Compile Include="Index\IAggregationProvider.cs" />
@@ -79,9 +80,7 @@
     <Compile Include="Index\SortOrder.cs" />
     <Compile Include="Metadata\IConfigurationObject.cs" />
     <Compile Include="Metadata\IConfigurationObjectBuilder.cs" />
-    <Compile Include="Metadata\IMetadataComponent.cs" />
-    <Compile Include="Metadata\IMetadataConfigurationProvider.cs" />
-    <Compile Include="Metadata\MetadataComponent.cs" />
+    <Compile Include="Metadata\IConfigurationMetadataProvider.cs" />
     <Compile Include="Contracts\ActionContext.cs" />
     <Compile Include="Factories\IHostingServiceFactory.cs" />
     <Compile Include="Factories\IIntegrationBusFactory.cs" />
@@ -108,7 +107,7 @@
     <Compile Include="MessageQueue\Integration\IntegrationBusMessage.cs" />
     <Compile Include="MessageQueue\Integration\IntegrationBusSubscription.cs" />
     <Compile Include="Metadata\DataType.cs" />
-    <Compile Include="Metadata\IMetadataConfiguration.cs" />
+    <Compile Include="Metadata\IConfigurationMetadata.cs" />
     <Compile Include="Metadata\MetadataType.cs" />
     <Compile Include="Metadata\Validation\IMetadataSchemaValidator.cs" />
     <Compile Include="Metadata\Validation\IMetadataSchemaValidatorFactory.cs" />
@@ -130,10 +129,7 @@
     <Compile Include="RestApi\DataApi\ISetDocumentExecutor.cs" />
     <Compile Include="RestApi\DataApi\MetadataLoaderHelper.cs" />
     <Compile Include="RestApi\DataApi\PackageMetadataLoader.cs" />
-    <Compile Include="Runtime\IScriptConfiguration.cs" />
-    <Compile Include="Runtime\IScriptMetadataProvider.cs" />
     <Compile Include="Runtime\IScriptProcessor.cs" />
-    <Compile Include="Runtime\ScriptMetadata.cs" />
     <Compile Include="Extensions\CommonExtensions.cs" />
     <Compile Include="Schema\DataSchema.cs" />
     <Compile Include="Schema\ISchemaProvider.cs" />

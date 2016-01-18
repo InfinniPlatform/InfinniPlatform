@@ -11,13 +11,13 @@ namespace InfinniPlatform.SystemConfig.PrintView
     /// </summary>
     internal sealed class PrintViewApi : IPrintViewApi
     {
-        public PrintViewApi(IMetadataComponent metadataComponent, IPrintViewBuilder printViewBuilder)
+        public PrintViewApi(IMetadataApi metadataApi, IPrintViewBuilder printViewBuilder)
         {
-            _metadataComponent = metadataComponent;
+            _metadataApi = metadataApi;
             _printViewBuilder = printViewBuilder;
         }
 
-        private readonly IMetadataComponent _metadataComponent;
+        private readonly IMetadataApi _metadataApi;
         private readonly IPrintViewBuilder _printViewBuilder;
 
         public byte[] Build(string configuration, string documentType, string printViewName, object printViewSource, PrintViewFileFormat priiViewFormat = PrintViewFileFormat.Pdf)
@@ -37,7 +37,7 @@ namespace InfinniPlatform.SystemConfig.PrintView
                 throw new ArgumentNullException(nameof(printViewName));
             }
 
-            var printViewMetadata = _metadataComponent.GetMetadataItem(configuration, documentType, MetadataType.PrintView, (dynamic i) => i.Name == printViewName);
+            var printViewMetadata = _metadataApi.GetPrintView(configuration, documentType, printViewName);
 
             if (printViewMetadata == null)
             {

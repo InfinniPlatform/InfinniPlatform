@@ -20,14 +20,14 @@ namespace InfinniPlatform.SystemConfig.Utils
             IEnumerable<SortingCriteria> sorting = null);
 
 
-        public DocumentLinkMap(IMetadataComponent metadataComponent, GetDocumentsDelegate getDocuments)
+        public DocumentLinkMap(IMetadataApi metadataComponent, GetDocumentsDelegate getDocuments)
         {
             _metadataComponent = metadataComponent;
             _getDocuments = getDocuments;
         }
 
         private readonly IList<DocumentLink> _links = new List<DocumentLink>();
-        private readonly IMetadataComponent _metadataComponent;
+        private readonly IMetadataApi _metadataComponent;
         private readonly GetDocumentsDelegate _getDocuments;
 
         public void RegisterLink(string configId, string documentId, string instanceId, Action<object> valueSetFunc)
@@ -116,9 +116,8 @@ namespace InfinniPlatform.SystemConfig.Utils
 
         private bool HasCircularRefs(string configId, string documentId)
         {
-            var metadata = _metadataComponent.GetMetadataList(configId, documentId, "Schema");
+            dynamic schema = _metadataComponent.GetDocumentSchema(configId, documentId);
 
-            dynamic schema = metadata.FirstOrDefault();
             if (schema != null)
             {
                 dynamic properties = schema.Properties;
@@ -190,7 +189,7 @@ namespace InfinniPlatform.SystemConfig.Utils
             _documentLinkMapFactory = () =>
                                       {
                                           var documentApi = containerResolver.Resolve<IDocumentApi>();
-                                          var metadataComponent = containerResolver.Resolve<IMetadataComponent>();
+                                          var metadataComponent = containerResolver.Resolve<IMetadataApi>();
                                           return new DocumentLinkMap(metadataComponent, documentApi.GetDocuments);
                                       };
         }

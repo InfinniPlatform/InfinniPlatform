@@ -19,7 +19,7 @@ namespace InfinniPlatform.Core.Index
         /// </summary>
         /// <param name="metadataComponent">Провайдер метаданных сервисной части</param>
         /// <param name="schema">Схема данных документа, к которому выполняется запрос</param>
-        public QueryCriteriaAnalyzer(IMetadataComponent metadataComponent, dynamic schema)
+        public QueryCriteriaAnalyzer(IMetadataApi metadataComponent, dynamic schema)
         {
             var metadataIterator = new SchemaIterator(new SchemaProvider(metadataComponent))
                                    {

@@ -11,7 +11,7 @@ namespace InfinniPlatform.SystemConfig.Executors
 {
     internal class SetDocumentExecutor : ISetDocumentExecutor
     {
-        public SetDocumentExecutor(IDocumentTransactionScopeProvider transactionScopeProvider, IMetadataComponent metadataComponent, IScriptProcessor scriptProcessor)
+        public SetDocumentExecutor(IDocumentTransactionScopeProvider transactionScopeProvider, IMetadataApi metadataComponent, IScriptProcessor scriptProcessor)
         {
             _transactionScopeProvider = transactionScopeProvider;
             _metadataComponent = metadataComponent;
@@ -20,7 +20,7 @@ namespace InfinniPlatform.SystemConfig.Executors
 
 
         private readonly IDocumentTransactionScopeProvider _transactionScopeProvider;
-        private readonly IMetadataComponent _metadataComponent;
+        private readonly IMetadataApi _metadataComponent;
         private readonly IScriptProcessor _scriptProcessor;
 
 
@@ -55,14 +55,14 @@ namespace InfinniPlatform.SystemConfig.Executors
             // TODO: Разрешить вызов данной операции только для REST-запросов с соответствующим параметром
             transactionScope.Synchronous();
 
-            // Бизнес-процесс сохранения документа
-            var businessProcess = _metadataComponent.GetMetadata(configuration, documentType, MetadataType.Process, "Default");
+            // События документа
+            var documentEvents = _metadataComponent.GetDocumentEvents(configuration, documentType);
 
             // Скрипт, который выполняется для проверки возможности сохранения документа
-            string onValidateAction = businessProcess?.Transitions?[0]?.ValidationPointError?.ScenarioId;
+            string onValidateAction = documentEvents?.ValidationPointError?.ScenarioId;
 
             // Скрипт, который выполняется после успешного сохранения документа
-            string onSuccessAction = businessProcess?.Transitions?[0]?.SuccessPoint?.ScenarioId;
+            string onSuccessAction = documentEvents?.SuccessPoint?.ScenarioId;
 
             foreach (dynamic documentInstance in documentInstances)
             {
@@ -118,14 +118,14 @@ namespace InfinniPlatform.SystemConfig.Executors
             // TODO: Разрешить вызов данной операции только для REST-запросов с соответствующим параметром
             transactionScope.Synchronous();
 
-            // Бизнес-процесс сохранения документа
-            var businessProcess = _metadataComponent.GetMetadata(configuration, documentType, MetadataType.Process, "Default");
+            // События документа
+            var documentEvents = _metadataComponent.GetDocumentEvents(configuration, documentType);
 
             // Скрипт, который выполняется для проверки возможности удаления документа
-            string onValidateAction = businessProcess?.Transitions?[0]?.DeletingDocumentValidationPoint?.ScenarioId;
+            string onValidateAction = documentEvents?.DeletingDocumentValidationPoint?.ScenarioId;
 
             // Скрипт, который выполняется после успешного удаления документа
-            string onSuccessAction = businessProcess?.Transitions?[0]?.DeletePoint?.ScenarioId;
+            string onSuccessAction = documentEvents?.DeletePoint?.ScenarioId;
 
             foreach (var documentId in documentIds)
             {
@@ -161,7 +161,7 @@ namespace InfinniPlatform.SystemConfig.Executors
         }
 
 
-        private ActionContext CreateActionContext(string configuration, string documentType, object actionItem)
+        private static ActionContext CreateActionContext(string configuration, string documentType, object actionItem)
         {
             var actionContext = new ActionContext
                                 {

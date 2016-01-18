@@ -7,20 +7,20 @@ namespace InfinniPlatform.SystemConfig.Utils
 {
     public sealed class ReferenceResolver : IReferenceResolver
     {
-        public ReferenceResolver(IMetadataComponent metadataComponent, DocumentLinkMapProvider documentLinkMapProvider)
+        public ReferenceResolver(IMetadataApi metadataApi, DocumentLinkMapProvider documentLinkMapProvider)
         {
-            _metadataComponent = metadataComponent;
+            _metadataApi = metadataApi;
             _documentLinkMapProvider = documentLinkMapProvider;
         }
 
-        private readonly IMetadataComponent _metadataComponent;
+        private readonly IMetadataApi _metadataApi;
         private readonly DocumentLinkMapProvider _documentLinkMapProvider;
 
         public void ResolveReferences(string configId, string documentId, dynamic documents, IEnumerable<dynamic> ignoreResolve)
         {
             var documentLinkMap = _documentLinkMapProvider.GetDocumentLinkMap();
 
-            var metadataOperator = new MetadataOperator(_metadataComponent, documentLinkMap, ignoreResolve);
+            var metadataOperator = new MetadataOperator(_metadataApi, documentLinkMap, ignoreResolve);
 
             dynamic typeInfo = new DynamicWrapper();
             typeInfo.ConfigId = configId;

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Runtime.Properties;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.SystemConfig.Properties;
 
-namespace InfinniPlatform.Runtime.Implementation
+namespace InfinniPlatform.SystemConfig.Runtime
 {
     /// <summary>
     /// Фабрика прикладных скриптов.

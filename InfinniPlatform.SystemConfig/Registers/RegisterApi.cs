@@ -23,18 +23,18 @@ namespace InfinniPlatform.SystemConfig.Registers
     {
         // TODO: Нужен глубокий рефакторинг и тестирование.
 
-        public RegisterApi(IDocumentApi documentApi, IIndexFactory indexFactory, IMetadataComponent metadataComponent)
+        public RegisterApi(IDocumentApi documentApi, IIndexFactory indexFactory, IMetadataApi metadataApi)
         {
             _documentApi = documentApi;
             _indexFactory = indexFactory;
-            _metadataComponent = metadataComponent;
+            _metadataApi = metadataApi;
             _filterFactory = FilterBuilderFactory.GetInstance();
         }
 
         private readonly IDocumentApi _documentApi;
         private readonly INestFilterBuilder _filterFactory;
         private readonly IIndexFactory _indexFactory;
-        private readonly IMetadataComponent _metadataComponent;
+        private readonly IMetadataApi _metadataApi;
 
         /// <summary>
         /// Создает (но не сохраняет) запись регистра.
@@ -80,36 +80,16 @@ namespace InfinniPlatform.SystemConfig.Registers
             if (documentDate == null)
             {
                 // Дата документа явно не задана, используем дату из содержимого переданного документа
-                var defaultProcess = _metadataComponent.GetMetadata(configuration, documentId, MetadataType.Process, "Default");
-                var customProcess = _metadataComponent.GetMetadata(configuration, documentId, MetadataType.Process, "Custom");
+                dynamic documentEvents = _metadataApi.GetDocumentEvents(configuration, documentId);
+                string dateFieldName = documentEvents?.RegisterPoint?.DocumentDateProperty;
 
-                if (defaultProcess != null &&
-                    defaultProcess.Transitions != null &&
-                    defaultProcess.Transitions.Count > 0 &&
-                    defaultProcess.Transitions[0].RegisterPoint != null)
+                if (!string.IsNullOrEmpty(dateFieldName))
                 {
-                    var dateFieldName = defaultProcess.Transitions[0].RegisterPoint.DocumentDateProperty;
-
-                    if (!string.IsNullOrEmpty(dateFieldName))
-                    {
-                        documentDate = document[dateFieldName];
-                    }
-                }
-                else if (customProcess != null &&
-                         customProcess.Transitions != null &&
-                         customProcess.Transitions.Count > 0 &&
-                         customProcess.Transitions[0].RegisterPoint != null)
-                {
-                    var dateFieldName = customProcess.Transitions[0].RegisterPoint.DocumentDateProperty;
-
-                    if (!string.IsNullOrEmpty(dateFieldName))
-                    {
-                        documentDate = document[dateFieldName];
-                    }
+                    documentDate = document[dateFieldName];
                 }
             }
 
-            var registerMetadata = _metadataComponent.GetMetadataList(configuration, registerName, MetadataType.Register).FirstOrDefault();
+            var registerMetadata = _metadataApi.GetRegister(configuration, registerName);
 
             // Признак того, что необходимо создать запись для регистра сведений
             if (isInfoRegister && registerMetadata != null)
@@ -145,7 +125,7 @@ namespace InfinniPlatform.SystemConfig.Registers
                 throw new ArgumentNullException(nameof(registerEntries));
             }
 
-            var registerObject = _metadataComponent.GetMetadataList(configuration, registerName, MetadataType.Register).FirstOrDefault();
+            var registerObject = _metadataApi.GetRegister(configuration, registerName);
 
             if (registerObject == null)
             {
@@ -401,7 +381,7 @@ namespace InfinniPlatform.SystemConfig.Registers
             IEnumerable<string> valueProperties = null,
             IEnumerable<AggregationType> aggregationTypes = null)
         {
-            var registerObject = _metadataComponent.GetMetadataList(configuration, registerName, MetadataType.Register).FirstOrDefault();
+            var registerObject = _metadataApi.GetRegister(configuration, registerName);
 
             if (registerObject == null)
             {
@@ -483,7 +463,7 @@ namespace InfinniPlatform.SystemConfig.Registers
             IEnumerable<string> valueProperties = null,
             IEnumerable<AggregationType> aggregationTypes = null)
         {
-            var registerObject = _metadataComponent.GetMetadataList(configuration, registerName, MetadataType.Register).FirstOrDefault();
+            var registerObject = _metadataApi.GetRegister(configuration, registerName);
 
             if (registerObject == null)
             {
@@ -541,7 +521,7 @@ namespace InfinniPlatform.SystemConfig.Registers
             IEnumerable<string> valueProperties = null,
             string timezone = null)
         {
-            var registerObject = _metadataComponent.GetMetadataList(configuration, registerName, MetadataType.Register).FirstOrDefault();
+            var registerObject = _metadataApi.GetRegister(configuration, registerName);
 
             if (registerObject == null)
             {
@@ -620,7 +600,7 @@ namespace InfinniPlatform.SystemConfig.Registers
             IEnumerable<string> dimensionsProperties = null,
             IEnumerable<string> valueProperties = null)
         {
-            var registerObject = _metadataComponent.GetMetadataList(configuration, registerName, MetadataType.Register).FirstOrDefault();
+            var registerObject = _metadataApi.GetRegister(configuration, registerName);
 
             if (registerObject == null)
             {
@@ -662,7 +642,7 @@ namespace InfinniPlatform.SystemConfig.Registers
             IEnumerable<string> dimensionsProperties = null,
             IEnumerable<string> valueProperties = null)
         {
-            var registerObject = _metadataComponent.GetMetadataList(configuration, registerName, MetadataType.Register).FirstOrDefault();
+            var registerObject = _metadataApi.GetRegister(configuration, registerName);
 
             if (registerObject == null)
             {

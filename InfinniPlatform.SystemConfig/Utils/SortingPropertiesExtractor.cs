@@ -24,23 +24,20 @@ namespace InfinniPlatform.SystemConfig.Utils
                     {
                         var childProps = new SortingCriteria[] { };
 
-                        if (propertyMapping.Value.TypeInfo != null &&
-                            propertyMapping.Value.TypeInfo.DocumentLink != null &&
-                            propertyMapping.Value.TypeInfo.DocumentLink.Inline != null &&
-                            propertyMapping.Value.TypeInfo.DocumentLink.Inline == true)
+                        var documentLink = propertyMapping.Value.TypeInfo?.DocumentLink;
+
+                        if (documentLink?.Inline == true)
                         {
-                            // inline ссылка на документ: необходимо получить схему документа, на который сделана ссылка,
-                            // чтобы получить сортировочные поля 
-                            dynamic inlineMetadataConfiguration =
-                                configurationObjectBuilder.GetConfigurationObject(propertyMapping.Value.TypeInfo
-                                                                                                 .DocumentLink.ConfigId)
-                                                          .MetadataConfiguration;
+                            string configId = documentLink.ConfigId;
+                            string documentType = documentLink.DocumentId;
+
+                            // inline ссылка на документ: необходимо получить схему документа, на который сделана ссылка, чтобы получить сортировочные поля 
+                            IConfigurationObject configurationObject = configurationObjectBuilder.GetConfigurationObject(configId);
+                            IConfigurationMetadata inlineMetadataConfiguration =configurationObject.ConfigurationMetadata;
 
                             if (inlineMetadataConfiguration != null)
                             {
-                                dynamic inlineDocumentSchema =
-                                    inlineMetadataConfiguration.GetSchemaVersion(
-                                                                                 propertyMapping.Value.TypeInfo.DocumentLink.DocumentId);
+                                dynamic inlineDocumentSchema = inlineMetadataConfiguration.GetDocumentSchema(documentType);
 
                                 if (inlineDocumentSchema != null)
                                 {

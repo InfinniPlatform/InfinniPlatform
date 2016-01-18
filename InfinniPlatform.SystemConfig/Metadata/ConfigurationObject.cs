@@ -19,9 +19,9 @@ namespace InfinniPlatform.SystemConfig.Metadata
             VersionProviderCache = new ConcurrentDictionary<string, IVersionProvider>(StringComparer.OrdinalIgnoreCase);
         }
 
-        public ConfigurationObject(IMetadataConfiguration metadataConfiguration, IIndexFactory indexFactory)
+        public ConfigurationObject(IConfigurationMetadata configurationMetadata, IIndexFactory indexFactory)
         {
-            MetadataConfiguration = metadataConfiguration;
+            ConfigurationMetadata = configurationMetadata;
 
             _indexFactory = indexFactory;
         }
@@ -30,7 +30,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
         private readonly IIndexFactory _indexFactory;
 
 
-        public IMetadataConfiguration MetadataConfiguration { get; }
+        public IConfigurationMetadata ConfigurationMetadata { get; }
 
 
         /// <summary>
@@ -44,14 +44,13 @@ namespace InfinniPlatform.SystemConfig.Metadata
         {
             IVersionProvider versionProvider;
 
-            var documentIndexName = MetadataConfiguration.ConfigurationId;
-            var documentTypeName = MetadataConfiguration.GetMetadataIndexType(documentId);
+            var documentIndexName = ConfigurationMetadata.Configuration;
 
-            var versionProviderKey = $"{documentIndexName},{documentTypeName}";
+            var versionProviderKey = $"{documentIndexName},{documentId}";
 
             if (!VersionProviderCache.TryGetValue(versionProviderKey, out versionProvider))
             {
-                versionProvider = _indexFactory.BuildVersionProvider(documentIndexName, documentTypeName);
+                versionProvider = _indexFactory.BuildVersionProvider(documentIndexName, documentId);
 
                 VersionProviderCache[versionProviderKey] = versionProvider;
             }

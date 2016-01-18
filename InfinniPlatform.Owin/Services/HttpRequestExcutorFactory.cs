@@ -1,5 +1,7 @@
 ﻿using System;
 
+using InfinniPlatform.Owin.Properties;
+using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.Owin.Services
@@ -9,6 +11,15 @@ namespace InfinniPlatform.Owin.Services
     /// </summary>
     internal sealed class HttpRequestExcutorFactory
     {
+        public HttpRequestExcutorFactory(ILog log)
+        {
+            _log = log;
+        }
+
+
+        private readonly ILog _log;
+
+
         /// <summary>
         /// Создает функцию обработки запросов.
         /// </summary>
@@ -33,7 +44,7 @@ namespace InfinniPlatform.Owin.Services
             var beforeExcutor = new BeforeHttpRequestExcutor(onBefore);
             var handlerExcutor = new HandlerHttpRequestExcutor(onHandle);
             var afterExcutor = new AfterHttpRequestExcutor(onAfter);
-            var errorExcutor = new ErrorHttpRequestExcutor(onError);
+            var errorExcutor = new ErrorHttpRequestExcutor(onError, _log);
 
             beforeExcutor.After = beforeExcutor;
             beforeExcutor.Handler = handlerExcutor;
@@ -216,22 +227,32 @@ namespace InfinniPlatform.Owin.Services
 
         private sealed class ErrorHttpRequestExcutor : IHttpRequestExcutor
         {
-            public ErrorHttpRequestExcutor(Func<IHttpRequest, Exception, object> onError)
+            public ErrorHttpRequestExcutor(Func<IHttpRequest, Exception, object> onError, ILog log)
             {
                 _onError = onError;
+                _log = log;
             }
 
             private readonly Func<IHttpRequest, Exception, object> _onError;
+            private readonly ILog _log;
 
             public void Execute(HttpRequestExcutorContext context)
             {
-                if (_onError != null)
+                var error = context.Error;
+
+                if (error != null)
                 {
-                    context.Result = _onError(context.Request, context.Error);
-                }
-                else
-                {
-                    throw context.Error;
+                    // Вне зависимости от наличия прикладных обработчиков, фиксируем событие ошибки
+                    _log.Error(Resources.RequestProcessingCompletedWithUnexpectedException, null, error);
+
+                    if (_onError != null)
+                    {
+                        context.Result = _onError(context.Request, context.Error);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException(Resources.RequestProcessingCompletedWithUnexpectedException, error);
+                    }
                 }
             }
         }

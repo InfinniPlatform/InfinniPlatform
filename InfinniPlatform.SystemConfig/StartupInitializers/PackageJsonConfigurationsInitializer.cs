@@ -4,10 +4,10 @@ using System.IO;
 using System.Linq;
 
 using InfinniPlatform.Core.Logging;
-using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Settings;
+using InfinniPlatform.SystemConfig.Metadata;
 
 namespace InfinniPlatform.SystemConfig.StartupInitializers
 {
@@ -16,9 +16,9 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
     /// </summary>
     internal sealed class PackageJsonConfigurationsInitializer : IStartupInitializer
     {
-        public PackageJsonConfigurationsInitializer(IMetadataConfigurationProvider metadataConfigurationProvider, IAppConfiguration appConfiguration)
+        public PackageJsonConfigurationsInitializer(ConfigurationMetadataProvider configurationMetadataProvider, IAppConfiguration appConfiguration)
         {
-            _metadataConfigurationProvider = metadataConfigurationProvider;
+            _configurationMetadataProvider = configurationMetadataProvider;
 
             _contentDirectory = appConfiguration.GetSection("metadata")?.ContentDirectory as string ?? "content";
             _configurations = new Lazy<IEnumerable<DynamicWrapper>>(LoadConfigsMetadata);
@@ -38,7 +38,7 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 
         private readonly string _contentDirectory;
         private readonly Lazy<IEnumerable<DynamicWrapper>> _configurations;
-        private readonly IMetadataConfigurationProvider _metadataConfigurationProvider;
+        private readonly ConfigurationMetadataProvider _configurationMetadataProvider;
 
 
         public int Order => 0;
@@ -69,11 +69,6 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
                     Console.WriteLine(@"[{1}] File {0} changed.", args.Name, DateTime.Now.TimeOfDay);
 #endif
 
-                    foreach (dynamic configuration in _configurations.Value)
-                    {
-                        RemoveConfiguration(configuration.Name);
-                    }
-
                     var updatedConfigurations = LoadConfigsMetadata();
 
                     foreach (dynamic configuration in updatedConfigurations)
@@ -94,41 +89,42 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 
         private void InstallConfiguration(object configuration, string configId)
         {
-            // Загрузка метаданных конфигурации для кэширования
-            var metadataCacheFiller = LoadConfigurationMetadata(configuration);
+            var configurationMetadata = new ConfigurationMetadata(configId);
 
-            // Создание менеджера кэша метаданных конфигураций
-            var metadataCacheManager = _metadataConfigurationProvider.AddConfiguration(configId, false);
+            LoadConfigurationMetadata(configurationMetadata, configuration);
 
-            // Загрузка метаданных конфигурации в кэш
-            metadataCacheFiller.InstallConfiguration(metadataCacheManager);
+            _configurationMetadataProvider.AddConfiguration(configurationMetadata);
         }
 
-        private void RemoveConfiguration(string configurationName)
+        private static void LoadConfigurationMetadata(ConfigurationMetadata metadataConfiguration, dynamic configuration)
         {
-            // Удаление метаданных конфигурации из кэша
-            _metadataConfigurationProvider.RemoveConfiguration(configurationName);
+            IEnumerable<dynamic> menuList = configuration.Menu;
+            IEnumerable<dynamic> registerList = configuration.Registers;
+            IEnumerable<dynamic> documentList = configuration.Documents;
+
+            metadataConfiguration.AddMenu(menuList);
+            metadataConfiguration.AddRegisters(registerList);
+
+            foreach (var document in documentList)
+            {
+                var processes = document.Processes as IEnumerable<dynamic>;
+                var transitions = processes?.FirstOrDefault()?.Transitions as IEnumerable<dynamic>;
+
+                document.Events = transitions?.FirstOrDefault();
+            }
+
+            metadataConfiguration.AddDocuments(documentList);
+
+            foreach (var document in documentList)
+            {
+                string documentName = document.Name;
+
+                metadataConfiguration.AddActions(documentName, document.Scenarios);
+                metadataConfiguration.AddViews(documentName, document.Views);
+                metadataConfiguration.AddPrintViews(documentName, document.PrintViews);
+            }
         }
 
-        private static PackageJsonConfigurationInstaller LoadConfigurationMetadata(dynamic configuration)
-        {
-            IEnumerable<dynamic> menu = configuration.Menu;
-            IEnumerable<dynamic> registers = configuration.Registers;
-            IEnumerable<dynamic> documents = configuration.Documents;
-            IEnumerable<dynamic> scenarios = documents.SelectMany(i => (IEnumerable<dynamic>)i.Scenarios).ToArray();
-            IEnumerable<dynamic> processes = documents.SelectMany(i => (IEnumerable<dynamic>)i.Processes).ToArray();
-            IEnumerable<dynamic> views = documents.SelectMany(i => (IEnumerable<dynamic>)i.Views).ToArray();
-            IEnumerable<dynamic> printViews = documents.SelectMany(i => (IEnumerable<dynamic>)i.PrintViews).ToArray();
-
-            return new PackageJsonConfigurationInstaller(
-                menu,
-                registers,
-                documents,
-                scenarios,
-                processes,
-                views,
-                printViews);
-        }
 
         private IEnumerable<DynamicWrapper> LoadConfigsMetadata()
         {
@@ -182,15 +178,10 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
             object documentId = document.Name;
 
             document.ConfigId = configId;
+            document.Processes = LoadItemsMetadata(documentDirectory, "Processes", configId, documentId);
+            document.Scenarios = LoadItemsMetadata(documentDirectory, "Scenarios", configId, documentId);
             document.Views = LoadItemsMetadata(documentDirectory, "Views", configId, documentId);
             document.PrintViews = LoadItemsMetadata(documentDirectory, "PrintViews", configId, documentId);
-            document.Scenarios = LoadItemsMetadata(documentDirectory, "Scenarios", configId, documentId);
-            document.Processes = LoadItemsMetadata(documentDirectory, "Processes", configId, documentId);
-            document.Services = LoadItemsMetadata(documentDirectory, "Services", configId, documentId);
-            document.Generators = LoadItemsMetadata(documentDirectory, "Generators", configId, documentId);
-            document.ValidationWarnings = LoadItemsMetadata(documentDirectory, "ValidationWarnings", configId, documentId);
-            document.ValidationErrors = LoadItemsMetadata(documentDirectory, "ValidationErrors", configId, documentId);
-            document.DocumentStatuses = LoadItemsMetadata(documentDirectory, "DocumentStatuses", configId, documentId);
 
             return document;
         }

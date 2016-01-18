@@ -70,6 +70,33 @@ namespace InfinniPlatform.SystemConfig.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ActionUnit completed with error..
+        /// </summary>
+        internal static string ActionUnitCompletedWithError {
+            get {
+                return ResourceManager.GetString("ActionUnitCompletedWithError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ActionUnit is not registered..
+        /// </summary>
+        internal static string ActionUnitIsNotRegistered {
+            get {
+                return ResourceManager.GetString("ActionUnitIsNotRegistered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ActionUnit metadata &apos;{0}&apos; is not registered..
+        /// </summary>
+        internal static string ActionUnitMetadataIsNotRegistered {
+            get {
+                return ResourceManager.GetString("ActionUnitMetadataIsNotRegistered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Blob storage already created..
         /// </summary>
         internal static string BlobStorageAlreadyCreated {

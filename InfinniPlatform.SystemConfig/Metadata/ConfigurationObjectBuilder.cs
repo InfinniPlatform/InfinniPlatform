@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.ElasticSearch.Factories;
@@ -12,30 +13,22 @@ namespace InfinniPlatform.SystemConfig.Metadata
     /// </summary>
     public sealed class ConfigurationObjectBuilder : IConfigurationObjectBuilder
     {
-        public ConfigurationObjectBuilder(IIndexFactory indexFactory, IMetadataConfigurationProvider metadataConfigurationProvider)
+        public ConfigurationObjectBuilder(IIndexFactory indexFactory, IConfigurationMetadataProvider configurationMetadataProvider)
         {
             _indexFactory = indexFactory;
-            _metadataConfigurationProvider = metadataConfigurationProvider;
+            _configurationMetadataProvider = configurationMetadataProvider;
         }
 
         private readonly IIndexFactory _indexFactory;
-        private readonly IMetadataConfigurationProvider _metadataConfigurationProvider;
+        private readonly IConfigurationMetadataProvider _configurationMetadataProvider;
 
         /// <summary>
         /// Получить объект конфигурации метаданных для указанного идентификатора
         /// </summary>
-        /// <param name="metadataIdentifier">Идентификатор метаданных</param>
-        /// <returns>Объект конфигурации метаданных</returns>
-        public IConfigurationObject GetConfigurationObject(string metadataIdentifier)
+        public IConfigurationObject GetConfigurationObject(string configuration)
         {
-            var metadataConfiguration = _metadataConfigurationProvider.GetMetadataConfiguration(metadataIdentifier);
-            if (metadataConfiguration == null)
-            {
-                // Для тестов %) т.к. теперь метаданные загружаются только с диска
-                metadataConfiguration = _metadataConfigurationProvider.AddConfiguration(metadataIdentifier, false);
-                // Logger.Log.Error(string.Format("Metadata configuration not registered: \"{0}\"", metadataIdentifier));
-                // return null;
-            }
+            var metadataConfiguration = _configurationMetadataProvider.GetConfiguration(configuration);
+
             return new ConfigurationObject(metadataConfiguration, _indexFactory);
         }
 
@@ -43,9 +36,11 @@ namespace InfinniPlatform.SystemConfig.Metadata
         /// Получить список зарегистрированных конфигураций
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<IMetadataConfiguration> GetConfigurationList()
+        public IEnumerable<IConfigurationMetadata> GetConfigurationList()
         {
-            return _metadataConfigurationProvider.Configurations;
+            var configurationNames = _configurationMetadataProvider.GetConfigurationNames();
+
+            return configurationNames.Select(i => _configurationMetadataProvider.GetConfiguration(i));
         }
     }
 }
