@@ -68,18 +68,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionUnits\Documents\ActionUnitDeleteDocument.cs" />
-    <Compile Include="ActionUnits\Documents\ActionUnitGetDocument.cs" />
-    <Compile Include="ActionUnits\Documents\ActionUnitGetDocumentById.cs" />
-    <Compile Include="ActionUnits\Documents\ActionUnitGetDocumentCrossConfig.cs" />
-    <Compile Include="ActionUnits\Metadata\ActionUnitGetManagedMetadata.cs" />
-    <Compile Include="ActionUnits\Documents\ActionUnitGetNumberOfDocuments.cs" />
-    <Compile Include="ActionUnits\Documents\ActionUnitSetDocument.cs" />
     <Compile Include="Registers\AggregationUtils.cs" />
     <Compile Include="Registers\RegisterApi.cs" />
-    <Compile Include="ActionUnits\Session\ActionUnitGetSessionData.cs" />
-    <Compile Include="ActionUnits\Session\ActionUnitRemoveSessionData.cs" />
-    <Compile Include="ActionUnits\Session\ActionUnitSetSessionData.cs" />
     <Compile Include="Executors\DocumentTransactionAction.cs" />
     <Compile Include="Executors\DocumentTransactionCommand.cs" />
     <Compile Include="Executors\DocumentTransactionLog.cs" />
@@ -89,13 +79,14 @@
     <Compile Include="Executors\SetDocumentExecutor.cs" />
     <Compile Include="Metadata\ICrossConfigSearcher.cs" />
     <Compile Include="PrintView\PrintViewApi.cs" />
-    <Compile Include="RequestHandlers\AttachHttpRequestHandler.cs" />
-    <Compile Include="RequestHandlers\CustomHttpRequestHandler.cs" />
-    <Compile Include="RequestHandlers\ChangeHttpRequestHandler.cs" />
-    <Compile Include="RequestHandlers\DocumentTransactionScopeHttpGlobalHandler.cs" />
-    <Compile Include="RequestHandlers\DownloadHttpRequestHandler.cs" />
-    <Compile Include="RequestHandlers\ReportHttpRequestHandler.cs" />
-    <Compile Include="Services\SystemHttpService.cs" />
+    <Compile Include="Services\CustomApiHttpService.cs" />
+    <Compile Include="Services\ChangeHttpRequestHandler.cs" />
+    <Compile Include="Services\DocumentTransactionScopeHttpGlobalHandler.cs" />
+    <Compile Include="Services\DocumentApiHttpService.cs" />
+    <Compile Include="Services\FileApiHttpService.cs" />
+    <Compile Include="Services\MetadataApiHttpService.cs" />
+    <Compile Include="Services\PrintViewApiHttpService.cs" />
+    <Compile Include="Services\SessionApiHttpService.cs" />
     <Compile Include="StartupInitializers\DocumentSchemaHelper.cs" />
     <Compile Include="StartupInitializers\FileHistoryHelper.cs" />
     <Compile Include="StartupInitializers\IStartupInitializer.cs" />
@@ -112,7 +103,7 @@
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="RequestHandlers\RequestHandlerHelper.cs" />
+    <Compile Include="Services\RequestHandlerHelper.cs" />
     <Compile Include="Metadata\ConfigurationObject.cs" />
     <Compile Include="Metadata\ConfigurationObjectBuilder.cs" />
     <Compile Include="Metadata\CrossConfigSearcher.cs" />

@@ -2,18 +2,26 @@
 using InfinniPlatform.Core.Runtime;
 using InfinniPlatform.Sdk.Services;
 
-namespace InfinniPlatform.SystemConfig.RequestHandlers
+namespace InfinniPlatform.SystemConfig.Services
 {
-    internal sealed class CustomHttpRequestHandler : IHttpRequestHandler
+    /// <summary>
+    /// Реализует REST-сервис для CustomApi.
+    /// </summary>
+    internal sealed class CustomApiHttpService : IHttpService
     {
-        public CustomHttpRequestHandler(IScriptProcessor scriptProcessor)
+        public CustomApiHttpService(IScriptProcessor scriptProcessor)
         {
             _scriptProcessor = scriptProcessor;
         }
 
         private readonly IScriptProcessor _scriptProcessor;
 
-        public object Action(IHttpRequest request)
+        public void Load(IHttpServiceBuilder builder)
+        {
+            builder.Post["/{configuration}/StandardApi/{documentType}/{actionName}"] = CustomAction;
+        }
+
+        private object CustomAction(IHttpRequest request)
         {
             // TODO: Это наивное предположение, нужно изменить после рефакторинга метаданных сервисов.
             string actionName = $"ActionUnit{request.Parameters.ActionName}";
@@ -26,12 +34,12 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
             changesObject.Documents = changesObject.Documents ?? new object[] { changesObject.Document };
 
             var context = new ActionContext
-            {
-                Configuration = configuration,
-                Metadata = documentType,
-                Item = changesObject,
-                Result = changesObject
-            };
+                          {
+                              Configuration = configuration,
+                              Metadata = documentType,
+                              Item = changesObject,
+                              Result = changesObject
+                          };
 
             _scriptProcessor.InvokeScriptByType(actionName, context);
 

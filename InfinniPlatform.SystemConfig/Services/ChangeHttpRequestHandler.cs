@@ -4,7 +4,7 @@ using InfinniPlatform.Core.Contracts;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Services;
 
-namespace InfinniPlatform.SystemConfig.RequestHandlers
+namespace InfinniPlatform.SystemConfig.Services
 {
     internal sealed class ChangeHttpRequestHandler : IHttpRequestHandler
     {

@@ -3,7 +3,7 @@
 using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Sdk.Services;
 
-namespace InfinniPlatform.SystemConfig.RequestHandlers
+namespace InfinniPlatform.SystemConfig.Services
 {
     internal sealed class DocumentTransactionScopeHttpGlobalHandler : IHttpGlobalHandler
     {

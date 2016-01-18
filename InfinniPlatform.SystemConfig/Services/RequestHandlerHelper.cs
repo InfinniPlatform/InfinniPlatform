@@ -1,7 +1,7 @@
 ﻿using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Services;
 
-namespace InfinniPlatform.SystemConfig.RequestHandlers
+namespace InfinniPlatform.SystemConfig.Services
 {
     internal static class RequestHandlerHelper
     {

@@ -4,18 +4,26 @@ using InfinniPlatform.Sdk.BlobStorage;
 using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Services;
 
-namespace InfinniPlatform.SystemConfig.RequestHandlers
+namespace InfinniPlatform.SystemConfig.Services
 {
-    internal sealed class DownloadHttpRequestHandler : IHttpRequestHandler
+    /// <summary>
+    /// Реализует REST-сервис для FileApi.
+    /// </summary>
+    internal sealed class FileApiHttpService : IHttpService
     {
-        public DownloadHttpRequestHandler(IBlobStorage blobStorage)
+        public FileApiHttpService(IBlobStorage blobStorage)
         {
             _blobStorage = blobStorage;
         }
 
         private readonly IBlobStorage _blobStorage;
 
-        public object Action(IHttpRequest request)
+        public void Load(IHttpServiceBuilder builder)
+        {
+            builder.Get["/SystemConfig/UrlEncodedData/configuration/DownloadBinaryContent"] = DownloadFile;
+        }
+
+        private object DownloadFile(IHttpRequest request)
         {
             string formString = request.Query.Form;
 

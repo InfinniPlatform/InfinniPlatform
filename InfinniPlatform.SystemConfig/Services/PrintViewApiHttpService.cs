@@ -8,11 +8,14 @@ using InfinniPlatform.Sdk.PrintView;
 using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Services;
 
-namespace InfinniPlatform.SystemConfig.RequestHandlers
+namespace InfinniPlatform.SystemConfig.Services
 {
-    internal sealed class ReportHttpRequestHandler : IHttpRequestHandler
+    /// <summary>
+    /// Реализует REST-сервис для PrintViewApi.
+    /// </summary>
+    internal sealed class PrintViewApiHttpService : IHttpService
     {
-        public ReportHttpRequestHandler(IDocumentApi documentApi, IPrintViewApi printViewApi, IScriptProcessor scriptProcessor)
+        public PrintViewApiHttpService(IDocumentApi documentApi, IPrintViewApi printViewApi, IScriptProcessor scriptProcessor)
         {
             _documentApi = documentApi;
             _printViewApi = printViewApi;
@@ -23,7 +26,14 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
         private readonly IPrintViewApi _printViewApi;
         private readonly IScriptProcessor _scriptProcessor;
 
-        public object Action(IHttpRequest request)
+        public void Load(IHttpServiceBuilder builder)
+        {
+            builder.ServicePath = "/SystemConfig/UrlEncodedData/reporting";
+
+            builder.Post["/GetPrintView"] = GetPrintView;
+        }
+
+        private object GetPrintView(IHttpRequest request)
         {
             string formString = request.Form.Form;
 

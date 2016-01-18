@@ -43,7 +43,7 @@ namespace InfinniPlatform.Core.RestApi.DataApi
 
         public IEnumerable<dynamic> GetDocuments(string configurationName, string documentType, IEnumerable<FilterCriteria> filter, int pageNumber, int pageSize, IEnumerable<SortingCriteria> sorting = null)
         {
-            return _getDocumentExecutor.GetDocument(configurationName, documentType, filter, pageNumber, pageSize, null, sorting);
+            return _getDocumentExecutor.GetDocument(configurationName, documentType, filter, pageNumber, pageSize, sorting);
         }
 
         public dynamic SetDocument(string configuration, string documentType, object documentInstance)
